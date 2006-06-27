@@ -14,7 +14,9 @@
 
 package org.apache.tapestry.binding;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
@@ -23,6 +25,7 @@ import org.apache.tapestry.IBinding;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.engine.state.ApplicationStateManager;
 import org.easymock.MockControl;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.binding.StateBinding}and
@@ -31,6 +34,7 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class StateBindingTest extends HiveMindTestCase
 {
 
@@ -59,14 +63,14 @@ public class StateBindingTest extends HiveMindTestCase
 
         ValueConverter vc = newValueConverter();
 
-        replayControls();
+        replay();
 
         IBinding b = newBinding("fred", vc, asm, null);
 
         assertEquals(Boolean.TRUE, b.getObject());
         assertEquals(false, b.isInvariant());
 
-        verifyControls();
+        verify();
     }
 
     public void testFailure()
@@ -80,7 +84,7 @@ public class StateBindingTest extends HiveMindTestCase
         
         ValueConverter vc = newValueConverter();
 
-        replayControls();
+        replay();
 
         IBinding b = newBinding("fred", vc, asm, l);
 
@@ -96,7 +100,7 @@ public class StateBindingTest extends HiveMindTestCase
             assertSame(t, ex.getRootCause());
         }
 
-        verifyControls();
+        verify();
     }
 
 }

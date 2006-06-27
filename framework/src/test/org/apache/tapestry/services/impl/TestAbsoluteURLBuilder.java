@@ -14,10 +14,12 @@
 
 package org.apache.tapestry.services.impl;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.services.AbsoluteURLBuilder;
 import org.apache.tapestry.web.WebRequest;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.AbsoluteURLBuilderImpl}.
@@ -38,19 +40,15 @@ public class TestAbsoluteURLBuilder extends TapestryTestCase
 
     private void attemptDefault(String expected, String URI, String scheme, String server, int port)
     {
-        MockControl control = newControl(WebRequest.class);
-        WebRequest request = (WebRequest) control.getMock();
+        WebRequest request = newMock(WebRequest.class);
 
-        request.getScheme();
-        control.setReturnValue(scheme);
+        expect(request.getScheme()).andReturn(scheme);
 
-        request.getServerName();
-        control.setReturnValue(server);
+        expect(request.getServerName()).andReturn(server);
 
-        request.getServerPort();
-        control.setReturnValue(port);
+        expect(request.getServerPort()).andReturn(port);
 
-        replayControls();
+        replay();
 
         AbsoluteURLBuilderImpl b = new AbsoluteURLBuilderImpl();
         b.setRequest(request);
@@ -59,7 +57,7 @@ public class TestAbsoluteURLBuilder extends TapestryTestCase
 
         assertEquals(expected, actual);
 
-        verifyControls();
+        verify();
     }
 
     public void testURIIncludesServer()

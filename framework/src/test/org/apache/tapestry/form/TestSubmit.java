@@ -16,6 +16,7 @@ package org.apache.tapestry.form;
 
 import static org.easymock.EasyMock.aryEq;
 import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -52,11 +53,11 @@ public class TestSubmit extends BaseFormComponentTestCase
 
         trainWasPrerendered(form, writer, submit, true);
 
-        replayControls();
+        replay();
 
         submit.renderComponent(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRender()
@@ -92,11 +93,11 @@ public class TestSubmit extends BaseFormComponentTestCase
 
         delegate.registerForFocus(submit, ValidationConstants.NORMAL_FIELD);
 
-        replayControls();
+        replay();
 
         submit.renderComponent(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderDisabled()
@@ -130,11 +131,11 @@ public class TestSubmit extends BaseFormComponentTestCase
         writer.attribute("disabled", "disabled");
         writer.closeTag();
 
-        replayControls();
+        replay();
 
         submit.renderComponent(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderWithLabel()
@@ -172,11 +173,11 @@ public class TestSubmit extends BaseFormComponentTestCase
 
         delegate.registerForFocus(submit, ValidationConstants.NORMAL_FIELD);
 
-        replayControls();
+        replay();
 
         submit.renderComponent(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRewindingDisabled()
@@ -202,11 +203,11 @@ public class TestSubmit extends BaseFormComponentTestCase
 
         trainIsRewinding(form, true);
 
-        replayControls();
+        replay();
 
         submit.renderComponent(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRewindNotForm()
@@ -232,11 +233,11 @@ public class TestSubmit extends BaseFormComponentTestCase
         trainIsRewinding(form, false);
         trainIsRewinding(cycle, true);
 
-        replayControls();
+        replay();
 
         submit.renderComponent(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRewindNotTrigger()
@@ -263,11 +264,11 @@ public class TestSubmit extends BaseFormComponentTestCase
 
         trainGetParameter(cycle, "fred", null);
 
-        replayControls();
+        replay();
 
         submit.renderComponent(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRewindTriggered()
@@ -298,13 +299,13 @@ public class TestSubmit extends BaseFormComponentTestCase
 
         trainGetParameter(cycle, "fred", "flintstone");
 
-        replayControls();
+        replay();
 
         submit.renderComponent(writer, cycle);
 
         assertEquals("clicked", PropertyUtils.read(submit, "selected"));
 
-        verifyControls();
+        verify();
     }
 
     public void testTriggerWithListener()
@@ -319,11 +320,11 @@ public class TestSubmit extends BaseFormComponentTestCase
 
         listener.actionTriggered(submit, cycle);
 
-        replayControls();
+        replay();
 
         submit.handleClick(cycle, form);
 
-        verifyControls();
+        verify();
     }
 
     public void testTriggerWithAction()
@@ -337,19 +338,19 @@ public class TestSubmit extends BaseFormComponentTestCase
         { "action", action, "listenerInvoker",
                 new ListenerInvokerTerminator() });
 
-        replayControls();
+        replay();
 
         submit.handleClick(cycle, form);
 
-        verifyControls();
+        verify();
 
         action.actionTriggered(submit, cycle);
 
-        replayControls();
+        replay();
 
         form.runDeferred();
 
-        verifyControls();
+        verify();
     }
 
     public void testTriggerWithActionAndSingleParameter()
@@ -366,19 +367,19 @@ public class TestSubmit extends BaseFormComponentTestCase
         
         cycle.setListenerParameters(aryEq(new Object[] { parameter }));
 
-        replayControls();
+        replay();
 
         submit.handleClick(cycle, form);
 
-        verifyControls();
+        verify();
 
         action.actionTriggered(submit, cycle);
 
-        replayControls();
+        replay();
 
         form.runDeferred();
 
-        verifyControls();
+        verify();
     }
 
     public void testTriggerWithDActionAndMultipleParameters()
@@ -398,19 +399,19 @@ public class TestSubmit extends BaseFormComponentTestCase
 
         cycle.setListenerParameters(aryEq(new Object[]{ "p1", "p2" }));
 
-        replayControls();
+        replay();
 
         submit.handleClick(cycle, form);
 
-        verifyControls();
+        verify();
 
         action.actionTriggered(submit, cycle);
 
-        replayControls();
+        replay();
 
         form.runDeferred();
 
-        verifyControls();
+        verify();
     }
     
     public void testTriggerWithListenerAndAction()
@@ -428,19 +429,19 @@ public class TestSubmit extends BaseFormComponentTestCase
 
         listener.actionTriggered(submit, cycle);
         
-        replayControls();
+        replay();
 
         submit.handleClick(cycle, form);
 
-        verifyControls();
+        verify();
 
         action.actionTriggered(submit, cycle);
 
-        replayControls();
+        replay();
 
         form.runDeferred();
 
-        verifyControls();
+        verify();
     }
     
 }

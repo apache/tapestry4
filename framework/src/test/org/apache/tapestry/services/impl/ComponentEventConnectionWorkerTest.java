@@ -17,6 +17,10 @@ import static org.easymock.EasyMock.checkOrder;
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isA;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNotNull;
+import static org.testng.AssertJUnit.assertNull;
+import static org.testng.AssertJUnit.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,15 +110,13 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         script.execute(eq(cycle), eq(prs), isA(Map.class));
         
-        replayControls();
+        replay();
         
         worker.renderComponent(cycle, component);
         
-        verifyControls();
+        verify();
         
         assertEquals(0, worker.getDefferedFormConnections().size());
-        
-        resetControls();
         
         // test widget render
         
@@ -138,11 +140,11 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         script.execute(eq(cycle), eq(prs), isA(Map.class));
         
-        replayControls();
+        replay();
         
         worker.renderComponent(cycle, widget);
         
-        verifyControls();
+        verify();
     }
     
     public void testRewindRender()
@@ -153,11 +155,11 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         expect(cycle.isRewinding()).andReturn(true);
         
-        replayControls();
+        replay();
         
         worker.renderComponent(cycle, null);
         
-        verifyControls();
+        verify();
     }
     
     public void testNullPageSupport()
@@ -170,11 +172,11 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE)).andReturn(null);
         
-        replayControls();
+        replay();
         
         worker.renderComponent(cycle, null);
         
-        verifyControls();
+        verify();
     }
     
     public void testDeferredConnection()
@@ -203,15 +205,13 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         expect(cycle.getAttribute(ComponentEventConnectionWorker.FORM_NAME_LIST + "form1")).andReturn(null);
         
-        replayControls();
+        replay();
         
         worker.renderComponent(cycle, component);
         
-        verifyControls();
+        verify();
         
         assertEquals(1, worker.getDefferedFormConnections().size());
-        
-        resetControls();
         
         List deferred = (List)worker.getDefferedFormConnections().get("form1");
         assertNotNull(deferred);
@@ -269,15 +269,13 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         expect(cycle.getAttribute(ComponentEventConnectionWorker.FORM_NAME_LIST + "form1")).andReturn(null);
         
-        replayControls();
+        replay();
         
         worker.renderComponent(cycle, component);
         
-        verifyControls();
+        verify();
         
         assertEquals(1, worker.getDefferedFormConnections().size());
-        
-        resetControls();
         
         checkOrder(form, false);
         checkOrder(component, false);
@@ -310,11 +308,11 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         script.execute(eq(cycle), eq(prs), isA(Map.class));
         
-        replayControls();
+        replay();
         
         worker.renderComponent(cycle, form);
         
-        verifyControls();
+        verify();
     }
     
     public void testScriptResource()
@@ -347,8 +345,8 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         assertNotNull(worker.getScript(body));
         assertEquals(elementScript, worker.getScript(body).getPath());
         
-        replayControls();
+        replay();
         
-        verifyControls();
+        verify();
     }
 }

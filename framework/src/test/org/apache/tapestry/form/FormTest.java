@@ -17,6 +17,7 @@ package org.apache.tapestry.form;
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isA;
+import static org.testng.AssertJUnit.assertSame;
 
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IActionListener;
@@ -107,7 +108,7 @@ public class FormTest extends BaseComponentTestCase
 
         TapestryUtils.removeForm(cycle);
 
-        replayControls();
+        replay();
 
         try
         {
@@ -118,7 +119,7 @@ public class FormTest extends BaseComponentTestCase
             assertSame(form, ex.getComponent());
         }
 
-        verifyControls();
+        verify();
     }
 
     private ListenerInvoker newListenerInvoker()
@@ -165,11 +166,11 @@ public class FormTest extends BaseComponentTestCase
 
         TapestryUtils.removeForm(cycle);
 
-        replayControls();
+        replay();
 
         form.render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderWithScheme()
@@ -211,11 +212,11 @@ public class FormTest extends BaseComponentTestCase
 
         TapestryUtils.removeForm(cycle);
 
-        replayControls();
+        replay();
 
         form.render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     protected void trainStoreForm(IRequestCycle cycle, IForm form)
@@ -240,27 +241,27 @@ public class FormTest extends BaseComponentTestCase
         IActionListener cancel = newListener();
         IActionListener listener = newListener();
 
-        replayControls();
+        replay();
 
         Form form = (Form) newInstance(Form.class, new Object[]
         { "listener", listener, "cancel", cancel });
 
         assertSame(cancel, form.findListener(FormConstants.SUBMIT_CANCEL));
 
-        verifyControls();
+        verify();
     }
 
     public void testFindCancelDefaultListener()
     {
         IActionListener listener = newListener();
 
-        replayControls();
+        replay();
 
         Form form = (Form) newInstance(Form.class, "listener", listener);
 
         assertSame(listener, form.findListener(FormConstants.SUBMIT_CANCEL));
 
-        verifyControls();
+        verify();
     }
 
     public void testFindRefreshListener()
@@ -268,28 +269,28 @@ public class FormTest extends BaseComponentTestCase
         IActionListener refresh = newListener();
         IActionListener listener = newListener();
 
-        replayControls();
+        replay();
 
         Form form = (Form) newInstance(Form.class, new Object[]
         { "listener", listener, "refresh", refresh });
 
         assertSame(refresh, form.findListener(FormConstants.SUBMIT_REFRESH));
 
-        verifyControls();
+        verify();
     }
 
     public void testFindRefreshListenerDefault()
     {
         IActionListener listener = newListener();
 
-        replayControls();
+        replay();
 
         Form form = (Form) newInstance(Form.class, new Object[]
         { "listener", listener });
 
         assertSame(listener, form.findListener(FormConstants.SUBMIT_REFRESH));
 
-        verifyControls();
+        verify();
     }
 
     public void testFindListenerSuccess()
@@ -301,7 +302,7 @@ public class FormTest extends BaseComponentTestCase
 
         IValidationDelegate delegate = newDelegate(false);
 
-        replayControls();
+        replay();
 
         Form form = (Form) newInstance(Form.class, new Object[]
         { "delegate", delegate, "success", success, "cancel", cancel, "refresh", refresh,
@@ -309,7 +310,7 @@ public class FormTest extends BaseComponentTestCase
 
         assertSame(success, form.findListener(FormConstants.SUBMIT_NORMAL));
 
-        verifyControls();
+        verify();
     }
 
     public void testFindListenerValidationErrors()
@@ -321,7 +322,7 @@ public class FormTest extends BaseComponentTestCase
 
         IValidationDelegate delegate = newDelegate(true);
 
-        replayControls();
+        replay();
         
         Form form = (Form) newInstance(Form.class, new Object[]
         { "delegate", delegate, "success", success, "cancel", cancel, "refresh", refresh,
@@ -329,7 +330,7 @@ public class FormTest extends BaseComponentTestCase
 
         assertSame(listener, form.findListener(FormConstants.SUBMIT_NORMAL));
 
-        verifyControls();
+        verify();
     }
 
     private IValidationDelegate newDelegate(boolean hasErrors)

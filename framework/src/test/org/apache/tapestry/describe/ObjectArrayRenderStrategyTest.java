@@ -16,6 +16,7 @@ package org.apache.tapestry.describe;
 
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link ObjectArrayRenderStrategy}.
@@ -23,6 +24,7 @@ import org.apache.tapestry.IRequestCycle;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class ObjectArrayRenderStrategyTest extends BaseDescribeTestCase
 {
     public void testEmpty()
@@ -36,11 +38,11 @@ public class ObjectArrayRenderStrategyTest extends BaseDescribeTestCase
         writer.print("empty list");
         writer.end();
 
-        replayControls();
+        replay();
 
         new ObjectArrayRenderStrategy().renderObject(array, writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testNonEmpty()
@@ -73,7 +75,7 @@ public class ObjectArrayRenderStrategyTest extends BaseDescribeTestCase
         writer.end();
         writer.end();
 
-        replayControls();
+        replay();
 
         ObjectArrayRenderStrategy subject = new ObjectArrayRenderStrategy();
 
@@ -81,7 +83,7 @@ public class ObjectArrayRenderStrategyTest extends BaseDescribeTestCase
 
         subject.renderObject(array, writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testNullInArray()
@@ -100,10 +102,10 @@ public class ObjectArrayRenderStrategyTest extends BaseDescribeTestCase
         writer.end();
         writer.end();
 
-        replayControls();
+        replay();
 
         new ObjectArrayRenderStrategy().renderObject(array, writer, cycle);
 
-        verifyControls();
+        verify();
     }
 }

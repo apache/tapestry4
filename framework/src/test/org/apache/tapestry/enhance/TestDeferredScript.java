@@ -14,13 +14,17 @@
 
 package org.apache.tapestry.enhance;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+import static org.testng.AssertJUnit.assertTrue;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.engine.IScriptSource;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.DeferredScriptImpl}.
@@ -28,20 +32,18 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestDeferredScript extends HiveMindTestCase
+public class TestDeferredScript extends BaseComponentTestCase
 {
     public void testSuccess()
     {
-        MockControl control = newControl(IScriptSource.class);
-        IScriptSource source = (IScriptSource) control.getMock();
+        IScriptSource source = newMock(IScriptSource.class);
 
         Resource r = (Resource) newMock(Resource.class);
         IScript script = (IScript) newMock(IScript.class);
 
-        source.getScript(r);
-        control.setReturnValue(script);
+        expect(source.getScript(r)).andReturn(script);
 
-        replayControls();
+        replay();
 
         DeferredScript ds = new DeferredScriptImpl(r, source, null);
 
@@ -52,13 +54,12 @@ public class TestDeferredScript extends HiveMindTestCase
 
         assertTrue(ds.toString().indexOf(r.toString()) > 0);
 
-        verifyControls();
+        verify();
     }
 
     public void testFailure()
     {
-        MockControl control = newControl(IScriptSource.class);
-        IScriptSource source = (IScriptSource) control.getMock();
+        IScriptSource source = newMock(IScriptSource.class);
 
         Resource newResource = (Resource) newMock(Resource.class);
         Resource r = newResource;
@@ -66,10 +67,9 @@ public class TestDeferredScript extends HiveMindTestCase
         Location l = newLocation();
         Throwable t = new RuntimeException("Woops!");
 
-        source.getScript(r);
-        control.setThrowable(t);
+        expect(source.getScript(r)).andThrow(t);
 
-        replayControls();
+        replay();
 
         DeferredScript ds = new DeferredScriptImpl(r, source, l);
 
@@ -85,7 +85,7 @@ public class TestDeferredScript extends HiveMindTestCase
             assertSame(t, ex.getRootCause());
         }
 
-        verifyControls();
+        verify();
 
     }
 }

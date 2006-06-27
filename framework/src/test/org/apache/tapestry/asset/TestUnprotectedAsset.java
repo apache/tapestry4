@@ -28,12 +28,14 @@ import org.apache.oro.text.regex.PatternMatcher;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
 import org.apache.tapestry.services.ServiceConstants;
+import org.testng.annotations.Test;
 
 /**
  * Tests for unprotected resource contributions.
  * 
  * @author jkuhnert
  */
+@Test
 public class TestUnprotectedAsset extends HiveMindTestCase
 {
 

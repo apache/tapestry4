@@ -14,6 +14,12 @@
 
 package org.apache.tapestry.junit.parse;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNotNull;
+import static org.testng.AssertJUnit.assertNull;
+import static org.testng.AssertJUnit.assertSame;
+import static org.testng.AssertJUnit.assertTrue;
+
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -470,7 +476,7 @@ public class TestSpecificationParser extends TapestryTestCase
 
     public void testListenerBinding() throws Exception
     {
-        Log log = (Log) newMock(Log.class);
+        Log log = newMock(Log.class);
 
         SpecificationParser parser = new SpecificationParser(new DefaultErrorHandler(), log,
                 new DefaultClassResolver(), new SpecFactory());
@@ -482,11 +488,11 @@ public class TestSpecificationParser extends TapestryTestCase
         log
                 .warn("The <listener-binding> element is no longer supported (at classpath:/org/apache/tapestry/junit/parse/ListenerBinding.page, line 25, column 56).");
 
-        replayControls();
+        replay();
 
         IComponentSpecification spec = parser.parsePageSpecification(location);
 
-        verifyControls();
+        verify();
 
         IContainedComponent cc = spec.getComponent("c");
 
@@ -873,21 +879,6 @@ public class TestSpecificationParser extends TapestryTestCase
         }
     }
 
-    /**
-     * Check that &lt;service&gt; elements are ignored properly.
-     * 
-     * @since 4.0
-     */
-
-    public void testServiceElement() throws Exception
-    {
-        interceptLogging("org.apache.tapestry");
-
-        parseLib("ServiceElement.library");
-
-        assertLoggedMessagePattern("The <service> element is no longer supported");
-    }
-
     /** @since 4.0 */
     public void testMeta() throws Exception
     {
@@ -1040,7 +1031,7 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals(false, ps.getCache());
 
         ps = spec.getParameter("withAliases");
-        assertListsEqual(new String[]
+        assertEquals(new String[]
         { "fred", "barney" }, ps.getAliasNames().toArray());
 
         assertSame(ps, spec.getParameter("fred"));
@@ -1072,7 +1063,7 @@ public class TestSpecificationParser extends TapestryTestCase
 
         assertEquals("http://myexternal/asset", as.getPath());
 
-        assertListsEqual(new String[]
+        assertEquals(new String[]
         { "mycontext", "myexternal", "myprivate" }, cs.getAssetNames());
     }
 

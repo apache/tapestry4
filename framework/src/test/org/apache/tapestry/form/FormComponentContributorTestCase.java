@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.form;
 
+import static org.easymock.EasyMock.expect;
+
 import java.util.Locale;
 
 import org.apache.hivemind.util.ClasspathResource;
@@ -24,8 +26,6 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.junit.TapestryTestCase;
-import org.easymock.MockControl;
-import org.easymock.internal.ArrayMatcher;
 
 /**
  * Abstract test case for {@link FormComponentContributor}.
@@ -42,132 +42,69 @@ public abstract class FormComponentContributorTestCase extends TapestryTestCase
     // that
     // create and initialize a Foo instance.
     // -- Howard
+    
+    protected IFormComponent _component = newMock(IFormComponent.class);
+    
+    protected IPage _page = newPage();
+    
+    protected IRequestCycle _cycle = newCycle();
+    
+    protected IForm _form = newMock(IForm.class);
 
-    protected MockControl _componentControl = MockControl.createControl(IFormComponent.class);
+    protected IEngine _engine = newMock(IEngine.class);
 
-    protected IFormComponent _component = (IFormComponent) _componentControl.getMock();
-
-    protected MockControl _pageControl = MockControl.createControl(IPage.class);
-
-    protected IPage _page = (IPage) _pageControl.getMock();
-
-    protected MockControl _cycleControl = MockControl.createControl(IRequestCycle.class);
-
-    protected IRequestCycle _cycle = (IRequestCycle) _cycleControl.getMock();
-
-    protected MockControl _formControl = MockControl.createControl(IForm.class);
-
-    protected IForm _form = (IForm) _formControl.getMock();
-
-    protected MockControl _engineControl = MockControl.createControl(IEngine.class);
-
-    protected IEngine _engine = (IEngine) _engineControl.getMock();
-
-    protected MockControl _pageRenderSupportControl = MockControl
-            .createControl(PageRenderSupport.class);
-
-    protected PageRenderSupport _pageRenderSupport = (PageRenderSupport) _pageRenderSupportControl
-            .getMock();
-
-    /**
-     * @see org.apache.hivemind.test.HiveMindTestCase#tearDown()
-     */
-    protected void tearDown() throws Exception
-    {
-        _componentControl.reset();
-        _pageControl.reset();
-        _cycleControl.reset();
-        _formControl.reset();
-        _engineControl.reset();
-        _pageRenderSupportControl.reset();
-
-        super.tearDown();
-    }
-
-    protected void replay()
-    {
-        _componentControl.replay();
-        _pageControl.replay();
-        _cycleControl.replay();
-        _formControl.replay();
-        _engineControl.replay();
-        _pageRenderSupportControl.replay();
-    }
-
-    protected void verify()
-    {
-        _componentControl.verify();
-        _pageControl.verify();
-        _cycleControl.verify();
-        _formControl.verify();
-        _engineControl.verify();
-        _pageRenderSupportControl.verify();
-    }
+    protected PageRenderSupport _pageRenderSupport = newPageRenderSupport();
 
     protected void addScript(String script)
     {
-        _cycle.getEngine();
-        _cycleControl.setReturnValue(_engine);
+        expect(_cycle.getEngine()).andReturn(_engine);
 
-        _cycle.getAttribute("org.apache.tapestry.PageRenderSupport");
-        _cycleControl.setReturnValue(_pageRenderSupport);
-
+        expect(_cycle.getAttribute("org.apache.tapestry.PageRenderSupport"))
+        .andReturn(_pageRenderSupport);
+        
         _pageRenderSupport.addExternalScript(new ClasspathResource(null, script));
-        _pageRenderSupportControl.setVoidCallable();
     }
 
     protected IFormComponent newField(String displayName)
     {
-        MockControl control = newControl(IFormComponent.class);
-        IFormComponent field = (IFormComponent) control.getMock();
+        IFormComponent field = newMock(IFormComponent.class);
 
-        field.getDisplayName();
-        control.setReturnValue(displayName);
+        expect(field.getDisplayName()).andReturn(displayName);
 
         return field;
     }
 
     protected IFormComponent newField(String displayName, String clientId, int count)
     {
-        MockControl control = MockControl.createNiceControl(IFormComponent.class);
+        IFormComponent field = newMock(IFormComponent.class);
 
-        addControl(control);
+        expect(field.getDisplayName()).andReturn(displayName);
 
-        IFormComponent field = (IFormComponent) control.getMock();
-
-        field.getDisplayName();
-        control.setReturnValue(displayName);
-
-        field.getClientId();
-        control.setReturnValue(clientId, count);
+        expect(field.getClientId()).andReturn(clientId).times(count);
 
         return field;
     }
     
     protected IFormComponent newFieldWithClientId(String clientId)
     {
-        MockControl control = newControl(IFormComponent.class);
-        IFormComponent field = (IFormComponent)control.getMock();
+        IFormComponent field = newMock(IFormComponent.class);
         
-        field.getClientId();
-        control.setReturnValue(clientId);
+        expect(field.getClientId()).andReturn(clientId);
         
         return field;        
     }
 
 
-    protected void trainBuildMessage(MockControl control, ValidationMessages messages,
+    protected void trainBuildMessage(ValidationMessages messages,
             String overrideMessage, String key, Object[] parameters, String result)
     {
-        messages.formatValidationMessage(overrideMessage, key, parameters);
-        control.setMatcher(new ArrayMatcher());
-        control.setReturnValue(result);
+        expect(messages.formatValidationMessage(overrideMessage, key, parameters))
+        .andReturn(result);
     }
 
-    protected void trainGetLocale(MockControl control, ValidationMessages messages, Locale locale)
+    protected void trainGetLocale(ValidationMessages messages, Locale locale)
     {
-        messages.getLocale();
-        control.setReturnValue(locale);
+        expect(messages.getLocale()).andReturn(locale);
     }
 
     protected IFormComponent newField()
@@ -187,11 +124,9 @@ public abstract class FormComponentContributorTestCase extends TapestryTestCase
 
     protected ValidationMessages newValidationMessages(Locale locale)
     {
-        MockControl control = newControl(ValidationMessages.class);
-        ValidationMessages messages = (ValidationMessages) control.getMock();
+        ValidationMessages messages = newMock(ValidationMessages.class);
 
-        messages.getLocale();
-        control.setReturnValue(locale);
+        expect(messages.getLocale()).andReturn(locale);
 
         return messages;
     }

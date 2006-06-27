@@ -14,18 +14,21 @@
 
 package org.apache.tapestry.enhance;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.lang.reflect.Modifier;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.service.MethodSignature;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.engine.HomeService;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.services.InjectedValueProvider;
 import org.apache.tapestry.spec.InjectSpecification;
 import org.apache.tapestry.spec.InjectSpecificationImpl;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.InjectObjectWorker}.
@@ -33,7 +36,7 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestInjectObjectWorker extends HiveMindTestCase
+public class TestInjectObjectWorker extends BaseComponentTestCase
 {
     private InjectSpecification newSpec(String name, String locator, Location location)
     {
@@ -53,27 +56,21 @@ public class TestInjectObjectWorker extends HiveMindTestCase
 
         InjectSpecification spec = newSpec("fred", "service:barney", l);
 
-        MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+        EnhancementOperation op = newMock(EnhancementOperation.class);
 
-        MockControl pc = newControl(InjectedValueProvider.class);
-        InjectedValueProvider p = (InjectedValueProvider) pc.getMock();
+        InjectedValueProvider p = newMock(InjectedValueProvider.class);
 
-        op.getPropertyType("fred");
-        opc.setReturnValue(null);
+        expect(op.getPropertyType("fred")).andReturn(null);
 
         op.claimReadonlyProperty("fred");
 
-        p.obtainValue("service:barney", l);
-
-        pc.setReturnValue(injectedValue);
+        expect(p.obtainValue("service:barney", l)).andReturn(injectedValue);
 
         // When the same bean is injected multiple times, the field name
         // returned won't match the field name suggested; make sure the code
         // generation used the correct field name.
 
-        op.addInjectedField("_$fred", Object.class, injectedValue);
-        opc.setReturnValue("_$gnarly");
+        expect(op.addInjectedField("_$fred", Object.class, injectedValue)).andReturn("_$gnarly");
 
         op.addMethod(
                 Modifier.PUBLIC,
@@ -81,14 +78,14 @@ public class TestInjectObjectWorker extends HiveMindTestCase
                 "return _$gnarly;",
                 l);
 
-        replayControls();
+        replay();
 
         InjectObjectWorker w = new InjectObjectWorker();
         w.setProvider(p);
 
         w.performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 
     public void testWithExistingProperty()
@@ -98,34 +95,29 @@ public class TestInjectObjectWorker extends HiveMindTestCase
 
         InjectSpecification spec = newSpec("wilma", "service:betty", l);
 
-        MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+        EnhancementOperation op = newMock(EnhancementOperation.class);
 
-        MockControl pc = newControl(InjectedValueProvider.class);
-        InjectedValueProvider p = (InjectedValueProvider) pc.getMock();
+        InjectedValueProvider p = newMock(InjectedValueProvider.class);
 
-        op.getPropertyType("wilma");
-        opc.setReturnValue(IEngineService.class);
+        expect(op.getPropertyType("wilma")).andReturn(IEngineService.class);
 
         op.claimReadonlyProperty("wilma");
 
-        p.obtainValue("service:betty", l);
-        pc.setReturnValue(injectedValue);
+        expect(p.obtainValue("service:betty", l)).andReturn(injectedValue);
 
-        op.addInjectedField("_$wilma", IEngineService.class, injectedValue);
-        opc.setReturnValue("_$wilma");
+        expect(op.addInjectedField("_$wilma", IEngineService.class, injectedValue)).andReturn("_$wilma");
 
         op.addMethod(Modifier.PUBLIC, new MethodSignature(IEngineService.class, "getWilma", null,
                 null), "return _$wilma;", l);
 
-        replayControls();
+        replay();
 
         InjectObjectWorker w = new InjectObjectWorker();
         w.setProvider(p);
 
         w.performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 
     /**
@@ -139,21 +131,17 @@ public class TestInjectObjectWorker extends HiveMindTestCase
 
         InjectSpecification spec = newSpec("fred", "service:barney", l);
 
-        MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+        EnhancementOperation op = newMock(EnhancementOperation.class);
 
-        MockControl pc = newControl(InjectedValueProvider.class);
-        InjectedValueProvider p = (InjectedValueProvider) pc.getMock();
+        InjectedValueProvider p = newMock(InjectedValueProvider.class);
 
-        op.getPropertyType("fred");
-        opc.setReturnValue(null);
+        expect(op.getPropertyType("fred")).andReturn(null);
 
         op.claimReadonlyProperty("fred");
 
-        p.obtainValue("service:barney", l);
-        pc.setReturnValue(null);
+        expect(p.obtainValue("service:barney", l)).andReturn(null);
 
-        replayControls();
+        replay();
 
         InjectObjectWorker w = new InjectObjectWorker();
         w.setProvider(p);
@@ -169,7 +157,7 @@ public class TestInjectObjectWorker extends HiveMindTestCase
             assertSame(l, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testInjectedValueWrongType()
@@ -178,21 +166,17 @@ public class TestInjectObjectWorker extends HiveMindTestCase
 
         InjectSpecification spec = newSpec("fred", "service:barney", l);
 
-        MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+        EnhancementOperation op = newMock(EnhancementOperation.class);
 
-        MockControl pc = newControl(InjectedValueProvider.class);
-        InjectedValueProvider p = (InjectedValueProvider) pc.getMock();
+        InjectedValueProvider p = newMock(InjectedValueProvider.class);
 
-        op.getPropertyType("fred");
-        opc.setReturnValue(IEngineService.class);
+        expect(op.getPropertyType("fred")).andReturn(IEngineService.class);
 
         op.claimReadonlyProperty("fred");
 
-        p.obtainValue("service:barney", l);
-        pc.setReturnValue("INJECTED-VALUE");
+        expect(p.obtainValue("service:barney", l)).andReturn("INJECTED-VALUE");
 
-        replayControls();
+        replay();
 
         InjectObjectWorker w = new InjectObjectWorker();
         w.setProvider(p);
@@ -211,6 +195,6 @@ public class TestInjectObjectWorker extends HiveMindTestCase
             assertSame(l, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
     }
 }

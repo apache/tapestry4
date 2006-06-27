@@ -13,18 +13,21 @@
 // limitations under the License.
 package org.apache.tapestry.services.impl;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNotNull;
+import static org.testng.AssertJUnit.assertTrue;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.hivemind.test.AggregateArgumentsMatcher;
-import org.apache.hivemind.test.ArgumentMatcher;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IgnoreMatcher;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.event.EventTarget;
 import org.apache.tapestry.form.FormSupport;
@@ -81,22 +84,21 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         invoker.addEventListener("testId", new String[] { "onSelect" }, "fooListener",
                 null, false);
         
-        comp.getId();
-        setReturnValue(comp, "testId");
-        comp.getContainer();
-        setReturnValue(comp, comp);
-        comp.getListeners();
-        setReturnValue(comp, listenerMap);
+        expect(comp.getId()).andReturn("testId");
         
-        listenerMap.getListener("fooListener");
-        setReturnValue(listenerMap, listener);
+        expect(comp.getContainer()).andReturn(comp);
+        
+        expect(comp.getListeners()).andReturn(listenerMap);
+        
+        expect(listenerMap.getListener("fooListener")).andReturn(listener);
+        
         listenerInvoker.invokeListener(listener, comp, cycle);
         
-        replayControls();
+        replay();
         
         invoker.invokeListeners(comp, cycle, event);
         
-        verifyControls();
+        verify();
     }
     
     public void testInvokeElementListener()
@@ -117,22 +119,19 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         invoker.addElementEventListener("testId", new String[] { "onSelect" }, 
                 "fooListener", null, false);
         
-        comp.getId();
-        setReturnValue(comp, "testId");
-        comp.getContainer();
-        setReturnValue(comp, comp);
-        comp.getListeners();
-        setReturnValue(comp, listenerMap);
+        expect(comp.getId()).andReturn("testId");
         
-        listenerMap.getListener("fooListener");
-        setReturnValue(listenerMap, listener);
-        listenerInvoker.invokeListener(listener, comp, cycle);
+        expect(comp.getContainer()).andReturn(comp);
         
-        replayControls();
+        expect(comp.getListeners()).andReturn(listenerMap);
+        
+        expect(listenerMap.getListener("fooListener")).andReturn(listener);
+        
+        replay();
         
         invoker.invokeListeners(comp, cycle, event);
         
-        verifyControls();
+        verify();
     }
     
     public void testInvokeFormListener()
@@ -140,7 +139,6 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         IRequestCycle cycle = newCycle();
         IForm form = newForm();
         FormSupport formSupport = (FormSupport) newMock(FormSupport.class);
-        Runnable runnable = (Runnable)newMock(Runnable.class);
         
         ListenerInvoker listenerInvoker = (ListenerInvoker)newMock(ListenerInvoker.class);
         ListenerMap listenerMap = (ListenerMap)newMock(ListenerMap.class);
@@ -156,29 +154,22 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         invoker.addEventListener("testId", new String[] { "onSelect" }, "fooListener",
                 "form1", false);
         
-        formSupport.getForm();
-        setReturnValue(formSupport, form);
-        form.getId();
-        setReturnValue(form, "form1");
+        expect(formSupport.getForm()).andReturn(form);
         
-        form.getContainer();
-        setReturnValue(form, form);
-        form.getContainer();
-        setReturnValue(form, form);
-        form.getListeners();
-        setReturnValue(form, listenerMap);
+        expect(form.getId()).andReturn("form1");
         
-        listenerMap.getListener("fooListener");
-        setReturnValue(listenerMap, listener);
+        expect(form.getContainer()).andReturn(form).anyTimes();
         
-        form.addDeferredRunnable(runnable);
-        ArgumentMatcher ignore = new IgnoreMatcher();
-        getControl(form).setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[] { ignore }));
+        expect(form.getListeners()).andReturn(listenerMap);
         
-        replayControls();
+        expect(listenerMap.getListener("fooListener")).andReturn(listener);
+        
+        form.addDeferredRunnable(isA(Runnable.class));
+        
+        replay();
         
         invoker.invokeFormListeners(formSupport, cycle, event);
         
-        verifyControls();
+        verify();
     }
 }

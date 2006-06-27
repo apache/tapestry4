@@ -172,6 +172,12 @@
                 <artifactId>commons-lang</artifactId>
                 <version>2.1</version>
             </dependency>
+            <dependency>
+                <groupId>com.javaforge.tapestry</groupId>
+                <artifactId>tapestry-testng</artifactId>
+                <version>0.0.1</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <build>
@@ -228,6 +234,10 @@
         <repository>
             <id>apache.snapshots</id>
             <url>http://cvs.apache.org/maven-snapshot-repository</url>
+        </repository>
+        <repository>
+            <id>tapestry.javaforge</id>
+            <url>http://howardlewisship.com/repository</url>
         </repository>
     </repositories>
 </project>

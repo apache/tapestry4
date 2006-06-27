@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.describe;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 
@@ -26,27 +26,27 @@ import org.apache.tapestry.IRequestCycle;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public abstract class BaseDescribeTestCase extends HiveMindTestCase
+public abstract class BaseDescribeTestCase extends BaseComponentTestCase
 {
 
     protected IMarkupWriter newWriter()
     {
-        return (IMarkupWriter) newMock(IMarkupWriter.class);
+        return newMock(IMarkupWriter.class);
     }
 
     protected IRequestCycle newCycle()
     {
-        return (IRequestCycle) newMock(IRequestCycle.class);
+        return newMock(IRequestCycle.class);
     }
 
     protected HTMLDescriber newDescriber()
     {
-        return (HTMLDescriber) newMock(HTMLDescriber.class);
+        return newMock(HTMLDescriber.class);
     }
 
     protected DescriptionReceiver newReceiver()
     {
-        return (DescriptionReceiver) newMock(DescriptionReceiver.class);
+        return newMock(DescriptionReceiver.class);
     }
 
 }

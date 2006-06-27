@@ -14,15 +14,18 @@
 
 package org.apache.tapestry.pageload;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ParameterSpecification;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.pageload.VerifyRequiredParametersVisitor}.
@@ -30,22 +33,15 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestVerifyRequiredParametersVisitor extends HiveMindTestCase
+public class TestVerifyRequiredParametersVisitor extends BaseComponentTestCase
 {
     private IComponent newComponent(IComponentSpecification spec)
     {
-        MockControl control = newControl(IComponent.class);
-        IComponent component = (IComponent) control.getMock();
+        IComponent component = newComponent();
 
-        component.getSpecification();
-        control.setReturnValue(spec);
+        expect(component.getSpecification()).andReturn(spec);
 
         return component;
-    }
-
-    private IBinding newBinding()
-    {
-        return (IBinding) newMock(IBinding.class);
     }
 
     public void testNotRequired()
@@ -58,13 +54,13 @@ public class TestVerifyRequiredParametersVisitor extends HiveMindTestCase
 
         IComponent component = newComponent(cspec);
 
-        replayControls();
+        replay();
 
         VerifyRequiredParametersVisitor visitor = new VerifyRequiredParametersVisitor();
 
         visitor.visitComponent(component);
 
-        verifyControls();
+        verify();
     }
 
     public void testRequiredWithAlias()
@@ -78,26 +74,20 @@ public class TestVerifyRequiredParametersVisitor extends HiveMindTestCase
         cspec.addParameter(pspec);
 
         IBinding fredBinding = newBinding();
-
-        MockControl control = newControl(IComponent.class);
-        IComponent component = (IComponent) control.getMock();
-
-        component.getSpecification();
-        control.setReturnValue(cspec);
+        IComponent component = newComponent(cspec);
 
         // Notice that we don't ever check for "barney", just
         // "fred"
 
-        component.getBinding("fred");
-        control.setReturnValue(fredBinding);
+        expect(component.getBinding("fred")).andReturn(fredBinding);
 
-        replayControls();
+        replay();
 
         VerifyRequiredParametersVisitor visitor = new VerifyRequiredParametersVisitor();
 
         visitor.visitComponent(component);
 
-        verifyControls();
+        verify();
     }
 
     public void testRequiredNotBound()
@@ -110,23 +100,16 @@ public class TestVerifyRequiredParametersVisitor extends HiveMindTestCase
         cspec.addParameter(pspec);
 
         Location l = newLocation();
+        
+        IComponent component = newComponent(cspec);
 
-        MockControl control = newControl(IComponent.class);
-        IComponent component = (IComponent) control.getMock();
+        expect(component.getBinding("fred")).andReturn(null);
 
-        component.getSpecification();
-        control.setReturnValue(cspec);
+        expect(component.getExtendedId()).andReturn("Fred/flintstone");
 
-        component.getBinding("fred");
-        control.setReturnValue(null);
+        expect(component.getLocation()).andReturn(l);
 
-        component.getExtendedId();
-        control.setReturnValue("Fred/flintstone");
-
-        component.getLocation();
-        control.setReturnValue(l);
-
-        replayControls();
+        replay();
 
         VerifyRequiredParametersVisitor visitor = new VerifyRequiredParametersVisitor();
 
@@ -143,6 +126,6 @@ public class TestVerifyRequiredParametersVisitor extends HiveMindTestCase
             assertSame(l, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
     }
 }

@@ -14,12 +14,15 @@
 
 package org.apache.tapestry.listener;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IRequestCycle;
 
@@ -29,7 +32,7 @@ import org.apache.tapestry.IRequestCycle;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestListenerMap extends HiveMindTestCase
+public class TestListenerMap extends BaseComponentTestCase
 {
     public void testGetListener()
     {
@@ -40,7 +43,7 @@ public class TestListenerMap extends HiveMindTestCase
 
         invoker.invokeListenerMethod(target, cycle);
 
-        replayControls();
+        replay();
 
         ListenerMap lm = new ListenerMapImpl(target, map);
 
@@ -48,7 +51,7 @@ public class TestListenerMap extends HiveMindTestCase
 
         l1.actionTriggered(null, cycle);
 
-        verifyControls();
+        verify();
 
         IActionListener l2 = lm.getListener("method");
 
@@ -61,7 +64,7 @@ public class TestListenerMap extends HiveMindTestCase
         ListenerMethodInvoker invoker = newInvoker();
         Map map = newMap("method", invoker);
 
-        replayControls();
+        replay();
 
         ListenerMap lm = new ListenerMapImpl(target, map);
 
@@ -69,7 +72,7 @@ public class TestListenerMap extends HiveMindTestCase
 
         assertEquals(new ArrayList(map.keySet()), new ArrayList(lm.getListenerNames()));
 
-        verifyControls();
+        verify();
 
         try
         {
@@ -88,14 +91,14 @@ public class TestListenerMap extends HiveMindTestCase
         ListenerMethodInvoker invoker = newInvoker();
         Map map = newMap("method", invoker);
 
-        replayControls();
+        replay();
 
         ListenerMap lm = new ListenerMapImpl(target, map);
 
         assertEquals(true, lm.canProvideListener("method"));
         assertEquals(false, lm.canProvideListener("foobar"));
 
-        verifyControls();
+        verify();
     }
 
     public void testMissingListener()
@@ -104,7 +107,7 @@ public class TestListenerMap extends HiveMindTestCase
         ListenerMethodInvoker invoker = newInvoker();
         Map map = newMap("method", invoker);
 
-        replayControls();
+        replay();
 
         ListenerMap lm = new ListenerMapImpl(target, map);
 
@@ -120,7 +123,7 @@ public class TestListenerMap extends HiveMindTestCase
             assertSame(target, ex.getComponent());
         }
 
-        verifyControls();
+        verify();
     }
 
     private Map newMap(Object key, Object value)
@@ -135,10 +138,5 @@ public class TestListenerMap extends HiveMindTestCase
     private ListenerMethodInvoker newInvoker()
     {
         return (ListenerMethodInvoker) newMock(ListenerMethodInvoker.class);
-    }
-
-    private IRequestCycle newCycle()
-    {
-        return (IRequestCycle) newMock(IRequestCycle.class);
     }
 }

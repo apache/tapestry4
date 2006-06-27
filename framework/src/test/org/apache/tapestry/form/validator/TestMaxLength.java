@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.form.validator;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
@@ -33,11 +35,11 @@ public class TestMaxLength extends BaseValidatorTestCase
 
         String object = "short and sweet";
 
-        replayControls();
+        replay();
 
         new MaxLength("maxLength=50").validate(field, messages, object);
 
-        verifyControls();
+        verify();
     }
 
     public void testFail()
@@ -50,7 +52,7 @@ public class TestMaxLength extends BaseValidatorTestCase
                 { new Integer(10), "My Field" },
                 "Exception!");
 
-        replayControls();
+        replay();
 
         try
         {
@@ -74,7 +76,7 @@ public class TestMaxLength extends BaseValidatorTestCase
                 { new Integer(10), "My Field" },
                 "Exception!");
 
-        replayControls();
+        replay();
 
         try
         {
@@ -107,10 +109,10 @@ public class TestMaxLength extends BaseValidatorTestCase
         context
                 .addSubmitHandler("function(event) { Tapestry.validate_max_length(event, 'myfield', 20, 'default\\\\message'); }");
 
-        replayControls();
+        replay();
 
         new MaxLength("maxLength=20").renderContribution(writer, cycle, context, field);
 
-        verifyControls();
+        verify();
     }
 }

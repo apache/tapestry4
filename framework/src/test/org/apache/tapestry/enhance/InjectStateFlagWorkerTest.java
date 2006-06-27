@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.enhance;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.lang.reflect.Modifier;
 
 import org.apache.hivemind.ApplicationRuntimeException;
@@ -62,7 +65,7 @@ public class InjectStateFlagWorkerTest extends BaseEnhancementTestCase
 
         op.addMethod(Modifier.PUBLIC, sig, code, l);
 
-        replayControls();
+        replay();
 
         InjectStateFlagWorker worker = new InjectStateFlagWorker();
 
@@ -70,7 +73,7 @@ public class InjectStateFlagWorkerTest extends BaseEnhancementTestCase
 
         worker.performEnhancement(op, is);
 
-        verifyControls();
+        verify();
     }
 
     public void testWithExistingProperty()
@@ -104,7 +107,7 @@ public class InjectStateFlagWorkerTest extends BaseEnhancementTestCase
 
         op.addMethod(Modifier.PUBLIC, sig, code, l);
 
-        replayControls();
+        replay();
 
         InjectStateFlagWorker worker = new InjectStateFlagWorker();
 
@@ -112,7 +115,7 @@ public class InjectStateFlagWorkerTest extends BaseEnhancementTestCase
 
         worker.performEnhancement(op, is);
 
-        verifyControls();
+        verify();
     }
 
     public void testWithExistingPropertyWrongType()
@@ -129,7 +132,7 @@ public class InjectStateFlagWorkerTest extends BaseEnhancementTestCase
 
         trainGetPropertyType(op, "fred", int.class);
 
-        replayControls();
+        replay();
 
         InjectStateFlagWorker worker = new InjectStateFlagWorker();
 
@@ -146,6 +149,6 @@ public class InjectStateFlagWorkerTest extends BaseEnhancementTestCase
             assertSame(l, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
     }
 }

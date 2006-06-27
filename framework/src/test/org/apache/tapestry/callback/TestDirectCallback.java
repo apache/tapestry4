@@ -14,6 +14,10 @@
 
 package org.apache.tapestry.callback;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.BaseComponentTestCase;
@@ -21,7 +25,6 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IDirect;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.easymock.MockControl;
 
 /**
  * @author Howard M. Lewis Ship
@@ -30,43 +33,36 @@ public class TestDirectCallback extends BaseComponentTestCase
 {
     public void testNoParams()
     {
-        MockControl pagec = newControl(IPage.class);
-        IPage page = (IPage) pagec.getMock();
+        IPage page = newMock(IPage.class);
+        IDirect component = newMock(IDirect.class);
 
-        MockControl componentc = newControl(IDirect.class);
-        IDirect component = (IDirect) componentc.getMock();
+        expect(component.getPage()).andReturn(page);
 
-        component.getPage();
-        componentc.setReturnValue(page);
+        expect(page.getPageName()).andReturn("Fred");
 
-        page.getPageName();
-        pagec.setReturnValue("Fred");
+        expect(component.getIdPath()).andReturn("foo.bar");
 
-        component.getIdPath();
-        componentc.setReturnValue("foo.bar");
-
-        replayControls();
+        replay();
 
         DirectCallback callback = new DirectCallback(component, null);
 
         assertEquals("DirectCallback[Fred/foo.bar]", callback.toString());
 
-        verifyControls();
+        verify();
 
         IRequestCycle cycle = newCycleGetPage("Fred", page);
 
-        page.getNestedComponent("foo.bar");
-        pagec.setReturnValue(component);
+        expect(page.getNestedComponent("foo.bar")).andReturn(component);
 
         cycle.setListenerParameters(null);
 
         component.trigger(cycle);
 
-        replayControls();
+        replay();
 
         callback.performCallback(cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testWithParams()
@@ -74,79 +70,65 @@ public class TestDirectCallback extends BaseComponentTestCase
         Object[] params = new Object[]
         { "p1", "p2" };
 
-        MockControl pagec = newControl(IPage.class);
-        IPage page = (IPage) pagec.getMock();
+        IPage page = newMock(IPage.class);
+        IDirect component = newMock(IDirect.class);
 
-        MockControl componentc = newControl(IDirect.class);
-        IDirect component = (IDirect) componentc.getMock();
+        expect(component.getPage()).andReturn(page);
 
-        component.getPage();
-        componentc.setReturnValue(page);
+        expect(page.getPageName()).andReturn("Barney");
 
-        page.getPageName();
-        pagec.setReturnValue("Barney");
+        expect(component.getIdPath()).andReturn("foo.bar");
 
-        component.getIdPath();
-        componentc.setReturnValue("foo.bar");
-
-        replayControls();
+        replay();
 
         DirectCallback callback = new DirectCallback(component, params);
 
         assertEquals("DirectCallback[Barney/foo.bar p1, p2]", callback.toString());
 
-        verifyControls();
+        verify();
 
         IRequestCycle cycle = newCycleGetPage("Barney", page);
 
-        page.getNestedComponent("foo.bar");
-        pagec.setReturnValue(component);
+        expect(page.getNestedComponent("foo.bar")).andReturn(component);
 
         cycle.setListenerParameters(params);
 
         component.trigger(cycle);
 
-        replayControls();
+        replay();
 
         callback.performCallback(cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testNotDirect()
     {
-        MockControl pagec = newControl(IPage.class);
-        IPage page = (IPage) pagec.getMock();
+        IPage page = newMock(IPage.class);
+        IDirect component = newMock(IDirect.class);
 
-        MockControl componentc = newControl(IDirect.class);
-        IDirect component = (IDirect) componentc.getMock();
+        expect(component.getPage()).andReturn(page);
 
-        component.getPage();
-        componentc.setReturnValue(page);
+        expect(page.getPageName()).andReturn("Fred");
 
-        page.getPageName();
-        pagec.setReturnValue("Fred");
+        expect(component.getIdPath()).andReturn("foo.bar");
 
-        component.getIdPath();
-        componentc.setReturnValue("foo.bar");
-
-        replayControls();
+        replay();
 
         DirectCallback callback = new DirectCallback(component, null);
 
         assertEquals("DirectCallback[Fred/foo.bar]", callback.toString());
 
-        verifyControls();
+        verify();
 
         IRequestCycle cycle = newCycleGetPage("Fred", page);
 
         Location l = newLocation();
         IComponent component2 = newComponent("Fred/foo.bar", l);
 
-        page.getNestedComponent("foo.bar");
-        pagec.setReturnValue(component2);
+        expect(page.getNestedComponent("foo.bar")).andReturn(component2);
 
-        replayControls();
+        replay();
 
         try
         {
@@ -160,6 +142,6 @@ public class TestDirectCallback extends BaseComponentTestCase
             assertSame(l, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
     }
 }

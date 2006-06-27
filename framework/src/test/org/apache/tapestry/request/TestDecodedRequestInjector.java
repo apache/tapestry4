@@ -14,17 +14,19 @@
 
 package org.apache.tapestry.request;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+
 import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.services.ServletRequestServicer;
 import org.apache.tapestry.spec.ILibrarySpecification;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.request.DecodedRequestInjector}.
@@ -32,7 +34,7 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestDecodedRequestInjector extends HiveMindTestCase
+public class TestDecodedRequestInjector extends BaseComponentTestCase
 {
     private static class ServicerFixture implements ServletRequestServicer
     {
@@ -45,7 +47,7 @@ public class TestDecodedRequestInjector extends HiveMindTestCase
         }
     }
 
-    private HttpServletRequest newRequest()
+    private HttpServletRequest newHttpRequest()
     {
         return (HttpServletRequest) newMock(HttpServletRequest.class);
     }
@@ -57,16 +59,14 @@ public class TestDecodedRequestInjector extends HiveMindTestCase
 
     private ILibrarySpecification newSpec(boolean exists, IRequestDecoder decoder)
     {
-        MockControl control = newControl(ILibrarySpecification.class);
-        ILibrarySpecification spec = (ILibrarySpecification) control.getMock();
+        ILibrarySpecification spec = newMock(ILibrarySpecification.class);
 
-        spec.checkExtension(Tapestry.REQUEST_DECODER_EXTENSION_NAME);
-        control.setReturnValue(exists);
+        expect(spec.checkExtension(Tapestry.REQUEST_DECODER_EXTENSION_NAME)).andReturn(exists);
 
         if (exists)
         {
-            spec.getExtension(Tapestry.REQUEST_DECODER_EXTENSION_NAME, IRequestDecoder.class);
-            control.setReturnValue(decoder);
+            expect(spec.getExtension(Tapestry.REQUEST_DECODER_EXTENSION_NAME, IRequestDecoder.class))
+            .andReturn(decoder);
         }
 
         return spec;
@@ -74,7 +74,7 @@ public class TestDecodedRequestInjector extends HiveMindTestCase
 
     public void testNoExtension() throws Exception
     {
-        HttpServletRequest request = newRequest();
+        HttpServletRequest request = newHttpRequest();
         HttpServletResponse response = newResponse();
         ILibrarySpecification spec = newSpec(false, null);
 
@@ -82,7 +82,7 @@ public class TestDecodedRequestInjector extends HiveMindTestCase
 
         servicer.service(request, response);
 
-        replayControls();
+        replay();
 
         DecodedRequestInjector dri = new DecodedRequestInjector();
 
@@ -91,16 +91,15 @@ public class TestDecodedRequestInjector extends HiveMindTestCase
 
         dri.service(request, response, servicer);
 
-        verifyControls();
+        verify();
     }
 
     public void testWithExtension() throws Exception
     {
-        HttpServletRequest request = newRequest();
+        HttpServletRequest request = newHttpRequest();
         HttpServletResponse response = newResponse();
-
-        MockControl decoderc = newControl(IRequestDecoder.class);
-        IRequestDecoder decoder = (IRequestDecoder) decoderc.getMock();
+        
+        IRequestDecoder decoder = newMock(IRequestDecoder.class);
         ILibrarySpecification spec = newSpec(true, decoder);
 
         ServicerFixture servicer = new ServicerFixture();
@@ -108,10 +107,9 @@ public class TestDecodedRequestInjector extends HiveMindTestCase
         DecodedRequest decoded = new DecodedRequest();
         decoded.setRequestURI("/foo/bar/baz");
 
-        decoder.decodeRequest(request);
-        decoderc.setReturnValue(decoded);
+        expect(decoder.decodeRequest(request)).andReturn(decoded);
 
-        replayControls();
+        replay();
 
         DecodedRequestInjector dri = new DecodedRequestInjector();
 
@@ -124,6 +122,6 @@ public class TestDecodedRequestInjector extends HiveMindTestCase
 
         assertEquals("/foo/bar/baz", servicer._request.getRequestURI());
 
-        verifyControls();
+        verify();
     }
 }

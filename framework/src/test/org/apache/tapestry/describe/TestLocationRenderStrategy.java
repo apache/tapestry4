@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.describe;
 
+import static org.easymock.EasyMock.expect;
+
 import java.net.URL;
 
 import org.apache.hivemind.Location;
@@ -22,7 +24,6 @@ import org.apache.hivemind.impl.LocationImpl;
 import org.apache.hivemind.util.URLResource;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.describe.LocationRenderStrategy}.
@@ -34,11 +35,9 @@ public class TestLocationRenderStrategy extends BaseDescribeTestCase
 {
     private Resource newResource(URL url)
     {
-        MockControl control = newControl(Resource.class);
-        Resource resource = (Resource) control.getMock();
+        Resource resource = newMock(Resource.class);
 
-        resource.getResourceURL();
-        control.setReturnValue(url);
+        expect(resource.getResourceURL()).andReturn(url);
 
         return resource;
     }
@@ -85,19 +84,17 @@ public class TestLocationRenderStrategy extends BaseDescribeTestCase
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
-        MockControl lc = newControl(Location.class);
-        Location l = (Location) lc.getMock();
+        Location l = newLocation();
 
-        l.getLineNumber();
-        lc.setReturnValue(0);
+        expect(l.getLineNumber()).andReturn(0);
 
         writer.print(l.toString());
 
-        replayControls();
+        replay();
 
         new LocationRenderStrategy().renderObject(l, writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testNoURL()
@@ -105,22 +102,17 @@ public class TestLocationRenderStrategy extends BaseDescribeTestCase
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
         Resource resource = newResource(null);
-        MockControl lc = newControl(Location.class);
-        Location l = (Location) lc.getMock();
+        Location l = fabricateLocation(99);
 
-        l.getLineNumber();
-        lc.setReturnValue(99);
-
-        l.getResource();
-        lc.setReturnValue(resource);
+        expect(l.getResource()).andReturn(resource);
 
         writer.print(l.toString());
 
-        replayControls();
+        replay();
 
         new LocationRenderStrategy().renderObject(l, writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     /**
@@ -137,11 +129,11 @@ public class TestLocationRenderStrategy extends BaseDescribeTestCase
         train(writer, 2, 7, new String[]
         { "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine" });
 
-        replayControls();
+        replay();
 
         new LocationRenderStrategy().renderObject(l, writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     /**
@@ -158,10 +150,10 @@ public class TestLocationRenderStrategy extends BaseDescribeTestCase
         train(writer, 1, 3, new String[]
         { "Line One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight" });
 
-        replayControls();
+        replay();
 
         new LocationRenderStrategy().renderObject(l, writer, cycle);
 
-        verifyControls();
+        verify();
     }
 }

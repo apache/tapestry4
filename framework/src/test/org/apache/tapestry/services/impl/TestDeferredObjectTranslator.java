@@ -14,11 +14,13 @@
 
 package org.apache.tapestry.services.impl;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertSame;
+
 import org.apache.hivemind.Location;
 import org.apache.hivemind.internal.Module;
 import org.apache.hivemind.schema.Translator;
-import org.apache.hivemind.test.HiveMindTestCase;
-import org.easymock.MockControl;
+import org.apache.tapestry.BaseComponentTestCase;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.DeferredObjectImpl}&nbsp;and
@@ -27,7 +29,7 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestDeferredObjectTranslator extends HiveMindTestCase
+public class TestDeferredObjectTranslator extends BaseComponentTestCase
 {
     private Module newModule()
     {
@@ -37,11 +39,9 @@ public class TestDeferredObjectTranslator extends HiveMindTestCase
     private Translator newTranslator(Module module, String objectReference, Location location,
             Object result)
     {
-        MockControl control = newControl(Translator.class);
-        Translator translator = (Translator) control.getMock();
+        Translator translator = newMock(Translator.class);
 
-        translator.translate(module, Object.class, objectReference, location);
-        control.setReturnValue(result);
+        expect(translator.translate(module, Object.class, objectReference, location)).andReturn(result);
 
         return translator;
     }
@@ -53,7 +53,7 @@ public class TestDeferredObjectTranslator extends HiveMindTestCase
         Location l = newLocation();
         Translator translator = newTranslator(module, "OBJ-REFERENCE", l, object);
 
-        replayControls();
+        replay();
 
         DeferredObject deferred = new DeferredObjectImpl(translator, module, "OBJ-REFERENCE", l);
 
@@ -63,7 +63,7 @@ public class TestDeferredObjectTranslator extends HiveMindTestCase
 
         assertSame(object, deferred.getObject());
 
-        verifyControls();
+        verify();
 
         assertSame(l, deferred.getLocation());
     }
@@ -75,7 +75,7 @@ public class TestDeferredObjectTranslator extends HiveMindTestCase
         Location l = newLocation();
         Translator objectTranslator = newTranslator(module, "OBJ-REFERENCE", l, object);
 
-        replayControls();
+        replay();
 
         DeferredObjectTranslator translator = new DeferredObjectTranslator();
         translator.setObjectTranslator(objectTranslator);
@@ -92,7 +92,7 @@ public class TestDeferredObjectTranslator extends HiveMindTestCase
 
         assertSame(object, deferred.getObject());
 
-        verifyControls();
+        verify();
 
         assertSame(l, deferred.getLocation());
     }

@@ -14,6 +14,10 @@
 
 package org.apache.tapestry.valid;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNull;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.Map;
 
 import org.apache.tapestry.form.IFormComponent;
@@ -80,7 +84,7 @@ public class TestIntValidator extends BaseValidatorTestCase
     {
         IFormComponent field = newField("BamBam");
 
-        replayControls();
+        replay();
 
         IValidator validator = new IntValidator();
 
@@ -100,7 +104,7 @@ public class TestIntValidator extends BaseValidatorTestCase
     {
         IFormComponent field = newField("Fred");
 
-        replayControls();
+        replay();
 
         IValidator validator = new IntValidator("minimum=10");
 
@@ -120,7 +124,7 @@ public class TestIntValidator extends BaseValidatorTestCase
     {
         IFormComponent field = newField("Barney");
 
-        replayControls();
+        replay();
 
         IValidator validator = new IntValidator("maximum=10");
 
@@ -140,7 +144,7 @@ public class TestIntValidator extends BaseValidatorTestCase
     {
         IFormComponent field = newField("Fred");
 
-        replayControls();
+        replay();
 
         IntValidator validator = new IntValidator();
 
@@ -150,14 +154,14 @@ public class TestIntValidator extends BaseValidatorTestCase
 
         assertEquals("Fred must be an integer value.", map.get("formatMessage"));
 
-        verifyControls();
+        verify();
     }
 
     public void testScriptSymbolsRequired()
     {
         IFormComponent field = newField("Barney", 2);
 
-        replayControls();
+        replay();
 
         IntValidator validator = new IntValidator("required");
 
@@ -168,14 +172,14 @@ public class TestIntValidator extends BaseValidatorTestCase
         assertEquals("You must enter a value for Barney.", map.get("requiredMessage"));
         assertEquals("Barney must be an integer value.", map.get("formatMessage"));
 
-        verifyControls();
+        verify();
     }
 
     public void testScriptSymbolsMinimum()
     {
         IFormComponent field = newField("Barney", 2);
 
-        replayControls();
+        replay();
 
         IntValidator validator = new IntValidator("minimum=5");
 
@@ -188,14 +192,14 @@ public class TestIntValidator extends BaseValidatorTestCase
         assertEquals("Barney must not be smaller than 5.", map.get("rangeMessage"));
         assertEquals("Barney must be an integer value.", map.get("formatMessage"));
 
-        verifyControls();
+        verify();
     }
     
     public void testScriptSymbolsMaximum()
     {
         IFormComponent field = newField("Barney", 2);
 
-        replayControls();
+        replay();
 
         IntValidator validator = new IntValidator("maximum=5");
 
@@ -208,14 +212,14 @@ public class TestIntValidator extends BaseValidatorTestCase
         assertEquals("Barney must not be larger than 5.", map.get("rangeMessage"));
         assertEquals("Barney must be an integer value.", map.get("formatMessage"));
 
-        verifyControls();
+        verify();
     }    
     
     public void testScriptSymbolsRange()
     {
         IFormComponent field = newField("Barney", 2);
 
-        replayControls();
+        replay();
 
         IntValidator validator = new IntValidator("maximum=5,minimum=1");
 
@@ -228,6 +232,6 @@ public class TestIntValidator extends BaseValidatorTestCase
         assertEquals("Barney must be between 1 and 5.", map.get("rangeMessage"));
         assertEquals("Barney must be an integer value.", map.get("formatMessage"));
 
-        verifyControls();
+        verify();
     }
 }

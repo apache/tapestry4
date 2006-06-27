@@ -14,6 +14,14 @@
 
 package org.apache.tapestry.form;
 
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.isA;
+import static org.easymock.EasyMock.isNull;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -21,10 +29,6 @@ import java.util.Locale;
 
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.service.ThreadLocale;
-import org.apache.hivemind.test.AggregateArgumentsMatcher;
-import org.apache.hivemind.test.ArgumentMatcher;
-import org.apache.hivemind.test.EqualsMatcher;
-import org.apache.hivemind.test.TypeMatcher;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IForm;
@@ -36,7 +40,6 @@ import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.form.validator.Validator;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.valid.ValidatorException;
-import org.easymock.MockControl;
 
 /**
  * Test case for {@link ValidatableFieldSupportImpl}.
@@ -48,11 +51,9 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
 {
     private ThreadLocale newThreadLocale()
     {
-        MockControl control = newControl(ThreadLocale.class);
-        ThreadLocale tl = (ThreadLocale) control.getMock();
+        ThreadLocale tl = newMock(ThreadLocale.class);
 
-        tl.getLocale();
-        control.setReturnValue(Locale.ENGLISH);
+        expect(tl.getLocale()).andReturn(Locale.ENGLISH);
 
         return tl;
     }
@@ -63,21 +64,17 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
      */
     protected IRequestCycle newCycle(IComponent component)
     {
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IRequestCycle cycle = newCycle();
 
         ClassResolver cr = (ClassResolver) newMock(ClassResolver.class);
-
-        MockControl infrac = newControl(Infrastructure.class);
-        Infrastructure infra = (Infrastructure) infrac.getMock();
+        
+        Infrastructure infra = newMock(Infrastructure.class);
 
         PageRenderSupport prs = (PageRenderSupport) newMock(PageRenderSupport.class);
 
-        cycle.getInfrastructure();
-        cyclec.setReturnValue(infra);
+        expect(cycle.getInfrastructure()).andReturn(infra);
 
-        infra.getClassResolver();
-        infrac.setReturnValue(cr);
+        expect(infra.getClassResolver()).andReturn(cr);
 
         trainGetAttribute(cycle, TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE, prs);
 
@@ -88,162 +85,128 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
     {
         ValidatableFieldSupportImpl support = new ValidatableFieldSupportImpl();
         
-        MockControl fieldControl = newControl(TranslatedField.class);
-        TranslatedField field = (TranslatedField) fieldControl.getMock();
-        
-        MockControl formControl = newControl(IForm.class);
-        IForm form = (IForm) formControl.getMock();
+        TranslatedField field = newMock(TranslatedField.class);
+        IForm form = newMock(IForm.class);
         
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
         
-        field.getForm();
-        fieldControl.setReturnValue(form);
+        expect(field.getForm()).andReturn(form);
 
-        form.isClientValidationEnabled();
-        formControl.setReturnValue(false);
+        expect(form.isClientValidationEnabled()).andReturn(false);
 
-        replayControls();
+        replay();
 
         support.renderContributions(field, writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderContributionsClientValidationEnabledNoValidators()
     {
-        MockControl converterControl = newControl(ValueConverter.class);
-        ValueConverter converter = (ValueConverter) converterControl.getMock();
+        ValueConverter converter = newMock(ValueConverter.class);
         
         ValidatableFieldSupportImpl support = new ValidatableFieldSupportImpl();
         support.setThreadLocale(newThreadLocale());
         support.setValueConverter(converter);
         
-        MockControl fieldControl = newControl(TranslatedField.class);
-        TranslatedField field = (TranslatedField) fieldControl.getMock();
+        TranslatedField field = newMock(TranslatedField.class);
         
-        MockControl formControl = newControl(IForm.class);
-        IForm form = (IForm) formControl.getMock();
+        IForm form = newMock(IForm.class);
         
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle(field);
         
-        field.getForm();
-        fieldControl.setReturnValue(form);
+        expect(field.getForm()).andReturn(form);
 
-        form.isClientValidationEnabled();
-        formControl.setReturnValue(true);
+        expect(form.isClientValidationEnabled()).andReturn(true);
 
-        field.getForm();
-        fieldControl.setReturnValue(form);
+        expect(field.getForm()).andReturn(form);
 
-        form.getName();
-        formControl.setReturnValue("myform");
+        expect(form.getName()).andReturn("myform");
 
-        field.getValidators();
-        fieldControl.setReturnValue(null);
+        expect(field.getValidators()).andReturn(null);
         
-        converter.coerceValue(null, Iterator.class);
-        converterControl.setReturnValue(Collections.EMPTY_LIST.iterator());
+        expect(converter.coerceValue(null, Iterator.class)).andReturn(Collections.EMPTY_LIST.iterator());
         
-        replayControls();
+        replay();
 
         support.renderContributions(field, writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderContributionsClientValidationEnabled()
     {
-        MockControl converterControl = newControl(ValueConverter.class);
-        ValueConverter converter = (ValueConverter) converterControl.getMock();
+        ValueConverter converter = newMock(ValueConverter.class);
         
         ValidatableFieldSupportImpl support = new ValidatableFieldSupportImpl();
         support.setThreadLocale(newThreadLocale());
         support.setValueConverter(converter);
         
-        MockControl fieldControl = newControl(TranslatedField.class);
-        TranslatedField field = (TranslatedField) fieldControl.getMock();
+        TranslatedField field = newMock(TranslatedField.class);
         
-        MockControl formControl = newControl(IForm.class);
-        IForm form = (IForm) formControl.getMock();
+        IForm form = newMock(IForm.class);
         
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle(field);
         
-        MockControl validatorControl = newControl(Validator.class);
-        Validator validator = (Validator) validatorControl.getMock();
+        Validator validator = newMock(Validator.class);
         
-        field.getForm();
-        fieldControl.setReturnValue(form);
+        expect(field.getForm()).andReturn(form);
 
-        form.isClientValidationEnabled();
-        formControl.setReturnValue(true);
+        expect(form.isClientValidationEnabled()).andReturn(true);
 
-        field.getForm();
-        fieldControl.setReturnValue(form);
+        expect(field.getForm()).andReturn(form);
 
-        form.getName();
-        formControl.setReturnValue("myform");
+        expect(form.getName()).andReturn("myform");
 
-        field.getValidators();
-        fieldControl.setReturnValue(validator);
+        expect(field.getValidators()).andReturn(validator);
         
-        converter.coerceValue(validator, Iterator.class);
-        converterControl.setReturnValue(Collections.singleton(validator).iterator());
+        expect(converter.coerceValue(validator, Iterator.class))
+        .andReturn(Collections.singleton(validator).iterator());
         
-        FormComponentContributorContext context = new FormComponentContributorContextImpl(field);
+        validator.renderContribution(eq(writer), eq(cycle), 
+                isA(FormComponentContributorContext.class), eq(field));
         
-        validator.renderContribution(writer, cycle, context, field);
-        validatorControl.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-        { new EqualsMatcher(), new EqualsMatcher(), new TypeMatcher(), new EqualsMatcher() }));        
-        
-        replayControls();
+        replay();
 
         support.renderContributions(field, writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testValidate()
     {
-        MockControl converterControl = newControl(ValueConverter.class);
-        ValueConverter converter = (ValueConverter) converterControl.getMock();
+        ValueConverter converter = newMock(ValueConverter.class);
         
         ValidatableFieldSupportImpl support = new ValidatableFieldSupportImpl();
         support.setThreadLocale(newThreadLocale());
         support.setValueConverter(converter);
         
-        MockControl fieldControl = newControl(TranslatedField.class);
-        TranslatedField field = (TranslatedField) fieldControl.getMock();
+        TranslatedField field = newMock(TranslatedField.class);
         
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
         
-        MockControl validatorControl = newControl(Validator.class);
-        Validator validator = (Validator) validatorControl.getMock();
+        Validator validator = newMock(Validator.class);
         
         Object object = new Object();
 
-        field.getValidators();
-        fieldControl.setReturnValue(validator);
+        expect(field.getValidators()).andReturn(validator);
         
-        converter.coerceValue(validator, Iterator.class);
-        converterControl.setReturnValue(Collections.singleton(validator).iterator());
-
-        ValidationMessages messages = new ValidationMessagesImpl(field, Locale.ENGLISH);
+        expect(converter.coerceValue(validator, Iterator.class))
+        .andReturn(Collections.singleton(validator).iterator());
         
         try
         {
-            validator.validate(field, messages, object);
-            validatorControl.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-            { new EqualsMatcher(), new TypeMatcher(), new EqualsMatcher() }));
+            validator.validate(eq(field), isA(ValidationMessages.class), eq(object));
             
-            replayControls();
+            replay();
     
             support.validate(field, writer, cycle, object);
     
-            verifyControls();
+            verify();
         }
         catch (ValidatorException e)
         {
@@ -253,42 +216,34 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
 
     public void testValidateFailed()
     {
-        MockControl converterControl = newControl(ValueConverter.class);
-        ValueConverter converter = (ValueConverter) converterControl.getMock();
+        ValueConverter converter = newMock(ValueConverter.class);
         
         ValidatableFieldSupportImpl support = new ValidatableFieldSupportImpl();
         support.setThreadLocale(newThreadLocale());
         support.setValueConverter(converter);
         
-        MockControl fieldControl = newControl(TranslatedField.class);
-        TranslatedField field = (TranslatedField) fieldControl.getMock();
+        TranslatedField field = newMock(TranslatedField.class);
         
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
         
-        MockControl validatorControl = newControl(Validator.class);
-        Validator validator = (Validator) validatorControl.getMock();
+        Validator validator = newMock(Validator.class);
         
         Object object = new Object();
 
-        field.getValidators();
-        fieldControl.setReturnValue(validator);
+        expect(field.getValidators()).andReturn(validator);
         
-        converter.coerceValue(validator, Iterator.class);
-        converterControl.setReturnValue(Collections.singleton(validator).iterator());
-
-        ValidationMessages messages = new ValidationMessagesImpl(field, Locale.ENGLISH);
+        expect(converter.coerceValue(validator, Iterator.class))
+        .andReturn(Collections.singleton(validator).iterator());
         
         ValidatorException expected = new ValidatorException("test");
         
         try
         {
-            validator.validate(field, messages, object);
-            validatorControl.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-            { new EqualsMatcher(), new TypeMatcher(), new EqualsMatcher() }));
-            validatorControl.setThrowable(expected);
+            validator.validate(eq(field), isA(ValidationMessages.class), eq(object));
+            expectLastCall().andThrow(expected);
             
-            replayControls();
+            replay();
     
             support.validate(field, writer, cycle, object);
     
@@ -296,7 +251,7 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
         }
         catch (ValidatorException e)
         {
-            verifyControls();
+            verify();
             
             assertSame(expected, e);
         }
@@ -304,34 +259,31 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
 
     public void testValidateNoValidators()
     {
-        MockControl converterControl = newControl(ValueConverter.class);
-        ValueConverter converter = (ValueConverter) converterControl.getMock();
+        ValueConverter converter = newMock(ValueConverter.class);
         
         ValidatableFieldSupportImpl support = new ValidatableFieldSupportImpl();
         support.setThreadLocale(newThreadLocale());
         support.setValueConverter(converter);
         
-        MockControl fieldControl = newControl(TranslatedField.class);
-        TranslatedField field = (TranslatedField) fieldControl.getMock();
+        TranslatedField field = newMock(TranslatedField.class);
         
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
         
         Object object = new Object();
 
-        field.getValidators();
-        fieldControl.setReturnValue(null);
+        expect(field.getValidators()).andReturn(null);
         
-        converter.coerceValue(null, Iterator.class);
-        converterControl.setReturnValue(Collections.EMPTY_LIST.iterator());
+        expect(converter.coerceValue(null, Iterator.class))
+        .andReturn(Collections.EMPTY_LIST.iterator());
         
         try
         {
-            replayControls();
+            replay();
     
             support.validate(field, writer, cycle, object);
     
-            verifyControls();
+            verify();
         }
         catch (ValidatorException e)
         {
@@ -341,44 +293,35 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
 
     public void testValidateAcceptNull()
     {
-        MockControl converterControl = newControl(ValueConverter.class);
-        ValueConverter converter = (ValueConverter) converterControl.getMock();
+        ValueConverter converter = newMock(ValueConverter.class);
         
         ValidatableFieldSupportImpl support = new ValidatableFieldSupportImpl();
         support.setThreadLocale(newThreadLocale());
         support.setValueConverter(converter);
         
-        MockControl fieldControl = newControl(TranslatedField.class);
-        TranslatedField field = (TranslatedField) fieldControl.getMock();
+        TranslatedField field = newMock(TranslatedField.class);
         
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
         
-        MockControl validatorControl = newControl(Validator.class);
-        Validator validator = (Validator) validatorControl.getMock();
+        Validator validator = newMock(Validator.class);
         
-        field.getValidators();
-        fieldControl.setReturnValue(validator);
+        expect(field.getValidators()).andReturn(validator);
         
-        converter.coerceValue(validator, Iterator.class);
-        converterControl.setReturnValue(Collections.singleton(validator).iterator());
+        expect(converter.coerceValue(validator, Iterator.class))
+        .andReturn(Collections.singleton(validator).iterator());
 
-        validator.getAcceptsNull();
-        validatorControl.setReturnValue(true);
-
-        ValidationMessages messages = new ValidationMessagesImpl(field, Locale.ENGLISH);
+        expect(validator.getAcceptsNull()).andReturn(true);
         
         try
         {
-            validator.validate(field, messages, null);
-            validatorControl.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-            { new EqualsMatcher(), new TypeMatcher(), new EqualsMatcher() }));
+            validator.validate(eq(field), isA(ValidationMessages.class), isNull());
             
-            replayControls();
+            replay();
     
             support.validate(field, writer, cycle, null);
     
-            verifyControls();
+            verify();
         }
         catch (ValidatorException e)
         {
@@ -388,38 +331,33 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
 
     public void testValidateRejectNull()
     {
-        MockControl converterControl = newControl(ValueConverter.class);
-        ValueConverter converter = (ValueConverter) converterControl.getMock();
+        ValueConverter converter = newMock(ValueConverter.class);
         
         ValidatableFieldSupportImpl support = new ValidatableFieldSupportImpl();
         support.setThreadLocale(newThreadLocale());
         support.setValueConverter(converter);
         
-        MockControl fieldControl = newControl(TranslatedField.class);
-        TranslatedField field = (TranslatedField) fieldControl.getMock();
+        TranslatedField field = newMock(TranslatedField.class);
         
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
         
-        MockControl validatorControl = newControl(Validator.class);
-        Validator validator = (Validator) validatorControl.getMock();
+        Validator validator = newMock(Validator.class);
         
-        field.getValidators();
-        fieldControl.setReturnValue(validator);
+        expect(field.getValidators()).andReturn(validator);
         
-        converter.coerceValue(validator, Iterator.class);
-        converterControl.setReturnValue(Collections.singleton(validator).iterator());
+        expect(converter.coerceValue(validator, Iterator.class))
+        .andReturn(Collections.singleton(validator).iterator());
 
-        validator.getAcceptsNull();
-        validatorControl.setReturnValue(false);
+        expect(validator.getAcceptsNull()).andReturn(false);
         
         try
         {
-            replayControls();
+            replay();
     
             support.validate(field, writer, cycle, null);
     
-            verifyControls();
+            verify();
         }
         catch (ValidatorException e)
         {
@@ -429,33 +367,27 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
 
     private ValidatableField newFieldGetValidators(Collection validators)
     {
-        MockControl control = newControl(ValidatableField.class);
-        ValidatableField field = (ValidatableField) control.getMock();
+        ValidatableField field = newMock(ValidatableField.class);
 
-        field.getValidators();
-        control.setReturnValue(validators);
+        expect(field.getValidators()).andReturn(validators);
 
         return field;
     }
 
     private ValueConverter newValueConverter(Collection validators)
     {
-        MockControl control = newControl(ValueConverter.class);
-        ValueConverter converter = (ValueConverter) control.getMock();
+        ValueConverter converter = newMock(ValueConverter.class);
 
-        converter.coerceValue(validators, Iterator.class);
-        control.setReturnValue(validators.iterator());
+        expect(converter.coerceValue(validators, Iterator.class)).andReturn(validators.iterator());
 
         return converter;
     }
 
     private Validator newValidator(boolean isRequired)
     {
-        MockControl control = newControl(Validator.class);
-        Validator validator = (Validator) control.getMock();
+        Validator validator = newMock(Validator.class);
 
-        validator.isRequired();
-        control.setReturnValue(isRequired);
+        expect(validator.isRequired()).andReturn(isRequired);
 
         return validator;
     }
@@ -466,14 +398,14 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
         ValidatableField field = newFieldGetValidators(validators);
         ValueConverter converter = newValueConverter(validators);
 
-        replayControls();
+        replay();
 
         ValidatableFieldSupportImpl support = new ValidatableFieldSupportImpl();
         support.setValueConverter(converter);
 
         assertEquals(false, support.isRequired(field));
 
-        verifyControls();
+        verify();
     }
 
     public void testIsRequiredNoRequiredValidators()
@@ -482,14 +414,14 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
         ValidatableField field = newFieldGetValidators(validators);
         ValueConverter converter = newValueConverter(validators);
 
-        replayControls();
+        replay();
 
         ValidatableFieldSupportImpl support = new ValidatableFieldSupportImpl();
         support.setValueConverter(converter);
 
         assertEquals(false, support.isRequired(field));
 
-        verifyControls();
+        verify();
     }
 
     public void testIsRequiredWithRequiredValidator()
@@ -498,13 +430,13 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
         ValidatableField field = newFieldGetValidators(validators);
         ValueConverter converter = newValueConverter(validators);
 
-        replayControls();
+        replay();
 
         ValidatableFieldSupportImpl support = new ValidatableFieldSupportImpl();
         support.setValueConverter(converter);
 
         assertEquals(true, support.isRequired(field));
 
-        verifyControls();
+        verify();
     }
 }

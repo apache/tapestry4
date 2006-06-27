@@ -14,14 +14,16 @@
 
 package org.apache.tapestry.services.impl;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.Locale;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.services.EngineFactory;
 import org.apache.tapestry.services.ObjectPool;
 import org.apache.tapestry.services.RequestLocaleManager;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.EngineManagerImpl}.
@@ -29,29 +31,24 @@ import org.easymock.MockControl;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class TestEngineManager extends HiveMindTestCase
+public class TestEngineManager extends BaseComponentTestCase
 {
 
     public void testGetFromPool()
     {
-
-        MockControl extractorControl = newControl(RequestLocaleManager.class);
-        RequestLocaleManager extractor = (RequestLocaleManager) extractorControl.getMock();
-
-        MockControl poolControl = newControl(ObjectPool.class);
-        ObjectPool pool = (ObjectPool) poolControl.getMock();
+        RequestLocaleManager extractor = newMock(RequestLocaleManager.class);
+        
+        ObjectPool pool = newMock(ObjectPool.class);
 
         // Training
 
-        extractor.extractLocaleForCurrentRequest();
-        extractorControl.setReturnValue(Locale.CHINESE);
+        expect(extractor.extractLocaleForCurrentRequest()).andReturn(Locale.CHINESE);
 
-        IEngine engine = (IEngine) newMock(IEngine.class);
+        IEngine engine = newMock(IEngine.class);
 
-        pool.get(Locale.CHINESE);
-        poolControl.setReturnValue(engine);
+        expect(pool.get(Locale.CHINESE)).andReturn(engine);
 
-        replayControls();
+        replay();
 
         EngineManagerImpl m = new EngineManagerImpl();
 
@@ -62,35 +59,28 @@ public class TestEngineManager extends HiveMindTestCase
 
         assertSame(engine, actual);
 
-        verifyControls();
+        verify();
     }
 
     public void testGetNotInPool()
     {
-
-        MockControl extractorControl = newControl(RequestLocaleManager.class);
-        RequestLocaleManager extractor = (RequestLocaleManager) extractorControl.getMock();
-
-        MockControl poolControl = newControl(ObjectPool.class);
-        ObjectPool pool = (ObjectPool) poolControl.getMock();
+        RequestLocaleManager extractor = newMock(RequestLocaleManager.class);
+        
+        ObjectPool pool = newMock(ObjectPool.class);
 
         // Training
 
-        extractor.extractLocaleForCurrentRequest();
-        extractorControl.setReturnValue(Locale.CHINESE);
+        expect(extractor.extractLocaleForCurrentRequest()).andReturn(Locale.CHINESE);
 
-        IEngine engine = (IEngine) newMock(IEngine.class);
+        IEngine engine = newMock(IEngine.class);
 
-        pool.get(Locale.CHINESE);
-        poolControl.setReturnValue(null);
+        expect(pool.get(Locale.CHINESE)).andReturn(null);
+        
+        EngineFactory factory = newMock(EngineFactory.class);
 
-        MockControl factoryControl = newControl(EngineFactory.class);
-        EngineFactory factory = (EngineFactory) factoryControl.getMock();
+        expect(factory.constructNewEngineInstance(Locale.CHINESE)).andReturn(engine);
 
-        factory.constructNewEngineInstance(Locale.CHINESE);
-        factoryControl.setReturnValue(engine);
-
-        replayControls();
+        replay();
 
         EngineManagerImpl m = new EngineManagerImpl();
 
@@ -102,25 +92,22 @@ public class TestEngineManager extends HiveMindTestCase
 
         assertSame(engine, actual);
 
-        verifyControls();
+        verify();
     }
 
     public void testStoreNoSession()
     {
+        IEngine engine = newMock(IEngine.class);
 
-        MockControl engineControl = newControl(IEngine.class);
-        IEngine engine = (IEngine) engineControl.getMock();
-
-        ObjectPool pool = (ObjectPool) newMock(ObjectPool.class);
+        ObjectPool pool = newMock(ObjectPool.class);
 
         // Training
 
-        engine.getLocale();
-        engineControl.setReturnValue(Locale.KOREAN);
+        expect(engine.getLocale()).andReturn(Locale.KOREAN);
 
         pool.store(Locale.KOREAN, engine);
 
-        replayControls();
+        replay();
 
         EngineManagerImpl m = new EngineManagerImpl();
 
@@ -128,7 +115,7 @@ public class TestEngineManager extends HiveMindTestCase
 
         m.storeEngineInstance(engine);
 
-        verifyControls();
+        verify();
     }
 
 }

@@ -14,11 +14,14 @@
 
 package org.apache.tapestry.pageload;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNull;
+
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.services.ClassFinder;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.pageload.NamespaceClassSearchComponentClassProvider}.
@@ -26,31 +29,22 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestNamespaceClassSearchComponentClassProvider extends HiveMindTestCase
+public class TestNamespaceClassSearchComponentClassProvider extends BaseComponentTestCase
 {
-    private IComponentSpecification newSpec()
-    {
-        return (IComponentSpecification) newMock(IComponentSpecification.class);
-    }
-
     private INamespace newNamespace(String key, String prefixes)
     {
-        MockControl control = newControl(INamespace.class);
-        INamespace namespace = (INamespace) control.getMock();
+        INamespace namespace = newMock(INamespace.class);
 
-        namespace.getPropertyValue(key);
-        control.setReturnValue(prefixes);
+        expect(namespace.getPropertyValue(key)).andReturn(prefixes);
 
         return namespace;
     }
 
     private ClassFinder newClassFinder(String packageList, String className, Class resultClass)
     {
-        MockControl control = newControl(ClassFinder.class);
-        ClassFinder finder = (ClassFinder) control.getMock();
+        ClassFinder finder = newMock(ClassFinder.class);
 
-        finder.findClass(packageList, className);
-        control.setReturnValue(resultClass);
+        expect(finder.findClass(packageList, className)).andReturn(resultClass);
 
         return finder;
     }
@@ -65,7 +59,7 @@ public class TestNamespaceClassSearchComponentClassProvider extends HiveMindTest
 
         IComponentSpecification spec = newSpec();
 
-        replayControls();
+        replay();
 
         ComponentClassProviderContext context = new ComponentClassProviderContext("bar/Baz", spec,
                 namespace);
@@ -76,7 +70,7 @@ public class TestNamespaceClassSearchComponentClassProvider extends HiveMindTest
 
         assertEquals(PageLoaderTest.class.getName(), provider.provideComponentClassName(context));
 
-        verifyControls();
+        verify();
     }
 
     public void testNotFound()
@@ -86,7 +80,7 @@ public class TestNamespaceClassSearchComponentClassProvider extends HiveMindTest
 
         IComponentSpecification spec = newSpec();
 
-        replayControls();
+        replay();
 
         ComponentClassProviderContext context = new ComponentClassProviderContext("bar/Baz", spec,
                 namespace);
@@ -97,6 +91,6 @@ public class TestNamespaceClassSearchComponentClassProvider extends HiveMindTest
 
         assertNull(provider.provideComponentClassName(context));
 
-        verifyControls();
+        verify();
     }
 }

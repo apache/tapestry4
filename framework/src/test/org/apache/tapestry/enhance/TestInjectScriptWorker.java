@@ -14,18 +14,17 @@
 
 package org.apache.tapestry.enhance;
 
+import static org.easymock.EasyMock.expect;
+
 import java.lang.reflect.Modifier;
 
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.service.MethodSignature;
-import org.apache.hivemind.test.AggregateArgumentsMatcher;
-import org.apache.hivemind.test.ArgumentMatcher;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.spec.InjectSpecificationImpl;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.InjectScriptWorker}.
@@ -33,12 +32,11 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestInjectScriptWorker extends HiveMindTestCase
+public class TestInjectScriptWorker extends BaseComponentTestCase
 {
     public void testSuccess()
     {
-        MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+        EnhancementOperation op = newMock(EnhancementOperation.class);
 
         Location componentSpecLocation = newLocation();
         final Resource scriptResource = componentSpecLocation.getResource().getRelativeResource(
@@ -50,15 +48,14 @@ public class TestInjectScriptWorker extends HiveMindTestCase
 
         op.claimReadonlyProperty("foo");
 
-        op.getPropertyType("foo");
-        opc.setReturnValue(IScript.class);
+        expect(op.getPropertyType("foo")).andReturn(IScript.class);
 
-        op.getAccessorMethodName("foo");
-        opc.setReturnValue("getFoo");
+        expect(op.getAccessorMethodName("foo")).andReturn("getFoo");
 
-        op.addInjectedField("_$script", DeferredScript.class, new DeferredScriptImpl(scriptResource,
-                source, injectSpecLocation));
-        opc.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
+        expect(op.addInjectedField("_$script", DeferredScript.class, new DeferredScriptImpl(scriptResource,
+                source, injectSpecLocation)))
+                .andReturn("_script");
+        /* opc.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
         { null, null, new ArgumentMatcher()
         {
 
@@ -72,14 +69,13 @@ public class TestInjectScriptWorker extends HiveMindTestCase
 
         }
 
-        }));
-        opc.setReturnValue("_script");
+        }));*/
 
         MethodSignature sig = new MethodSignature(IScript.class, "getFoo", null, null);
 
         op.addMethod(Modifier.PUBLIC, sig, "return _script.getScript();", injectSpecLocation);
 
-        replayControls();
+        replay();
 
         InjectSpecificationImpl is = new InjectSpecificationImpl();
         is.setProperty("foo");
@@ -91,6 +87,6 @@ public class TestInjectScriptWorker extends HiveMindTestCase
 
         worker.performEnhancement(op, is);
 
-        verifyControls();
+        verify();
     }
 }

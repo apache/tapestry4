@@ -14,14 +14,17 @@
 
 package org.apache.tapestry.services.impl;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.Locale;
 
 import org.apache.hivemind.service.ThreadLocale;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.TapestryConstants;
 import org.apache.tapestry.services.CookieSource;
 import org.apache.tapestry.web.WebRequest;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.RequestLocaleManagerImpl}.
@@ -29,7 +32,7 @@ import org.easymock.MockControl;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class TestRequestLocaleManager extends HiveMindTestCase
+public class TestRequestLocaleManager extends BaseComponentTestCase
 {
     private ThreadLocale newThreadLocale()
     {
@@ -38,36 +41,30 @@ public class TestRequestLocaleManager extends HiveMindTestCase
 
     private ThreadLocale newThreadLocale(Locale locale)
     {
-        MockControl control = newControl(ThreadLocale.class);
-        ThreadLocale threadLocale = (ThreadLocale) control.getMock();
+        ThreadLocale threadLocale = newMock(ThreadLocale.class);
 
-        threadLocale.getLocale();
-        control.setReturnValue(locale);
+        expect(threadLocale.getLocale()).andReturn(locale);
 
         return threadLocale;
     }
 
     public void testSuppliedByRequest()
     {
-        MockControl sourceControl = newControl(CookieSource.class);
-        CookieSource source = (CookieSource) sourceControl.getMock();
-
-        MockControl requestControl = newControl(WebRequest.class);
-        WebRequest request = (WebRequest) requestControl.getMock();
+        CookieSource source = newMock(CookieSource.class);
+        
+        WebRequest request = newRequest();
 
         ThreadLocale tl = newThreadLocale();
 
         // Training
 
-        source.readCookieValue(TapestryConstants.LOCALE_COOKIE_NAME);
-        sourceControl.setReturnValue(null);
+        expect(source.readCookieValue(TapestryConstants.LOCALE_COOKIE_NAME)).andReturn(null);
 
-        request.getLocale();
-        requestControl.setReturnValue(Locale.JAPANESE);
+        expect(request.getLocale()).andReturn(Locale.JAPANESE);
 
         tl.setLocale(Locale.JAPANESE);
 
-        replayControls();
+        replay();
 
         RequestLocaleManagerImpl manager = new RequestLocaleManagerImpl();
         manager.setCookieSource(source);
@@ -78,24 +75,22 @@ public class TestRequestLocaleManager extends HiveMindTestCase
 
         assertEquals(Locale.JAPANESE, actual);
 
-        verifyControls();
+        verify();
     }
 
     private void attempt(String localeName, Locale expectedLocale)
     {
-        MockControl sourceControl = newControl(CookieSource.class);
-        CookieSource source = (CookieSource) sourceControl.getMock();
+        CookieSource source = newMock(CookieSource.class);
 
         ThreadLocale tl = newThreadLocale();
 
         // Training
 
-        source.readCookieValue(TapestryConstants.LOCALE_COOKIE_NAME);
-        sourceControl.setReturnValue(localeName);
+        expect(source.readCookieValue(TapestryConstants.LOCALE_COOKIE_NAME)).andReturn(localeName);
 
         tl.setLocale(expectedLocale);
 
-        replayControls();
+        replay();
 
         RequestLocaleManagerImpl manager = new RequestLocaleManagerImpl();
         manager.setCookieSource(source);
@@ -105,7 +100,7 @@ public class TestRequestLocaleManager extends HiveMindTestCase
 
         assertEquals(expectedLocale, actual);
 
-        verifyControls();
+        verify();
     }
 
     public void testJustLanguage()
@@ -127,14 +122,14 @@ public class TestRequestLocaleManager extends HiveMindTestCase
     {
         Locale locale = Locale.SIMPLIFIED_CHINESE;
 
-        CookieSource source = (CookieSource) newMock(CookieSource.class);
+        CookieSource source = newMock(CookieSource.class);
         ThreadLocale threadLocale = newThreadLocale(locale);
 
         // Training
 
         source.writeCookieValue(TapestryConstants.LOCALE_COOKIE_NAME, locale.toString());
 
-        replayControls();
+        replay();
 
         RequestLocaleManagerImpl m = new RequestLocaleManagerImpl();
         m.setCookieSource(source);
@@ -142,31 +137,26 @@ public class TestRequestLocaleManager extends HiveMindTestCase
 
         m.persistLocale();
 
-        verifyControls();
+        verify();
     }
 
     public void testPersistNoChange()
     {
-        MockControl sourceControl = newControl(CookieSource.class);
-        CookieSource source = (CookieSource) sourceControl.getMock();
-
-        MockControl requestControl = newControl(WebRequest.class);
-        WebRequest request = (WebRequest) requestControl.getMock();
-
-        MockControl tlc = newControl(ThreadLocale.class);
-        ThreadLocale tl = (ThreadLocale) tlc.getMock();
+        CookieSource source = newMock(CookieSource.class);
+        
+        WebRequest request = newRequest();
+        
+        ThreadLocale tl = newMock(ThreadLocale.class);
 
         // Training
 
-        source.readCookieValue(TapestryConstants.LOCALE_COOKIE_NAME);
-        sourceControl.setReturnValue(null);
-
-        request.getLocale();
-        requestControl.setReturnValue(Locale.JAPANESE);
+        expect(source.readCookieValue(TapestryConstants.LOCALE_COOKIE_NAME)).andReturn(null);
+        
+        expect(request.getLocale()).andReturn(Locale.JAPANESE);
 
         tl.setLocale(Locale.JAPANESE);
 
-        replayControls();
+        replay();
 
         RequestLocaleManagerImpl manager = new RequestLocaleManagerImpl();
         manager.setCookieSource(source);
@@ -177,18 +167,17 @@ public class TestRequestLocaleManager extends HiveMindTestCase
 
         assertEquals(Locale.JAPANESE, actual);
 
-        verifyControls();
+        verify();
 
-        tl.getLocale();
-        tlc.setReturnValue(Locale.JAPANESE);
+        expect(tl.getLocale()).andReturn(Locale.JAPANESE);
 
-        replayControls();
+        replay();
 
         // Should do nothing, beacuse it isn't a change.
 
         manager.persistLocale();
 
-        verifyControls();
+        verify();
     }
 
     public void testGetLocaleValuesAreCached()

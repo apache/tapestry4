@@ -14,12 +14,16 @@
 
 package org.apache.tapestry.binding;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNull;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.Date;
 
 import org.apache.hivemind.Location;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.coerce.ValueConverter;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.binding.LiteralBinding}. It also tests some common
@@ -35,7 +39,7 @@ public class TestLiteralBinding extends BindingTestCase
         Location l = fabricateLocation(22);
         ValueConverter vc = newValueConverter();
 
-        replayControls();
+        replay();
 
         LiteralBinding b = new LiteralBinding("parameter foo", vc, l, "literal-value");
 
@@ -46,7 +50,7 @@ public class TestLiteralBinding extends BindingTestCase
         assertEquals(true, b.isInvariant());
         assertNull(b.getComponent());
 
-        verifyControls();
+        verify();
     }
 
     public void testToString()
@@ -54,46 +58,42 @@ public class TestLiteralBinding extends BindingTestCase
         Location l = fabricateLocation(22);
         ValueConverter vc = newValueConverter();
 
-        replayControls();
+        replay();
 
         LiteralBinding b = new LiteralBinding("parameter foo", vc, l, "literal-value");
 
         assertEquals("StaticBinding[literal-value]", b.toString());
 
-        verifyControls();
+        verify();
     }
 
     public void testGetObjectWithClass()
     {
-        MockControl control = newControl(ValueConverter.class);
-        ValueConverter vc = (ValueConverter) control.getMock();
+        ValueConverter vc = newMock(ValueConverter.class);
 
         Date date = new Date();
 
-        vc.coerceValue("my-literal", Date.class);
-        control.setReturnValue(date);
+        expect(vc.coerceValue("my-literal", Date.class)).andReturn(date);
 
-        replayControls();
+        replay();
 
         LiteralBinding b = new LiteralBinding("parameter foo", vc, fabricateLocation(99),
                 "my-literal");
 
         assertSame(date, b.getObject(Date.class));
 
-        verifyControls();
+        verify();
     }
 
     public void testGetObjectException()
     {
-        MockControl control = newControl(ValueConverter.class);
-        ValueConverter vc = (ValueConverter) control.getMock();
+        ValueConverter vc = newMock(ValueConverter.class);
 
         Exception innerException = new RuntimeException("Failure");
 
-        vc.coerceValue("my-literal", Date.class);
-        control.setThrowable(innerException);
+        expect(vc.coerceValue("my-literal", Date.class)).andThrow(innerException);
 
-        replayControls();
+        replay();
 
         Location location = fabricateLocation(99);
         LiteralBinding b = new LiteralBinding("parameter foo", vc, location, "my-literal");
@@ -111,7 +111,7 @@ public class TestLiteralBinding extends BindingTestCase
             assertSame(b, ex.getBinding());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testSetObject()
@@ -119,7 +119,7 @@ public class TestLiteralBinding extends BindingTestCase
         Location l = fabricateLocation(22);
         ValueConverter vc = newValueConverter();
 
-        replayControls();
+        replay();
 
         LiteralBinding b = new LiteralBinding("parameter foo", vc, l, "literal-value");
 

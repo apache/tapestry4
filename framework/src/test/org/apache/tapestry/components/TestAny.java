@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.components;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.BaseComponentTestCase;
@@ -38,7 +41,7 @@ public class TestAny extends BaseComponentTestCase
         IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
         Location l = newLocation();
         
-        replayControls();
+        replay();
         
         Any any = (Any) newInstance(Any.class, new Object[] { "location", l });
 
@@ -54,7 +57,7 @@ public class TestAny extends BaseComponentTestCase
             assertSame(l, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testRender()
@@ -69,7 +72,7 @@ public class TestAny extends BaseComponentTestCase
 
         writer.end("span");
 
-        replayControls();
+        replay();
 
         Any any = (Any) newInstance(Any.class,
                 new Object[] { "element", "span" });
@@ -78,7 +81,7 @@ public class TestAny extends BaseComponentTestCase
 
         any.render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderWithInformalParameters()
@@ -95,7 +98,7 @@ public class TestAny extends BaseComponentTestCase
 
         writer.end("span");
 
-        replayControls();
+        replay();
 
         Any any = (Any) newInstance(Any.class, new Object[] { "element",
                 "span", "specification", new ComponentSpecification() });
@@ -105,7 +108,7 @@ public class TestAny extends BaseComponentTestCase
 
         any.render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRewind()
@@ -116,7 +119,7 @@ public class TestAny extends BaseComponentTestCase
 
         body.render(writer, cycle);
 
-        replayControls();
+        replay();
 
         Any any = (Any) newInstance(Any.class,
                 new Object[] { "element", "span" });
@@ -125,6 +128,6 @@ public class TestAny extends BaseComponentTestCase
 
         any.render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 }

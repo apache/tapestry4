@@ -14,26 +14,32 @@
 
 package org.apache.tapestry.services.impl;
 
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Map;
 
 import ognl.TypeConverter;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.services.ExpressionCache;
 import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.easymock.AbstractMatcher;
-import org.easymock.MockControl;
 
 /**
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestExpressionEvaluator extends HiveMindTestCase
+public class TestExpressionEvaluator extends BaseComponentTestCase
 {
     private ExpressionEvaluatorImpl create()
     {
@@ -152,7 +158,7 @@ public class TestExpressionEvaluator extends HiveMindTestCase
         ee.setContributions(Collections.EMPTY_LIST);
         ee.setNullHandlerContributions(Collections.EMPTY_LIST);
 
-        replayControls();
+        replay();
 
         ee.initializeService();
 
@@ -162,16 +168,14 @@ public class TestExpressionEvaluator extends HiveMindTestCase
         assertEquals(false, ee.isConstant("bar()"));
         assertEquals(true, ee.isConstant("@org.apache.tapestry.Tapestry@HOME_SERVICE"));
 
-        verifyControls();
+        verify();
     }
 
     private IApplicationSpecification newAppSpec()
     {
-        MockControl control = newControl(IApplicationSpecification.class);
-        IApplicationSpecification spec = (IApplicationSpecification) control.getMock();
+        IApplicationSpecification spec = newMock(IApplicationSpecification.class);
 
-        spec.checkExtension(Tapestry.OGNL_TYPE_CONVERTER);
-        control.setReturnValue(false);
+        expect(spec.checkExtension(Tapestry.OGNL_TYPE_CONVERTER)).andReturn(false);
 
         return spec;
     }
@@ -194,21 +198,17 @@ public class TestExpressionEvaluator extends HiveMindTestCase
 
     public void testTypeConverter() throws Exception
     {
-        MockControl asc = newControl(IApplicationSpecification.class);
-        IApplicationSpecification as = (IApplicationSpecification) asc.getMock();
-
-        MockControl tcc = newControl(TypeConverter.class);
-        TypeConverter tc = (TypeConverter) tcc.getMock();
+        IApplicationSpecification as = newMock(IApplicationSpecification.class);
+        
+        TypeConverter tc = newMock(TypeConverter.class);
 
         // Training
 
-        as.checkExtension(Tapestry.OGNL_TYPE_CONVERTER);
-        asc.setReturnValue(true);
+        expect(as.checkExtension(Tapestry.OGNL_TYPE_CONVERTER)).andReturn(true);
 
-        as.getExtension(Tapestry.OGNL_TYPE_CONVERTER, TypeConverter.class);
-        asc.setReturnValue(tc);
+        expect(as.getExtension(Tapestry.OGNL_TYPE_CONVERTER, TypeConverter.class)).andReturn(tc);
 
-        replayControls();
+        replay();
 
         ExpressionCache cache = new ExpressionCacheImpl();
 
@@ -221,7 +221,7 @@ public class TestExpressionEvaluator extends HiveMindTestCase
 
         ee.initializeService();
 
-        verifyControls();
+        verify();
 
         Fixture f = new Fixture();
 
@@ -234,17 +234,15 @@ public class TestExpressionEvaluator extends HiveMindTestCase
 
         // Since we have no idea what OGNL will stuff into that Map parameter,
         // we just ignore it.
-        tc.convertValue(null, f, m, "value", d, String.class);
-        tcc.setMatcher(new NullMeansIgnoreMatcher());
+        expect(tc.convertValue(isA(Map.class), eq(f), eq(m), eq("value"), eq(d), eq(String.class)))
+        .andReturn("FROM-TYPE-CONVERTER");
 
-        tcc.setReturnValue("FROM-TYPE-CONVERTER");
-
-        replayControls();
+        replay();
 
         ee.write(f, "value", d);
 
         assertEquals("FROM-TYPE-CONVERTER", f.getValue());
 
-        verifyControls();
+        verify();
     }
 }

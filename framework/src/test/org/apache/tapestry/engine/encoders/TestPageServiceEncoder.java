@@ -14,10 +14,11 @@
 
 package org.apache.tapestry.engine.encoders;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import static org.easymock.EasyMock.expect;
+
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.engine.ServiceEncoding;
 import org.apache.tapestry.services.ServiceConstants;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.engine.encoders.PageServiceEncoder}.
@@ -25,42 +26,37 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestPageServiceEncoder extends HiveMindTestCase
+public class TestPageServiceEncoder extends BaseComponentTestCase
 {
     public void testEncodeOtherService()
     {
-        MockControl control = newControl(ServiceEncoding.class);
-        ServiceEncoding e = (ServiceEncoding) control.getMock();
+        ServiceEncoding e = newMock(ServiceEncoding.class);
 
-        e.getParameterValue(ServiceConstants.SERVICE);
-        control.setReturnValue("foo");
+        expect(e.getParameterValue(ServiceConstants.SERVICE)).andReturn("foo");
 
-        replayControls();
+        replay();
 
         PageServiceEncoder encoder = new PageServiceEncoder();
         encoder.setServiceName("page");
 
         encoder.encode(e);
 
-        verifyControls();
+        verify();
     }
 
     public void testEncode()
     {
-        MockControl control = newControl(ServiceEncoding.class);
-        ServiceEncoding e = (ServiceEncoding) control.getMock();
+        ServiceEncoding e = newMock(ServiceEncoding.class);
 
-        e.getParameterValue(ServiceConstants.SERVICE);
-        control.setReturnValue("page");
+        expect(e.getParameterValue(ServiceConstants.SERVICE)).andReturn("page");
 
-        e.getParameterValue(ServiceConstants.PAGE);
-        control.setReturnValue("Home");
+        expect(e.getParameterValue(ServiceConstants.PAGE)).andReturn("Home");
 
         e.setServletPath("/Home.html");
         e.setParameterValue(ServiceConstants.SERVICE, null);
         e.setParameterValue(ServiceConstants.PAGE, null);
 
-        replayControls();
+        replay();
 
         PageServiceEncoder encoder = new PageServiceEncoder();
         encoder.setServiceName("page");
@@ -68,25 +64,22 @@ public class TestPageServiceEncoder extends HiveMindTestCase
 
         encoder.encode(e);
 
-        verifyControls();
+        verify();
     }
 
     public void testEncodeHtm()
     {
-        MockControl control = newControl(ServiceEncoding.class);
-        ServiceEncoding e = (ServiceEncoding) control.getMock();
+        ServiceEncoding e = newMock(ServiceEncoding.class);
 
-        e.getParameterValue(ServiceConstants.SERVICE);
-        control.setReturnValue("page");
+        expect(e.getParameterValue(ServiceConstants.SERVICE)).andReturn("page");
 
-        e.getParameterValue(ServiceConstants.PAGE);
-        control.setReturnValue("Home");
+        expect(e.getParameterValue(ServiceConstants.PAGE)).andReturn("Home");
 
         e.setServletPath("/Home.htm");
         e.setParameterValue(ServiceConstants.SERVICE, null);
         e.setParameterValue(ServiceConstants.PAGE, null);
 
-        replayControls();
+        replay();
 
         PageServiceEncoder encoder = new PageServiceEncoder();
         encoder.setServiceName("page");
@@ -94,93 +87,82 @@ public class TestPageServiceEncoder extends HiveMindTestCase
 
         encoder.encode(e);
 
-        verifyControls();
+        verify();
     }
     
     public void testEncodeInNamespace()
     {
-        MockControl control = newControl(ServiceEncoding.class);
-        ServiceEncoding e = (ServiceEncoding) control.getMock();
+        ServiceEncoding e = newMock(ServiceEncoding.class);
 
-        e.getParameterValue(ServiceConstants.SERVICE);
-        control.setReturnValue("page");
+        expect(e.getParameterValue(ServiceConstants.SERVICE)).andReturn("page");
 
-        e.getParameterValue(ServiceConstants.PAGE);
-        control.setReturnValue("contrib:Foo");
-
-        replayControls();
+        expect(e.getParameterValue(ServiceConstants.PAGE)).andReturn("contrib:Foo");
+        
+        replay();
 
         PageServiceEncoder encoder = new PageServiceEncoder();
         encoder.setServiceName("page");
 
         encoder.encode(e);
 
-        verifyControls();
+        verify();
     }
 
     public void testDecodeNoExtension()
     {
-        MockControl control = newControl(ServiceEncoding.class);
-        ServiceEncoding e = (ServiceEncoding) control.getMock();
+        ServiceEncoding e = newMock(ServiceEncoding.class);
 
-        e.getServletPath();
-        control.setReturnValue("/app");
-
-        replayControls();
+        expect(e.getServletPath()).andReturn("/app");
+        
+        replay();
 
         PageServiceEncoder encoder = new PageServiceEncoder();
 
         encoder.decode(e);
 
-        verifyControls();
+        verify();
     }
 
     public void testDecodeEndsWithDot()
     {
-        MockControl control = newControl(ServiceEncoding.class);
-        ServiceEncoding e = (ServiceEncoding) control.getMock();
+        ServiceEncoding e = newMock(ServiceEncoding.class);
 
-        e.getServletPath();
-        control.setReturnValue("/ends.with.dot.");
+        expect(e.getServletPath()).andReturn("/ends.with.dot.");
 
-        replayControls();
+        replay();
 
         PageServiceEncoder encoder = new PageServiceEncoder();
 
         encoder.decode(e);
 
-        verifyControls();
+        verify();
     }
 
     public void testDecodeWrongExtension()
     {
-        MockControl control = newControl(ServiceEncoding.class);
-        ServiceEncoding e = (ServiceEncoding) control.getMock();
+        ServiceEncoding e = newMock(ServiceEncoding.class);
 
-        e.getServletPath();
-        control.setReturnValue("/Home.direct");
+        expect(e.getServletPath()).andReturn("/Home.direct");
 
-        replayControls();
+        replay();
 
         PageServiceEncoder encoder = new PageServiceEncoder();
 
         encoder.decode(e);
 
-        verifyControls();
+        verify();
     }
 
     public void testDecodeSuccess()
     {
-        MockControl control = newControl(ServiceEncoding.class);
-        ServiceEncoding e = (ServiceEncoding) control.getMock();
+        ServiceEncoding e = newMock(ServiceEncoding.class);
 
-        e.getServletPath();
-        control.setReturnValue("/Home.html");
+        expect(e.getServletPath()).andReturn("/Home.html");
 
         e.setParameterValue(ServiceConstants.SERVICE, "page");
         e.setParameterValue(ServiceConstants.PAGE, "Home");
 
-        replayControls();
+        replay();
 
         PageServiceEncoder encoder = new PageServiceEncoder();
         encoder.setExtension("html");
@@ -188,21 +170,19 @@ public class TestPageServiceEncoder extends HiveMindTestCase
 
         encoder.decode(e);
 
-        verifyControls();
+        verify();
     }
     
     public void testDecodeHtmSuccess()
     {
-        MockControl control = newControl(ServiceEncoding.class);
-        ServiceEncoding e = (ServiceEncoding) control.getMock();
+        ServiceEncoding e = newMock(ServiceEncoding.class);
 
-        e.getServletPath();
-        control.setReturnValue("/Home.htm");
+        expect(e.getServletPath()).andReturn("/Home.htm");
 
         e.setParameterValue(ServiceConstants.SERVICE, "page");
         e.setParameterValue(ServiceConstants.PAGE, "Home");
 
-        replayControls();
+        replay();
 
         PageServiceEncoder encoder = new PageServiceEncoder();
         encoder.setExtension("htm");
@@ -210,6 +190,6 @@ public class TestPageServiceEncoder extends HiveMindTestCase
 
         encoder.decode(e);
 
-        verifyControls();
+        verify();
     }
 }

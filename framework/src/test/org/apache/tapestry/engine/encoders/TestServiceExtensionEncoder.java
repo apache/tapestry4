@@ -14,10 +14,11 @@
 
 package org.apache.tapestry.engine.encoders;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import static org.easymock.EasyMock.expect;
+
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.engine.ServiceEncoding;
 import org.apache.tapestry.services.ServiceConstants;
-import org.easymock.MockControl;
 
 /**
  * Tests {@link org.apache.tapestry.engine.encoders.ServiceExtensionEncoder}.
@@ -25,64 +26,58 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestServiceExtensionEncoder extends HiveMindTestCase
+public class TestServiceExtensionEncoder extends BaseComponentTestCase
 {
     public void testEncode()
     {
-        MockControl c = newControl(ServiceEncoding.class);
-        ServiceEncoding sec = (ServiceEncoding) c.getMock();
+        ServiceEncoding sec = newMock(ServiceEncoding.class);
 
-        sec.getParameterValue(ServiceConstants.SERVICE);
-        c.setReturnValue("heavy");
+        expect(sec.getParameterValue(ServiceConstants.SERVICE)).andReturn("heavy");
 
         sec.setServletPath("/heavy.svc");
         sec.setParameterValue(ServiceConstants.SERVICE, null);
 
-        replayControls();
+        replay();
 
         ServiceExtensionEncoder e = new ServiceExtensionEncoder();
         e.setExtension("svc");
 
         e.encode(sec);
 
-        verifyControls();
+        verify();
     }
 
     public void testDecodeWrongExtension()
     {
-        MockControl c = newControl(ServiceEncoding.class);
-        ServiceEncoding sec = (ServiceEncoding) c.getMock();
+        ServiceEncoding sec = newMock(ServiceEncoding.class);
 
-        sec.getServletPath();
-        c.setReturnValue("/foo/bar/baz.direct");
+        expect(sec.getServletPath()).andReturn("/foo/bar/baz.direct");
 
-        replayControls();
+        replay();
 
         ServiceExtensionEncoder e = new ServiceExtensionEncoder();
         e.setExtension("svc");
 
         e.decode(sec);
 
-        verifyControls();
+        verify();
     }
     
     public void testDecode()
     {
-        MockControl c = newControl(ServiceEncoding.class);
-        ServiceEncoding sec = (ServiceEncoding) c.getMock();
+        ServiceEncoding sec = newMock(ServiceEncoding.class);
 
-        sec.getServletPath();
-        c.setReturnValue("/hitter.svc");
+        expect(sec.getServletPath()).andReturn("/hitter.svc");
 
         sec.setParameterValue(ServiceConstants.SERVICE, "hitter");
         
-        replayControls();
+        replay();
 
         ServiceExtensionEncoder e = new ServiceExtensionEncoder();
         e.setExtension("svc");
 
         e.decode(sec);
 
-        verifyControls();     
+        verify();     
     }
 }

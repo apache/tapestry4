@@ -14,14 +14,14 @@
 
 package org.apache.tapestry.valid;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNull;
+import static org.testng.AssertJUnit.assertSame;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.form.IFormComponent;
-import org.apache.tapestry.valid.PatternDelegate;
-import org.apache.tapestry.valid.PatternValidator;
-import org.apache.tapestry.valid.ValidationConstraint;
-import org.apache.tapestry.valid.ValidatorException;
-import org.easymock.MockControl;
 
 /**
  * Test cases for PatternValidator.
@@ -62,7 +62,7 @@ public class TestPatternValidator extends BaseValidatorTestCase
     {
         IFormComponent field = newField("PatternField");
 
-        replayControls();
+        replay();
 
         try
         {
@@ -74,7 +74,7 @@ public class TestPatternValidator extends BaseValidatorTestCase
             assertValidatorException(e);
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testUnfulfillingPatterns()
@@ -90,17 +90,14 @@ public class TestPatternValidator extends BaseValidatorTestCase
     public void testMalformedPattern() throws ValidatorException
     {
         Location l = fabricateLocation(11);
+        
+        IFormComponent field = newMock(IFormComponent.class);
 
-        MockControl control = newControl(IFormComponent.class);
-        IFormComponent field = (IFormComponent) control.getMock();
+        expect(field.getDisplayName()).andReturn("badPattern");
 
-        field.getDisplayName();
-        control.setReturnValue("badPattern");
+        expect(field.getLocation()).andReturn(l);
 
-        field.getLocation();
-        control.setReturnValue(l);
-
-        replayControls();
+        replay();
 
         pv.setPatternString("^(\\d{5}(-\\d{4})?$");
 
@@ -116,13 +113,13 @@ public class TestPatternValidator extends BaseValidatorTestCase
             assertSame(l, e.getLocation());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testOverridePatternNotMatchedMessage()
     {
         IFormComponent field = newField("PatternField");
-        replayControls();
+        replay();
 
         pv.setPatternNotMatchedMessage("Field: {0}, Pattern: {1}, you figure!");
         pv.setPatternString("^(\\d{5}(-\\d{4})?)$");
@@ -139,7 +136,7 @@ public class TestPatternValidator extends BaseValidatorTestCase
                     .getMessage());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testOverridePatternMatcher()

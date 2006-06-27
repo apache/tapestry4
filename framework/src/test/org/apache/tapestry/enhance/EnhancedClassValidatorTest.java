@@ -15,9 +15,8 @@
 package org.apache.tapestry.enhance;
 
 import org.apache.hivemind.ErrorLog;
-import org.apache.hivemind.Locatable;
 import org.apache.hivemind.Location;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 
@@ -27,7 +26,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class EnhancedClassValidatorTest extends HiveMindTestCase
+public class EnhancedClassValidatorTest extends BaseComponentTestCase
 {
     /**
      * Test for a class that fulfills its requirements (by implementing all inherited abstract
@@ -64,14 +63,14 @@ public class EnhancedClassValidatorTest extends HiveMindTestCase
                         l,
                         null);
 
-        replayControls();
+        replay();
 
         EnhancedClassValidatorImpl v = new EnhancedClassValidatorImpl();
         v.setErrorLog(log);
 
         v.validate(AbstractBase.class, Incomplete.class, spec);
 
-        verifyControls();
+        verify();
     }
 
     public void testInheritsMissingMethod()
@@ -91,25 +90,14 @@ public class EnhancedClassValidatorTest extends HiveMindTestCase
                         l,
                         null);
 
-        replayControls();
+        replay();
 
         EnhancedClassValidatorImpl v = new EnhancedClassValidatorImpl();
         v.setErrorLog(log);
 
         v.validate(AbstractRunnable.class, AbstractRunnableSubclass.class, spec);
 
-        verifyControls();
-    }
-
-    private void trainGetLocation(Locatable locatable, Location location)
-    {
-        locatable.getLocation();
-        setReturnValue(locatable, location);
-    }
-
-    private IComponentSpecification newSpec()
-    {
-        return (IComponentSpecification) newMock(IComponentSpecification.class);
+        verify();
     }
 
     private ErrorLog newErrorLog()

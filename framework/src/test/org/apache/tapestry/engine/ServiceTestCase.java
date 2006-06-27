@@ -14,7 +14,8 @@
 
 package org.apache.tapestry.engine;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.expect;
+
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +26,6 @@ import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.web.WebRequest;
@@ -165,33 +165,6 @@ public abstract class ServiceTestCase extends BaseComponentTestCase
     protected void trainGetAbsoluteURL(IRequestCycle cycle, String shortURL, String fullURL)
     {
         expect(cycle.getAbsoluteURL(shortURL)).andReturn(fullURL);
-    }
-
-    protected void trainExtractBrowserEvent(IRequestCycle cycle)
-    {
-        cycle.getParameter(BrowserEvent.NAME);
-        setReturnValue(cycle, "onClick");
-        
-        cycle.getParameter(BrowserEvent.NAME);
-        setReturnValue(cycle, "onClick");
-        
-        cycle.getParameter(BrowserEvent.TYPE);
-        setReturnValue(cycle, "click");
-        cycle.getParameters(BrowserEvent.KEYS);
-        setReturnValue(cycle, null);
-        cycle.getParameter(BrowserEvent.CHAR_CODE);
-        setReturnValue(cycle, null);
-        cycle.getParameter(BrowserEvent.PAGE_X);
-        setReturnValue(cycle, "123");
-        cycle.getParameter(BrowserEvent.PAGE_Y);
-        setReturnValue(cycle, "1243");
-        cycle.getParameter(BrowserEvent.LAYER_X);
-        setReturnValue(cycle, null);
-        cycle.getParameter(BrowserEvent.LAYER_Y);
-        setReturnValue(cycle, null);
-        
-        cycle.getParameter(BrowserEvent.TARGET + "." + BrowserEvent.TARGET_ATTR_ID);
-        setReturnValue(cycle, "element1");
     }
     
     protected Log newLog()

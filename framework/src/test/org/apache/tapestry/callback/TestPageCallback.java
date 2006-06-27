@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.callback;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
@@ -32,7 +34,7 @@ public class TestPageCallback extends BaseComponentTestCase
 
         cycle.activate("Fred");
 
-        replayControls();
+        replay();
 
         PageCallback callback = new PageCallback("Fred");
 
@@ -40,7 +42,7 @@ public class TestPageCallback extends BaseComponentTestCase
 
         callback.performCallback(cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testByPage()
@@ -50,7 +52,7 @@ public class TestPageCallback extends BaseComponentTestCase
 
         cycle.activate("Barney");
 
-        replayControls();
+        replay();
 
         PageCallback callback = new PageCallback(page);
 
@@ -58,6 +60,6 @@ public class TestPageCallback extends BaseComponentTestCase
 
         callback.performCallback(cycle);
 
-        verifyControls();
+        verify();
     }
 }

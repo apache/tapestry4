@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.valid;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNull;
+
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,9 +24,6 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import org.apache.tapestry.form.IFormComponent;
-import org.apache.tapestry.valid.DateValidator;
-import org.apache.tapestry.valid.ValidationConstraint;
-import org.apache.tapestry.valid.ValidatorException;
 
 /**
  * Tests the {@link DateValidator}class.
@@ -81,33 +81,33 @@ public class TestDateValidator extends BaseValidatorTestCase
     {
         IFormComponent field = newField();
 
-        replayControls();
+        replay();
 
         Object out = v.toObject(field, null);
 
         assertNull(out);
 
-        verifyControls();
+        verify();
     }
 
     public void testToObjectEmpty() throws ValidatorException
     {
         IFormComponent field = newField();
 
-        replayControls();
+        replay();
 
         Object out = v.toObject(field, "");
 
         assertNull(out);
 
-        verifyControls();
+        verify();
     }
 
     public void testToObjectInvalid()
     {
         IFormComponent field = newField("badDatesIndy");
 
-        replayControls();
+        replay();
 
         try
         {
@@ -122,7 +122,7 @@ public class TestDateValidator extends BaseValidatorTestCase
             assertEquals(ValidationConstraint.DATE_FORMAT, ex.getConstraint());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testOverrideInvalidDateFormatMessage()
@@ -130,7 +130,7 @@ public class TestDateValidator extends BaseValidatorTestCase
 
         IFormComponent field = newField("badDatesIndy");
 
-        replayControls();
+        replay();
 
         v.setInvalidDateFormatMessage("Enter a valid date for {0}.");
 
@@ -146,7 +146,7 @@ public class TestDateValidator extends BaseValidatorTestCase
 
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testToObjectFormat() throws ValidatorException
@@ -169,7 +169,7 @@ public class TestDateValidator extends BaseValidatorTestCase
     {
         IFormComponent field = newField("toObjectMinimum", Locale.ENGLISH);
 
-        replayControls();
+        replay();
 
         v.setMinimum(buildDate(Calendar.DECEMBER, 24, 2001));
 
@@ -183,14 +183,14 @@ public class TestDateValidator extends BaseValidatorTestCase
             assertEquals(ValidationConstraint.TOO_SMALL, ex.getConstraint());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testOverrideDateTooEarlyMessage()
     {
         IFormComponent field = newField("inputDate", Locale.ENGLISH);
 
-        replayControls();
+        replay();
 
         v.setMinimum(buildDate(Calendar.DECEMBER, 24, 2001));
         v.setDateTooEarlyMessage("Provide a date for {0} after Dec 24 2001.");
@@ -206,7 +206,7 @@ public class TestDateValidator extends BaseValidatorTestCase
             assertEquals(ValidationConstraint.TOO_SMALL, ex.getConstraint());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testToObjectMinimumNull() throws ValidatorException
@@ -222,7 +222,7 @@ public class TestDateValidator extends BaseValidatorTestCase
     {
         IFormComponent field = newField("toObjectMaximum");
 
-        replayControls();
+        replay();
 
         v.setMaximum(buildDate(Calendar.DECEMBER, 24, 2001));
 
@@ -237,14 +237,14 @@ public class TestDateValidator extends BaseValidatorTestCase
             assertEquals(ValidationConstraint.TOO_LARGE, ex.getConstraint());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testOverrideDateTooLateMessage()
     {
         IFormComponent field = newField("toObjectMaximum");
 
-        replayControls();
+        replay();
 
         v.setMaximum(buildDate(Calendar.DECEMBER, 24, 2001));
         v.setDateTooLateMessage("Try again with a date before Dec 24 2001 in {0}.");
@@ -260,7 +260,7 @@ public class TestDateValidator extends BaseValidatorTestCase
                     .getMessage());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testToObjectMaximumNull() throws ValidatorException

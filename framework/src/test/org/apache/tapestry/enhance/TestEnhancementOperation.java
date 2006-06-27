@@ -14,6 +14,13 @@
 
 package org.apache.tapestry.enhance;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertFalse;
+import static org.testng.AssertJUnit.assertNull;
+import static org.testng.AssertJUnit.assertSame;
+import static org.testng.AssertJUnit.assertTrue;
+
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.List;
@@ -29,9 +36,9 @@ import org.apache.hivemind.service.ClassFab;
 import org.apache.hivemind.service.ClassFactory;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.hivemind.service.impl.ClassFactoryImpl;
-import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.BaseComponent;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.components.Insert;
@@ -40,8 +47,7 @@ import org.apache.tapestry.event.PageValidateListener;
 import org.apache.tapestry.link.ServiceLink;
 import org.apache.tapestry.services.ComponentConstructor;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.easymock.MockControl;
-import org.easymock.internal.ArrayMatcher;
+import org.testng.annotations.Configuration;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.EnhancementOperationImpl}.
@@ -49,12 +55,11 @@ import org.easymock.internal.ArrayMatcher;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestEnhancementOperation extends HiveMindTestCase
+public class TestEnhancementOperation extends BaseComponentTestCase
 {
+    @Configuration(beforeTestClass = true)
     protected void setUp() throws Exception
     {
-        super.setUp();
-
         EnhancementOperationImpl._uid = 97;
     }
 
@@ -125,7 +130,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         IComponentSpecification spec = newSpec();
         ClassFactory cf = newClassFactory();
 
-        replayControls();
+        replay();
 
         EnhancementOperationImpl eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
                 BaseComponent.class, cf, null);
@@ -136,7 +141,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         
         assertFalse(eo.canClaimAsReadOnlyProperty("foo"));
         
-        verifyControls();
+        verify();
     }
 
     public void testClaimReadonlyPropertyClaimed()
@@ -144,7 +149,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         IComponentSpecification spec = newSpec();
         ClassFactory cf = newClassFactory();
 
-        replayControls();
+        replay();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
                 BaseComponent.class, cf, null);
@@ -162,7 +167,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
             assertEquals(EnhanceMessages.claimedProperty("foo"), ex.getMessage());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testClaimReadonlyPropertyHasSetter()
@@ -170,7 +175,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         IComponentSpecification spec = newSpec();
         ClassFactory cf = newClassFactory();
 
-        replayControls();
+        replay();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
                 BaseComponent.class, cf, null);
@@ -188,7 +193,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
                     ex.getMessage());
         }
 
-        verifyControls();
+        verify();
     }
 
     private ClassFactory newClassFactory()
@@ -203,15 +208,13 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
     private ClassFactory newClassFactory(Class baseClass, ClassFab classFab)
     {
-        MockControl control = newControl(ClassFactory.class);
-        ClassFactory factory = (ClassFactory) control.getMock();
+        ClassFactory factory = newMock(ClassFactory.class);
 
         String className = baseClass.getName();
         int dotx = className.lastIndexOf('.');
         String baseName = className.substring(dotx + 1);
 
-        factory.newClass("$" + baseName + "_97", baseClass);
-        control.setReturnValue(classFab);
+        expect(factory.newClass("$" + baseName + "_97", baseClass)).andReturn(classFab);
 
         return factory;
     }
@@ -221,24 +224,19 @@ public class TestEnhancementOperation extends HiveMindTestCase
         return (ClassFab) newMock(ClassFab.class);
     }
 
-    private IComponentSpecification newSpec()
-    {
-        return (IComponentSpecification) newMock(IComponentSpecification.class);
-    }
-
     public void testConstructorAndAccessors()
     {
         IComponentSpecification spec = newSpec();
         ClassFactory cf = newClassFactory();
 
-        replayControls();
+        replay();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
                 BaseComponent.class, cf, null);
 
         assertSame(BaseComponent.class, eo.getBaseClass());
 
-        verifyControls();
+        verify();
     }
 
     public void testCheckImplementsNoInterface()
@@ -246,14 +244,14 @@ public class TestEnhancementOperation extends HiveMindTestCase
         IComponentSpecification spec = newSpec();
         ClassFactory cf = newClassFactory();
 
-        replayControls();
+        replay();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
                 BaseComponent.class, cf, null);
 
         assertEquals(false, eo.implementsInterface(PageValidateListener.class));
 
-        verifyControls();
+        verify();
     }
 
     public void testCheckImplementsClassImplements()
@@ -261,32 +259,27 @@ public class TestEnhancementOperation extends HiveMindTestCase
         IComponentSpecification spec = newSpec();
         ClassFactory cf = newClassFactory(ValidatingComponent.class);
 
-        replayControls();
+        replay();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
                 ValidatingComponent.class, cf, null);
 
         assertEquals(true, eo.implementsInterface(PageValidateListener.class));
 
-        verifyControls();
+        verify();
     }
 
     public void testCheckImplementsNoMatchForAddedInterfaces()
     {
         IComponentSpecification spec = newSpec();
+        ClassFactory factory = newMock(ClassFactory.class);
+        ClassFab classfab = newMock(ClassFab.class);
 
-        MockControl factoryc = newControl(ClassFactory.class);
-        ClassFactory factory = (ClassFactory) factoryc.getMock();
-
-        MockControl classfabc = newControl(ClassFab.class);
-        ClassFab classfab = (ClassFab) classfabc.getMock();
-
-        factory.newClass("$BaseComponent_97", BaseComponent.class);
-        factoryc.setReturnValue(classfab);
+        expect(factory.newClass("$BaseComponent_97", BaseComponent.class)).andReturn(classfab);
 
         classfab.addInterface(PageDetachListener.class);
 
-        replayControls();
+        replay();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
                 BaseComponent.class, factory, null);
@@ -298,25 +291,21 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
         assertEquals(false, eo.implementsInterface(PageValidateListener.class));
 
-        verifyControls();
+        verify();
     }
 
     public void testCheckImplementsMatchAddedInterfaces()
     {
         IComponentSpecification spec = newSpec();
 
-        MockControl factoryc = newControl(ClassFactory.class);
-        ClassFactory factory = (ClassFactory) factoryc.getMock();
+        ClassFactory factory = newMock(ClassFactory.class);
+        ClassFab classfab = newMock(ClassFab.class);
 
-        MockControl classfabc = newControl(ClassFab.class);
-        ClassFab classfab = (ClassFab) classfabc.getMock();
-
-        factory.newClass("$BaseComponent_97", BaseComponent.class);
-        factoryc.setReturnValue(classfab);
+        expect(factory.newClass("$BaseComponent_97", BaseComponent.class)).andReturn(classfab);
 
         classfab.addInterface(PageDetachListener.class);
 
-        replayControls();
+        replay();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
                 BaseComponent.class, factory, null);
@@ -328,7 +317,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
         assertEquals(true, eo.implementsInterface(PageDetachListener.class));
 
-        verifyControls();
+        verify();
     }
 
     public void testValidatePropertyNew()
@@ -336,7 +325,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         IComponentSpecification spec = newSpec();
         ClassFactory cf = newClassFactory();
 
-        replayControls();
+        replay();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
                 BaseComponent.class, cf, null);
@@ -345,7 +334,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
         eo.validateProperty("abraxis", Set.class);
 
-        verifyControls();
+        verify();
     }
 
     public void testValidatePropertyMatches()
@@ -353,7 +342,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         IComponentSpecification spec = newSpec();
         ClassFactory cf = newClassFactory();
 
-        replayControls();
+        replay();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
                 BaseComponent.class, cf, null);
@@ -362,7 +351,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
         eo.validateProperty("page", IPage.class);
 
-        verifyControls();
+        verify();
     }
 
     public void testValidatePropertyMismatch()
@@ -370,7 +359,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         IComponentSpecification spec = newSpec();
         ClassFactory cf = newClassFactory();
 
-        replayControls();
+        replay();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
                 BaseComponent.class, cf, null);
@@ -391,7 +380,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
                     String.class), ex.getMessage());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testConvertTypeName()
@@ -399,7 +388,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         IComponentSpecification spec = newSpec();
         ClassFactory cf = newClassFactory();
 
-        replayControls();
+        replay();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
                 BaseComponent.class, cf, null);
@@ -422,7 +411,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
             // Ignore message, it's from HiveMind anyway.
         }
 
-        verifyControls();
+        verify();
 
     }
 
@@ -430,63 +419,54 @@ public class TestEnhancementOperation extends HiveMindTestCase
     {
         IComponentSpecification spec = newSpec();
 
-        MockControl cfc = newControl(ClassFactory.class);
-        ClassFactory cf = (ClassFactory) cfc.getMock();
+        ClassFactory cf = newMock(ClassFactory.class);
+        ClassFab fab = newMock(ClassFab.class);
 
-        ClassFab fab = (ClassFab) newMock(ClassFab.class);
-
-        cf.newClass("$BaseComponent_97", BaseComponent.class);
-
-        cfc.setReturnValue(fab);
+        expect(cf.newClass("$BaseComponent_97", BaseComponent.class)).andReturn(fab);
 
         fab.addField("fred", String.class);
 
-        replayControls();
+        replay();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
                 BaseComponent.class, cf, null);
 
         eo.addField("fred", String.class);
 
-        verifyControls();
+        verify();
     }
 
     public void testAddInjectedField()
     {
         IComponentSpecification spec = newSpec();
 
-        MockControl cfc = newControl(ClassFactory.class);
-        ClassFactory cf = (ClassFactory) cfc.getMock();
+        ClassFactory cf = newMock(ClassFactory.class);
+        ClassFab fab = newMock(ClassFab.class);
 
-        MockControl fabc = newControl(ClassFab.class);
-        ClassFab fab = (ClassFab) fabc.getMock();
-
-        cf.newClass("$BaseComponent_97", BaseComponent.class);
-
-        cfc.setReturnValue(fab);
+        expect(cf.newClass("$BaseComponent_97", BaseComponent.class)).andReturn(fab);
 
         // String because "FRED_VALUE" is a String
 
         fab.addField("fred", String.class);
 
-        replayControls();
+        replay();
 
         EnhancementOperationImpl eo = new EnhancementOperationImpl(new DefaultClassResolver(),
                 spec, BaseComponent.class, cf, null);
 
         assertEquals("fred", eo.addInjectedField("fred", String.class, "FRED_VALUE"));
 
-        verifyControls();
+        verify();
 
         HashMap map = new HashMap();
 
         fab.addField("fred_0", Map.class);
 
-        replayControls();
+        replay();
 
         assertEquals("fred_0", eo.addInjectedField("fred", Map.class, map));
 
-        verifyControls();
+        verify();
 
         BodyBuilder body = new BodyBuilder();
         body.begin();
@@ -496,13 +476,12 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
         fab.addConstructor(new Class[]
         { String.class, Map.class }, null, body.toString());
-        fabc.setMatcher(new ArrayMatcher());
 
-        replayControls();
+        replay();
 
         eo.finalizeEnhancedClass();
 
-        verifyControls();
+        verify();
     }
 
     public void testAddMethod()
@@ -514,29 +493,23 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
         IComponentSpecification spec = newSpec();
 
-        MockControl cfc = newControl(ClassFactory.class);
-        ClassFactory cf = (ClassFactory) cfc.getMock();
-
-        MockControl fabc = newControl(ClassFab.class);
-        ClassFab fab = (ClassFab) fabc.getMock();
+        ClassFactory cf = newMock(ClassFactory.class);
+        ClassFab fab = newMock(ClassFab.class);
 
         // We force the uid to 97 in setUp()
 
-        cf.newClass("$Insert_97", baseClass);
+        expect(cf.newClass("$Insert_97", baseClass)).andReturn(fab);
+        
+        expect(fab.addMethod(Modifier.PUBLIC, sig, "method body")).andReturn(null);
 
-        cfc.setReturnValue(fab);
-
-        fab.addMethod(Modifier.PUBLIC, sig, "method body");
-        fabc.setReturnValue(null);
-
-        replayControls();
+        replay();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
                 baseClass, cf, null);
 
         eo.addMethod(Modifier.PUBLIC, sig, "method body", l);
 
-        verifyControls();
+        verify();
     }
 
     public void testAddMethodDuplicate()
@@ -549,22 +522,16 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
         IComponentSpecification spec = newSpec();
 
-        MockControl cfc = newControl(ClassFactory.class);
-        ClassFactory cf = (ClassFactory) cfc.getMock();
-
-        MockControl fabc = newControl(ClassFab.class);
-        ClassFab fab = (ClassFab) fabc.getMock();
+        ClassFactory cf = newMock(ClassFactory.class);
+        ClassFab fab = newMock(ClassFab.class);
 
         // We force the uid to 97 in setUp()
 
-        cf.newClass("$Insert_97", baseClass);
+        expect(cf.newClass("$Insert_97", baseClass)).andReturn(fab);
 
-        cfc.setReturnValue(fab);
+        expect(fab.addMethod(Modifier.PUBLIC, sig, "method body")).andReturn(null);
 
-        fab.addMethod(Modifier.PUBLIC, sig, "method body");
-        fabc.setReturnValue(null);
-
-        replayControls();
+        replay();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
                 baseClass, cf, null);
@@ -585,7 +552,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
             assertSame(secondLocation, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testGetAccessorMethodName()
@@ -593,7 +560,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         IComponentSpecification spec = newSpec();
         ClassFactory cf = newClassFactory(Fixture.class);
 
-        replayControls();
+        replay();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
                 Fixture.class, cf, null);
@@ -603,7 +570,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         assertEquals("getFlagProperty", eo.getAccessorMethodName("flagProperty"));
         assertEquals("getUnknownProperty", eo.getAccessorMethodName("unknownProperty"));
 
-        verifyControls();
+        verify();
     }
 
     /**
@@ -614,14 +581,11 @@ public class TestEnhancementOperation extends HiveMindTestCase
     public void testGetClassReference() throws Exception
     {
         Location l = newLocation();
-        MockControl specControl = newControl(IComponentSpecification.class);
+        IComponentSpecification spec = newSpec();
 
-        IComponentSpecification spec = (IComponentSpecification) specControl.getMock();
+        expect(spec.getLocation()).andReturn(l);
 
-        spec.getLocation();
-        specControl.setReturnValue(l);
-
-        replayControls();
+        replay();
 
         EnhancementOperationImpl eo = new EnhancementOperationImpl(new DefaultClassResolver(),
                 spec, GetClassReferenceFixture.class, new ClassFactoryImpl(), null);
@@ -641,18 +605,16 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
         assertSame(Map.class, f.getClassReference());
 
-        verifyControls();
+        verify();
 
         assertSame(ref, ref2);
     }
 
     public void testGetArrayClassReference() throws Exception
     {
-        MockControl specControl = newControl(IComponentSpecification.class);
+        IComponentSpecification spec = newSpec();
 
-        IComponentSpecification spec = (IComponentSpecification) specControl.getMock();
-
-        replayControls();
+        replay();
 
         EnhancementOperationImpl eo = new EnhancementOperationImpl(new DefaultClassResolver(),
                 spec, GetClassReferenceFixture.class, new ClassFactoryImpl(), null);
@@ -661,7 +623,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
         assertTrue(ref.indexOf('[') < 0);
 
-        verifyControls();
+        verify();
     }
 
     /**
@@ -696,7 +658,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         IComponentSpecification spec = newSpec();
         ClassFactory cf = newClassFactory();
 
-        replayControls();
+        replay();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
                 BaseComponent.class, cf, null);
@@ -708,7 +670,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
         assertNull(eo.getPropertyType("foosball"));
 
-        verifyControls();
+        verify();
     }
 
     public void testFindUnclaimedAbstractProperties()
@@ -717,7 +679,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         IComponentSpecification spec = newSpec();
         ClassFactory cf = newClassFactory(UnclaimedAbstractPropertiesFixture.class);
 
-        replayControls();
+        replay();
 
         EnhancementOperation eo = new EnhancementOperationImpl(cr, spec,
                 UnclaimedAbstractPropertiesFixture.class, cf, null);
@@ -741,26 +703,24 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
         assertEquals(true, l.isEmpty());
 
-        verifyControls();
+        verify();
     }
 
     public void testGetNewMethod()
     {
         ClassResolver cr = new DefaultClassResolver();
-        MockControl specc = newControl(IComponentSpecification.class);
-        IComponentSpecification spec = (IComponentSpecification) specc.getMock();
-
-        MockControl cfc = newControl(ClassFactory.class);
-        ClassFactory cf = (ClassFactory) cfc.getMock();
-        MockControl fabc = newControl(ClassFab.class);
-        ClassFab fab = (ClassFab) fabc.getMock();
+        
+        IComponentSpecification spec = newSpec();
+        
+        ClassFactory cf = newMock(ClassFactory.class);
+        
+        ClassFab fab = newMock(ClassFab.class);
 
         fab.addInterface(PageDetachListener.class);
 
-        cf.newClass("$BaseComponent_97", BaseComponent.class);
-        cfc.setReturnValue(fab);
+        expect(cf.newClass("$BaseComponent_97", BaseComponent.class)).andReturn(fab);
 
-        replayControls();
+        replay();
 
         EnhancementOperationImpl eo = new EnhancementOperationImpl(cr, spec, BaseComponent.class,
                 cf, null);
@@ -769,48 +729,43 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
         eo.extendMethodImplementation(PageDetachListener.class, sig, "some-code();");
 
-        verifyControls();
+        verify();
 
-        replayControls();
+        replay();
 
         // Check that repeated calls do not
         // keep adding methods.
 
         eo.extendMethodImplementation(PageDetachListener.class, sig, "more-code();");
 
-        verifyControls();
+        verify();
 
-        fab.addMethod(Modifier.PUBLIC, sig, "{\n  some-code();\n  more-code();\n}\n");
-        fabc.setReturnValue(null);
+        expect(fab.addMethod(Modifier.PUBLIC, sig, "{\n  some-code();\n  more-code();\n}\n")).andReturn(null);
 
-        fab.createClass();
-        fabc.setReturnValue(BaseComponent.class);
+        expect(fab.createClass()).andReturn(BaseComponent.class);
 
-        spec.getLocation();
-        specc.setReturnValue(null);
+        expect(spec.getLocation()).andReturn(null);
 
-        replayControls();
+        replay();
 
         eo.getConstructor();
 
-        verifyControls();
+        verify();
     }
 
     public void testGetExistingMethod()
     {
         ClassResolver cr = new DefaultClassResolver();
-        MockControl specc = newControl(IComponentSpecification.class);
-        IComponentSpecification spec = (IComponentSpecification) specc.getMock();
+        
+        IComponentSpecification spec = newSpec();
 
-        MockControl cfc = newControl(ClassFactory.class);
-        ClassFactory cf = (ClassFactory) cfc.getMock();
-        MockControl fabc = newControl(ClassFab.class);
-        ClassFab fab = (ClassFab) fabc.getMock();
+        ClassFactory cf = newMock(ClassFactory.class);
+        
+        ClassFab fab = newMock(ClassFab.class);
 
-        cf.newClass("$BaseComponent_97", BaseComponent.class);
-        cfc.setReturnValue(fab);
+        expect(cf.newClass("$BaseComponent_97", BaseComponent.class)).andReturn(fab);
 
-        replayControls();
+        replay();
 
         EnhancementOperationImpl eo = new EnhancementOperationImpl(cr, spec, BaseComponent.class,
                 cf, null);
@@ -819,39 +774,34 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
         eo.extendMethodImplementation(IComponent.class, sig, "some-code();");
 
-        verifyControls();
+        verify();
 
-        fab.addMethod(Modifier.PUBLIC, sig, "{\n  super.finishLoad($$);\n  some-code();\n}\n");
-        fabc.setReturnValue(null);
+        expect(fab.addMethod(Modifier.PUBLIC, sig, "{\n  super.finishLoad($$);\n  some-code();\n}\n"))
+        .andReturn(null);
 
-        fab.createClass();
-        fabc.setReturnValue(BaseComponent.class);
+        expect(fab.createClass()).andReturn(BaseComponent.class);
 
-        spec.getLocation();
-        specc.setReturnValue(null);
+        expect(spec.getLocation()).andReturn(null);
 
-        replayControls();
+        replay();
 
         eo.getConstructor();
 
-        verifyControls();
+        verify();
     }
 
     public void testGetExistingProtectedMethod()
     {
         ClassResolver cr = new DefaultClassResolver();
-        MockControl specc = newControl(IComponentSpecification.class);
-        IComponentSpecification spec = (IComponentSpecification) specc.getMock();
+        IComponentSpecification spec = newSpec();
 
-        MockControl cfc = newControl(ClassFactory.class);
-        ClassFactory cf = (ClassFactory) cfc.getMock();
-        MockControl fabc = newControl(ClassFab.class);
-        ClassFab fab = (ClassFab) fabc.getMock();
+        ClassFactory cf = newMock(ClassFactory.class);
+        
+        ClassFab fab = newMock(ClassFab.class);
 
-        cf.newClass("$BaseComponent_97", BaseComponent.class);
-        cfc.setReturnValue(fab);
+        expect(cf.newClass("$BaseComponent_97", BaseComponent.class)).andReturn(fab);
 
-        replayControls();
+        replay();
 
         EnhancementOperationImpl eo = new EnhancementOperationImpl(cr, spec, BaseComponent.class,
                 cf, null);
@@ -861,25 +811,23 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
         eo.extendMethodImplementation(IComponent.class, sig, "some-code();");
 
-        verifyControls();
+        verify();
 
-        fab.addMethod(
+        expect(fab.addMethod(
                 Modifier.PUBLIC,
                 sig,
-                "{\n  super.cleanupAfterRender($$);\n  some-code();\n}\n");
-        fabc.setReturnValue(null);
+                "{\n  super.cleanupAfterRender($$);\n  some-code();\n}\n"))
+                .andReturn(null);
 
-        fab.createClass();
-        fabc.setReturnValue(BaseComponent.class);
+        expect(fab.createClass()).andReturn(BaseComponent.class);
 
-        spec.getLocation();
-        specc.setReturnValue(null);
+        expect(spec.getLocation()).andReturn(null);
 
-        replayControls();
+        replay();
 
         eo.getConstructor();
 
-        verifyControls();
+        verify();
     }
 
     public static abstract class ExistingAbstractMethodFixture extends BaseComponent implements
@@ -891,18 +839,16 @@ public class TestEnhancementOperation extends HiveMindTestCase
     public void getExistingAbstractMethod()
     {
         ClassResolver cr = new DefaultClassResolver();
-        MockControl specc = newControl(IComponentSpecification.class);
-        IComponentSpecification spec = (IComponentSpecification) specc.getMock();
+        IComponentSpecification spec = newSpec();
 
-        MockControl cfc = newControl(ClassFactory.class);
-        ClassFactory cf = (ClassFactory) cfc.getMock();
-        MockControl fabc = newControl(ClassFab.class);
-        ClassFab fab = (ClassFab) fabc.getMock();
+        ClassFactory cf = newMock(ClassFactory.class);
+        
+        ClassFab fab = newMock(ClassFab.class);
 
-        cf.newClass("$ExitingAbstractMethodFixture_97", ExistingAbstractMethodFixture.class);
-        cfc.setReturnValue(fab);
+        expect(cf.newClass("$ExitingAbstractMethodFixture_97", ExistingAbstractMethodFixture.class))
+        .andReturn(fab);
 
-        replayControls();
+        replay();
 
         EnhancementOperationImpl eo = new EnhancementOperationImpl(cr, spec,
                 ExistingAbstractMethodFixture.class, cf, null);
@@ -911,22 +857,19 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
         eo.extendMethodImplementation(PageDetachListener.class, sig, "some-code();");
 
-        verifyControls();
+        verify();
 
-        fab.addMethod(Modifier.PUBLIC, sig, "{\n  some-code();\n}\n");
-        fabc.setReturnValue(null);
+        expect(fab.addMethod(Modifier.PUBLIC, sig, "{\n  some-code();\n}\n")).andReturn(null);
 
-        fab.createClass();
-        fabc.setReturnValue(BaseComponent.class);
+        expect(fab.createClass()).andReturn(BaseComponent.class);
 
-        spec.getLocation();
-        specc.setReturnValue(null);
+        expect(spec.getLocation()).andReturn(null);
 
-        replayControls();
+        replay();
 
         eo.getConstructor();
 
-        verifyControls();
+        verify();
     }
 
     /**
@@ -940,31 +883,29 @@ public class TestEnhancementOperation extends HiveMindTestCase
         IComponentSpecification spec = newSpec();
         ClassFactory cf = newClassFactory(ServiceLink.class);
 
-        replayControls();
+        replay();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
                 ServiceLink.class, cf, null);
 
         assertEquals(String.class, eo.getPropertyType("target"));
 
-        verifyControls();
+        verify();
     }
 
     public void testConstructorFailure()
     {
         IComponentSpecification spec = newSpec();
-
-        MockControl control = newControl(ClassFab.class);
-        ClassFab classFab = (ClassFab) control.getMock();
+        
+        ClassFab classFab = newMock(ClassFab.class);
 
         Throwable t = new RuntimeException("Inconceivable!");
 
-        classFab.createClass();
-        control.setThrowable(t);
+        expect(classFab.createClass()).andThrow(t);
 
         ClassFactory cf = newClassFactory(ServiceLink.class, classFab);
 
-        replayControls();
+        replay();
 
         EnhancementOperationImpl eo = new EnhancementOperationImpl(new DefaultClassResolver(),
                 spec, ServiceLink.class, cf, null);
@@ -983,6 +924,6 @@ public class TestEnhancementOperation extends HiveMindTestCase
             assertSame(t, ex.getRootCause());
         }
 
-        verifyControls();
+        verify();
     }
 }

@@ -18,12 +18,14 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
-
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.junit.TapestryTestCase;
+import org.testng.annotations.Configuration;
+import org.testng.annotations.Factory;
+import org.testng.annotations.Test;
 
 /**
  * Test case for Mock Servlet API tests using the Simple application.
@@ -31,7 +33,7 @@ import org.apache.tapestry.junit.TapestryTestCase;
  * @author Howard Lewis Ship
  * @since 2.2
  */
-
+@Test
 public class TestMocks extends TapestryTestCase
 {
     public static final String LOGS_DIR = "/target/logs";
@@ -46,6 +48,13 @@ public class TestMocks extends TapestryTestCase
 
     private static String _baseDir;
 
+    private String _path;
+    
+    public TestMocks(String path)
+    {
+        _path = path;
+    }
+    
     public static String getBaseDirectory()
     {
         if (_baseDir == null)
@@ -54,20 +63,22 @@ public class TestMocks extends TapestryTestCase
         return _baseDir;
     }
 
+    @Test
     protected void runTest() throws Throwable
     {
-        String path = getBaseDirectory() + SCRIPTS_DIR + "/" + getName();
-
-        MockTester tester = new MockTester(getBaseDirectory() + "/src/test-data/", path);
-
+        MockTester tester = new MockTester(getBaseDirectory() + "/src/test-data/", _path);
+        
         tester.execute();
-
+        
         PropertyUtils.clearCache();
     }
 
-    public static Test suite()
+    @Factory
+    public static Object[] suite()
     {
-        TestSuite suite = new TestSuite("Mock Unit Test Suite");
+        List<TestMocks> tests = new ArrayList<TestMocks>();
+        
+        // TestSuite suite = new TestSuite("Mock Unit Test Suite");
 
         if (Boolean.getBoolean("skip-mock-tests"))
         {
@@ -75,16 +86,16 @@ public class TestMocks extends TapestryTestCase
         }
         else
         {
-            addScripts(suite);
+            addScripts(tests);
 
             // Handy place to perform one-time
             deleteDir(getBaseDirectory() + "/target/.private");
         }
 
-        return suite;
+        return tests.toArray(new TestMocks[tests.size()]);
     }
 
-    private static void addScripts(TestSuite suite)
+    private static void addScripts(List<TestMocks> tests)
     {
         File scriptsDir = new File(getBaseDirectory() + SCRIPTS_DIR);
 
@@ -96,11 +107,9 @@ public class TestMocks extends TapestryTestCase
 
             if (name.endsWith(".xml"))
             {
-                TestMocks test = new TestMocks();
+                TestMocks test = new TestMocks(getBaseDirectory() + SCRIPTS_DIR + "/" + name);
 
-                test.setName(name);
-
-                suite.addTest(test);
+                tests.add(test);
             }
         }
     }
@@ -138,6 +147,7 @@ public class TestMocks extends TapestryTestCase
      * Ensures that the log directory exists, then redirects System.out and System.err to files
      * within the log.
      */
+    @Configuration(beforeTestClass = true)
     protected void setUp() throws Exception
     {
         File outDir = new File(getBaseDirectory() + LOGS_DIR);
@@ -154,7 +164,7 @@ public class TestMocks extends TapestryTestCase
 
     protected PrintStream createPrintStream(File directory, String extension) throws Exception
     {
-        String name = getName() + "." + extension;
+        String name = _path;
 
         File file = new File(directory, name);
 
@@ -170,6 +180,7 @@ public class TestMocks extends TapestryTestCase
     /**
      * Closes System.out and System.err, then restores them to their original values.
      */
+    @Configuration(afterTestClass = true)
     protected void tearDown() throws Exception
     {
         System.err.close();

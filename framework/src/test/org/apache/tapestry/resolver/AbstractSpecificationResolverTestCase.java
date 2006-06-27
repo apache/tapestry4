@@ -20,8 +20,8 @@ import java.net.URL;
 
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.Resource;
-import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.hivemind.util.URLResource;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ISpecificationSource;
@@ -33,7 +33,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public abstract class AbstractSpecificationResolverTestCase extends HiveMindTestCase
+public abstract class AbstractSpecificationResolverTestCase extends BaseComponentTestCase
 {
 
     protected IComponentSpecification newSpecification()

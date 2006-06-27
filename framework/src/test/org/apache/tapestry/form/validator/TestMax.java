@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.form.validator;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
@@ -39,11 +41,11 @@ public class TestMax extends BaseValidatorTestCase
 
         Integer object = new Integer(10);
 
-        replayControls();
+        replay();
 
         new Max("max=50").validate(field, messages, object);
 
-        verifyControls();
+        verify();
     }
 
     public void testFail()
@@ -56,7 +58,7 @@ public class TestMax extends BaseValidatorTestCase
                 { "My Field", new Double(10) },
                 "Exception!");
 
-        replayControls();
+        replay();
 
         try
         {
@@ -79,7 +81,7 @@ public class TestMax extends BaseValidatorTestCase
                 { "My Field", new Double(100) },
                 "custom message");
 
-        replayControls();
+        replay();
 
         try
         {
@@ -108,11 +110,11 @@ public class TestMax extends BaseValidatorTestCase
 
         context.addSubmitHandler("function(event) { Tapestry.validate_max_number(event, 'myfield', 20.0, 'default message'); }");
 
-        replayControls();
+        replay();
 
         new Max("max=20").renderContribution(writer, cycle, context, field);
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderContributionCustomMessage()
@@ -136,11 +138,11 @@ public class TestMax extends BaseValidatorTestCase
         
         context.addSubmitHandler("function(event) { Tapestry.validate_max_number(event, 'myfield', 20.0, 'custom\\\\message'); }");
 
-        replayControls();
+        replay();
 
         new Max("max=20,message=custom").renderContribution(writer, cycle, context, field);
 
-        verifyControls();
+        verify();
     }
 
 }

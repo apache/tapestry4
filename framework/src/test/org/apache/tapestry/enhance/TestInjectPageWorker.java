@@ -14,16 +14,19 @@
 
 package org.apache.tapestry.enhance;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.lang.reflect.Modifier;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.service.MethodSignature;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.spec.InjectSpecification;
 import org.apache.tapestry.spec.InjectSpecificationImpl;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.InjectPageWorker}.
@@ -31,19 +34,17 @@ import org.easymock.MockControl;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class TestInjectPageWorker extends HiveMindTestCase
+public class TestInjectPageWorker extends BaseComponentTestCase
 {
     public void testPrimitivePropertyType()
     {
         Location l = newLocation();
+        
+        EnhancementOperation op = newMock(EnhancementOperation.class);
 
-        MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+        expect(op.getPropertyType("somePage")).andReturn(int.class);
 
-        op.getPropertyType("somePage");
-        opc.setReturnValue(int.class);
-
-        replayControls();
+        replay();
 
         InjectSpecification is = newSpec(l);
 
@@ -60,7 +61,7 @@ public class TestInjectPageWorker extends HiveMindTestCase
             assertSame(l, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
     }
 
     private InjectSpecification newSpec(Location l)
@@ -81,16 +82,13 @@ public class TestInjectPageWorker extends HiveMindTestCase
     {
         Location l = newLocation();
 
-        MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+        EnhancementOperation op = newMock(EnhancementOperation.class);
 
-        op.getPropertyType("somePage");
-        opc.setReturnValue(null);
+        expect(op.getPropertyType("somePage")).andReturn(null);
 
         op.claimReadonlyProperty("somePage");
 
-        op.getAccessorMethodName("somePage");
-        opc.setReturnValue("getSomePage");
+        expect(op.getAccessorMethodName("somePage")).andReturn("getSomePage");
 
         MethodSignature sig = new MethodSignature(Object.class, "getSomePage", null, null);
 
@@ -100,29 +98,26 @@ public class TestInjectPageWorker extends HiveMindTestCase
                 "return getPage().getRequestCycle().getPage(\"SomePage\");",
                 l);
 
-        replayControls();
+        replay();
 
         InjectSpecification is = newSpec(l);
 
         new InjectPageWorker().performEnhancement(op, is);
 
-        verifyControls();
+        verify();
     }
 
     public void testExistingPropertyType()
     {
         Location l = newLocation();
 
-        MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+        EnhancementOperation op = newMock(EnhancementOperation.class);
 
-        op.getPropertyType("somePage");
-        opc.setReturnValue(BasePage.class);
+        expect(op.getPropertyType("somePage")).andReturn(BasePage.class);
 
         op.claimReadonlyProperty("somePage");
 
-        op.getAccessorMethodName("somePage");
-        opc.setReturnValue("getSomePage");
+        expect(op.getAccessorMethodName("somePage")).andReturn("getSomePage");
 
         MethodSignature sig = new MethodSignature(BasePage.class, "getSomePage", null, null);
 
@@ -136,12 +131,12 @@ public class TestInjectPageWorker extends HiveMindTestCase
                         "return (org.apache.tapestry.html.BasePage)getPage().getRequestCycle().getPage(\"SomePage\");",
                         l);
 
-        replayControls();
+        replay();
 
         InjectSpecification is = newSpec(l);
 
         new InjectPageWorker().performEnhancement(op, is);
 
-        verifyControls();
+        verify();
     }
 }

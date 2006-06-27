@@ -14,29 +14,29 @@
 
 package org.apache.tapestry.services.impl;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertSame;
+
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.services.ServiceMap;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.EngineServiceObjectProvider}.
  * 
  * @author Howard M. Lewis Ship
  */
-public class TestEngineServiceObjectProvider extends HiveMindTestCase
+public class TestEngineServiceObjectProvider extends BaseComponentTestCase
 {
     public void testProvideObject()
     {
-        MockControl mapControl = newControl(ServiceMap.class);
-        ServiceMap map = (ServiceMap) mapControl.getMock();
+        ServiceMap map = newMock(ServiceMap.class);
 
-        IEngineService service = (IEngineService) newMock(IEngineService.class);
+        IEngineService service = newMock(IEngineService.class);
 
-        map.getService("page");
-        mapControl.setReturnValue(service);
+        expect(map.getService("page")).andReturn(service);
 
-        replayControls();
+        replay();
 
         EngineServiceObjectProvider p = new EngineServiceObjectProvider();
 
@@ -44,6 +44,6 @@ public class TestEngineServiceObjectProvider extends HiveMindTestCase
 
         assertSame(service, p.provideObject(null, null, "page", null));
 
-        verifyControls();
+        verify();
     }
 }

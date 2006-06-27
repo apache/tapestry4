@@ -14,18 +14,19 @@
 
 package org.apache.tapestry.enhance;
 
+import static org.easymock.EasyMock.expect;
+
 import java.lang.reflect.Modifier;
 import java.util.Map;
 
 import org.apache.hivemind.Location;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.MethodSignature;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.engine.state.ApplicationStateManager;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.spec.InjectSpecification;
 import org.apache.tapestry.spec.InjectSpecificationImpl;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.InjectStateWorker}.
@@ -33,7 +34,7 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestInjectStateWorker extends HiveMindTestCase
+public class TestInjectStateWorker extends BaseComponentTestCase
 {
     private ApplicationStateManager newASM()
     {
@@ -55,22 +56,20 @@ public class TestInjectStateWorker extends HiveMindTestCase
     {
         Location l = newLocation();
         InjectSpecification spec = newSpec("fred", "barney", l);
-        MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+        
+        EnhancementOperation op = newMock(EnhancementOperation.class);
 
         ApplicationStateManager asm = newASM();
 
-        op.getPropertyType("fred");
-        opc.setReturnValue(Map.class);
+        expect(op.getPropertyType("fred")).andReturn(Map.class);
 
         op.claimProperty("fred");
         op.addField("_$fred", Map.class);
 
-        op.addInjectedField("_$applicationStateManager", ApplicationStateManager.class, asm);
-        opc.setReturnValue("_$applicationStateManager");
+        expect(op.addInjectedField("_$applicationStateManager", ApplicationStateManager.class, asm))
+        .andReturn("_$applicationStateManager");
 
-        op.getAccessorMethodName("fred");
-        opc.setReturnValue("getFred");
+        expect(op.getAccessorMethodName("fred")).andReturn("getFred");
 
         BodyBuilder builder = new BodyBuilder();
 
@@ -101,13 +100,13 @@ public class TestInjectStateWorker extends HiveMindTestCase
                 EnhanceUtils.PAGE_DETACHED_SIGNATURE,
                 "_$fred = null;");
 
-        replayControls();
+        replay();
 
         InjectStateWorker w = new InjectStateWorker();
         w.setApplicationStateManager(asm);
 
         w.performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 }

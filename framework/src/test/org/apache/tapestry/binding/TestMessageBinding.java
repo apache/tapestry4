@@ -14,10 +14,13 @@
 
 package org.apache.tapestry.binding;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import org.apache.hivemind.Messages;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.coerce.ValueConverter;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.binding.MessageBinding}.
@@ -30,58 +33,51 @@ public class TestMessageBinding extends BindingTestCase
 
     public void testCreate()
     {
-        IComponent component = (IComponent) newMock(IComponent.class);
+        IComponent component = newMock(IComponent.class);
         ValueConverter vc = newValueConverter();
 
-        replayControls();
+        replay();
 
         MessageBinding b = new MessageBinding("param", vc, fabricateLocation(12), component, "key");
 
         assertSame(component, b.getComponent());
         assertEquals("key", b.getKey());
 
-        verifyControls();
+        verify();
     }
 
     public void testToString()
     {
-        MockControl control = newControl(IComponent.class);
-        IComponent component = (IComponent) control.getMock();
+        IComponent component = newComponent();
         ValueConverter vc = newValueConverter();
 
-        component.getExtendedId();
-        control.setReturnValue("Foo/bar.baz");
+        expect(component.getExtendedId()).andReturn("Foo/bar.baz");
 
-        replayControls();
+        replay();
 
         MessageBinding b = new MessageBinding("param", vc, fabricateLocation(12), component, "key");
 
         assertEquals("StringBinding[Foo/bar.baz key]", b.toString());
 
-        verifyControls();
+        verify();
     }
 
     public void testGetObject()
     {
-        MockControl mc = newControl(Messages.class);
-        Messages m = (Messages) mc.getMock();
-
-        MockControl control = newControl(IComponent.class);
-        IComponent component = (IComponent) control.getMock();
+        Messages m = newMock(Messages.class);
+        IComponent component = newComponent();
 
         ValueConverter vc = newValueConverter();
 
-        component.getMessages();
-        control.setReturnValue(m);
+        expect(component.getMessages()).andReturn(m);
+        
+        expect(m.getMessage("key")).andReturn("value");
 
-        m.getMessage("key");
-        mc.setReturnValue("value");
-
-        replayControls();
+        replay();
         MessageBinding b = new MessageBinding("param", vc, fabricateLocation(12), component, "key");
 
         assertEquals("value", b.getObject());
 
-        verifyControls();
+        verify();
     }
 }

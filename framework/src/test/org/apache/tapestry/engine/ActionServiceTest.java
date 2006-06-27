@@ -14,7 +14,10 @@
 
 package org.apache.tapestry.engine;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -68,13 +71,13 @@ public class ActionServiceTest extends ServiceTestCase
 
         trainConstructLink(lf, as, false, parameters, true, link);
 
-        replayControls();
+        replay();
 
         ActionServiceParameter p = new ActionServiceParameter(component, "action-id");
 
         assertSame(link, as.getLink(false, p));
 
-        verifyControls();
+        verify();
     }
 
     public void testGetLinkSimplePost()
@@ -106,13 +109,13 @@ public class ActionServiceTest extends ServiceTestCase
 
         trainConstructLink(lf, as, true, parameters, true, link);
 
-        replayControls();
+        replay();
 
         ActionServiceParameter p = new ActionServiceParameter(component, "action-id");
 
         assertSame(link, as.getLink(true, p));
 
-        verifyControls();
+        verify();
     }
 
     public void testGetLinkComplex()
@@ -145,13 +148,13 @@ public class ActionServiceTest extends ServiceTestCase
 
         trainConstructLink(lf, as, false, parameters, true, link);
 
-        replayControls();
+        replay();
 
         ActionServiceParameter p = new ActionServiceParameter(component, "action-id");
 
         assertSame(link, as.getLink(false, p));
 
-        verifyControls();
+        verify();
     }
 
     public void testServiceSimple() throws Exception
@@ -177,14 +180,14 @@ public class ActionServiceTest extends ServiceTestCase
 
         rr.renderResponse(cycle);
 
-        replayControls();
+        replay();
 
         ActionService as = new ActionService();
         as.setResponseRenderer(rr);
 
         as.service(cycle);
 
-        verifyControls();
+        verify();
     }
 
     private IAction newAction()
@@ -219,7 +222,7 @@ public class ActionServiceTest extends ServiceTestCase
 
         rr.renderResponse(cycle);
 
-        replayControls();
+        replay();
 
         ActionService as = new ActionService();
         as.setResponseRenderer(rr);
@@ -227,7 +230,7 @@ public class ActionServiceTest extends ServiceTestCase
 
         as.service(cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testServiceNotAction() throws Exception
@@ -253,7 +256,7 @@ public class ActionServiceTest extends ServiceTestCase
 
         trainGetLocation(component, l);
 
-        replayControls();
+        replay();
 
         ActionService as = new ActionService();
 
@@ -271,7 +274,7 @@ public class ActionServiceTest extends ServiceTestCase
             assertSame(l, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testServiceStaleSession() throws Exception
@@ -302,7 +305,7 @@ public class ActionServiceTest extends ServiceTestCase
 
         trainGetPageName(page, "ActivePage");
 
-        replayControls();
+        replay();
 
         ActionService as = new ActionService();
         as.setRequest(request);
@@ -322,7 +325,7 @@ public class ActionServiceTest extends ServiceTestCase
             assertEquals("ActivePage", ex.getPageName());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testServiceComplex() throws Exception
@@ -351,14 +354,14 @@ public class ActionServiceTest extends ServiceTestCase
 
         rr.renderResponse(cycle);
 
-        replayControls();
+        replay();
 
         ActionService as = new ActionService();
         as.setResponseRenderer(rr);
 
         as.service(cycle);
 
-        verifyControls();
+        verify();
     }
 
     protected void trainGetRequiresSession(IAction action, boolean requiresSession)

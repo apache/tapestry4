@@ -14,6 +14,10 @@
 
 package org.apache.tapestry.services.impl;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,10 +25,9 @@ import java.util.List;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IEngineService;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.ServiceMapImpl}.
@@ -32,15 +35,13 @@ import org.easymock.MockControl;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class TestServiceMap extends HiveMindTestCase
+public class TestServiceMap extends BaseComponentTestCase
 {
     private IEngineService newService(String name)
     {
-        MockControl control = newControl(IEngineService.class);
-        IEngineService service = (IEngineService) control.getMock();
+        IEngineService service = newMock(IEngineService.class);
 
-        service.getName();
-        control.setReturnValue(name);
+        expect(service.getName()).andReturn(name);
 
         return service;
     }
@@ -49,12 +50,7 @@ public class TestServiceMap extends HiveMindTestCase
     {
         return (IEngineService) newMock(IEngineService.class);
     }
-
-    private IRequestCycle newCycle()
-    {
-        return (IRequestCycle) newMock(IRequestCycle.class);
-    }
-
+    
     private EngineServiceContribution constructService(String name, IEngineService service)
     {
         EngineServiceContribution result = new EngineServiceContribution();
@@ -83,7 +79,7 @@ public class TestServiceMap extends HiveMindTestCase
         factory.service(cycle1);
         application.service(cycle2);
 
-        replayControls();
+        replay();
 
         ServiceMapImpl m = new ServiceMapImpl();
 
@@ -100,7 +96,7 @@ public class TestServiceMap extends HiveMindTestCase
 
         m.getService("application").service(cycle2);
 
-        verifyControls();
+        verify();
     }
 
     public void testNameMismatch() throws Exception
@@ -113,7 +109,7 @@ public class TestServiceMap extends HiveMindTestCase
         EngineServiceContribution contribution = constructService("expected-name", service);
         contribution.setLocation(l);
 
-        replayControls();
+        replay();
 
         ServiceMapImpl m = new ServiceMapImpl();
 
@@ -137,7 +133,7 @@ public class TestServiceMap extends HiveMindTestCase
             assertSame(l, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testGetServiceRepeated()
@@ -145,7 +141,7 @@ public class TestServiceMap extends HiveMindTestCase
         IEngineService application = newService();
         EngineServiceContribution applicationc = constructService("application", application);
 
-        replayControls();
+        replay();
 
         ServiceMapImpl m = new ServiceMapImpl();
 
@@ -157,7 +153,7 @@ public class TestServiceMap extends HiveMindTestCase
         IEngineService service = m.getService("application");
         assertSame(service, m.getService("application"));
 
-        verifyControls();
+        verify();
     }
 
     public void testApplicationOverridesFactory() throws Exception
@@ -171,7 +167,7 @@ public class TestServiceMap extends HiveMindTestCase
 
         application.service(cycle);
 
-        replayControls();
+        replay();
 
         ServiceMapImpl m = new ServiceMapImpl();
 
@@ -182,7 +178,7 @@ public class TestServiceMap extends HiveMindTestCase
 
         m.getService("override").service(cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testUnknownService()
@@ -241,7 +237,7 @@ public class TestServiceMap extends HiveMindTestCase
 
         log.error(ImplMessages.dupeService("duplicate", firstc), l, null);
 
-        replayControls();
+        replay();
 
         ServiceMapImpl m = new ServiceMapImpl();
 
@@ -253,6 +249,6 @@ public class TestServiceMap extends HiveMindTestCase
 
         m.getService("duplicate").service(cycle);
 
-        verifyControls();
+        verify();
     }
 }

@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.engine;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 import org.apache.tapestry.web.WebRequest;
 
 /**
@@ -31,11 +33,11 @@ public class EngineUtilsTest extends ServiceTestCase
 
         trainGetScheme(request, "http");
 
-        replayControls();
+        replay();
 
         assertEquals(true, EngineUtils.needAbsoluteURL("https", null, 0, request));
 
-        verifyControls();
+        verify();
     }
 
     public void testNeedAbsoluteURLForServer()
@@ -44,11 +46,11 @@ public class EngineUtilsTest extends ServiceTestCase
 
         trainGetServerName(request, "someserver.net");
 
-        replayControls();
+        replay();
 
         assertEquals(true, EngineUtils.needAbsoluteURL(null, "myserver.com", 0, request));
 
-        verifyControls();
+        verify();
     }
 
     public void testNeedAbsoluteURLForServerPort()
@@ -57,22 +59,22 @@ public class EngineUtilsTest extends ServiceTestCase
 
         trainGetServerPort(request, 80);
 
-        replayControls();
+        replay();
 
         assertEquals(true, EngineUtils.needAbsoluteURL(null, null, 8197, request));
 
-        verifyControls();
+        verify();
     }
 
     public void testDontNeedAbsoluteURL()
     {
         WebRequest request = newRequest();
 
-        replayControls();
+        replay();
 
         assertEquals(false, EngineUtils.needAbsoluteURL(null, null, 0, request));
 
-        verifyControls();
+        verify();
 
         trainGetScheme(request, "http");
 
@@ -80,10 +82,10 @@ public class EngineUtilsTest extends ServiceTestCase
 
         trainGetServerPort(request, 80);
 
-        replayControls();
+        replay();
 
         assertEquals(false, EngineUtils.needAbsoluteURL("http", "myserver.com", 80, request));
 
-        verifyControls();
+        verify();
     }
 }

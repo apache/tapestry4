@@ -14,13 +14,17 @@
 
 package org.apache.tapestry.binding;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.services.ExpressionCache;
 import org.apache.tapestry.services.ExpressionEvaluator;
-import org.easymock.MockControl;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.binding.ExpressionBinding}.
@@ -28,14 +32,15 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestExpressionBinding extends BindingTestCase
 {
 
     public void testInvariant()
     {   
-        ExpressionEvaluator ev = createMock(ExpressionEvaluator.class);
-        ExpressionCache ec = createMock(ExpressionCache.class);
-        IComponent component = createMock(IComponent.class);
+        ExpressionEvaluator ev = newMock(ExpressionEvaluator.class);
+        ExpressionCache ec = newMock(ExpressionCache.class);
+        IComponent component = newMock(IComponent.class);
 
         Object compiled = new Object();
         
@@ -51,7 +56,7 @@ public class TestExpressionBinding extends BindingTestCase
         
         expect(component.getExtendedId()).andReturn("Foo/bar.baz");
         
-        replay(ev,ec,component);
+        replay();
         
         ExpressionBinding b = new ExpressionBinding("param", fabricateLocation(1), vc, component,
                 "exp", ev, ec);
@@ -71,16 +76,13 @@ public class TestExpressionBinding extends BindingTestCase
 
         assertEquals("ExpressionBinding[Foo/bar.baz exp]", b.toString());
 
-        verify(ev,ec,component);
+        verify();
     }
 
     public void testVariant()
     {
-        MockControl evc = newControl(ExpressionEvaluator.class);
-        ExpressionEvaluator ev = (ExpressionEvaluator) evc.getMock();
-
-        MockControl ecc = newControl(ExpressionCache.class);
-        ExpressionCache ec = (ExpressionCache) ecc.getMock();
+        ExpressionEvaluator ev = newMock(ExpressionEvaluator.class);
+        ExpressionCache ec = newMock(ExpressionCache.class);
 
         IComponent component = newComponent();
         Object compiled = new Object();
@@ -90,19 +92,15 @@ public class TestExpressionBinding extends BindingTestCase
 
         ValueConverter vc = newValueConverter();
 
-        ec.getCompiledExpression("exp");
-        ecc.setReturnValue(compiled);
+        expect(ec.getCompiledExpression("exp")).andReturn(compiled);
 
-        ev.isConstant("exp");
-        evc.setReturnValue(false);
+        expect(ev.isConstant("exp")).andReturn(false);
 
-        ev.readCompiled(component, compiled);
-        evc.setReturnValue(expressionValue1);
+        expect(ev.readCompiled(component, compiled)).andReturn(expressionValue1);
 
-        ev.readCompiled(component, compiled);
-        evc.setReturnValue(expressionValue2);
+        expect(ev.readCompiled(component, compiled)).andReturn(expressionValue2);
 
-        replayControls();
+        replay();
 
         ExpressionBinding b = new ExpressionBinding("param", fabricateLocation(1), vc, component,
                 "exp", ev, ec);
@@ -116,62 +114,52 @@ public class TestExpressionBinding extends BindingTestCase
 
         assertSame(expressionValue2, b.getObject());
 
-        verifyControls();
+        verify();
     }
 
     public void testSetObject()
     {
-        MockControl evc = newControl(ExpressionEvaluator.class);
-        ExpressionEvaluator ev = (ExpressionEvaluator) evc.getMock();
-
-        MockControl ecc = newControl(ExpressionCache.class);
-        ExpressionCache ec = (ExpressionCache) ecc.getMock();
+        ExpressionEvaluator ev = newMock(ExpressionEvaluator.class);
+        ExpressionCache ec = newMock(ExpressionCache.class);
 
         IComponent component = newComponent();
         Object compiled = new Object();
 
         ValueConverter vc = newValueConverter();
 
-        ec.getCompiledExpression("exp");
-        ecc.setReturnValue(compiled);
+        expect(ec.getCompiledExpression("exp")).andReturn(compiled);
 
-        ev.isConstant("exp");
-        evc.setReturnValue(false);
+        expect(ev.isConstant("exp")).andReturn(false);
 
         Object newValue = new Object();
 
         ev.writeCompiled(component, compiled, newValue);
 
-        replayControls();
+        replay();
 
         ExpressionBinding b = new ExpressionBinding("param", fabricateLocation(1), vc, component,
                 "exp", ev, ec);
 
         b.setObject(newValue);
 
-        verifyControls();
+        verify();
     }
 
     public void testSetObjectInvariant()
     {
-        MockControl evc = newControl(ExpressionEvaluator.class);
-        ExpressionEvaluator ev = (ExpressionEvaluator) evc.getMock();
-
-        MockControl ecc = newControl(ExpressionCache.class);
-        ExpressionCache ec = (ExpressionCache) ecc.getMock();
+        ExpressionEvaluator ev = newMock(ExpressionEvaluator.class);
+        ExpressionCache ec = newMock(ExpressionCache.class);
 
         IComponent component = newComponent("Foo/bar.baz");
         Object compiled = new Object();
 
         ValueConverter vc = newValueConverter();
 
-        ec.getCompiledExpression("exp");
-        ecc.setReturnValue(compiled);
+        expect(ec.getCompiledExpression("exp")).andReturn(compiled);
 
-        ev.isConstant("exp");
-        evc.setReturnValue(true);
+        expect(ev.isConstant("exp")).andReturn(true);
 
-        replayControls();
+        replay();
 
         ExpressionBinding b = new ExpressionBinding("parameter foo", fabricateLocation(1), vc, component,
                 "exp", ev, ec);
@@ -188,36 +176,31 @@ public class TestExpressionBinding extends BindingTestCase
                     ex.getMessage());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testSetObjectFailure()
     {
-        MockControl evc = newControl(ExpressionEvaluator.class);
-        ExpressionEvaluator ev = (ExpressionEvaluator) evc.getMock();
-
-        MockControl ecc = newControl(ExpressionCache.class);
-        ExpressionCache ec = (ExpressionCache) ecc.getMock();
+        ExpressionEvaluator ev = newMock(ExpressionEvaluator.class);
+        ExpressionCache ec = newMock(ExpressionCache.class);
 
         IComponent component = newComponent();
         Object compiled = new Object();
 
         ValueConverter vc = newValueConverter();
 
-        ec.getCompiledExpression("exp");
-        ecc.setReturnValue(compiled);
+        expect(ec.getCompiledExpression("exp")).andReturn(compiled);
 
-        ev.isConstant("exp");
-        evc.setReturnValue(false);
+        expect(ev.isConstant("exp")).andReturn(false);
 
         Object newValue = new Object();
 
         RuntimeException innerException = new RuntimeException("Failure");
 
         ev.writeCompiled(component, compiled, newValue);
-        evc.setThrowable(innerException);
+        expectLastCall().andThrow(innerException);
 
-        replayControls();
+        replay();
 
         ExpressionBinding b = new ExpressionBinding("param", fabricateLocation(1), vc, component,
                 "exp", ev, ec);
@@ -233,26 +216,22 @@ public class TestExpressionBinding extends BindingTestCase
             assertSame(innerException, ex.getRootCause());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testCompileExpressionFailure()
     {
-        MockControl evc = newControl(ExpressionEvaluator.class);
-        ExpressionEvaluator ev = (ExpressionEvaluator) evc.getMock();
-
-        MockControl ecc = newControl(ExpressionCache.class);
-        ExpressionCache ec = (ExpressionCache) ecc.getMock();
+        ExpressionEvaluator ev = newMock(ExpressionEvaluator.class);
+        ExpressionCache ec = newMock(ExpressionCache.class);
 
         IComponent component = newComponent();
         ValueConverter vc = newValueConverter();
 
         Throwable innerException = new RuntimeException("Failure");
 
-        ec.getCompiledExpression("exp");
-        ecc.setThrowable(innerException);
+        expect(ec.getCompiledExpression("exp")).andThrow(innerException);
 
-        replayControls();
+        replay();
 
         ExpressionBinding b = new ExpressionBinding("param", fabricateLocation(1), vc, component,
                 "exp", ev, ec);
@@ -268,34 +247,29 @@ public class TestExpressionBinding extends BindingTestCase
             assertSame(innerException, ex.getRootCause());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testResolveExpressionFailure()
     {
-        MockControl evc = newControl(ExpressionEvaluator.class);
-        ExpressionEvaluator ev = (ExpressionEvaluator) evc.getMock();
-
-        MockControl ecc = newControl(ExpressionCache.class);
-        ExpressionCache ec = (ExpressionCache) ecc.getMock();
+        ExpressionEvaluator ev = newMock(ExpressionEvaluator.class);
+        ExpressionCache ec = newMock(ExpressionCache.class);
 
         IComponent component = newComponent();
         Object compiled = new Object();
 
         ValueConverter vc = newValueConverter();
 
-        ec.getCompiledExpression("exp");
-        ecc.setReturnValue(compiled);
+        expect(ec.getCompiledExpression("exp")).andReturn(compiled);
 
-        ev.isConstant("exp");
-        evc.setReturnValue(false);
+        expect(ev.isConstant("exp")).andReturn(false);
 
         Throwable innerException = new RuntimeException("Failure");
 
         ev.readCompiled(component, compiled);
-        evc.setThrowable(innerException);
+        expectLastCall().andThrow(innerException);
 
-        replayControls();
+        replay();
 
         ExpressionBinding b = new ExpressionBinding("param", fabricateLocation(1), vc, component,
                 "exp", ev, ec);
@@ -311,6 +285,6 @@ public class TestExpressionBinding extends BindingTestCase
             assertSame(innerException, ex.getRootCause());
         }
 
-        verifyControls();
+        verify();
     }
 }

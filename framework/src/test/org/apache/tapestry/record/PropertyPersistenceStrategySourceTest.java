@@ -14,12 +14,16 @@
 
 package org.apache.tapestry.record;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.engine.ServiceEncoding;
 
 /**
@@ -28,7 +32,7 @@ import org.apache.tapestry.engine.ServiceEncoding;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class PropertyPersistenceStrategySourceTest extends HiveMindTestCase
+public class PropertyPersistenceStrategySourceTest extends BaseComponentTestCase
 {
     private PropertyPersistenceStrategy newStrategy()
     {
@@ -48,7 +52,7 @@ public class PropertyPersistenceStrategySourceTest extends HiveMindTestCase
     {
         PropertyPersistenceStrategy strategy = newStrategy();
 
-        replayControls();
+        replay();
 
         PropertyPersistenceStrategySourceImpl source = new PropertyPersistenceStrategySourceImpl();
         source.setContributions(newContributions("known", strategy));
@@ -56,7 +60,7 @@ public class PropertyPersistenceStrategySourceTest extends HiveMindTestCase
 
         assertSame(strategy, source.getStrategy("known"));
 
-        verifyControls();
+        verify();
     }
 
     public void testGetUnknownStrategy()
@@ -78,9 +82,7 @@ public class PropertyPersistenceStrategySourceTest extends HiveMindTestCase
     protected void trainGetStoredChanges(PropertyPersistenceStrategy strategy, String pageName,
             Collection changes)
     {
-
-        strategy.getStoredChanges(pageName);
-        setReturnValue(strategy, changes);
+        expect(strategy.getStoredChanges(pageName)).andReturn(changes);
     }
 
     public void testGetAllStoredChanges()
@@ -91,7 +93,7 @@ public class PropertyPersistenceStrategySourceTest extends HiveMindTestCase
 
         trainGetStoredChanges(strategy, "MyPage", Collections.singleton(change));
 
-        replayControls();
+        replay();
 
         PropertyPersistenceStrategySourceImpl source = new PropertyPersistenceStrategySourceImpl();
         source.setContributions(newContributions("whatever", strategy));
@@ -102,7 +104,7 @@ public class PropertyPersistenceStrategySourceTest extends HiveMindTestCase
         assertEquals(1, result.size());
         assertSame(change, result.iterator().next());
 
-        verifyControls();
+        verify();
     }
 
     private PropertyChange newChange()
@@ -117,7 +119,7 @@ public class PropertyPersistenceStrategySourceTest extends HiveMindTestCase
 
         strategy.addParametersForPersistentProperties(encoding, false);
 
-        replayControls();
+        replay();
 
         PropertyPersistenceStrategySourceImpl source = new PropertyPersistenceStrategySourceImpl();
         source.setContributions(newContributions("whatever", strategy));
@@ -125,11 +127,11 @@ public class PropertyPersistenceStrategySourceTest extends HiveMindTestCase
 
         source.addParametersForPersistentProperties(encoding, false);
 
-        verifyControls();
+        verify();
 
         strategy.addParametersForPersistentProperties(encoding, true);
 
-        replayControls();
+        replay();
 
         source.addParametersForPersistentProperties(encoding, true);
     }
@@ -145,7 +147,7 @@ public class PropertyPersistenceStrategySourceTest extends HiveMindTestCase
 
         strategy.discardStoredChanges("Home");
 
-        replayControls();
+        replay();
 
         PropertyPersistenceStrategySourceImpl source = new PropertyPersistenceStrategySourceImpl();
         source.setContributions(newContributions("known", strategy));
@@ -153,6 +155,6 @@ public class PropertyPersistenceStrategySourceTest extends HiveMindTestCase
 
         source.discardAllStoredChanged("Home");
 
-        verifyControls();
+        verify();
     }
 }

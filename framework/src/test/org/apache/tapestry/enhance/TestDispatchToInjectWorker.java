@@ -14,17 +14,19 @@
 
 package org.apache.tapestry.enhance;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+
 import java.util.Collections;
 import java.util.Map;
 
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.InjectSpecification;
 import org.apache.tapestry.spec.InjectSpecificationImpl;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.DispatchToInjectWorker}.
@@ -32,7 +34,7 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestDispatchToInjectWorker extends HiveMindTestCase
+public class TestDispatchToInjectWorker extends BaseComponentTestCase
 {
     private InjectSpecification newInjectSpecification(String propertyName, String type,
             String object)
@@ -54,11 +56,9 @@ public class TestDispatchToInjectWorker extends HiveMindTestCase
 
     private IComponentSpecification newSpec(InjectSpecification injectSpec)
     {
-        MockControl control = newControl(IComponentSpecification.class);
-        IComponentSpecification spec = (IComponentSpecification) control.getMock();
+        IComponentSpecification spec = newSpec();
 
-        spec.getInjectSpecifications();
-        control.setReturnValue(Collections.singletonList(injectSpec));
+        expect(spec.getInjectSpecifications()).andReturn(Collections.singletonList(injectSpec));
 
         return spec;
     }
@@ -78,14 +78,14 @@ public class TestDispatchToInjectWorker extends HiveMindTestCase
 
         worker.performEnhancement(op, is);
 
-        replayControls();
+        replay();
 
         DispatchToInjectWorker d = new DispatchToInjectWorker();
         d.setInjectWorkers(map);
 
         d.performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 
     public void testUnknownType()
@@ -98,11 +98,11 @@ public class TestDispatchToInjectWorker extends HiveMindTestCase
                 "service:Foo",
                 l);
         IComponentSpecification spec = newSpec(is);
-        ErrorLog log = newLog();
+        ErrorLog log = newErrorLog();
 
         log.error(EnhanceMessages.unknownInjectType("injectedProperty", "object"), l, null);
 
-        replayControls();
+        replay();
 
         DispatchToInjectWorker d = new DispatchToInjectWorker();
         d.setInjectWorkers(Collections.EMPTY_MAP);
@@ -110,27 +110,28 @@ public class TestDispatchToInjectWorker extends HiveMindTestCase
 
         d.performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 
     public void testFailure()
     {
         Location l = newLocation();
-        MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+        
+        EnhancementOperation op = newOp();
         InjectSpecification is = newInjectSpecification("myProperty", "object", "service:Foo", l);
-        MockControl workerc = newControl(InjectEnhancementWorker.class);
-        InjectEnhancementWorker worker = (InjectEnhancementWorker) workerc.getMock();
+        
+        InjectEnhancementWorker worker = newMock(InjectEnhancementWorker.class);
+        
         Map map = newMap("object", worker);
         IComponentSpecification spec = newSpec(is);
+        
         Throwable t = new RuntimeException("Simulated failure.");
-        ErrorLog log = newLog();
+        ErrorLog log = newErrorLog();
 
         worker.performEnhancement(op, is);
-        workerc.setThrowable(t);
+        expectLastCall().andThrow(t);
 
-        op.getBaseClass();
-        opc.setReturnValue(BasePage.class);
+        expect(op.getBaseClass()).andReturn(BasePage.class);
 
         log
                 .error(
@@ -138,7 +139,7 @@ public class TestDispatchToInjectWorker extends HiveMindTestCase
                         l,
                         t);
 
-        replayControls();
+        replay();
 
         DispatchToInjectWorker d = new DispatchToInjectWorker();
         d.setInjectWorkers(map);
@@ -146,21 +147,21 @@ public class TestDispatchToInjectWorker extends HiveMindTestCase
 
         d.performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 
     private InjectEnhancementWorker newWorker()
     {
-        return (InjectEnhancementWorker) newMock(InjectEnhancementWorker.class);
+        return newMock(InjectEnhancementWorker.class);
     }
 
-    private ErrorLog newLog()
+    private ErrorLog newErrorLog()
     {
-        return (ErrorLog) newMock(ErrorLog.class);
+        return newMock(ErrorLog.class);
     }
 
     private EnhancementOperation newOp()
     {
-        return (EnhancementOperation) newMock(EnhancementOperation.class);
+        return newMock(EnhancementOperation.class);
     }
 }

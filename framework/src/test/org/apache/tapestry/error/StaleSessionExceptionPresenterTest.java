@@ -35,7 +35,7 @@ public class StaleSessionExceptionPresenterTest extends BaseErrorTestCase
 
         cycle.activate(page);
 
-        replayControls();
+        replay();
 
         StaleSessionExceptionPresenterImpl presenter = new StaleSessionExceptionPresenterImpl();
 
@@ -44,7 +44,7 @@ public class StaleSessionExceptionPresenterTest extends BaseErrorTestCase
 
         presenter.presentStaleSessionException(cycle, new StaleSessionException());
 
-        verifyControls();
+        verify();
     }
 
 }

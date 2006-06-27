@@ -14,12 +14,13 @@
 
 package org.apache.tapestry.services.impl;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import static org.easymock.EasyMock.expect;
+
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.BaseTagWriter}.
@@ -27,11 +28,11 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestBaseTagWriter extends HiveMindTestCase
+public class TestBaseTagWriter extends BaseComponentTestCase
 {
     private IMarkupWriter newWriter(String url)
     {
-        IMarkupWriter writer = (IMarkupWriter) newMock(IMarkupWriter.class);
+        IMarkupWriter writer = newMock(IMarkupWriter.class);
 
         writer.beginEmpty("base");
         writer.attribute("href", url);
@@ -43,32 +44,22 @@ public class TestBaseTagWriter extends HiveMindTestCase
 
     private INamespace newNamespace(String id)
     {
-        MockControl control = newControl(INamespace.class);
-        INamespace ns = (INamespace) control.getMock();
+        INamespace ns = newMock(INamespace.class);
 
-        ns.getId();
-        control.setReturnValue(id);
+        expect(ns.getId()).andReturn(id);
 
         return ns;
     }
 
-    private IPage newPage(String pageName)
-    {
-        return newPage(newNamespace(null), pageName);
-    }
-
     private IPage newPage(INamespace ns, String pageName)
     {
-        MockControl control = newControl(IPage.class);
-        IPage page = (IPage) control.getMock();
+        IPage page = newPage();
 
-        page.getNamespace();
-        control.setReturnValue(ns);
+        expect(page.getNamespace()).andReturn(ns);
 
         if (pageName != null)
         {
-            page.getPageName();
-            control.setReturnValue(pageName);
+            expect(page.getPageName()).andReturn(pageName);
         }
 
         return page;
@@ -76,25 +67,22 @@ public class TestBaseTagWriter extends HiveMindTestCase
 
     private IRequestCycle newRequestCycle(IPage page, String url)
     {
-        MockControl control = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) control.getMock();
+        IRequestCycle cycle = newCycle();
 
-        cycle.getPage();
-        control.setReturnValue(page);
+        expect(cycle.getPage()).andReturn(page);
 
-        cycle.getAbsoluteURL(url);
-        control.setReturnValue("http://foo.com/context" + url);
+        expect(cycle.getAbsoluteURL(url)).andReturn("http://foo.com/context" + url);
 
         return cycle;
     }
 
     private void run(IMarkupWriter writer, IRequestCycle cycle)
     {
-        replayControls();
-
+        replay();
+        
         new BaseTagWriter().render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testNotApplicationNamespace()

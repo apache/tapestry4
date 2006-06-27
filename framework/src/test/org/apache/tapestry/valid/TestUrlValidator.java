@@ -14,14 +14,13 @@
 
 package org.apache.tapestry.valid;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+
 import java.util.Locale;
 
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.form.IFormComponent;
-import org.apache.tapestry.valid.UrlValidator;
-import org.apache.tapestry.valid.ValidationConstraint;
-import org.apache.tapestry.valid.ValidatorException;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.valid.EmailValidator}.
@@ -39,19 +38,19 @@ public class TestUrlValidator extends BaseValidatorTestCase
     {
         IFormComponent field = newField();
 
-        replayControls();
+        replay();
 
         Object result = v.toObject(field, "http://www.google.com");
         assertEquals("http://www.google.com", result);
 
-        verifyControls();
+        verify();
     }
 
     public void testInvalidUrl()
     {
         IFormComponent field = newField("url");
 
-        replayControls();
+        replay();
 
         try
         {
@@ -64,14 +63,14 @@ public class TestUrlValidator extends BaseValidatorTestCase
             assertEquals("Invalid URL.", ex.getMessage());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testOverrideInvalidUrlFormatMessage()
     {
         IFormComponent field = newField("url");
 
-        replayControls();
+        replay();
 
         v.setInvalidUrlFormatMessage("Try a valid URL (for {0}), like \"http://www.google.com\"");
 
@@ -86,14 +85,14 @@ public class TestUrlValidator extends BaseValidatorTestCase
                     .getMessage());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testTooShort()
     {
         IFormComponent field = newField("short");
 
-        replayControls();
+        replay();
 
         v.setMinimumLength(20);
 
@@ -108,14 +107,14 @@ public class TestUrlValidator extends BaseValidatorTestCase
             assertEquals("You must enter at least 20 characters for short.", ex.getMessage());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testOverrideMinimumLengthMessage()
     {
         IFormComponent field = newField("short");
 
-        replayControls();
+        replay();
 
         v.setMinimumLength(20);
         v.setMinimumLengthMessage("URLs must be at least 20 characters.");
@@ -130,19 +129,17 @@ public class TestUrlValidator extends BaseValidatorTestCase
             assertEquals("URLs must be at least 20 characters.", ex.getMessage());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testDisallowedProtocol()
     {
         IPage page = newPage(Locale.ENGLISH);
-        MockControl control = newControl(IFormComponent.class);
-        IFormComponent field = (IFormComponent) control.getMock();
+        IFormComponent field = newMock(IFormComponent.class);
 
-        field.getPage();
-        control.setReturnValue(page);
+        expect(field.getPage()).andReturn(page);
 
-        replayControls();
+        replay();
 
         v.setAllowedProtocols("http,https");
 
@@ -157,6 +154,6 @@ public class TestUrlValidator extends BaseValidatorTestCase
             assertEquals("Disallowed protocol - protocol must be http or https.", ex.getMessage());
         }
 
-        verifyControls();
+        verify();
     }
 }

@@ -13,10 +13,14 @@
 // limitations under the License.
 package org.apache.tapestry.services.impl;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+import static org.testng.AssertJUnit.assertTrue;
+
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
@@ -26,6 +30,7 @@ import org.apache.tapestry.markup.MarkupFilter;
 import org.apache.tapestry.markup.MarkupWriterImpl;
 import org.apache.tapestry.markup.UTFMarkupFilter;
 import org.apache.tapestry.services.ResponseBuilder;
+import org.testng.annotations.Configuration;
 
 
 /**
@@ -34,7 +39,7 @@ import org.apache.tapestry.services.ResponseBuilder;
  * @author jkuhnert
  */
 @SuppressWarnings("cast")
-public class DefaultResponseBuilderTest extends HiveMindTestCase
+public class DefaultResponseBuilderTest extends BaseComponentTestCase
 {
 
     private static CharArrayWriter _writer;
@@ -49,11 +54,10 @@ public class DefaultResponseBuilderTest extends HiveMindTestCase
         return new PrintWriter(_writer);
     }
 
+    @Configuration(afterTestClass = true)
     protected void tearDown() throws Exception
     {
         _writer = null;
-
-        super.tearDown();
     }
 
     private void assertOutput(String expected)
@@ -72,11 +76,11 @@ public class DefaultResponseBuilderTest extends HiveMindTestCase
         
         render.render(null, cycle);
         
-        replayControls();
+        replay();
         
         builder.render(null, render, cycle);
         
-        verifyControls();
+        verify();
         
         assertSame(builder.getWriter(), NullWriter.getSharedInstance());
     }
@@ -91,11 +95,11 @@ public class DefaultResponseBuilderTest extends HiveMindTestCase
         
         render.render(writer, cycle);
         
-        replayControls();
+        replay();
         
         builder.render(null, render, cycle);
         
-        verifyControls();
+        verify();
         
         assertSame(builder.getWriter(), writer);
     }
@@ -124,7 +128,7 @@ public class DefaultResponseBuilderTest extends HiveMindTestCase
         PrintWriter writer = newPrintWriter();
         IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
         
-        replayControls();
+        replay();
         
         IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
         ResponseBuilder builder = new DefaultResponseBuilder(mw);
@@ -133,8 +137,8 @@ public class DefaultResponseBuilderTest extends HiveMindTestCase
         String imageInit = "image initializations";
         String preload = "preloadedvarname";
         
-        verifyControls();
-        replayControls();
+        verify();
+        replay();
         
         builder.beginBodyScript(cycle);
         
@@ -154,7 +158,7 @@ public class DefaultResponseBuilderTest extends HiveMindTestCase
         
         assertOutput("\n\n// --></script>");
         
-        verifyControls();
+        verify();
     }
     
     public void testWriteExternalScripts()
@@ -163,7 +167,7 @@ public class DefaultResponseBuilderTest extends HiveMindTestCase
         PrintWriter writer = newPrintWriter();
         IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
         
-        replayControls();
+        replay();
         
         IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
         ResponseBuilder builder = new DefaultResponseBuilder(mw);
@@ -171,8 +175,8 @@ public class DefaultResponseBuilderTest extends HiveMindTestCase
         String script1 = "http://noname/js/package.js";
         String script2 = "http://noname/js/package.js";
         
-        verifyControls();
-        replayControls();
+        verify();
+        replay();
         
         builder.writeExternalScript(script1, cycle);
         
@@ -184,7 +188,7 @@ public class DefaultResponseBuilderTest extends HiveMindTestCase
         assertOutput("<script type=\"text/javascript\" src=\""
                 + script2 + "\"></script>" + LINE_SEPERATOR);
         
-        verifyControls();
+        verify();
     }
     
     public void testWriteInitializationScript()
@@ -192,15 +196,15 @@ public class DefaultResponseBuilderTest extends HiveMindTestCase
         MarkupFilter filter = new UTFMarkupFilter();
         PrintWriter writer = newPrintWriter();
         
-        replayControls();
+        replay();
         
         IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
         ResponseBuilder builder = new DefaultResponseBuilder(mw);
         
         String script = "doThisInInit();";
         
-        verifyControls();
-        replayControls();
+        verify();
+        replay();
         
         builder.writeInitializationScript(script);
         
@@ -211,6 +215,6 @@ public class DefaultResponseBuilderTest extends HiveMindTestCase
                 + "\n// -->"
                 + "</script>");
         
-        verifyControls();
+        verify();
     }
 }

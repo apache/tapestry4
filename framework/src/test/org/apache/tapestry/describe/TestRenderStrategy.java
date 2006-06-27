@@ -43,11 +43,11 @@ public class TestRenderStrategy extends BaseDescribeTestCase
 
         strategy.renderObject(object, writer, cycle);
 
-        replayControls();
+        replay();
 
         new RenderBridge(object, strategy).render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderableAdapterFactory()
@@ -60,7 +60,7 @@ public class TestRenderStrategy extends BaseDescribeTestCase
 
         strategy.renderObject(object, writer, cycle);
 
-        replayControls();
+        replay();
 
         RenderableAdapterFactoryImpl factory = new RenderableAdapterFactoryImpl();
         factory.setStrategy(strategy);
@@ -69,7 +69,7 @@ public class TestRenderStrategy extends BaseDescribeTestCase
 
         renderable.render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testDefaultRenderableAdapter()
@@ -82,13 +82,13 @@ public class TestRenderStrategy extends BaseDescribeTestCase
 
         describer.describeObject(object, writer);
 
-        replayControls();
+        replay();
 
         DefaultRenderStrategy strategy = new DefaultRenderStrategy();
         strategy.setDescriber(describer);
 
         strategy.renderObject(object, writer, cycle);
 
-        verifyControls();
+        verify();
     }
 }

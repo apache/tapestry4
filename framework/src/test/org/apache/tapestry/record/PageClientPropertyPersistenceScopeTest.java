@@ -14,7 +14,10 @@
 
 package org.apache.tapestry.record;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 
@@ -24,7 +27,7 @@ import org.apache.tapestry.IRequestCycle;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class PageClientPropertyPersistenceScopeTest extends HiveMindTestCase
+public class PageClientPropertyPersistenceScopeTest extends BaseComponentTestCase
 {
     protected IRequestCycle newCycle()
     {
@@ -67,7 +70,7 @@ public class PageClientPropertyPersistenceScopeTest extends HiveMindTestCase
         trainGetPage(cycle, page);
         trainGetPageName(page, "MyPage");
 
-        replayControls();
+        replay();
 
         PageClientPropertyPersistenceScope scope = new PageClientPropertyPersistenceScope();
 
@@ -75,7 +78,7 @@ public class PageClientPropertyPersistenceScopeTest extends HiveMindTestCase
 
         assertEquals(true, scope.shouldEncodeState(null, "MyPage", null));
 
-        verifyControls();
+        verify();
     }
 
     public void testShouldEncodeStateDifferentPage()
@@ -86,7 +89,7 @@ public class PageClientPropertyPersistenceScopeTest extends HiveMindTestCase
         trainGetPage(cycle, page);
         trainGetPageName(page, "MyPage");
 
-        replayControls();
+        replay();
 
         PageClientPropertyPersistenceScope scope = new PageClientPropertyPersistenceScope();
 
@@ -94,7 +97,7 @@ public class PageClientPropertyPersistenceScopeTest extends HiveMindTestCase
 
         assertEquals(false, scope.shouldEncodeState(null, "OtherPage", null));
 
-        verifyControls();
+        verify();
     }
 
     public void testShouldEncodeStateNoActivePage()
@@ -103,7 +106,7 @@ public class PageClientPropertyPersistenceScopeTest extends HiveMindTestCase
 
         trainGetPage(cycle, null);
 
-        replayControls();
+        replay();
 
         PageClientPropertyPersistenceScope scope = new PageClientPropertyPersistenceScope();
 
@@ -111,18 +114,11 @@ public class PageClientPropertyPersistenceScopeTest extends HiveMindTestCase
 
         assertEquals(true, scope.shouldEncodeState(null, "MyPage", null));
 
-        verifyControls();
-    }
-
-    private void trainGetPageName(IPage page, String pageName)
-    {
-        page.getPageName();
-        setReturnValue(page, pageName);
+        verify();
     }
 
     private void trainGetPage(IRequestCycle cycle, IPage page)
     {
-        cycle.getPage();
-        setReturnValue(cycle, page);
+        expect(cycle.getPage()).andReturn(page);
     }
 }

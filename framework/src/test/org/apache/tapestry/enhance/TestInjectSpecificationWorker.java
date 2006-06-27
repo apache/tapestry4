@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.enhance;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+
 import java.lang.reflect.Modifier;
 
 import org.apache.hivemind.ApplicationRuntimeException;
@@ -22,7 +25,6 @@ import org.apache.hivemind.Location;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.InjectSpecificationWorker}.
@@ -36,66 +38,59 @@ public class TestInjectSpecificationWorker extends BaseEnhancementTestCase
     public void testSuccess() throws Exception
     {
         Location l = newLocation();
-
-        MockControl control = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) control.getMock();
+        
+        EnhancementOperation op = newOp();
 
         IComponentSpecification spec = newSpec(l);
 
         op.claimReadonlyProperty("specification");
 
-        op.addInjectedField("_$specification", IComponentSpecification.class, spec);
-        control.setReturnValue("_$specification");
+        expect(op.addInjectedField("_$specification", IComponentSpecification.class, spec))
+        .andReturn("_$specification");
 
-        op.getAccessorMethodName("specification");
-        control.setReturnValue("getSpecification");
+        expect(op.getAccessorMethodName("specification")).andReturn("getSpecification");
 
         op.addMethod(Modifier.PUBLIC, new MethodSignature(IComponentSpecification.class,
                 "getSpecification", null, null), "return _$specification;", l);
 
-        replayControls();
+        replay();
 
         new InjectSpecificationWorker().performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 
     public void testFailure()
     {
         Location l = newLocation();
-
-        MockControl control = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) control.getMock();
+        EnhancementOperation op = newOp();
 
         ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
 
         Throwable ex = new ApplicationRuntimeException(EnhanceMessages
                 .claimedProperty("specification"));
-
-        MockControl specc = newControl(IComponentSpecification.class);
-        IComponentSpecification spec = (IComponentSpecification) specc.getMock();
+        
+        IComponentSpecification spec = newSpec();
 
         op.claimReadonlyProperty("specification");
-        control.setThrowable(ex);
+        expectLastCall().andThrow(ex);
 
-        op.getBaseClass();
-        control.setReturnValue(BaseComponent.class);
+        expect(op.getBaseClass()).andReturn(BaseComponent.class);
 
-        spec.getLocation();
-        specc.setReturnValue(l);
+        expect(spec.getLocation()).andReturn(l);
 
         log.error(
                 EnhanceMessages.errorAddingProperty("specification", BaseComponent.class, ex),
                 l,
                 ex);
 
-        replayControls();
+        replay();
 
         InjectSpecificationWorker w = new InjectSpecificationWorker();
         w.setErrorLog(log);
 
         w.performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 }

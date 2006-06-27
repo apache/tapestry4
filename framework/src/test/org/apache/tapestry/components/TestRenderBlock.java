@@ -17,7 +17,6 @@ package org.apache.tapestry.components;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.components.RenderBlock} component.
@@ -34,17 +33,16 @@ public class TestRenderBlock extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
 
-        replayControls();
+        replay();
 
         rb.render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testNonNullBlock()
     {
-        MockControl bc = newControl(Block.class);
-        Block b = (Block) bc.getMock();
+        Block b = newMock(Block.class);
 
         RenderBlock rb = (RenderBlock) newInstance(RenderBlock.class, new Object[]
         { "block", b });
@@ -54,10 +52,10 @@ public class TestRenderBlock extends BaseComponentTestCase
 
         b.renderForComponent(writer, cycle, rb);
 
-        replayControls();
+        replay();
 
         rb.render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 }

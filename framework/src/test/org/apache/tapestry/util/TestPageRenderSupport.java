@@ -14,12 +14,16 @@
 
 package org.apache.tapestry.util;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
 
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
@@ -28,7 +32,6 @@ import org.apache.tapestry.markup.AsciiMarkupFilter;
 import org.apache.tapestry.markup.MarkupWriterImpl;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.services.impl.DefaultResponseBuilder;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.util.PageRenderSupportImpl}.
@@ -36,37 +39,25 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestPageRenderSupport extends HiveMindTestCase
+public class TestPageRenderSupport extends BaseComponentTestCase
 {
     private AssetFactory newAssetFactory()
     {
         return (AssetFactory) newMock(AssetFactory.class);
     }
 
-    private IRequestCycle newCycle()
-    {
-        return (IRequestCycle) newMock(IRequestCycle.class);
-    }
-
-    private Resource newResource()
-    {
-        return (Resource) newMock(Resource.class);
-    }
-
     private IAsset newAsset(IRequestCycle cycle, String url)
     {
-        MockControl control = newControl(IAsset.class);
-        IAsset asset = (IAsset) control.getMock();
+        IAsset asset = newMock(IAsset.class);
 
-        asset.buildURL();
-        control.setReturnValue(url);
+        expect(asset.buildURL()).andReturn(url);
 
         return asset;
     }
 
     private CharArrayWriter _writer;
 
-    private IMarkupWriter newWriter()
+    private IMarkupWriter createWriter()
     {
         _writer = new CharArrayWriter();
 
@@ -110,13 +101,13 @@ public class TestPageRenderSupport extends HiveMindTestCase
         AssetFactory factory = newAssetFactory();
         Location l = newLocation();
 
-        replayControls();
+        replay();
 
         PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "", l, newBuilder(null));
 
         assertSame(l, prs.getLocation());
 
-        verifyControls();
+        verify();
     }
 
     public void testGetPreloadedImageReference()
@@ -124,9 +115,9 @@ public class TestPageRenderSupport extends HiveMindTestCase
         AssetFactory factory = newAssetFactory();
         Location l = newLocation();
         IRequestCycle cycle = newCycle();
-        IMarkupWriter writer = newWriter();
+        IMarkupWriter writer = createWriter();
 
-        replayControls();
+        replay();
 
         PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "", l, newBuilder(writer));
 
@@ -147,7 +138,7 @@ public class TestPageRenderSupport extends HiveMindTestCase
                 "  tapestry_preload[1].src = \"/zip/zap.png\";", "}", "", "", "myBodyScript();",
                 "", "// --></script>" });
 
-        verifyControls();
+        verify();
     }
 
     public void testPreloadedImagesInNamespace()
@@ -155,9 +146,9 @@ public class TestPageRenderSupport extends HiveMindTestCase
         AssetFactory factory = newAssetFactory();
         Location l = newLocation();
         IRequestCycle cycle = newCycle();
-        IMarkupWriter writer = newWriter();
+        IMarkupWriter writer = createWriter();
 
-        replayControls();
+        replay();
 
         PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "NAMESPACE", l, newBuilder(writer));
 
@@ -171,7 +162,7 @@ public class TestPageRenderSupport extends HiveMindTestCase
                 "  NAMESPACE_preload[0] = new Image();",
                 "  NAMESPACE_preload[0].src = \"/foo/bar.gif\";", "}", "", "", "// --></script>" });
 
-        verifyControls();
+        verify();
     }
 
     public void testAddBodyScript()
@@ -179,9 +170,9 @@ public class TestPageRenderSupport extends HiveMindTestCase
         AssetFactory factory = newAssetFactory();
         Location l = newLocation();
         IRequestCycle cycle = newCycle();
-        IMarkupWriter writer = newWriter();
+        IMarkupWriter writer = createWriter();
 
-        replayControls();
+        replay();
 
         PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "", l, newBuilder(writer));
 
@@ -193,7 +184,7 @@ public class TestPageRenderSupport extends HiveMindTestCase
         { "<script type=\"text/javascript\"><!--", "", "myBodyScript();",
                 "", "// --></script>" });
 
-        verifyControls();
+        verify();
     }
 
     public void testGetUniqueString()
@@ -201,7 +192,7 @@ public class TestPageRenderSupport extends HiveMindTestCase
         AssetFactory factory = newAssetFactory();
         Location l = newLocation();
 
-        replayControls();
+        replay();
 
         PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "", l, newBuilder(null));
 
@@ -210,7 +201,7 @@ public class TestPageRenderSupport extends HiveMindTestCase
         assertEquals("bar", prs.getUniqueString("bar"));
         assertEquals("foo_1", prs.getUniqueString("foo"));
 
-        verifyControls();
+        verify();
     }
 
     public void testGetUniqueStringWithNamespace()
@@ -218,7 +209,7 @@ public class TestPageRenderSupport extends HiveMindTestCase
         AssetFactory factory = newAssetFactory();
         Location l = newLocation();
 
-        replayControls();
+        replay();
 
         PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "NAMESPACE", l, newBuilder(null));
 
@@ -227,16 +218,16 @@ public class TestPageRenderSupport extends HiveMindTestCase
         assertEquals("barNAMESPACE", prs.getUniqueString("bar"));
         assertEquals("fooNAMESPACE_1", prs.getUniqueString("foo"));
 
-        verifyControls();
+        verify();
     }
 
     public void testAddInitializationScript()
     {
         AssetFactory factory = newAssetFactory();
         Location l = newLocation();
-        IMarkupWriter writer = newWriter();
+        IMarkupWriter writer = createWriter();
 
-        replayControls();
+        replay();
 
         PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "", l, newBuilder(writer));
 
@@ -251,7 +242,7 @@ public class TestPageRenderSupport extends HiveMindTestCase
                 "myInitializationScript1();", "myInitializationScript2();", 
                 "});", "// --></script>" });
 
-        verifyControls();
+        verify();
     }
 
     public void testAddExternalScript() throws Exception
@@ -260,23 +251,20 @@ public class TestPageRenderSupport extends HiveMindTestCase
 
         IRequestCycle cycle = newCycle();
 
-        IMarkupWriter writer = newWriter();
-
-        MockControl assetFactoryc = newControl(AssetFactory.class);
-        AssetFactory assetFactory = (AssetFactory) assetFactoryc.getMock();
+        IMarkupWriter writer = createWriter();
+        
+        AssetFactory assetFactory = newMock(AssetFactory.class);
 
         Resource script1 = newResource();
         IAsset asset1 = newAsset(cycle, "/script1.js");
         Resource script2 = newResource();
         IAsset asset2 = newAsset(cycle, "/script2.js");
 
-        assetFactory.createAsset(script1, null);
-        assetFactoryc.setReturnValue(asset1);
+        expect(assetFactory.createAsset(script1, null)).andReturn(asset1);
 
-        assetFactory.createAsset(script2, null);
-        assetFactoryc.setReturnValue(asset2);
+        expect(assetFactory.createAsset(script2, null)).andReturn(asset2);
 
-        replayControls();
+        replay();
 
         PageRenderSupportImpl prs = new PageRenderSupportImpl(assetFactory, "", null, newBuilder(writer));
 
@@ -291,7 +279,7 @@ public class TestPageRenderSupport extends HiveMindTestCase
 
         assertOutput(scriptTagFor("/script1.js") + newline + scriptTagFor("/script2.js") + newline);
 
-        verifyControls();
+        verify();
     }
 
     private String scriptTagFor(String url)

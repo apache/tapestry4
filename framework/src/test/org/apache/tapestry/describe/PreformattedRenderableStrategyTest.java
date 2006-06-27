@@ -35,10 +35,10 @@ public class PreformattedRenderableStrategyTest extends BaseDescribeTestCase
         writer.print(object);
         writer.end();
 
-        replayControls();
+        replay();
 
         new PreformattedRenderStrategy().renderObject(object, writer, cycle);
 
-        verifyControls();
+        verify();
     }
 }

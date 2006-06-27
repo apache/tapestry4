@@ -20,7 +20,6 @@ import java.util.Enumeration;
 import java.util.List;
 
 import org.apache.hivemind.test.HiveMindTestCase;
-import org.apache.tapestry.web.WebUtils;
 
 /**
  * Tests for {@link org.apache.tapestry.web.WebUtils}.

@@ -14,12 +14,13 @@
 
 package org.apache.tapestry.form.translator;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.valid.ValidatorException;
-import org.easymock.MockControl;
 
 /**
  * Test case for {@link StringTranslator}.
@@ -150,22 +151,20 @@ public class TestStringTranslator extends TranslatorTestCase
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
-
-        MockControl contextc = newControl(FormComponentContributorContext.class);
-        FormComponentContributorContext context = (FormComponentContributorContext) contextc
-                .getMock();
+        
+        FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
 
         IFormComponent field = newFieldWithClientId("myfield");
 
         trainTrim(context, "myfield");
 
-        replayControls();
+        replay();
 
         Translator t = new StringTranslator("trim");
 
         t.renderContribution(writer, cycle, context, field);
 
-        verifyControls();
+        verify();
     }
 
 }

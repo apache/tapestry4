@@ -14,11 +14,15 @@
 
 package org.apache.tapestry.test;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNotSame;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.List;
 
 import org.apache.hivemind.Messages;
-import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.AbstractComponent;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.spec.IComponentSpecification;
 
@@ -28,7 +32,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class TestCreator extends HiveMindTestCase
+public class TestCreator extends BaseComponentTestCase
 {
 
     public void testInterface() throws Exception
@@ -134,7 +138,7 @@ public class TestCreator extends HiveMindTestCase
     {
         IComponentSpecification spec = (IComponentSpecification) newMock(IComponentSpecification.class);
 
-        replayControls();
+        replay();
 
         Creator c = new Creator();
 
@@ -143,14 +147,14 @@ public class TestCreator extends HiveMindTestCase
 
         assertSame(spec, component.getSpecification());
 
-        verifyControls();
+        verify();
     }
 
     public void testMessagesProperty()
     {
         Messages messages = (Messages) newMock(Messages.class);
 
-        replayControls();
+        replay();
 
         Creator c = new Creator();
 
@@ -159,6 +163,6 @@ public class TestCreator extends HiveMindTestCase
 
         assertSame(messages, component.getMessages());
 
-        verifyControls();
+        verify();
     }
 }

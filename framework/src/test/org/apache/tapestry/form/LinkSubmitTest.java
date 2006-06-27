@@ -14,7 +14,11 @@
 
 package org.apache.tapestry.form;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNotNull;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.Map;
 
 import org.apache.hivemind.ApplicationRuntimeException;
@@ -69,7 +73,7 @@ public class LinkSubmitTest extends BaseComponentTestCase
 
         IForm form = newForm();
 
-        LinkSubmit linkSubmit = (LinkSubmit) newInstance(LinkSubmit.class, new Object[]
+        LinkSubmit linkSubmit = newInstance(LinkSubmit.class, new Object[]
         { "form", form, "name", "fred_1", "script", script, "idParameter", "fred_id" });
         linkSubmit.addBody(newBody());
 
@@ -79,11 +83,11 @@ public class LinkSubmitTest extends BaseComponentTestCase
 
         trainResponseBuilder(cycle, writer);
         
-        replayControls();
+        replay();
 
         linkSubmit.renderFormComponent(writer, cycle);
 
-        verifyControls();
+        verify();
 
         assertBuffer("<a href=\"HREF\" id=\"fred_id_unique\">BODY</a>");
     }
@@ -95,17 +99,17 @@ public class LinkSubmitTest extends BaseComponentTestCase
 
         IForm form = newForm();
 
-        LinkSubmit linkSubmit = (LinkSubmit) newInstance(LinkSubmit.class, new Object[]
+        LinkSubmit linkSubmit = newInstance(LinkSubmit.class, new Object[]
         { "disabled", Boolean.TRUE, "form", form, "name", "fred_1", "idParameter", "fred_id" });
         linkSubmit.addBody(newBody());
 
         trainResponseBuilder(cycle, writer);
         
-        replayControls();
+        replay();
 
         linkSubmit.renderFormComponent(writer, cycle);
 
-        verifyControls();
+        verify();
 
         assertBuffer("BODY");
     }
@@ -120,11 +124,11 @@ public class LinkSubmitTest extends BaseComponentTestCase
 
         cycle.setAttribute(LinkSubmit.ATTRIBUTE_NAME, linkSubmit);
 
-        replayControls();
+        replay();
 
         linkSubmit.prepareForRender(cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testPrepareConflict()
@@ -139,10 +143,10 @@ public class LinkSubmitTest extends BaseComponentTestCase
 
         trainGetIdPath(page, null);
 
-        LinkSubmit linkSubmit = (LinkSubmit) newInstance(LinkSubmit.class, new Object[]
+        LinkSubmit linkSubmit = newInstance(LinkSubmit.class, new Object[]
         { "id", "fred", "page", page, "container", page, "location", floc });
 
-        replayControls();
+        replay();
 
         try
         {
@@ -158,7 +162,7 @@ public class LinkSubmitTest extends BaseComponentTestCase
             assertSame(floc, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testCleanupAfterRender()
@@ -167,13 +171,13 @@ public class LinkSubmitTest extends BaseComponentTestCase
 
         cycle.removeAttribute(LinkSubmit.ATTRIBUTE_NAME);
 
-        replayControls();
+        replay();
 
         LinkSubmit linkSubmit = (LinkSubmit) newInstance(LinkSubmit.class);
 
         linkSubmit.cleanupAfterRender(cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testIsClicked()
@@ -182,13 +186,13 @@ public class LinkSubmitTest extends BaseComponentTestCase
 
         trainGetParameter(cycle, FormConstants.SUBMIT_NAME_PARAMETER, "fred");
 
-        replayControls();
+        replay();
 
         LinkSubmit linkSubmit = (LinkSubmit) newInstance(LinkSubmit.class);
 
         assertEquals(true, linkSubmit.isClicked(cycle, "fred"));
 
-        verifyControls();
+        verify();
     }
 
     public void testIsNotClicked()
@@ -197,13 +201,13 @@ public class LinkSubmitTest extends BaseComponentTestCase
 
         trainGetParameter(cycle, FormConstants.SUBMIT_NAME_PARAMETER, null);
 
-        replayControls();
+        replay();
 
         LinkSubmit linkSubmit = (LinkSubmit) newInstance(LinkSubmit.class);
 
         assertEquals(false, linkSubmit.isClicked(cycle, "fred"));
 
-        verifyControls();
+        verify();
     }
 
     public void testRewind()
@@ -214,7 +218,7 @@ public class LinkSubmitTest extends BaseComponentTestCase
         IForm form = newForm();
         IValidationDelegate delegate = newDelegate();
 
-        LinkSubmit linkSubmit = (LinkSubmit) newInstance(LinkSubmit.class, new Object[]
+        LinkSubmit linkSubmit = newInstance(LinkSubmit.class, new Object[]
         { "name", "fred", "form", form });
         linkSubmit.addBody(body);
 
@@ -240,11 +244,11 @@ public class LinkSubmitTest extends BaseComponentTestCase
         
         body.render(writer, cycle);
 
-        replayControls();
+        replay();
 
         linkSubmit.renderComponent(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     private void trainIsRewinding(IForm form, boolean isRewindind)
@@ -275,7 +279,7 @@ public class LinkSubmitTest extends BaseComponentTestCase
 
     protected IValidationDelegate newDelegate()
     {
-        return (IValidationDelegate) newMock(IValidationDelegate.class);
+        return newMock(IValidationDelegate.class);
     }
 
 }

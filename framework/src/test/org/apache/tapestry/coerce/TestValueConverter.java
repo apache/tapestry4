@@ -14,12 +14,16 @@
 
 package org.apache.tapestry.coerce;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNull;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.Collections;
 import java.util.Date;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.test.HiveMindTestCase;
-import org.easymock.MockControl;
+import org.apache.tapestry.BaseComponentTestCase;
 
 /**
  * Tests for {@link org.apache.tapestry.coerce.ValueConverterImpl}.
@@ -27,7 +31,7 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestValueConverter extends HiveMindTestCase
+public class TestValueConverter extends BaseComponentTestCase
 {
 
     public void testAlreadyCorrectType()
@@ -90,16 +94,14 @@ public class TestValueConverter extends HiveMindTestCase
 
     public void testConverterFound()
     {
-        MockControl tcc = newControl(TypeConverter.class);
-        TypeConverter tc = (TypeConverter) tcc.getMock();
+        TypeConverter tc = newMock(TypeConverter.class);
 
         Object input = new Integer(7);
         Object output = "SEVEN";
 
-        tc.convertValue(input);
-        tcc.setReturnValue(output);
+        expect(tc.convertValue(input)).andReturn(output);
 
-        replayControls();
+        replay();
 
         ValueConverterImpl v = new ValueConverterImpl();
 
@@ -114,20 +116,18 @@ public class TestValueConverter extends HiveMindTestCase
 
         assertSame(output, v.coerceValue(input, String.class));
 
-        verifyControls();
+        verify();
     }
 
     public void testConverterFoundForNullValue()
     {
-        MockControl tcc = newControl(TypeConverter.class);
-        TypeConverter tc = (TypeConverter) tcc.getMock();
+        TypeConverter tc = newMock(TypeConverter.class);
 
         Object output = "NULL";
 
-        tc.convertValue(null);
-        tcc.setReturnValue(output);
+        expect(tc.convertValue(null)).andReturn(output);
 
-        replayControls();
+        replay();
 
         ValueConverterImpl v = new ValueConverterImpl();
 
@@ -142,7 +142,7 @@ public class TestValueConverter extends HiveMindTestCase
 
         assertSame(output, v.coerceValue(null, String.class));
 
-        verifyControls();
+        verify();
     }
 
     public void testNoConverterFoundForNullValue()
@@ -190,16 +190,14 @@ public class TestValueConverter extends HiveMindTestCase
 
     public void testStringToNonNumericPrimitive()
     {
-        MockControl tcc = newControl(TypeConverter.class);
-        TypeConverter tc = (TypeConverter) tcc.getMock();
+        TypeConverter tc = newMock(TypeConverter.class);
 
         Object input = "false";
         Object output = Boolean.FALSE;
 
-        tc.convertValue(input);
-        tcc.setReturnValue(output);
+        expect(tc.convertValue(input)).andReturn(output);
 
-        replayControls();
+        replay();
 
         ValueConverterImpl v = new ValueConverterImpl();
 
@@ -214,7 +212,7 @@ public class TestValueConverter extends HiveMindTestCase
 
         assertSame(output, v.coerceValue(input, Boolean.class));
 
-        verifyControls();
+        verify();
     }
 
     public void testNumberToNumber()

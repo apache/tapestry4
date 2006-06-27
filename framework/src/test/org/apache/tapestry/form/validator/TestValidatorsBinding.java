@@ -14,6 +14,10 @@
 
 package org.apache.tapestry.form.validator;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.List;
 
 import org.apache.hivemind.ApplicationRuntimeException;
@@ -22,7 +26,6 @@ import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.binding.BindingTestCase;
 import org.apache.tapestry.coerce.ValueConverter;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.form.validator.ValidatorsBinding} and
@@ -37,16 +40,14 @@ public class TestValidatorsBinding extends BindingTestCase
     {
         IComponent component = newComponent();
         Location l = newLocation();
-        List validators = (List) newMock(List.class);
+        List validators = newMock(List.class);
         ValueConverter vc = newValueConverter();
+        
+        ValidatorFactory vf = newMock(ValidatorFactory.class);
 
-        MockControl control = newControl(ValidatorFactory.class);
-        ValidatorFactory vf = (ValidatorFactory) control.getMock();
+        expect(vf.constructValidatorList(component, "required")).andReturn(validators);
 
-        vf.constructValidatorList(component, "required");
-        control.setReturnValue(validators);
-
-        replayControls();
+        replay();
 
         ValidatorsBindingFactory factory = new ValidatorsBindingFactory();
         factory.setValueConverter(vc);
@@ -58,7 +59,7 @@ public class TestValidatorsBinding extends BindingTestCase
         assertSame(l, binding.getLocation());
         assertEquals("my desc", binding.getDescription());
 
-        verifyControls();
+        verify();
     }
 
     public void testFailure()
@@ -69,13 +70,11 @@ public class TestValidatorsBinding extends BindingTestCase
 
         ValueConverter vc = newValueConverter();
 
-        MockControl control = newControl(ValidatorFactory.class);
-        ValidatorFactory vf = (ValidatorFactory) control.getMock();
+        ValidatorFactory vf = newMock(ValidatorFactory.class);
 
-        vf.constructValidatorList(component, "required");
-        control.setThrowable(t);
+        expect(vf.constructValidatorList(component, "required")).andThrow(t);
 
-        replayControls();
+        replay();
 
         ValidatorsBindingFactory factory = new ValidatorsBindingFactory();
         factory.setValueConverter(vc);
@@ -93,6 +92,6 @@ public class TestValidatorsBinding extends BindingTestCase
             assertSame(l, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
     }
 }

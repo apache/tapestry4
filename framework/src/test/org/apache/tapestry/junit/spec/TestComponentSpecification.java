@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.junit.spec;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;

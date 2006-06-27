@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.html;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.BaseComponentTestCase;
@@ -41,11 +44,11 @@ public class TestImage extends BaseComponentTestCase
 
         Image image = (Image) newInstance(Image.class);
 
-        replayControls();
+        replay();
 
         image.renderComponent(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testNoImage()
@@ -63,7 +66,7 @@ public class TestImage extends BaseComponentTestCase
         Image image = (Image) newInstance(Image.class, new Object[]
         { "location", l, "id", "barney", "page", page, "container", page });
 
-        replayControls();
+        replay();
 
         try
         {
@@ -78,7 +81,7 @@ public class TestImage extends BaseComponentTestCase
             assertSame(l, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testRender()
@@ -99,7 +102,7 @@ public class TestImage extends BaseComponentTestCase
 
         writer.closeTag();
 
-        replayControls();
+        replay();
 
         Image image = (Image) newInstance(Image.class, new Object[]
         { "image", asset, "specification", spec });
@@ -108,6 +111,6 @@ public class TestImage extends BaseComponentTestCase
 
         image.renderComponent(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 }

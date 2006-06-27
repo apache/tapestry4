@@ -14,11 +14,14 @@
 
 package org.apache.tapestry.services.impl;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNull;
+
 import java.util.Locale;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.engine.IPropertySource;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.LocalizedPropertySource}.
@@ -26,20 +29,17 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestLocalizedPropertySource extends HiveMindTestCase
+public class TestLocalizedPropertySource extends BaseComponentTestCase
 {
     public void testFound()
     {
-        MockControl control = newControl(IPropertySource.class);
-        IPropertySource ps = (IPropertySource) control.getMock();
+        IPropertySource ps = newMock(IPropertySource.class);
 
-        ps.getPropertyValue("property-name_en");
-        control.setReturnValue(null);
+        expect(ps.getPropertyValue("property-name_en")).andReturn(null);
 
-        ps.getPropertyValue("property-name");
-        control.setReturnValue("fred");
+        expect(ps.getPropertyValue("property-name")).andReturn("fred");
 
-        replayControls();
+        replay();
 
         LocalizedPropertySource lps = new LocalizedPropertySource(ps);
 
@@ -47,26 +47,23 @@ public class TestLocalizedPropertySource extends HiveMindTestCase
 
         assertEquals("fred", result);
 
-        verifyControls();
+        verify();
     }
 
     public void testNotFound()
     {
-        MockControl control = newControl(IPropertySource.class);
-        IPropertySource ps = (IPropertySource) control.getMock();
+        IPropertySource ps = newMock(IPropertySource.class);
 
-        ps.getPropertyValue("property-name_fr");
-        control.setReturnValue(null);
+        expect(ps.getPropertyValue("property-name_fr")).andReturn(null);
 
-        ps.getPropertyValue("property-name");
-        control.setReturnValue(null);
+        expect(ps.getPropertyValue("property-name")).andReturn(null);
 
-        replayControls();
+        replay();
 
         LocalizedPropertySource lps = new LocalizedPropertySource(ps);
 
         assertNull(lps.getPropertyValue("property-name", Locale.FRENCH));
 
-        verifyControls();
+        verify();
     }
 }

@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.junit;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertTrue;
+
 import org.apache.tapestry.util.ContentType;
 
 /**

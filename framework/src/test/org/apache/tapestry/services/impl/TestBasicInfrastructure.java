@@ -14,6 +14,10 @@
 
 package org.apache.tapestry.services.impl;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -23,13 +27,12 @@ import org.apache.hivemind.Location;
 import org.apache.hivemind.Registry;
 import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.impl.RegistryBuilder;
-import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.hivemind.util.ClasspathResource;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.services.ClasspathResourceFactory;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.ResetEventHub;
-import org.easymock.MockControl;
 
 /**
  * Tests for:
@@ -43,7 +46,7 @@ import org.easymock.MockControl;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class TestBasicInfrastructure extends HiveMindTestCase
+public class TestBasicInfrastructure extends BaseComponentTestCase
 {
     public void testRequestGlobals()
     {
@@ -52,14 +55,14 @@ public class TestBasicInfrastructure extends HiveMindTestCase
         HttpServletRequest r = (HttpServletRequest) newMock(HttpServletRequest.class);
         HttpServletResponse p = (HttpServletResponse) newMock(HttpServletResponse.class);
 
-        replayControls();
+        replay();
 
         si.store(r, p);
 
         assertSame(r, si.getRequest());
         assertSame(p, si.getResponse());
 
-        verifyControls();
+        verify();
     }
 
     public void testClasspathResourceFactory()
@@ -97,37 +100,33 @@ public class TestBasicInfrastructure extends HiveMindTestCase
 
     public void testGlobalPropertyObjectProviderSuccess()
     {
-        MockControl sourceControl = newControl(IPropertySource.class);
-        IPropertySource source = (IPropertySource) sourceControl.getMock();
+        IPropertySource source = newMock(IPropertySource.class);
 
         // Training
 
-        source.getPropertyValue("foo");
-        sourceControl.setReturnValue("bar");
+        expect(source.getPropertyValue("foo")).andReturn("bar");
 
-        replayControls();
+        replay();
 
         PropertyObjectProvider p = new PropertyObjectProvider();
         p.setSource(source);
 
         assertEquals("bar", p.provideObject(null, null, "foo", null));
 
-        verifyControls();
+        verify();
     }
 
     public void testGlobalPropertyObjectProviderFailure()
     {
         Location l = fabricateLocation(223);
 
-        MockControl sourceControl = newControl(IPropertySource.class);
-        IPropertySource source = (IPropertySource) sourceControl.getMock();
+        IPropertySource source = newMock(IPropertySource.class);
 
         // Training
 
-        source.getPropertyValue("foo");
-        sourceControl.setThrowable(new ApplicationRuntimeException("failure"));
+        expect(source.getPropertyValue("foo")).andThrow(new ApplicationRuntimeException("failure"));
 
-        replayControls();
+        replay();
 
         PropertyObjectProvider p = new PropertyObjectProvider();
         p.setSource(source);
@@ -142,20 +141,18 @@ public class TestBasicInfrastructure extends HiveMindTestCase
             assertEquals(l, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testSuccessfulInfrastructureLookup()
     {
-        MockControl ifrControl = newControl(Infrastructure.class);
-        Infrastructure ifr = (Infrastructure) ifrControl.getMock();
+        Infrastructure ifr = newMock(Infrastructure.class);
 
         ResetEventHub coord = (ResetEventHub) newMock(ResetEventHub.class);
 
-        ifr.getResetEventHub();
-        ifrControl.setReturnValue(coord);
+        expect(ifr.getResetEventHub()).andReturn(coord);
 
-        replayControls();
+        replay();
 
         InfrastructureObjectProvider p = new InfrastructureObjectProvider();
 
@@ -165,6 +162,6 @@ public class TestBasicInfrastructure extends HiveMindTestCase
 
         assertSame(coord, actual);
 
-        verifyControls();
+        verify();
     }
 }

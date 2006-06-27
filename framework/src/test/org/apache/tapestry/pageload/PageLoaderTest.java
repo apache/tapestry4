@@ -14,6 +14,10 @@
 
 package org.apache.tapestry.pageload;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
@@ -49,7 +53,7 @@ public class PageLoaderTest extends BaseComponentTestCase
 
         trainGetBinding(component, "dupe", oldBinding);
 
-        replayControls();
+        replay();
 
         try
         {
@@ -110,7 +114,7 @@ public class PageLoaderTest extends BaseComponentTestCase
 
         component.setBinding("fred", binding);
 
-        replayControls();
+        replay();
 
         PageLoader loader = new PageLoader();
         loader.setLog(log);
@@ -118,14 +122,14 @@ public class PageLoaderTest extends BaseComponentTestCase
 
         loader.bind(container, component, contained, "ognl");
 
-        verifyControls();
+        verify();
     }
 
     private void trainCreateBinding(BindingSource source, IComponent container, String description,
             String expression, String defaultBindingPrefix, Location l, IBinding binding)
     {
-        source.createBinding(container, description, expression, defaultBindingPrefix, l);
-        setReturnValue(source, binding);
+        expect(source.createBinding(container, description, expression, defaultBindingPrefix, l))
+        .andReturn(binding);
     }
 
     protected BindingSource newBindingSource()
@@ -172,7 +176,7 @@ public class PageLoaderTest extends BaseComponentTestCase
 
         component.setBinding("fred", binding);
 
-        replayControls();
+        replay();
 
         PageLoader loader = new PageLoader();
         loader.setLog(log);
@@ -180,7 +184,7 @@ public class PageLoaderTest extends BaseComponentTestCase
 
         loader.bind(container, component, contained, "ognl");
 
-        verifyControls();
+        verify();
     }
 
     protected ComponentPropertySource newPropertySource()

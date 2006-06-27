@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.enhance;
 
+import static org.easymock.EasyMock.expect;
+
 import java.lang.reflect.Modifier;
 import java.util.Collections;
 
@@ -25,7 +27,6 @@ import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.easymock.MockControl;
 
 /**
  * Tests {@link org.apache.tapestry.enhance.AbstractPropertyWorker}.
@@ -41,21 +42,16 @@ public class TestAbstractPropertyWorker extends BaseEnhancementTestCase
         Location l = newLocation();
 
         IComponentSpecification spec = newSpec(l);
+        EnhancementOperation op = newOp();
 
-        MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+        expect(op.findUnclaimedAbstractProperties()).andReturn(Collections.singletonList("fred"));
 
-        op.findUnclaimedAbstractProperties();
-        opc.setReturnValue(Collections.singletonList("fred"));
-
-        op.getPropertyType("fred");
-        opc.setReturnValue(String.class);
+        expect(op.getPropertyType("fred")).andReturn(String.class);
 
         op.addField("_$fred", String.class);
         op.addField("_$fred$defaultValue", String.class);
 
-        op.getAccessorMethodName("fred");
-        opc.setReturnValue("getFred");
+        expect(op.getAccessorMethodName("fred")).andReturn("getFred");
 
         op.addMethod(
                 Modifier.PUBLIC,
@@ -78,48 +74,40 @@ public class TestAbstractPropertyWorker extends BaseEnhancementTestCase
 
         op.claimProperty("fred");
 
-        replayControls();
+        replay();
 
         new AbstractPropertyWorker().performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 
     public void testFailure()
     {
-        MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) opc.getMock();
-
-        MockControl specc = newControl(IComponentSpecification.class);
-        IComponentSpecification spec = (IComponentSpecification) specc.getMock();
+        EnhancementOperation op = newOp();
+        IComponentSpecification spec = newSpec();
 
         Location l = fabricateLocation(21);
 
         ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
 
-        op.findUnclaimedAbstractProperties();
-        opc.setReturnValue(Collections.singletonList("fred"));
-
+        expect(op.findUnclaimedAbstractProperties()).andReturn(Collections.singletonList("fred"));
         Throwable ex = new ApplicationRuntimeException("Arbitrary error.");
 
-        op.getPropertyType("fred");
-        opc.setThrowable(ex);
+        expect(op.getPropertyType("fred")).andThrow(ex);
 
-        op.getBaseClass();
-        opc.setReturnValue(BaseComponent.class);
+        expect(op.getBaseClass()).andReturn(BaseComponent.class);
 
-        spec.getLocation();
-        specc.setReturnValue(l);
+        expect(spec.getLocation()).andReturn(l);
 
         log.error(EnhanceMessages.errorAddingProperty("fred", BaseComponent.class, ex), l, ex);
 
-        replayControls();
+        replay();
 
         AbstractPropertyWorker w = new AbstractPropertyWorker();
         w.setErrorLog(log);
 
         w.performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 }

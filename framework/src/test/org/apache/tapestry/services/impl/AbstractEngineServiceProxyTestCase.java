@@ -14,8 +14,9 @@
 
 package org.apache.tapestry.services.impl;
 
-import org.apache.hivemind.test.HiveMindTestCase;
-import org.apache.tapestry.IRequestCycle;
+import static org.easymock.EasyMock.expect;
+
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 
@@ -25,14 +26,8 @@ import org.apache.tapestry.engine.ILink;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public abstract class AbstractEngineServiceProxyTestCase extends HiveMindTestCase
+public abstract class AbstractEngineServiceProxyTestCase extends BaseComponentTestCase
 {
-
-    protected IRequestCycle newCycle()
-    {
-        return (IRequestCycle) newMock(IRequestCycle.class);
-    }
-
     protected IEngineService newEngineService()
     {
         return (IEngineService) newMock(IEngineService.class);
@@ -40,8 +35,7 @@ public abstract class AbstractEngineServiceProxyTestCase extends HiveMindTestCas
 
     protected void trainGetLink(IEngineService service, boolean post, Object parameter, ILink link)
     {
-        service.getLink(post, parameter);
-        setReturnValue(service, link);
+        expect(service.getLink(post, parameter)).andReturn(link);
     }
 
     protected ILink newLink()

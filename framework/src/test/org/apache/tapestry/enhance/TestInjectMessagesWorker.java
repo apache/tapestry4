@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.enhance;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+
 import java.lang.reflect.Modifier;
 
 import org.apache.hivemind.ApplicationRuntimeException;
@@ -24,7 +27,6 @@ import org.apache.hivemind.service.BodyBuilder;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.services.ComponentMessagesSource;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.InjectMessagesWorker}.
@@ -46,13 +48,11 @@ public class TestInjectMessagesWorker extends BaseEnhancementTestCase
 
         IComponentSpecification spec = newSpec(l);
         ComponentMessagesSource source = newSource();
-
-        MockControl control = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) control.getMock();
+        EnhancementOperation op = newOp();
 
         op.claimReadonlyProperty(w._messagesProperty);
-        op.addInjectedField("_$componentMessagesSource", ComponentMessagesSource.class, source);
-        control.setReturnValue("fred");
+        expect(op.addInjectedField("_$componentMessagesSource", ComponentMessagesSource.class, source))
+        .andReturn("fred");
 
         BodyBuilder builder = new BodyBuilder();
         builder.begin();
@@ -64,13 +64,13 @@ public class TestInjectMessagesWorker extends BaseEnhancementTestCase
         op.addField("_$messages", Messages.class);
         op.addMethod(Modifier.PUBLIC, w._methodSignature, builder.toString(), l);
 
-        replayControls();
+        replay();
 
         w.setComponentMessagesSource(source);
 
         w.performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 
     public void testFailure()
@@ -82,15 +82,12 @@ public class TestInjectMessagesWorker extends BaseEnhancementTestCase
                 .claimedProperty(w._messagesProperty));
 
         IComponentSpecification spec = newSpec(l);
-
-        MockControl control = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) control.getMock();
+        EnhancementOperation op = newOp();
 
         op.claimReadonlyProperty(w._messagesProperty);
-        control.setThrowable(ex);
+        expectLastCall().andThrow(ex);
 
-        op.getBaseClass();
-        control.setReturnValue(BaseComponent.class);
+        expect(op.getBaseClass()).andReturn(BaseComponent.class);
 
         ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
 
@@ -99,12 +96,12 @@ public class TestInjectMessagesWorker extends BaseEnhancementTestCase
                 l,
                 ex);
 
-        replayControls();
+        replay();
 
         w.setErrorLog(log);
 
         w.performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 }

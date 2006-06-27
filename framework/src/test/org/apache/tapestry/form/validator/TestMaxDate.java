@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.form.validator;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 import java.util.Date;
 
 import org.apache.tapestry.IMarkupWriter;
@@ -45,14 +47,14 @@ public class TestMaxDate extends BaseValidatorTestCase
         IFormComponent field = newField();
         ValidationMessages message = newMessages();
 
-        replayControls();
+        replay();
 
         MaxDate v = new MaxDate();
         v.setMaxDate(today);
 
         v.validate(field, message, yesterday);
 
-        verifyControls();
+        verify();
     }
 
     public void testFail() throws Exception
@@ -70,7 +72,7 @@ public class TestMaxDate extends BaseValidatorTestCase
                 { "Fred", today },
                 "default message");
 
-        replayControls();
+        replay();
 
         MaxDate v = new MaxDate();
         v.setMaxDate(today);
@@ -86,7 +88,7 @@ public class TestMaxDate extends BaseValidatorTestCase
             assertEquals(ValidationConstraint.TOO_LARGE, ex.getConstraint());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testFailCustomMessage() throws Exception
@@ -104,7 +106,7 @@ public class TestMaxDate extends BaseValidatorTestCase
                 { "Fred", today },
                 "custom message");
 
-        replayControls();
+        replay();
 
         MaxDate v = new MaxDate("message=custom");
         v.setMaxDate(today);
@@ -120,7 +122,7 @@ public class TestMaxDate extends BaseValidatorTestCase
             assertEquals(ValidationConstraint.TOO_LARGE, ex.getConstraint());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderComponentNoOp()
@@ -130,10 +132,10 @@ public class TestMaxDate extends BaseValidatorTestCase
         FormComponentContributorContext context = newContext();
         IFormComponent field = newField();
 
-        replayControls();
+        replay();
 
         new MaxDate().renderContribution(writer, cycle, context, field);
 
-        verifyControls();
+        verify();
     }
 }

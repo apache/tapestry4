@@ -14,6 +14,10 @@
 
 package org.apache.tapestry.services.impl;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
@@ -30,8 +34,7 @@ public class EngineServiceInnerProxyTest extends AbstractEngineServiceProxyTestC
     {
         EngineServiceSource source = newSource();
 
-        source.resolveEngineService(name);
-        setReturnValue(source, service);
+        expect(source.resolveEngineService(name)).andReturn(service);
 
         return source;
     }
@@ -41,14 +44,14 @@ public class EngineServiceInnerProxyTest extends AbstractEngineServiceProxyTestC
         EngineServiceOuterProxy outer = new EngineServiceOuterProxy("Outer");
         EngineServiceSource source = newSource();
 
-        replayControls();
+        replay();
 
         EngineServiceInnerProxy proxy = new EngineServiceInnerProxy("Inner", outer, source);
 
         assertEquals("Inner", proxy.getName());
         assertEquals("<InnerProxy for engine service 'Inner'>", proxy.toString());
 
-        verifyControls();
+        verify();
     }
 
     protected EngineServiceSource newSource()
@@ -68,7 +71,7 @@ public class EngineServiceInnerProxyTest extends AbstractEngineServiceProxyTestC
 
         EngineServiceSource source = newSource("fred", service);
 
-        replayControls();
+        replay();
 
         EngineServiceOuterProxy outer = new EngineServiceOuterProxy("fred");
         EngineServiceInnerProxy inner = new EngineServiceInnerProxy("fred", outer, source);
@@ -79,7 +82,7 @@ public class EngineServiceInnerProxyTest extends AbstractEngineServiceProxyTestC
 
         assertSame(service, outer.getDelegate());
 
-        verifyControls();
+        verify();
     }
 
     public void testGetLinkPost()
@@ -94,7 +97,7 @@ public class EngineServiceInnerProxyTest extends AbstractEngineServiceProxyTestC
 
         EngineServiceSource source = newSource("fred", service);
 
-        replayControls();
+        replay();
 
         EngineServiceOuterProxy outer = new EngineServiceOuterProxy("fred");
         EngineServiceInnerProxy inner = new EngineServiceInnerProxy("fred", outer, source);
@@ -105,7 +108,7 @@ public class EngineServiceInnerProxyTest extends AbstractEngineServiceProxyTestC
 
         assertSame(service, outer.getDelegate());
 
-        verifyControls();
+        verify();
     }
     public void testService() throws Exception
     {
@@ -116,7 +119,7 @@ public class EngineServiceInnerProxyTest extends AbstractEngineServiceProxyTestC
 
         EngineServiceSource source = newSource("fred", service);
 
-        replayControls();
+        replay();
 
         EngineServiceOuterProxy outer = new EngineServiceOuterProxy("fred");
         EngineServiceInnerProxy inner = new EngineServiceInnerProxy("fred", outer, source);
@@ -127,6 +130,6 @@ public class EngineServiceInnerProxyTest extends AbstractEngineServiceProxyTestC
 
         assertSame(service, outer.getDelegate());
 
-        verifyControls();
+        verify();
     }
 }

@@ -14,11 +14,15 @@
 
 package org.apache.tapestry.binding;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.coerce.ValueConverter;
-import org.easymock.MockControl;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.binding.ComponentBinding}.
@@ -26,47 +30,43 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestComponentBinding extends BindingTestCase
 {
     public void testGetObject()
     {
         IComponent nested = newComponent();
-
-        MockControl cc = newControl(IComponent.class);
-        IComponent component = (IComponent) cc.getMock();
-
-        component.getComponent("foo");
-        cc.setReturnValue(nested);
+        IComponent component = newMock(IComponent.class);
+        
+        expect(component.getComponent("foo")).andReturn(nested);
 
         ValueConverter vc = newValueConverter();
 
         Location l = newLocation();
 
-        replayControls();
+        replay();
 
         ComponentBinding b = new ComponentBinding("param", vc, l, component, "foo");
 
         assertSame(component, b.getComponent());
         assertSame(nested, b.getObject());
 
-        verifyControls();
+        verify();
     }
 
     public void testGetObjectFailure()
     {
-        MockControl cc = newControl(IComponent.class);
-        IComponent component = (IComponent) cc.getMock();
+        IComponent component = newMock(IComponent.class);
 
         Throwable t = new ApplicationRuntimeException("No such component.");
 
-        component.getComponent("foo");
-        cc.setThrowable(t);
+        expect(component.getComponent("foo")).andThrow(t);
 
         ValueConverter vc = newValueConverter();
 
         Location l = newLocation();
 
-        replayControls();
+        replay();
 
         ComponentBinding b = new ComponentBinding("param", vc, l, component, "foo");
 
@@ -82,6 +82,6 @@ public class TestComponentBinding extends BindingTestCase
             assertSame(l, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
     }
 }

@@ -14,7 +14,10 @@
 
 package org.apache.tapestry.form.validator;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.aryEq;
+import static org.easymock.EasyMock.checkOrder;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
 
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.form.FormComponentContributorContext;

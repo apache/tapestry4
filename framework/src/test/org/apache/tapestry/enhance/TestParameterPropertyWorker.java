@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.enhance;
 
+import static org.easymock.EasyMock.expect;
+
 import java.lang.reflect.Modifier;
 import java.util.Collections;
 
@@ -22,20 +24,19 @@ import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.MethodSignature;
-import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.BaseComponent;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
 import org.apache.tapestry.spec.ParameterSpecification;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.ParameterPropertyWorker}.
  * 
  * @author Howard M. Lewis Ship
  */
-public class TestParameterPropertyWorker extends HiveMindTestCase
+public class TestParameterPropertyWorker extends BaseComponentTestCase
 {
 
     private ParameterSpecification buildParameterSpec(String parameterName, String type,
@@ -60,16 +61,12 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
     private IComponentSpecification buildComponentSpecification(String parameterName,
             IParameterSpecification ps)
     {
-        MockControl c = newControl(IComponentSpecification.class);
-        IComponentSpecification result = (IComponentSpecification) c.getMock();
+        IComponentSpecification result = newSpec();
 
-        result.getParameterNames();
+        expect(result.getParameterNames()).andReturn(Collections.singletonList(parameterName));
 
-        c.setReturnValue(Collections.singletonList(parameterName));
-
-        result.getParameter(parameterName);
-        c.setReturnValue(ps);
-
+        expect(result.getParameter(parameterName)).andReturn(ps);
+        
         return result;
     }
 
@@ -81,18 +78,15 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
                 "wilma",
                 "String",
                 l));
-
-        MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) opc.getMock();
-
-        op.convertTypeName("String");
+        
+        EnhancementOperation op = newMock(EnhancementOperation.class);
+        
         Throwable ex = new ApplicationRuntimeException("Simulated error.");
-        opc.setThrowable(ex);
+        expect(op.convertTypeName("String")).andThrow(ex);
 
-        op.getBaseClass();
-        opc.setReturnValue(BaseComponent.class);
+        expect(op.getBaseClass()).andReturn(BaseComponent.class);
 
-        ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
+        ErrorLog log = newMock(ErrorLog.class);
 
         log
                 .error(
@@ -100,14 +94,14 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
                         l,
                         ex);
 
-        replayControls();
+        replay();
 
         ParameterPropertyWorker w = new ParameterPropertyWorker();
         w.setErrorLog(log);
 
         w.performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 
     public void testSkipParameterAlias()
@@ -119,13 +113,13 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
 
         EnhancementOperation op = (EnhancementOperation) newMock(EnhancementOperation.class);
 
-        replayControls();
+        replay();
 
         ParameterPropertyWorker w = new ParameterPropertyWorker();
 
         w.performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 
     /**
@@ -140,20 +134,17 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
                 null,
                 null));
 
-        MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+        EnhancementOperation op = newMock(EnhancementOperation.class);
 
-        op.getPropertyType("fred");
-        opc.setReturnValue(String.class);
-
+        expect(op.getPropertyType("fred")).andReturn(String.class);
+        
         op.claimProperty("fred");
 
         op.addField("_$fred", String.class);
         op.addField("_$fred$Default", String.class);
         op.addField("_$fred$Cached", boolean.class);
 
-        op.getClassReference(String.class);
-        opc.setReturnValue("_class$String");
+        expect(op.getClassReference(String.class)).andReturn("_class$String");
 
         BodyBuilder builder = new BodyBuilder();
         builder.begin();
@@ -170,8 +161,7 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
         builder.addln("return result;");
         builder.end();
 
-        op.getAccessorMethodName("fred");
-        opc.setReturnValue("getFred");
+        expect(op.getAccessorMethodName("fred")).andReturn("getFred");
 
         op.addMethod(
                 Modifier.PUBLIC,
@@ -220,13 +210,13 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
                 EnhanceUtils.CLEANUP_AFTER_RENDER_SIGNATURE,
                 expectedCleanup.toString());
 
-        replayControls();
+        replay();
 
         ParameterPropertyWorker w = new ParameterPropertyWorker();
 
         w.performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 
     /**
@@ -243,11 +233,9 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
                 null,
                 l));
 
-        MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+        EnhancementOperation op = newMock(EnhancementOperation.class);
 
-        op.getPropertyType("fred");
-        opc.setReturnValue(String.class);
+        expect(op.getPropertyType("fred")).andReturn(String.class);
 
         op.claimProperty("fred");
 
@@ -255,8 +243,7 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
         op.addField("_$fred$Default", String.class);
         op.addField("_$fred$Cached", boolean.class);
 
-        op.getClassReference(String.class);
-        opc.setReturnValue("_class$String");
+        expect(op.getClassReference(String.class)).andReturn("_class$String");
 
         BodyBuilder builder = new BodyBuilder();
         builder.begin();
@@ -273,8 +260,7 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
         builder.addln("return result;");
         builder.end();
 
-        op.getAccessorMethodName("fred");
-        opc.setReturnValue("getFred");
+        expect(op.getAccessorMethodName("fred")).andReturn("getFred");
 
         op.addMethod(
                 Modifier.PUBLIC,
@@ -324,21 +310,20 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
                 EnhanceUtils.CLEANUP_AFTER_RENDER_SIGNATURE,
                 expectedCleanup.toString());
 
-        replayControls();
+        replay();
 
         ParameterPropertyWorker w = new ParameterPropertyWorker();
 
         w.performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 
     public void testPrimitiveType()
     {
         Location l = newLocation();
 
-        MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+        EnhancementOperation op = newMock(EnhancementOperation.class);
 
         BodyBuilder builder = new BodyBuilder();
         builder.begin();
@@ -355,8 +340,7 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
         builder.addln("return result;");
         builder.end();
 
-        op.getAccessorMethodName("fred");
-        opc.setReturnValue("isFred");
+        expect(op.getAccessorMethodName("fred")).andReturn("isFred");
 
         op.addMethod(
                 Modifier.PUBLIC,
@@ -364,7 +348,7 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
                 builder.toString(),
                 l);
 
-        replayControls();
+        replay();
 
         new ParameterPropertyWorker().buildAccessor(
                 op,
@@ -377,15 +361,14 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
                 true,
                 l);
 
-        verifyControls();
+        verify();
     }
 
     public void testParameterCacheDisabled()
     {
         Location l = newLocation();
 
-        MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+        EnhancementOperation op = newMock(EnhancementOperation.class);
 
         BodyBuilder builder = new BodyBuilder();
         builder.begin();
@@ -402,8 +385,7 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
         builder.addln("return result;");
         builder.end();
 
-        op.getAccessorMethodName("fred");
-        opc.setReturnValue("isFred");
+        expect(op.getAccessorMethodName("fred")).andReturn("isFred");
 
         op.addMethod(
                 Modifier.PUBLIC,
@@ -411,7 +393,7 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
                 builder.toString(),
                 l);
 
-        replayControls();
+        replay();
 
         new ParameterPropertyWorker().buildAccessor(
                 op,
@@ -424,6 +406,6 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
                 false,
                 l);
 
-        verifyControls();
+        verify();
     }
 }

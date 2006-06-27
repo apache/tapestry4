@@ -14,10 +14,12 @@
 
 package org.apache.tapestry.request;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.hivemind.test.HiveMindTestCase;
-import org.easymock.MockControl;
+import org.apache.tapestry.BaseComponentTestCase;
 
 /**
  * Tests for {@link org.apache.tapestry.request.DecodedRequestWrapper}and
@@ -26,9 +28,9 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestDecodedRequestWrapper extends HiveMindTestCase
+public class TestDecodedRequestWrapper extends BaseComponentTestCase
 {
-    private HttpServletRequest newRequest()
+    private HttpServletRequest newHttpRequest()
     {
         return (HttpServletRequest) newMock(HttpServletRequest.class);
     }
@@ -42,9 +44,9 @@ public class TestDecodedRequestWrapper extends HiveMindTestCase
         dr.setServerPort(2170);
         dr.setServerName("www.flintstone.com");
 
-        HttpServletRequest request = newRequest();
+        HttpServletRequest request = newHttpRequest();
 
-        replayControls();
+        replay();
 
         DecodedRequestWrapper w = new DecodedRequestWrapper(request, dr);
 
@@ -53,27 +55,22 @@ public class TestDecodedRequestWrapper extends HiveMindTestCase
         assertEquals(2170, w.getServerPort());
         assertEquals("www.flintstone.com", w.getServerName());
 
-        verifyControls();
+        verify();
     }
 
     public void testRequestConstructor()
     {
-        MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
+        HttpServletRequest request = newHttpRequest();
 
-        request.getScheme();
-        control.setReturnValue("https");
+        expect(request.getScheme()).andReturn("https");
 
-        request.getServerName();
-        control.setReturnValue("www.flintstone.com");
+        expect(request.getServerName()).andReturn("www.flintstone.com");
 
-        request.getRequestURI();
-        control.setReturnValue("/foo/bar/baz");
+        expect(request.getRequestURI()).andReturn("/foo/bar/baz");
 
-        request.getServerPort();
-        control.setReturnValue(2170);
+        expect(request.getServerPort()).andReturn(2170);
 
-        replayControls();
+        replay();
 
         DecodedRequest dr = new DecodedRequest(request);
 
@@ -82,6 +79,6 @@ public class TestDecodedRequestWrapper extends HiveMindTestCase
         assertEquals(2170, dr.getServerPort());
         assertEquals("www.flintstone.com", dr.getServerName());
 
-        verifyControls();
+        verify();
     }
 }

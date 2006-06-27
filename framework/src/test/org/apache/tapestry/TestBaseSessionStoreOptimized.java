@@ -14,10 +14,12 @@
 
 package org.apache.tapestry;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionBindingEvent;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.BaseSessionStoreOptimized}.
@@ -25,7 +27,8 @@ import org.apache.hivemind.test.HiveMindTestCase;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestBaseSessionStoreOptimized extends HiveMindTestCase
+@Test
+public class TestBaseSessionStoreOptimized extends BaseComponentTestCase
 {
     public void testMarkDirty()
     {
@@ -40,36 +43,36 @@ public class TestBaseSessionStoreOptimized extends HiveMindTestCase
 
     public void testMarkClean()
     {
-        HttpSession session = (HttpSession) newMock(HttpSession.class);
+        HttpSession session = newMock(HttpSession.class);
 
         BaseSessionStoreOptimized object = new BaseSessionStoreOptimized();
 
         object.markSessionStoreNeeded();
 
-        replayControls();
+        replay();
 
         object.valueBound(new HttpSessionBindingEvent(session, "sessionid", object));
 
         assertEquals(false, object.isStoreToSessionNeeded());
 
-        verifyControls();
+        verify();
     }
 
     public void testUnboundDoesNothing()
     {
-        HttpSession session = (HttpSession) newMock(HttpSession.class);
+        HttpSession session = newMock(HttpSession.class);
 
         BaseSessionStoreOptimized object = new BaseSessionStoreOptimized();
 
         object.markSessionStoreNeeded();
 
-        replayControls();
+        replay();
 
         object.valueUnbound(new HttpSessionBindingEvent(session, "sessionid", object));
 
         assertEquals(true, object.isStoreToSessionNeeded());
 
-        verifyControls();
+        verify();
 
     }
 

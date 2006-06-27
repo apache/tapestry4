@@ -14,6 +14,10 @@
 
 package org.apache.tapestry.bean;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Location;
@@ -28,6 +32,7 @@ import org.apache.tapestry.services.ClassFinder;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.spec.BeanSpecification;
 import org.apache.tapestry.spec.IBeanSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.bean.BeanProvider} (mostly new features added in release
@@ -36,6 +41,7 @@ import org.apache.tapestry.spec.IBeanSpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestBeanProvider extends BaseComponentTestCase
 {
     public static class BeanInitializerFixture extends AbstractBeanInitializer
@@ -57,13 +63,12 @@ public class TestBeanProvider extends BaseComponentTestCase
 
     protected IBeanSpecification newBeanSpec()
     {
-        return (IBeanSpecification) newMock(IBeanSpecification.class);
+        return newMock(IBeanSpecification.class);
     }
 
     protected void trainGetClassName(IBeanSpecification spec, String className)
     {
-        spec.getClassName();
-        setReturnValue(spec, className);
+        expect(spec.getClassName()).andReturn(className);
     }
 
     public void testResolveClassFailure()
@@ -75,11 +80,11 @@ public class TestBeanProvider extends BaseComponentTestCase
 
         trainForConstructor(page, component, resolver, finder);
 
-        replayControls();
+        replay();
 
         BeanProvider bp = new BeanProvider(component);
 
-        verifyControls();
+        verify();
 
         IBeanSpecification bs = newBeanSpec();
 
@@ -93,7 +98,7 @@ public class TestBeanProvider extends BaseComponentTestCase
 
         trainGetLocation(bs, l);
 
-        replayControls();
+        replay();
 
         try
         {
@@ -109,7 +114,7 @@ public class TestBeanProvider extends BaseComponentTestCase
             assertSame(l, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testInstantiateBeanFailure()
@@ -121,11 +126,11 @@ public class TestBeanProvider extends BaseComponentTestCase
 
         trainForConstructor(page, component, resolver, finder);
 
-        replayControls();
+        replay();
 
         BeanProvider bp = new BeanProvider(component);
 
-        verifyControls();
+        verify();
 
         IBeanSpecification bs = newBeanSpec();
 
@@ -139,7 +144,7 @@ public class TestBeanProvider extends BaseComponentTestCase
 
         trainGetLocation(bs, l);
 
-        replayControls();
+        replay();
 
         try
         {
@@ -155,45 +160,40 @@ public class TestBeanProvider extends BaseComponentTestCase
             assertSame(l, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
     }
 
     private void trainForConstructor(IPage page, IComponent component, ClassResolver resolver,
             ClassFinder classFinder)
     {
-        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
-        Infrastructure infrastructure = (Infrastructure) newMock(Infrastructure.class);
-        INamespace namespace = (INamespace) newMock(INamespace.class);
+        IRequestCycle cycle = newCycle();
+        Infrastructure infrastructure = newMock(Infrastructure.class);
+        INamespace namespace = newMock(INamespace.class);
 
         trainGetPage(component, page);
 
-        page.getRequestCycle();
-        setReturnValue(page, cycle);
+        expect(page.getRequestCycle()).andReturn(cycle);
 
-        cycle.getInfrastructure();
-        setReturnValue(cycle, infrastructure);
+        expect(cycle.getInfrastructure()).andReturn(infrastructure);
 
-        infrastructure.getClassResolver();
-        setReturnValue(infrastructure, resolver);
+        expect(infrastructure.getClassResolver()).andReturn(resolver);
 
-        component.getNamespace();
-        setReturnValue(component, namespace);
+        expect(component.getNamespace()).andReturn(namespace);
 
-        namespace.getPropertyValue("org.apache.tapestry.bean-class-packages");
-        setReturnValue(namespace, "mypackage");
+        expect(namespace.getPropertyValue("org.apache.tapestry.bean-class-packages"))
+        .andReturn("mypackage");
 
-        infrastructure.getClassFinder();
-        setReturnValue(infrastructure, classFinder);
+        expect(infrastructure.getClassFinder()).andReturn(classFinder);
     }
 
     protected ClassFinder newClassFinder()
     {
-        return (ClassFinder) newMock(ClassFinder.class);
+        return newMock(ClassFinder.class);
     }
 
     private ClassResolver newResolver()
     {
-        return (ClassResolver) newMock(ClassResolver.class);
+        return newMock(ClassResolver.class);
     }
 
     public void testInitializeFailure()
@@ -205,11 +205,11 @@ public class TestBeanProvider extends BaseComponentTestCase
 
         trainForConstructor(page, component, resolver, finder);
 
-        replayControls();
+        replay();
 
         BeanProvider bp = new BeanProvider(component);
 
-        verifyControls();
+        verify();
 
         String className = TargetBean.class.getName();
 
@@ -229,7 +229,7 @@ public class TestBeanProvider extends BaseComponentTestCase
 
         trainGetExtendedId(component, "Fred/barney");
 
-        replayControls();
+        replay();
 
         try
         {
@@ -250,7 +250,6 @@ public class TestBeanProvider extends BaseComponentTestCase
 
     private void trainFindClass(ClassFinder finder, String className, Class clazz)
     {
-        finder.findClass("mypackage", className);
-        setReturnValue(finder, clazz);
+        expect(finder.findClass("mypackage", className)).andReturn(clazz);
     }
 }

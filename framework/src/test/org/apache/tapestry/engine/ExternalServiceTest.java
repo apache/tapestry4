@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.engine;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,13 +52,13 @@ public class ExternalServiceTest extends ServiceTestCase
 
         trainConstructLink(lf, es, false, parameters, true, link);
 
-        replayControls();
+        replay();
 
         ExternalServiceParameter p = new ExternalServiceParameter("ActivePage", serviceParameters);
 
         assertSame(link, es.getLink(false, p));
 
-        verifyControls();
+        verify();
     }
 
     public void testService() throws Exception
@@ -79,7 +82,7 @@ public class ExternalServiceTest extends ServiceTestCase
 
         rr.renderResponse(cycle);
 
-        replayControls();
+        replay();
 
         ExternalService es = new ExternalService();
         es.setLinkFactory(lf);
@@ -87,7 +90,7 @@ public class ExternalServiceTest extends ServiceTestCase
 
         es.service(cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testServiceWrongType() throws Exception
@@ -104,7 +107,7 @@ public class ExternalServiceTest extends ServiceTestCase
         trainGetPageName(page, "ActivePage");
         trainGetLocation(page, l);
 
-        replayControls();
+        replay();
 
         ExternalService es = new ExternalService();
 
@@ -122,6 +125,6 @@ public class ExternalServiceTest extends ServiceTestCase
             assertSame(page, ex.getComponent());
         }
 
-        verifyControls();
+        verify();
     }
 }

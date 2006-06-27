@@ -14,15 +14,19 @@
 
 package org.apache.tapestry.services.impl;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.io.UnsupportedEncodingException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.services.ServletRequestServicer;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.SetupRequestEncoding}.
@@ -30,15 +34,13 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestSetupRequestEncoding extends HiveMindTestCase
+public class TestSetupRequestEncoding extends BaseComponentTestCase
 {
     private HttpServletRequest newRequest(String encoding)
     {
-        MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
+        HttpServletRequest request = newMock(HttpServletRequest.class);
 
-        request.getCharacterEncoding();
-        control.setReturnValue(encoding);
+        expect(request.getCharacterEncoding()).andReturn(encoding);
 
         return request;
     }
@@ -61,14 +63,14 @@ public class TestSetupRequestEncoding extends HiveMindTestCase
 
         servicer.service(request, response);
 
-        replayControls();
+        replay();
 
         SetupRequestEncoding sre = new SetupRequestEncoding();
         sre.setOutputEncoding("output-encoding");
 
         sre.service(request, response, servicer);
 
-        verifyControls();
+        verify();
     }
 
     public void testEncodingNull() throws Exception
@@ -81,33 +83,31 @@ public class TestSetupRequestEncoding extends HiveMindTestCase
 
         servicer.service(request, response);
 
-        replayControls();
+        replay();
 
         SetupRequestEncoding sre = new SetupRequestEncoding();
         sre.setOutputEncoding("output-encoding");
 
         sre.service(request, response, servicer);
 
-        verifyControls();
+        verify();
     }
 
     public void testUnsupportedEncoding() throws Exception
     {
-        MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
+        HttpServletRequest request = newMock(HttpServletRequest.class);
 
         HttpServletResponse response = newResponse();
         ServletRequestServicer servicer = newServicer();
 
         Throwable t = new UnsupportedEncodingException("Bad encoding.");
 
-        request.getCharacterEncoding();
-        control.setReturnValue(null);
+        expect(request.getCharacterEncoding()).andReturn(null);
 
         request.setCharacterEncoding("output-encoding");
-        control.setThrowable(t);
+        expectLastCall().andThrow(t);
 
-        replayControls();
+        replay();
 
         SetupRequestEncoding sre = new SetupRequestEncoding();
         sre.setOutputEncoding("output-encoding");
@@ -125,82 +125,78 @@ public class TestSetupRequestEncoding extends HiveMindTestCase
             assertSame(t, ex.getRootCause());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testNoSuchMethodError() throws Exception
     {
-        MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
+        HttpServletRequest request = newMock(HttpServletRequest.class);
 
         HttpServletResponse response = newResponse();
         ServletRequestServicer servicer = newServicer();
 
         Throwable t = new NoSuchMethodError();
 
-        request.getCharacterEncoding();
-        control.setReturnValue(null);
+        expect(request.getCharacterEncoding()).andReturn(null);
 
         request.setCharacterEncoding("output-encoding");
-        control.setThrowable(t);
+        expectLastCall().andThrow(t);
 
         servicer.service(request, response);
 
-        replayControls();
+        replay();
 
         SetupRequestEncoding sre = new SetupRequestEncoding();
         sre.setOutputEncoding("output-encoding");
 
         sre.service(request, response, servicer);
 
-        verifyControls();
+        verify();
 
         // Check that, after such an error, we don't even try to do it again.
 
         servicer.service(request, response);
 
-        replayControls();
+        replay();
 
         sre.service(request, response, servicer);
 
-        verifyControls();
+        verify();
     }
     
     public void testAbstractMethodError() throws Exception
     {
-        MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
+        HttpServletRequest request = newMock(HttpServletRequest.class);
 
         HttpServletResponse response = newResponse();
         ServletRequestServicer servicer = newServicer();
 
         Throwable t = new AbstractMethodError();
 
-        request.getCharacterEncoding();
-        control.setReturnValue(null);
+        expect(request.getCharacterEncoding()).andReturn(null);
 
         request.setCharacterEncoding("output-encoding");
-        control.setThrowable(t);
+        expectLastCall().andThrow(t);
 
         servicer.service(request, response);
 
-        replayControls();
+        replay();
 
         SetupRequestEncoding sre = new SetupRequestEncoding();
         sre.setOutputEncoding("output-encoding");
 
         sre.service(request, response, servicer);
 
-        verifyControls();
+        verify();
 
         // Check that, after such an error, we don't even try to do it again.
 
         servicer.service(request, response);
 
-        replayControls();
+        replay();
 
         sre.service(request, response, servicer);
 
-        verifyControls();
+        verify();
     }    
 }

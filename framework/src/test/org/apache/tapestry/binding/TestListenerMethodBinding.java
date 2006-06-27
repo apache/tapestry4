@@ -14,6 +14,11 @@
 
 package org.apache.tapestry.binding;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import org.apache.hivemind.Location;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IActionListener;
@@ -23,6 +28,7 @@ import org.apache.tapestry.PageRedirectException;
 import org.apache.tapestry.RedirectException;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.listener.ListenerMap;
+import org.testng.annotations.Test;
 
 /**
  * Test for {@link org.apache.tapestry.binding.ListenerMethodBinding}.
@@ -30,6 +36,7 @@ import org.apache.tapestry.listener.ListenerMap;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestListenerMethodBinding extends BindingTestCase
 {
     public void testInvokeListener()
@@ -46,7 +53,7 @@ public class TestListenerMethodBinding extends BindingTestCase
 
         listener.actionTriggered(sourceComponent, cycle);
 
-        replayControls();
+        replay();
 
         ListenerMethodBinding b = new ListenerMethodBinding("param", vc, l, component, "foo");
 
@@ -55,7 +62,7 @@ public class TestListenerMethodBinding extends BindingTestCase
 
         b.actionTriggered(sourceComponent, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testToString()
@@ -66,7 +73,7 @@ public class TestListenerMethodBinding extends BindingTestCase
 
         trainGetExtendedId(component, "Fred/barney");
 
-        replayControls();
+        replay();
 
         ListenerMethodBinding b = new ListenerMethodBinding("param", vc, l, component, "foo");
 
@@ -77,7 +84,7 @@ public class TestListenerMethodBinding extends BindingTestCase
                 "param, component=Fred/barney, methodName=foo, location=classpath:/org/apache/tapestry/binding/TestListenerMethodBinding, line 1",
                 description);
 
-        verifyControls();
+        verify();
     }
 
     public void testInvokeAndPageRedirect()
@@ -93,11 +100,11 @@ public class TestListenerMethodBinding extends BindingTestCase
         trainGetListener(component, map, listener);
 
         listener.actionTriggered(sourceComponent, cycle);
-
+        
         Throwable t = new PageRedirectException("TargetPage");
-        setThrowable(listener, t);
-
-        replayControls();
+        expectLastCall().andThrow(t);
+        
+        replay();
 
         ListenerMethodBinding b = new ListenerMethodBinding("param", vc, l, component, "foo");
 
@@ -111,7 +118,7 @@ public class TestListenerMethodBinding extends BindingTestCase
             assertSame(t, ex);
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testInvokeAndRedirect()
@@ -127,11 +134,11 @@ public class TestListenerMethodBinding extends BindingTestCase
         trainGetListener(component, map, listener);
 
         listener.actionTriggered(sourceComponent, cycle);
-
+        
         Throwable t = new RedirectException("http://foo.bar");
-        setThrowable(listener, t);
+        expectLastCall().andThrow(t);
 
-        replayControls();
+        replay();
 
         ListenerMethodBinding b = new ListenerMethodBinding("param", vc, l, component, "foo");
 
@@ -145,7 +152,7 @@ public class TestListenerMethodBinding extends BindingTestCase
             assertSame(t, ex);
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testInvokeListenerFailure()
@@ -163,11 +170,11 @@ public class TestListenerMethodBinding extends BindingTestCase
         listener.actionTriggered(sourceComponent, cycle);
 
         Throwable t = new RuntimeException("Failure.");
-        setThrowable(listener, t);
+        expectLastCall().andThrow(t);
 
         trainGetExtendedId(component, "Fred/barney");
 
-        replayControls();
+        replay();
 
         ListenerMethodBinding b = new ListenerMethodBinding("param", vc, l, component, "foo");
 
@@ -186,7 +193,7 @@ public class TestListenerMethodBinding extends BindingTestCase
             assertSame(b, ex.getBinding());
         }
 
-        verifyControls();
+        verify();
     }
 
     private void trainGetListener(IComponent component, ListenerMap lm, IActionListener listener)
@@ -197,28 +204,26 @@ public class TestListenerMethodBinding extends BindingTestCase
 
     protected IRequestCycle newCycle()
     {
-        return (IRequestCycle) newMock(IRequestCycle.class);
+        return newMock(IRequestCycle.class);
     }
 
     private void trainGetListener(ListenerMap map, String methodName, IActionListener listener)
     {
-        map.getListener(methodName);
-        setReturnValue(map, listener);
+        expect(map.getListener(methodName)).andReturn(listener);
     }
 
     private void trainGetListeners(IComponent component, ListenerMap lm)
     {
-        component.getListeners();
-        setReturnValue(component,lm);
+        expect(component.getListeners()).andReturn(lm);
     }
 
     private ListenerMap newListenerMap()
     {
-        return (ListenerMap) newMock(ListenerMap.class);
+        return newMock(ListenerMap.class);
     }
 
     private IActionListener newListener()
     {
-        return (IActionListener) newMock(IActionListener.class);
+        return newMock(IActionListener.class);
     }
 }

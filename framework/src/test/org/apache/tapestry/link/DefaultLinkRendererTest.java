@@ -14,7 +14,10 @@
 
 package org.apache.tapestry.link;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.BaseComponentTestCase;
@@ -128,7 +131,7 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
 
         trainGetLocation(active, l);
 
-        replayControls();
+        replay();
 
         try
         {
@@ -142,7 +145,7 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
             assertSame(l, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testStandardNotDisabled()
@@ -185,11 +188,11 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
 
         cycle.removeAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME);
 
-        replayControls();
+        replay();
 
         new DefaultLinkRenderer().renderLink(writer, cycle, component);
 
-        verifyControls();
+        verify();
     }
 
     protected void trainGetScheme(ILinkComponent component, String scheme)
@@ -246,11 +249,11 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
         
         cycle.removeAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME);
 
-        replayControls();
+        replay();
 
         new DefaultLinkRenderer().renderLink(writer, cycle, component);
 
-        verifyControls();
+        verify();
     }
 
     public void testDisabled()
@@ -268,11 +271,11 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
 
         cycle.removeAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME);
 
-        replayControls();
+        replay();
 
         new DefaultLinkRenderer().renderLink(writer, cycle, component);
 
-        verifyControls();
+        verify();
     }
 
     public void testRewinding()
@@ -291,11 +294,11 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
 
         cycle.removeAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME);
 
-        replayControls();
+        replay();
 
         new DefaultLinkRenderer().renderLink(writer, cycle, component);
 
-        verifyControls();
+        verify();
     }
 
     public void testWithSubclass()
@@ -346,14 +349,14 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
 
         cycle.removeAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME);
 
-        replayControls();
+        replay();
 
         new RendererFixture(writer, cycle, component, "xlink", true, "xtarget", "xurl").renderLink(
                 writer,
                 cycle,
                 component);
 
-        verifyControls();
+        verify();
     }
 
     public void testWithSubclassNoBody()
@@ -401,12 +404,12 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
 
         cycle.removeAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME);
 
-        replayControls();
+        replay();
 
         new RendererFixture(writer, cycle, component, "xlink", false, "xtarget", "xurl")
                 .renderLink(writer, cycle, component);
 
-        verifyControls();
+        verify();
     }
 
     public void testWithSubclassDisabled()
@@ -424,14 +427,14 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
 
         cycle.removeAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME);
 
-        replayControls();
+        replay();
 
         new RendererFixture(writer, cycle, component, "xlink", true, "xtarget", "xurl").renderLink(
                 writer,
                 cycle,
                 component);
 
-        verifyControls();
+        verify();
     }
 
     public void testWithSubclassDisabledNoBody()
@@ -447,12 +450,12 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
 
         cycle.removeAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME);
 
-        replayControls();
+        replay();
 
         new RendererFixture(writer, cycle, component, "xlink", false, "xtarget", "xurl")
                 .renderLink(writer, cycle, component);
 
-        verifyControls();
+        verify();
     }
 
     protected void trainGetAnchor(ILinkComponent component, String anchor)

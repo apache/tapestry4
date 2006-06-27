@@ -14,11 +14,17 @@
 
 package org.apache.tapestry.valid;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNotNull;
+import static org.testng.AssertJUnit.assertNull;
+import static org.testng.AssertJUnit.assertSame;
+import static org.testng.AssertJUnit.assertTrue;
+
 import java.util.List;
 
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.form.IFormComponent;
-import org.easymock.MockControl;
 
 /**
  * Test the class {@link ValidationDelegate}.
@@ -31,11 +37,9 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
 {
     protected IFormComponent newField(String name, int count)
     {
-        MockControl control = newControl(IFormComponent.class);
-        IFormComponent fc = (IFormComponent) control.getMock();
+        IFormComponent fc = newMock(IFormComponent.class);
 
-        fc.getName();
-        control.setReturnValue(name, count);
+        expect(fc.getName()).andReturn(name).times(count);
 
         return fc;
     }
@@ -56,7 +60,7 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
     {
         IFormComponent field = newField("testAdd", 3);
 
-        replayControls();
+        replay();
 
         String errorMessage = "Need a bigger one.";
 
@@ -79,14 +83,14 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
         assertTrue(d.getHasErrors());
         assertEquals(errorMessage, ((RenderString) (d.getFirstError())).getString());
 
-        verifyControls();
+        verify();
     }
 
     public void testValidatorErrorRenderer()
     {
         IFormComponent field = newField("testValidatorErrorRenderer", 3);
 
-        replayControls();
+        replay();
 
         IRender errorRenderer = new RenderString("Just don't like it.");
 
@@ -110,14 +114,14 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
         assertTrue(d.getHasErrors());
         assertSame(errorRenderer, d.getFirstError());
 
-        verifyControls();
+        verify();
     }
 
     public void testNoError()
     {
         IFormComponent field = newField("input", 2);
 
-        replayControls();
+        replay();
 
         d.setFormComponent(field);
         d.recordFieldInputValue("Futurama");
@@ -136,14 +140,14 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
         assertEquals(false, d.getHasErrors());
         assertNull(d.getFirstError());
 
-        verifyControls();
+        verify();
     }
 
     public void testUnassociatedErrors()
     {
         IFormComponent field = newField("input", 2);
 
-        replayControls();
+        replay();
 
         d.setFormComponent(field);
         d.recordFieldInputValue("Bender");
@@ -175,7 +179,7 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
         assertEquals(1, trackings.size());
         assertEquals(t0, trackings.get(0));
 
-        verifyControls();
+        verify();
     }
 
     private void checkRender(String errorMessage, IFieldTracking tracking)
@@ -195,7 +199,7 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
         IFormComponent f1 = newField("monty", 3);
         IFormComponent f2 = newField("python", 3);
 
-        replayControls();
+        replay();
 
         String e1 = "And now for something completely different.";
         String e2 = "A man with three buttocks.";
@@ -221,7 +225,7 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
         checkRender(e2, t);
         assertSame(f2, t.getComponent());
 
-        verifyControls();
+        verify();
     }
 
     public void testReset()
@@ -229,7 +233,7 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
         IFormComponent f1 = newField("monty", 4);
         IFormComponent f2 = newField("python", 3);
 
-        replayControls();
+        replay();
 
         String e1 = "And now for something completely different.";
         String e2 = "A man with three buttocks.";
@@ -255,7 +259,7 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
         checkRender(e2, t);
         assertEquals(f2, t.getComponent());
 
-        verifyControls();
+        verify();
     }
 
     public void testResetAll()
@@ -263,7 +267,7 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
         IFormComponent f1 = newField("monty", 3);
         IFormComponent f2 = newField("python", 3);
 
-        replayControls();
+        replay();
 
         String e1 = "And now for something completely different.";
         String e2 = "A man with three buttocks.";
@@ -285,7 +289,7 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
         assertEquals(false, d.getHasErrors());
         assertNull(d.getFirstError());
 
-        verifyControls();
+        verify();
     }
 
     /** @since 4.0 */
@@ -301,7 +305,7 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
 
         IRender f2ErrorRenderer = (IRender) newMock(IRender.class);
 
-        replayControls();
+        replay();
 
         d.setFormComponent(f1);
         d.recordFieldInputValue("f1 input");
@@ -314,14 +318,14 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
         assertEquals(1, l.size());
         assertSame(f2ErrorRenderer, l.get(0));
 
-        verifyControls();
+        verify();
     }
 
     public void testClearErrors()
     {
         IFormComponent f = newField("input", 4);
 
-        replayControls();
+        replay();
 
         d.setFormComponent(f);
         d.recordFieldInputValue("hello");
@@ -339,7 +343,7 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
 
         assertEquals("hello", d.getFieldInputValue());
 
-        verifyControls();
+        verify();
     }
 
     public void testRegisterForFocus()
@@ -350,7 +354,7 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
 
         ValidationDelegate vd = new ValidationDelegate();
 
-        replayControls();
+        replay();
 
         vd.registerForFocus(fred, ValidationConstants.NORMAL_FIELD);
         vd.registerForFocus(barney, ValidationConstants.REQUIRED_FIELD);
@@ -358,16 +362,14 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
 
         assertEquals("barney", vd.getFocusField());
 
-        verifyControls();
+        verify();
     }
 
     private IFormComponent newFieldWithClientId(String clientId)
     {
-        MockControl control = newControl(IFormComponent.class);
-        IFormComponent field = (IFormComponent) control.getMock();
+        IFormComponent field = newMock(IFormComponent.class);
 
-        field.getClientId();
-        control.setReturnValue(clientId);
+        expect(field.getClientId()).andReturn(clientId);
 
         return field;
     }
@@ -384,7 +386,7 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
         trainGetName(field, "myField");
         trainGetName(field, "myField");
 
-        replayControls();
+        replay();
 
         ValidationDelegate delegate = new ValidationDelegate();
 
@@ -401,7 +403,7 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
         assertNull(ft.getConstraint());
         assertEquals("My Error Message", ft.getErrorRenderer().toString());
 
-        verifyControls();
+        verify();
     }
 
     public void testSimpleRecordUnassociated()
@@ -425,7 +427,6 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
 
     protected void trainGetName(IFormComponent field, String name)
     {
-        field.getName();
-        setReturnValue(field, name);
+        expect(field.getName()).andReturn(name);
     }
 }

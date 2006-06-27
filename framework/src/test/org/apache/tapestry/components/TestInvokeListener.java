@@ -14,12 +14,14 @@
 
 package org.apache.tapestry.components;
 
+import static org.easymock.EasyMock.expectLastCall;
+import static org.testng.AssertJUnit.assertSame;
+
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.listener.ListenerInvoker;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.components.InvokeListener}.
@@ -56,11 +58,11 @@ public class TestInvokeListener extends BaseComponentTestCase
         invoker.invokeListener(listener, component, cycle);
         cycle.setListenerParameters(null);
 
-        replayControls();
+        replay();
 
         component.render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testEnsureParametersClearedAfterException()
@@ -69,25 +71,24 @@ public class TestInvokeListener extends BaseComponentTestCase
         IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
 
         IActionListener listener = newListener();
-
-        MockControl invokerc = newControl(ListenerInvoker.class);
-        ListenerInvoker invoker = (ListenerInvoker) invokerc.getMock();
+        
+        ListenerInvoker invoker = newMock(ListenerInvoker.class);
 
         Throwable t = new RuntimeException();
 
         Object[] parameters = new Object[0];
 
-        InvokeListener component = (InvokeListener) newInstance(InvokeListener.class, new Object[]
+        InvokeListener component = newInstance(InvokeListener.class, new Object[]
         { "listener", listener, "parameters", parameters, "listenerInvoker", invoker, });
 
         cycle.setListenerParameters(parameters);
 
         invoker.invokeListener(listener, component, cycle);
-        invokerc.setThrowable(t);
+        expectLastCall().andThrow(t);
 
         cycle.setListenerParameters(null);
 
-        replayControls();
+        replay();
 
         try
         {
@@ -99,6 +100,6 @@ public class TestInvokeListener extends BaseComponentTestCase
             assertSame(t, ex);
         }
 
-        verifyControls();
+        verify();
     }
 }

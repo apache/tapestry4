@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.services.impl;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -21,9 +24,8 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.ServiceImplementationFactoryParameters;
 import org.apache.hivemind.lib.DefaultImplementationBuilder;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.spec.IApplicationSpecification;
-import org.easymock.MockControl;
 
 /**
  * Tests {@link org.apache.tapestry.services.impl.ExtensionLookupFactory}.
@@ -31,7 +33,7 @@ import org.easymock.MockControl;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class TestExtensionLookupFactory extends HiveMindTestCase
+public class TestExtensionLookupFactory extends BaseComponentTestCase
 {
     private List createParameters(String extensionName)
     {
@@ -50,30 +52,23 @@ public class TestExtensionLookupFactory extends HiveMindTestCase
 
     public void testInSpecification()
     {
-        MockControl specControl = newControl(IApplicationSpecification.class);
-        IApplicationSpecification spec = (IApplicationSpecification) specControl.getMock();
+        IApplicationSpecification spec = newMock(IApplicationSpecification.class);
 
-        Runnable r = (Runnable) newMock(Runnable.class);
-
-        MockControl fpc = newControl(ServiceImplementationFactoryParameters.class);
-        ServiceImplementationFactoryParameters fp = (ServiceImplementationFactoryParameters) fpc
-                .getMock();
+        Runnable r = newMock(Runnable.class);
+        
+        ServiceImplementationFactoryParameters fp = newMock(ServiceImplementationFactoryParameters.class);
 
         // Training
 
-        fp.getParameters();
-        fpc.setReturnValue(createParameters("foo.bar"));
+        expect(fp.getParameters()).andReturn(createParameters("foo.bar"));
 
-        fp.getServiceInterface();
-        fpc.setReturnValue(Runnable.class);
+        expect(fp.getServiceInterface()).andReturn(Runnable.class);
 
-        spec.checkExtension("foo.bar");
-        specControl.setReturnValue(true);
+        expect(spec.checkExtension("foo.bar")).andReturn(true);
 
-        spec.getExtension("foo.bar", Runnable.class);
-        specControl.setReturnValue(r);
+        expect(spec.getExtension("foo.bar", Runnable.class)).andReturn(r);
 
-        replayControls();
+        replay();
 
         ExtensionLookupFactory f = new ExtensionLookupFactory();
         f.setSpecification(spec);
@@ -82,38 +77,30 @@ public class TestExtensionLookupFactory extends HiveMindTestCase
 
         assertSame(r, actual);
 
-        verifyControls();
+        verify();
     }
 
     public void testSyntheticDefault()
     {
-        MockControl specControl = newControl(IApplicationSpecification.class);
-        IApplicationSpecification spec = (IApplicationSpecification) specControl.getMock();
+        IApplicationSpecification spec = newMock(IApplicationSpecification.class);
+        
+        DefaultImplementationBuilder dib = newMock(DefaultImplementationBuilder.class);
 
-        MockControl dibControl = newControl(DefaultImplementationBuilder.class);
-        DefaultImplementationBuilder dib = (DefaultImplementationBuilder) dibControl.getMock();
+        Runnable r = newMock(Runnable.class);
 
-        Runnable r = (Runnable) newMock(Runnable.class);
-
-        MockControl fpc = newControl(ServiceImplementationFactoryParameters.class);
-        ServiceImplementationFactoryParameters fp = (ServiceImplementationFactoryParameters) fpc
-                .getMock();
+        ServiceImplementationFactoryParameters fp = newMock(ServiceImplementationFactoryParameters.class);
 
         // Training
 
-        fp.getParameters();
-        fpc.setReturnValue(createParameters("foo.bar"));
+        expect(fp.getParameters()).andReturn(createParameters("foo.bar"));
 
-        fp.getServiceInterface();
-        fpc.setReturnValue(Runnable.class);
+        expect(fp.getServiceInterface()).andReturn(Runnable.class);
+        
+        expect(spec.checkExtension("foo.bar")).andReturn(false);
 
-        spec.checkExtension("foo.bar");
-        specControl.setReturnValue(false);
+        expect(dib.buildDefaultImplementation(Runnable.class)).andReturn(r);
 
-        dib.buildDefaultImplementation(Runnable.class);
-        dibControl.setReturnValue(r);
-
-        replayControls();
+        replay();
 
         ExtensionLookupFactory f = new ExtensionLookupFactory();
         f.setSpecification(spec);
@@ -123,32 +110,26 @@ public class TestExtensionLookupFactory extends HiveMindTestCase
 
         assertSame(r, actual);
 
-        verifyControls();
+        verify();
     }
 
     public void testConfigurationDefault()
     {
-        MockControl specControl = newControl(IApplicationSpecification.class);
-        IApplicationSpecification spec = (IApplicationSpecification) specControl.getMock();
+        IApplicationSpecification spec = newMock(IApplicationSpecification.class);
 
-        Runnable r = (Runnable) newMock(Runnable.class);
+        Runnable r = newMock(Runnable.class);
 
-        MockControl fpc = newControl(ServiceImplementationFactoryParameters.class);
-        ServiceImplementationFactoryParameters fp = (ServiceImplementationFactoryParameters) fpc
-                .getMock();
+        ServiceImplementationFactoryParameters fp = newMock(ServiceImplementationFactoryParameters.class);
 
         // Training
 
-        fp.getParameters();
-        fpc.setReturnValue(createParameters("foo.bar", r));
+        expect(fp.getParameters()).andReturn(createParameters("foo.bar", r));
 
-        fp.getServiceInterface();
-        fpc.setReturnValue(Runnable.class);
+        expect(fp.getServiceInterface()).andReturn(Runnable.class);
 
-        spec.checkExtension("foo.bar");
-        specControl.setReturnValue(false);
+        expect(spec.checkExtension("foo.bar")).andReturn(false);
 
-        replayControls();
+        replay();
 
         ExtensionLookupFactory f = new ExtensionLookupFactory();
         f.setSpecification(spec);
@@ -157,7 +138,7 @@ public class TestExtensionLookupFactory extends HiveMindTestCase
 
         assertSame(r, actual);
 
-        verifyControls();
+        verify();
     }
 
     public void testFailure()
@@ -168,19 +149,15 @@ public class TestExtensionLookupFactory extends HiveMindTestCase
         p.setLocation(l);
         p.setExtensionName("gnip.gnop");
 
-        MockControl fpc = newControl(ServiceImplementationFactoryParameters.class);
-        ServiceImplementationFactoryParameters fp = (ServiceImplementationFactoryParameters) fpc
-                .getMock();
+        ServiceImplementationFactoryParameters fp = newMock(ServiceImplementationFactoryParameters.class);
 
-        fp.getParameters();
-        fpc.setReturnValue(Collections.singletonList(p));
+        expect(fp.getParameters()).andReturn(Collections.singletonList(p));
 
-        fp.getServiceInterface();
-        fpc.setReturnValue(null);
+        expect(fp.getServiceInterface()).andReturn(null);
 
         ExtensionLookupFactory f = new ExtensionLookupFactory();
 
-        replayControls();
+        replay();
 
         try
         {
@@ -193,6 +170,6 @@ public class TestExtensionLookupFactory extends HiveMindTestCase
             assertSame(l, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
     }
 }

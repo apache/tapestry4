@@ -14,17 +14,18 @@
 
 package org.apache.tapestry.enhance;
 
+import static org.easymock.EasyMock.expect;
+
 import java.lang.reflect.Modifier;
 
 import org.apache.hivemind.Location;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.MethodSignature;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.services.ComponentPropertySource;
 import org.apache.tapestry.spec.InjectSpecification;
 import org.apache.tapestry.spec.InjectSpecificationImpl;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.InjectMetaWorker}.
@@ -32,7 +33,7 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestInjectMetaWorker extends HiveMindTestCase
+public class TestInjectMetaWorker extends BaseComponentTestCase
 {
     private InjectSpecification newSpec(String propertyName, String object, Location location)
     {
@@ -56,22 +57,19 @@ public class TestInjectMetaWorker extends HiveMindTestCase
         InjectSpecification spec = newSpec("fooBar", "foo.bar", l);
 
         ComponentPropertySource source = newSource();
+        
+        EnhancementOperation op = newMock(EnhancementOperation.class);
 
-        MockControl control = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) control.getMock();
-
-        op.getPropertyType("fooBar");
-        control.setReturnValue(int.class);
+        expect(op.getPropertyType("fooBar")).andReturn(int.class);
 
         op.claimReadonlyProperty("fooBar");
 
         MethodSignature sig = new MethodSignature(int.class, "getFooBar", null, null);
 
-        op.addInjectedField(InjectMetaWorker.SOURCE_NAME, ComponentPropertySource.class, source);
-        control.setReturnValue("_source");
+        expect(op.addInjectedField(InjectMetaWorker.SOURCE_NAME, ComponentPropertySource.class, source))
+        .andReturn("_source");
 
-        op.getAccessorMethodName("fooBar");
-        control.setReturnValue("getFooBar");
+        expect(op.getAccessorMethodName("fooBar")).andReturn("getFooBar");
 
         BodyBuilder builder = new BodyBuilder();
         builder.begin();
@@ -81,7 +79,7 @@ public class TestInjectMetaWorker extends HiveMindTestCase
 
         op.addMethod(Modifier.PUBLIC, sig, builder.toString(), l);
 
-        replayControls();
+        replay();
 
         InjectMetaWorker worker = new InjectMetaWorker();
 
@@ -89,7 +87,7 @@ public class TestInjectMetaWorker extends HiveMindTestCase
 
         worker.performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 
     public void testCharacter()
@@ -99,21 +97,18 @@ public class TestInjectMetaWorker extends HiveMindTestCase
 
         ComponentPropertySource source = newSource();
 
-        MockControl control = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) control.getMock();
+        EnhancementOperation op = newMock(EnhancementOperation.class);
 
-        op.getPropertyType("fooBar");
-        control.setReturnValue(char.class);
+        expect(op.getPropertyType("fooBar")).andReturn(char.class);
 
         op.claimReadonlyProperty("fooBar");
 
         MethodSignature sig = new MethodSignature(char.class, "getFooBar", null, null);
 
-        op.addInjectedField(InjectMetaWorker.SOURCE_NAME, ComponentPropertySource.class, source);
-        control.setReturnValue("_source");
+        expect(op.addInjectedField(InjectMetaWorker.SOURCE_NAME, ComponentPropertySource.class, source))
+        .andReturn("_source");
 
-        op.getAccessorMethodName("fooBar");
-        control.setReturnValue("getFooBar");
+        expect(op.getAccessorMethodName("fooBar")).andReturn("getFooBar");
 
         BodyBuilder builder = new BodyBuilder();
         builder.begin();
@@ -123,7 +118,7 @@ public class TestInjectMetaWorker extends HiveMindTestCase
 
         op.addMethod(Modifier.PUBLIC, sig, builder.toString(), l);
 
-        replayControls();
+        replay();
 
         InjectMetaWorker worker = new InjectMetaWorker();
 
@@ -131,7 +126,7 @@ public class TestInjectMetaWorker extends HiveMindTestCase
 
         worker.performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 
     public void testObject()
@@ -142,27 +137,23 @@ public class TestInjectMetaWorker extends HiveMindTestCase
         ComponentPropertySource source = newSource();
         ValueConverter converter = (ValueConverter) newMock(ValueConverter.class);
 
-        MockControl control = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) control.getMock();
+        EnhancementOperation op = newMock(EnhancementOperation.class);
 
-        op.getPropertyType("fooBar");
-        control.setReturnValue(Object.class);
+        expect(op.getPropertyType("fooBar")).andReturn(Object.class);
 
         op.claimReadonlyProperty("fooBar");
 
         MethodSignature sig = new MethodSignature(Object.class, "getFooBar", null, null);
 
-        op.addInjectedField(InjectMetaWorker.SOURCE_NAME, ComponentPropertySource.class, source);
-        control.setReturnValue("_source");
+        expect(op.addInjectedField(InjectMetaWorker.SOURCE_NAME, ComponentPropertySource.class, source))
+        .andReturn("_source");
 
-        op.getAccessorMethodName("fooBar");
-        control.setReturnValue("getFooBar");
+        expect(op.getAccessorMethodName("fooBar")).andReturn("getFooBar");
 
-        op.addInjectedField("_$valueConverter", ValueConverter.class, converter);
-        control.setReturnValue("vc");
+        expect(op.addInjectedField("_$valueConverter", ValueConverter.class, converter))
+        .andReturn("vc");
 
-        op.getClassReference(Object.class);
-        control.setReturnValue("_$Object");
+        expect(op.getClassReference(Object.class)).andReturn("_$Object");
 
         BodyBuilder builder = new BodyBuilder();
         builder.begin();
@@ -172,7 +163,7 @@ public class TestInjectMetaWorker extends HiveMindTestCase
 
         op.addMethod(Modifier.PUBLIC, sig, builder.toString(), l);
 
-        replayControls();
+        replay();
 
         InjectMetaWorker worker = new InjectMetaWorker();
 
@@ -181,7 +172,7 @@ public class TestInjectMetaWorker extends HiveMindTestCase
 
         worker.performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 
 }

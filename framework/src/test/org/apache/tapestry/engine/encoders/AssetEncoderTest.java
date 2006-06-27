@@ -14,11 +14,14 @@
 
 package org.apache.tapestry.engine.encoders;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import static org.easymock.EasyMock.expect;
+
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.asset.AssetService;
 import org.apache.tapestry.engine.ServiceEncoding;
 import org.apache.tapestry.services.ServiceConstants;
+
+import com.javaforge.tapestry.testng.TestBase;
 
 /**
  * Tests for {@link org.apache.tapestry.engine.encoders.AssetEncoder}.
@@ -26,7 +29,7 @@ import org.apache.tapestry.services.ServiceConstants;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class AssetEncoderTest extends HiveMindTestCase
+public class AssetEncoderTest extends TestBase
 {
     public void testWrongService()
     {
@@ -34,17 +37,16 @@ public class AssetEncoderTest extends HiveMindTestCase
 
         trainGetParameterValue(encoding, ServiceConstants.SERVICE, "foo");
 
-        replayControls();
+        replay();
 
         new AssetEncoder().encode(encoding);
 
-        verifyControls();
+        verify();
     }
 
     protected void trainGetParameterValue(ServiceEncoding encoding, String name, String value)
     {
-        encoding.getParameterValue(name);
-        setReturnValue(encoding, value);
+        expect(encoding.getParameterValue(name)).andReturn(value);
     }
 
     protected ServiceEncoding newEncoding()
@@ -58,20 +60,19 @@ public class AssetEncoderTest extends HiveMindTestCase
 
         trainGetServletPath(encoding, "/Home.page");
 
-        replayControls();
+        replay();
 
         AssetEncoder encoder = new AssetEncoder();
         encoder.setPath("/assets");
 
         encoder.decode(encoding);
 
-        verifyControls();
+        verify();
     }
 
     protected void trainGetServletPath(ServiceEncoding encoding, String servletPath)
     {
-        encoding.getServletPath();
-        setReturnValue(encoding, servletPath);
+        expect(encoding.getServletPath()).andReturn(servletPath);
     }
 
     public void testEncode()
@@ -87,14 +88,14 @@ public class AssetEncoderTest extends HiveMindTestCase
         encoding.setParameterValue(AssetService.DIGEST, null);
         encoding.setParameterValue(ServiceConstants.SERVICE, null);
 
-        replayControls();
+        replay();
 
         AssetEncoder encoder = new AssetEncoder();
         encoder.setPath("/assets");
 
         encoder.encode(encoding);
 
-        verifyControls();
+        verify();
     }
 
     public void testDecode()
@@ -108,19 +109,18 @@ public class AssetEncoderTest extends HiveMindTestCase
         encoding.setParameterValue(AssetService.DIGEST, "12345");
         encoding.setParameterValue(AssetService.PATH, "/foo/bar/Baz.gif");
 
-        replayControls();
+        replay();
 
         AssetEncoder encoder = new AssetEncoder();
         encoder.setPath("/assets");
 
         encoder.decode(encoding);
 
-        verifyControls();
+        verify();
     }
 
     protected void trainGetPathInfo(ServiceEncoding encoding, String pathInfo)
     {
-        encoding.getPathInfo();
-        setReturnValue(encoding, pathInfo);
+        expect(encoding.getPathInfo()).andReturn(pathInfo);
     }
 }

@@ -14,12 +14,13 @@
 
 package org.apache.tapestry.valid;
 
+import static org.easymock.EasyMock.expect;
+
 import java.util.Locale;
 
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.junit.TapestryTestCase;
-import org.easymock.MockControl;
 
 /**
  * Base class for tests of different {@link org.apache.tapestry.valid.IValidator}implementations.
@@ -53,17 +54,14 @@ public abstract class BaseValidatorTestCase extends TapestryTestCase
     protected IFormComponent newField(String displayName, Locale locale, int count)
     {
         IPage page = newPage(locale, count);
-
-        MockControl control = newControl(IFormComponent.class);
-        IFormComponent component = (IFormComponent) control.getMock();
+        
+        IFormComponent component = newMock(IFormComponent.class);
 
         for (int i = 0; i < count; i++)
         {
-            component.getPage();
-            control.setReturnValue(page);
+            expect(component.getPage()).andReturn(page);
 
-            component.getDisplayName();
-            control.setReturnValue(displayName);
+            expect(component.getDisplayName()).andReturn(displayName);
         }
 
         return component;
@@ -76,11 +74,9 @@ public abstract class BaseValidatorTestCase extends TapestryTestCase
 
     protected IPage newPage(Locale locale, int count)
     {
-        MockControl pagec = newControl(IPage.class);
-        IPage page = (IPage) pagec.getMock();
+        IPage page = newPage();
 
-        page.getLocale();
-        pagec.setReturnValue(locale, count);
+        expect(page.getLocale()).andReturn(locale).times(count);
 
         return page;
     }

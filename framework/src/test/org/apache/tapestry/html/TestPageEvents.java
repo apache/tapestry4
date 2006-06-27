@@ -14,21 +14,24 @@
 
 package org.apache.tapestry.html;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNull;
+
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.NullWriter;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.test.Creator;
-import org.easymock.MockControl;
 
 /**
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestPageEvents extends HiveMindTestCase
+public class TestPageEvents extends BaseComponentTestCase
 {
-    private IPage newPage()
+    private IPage createPage()
     {
         Creator creator = new Creator();
 
@@ -37,7 +40,7 @@ public class TestPageEvents extends HiveMindTestCase
 
     public void testPageDetached()
     {
-        IPage page = newPage();
+        IPage page = createPage();
         ListenerFixture l = new ListenerFixture();
 
         // Code path: no listener list
@@ -63,7 +66,7 @@ public class TestPageEvents extends HiveMindTestCase
 
     public void testPageAttached()
     {
-        IPage page = newPage();
+        IPage page = createPage();
         ListenerFixture l = new ListenerFixture();
 
         // Code path: no listener list
@@ -87,44 +90,29 @@ public class TestPageEvents extends HiveMindTestCase
 
     public void testPageBeginRender()
     {
-        IPage page = newPage();
+        IPage page = createPage();
         ListenerFixture l = new ListenerFixture();
-
-        MockControl control = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) control.getMock();
-        ResponseBuilder builder = (ResponseBuilder)newMock(ResponseBuilder.class);
         
-        cycle.isRewinding();
-        control.setReturnValue(true);
+        IRequestCycle cycle = newCycle();
+        ResponseBuilder builder = newMock(ResponseBuilder.class);
         
-        cycle.isRewinding();
-        control.setReturnValue(true);
-        
-        cycle.isRewinding();
-        control.setReturnValue(true);
+        expect(cycle.isRewinding()).andReturn(true).anyTimes();
         
         builder.render(NullWriter.getSharedInstance(), page, cycle);
         
-        replayControls();
+        replay();
         
         // Code path: no listener list
 
         page.renderPage(builder, cycle);
         
-        verifyControls();
+        verify();
 
-        cycle.isRewinding();
-        control.setReturnValue(true);
-        
-        cycle.isRewinding();
-        control.setReturnValue(true);
-        
-        cycle.isRewinding();
-        control.setReturnValue(true);
+        expect(cycle.isRewinding()).andReturn(true).anyTimes();
         
         builder.render(NullWriter.getSharedInstance(), page, cycle);
         
-        replayControls();
+        replay();
 
         page.addPageBeginRenderListener(l);
 
@@ -136,68 +124,46 @@ public class TestPageEvents extends HiveMindTestCase
 
         page.removePageBeginRenderListener(l);
 
-        verifyControls();
+        verify();
 
-        cycle.isRewinding();
-        control.setReturnValue(true);
-        
-        cycle.isRewinding();
-        control.setReturnValue(true);
-        
-        cycle.isRewinding();
-        control.setReturnValue(true);
+        expect(cycle.isRewinding()).andReturn(true).anyTimes();
         
         builder.render(NullWriter.getSharedInstance(), page, cycle);
         
-        replayControls();
+        replay();
 
         page.renderPage(builder, cycle);
 
         assertNull(l.getMethod());
 
-        verifyControls();
+        verify();
     }
 
     public void testPageEndRender()
     {
-        IPage page = newPage();
+        IPage page = createPage();
         ListenerFixture l = new ListenerFixture();
-
-        MockControl control = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) control.getMock();
-        ResponseBuilder builder = (ResponseBuilder)newMock(ResponseBuilder.class);
         
-        cycle.isRewinding();
-        control.setReturnValue(true);
+        IRequestCycle cycle = newCycle();
+        ResponseBuilder builder = newMock(ResponseBuilder.class);
         
-        cycle.isRewinding();
-        control.setReturnValue(true);
-        
-        cycle.isRewinding();
-        control.setReturnValue(true);
+        expect(cycle.isRewinding()).andReturn(true).anyTimes();
         
         builder.render(NullWriter.getSharedInstance(), page, cycle);
         
-        replayControls();
+        replay();
 
         // Code path: no listener list
 
         page.renderPage(builder, cycle);
 
-        verifyControls();
+        verify();
 
-        cycle.isRewinding();
-        control.setReturnValue(true);
-        
-        cycle.isRewinding();
-        control.setReturnValue(true);
-        
-        cycle.isRewinding();
-        control.setReturnValue(true);
+        expect(cycle.isRewinding()).andReturn(true).anyTimes();
         
         builder.render(NullWriter.getSharedInstance(), page, cycle);
         
-        replayControls();
+        replay();
 
         page.addPageEndRenderListener(l);
 
@@ -209,31 +175,24 @@ public class TestPageEvents extends HiveMindTestCase
 
         page.removePageEndRenderListener(l);
 
-        verifyControls();
+        verify();
 
-        cycle.isRewinding();
-        control.setReturnValue(true);
-        
-        cycle.isRewinding();
-        control.setReturnValue(true);
-        
-        cycle.isRewinding();
-        control.setReturnValue(true);
+        expect(cycle.isRewinding()).andReturn(true).anyTimes();
         
         builder.render(NullWriter.getSharedInstance(), page, cycle);
         
-        replayControls();
+        replay();
 
         page.renderPage(builder, cycle);
 
         assertNull(l.getMethod());
 
-        verifyControls();
+        verify();
     }
 
     public void testPageValidate()
     {
-        IPage page = newPage();
+        IPage page = createPage();
         ListenerFixture l = new ListenerFixture();
 
         // Code path: no listener list

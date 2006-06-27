@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.engine;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,13 +61,13 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
         EngineServiceLink l = new EngineServiceLink(rc, "/context/servlet", ENCODING, _urlCodec,
                 request, buildParameters("myservice", null), true);
 
-        replayControls();
+        replay();
 
         assertEquals("/context/servlet?service=myservice;encoded", l.getURL());
 
-        verifyControls();
+        verify();
 
-        assertListsEqual(new String[]
+        assertEquals(new String[]
         { ServiceConstants.SERVICE, ServiceConstants.PARAMETER }, l.getParameterNames());
 
     }
@@ -83,11 +85,11 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
         		"/ctx/app?service=foo&sp=godzilla&sp=frodo", 
         		"/ctx/app?service=foo&sp=godzilla&sp=frodo");
         
-        replayControls();
+        replay();
 
         assertEquals("/ctx/app?service=foo&sp=godzilla&sp=frodo", l.getURL());
 
-        verifyControls();
+        verify();
     }
 
     /** @since 4.0 */
@@ -102,11 +104,11 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
 
         trainEncodeURL(rc, "/context/servlet", "/context/servlet;encoded");
 
-        replayControls();
+        replay();
 
         assertEquals("/context/servlet;encoded", l.getURL(null, false));
 
-        verifyControls();
+        verify();
     }
 
     /** @since 4.0 */
@@ -121,11 +123,11 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
 
         trainEncodeURL(rc, "/context/servlet#anchor", "/context/servlet#anchor");
         
-        replayControls();
+        replay();
 
         assertEquals("/context/servlet#anchor", l.getURL("anchor", false));
 
-        verifyControls();
+        verify();
     }
 
     public void testGetURLWithAnchorAndParameters() throws Exception
@@ -140,11 +142,11 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
         		"/context/servlet?service=myservice#anchor", 
         		"/context/servlet?service=myservice#anchor");
         
-        replayControls();
+        replay();
 
         assertEquals("/context/servlet?service=myservice#anchor", l.getURL("anchor", true));
 
-        verifyControls();
+        verify();
     }
 
     public void testGetAbsoluteURL() throws Exception
@@ -165,11 +167,11 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
         		"HTTP://TESTSERVER.COM:9187/ctx/app?service=myservice", 
         		"HTTP://TESTSERVER.COM:9187/ctx/app?service=myservice");
         
-        replayControls();
+        replay();
         
         assertEquals("HTTP://TESTSERVER.COM:9187/ctx/app?service=myservice", l.getAbsoluteURL());
 
-        verifyControls();
+        verify();
     }
 
     public void testGetAbsoluteURLWithOverrides() throws Exception
@@ -184,7 +186,7 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
         		"https://myserver.net:9100/ctx/app?service=myservice", 
         		"https://myserver.net:9100/ctx/app?service=myservice");
         
-        replayControls();
+        replay();
 
         assertEquals("https://myserver.net:9100/ctx/app?service=myservice", l.getAbsoluteURL(
                 "https",
@@ -193,7 +195,7 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
                 null,
                 true));
 
-        verifyControls();
+        verify();
     }
 
     public void testGetURLNotAbsolute()
@@ -209,7 +211,7 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
         		"/ctx/app?service=myservice#myanchor", 
         		"/ctx/app?service=myservice#myanchor");
         
-        replayControls();
+        replay();
 
         EngineServiceLink l = new EngineServiceLink(rc, "/ctx/app", ENCODING, _urlCodec, request,
                 buildParameters("myservice", null), false);
@@ -221,7 +223,7 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
                 "myanchor",
                 true));
 
-        verifyControls();
+        verify();
     }
 
     public void testGetURLAbsolute()
@@ -235,7 +237,7 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
         		"https://override.net:8080/ctx/app?service=myservice#myanchor", 
         		"https://override.net:8080/ctx/app?service=myservice#myanchor");
         
-        replayControls();
+        replay();
 
         EngineServiceLink l = new EngineServiceLink(rc, "/ctx/app", ENCODING, _urlCodec, request,
                 buildParameters("myservice", null), false);
@@ -247,6 +249,6 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
                 "myanchor",
                 true));
 
-        verifyControls();
+        verify();
     }
 }

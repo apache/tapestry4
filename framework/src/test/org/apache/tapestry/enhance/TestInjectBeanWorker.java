@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.enhance;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,12 +25,11 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.service.MethodSignature;
-import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.BaseComponent;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.spec.BeanSpecification;
 import org.apache.tapestry.spec.IBeanSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.InjectBeanWorker}.
@@ -35,52 +37,52 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestInjectBeanWorker extends HiveMindTestCase
+public class TestInjectBeanWorker extends BaseComponentTestCase
 {
     private IComponentSpecification newSpec(String beanName, String propertyName, Location location)
     {
         IBeanSpecification bs = new BeanSpecification();
         bs.setPropertyName(propertyName);
         bs.setLocation(location);
+        
+        IComponentSpecification spec = newSpec();
 
-        MockControl control = newControl(IComponentSpecification.class);
-        IComponentSpecification spec = (IComponentSpecification) control.getMock();
+        expect(spec.getBeanNames()).andReturn(Collections.singletonList(beanName));
 
-        spec.getBeanNames();
-        control.setReturnValue(Collections.singletonList(beanName));
-
-        spec.getBeanSpecification(beanName);
-        control.setReturnValue(bs);
+        expect(spec.getBeanSpecification(beanName)).andReturn(bs);
 
         return spec;
     }
 
+    private EnhancementOperation newOp()
+    {
+        return newMock(EnhancementOperation.class);
+    }
+    
     public void testNoWork()
     {
         IComponentSpecification spec = newSpec("fred", null, null);
-        EnhancementOperation op = (EnhancementOperation) newMock(EnhancementOperation.class);
+        EnhancementOperation op = newMock(EnhancementOperation.class);
 
-        replayControls();
+        replay();
 
         new InjectBeanWorker().performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 
     public void testSuccess()
     {
         Location l = newLocation();
         IComponentSpecification spec = newSpec("fred", "barney", l);
-        MockControl control = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) control.getMock();
+        
+        EnhancementOperation op = newOp();
 
         op.claimReadonlyProperty("barney");
 
-        op.getPropertyType("barney");
-        control.setReturnValue(ArrayList.class);
+        expect(op.getPropertyType("barney")).andReturn(ArrayList.class);
 
-        op.getAccessorMethodName("barney");
-        control.setReturnValue("getBarney");
+        expect(op.getAccessorMethodName("barney")).andReturn("getBarney");
 
         op.addMethod(
                 Modifier.PUBLIC,
@@ -88,11 +90,11 @@ public class TestInjectBeanWorker extends HiveMindTestCase
                 "return (java.util.ArrayList) getBeans().getBean(\"fred\");",
                 l);
 
-        replayControls();
+        replay();
 
         new InjectBeanWorker().performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 
     public void testFailure()
@@ -100,22 +102,20 @@ public class TestInjectBeanWorker extends HiveMindTestCase
         Location l = fabricateLocation(99);
         Throwable ex = new ApplicationRuntimeException(EnhanceMessages.claimedProperty("barney"));
 
-        MockControl control = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) control.getMock();
+        EnhancementOperation op = newOp();
 
         IComponentSpecification spec = newSpec("fred", "barney", l);
 
-        ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
+        ErrorLog log = newMock(ErrorLog.class);
 
         op.claimReadonlyProperty("barney");
-        control.setThrowable(ex);
+        expectLastCall().andThrow(ex);
 
-        op.getBaseClass();
-        control.setReturnValue(BaseComponent.class);
+        expect(op.getBaseClass()).andReturn(BaseComponent.class);
 
         log.error(EnhanceMessages.errorAddingProperty("barney", BaseComponent.class, ex), l, ex);
 
-        replayControls();
+        replay();
 
         InjectBeanWorker w = new InjectBeanWorker();
 
@@ -123,7 +123,7 @@ public class TestInjectBeanWorker extends HiveMindTestCase
 
         w.performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 
 }

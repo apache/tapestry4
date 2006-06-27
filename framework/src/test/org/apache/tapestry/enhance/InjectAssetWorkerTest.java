@@ -14,6 +14,10 @@
 
 package org.apache.tapestry.enhance;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.testng.AssertJUnit.assertEquals;
+
 import java.lang.reflect.Modifier;
 import java.util.Collections;
 
@@ -44,11 +48,9 @@ public class InjectAssetWorkerTest extends BaseEnhancementTestCase
 
         IComponentSpecification spec = newSpec();
 
-        spec.getAssetNames();
-        setReturnValue(spec, Collections.singletonList(assetName));
+        expect(spec.getAssetNames()).andReturn(Collections.singletonList(assetName));
 
-        spec.getAsset(assetName);
-        setReturnValue(spec, as);
+        expect(spec.getAsset(assetName)).andReturn(as);
 
         return spec;
     }
@@ -58,11 +60,11 @@ public class InjectAssetWorkerTest extends BaseEnhancementTestCase
         IComponentSpecification spec = newSpec("fred", null, null);
         EnhancementOperation op = newEnhancementOp();
 
-        replayControls();
+        replay();
 
         new InjectAssetWorker().performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 
     public void testSuccess()
@@ -83,11 +85,11 @@ public class InjectAssetWorkerTest extends BaseEnhancementTestCase
                 "return getAsset(\"fred\");",
                 l);
 
-        replayControls();
+        replay();
 
         new InjectAssetWorker().performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 
     public void testFailure()
@@ -103,13 +105,13 @@ public class InjectAssetWorkerTest extends BaseEnhancementTestCase
         trainGetPropertyType(op, "barney", IComponent.class);
 
         op.claimReadonlyProperty("barney");
-        setThrowable(op, ex);
+        expectLastCall().andThrow(ex);
 
         trainGetBaseClass(op, BaseComponent.class);
 
         log.error(EnhanceMessages.errorAddingProperty("barney", BaseComponent.class, ex), l, ex);
 
-        replayControls();
+        replay();
 
         InjectAssetWorker w = new InjectAssetWorker();
 
@@ -117,7 +119,7 @@ public class InjectAssetWorkerTest extends BaseEnhancementTestCase
 
         w.performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 
     public void testWrongPropertyType()
@@ -128,7 +130,7 @@ public class InjectAssetWorkerTest extends BaseEnhancementTestCase
 
         op.claimReadonlyProperty("barney");
 
-        replayControls();
+        replay();
 
         InjectAssetWorker w = new InjectAssetWorker();
         try
@@ -143,7 +145,7 @@ public class InjectAssetWorkerTest extends BaseEnhancementTestCase
                     ex.getMessage());
         }
 
-        verifyControls();
+        verify();
 
     }
 }

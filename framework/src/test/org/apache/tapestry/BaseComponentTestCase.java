@@ -14,17 +14,31 @@
 
 package org.apache.tapestry;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.anyObject;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertTrue;
 
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Locatable;
 import org.apache.hivemind.Location;
+import org.apache.hivemind.ModuleDescriptorProvider;
+import org.apache.hivemind.Registry;
 import org.apache.hivemind.Resource;
+import org.apache.hivemind.impl.DefaultClassResolver;
+import org.apache.hivemind.impl.RegistryBuilder;
+import org.apache.hivemind.impl.XmlModuleDescriptorProvider;
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.hivemind.util.URLResource;
 import org.apache.tapestry.components.ILinkComponent;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
@@ -40,7 +54,9 @@ import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
 import org.apache.tapestry.test.Creator;
 import org.apache.tapestry.web.WebRequest;
-import org.easymock.MockControl;
+import org.testng.annotations.Test;
+
+import com.javaforge.tapestry.testng.TestBase;
 
 /**
  * Base class for testing components, or testing classes that operate on components. Simplifies
@@ -51,7 +67,8 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public abstract class BaseComponentTestCase extends HiveMindTestCase
+@Test
+public abstract class BaseComponentTestCase extends TestBase
 {
     private Creator _creator;
 
@@ -59,10 +76,15 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
     {
         if (_creator == null)
             _creator = new Creator();
-
+        
         return _creator;
     }
 
+    protected ClassResolver getClassResolver()
+    {
+        return new DefaultClassResolver();
+    }
+    
     protected CharArrayWriter _charArrayWriter;
 
     protected IMarkupWriter newBufferWriter()
@@ -90,6 +112,11 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
         _charArrayWriter.reset();
     }
 
+    protected void assertExceptionSubstring(Throwable t, String msg)
+    {
+        assertTrue(t.getMessage().contains(msg));
+    }
+    
     protected Object newInstance(Class componentClass)
     {
         return newInstance(componentClass, null);
@@ -101,19 +128,14 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
         { propertyName, propertyValue });
     }
 
-    protected Object newInstance(Class componentClass, Object[] properties)
-    {
-        return getCreator().newInstance(componentClass, properties);
-    }
-
     protected IRequestCycle newCycle()
     {
-        return (IRequestCycle)newMock(IRequestCycle.class);
+        return newMock(IRequestCycle.class);
     }
 
     protected IRequestCycle newCycle(IMarkupWriter writer)
     {
-        IRequestCycle cycle = (IRequestCycle) newMock(IRequestCycle.class);
+        IRequestCycle cycle = newMock(IRequestCycle.class);
         
         trainResponseBuilder(cycle, writer);
         
@@ -127,9 +149,8 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
     
     protected IRequestCycle newCycle(boolean rewinding, boolean trainWriter)
     {
-        MockControl control = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) control.getMock();
-
+        IRequestCycle cycle = newRequestCycle();
+        
         trainIsRewinding(cycle, rewinding);
         
         if (trainWriter)
@@ -140,8 +161,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
     
     protected IRequestCycle newCycle(boolean rewinding, IMarkupWriter writer)
     {
-        MockControl control = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) control.getMock();
+        IRequestCycle cycle = newRequestCycle();
 
         trainIsRewinding(cycle, rewinding);
 
@@ -165,8 +185,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
     protected IRequestCycle newCycleGetPage(String pageName, IPage page)
     {
-        MockControl control = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) control.getMock();
+        IRequestCycle cycle = newRequestCycle();
 
         expect(cycle.getPage(pageName)).andReturn(page);
 
@@ -175,8 +194,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
     protected IRequestCycle newCycleGetUniqueId(String id, String uniqueId)
     {
-        MockControl control = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) control.getMock();
+        IRequestCycle cycle = newRequestCycle();
 
         expect(cycle.getUniqueId(id)).andReturn(uniqueId);
         return cycle;
@@ -184,8 +202,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
     protected IRequestCycle newCycleGetParameter(String name, String value)
     {
-        MockControl control = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) control.getMock();
+        IRequestCycle cycle = newRequestCycle();
 
         expect(cycle.getParameter(name)).andReturn(value);
         return cycle;
@@ -193,13 +210,12 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
     protected IMarkupWriter newWriter()
     {
-        return (IMarkupWriter) newMock(IMarkupWriter.class);
+        return newMock(IMarkupWriter.class);
     }
 
     protected IBinding newBinding(Object value)
     {
-        MockControl control = newControl(IBinding.class);
-        IBinding binding = (IBinding) control.getMock();
+        IBinding binding = newMock(IBinding.class);
 
         expect(binding.getObject()).andReturn(value);
         return binding;
@@ -216,8 +232,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
     protected IComponent newComponent(String extendedId, Location location)
     {
-        MockControl control = newControl(IComponent.class);
-        IComponent component = (IComponent) control.getMock();
+        IComponent component = newMock(IComponent.class);
 
         expect(component.getExtendedId()).andReturn(extendedId);
         expect(component.getLocation()).andReturn(location);
@@ -226,8 +241,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
     protected IComponentSpecification newSpec(String parameterName, IParameterSpecification pspec)
     {
-        MockControl control = newControl(IComponentSpecification.class);
-        IComponentSpecification spec = (IComponentSpecification) control.getMock();
+        IComponentSpecification spec = newMock(IComponentSpecification.class);
 
         expect(spec.getParameter(parameterName)).andReturn(pspec);
         return spec;
@@ -235,12 +249,12 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
     protected IRender newRender()
     {
-        return (IRender) newMock(IRender.class);
+        return newMock(IRender.class);
     }
 
     protected IPage newPage()
     {
-        return (IPage) newMock(IPage.class);
+        return newMock(IPage.class);
     }
 
     protected IPage newPage(String name)
@@ -250,7 +264,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
     protected IPage newPage(String name, int count)
     {
-        IPage page = (IPage)newMock(IPage.class);
+        IPage page = newMock(IPage.class);
         
         expect(page.getPageName()).andReturn(name).times(count);
         
@@ -259,7 +273,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
     protected IForm newForm()
     {
-        return (IForm) newMock(IForm.class);
+        return newMock(IForm.class);
     }
 
     protected IRender newBody()
@@ -275,7 +289,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
     protected PageRenderSupport newPageRenderSupport()
     {
-        return (PageRenderSupport) newMock(PageRenderSupport.class);
+        return newMock(PageRenderSupport.class);
     }
 
     protected void trainGetSupport(IRequestCycle cycle, PageRenderSupport support)
@@ -315,12 +329,12 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
     protected IAsset newAsset()
     {
-        return (IAsset) newMock(IAsset.class);
+        return newMock(IAsset.class);
     }
 
     protected IEngine newEngine(ClassResolver resolver)
     {
-        IEngine engine = (IEngine) newMock(IEngine.class);
+        IEngine engine = newMock(IEngine.class);
         
         return engine;
     }
@@ -332,7 +346,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
     protected IComponent newComponent()
     {
-        return (IComponent) newMock(IComponent.class);
+        return newMock(IComponent.class);
     }
 
     protected void trainGetPage(IComponent component, IPage page)
@@ -352,7 +366,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
     protected IBinding newBinding()
     {
-        return (IBinding) newMock(IBinding.class);
+        return newMock(IBinding.class);
     }
 
     protected void trainGetComponent(IComponent container, String componentId, IComponent containee)
@@ -362,7 +376,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
     protected IEngineService newEngineService()
     {
-        return (IEngineService) newMock(IEngineService.class);
+        return newMock(IEngineService.class);
     }
 
     protected void trainGetLink(IEngineService service, IRequestCycle cycle, boolean post,
@@ -389,19 +403,32 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
     protected IComponentSpecification newSpec()
     {
-        return (IComponentSpecification) newMock(IComponentSpecification.class);
+        return newMock(IComponentSpecification.class);
     }
 
     protected Resource newResource()
     {
-        return (Resource) newMock(Resource.class);
+        return newMock(Resource.class);
     }
 
     protected WebRequest newRequest()
     {
-        return (WebRequest) newMock(WebRequest.class);
+        return newMock(WebRequest.class);
     }
 
+    protected Location newLocation()
+    {
+        return newMock(Location.class);
+    }
+    
+    protected Location fabricateLocation(int line)
+    {
+        Location location = newLocation();
+        expect(location.getLineNumber()).andReturn(line).anyTimes();
+        
+        return location;
+    }
+    
     protected void trainEncodeURL(IRequestCycle rc, String URL, String encodedURL)
     {
         expect(rc.encodeURL(URL)).andReturn(encodedURL);
@@ -424,7 +451,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
     protected NestedMarkupWriter newNestedWriter()
     {
-        return (NestedMarkupWriter) newMock(NestedMarkupWriter.class);
+        return newMock(NestedMarkupWriter.class);
     }
 
     protected void trainGetNestedWriter(IMarkupWriter writer, NestedMarkupWriter nested)
@@ -444,7 +471,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
     protected ILink newLink()
     {
-        return (ILink) newMock(ILink.class);
+        return newMock(ILink.class);
     }
 
     protected void trainGetLink(ILinkComponent component, IRequestCycle cycle, ILink link)
@@ -479,7 +506,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
     protected Log newLog()
     {
-        return (Log) newMock(Log.class);
+        return newMock(Log.class);
     }
 
     protected void trainGetId(IComponent component, String id)
@@ -489,24 +516,92 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
     
     protected void trainExtractBrowserEvent(IRequestCycle cycle)
     {
-        expect(cycle.getParameter(BrowserEvent.NAME)).andReturn("onClick");
+        expect(cycle.getParameter(BrowserEvent.NAME)).andReturn("onClick").anyTimes();
         
-        cycle.getParameter(BrowserEvent.TYPE);
-        setReturnValue(cycle, "click");
-        cycle.getParameters(BrowserEvent.KEYS);
-        setReturnValue(cycle, null);
-        cycle.getParameter(BrowserEvent.CHAR_CODE);
-        setReturnValue(cycle, null);
-        cycle.getParameter(BrowserEvent.PAGE_X);
-        setReturnValue(cycle, "123");
-        cycle.getParameter(BrowserEvent.PAGE_Y);
-        setReturnValue(cycle, "1243");
-        cycle.getParameter(BrowserEvent.LAYER_X);
-        setReturnValue(cycle, null);
-        cycle.getParameter(BrowserEvent.LAYER_Y);
-        setReturnValue(cycle, null);
+        expect(cycle.getParameter(BrowserEvent.TYPE)).andReturn("click");
+        expect(cycle.getParameters(BrowserEvent.KEYS)).andReturn(null);
+        expect(cycle.getParameter(BrowserEvent.CHAR_CODE)).andReturn(null);
+        expect(cycle.getParameter(BrowserEvent.PAGE_X)).andReturn("123");
+        expect(cycle.getParameter(BrowserEvent.PAGE_Y)).andReturn("1243");
+        expect(cycle.getParameter(BrowserEvent.LAYER_X)).andReturn(null);
+        expect(cycle.getParameter(BrowserEvent.LAYER_Y)).andReturn(null);
         
-        cycle.getParameter(BrowserEvent.TARGET + "." + BrowserEvent.TARGET_ATTR_ID);
-        setReturnValue(cycle, "element1");
+        expect(cycle.getParameter(BrowserEvent.TARGET + "." + BrowserEvent.TARGET_ATTR_ID))
+        .andReturn("element1");
+    }
+    
+    /**
+     * Convienience method for invoking {@link #buildFrameworkRegistry(String[])} with only a single
+     * file.
+     */
+    protected Registry buildFrameworkRegistry(String file) throws Exception
+    {
+        return buildFrameworkRegistry(new String[]
+        { file });
+    }
+    
+    /**
+     * Builds a minimal registry, containing only the specified files, plus the master module
+     * descriptor (i.e., those visible on the classpath). Files are resolved using
+     * {@link HiveMindTestCase#getResource(String)}.
+     */
+    protected Registry buildFrameworkRegistry(String[] files) throws Exception
+    {
+        ClassResolver resolver = getClassResolver();
+
+        List descriptorResources = new ArrayList();
+        for (int i = 0; i < files.length; i++)
+        {
+            Resource resource = getResource(files[i]);
+
+            descriptorResources.add(resource);
+        }
+
+        ModuleDescriptorProvider provider = new XmlModuleDescriptorProvider(resolver,
+                descriptorResources);
+
+        return buildFrameworkRegistry(provider);
+    }
+    
+    /**
+     * Builds a registry, containing only the modules delivered by the specified
+     * {@link org.apache.hivemind.ModuleDescriptorProvider}, plus the master module descriptor
+     * (i.e., those visible on the classpath).
+     */
+    protected Registry buildFrameworkRegistry(ModuleDescriptorProvider customProvider)
+    {
+        ClassResolver resolver = getClassResolver();
+
+        RegistryBuilder builder = new RegistryBuilder();
+
+        builder.addModuleDescriptorProvider(new XmlModuleDescriptorProvider(resolver));
+        builder.addModuleDescriptorProvider(customProvider);
+
+        return builder.constructRegistry(Locale.getDefault());
+    }
+
+    /**
+     * Builds a registry from exactly the provided resource; this registry will not include the
+     * <code>hivemind</code> module.
+     */
+    protected Registry buildMinimalRegistry(Resource l) throws Exception
+    {
+        RegistryBuilder builder = new RegistryBuilder();
+
+        return builder.constructRegistry(Locale.getDefault());
+    }
+    
+    /**
+     * Returns the given file as a {@link Resource} from the classpath. Typically, this is to find
+     * files in the same folder as the invoking class.
+     */
+    protected Resource getResource(String file)
+    {
+        URL url = getClass().getResource(file);
+
+        if (url == null)
+            throw new NullPointerException("No resource named '" + file + "'.");
+
+        return new URLResource(url);
     }
 }

@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.services.impl;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,7 +24,7 @@ import java.util.List;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.InfrastructureImpl}.
@@ -29,7 +32,7 @@ import org.apache.hivemind.test.HiveMindTestCase;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestInfrastructure extends HiveMindTestCase
+public class TestInfrastructure extends BaseComponentTestCase
 {
     private static class DeferredObjectFixture implements DeferredObject
     {
@@ -215,7 +218,7 @@ public class TestInfrastructure extends HiveMindTestCase
 
         log.error(ImplMessages.duplicateInfrastructureContribution(conflict, l1), l2, null);
 
-        replayControls();
+        replay();
 
         InfrastructureImpl infra = new InfrastructureImpl();
         infra.setNormalContributions(l);
@@ -226,6 +229,6 @@ public class TestInfrastructure extends HiveMindTestCase
 
         assertSame(fredModal, infra.getProperty("fred"));
 
-        verifyControls();
+        verify();
     }
 }

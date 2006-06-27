@@ -44,7 +44,7 @@ public class TestShell extends BaseComponentTestCase
 
         body.render(writer, cycle);
 
-        replayControls();
+        replay();
 
         Shell shell = (Shell) _creator.newInstance(Shell.class);
 
@@ -52,6 +52,6 @@ public class TestShell extends BaseComponentTestCase
 
         shell.render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 }

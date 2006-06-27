@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.junit;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertTrue;
+
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IMarkupWriter;
@@ -82,15 +85,14 @@ public class TestComponent extends BaseComponentTestCase
             list[i] = new TestRender();
             c.addOuterTest(list[i]);
             
-            cycle.getResponseBuilder();
-            setReturnValue(cycle, builder);
+            expect(cycle.getResponseBuilder()).andReturn(builder);
         }
         
-        replayControls();
+        replay();
         
         c.testRenderComponent(writer, cycle);
         
-        verifyControls();
+        verify();
         
         for (int i = 0; i < list.length; i++)
             assertTrue("Outer object #" + i + " did render.", list[i].rendered);

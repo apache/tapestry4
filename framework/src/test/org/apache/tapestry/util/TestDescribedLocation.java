@@ -14,8 +14,11 @@
 
 package org.apache.tapestry.util;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import org.apache.hivemind.Resource;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 
 /**
  * Tests for {@link org.apache.tapestry.util.DescribedLocation}.
@@ -23,13 +26,13 @@ import org.apache.hivemind.test.HiveMindTestCase;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class TestDescribedLocation extends HiveMindTestCase
+public class TestDescribedLocation extends BaseComponentTestCase
 {
     public void testLineRowAreZero()
     {
         Resource r = (Resource) newMock(Resource.class);
 
-        replayControls();
+        replay();
 
         DescribedLocation l = new DescribedLocation(r, "location description");
 
@@ -40,7 +43,7 @@ public class TestDescribedLocation extends HiveMindTestCase
 
         assertEquals("location description", l.toString());
 
-        verifyControls();
+        verify();
     }
 
     public void testEquals()
@@ -48,7 +51,7 @@ public class TestDescribedLocation extends HiveMindTestCase
         Resource r = (Resource) newMock(Resource.class);
         Resource r2 = (Resource) newMock(Resource.class);
 
-        replayControls();
+        replay();
 
         DescribedLocation l = new DescribedLocation(r, "location description");
         DescribedLocation l2 = new DescribedLocation(r2, "location description");
@@ -61,6 +64,6 @@ public class TestDescribedLocation extends HiveMindTestCase
         assertEquals(false, l.equals(l3));
         assertEquals(true, l.equals(l4));
 
-        verifyControls();
+        verify();
     }
 }

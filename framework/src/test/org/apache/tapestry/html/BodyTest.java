@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.html;
 
+import static org.testng.AssertJUnit.assertNull;
+import static org.testng.AssertJUnit.assertSame;
+
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.TapestryUtils;
@@ -32,11 +35,11 @@ public class BodyTest extends BaseComponentTestCase
 
         trainGetAttribute(cycle, TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE, null);
 
-        replayControls();
+        replay();
 
         assertNull(Body.get(cycle));
 
-        verifyControls();
+        verify();
     }
 
     public void testGetReturnsBody()
@@ -46,10 +49,10 @@ public class BodyTest extends BaseComponentTestCase
 
         trainGetAttribute(cycle, TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE, body);
 
-        replayControls();
+        replay();
 
         assertSame(body, Body.get(cycle));
 
-        verifyControls();
+        verify();
     }
 }

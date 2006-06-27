@@ -14,6 +14,11 @@
 
 package org.apache.tapestry.html;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNotSame;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -92,13 +97,13 @@ public class ScriptTest extends BaseComponentTestCase
 
         trainResponseBuilder(cycle, writer);
         
-        replayControls();
+        replay();
 
         component.addBody(body);
 
         component.renderComponent(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testWithSymbolsMap()
@@ -133,13 +138,13 @@ public class ScriptTest extends BaseComponentTestCase
 
         trainResponseBuilder(cycle, writer);
         
-        replayControls();
+        replay();
 
         component.addBody(body);
 
         component.renderComponent(writer, cycle);
 
-        verifyControls();
+        verify();
 
         assertEquals(baseSymbols, script._symbols);
         assertSame(script._symbols, component.getSymbols());
@@ -182,13 +187,13 @@ public class ScriptTest extends BaseComponentTestCase
 
         trainResponseBuilder(cycle, writer);
         
-        replayControls();
+        replay();
 
         component.addBody(body);
 
         component.renderComponent(writer, cycle);
 
-        verifyControls();
+        verify();
 
         Map expectedSymbols = new HashMap(baseSymbols);
         expectedSymbols.put("fred", "mercury");
@@ -207,7 +212,7 @@ public class ScriptTest extends BaseComponentTestCase
 
         trainResponseBuilder(cycle, writer);
         
-        replayControls();
+        replay();
 
         Script component = (Script) newInstance(Script.class);
 
@@ -215,7 +220,7 @@ public class ScriptTest extends BaseComponentTestCase
 
         component.renderComponent(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testMultiParamException() 
@@ -239,7 +244,7 @@ public class ScriptTest extends BaseComponentTestCase
         
         trainGetPageRenderSupport(cycle, support);
         
-        replayControls();
+        replay();
         
         component.addBody(body);
         
@@ -249,7 +254,7 @@ public class ScriptTest extends BaseComponentTestCase
         	assertExceptionSubstring(ex, "Script component has both script IAsset");
         }
         
-        verifyControls();
+        verify();
     }
     
     public void testIAssetParamRender()
@@ -267,10 +272,9 @@ public class ScriptTest extends BaseComponentTestCase
         
         IAsset scriptAsset = newAsset();
         
-        scriptAsset.getResourceLocation();
-        setReturnValue(scriptAsset, scriptLocation);
+        expect(scriptAsset.getResourceLocation()).andReturn(scriptLocation);
         
-        Script component = (Script) newInstance(Script.class, new Object[]
+        Script component = newInstance(Script.class, new Object[]
         { "specification", new ComponentSpecification(), "container", container, "scriptSource",
                 source, "scriptAsset", scriptAsset });
         
@@ -284,13 +288,13 @@ public class ScriptTest extends BaseComponentTestCase
         
         trainResponseBuilder(cycle, writer);
         
-        replayControls();
+        replay();
         
         component.addBody(body);
         
         component.renderComponent(writer, cycle);
         
-        verifyControls();
+        verify();
     }
     
     protected IScript newScript()
@@ -300,8 +304,7 @@ public class ScriptTest extends BaseComponentTestCase
 
     protected void trainGetScript(IScriptSource source, Resource scriptLocation, IScript script)
     {
-        source.getScript(scriptLocation);
-        setReturnValue(source, script);
+        expect(source.getScript(scriptLocation)).andReturn(script);
     }
 
     protected IScriptSource newScriptSource()
@@ -315,13 +318,10 @@ public class ScriptTest extends BaseComponentTestCase
         IComponentSpecification spec = newSpec();
         Resource resource = newResource();
 
-        component.getSpecification();
-        setReturnValue(component, spec);
+        expect(component.getSpecification()).andReturn(spec);
+        
+        expect(spec.getSpecificationLocation()).andReturn(resource);
 
-        spec.getSpecificationLocation();
-        setReturnValue(spec, resource);
-
-        resource.getRelativeResource(scriptPath);
-        setReturnValue(resource, scriptLocation);
+        expect(resource.getRelativeResource(scriptPath)).andReturn(scriptLocation);
     }
 }

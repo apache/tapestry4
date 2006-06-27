@@ -14,13 +14,15 @@
 
 package org.apache.tapestry.error;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.error.TestExceptionPresenter.ExceptionFixture;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.test.Creator;
-import org.easymock.MockControl;
 
 /**
  * Base class for tests of the various error reporting service implementations.
@@ -28,7 +30,7 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public abstract class BaseErrorTestCase extends HiveMindTestCase
+public abstract class BaseErrorTestCase extends BaseComponentTestCase
 {
 
     protected IPage newPage()
@@ -40,24 +42,21 @@ public abstract class BaseErrorTestCase extends HiveMindTestCase
 
     protected IRequestCycle newCycle(String pageName, IPage page)
     {
-        MockControl control = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) control.getMock();
-    
-        cycle.getPage(pageName);
-        control.setReturnValue(page);
+        IRequestCycle cycle = newCycle();
+        
+        expect(cycle.getPage(pageName)).andReturn(page);
     
         return cycle;
     }
 
     protected ResponseRenderer newRenderer(IRequestCycle cycle, Throwable throwable) throws Exception
     {
-        MockControl control = newControl(ResponseRenderer.class);
-        ResponseRenderer renderer = (ResponseRenderer) control.getMock();
+        ResponseRenderer renderer = newMock(ResponseRenderer.class);
     
         renderer.renderResponse(cycle);
     
         if (throwable != null)
-            control.setThrowable(throwable);
+            expectLastCall().andThrow(throwable);
     
         return renderer;
     }

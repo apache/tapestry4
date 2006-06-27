@@ -14,11 +14,14 @@
 
 package org.apache.tapestry.services.impl;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.net.URL;
 
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.asset.AssetSource;
 import org.apache.tapestry.engine.ISpecificationSource;
@@ -32,7 +35,7 @@ import org.apache.tapestry.spec.ILibrarySpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestNamespaceResources extends HiveMindTestCase
+public class TestNamespaceResources extends BaseComponentTestCase
 {
     protected Resource newResource()
     {
@@ -41,14 +44,12 @@ public class TestNamespaceResources extends HiveMindTestCase
 
     protected void trainGetRelativeResource(Resource parent, String path, Resource child)
     {
-        parent.getRelativeResource(path);
-        setReturnValue(parent,child);
+        expect(parent.getRelativeResource(path)).andReturn(child);
     }
 
     protected void trainGetResourceURL(Resource resource, URL url)
     {
-        resource.getResourceURL();
-        setReturnValue(resource,url);
+        expect(resource.getResourceURL()).andReturn(url);
     }
 
     protected ISpecificationSource newSource()
@@ -56,7 +57,7 @@ public class TestNamespaceResources extends HiveMindTestCase
         return (ISpecificationSource) newMock(ISpecificationSource.class);
     }
 
-    protected ILibrarySpecification newSpec()
+    protected ILibrarySpecification newLSpec()
     {
         return (ILibrarySpecification) newMock(ILibrarySpecification.class);
     }
@@ -71,7 +72,7 @@ public class TestNamespaceResources extends HiveMindTestCase
         Resource parent = newResource();
         Resource child = newResource();
         ISpecificationSource source = newSource();
-        ILibrarySpecification spec = newSpec();
+        ILibrarySpecification spec = newLSpec();
         AssetSource assetSource = newAssetSource();
         Location l = newLocation();
 
@@ -79,13 +80,13 @@ public class TestNamespaceResources extends HiveMindTestCase
 
         trainGetLibrarySpecification(source, child, spec);
 
-        replayControls();
+        replay();
 
         NamespaceResources nr = new NamespaceResourcesImpl(source, assetSource);
 
         assertSame(spec, nr.findChildLibrarySpecification(parent, "foo/bar.library", l));
 
-        verifyControls();
+        verify();
 
     }
 
@@ -94,11 +95,9 @@ public class TestNamespaceResources extends HiveMindTestCase
     {
         IAsset asset = newAsset();
 
-        assetSource.findAsset(parent, childPath, null, location);
-        setReturnValue(assetSource,asset);
+        expect(assetSource.findAsset(parent, childPath, null, location)).andReturn(asset);
 
-        asset.getResourceLocation();
-        setReturnValue(asset,child);
+        expect(asset.getResourceLocation()).andReturn(child);
     }
 
     protected IAsset newAsset()
@@ -114,8 +113,7 @@ public class TestNamespaceResources extends HiveMindTestCase
     protected void trainGetLibrarySpecification(ISpecificationSource source, Resource resource,
             ILibrarySpecification spec)
     {
-        source.getLibrarySpecification(resource);
-        setReturnValue(source,spec);
+        expect(source.getLibrarySpecification(resource)).andReturn(spec);
     }
 
     protected IComponentSpecification newComponentSpec()
@@ -134,16 +132,15 @@ public class TestNamespaceResources extends HiveMindTestCase
 
         trainResolveChildResource(assetSource, libraryResource, "Foo.page", l, specResource);
 
-        source.getPageSpecification(specResource);
-        setReturnValue(source,spec);
+        expect(source.getPageSpecification(specResource)).andReturn(spec);
 
-        replayControls();
+        replay();
 
         NamespaceResources nr = new NamespaceResourcesImpl(source, assetSource);
 
         assertSame(spec, nr.getPageSpecification(libraryResource, "Foo.page", l));
 
-        verifyControls();
+        verify();
     }
 
     public void testGetComponentSpecification()
@@ -157,15 +154,14 @@ public class TestNamespaceResources extends HiveMindTestCase
 
         trainResolveChildResource(assetSource, libraryResource, "Foo.jwc", l, specResource);
 
-        source.getComponentSpecification(specResource);
-        setReturnValue(source,spec);
+        expect(source.getComponentSpecification(specResource)).andReturn(spec);
 
-        replayControls();
+        replay();
 
         NamespaceResources nr = new NamespaceResourcesImpl(source, assetSource);
 
         assertSame(spec, nr.getComponentSpecification(libraryResource, "Foo.jwc", l));
 
-        verifyControls();
+        verify();
     }
 }

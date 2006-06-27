@@ -14,6 +14,11 @@
 
 package org.apache.tapestry.form;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNull;
+
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
@@ -21,7 +26,6 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidatorException;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.form.TextField}.
@@ -33,20 +37,15 @@ public class TestTextField extends BaseFormComponentTestCase
 {
     public void testRewind()
     {
-        MockControl tfsc = newControl(TranslatedFieldSupport.class);
-        TranslatedFieldSupport tfs = (TranslatedFieldSupport) tfsc.getMock();
-
-        MockControl vfsc = newControl(ValidatableFieldSupport.class);
-        ValidatableFieldSupport vfs = (ValidatableFieldSupport) vfsc.getMock();
+        TranslatedFieldSupport tfs = newMock(TranslatedFieldSupport.class);
+        ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
 
         TextField component = (TextField) newInstance(TextField.class, new Object[]
         { "translatedFieldSupport", tfs, "validatableFieldSupport", vfs });
-
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
+        
+        IRequestCycle cycle = newCycle();
+        
+        IForm form = newMock(IForm.class);
 
         IMarkupWriter writer = newWriter();
 
@@ -67,8 +66,7 @@ public class TestTextField extends BaseFormComponentTestCase
         
         try
         {
-            tfs.parse(component, "10");
-            tfsc.setReturnValue(value);
+            expect(tfs.parse(component, "10")).andReturn(value);
         
             vfs.validate(component, writer, cycle, value);
         }
@@ -77,31 +75,26 @@ public class TestTextField extends BaseFormComponentTestCase
             unreachable();
         }
         
-        replayControls();
+        replay();
 
         component.render(writer, cycle);
 
-        verifyControls();
+        verify();
         
         assertEquals(value, component.getValue());
     }
 
     public void testRewindTranslateFailed()
     {
-        MockControl tfsc = newControl(TranslatedFieldSupport.class);
-        TranslatedFieldSupport tfs = (TranslatedFieldSupport) tfsc.getMock();
-
-        MockControl vfsc = newControl(ValidatableFieldSupport.class);
-        ValidatableFieldSupport vfs = (ValidatableFieldSupport) vfsc.getMock();
+        TranslatedFieldSupport tfs = newMock(TranslatedFieldSupport.class);
+        ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
 
         TextField component = (TextField) newInstance(TextField.class, new Object[]
         { "translatedFieldSupport", tfs, "validatableFieldSupport", vfs });
 
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
+        IRequestCycle cycle = newCycle();
+        
+        IForm form = newMock(IForm.class);
 
         IMarkupWriter writer = newWriter();
 
@@ -122,8 +115,7 @@ public class TestTextField extends BaseFormComponentTestCase
         
         try
         {
-            tfs.parse(component, "10");
-            tfsc.setThrowable(exception);
+            expect(tfs.parse(component, "10")).andThrow(exception);
         }
         catch (ValidatorException e)
         {
@@ -133,31 +125,26 @@ public class TestTextField extends BaseFormComponentTestCase
         trainGetDelegate(form, delegate);
         delegate.record(exception);
         
-        replayControls();
+        replay();
 
         component.render(writer, cycle);
         
-        verifyControls();
+        verify();
 
         assertNull(component.getValue());
     }
 
     public void testRewindValidateFailed()
     {
-        MockControl tfsc = newControl(TranslatedFieldSupport.class);
-        TranslatedFieldSupport tfs = (TranslatedFieldSupport) tfsc.getMock();
-
-        MockControl vfsc = newControl(ValidatableFieldSupport.class);
-        ValidatableFieldSupport vfs = (ValidatableFieldSupport) vfsc.getMock();
+        TranslatedFieldSupport tfs = newMock(TranslatedFieldSupport.class);
+        ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
 
         TextField component = (TextField) newInstance(TextField.class, new Object[]
         { "translatedFieldSupport", tfs, "validatableFieldSupport", vfs });
 
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
+        IRequestCycle cycle = newCycle();
+        
+        IForm form = newMock(IForm.class);
 
         IMarkupWriter writer = newWriter();
 
@@ -180,11 +167,10 @@ public class TestTextField extends BaseFormComponentTestCase
         
         try
         {
-            tfs.parse(component, "10");
-            tfsc.setReturnValue(value);
+            expect(tfs.parse(component, "10")).andReturn(value);
             
             vfs.validate(component, writer, cycle, value);
-            vfsc.setThrowable(exception);
+            expectLastCall().andThrow(exception);
         }
         catch (ValidatorException e)
         {
@@ -194,11 +180,11 @@ public class TestTextField extends BaseFormComponentTestCase
         trainGetDelegate(form, delegate);
         delegate.record(exception);
         
-        replayControls();
+        replay();
 
         component.render(writer, cycle);
         
-        verifyControls();
+        verify();
         
         assertNull(component.getValue());
     }
@@ -207,33 +193,29 @@ public class TestTextField extends BaseFormComponentTestCase
     {
         TextField component = (TextField) newInstance(TextField.class);
 
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
+        IRequestCycle cycle = newCycle();
+        
+        IForm form = newMock(IForm.class);
 
         IMarkupWriter writer = newWriter();
 
         trainGetForm(cycle, form);
         trainWasPrerendered(form, writer, component, true);
 
-        replayControls();
+        replay();
 
         component.render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRewindNotForm()
     {
         TextField component = (TextField) newInstance(TextField.class);
 
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
+        IRequestCycle cycle = newCycle();
+        
+        IForm form = newMock(IForm.class);
 
         IMarkupWriter writer = newWriter();
 
@@ -249,22 +231,20 @@ public class TestTextField extends BaseFormComponentTestCase
         trainIsRewinding(form, false);
         trainIsRewinding(cycle, true);
 
-        replayControls();
+        replay();
 
         component.render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRewindDisabled()
     {
         TextField component = (TextField) newInstance(TextField.class, "disabled", Boolean.TRUE);
 
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
+        IRequestCycle cycle = newCycle();
+        
+        IForm form = newMock(IForm.class);
 
         IMarkupWriter writer = newWriter();
 
@@ -279,27 +259,23 @@ public class TestTextField extends BaseFormComponentTestCase
         trainGetElementId(form, component, "barney");
         trainIsRewinding(form, true);
 
-        replayControls();
+        replay();
 
         component.render(writer, cycle);
 
         assertNull(component.getProperty("value"));
 
-        verifyControls();
+        verify();
     }
 
     public void testRender()
     {
-        MockControl tfsc = newControl(TranslatedFieldSupport.class);
-        TranslatedFieldSupport tfs = (TranslatedFieldSupport) tfsc.getMock();
+        TranslatedFieldSupport tfs = newMock(TranslatedFieldSupport.class);
         
         ValidatableFieldSupport vfs = (ValidatableFieldSupport) newMock(ValidatableFieldSupport.class);
-
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
+        
+        IRequestCycle cycle = newCycle();
+        IForm form = newMock(IForm.class);
 
         IMarkupWriter writer = newBufferWriter();
 
@@ -324,33 +300,28 @@ public class TestTextField extends BaseFormComponentTestCase
         trainGetDelegate(form, delegate);
         trainGetDelegate(form, delegate);
 
-        tfs.format(component, new Integer(10));
-        tfsc.setReturnValue("10");
+        expect(tfs.format(component, new Integer(10))).andReturn("10");
         
         tfs.renderContributions(component, writer, cycle);
         vfs.renderContributions(component, writer, cycle);
 
-        replayControls();
+        replay();
 
         component.render(writer, cycle);
 
-        verifyControls();
+        verify();
 
         assertBuffer("<span class=\"prefix\"><input type=\"text\" name=\"fred\" value=\"10\" class=\"validation-delegate\"/></span>");
     }
 
     public void testRenderHidden()
     {
-        MockControl tfsc = newControl(TranslatedFieldSupport.class);
-        TranslatedFieldSupport tfs = (TranslatedFieldSupport) tfsc.getMock();
+        TranslatedFieldSupport tfs = newMock(TranslatedFieldSupport.class);
         
         ValidatableFieldSupport vfs = (ValidatableFieldSupport) newMock(ValidatableFieldSupport.class);
 
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
+        IRequestCycle cycle = newCycle();
+        IForm form = newMock(IForm.class);
 
         IMarkupWriter writer = newBufferWriter();
 
@@ -375,33 +346,28 @@ public class TestTextField extends BaseFormComponentTestCase
         trainGetDelegate(form, delegate);
         trainGetDelegate(form, delegate);
 
-        tfs.format(component, new Integer(10));
-        tfsc.setReturnValue("10");
+        expect(tfs.format(component, new Integer(10))).andReturn("10");
         
         tfs.renderContributions(component, writer, cycle);
         vfs.renderContributions(component, writer, cycle);
 
-        replayControls();
+        replay();
 
         component.render(writer, cycle);
 
-        verifyControls();
+        verify();
 
         assertBuffer("<span class=\"prefix\"><input type=\"password\" name=\"fred\" value=\"10\" class=\"validation-delegate\"/></span>");
     }
 
     public void testRenderDisabled()
     {
-        MockControl tfsc = newControl(TranslatedFieldSupport.class);
-        TranslatedFieldSupport tfs = (TranslatedFieldSupport) tfsc.getMock();
+        TranslatedFieldSupport tfs = newMock(TranslatedFieldSupport.class);
 
         ValidatableFieldSupport vfs = (ValidatableFieldSupport) newMock(ValidatableFieldSupport.class);
 
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
+        IRequestCycle cycle = newCycle();
+        IForm form = newMock(IForm.class);
 
         IMarkupWriter writer = newBufferWriter();
 
@@ -426,33 +392,28 @@ public class TestTextField extends BaseFormComponentTestCase
         trainGetDelegate(form, delegate);
         trainGetDelegate(form, delegate);
 
-        tfs.format(component, new Integer(10));
-        tfsc.setReturnValue("10");
+        expect(tfs.format(component, new Integer(10))).andReturn("10");
         
         tfs.renderContributions(component, writer, cycle);
         vfs.renderContributions(component, writer, cycle);
 
-        replayControls();
+        replay();
 
         component.render(writer, cycle);
 
-        verifyControls();
+        verify();
 
         assertBuffer("<span class=\"prefix\"><input type=\"text\" name=\"fred\" disabled=\"disabled\" value=\"10\" class=\"validation-delegate\"/></span>");
     }
 
     public void testRenderWithInformalParameters()
     {
-        MockControl tfsc = newControl(TranslatedFieldSupport.class);
-        TranslatedFieldSupport tfs = (TranslatedFieldSupport) tfsc.getMock();
+        TranslatedFieldSupport tfs = newMock(TranslatedFieldSupport.class);
 
         ValidatableFieldSupport vfs = (ValidatableFieldSupport) newMock(ValidatableFieldSupport.class);
 
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
+        IRequestCycle cycle = newCycle();
+        IForm form = newMock(IForm.class);
 
         IMarkupWriter writer = newBufferWriter();
 
@@ -481,33 +442,28 @@ public class TestTextField extends BaseFormComponentTestCase
         trainGetDelegate(form, delegate);
         trainGetDelegate(form, delegate);
 
-        tfs.format(component, new Integer(10));
-        tfsc.setReturnValue("10");
+        expect(tfs.format(component, new Integer(10))).andReturn("10");
         
         tfs.renderContributions(component, writer, cycle);
         vfs.renderContributions(component, writer, cycle);
 
-        replayControls();
+        replay();
 
         component.render(writer, cycle);
 
-        verifyControls();
+        verify();
 
         assertBuffer("<span class=\"prefix\"><input type=\"text\" name=\"fred\" value=\"10\" class=\"validation-delegate\" informal=\"informal-value\"/></span>");
     }
 
     public void testRenderNullValue()
     {
-        MockControl tfsc = newControl(TranslatedFieldSupport.class);
-        TranslatedFieldSupport tfs = (TranslatedFieldSupport) tfsc.getMock();
+        TranslatedFieldSupport tfs = newMock(TranslatedFieldSupport.class);
 
         ValidatableFieldSupport vfs = (ValidatableFieldSupport) newMock(ValidatableFieldSupport.class);
 
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
+        IRequestCycle cycle = newCycle();
+        IForm form = newMock(IForm.class);
 
         IMarkupWriter writer = newBufferWriter();
 
@@ -532,36 +488,33 @@ public class TestTextField extends BaseFormComponentTestCase
         trainGetDelegate(form, delegate);
         trainGetDelegate(form, delegate);
 
-        tfs.format(component, null);
-        tfsc.setReturnValue("");
+        expect(tfs.format(component, null)).andReturn("");
         
         tfs.renderContributions(component, writer, cycle);
         vfs.renderContributions(component, writer, cycle);
 
-        replayControls();
+        replay();
 
         component.render(writer, cycle);
 
-        verifyControls();
+        verify();
 
         assertBuffer("<span class=\"prefix\"><input type=\"text\" name=\"fred\" value=\"\" class=\"validation-delegate\"/></span>");
     }
 
     public void testIsRequired()
     {
-        MockControl supportc = newControl(ValidatableFieldSupport.class);
-        ValidatableFieldSupport support = (ValidatableFieldSupport) supportc.getMock();
+        ValidatableFieldSupport support = newMock(ValidatableFieldSupport.class);
 
         TextField field = (TextField) newInstance(TextField.class, new Object[]
         { "validatableFieldSupport", support, });
 
-        support.isRequired(field);
-        supportc.setReturnValue(true);
+        expect(support.isRequired(field)).andReturn(true);
 
-        replayControls();
+        replay();
 
         assertEquals(true, field.isRequired());
 
-        verifyControls();
+        verify();
     }
 }

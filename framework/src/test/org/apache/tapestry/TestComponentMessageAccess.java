@@ -14,10 +14,12 @@
 
 package org.apache.tapestry;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+
 import org.apache.hivemind.Messages;
-import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.test.Creator;
-import org.easymock.MockControl;
+import org.testng.annotations.Test;
 
 /**
  * Tests support for several deprecated methods on {@link org.apache.tapestry.AbstractComponent}
@@ -27,7 +29,8 @@ import org.easymock.MockControl;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class TestComponentMessageAccess extends HiveMindTestCase
+@Test
+public class TestComponentMessageAccess extends BaseComponentTestCase
 {
     private AbstractComponent newComponent(Messages messages)
     {
@@ -39,66 +42,59 @@ public class TestComponentMessageAccess extends HiveMindTestCase
 
     public void testGetMessage()
     {
-        MockControl control = newControl(Messages.class);
-        Messages m = (Messages) control.getMock();
+        Messages m = newMock(Messages.class);
 
-        m.getMessage("fred");
-        control.setReturnValue("flintstone");
+        expect(m.getMessage("fred")).andReturn("flintstone");
 
         AbstractComponent ac = newComponent(m);
 
-        replayControls();
+        replay();
 
         assertEquals("flintstone", ac.getMessage("fred"));
 
-        verifyControls();
+        verify();
     }
 
     public void testFormat()
     {
-        MockControl control = newControl(Messages.class);
-        Messages m = (Messages) control.getMock();
+        Messages m = newMock(Messages.class);
 
-        m.format("fred", "flintstone");
-        control.setReturnValue("Fred Flintstone");
+        expect(m.format("fred", "flintstone")).andReturn("Fred Flintstone");
 
         AbstractComponent ac = newComponent(m);
 
-        replayControls();
+        replay();
 
         assertEquals("Fred Flintstone", ac.format("fred", "flintstone"));
 
-        verifyControls();
+        verify();
 
-        m.format("fred", "wilma", "dino");
-        control.setReturnValue("flintstone family");
+        expect(m.format("fred", "wilma", "dino")).andReturn("flintstone family");
 
-        replayControls();
+        replay();
 
         assertEquals("flintstone family", ac.format("fred", "wilma", "dino"));
 
-        verifyControls();
+        verify();
 
-        m.format("fred", "wilma", "dino", "pebbles");
-        control.setReturnValue("flintstone family 2");
+        expect(m.format("fred", "wilma", "dino", "pebbles")).andReturn("flintstone family 2");
 
-        replayControls();
+        replay();
 
         assertEquals("flintstone family 2", ac.format("fred", "wilma", "dino", "pebbles"));
 
-        verifyControls();
+        verify();
 
         Object[] arguments = new String[]
         { "flinstone" };
 
-        m.format("fred", arguments);
-        control.setReturnValue("flintstone family 3");
+        expect(m.format("fred", arguments)).andReturn("flintstone family 3");
 
-        replayControls();
+        replay();
 
         assertEquals("flintstone family 3", ac.format("fred", arguments));
 
-        verifyControls();
+        verify();
 
     }
 }

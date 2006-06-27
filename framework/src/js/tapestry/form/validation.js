@@ -87,6 +87,15 @@ tapestry.form.validation={
 			formValid=false;
 		}
 		
+		if (results.hasInvalid()) {
+			var invalid=results.getInvalid();
+			for (var i=0; i < invalid.length; i++) {
+				this.handleInvalidField(invalid[i], profile);
+			}
+			
+			formValid=false;
+		}
+		
 		return formValid; // if got past successful everything is invalid
 	},
 	
@@ -97,16 +106,6 @@ tapestry.form.validation={
 	 * @param profile The form validation profile.
 	 */
 	handleMissingField:function(field, profile){
-		// if it's a widget form control try to point the field
-		// to the widget controlled field
-		/* var w=dojo.widget.byId(field);
-		if (w) {
-			if (w["textInputNode"]){
-				field=w.textInputNode;
-			}
-		}
-		*/
-		
 		dojo.html.removeClass(field, this.invalidClass);
 		
 		if (!dojo.html.hasClass(field, this.missingClass)){
@@ -162,8 +161,8 @@ tapestry.form.validation={
 		if (results.hasInvalid()){
 			var fields=results.getInvalid();
 			for (var i=0; i<fields.length; i++){
-				if (profile[fields[i]] && profile[fields[i]]["required"]){
-					ierrs.push(profile[fields[i]]["required"]);
+				if (profile[fields[i]] && profile[fields[i]]["constraints"]){
+					ierrs.push(profile[fields[i]]["constraints"]);
 				}
 			}
 		}

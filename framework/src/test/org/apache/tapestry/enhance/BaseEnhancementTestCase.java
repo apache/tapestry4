@@ -17,7 +17,7 @@ package org.apache.tapestry.enhance;
 import static org.easymock.EasyMock.expect;
 
 import org.apache.hivemind.Location;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.engine.state.ApplicationStateManager;
 import org.apache.tapestry.spec.IComponentSpecification;
 
@@ -27,7 +27,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public abstract class BaseEnhancementTestCase extends HiveMindTestCase
+public abstract class BaseEnhancementTestCase extends BaseComponentTestCase
 {
     public IComponentSpecification newSpec(Location location)
     {
@@ -36,11 +36,6 @@ public abstract class BaseEnhancementTestCase extends HiveMindTestCase
         expect(spec.getLocation()).andReturn(location);
 
         return spec;
-    }
-
-    protected IComponentSpecification newSpec()
-    {
-        return (IComponentSpecification) newMock(IComponentSpecification.class);
     }
 
     protected EnhancementOperation newOp()

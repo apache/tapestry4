@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.form.validator;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
@@ -38,11 +40,11 @@ public class TestMinLength extends BaseValidatorTestCase
 
         String object = "a nice long string";
 
-        replayControls();
+        replay();
 
         new MinLength("minLength=5").validate(field, messages, object);
 
-        verifyControls();
+        verify();
     }
 
     public void testFail()
@@ -55,7 +57,7 @@ public class TestMinLength extends BaseValidatorTestCase
                 { new Integer(10), "My Field" },
                 "Exception!");
 
-        replayControls();
+        replay();
 
         try
         {
@@ -78,7 +80,7 @@ public class TestMinLength extends BaseValidatorTestCase
                 { new Integer(10), "My Field" },
                 "Exception!");
 
-        replayControls();
+        replay();
 
         try
         {
@@ -108,11 +110,11 @@ public class TestMinLength extends BaseValidatorTestCase
         context
                 .addSubmitHandler("function(event) { Tapestry.validate_min_length(event, 'myfield', 20, 'default message'); }");
 
-        replayControls();
+        replay();
 
         new MinLength("minLength=20").renderContribution(writer, cycle, context, field);
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderContributionCustomMessage()
@@ -137,7 +139,7 @@ public class TestMinLength extends BaseValidatorTestCase
         context
                 .addSubmitHandler("function(event) { Tapestry.validate_min_length(event, 'customField', 25, 'custom\\\\message'); }");
 
-        replayControls();
+        replay();
 
         new MinLength("minLength=25,message=custom").renderContribution(
                 writer,
@@ -145,7 +147,7 @@ public class TestMinLength extends BaseValidatorTestCase
                 context,
                 field);
 
-        verifyControls();
+        verify();
     }
 
     public void testNotRequired()

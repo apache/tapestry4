@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.error;
 
+import static org.testng.AssertJUnit.assertSame;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
@@ -43,7 +45,7 @@ public class TestExceptionPresenter extends BaseErrorTestCase
 
         cycle.activate(page);
 
-        replayControls();
+        replay();
 
         ExceptionPresenterImpl ep = new ExceptionPresenterImpl();
         ep.setExceptionPageName("Exception");
@@ -51,7 +53,7 @@ public class TestExceptionPresenter extends BaseErrorTestCase
 
         ep.presentException(cycle, cause);
 
-        verifyControls();
+        verify();
 
         assertSame(cause, page.getProperty("exception"));
     }
@@ -74,7 +76,7 @@ public class TestExceptionPresenter extends BaseErrorTestCase
                 ErrorMessages.unableToPresentExceptionPage(renderCause),
                 renderCause);
 
-        replayControls();
+        replay();
 
         ExceptionPresenterImpl ep = new ExceptionPresenterImpl();
         ep.setExceptionPageName("Exception");
@@ -91,7 +93,7 @@ public class TestExceptionPresenter extends BaseErrorTestCase
             assertSame(renderCause, ex.getRootCause());
         }
 
-        verifyControls();
+        verify();
 
         assertSame(cause, page.getProperty("exception"));
     }

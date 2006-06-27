@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.form.validator;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
@@ -38,11 +40,11 @@ public class TestMin extends BaseValidatorTestCase
 
         Integer object = new Integer(10);
 
-        replayControls();
+        replay();
 
         new Min("min=5").validate(field, messages, object);
 
-        verifyControls();
+        verify();
     }
 
     public void testFail()
@@ -55,7 +57,7 @@ public class TestMin extends BaseValidatorTestCase
                 { "My Field", new Double(10) },
                 "Exception!");
 
-        replayControls();
+        replay();
 
         try
         {
@@ -78,7 +80,7 @@ public class TestMin extends BaseValidatorTestCase
                 { "My Field", new Double(10) },
                 "custom message");
 
-        replayControls();
+        replay();
 
         try
         {
@@ -108,11 +110,11 @@ public class TestMin extends BaseValidatorTestCase
         context
                 .addSubmitHandler("function(event) { Tapestry.validate_min_number(event, 'myfield', 20.0, 'default message'); }");
         
-        replayControls();
+        replay();
         
         new Min("min=20").renderContribution(writer, cycle, context, field);
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderContributionCustomMessage()
@@ -137,10 +139,10 @@ public class TestMin extends BaseValidatorTestCase
         context
                 .addSubmitHandler("function(event) { Tapestry.validate_min_number(event, 'myfield', 20.0, 'custom\\\\message'); }");
 
-        replayControls();
+        replay();
 
         new Min("min=20,message=custom").renderContribution(writer, cycle, context, field);
 
-        verifyControls();
+        verify();
     }
 }

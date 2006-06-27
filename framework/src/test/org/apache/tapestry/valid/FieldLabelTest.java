@@ -14,6 +14,10 @@
 
 package org.apache.tapestry.valid;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import org.apache.hivemind.Location;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IBinding;
@@ -23,7 +27,6 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.BaseFormComponentTestCase;
 import org.apache.tapestry.form.IFormComponent;
-import org.easymock.MockControl;
 
 /**
  * Tests for the {@link org.apache.tapestry.valid.FieldLabel} component.
@@ -44,8 +47,7 @@ public class FieldLabelTest extends BaseFormComponentTestCase
 
     private void trainGetDelegate(IValidationDelegate delegate, IForm form)
     {
-        form.getDelegate();
-        setReturnValue(form, delegate);
+        expect(form.getDelegate()).andReturn(delegate);
     }
 
     private IPage newFred()
@@ -61,8 +63,7 @@ public class FieldLabelTest extends BaseFormComponentTestCase
 
     private void trainGetIdPath(IPage page, String idPath)
     {
-        page.getIdPath();
-        setReturnValue(page, idPath);
+        expect(page.getIdPath()).andReturn(idPath);
     }
 
     private IFormComponent newField(String displayName, String clientId)
@@ -78,14 +79,12 @@ public class FieldLabelTest extends BaseFormComponentTestCase
 
     private void trainGetClientId(String clientId, IFormComponent field)
     {
-        field.getClientId();
-        setReturnValue(field, clientId);
+        expect(field.getClientId()).andReturn(clientId);
     }
 
     private void trainGetDisplayName(IFormComponent field, String displayName)
     {
-        field.getDisplayName();
-        setReturnValue(field, displayName);
+        expect(field.getDisplayName()).andReturn(displayName);
     }
 
     public void testRewinding()
@@ -102,14 +101,14 @@ public class FieldLabelTest extends BaseFormComponentTestCase
 
         trainIsRewinding(cycle, true);
 
-        replayControls();
+        replay();
 
         FieldLabel fl = (FieldLabel) newInstance(FieldLabel.class, new Object[]
         { "field", field, "location", l, "prerender", true });
 
         fl.render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testNoField()
@@ -117,23 +116,22 @@ public class FieldLabelTest extends BaseFormComponentTestCase
         IValidationDelegate delegate = new MockDelegate();
         IForm form = newForm(delegate);
         IMarkupWriter writer = newBufferWriter();
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IRequestCycle cycle = newCycle();
 
         trainGetForm(cycle, form);
 
         trainIsRewinding(cycle, false);
 
-        replayControls();
+        replay();
 
-        FieldLabel fl = (FieldLabel) newInstance(FieldLabel.class, new Object[]
+        FieldLabel fl = newInstance(FieldLabel.class, new Object[]
         { "displayName", "FredFlintstone" });
 
         fl.render(writer, cycle);
 
         assertBuffer("{LABEL-PREFIX}<label>FredFlintstone</label>{LABEL-SUFFIX}");
 
-        verifyControls();
+        verify();
     }
 
     public void testNoFieldRaw()
@@ -141,31 +139,29 @@ public class FieldLabelTest extends BaseFormComponentTestCase
         IValidationDelegate delegate = new MockDelegate();
         IForm form = newForm(delegate);
         IMarkupWriter writer = newBufferWriter();
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IRequestCycle cycle = newCycle();
 
         trainGetForm(cycle, form);
 
         trainIsRewinding(cycle, false);
 
-        replayControls();
+        replay();
 
-        FieldLabel fl = (FieldLabel) newInstance(FieldLabel.class, new Object[]
+        FieldLabel fl = newInstance(FieldLabel.class, new Object[]
         { "displayName", "<b>FredFlintstone</b>", "raw", Boolean.TRUE });
 
         fl.render(writer, cycle);
 
         assertBuffer("{LABEL-PREFIX}<label><b>FredFlintstone</b></label>{LABEL-SUFFIX}");
 
-        verifyControls();
+        verify();
     }
 
     public void testNoFieldOrDisplayName()
     {
         IForm form = newForm();
         IMarkupWriter writer = newBufferWriter();
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IRequestCycle cycle = newCycle();
 
         Location l = newLocation();
         IBinding binding = newBinding(l);
@@ -175,9 +171,9 @@ public class FieldLabelTest extends BaseFormComponentTestCase
 
         trainIsRewinding(cycle, false);
 
-        replayControls();
+        replay();
 
-        FieldLabel fl = (FieldLabel) newInstance(FieldLabel.class, new Object[]
+        FieldLabel fl = newInstance(FieldLabel.class, new Object[]
         { "id", "label", "page", page, "container", page });
 
         fl.setBinding("field", binding);
@@ -196,7 +192,7 @@ public class FieldLabelTest extends BaseFormComponentTestCase
             assertSame(binding, ex.getBinding());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testDisplayNameFromField()
@@ -222,13 +218,13 @@ public class FieldLabelTest extends BaseFormComponentTestCase
 
         trainGetDelegate(form, delegate);
 
-        replayControls();
+        replay();
 
         fl.render(writer, cycle);
 
         assertBuffer("{LABEL-PREFIX}<label>MyLabel</label>{LABEL-SUFFIX}");
 
-        verifyControls();
+        verify();
     }
 
     public void testPrerenderOff()
@@ -252,13 +248,13 @@ public class FieldLabelTest extends BaseFormComponentTestCase
 
         trainGetDelegate(form, delegate);
 
-        replayControls();
+        replay();
 
         fl.render(writer, cycle);
 
         assertBuffer("{LABEL-PREFIX}<label>MyLabel</label>{LABEL-SUFFIX}");
 
-        verifyControls();
+        verify();
     }
 
     public void testFieldWithClientId()
@@ -284,13 +280,13 @@ public class FieldLabelTest extends BaseFormComponentTestCase
 
         trainGetDelegate(form, delegate);
 
-        replayControls();
+        replay();
 
         fl.render(writer, cycle);
 
         assertBuffer("{LABEL-PREFIX}<label for=\"clientId\">MyLabel</label>{LABEL-SUFFIX}");
 
-        verifyControls();
+        verify();
     }
 
     public void testNoDisplayNameInField()
@@ -317,7 +313,7 @@ public class FieldLabelTest extends BaseFormComponentTestCase
         trainGetDisplayName(field, null);
         trainGetExtendedId(field, "Fred/field");
 
-        replayControls();
+        replay();
 
         try
         {
@@ -331,6 +327,6 @@ public class FieldLabelTest extends BaseFormComponentTestCase
                     ex.getMessage());
         }
 
-        verifyControls();
+        verify();
     }
 }

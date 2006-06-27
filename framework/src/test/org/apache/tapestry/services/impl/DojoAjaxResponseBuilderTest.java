@@ -13,12 +13,18 @@
 // limitations under the License.
 package org.apache.tapestry.services.impl;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertFalse;
+import static org.testng.AssertJUnit.assertSame;
+import static org.testng.AssertJUnit.assertTrue;
+
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
@@ -29,6 +35,7 @@ import org.apache.tapestry.markup.MarkupFilter;
 import org.apache.tapestry.markup.MarkupWriterImpl;
 import org.apache.tapestry.markup.UTFMarkupFilter;
 import org.apache.tapestry.services.ResponseBuilder;
+import org.testng.annotations.Configuration;
 
 
 /**
@@ -37,7 +44,7 @@ import org.apache.tapestry.services.ResponseBuilder;
  * @author jkuhnert
  */
 @SuppressWarnings("cast")
-public class DojoAjaxResponseBuilderTest extends HiveMindTestCase
+public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
 {
 
     private static CharArrayWriter _writer;
@@ -52,11 +59,10 @@ public class DojoAjaxResponseBuilderTest extends HiveMindTestCase
         return new PrintWriter(_writer);
     }
 
+    @Configuration(afterTestClass = true)
     protected void tearDown() throws Exception
     {
         _writer = null;
-
-        super.tearDown();
     }
 
     private void assertOutput(String expected)
@@ -75,11 +81,11 @@ public class DojoAjaxResponseBuilderTest extends HiveMindTestCase
         
         render.render(NullWriter.getSharedInstance(), cycle);
         
-        replayControls();
+        replay();
         
         builder.render(null, render, cycle);
         
-        verifyControls();
+        verify();
         
         assertSame(builder.getWriter(), null);
     }
@@ -94,11 +100,11 @@ public class DojoAjaxResponseBuilderTest extends HiveMindTestCase
         
         render.render(NullWriter.getSharedInstance(), cycle);
         
-        replayControls();
+        replay();
         
         builder.render(null, render, cycle);
         
-        verifyControls();
+        verify();
         
         assertSame(builder.getWriter(), writer);
     }
@@ -107,11 +113,11 @@ public class DojoAjaxResponseBuilderTest extends HiveMindTestCase
     {
         ResponseBuilder builder = new DojoAjaxResponseBuilder(null, null);
         
-        replayControls();
+        replay();
         
         builder.isBodyScriptAllowed(null);
         
-        verifyControls();
+        verify();
     }
     
     public void testPartialRender()
@@ -130,17 +136,9 @@ public class DojoAjaxResponseBuilderTest extends HiveMindTestCase
         
         render.render(NullWriter.getSharedInstance(), cycle);
         
-        comp1.getClientId();
-        setReturnValue(comp1, "id1");
+        expect(comp1.getClientId()).andReturn("id1").anyTimes();
         
-        comp1.getClientId();
-        setReturnValue(comp1, "id1");
-        
-        comp1.getClientId();
-        setReturnValue(comp1, "id1");
-        
-        writer.getNestedWriter();
-        setReturnValue(writer, nested);
+        expect(writer.getNestedWriter()).andReturn(nested);
         
         nested.begin("response");
         nested.attribute("id", "id1");
@@ -148,7 +146,7 @@ public class DojoAjaxResponseBuilderTest extends HiveMindTestCase
         
         comp1.render(nested, cycle);
         
-        replayControls();
+        replay();
         
         builder.render(null, render, cycle);
         
@@ -157,7 +155,7 @@ public class DojoAjaxResponseBuilderTest extends HiveMindTestCase
         
         builder.render(null, comp1, cycle);
         
-        verifyControls();
+        verify();
         
         assertSame(builder.getWriter(), writer);
     }
@@ -170,20 +168,19 @@ public class DojoAjaxResponseBuilderTest extends HiveMindTestCase
         
         ResponseBuilder builder = new DojoAjaxResponseBuilder(null, parts);
         
-        comp.getClientId();
-        setReturnValue(comp, "comp");
-        comp.getClientId();
-        setReturnValue(comp, "comp1");
-        comp.getClientId();
-        setReturnValue(comp, "comp");
+        expect(comp.getClientId()).andReturn("comp");
         
-        replayControls();
+        expect(comp.getClientId()).andReturn("comp1");
+        
+        expect(comp.getClientId()).andReturn("comp");
+        
+        replay();
         
         assertFalse(builder.isBodyScriptAllowed(comp));
         assertTrue(builder.isExternalScriptAllowed(comp));
         assertFalse(builder.isInitializationScriptAllowed(comp));
         
-        verifyControls();
+        verify();
     }
     
     public void testWriteBodyScript()
@@ -192,7 +189,7 @@ public class DojoAjaxResponseBuilderTest extends HiveMindTestCase
         PrintWriter writer = newPrintWriter();
         IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
         
-        replayControls();
+        replay();
         
         IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
         DojoAjaxResponseBuilder builder = new DojoAjaxResponseBuilder(mw, null);
@@ -201,8 +198,8 @@ public class DojoAjaxResponseBuilderTest extends HiveMindTestCase
         String imageInit = "image initializations";
         String preload = "preloadedvarname";
         
-        verifyControls();
-        replayControls();
+        verify();
+        replay();
         
         builder.beginResponse();
         
@@ -231,7 +228,7 @@ public class DojoAjaxResponseBuilderTest extends HiveMindTestCase
                 "//]]>\n" + 
                 "</script></response></ajax-response>");
         
-        verifyControls();
+        verify();
     }
     
     public void testWriteExternalScripts()
@@ -240,7 +237,7 @@ public class DojoAjaxResponseBuilderTest extends HiveMindTestCase
         PrintWriter writer = newPrintWriter();
         IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
         
-        replayControls();
+        replay();
         
         IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
         DojoAjaxResponseBuilder builder = new DojoAjaxResponseBuilder(mw, null);
@@ -248,8 +245,8 @@ public class DojoAjaxResponseBuilderTest extends HiveMindTestCase
         String script1 = "http://noname/js/package.js";
         String script2 = "http://noname/js/package.js";
         
-        verifyControls();
-        replayControls();
+        verify();
+        replay();
         
         builder.beginResponse();
         
@@ -268,7 +265,7 @@ public class DojoAjaxResponseBuilderTest extends HiveMindTestCase
                 LINE_SEPERATOR +
                 "</response></ajax-response>");
         
-        verifyControls();
+        verify();
     }
     
     public void testWriteInitializationScript()
@@ -276,15 +273,15 @@ public class DojoAjaxResponseBuilderTest extends HiveMindTestCase
         MarkupFilter filter = new UTFMarkupFilter();
         PrintWriter writer = newPrintWriter();
         
-        replayControls();
+        replay();
         
         IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
         DojoAjaxResponseBuilder builder = new DojoAjaxResponseBuilder(mw, null);
         
         String script = "doThisInInit();";
         
-        verifyControls();
-        replayControls();
+        verify();
+        replay();
         
         builder.beginResponse();
         
@@ -301,6 +298,6 @@ public class DojoAjaxResponseBuilderTest extends HiveMindTestCase
                 "//]]>\n" + 
                 "</script></response></ajax-response>");
         
-        verifyControls();
+        verify();
     }
 }

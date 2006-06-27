@@ -13,6 +13,9 @@
 // limitations under the License.
 package org.apache.tapestry.enhance;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+
 import java.lang.reflect.Modifier;
 
 import org.apache.hivemind.ApplicationRuntimeException;
@@ -22,7 +25,6 @@ import org.apache.hivemind.service.MethodSignature;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.services.impl.ComponentEventInvoker;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.easymock.MockControl;
 
 
 /**
@@ -36,39 +38,36 @@ public class TestInjectEventInvokerWorker extends BaseEnhancementTestCase
     public void testSuccess() throws Exception
     {
         Location l = newLocation();
-
-        MockControl control = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) control.getMock();
+        
+        EnhancementOperation op = newOp();
         ComponentEventInvoker invoker = new ComponentEventInvoker();
         
         IComponentSpecification spec = newSpec(l);
         
         op.claimReadonlyProperty("eventInvoker");
         
-        op.addInjectedField("_$eventInvoker", ComponentEventInvoker.class, invoker);
-        control.setReturnValue("_$eventInvoker");
+        expect(op.addInjectedField("_$eventInvoker", ComponentEventInvoker.class, invoker))
+        .andReturn("_$eventInvoker");
         
-        op.getAccessorMethodName("eventInvoker");
-        control.setReturnValue("getEventInvoker");
+        expect(op.getAccessorMethodName("eventInvoker")).andReturn("getEventInvoker");
         
         op.addMethod(Modifier.PUBLIC, new MethodSignature(ComponentEventInvoker.class,
                 "getEventInvoker", null, null), "return _$eventInvoker;", l);
         
-        replayControls();
+        replay();
         
         InjectEventInvokerWorker worker = new InjectEventInvokerWorker();
         worker.setComponentEventInvoker(invoker);
         worker.performEnhancement(op, spec);
         
-        verifyControls();
+        verify();
     }
     
     public void testFailure()
     {
         Location l = newLocation();
-
-        MockControl control = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) control.getMock();
+        
+        EnhancementOperation op = newOp();
         ComponentEventInvoker invoker = new ComponentEventInvoker();
         
         ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
@@ -76,24 +75,21 @@ public class TestInjectEventInvokerWorker extends BaseEnhancementTestCase
         Throwable ex = new ApplicationRuntimeException(EnhanceMessages
                 .claimedProperty("eventInvoker"));
         
-        MockControl specc = newControl(IComponentSpecification.class);
-        IComponentSpecification spec = (IComponentSpecification) specc.getMock();
+        IComponentSpecification spec = newSpec();
 
         op.claimReadonlyProperty("eventInvoker");
-        control.setThrowable(ex);
+        expectLastCall().andThrow(ex);
 
-        op.getBaseClass();
-        control.setReturnValue(BaseComponent.class);
+        expect(op.getBaseClass()).andReturn(BaseComponent.class);
         
-        spec.getLocation();
-        specc.setReturnValue(l);
+        expect(spec.getLocation()).andReturn(l);
 
         log.error(
                 EnhanceMessages.errorAddingProperty("eventInvoker", BaseComponent.class, ex),
                 l,
                 ex);
 
-        replayControls();
+        replay();
 
         InjectEventInvokerWorker worker = new InjectEventInvokerWorker();
         worker.setComponentEventInvoker(invoker);
@@ -101,7 +97,7 @@ public class TestInjectEventInvokerWorker extends BaseEnhancementTestCase
         
         worker.performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
     
 }

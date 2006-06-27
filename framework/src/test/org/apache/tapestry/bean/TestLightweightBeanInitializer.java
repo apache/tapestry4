@@ -17,6 +17,7 @@ package org.apache.tapestry.bean;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.bean.LightweightBeanInitializer}.
@@ -24,6 +25,7 @@ import org.apache.hivemind.test.HiveMindTestCase;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestLightweightBeanInitializer extends HiveMindTestCase
 {
     public void testSuccess()
