@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.event.BrowserEvent;
+import org.testng.annotations.Test;
 
 
 /**
@@ -24,6 +25,7 @@ import org.apache.tapestry.event.BrowserEvent;
  * 
  * @author jkuhnert
  */
+@Test
 public class ComponentEventPropertyTest extends HiveMindTestCase
 {
 

@@ -22,6 +22,7 @@ import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.services.ClassFinder;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.pageload.NamespaceClassSearchComponentClassProvider}.
@@ -29,6 +30,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestNamespaceClassSearchComponentClassProvider extends BaseComponentTestCase
 {
     private INamespace newNamespace(String key, String prefixes)

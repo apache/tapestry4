@@ -17,6 +17,7 @@ package org.apache.tapestry.junit;
 import static org.testng.AssertJUnit.assertEquals;
 
 import org.apache.tapestry.Tapestry;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.Tapestry#getClassName(Class)}.
@@ -24,6 +25,7 @@ import org.apache.tapestry.Tapestry;
  * @author Howard Lewis Ship
  * @since 3.0
  */
+@Test
 public class TestTapestryGetClassName extends TapestryTestCase
 {
 

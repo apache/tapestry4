@@ -21,6 +21,7 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.BaseTagWriter}.
@@ -28,6 +29,7 @@ import org.apache.tapestry.IRequestCycle;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestBaseTagWriter extends BaseComponentTestCase
 {
     private IMarkupWriter newWriter(String url)

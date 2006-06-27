@@ -32,6 +32,7 @@ import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.ContainedComponent;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ParameterSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Additional tests for {@link org.apache.tapestry.pageload.PageLoader}. Ultimately, testing this
@@ -40,6 +41,7 @@ import org.apache.tapestry.spec.ParameterSpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class PageLoaderTest extends BaseComponentTestCase
 {
 
@@ -134,7 +136,7 @@ public class PageLoaderTest extends BaseComponentTestCase
 
     protected BindingSource newBindingSource()
     {
-        return (BindingSource) newMock(BindingSource.class);
+        return newMock(BindingSource.class);
     }
 
     public void testBindDeprecated()
@@ -189,6 +191,6 @@ public class PageLoaderTest extends BaseComponentTestCase
 
     protected ComponentPropertySource newPropertySource()
     {
-        return (ComponentPropertySource) newMock(ComponentPropertySource.class);
+        return newMock(ComponentPropertySource.class);
     }
 }

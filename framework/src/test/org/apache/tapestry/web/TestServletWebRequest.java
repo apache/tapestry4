@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.web.ServletWebRequest}.
@@ -37,21 +38,22 @@ import org.apache.hivemind.ApplicationRuntimeException;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestServletWebRequest extends BaseWebTestCase
 {
     private HttpServletRequest newHttpRequest()
     {
-        return (HttpServletRequest) newMock(HttpServletRequest.class);
+        return newMock(HttpServletRequest.class);
     }
 
     private HttpServletResponse newResponse()
     {
-        return (HttpServletResponse) newMock(HttpServletResponse.class);
+        return newMock(HttpServletResponse.class);
     }
 
     private RequestDispatcher newDispatcher()
     {
-        return (RequestDispatcher) newMock(RequestDispatcher.class);
+        return newMock(RequestDispatcher.class);
     }
 
     public void testGetParameterNames()
@@ -240,7 +242,7 @@ public class TestServletWebRequest extends BaseWebTestCase
 
     private HttpSession newSession()
     {
-        return (HttpSession) newMock(HttpSession.class);
+        return newMock(HttpSession.class);
     }
 
     public void testGetScheme()
@@ -455,7 +457,7 @@ public class TestServletWebRequest extends BaseWebTestCase
     public void testForwardExternalFailure() throws Exception
     {
         HttpServletRequest request = newHttpRequest();
-        HttpServletResponse response = (HttpServletResponse)newMock(HttpServletResponse.class);
+        HttpServletResponse response = newMock(HttpServletResponse.class);
 
         Throwable t = new IOException("Mock IO Exception");
 

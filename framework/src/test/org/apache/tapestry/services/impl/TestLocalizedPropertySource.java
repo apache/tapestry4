@@ -22,6 +22,7 @@ import java.util.Locale;
 
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.engine.IPropertySource;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.LocalizedPropertySource}.
@@ -29,6 +30,7 @@ import org.apache.tapestry.engine.IPropertySource;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestLocalizedPropertySource extends BaseComponentTestCase
 {
     public void testFound()

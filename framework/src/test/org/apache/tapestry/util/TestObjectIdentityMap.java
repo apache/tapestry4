@@ -14,7 +14,11 @@
 
 package org.apache.tapestry.util;
 
-import junit.framework.TestCase;
+import static org.testng.AssertJUnit.assertNull;
+import static org.testng.AssertJUnit.assertSame;
+
+import org.apache.tapestry.BaseComponentTestCase;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.util.ObjectIdentityMap}
@@ -22,8 +26,9 @@ import junit.framework.TestCase;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class TestObjectIdentityMap extends TestCase
+public class TestObjectIdentityMap extends BaseComponentTestCase
 {
+    @Test
     public void testGetNotFound()
     {
         ObjectIdentityMap map = new ObjectIdentityMap();
@@ -32,7 +37,8 @@ public class TestObjectIdentityMap extends TestCase
 
         assertNull(map.get("foe"));
     }
-
+    
+    @Test
     public void testGetFound()
     {
         ObjectIdentityMap map = new ObjectIdentityMap();
@@ -45,6 +51,7 @@ public class TestObjectIdentityMap extends TestCase
         assertSame(value, map.get(key));
     }
 
+    @Test
     public void testGetWhenEmpty()
     {
         ObjectIdentityMap map = new ObjectIdentityMap();
@@ -52,6 +59,7 @@ public class TestObjectIdentityMap extends TestCase
         assertNull(map.get(null));
     }
 
+    @Test
     public void testStoreNull()
     {
         ObjectIdentityMap map = new ObjectIdentityMap();
@@ -63,6 +71,7 @@ public class TestObjectIdentityMap extends TestCase
         assertSame(value, map.get(null));
     }
 
+    @Test
     public void testStoreMany()
     {
         ObjectIdentityMap map = new ObjectIdentityMap();

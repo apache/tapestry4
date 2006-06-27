@@ -40,6 +40,7 @@ public class TestComponentMessageAccess extends BaseComponentTestCase
         { "messages", messages });
     }
 
+    @Test
     public void testGetMessage()
     {
         Messages m = newMock(Messages.class);
@@ -55,6 +56,7 @@ public class TestComponentMessageAccess extends BaseComponentTestCase
         verify();
     }
 
+    @Test
     public void testFormat()
     {
         Messages m = newMock(Messages.class);

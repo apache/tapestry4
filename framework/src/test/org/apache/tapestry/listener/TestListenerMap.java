@@ -25,6 +25,7 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IRequestCycle;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.listener.ListenerMapImpl}.
@@ -32,6 +33,7 @@ import org.apache.tapestry.IRequestCycle;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestListenerMap extends BaseComponentTestCase
 {
     public void testGetListener()
@@ -137,6 +139,6 @@ public class TestListenerMap extends BaseComponentTestCase
 
     private ListenerMethodInvoker newInvoker()
     {
-        return (ListenerMethodInvoker) newMock(ListenerMethodInvoker.class);
+        return newMock(ListenerMethodInvoker.class);
     }
 }

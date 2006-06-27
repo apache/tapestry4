@@ -26,6 +26,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.tapestry.BaseComponentTestCase;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.multipart.UploadFormParametersWrapper}.
@@ -33,11 +34,12 @@ import org.apache.tapestry.BaseComponentTestCase;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestUploadFormParametersWrapper extends BaseComponentTestCase
 {
     private HttpServletRequest newHttpRequest()
     {
-        return (HttpServletRequest) newMock(HttpServletRequest.class);
+        return newMock(HttpServletRequest.class);
     }
 
     public void testMapIsNotModifiable()

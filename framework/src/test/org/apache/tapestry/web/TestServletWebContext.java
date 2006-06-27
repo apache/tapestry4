@@ -24,12 +24,15 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 
+import org.testng.annotations.Test;
+
 /**
  * Tests for {@link org.apache.tapestry.web.ServletWebContext}.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestServletWebContext extends BaseWebTestCase
 {
 

@@ -21,6 +21,7 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.spec.IExtensionSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests related to {@link org.apache.tapestry.spec.ApplicationSpecification}.
@@ -28,7 +29,7 @@ import org.apache.tapestry.spec.IExtensionSpecification;
  * @author Howard Lewis Ship
  * @since 2.2
  */
-
+@Test
 public class TestApplicationSpecification extends TapestryTestCase
 {
 

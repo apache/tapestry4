@@ -28,6 +28,7 @@ import org.apache.tapestry.IEngine;
 import org.apache.tapestry.engine.AbstractEngine;
 import org.apache.tapestry.engine.BaseEngine;
 import org.apache.tapestry.spec.IApplicationSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.EngineFactoryImpl}.
@@ -35,6 +36,7 @@ import org.apache.tapestry.spec.IApplicationSpecification;
  * @author Howard Lewis Ship
  * @since 4.0
  */
+@Test
 public class EngineFactoryTest extends BaseComponentTestCase
 {
     public void testUseDefault()
@@ -70,7 +72,7 @@ public class EngineFactoryTest extends BaseComponentTestCase
 
     private IApplicationSpecification newAppSpec()
     {
-        return (IApplicationSpecification) newMock(IApplicationSpecification.class);
+        return newMock(IApplicationSpecification.class);
     }
 
     public void testDefinedInSpec()
@@ -134,7 +136,7 @@ public class EngineFactoryTest extends BaseComponentTestCase
 
         trainGetEngineClassName(spec, "foo.XyzzYx");
 
-        ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
+        ErrorLog log = newMock(ErrorLog.class);
 
         log.error("Engine class 'foo.XyzzYx' not found.", null, null);
 

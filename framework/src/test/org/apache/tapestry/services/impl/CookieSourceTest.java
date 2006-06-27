@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tapestry.BaseComponentTestCase;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.CookieSourceImpl}.
@@ -32,6 +33,7 @@ import org.apache.tapestry.BaseComponentTestCase;
  * @author Howard Lewis Ship
  * @since 4.0
  */
+@Test
 public class CookieSourceTest extends BaseComponentTestCase
 {
     // In seconds
@@ -91,7 +93,7 @@ public class CookieSourceTest extends BaseComponentTestCase
 
     protected HttpServletRequest newHttpRequest()
     {
-        return (HttpServletRequest) newMock(HttpServletRequest.class);
+        return newMock(HttpServletRequest.class);
     }
 
     private void attempt(String name, String expected, String[] nameValues)
@@ -187,7 +189,7 @@ public class CookieSourceTest extends BaseComponentTestCase
 
     private HttpServletResponse newResponse()
     {
-        return (HttpServletResponse) newMock(HttpServletResponse.class);
+        return newMock(HttpServletResponse.class);
     }
 
     public void testRemoveCookie()

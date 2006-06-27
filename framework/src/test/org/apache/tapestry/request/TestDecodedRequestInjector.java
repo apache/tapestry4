@@ -27,6 +27,7 @@ import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.services.ServletRequestServicer;
 import org.apache.tapestry.spec.ILibrarySpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.request.DecodedRequestInjector}.
@@ -34,6 +35,7 @@ import org.apache.tapestry.spec.ILibrarySpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestDecodedRequestInjector extends BaseComponentTestCase
 {
     private static class ServicerFixture implements ServletRequestServicer
@@ -49,12 +51,12 @@ public class TestDecodedRequestInjector extends BaseComponentTestCase
 
     private HttpServletRequest newHttpRequest()
     {
-        return (HttpServletRequest) newMock(HttpServletRequest.class);
+        return newMock(HttpServletRequest.class);
     }
 
     private HttpServletResponse newResponse()
     {
-        return (HttpServletResponse) newMock(HttpServletResponse.class);
+        return newMock(HttpServletResponse.class);
     }
 
     private ILibrarySpecification newSpec(boolean exists, IRequestDecoder decoder)
@@ -78,7 +80,7 @@ public class TestDecodedRequestInjector extends BaseComponentTestCase
         HttpServletResponse response = newResponse();
         ILibrarySpecification spec = newSpec(false, null);
 
-        ServletRequestServicer servicer = (ServletRequestServicer) newMock(ServletRequestServicer.class);
+        ServletRequestServicer servicer = newMock(ServletRequestServicer.class);
 
         servicer.service(request, response);
 

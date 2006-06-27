@@ -24,6 +24,7 @@ import org.apache.tapestry.services.ResetEventHub;
 import org.apache.tapestry.services.WebRequestServicer;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.DisableCachingFilter}.
@@ -31,21 +32,22 @@ import org.apache.tapestry.web.WebResponse;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestDisableCachingFilter extends BaseComponentTestCase
 {
     private WebResponse newResponse()
     {
-        return (WebResponse) newMock(WebResponse.class);
+        return newMock(WebResponse.class);
     }
 
     private WebRequestServicer newServicer()
     {
-        return (WebRequestServicer) newMock(WebRequestServicer.class);
+        return newMock(WebRequestServicer.class);
     }
 
     private ResetEventHub newREC()
     {
-        return (ResetEventHub) newMock(ResetEventHub.class);
+        return newMock(ResetEventHub.class);
     }
 
     public void testNormal() throws Exception
@@ -75,7 +77,7 @@ public class TestDisableCachingFilter extends BaseComponentTestCase
         WebRequestServicer servicer = newServicer();
         
         ResetEventHub rec = newMock(ResetEventHub.class);
-        ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
+        ErrorLog log = newMock(ErrorLog.class);
 
         Location l = fabricateLocation(99);
 

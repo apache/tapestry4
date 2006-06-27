@@ -18,6 +18,7 @@ import static org.testng.AssertJUnit.assertEquals;
 
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.link.StaticLink;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.link.StaticLink}.
@@ -25,7 +26,7 @@ import org.apache.tapestry.link.StaticLink;
  * @author Howard Lewis Ship
  * @since 3.0
  */
-
+@Test
 public class TestStaticLink extends TapestryTestCase
 {
     private static final String URL = "http://host/path";

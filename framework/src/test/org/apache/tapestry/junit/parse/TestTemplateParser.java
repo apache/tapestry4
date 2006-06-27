@@ -14,18 +14,22 @@
 
 package org.apache.tapestry.junit.parse;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNotNull;
+import static org.testng.AssertJUnit.assertTrue;
+import static org.testng.AssertJUnit.fail;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-
-import junit.framework.TestCase;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.util.ClasspathResource;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.parse.ITemplateParserDelegate;
 import org.apache.tapestry.parse.LocalizationToken;
 import org.apache.tapestry.parse.OpenToken;
@@ -35,14 +39,15 @@ import org.apache.tapestry.parse.TemplateToken;
 import org.apache.tapestry.parse.TemplateTokenFactory;
 import org.apache.tapestry.parse.TextToken;
 import org.apache.tapestry.parse.TokenType;
+import org.testng.annotations.Test;
 
 /**
  * Tests for the Tapestry HTML template parser.
  * 
  * @author Howard Lewis Ship
  */
-
-public class TestTemplateParser extends TestCase
+@Test
+public class TestTemplateParser extends BaseComponentTestCase
 {
     private static class ParserDelegate implements ITemplateParserDelegate
     {

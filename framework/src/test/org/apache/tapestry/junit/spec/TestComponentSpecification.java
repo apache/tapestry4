@@ -28,6 +28,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
 import org.apache.tapestry.spec.IParameterSpecification;
 import org.apache.tapestry.spec.ParameterSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Test cases for page and component specifications.
@@ -35,7 +36,7 @@ import org.apache.tapestry.spec.ParameterSpecification;
  * @author Howard Lewis Ship
  * @since 2.2
  */
-
+@Test
 public class TestComponentSpecification extends TapestryTestCase
 {
 

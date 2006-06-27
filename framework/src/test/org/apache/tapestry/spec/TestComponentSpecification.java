@@ -17,6 +17,7 @@ package org.apache.tapestry.spec;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.testng.annotations.Test;
 
 /**
  * Tests a number of <em>failure</em> cases in
@@ -27,6 +28,7 @@ import org.apache.hivemind.test.HiveMindTestCase;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestComponentSpecification extends HiveMindTestCase
 {
     public void testClaimPropertyOK()

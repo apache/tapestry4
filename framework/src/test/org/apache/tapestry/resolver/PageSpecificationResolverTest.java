@@ -33,6 +33,7 @@ import org.apache.tapestry.services.ComponentPropertySource;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.resolver.PageSpecificationResolverImpl}.
@@ -40,6 +41,7 @@ import org.apache.tapestry.spec.ILibrarySpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class PageSpecificationResolverTest extends AbstractSpecificationResolverTestCase
 {
     private static class MockApplicationNamespace implements INamespace
@@ -154,7 +156,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
 
     private ISpecificationResolverDelegate newDelegate()
     {
-        return (ISpecificationResolverDelegate) newMock(ISpecificationResolverDelegate.class);
+        return newMock(ISpecificationResolverDelegate.class);
     }
 
     private INamespace newNamespace(String pageName, IComponentSpecification spec)
@@ -171,7 +173,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
 
     private ComponentPropertySource newPropertySource(INamespace namespace)
     {
-        ComponentPropertySource source = (ComponentPropertySource) newMock(ComponentPropertySource.class);
+        ComponentPropertySource source = newMock(ComponentPropertySource.class);
 
         expect(source.getNamespaceProperty(namespace, Tapestry.TEMPLATE_EXTENSION_PROPERTY))
         .andReturn("html");

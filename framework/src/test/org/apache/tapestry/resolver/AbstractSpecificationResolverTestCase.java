@@ -26,6 +26,7 @@ import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Base class for testing specification resolvers.
@@ -33,17 +34,18 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public abstract class AbstractSpecificationResolverTestCase extends BaseComponentTestCase
 {
 
     protected IComponentSpecification newSpecification()
     {
-        return (IComponentSpecification) newMock(IComponentSpecification.class);
+        return newMock(IComponentSpecification.class);
     }
 
     protected IRequestCycle newCycle()
     {
-        return (IRequestCycle) newMock(IRequestCycle.class);
+        return newMock(IRequestCycle.class);
     }
 
     protected URL newURL(String file)
@@ -53,7 +55,7 @@ public abstract class AbstractSpecificationResolverTestCase extends BaseComponen
 
     protected Resource newResource(URL url)
     {
-        Resource resource = (Resource)newMock(Resource.class);
+        Resource resource = newMock(Resource.class);
 
         expect(resource.getResourceURL()).andReturn(url);
 
@@ -74,17 +76,17 @@ public abstract class AbstractSpecificationResolverTestCase extends BaseComponen
 
     protected Log newLog()
     {
-        return (Log) newMock(Log.class);
+        return newMock(Log.class);
     }
 
     protected INamespace newNamespace()
     {
-        return (INamespace) newMock(INamespace.class);
+        return newMock(INamespace.class);
     }
 
     protected ISpecificationSource newSource()
     {
-        return (ISpecificationSource) newMock(ISpecificationSource.class);
+        return newMock(ISpecificationSource.class);
     }
 
     protected void trainContainsPage(INamespace namespace, String pageName, boolean containsPage)

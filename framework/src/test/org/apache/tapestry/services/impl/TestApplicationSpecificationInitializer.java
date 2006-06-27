@@ -38,6 +38,7 @@ import org.apache.tapestry.services.ApplicationGlobals;
 import org.apache.tapestry.services.ApplicationInitializer;
 import org.apache.tapestry.spec.ApplicationSpecification;
 import org.apache.tapestry.spec.IApplicationSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests for the {@link org.apache.tapestry.services.impl.ApplicationSpecificationInitializer}.
@@ -45,6 +46,7 @@ import org.apache.tapestry.spec.IApplicationSpecification;
  * @author Howard Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestApplicationSpecificationInitializer extends BaseComponentTestCase
 {
     public void testOnClasspath() throws Exception
@@ -55,7 +57,7 @@ public class TestApplicationSpecificationInitializer extends BaseComponentTestCa
 
         ApplicationSpecificationInitializer i = new ApplicationSpecificationInitializer();
 
-        Log log = (Log) newMock(Log.class);
+        Log log = newMock(Log.class);
 
         i.setLog(log);
 

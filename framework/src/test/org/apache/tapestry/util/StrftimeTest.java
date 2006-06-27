@@ -14,6 +14,7 @@
 package org.apache.tapestry.util;
 
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.testng.annotations.Test;
 
 
 /**
@@ -22,6 +23,7 @@ import org.apache.hivemind.test.HiveMindTestCase;
  * @see {@linkplain http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html} for list of assertions
  * @author jkuhnert
  */
+@Test
 public class StrftimeTest extends HiveMindTestCase
 {
 

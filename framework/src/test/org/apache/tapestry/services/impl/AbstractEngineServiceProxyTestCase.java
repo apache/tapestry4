@@ -30,7 +30,7 @@ public abstract class AbstractEngineServiceProxyTestCase extends BaseComponentTe
 {
     protected IEngineService newEngineService()
     {
-        return (IEngineService) newMock(IEngineService.class);
+        return newMock(IEngineService.class);
     }
 
     protected void trainGetLink(IEngineService service, boolean post, Object parameter, ILink link)
@@ -40,7 +40,7 @@ public abstract class AbstractEngineServiceProxyTestCase extends BaseComponentTe
 
     protected ILink newLink()
     {
-        return (ILink) newMock(ILink.class);
+        return newMock(ILink.class);
     }
 
 }

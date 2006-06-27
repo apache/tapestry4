@@ -34,6 +34,7 @@ import org.apache.tapestry.form.FormSupport;
 import org.apache.tapestry.internal.event.ComponentEventProperty;
 import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.listener.ListenerMap;
+import org.testng.annotations.Test;
 
 
 /**
@@ -41,6 +42,7 @@ import org.apache.tapestry.listener.ListenerMap;
  * 
  * @author jkuhnert
  */
+@Test
 public class ComponentEventInvokerTest extends BaseComponentTestCase
 {
     
@@ -70,9 +72,9 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
     {
         IRequestCycle cycle = newCycle();
         IComponent comp = newComponent();
-        ListenerInvoker listenerInvoker = (ListenerInvoker)newMock(ListenerInvoker.class);
-        ListenerMap listenerMap = (ListenerMap)newMock(ListenerMap.class);
-        IActionListener listener = (IActionListener)newMock(IActionListener.class);
+        ListenerInvoker listenerInvoker = newMock(ListenerInvoker.class);
+        ListenerMap listenerMap = newMock(ListenerMap.class);
+        IActionListener listener = newMock(IActionListener.class);
         
         Map tprops = new HashMap();
         tprops.put("id", "testId");
@@ -105,9 +107,9 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
     {
         IRequestCycle cycle = newCycle();
         IComponent comp = newComponent();
-        ListenerInvoker listenerInvoker = (ListenerInvoker)newMock(ListenerInvoker.class);
-        ListenerMap listenerMap = (ListenerMap)newMock(ListenerMap.class);
-        IActionListener listener = (IActionListener)newMock(IActionListener.class);
+        ListenerInvoker listenerInvoker = newMock(ListenerInvoker.class);
+        ListenerMap listenerMap = newMock(ListenerMap.class);
+        IActionListener listener = newMock(IActionListener.class);
         
         Map tprops = new HashMap();
         tprops.put("id", "testId");
@@ -138,11 +140,11 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
     {
         IRequestCycle cycle = newCycle();
         IForm form = newForm();
-        FormSupport formSupport = (FormSupport) newMock(FormSupport.class);
+        FormSupport formSupport = newMock(FormSupport.class);
         
-        ListenerInvoker listenerInvoker = (ListenerInvoker)newMock(ListenerInvoker.class);
-        ListenerMap listenerMap = (ListenerMap)newMock(ListenerMap.class);
-        IActionListener listener = (IActionListener)newMock(IActionListener.class);
+        ListenerInvoker listenerInvoker = newMock(ListenerInvoker.class);
+        ListenerMap listenerMap = newMock(ListenerMap.class);
+        IActionListener listener = newMock(IActionListener.class);
         
         Map tprops = new HashMap();
         tprops.put("id", "testId");

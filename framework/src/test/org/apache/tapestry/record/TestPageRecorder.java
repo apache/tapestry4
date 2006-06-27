@@ -34,6 +34,7 @@ import org.apache.tapestry.event.ObservedChangeEvent;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IPropertySpecification;
 import org.apache.tapestry.test.Creator;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.record.PageRecorderImpl}.
@@ -41,11 +42,12 @@ import org.apache.tapestry.test.Creator;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestPageRecorder extends BaseComponentTestCase
 {
     private ErrorLog newErrorLog()
     {
-        return (ErrorLog) newMock(ErrorLog.class);
+        return newMock(ErrorLog.class);
     }
 
     public void testGetChanges()
@@ -181,7 +183,7 @@ public class TestPageRecorder extends BaseComponentTestCase
         
         IPage page = newPage();
 
-        IComponent component = (IComponent) newMock(IComponent.class);
+        IComponent component = newMock(IComponent.class);
 
         PropertyPersistenceStrategySource source = newMock(PropertyPersistenceStrategySource.class);
 

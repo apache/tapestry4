@@ -29,6 +29,7 @@ import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.util.ContentType;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.web.ServletWebResponse}.
@@ -36,6 +37,7 @@ import org.apache.tapestry.util.ContentType;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class ServletWebResponseTest extends BaseComponentTestCase
 {
     private static class MockServletOutputStream extends ServletOutputStream
@@ -255,7 +257,7 @@ public class ServletWebResponseTest extends BaseComponentTestCase
 
     private HttpServletResponse newResponse()
     {
-        return (HttpServletResponse) newMock(HttpServletResponse.class);
+        return newMock(HttpServletResponse.class);
     }
 
     public void testSetHeaderMethods() throws Exception

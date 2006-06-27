@@ -40,6 +40,7 @@ import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
 import org.apache.tapestry.util.IPropertyHolder;
+import org.testng.annotations.Test;
 
 /**
  * Base class for Tapestry test cases.
@@ -47,7 +48,7 @@ import org.apache.tapestry.util.IPropertyHolder;
  * @author Howard Lewis Ship
  * @since 2.2
  */
-
+@Test
 public abstract class TapestryTestCase extends BaseComponentTestCase
 {
     protected static final boolean IS_JDK13 = System.getProperty("java.specification.version")
@@ -185,6 +186,6 @@ public abstract class TapestryTestCase extends BaseComponentTestCase
 
     protected IComponent newComponent()
     {
-        return (IComponent) newMock(IComponent.class);
+        return newMock(IComponent.class);
     }
 }

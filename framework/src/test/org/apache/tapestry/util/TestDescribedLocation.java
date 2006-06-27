@@ -19,6 +19,7 @@ import static org.testng.AssertJUnit.assertSame;
 
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.BaseComponentTestCase;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.util.DescribedLocation}.
@@ -26,11 +27,12 @@ import org.apache.tapestry.BaseComponentTestCase;
  * @author Howard Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestDescribedLocation extends BaseComponentTestCase
 {
     public void testLineRowAreZero()
     {
-        Resource r = (Resource) newMock(Resource.class);
+        Resource r = newMock(Resource.class);
 
         replay();
 
@@ -48,8 +50,8 @@ public class TestDescribedLocation extends BaseComponentTestCase
 
     public void testEquals()
     {
-        Resource r = (Resource) newMock(Resource.class);
-        Resource r2 = (Resource) newMock(Resource.class);
+        Resource r = newMock(Resource.class);
+        Resource r2 = newMock(Resource.class);
 
         replay();
 

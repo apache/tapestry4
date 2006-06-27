@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServlet;
 
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.services.ApplicationGlobals;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.WebContextInitializer}.
@@ -30,13 +31,14 @@ import org.apache.tapestry.services.ApplicationGlobals;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class WebContextInitializerTest extends BaseComponentTestCase
 {
 
     public void testInitializer()
     {
-        HttpServlet servlet = (HttpServlet) newMock(HttpServlet.class);
-        ServletContext servletContext = (ServletContext) newMock(ServletContext.class);
+        HttpServlet servlet = newMock(HttpServlet.class);
+        ServletContext servletContext = newMock(ServletContext.class);
 
         expect(servlet.getServletContext()).andReturn(servletContext);
 

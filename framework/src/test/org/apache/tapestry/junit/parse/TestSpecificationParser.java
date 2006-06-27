@@ -45,6 +45,7 @@ import org.apache.tapestry.spec.IPropertySpecification;
 import org.apache.tapestry.spec.InjectSpecification;
 import org.apache.tapestry.spec.SpecFactory;
 import org.apache.tapestry.util.xml.DocumentParseException;
+import org.testng.annotations.Test;
 
 /**
  * Tests the specification parser (which reads page and component specifications). Came into being
@@ -53,7 +54,7 @@ import org.apache.tapestry.util.xml.DocumentParseException;
  * @author Howard Lewis Ship
  * @since 2.0.4
  */
-
+@Test
 public class TestSpecificationParser extends TapestryTestCase
 {
 

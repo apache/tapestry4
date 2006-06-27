@@ -18,6 +18,7 @@ import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertTrue;
 
 import org.apache.tapestry.util.ContentType;
+import org.testng.annotations.Test;
 
 /**
  * Test the functionality of {@link org.apache.tapestry.util.ContentType}
@@ -25,7 +26,7 @@ import org.apache.tapestry.util.ContentType;
  * @author Mindbridge
  * @since 3.0
  */
-
+@Test
 public class ContentTypeTest extends TapestryTestCase
 {
     public void testEquals()

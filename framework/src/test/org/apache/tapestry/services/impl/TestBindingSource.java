@@ -25,6 +25,7 @@ import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.binding.BindingConstants;
 import org.apache.tapestry.binding.BindingFactory;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.BindingSourceImpl}.
@@ -32,6 +33,7 @@ import org.apache.tapestry.binding.BindingFactory;
  * @author Howard Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestBindingSource extends BaseComponentTestCase
 {
     public void testNoPrefix()
@@ -171,6 +173,6 @@ public class TestBindingSource extends BaseComponentTestCase
 
     protected BindingFactory newFactory()
     {
-        return (BindingFactory) newMock(BindingFactory.class);
+        return newMock(BindingFactory.class);
     }
 }

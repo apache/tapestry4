@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.services.ServletRequestServicer;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.SetupRequestEncoding}.
@@ -34,6 +35,7 @@ import org.apache.tapestry.services.ServletRequestServicer;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestSetupRequestEncoding extends BaseComponentTestCase
 {
     private HttpServletRequest newRequest(String encoding)
@@ -47,12 +49,12 @@ public class TestSetupRequestEncoding extends BaseComponentTestCase
 
     private HttpServletResponse newResponse()
     {
-        return (HttpServletResponse) newMock(HttpServletResponse.class);
+        return newMock(HttpServletResponse.class);
     }
 
     private ServletRequestServicer newServicer()
     {
-        return (ServletRequestServicer) newMock(ServletRequestServicer.class);
+        return newMock(ServletRequestServicer.class);
     }
 
     public void testEncodingNotNull() throws Exception

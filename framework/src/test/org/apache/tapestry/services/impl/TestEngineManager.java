@@ -24,6 +24,7 @@ import org.apache.tapestry.IEngine;
 import org.apache.tapestry.services.EngineFactory;
 import org.apache.tapestry.services.ObjectPool;
 import org.apache.tapestry.services.RequestLocaleManager;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.EngineManagerImpl}.
@@ -31,6 +32,7 @@ import org.apache.tapestry.services.RequestLocaleManager;
  * @author Howard Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestEngineManager extends BaseComponentTestCase
 {
 

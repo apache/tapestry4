@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.junit.utils;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNull;
+
 import java.io.File;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -23,31 +26,31 @@ import java.util.HashMap;
 import java.util.Map;
 
 import junit.framework.AssertionFailedError;
-import junit.framework.TestCase;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.impl.DefaultClassResolver;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.util.ComponentAddress;
 import org.apache.tapestry.util.io.DataSqueezerImpl;
 import org.apache.tapestry.util.io.DataSqueezerUtil;
 import org.apache.tapestry.util.io.SerializableAdaptor;
 import org.apache.tapestry.util.io.SqueezeAdaptor;
+import org.testng.annotations.Test;
 
 /**
  * A series of tests for {@link DataSqueezerImpl}&nbsp;and friends.
  * 
  * @author Howard Lewis Ship
  */
-
-public class TestDataSqueezer extends TestCase
+@Test
+public class TestDataSqueezer extends BaseComponentTestCase
 {
     private DataSqueezerImpl ds = DataSqueezerUtil.createUnitTestSqueezer();
 
     public TestDataSqueezer(String name)
     {
-        super(name);
     }
 
     private void attempt(Object input, String expectedEncoding)

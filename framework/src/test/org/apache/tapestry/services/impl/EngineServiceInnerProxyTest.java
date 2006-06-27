@@ -21,6 +21,7 @@ import static org.testng.AssertJUnit.assertSame;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.EngineServiceInnerProxy}.
@@ -28,6 +29,7 @@ import org.apache.tapestry.engine.ILink;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class EngineServiceInnerProxyTest extends AbstractEngineServiceProxyTestCase
 {
     private EngineServiceSource newSource(String name, IEngineService service)
@@ -56,7 +58,7 @@ public class EngineServiceInnerProxyTest extends AbstractEngineServiceProxyTestC
 
     protected EngineServiceSource newSource()
     {
-        return (EngineServiceSource) newMock(EngineServiceSource.class);
+        return newMock(EngineServiceSource.class);
     }
 
     public void testGetLinkNonPost()

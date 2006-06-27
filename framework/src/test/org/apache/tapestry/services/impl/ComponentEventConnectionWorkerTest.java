@@ -44,6 +44,7 @@ import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.html.Body;
 import org.easymock.MockControl;
 import org.easymock.classextension.MockClassControl;
+import org.testng.annotations.Test;
 
 
 /**
@@ -51,6 +52,7 @@ import org.easymock.classextension.MockClassControl;
  * 
  * @author jkuhnert
  */
+@Test
 public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
 {
 
@@ -59,14 +61,14 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         ClassResolver resolver = new DefaultClassResolver();
         
         ComponentEventInvoker invoker = new ComponentEventInvoker();
-        IEngineService engine = (IEngineService)newMock(IEngineService.class);
+        IEngineService engine = newMock(IEngineService.class);
         IRequestCycle cycle = newCycle();
-        IScriptSource scriptSource = (IScriptSource)newMock(IScriptSource.class);
-        IScript script = (IScript)newMock(IScript.class);
+        IScriptSource scriptSource = newMock(IScriptSource.class);
+        IScript script = newMock(IScript.class);
         
         PageRenderSupport prs = newPageRenderSupport();
         
-        ILink link = (ILink)newMock(ILink.class);
+        ILink link = newMock(ILink.class);
         
         String compScript = "/org/apache/tapestry/ComponentEvent.script";
         String widScript = "/org/apache/tapestry/dojo/html/WidgetEvent.script";
@@ -82,8 +84,8 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         worker.setEventEngine(engine);
         worker.setScriptSource(scriptSource);
         
-        IDirectEvent component = (IDirectEvent)newMock(IDirectEvent.class);
-        IWidget widget = (IWidget)newMock(IWidget.class);
+        IDirectEvent component = newMock(IDirectEvent.class);
+        IWidget widget = newMock(IWidget.class);
         
         assertNotNull(worker.getScript(component));
         assertEquals(compScript, worker.getScript(component).getPath());
@@ -182,7 +184,7 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
     public void testDeferredConnection()
     {
         ComponentEventInvoker invoker = new ComponentEventInvoker();
-        IEngineService engine = (IEngineService)newMock(IEngineService.class);
+        IEngineService engine = newMock(IEngineService.class);
         IRequestCycle cycle = newCycle();
         PageRenderSupport prs = newPageRenderSupport();
         
@@ -190,7 +192,7 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         worker.setComponentEventInvoker(invoker);
         worker.setEventEngine(engine);
         
-        IDirectEvent component = (IDirectEvent)newMock(IDirectEvent.class);
+        IDirectEvent component = newMock(IDirectEvent.class);
         
         // now test render
         invoker.addEventListener("comp1", new String[] {"onclick"}, 
@@ -236,10 +238,10 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         ClassResolver resolver = new DefaultClassResolver();
         
         ComponentEventInvoker invoker = new ComponentEventInvoker();
-        IEngineService engine = (IEngineService)newMock(IEngineService.class);
+        IEngineService engine = newMock(IEngineService.class);
         IRequestCycle cycle = newCycle();
-        IScriptSource scriptSource = (IScriptSource)newMock(IScriptSource.class);
-        IScript script = (IScript)newMock(IScript.class);
+        IScriptSource scriptSource = newMock(IScriptSource.class);
+        IScript script = newMock(IScript.class);
         
         PageRenderSupport prs = newPageRenderSupport();
         
@@ -253,8 +255,8 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         worker.setEventEngine(engine);
         worker.setScriptSource(scriptSource);
         
-        IDirectEvent component = (IDirectEvent)newMock(IDirectEvent.class);
-        IForm form = (IForm)newMock(IForm.class);
+        IDirectEvent component = newMock(IDirectEvent.class);
+        IForm form = newMock(IForm.class);
         
         // now test render
         invoker.addEventListener("comp1", new String[] {"onclick"}, 
@@ -331,8 +333,8 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         worker.setWidgetScript(widScript);
         worker.setElementScript(elementScript);
         
-        IDirectEvent component = (IDirectEvent)newMock(IDirectEvent.class);
-        IWidget widget = (IWidget)newMock(IWidget.class);
+        IDirectEvent component = newMock(IDirectEvent.class);
+        IWidget widget = newMock(IWidget.class);
         MockControl bodyControl = MockClassControl.createControl(Body.class);
         Body body = (Body) bodyControl.getMock();
         

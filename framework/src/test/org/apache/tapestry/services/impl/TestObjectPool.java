@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.services.ObjectPool;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.ObjectPoolImpl}.
@@ -26,6 +27,7 @@ import org.apache.tapestry.services.ObjectPool;
  * @author Howard Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestObjectPool extends HiveMindTestCase
 {
     public void testStoreAndGet()

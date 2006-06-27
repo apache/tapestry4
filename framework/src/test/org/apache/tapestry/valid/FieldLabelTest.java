@@ -27,6 +27,7 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.BaseFormComponentTestCase;
 import org.apache.tapestry.form.IFormComponent;
+import org.testng.annotations.Test;
 
 /**
  * Tests for the {@link org.apache.tapestry.valid.FieldLabel} component.
@@ -34,11 +35,12 @@ import org.apache.tapestry.form.IFormComponent;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class FieldLabelTest extends BaseFormComponentTestCase
 {
     private IForm newForm(IValidationDelegate delegate)
     {
-        IForm form = (IForm) newMock(IForm.class);
+        IForm form = newMock(IForm.class);
 
         trainGetDelegate(delegate, form);
 
@@ -52,7 +54,7 @@ public class FieldLabelTest extends BaseFormComponentTestCase
 
     private IPage newFred()
     {
-        IPage page = (IPage) newMock(IPage.class);
+        IPage page = newMock(IPage.class);
 
         trainGetPageName(page, "Fred");
 
@@ -68,7 +70,7 @@ public class FieldLabelTest extends BaseFormComponentTestCase
 
     private IFormComponent newField(String displayName, String clientId)
     {
-        IFormComponent field = (IFormComponent) newMock(IFormComponent.class);
+        IFormComponent field = newMock(IFormComponent.class);
 
         trainGetDisplayName(field, displayName);
 
@@ -103,7 +105,7 @@ public class FieldLabelTest extends BaseFormComponentTestCase
 
         replay();
 
-        FieldLabel fl = (FieldLabel) newInstance(FieldLabel.class, new Object[]
+        FieldLabel fl = newInstance(FieldLabel.class, new Object[]
         { "field", field, "location", l, "prerender", true });
 
         fl.render(writer, cycle);
@@ -211,7 +213,7 @@ public class FieldLabelTest extends BaseFormComponentTestCase
 
         trainIsRewinding(cycle, false);
 
-        FieldLabel fl = (FieldLabel) newInstance(FieldLabel.class, new Object[]
+        FieldLabel fl = newInstance(FieldLabel.class, new Object[]
         { "location", l, "field", field, "prerender", true });
 
         form.prerenderField(writer, field, l);
@@ -243,7 +245,7 @@ public class FieldLabelTest extends BaseFormComponentTestCase
 
         trainIsRewinding(cycle, false);
 
-        FieldLabel fl = (FieldLabel) newInstance(FieldLabel.class, new Object[]
+        FieldLabel fl = newInstance(FieldLabel.class, new Object[]
         { "location", l, "field", field });
 
         trainGetDelegate(form, delegate);
@@ -273,7 +275,7 @@ public class FieldLabelTest extends BaseFormComponentTestCase
 
         trainIsRewinding(cycle, false);
 
-        FieldLabel fl = (FieldLabel) newInstance(FieldLabel.class, new Object[]
+        FieldLabel fl = newInstance(FieldLabel.class, new Object[]
         { "location", l, "field", field, "prerender", true });
 
         form.prerenderField(writer, field, l);
@@ -304,7 +306,7 @@ public class FieldLabelTest extends BaseFormComponentTestCase
         Location l = newLocation();
         IPage page = newFred();
 
-        FieldLabel fl = (FieldLabel) newInstance(FieldLabel.class, new Object[]
+        FieldLabel fl = newInstance(FieldLabel.class, new Object[]
         { "id", "label", "location", l, "field", field, "page", page, "container", page,
                 "prerender", true });
 

@@ -40,7 +40,8 @@ public class TestAbstractComponent extends BaseComponentTestCase
         }
 
     }
-
+    
+    @Test
     public void testUnimplementedMethods()
     {
         IComponent component = new ConcreteComponent();
@@ -69,6 +70,7 @@ public class TestAbstractComponent extends BaseComponentTestCase
         }
     }
 
+    @Test
     public void testContainedComponent()
     {
         Creator creator = new Creator();
@@ -86,6 +88,7 @@ public class TestAbstractComponent extends BaseComponentTestCase
         verify();
     }
 
+    @Test
     public void testContainedComponentConflict()
     {
         Creator creator = new Creator();

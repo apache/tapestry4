@@ -28,6 +28,7 @@ import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.services.NamespaceResources;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.NamespaceResourcesImpl}.
@@ -35,11 +36,12 @@ import org.apache.tapestry.spec.ILibrarySpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestNamespaceResources extends BaseComponentTestCase
 {
     protected Resource newResource()
     {
-        return (Resource) newMock(Resource.class);
+        return newMock(Resource.class);
     }
 
     protected void trainGetRelativeResource(Resource parent, String path, Resource child)
@@ -54,17 +56,17 @@ public class TestNamespaceResources extends BaseComponentTestCase
 
     protected ISpecificationSource newSource()
     {
-        return (ISpecificationSource) newMock(ISpecificationSource.class);
+        return newMock(ISpecificationSource.class);
     }
 
     protected ILibrarySpecification newLSpec()
     {
-        return (ILibrarySpecification) newMock(ILibrarySpecification.class);
+        return newMock(ILibrarySpecification.class);
     }
 
     protected AssetSource newAssetSource()
     {
-        return (AssetSource) newMock(AssetSource.class);
+        return newMock(AssetSource.class);
     }
 
     public void testFindChildLibrarySpecification()
@@ -102,7 +104,7 @@ public class TestNamespaceResources extends BaseComponentTestCase
 
     protected IAsset newAsset()
     {
-        return (IAsset) newMock(IAsset.class);
+        return newMock(IAsset.class);
     }
 
     protected URL newURL()
@@ -118,7 +120,7 @@ public class TestNamespaceResources extends BaseComponentTestCase
 
     protected IComponentSpecification newComponentSpec()
     {
-        return (IComponentSpecification) newMock(IComponentSpecification.class);
+        return newMock(IComponentSpecification.class);
     }
 
     public void testGetPageSpecification()
