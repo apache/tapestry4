@@ -31,6 +31,7 @@ import org.apache.tapestry.markup.MarkupWriterImpl;
 import org.apache.tapestry.markup.UTFMarkupFilter;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.testng.annotations.Configuration;
+import org.testng.annotations.Test;
 
 
 /**
@@ -39,6 +40,7 @@ import org.testng.annotations.Configuration;
  * @author jkuhnert
  */
 @SuppressWarnings("cast")
+@Test
 public class DefaultResponseBuilderTest extends BaseComponentTestCase
 {
 

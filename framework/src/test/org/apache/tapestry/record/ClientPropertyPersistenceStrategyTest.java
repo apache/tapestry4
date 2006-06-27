@@ -27,6 +27,7 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ServiceEncoding;
 import org.apache.tapestry.web.WebRequest;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.record.ClientPropertyPersistenceStrategy}.
@@ -34,6 +35,7 @@ import org.apache.tapestry.web.WebRequest;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class ClientPropertyPersistenceStrategyTest extends HiveMindTestCase
 {
     private IRequestCycle newCycle()

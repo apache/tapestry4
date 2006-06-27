@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.services.ServletRequestServicer;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.multipart.MultipartDecoderFilter}.
@@ -32,6 +33,7 @@ import org.apache.tapestry.services.ServletRequestServicer;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestMultipartDecoderFilter extends BaseComponentTestCase
 {
     private static class MockServicer implements ServletRequestServicer
@@ -56,7 +58,7 @@ public class TestMultipartDecoderFilter extends BaseComponentTestCase
 
     private HttpServletResponse newResponse()
     {
-        return (HttpServletResponse) newMock(HttpServletResponse.class);
+        return newMock(HttpServletResponse.class);
     }
 
     public void testNormalRequest() throws Exception
@@ -81,7 +83,7 @@ public class TestMultipartDecoderFilter extends BaseComponentTestCase
     {
         HttpServletRequest request = newRequest("multipart/form-data");
         HttpServletResponse response = newResponse();
-        HttpServletRequest decoded = (HttpServletRequest) newMock(HttpServletRequest.class);
+        HttpServletRequest decoded = newMock(HttpServletRequest.class);
         
         ServletMultipartDecoder decoder = newMock(ServletMultipartDecoder.class);
 

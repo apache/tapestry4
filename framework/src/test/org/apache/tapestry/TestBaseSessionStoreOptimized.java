@@ -30,6 +30,7 @@ import org.testng.annotations.Test;
 @Test
 public class TestBaseSessionStoreOptimized extends BaseComponentTestCase
 {
+    @Test
     public void testMarkDirty()
     {
         BaseSessionStoreOptimized object = new BaseSessionStoreOptimized();
@@ -41,6 +42,7 @@ public class TestBaseSessionStoreOptimized extends BaseComponentTestCase
         assertEquals(true, object.isStoreToSessionNeeded());
     }
 
+    @Test
     public void testMarkClean()
     {
         HttpSession session = newMock(HttpSession.class);
@@ -58,6 +60,7 @@ public class TestBaseSessionStoreOptimized extends BaseComponentTestCase
         verify();
     }
 
+    @Test
     public void testUnboundDoesNothing()
     {
         HttpSession session = newMock(HttpSession.class);

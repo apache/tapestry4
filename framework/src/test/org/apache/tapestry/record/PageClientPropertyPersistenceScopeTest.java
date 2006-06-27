@@ -20,6 +20,7 @@ import static org.testng.AssertJUnit.assertEquals;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.record.PageClientPropertyPersistenceScope}.
@@ -27,16 +28,17 @@ import org.apache.tapestry.IRequestCycle;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class PageClientPropertyPersistenceScopeTest extends BaseComponentTestCase
 {
     protected IRequestCycle newCycle()
     {
-        return (IRequestCycle) newMock(IRequestCycle.class);
+        return newMock(IRequestCycle.class);
     }
 
     protected IPage newPage()
     {
-        return (IPage) newMock(IPage.class);
+        return newMock(IPage.class);
     }
 
     public void testConstructParameterName()

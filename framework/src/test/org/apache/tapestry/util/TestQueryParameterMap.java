@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.util.QueryParameterMap}.
@@ -25,6 +26,7 @@ import org.apache.hivemind.test.HiveMindTestCase;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestQueryParameterMap extends HiveMindTestCase
 {
     public void testUnknownKey()

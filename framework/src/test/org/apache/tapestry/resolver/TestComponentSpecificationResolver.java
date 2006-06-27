@@ -28,6 +28,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.services.ClassFinder;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.resolver.ComponentSpecificationResolverImpl}.
@@ -35,6 +36,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestComponentSpecificationResolver extends AbstractSpecificationResolverTestCase
 {
     private void trainIsDeprecated(IComponentSpecification spec,
@@ -111,7 +113,7 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
 
         trainIsDeprecated(spec, true);
 
-        Log log = (Log) newMock(Log.class);
+        Log log = newMock(Log.class);
 
         log
                 .warn("Component 'MyComponent' (at classpath:/org/apache/tapestry/resolver/TestComponentSpecificationResolver, line 1) is deprecated, and will likely be removed in a later release. Consult its documentation to find a replacement component.");

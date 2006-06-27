@@ -18,6 +18,7 @@ import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertNull;
 
 import org.apache.tapestry.form.IFormComponent;
+import org.testng.annotations.Test;
 
 /**
  * Tests the {@link StringValidator}class.
@@ -25,7 +26,7 @@ import org.apache.tapestry.form.IFormComponent;
  * @author Howard Lewis Ship
  * @since 1.0.8
  */
-
+@Test
 public class TestStringValidator extends BaseValidatorTestCase
 {
     private StringValidator v = new StringValidator();

@@ -20,6 +20,7 @@ import static org.testng.AssertJUnit.assertEquals;
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.services.AbsoluteURLBuilder;
 import org.apache.tapestry.web.WebRequest;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.AbsoluteURLBuilderImpl}.
@@ -27,6 +28,7 @@ import org.apache.tapestry.web.WebRequest;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestAbsoluteURLBuilder extends TapestryTestCase
 {
     private void attempt(String expected, String URI, String scheme, String server, int port)

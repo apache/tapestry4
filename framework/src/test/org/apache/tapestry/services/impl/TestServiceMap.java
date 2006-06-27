@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.services.impl;
 
-import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.*;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertSame;
 
@@ -28,6 +28,7 @@ import org.apache.hivemind.Location;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IEngineService;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.ServiceMapImpl}.
@@ -35,12 +36,14 @@ import org.apache.tapestry.engine.IEngineService;
  * @author Howard Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestServiceMap extends BaseComponentTestCase
 {
     private IEngineService newService(String name)
     {
         IEngineService service = newMock(IEngineService.class);
-
+        checkOrder(service, false);
+        
         expect(service.getName()).andReturn(name);
 
         return service;
@@ -48,7 +51,7 @@ public class TestServiceMap extends BaseComponentTestCase
 
     private IEngineService newService()
     {
-        return (IEngineService) newMock(IEngineService.class);
+        return newMock(IEngineService.class);
     }
     
     private EngineServiceContribution constructService(String name, IEngineService service)
@@ -224,17 +227,17 @@ public class TestServiceMap extends BaseComponentTestCase
 
         EngineServiceContribution firstc = constructService("duplicate", first);
         firstc.setLocation(l);
-
+        
         EngineServiceContribution secondc = constructService("duplicate", second);
-
+        
         List list = new ArrayList();
         list.add(firstc);
         list.add(secondc);
 
-        ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
+        ErrorLog log = newMock(ErrorLog.class);
 
         first.service(cycle);
-
+        
         log.error(ImplMessages.dupeService("duplicate", firstc), l, null);
 
         replay();

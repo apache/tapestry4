@@ -18,6 +18,7 @@ import static org.testng.AssertJUnit.assertEquals;
 
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.util.IdAllocator;
+import org.testng.annotations.Test;
 
 /**
  * Tests the {@link org.apache.tapestry.util.IdAllocator}class.
@@ -25,7 +26,7 @@ import org.apache.tapestry.util.IdAllocator;
  * @author Howard Lewis Ship
  * @since 3.0
  */
-
+@Test
 public class TestIdAllocator extends TapestryTestCase
 {
     public void testSimple()

@@ -16,6 +16,7 @@ package org.apache.tapestry.util;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.oro.text.perl.Perl5Util;
 import org.apache.oro.text.regex.MatchResult;
+import org.testng.annotations.Test;
 
 
 /**
@@ -23,6 +24,7 @@ import org.apache.oro.text.regex.MatchResult;
  * 
  * @author jkuhnert
  */
+@Test
 public class ScriptUtilsTest extends HiveMindTestCase
 {
     protected static final String JAVASCRIPT_NOCOMMENT = 

@@ -33,12 +33,13 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.services.ExpressionCache;
 import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.spec.IApplicationSpecification;
-import org.easymock.AbstractMatcher;
+import org.testng.annotations.Test;
 
 /**
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestExpressionEvaluator extends BaseComponentTestCase
 {
     private ExpressionEvaluatorImpl create()
@@ -50,24 +51,6 @@ public class TestExpressionEvaluator extends BaseComponentTestCase
         result.setExpressionCache(cache);
 
         return result;
-    }
-
-    private static class NullMeansIgnoreMatcher extends AbstractMatcher
-    {
-        public boolean matches(Object[] expected, Object[] actual)
-        {
-            for (int i = 0; i < expected.length; i++)
-            {
-                if (expected[i] == null)
-                    continue;
-
-                if (!argumentMatches(expected[i], actual[i]))
-                    return false;
-            }
-
-            return true;
-        }
-
     }
 
     public static class Fixture

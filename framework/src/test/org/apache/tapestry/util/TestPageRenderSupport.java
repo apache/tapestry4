@@ -32,6 +32,7 @@ import org.apache.tapestry.markup.AsciiMarkupFilter;
 import org.apache.tapestry.markup.MarkupWriterImpl;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.services.impl.DefaultResponseBuilder;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.util.PageRenderSupportImpl}.
@@ -39,11 +40,12 @@ import org.apache.tapestry.services.impl.DefaultResponseBuilder;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestPageRenderSupport extends BaseComponentTestCase
 {
     private AssetFactory newAssetFactory()
     {
-        return (AssetFactory) newMock(AssetFactory.class);
+        return newMock(AssetFactory.class);
     }
 
     private IAsset newAsset(IRequestCycle cycle, String url)

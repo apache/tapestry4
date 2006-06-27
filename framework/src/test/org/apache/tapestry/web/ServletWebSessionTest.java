@@ -22,12 +22,15 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.testng.annotations.Test;
+
 /**
  * Tests for {@link org.apache.tapestry.web.ServletWebSession}.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class ServletWebSessionTest extends BaseWebTestCase
 {
     public void testGetAttributeNames()
@@ -49,7 +52,7 @@ public class ServletWebSessionTest extends BaseWebTestCase
 
     private HttpSession newSession()
     {
-        return (HttpSession) newMock(HttpSession.class);
+        return newMock(HttpSession.class);
     }
 
     public void testGetAttribute()

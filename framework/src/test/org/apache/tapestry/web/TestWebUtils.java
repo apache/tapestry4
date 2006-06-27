@@ -20,6 +20,7 @@ import java.util.Enumeration;
 import java.util.List;
 
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.web.WebUtils}.
@@ -27,6 +28,7 @@ import org.apache.hivemind.test.HiveMindTestCase;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestWebUtils extends HiveMindTestCase
 {
     public void testToSortedList()

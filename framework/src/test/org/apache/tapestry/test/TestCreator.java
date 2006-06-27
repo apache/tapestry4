@@ -25,6 +25,7 @@ import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.test.Creator}.
@@ -32,6 +33,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @author Howard Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestCreator extends BaseComponentTestCase
 {
 
@@ -136,7 +138,7 @@ public class TestCreator extends BaseComponentTestCase
 
     public void testSpecificationProperty()
     {
-        IComponentSpecification spec = (IComponentSpecification) newMock(IComponentSpecification.class);
+        IComponentSpecification spec = newMock(IComponentSpecification.class);
 
         replay();
 
@@ -152,7 +154,7 @@ public class TestCreator extends BaseComponentTestCase
 
     public void testMessagesProperty()
     {
-        Messages messages = (Messages) newMock(Messages.class);
+        Messages messages = newMock(Messages.class);
 
         replay();
 

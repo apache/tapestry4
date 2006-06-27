@@ -25,6 +25,7 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.BaseComponentTestCase;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.InfrastructureImpl}.
@@ -32,6 +33,7 @@ import org.apache.tapestry.BaseComponentTestCase;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestInfrastructure extends BaseComponentTestCase
 {
     private static class DeferredObjectFixture implements DeferredObject
@@ -203,7 +205,7 @@ public class TestInfrastructure extends BaseComponentTestCase
 
     public void testDuplicate()
     {
-        ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
+        ErrorLog log = newMock(ErrorLog.class);
 
         Location l1 = fabricateLocation(99);
         Location l2 = fabricateLocation(132);

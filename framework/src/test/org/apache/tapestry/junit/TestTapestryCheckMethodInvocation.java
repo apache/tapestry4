@@ -18,6 +18,7 @@ import static org.testng.AssertJUnit.assertEquals;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.Tapestry;
+import org.testng.annotations.Test;
 
 /**
  * Tests for the methods
@@ -28,6 +29,7 @@ import org.apache.tapestry.Tapestry;
  * @author Howard Lewis Ship
  * @since 3.0
  */
+@Test
 public class TestTapestryCheckMethodInvocation extends TapestryTestCase
 {
 

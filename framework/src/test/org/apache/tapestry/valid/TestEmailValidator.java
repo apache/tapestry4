@@ -17,6 +17,7 @@ package org.apache.tapestry.valid;
 import static org.testng.AssertJUnit.assertEquals;
 
 import org.apache.tapestry.form.IFormComponent;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.valid.EmailValidator}.
@@ -24,7 +25,7 @@ import org.apache.tapestry.form.IFormComponent;
  * @author Howard Lewis Ship
  * @since 3.0
  */
-
+@Test
 public class TestEmailValidator extends BaseValidatorTestCase
 {
     private EmailValidator v = new EmailValidator();

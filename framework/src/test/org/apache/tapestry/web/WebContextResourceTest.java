@@ -24,6 +24,7 @@ import java.util.Locale;
 
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.BaseComponentTestCase;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.web.WebContextResource}.
@@ -31,11 +32,12 @@ import org.apache.tapestry.BaseComponentTestCase;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class WebContextResourceTest extends BaseComponentTestCase
 {
     private WebContext newContext()
     {
-        return (WebContext) newMock(WebContext.class);
+        return newMock(WebContext.class);
     }
 
     public void testConstructor()

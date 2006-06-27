@@ -26,6 +26,7 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ParameterSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.pageload.VerifyRequiredParametersVisitor}.
@@ -33,6 +34,7 @@ import org.apache.tapestry.spec.ParameterSpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestVerifyRequiredParametersVisitor extends BaseComponentTestCase
 {
     private IComponent newComponent(IComponentSpecification spec)

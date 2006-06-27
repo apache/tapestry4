@@ -15,6 +15,7 @@
 package org.apache.tapestry.record;
 
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.record.ChangeKey}.
@@ -22,6 +23,7 @@ import org.apache.hivemind.test.HiveMindTestCase;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestChangeKey extends HiveMindTestCase
 {
     public void testSetters()

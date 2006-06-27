@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.tapestry.BaseComponentTestCase;
+import org.testng.annotations.Test;
 
 /**
  * Tests {@link org.apache.tapestry.script.ForeachToken}.
@@ -30,6 +31,7 @@ import org.apache.tapestry.BaseComponentTestCase;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestForeachToken extends BaseComponentTestCase
 {
     private static class EchoToken extends AbstractToken

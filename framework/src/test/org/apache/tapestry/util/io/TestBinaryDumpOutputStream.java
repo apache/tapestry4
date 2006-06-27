@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.util.io;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.CharArrayWriter;
@@ -25,7 +27,8 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.apache.tapestry.BaseComponentTestCase;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.util.io.BinaryDumpOutputStream}.
@@ -33,7 +36,8 @@ import junit.framework.TestCase;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class TestBinaryDumpOutputStream extends TestCase
+@Test
+public class TestBinaryDumpOutputStream extends BaseComponentTestCase
 {
     /**
      * Reads the content of a file, and forms a string. Converts line-number endings in the file

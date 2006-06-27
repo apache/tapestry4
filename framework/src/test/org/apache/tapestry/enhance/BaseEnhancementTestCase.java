@@ -20,7 +20,6 @@ import org.apache.hivemind.Location;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.engine.state.ApplicationStateManager;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.testng.annotations.Test;
 
 /**
  * Base class for common utilities when testing enhancement workers.
@@ -28,7 +27,6 @@ import org.testng.annotations.Test;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-@Test
 public abstract class BaseEnhancementTestCase extends BaseComponentTestCase
 {
     public IComponentSpecification newSpec(Location location)

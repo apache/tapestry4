@@ -37,6 +37,7 @@ import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.services.impl.ExpressionCacheImpl;
 import org.apache.tapestry.services.impl.ExpressionEvaluatorImpl;
 import org.apache.tapestry.util.xml.DocumentParseException;
+import org.testng.annotations.Test;
 
 /**
  * A collection of tests for Tapestry scripting.
@@ -44,7 +45,7 @@ import org.apache.tapestry.util.xml.DocumentParseException;
  * @author Howard Lewis Ship
  * @since 2.2
  */
-
+@Test
 public class TestScript extends TapestryTestCase
 {
     private MockScriptProcessor _processor = new MockScriptProcessor();
@@ -75,7 +76,7 @@ public class TestScript extends TapestryTestCase
     {
         IScript script = read(file);
 
-        IRequestCycle cycle = (IRequestCycle) newMock(IRequestCycle.class);
+        IRequestCycle cycle = newMock(IRequestCycle.class);
 
         replay();
 

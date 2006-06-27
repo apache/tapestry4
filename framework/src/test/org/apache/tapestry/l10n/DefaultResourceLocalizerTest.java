@@ -21,6 +21,7 @@ import java.util.Locale;
 
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.BaseComponentTestCase;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.l10n.DefaultResourceLocalizer}.
@@ -28,6 +29,7 @@ import org.apache.tapestry.BaseComponentTestCase;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class DefaultResourceLocalizerTest extends BaseComponentTestCase
 {
     public void testLocalizer()

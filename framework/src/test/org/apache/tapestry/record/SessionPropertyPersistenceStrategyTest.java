@@ -28,6 +28,7 @@ import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.engine.ServiceEncoding;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebSession;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link SessionPropertyPersistenceStrategy}.
@@ -35,16 +36,17 @@ import org.apache.tapestry.web.WebSession;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class SessionPropertyPersistenceStrategyTest extends BaseComponentTestCase
 {
     private ServiceEncoding newEncoding()
     {
-        return (ServiceEncoding) newMock(ServiceEncoding.class);
+        return newMock(ServiceEncoding.class);
     }
 
     private WebRequest newRequest(boolean create, WebSession session)
     {
-        WebRequest request = (WebRequest) newMock(WebRequest.class);
+        WebRequest request = newMock(WebRequest.class);
 
         expect(request.getSession(create)).andReturn(session);
 
@@ -53,7 +55,7 @@ public class SessionPropertyPersistenceStrategyTest extends BaseComponentTestCas
 
     private WebSession newSession()
     {
-        return (WebSession) newMock(WebSession.class);
+        return newMock(WebSession.class);
     }
 
     private WebSession newSession(String attributeName, boolean remove)
@@ -70,7 +72,7 @@ public class SessionPropertyPersistenceStrategyTest extends BaseComponentTestCas
 
     private WebSession newSession(String attributeName, Object value)
     {
-        WebSession session = (WebSession) newMock(WebSession.class);
+        WebSession session = newMock(WebSession.class);
 
         expect(session.getAttributeNames()).andReturn(Collections.singletonList(attributeName));
         

@@ -21,6 +21,7 @@ import static org.testng.AssertJUnit.assertSame;
 import java.util.Map;
 
 import org.apache.tapestry.form.IFormComponent;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.valid.IntValidator}.
@@ -28,6 +29,7 @@ import org.apache.tapestry.form.IFormComponent;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestIntValidator extends BaseValidatorTestCase
 {
     public void testToStringNull()

@@ -27,6 +27,7 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.event.BrowserEvent;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.listener.ListenerMapSourceImpl}&nbsp;and
@@ -35,6 +36,7 @@ import org.apache.tapestry.event.BrowserEvent;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestListenerMapSource extends BaseComponentTestCase
 {
 
@@ -227,7 +229,7 @@ public class TestListenerMapSource extends BaseComponentTestCase
 
     public void testReturnPageInstance()
     {
-        IPage page = (IPage) newMock(IPage.class);
+        IPage page = newMock(IPage.class);
         IRequestCycle cycle = newLCycle(null);
         ListenerMethodHolder holder = new ListenerMethodHolder(page);
 
@@ -370,6 +372,6 @@ public class TestListenerMapSource extends BaseComponentTestCase
 
     private ListenerMethodHolder newHolder()
     {
-        return (ListenerMethodHolder) newMock(ListenerMethodHolder.class);
+        return newMock(ListenerMethodHolder.class);
     }
 }

@@ -23,6 +23,7 @@ import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.engine.IScriptSource;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.valid.ValidatorBindingFactory}.
@@ -30,16 +31,17 @@ import org.apache.tapestry.engine.IScriptSource;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestValidatorBindingFactory extends BaseComponentTestCase
 {
     public void testFactory()
     {
-        IValidator validator = (IValidator) newMock(IValidator.class);
-        ValueConverter vc = (ValueConverter) newMock(ValueConverter.class);
+        IValidator validator = newMock(IValidator.class);
+        ValueConverter vc = newMock(ValueConverter.class);
         
         BeanFactory vbf = newMock(BeanFactory.class);
 
-        IScriptSource scriptSource = (IScriptSource)newMock(IScriptSource.class);
+        IScriptSource scriptSource = newMock(IScriptSource.class);
         
         expect(vbf.get("foo,bar=baz")).andReturn(validator);
         

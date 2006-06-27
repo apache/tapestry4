@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.form.IFormComponent;
+import org.testng.annotations.Test;
 
 /**
  * Test the class {@link ValidationDelegate}.
@@ -32,7 +33,7 @@ import org.apache.tapestry.form.IFormComponent;
  * @author Howard Lewis Ship
  * @since 1.0.8
  */
-
+@Test
 public class ValidationDelegateTest extends BaseValidatorTestCase
 {
     protected IFormComponent newField(String name, int count)
@@ -303,7 +304,7 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
         IFormComponent f1 = newField("monty", 2);
         IFormComponent f2 = newField("python", 3);
 
-        IRender f2ErrorRenderer = (IRender) newMock(IRender.class);
+        IRender f2ErrorRenderer = newMock(IRender.class);
 
         replay();
 

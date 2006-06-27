@@ -33,6 +33,7 @@ import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.services.ClasspathResourceFactory;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.ResetEventHub;
+import org.testng.annotations.Test;
 
 /**
  * Tests for:
@@ -46,14 +47,15 @@ import org.apache.tapestry.services.ResetEventHub;
  * @author Howard Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestBasicInfrastructure extends BaseComponentTestCase
 {
     public void testRequestGlobals()
     {
         RequestGlobalsImpl si = new RequestGlobalsImpl();
 
-        HttpServletRequest r = (HttpServletRequest) newMock(HttpServletRequest.class);
-        HttpServletResponse p = (HttpServletResponse) newMock(HttpServletResponse.class);
+        HttpServletRequest r = newMock(HttpServletRequest.class);
+        HttpServletResponse p = newMock(HttpServletResponse.class);
 
         replay();
 
@@ -148,7 +150,7 @@ public class TestBasicInfrastructure extends BaseComponentTestCase
     {
         Infrastructure ifr = newMock(Infrastructure.class);
 
-        ResetEventHub coord = (ResetEventHub) newMock(ResetEventHub.class);
+        ResetEventHub coord = newMock(ResetEventHub.class);
 
         expect(ifr.getResetEventHub()).andReturn(coord);
 

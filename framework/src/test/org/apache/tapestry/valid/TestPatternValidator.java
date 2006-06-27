@@ -22,6 +22,7 @@ import static org.testng.AssertJUnit.assertSame;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.form.IFormComponent;
+import org.testng.annotations.Test;
 
 /**
  * Test cases for PatternValidator.
@@ -29,6 +30,7 @@ import org.apache.tapestry.form.IFormComponent;
  * @author Harish Krishnaswamy
  * @since 3.0
  */
+@Test
 public class TestPatternValidator extends BaseValidatorTestCase
 {
     PatternValidator pv = new PatternValidator();

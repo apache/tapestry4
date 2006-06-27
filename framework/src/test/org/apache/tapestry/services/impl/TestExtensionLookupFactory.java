@@ -26,6 +26,7 @@ import org.apache.hivemind.ServiceImplementationFactoryParameters;
 import org.apache.hivemind.lib.DefaultImplementationBuilder;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.spec.IApplicationSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests {@link org.apache.tapestry.services.impl.ExtensionLookupFactory}.
@@ -33,6 +34,7 @@ import org.apache.tapestry.spec.IApplicationSpecification;
  * @author Howard Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestExtensionLookupFactory extends BaseComponentTestCase
 {
     private List createParameters(String extensionName)

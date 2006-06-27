@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import org.apache.tapestry.util.text.LocalizedProperties;
+import org.testng.annotations.Test;
 
 /**
  * Tests to ensure that LocalizedProperties are fully backward compatible with java.util.Properties
@@ -29,6 +30,7 @@ import org.apache.tapestry.util.text.LocalizedProperties;
  * @author mb
  * @since 4.0
  */
+@Test
 public class TestLocalizedProperties extends TapestryTestCase
 {
     private void ensureEquivalence(String fileName)

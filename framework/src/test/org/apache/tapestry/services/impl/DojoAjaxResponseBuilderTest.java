@@ -36,6 +36,7 @@ import org.apache.tapestry.markup.MarkupWriterImpl;
 import org.apache.tapestry.markup.UTFMarkupFilter;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.testng.annotations.Configuration;
+import org.testng.annotations.Test;
 
 
 /**
@@ -44,6 +45,7 @@ import org.testng.annotations.Configuration;
  * @author jkuhnert
  */
 @SuppressWarnings("cast")
+@Test
 public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
 {
 
@@ -74,8 +76,8 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
     
     public void testNullRender() 
     {
-        IRender render = (IRender)newMock(IRender.class);
-        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
+        IRender render = newMock(IRender.class);
+        IRequestCycle cycle = newMock(IRequestCycle.class);
         
         ResponseBuilder builder = new DojoAjaxResponseBuilder(null, null);
         
@@ -92,9 +94,9 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
     
     public void testNormalRender()
     {
-        IRender render = (IRender)newMock(IRender.class);
-        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
-        IMarkupWriter writer = (IMarkupWriter)newMock(IMarkupWriter.class);
+        IRender render = newMock(IRender.class);
+        IRequestCycle cycle = newMock(IRequestCycle.class);
+        IMarkupWriter writer = newMock(IMarkupWriter.class);
         
         ResponseBuilder builder = new DojoAjaxResponseBuilder(writer, null);
         
@@ -122,12 +124,12 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
     
     public void testPartialRender()
     {
-        IRender render = (IRender)newMock(IRender.class);
+        IRender render = newMock(IRender.class);
         
-        IComponent comp1 = (IComponent)newMock(IComponent.class);
-        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
-        IMarkupWriter writer = (IMarkupWriter)newMock(IMarkupWriter.class);
-        NestedMarkupWriter nested = (NestedMarkupWriter)newMock(NestedMarkupWriter.class);
+        IComponent comp1 = newMock(IComponent.class);
+        IRequestCycle cycle = newMock(IRequestCycle.class);
+        IMarkupWriter writer = newMock(IMarkupWriter.class);
+        NestedMarkupWriter nested = newMock(NestedMarkupWriter.class);
         
         List parts = new ArrayList();
         parts.add("id1");
@@ -162,7 +164,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
     
     public void testAllowedScripts()
     {
-        IComponent comp = (IComponent)newMock(IComponent.class);
+        IComponent comp = newMock(IComponent.class);
         List parts = new ArrayList();
         parts.add("comp1");
         
@@ -187,7 +189,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
     {
         MarkupFilter filter = new UTFMarkupFilter();
         PrintWriter writer = newPrintWriter();
-        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
+        IRequestCycle cycle = newMock(IRequestCycle.class);
         
         replay();
         
@@ -235,7 +237,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
     {
         MarkupFilter filter = new UTFMarkupFilter();
         PrintWriter writer = newPrintWriter();
-        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
+        IRequestCycle cycle = newMock(IRequestCycle.class);
         
         replay();
         

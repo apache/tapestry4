@@ -24,6 +24,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import org.apache.tapestry.form.IFormComponent;
+import org.testng.annotations.Test;
 
 /**
  * Tests the {@link DateValidator}class.
@@ -31,7 +32,7 @@ import org.apache.tapestry.form.IFormComponent;
  * @author Howard Lewis Ship
  * @since 1.0.8
  */
-
+@Test
 public class TestDateValidator extends BaseValidatorTestCase
 {
     private Calendar calendar = new GregorianCalendar();

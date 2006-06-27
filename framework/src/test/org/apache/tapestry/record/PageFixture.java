@@ -15,12 +15,13 @@
 package org.apache.tapestry.record;
 
 import org.apache.tapestry.html.BasePage;
+import org.testng.annotations.Test;
 
 /**
  * @author Howard Lewis Ship
  * @since 4.0
  */
-
+@Test
 public abstract class PageFixture extends BasePage
 {
     public abstract String getCartoonName();

@@ -18,6 +18,7 @@ import java.io.PrintWriter;
 
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.json.IJSONWriter;
+import org.testng.annotations.Test;
 
 
 /**
@@ -25,6 +26,7 @@ import org.apache.tapestry.json.IJSONWriter;
  * 
  * @author jkuhnert
  */
+@Test
 public class TestJSONWriter extends HiveMindTestCase
 {
     

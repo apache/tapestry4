@@ -17,6 +17,7 @@ package org.apache.tapestry.junit;
 import static org.testng.AssertJUnit.assertEquals;
 
 import org.apache.tapestry.multipart.ValuePart;
+import org.testng.annotations.Test;
 
 /**
  * A few tests to fill in the code coverage of {@link org.apache.tapestry.multipart.ValuePart}and
@@ -25,6 +26,7 @@ import org.apache.tapestry.multipart.ValuePart;
  * @author Howard Lewis Ship
  * @since 3.0
  */
+@Test
 public class TestMultipart extends TapestryTestCase
 {
 

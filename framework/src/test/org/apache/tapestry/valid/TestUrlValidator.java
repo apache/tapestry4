@@ -21,6 +21,7 @@ import java.util.Locale;
 
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.form.IFormComponent;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.valid.EmailValidator}.
@@ -29,7 +30,7 @@ import org.apache.tapestry.form.IFormComponent;
  * @author Jimmy Dyson
  * @since 3.0
  */
-
+@Test
 public class TestUrlValidator extends BaseValidatorTestCase
 {
     private UrlValidator v = new UrlValidator();

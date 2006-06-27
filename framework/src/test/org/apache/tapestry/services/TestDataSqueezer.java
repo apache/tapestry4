@@ -15,12 +15,14 @@ package org.apache.tapestry.services;
 
 import org.apache.hivemind.Registry;
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.testng.annotations.Test;
 
 
 /**
  * 
  *
  */
+@Test
 public class TestDataSqueezer extends HiveMindTestCase {
 
     public void testPipeline() throws Exception {

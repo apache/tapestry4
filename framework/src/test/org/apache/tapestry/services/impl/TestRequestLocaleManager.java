@@ -25,6 +25,7 @@ import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.TapestryConstants;
 import org.apache.tapestry.services.CookieSource;
 import org.apache.tapestry.web.WebRequest;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.RequestLocaleManagerImpl}.
@@ -32,11 +33,12 @@ import org.apache.tapestry.web.WebRequest;
  * @author Howard Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestRequestLocaleManager extends BaseComponentTestCase
 {
     private ThreadLocale newThreadLocale()
     {
-        return (ThreadLocale) newMock(ThreadLocale.class);
+        return newMock(ThreadLocale.class);
     }
 
     private ThreadLocale newThreadLocale(Locale locale)

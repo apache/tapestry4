@@ -26,6 +26,7 @@ import org.apache.tapestry.engine.NullWriter;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.services.impl.DefaultResponseBuilder;
 import org.apache.tapestry.test.Creator;
+import org.testng.annotations.Test;
 
 /**
  * Test a few random things in {@link org.apache.tapestry.AbstractComponent}and
@@ -34,7 +35,7 @@ import org.apache.tapestry.test.Creator;
  * @author Howard Lewis Ship
  * @since 3.0
  */
-
+@Test
 public class TestComponent extends BaseComponentTestCase
 {
     private static class TestRender implements IRender
@@ -69,7 +70,7 @@ public class TestComponent extends BaseComponentTestCase
     public void testOuter() throws Exception
     {
         IMarkupWriter writer = new NullWriter();
-        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
+        IRequestCycle cycle = newMock(IRequestCycle.class);
         
         Creator creator = new Creator();
         

@@ -21,6 +21,7 @@ import org.apache.hivemind.Location;
 import org.apache.hivemind.internal.Module;
 import org.apache.hivemind.schema.Translator;
 import org.apache.tapestry.BaseComponentTestCase;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.DeferredObjectImpl}&nbsp;and
@@ -29,11 +30,12 @@ import org.apache.tapestry.BaseComponentTestCase;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestDeferredObjectTranslator extends BaseComponentTestCase
 {
     private Module newModule()
     {
-        return (Module) newMock(Module.class);
+        return newMock(Module.class);
     }
 
     private Translator newTranslator(Module module, String objectReference, Location location,

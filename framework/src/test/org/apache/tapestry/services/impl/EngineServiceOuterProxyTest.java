@@ -20,6 +20,7 @@ import static org.testng.AssertJUnit.assertSame;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.EngineServiceOuterProxy}.
@@ -27,6 +28,7 @@ import org.apache.tapestry.engine.ILink;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class EngineServiceOuterProxyTest extends AbstractEngineServiceProxyTestCase
 {
     public void testToString()

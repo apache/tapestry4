@@ -21,6 +21,7 @@ import java.util.Locale;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.junit.TapestryTestCase;
+import org.testng.annotations.Test;
 
 /**
  * Base class for tests of different {@link org.apache.tapestry.valid.IValidator}implementations.
@@ -28,12 +29,13 @@ import org.apache.tapestry.junit.TapestryTestCase;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public abstract class BaseValidatorTestCase extends TapestryTestCase
 {
 
     protected IFormComponent newField()
     {
-        return (IFormComponent) newMock(IFormComponent.class);
+        return newMock(IFormComponent.class);
     }
 
     protected IFormComponent newField(String displayName)

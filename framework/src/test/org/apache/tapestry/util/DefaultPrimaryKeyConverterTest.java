@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.util.DefaultPrimaryKeyConverter}.
@@ -25,6 +26,7 @@ import org.apache.hivemind.test.HiveMindTestCase;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class DefaultPrimaryKeyConverterTest extends HiveMindTestCase
 {
     /**

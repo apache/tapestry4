@@ -21,6 +21,7 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.util.RegexpMatch;
 import org.apache.tapestry.util.RegexpMatcher;
+import org.testng.annotations.Test;
 
 /**
  * Simple test case for {@link org.apache.tapestry.util.RegexpMatcher}.
@@ -28,6 +29,7 @@ import org.apache.tapestry.util.RegexpMatcher;
  * @author Howard Lewis Ship
  * @since 3.0
  */
+@Test
 public class TestRegexpMatcher extends TapestryTestCase
 {
 

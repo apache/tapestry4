@@ -31,22 +31,22 @@ import org.testng.annotations.Test;
  * @author James Carman
  *
  */
-@Test
 public class TestAutowireWorker extends BaseEnhancementTestCase
 {
 
     private static final String HELLO_SERVICE_PROPERTY = "helloService";
 
+    @Test
     public void testWithNoService() throws Exception
     {
         assertNotAutowired( RegistryBuilder.constructDefaultRegistry() );
     }
-    
+    @Test
     public void testWithManyServices() throws Exception
     {        
         assertNotAutowired( buildFrameworkRegistry("autowire-multiple.xml" ) );   
     }
-    
+    @Test
     public void testWithOneService() throws Exception
     {
         final Registry registry = buildFrameworkRegistry("autowire-single.xml" );

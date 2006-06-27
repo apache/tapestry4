@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import org.apache.tapestry.form.IFormComponent;
+import org.testng.annotations.Test;
 
 /**
  * Test the {@link NumberValidator}.
@@ -27,7 +28,7 @@ import org.apache.tapestry.form.IFormComponent;
  * @author Howard Lewis Ship
  * @since 1.0.8
  */
-
+@Test
 public class TestNumberValidator extends BaseValidatorTestCase
 {
     private NumberValidator v = new NumberValidator();

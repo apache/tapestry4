@@ -43,6 +43,7 @@ import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
 import org.apache.tapestry.spec.LibrarySpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests the class {@link org.apache.tapestry.services.impl.ComponentMessagesSourceImpl}.
@@ -53,7 +54,7 @@ import org.apache.tapestry.spec.LibrarySpecification;
  * @author Howard Lewis Ship
  * @since 2.0.4
  */
-
+@Test
 public class TestComponentMessages extends TapestryTestCase
 {
     private Location _locationFixture = new Location()

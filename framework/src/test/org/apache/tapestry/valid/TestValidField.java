@@ -29,6 +29,7 @@ import org.apache.tapestry.form.BaseFormComponentTestCase;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.MockDelegate;
 import org.apache.tapestry.html.BasePage;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.valid.ValidField}.
@@ -36,6 +37,7 @@ import org.apache.tapestry.html.BasePage;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestValidField extends BaseFormComponentTestCase
 {
 

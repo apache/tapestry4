@@ -25,6 +25,7 @@ import java.util.List;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.engine.ServiceEncoding;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.record.PropertyPersistenceStrategySourceImpl}.
@@ -32,11 +33,12 @@ import org.apache.tapestry.engine.ServiceEncoding;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class PropertyPersistenceStrategySourceTest extends BaseComponentTestCase
 {
     private PropertyPersistenceStrategy newStrategy()
     {
-        return (PropertyPersistenceStrategy) newMock(PropertyPersistenceStrategy.class);
+        return newMock(PropertyPersistenceStrategy.class);
     }
 
     private List newContributions(String name, PropertyPersistenceStrategy strategy)
@@ -109,7 +111,7 @@ public class PropertyPersistenceStrategySourceTest extends BaseComponentTestCase
 
     private PropertyChange newChange()
     {
-        return (PropertyChange) newMock(PropertyChange.class);
+        return newMock(PropertyChange.class);
     }
 
     public void testAddParameters()
@@ -138,7 +140,7 @@ public class PropertyPersistenceStrategySourceTest extends BaseComponentTestCase
 
     private ServiceEncoding newEncoding()
     {
-        return (ServiceEncoding) newMock(ServiceEncoding.class);
+        return newMock(ServiceEncoding.class);
     }
 
     public void testDiscardStoredChanges()

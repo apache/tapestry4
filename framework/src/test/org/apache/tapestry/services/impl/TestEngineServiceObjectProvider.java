@@ -20,12 +20,14 @@ import static org.testng.AssertJUnit.assertSame;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.services.ServiceMap;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.EngineServiceObjectProvider}.
  * 
  * @author Howard M. Lewis Ship
  */
+@Test
 public class TestEngineServiceObjectProvider extends BaseComponentTestCase
 {
     public void testProvideObject()

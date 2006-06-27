@@ -16,6 +16,7 @@ package org.apache.tapestry.services.impl;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.ExpressionCacheImpl}.
@@ -23,6 +24,7 @@ import org.apache.hivemind.test.HiveMindTestCase;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestExpressionCache extends HiveMindTestCase
 {
     public void testValidExpression()

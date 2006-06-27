@@ -14,9 +14,11 @@
 
 package org.apache.tapestry.form;
 
-import org.testng.annotations.Test;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertTrue;
 
-import junit.framework.TestCase;
+import org.apache.tapestry.BaseComponentTestCase;
+import org.testng.annotations.Test;
 
 /**
  * Test case for {@link org.apache.tapestry.form.LabeledPropertySelectionModel}.
@@ -25,7 +27,7 @@ import junit.framework.TestCase;
  * @since 4.0
  */
 @Test
-public class LabeledPropertySelectionModelTest extends TestCase
+public class LabeledPropertySelectionModelTest extends BaseComponentTestCase
 {
     public void testNullValue()
     {

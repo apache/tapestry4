@@ -27,6 +27,7 @@ import org.apache.tapestry.NestedMarkupWriter;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.components.ILinkComponent;
 import org.apache.tapestry.engine.ILink;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.link.DefaultLinkRenderer}.
@@ -34,6 +35,7 @@ import org.apache.tapestry.engine.ILink;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class DefaultLinkRendererTest extends BaseComponentTestCase
 {
     class RendererFixture extends DefaultLinkRenderer
@@ -116,7 +118,7 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
 
     protected ILinkComponent newComponent()
     {
-        return (ILinkComponent) newMock(ILinkComponent.class);
+        return newMock(ILinkComponent.class);
     }
 
     public void testNoNesting()

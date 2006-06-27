@@ -23,6 +23,7 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IMarkupWriter;
 import org.testng.annotations.Configuration;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.markup.MarkupWriterImpl}.
@@ -30,6 +31,7 @@ import org.testng.annotations.Configuration;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestMarkupWriter extends BaseComponentTestCase
 {
     private static CharArrayWriter _writer;
@@ -58,7 +60,7 @@ public class TestMarkupWriter extends BaseComponentTestCase
 
     private MarkupFilter newFilter()
     {
-        return (MarkupFilter) newMock(MarkupFilter.class);
+        return newMock(MarkupFilter.class);
     }
 
     private PrintWriter newPrintWriter()

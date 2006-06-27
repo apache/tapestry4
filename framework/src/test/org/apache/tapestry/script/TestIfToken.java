@@ -21,6 +21,7 @@ import static org.testng.AssertJUnit.assertSame;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.BaseComponentTestCase;
+import org.testng.annotations.Test;
 
 /**
  * Tests {@link org.apache.tapestry.script.IfToken}, the basis for the &lt;if&gt; and
@@ -29,6 +30,7 @@ import org.apache.tapestry.BaseComponentTestCase;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestIfToken extends BaseComponentTestCase
 {
     public void testEvaluateTrue()
@@ -57,7 +59,7 @@ public class TestIfToken extends BaseComponentTestCase
     {
         ScriptSession s = newMock(ScriptSession.class);
 
-        IScriptToken nested = (IScriptToken) newMock(IScriptToken.class);
+        IScriptToken nested = newMock(IScriptToken.class);
 
         expect(s.evaluate("EXPRESSION", Boolean.class)).andReturn(Boolean.FALSE);
 
@@ -77,7 +79,7 @@ public class TestIfToken extends BaseComponentTestCase
     {
         ScriptSession s = newMock(ScriptSession.class);
 
-        IScriptToken nested = (IScriptToken) newMock(IScriptToken.class);
+        IScriptToken nested = newMock(IScriptToken.class);
 
         expect(s.evaluate("EXPRESSION", Boolean.class)).andReturn(Boolean.FALSE);
 
