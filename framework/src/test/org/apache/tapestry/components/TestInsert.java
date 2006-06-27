@@ -30,6 +30,7 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests for the {@link org.apache.tapestry.components.Insert}&nbsp; component.
@@ -37,6 +38,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestInsert extends BaseComponentTestCase
 {
     /**
@@ -71,7 +73,7 @@ public class TestInsert extends BaseComponentTestCase
 
         replay();
 
-        Insert insert = (Insert) newInstance(Insert.class, new Object[]
+        Insert insert = newInstance(Insert.class, new Object[]
         { "value", null });
 
         insert.render(null, cycle);
@@ -88,7 +90,7 @@ public class TestInsert extends BaseComponentTestCase
         
         replay();
         
-        Insert insert = (Insert) newInstance(Insert.class, new Object[]
+        Insert insert = newInstance(Insert.class, new Object[]
         { "value", new Integer(42) });
         
         insert.render(writer, cycle);
@@ -109,7 +111,7 @@ public class TestInsert extends BaseComponentTestCase
         
         replay();
         
-        Insert insert = (Insert) newInstance(Insert.class, new Object[]
+        Insert insert = newInstance(Insert.class, new Object[]
         { "value", date, "format", format });
 
         insert.render(writer, cycle);
@@ -132,7 +134,7 @@ public class TestInsert extends BaseComponentTestCase
         
         replay();
         
-        Insert insert = (Insert) newInstance(Insert.class, new Object[]
+        Insert insert = newInstance(Insert.class, new Object[]
         { "value", value, "format", format });
         insert.setBinding("format", binding);
         insert.setId("fred");
@@ -165,7 +167,7 @@ public class TestInsert extends BaseComponentTestCase
 
         replay();
 
-        Insert insert = (Insert) newInstance(Insert.class, new Object[]
+        Insert insert = newInstance(Insert.class, new Object[]
         { "value", new Integer(42), "raw", Boolean.TRUE });
 
         insert.render(writer, cycle);
@@ -189,7 +191,7 @@ public class TestInsert extends BaseComponentTestCase
 
         replay();
 
-        Insert insert = (Insert) newInstance(Insert.class, new Object[]
+        Insert insert = newInstance(Insert.class, new Object[]
         { "value", "42", "specification", spec, "styleClass", "paisley" });
 
         insert.setBinding("informal", informal);

@@ -20,6 +20,7 @@ import static org.testng.AssertJUnit.assertSame;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.TapestryUtils;
+import org.testng.annotations.Test;
 
 /**
  * A scattering of tests for the {@link org.apache.tapestry.html.Body} component.
@@ -27,6 +28,7 @@ import org.apache.tapestry.TapestryUtils;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class BodyTest extends BaseComponentTestCase
 {
     public void testGetNoBodyReturnsNull()

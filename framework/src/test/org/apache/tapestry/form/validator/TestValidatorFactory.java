@@ -30,6 +30,7 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.junit.TapestryTestCase;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.form.validator.ValidatorFactoryImpl}.
@@ -37,6 +38,7 @@ import org.apache.tapestry.junit.TapestryTestCase;
  * @author Howard Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestValidatorFactory extends TapestryTestCase
 {
 
@@ -275,7 +277,7 @@ public class TestValidatorFactory extends TapestryTestCase
 
     private Validator newValidator()
     {
-        return (Validator) newMock(Validator.class);
+        return newMock(Validator.class);
     }
 
     private IBeanProvider newBeanProvider(String beanName, Object bean)
@@ -327,12 +329,12 @@ public class TestValidatorFactory extends TapestryTestCase
 
     private ValidationMessages newMessages()
     {
-        return (ValidationMessages) newMock(ValidationMessages.class);
+        return newMock(ValidationMessages.class);
     }
 
     private IFormComponent newField()
     {
-        return (IFormComponent) newMock(IFormComponent.class);
+        return newMock(IFormComponent.class);
     }
 
     public void testBeanReferenceNotValidator()

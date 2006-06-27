@@ -26,6 +26,7 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.html.Image} component.
@@ -33,6 +34,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestImage extends BaseComponentTestCase
 {
     public void testRewinding()
@@ -63,7 +65,7 @@ public class TestImage extends BaseComponentTestCase
         trainGetPageName(page, "Fred");
         trainGetIdPath(page, null);
 
-        Image image = (Image) newInstance(Image.class, new Object[]
+        Image image = newInstance(Image.class, new Object[]
         { "location", l, "id", "barney", "page", page, "container", page });
 
         replay();
@@ -104,7 +106,7 @@ public class TestImage extends BaseComponentTestCase
 
         replay();
 
-        Image image = (Image) newInstance(Image.class, new Object[]
+        Image image = newInstance(Image.class, new Object[]
         { "image", asset, "specification", spec });
 
         image.setBinding("border", informal);

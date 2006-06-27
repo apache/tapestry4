@@ -35,6 +35,7 @@ import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebSession;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.engine.DirectService}.
@@ -42,11 +43,12 @@ import org.apache.tapestry.web.WebSession;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class DirectEventServiceTest extends ServiceTestCase
 {
     protected IDirectEvent newDirect()
     {
-        return (IDirectEvent) newMock(IDirectEvent.class);
+        return newMock(IDirectEvent.class);
     }
 
     public void testGetLinkOnSamePage()

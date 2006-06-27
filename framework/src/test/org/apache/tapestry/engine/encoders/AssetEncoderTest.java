@@ -20,6 +20,7 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.asset.AssetService;
 import org.apache.tapestry.engine.ServiceEncoding;
 import org.apache.tapestry.services.ServiceConstants;
+import org.testng.annotations.Test;
 
 import com.javaforge.tapestry.testng.TestBase;
 
@@ -29,6 +30,7 @@ import com.javaforge.tapestry.testng.TestBase;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class AssetEncoderTest extends TestBase
 {
     public void testWrongService()
@@ -51,7 +53,7 @@ public class AssetEncoderTest extends TestBase
 
     protected ServiceEncoding newEncoding()
     {
-        return (ServiceEncoding) newMock(ServiceEncoding.class);
+        return newMock(ServiceEncoding.class);
     }
 
     public void testWrongPath()

@@ -36,6 +36,7 @@ import org.apache.tapestry.form.ValidatableFieldSupport;
 import org.apache.tapestry.json.IJSONWriter;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidatorException;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.form.TextField}.
@@ -43,19 +44,20 @@ import org.apache.tapestry.valid.ValidatorException;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestAutocompleter extends BaseFormComponentTestCase
 {
     public void testRewind()
     {
         String[] values = { "red", "green", "blue" };
         StringPropertySelectionModel model = new StringPropertySelectionModel(values);
-        ValidatableFieldSupport vfs = (ValidatableFieldSupport)newMock(ValidatableFieldSupport.class);
+        ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
         
-        Autocompleter component = (Autocompleter) newInstance(Autocompleter.class, new Object[]
+        Autocompleter component = newInstance(Autocompleter.class, new Object[]
         { "model", model, "validatableFieldSupport", vfs });
         
-        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
-        IForm form = (IForm) newMock(IForm.class);
+        IRequestCycle cycle = newMock(IRequestCycle.class);
+        IForm form = newMock(IForm.class);
         
         IMarkupWriter writer = newWriter();
         
@@ -97,8 +99,8 @@ public class TestAutocompleter extends BaseFormComponentTestCase
     {
         Autocompleter component = (Autocompleter) newInstance(Autocompleter.class);
         
-        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
-        IForm form = (IForm) newMock(IForm.class);
+        IRequestCycle cycle = newMock(IRequestCycle.class);
+        IForm form = newMock(IForm.class);
         
         IMarkupWriter writer = newWriter();
         
@@ -126,10 +128,10 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         String[] values = { "red", "green", "blue" };
         StringPropertySelectionModel model = new StringPropertySelectionModel(values);
         
-        ValidatableFieldSupport vfs = (ValidatableFieldSupport) newMock(ValidatableFieldSupport.class);
+        ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
         
-        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
-        IForm form = (IForm) newMock(IForm.class);
+        IRequestCycle cycle = newMock(IRequestCycle.class);
+        IForm form = newMock(IForm.class);
         
         IMarkupWriter writer = newBufferWriter();
         
@@ -138,9 +140,9 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         IEngineService engine = newEngineService();
         ILink link = newLink();
         
-        IScript script = (IScript)newMock(IScript.class);
+        IScript script = newMock(IScript.class);
         
-        Autocompleter component = (Autocompleter) newInstance(Autocompleter.class, new Object[]
+        Autocompleter component = newInstance(Autocompleter.class, new Object[]
         { "name", "fred", "model", model, 
             "directService", engine,
             "script", script,
@@ -192,11 +194,11 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         String[] values = { "red", "green", "blue", "yellow" };
         StringPropertySelectionModel model = new StringPropertySelectionModel(values);
         
-        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
+        IRequestCycle cycle = newMock(IRequestCycle.class);
         
         IJSONWriter json = newBufferJSONWriter();
         
-        Autocompleter component = (Autocompleter) newInstance(Autocompleter.class, new Object[]
+        Autocompleter component = newInstance(Autocompleter.class, new Object[]
         { "name", "fred", "model", model,
             "filter", "l" });
         
@@ -213,9 +215,9 @@ public class TestAutocompleter extends BaseFormComponentTestCase
     
     public void testIsRequired()
     {
-        ValidatableFieldSupport support = (ValidatableFieldSupport)newMock(ValidatableFieldSupport.class);
+        ValidatableFieldSupport support = newMock(ValidatableFieldSupport.class);
         
-        Autocompleter field = (Autocompleter) newInstance(Autocompleter.class, new Object[]
+        Autocompleter field = newInstance(Autocompleter.class, new Object[]
         { "validatableFieldSupport", support, });
         
         expect(support.isRequired(field)).andReturn(true);

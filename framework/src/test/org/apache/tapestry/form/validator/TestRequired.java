@@ -32,6 +32,7 @@ import org.apache.tapestry.valid.ValidationConstants;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.form.validator.Required}.
@@ -39,6 +40,7 @@ import org.apache.tapestry.valid.ValidatorException;
  * @author Howard Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestRequired extends BaseValidatorTestCase
 {
     public void testValidateNotNull() throws Exception
@@ -165,8 +167,7 @@ public class TestRequired extends BaseValidatorTestCase
         IRequestCycle cycle = newCycle();
         JSONObject json = new JSONObject();
         
-        FormComponentContributorContext context = 
-            (FormComponentContributorContext)newMock(FormComponentContributorContext.class);
+        FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
         
         IFormComponent field = newField("Fred", "fred");
         

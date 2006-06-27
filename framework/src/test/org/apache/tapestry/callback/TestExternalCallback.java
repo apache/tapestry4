@@ -22,6 +22,7 @@ import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IExternalPage;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.callback.ExternalCallback}.
@@ -29,11 +30,12 @@ import org.apache.tapestry.IRequestCycle;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestExternalCallback extends BaseComponentTestCase
 {
     private IExternalPage newExternalPage()
     {
-        return (IExternalPage) newMock(IExternalPage.class);
+        return newMock(IExternalPage.class);
     }
 
     private IExternalPage newExternalPage(String pageName)

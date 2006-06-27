@@ -19,6 +19,7 @@ import static org.easymock.EasyMock.expect;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.engine.ServiceEncoding;
 import org.apache.tapestry.services.ServiceConstants;
+import org.testng.annotations.Test;
 
 /**
  * Tests {@link org.apache.tapestry.engine.encoders.ServiceExtensionEncoder}.
@@ -26,6 +27,7 @@ import org.apache.tapestry.services.ServiceConstants;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestServiceExtensionEncoder extends BaseComponentTestCase
 {
     public void testEncode()

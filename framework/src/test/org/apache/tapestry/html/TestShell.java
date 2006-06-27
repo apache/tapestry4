@@ -19,6 +19,7 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.test.Creator;
+import org.testng.annotations.Test;
 
 /**
  * Tests for the {@link org.apache.tapestry.html.Shell}&nbsp; component.
@@ -26,6 +27,7 @@ import org.apache.tapestry.test.Creator;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestShell extends BaseComponentTestCase
 {
     private Creator _creator = new Creator();

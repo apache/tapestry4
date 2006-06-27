@@ -26,6 +26,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidatorException;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.form.TextField}.
@@ -33,6 +34,7 @@ import org.apache.tapestry.valid.ValidatorException;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestTextField extends BaseFormComponentTestCase
 {
     public void testRewind()
@@ -40,7 +42,7 @@ public class TestTextField extends BaseFormComponentTestCase
         TranslatedFieldSupport tfs = newMock(TranslatedFieldSupport.class);
         ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
 
-        TextField component = (TextField) newInstance(TextField.class, new Object[]
+        TextField component = newInstance(TextField.class, new Object[]
         { "translatedFieldSupport", tfs, "validatableFieldSupport", vfs });
         
         IRequestCycle cycle = newCycle();
@@ -89,7 +91,7 @@ public class TestTextField extends BaseFormComponentTestCase
         TranslatedFieldSupport tfs = newMock(TranslatedFieldSupport.class);
         ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
 
-        TextField component = (TextField) newInstance(TextField.class, new Object[]
+        TextField component = newInstance(TextField.class, new Object[]
         { "translatedFieldSupport", tfs, "validatableFieldSupport", vfs });
 
         IRequestCycle cycle = newCycle();
@@ -139,7 +141,7 @@ public class TestTextField extends BaseFormComponentTestCase
         TranslatedFieldSupport tfs = newMock(TranslatedFieldSupport.class);
         ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
 
-        TextField component = (TextField) newInstance(TextField.class, new Object[]
+        TextField component = newInstance(TextField.class, new Object[]
         { "translatedFieldSupport", tfs, "validatableFieldSupport", vfs });
 
         IRequestCycle cycle = newCycle();
@@ -272,7 +274,7 @@ public class TestTextField extends BaseFormComponentTestCase
     {
         TranslatedFieldSupport tfs = newMock(TranslatedFieldSupport.class);
         
-        ValidatableFieldSupport vfs = (ValidatableFieldSupport) newMock(ValidatableFieldSupport.class);
+        ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
         
         IRequestCycle cycle = newCycle();
         IForm form = newMock(IForm.class);
@@ -281,7 +283,7 @@ public class TestTextField extends BaseFormComponentTestCase
 
         MockDelegate delegate = new MockDelegate();
 
-        TextField component = (TextField) newInstance(TextField.class, new Object[]
+        TextField component = newInstance(TextField.class, new Object[]
         { "name", "fred", "translatedFieldSupport", tfs, "validatableFieldSupport", vfs, "value", new Integer(10) });
 
         trainGetForm(cycle, form);
@@ -318,7 +320,7 @@ public class TestTextField extends BaseFormComponentTestCase
     {
         TranslatedFieldSupport tfs = newMock(TranslatedFieldSupport.class);
         
-        ValidatableFieldSupport vfs = (ValidatableFieldSupport) newMock(ValidatableFieldSupport.class);
+        ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
 
         IRequestCycle cycle = newCycle();
         IForm form = newMock(IForm.class);
@@ -327,7 +329,7 @@ public class TestTextField extends BaseFormComponentTestCase
 
         MockDelegate delegate = new MockDelegate();
 
-        TextField component = (TextField) newInstance(TextField.class, new Object[]
+        TextField component = newInstance(TextField.class, new Object[]
         { "name", "fred", "translatedFieldSupport", tfs, "validatableFieldSupport", vfs, "value", new Integer(10), "hidden", Boolean.TRUE });
 
         trainGetForm(cycle, form);
@@ -364,7 +366,7 @@ public class TestTextField extends BaseFormComponentTestCase
     {
         TranslatedFieldSupport tfs = newMock(TranslatedFieldSupport.class);
 
-        ValidatableFieldSupport vfs = (ValidatableFieldSupport) newMock(ValidatableFieldSupport.class);
+        ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
 
         IRequestCycle cycle = newCycle();
         IForm form = newMock(IForm.class);
@@ -373,7 +375,7 @@ public class TestTextField extends BaseFormComponentTestCase
 
         MockDelegate delegate = new MockDelegate();
 
-        TextField component = (TextField) newInstance(TextField.class, new Object[]
+        TextField component = newInstance(TextField.class, new Object[]
         { "name", "fred", "translatedFieldSupport", tfs, "validatableFieldSupport", vfs, "value", new Integer(10), "disabled", Boolean.TRUE });
 
         trainGetForm(cycle, form);
@@ -410,7 +412,7 @@ public class TestTextField extends BaseFormComponentTestCase
     {
         TranslatedFieldSupport tfs = newMock(TranslatedFieldSupport.class);
 
-        ValidatableFieldSupport vfs = (ValidatableFieldSupport) newMock(ValidatableFieldSupport.class);
+        ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
 
         IRequestCycle cycle = newCycle();
         IForm form = newMock(IForm.class);
@@ -421,7 +423,7 @@ public class TestTextField extends BaseFormComponentTestCase
 
         IBinding binding = newBinding("informal-value");
 
-        TextField component = (TextField) newInstance(TextField.class, new Object[]
+        TextField component = newInstance(TextField.class, new Object[]
         { "name", "fred", "translatedFieldSupport", tfs, "validatableFieldSupport", vfs, "value", new Integer(10), "specification", new ComponentSpecification() });
 
         component.setBinding("informal", binding);
@@ -460,7 +462,7 @@ public class TestTextField extends BaseFormComponentTestCase
     {
         TranslatedFieldSupport tfs = newMock(TranslatedFieldSupport.class);
 
-        ValidatableFieldSupport vfs = (ValidatableFieldSupport) newMock(ValidatableFieldSupport.class);
+        ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
 
         IRequestCycle cycle = newCycle();
         IForm form = newMock(IForm.class);
@@ -469,7 +471,7 @@ public class TestTextField extends BaseFormComponentTestCase
 
         MockDelegate delegate = new MockDelegate();
 
-        TextField component = (TextField) newInstance(TextField.class, new Object[]
+        TextField component = newInstance(TextField.class, new Object[]
         { "name", "fred", "translatedFieldSupport", tfs, "validatableFieldSupport", vfs });
 
         trainGetForm(cycle, form);
@@ -506,7 +508,7 @@ public class TestTextField extends BaseFormComponentTestCase
     {
         ValidatableFieldSupport support = newMock(ValidatableFieldSupport.class);
 
-        TextField field = (TextField) newInstance(TextField.class, new Object[]
+        TextField field = newInstance(TextField.class, new Object[]
         { "validatableFieldSupport", support, });
 
         expect(support.isRequired(field)).andReturn(true);

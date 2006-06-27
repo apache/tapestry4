@@ -31,6 +31,7 @@ import org.apache.tapestry.listener.ListenerInvokerTerminator;
 import org.apache.tapestry.test.Creator;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidationConstants;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.form.Submit}.
@@ -38,6 +39,7 @@ import org.apache.tapestry.valid.ValidationConstants;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestSubmit extends BaseFormComponentTestCase
 {
     public void testPrerendered()
@@ -45,7 +47,7 @@ public class TestSubmit extends BaseFormComponentTestCase
         Creator creator = new Creator();
         Submit submit = (Submit) creator.newInstance(Submit.class);
 
-        IForm form = (IForm)newMock(IForm.class);
+        IForm form = newMock(IForm.class);
         IRequestCycle cycle = newCycle();
         IMarkupWriter writer = newWriter();
 

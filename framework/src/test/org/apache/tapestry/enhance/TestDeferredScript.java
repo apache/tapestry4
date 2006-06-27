@@ -25,6 +25,7 @@ import org.apache.hivemind.Resource;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.engine.IScriptSource;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.DeferredScriptImpl}.
@@ -32,14 +33,15 @@ import org.apache.tapestry.engine.IScriptSource;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestDeferredScript extends BaseComponentTestCase
 {
     public void testSuccess()
     {
         IScriptSource source = newMock(IScriptSource.class);
 
-        Resource r = (Resource) newMock(Resource.class);
-        IScript script = (IScript) newMock(IScript.class);
+        Resource r = newMock(Resource.class);
+        IScript script = newMock(IScript.class);
 
         expect(source.getScript(r)).andReturn(script);
 
@@ -61,7 +63,7 @@ public class TestDeferredScript extends BaseComponentTestCase
     {
         IScriptSource source = newMock(IScriptSource.class);
 
-        Resource newResource = (Resource) newMock(Resource.class);
+        Resource newResource = newMock(Resource.class);
         Resource r = newResource;
 
         Location l = newLocation();

@@ -19,11 +19,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.testng.annotations.Test;
 
 /**
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestIteratorConverters extends HiveMindTestCase
 {
     public void testObjectToIterator()

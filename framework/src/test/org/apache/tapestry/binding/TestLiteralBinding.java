@@ -24,6 +24,7 @@ import java.util.Date;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.coerce.ValueConverter;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.binding.LiteralBinding}. It also tests some common
@@ -32,6 +33,7 @@ import org.apache.tapestry.coerce.ValueConverter;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestLiteralBinding extends BindingTestCase
 {
     public void testGetObject()

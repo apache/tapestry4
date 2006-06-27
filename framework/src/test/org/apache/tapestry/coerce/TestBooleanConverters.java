@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.testng.annotations.Test;
 
 /**
  * Tests several implementations of {@link org.apache.tapestry.coerce.TypeConverter}that return
@@ -29,6 +30,7 @@ import org.apache.hivemind.test.HiveMindTestCase;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestBooleanConverters extends HiveMindTestCase
 {
     public void testStringToBoolean()

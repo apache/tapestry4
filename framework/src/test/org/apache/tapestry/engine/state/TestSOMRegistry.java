@@ -26,6 +26,7 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.BaseComponentTestCase;
+import org.testng.annotations.Test;
 
 /**
  * Tests {@link TestSOMRegistry}.
@@ -33,6 +34,7 @@ import org.apache.tapestry.BaseComponentTestCase;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestSOMRegistry extends BaseComponentTestCase
 {
     public void testInitializeAndGet()
@@ -74,7 +76,7 @@ public class TestSOMRegistry extends BaseComponentTestCase
     public void testInitializeUnknownScope()
     {
         Location l = fabricateLocation(55);
-        ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
+        ErrorLog log = newMock(ErrorLog.class);
 
         StateObjectContribution c = new StateObjectContribution();
         c.setName("fred");

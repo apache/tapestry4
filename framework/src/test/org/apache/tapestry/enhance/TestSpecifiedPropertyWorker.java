@@ -37,6 +37,7 @@ import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IPropertySpecification;
 import org.apache.tapestry.spec.PropertySpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.SpecifiedPropertyWorker}.
@@ -44,6 +45,7 @@ import org.apache.tapestry.spec.PropertySpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestSpecifiedPropertyWorker extends BaseComponentTestCase
 {
     private List buildPropertySpecs(String name, String type, boolean persistent)
@@ -150,7 +152,7 @@ public class TestSpecifiedPropertyWorker extends BaseComponentTestCase
 
     public void testAddWithInitialValue() throws Exception
     {
-        BindingSource bs = (BindingSource) newMock(BindingSource.class);
+        BindingSource bs = newMock(BindingSource.class);
         Location l = fabricateLocation(12);
 
         IComponentSpecification spec = buildComponentSpecification(buildPropertySpecs(
@@ -287,7 +289,7 @@ public class TestSpecifiedPropertyWorker extends BaseComponentTestCase
 
         expect(op.getBaseClass()).andReturn(BaseComponent.class);
 
-        ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
+        ErrorLog log = newMock(ErrorLog.class);
 
         log
                 .error(

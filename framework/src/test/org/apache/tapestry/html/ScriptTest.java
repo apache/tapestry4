@@ -37,6 +37,7 @@ import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests for the {@link Script} component.
@@ -44,6 +45,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class ScriptTest extends BaseComponentTestCase
 {
     private static class MockScript implements IScript
@@ -81,7 +83,7 @@ public class ScriptTest extends BaseComponentTestCase
 
         String scriptPath = "MyScript.script";
 
-        Script component = (Script) newInstance(Script.class, new Object[]
+        Script component = newInstance(Script.class, new Object[]
         { "specification", new ComponentSpecification(), "container", container, "scriptSource",
                 source, "scriptPath", scriptPath });
 
@@ -124,7 +126,7 @@ public class ScriptTest extends BaseComponentTestCase
 
         String scriptPath = "MyScript.script";
 
-        Script component = (Script) newInstance(Script.class, new Object[]
+        Script component = newInstance(Script.class, new Object[]
         { "specification", new ComponentSpecification(), "container", container, "scriptSource",
                 source, "scriptPath", scriptPath, "baseSymbols", baseSymbols });
 
@@ -172,7 +174,7 @@ public class ScriptTest extends BaseComponentTestCase
 
         String scriptPath = "MyScript.script";
 
-        Script component = (Script) newInstance(Script.class, new Object[]
+        Script component = newInstance(Script.class, new Object[]
         { "specification", new ComponentSpecification(), "container", container, "scriptSource",
                 source, "scriptPath", scriptPath, "baseSymbols", baseSymbols });
         component.setBinding("fred", informal);
@@ -238,7 +240,7 @@ public class ScriptTest extends BaseComponentTestCase
         
         IAsset scriptAsset = newAsset();
         
-        Script component = (Script) newInstance(Script.class, new Object[]
+        Script component = newInstance(Script.class, new Object[]
         { "specification", new ComponentSpecification(), "container", container, "scriptSource",
                 source, "scriptPath", scriptPath, "scriptAsset", scriptAsset });
         
@@ -299,7 +301,7 @@ public class ScriptTest extends BaseComponentTestCase
     
     protected IScript newScript()
     {
-        return (IScript) newMock(IScript.class);
+        return newMock(IScript.class);
     }
 
     protected void trainGetScript(IScriptSource source, Resource scriptLocation, IScript script)
@@ -309,7 +311,7 @@ public class ScriptTest extends BaseComponentTestCase
 
     protected IScriptSource newScriptSource()
     {
-        return (IScriptSource) newMock(IScriptSource.class);
+        return newMock(IScriptSource.class);
     }
 
     protected void trainGetScriptLocation(IComponent component, String scriptPath,

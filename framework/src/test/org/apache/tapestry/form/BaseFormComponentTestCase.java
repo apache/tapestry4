@@ -38,7 +38,7 @@ public abstract class BaseFormComponentTestCase extends BaseComponentTestCase
 
     protected IValidationDelegate newDelegate()
     {
-        return (IValidationDelegate) newMock(IValidationDelegate.class);
+        return newMock(IValidationDelegate.class);
     }
 
     protected void trainIsInError(IValidationDelegate delegate, boolean isInError)
@@ -48,7 +48,7 @@ public abstract class BaseFormComponentTestCase extends BaseComponentTestCase
 
     protected IForm newForm()
     {
-        return (IForm) newMock(IForm.class);
+        return newMock(IForm.class);
     }
 
     protected void trainGetForm(IRequestCycle cycle, IForm form)
@@ -87,16 +87,16 @@ public abstract class BaseFormComponentTestCase extends BaseComponentTestCase
 
     protected IBinding newBinding()
     {
-        return (IBinding) newMock(IBinding.class);
+        return newMock(IBinding.class);
     }
 
     protected IActionListener newListener()
     {
-        return (IActionListener) newMock(IActionListener.class);
+        return newMock(IActionListener.class);
     }
 
     protected IFormComponent newField()
     {
-        return (IFormComponent) newMock(IFormComponent.class);
+        return newMock(IFormComponent.class);
     }
 }

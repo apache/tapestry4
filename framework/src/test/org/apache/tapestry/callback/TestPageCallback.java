@@ -19,6 +19,7 @@ import static org.testng.AssertJUnit.assertEquals;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.callback.PageCallback}.
@@ -26,11 +27,12 @@ import org.apache.tapestry.IRequestCycle;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestPageCallback extends BaseComponentTestCase
 {
     public void testByString()
     {
-        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
+        IRequestCycle cycle = newMock(IRequestCycle.class);
 
         cycle.activate("Fred");
 
@@ -47,7 +49,7 @@ public class TestPageCallback extends BaseComponentTestCase
 
     public void testByPage()
     {
-        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
+        IRequestCycle cycle = newMock(IRequestCycle.class);
         IPage page = newPage("Barney");
 
         cycle.activate("Barney");

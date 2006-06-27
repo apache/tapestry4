@@ -25,6 +25,7 @@ import org.apache.tapestry.util.RegexpMatcher;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.form.validator.Email}.
@@ -32,6 +33,7 @@ import org.apache.tapestry.valid.ValidatorException;
  * @author Howard Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestEmail extends BaseValidatorTestCase
 {
     public void testOK() throws Exception
@@ -105,8 +107,7 @@ public class TestEmail extends BaseValidatorTestCase
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
         
-        FormComponentContributorContext context = 
-            (FormComponentContributorContext)newMock(FormComponentContributorContext.class);
+        FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
 
         context.includeClasspathScript("/org/apache/tapestry/form/validator/RegExValidator.js");
 
@@ -132,8 +133,7 @@ public class TestEmail extends BaseValidatorTestCase
 
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
-        FormComponentContributorContext context = 
-            (FormComponentContributorContext)newMock(FormComponentContributorContext.class);
+        FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
 
         context.includeClasspathScript("/org/apache/tapestry/form/validator/RegExValidator.js");
 

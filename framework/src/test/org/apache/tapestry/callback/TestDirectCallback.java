@@ -25,10 +25,12 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IDirect;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
+import org.testng.annotations.Test;
 
 /**
  * @author Howard M. Lewis Ship
  */
+@Test
 public class TestDirectCallback extends BaseComponentTestCase
 {
     public void testNoParams()

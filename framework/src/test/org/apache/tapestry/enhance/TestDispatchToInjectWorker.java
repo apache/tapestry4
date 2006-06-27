@@ -27,6 +27,7 @@ import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.InjectSpecification;
 import org.apache.tapestry.spec.InjectSpecificationImpl;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.DispatchToInjectWorker}.
@@ -34,6 +35,7 @@ import org.apache.tapestry.spec.InjectSpecificationImpl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestDispatchToInjectWorker extends BaseComponentTestCase
 {
     private InjectSpecification newInjectSpecification(String propertyName, String type,

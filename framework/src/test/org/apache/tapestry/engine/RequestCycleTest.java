@@ -29,6 +29,7 @@ import org.apache.tapestry.services.AbsoluteURLBuilder;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.ServiceMap;
 import org.apache.tapestry.util.QueryParameterMap;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.engine.RequestCycle}. Mostly just tests changes for 4.0
@@ -37,6 +38,7 @@ import org.apache.tapestry.util.QueryParameterMap;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class RequestCycleTest extends HiveMindTestCase
 {
     private IEngine newEngine()

@@ -30,12 +30,14 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
 import org.apache.tapestry.spec.ParameterSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.ParameterPropertyWorker}.
  * 
  * @author Howard M. Lewis Ship
  */
+@Test
 public class TestParameterPropertyWorker extends BaseComponentTestCase
 {
 
@@ -111,7 +113,7 @@ public class TestParameterPropertyWorker extends BaseComponentTestCase
                 null,
                 null));
 
-        EnhancementOperation op = (EnhancementOperation) newMock(EnhancementOperation.class);
+        EnhancementOperation op = newMock(EnhancementOperation.class);
 
         replay();
 

@@ -33,6 +33,7 @@ import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.web.WebResponse;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.form.Form}. Most of the testing is, still alas, done with
@@ -41,16 +42,17 @@ import org.apache.tapestry.web.WebResponse;
  * @author Howard Lewis Ship
  * @since 4.0
  */
+@Test
 public class FormTest extends BaseComponentTestCase
 {
     private IActionListener newListener()
     {
-        return (IActionListener) newMock(IActionListener.class);
+        return newMock(IActionListener.class);
     }
 
     private FormSupport newFormSupport()
     {
-        return (FormSupport) newMock(FormSupport.class);
+        return newMock(FormSupport.class);
     }
 
     protected void trainGetNextActionId(IRequestCycle cycle, String actionId)
@@ -65,7 +67,7 @@ public class FormTest extends BaseComponentTestCase
 
     protected WebResponse newResponse()
     {
-        return (WebResponse) newMock(WebResponse.class);
+        return newMock(WebResponse.class);
     }
 
     protected void trainGetNamespace(WebResponse response, String namespace)
@@ -75,7 +77,7 @@ public class FormTest extends BaseComponentTestCase
 
     protected IValidationDelegate newDelegate()
     {
-        return (IValidationDelegate) newMock(IValidationDelegate.class);
+        return newMock(IValidationDelegate.class);
     }
 
     public void testRewind()
@@ -87,7 +89,7 @@ public class FormTest extends BaseComponentTestCase
         IActionListener listener = newListener();
         ListenerInvoker invoker = newListenerInvoker();
 
-        Form form = (Form) newInstance(FormFixture.class, new Object[]
+        Form form = newInstance(FormFixture.class, new Object[]
         { "id", "myform", "direct", true, "expectedWriter", writer, "expectedRequestCycle", cycle,
                 "formSupport", support, "listener", listener, "listenerInvoker", invoker,
                 "delegate", delegate });
@@ -124,7 +126,7 @@ public class FormTest extends BaseComponentTestCase
 
     private ListenerInvoker newListenerInvoker()
     {
-        return (ListenerInvoker) newMock(ListenerInvoker.class);
+        return newMock(ListenerInvoker.class);
     }
 
     public void testBasicRender()
@@ -138,7 +140,7 @@ public class FormTest extends BaseComponentTestCase
         IRender render = newRender();
         IValidationDelegate delegate = newDelegate();
 
-        Form form = (Form) newInstance(FormFixture.class, new Object[]
+        Form form = newInstance(FormFixture.class, new Object[]
         { "id", "myform", "direct", true, "expectedWriter", writer, "expectedRequestCycle", cycle,
                 "formSupport", support, "response", response, "directService", direct, "method",
                 "post", "delegate", delegate });
@@ -184,7 +186,7 @@ public class FormTest extends BaseComponentTestCase
         IRender render = newRender();
         IValidationDelegate delegate = newDelegate();
 
-        Form form = (Form) newInstance(FormFixture.class, new Object[]
+        Form form = newInstance(FormFixture.class, new Object[]
         { "id", "myform", "direct", true, "expectedWriter", writer, "expectedRequestCycle", cycle,
                 "formSupport", support, "response", response, "directService", direct, "method",
                 "post", "delegate", delegate, "scheme", "https", "port", new Integer(443) });
@@ -243,7 +245,7 @@ public class FormTest extends BaseComponentTestCase
 
         replay();
 
-        Form form = (Form) newInstance(Form.class, new Object[]
+        Form form = newInstance(Form.class, new Object[]
         { "listener", listener, "cancel", cancel });
 
         assertSame(cancel, form.findListener(FormConstants.SUBMIT_CANCEL));
@@ -271,7 +273,7 @@ public class FormTest extends BaseComponentTestCase
 
         replay();
 
-        Form form = (Form) newInstance(Form.class, new Object[]
+        Form form = newInstance(Form.class, new Object[]
         { "listener", listener, "refresh", refresh });
 
         assertSame(refresh, form.findListener(FormConstants.SUBMIT_REFRESH));
@@ -285,7 +287,7 @@ public class FormTest extends BaseComponentTestCase
 
         replay();
 
-        Form form = (Form) newInstance(Form.class, new Object[]
+        Form form = newInstance(Form.class, new Object[]
         { "listener", listener });
 
         assertSame(listener, form.findListener(FormConstants.SUBMIT_REFRESH));
@@ -304,7 +306,7 @@ public class FormTest extends BaseComponentTestCase
 
         replay();
 
-        Form form = (Form) newInstance(Form.class, new Object[]
+        Form form = newInstance(Form.class, new Object[]
         { "delegate", delegate, "success", success, "cancel", cancel, "refresh", refresh,
                 "listener", listener });
 
@@ -324,7 +326,7 @@ public class FormTest extends BaseComponentTestCase
 
         replay();
         
-        Form form = (Form) newInstance(Form.class, new Object[]
+        Form form = newInstance(Form.class, new Object[]
         { "delegate", delegate, "success", success, "cancel", cancel, "refresh", refresh,
                 "listener", listener });
 
@@ -335,7 +337,7 @@ public class FormTest extends BaseComponentTestCase
 
     private IValidationDelegate newDelegate(boolean hasErrors)
     {
-        IValidationDelegate delegate = (IValidationDelegate) newMock(IValidationDelegate.class);
+        IValidationDelegate delegate = newMock(IValidationDelegate.class);
         
         expect(delegate.getHasErrors()).andReturn(hasErrors);
         

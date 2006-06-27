@@ -48,6 +48,7 @@ import org.apache.tapestry.link.ServiceLink;
 import org.apache.tapestry.services.ComponentConstructor;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.testng.annotations.Configuration;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.EnhancementOperationImpl}.
@@ -55,6 +56,7 @@ import org.testng.annotations.Configuration;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestEnhancementOperation extends BaseComponentTestCase
 {
     @Configuration(beforeTestClass = true)
@@ -221,7 +223,7 @@ public class TestEnhancementOperation extends BaseComponentTestCase
 
     private ClassFab newClassFab()
     {
-        return (ClassFab) newMock(ClassFab.class);
+        return newMock(ClassFab.class);
     }
 
     public void testConstructorAndAccessors()
@@ -675,7 +677,7 @@ public class TestEnhancementOperation extends BaseComponentTestCase
 
     public void testFindUnclaimedAbstractProperties()
     {
-        ClassResolver cr = (ClassResolver) newMock(ClassResolver.class);
+        ClassResolver cr = newMock(ClassResolver.class);
         IComponentSpecification spec = newSpec();
         ClassFactory cf = newClassFactory(UnclaimedAbstractPropertiesFixture.class);
 

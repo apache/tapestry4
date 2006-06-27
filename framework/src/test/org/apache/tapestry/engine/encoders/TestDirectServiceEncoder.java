@@ -20,6 +20,7 @@ import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.ServiceEncoding;
 import org.apache.tapestry.services.ServiceConstants;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.engine.encoders.DirectServiceEncoder}.
@@ -27,6 +28,7 @@ import org.apache.tapestry.services.ServiceConstants;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestDirectServiceEncoder extends BaseComponentTestCase
 {
     private ServiceEncoding newEncoding(String servletPath)

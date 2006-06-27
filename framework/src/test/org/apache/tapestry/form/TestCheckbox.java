@@ -25,6 +25,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidatorException;
+import org.testng.annotations.Test;
 
 /**
  * Tests for the {@link org.apache.tapestry.form.Checkbox} component.
@@ -32,11 +33,12 @@ import org.apache.tapestry.valid.ValidatorException;
  * @author Howard Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestCheckbox extends BaseFormComponentTestCase
 {
     public void testRenderChecked()
     {
-        Checkbox cb = (Checkbox) newInstance(Checkbox.class, new Object[]
+        Checkbox cb = newInstance(Checkbox.class, new Object[]
         { "name", "assignedName", "value", Boolean.TRUE });
 
         IMarkupWriter writer = newBufferWriter();
@@ -53,7 +55,7 @@ public class TestCheckbox extends BaseFormComponentTestCase
 
     public void testRenderDisabled()
     {
-        Checkbox cb = (Checkbox) newInstance(Checkbox.class, new Object[]
+        Checkbox cb = newInstance(Checkbox.class, new Object[]
         { "name", "assignedName", "disabled", Boolean.TRUE });
 
         IMarkupWriter writer = newBufferWriter();
@@ -70,7 +72,7 @@ public class TestCheckbox extends BaseFormComponentTestCase
 
     public void testRenderInformalParameters()
     {
-        Checkbox cb = (Checkbox) newInstance(Checkbox.class, new Object[]
+        Checkbox cb = newInstance(Checkbox.class, new Object[]
         { "name", "assignedName", "value", Boolean.TRUE, "specification",
                 new ComponentSpecification() });
 
@@ -92,7 +94,7 @@ public class TestCheckbox extends BaseFormComponentTestCase
 
     public void testRenderWithId()
     {
-        Checkbox cb = (Checkbox) newInstance(Checkbox.class, new Object[]
+        Checkbox cb = newInstance(Checkbox.class, new Object[]
         { "idParameter", "foo", "name", "assignedName", "value", Boolean.TRUE });
 
         IMarkupWriter writer = newBufferWriter();
@@ -109,9 +111,9 @@ public class TestCheckbox extends BaseFormComponentTestCase
 
     public void testSubmitNull()
     {
-        ValidatableFieldSupport vfs = (ValidatableFieldSupport) newMock(ValidatableFieldSupport.class);
+        ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
     	
-        Checkbox cb = (Checkbox) newInstance(Checkbox.class, new Object[]
+        Checkbox cb = newInstance(Checkbox.class, new Object[]
         { "value", Boolean.TRUE, "name", "checkbox", "validatableFieldSupport", vfs });
 
         IMarkupWriter writer = newWriter();
@@ -142,7 +144,7 @@ public class TestCheckbox extends BaseFormComponentTestCase
         
         IValidationDelegate delegate = newDelegate();
         
-        Checkbox cb = (Checkbox) newInstance(Checkbox.class, new Object[]
+        Checkbox cb = newInstance(Checkbox.class, new Object[]
         { "form", form, "value", Boolean.FALSE, "name", "checkbox", "validatableFieldSupport", vfs });
 
         IMarkupWriter writer = newWriter();
@@ -175,9 +177,9 @@ public class TestCheckbox extends BaseFormComponentTestCase
 
     public void testSubmitNonNull()
     {
-        ValidatableFieldSupport vfs = (ValidatableFieldSupport) newMock(ValidatableFieldSupport.class);
+        ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
         
-        Checkbox cb = (Checkbox) newInstance(Checkbox.class, new Object[]
+        Checkbox cb = newInstance(Checkbox.class, new Object[]
         { "value", Boolean.FALSE, "name", "checkbox", "validatableFieldSupport", vfs });
 
         IMarkupWriter writer = newWriter();

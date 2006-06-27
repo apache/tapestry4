@@ -28,6 +28,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.test.Creator;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidationConstants;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.form.ImageSubmit}.
@@ -35,11 +36,12 @@ import org.apache.tapestry.valid.ValidationConstants;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestImageSubmit extends BaseFormComponentTestCase
 {
     protected IAsset newAsset(IRequestCycle cycle, String imageURL)
     {
-        IAsset asset = (IAsset)newMock(IAsset.class);
+        IAsset asset = newMock(IAsset.class);
 
         expect(asset.buildURL()).andReturn(imageURL);
 
@@ -51,7 +53,7 @@ public class TestImageSubmit extends BaseFormComponentTestCase
         Creator creator = new Creator();
         ImageSubmit submit = (ImageSubmit) creator.newInstance(ImageSubmit.class);
 
-        IForm form = (IForm)newMock(IForm.class);
+        IForm form = newMock(IForm.class);
         IRequestCycle cycle = newCycle();
         IMarkupWriter writer = newWriter();
 

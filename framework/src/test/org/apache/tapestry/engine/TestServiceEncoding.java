@@ -18,12 +18,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.engine.ServiceEncodingImpl}.
  * 
  * @author Howard M. Lewis Ship
  */
+@Test
 public class TestServiceEncoding extends HiveMindTestCase
 {
     public void testSetServletPath()

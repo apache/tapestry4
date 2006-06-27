@@ -16,11 +16,14 @@ package org.apache.tapestry.describe;
 
 import javax.servlet.http.Cookie;
 
+import org.testng.annotations.Test;
+
 /**
  * Tests for {@link org.apache.tapestry.describe.CookieStrategy}.
  * 
  * @author Howard M. Lewis Ship
  */
+@Test
 public class CookieStrategyTest extends BaseDescribeTestCase
 {
     public void testDescribeObject()

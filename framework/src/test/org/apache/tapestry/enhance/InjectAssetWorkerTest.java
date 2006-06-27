@@ -31,6 +31,7 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.spec.AssetSpecification;
 import org.apache.tapestry.spec.IAssetSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.InjectAssetWorker}.
@@ -38,6 +39,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class InjectAssetWorkerTest extends BaseEnhancementTestCase
 {
     private IComponentSpecification newSpec(String assetName, String propertyName, Location location)
@@ -100,7 +102,7 @@ public class InjectAssetWorkerTest extends BaseEnhancementTestCase
 
         IComponentSpecification spec = newSpec("fred", "barney", l);
 
-        ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
+        ErrorLog log = newMock(ErrorLog.class);
 
         trainGetPropertyType(op, "barney", IComponent.class);
 

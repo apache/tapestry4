@@ -24,6 +24,7 @@ import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.form.validator.Min}.
@@ -31,6 +32,7 @@ import org.apache.tapestry.valid.ValidatorException;
  * @author Howard Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestMin extends BaseValidatorTestCase
 {
     public void testOK() throws Exception
@@ -99,8 +101,7 @@ public class TestMin extends BaseValidatorTestCase
         IRequestCycle cycle = newCycle();
         IFormComponent field = newField("My Field", "myfield");
         
-        FormComponentContributorContext context = 
-            (FormComponentContributorContext)newMock(FormComponentContributorContext.class);
+        FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
         
         context.includeClasspathScript("/org/apache/tapestry/form/validator/NumberValidator.js");
         
@@ -123,8 +124,7 @@ public class TestMin extends BaseValidatorTestCase
         IRequestCycle cycle = newCycle();
         IFormComponent field = newField("My Field", "myfield");
         
-        FormComponentContributorContext context = 
-            (FormComponentContributorContext)newMock(FormComponentContributorContext.class);
+        FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
 
         context.includeClasspathScript("/org/apache/tapestry/form/validator/NumberValidator.js");
 

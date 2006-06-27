@@ -26,6 +26,7 @@ import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.form.validator.MaxDate}
@@ -33,6 +34,7 @@ import org.apache.tapestry.valid.ValidatorException;
  * @author Howard Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestMaxDate extends BaseValidatorTestCase
 {
     private static final long ONE_DAY = 24 * 60 * 60 * 1000l;

@@ -17,6 +17,7 @@ package org.apache.tapestry.html;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.html.InsertText}.
@@ -24,6 +25,7 @@ import org.apache.tapestry.IRequestCycle;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestInsertText extends BaseComponentTestCase
 {
     public void testRewinding()
@@ -97,7 +99,7 @@ public class TestInsertText extends BaseComponentTestCase
 
         replay();
 
-        InsertText component = (InsertText) newInstance(InsertText.class, new Object[]
+        InsertText component = newInstance(InsertText.class, new Object[]
         { "mode", InsertTextMode.PARAGRAPH, "value",
                 "Now is the time\nfor all good men\nto come to the aid of their Tapestry." });
 
@@ -117,7 +119,7 @@ public class TestInsertText extends BaseComponentTestCase
 
         replay();
 
-        InsertText component = (InsertText) newInstance(InsertText.class, new Object[]
+        InsertText component = newInstance(InsertText.class, new Object[]
         { "value", "output\n<b>raw</b>", "raw", Boolean.TRUE });
 
         component.finishLoad(cycle, null, null);

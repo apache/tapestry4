@@ -24,6 +24,7 @@ import org.apache.hivemind.impl.LocationImpl;
 import org.apache.hivemind.util.URLResource;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.describe.LocationRenderStrategy}.
@@ -31,6 +32,7 @@ import org.apache.tapestry.IRequestCycle;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestLocationRenderStrategy extends BaseDescribeTestCase
 {
     private Resource newResource(URL url)

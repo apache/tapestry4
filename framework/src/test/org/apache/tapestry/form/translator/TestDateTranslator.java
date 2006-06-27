@@ -28,6 +28,7 @@ import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
+import org.testng.annotations.Test;
 
 /**
  * Test case for {@link DateTranslator}.
@@ -35,6 +36,7 @@ import org.apache.tapestry.valid.ValidatorException;
  * @author Paul Ferraro
  * @since 4.0
  */
+@Test
 public class TestDateTranslator extends TranslatorTestCase
 {
     private Calendar _calendar = Calendar.getInstance();
@@ -236,7 +238,7 @@ public class TestDateTranslator extends TranslatorTestCase
 
         IFormComponent field = newFieldWithClientId("foo");
 
-        FormComponentContributorContext context = (FormComponentContributorContext) newMock(FormComponentContributorContext.class);
+        FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
 
         trainTrim(context, "foo");
 

@@ -24,11 +24,13 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.NullWriter;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.test.Creator;
+import org.testng.annotations.Test;
 
 /**
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestPageEvents extends BaseComponentTestCase
 {
     private IPage createPage()

@@ -25,6 +25,7 @@ import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.spec.InjectSpecificationImpl;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.InjectScriptWorker}.
@@ -32,6 +33,7 @@ import org.apache.tapestry.spec.InjectSpecificationImpl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestInjectScriptWorker extends BaseComponentTestCase
 {
     public void testSuccess()
@@ -44,7 +46,7 @@ public class TestInjectScriptWorker extends BaseComponentTestCase
 
         final Location injectSpecLocation = newLocation();
 
-        final IScriptSource source = (IScriptSource) newMock(IScriptSource.class);
+        final IScriptSource source = newMock(IScriptSource.class);
 
         op.claimReadonlyProperty("foo");
 

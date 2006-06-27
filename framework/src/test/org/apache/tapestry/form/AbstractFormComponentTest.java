@@ -17,6 +17,7 @@ package org.apache.tapestry.form;
 import static org.testng.AssertJUnit.assertEquals;
 
 import org.apache.hivemind.util.PropertyUtils;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.form.AbstractFormComponent}.
@@ -24,6 +25,7 @@ import org.apache.hivemind.util.PropertyUtils;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class AbstractFormComponentTest extends BaseFormComponentTestCase
 {
     public void testCanTakeFocus()

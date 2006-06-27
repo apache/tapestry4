@@ -24,7 +24,9 @@ import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
+import org.testng.annotations.Test;
 
+@Test
 public class TestMaxLength extends BaseValidatorTestCase
 {
 
@@ -98,8 +100,7 @@ public class TestMaxLength extends BaseValidatorTestCase
         IRequestCycle cycle = newCycle();
         IFormComponent field = newField("My Field", "myfield");
         
-        FormComponentContributorContext context = 
-            (FormComponentContributorContext)newMock(FormComponentContributorContext.class);
+        FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
 
         context.includeClasspathScript("/org/apache/tapestry/form/validator/StringValidator.js");
 

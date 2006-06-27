@@ -26,6 +26,7 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.junit.TapestryTestCase;
+import org.testng.annotations.Test;
 
 /**
  * Abstract test case for {@link FormComponentContributor}.
@@ -33,6 +34,7 @@ import org.apache.tapestry.junit.TapestryTestCase;
  * @author Paul Ferraro
  * @since 4.0
  */
+@Test
 public abstract class FormComponentContributorTestCase extends TapestryTestCase
 {
     // Paul,
@@ -109,17 +111,17 @@ public abstract class FormComponentContributorTestCase extends TapestryTestCase
 
     protected IFormComponent newField()
     {
-        return (IFormComponent) newMock(IFormComponent.class);
+        return newMock(IFormComponent.class);
     }
 
     protected IMarkupWriter newWriter()
     {
-        return (IMarkupWriter) newMock(IMarkupWriter.class);
+        return newMock(IMarkupWriter.class);
     }
 
     protected IRequestCycle newCycle()
     {
-        return (IRequestCycle) newMock(IRequestCycle.class);
+        return newMock(IRequestCycle.class);
     }
 
     protected ValidationMessages newValidationMessages(Locale locale)

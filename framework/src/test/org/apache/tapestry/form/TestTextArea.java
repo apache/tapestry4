@@ -26,6 +26,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidatorException;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.form.TextArea}.
@@ -33,6 +34,7 @@ import org.apache.tapestry.valid.ValidatorException;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestTextArea extends BaseFormComponentTestCase
 {
     public void testRewind()

@@ -29,6 +29,7 @@ import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.services.InjectedValueProvider;
 import org.apache.tapestry.spec.InjectSpecification;
 import org.apache.tapestry.spec.InjectSpecificationImpl;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.InjectObjectWorker}.
@@ -36,6 +37,7 @@ import org.apache.tapestry.spec.InjectSpecificationImpl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestInjectObjectWorker extends BaseComponentTestCase
 {
     private InjectSpecification newSpec(String name, String locator, Location location)

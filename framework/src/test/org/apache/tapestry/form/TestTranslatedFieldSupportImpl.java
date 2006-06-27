@@ -34,6 +34,7 @@ import org.apache.tapestry.form.translator.Translator;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidatorException;
+import org.testng.annotations.Test;
 
 /**
  * Test case for {@link TranslatedFieldSupportImpl}.
@@ -41,6 +42,7 @@ import org.apache.tapestry.valid.ValidatorException;
  * @author Paul Ferraro
  * @since 4.0
  */
+@Test
 public class TestTranslatedFieldSupportImpl extends BaseComponentTestCase
 {
     private ThreadLocale newThreadLocale()

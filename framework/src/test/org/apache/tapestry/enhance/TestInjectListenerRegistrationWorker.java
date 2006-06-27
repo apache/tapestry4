@@ -19,6 +19,7 @@ import static org.easymock.EasyMock.expect;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link TestInjectListenerRegistrationWorker}.
@@ -26,6 +27,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestInjectListenerRegistrationWorker extends BaseComponentTestCase
 {
 

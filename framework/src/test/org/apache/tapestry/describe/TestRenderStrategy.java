@@ -17,6 +17,7 @@ package org.apache.tapestry.describe;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.describe.RenderableAdapterFactoryImpl},
@@ -26,11 +27,12 @@ import org.apache.tapestry.IRequestCycle;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestRenderStrategy extends BaseDescribeTestCase
 {
     private RenderStrategy newStrategy()
     {
-        return (RenderStrategy) newMock(RenderStrategy.class);
+        return newMock(RenderStrategy.class);
     }
 
     public void testRenderBridge()

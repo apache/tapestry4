@@ -25,6 +25,7 @@ import org.apache.hivemind.service.MethodSignature;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.services.impl.ComponentEventInvoker;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.testng.annotations.Test;
 
 
 /**
@@ -32,6 +33,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * 
  * @author jkuhnert
  */
+@Test
 public class TestInjectEventInvokerWorker extends BaseEnhancementTestCase
 {
 
@@ -70,7 +72,7 @@ public class TestInjectEventInvokerWorker extends BaseEnhancementTestCase
         EnhancementOperation op = newOp();
         ComponentEventInvoker invoker = new ComponentEventInvoker();
         
-        ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
+        ErrorLog log = newMock(ErrorLog.class);
         
         Throwable ex = new ApplicationRuntimeException(EnhanceMessages
                 .claimedProperty("eventInvoker"));

@@ -23,6 +23,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.tapestry.IRequestCycle;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.engine.RestartService}.
@@ -30,6 +31,7 @@ import org.apache.tapestry.IRequestCycle;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class RestartServiceTest extends ServiceTestCase
 {
     public void testNoSession() throws Exception
@@ -64,12 +66,12 @@ public class RestartServiceTest extends ServiceTestCase
 
     private HttpServletResponse newServletResponse()
     {
-        return (HttpServletResponse) newMock(HttpServletResponse.class);
+        return newMock(HttpServletResponse.class);
     }
 
     private HttpServletRequest newServletRequest()
     {
-        return (HttpServletRequest) newMock(HttpServletRequest.class);
+        return newMock(HttpServletRequest.class);
     }
 
     public void testWithSession() throws Exception
@@ -104,7 +106,7 @@ public class RestartServiceTest extends ServiceTestCase
 
     private HttpSession newHttpSession()
     {
-        return (HttpSession) newMock(HttpSession.class);
+        return newMock(HttpSession.class);
     }
 
     public void testErrorInvalidatingSession() throws Exception

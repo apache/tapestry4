@@ -18,6 +18,7 @@ import static org.easymock.EasyMock.expect;
 
 import org.apache.tapestry.form.FormComponentContributorTestCase;
 import org.apache.tapestry.form.FormEventType;
+import org.testng.annotations.Test;
 
 /**
  * Abstract test case for {@link Translator}.
@@ -25,6 +26,7 @@ import org.apache.tapestry.form.FormEventType;
  * @author Paul Ferraro
  * @since 4.0
  */
+@Test
 public abstract class TranslatorTestCase extends FormComponentContributorTestCase
 {
     protected void trim()
