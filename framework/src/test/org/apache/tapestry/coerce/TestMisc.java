@@ -17,6 +17,7 @@ package org.apache.tapestry.coerce;
 import java.util.Iterator;
 
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.testng.annotations.Test;
 
 /**
  * Tests for random, simple converters.
@@ -24,6 +25,7 @@ import org.apache.hivemind.test.HiveMindTestCase;
  * @author Howard Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestMisc extends HiveMindTestCase
 {
     public void testCharArrayToIteratorConverter()

@@ -55,7 +55,7 @@ public class ObjectArrayRenderStrategyTest extends BaseDescribeTestCase
 
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
-        RenderStrategy strategy = (RenderStrategy) newMock(RenderStrategy.class);
+        RenderStrategy strategy = newMock(RenderStrategy.class);
 
         // Alas; this doesn't *prove* that the code executes
         // in the right order, just that the messages for

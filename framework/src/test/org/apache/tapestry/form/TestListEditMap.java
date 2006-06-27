@@ -21,6 +21,7 @@ import static org.testng.AssertJUnit.assertTrue;
 
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.spec.BeanLifecycle;
+import org.testng.annotations.Test;
 
 /**
  * Suite of tests for {@link org.apache.tapestry.form.ListEditMap}.
@@ -28,7 +29,7 @@ import org.apache.tapestry.spec.BeanLifecycle;
  * @author Howard Lewis Ship
  * @since 3.0
  */
-
+@Test
 public class TestListEditMap extends TapestryTestCase
 {
 

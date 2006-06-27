@@ -63,7 +63,7 @@ public abstract class BaseErrorTestCase extends BaseComponentTestCase
 
     protected RequestExceptionReporter newReporter()
     {
-        return (RequestExceptionReporter) newMock(RequestExceptionReporter.class);
+        return newMock(RequestExceptionReporter.class);
     }
 
 }

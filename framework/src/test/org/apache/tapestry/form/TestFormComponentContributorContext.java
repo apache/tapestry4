@@ -27,6 +27,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.services.Infrastructure;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.form.FormComponentContributorContextImpl}.
@@ -34,6 +35,7 @@ import org.apache.tapestry.services.Infrastructure;
  * @author Howard Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestFormComponentContributorContext extends BaseComponentTestCase
 {
     private IForm newForm(String name)
@@ -56,7 +58,7 @@ public class TestFormComponentContributorContext extends BaseComponentTestCase
 
     private ClassResolver newResolver()
     {
-        return (ClassResolver) newMock(ClassResolver.class);
+        return newMock(ClassResolver.class);
     }
 
     private Infrastructure newInfrastructure(ClassResolver resolver)
@@ -128,6 +130,6 @@ public class TestFormComponentContributorContext extends BaseComponentTestCase
 
     private PageRenderSupport newSupport()
     {
-        return (PageRenderSupport) newMock(PageRenderSupport.class);
+        return newMock(PageRenderSupport.class);
     }
 }

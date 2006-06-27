@@ -21,6 +21,7 @@ import static org.testng.AssertJUnit.assertSame;
 import org.apache.hivemind.Messages;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.coerce.ValueConverter;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.binding.MessageBinding}.
@@ -28,6 +29,7 @@ import org.apache.tapestry.coerce.ValueConverter;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestMessageBinding extends BindingTestCase
 {
 

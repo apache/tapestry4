@@ -17,6 +17,7 @@ package org.apache.tapestry.engine;
 import static org.testng.AssertJUnit.assertEquals;
 
 import org.apache.tapestry.web.WebRequest;
+import org.testng.annotations.Test;
 
 /**
  * Tests for code inside {@link org.apache.tapestry.engine.EngineUtils}.
@@ -24,6 +25,7 @@ import org.apache.tapestry.web.WebRequest;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class EngineUtilsTest extends ServiceTestCase
 {
 

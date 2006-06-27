@@ -24,6 +24,7 @@ import java.util.Date;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponentTestCase;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.coerce.ValueConverterImpl}.
@@ -31,6 +32,7 @@ import org.apache.tapestry.BaseComponentTestCase;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestValueConverter extends BaseComponentTestCase
 {
 

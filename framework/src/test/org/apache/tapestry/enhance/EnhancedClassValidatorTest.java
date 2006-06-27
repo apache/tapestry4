@@ -19,6 +19,7 @@ import org.apache.hivemind.Location;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.EnhancedClassValidatorImpl}.
@@ -26,6 +27,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class EnhancedClassValidatorTest extends BaseComponentTestCase
 {
     /**
@@ -102,7 +104,7 @@ public class EnhancedClassValidatorTest extends BaseComponentTestCase
 
     private ErrorLog newErrorLog()
     {
-        return (ErrorLog) newMock(ErrorLog.class);
+        return newMock(ErrorLog.class);
     }
 
     /**

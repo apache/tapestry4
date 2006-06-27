@@ -20,6 +20,7 @@ import org.apache.hivemind.Location;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.engine.state.ApplicationStateManager;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Base class for common utilities when testing enhancement workers.
@@ -27,6 +28,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @author Howard Lewis Ship
  * @since 4.0
  */
+@Test
 public abstract class BaseEnhancementTestCase extends BaseComponentTestCase
 {
     public IComponentSpecification newSpec(Location location)
@@ -40,7 +42,7 @@ public abstract class BaseEnhancementTestCase extends BaseComponentTestCase
 
     protected EnhancementOperation newOp()
     {
-        return (EnhancementOperation) newMock(EnhancementOperation.class);
+        return newMock(EnhancementOperation.class);
     }
 
     protected void trainAddInjectedField(EnhancementOperation op, String fieldName,
@@ -53,12 +55,12 @@ public abstract class BaseEnhancementTestCase extends BaseComponentTestCase
 
     protected ApplicationStateManager newApplicationStateManager()
     {
-        return (ApplicationStateManager) newMock(ApplicationStateManager.class);
+        return newMock(ApplicationStateManager.class);
     }
 
     protected EnhancementOperation newEnhancementOp()
     {
-        return (EnhancementOperation) newMock(EnhancementOperation.class);
+        return newMock(EnhancementOperation.class);
     }
 
     protected void trainGetAccessorMethodName(EnhancementOperation op, String propertyName,

@@ -15,11 +15,13 @@
 package org.apache.tapestry.coerce;
 
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.testng.annotations.Test;
 
 /**
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestStringConverters extends HiveMindTestCase
 {
     public void testObjectToString()

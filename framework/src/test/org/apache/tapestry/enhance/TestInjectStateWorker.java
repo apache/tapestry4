@@ -27,6 +27,7 @@ import org.apache.tapestry.engine.state.ApplicationStateManager;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.spec.InjectSpecification;
 import org.apache.tapestry.spec.InjectSpecificationImpl;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.InjectStateWorker}.
@@ -34,11 +35,12 @@ import org.apache.tapestry.spec.InjectSpecificationImpl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestInjectStateWorker extends BaseComponentTestCase
 {
     private ApplicationStateManager newASM()
     {
-        return (ApplicationStateManager) newMock(ApplicationStateManager.class);
+        return newMock(ApplicationStateManager.class);
     }
 
     private InjectSpecification newSpec(String propertyName, String objectName, Location l)

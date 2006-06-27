@@ -18,6 +18,7 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.StaleSessionException;
 import org.apache.tapestry.services.ResponseRenderer;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.error.StaleSessionExceptionPresenterImpl}.
@@ -25,6 +26,7 @@ import org.apache.tapestry.services.ResponseRenderer;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class StaleSessionExceptionPresenterTest extends BaseErrorTestCase
 {
     public void testSuccess() throws Exception

@@ -27,6 +27,7 @@ import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests {@link org.apache.tapestry.enhance.AbstractPropertyWorker}.
@@ -34,6 +35,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestAbstractPropertyWorker extends BaseEnhancementTestCase
 {
 
@@ -88,7 +90,7 @@ public class TestAbstractPropertyWorker extends BaseEnhancementTestCase
 
         Location l = fabricateLocation(21);
 
-        ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
+        ErrorLog log = newMock(ErrorLog.class);
 
         expect(op.findUnclaimedAbstractProperties()).andReturn(Collections.singletonList("fred"));
         Throwable ex = new ApplicationRuntimeException("Arbitrary error.");

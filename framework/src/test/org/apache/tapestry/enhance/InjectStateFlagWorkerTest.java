@@ -25,6 +25,7 @@ import org.apache.hivemind.service.MethodSignature;
 import org.apache.tapestry.engine.state.ApplicationStateManager;
 import org.apache.tapestry.spec.InjectSpecification;
 import org.apache.tapestry.spec.InjectSpecificationImpl;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.InjectStateFlagWorker}.
@@ -32,6 +33,7 @@ import org.apache.tapestry.spec.InjectSpecificationImpl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class InjectStateFlagWorkerTest extends BaseEnhancementTestCase
 {
     public void testNoExistingProperty()

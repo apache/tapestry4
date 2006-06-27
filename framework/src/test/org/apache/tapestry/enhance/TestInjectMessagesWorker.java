@@ -27,6 +27,7 @@ import org.apache.hivemind.service.BodyBuilder;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.services.ComponentMessagesSource;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.InjectMessagesWorker}.
@@ -34,11 +35,12 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestInjectMessagesWorker extends BaseEnhancementTestCase
 {
     private ComponentMessagesSource newSource()
     {
-        return (ComponentMessagesSource) newMock(ComponentMessagesSource.class);
+        return newMock(ComponentMessagesSource.class);
     }
 
     public void testSuccess()
@@ -89,7 +91,7 @@ public class TestInjectMessagesWorker extends BaseEnhancementTestCase
 
         expect(op.getBaseClass()).andReturn(BaseComponent.class);
 
-        ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
+        ErrorLog log = newMock(ErrorLog.class);
 
         log.error(
                 EnhanceMessages.errorAddingProperty(w._messagesProperty, BaseComponent.class, ex),

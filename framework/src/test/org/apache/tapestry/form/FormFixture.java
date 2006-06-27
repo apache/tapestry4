@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.form;
 
-import junit.framework.Assert;
+import static org.testng.AssertJUnit.assertSame;
 
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
@@ -37,8 +37,8 @@ public abstract class FormFixture extends Form
     @Override
     protected FormSupport newFormSupport(IMarkupWriter writer, IRequestCycle cycle)
     {
-        Assert.assertSame(getExpectedWriter(), writer);
-        Assert.assertSame(getExpectedRequestCycle(), cycle);
+        assertSame(getExpectedWriter(), writer);
+        assertSame(getExpectedRequestCycle(), cycle);
 
         return getFormSupport();
     }

@@ -33,6 +33,7 @@ import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebSession;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.engine.ActionService}.
@@ -40,6 +41,7 @@ import org.apache.tapestry.web.WebSession;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class ActionServiceTest extends ServiceTestCase
 {
     public void testGetLinkSimple()
@@ -192,7 +194,7 @@ public class ActionServiceTest extends ServiceTestCase
 
     private IAction newAction()
     {
-        return (IAction) newMock(IAction.class);
+        return newMock(IAction.class);
     }
 
     public void testSeviceActiveSession() throws Exception

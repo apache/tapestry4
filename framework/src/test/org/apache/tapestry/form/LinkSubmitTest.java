@@ -36,6 +36,7 @@ import org.apache.tapestry.IScriptProcessor;
 import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.valid.IValidationDelegate;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.form.LinkSubmit}
@@ -43,6 +44,7 @@ import org.apache.tapestry.valid.IValidationDelegate;
  * @author Howard Lewis Ship
  * @since 4.0
  */
+@Test
 public class LinkSubmitTest extends BaseComponentTestCase
 {
     private class ScriptFixture implements IScript

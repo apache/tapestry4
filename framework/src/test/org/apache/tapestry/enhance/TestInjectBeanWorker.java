@@ -30,6 +30,7 @@ import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.spec.BeanSpecification;
 import org.apache.tapestry.spec.IBeanSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.InjectBeanWorker}.
@@ -37,6 +38,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestInjectBeanWorker extends BaseComponentTestCase
 {
     private IComponentSpecification newSpec(String beanName, String propertyName, Location location)

@@ -22,6 +22,7 @@ import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.listener.ListenerInvoker;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.components.InvokeListener}.
@@ -29,29 +30,30 @@ import org.apache.tapestry.listener.ListenerInvoker;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestInvokeListener extends BaseComponentTestCase
 {
     private IActionListener newListener()
     {
-        return (IActionListener) newMock(IActionListener.class);
+        return newMock(IActionListener.class);
     }
 
     private ListenerInvoker newInvoker()
     {
-        return (ListenerInvoker) newMock(ListenerInvoker.class);
+        return newMock(ListenerInvoker.class);
     }
 
     public void testSuccess()
     {
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
+        IRequestCycle cycle = newMock(IRequestCycle.class);
 
         IActionListener listener = newListener();
         ListenerInvoker invoker = newInvoker();
 
         Object[] parameters = new Object[0];
 
-        InvokeListener component = (InvokeListener) newInstance(InvokeListener.class, new Object[]
+        InvokeListener component = newInstance(InvokeListener.class, new Object[]
         { "listener", listener, "parameters", parameters, "listenerInvoker", invoker, });
 
         cycle.setListenerParameters(parameters);
@@ -68,7 +70,7 @@ public class TestInvokeListener extends BaseComponentTestCase
     public void testEnsureParametersClearedAfterException()
     {
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
+        IRequestCycle cycle = newMock(IRequestCycle.class);
 
         IActionListener listener = newListener();
         

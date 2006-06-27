@@ -18,6 +18,7 @@ import static org.testng.AssertJUnit.assertSame;
 
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.describe.DescriptionReceiver;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.event.ReportStatusEvent}.
@@ -25,11 +26,12 @@ import org.apache.tapestry.describe.DescriptionReceiver;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class ReportStatusEventTest extends BaseComponentTestCase
 {
     protected DescriptionReceiver newReceiver()
     {
-        return (DescriptionReceiver) newMock(DescriptionReceiver.class);
+        return newMock(DescriptionReceiver.class);
     }
 
     public void testConstructor()

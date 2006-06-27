@@ -21,6 +21,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.valid.ValidatorException;
+import org.testng.annotations.Test;
 
 /**
  * Test case for {@link StringTranslator}.
@@ -28,6 +29,7 @@ import org.apache.tapestry.valid.ValidatorException;
  * @author Paul Ferraro
  * @since 4.0
  */
+@Test
 public class TestStringTranslator extends TranslatorTestCase
 {
     private StringTranslator _translator = new StringTranslator();

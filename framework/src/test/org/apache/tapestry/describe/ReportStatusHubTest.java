@@ -19,6 +19,7 @@ import static org.easymock.EasyMock.expect;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.event.ReportStatusEvent;
 import org.apache.tapestry.event.ReportStatusListener;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.describe.ReportStatusHubImpl}.
@@ -26,6 +27,7 @@ import org.apache.tapestry.event.ReportStatusListener;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class ReportStatusHubTest extends BaseDescribeTestCase
 {
     public RootDescriptionReceiverFactory newReceiverFactory(IMarkupWriter writer,
@@ -40,7 +42,7 @@ public class ReportStatusHubTest extends BaseDescribeTestCase
 
     protected RootDescriptionReceiverFactory newReceiverFactory()
     {
-        return (RootDescriptionReceiverFactory) newMock(RootDescriptionReceiverFactory.class);
+        return newMock(RootDescriptionReceiverFactory.class);
     }
 
     public static class ListenerFixture implements ReportStatusListener
@@ -99,6 +101,6 @@ public class ReportStatusHubTest extends BaseDescribeTestCase
 
     protected RootDescriptionReciever newRootReceiver()
     {
-        return (RootDescriptionReciever) newMock(RootDescriptionReciever.class);
+        return newMock(RootDescriptionReciever.class);
     }
 }

@@ -23,6 +23,7 @@ import org.apache.hivemind.Registry;
 import org.apache.hivemind.impl.RegistryBuilder;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.testng.annotations.Test;
 
 
 /**
@@ -30,6 +31,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @author James Carman
  *
  */
+@Test
 public class TestAutowireWorker extends BaseEnhancementTestCase
 {
 
@@ -49,7 +51,7 @@ public class TestAutowireWorker extends BaseEnhancementTestCase
     {
         final Registry registry = buildFrameworkRegistry("autowire-single.xml" );
         Location l = newLocation();
-        EnhancementOperation op = (EnhancementOperation) newMock(EnhancementOperation.class);
+        EnhancementOperation op = newMock(EnhancementOperation.class);
         
         expect(op.findUnclaimedAbstractProperties())
         .andReturn(Collections.singletonList( HELLO_SERVICE_PROPERTY ));
@@ -58,7 +60,7 @@ public class TestAutowireWorker extends BaseEnhancementTestCase
         
         expect(op.canClaimAsReadOnlyProperty(HELLO_SERVICE_PROPERTY)).andReturn(true);
         
-        IComponentSpecification spec = ( IComponentSpecification )newMock(IComponentSpecification.class);
+        IComponentSpecification spec = newMock(IComponentSpecification.class);
         
         expect(spec.getLocation()).andReturn(l);
         
@@ -85,7 +87,7 @@ public class TestAutowireWorker extends BaseEnhancementTestCase
     
     private void assertNotAutowired( Registry registry )
     {
-        EnhancementOperation op = (EnhancementOperation)newMock(EnhancementOperation.class);
+        EnhancementOperation op = newMock(EnhancementOperation.class);
         
         expect(op.findUnclaimedAbstractProperties())
         .andReturn(Collections.singletonList( HELLO_SERVICE_PROPERTY ));

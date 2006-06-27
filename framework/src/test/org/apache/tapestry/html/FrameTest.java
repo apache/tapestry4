@@ -21,6 +21,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.spec.ComponentSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests for the {@link org.apache.tapestry.html.Frame} component.
@@ -28,6 +29,7 @@ import org.apache.tapestry.spec.ComponentSpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class FrameTest extends BaseComponentTestCase
 {
 
@@ -49,7 +51,7 @@ public class FrameTest extends BaseComponentTestCase
 
         replay();
 
-        Frame frame = (Frame) newInstance(Frame.class, new Object[]
+        Frame frame = newInstance(Frame.class, new Object[]
         { "pageService", pageService, "targetPage", "FramePage" });
 
         frame.renderComponent(writer, cycle);
@@ -77,7 +79,7 @@ public class FrameTest extends BaseComponentTestCase
 
         replay();
 
-        Frame frame = (Frame) newInstance(Frame.class, new Object[]
+        Frame frame = newInstance(Frame.class, new Object[]
         { "pageService", pageService, "targetPage", "FramePage", "specification",
                 new ComponentSpecification() });
         frame.setBinding("class", binding);

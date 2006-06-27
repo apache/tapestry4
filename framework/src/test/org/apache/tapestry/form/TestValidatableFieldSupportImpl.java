@@ -40,6 +40,7 @@ import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.form.validator.Validator;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.valid.ValidatorException;
+import org.testng.annotations.Test;
 
 /**
  * Test case for {@link ValidatableFieldSupportImpl}.
@@ -47,6 +48,7 @@ import org.apache.tapestry.valid.ValidatorException;
  * @author Paul Ferraro
  * @since 4.0
  */
+@Test
 public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
 {
     private ThreadLocale newThreadLocale()
@@ -66,11 +68,11 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
     {
         IRequestCycle cycle = newCycle();
 
-        ClassResolver cr = (ClassResolver) newMock(ClassResolver.class);
+        ClassResolver cr = newMock(ClassResolver.class);
         
         Infrastructure infra = newMock(Infrastructure.class);
 
-        PageRenderSupport prs = (PageRenderSupport) newMock(PageRenderSupport.class);
+        PageRenderSupport prs = newMock(PageRenderSupport.class);
 
         expect(cycle.getInfrastructure()).andReturn(infra);
 

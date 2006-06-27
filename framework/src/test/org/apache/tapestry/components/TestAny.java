@@ -25,6 +25,7 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.spec.ComponentSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests for the {@link org.apache.tapestry.components.Any} component.
@@ -32,18 +33,19 @@ import org.apache.tapestry.spec.ComponentSpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestAny extends BaseComponentTestCase
 {
 
     public void testElementNull()
     {
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
+        IRequestCycle cycle = newMock(IRequestCycle.class);
         Location l = newLocation();
         
         replay();
         
-        Any any = (Any) newInstance(Any.class, new Object[] { "location", l });
+        Any any = newInstance(Any.class, new Object[] { "location", l });
 
         try
         {
@@ -74,7 +76,7 @@ public class TestAny extends BaseComponentTestCase
 
         replay();
 
-        Any any = (Any) newInstance(Any.class,
+        Any any = newInstance(Any.class,
                 new Object[] { "element", "span" });
 
         any.addBody(body);
@@ -100,7 +102,7 @@ public class TestAny extends BaseComponentTestCase
 
         replay();
 
-        Any any = (Any) newInstance(Any.class, new Object[] { "element",
+        Any any = newInstance(Any.class, new Object[] { "element",
                 "span", "specification", new ComponentSpecification() });
 
         any.addBody(body);
@@ -121,7 +123,7 @@ public class TestAny extends BaseComponentTestCase
 
         replay();
 
-        Any any = (Any) newInstance(Any.class,
+        Any any = newInstance(Any.class,
                 new Object[] { "element", "span" });
 
         any.addBody(body);

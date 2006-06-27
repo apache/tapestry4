@@ -22,6 +22,7 @@ import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.SessionStoreOptimized;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebSession;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.engine.state.SessionScopeManager}.
@@ -29,11 +30,12 @@ import org.apache.tapestry.web.WebSession;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestSessionScopeManager extends BaseComponentTestCase
 {
     private WebRequest newRequest(boolean create, WebSession session)
     {
-        WebRequest request = (WebRequest)newMock(WebRequest.class);
+        WebRequest request = newMock(WebRequest.class);
         
         expect(request.getSession(create)).andReturn(session);
 
@@ -42,7 +44,7 @@ public class TestSessionScopeManager extends BaseComponentTestCase
 
     private WebRequest newRequest(WebSession session)
     {
-        WebRequest request = (WebRequest)newMock(WebRequest.class);
+        WebRequest request = newMock(WebRequest.class);
 
         expect(request.getSession(true)).andReturn(session);
 
@@ -60,7 +62,7 @@ public class TestSessionScopeManager extends BaseComponentTestCase
 
     private StateObjectFactory newFactory(Object stateObject)
     {
-        StateObjectFactory factory = (StateObjectFactory)newMock(StateObjectFactory.class);
+        StateObjectFactory factory = newMock(StateObjectFactory.class);
 
         expect(factory.createStateObject()).andReturn(stateObject);
 
@@ -182,12 +184,12 @@ public class TestSessionScopeManager extends BaseComponentTestCase
 
     protected WebSession newSession()
     {
-        return (WebSession) newMock(WebSession.class);
+        return newMock(WebSession.class);
     }
 
     protected SessionStoreOptimized newOptimized(boolean dirty)
     {
-        SessionStoreOptimized optimized = (SessionStoreOptimized) newMock(SessionStoreOptimized.class);
+        SessionStoreOptimized optimized = newMock(SessionStoreOptimized.class);
 
         expect(optimized.isStoreToSessionNeeded()).andReturn(dirty);
 

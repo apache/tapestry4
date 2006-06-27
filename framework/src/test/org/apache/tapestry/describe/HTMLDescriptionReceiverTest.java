@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import org.apache.tapestry.IMarkupWriter;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.describe.HTMLDescriptionReceiver}and
@@ -30,11 +31,12 @@ import org.apache.tapestry.IMarkupWriter;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
 {
     protected DescribableStrategy newStrategy()
     {
-        return (DescribableStrategy) newMock(DescribableStrategy.class);
+        return newMock(DescribableStrategy.class);
     }
 
     private void trainForTitle(IMarkupWriter writer, String title)
@@ -432,7 +434,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
 
     protected RootDescriptionReceiverFactory newReceiverFactory()
     {
-        return (RootDescriptionReceiverFactory) newMock(RootDescriptionReceiverFactory.class);
+        return newMock(RootDescriptionReceiverFactory.class);
     }
 
     public void testDescribeAlternate()

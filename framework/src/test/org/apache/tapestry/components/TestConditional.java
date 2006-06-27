@@ -20,6 +20,7 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.components.Conditional}&nbsp; component.
@@ -27,11 +28,12 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestConditional extends BaseComponentTestCase
 {
     private IRender newRender(IMarkupWriter writer, IRequestCycle cycle)
     {
-        IRender render = (IRender) newMock(IRender.class);
+        IRender render = newMock(IRender.class);
 
         render.render(writer, cycle);
 
@@ -40,7 +42,7 @@ public class TestConditional extends BaseComponentTestCase
 
     public void testFalseAndFalse()
     {
-        Conditional conditional = (Conditional) newInstance(Conditional.class, new Object[]
+        Conditional conditional = newInstance(Conditional.class, new Object[]
         { "condition", Boolean.FALSE, "invert", Boolean.FALSE });
 
         conditional.renderComponent(null, null);
@@ -48,7 +50,7 @@ public class TestConditional extends BaseComponentTestCase
 
     public void testTrueAndTrue()
     {
-        Conditional conditional = (Conditional) newInstance(Conditional.class, new Object[]
+        Conditional conditional = newInstance(Conditional.class, new Object[]
         { "condition", Boolean.TRUE, "invert", Boolean.TRUE });
 
         conditional.renderComponent(null, null);
@@ -62,7 +64,7 @@ public class TestConditional extends BaseComponentTestCase
 
         replay();
 
-        Conditional conditional = (Conditional) newInstance(Conditional.class, new Object[]
+        Conditional conditional = newInstance(Conditional.class, new Object[]
         { "condition", Boolean.TRUE });
         conditional.addBody(body);
 
@@ -79,7 +81,7 @@ public class TestConditional extends BaseComponentTestCase
 
         replay();
 
-        Conditional conditional = (Conditional) newInstance(Conditional.class, new Object[]
+        Conditional conditional = newInstance(Conditional.class, new Object[]
         { "condition", Boolean.TRUE, "element", "div" });
         conditional.addBody(body);
 
@@ -110,7 +112,7 @@ public class TestConditional extends BaseComponentTestCase
 
         replay();
 
-        Conditional conditional = (Conditional) newInstance(Conditional.class, new Object[]
+        Conditional conditional = newInstance(Conditional.class, new Object[]
         { "condition", Boolean.TRUE, "element", "div", "specification", spec });
         conditional.addBody(body);
         conditional.setBinding("informal", informal);

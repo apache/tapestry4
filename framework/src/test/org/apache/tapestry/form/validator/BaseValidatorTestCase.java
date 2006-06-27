@@ -34,7 +34,7 @@ public abstract class BaseValidatorTestCase extends BaseComponentTestCase
 {
     protected IFormComponent newField(String displayName)
     {
-        IFormComponent field = (IFormComponent)newMock(IFormComponent.class);
+        IFormComponent field = newMock(IFormComponent.class);
         
         expect(field.getDisplayName()).andReturn(displayName);
         
@@ -43,7 +43,7 @@ public abstract class BaseValidatorTestCase extends BaseComponentTestCase
 
     protected IFormComponent newField(String displayName, String clientId)
     {
-        IFormComponent field = (IFormComponent)newMock(IFormComponent.class);
+        IFormComponent field = newMock(IFormComponent.class);
         checkOrder(field, false);
         
         expect(field.getClientId()).andReturn(clientId).anyTimes();
@@ -54,18 +54,18 @@ public abstract class BaseValidatorTestCase extends BaseComponentTestCase
 
     protected IFormComponent newField()
     {
-        return (IFormComponent) newMock(IFormComponent.class);
+        return newMock(IFormComponent.class);
     }
 
     protected ValidationMessages newMessages()
     {
-        return (ValidationMessages) newMock(ValidationMessages.class);
+        return newMock(ValidationMessages.class);
     }
 
     protected ValidationMessages newMessages(String messageOverride, String messageKey,
             Object[] parameters, String result)
     {
-        ValidationMessages messages = (ValidationMessages)newMock(ValidationMessages.class);
+        ValidationMessages messages = newMock(ValidationMessages.class);
         
         trainFormatMessage(messages, messageOverride, messageKey, parameters, result);
 
@@ -81,7 +81,7 @@ public abstract class BaseValidatorTestCase extends BaseComponentTestCase
 
     protected FormComponentContributorContext newContext()
     {
-        return (FormComponentContributorContext) newMock(FormComponentContributorContext.class);
+        return newMock(FormComponentContributorContext.class);
     }
 
 }

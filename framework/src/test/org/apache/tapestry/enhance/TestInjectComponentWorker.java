@@ -30,6 +30,7 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.spec.ContainedComponent;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.InjectComponentWorker}.
@@ -37,6 +38,7 @@ import org.apache.tapestry.spec.IContainedComponent;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestInjectComponentWorker extends BaseComponentTestCase
 {
     private IComponentSpecification newSpec(String componentId, String propertyName,
@@ -69,7 +71,7 @@ public class TestInjectComponentWorker extends BaseComponentTestCase
 
     protected EnhancementOperation newEnhancementOperation()
     {
-        return (EnhancementOperation) newMock(EnhancementOperation.class);
+        return newMock(EnhancementOperation.class);
     }
 
     protected void trainGetPropertyType(EnhancementOperation op, String propertyName,
@@ -141,7 +143,7 @@ public class TestInjectComponentWorker extends BaseComponentTestCase
 
         IComponentSpecification spec = newSpec("fred", "barney", l);
 
-        ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
+        ErrorLog log = newMock(ErrorLog.class);
 
         expect(op.getPropertyType("barney")).andReturn(IComponent.class);
 

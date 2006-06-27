@@ -16,12 +16,14 @@ package org.apache.tapestry.describe;
 
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link PreformattedRenderStrategy}.
  * 
  * @author Howard M. Lewis Ship
  */
+@Test
 public class PreformattedRenderableStrategyTest extends BaseDescribeTestCase
 {
     public void testRenderObject()

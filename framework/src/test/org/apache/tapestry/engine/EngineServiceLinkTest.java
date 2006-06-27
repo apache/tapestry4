@@ -24,6 +24,7 @@ import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.web.WebRequest;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.engine.EngineServiceLink}.
@@ -31,6 +32,7 @@ import org.apache.tapestry.web.WebRequest;
  * @author Howard Lewis Ship
  * @since 3.0
  */
+@Test
 public class EngineServiceLinkTest extends BaseComponentTestCase
 {
     private URLCodec _urlCodec = new URLCodec();
@@ -116,7 +118,7 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
     public void testGetURLWithAnchor()
     {
         WebRequest request = newRequest();
-        IRequestCycle rc = (IRequestCycle) newMock(IRequestCycle.class);
+        IRequestCycle rc = newMock(IRequestCycle.class);
 
         EngineServiceLink l = new EngineServiceLink(rc, "/context/servlet", ENCODING, _urlCodec,
                 request, buildParameters("myservice", null), false);

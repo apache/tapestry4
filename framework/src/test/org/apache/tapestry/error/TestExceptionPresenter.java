@@ -21,6 +21,7 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.services.ResponseRenderer;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.error.ExceptionPresenterImpl}.
@@ -28,6 +29,7 @@ import org.apache.tapestry.services.ResponseRenderer;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestExceptionPresenter extends BaseErrorTestCase
 {
     public abstract static class ExceptionFixture extends BasePage

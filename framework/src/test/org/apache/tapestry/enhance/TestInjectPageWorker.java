@@ -27,6 +27,7 @@ import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.spec.InjectSpecification;
 import org.apache.tapestry.spec.InjectSpecificationImpl;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.InjectPageWorker}.
@@ -34,6 +35,7 @@ import org.apache.tapestry.spec.InjectSpecificationImpl;
  * @author Howard Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestInjectPageWorker extends BaseComponentTestCase
 {
     public void testPrimitivePropertyType()

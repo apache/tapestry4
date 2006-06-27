@@ -24,11 +24,13 @@ import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRender;
+import org.testng.annotations.Test;
 
 /**
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestEnhanceUtils extends BaseComponentTestCase
 {
     protected EnhancementOperation newOp()

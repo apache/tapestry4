@@ -22,6 +22,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.form.validator.AbstractValidatorWrapper}
@@ -29,6 +30,7 @@ import org.apache.tapestry.form.ValidationMessages;
  * @author Howard Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestValidatorWrapper extends BaseValidatorTestCase
 {
     public static class Fixture extends AbstractValidatorWrapper
@@ -48,7 +50,7 @@ public class TestValidatorWrapper extends BaseValidatorTestCase
 
     private Validator newValidator()
     {
-        return (Validator) newMock(Validator.class);
+        return newMock(Validator.class);
     }
 
     public void testValidate() throws Exception

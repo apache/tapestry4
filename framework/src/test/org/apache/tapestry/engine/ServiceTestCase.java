@@ -30,6 +30,7 @@ import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebSession;
+import org.testng.annotations.Test;
 
 /**
  * Common utilities for building tests for {@link org.apache.tapestry.engine.IEngineService}s.
@@ -37,12 +38,13 @@ import org.apache.tapestry.web.WebSession;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public abstract class ServiceTestCase extends BaseComponentTestCase
 {
 
     protected IPage newPage(String name)
     {
-        IPage result = (IPage) newMock(IPage.class);
+        IPage result = newMock(IPage.class);
 
         expect(result.getPageName()).andReturn(name);
         return result;
@@ -50,7 +52,7 @@ public abstract class ServiceTestCase extends BaseComponentTestCase
 
     protected HttpServletRequest newRequest(HttpSession session)
     {
-        HttpServletRequest result = (HttpServletRequest) newMock(HttpServletRequest.class);
+        HttpServletRequest result = newMock(HttpServletRequest.class);
 
         expect(result.getSession()).andReturn(session);
 
@@ -59,7 +61,7 @@ public abstract class ServiceTestCase extends BaseComponentTestCase
 
     protected WebRequest newWebRequest(WebSession session)
     {
-        WebRequest result = (WebRequest) newMock(WebRequest.class);
+        WebRequest result = newMock(WebRequest.class);
 
         expect(result.getSession(false)).andReturn(session);
 
@@ -68,7 +70,7 @@ public abstract class ServiceTestCase extends BaseComponentTestCase
 
     protected HttpServletRequest newRequest(boolean create, HttpSession session)
     {
-        HttpServletRequest result = (HttpServletRequest) newMock(HttpServletRequest.class);
+        HttpServletRequest result = newMock(HttpServletRequest.class);
 
         expect(result.getSession(create)).andReturn(session);
 
@@ -77,7 +79,7 @@ public abstract class ServiceTestCase extends BaseComponentTestCase
 
     protected WebRequest newWebRequest(boolean create, WebSession session)
     {
-        WebRequest result = (WebRequest) newMock(WebRequest.class);
+        WebRequest result = newMock(WebRequest.class);
 
         expect(result.getSession(create)).andReturn(session);
 
@@ -104,22 +106,22 @@ public abstract class ServiceTestCase extends BaseComponentTestCase
 
     protected HttpSession newSession()
     {
-        return (HttpSession) newMock(HttpSession.class);
+        return newMock(HttpSession.class);
     }
 
     protected WebSession newWebSession()
     {
-        return (WebSession) newMock(WebSession.class);
+        return newMock(WebSession.class);
     }
 
     protected ILink newLink()
     {
-        return (ILink) newMock(ILink.class);
+        return newMock(ILink.class);
     }
 
     protected LinkFactory newLinkFactory(Map parameters, boolean stateful, ILink link)
     {
-        LinkFactory lf = (LinkFactory) newMock(LinkFactory.class);
+        LinkFactory lf = newMock(LinkFactory.class);
 
         expect(lf.constructLink(null, false, parameters, stateful)).andReturn(link);
 
@@ -128,7 +130,7 @@ public abstract class ServiceTestCase extends BaseComponentTestCase
 
     protected ResponseRenderer newResponseRenderer()
     {
-        return (ResponseRenderer) newMock(ResponseRenderer.class);
+        return newMock(ResponseRenderer.class);
     }
 
     protected void trainConstructLink(LinkFactory linkFactory, IEngineService service,
@@ -139,7 +141,7 @@ public abstract class ServiceTestCase extends BaseComponentTestCase
 
     protected LinkFactory newLinkFactory()
     {
-        return (LinkFactory) newMock(LinkFactory.class);
+        return newMock(LinkFactory.class);
     }
 
     protected void trainGetPage(IRequestCycle cycle, IPage page)
@@ -169,7 +171,7 @@ public abstract class ServiceTestCase extends BaseComponentTestCase
     
     protected Log newLog()
     {
-        return (Log) newMock(Log.class);
+        return newMock(Log.class);
     }
 
 }

@@ -19,12 +19,14 @@ import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.spec.ComponentSpecification;
+import org.testng.annotations.Test;
 
+@Test
 public class TestButton extends BaseComponentTestCase
 {
     public void testRender()
     {
-        Button b = (Button) newInstance(Button.class, new Object[]
+        Button b = newInstance(Button.class, new Object[]
         { "name", "assignedName" });
 
         IMarkupWriter writer = newBufferWriter();
@@ -41,7 +43,7 @@ public class TestButton extends BaseComponentTestCase
 
     public void testRenderLabel()
     {
-        Button b = (Button) newInstance(Button.class, new Object[]
+        Button b = newInstance(Button.class, new Object[]
         { "name", "assignedName", "label", "Label" });
 
         IMarkupWriter writer = newBufferWriter();
@@ -58,7 +60,7 @@ public class TestButton extends BaseComponentTestCase
 
     public void testRenderInformalParameters()
     {
-        Button b = (Button) newInstance(Button.class, new Object[]
+        Button b = newInstance(Button.class, new Object[]
         { "name", "assignedName", "specification", new ComponentSpecification() });
 
         IMarkupWriter writer = newBufferWriter();
@@ -79,7 +81,7 @@ public class TestButton extends BaseComponentTestCase
 
     public void testRenderWithId()
     {
-        Button b = (Button) newInstance(Button.class, new Object[]
+        Button b = newInstance(Button.class, new Object[]
         { "idParameter", "foo", "name", "assignedName" });
 
         IMarkupWriter writer = newBufferWriter();

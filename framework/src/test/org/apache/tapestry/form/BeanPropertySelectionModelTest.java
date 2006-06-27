@@ -13,10 +13,13 @@
 // limitations under the License.
 package org.apache.tapestry.form;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
+import org.testng.annotations.Test;
 
 
 /**
@@ -24,7 +27,8 @@ import org.apache.hivemind.test.HiveMindTestCase;
  *
  * @author jkuhnert
  */
-public class BeanPropertySelectionModelTest extends HiveMindTestCase
+@Test
+public class BeanPropertySelectionModelTest extends BaseComponentTestCase
 {
     
     /**

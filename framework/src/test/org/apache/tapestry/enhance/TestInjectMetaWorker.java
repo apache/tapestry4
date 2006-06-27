@@ -26,6 +26,7 @@ import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.services.ComponentPropertySource;
 import org.apache.tapestry.spec.InjectSpecification;
 import org.apache.tapestry.spec.InjectSpecificationImpl;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.InjectMetaWorker}.
@@ -33,6 +34,7 @@ import org.apache.tapestry.spec.InjectSpecificationImpl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestInjectMetaWorker extends BaseComponentTestCase
 {
     private InjectSpecification newSpec(String propertyName, String object, Location location)
@@ -48,7 +50,7 @@ public class TestInjectMetaWorker extends BaseComponentTestCase
 
     private ComponentPropertySource newSource()
     {
-        return (ComponentPropertySource) newMock(ComponentPropertySource.class);
+        return newMock(ComponentPropertySource.class);
     }
 
     public void testPrimitive()
@@ -135,7 +137,7 @@ public class TestInjectMetaWorker extends BaseComponentTestCase
         InjectSpecification spec = newSpec("fooBar", "foo.bar", l);
 
         ComponentPropertySource source = newSource();
-        ValueConverter converter = (ValueConverter) newMock(ValueConverter.class);
+        ValueConverter converter = newMock(ValueConverter.class);
 
         EnhancementOperation op = newMock(EnhancementOperation.class);
 

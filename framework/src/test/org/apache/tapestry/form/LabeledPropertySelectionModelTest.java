@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.form;
 
+import org.testng.annotations.Test;
+
 import junit.framework.TestCase;
 
 /**
@@ -22,6 +24,7 @@ import junit.framework.TestCase;
  * @author Paul Ferraro
  * @since 4.0
  */
+@Test
 public class LabeledPropertySelectionModelTest extends TestCase
 {
     public void testNullValue()

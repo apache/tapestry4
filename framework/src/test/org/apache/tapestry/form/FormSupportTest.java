@@ -35,6 +35,7 @@ import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.services.impl.ComponentEventInvoker;
 import org.apache.tapestry.valid.IValidationDelegate;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.form.FormSupportImpl}.
@@ -42,6 +43,7 @@ import org.apache.tapestry.valid.IValidationDelegate;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class FormSupportTest extends BaseComponentTestCase
 {
 
@@ -69,22 +71,22 @@ public class FormSupportTest extends BaseComponentTestCase
 
     private IValidationDelegate newDelegate()
     {
-        return (IValidationDelegate) newMock(IValidationDelegate.class);
+        return newMock(IValidationDelegate.class);
     }
 
     protected IEngine newEngine()
     {
-        return (IEngine) newMock(IEngine.class);
+        return newMock(IEngine.class);
     }
 
     private IFormComponent newField()
     {
-        return (IFormComponent) newMock(IFormComponent.class);
+        return newMock(IFormComponent.class);
     }
 
     private IFormComponent newFormComponent(String id, String name)
     {
-        IFormComponent component = (IFormComponent) newMock(IFormComponent.class);
+        IFormComponent component = newMock(IFormComponent.class);
 
         trainGetId(component, id);
 
@@ -95,7 +97,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
     private IFormComponent newFormComponent(String id, String extendedId, Location location)
     {
-        IFormComponent component = (IFormComponent) newMock(IFormComponent.class);
+        IFormComponent component = newMock(IFormComponent.class);
 
         trainGetId(component, id);
         trainGetExtendedId(component, extendedId);
@@ -127,7 +129,7 @@ public class FormSupportTest extends BaseComponentTestCase
         
         // Create a body, just to provie it doesn't get invoked.
         
-        IRender body = (IRender) newMock(IRender.class);
+        IRender body = newMock(IRender.class);
         
         form.setBody(body);
         
@@ -218,7 +220,7 @@ public class FormSupportTest extends BaseComponentTestCase
         IRequestCycle cycle = newCycle();
         IValidationDelegate delegate = newDelegate();
         MockForm form = new MockForm(delegate);
-        ComponentEventInvoker invoker = (ComponentEventInvoker)newMock(ComponentEventInvoker.class);
+        ComponentEventInvoker invoker = newMock(ComponentEventInvoker.class);
         
         trainIsRewound(cycle, form, true);
         trainGetPageRenderSupport(cycle, null);

@@ -26,6 +26,7 @@ import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.util.io.DataSqueezerUtil;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.components.If}&nbsp;
@@ -35,11 +36,12 @@ import org.apache.tapestry.util.io.DataSqueezerUtil;
  * @author Mindbridge
  * @since 4.0
  */
+@Test
 public class TestIfElse extends BaseComponentTestCase
 {
     private IRender newRender(IMarkupWriter writer, IRequestCycle cycle)
     {
-        IRender render = (IRender) newMock(IRender.class);
+        IRender render = newMock(IRender.class);
         
         render.render(writer, cycle);
 
@@ -48,7 +50,7 @@ public class TestIfElse extends BaseComponentTestCase
 
     public void testRenderPlainTrue()
     {
-        IRequestCycle cycle = (IRequestCycle) newMock(IRequestCycle.class);
+        IRequestCycle cycle = newMock(IRequestCycle.class);
 
         IMarkupWriter writer = newWriter();
         
@@ -67,7 +69,7 @@ public class TestIfElse extends BaseComponentTestCase
         
         replay();
         
-        IfBean conditional = (IfBean) newInstance(IfBean.class, new Object[]
+        IfBean conditional = newInstance(IfBean.class, new Object[]
         { "condition", Boolean.TRUE });
         conditional.addBody(body);
         
@@ -102,7 +104,7 @@ public class TestIfElse extends BaseComponentTestCase
 
         replay();
 
-        IfBean conditional = (IfBean) newInstance(IfBean.class, new Object[]
+        IfBean conditional = newInstance(IfBean.class, new Object[]
         { "condition", Boolean.FALSE });
         conditional.addBody(body);
         conditional.render(writer, cycle);
@@ -118,7 +120,7 @@ public class TestIfElse extends BaseComponentTestCase
     {
         IMarkupWriter writer = newWriter();
         
-        IfBean conditional = (IfBean) newInstance(TestIfBean.class, 
+        IfBean conditional = newInstance(TestIfBean.class, 
         		new Object[] { "condition", Boolean.TRUE });
 
         IForm form = newMock(IForm.class);
@@ -158,7 +160,7 @@ public class TestIfElse extends BaseComponentTestCase
     {
         IMarkupWriter writer = newWriter();
         
-        IfBean conditional = (IfBean) newInstance(TestIfBean.class, 
+        IfBean conditional = newInstance(TestIfBean.class, 
         		new Object[] { "condition", Boolean.FALSE });
 
         IRequestCycle cycle = newCycle();
@@ -200,7 +202,7 @@ public class TestIfElse extends BaseComponentTestCase
     {
         IMarkupWriter writer = newWriter();
         
-        IfBean conditional = (IfBean) newInstance(TestIfBean.class, 
+        IfBean conditional = newInstance(TestIfBean.class, 
         		new Object[] { "condition", Boolean.TRUE, "element", "div" });
         
         IForm form = newMock(IForm.class);
@@ -241,7 +243,7 @@ public class TestIfElse extends BaseComponentTestCase
     {
         IMarkupWriter writer = newWriter();
         
-        IfBean conditional = (IfBean) newInstance(TestIfBean.class, 
+        IfBean conditional = newInstance(TestIfBean.class, 
         		new Object[] { "condition", Boolean.TRUE, "element", "div" });
         
         IForm form = newMock(IForm.class);
@@ -307,7 +309,7 @@ public class TestIfElse extends BaseComponentTestCase
         
         replay();
 
-        IfBean conditional = (IfBean) newInstance(TestIfBean.class, new Object[]
+        IfBean conditional = newInstance(TestIfBean.class, new Object[]
         { "condition", Boolean.TRUE, "element", "div", "specification", spec });
         conditional.addBody(body);
         conditional.setBinding("informal", informal);

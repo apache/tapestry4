@@ -23,11 +23,13 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
+import org.testng.annotations.Test;
 
 /**
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class PageServiceTest extends ServiceTestCase
 {
     public void testGetLink()

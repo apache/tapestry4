@@ -18,12 +18,14 @@ import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.describe.HTMLDescriber;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.html.Describe}.
  * 
  * @author Howard M. Lewis Ship
  */
+@Test
 public class DescribeTest extends BaseComponentTestCase
 {
     public void testRewinding()
@@ -47,13 +49,13 @@ public class DescribeTest extends BaseComponentTestCase
         
         Object object = new Object();
         
-        HTMLDescriber describer = (HTMLDescriber) newMock(HTMLDescriber.class);
+        HTMLDescriber describer = newMock(HTMLDescriber.class);
 
         describer.describeObject(object, writer);
 
         replay();
 
-        Describe component = (Describe) newInstance(Describe.class, new Object[]
+        Describe component = newInstance(Describe.class, new Object[]
         { "object", object, "describer", describer });
 
         component.renderComponent(writer, cycle);

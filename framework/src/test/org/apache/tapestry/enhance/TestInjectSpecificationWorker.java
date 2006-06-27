@@ -25,6 +25,7 @@ import org.apache.hivemind.Location;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.InjectSpecificationWorker}.
@@ -32,6 +33,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestInjectSpecificationWorker extends BaseEnhancementTestCase
 {
 
@@ -65,7 +67,7 @@ public class TestInjectSpecificationWorker extends BaseEnhancementTestCase
         Location l = newLocation();
         EnhancementOperation op = newOp();
 
-        ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
+        ErrorLog log = newMock(ErrorLog.class);
 
         Throwable ex = new ApplicationRuntimeException(EnhanceMessages
                 .claimedProperty("specification"));

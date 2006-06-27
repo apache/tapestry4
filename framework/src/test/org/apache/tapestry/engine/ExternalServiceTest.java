@@ -28,6 +28,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.engine.ExternalService}.
@@ -35,6 +36,7 @@ import org.apache.tapestry.services.ServiceConstants;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class ExternalServiceTest extends ServiceTestCase
 {
     public void testGetLink()
@@ -64,7 +66,7 @@ public class ExternalServiceTest extends ServiceTestCase
     public void testService() throws Exception
     {
         IRequestCycle cycle = newCycle();
-        IExternalPage page = (IExternalPage) newMock(IExternalPage.class);
+        IExternalPage page = newMock(IExternalPage.class);
         Object[] parameters = new Object[0];
         LinkFactory lf = newLinkFactory();
         ResponseRenderer rr = newResponseRenderer();

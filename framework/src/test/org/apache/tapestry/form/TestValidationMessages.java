@@ -24,6 +24,7 @@ import org.apache.hivemind.Messages;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.valid.ValidationStrings;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.form.ValidationMessagesImpl}.
@@ -31,11 +32,12 @@ import org.apache.tapestry.valid.ValidationStrings;
  * @author Howard Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestValidationMessages extends BaseComponentTestCase
 {
     private IFormComponent newField()
     {
-        return (IFormComponent) newMock(IFormComponent.class);
+        return newMock(IFormComponent.class);
     }
 
     public void testMessageOverrideNull()

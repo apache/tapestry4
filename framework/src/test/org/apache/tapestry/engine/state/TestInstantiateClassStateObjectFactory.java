@@ -19,6 +19,7 @@ import java.util.HashMap;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.engine.state.InstantiateClassStateObjectFactory}.
@@ -26,6 +27,7 @@ import org.apache.hivemind.test.HiveMindTestCase;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestInstantiateClassStateObjectFactory extends HiveMindTestCase
 {
     public void testSuccess()

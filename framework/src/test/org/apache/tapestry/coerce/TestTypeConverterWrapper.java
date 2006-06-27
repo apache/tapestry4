@@ -21,6 +21,7 @@ import static org.testng.AssertJUnit.assertSame;
 import java.util.Collections;
 
 import org.apache.tapestry.BaseComponentTestCase;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.coerce.TypeConverterWrapper}.
@@ -28,6 +29,7 @@ import org.apache.tapestry.BaseComponentTestCase;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestTypeConverterWrapper extends BaseComponentTestCase
 {
     public void testNonNull()

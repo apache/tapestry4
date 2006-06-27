@@ -26,6 +26,7 @@ import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResetEventHub;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.engine.ResetService}.
@@ -33,6 +34,7 @@ import org.apache.tapestry.services.ServiceConstants;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class ResetServiceTest extends ServiceTestCase
 {
     public void testGetLink()
@@ -64,7 +66,7 @@ public class ResetServiceTest extends ServiceTestCase
     public void testService() throws Exception
     {
         IRequestCycle cycle = newCycle();
-        ResetEventHub hub = (ResetEventHub) newMock(ResetEventHub.class);
+        ResetEventHub hub = newMock(ResetEventHub.class);
         ResponseRenderer rr = newResponseRenderer();
 
         trainGetParameter(cycle, ServiceConstants.PAGE, "TargetPage");
@@ -90,7 +92,7 @@ public class ResetServiceTest extends ServiceTestCase
     public void testServiceNotEnabled() throws Exception
     {
         IRequestCycle cycle = newCycle();
-        ResetEventHub hub = (ResetEventHub) newMock(ResetEventHub.class);
+        ResetEventHub hub = newMock(ResetEventHub.class);
         ResponseRenderer rr = newResponseRenderer();
 
         trainGetParameter(cycle, ServiceConstants.PAGE, "TargetPage");

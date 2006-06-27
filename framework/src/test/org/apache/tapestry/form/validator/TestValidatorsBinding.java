@@ -26,6 +26,7 @@ import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.binding.BindingTestCase;
 import org.apache.tapestry.coerce.ValueConverter;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.form.validator.ValidatorsBinding} and
@@ -34,6 +35,7 @@ import org.apache.tapestry.coerce.ValueConverter;
  * @author Howard Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestValidatorsBinding extends BindingTestCase
 {
     public void testSuccess()
