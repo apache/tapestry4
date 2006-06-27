@@ -14,7 +14,10 @@
 
 package org.apache.tapestry.engine;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+
 import org.apache.hivemind.ErrorHandler;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IEngine;
@@ -93,7 +96,7 @@ public class RequestCycleTest extends HiveMindTestCase
                 infrastructure, newStrategySource(), newBuilder());
         IEngine engine = newEngine();
 
-        replayControls();
+        replay();
 
         IRequestCycle cycle = new RequestCycle(engine, new QueryParameterMap(), "fred", env);
 
@@ -101,7 +104,7 @@ public class RequestCycleTest extends HiveMindTestCase
         assertSame(service, cycle.getService());
         assertSame(engine, cycle.getEngine());
 
-        verifyControls();
+        verify();
     }
 
     private ServiceMap newServiceMap(String serviceName, IEngineService service)
@@ -121,21 +124,21 @@ public class RequestCycleTest extends HiveMindTestCase
                 infrastructure, source, newBuilder());
         IEngine engine = newEngine();
 
-        replayControls();
+        replay();
 
         IRequestCycle cycle = new RequestCycle(engine, new QueryParameterMap(), null, env);
 
         cycle.getEngine();
 
-        verifyControls();
+        verify();
         
         source.discardAllStoredChanged("MyPage");
         
-        replayControls();
+        replay();
         
         cycle.forgetPage("MyPage");
         
-        verifyControls();
+        verify();
     }
 
     public void testSendRedirect()

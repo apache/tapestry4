@@ -14,8 +14,10 @@
 
 package org.apache.tapestry.form.translator;
 
-import org.apache.tapestry.form.FormEventType;
+import static org.easymock.EasyMock.expect;
+
 import org.apache.tapestry.form.FormComponentContributorTestCase;
+import org.apache.tapestry.form.FormEventType;
 
 /**
  * Abstract test case for {@link Translator}.
@@ -27,16 +29,12 @@ public abstract class TranslatorTestCase extends FormComponentContributorTestCas
 {
     protected void trim()
     {
-        _component.getForm();
-        _componentControl.setReturnValue(_form);
+        expect(_component.getForm()).andReturn(_form);
         
-        _form.getName();
-        _formControl.setReturnValue("formName");
+        expect(_form.getName()).andReturn("formName");
         
-        _component.getName();
-        _componentControl.setReturnValue("fieldName");
+        expect(_component.getName()).andReturn("fieldName");
         
         _form.addEventHandler(FormEventType.SUBMIT, "trim(document.formName.fieldName)");
-        _formControl.setVoidCallable();
     }
 }

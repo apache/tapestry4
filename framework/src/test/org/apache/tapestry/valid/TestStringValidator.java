@@ -14,10 +14,10 @@
 
 package org.apache.tapestry.valid;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNull;
+
 import org.apache.tapestry.form.IFormComponent;
-import org.apache.tapestry.valid.StringValidator;
-import org.apache.tapestry.valid.ValidationConstraint;
-import org.apache.tapestry.valid.ValidatorException;
 
 /**
  * Tests the {@link StringValidator}class.
@@ -34,34 +34,34 @@ public class TestStringValidator extends BaseValidatorTestCase
     {
         IFormComponent field = newField();
 
-        replayControls();
+        replay();
 
         String in = "Foo";
         String out = v.toString(field, in);
 
         assertEquals("Result.", in, out);
 
-        verifyControls();
+        verify();
     }
 
     public void testToStringNull()
     {
         IFormComponent field = newField();
 
-        replayControls();
+        replay();
 
         String out = v.toString(field, null);
 
         assertNull("Null expected.", out);
 
-        verifyControls();
+        verify();
     }
 
     public void testToObjectRequiredFail()
     {
         IFormComponent field = newField("requiredField");
 
-        replayControls();
+        replay();
 
         v.setRequired(true);
 
@@ -77,14 +77,14 @@ public class TestStringValidator extends BaseValidatorTestCase
             assertEquals(ValidationConstraint.REQUIRED, ex.getConstraint());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testOverrideRequiredMessage()
     {
         IFormComponent field = newField("overrideMessage");
 
-        replayControls();
+        replay();
 
         v.setRequired(true);
         v.setRequiredMessage("Gimme a value for {0} you bastard.");
@@ -98,14 +98,14 @@ public class TestStringValidator extends BaseValidatorTestCase
             assertEquals("Gimme a value for overrideMessage you bastard.", ex.getMessage());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testToObjectRequiredPass() throws ValidatorException
     {
         IFormComponent field = newField();
 
-        replayControls();
+        replay();
 
         v.setRequired(true);
 
@@ -113,14 +113,14 @@ public class TestStringValidator extends BaseValidatorTestCase
 
         assertEquals("Result.", "stuff", result);
 
-        verifyControls();
+        verify();
     }
 
     public void testToObjectMinimumFail()
     {
         IFormComponent field = newField("minimumLength");
 
-        replayControls();
+        replay();
 
         v.setMinimumLength(10);
 
@@ -137,14 +137,14 @@ public class TestStringValidator extends BaseValidatorTestCase
             assertEquals(ValidationConstraint.MINIMUM_WIDTH, ex.getConstraint());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testOverrideMinimumMessage()
     {
         IFormComponent field = newField("overrideMessage");
 
-        replayControls();
+        replay();
 
         v.setMinimumLength(10);
         v
@@ -166,7 +166,7 @@ public class TestStringValidator extends BaseValidatorTestCase
     {
         IFormComponent field = newField();
 
-        replayControls();
+        replay();
 
         v.setMinimumLength(10);
 
@@ -176,7 +176,7 @@ public class TestStringValidator extends BaseValidatorTestCase
 
         assertEquals("Result", in, out);
 
-        verifyControls();
+        verify();
     }
 
     /**
@@ -187,7 +187,7 @@ public class TestStringValidator extends BaseValidatorTestCase
     {
         IFormComponent field = newField();
 
-        replayControls();
+        replay();
 
         v.setMinimumLength(10);
 
@@ -197,6 +197,6 @@ public class TestStringValidator extends BaseValidatorTestCase
 
         assertNull("Result", out);
 
-        verifyControls();
+        verify();
     }
 }

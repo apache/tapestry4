@@ -14,10 +14,12 @@
 
 package org.apache.tapestry.binding;
 
+import static org.easymock.EasyMock.expect;
+
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.coerce.ValueConverter;
-import org.easymock.MockControl;
+import org.testng.annotations.Test;
 
 /**
  * Base class for building tests for {@link org.apache.tapestry.IBinding}implementations.
@@ -25,22 +27,21 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public abstract class BindingTestCase extends BaseComponentTestCase
 {
     protected IComponent newComponent(String extendedId)
     {
-        MockControl control = newControl(IComponent.class);
-        IComponent component = (IComponent) control.getMock();
+        IComponent component = newMock(IComponent.class);
 
-        component.getExtendedId();
-        control.setReturnValue(extendedId);
+        expect(component.getExtendedId()).andReturn(extendedId);
 
         return component;
     }
 
     protected ValueConverter newValueConverter()
     {
-        return (ValueConverter) newMock(ValueConverter.class);
+        return newMock(ValueConverter.class);
     }
 
 }

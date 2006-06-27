@@ -14,7 +14,10 @@
 
 package org.apache.tapestry.record;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -74,7 +77,7 @@ public class ClientPropertyPersistenceStrategyTest extends HiveMindTestCase
 
         encoding.setParameterValue("appstate:MyPage", "ENCODED");
 
-        replayControls();
+        replay();
 
         ClientPropertyPersistenceStrategy strategy = new ClientPropertyPersistenceStrategy();
         strategy.setRequest(request);
@@ -85,7 +88,7 @@ public class ClientPropertyPersistenceStrategyTest extends HiveMindTestCase
 
         strategy.addParametersForPersistentProperties(encoding, false);
 
-        verifyControls();
+        verify();
     }
 
     public void testGetChangesUnknownPage()
@@ -115,7 +118,7 @@ public class ClientPropertyPersistenceStrategyTest extends HiveMindTestCase
 
         trainDecodePageChanges(encoder, "ENCODED", changes);
 
-        replayControls();
+        replay();
 
         ClientPropertyPersistenceStrategy strategy = new ClientPropertyPersistenceStrategy();
         strategy.setRequest(request);
@@ -126,7 +129,7 @@ public class ClientPropertyPersistenceStrategyTest extends HiveMindTestCase
 
         assertSame(changes, strategy.getStoredChanges("MyPage"));
 
-        verifyControls();
+        verify();
     }
 
     public void testPageScope()
@@ -152,7 +155,7 @@ public class ClientPropertyPersistenceStrategyTest extends HiveMindTestCase
 
         encoding.setParameterValue("state:MyPage", "ENCODED1");
 
-        replayControls();
+        replay();
 
         PageClientPropertyPersistenceScope scope = new PageClientPropertyPersistenceScope();
         scope.setRequestCycle(cycle);
@@ -166,7 +169,7 @@ public class ClientPropertyPersistenceStrategyTest extends HiveMindTestCase
 
         strategy.addParametersForPersistentProperties(encoding, false);
 
-        verifyControls();
+        verify();
 
     }
 

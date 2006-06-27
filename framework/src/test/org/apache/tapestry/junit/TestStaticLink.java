@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.junit;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.link.StaticLink;
 

@@ -14,12 +14,14 @@
 
 package org.apache.tapestry.callback;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IExternalPage;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.callback.ExternalCallback}.
@@ -36,11 +38,9 @@ public class TestExternalCallback extends BaseComponentTestCase
 
     private IExternalPage newExternalPage(String pageName)
     {
-        MockControl control = newControl(IExternalPage.class);
-        IExternalPage page = (IExternalPage) control.getMock();
+        IExternalPage page = newMock(IExternalPage.class);
 
-        page.getPageName();
-        control.setReturnValue(pageName);
+        expect(page.getPageName()).andReturn(pageName);
 
         return page;
     }
@@ -57,7 +57,7 @@ public class TestExternalCallback extends BaseComponentTestCase
 
         page.activateExternalPage(parameters, cycle);
 
-        replayControls();
+        replay();
 
         ExternalCallback callback = new ExternalCallback("Fred", parameters);
 
@@ -65,7 +65,7 @@ public class TestExternalCallback extends BaseComponentTestCase
 
         callback.performCallback(cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testByNameNoParameters()
@@ -77,7 +77,7 @@ public class TestExternalCallback extends BaseComponentTestCase
 
         page.activateExternalPage(null, cycle);
 
-        replayControls();
+        replay();
 
         ExternalCallback callback = new ExternalCallback("Fred", null);
 
@@ -85,7 +85,7 @@ public class TestExternalCallback extends BaseComponentTestCase
 
         callback.performCallback(cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testByPage()
@@ -100,7 +100,7 @@ public class TestExternalCallback extends BaseComponentTestCase
 
         page.activateExternalPage(parameters, cycle);
 
-        replayControls();
+        replay();
 
         ExternalCallback callback = new ExternalCallback(page, parameters);
 
@@ -108,7 +108,7 @@ public class TestExternalCallback extends BaseComponentTestCase
 
         callback.performCallback(cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testNotExternalPage()
@@ -116,7 +116,7 @@ public class TestExternalCallback extends BaseComponentTestCase
         IPage page = newPage();
         IRequestCycle cycle = newCycleGetPage("Barney", page);
 
-        replayControls();
+        replay();
 
         ExternalCallback callback = new ExternalCallback("Barney", null);
 
@@ -131,6 +131,6 @@ public class TestExternalCallback extends BaseComponentTestCase
                     ex.getMessage());
         }
 
-        verifyControls();
+        verify();
     }
 }

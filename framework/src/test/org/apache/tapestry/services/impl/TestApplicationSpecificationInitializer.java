@@ -14,6 +14,11 @@
 
 package org.apache.tapestry.services.impl;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNotNull;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.net.URL;
 
 import javax.servlet.ServletConfig;
@@ -25,15 +30,14 @@ import org.apache.hivemind.Registry;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.impl.RegistryBuilder;
-import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.hivemind.util.ClasspathResource;
 import org.apache.hivemind.util.ContextResource;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.parse.ISpecificationParser;
 import org.apache.tapestry.services.ApplicationGlobals;
 import org.apache.tapestry.services.ApplicationInitializer;
 import org.apache.tapestry.spec.ApplicationSpecification;
 import org.apache.tapestry.spec.IApplicationSpecification;
-import org.easymock.MockControl;
 
 /**
  * Tests for the {@link org.apache.tapestry.services.impl.ApplicationSpecificationInitializer}.
@@ -41,7 +45,7 @@ import org.easymock.MockControl;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class TestApplicationSpecificationInitializer extends HiveMindTestCase
+public class TestApplicationSpecificationInitializer extends BaseComponentTestCase
 {
     public void testOnClasspath() throws Exception
     {
@@ -61,30 +65,27 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
         i.setClasspathResourceFactory(cf);
 
         HttpServlet servlet = new ServletFixture();
+        
+        ServletConfig config = newMock(ServletConfig.class);
 
-        MockControl configControl = newControl(ServletConfig.class);
-        ServletConfig config = (ServletConfig) configControl.getMock();
+        trainForServletInit(config);
 
-        trainForServletInit(configControl, config);
-
-        config.getInitParameter(ApplicationSpecificationInitializer.APP_SPEC_PATH_PARAM);
-        configControl.setReturnValue(appSpecResource.getPath());
+        expect(config.getInitParameter(ApplicationSpecificationInitializer.APP_SPEC_PATH_PARAM))
+        .andReturn(appSpecResource.getPath());
 
         IApplicationSpecification as = new ApplicationSpecification();
-
-        MockControl parserControl = newControl(ISpecificationParser.class);
-        ISpecificationParser parser = (ISpecificationParser) parserControl.getMock();
+        
+        ISpecificationParser parser = newMock(ISpecificationParser.class);
 
         i.setParser(parser);
 
-        parser.parseApplicationSpecification(appSpecResource);
-        parserControl.setReturnValue(as);
+        expect(parser.parseApplicationSpecification(appSpecResource)).andReturn(as);
 
         ApplicationGlobals ag = new ApplicationGlobalsImpl();
 
         i.setGlobals(ag);
 
-        replayControls();
+        replay();
 
         servlet.init(config);
 
@@ -95,19 +96,16 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
         assertNotNull(ag.getActivator());
         assertSame(as, ag.getSpecification());
 
-        verifyControls();
+        verify();
     }
 
-    private void trainForServletInit(MockControl configControl, ServletConfig config)
+    private void trainForServletInit(ServletConfig config)
     {
-        MockControl contextControl = newControl(ServletContext.class);
-        ServletContext context = (ServletContext) contextControl.getMock();
+        ServletContext context = newMock(ServletContext.class);
 
-        config.getServletContext();
-        configControl.setReturnValue(context);
+        expect(config.getServletContext()).andReturn(context);
 
-        config.getServletName();
-        configControl.setReturnValue("test");
+        expect(config.getServletName()).andReturn("test");
 
         context.log("test: init");
     }
@@ -117,12 +115,9 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
         DefaultClassResolver cr = new DefaultClassResolver();
 
         ApplicationSpecificationInitializer i = new ApplicationSpecificationInitializer();
-
-        MockControl contextControl = newControl(ServletContext.class);
-        ServletContext context = (ServletContext) contextControl.getMock();
-
-        MockControl logControl = newControl(Log.class);
-        Log log = (Log) logControl.getMock();
+        
+        ServletContext context = newMock(ServletContext.class);
+        Log log = newLog();
 
         i.setLog(log);
 
@@ -132,48 +127,42 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
         i.setClasspathResourceFactory(cf);
 
         HttpServlet servlet = new ServletFixture();
+        
+        ServletConfig config = newMock(ServletConfig.class);
 
-        MockControl configControl = newControl(ServletConfig.class);
-        ServletConfig config = (ServletConfig) configControl.getMock();
+        trainForServletInit(config);
 
-        trainForServletInit(configControl, config);
+        expect(config.getInitParameter(ApplicationSpecificationInitializer.APP_SPEC_PATH_PARAM))
+        .andReturn(null);
 
-        config.getInitParameter(ApplicationSpecificationInitializer.APP_SPEC_PATH_PARAM);
-        configControl.setReturnValue(null);
+        expect(config.getServletContext()).andReturn(context);
 
-        config.getServletContext();
-        configControl.setReturnValue(context);
+        expect(config.getServletName()).andReturn("fred");
 
-        config.getServletName();
-        configControl.setReturnValue("fred");
-
-        log.isDebugEnabled();
-        logControl.setReturnValue(true);
+        expect(log.isDebugEnabled()).andReturn(true);
 
         Resource r = new ContextResource(context, "/WEB-INF/fred/fred.application");
 
         log.debug("Checking for existence of " + r);
 
-        context.getResource(r.getPath());
-        contextControl.setReturnValue(new URL("file:/context" + r.getPath()));
+        expect(context.getResource(r.getPath()))
+        .andReturn(new URL("file:/context" + r.getPath()));
 
         log.debug("Found " + r);
 
         IApplicationSpecification as = new ApplicationSpecification();
-
-        MockControl parserControl = newControl(ISpecificationParser.class);
-        ISpecificationParser parser = (ISpecificationParser) parserControl.getMock();
+        
+        ISpecificationParser parser = newMock(ISpecificationParser.class);
 
         i.setParser(parser);
 
-        parser.parseApplicationSpecification(r);
-        parserControl.setReturnValue(as);
+        expect(parser.parseApplicationSpecification(r)).andReturn(as);
 
         ApplicationGlobals ag = new ApplicationGlobalsImpl();
 
         i.setGlobals(ag);
 
-        replayControls();
+        replay();
 
         servlet.init(config);
 
@@ -181,7 +170,7 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
 
         i.initialize(servlet);
 
-        verifyControls();
+        verify();
     }
 
     public void testInWebInfFolder() throws Exception
@@ -190,11 +179,8 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
 
         ApplicationSpecificationInitializer i = new ApplicationSpecificationInitializer();
 
-        MockControl contextControl = newControl(ServletContext.class);
-        ServletContext context = (ServletContext) contextControl.getMock();
-
-        MockControl logControl = newControl(Log.class);
-        Log log = (Log) logControl.getMock();
+        ServletContext context = newMock(ServletContext.class);
+        Log log = newLog();
 
         i.setLog(log);
 
@@ -205,51 +191,43 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
 
         HttpServlet servlet = new ServletFixture();
 
-        MockControl configControl = newControl(ServletConfig.class);
-        ServletConfig config = (ServletConfig) configControl.getMock();
+        ServletConfig config = newMock(ServletConfig.class);
 
-        trainForServletInit(configControl, config);
+        trainForServletInit(config);
 
-        config.getInitParameter(ApplicationSpecificationInitializer.APP_SPEC_PATH_PARAM);
-        configControl.setReturnValue(null);
+        expect(config.getInitParameter(ApplicationSpecificationInitializer.APP_SPEC_PATH_PARAM))
+        .andReturn(null);
 
-        config.getServletContext();
-        configControl.setReturnValue(context);
+        expect(config.getServletContext()).andReturn(context);
 
-        config.getServletName();
-        configControl.setReturnValue("barney");
+        expect(config.getServletName()).andReturn("barney");
 
-        log.isDebugEnabled();
-        logControl.setReturnValue(false);
+        expect(log.isDebugEnabled()).andReturn(false);
 
         Resource r = new ContextResource(context, "/WEB-INF/barney.application");
 
-        context.getResource("/WEB-INF/barney/barney.application");
-        contextControl.setReturnValue(null);
+        expect(context.getResource("/WEB-INF/barney/barney.application")).andReturn(null);
 
-        log.isDebugEnabled();
-        logControl.setReturnValue(false);
+        expect(log.isDebugEnabled()).andReturn(false);
 
-        context.getResource(r.getPath());
-        contextControl.setReturnValue(new URL("file:/context" + r.getPath()));
+        expect(context.getResource(r.getPath()))
+        .andReturn(new URL("file:/context" + r.getPath()));
 
         log.debug("Found " + r);
 
         IApplicationSpecification as = new ApplicationSpecification();
-
-        MockControl parserControl = newControl(ISpecificationParser.class);
-        ISpecificationParser parser = (ISpecificationParser) parserControl.getMock();
+        
+        ISpecificationParser parser = newMock(ISpecificationParser.class);
 
         i.setParser(parser);
 
-        parser.parseApplicationSpecification(r);
-        parserControl.setReturnValue(as);
+        expect(parser.parseApplicationSpecification(r)).andReturn(as);
 
         ApplicationGlobals ag = new ApplicationGlobalsImpl();
 
         i.setGlobals(ag);
 
-        replayControls();
+        replay();
 
         servlet.init(config);
 
@@ -257,7 +235,7 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
 
         i.initialize(servlet);
 
-        verifyControls();
+        verify();
     }
 
     public void testNoAppSpec() throws Exception
@@ -266,11 +244,8 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
 
         ApplicationSpecificationInitializer i = new ApplicationSpecificationInitializer();
 
-        MockControl contextControl = newControl(ServletContext.class);
-        ServletContext context = (ServletContext) contextControl.getMock();
-
-        MockControl logControl = newControl(Log.class);
-        Log log = (Log) logControl.getMock();
+        ServletContext context = newMock(ServletContext.class);
+        Log log = newLog();
 
         i.setLog(log);
 
@@ -281,48 +256,37 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
 
         HttpServlet servlet = new ServletFixture();
 
-        MockControl configControl = newControl(ServletConfig.class);
-        ServletConfig config = (ServletConfig) configControl.getMock();
+        ServletConfig config = newMock(ServletConfig.class);
 
-        trainForServletInit(configControl, config);
+        trainForServletInit(config);
 
-        config.getInitParameter(ApplicationSpecificationInitializer.APP_SPEC_PATH_PARAM);
-        configControl.setReturnValue(null);
+        expect(config.getInitParameter(ApplicationSpecificationInitializer.APP_SPEC_PATH_PARAM)).andReturn(null);
 
-        config.getServletContext();
-        configControl.setReturnValue(context);
+        expect(config.getServletContext()).andReturn(context);
 
-        config.getServletName();
-        configControl.setReturnValue("wilma");
+        expect(config.getServletName()).andReturn("wilma");
 
-        log.isDebugEnabled();
-        logControl.setReturnValue(false);
+        expect(log.isDebugEnabled()).andReturn(false);
 
-        context.getResource("/WEB-INF/wilma/wilma.application");
-        contextControl.setReturnValue(null);
+        expect(context.getResource("/WEB-INF/wilma/wilma.application")).andReturn(null);
 
-        log.isDebugEnabled();
-        logControl.setReturnValue(false);
+        expect(log.isDebugEnabled()).andReturn(false);
 
-        context.getResource("/WEB-INF/wilma.application");
-        contextControl.setReturnValue(null);
+        expect(context.getResource("/WEB-INF/wilma.application")).andReturn(null);
 
-        config.getServletName();
-        configControl.setReturnValue("wilma");
+        expect(config.getServletName()).andReturn("wilma");
 
         log.debug("Could not find an application specification for application servlet wilma.");
 
-        config.getServletName();
-        configControl.setReturnValue("wilma");
+        expect(config.getServletName()).andReturn("wilma");
 
-        config.getServletContext();
-        configControl.setReturnValue(context);
+        expect(config.getServletContext()).andReturn(context);
 
         ApplicationGlobals ag = new ApplicationGlobalsImpl();
 
         i.setGlobals(ag);
 
-        replayControls();
+        replay();
 
         servlet.init(config);
 
@@ -330,7 +294,7 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
 
         i.initialize(servlet);
 
-        verifyControls();
+        verify();
 
         IApplicationSpecification as = ag.getSpecification();
 
@@ -344,31 +308,25 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
      */
     public void testIntegration() throws Exception
     {
-        MockControl contextControl = newControl(ServletContext.class);
-        ServletContext context = (ServletContext) contextControl.getMock();
+        ServletContext context = newMock(ServletContext.class);
 
         HttpServlet servlet = new ServletFixture();
+        
+        ServletConfig config = newMock(ServletConfig.class);
 
-        // Create a non-strict control
-        MockControl configControl = MockControl.createControl(ServletConfig.class);
-        addControl(configControl);
-        ServletConfig config = (ServletConfig) configControl.getMock();
+        expect(config.getInitParameter(ApplicationSpecificationInitializer.APP_SPEC_PATH_PARAM))
+        .andReturn(null);
 
-        config.getInitParameter(ApplicationSpecificationInitializer.APP_SPEC_PATH_PARAM);
-        configControl.setReturnValue(null);
+        expect(config.getServletContext()).andReturn(context).times(2);
 
-        config.getServletContext();
-        configControl.setReturnValue(context, 2);
-
-        config.getServletName();
-        configControl.setReturnValue("dino", 2);
+        expect(config.getServletName()).andReturn("dino").times(2);
 
         context.log("dino: init");
 
-        context.getResource("/WEB-INF/dino/dino.application");
-        contextControl.setReturnValue(getClass().getResource("ParseApp.application"), 2);
+        expect(context.getResource("/WEB-INF/dino/dino.application"))
+        .andReturn(getClass().getResource("ParseApp.application")).times(2);
 
-        replayControls();
+        replay();
 
         servlet.init(config);
 
@@ -386,7 +344,7 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
 
         assertEquals("ParseApp", ag.getSpecification().getName());
 
-        verifyControls();
+        verify();
 
     }
 }

@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.junit.spec;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNotNull;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.spec.IApplicationSpecification;

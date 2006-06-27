@@ -844,7 +844,8 @@ public class JSONObject
         if (value == null || value.equals(null)) { return "null"; }
         if (value instanceof Number) { return numberToString((Number) value); }
         if (value instanceof Boolean || value instanceof JSONObject
-                || value instanceof JSONArray) { return value.toString(); }
+                || value instanceof JSONArray
+                || value instanceof JSONLiteral) { return value.toString(); }
         return quote(value.toString());
     }
 

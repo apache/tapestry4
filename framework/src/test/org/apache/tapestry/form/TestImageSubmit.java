@@ -15,6 +15,7 @@
 package org.apache.tapestry.form;
 
 import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
 
 import java.awt.Point;
 
@@ -58,11 +59,11 @@ public class TestImageSubmit extends BaseFormComponentTestCase
 
         trainWasPrerendered(form, writer, submit, true);
 
-        replayControls();
+        replay();
 
         submit.renderComponent(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRender()
@@ -102,11 +103,11 @@ public class TestImageSubmit extends BaseFormComponentTestCase
 
         delegate.registerForFocus(submit, ValidationConstants.NORMAL_FIELD);
 
-        replayControls();
+        replay();
 
         submit.renderComponent(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderDisabled()
@@ -144,11 +145,11 @@ public class TestImageSubmit extends BaseFormComponentTestCase
         writer.attribute("src", "disabled-image-url");
         writer.closeTag();
 
-        replayControls();
+        replay();
 
         submit.renderComponent(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderDisabledNoDisabledImage()
@@ -186,11 +187,11 @@ public class TestImageSubmit extends BaseFormComponentTestCase
         writer.attribute("src", "image-url");
         writer.closeTag();
 
-        replayControls();
+        replay();
 
         submit.renderComponent(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderWithNameOverride()
@@ -231,11 +232,11 @@ public class TestImageSubmit extends BaseFormComponentTestCase
 
         delegate.registerForFocus(submit, ValidationConstants.NORMAL_FIELD);
 
-        replayControls();
+        replay();
 
         submit.renderComponent(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRewindingDisabled()
@@ -261,11 +262,11 @@ public class TestImageSubmit extends BaseFormComponentTestCase
 
         trainIsRewinding(form, true);
 
-        replayControls();
+        replay();
 
         submit.renderComponent(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRewindNotTrigger()
@@ -292,11 +293,11 @@ public class TestImageSubmit extends BaseFormComponentTestCase
 
         trainGetParameter(cycle, "fred.x", null);
 
-        replayControls();
+        replay();
 
         submit.renderComponent(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRewindTrigger()
@@ -327,7 +328,7 @@ public class TestImageSubmit extends BaseFormComponentTestCase
 
         trainGetParameter(cycle, "fred.x", "33");
 
-        replayControls();
+        replay();
 
         submit.renderComponent(writer, cycle);
 
@@ -338,7 +339,7 @@ public class TestImageSubmit extends BaseFormComponentTestCase
         // notifying listeners (deferred or not).
         // This test "proves" that Submit.handleClick() is invoked.
 
-        verifyControls();
+        verify();
     }
 
     public void testRewindTriggeredWithPointBound()
@@ -374,13 +375,13 @@ public class TestImageSubmit extends BaseFormComponentTestCase
         trainGetParameter(cycle, "fred.x", "33");
         trainGetParameter(cycle, "fred.y", "19");
 
-        replayControls();
+        replay();
 
         submit.renderComponent(writer, cycle);
 
         assertEquals("clicked", PropertyUtils.read(submit, "selected"));
         assertEquals(new Point(33, 19), PropertyUtils.read(submit, "point"));
 
-        verifyControls();
+        verify();
     }
 }

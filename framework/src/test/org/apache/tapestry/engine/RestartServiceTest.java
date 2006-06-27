@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.engine;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -42,7 +45,7 @@ public class RestartServiceTest extends ServiceTestCase
 
         response.sendRedirect("http://myserver/app");
 
-        replayControls();
+        replay();
 
         RestartService s = new RestartService();
         s.setRequest(request);
@@ -51,13 +54,12 @@ public class RestartServiceTest extends ServiceTestCase
 
         s.service(cycle);
 
-        verifyControls();
+        verify();
     }
 
     private void trainGetSession(HttpServletRequest request, boolean create, HttpSession session)
     {
-        request.getSession(create);
-        setReturnValue(request, session);
+        expect(request.getSession(create)).andReturn(session);
     }
 
     private HttpServletResponse newServletResponse()
@@ -88,7 +90,7 @@ public class RestartServiceTest extends ServiceTestCase
 
         response.sendRedirect("http://myserver/app");
 
-        replayControls();
+        replay();
 
         RestartService s = new RestartService();
         s.setRequest(request);
@@ -97,7 +99,7 @@ public class RestartServiceTest extends ServiceTestCase
 
         s.service(cycle);
 
-        verifyControls();
+        verify();
     }
 
     private HttpSession newHttpSession()
@@ -120,7 +122,7 @@ public class RestartServiceTest extends ServiceTestCase
         trainGetSession(request, false, session);
 
         session.invalidate();
-        setThrowable(session, ex);
+        expectLastCall().andThrow(ex);
 
         log.warn("Exception thrown invalidating HttpSession.", ex);
 
@@ -128,7 +130,7 @@ public class RestartServiceTest extends ServiceTestCase
 
         response.sendRedirect("http://myserver/app");
 
-        replayControls();
+        replay();
 
         RestartService s = new RestartService();
         s.setRequest(request);
@@ -138,6 +140,6 @@ public class RestartServiceTest extends ServiceTestCase
 
         s.service(cycle);
 
-        verifyControls();
+        verify();
     }
 }

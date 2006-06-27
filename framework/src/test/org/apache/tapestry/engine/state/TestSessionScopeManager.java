@@ -15,8 +15,10 @@
 package org.apache.tapestry.engine.state;
 
 import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.SessionStoreOptimized;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebSession;
@@ -27,7 +29,7 @@ import org.apache.tapestry.web.WebSession;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestSessionScopeManager extends HiveMindTestCase
+public class TestSessionScopeManager extends BaseComponentTestCase
 {
     private WebRequest newRequest(boolean create, WebSession session)
     {
@@ -69,14 +71,14 @@ public class TestSessionScopeManager extends HiveMindTestCase
     {
         WebRequest request = newRequest(false, null);
 
-        replayControls();
+        replay();
 
         SessionScopeManager m = new SessionScopeManager();
         m.setRequest(request);
 
         assertEquals(false, m.exists("doesn't matter"));
 
-        verifyControls();
+        verify();
     }
 
     public void testExistsMissing()
@@ -84,7 +86,7 @@ public class TestSessionScopeManager extends HiveMindTestCase
         WebSession session = newSession("state:myapp:fred", null);
         WebRequest request = newRequest(false, session);
 
-        replayControls();
+        replay();
 
         SessionScopeManager m = new SessionScopeManager();
         m.setRequest(request);
@@ -92,7 +94,7 @@ public class TestSessionScopeManager extends HiveMindTestCase
 
         assertEquals(false, m.exists("fred"));
 
-        verifyControls();
+        verify();
     }
 
     public void testExists()
@@ -100,7 +102,7 @@ public class TestSessionScopeManager extends HiveMindTestCase
         WebSession session = newSession("state:testapp:fred", "XXX");
         WebRequest request = newRequest(false, session);
 
-        replayControls();
+        replay();
 
         SessionScopeManager m = new SessionScopeManager();
         m.setRequest(request);
@@ -108,7 +110,7 @@ public class TestSessionScopeManager extends HiveMindTestCase
 
         assertEquals(true, m.exists("fred"));
 
-        verifyControls();
+        verify();
     }
 
     public void testGetExists()
@@ -117,7 +119,7 @@ public class TestSessionScopeManager extends HiveMindTestCase
         WebSession session = newSession("state:testapp:fred", stateObject);
         WebRequest request = newRequest(session);
 
-        replayControls();
+        replay();
 
         SessionScopeManager m = new SessionScopeManager();
         m.setRequest(request);
@@ -125,7 +127,7 @@ public class TestSessionScopeManager extends HiveMindTestCase
 
         assertSame(stateObject, m.get("fred", null));
 
-        verifyControls();
+        verify();
     }
 
     public void testGetAndCreate()
@@ -141,7 +143,7 @@ public class TestSessionScopeManager extends HiveMindTestCase
 
         WebRequest request = newRequest(session);
 
-        replayControls();
+        replay();
 
         SessionScopeManager m = new SessionScopeManager();
         m.setRequest(request);
@@ -149,14 +151,12 @@ public class TestSessionScopeManager extends HiveMindTestCase
 
         assertSame(stateObject, m.get("fred", factory));
 
-        verifyControls();
+        verify();
     }
 
     protected void trainGetAttribute(WebSession session, String name, Object attribute)
     {
-        session.getAttribute(name);
-
-        setReturnValue(session,attribute);
+        expect(session.getAttribute(name)).andReturn(attribute);
     }
 
     public void testStore()
@@ -169,7 +169,7 @@ public class TestSessionScopeManager extends HiveMindTestCase
 
         WebRequest request = newRequest(session);
 
-        replayControls();
+        replay();
 
         SessionScopeManager m = new SessionScopeManager();
         m.setRequest(request);
@@ -177,7 +177,7 @@ public class TestSessionScopeManager extends HiveMindTestCase
 
         m.store("fred", stateObject);
 
-        verifyControls();
+        verify();
     }
 
     protected WebSession newSession()
@@ -200,11 +200,11 @@ public class TestSessionScopeManager extends HiveMindTestCase
 
         SessionScopeManager m = new SessionScopeManager();
 
-        replayControls();
+        replay();
 
         m.store("fred", stateObject);
 
-        verifyControls();
+        verify();
     }
 
     public void testStoreOptimizedDirty()
@@ -217,7 +217,7 @@ public class TestSessionScopeManager extends HiveMindTestCase
 
         WebRequest request = newRequest(session);
 
-        replayControls();
+        replay();
 
         SessionScopeManager m = new SessionScopeManager();
         m.setRequest(request);
@@ -225,6 +225,6 @@ public class TestSessionScopeManager extends HiveMindTestCase
 
         m.store("fred", stateObject);
 
-        verifyControls();
+        verify();
     }
 }

@@ -14,12 +14,16 @@
 
 package org.apache.tapestry.services.impl;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertTrue;
+
 import java.util.Locale;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.impl.DefaultClassResolver;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.engine.AbstractEngine;
 import org.apache.tapestry.engine.BaseEngine;
@@ -31,11 +35,11 @@ import org.apache.tapestry.spec.IApplicationSpecification;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class EngineFactoryTest extends HiveMindTestCase
+public class EngineFactoryTest extends BaseComponentTestCase
 {
     public void testUseDefault()
     {
-        IApplicationSpecification spec = newSpec();
+        IApplicationSpecification spec = newAppSpec();
 
         // Training
 
@@ -47,7 +51,7 @@ public class EngineFactoryTest extends HiveMindTestCase
         f.setClassResolver(new DefaultClassResolver());
         f.setDefaultEngineClassName(BaseEngine.class.getName());
 
-        replayControls();
+        replay();
 
         f.initializeService();
 
@@ -56,23 +60,22 @@ public class EngineFactoryTest extends HiveMindTestCase
         assertTrue(result instanceof BaseEngine);
         assertEquals(Locale.CANADA_FRENCH, result.getLocale());
 
-        verifyControls();
+        verify();
     }
 
     private void trainGetEngineClassName(IApplicationSpecification spec, String engineClassName)
     {
-        spec.getEngineClassName();
-        setReturnValue(spec, engineClassName);
+        expect(spec.getEngineClassName()).andReturn(engineClassName);
     }
 
-    private IApplicationSpecification newSpec()
+    private IApplicationSpecification newAppSpec()
     {
         return (IApplicationSpecification) newMock(IApplicationSpecification.class);
     }
 
     public void testDefinedInSpec()
     {
-        IApplicationSpecification spec = newSpec();
+        IApplicationSpecification spec = newAppSpec();
 
         trainGetEngineClassName(spec, EngineFixture.class.getName());
 
@@ -81,7 +84,7 @@ public class EngineFactoryTest extends HiveMindTestCase
         f.setApplicationSpecification(spec);
         f.setClassResolver(new DefaultClassResolver());
 
-        replayControls();
+        replay();
 
         f.initializeService();
 
@@ -90,12 +93,12 @@ public class EngineFactoryTest extends HiveMindTestCase
         assertTrue(result instanceof EngineFixture);
         assertEquals(Locale.CHINESE, result.getLocale());
 
-        verifyControls();
+        verify();
     }
 
     public void testUnableToInstantiate()
     {
-        IApplicationSpecification spec = newSpec();
+        IApplicationSpecification spec = newAppSpec();
 
         // Training
 
@@ -106,7 +109,7 @@ public class EngineFactoryTest extends HiveMindTestCase
         f.setApplicationSpecification(spec);
         f.setClassResolver(new DefaultClassResolver());
 
-        replayControls();
+        replay();
 
         f.initializeService();
 
@@ -122,12 +125,12 @@ public class EngineFactoryTest extends HiveMindTestCase
                     "Unable to instantiate engine as instance of class org.apache.tapestry.engine.AbstractEngine");
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testInvalidClass()
     {
-        IApplicationSpecification spec = newSpec();
+        IApplicationSpecification spec = newAppSpec();
 
         trainGetEngineClassName(spec, "foo.XyzzYx");
 
@@ -142,7 +145,7 @@ public class EngineFactoryTest extends HiveMindTestCase
         f.setErrorLog(log);
         f.setDefaultEngineClassName(BaseEngine.class.getName());
 
-        replayControls();
+        replay();
 
         f.initializeService();
 
@@ -150,6 +153,6 @@ public class EngineFactoryTest extends HiveMindTestCase
 
         assertTrue(result instanceof BaseEngine);
 
-        verifyControls();
+        verify();
     }
 }

@@ -14,6 +14,11 @@
 
 package org.apache.tapestry.form.translator;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+import static org.testng.AssertJUnit.assertTrue;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.lib.BeanFactory;
@@ -21,7 +26,6 @@ import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.binding.BindingTestCase;
 import org.apache.tapestry.coerce.ValueConverter;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.form.translator.TranslatorBinding} and
@@ -37,16 +41,14 @@ public class TestTranslatorBinding extends BindingTestCase
         Location l = newLocation();
         ValueConverter vc = newValueConverter();
         IComponent component = newComponent();
+        
+        BeanFactory bf = newMock(BeanFactory.class);
 
-        MockControl bfc = newControl(BeanFactory.class);
-        BeanFactory bf = (BeanFactory) bfc.getMock();
+        Translator translator =newMock(Translator.class);
 
-        Translator translator = (Translator) newMock(Translator.class);
+        expect(bf.get("string")).andReturn(translator);
 
-        bf.get("string");
-        bfc.setReturnValue(translator);
-
-        replayControls();
+        replay();
 
         TranslatorBindingFactory f = new TranslatorBindingFactory();
         f.setValueConverter(vc);
@@ -59,7 +61,7 @@ public class TestTranslatorBinding extends BindingTestCase
         assertTrue(binding.isInvariant());
         assertEquals("description", binding.getDescription());
 
-        verifyControls();
+        verify();
     }
 
     public void testFailure()
@@ -67,15 +69,13 @@ public class TestTranslatorBinding extends BindingTestCase
         Location l = newLocation();
         IComponent component = newComponent();
 
-        MockControl bfc = newControl(BeanFactory.class);
-        BeanFactory bf = (BeanFactory) bfc.getMock();
+        BeanFactory bf = newMock(BeanFactory.class);
 
         Throwable t = new RuntimeException("Boom!");
 
-        bf.get("string");
-        bfc.setThrowable(t);
+        expect(bf.get("string")).andThrow(t);
 
-        replayControls();
+        replay();
 
         TranslatorBindingFactory f = new TranslatorBindingFactory();
         f.setTranslatorBeanFactory(bf);
@@ -92,7 +92,7 @@ public class TestTranslatorBinding extends BindingTestCase
             assertSame(l, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
 
     }
 }

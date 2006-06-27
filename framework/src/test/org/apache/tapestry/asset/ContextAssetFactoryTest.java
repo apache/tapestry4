@@ -14,23 +14,30 @@
 
 package org.apache.tapestry.asset;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+import static org.testng.AssertJUnit.assertTrue;
+
 import java.net.URL;
 import java.util.Locale;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.l10n.DefaultResourceLocalizer;
 import org.apache.tapestry.web.WebContext;
+import org.testng.annotations.Test;
 
-public class ContextAssetFactoryTest extends HiveMindTestCase
+@Test
+public class ContextAssetFactoryTest extends BaseComponentTestCase
 {
     protected Resource newResource()
     {
-        return (Resource) newMock(Resource.class);
+        return newMock(Resource.class);
     }
 
     protected URL newURL()
@@ -50,7 +57,7 @@ public class ContextAssetFactoryTest extends HiveMindTestCase
         trainGetResourceURL(relative, url);
         trainGetLocalization(relative, Locale.FRENCH, localized);
 
-        replayControls();
+        replay();
 
         ContextAssetFactory factory = new ContextAssetFactory();
         factory.setLocalizer(new DefaultResourceLocalizer());
@@ -63,7 +70,7 @@ public class ContextAssetFactoryTest extends HiveMindTestCase
         assertSame(localized, asset.getResourceLocation());
         assertSame(l, asset.getLocation());
 
-        verifyControls();
+        verify();
     }
 
     public void testCreateAssetMissing()
@@ -75,7 +82,7 @@ public class ContextAssetFactoryTest extends HiveMindTestCase
         trainGetResourceURL(relative, null);
         trainGetLocalization(relative, Locale.FRENCH, null);
 
-        replayControls();
+        replay();
 
         ContextAssetFactory factory = new ContextAssetFactory();
         factory.setLocalizer(new DefaultResourceLocalizer());
@@ -94,7 +101,7 @@ public class ContextAssetFactoryTest extends HiveMindTestCase
             assertSame(l, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testCreateAssetForClasspath()
@@ -102,16 +109,16 @@ public class ContextAssetFactoryTest extends HiveMindTestCase
         Resource base = newResource();
         Resource relative = newResource();
         Location l = newLocation();
-        AssetFactory classpathFactory = (AssetFactory) newMock(AssetFactory.class);
-        IAsset asset = (IAsset) newMock(IAsset.class);
+        AssetFactory classpathFactory = newMock(AssetFactory.class);
+        IAsset asset = newMock(IAsset.class);
 
         trainGetRelativeResource(base, "/asset.png", relative);
         trainGetResourceURL(relative, null);
 
-        classpathFactory.createAbsoluteAsset("/asset.png", Locale.FRENCH, l);
-        setReturnValue(classpathFactory, asset);
+        expect(classpathFactory.createAbsoluteAsset("/asset.png", Locale.FRENCH, l))
+        .andReturn(asset);
 
-        replayControls();
+        replay();
 
         ContextAssetFactory factory = new ContextAssetFactory();
 
@@ -120,18 +127,18 @@ public class ContextAssetFactoryTest extends HiveMindTestCase
 
         assertSame(asset, factory.createAsset(base, "/asset.png", Locale.FRENCH, l));
 
-        verifyControls();
+        verify();
     }
 
     public void testCreateAbsoluteAsset()
     {
         Location l = newLocation();
         URL url = newURL();
-        WebContext context = (WebContext) newMock(WebContext.class);
+        WebContext context = newMock(WebContext.class);
 
         trainGetResource(context, "/asset_fr.png", url);
 
-        replayControls();
+        replay();
 
         ContextAssetFactory factory = new ContextAssetFactory();
         factory.setLocalizer(new DefaultResourceLocalizer());
@@ -144,18 +151,18 @@ public class ContextAssetFactoryTest extends HiveMindTestCase
         assertEquals("/asset_fr.png", asset.getResourceLocation().getPath());
         assertSame(l, asset.getLocation());
 
-        verifyControls();
+        verify();
     }
 
     public void testCreateAbsoluteAssetMissing()
     {
         Location l = newLocation();
-        WebContext context = (WebContext) newMock(WebContext.class);
+        WebContext context = newMock(WebContext.class);
 
         trainGetResource(context, "/asset_fr.png", null);
         trainGetResource(context, "/asset.png", null);
 
-        replayControls();
+        replay();
 
         ContextAssetFactory factory = new ContextAssetFactory();
         factory.setLocalizer(new DefaultResourceLocalizer());
@@ -172,21 +179,21 @@ public class ContextAssetFactoryTest extends HiveMindTestCase
             assertEquals("Missing context resource '/asset.png'.", ex.getMessage());
             assertSame(l, ex.getLocation());
         }
-        verifyControls();
+        verify();
     }
     
     public void testCreateAssetEncodeURL()
     {
         Location l = newLocation();
         URL url = newURL();
-        WebContext context = (WebContext) newMock(WebContext.class);
-        IRequestCycle rc = (IRequestCycle) newMock(IRequestCycle.class);
+        WebContext context = newMock(WebContext.class);
+        IRequestCycle rc = newMock(IRequestCycle.class);
 
         trainGetResource(context, "/asset_fr.png", url);
 
         trainEncodeURL(rc, "/context/asset_fr.png", "/context/asset_fr.png?encoded");
         
-        replayControls();
+        replay();
 
         ContextAssetFactory factory = new ContextAssetFactory();
         factory.setLocalizer(new DefaultResourceLocalizer());
@@ -198,36 +205,31 @@ public class ContextAssetFactoryTest extends HiveMindTestCase
 
         assertTrue(assetUrl.endsWith("?encoded"));
 
-        verifyControls();
+        verify();
     }
 
     private void trainGetLocalization(Resource resource, Locale locale, Resource localized)
     {
-        resource.getLocalization(locale);
-        setReturnValue(resource, localized);
+        expect(resource.getLocalization(locale)).andReturn(localized);
     }
 
     protected void trainGetResourceURL(Resource resource, URL url)
     {
-        resource.getResourceURL();
-        setReturnValue(resource, url);
+        expect(resource.getResourceURL()).andReturn(url);
     }
 
     protected void trainGetResource(WebContext context, String path, URL url)
     {
-        context.getResource(path);
-        setReturnValue(context, url);
+        expect(context.getResource(path)).andReturn(url);
     }
 
     protected void trainGetRelativeResource(Resource base, String path, Resource relative)
     {
-        base.getRelativeResource(path);
-        setReturnValue(base, relative);
+        expect(base.getRelativeResource(path)).andReturn(relative);
     }
 
     protected void trainEncodeURL(IRequestCycle rc, String URL, String encodedURL)
     {
-        rc.encodeURL(URL);
-        setReturnValue(rc, encodedURL);
+        expect(rc.encodeURL(URL)).andReturn(encodedURL);
     }
 }

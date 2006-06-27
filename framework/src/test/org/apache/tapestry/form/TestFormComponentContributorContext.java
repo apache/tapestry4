@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.form;
 
+import static org.easymock.EasyMock.expect;
+
 import java.util.Locale;
 
 import org.apache.hivemind.ClassResolver;
@@ -25,7 +27,6 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.services.Infrastructure;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.form.FormComponentContributorContextImpl}.
@@ -37,22 +38,18 @@ public class TestFormComponentContributorContext extends BaseComponentTestCase
 {
     private IForm newForm(String name)
     {
-        MockControl control = newControl(IForm.class);
-        IForm form = (IForm) control.getMock();
+        IForm form = newMock(IForm.class);
 
-        form.getName();
-        control.setReturnValue(name);
+        expect(form.getName()).andReturn(name);
 
         return form;
     }
 
     private IFormComponent newField(IForm form)
     {
-        MockControl control = newControl(IFormComponent.class);
-        IFormComponent field = (IFormComponent) control.getMock();
+        IFormComponent field = newMock(IFormComponent.class);
 
-        field.getForm();
-        control.setReturnValue(form);
+        expect(field.getForm()).andReturn(form);
 
         return field;
     }
@@ -64,11 +61,9 @@ public class TestFormComponentContributorContext extends BaseComponentTestCase
 
     private Infrastructure newInfrastructure(ClassResolver resolver)
     {
-        MockControl control = newControl(Infrastructure.class);
-        Infrastructure inf = (Infrastructure) control.getMock();
+        Infrastructure inf = newMock(Infrastructure.class);
 
-        inf.getClassResolver();
-        control.setReturnValue(resolver);
+        expect(inf.getClassResolver()).andReturn(resolver);
 
         return inf;
     }
@@ -79,13 +74,11 @@ public class TestFormComponentContributorContext extends BaseComponentTestCase
         IFormComponent field = newField(form);
         ClassResolver resolver = newResolver();
 
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IRequestCycle cycle = newCycle();
 
         Infrastructure inf = newInfrastructure(resolver);
 
-        cycle.getInfrastructure();
-        cyclec.setReturnValue(inf);
+        expect(cycle.getInfrastructure()).andReturn(inf);
 
         PageRenderSupport prs = newSupport();
 
@@ -95,14 +88,14 @@ public class TestFormComponentContributorContext extends BaseComponentTestCase
 
         trainGetAttribute(cycle, TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE, prs);
 
-        replayControls();
+        replay();
 
         FormComponentContributorContext context = new FormComponentContributorContextImpl(
                 Locale.ENGLISH, cycle, field);
 
         context.includeClasspathScript("/foo.js");
 
-        verifyControls();
+        verify();
     }
 
     public void testAddSubmitHandler()
@@ -111,14 +104,11 @@ public class TestFormComponentContributorContext extends BaseComponentTestCase
         IForm form = newForm("myform");
         IFormComponent field = newField(form);
         ClassResolver resolver = newResolver();
-
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-
+        
+        IRequestCycle cycle = newCycle();
         Infrastructure inf = newInfrastructure(resolver);
 
-        cycle.getInfrastructure();
-        cyclec.setReturnValue(inf);
+        expect(cycle.getInfrastructure()).andReturn(inf);
 
         PageRenderSupport prs = newSupport();
 
@@ -126,14 +116,14 @@ public class TestFormComponentContributorContext extends BaseComponentTestCase
 
         trainGetAttribute(cycle, TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE, prs);
 
-        replayControls();
+        replay();
 
         FormComponentContributorContext context = new FormComponentContributorContextImpl(
                 Locale.ENGLISH, cycle, field);
 
         context.addSubmitHandler("foo");
 
-        verifyControls();
+        verify();
     }
 
     private PageRenderSupport newSupport()

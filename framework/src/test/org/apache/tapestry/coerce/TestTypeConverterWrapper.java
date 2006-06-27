@@ -14,10 +14,13 @@
 
 package org.apache.tapestry.coerce;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertNull;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.Collections;
 
-import org.apache.hivemind.test.HiveMindTestCase;
-import org.easymock.MockControl;
+import org.apache.tapestry.BaseComponentTestCase;
 
 /**
  * Tests for {@link org.apache.tapestry.coerce.TypeConverterWrapper}.
@@ -25,19 +28,17 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestTypeConverterWrapper extends HiveMindTestCase
+public class TestTypeConverterWrapper extends BaseComponentTestCase
 {
     public void testNonNull()
     {
-        MockControl tcc = newControl(TypeConverter.class);
-        TypeConverter tc = (TypeConverter) tcc.getMock();
+        TypeConverter tc = newMock(TypeConverter.class);
 
         Object expected = "BARNEY";
 
-        tc.convertValue("FRED");
-        tcc.setReturnValue(expected);
+        expect(tc.convertValue("FRED")).andReturn(expected);
 
-        replayControls();
+        replay();
 
         TypeConverterContribution contrib = new TypeConverterContribution();
         contrib.setSubjectClass(Object.class);
@@ -53,20 +54,18 @@ public class TestTypeConverterWrapper extends HiveMindTestCase
 
         assertSame(expected, actual);
 
-        verifyControls();
+        verify();
     }
 
     public void testNull()
     {
-        MockControl tcc = newControl(TypeConverter.class);
-        TypeConverter tc = (TypeConverter) tcc.getMock();
+        TypeConverter tc = newMock(TypeConverter.class);
 
         Object expected = "NULL";
 
-        tc.convertValue(null);
-        tcc.setReturnValue(expected);
+        expect(tc.convertValue(null)).andReturn(expected);
 
-        replayControls();
+        replay();
 
         TypeConverterWrapper w = new TypeConverterWrapper();
 
@@ -76,7 +75,7 @@ public class TestTypeConverterWrapper extends HiveMindTestCase
 
         assertSame(expected, actual);
 
-        verifyControls();
+        verify();
     }
 
     public void testNullWithNoNullConverter()

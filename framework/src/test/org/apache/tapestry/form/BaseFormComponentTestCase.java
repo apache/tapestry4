@@ -14,7 +14,8 @@
 
 package org.apache.tapestry.form;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
 
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IActionListener;

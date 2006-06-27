@@ -14,19 +14,20 @@
 
 package org.apache.tapestry.engine;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
-import org.apache.hivemind.test.AggregateArgumentsMatcher;
-import org.apache.hivemind.test.ArgumentMatcher;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IDirectEvent;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IgnoreMatcher;
 import org.apache.tapestry.StaleSessionException;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.services.LinkFactory;
@@ -79,11 +80,11 @@ public class DirectEventServiceTest extends ServiceTestCase
 
         trainConstructLink(lf, ds, false, parameters, true, link);
 
-        replayControls();
+        replay();
 
         assertSame(link, ds.getLink(false, new DirectEventServiceParameter(c, serviceParameters)));
 
-        verifyControls();
+        verify();
     }
 
     public void testGetLinkOnSamePageForPost()
@@ -117,11 +118,11 @@ public class DirectEventServiceTest extends ServiceTestCase
 
         trainConstructLink(lf, ds, true, parameters, true, link);
 
-        replayControls();
+        replay();
 
         assertSame(link, ds.getLink(true, new DirectEventServiceParameter(c, serviceParameters)));
 
-        verifyControls();
+        verify();
     }
 
     public void testGetLinkOnSamePageStateful()
@@ -155,11 +156,11 @@ public class DirectEventServiceTest extends ServiceTestCase
 
         trainConstructLink(lf, ds, false, parameters, true, link);
 
-        replayControls();
+        replay();
 
         assertSame(link, ds.getLink(false, new DirectEventServiceParameter(c, serviceParameters)));
 
-        verifyControls();
+        verify();
     }
 
     public void testGetLinkOnDifferentPage()
@@ -193,11 +194,11 @@ public class DirectEventServiceTest extends ServiceTestCase
 
         trainConstructLink(lf, ds, false, parameters, true, link);
 
-        replayControls();
+        replay();
 
         assertSame(link, ds.getLink(false, new DirectEventServiceParameter(c, serviceParameters)));
 
-        verifyControls();
+        verify();
     }
 
     public void testServiceSimple() throws Exception
@@ -223,20 +224,13 @@ public class DirectEventServiceTest extends ServiceTestCase
 
         trainExtractBrowserEvent(cycle);
         
-        cycle.setListenerParameters(parameters);
+        cycle.setListenerParameters(isA(Object[].class));
         
-        ArgumentMatcher ignore = new IgnoreMatcher();
-        getControl(cycle).setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-        {ignore }));
-        
-        d.triggerEvent(cycle, new BrowserEvent(null, null));
-        
-        getControl(d).setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-        { null, ignore }));
+        d.triggerEvent(cycle, isA(BrowserEvent.class));
         
         rr.renderResponse(cycle);
         
-        replayControls();
+        replay();
 
         DirectEventService ds = new DirectEventService();
         ds.setLinkFactory(lf);
@@ -244,7 +238,7 @@ public class DirectEventServiceTest extends ServiceTestCase
 
         ds.service(cycle);
 
-        verifyControls();
+        verify();
     }
 
     /**
@@ -278,20 +272,13 @@ public class DirectEventServiceTest extends ServiceTestCase
 
         trainExtractBrowserEvent(cycle);
         
-        cycle.setListenerParameters(parameters);
+        cycle.setListenerParameters(isA(Object[].class));
         
-        ArgumentMatcher ignore = new IgnoreMatcher();
-        getControl(cycle).setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-        {ignore }));
-        
-        d.triggerEvent(cycle, new BrowserEvent(null, null));
-        
-        getControl(d).setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-        { null, ignore }));
+        d.triggerEvent(cycle, isA(BrowserEvent.class));
 
         rr.renderResponse(cycle);
 
-        replayControls();
+        replay();
 
         DirectEventService ds = new DirectEventService();
         ds.setLinkFactory(lf);
@@ -299,7 +286,7 @@ public class DirectEventServiceTest extends ServiceTestCase
 
         ds.service(cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testServiceNotDirect() throws Exception
@@ -322,7 +309,7 @@ public class DirectEventServiceTest extends ServiceTestCase
         trainGetExtendedId(c, "ActivePage/fred.barney");
         trainGetLocation(c, l);
 
-        replayControls();
+        replay();
 
         DirectEventService ds = new DirectEventService();
 
@@ -340,7 +327,7 @@ public class DirectEventServiceTest extends ServiceTestCase
             assertSame(l, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testSessionActiveAndRequired() throws Exception
@@ -370,20 +357,13 @@ public class DirectEventServiceTest extends ServiceTestCase
 
         trainExtractBrowserEvent(cycle);
         
-        cycle.setListenerParameters(parameters);
+        cycle.setListenerParameters(isA(Object[].class));
         
-        ArgumentMatcher ignore = new IgnoreMatcher();
-        getControl(cycle).setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-        {ignore }));
-        
-        d.triggerEvent(cycle, new BrowserEvent(null, null));
-        
-        getControl(d).setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-        { null, ignore }));
+        d.triggerEvent(cycle, isA(BrowserEvent.class));
 
         rr.renderResponse(cycle);
 
-        replayControls();
+        replay();
 
         DirectEventService ds = new DirectEventService();
         ds.setLinkFactory(lf);
@@ -392,7 +372,7 @@ public class DirectEventServiceTest extends ServiceTestCase
 
         ds.service(cycle);
 
-        verifyControls();
+        verify();
     }
     
     public void testStaleSession() throws Exception
@@ -419,7 +399,7 @@ public class DirectEventServiceTest extends ServiceTestCase
         trainGetLocation(page, l);
         trainGetPageName(page, "ActivePage");
 
-        replayControls();
+        replay();
 
         DirectEventService ds = new DirectEventService();
         ds.setRequest(request);
@@ -440,7 +420,7 @@ public class DirectEventServiceTest extends ServiceTestCase
             assertSame(page, ex.getPage());
         }
 
-        verifyControls();
+        verify();
     }
     
     public void testNoBrowserEvent() throws Exception
@@ -464,10 +444,9 @@ public class DirectEventServiceTest extends ServiceTestCase
 
         trainExtractListenerParameters(lf, cycle, parameters);
 
-        cycle.getParameter(BrowserEvent.NAME);
-        setReturnValue(cycle, null);
+        expect(cycle.getParameter(BrowserEvent.NAME)).andReturn(null);
         
-        replayControls();
+        replay();
         
         DirectEventService ds = new DirectEventService();
         ds.setLinkFactory(lf);
@@ -480,7 +459,7 @@ public class DirectEventServiceTest extends ServiceTestCase
             assertExceptionSubstring(e, "no browser event was found");
         }
         
-        verifyControls();
+        verify();
     }
     
     protected void trainIsStateful(IDirectEvent direct, boolean isStateful)

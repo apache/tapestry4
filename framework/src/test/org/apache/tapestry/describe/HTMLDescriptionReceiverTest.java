@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.describe;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -92,7 +95,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         IMarkupWriter writer = newWriter();
         DescribableStrategy adapter = newStrategy();
 
-        replayControls();
+        replay();
 
         DescriptionReceiver dr = new HTMLDescriptionReceiver(writer, adapter);
 
@@ -109,7 +112,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
             assertEquals(DescribeMessages.setTitleOnce(), ex.getMessage());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testSetSectionBeforeTitleFails()
@@ -117,7 +120,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         IMarkupWriter writer = newWriter();
         DescribableStrategy adapter = newStrategy();
 
-        replayControls();
+        replay();
 
         DescriptionReceiver dr = new HTMLDescriptionReceiver(writer, adapter);
 
@@ -131,7 +134,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
             assertEquals(DescribeMessages.mustSetTitleBeforeSection(), ex.getMessage());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testIntProperty()
@@ -143,7 +146,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         trainForSection(writer, "Section");
         trainForKeyValue(writer, "intProperty", "97", true);
 
-        replayControls();
+        replay();
 
         DescriptionReceiver dr = new HTMLDescriptionReceiver(writer, adapter);
 
@@ -151,7 +154,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         dr.section("Section");
         dr.property("intProperty", 97);
 
-        verifyControls();
+        verify();
     }
 
     public void testPropertiesWithoutSection()
@@ -163,7 +166,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         trainForKeyValue(writer, "first", "1", true);
         trainForKeyValue(writer, "second", "2", false);
 
-        replayControls();
+        replay();
 
         DescriptionReceiver dr = new HTMLDescriptionReceiver(writer, adapter);
 
@@ -171,19 +174,19 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         dr.property("first", 1);
         dr.property("second", 2);
 
-        verifyControls();
+        verify();
 
         trainForSection(writer, "Section 1");
         trainForKeyValue(writer, "s1", "1", true);
         trainForKeyValue(writer, "s2", "2", false);
 
-        replayControls();
+        replay();
 
         dr.section("Section 1");
         dr.property("s1", 1);
         dr.property("s2", 2);
 
-        verifyControls();
+        verify();
     }
 
     public void testFinishWithProperties()
@@ -194,23 +197,23 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         trainForTitle(writer, "Object Title");
         trainForKeyValue(writer, "first", "1", true);
 
-        replayControls();
+        replay();
 
         HTMLDescriptionReceiver dr = new HTMLDescriptionReceiver(writer, adapter);
 
         dr.title("Object Title");
         dr.property("first", 1);
 
-        verifyControls();
+        verify();
 
         writer.end("table");
         writer.println();
 
-        replayControls();
+        replay();
 
         dr.finishUp(null);
 
-        verifyControls();
+        verify();
     }
 
     public void testFinishNoPropertiesNoTitle()
@@ -223,13 +226,13 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         writer.print("Fred");
         writer.println();
 
-        replayControls();
+        replay();
 
         HTMLDescriptionReceiver dr = new HTMLDescriptionReceiver(writer, adapter);
 
         dr.finishUp(object);
 
-        verifyControls();
+        verify();
     }
 
     public void testFinishNoPropertiesWithTitle()
@@ -242,7 +245,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         writer.print("Fred Title");
         writer.println();
 
-        replayControls();
+        replay();
 
         HTMLDescriptionReceiver dr = new HTMLDescriptionReceiver(writer, adapter);
 
@@ -250,7 +253,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
 
         dr.finishUp(object);
 
-        verifyControls();
+        verify();
     }
 
     public void testArray()
@@ -265,14 +268,14 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         trainForNestedKeyValue(writer, "list", "Fred", true);
         trainForNestedKeyValue(writer, null, "Barney", false);
 
-        replayControls();
+        replay();
 
         HTMLDescriptionReceiver dr = new HTMLDescriptionReceiver(writer, adapter);
 
         dr.title("Array");
         dr.array("list", array);
 
-        verifyControls();
+        verify();
     }
 
     public void testCollection()
@@ -288,14 +291,14 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         trainForNestedKeyValue(writer, "list", "Fred", true);
         trainForNestedKeyValue(writer, null, "Barney", false);
 
-        replayControls();
+        replay();
 
         HTMLDescriptionReceiver dr = new HTMLDescriptionReceiver(writer, adapter);
 
         dr.title("Collection");
         dr.collection("list", collection);
 
-        verifyControls();
+        verify();
     }
 
     public void testArrayNullAndEmpty()
@@ -303,7 +306,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         IMarkupWriter writer = newWriter();
         DescribableStrategy strategy = newStrategy();
 
-        replayControls();
+        replay();
 
         HTMLDescriptionReceiver dr = new HTMLDescriptionReceiver(writer, strategy);
 
@@ -311,7 +314,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         dr.array("null", null);
         dr.array("empty", new Object[0]);
 
-        verifyControls();
+        verify();
     }
 
     public void testCollectionNullAndEmpty()
@@ -319,7 +322,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         IMarkupWriter writer = newWriter();
         DescribableStrategy strategy = newStrategy();
 
-        replayControls();
+        replay();
 
         HTMLDescriptionReceiver dr = new HTMLDescriptionReceiver(writer, strategy);
 
@@ -327,7 +330,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         dr.collection("null", null);
         dr.collection("empty", Collections.EMPTY_LIST);
 
-        verifyControls();
+        verify();
     }
 
     public void testScalarProperties()
@@ -345,7 +348,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         trainForKeyValue(writer, "float", "3.14", true);
         trainForKeyValue(writer, "double", "-2.7", false);
 
-        replayControls();
+        replay();
 
         HTMLDescriptionReceiver dr = new HTMLDescriptionReceiver(writer, strategy);
 
@@ -359,7 +362,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         dr.property("float", (float) 3.14);
         dr.property("double", -2.7);
 
-        verifyControls();
+        verify();
     }
 
     public void testNullRoot()
@@ -369,13 +372,13 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
 
         writer.print(HTMLDescriptionReceiver.NULL_VALUE);
 
-        replayControls();
+        replay();
 
         RootDescriptionReciever dr = new HTMLDescriptionReceiver(writer, strategy);
 
         dr.describe(null);
 
-        verifyControls();
+        verify();
     }
 
     public void testNullProperty()
@@ -386,14 +389,14 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         trainForTitle(writer, "Null Property");
         trainForKeyValue(writer, "null", HTMLDescriptionReceiver.NULL_VALUE, true);
 
-        replayControls();
+        replay();
 
         HTMLDescriptionReceiver dr = new HTMLDescriptionReceiver(writer, strategy);
 
         dr.title("Null Property");
         dr.property("null", null);
 
-        verifyControls();
+        verify();
 
     }
 
@@ -411,22 +414,20 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         writer.print("Tapestry");
         writer.println();
 
-        replayControls();
+        replay();
 
         HTMLDescriberImpl d = new HTMLDescriberImpl();
         d.setReceiverFactory(factory);
 
         d.describeObject(object, writer);
 
-        verifyControls();
+        verify();
     }
 
     protected void trainGetReciever(RootDescriptionReceiverFactory factory, IMarkupWriter writer,
             RootDescriptionReciever receiver)
     {
-        factory.newRootDescriptionReceiver(writer);
-        setReturnValue(factory, receiver);
-
+        expect(factory.newRootDescriptionReceiver(writer)).andReturn(receiver);
     }
 
     protected RootDescriptionReceiverFactory newReceiverFactory()
@@ -445,10 +446,10 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
 
         strategy.describeObject(alternate, dr);
 
-        replayControls();
+        replay();
 
         dr.describeAlternate(alternate);
 
-        verifyControls();
+        verify();
     }
 }

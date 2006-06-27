@@ -14,15 +14,19 @@
 
 package org.apache.tapestry.listener;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+import static org.testng.AssertJUnit.assertTrue;
+
 import java.lang.reflect.Method;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.event.BrowserEvent;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.listener.ListenerMapSourceImpl}&nbsp;and
@@ -31,16 +35,14 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestListenerMapSource extends HiveMindTestCase
+public class TestListenerMapSource extends BaseComponentTestCase
 {
 
-    private IRequestCycle newCycle(Object[] listenerParameters)
+    private IRequestCycle newLCycle(Object[] listenerParameters)
     {
-        MockControl control = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) control.getMock();
+        IRequestCycle cycle = newCycle();
 
-        cycle.getListenerParameters();
-        control.setReturnValue(listenerParameters);
+        expect(cycle.getListenerParameters()).andReturn(listenerParameters);
 
         return cycle;
     }
@@ -80,12 +82,12 @@ public class TestListenerMapSource extends HiveMindTestCase
 
     public void testFoundWithParameters()
     {
-        IRequestCycle cycle = newCycle(new Object[] { "Hello", new Integer(7) });
+        IRequestCycle cycle = newLCycle(new Object[] { "Hello", new Integer(7) });
         ListenerMethodHolder holder = newHolder();
 
         holder.fred("Hello", 7);
 
-        replayControls();
+        replay();
 
         ListenerMapSource source = new ListenerMapSourceImpl();
 
@@ -93,17 +95,17 @@ public class TestListenerMapSource extends HiveMindTestCase
 
         map.getListener("fred").actionTriggered(null, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testFoundWithCycleAndParameters()
     {
-        IRequestCycle cycle = newCycle(new Object[] { new Integer(7) });
+        IRequestCycle cycle = newLCycle(new Object[] { new Integer(7) });
         ListenerMethodHolder holder = newHolder();
 
         holder.wilma(cycle, 7);
 
-        replayControls();
+        replay();
 
         ListenerMapSource source = new ListenerMapSourceImpl();
 
@@ -111,18 +113,18 @@ public class TestListenerMapSource extends HiveMindTestCase
 
         map.getListener("wilma").actionTriggered(null, cycle);
 
-        verifyControls();
+        verify();
     }
     
     public void testFoundWithAllParameters()
     {
         BrowserEvent event = new BrowserEvent("onClick", null);
-        IRequestCycle cycle = newCycle(new Object[] { event, new Integer(8) });
+        IRequestCycle cycle = newLCycle(new Object[] { event, new Integer(8) });
         ListenerMethodHolder holder = newHolder();
         
         holder.bangbangClicked(cycle, event, 8);
         
-        replayControls();
+        replay();
 
         ListenerMapSource source = new ListenerMapSourceImpl();
 
@@ -130,7 +132,7 @@ public class TestListenerMapSource extends HiveMindTestCase
 
         map.getListener("bangbangClicked").actionTriggered(null, cycle);
 
-        verifyControls();
+        verify();
     }
     
     /**
@@ -140,12 +142,12 @@ public class TestListenerMapSource extends HiveMindTestCase
 
     public void testNoParameterMatch()
     {
-        IRequestCycle cycle = newCycle(new Object[] { "Hello", new Integer(7) });
+        IRequestCycle cycle = newLCycle(new Object[] { "Hello", new Integer(7) });
         ListenerMethodHolder holder = newHolder();
 
         holder.barney();
 
-        replayControls();
+        replay();
 
         ListenerMapSource source = new ListenerMapSourceImpl();
 
@@ -153,18 +155,18 @@ public class TestListenerMapSource extends HiveMindTestCase
 
         map.getListener("barney").actionTriggered(null, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testFallbackToJustCycle()
     {
-        IRequestCycle cycle = newCycle(new Object[] { "Hello", new Integer(7) });
+        IRequestCycle cycle = newLCycle(new Object[] { "Hello", new Integer(7) });
 
         ListenerMethodHolder holder = newHolder();
 
         holder.pebbles(cycle);
 
-        replayControls();
+        replay();
 
         ListenerMapSource source = new ListenerMapSourceImpl();
 
@@ -172,17 +174,17 @@ public class TestListenerMapSource extends HiveMindTestCase
 
         map.getListener("pebbles").actionTriggered(null, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testReturnPageName()
     {
-        IRequestCycle cycle = newCycle(null);
+        IRequestCycle cycle = newLCycle(null);
         ListenerMethodHolder holder = new ListenerMethodHolder("PageName");
 
         cycle.activate("PageName");
 
-        replayControls();
+        replay();
 
         ListenerMapSource source = new ListenerMapSourceImpl();
 
@@ -190,20 +192,20 @@ public class TestListenerMapSource extends HiveMindTestCase
 
         map.getListener("returnsPageName").actionTriggered(null, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testReturnLink()
     {
         ILink link = newLink("http://foo/bar");
 
-        IRequestCycle cycle = newCycle(null);
+        IRequestCycle cycle = newLCycle(null);
 
         cycle.sendRedirect("http://foo/bar");
 
         ListenerMethodHolder holder = new ListenerMethodHolder(link);
 
-        replayControls();
+        replay();
 
         ListenerMapSource source = new ListenerMapSourceImpl();
 
@@ -211,16 +213,14 @@ public class TestListenerMapSource extends HiveMindTestCase
 
         map.getListener("returnsLink").actionTriggered(null, cycle);
 
-        verifyControls();
+        verify();
     }
 
     private ILink newLink(String absoluteURL)
     {
-        MockControl control = newControl(ILink.class);
-        ILink link = (ILink) control.getMock();
+        ILink link = newMock(ILink.class);
 
-        link.getAbsoluteURL();
-        control.setReturnValue(absoluteURL);
+        expect(link.getAbsoluteURL()).andReturn(absoluteURL);
 
         return link;
     }
@@ -228,12 +228,12 @@ public class TestListenerMapSource extends HiveMindTestCase
     public void testReturnPageInstance()
     {
         IPage page = (IPage) newMock(IPage.class);
-        IRequestCycle cycle = newCycle(null);
+        IRequestCycle cycle = newLCycle(null);
         ListenerMethodHolder holder = new ListenerMethodHolder(page);
 
         cycle.activate(page);
 
-        replayControls();
+        replay();
 
         ListenerMapSource source = new ListenerMapSourceImpl();
 
@@ -241,14 +241,14 @@ public class TestListenerMapSource extends HiveMindTestCase
 
         map.getListener("returnsPage").actionTriggered(null, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testNoMatch()
     {
-        IRequestCycle cycle = newCycle(new Object[] { "Hello", new Integer(7) });
+        IRequestCycle cycle = newLCycle(new Object[] { "Hello", new Integer(7) });
 
-        replayControls();
+        replay();
 
         ListenerMethodHolder holder = new ListenerMethodHolder();
 
@@ -269,14 +269,14 @@ public class TestListenerMapSource extends HiveMindTestCase
             assertSame(holder, ex.getComponent());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testMismatchedTypes()
     {
-        IRequestCycle cycle = newCycle(new Object[] { "Hello" });
+        IRequestCycle cycle = newLCycle(new Object[] { "Hello" });
 
-        replayControls();
+        replay();
 
         ListenerMethodHolder holder = new ListenerMethodHolder();
 
@@ -303,12 +303,12 @@ public class TestListenerMapSource extends HiveMindTestCase
             assertSame(holder, ex.getComponent());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testInvocationTargetException()
     {
-        IRequestCycle cycle = newCycle(new Object[] { "Hello", new Integer(7) });
+        IRequestCycle cycle = newLCycle(new Object[] { "Hello", new Integer(7) });
 
         ListenerMethodHolder holder = new ListenerMethodHolder();
 
@@ -316,7 +316,7 @@ public class TestListenerMapSource extends HiveMindTestCase
 
         holder.setException(exception);
 
-        replayControls();
+        replay();
 
         ListenerMapSource source = new ListenerMapSourceImpl();
 
@@ -336,12 +336,12 @@ public class TestListenerMapSource extends HiveMindTestCase
             assertSame(exception, ex.getRootCause());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testInvocationTargetExceptionForApplicationRuntimeException()
     {
-        IRequestCycle cycle = newCycle(new Object[] { "Hello", new Integer(7) });
+        IRequestCycle cycle = newLCycle(new Object[] { "Hello", new Integer(7) });
 
         ListenerMethodHolder holder = new ListenerMethodHolder();
 
@@ -349,7 +349,7 @@ public class TestListenerMapSource extends HiveMindTestCase
 
         holder.setException(exception);
 
-        replayControls();
+        replay();
 
         ListenerMapSource source = new ListenerMapSourceImpl();
 
@@ -365,7 +365,7 @@ public class TestListenerMapSource extends HiveMindTestCase
             assertSame(exception, ex);
         }
 
-        verifyControls();
+        verify();
     }
 
     private ListenerMethodHolder newHolder()

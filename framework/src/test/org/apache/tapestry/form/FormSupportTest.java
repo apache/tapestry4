@@ -17,6 +17,8 @@ package org.apache.tapestry.form;
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isA;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
@@ -113,11 +115,11 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetPageRenderSupport(cycle, null);
 
-        replayControls();
+        replay();
 
         final FormSupport fs = new FormSupportImpl(writer, cycle, form);
 
-        verifyControls();
+        verify();
 
         delegate.clear();
         
@@ -129,11 +131,11 @@ public class FormSupportTest extends BaseComponentTestCase
         
         form.setBody(body);
         
-        replayControls();
+        replay();
         
         assertEquals(FormConstants.SUBMIT_CANCEL, fs.rewind());
         
-        verifyControls();
+        verify();
     }
 
     public void testComplexRender()
@@ -153,11 +155,11 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetPageRenderSupport(cycle, support);
 
-        replayControls();
+        replay();
 
         final FormSupport fs = new FormSupportImpl(writer, cycle, form);
 
-        verifyControls();
+        verify();
 
         final IFormComponent barney1 = newFormComponent("barney", "barney");
         final IFormComponent wilma = newFormComponent("wilma", "wilma");
@@ -203,11 +205,11 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainSetFieldFocus(cycle);
 
-        replayControls();
+        replay();
 
         fs.render("post", render, link, null, null);
 
-        verifyControls();
+        verify();
     }
 
     public void testComplexRewind()
@@ -221,11 +223,11 @@ public class FormSupportTest extends BaseComponentTestCase
         trainIsRewound(cycle, form, true);
         trainGetPageRenderSupport(cycle, null);
 
-        replayControls();
+        replay();
 
         final FormSupport fs = new FormSupportImpl(writer, cycle, form);
         
-        verifyControls();
+        verify();
 
         delegate.clear();
 
@@ -245,11 +247,11 @@ public class FormSupportTest extends BaseComponentTestCase
         
         invoker.invokeFormListeners(eq(fs), eq(cycle), isA(BrowserEvent.class));
         
-        replayControls();
+        replay();
 
         assertEquals(FormConstants.SUBMIT_NORMAL, fs.rewind());
 
-        verifyControls();
+        verify();
     }
 
     public void testComplexSubmitEventHandler()
@@ -267,11 +269,11 @@ public class FormSupportTest extends BaseComponentTestCase
         trainIsRewound(cycle, form, false);
         trainGetPageRenderSupport(cycle, support);
 
-        replayControls();
+        replay();
 
         final FormSupport fs = new FormSupportImpl(writer, cycle, form);
 
-        verifyControls();
+        verify();
 
         form.setBody(new IRender()
         {
@@ -319,11 +321,11 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetFocusField(delegate, null);
 
-        replayControls();
+        replay();
 
         fs.render("post", render, link, null, null);
 
-        verifyControls();
+        verify();
     }
 
     public void testEncodingType()
@@ -342,11 +344,11 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetPageRenderSupport(cycle, support);
 
-        replayControls();
+        replay();
 
         final FormSupport fs = new FormSupportImpl(writer, cycle, form);
 
-        verifyControls();
+        verify();
 
         form.setBody(new IRender()
         {
@@ -387,11 +389,11 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetFocusField(delegate, null);
 
-        replayControls();
+        replay();
 
         fs.render("post", render, link, null, null);
 
-        verifyControls();
+        verify();
     }
 
     public void testFieldPrerenderTwice()
@@ -408,20 +410,19 @@ public class FormSupportTest extends BaseComponentTestCase
 
         field.render(nested, cycle);
 
-        nested.getBuffer();
-        setReturnValue(nested, "NESTED CONTENT");
+        expect(nested.getBuffer()).andReturn("NESTED CONTENT");
 
-        replayControls();
+        replay();
 
         FormSupport fs = new FormSupportImpl(cycle);
 
         fs.prerenderField(writer, field, l);
 
-        verifyControls();
+        verify();
 
         trainGetExtendedId(field, "foo.bar");
 
-        replayControls();
+        replay();
 
         try
         {
@@ -439,7 +440,7 @@ public class FormSupportTest extends BaseComponentTestCase
             assertSame(field, ex.getComponent());
         }
 
-        verifyControls();
+        verify();
 
     }
 
@@ -459,11 +460,11 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetPageRenderSupport(cycle, support);
 
-        replayControls();
+        replay();
 
         final FormSupport fs = new FormSupportImpl(writer, cycle, form);
 
-        verifyControls();
+        verify();
 
         form.setBody(new IRender()
         {
@@ -514,11 +515,11 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetFocusField(delegate, null);
 
-        replayControls();
+        replay();
 
         fs.render("post", render, link, null, null);
 
-        verifyControls();
+        verify();
     }
 
     public void testInvalidEncodingType()
@@ -537,11 +538,11 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetPageRenderSupport(cycle, support);
 
-        replayControls();
+        replay();
 
         final FormSupport fs = new FormSupportImpl(writer, cycle, form);
 
-        verifyControls();
+        verify();
 
         form.setBody(new IRender()
         {
@@ -562,7 +563,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetNestedWriter(writer, nested);
 
-        replayControls();
+        replay();
 
         try
         {
@@ -577,7 +578,7 @@ public class FormSupportTest extends BaseComponentTestCase
             assertSame(form, ex.getComponent());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testRefreshRewind()
@@ -592,11 +593,11 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetPageRenderSupport(cycle, null);
 
-        replayControls();
+        replay();
 
         final FormSupport fs = new FormSupportImpl(writer, cycle, form);
 
-        verifyControls();
+        verify();
 
         delegate.clear();
 
@@ -613,11 +614,11 @@ public class FormSupportTest extends BaseComponentTestCase
         
         invoker.invokeFormListeners(eq(fs), eq(cycle), isA(BrowserEvent.class));
         
-        replayControls();
+        replay();
 
         assertEquals(FormConstants.SUBMIT_REFRESH, fs.rewind());
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderExtraReservedIds()
@@ -636,11 +637,11 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetPageRenderSupport(cycle, support);
 
-        replayControls();
+        replay();
 
         final FormSupport fs = new FormSupportImpl(writer, cycle, form);
 
-        verifyControls();
+        verify();
 
         final IFormComponent component = newFormComponent("action", "action_0");
 
@@ -687,11 +688,11 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetFocusField(delegate, null);
 
-        replayControls();
+        replay();
 
         fs.render("post", render, link, null, null);
 
-        verifyControls();
+        verify();
     }
 
     public void testResetEventHandler()
@@ -710,11 +711,11 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetPageRenderSupport(cycle, support);
 
-        replayControls();
+        replay();
 
         final FormSupport fs = new FormSupportImpl(writer, cycle, form);
 
-        verifyControls();
+        verify();
 
         form.setBody(new IRender()
         {
@@ -759,11 +760,11 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetFocusField(delegate, null);
 
-        replayControls();
+        replay();
 
         fs.render("post", render, link, null, null);
 
-        verifyControls();
+        verify();
     }
 
     public void testRewindExtraReservedIds()
@@ -780,11 +781,11 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetPageRenderSupport(cycle, null);
 
-        replayControls();
+        replay();
 
         final FormSupport fs = new FormSupportImpl(writer, cycle, form);
 
-        verifyControls();
+        verify();
 
         delegate.clear();
 
@@ -801,11 +802,11 @@ public class FormSupportTest extends BaseComponentTestCase
         
         invoker.invokeFormListeners(eq(fs), eq(cycle), isA(BrowserEvent.class));
         
-        replayControls();
+        replay();
 
         assertEquals(FormConstants.SUBMIT_NORMAL, fs.rewind());
 
-        verifyControls();
+        verify();
     }
 
     public void testRewindMismatch()
@@ -819,11 +820,11 @@ public class FormSupportTest extends BaseComponentTestCase
         trainIsRewound(cycle, form, true);
         trainGetPageRenderSupport(cycle, null);
 
-        replayControls();
+        replay();
 
         final FormSupport fs = new FormSupportImpl(writer, cycle, form);
 
-        verifyControls();
+        verify();
 
         Location l = newLocation();
 
@@ -844,7 +845,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         form.setBody(body);
 
-        replayControls();
+        replay();
 
         try
         {
@@ -860,7 +861,7 @@ public class FormSupportTest extends BaseComponentTestCase
             assertSame(l, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testRewindTooLong()
@@ -874,11 +875,11 @@ public class FormSupportTest extends BaseComponentTestCase
         trainIsRewound(cycle, form, true);
         trainGetPageRenderSupport(cycle, null);
 
-        replayControls();
+        replay();
 
         final FormSupport fs = new FormSupportImpl(writer, cycle, form);
 
-        verifyControls();
+        verify();
 
         Location l = newLocation();
 
@@ -899,7 +900,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         form.setBody(body);
 
-        replayControls();
+        replay();
 
         try
         {
@@ -915,7 +916,7 @@ public class FormSupportTest extends BaseComponentTestCase
             assertSame(l, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testRewindTooShort()
@@ -932,11 +933,11 @@ public class FormSupportTest extends BaseComponentTestCase
         trainIsRewound(cycle, form, true);
         trainGetPageRenderSupport(cycle, null);
 
-        replayControls();
+        replay();
 
         final FormSupport fs = new FormSupportImpl(writer, cycle, form);
 
-        verifyControls();
+        verify();
 
         delegate.clear();
 
@@ -959,7 +960,7 @@ public class FormSupportTest extends BaseComponentTestCase
         
         invoker.invokeFormListeners(eq(fs), eq(cycle), isA(BrowserEvent.class));
         
-        replayControls();
+        replay();
 
         try
         {
@@ -975,7 +976,7 @@ public class FormSupportTest extends BaseComponentTestCase
             assertSame(l, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testSimpleRender()
@@ -995,11 +996,11 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetPageRenderSupport(cycle, support);
 
-        replayControls();
+        replay();
 
         final FormSupport fs = new FormSupportImpl(writer, cycle, form);
 
-        verifyControls();
+        verify();
 
         final IFormComponent component = newFormComponent("barney", "barney");
 
@@ -1041,11 +1042,11 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetFieldFocus(cycle, Boolean.TRUE);
 
-        replayControls();
+        replay();
 
         fs.render("post", render, link, null, null);
 
-        verifyControls();
+        verify();
     }
 
     public void testSimpleRenderWithDeferredRunnable()
@@ -1065,11 +1066,11 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetPageRenderSupport(cycle, support);
 
-        replayControls();
+        replay();
 
         final FormSupport fs = new FormSupportImpl(writer, cycle, form);
 
-        verifyControls();
+        verify();
 
         IRender body = new IRender()
         {
@@ -1127,11 +1128,11 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetFocusField(delegate, null);
 
-        replayControls();
+        replay();
 
         fs.render("post", render, link, null, null);
 
-        verifyControls();
+        verify();
     }
 
     public void testSimpleRenderWithScheme()
@@ -1151,11 +1152,11 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetPageRenderSupport(cycle, support);
 
-        replayControls();
+        replay();
 
         final FormSupport fs = new FormSupportImpl(writer, cycle, form);
 
-        verifyControls();
+        verify();
 
         final IFormComponent component = newFormComponent("barney", "barney");
 
@@ -1197,11 +1198,11 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetFieldFocus(cycle, Boolean.TRUE);
 
-        replayControls();
+        replay();
 
         fs.render("post", render, link, "https", new Integer(443));
 
-        verifyControls();
+        verify();
     }
 
     public void testSimpleRewind()
@@ -1217,11 +1218,11 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetPageRenderSupport(cycle, null);
 
-        replayControls();
+        replay();
 
         final FormSupport fs = new FormSupportImpl(writer, cycle, form);
 
-        verifyControls();
+        verify();
 
         delegate.clear();
 
@@ -1238,11 +1239,11 @@ public class FormSupportTest extends BaseComponentTestCase
         
         invoker.invokeFormListeners(eq(fs), eq(cycle), isA(BrowserEvent.class));
         
-        replayControls();
+        replay();
 
         assertEquals(FormConstants.SUBMIT_NORMAL, fs.rewind());
 
-        verifyControls();
+        verify();
     }
 
     public void testSimpleRewindWithDeferredRunnable()
@@ -1258,11 +1259,11 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetPageRenderSupport(cycle, null);
 
-        replayControls();
+        replay();
 
         final FormSupport fs = new FormSupportImpl(writer, cycle, form);
 
-        verifyControls();
+        verify();
 
         delegate.clear();
 
@@ -1274,7 +1275,7 @@ public class FormSupportTest extends BaseComponentTestCase
         
         invoker.invokeFormListeners(eq(fs), eq(cycle), isA(BrowserEvent.class));
         
-        replayControls();
+        replay();
 
         IRender body = new IRender()
         {
@@ -1298,7 +1299,7 @@ public class FormSupportTest extends BaseComponentTestCase
         
         assertEquals(FormConstants.SUBMIT_NORMAL, fs.rewind());
 
-        verifyControls();
+        verify();
     }
 
     public void testSimpleSubmitEventHandler()
@@ -1318,11 +1319,11 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetPageRenderSupport(cycle, support);
 
-        replayControls();
+        replay();
 
         final FormSupport fs = new FormSupportImpl(writer, cycle, form);
 
-        verifyControls();
+        verify();
 
         form.setBody(new IRender()
         {
@@ -1365,11 +1366,11 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetFocusField(delegate, null);
 
-        replayControls();
+        replay();
 
         fs.render("post", render, link, null, null);
 
-        verifyControls();
+        verify();
     }
 
     private void trainCycleForRewind(IRequestCycle cycle, String allocatedIds, String reservedIds)
@@ -1398,22 +1399,19 @@ public class FormSupportTest extends BaseComponentTestCase
 
     private void trainGetFieldFocus(IRequestCycle cycle, Object value)
     {
-        cycle.getAttribute(FormSupportImpl.FIELD_FOCUS_ATTRIBUTE);
-        setReturnValue(cycle, value);
+        expect(cycle.getAttribute(FormSupportImpl.FIELD_FOCUS_ATTRIBUTE)).andReturn(value);
     }
 
     private void trainGetFocusField(IValidationDelegate delegate, String fieldName)
     {
-        delegate.getFocusField();
-        setReturnValue(delegate, fieldName);
+        expect(delegate.getFocusField()).andReturn(fieldName);
     }
 
     private void trainGetURL(ILink link, String scheme, String URL, int port)
     {
         // This will change shortly, with the new scheme parameter passed into FormSupport.render()
 
-        link.getURL(scheme, null, port, null, false);
-        setReturnValue(link, URL);
+        expect(link.getURL(scheme, null, port, null, false)).andReturn(URL);
     }
     
     private void trainGetURL(ILink link, String scheme, String URL)

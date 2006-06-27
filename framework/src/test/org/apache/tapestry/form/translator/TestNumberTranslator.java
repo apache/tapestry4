@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.form.translator;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 import java.util.Locale;
 
 import org.apache.tapestry.IMarkupWriter;
@@ -25,7 +27,6 @@ import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.form.translator.NumberTranslator}
@@ -122,19 +123,18 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
     private void testParse(Translator translator, String number, Number expected) throws Exception
     {
         IFormComponent field = newField();
+        
+        ValidationMessages messages = newMock(ValidationMessages.class);
 
-        MockControl messagesc = newControl(ValidationMessages.class);
-        ValidationMessages messages = (ValidationMessages) messagesc.getMock();
+        trainGetLocale(messages, Locale.ENGLISH);
 
-        trainGetLocale(messagesc, messages, Locale.ENGLISH);
-
-        replayControls();
+        replay();
 
         Number result = (Number) translator.parse(field, messages, number);
 
         assertEquals(expected, result);
 
-        verifyControls();
+        verify();
 
     }
 
@@ -159,15 +159,13 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
     private void testFailedParse(Translator translator, String messageOverride)
     {
         IFormComponent field = newField("Number Field");
+        
+        ValidationMessages messages = newMock(ValidationMessages.class);
 
-        MockControl messagesc = newControl(ValidationMessages.class);
-        ValidationMessages messages = (ValidationMessages) messagesc.getMock();
-
-        trainGetLocale(messagesc, messages, Locale.ENGLISH);
-        trainGetLocale(messagesc, messages, Locale.ENGLISH);
+        trainGetLocale(messages, Locale.ENGLISH);
+        trainGetLocale(messages, Locale.ENGLISH);
 
         trainBuildMessage(
-                messagesc,
                 messages,
                 messageOverride,
                 ValidationStrings.INVALID_NUMBER,
@@ -175,7 +173,7 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
                 { "Number Field", "#" },
                 "invalid number");
 
-        replayControls();
+        replay();
 
         try
         {
@@ -189,7 +187,7 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
             assertEquals(ValidationConstraint.NUMBER_FORMAT, e.getConstraint());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderContribution()
@@ -198,16 +196,14 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
 
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
-
-        MockControl contextc = newControl(FormComponentContributorContext.class);
-        FormComponentContributorContext context = (FormComponentContributorContext) contextc
-                .getMock();
+        
+        FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
 
         context.includeClasspathScript(translator.defaultScript());
 
-        trainGetLocale(contextc, context, Locale.ENGLISH);
+        trainGetLocale(context, Locale.ENGLISH);
 
-        trainBuildMessage(contextc, context, null, ValidationStrings.INVALID_NUMBER, new Object[]
+        trainBuildMessage(context, null, ValidationStrings.INVALID_NUMBER, new Object[]
         { "Number Field", "#" }, "invalid number message");
 
         context
@@ -215,11 +211,11 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
 
         IFormComponent field = newField("Number Field", "numberField", 1);
 
-        replayControls();
+        replay();
 
         translator.renderContribution(writer, cycle, context, field);
 
-        verifyControls();
+        verify();
     }
 
     public void testMessageRenderContribution()
@@ -230,17 +226,14 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
 
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
-
-        MockControl contextc = newControl(FormComponentContributorContext.class);
-        FormComponentContributorContext context = (FormComponentContributorContext) contextc
-                .getMock();
+        
+        FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
 
         context.includeClasspathScript(translator.defaultScript());
 
-        trainGetLocale(contextc, context, Locale.ENGLISH);
+        trainGetLocale(context, Locale.ENGLISH);
 
         trainBuildMessage(
-                contextc,
                 context,
                 messageOverride,
                 ValidationStrings.INVALID_NUMBER,
@@ -253,13 +246,13 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
 
         IFormComponent field = newField("Number Field", "myfield", 1);
 
-        replayControls();
+        replay();
 
         translator.setMessage(messageOverride);
 
         translator.renderContribution(writer, cycle, context, field);
 
-        verifyControls();
+        verify();
     }
 
     public void testTrimRenderContribution()
@@ -271,29 +264,27 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
 
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
-
-        MockControl contextc = newControl(FormComponentContributorContext.class);
-        FormComponentContributorContext context = (FormComponentContributorContext) contextc
-                .getMock();
+        
+        FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
 
         context.includeClasspathScript(translator.defaultScript());
 
         trainTrim(context, "myfield");
 
-        trainGetLocale(contextc, context, Locale.ENGLISH);
+        trainGetLocale(context, Locale.ENGLISH);
 
-        trainBuildMessage(contextc, context, null, ValidationStrings.INVALID_NUMBER, new Object[]
+        trainBuildMessage(context, null, ValidationStrings.INVALID_NUMBER, new Object[]
         { "Number Field", "#" }, "invalid number message");
 
         context
                 .addSubmitHandler("function(event) { Tapestry.validate_number(event, 'myfield', 'invalid number message'); }");
 
-        replayControls();
+        replay();
 
         translator.setTrim(true);
 
         translator.renderContribution(writer, cycle, context, field);
 
-        verifyControls();
+        verify();
     }
 }

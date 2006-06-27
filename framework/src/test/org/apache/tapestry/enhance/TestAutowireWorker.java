@@ -75,12 +75,12 @@ public class TestAutowireWorker extends BaseEnhancementTestCase
                 null), "return " + fieldName + ";", l);
         op.claimReadonlyProperty( HELLO_SERVICE_PROPERTY );
         
-        replayControls();
+        replay();
         
         final EnhancementWorker worker = ( EnhancementWorker )registry.getService( "tapestry.enhance.AutowireWorker", EnhancementWorker.class );
         worker.performEnhancement( op, spec );
         
-        verifyControls();
+        verify();
     }
     
     private void assertNotAutowired( Registry registry )
@@ -94,12 +94,12 @@ public class TestAutowireWorker extends BaseEnhancementTestCase
         
         expect(op.canClaimAsReadOnlyProperty(HELLO_SERVICE_PROPERTY)).andReturn(true);
         
-        replayControls();
+        replay();
         
         final EnhancementWorker worker = ( EnhancementWorker )registry.getService( "tapestry.enhance.AutowireWorker", EnhancementWorker.class );
         worker.performEnhancement( op, null);
         
-        verifyControls();
+        verify();
     }
     
 }

@@ -31,13 +31,13 @@ public class DescribeTest extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle(true, false);
 
-        replayControls();
+        replay();
 
         Describe component = (Describe) newInstance(Describe.class);
 
         component.renderComponent(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRender()
@@ -51,13 +51,13 @@ public class DescribeTest extends BaseComponentTestCase
 
         describer.describeObject(object, writer);
 
-        replayControls();
+        replay();
 
         Describe component = (Describe) newInstance(Describe.class, new Object[]
         { "object", object, "describer", describer });
 
         component.renderComponent(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 }

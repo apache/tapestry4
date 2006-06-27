@@ -14,15 +14,17 @@
 
 package org.apache.tapestry.multipart;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.services.ServletRequestServicer;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.multipart.MultipartDecoderFilter}.
@@ -30,7 +32,7 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestMultipartDecoderFilter extends HiveMindTestCase
+public class TestMultipartDecoderFilter extends BaseComponentTestCase
 {
     private static class MockServicer implements ServletRequestServicer
     {
@@ -45,11 +47,9 @@ public class TestMultipartDecoderFilter extends HiveMindTestCase
 
     private HttpServletRequest newRequest(String contentType)
     {
-        MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
+        HttpServletRequest request = newMock(HttpServletRequest.class);
 
-        request.getContentType();
-        control.setReturnValue(contentType);
+        expect(request.getContentType()).andReturn(contentType);
 
         return request;
     }
@@ -66,7 +66,7 @@ public class TestMultipartDecoderFilter extends HiveMindTestCase
 
         MockServicer servicer = new MockServicer();
 
-        replayControls();
+        replay();
 
         MultipartDecoderFilter f = new MultipartDecoderFilter();
 
@@ -74,7 +74,7 @@ public class TestMultipartDecoderFilter extends HiveMindTestCase
 
         assertSame(request, servicer._request);
 
-        verifyControls();
+        verify();
     }
 
     public void testUploadRequest() throws Exception
@@ -82,18 +82,16 @@ public class TestMultipartDecoderFilter extends HiveMindTestCase
         HttpServletRequest request = newRequest("multipart/form-data");
         HttpServletResponse response = newResponse();
         HttpServletRequest decoded = (HttpServletRequest) newMock(HttpServletRequest.class);
+        
+        ServletMultipartDecoder decoder = newMock(ServletMultipartDecoder.class);
 
-        MockControl control = newControl(ServletMultipartDecoder.class);
-        ServletMultipartDecoder decoder = (ServletMultipartDecoder) control.getMock();
-
-        decoder.decode(request);
-        control.setReturnValue(decoded);
+        expect(decoder.decode(request)).andReturn(decoded);
 
         decoder.cleanup();
 
         MockServicer servicer = new MockServicer();
 
-        replayControls();
+        replay();
 
         MultipartDecoderFilter f = new MultipartDecoderFilter();
         f.setDecoder(decoder);
@@ -102,6 +100,6 @@ public class TestMultipartDecoderFilter extends HiveMindTestCase
 
         assertSame(decoded, servicer._request);
 
-        verifyControls();
+        verify();
     }
 }

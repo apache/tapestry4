@@ -31,13 +31,13 @@ public class TestInsertText extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle(true, false);
 
-        replayControls();
+        replay();
 
         InsertText component = (InsertText) newInstance(InsertText.class);
 
         component.render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderNull()
@@ -45,13 +45,13 @@ public class TestInsertText extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle(false, false);
 
-        replayControls();
+        replay();
 
         InsertText component = (InsertText) newInstance(InsertText.class);
 
         component.render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderBreaks()
@@ -65,7 +65,7 @@ public class TestInsertText extends BaseComponentTestCase
         writer.beginEmpty("br");
         writer.print("to come to the aid of their Tapestry.", false);
 
-        replayControls();
+        replay();
 
         InsertText component = (InsertText) newInstance(
                 InsertText.class,
@@ -75,7 +75,7 @@ public class TestInsertText extends BaseComponentTestCase
         component.finishLoad(cycle, null, null);
         component.render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderParas()
@@ -95,7 +95,7 @@ public class TestInsertText extends BaseComponentTestCase
         writer.print("to come to the aid of their Tapestry.", false);
         writer.end();
 
-        replayControls();
+        replay();
 
         InsertText component = (InsertText) newInstance(InsertText.class, new Object[]
         { "mode", InsertTextMode.PARAGRAPH, "value",
@@ -103,7 +103,7 @@ public class TestInsertText extends BaseComponentTestCase
 
         component.render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderRaw()
@@ -115,7 +115,7 @@ public class TestInsertText extends BaseComponentTestCase
         writer.beginEmpty("br");
         writer.print("<b>raw</b>", true);
 
-        replayControls();
+        replay();
 
         InsertText component = (InsertText) newInstance(InsertText.class, new Object[]
         { "value", "output\n<b>raw</b>", "raw", Boolean.TRUE });
@@ -123,6 +123,6 @@ public class TestInsertText extends BaseComponentTestCase
         component.finishLoad(cycle, null, null);
         component.render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 }

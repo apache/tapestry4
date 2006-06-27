@@ -47,14 +47,14 @@ public class FrameTest extends BaseComponentTestCase
 
         writer.closeTag();
 
-        replayControls();
+        replay();
 
         Frame frame = (Frame) newInstance(Frame.class, new Object[]
         { "pageService", pageService, "targetPage", "FramePage" });
 
         frame.renderComponent(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderWithInformal()
@@ -75,7 +75,7 @@ public class FrameTest extends BaseComponentTestCase
 
         writer.closeTag();
 
-        replayControls();
+        replay();
 
         Frame frame = (Frame) newInstance(Frame.class, new Object[]
         { "pageService", pageService, "targetPage", "FramePage", "specification",
@@ -84,6 +84,6 @@ public class FrameTest extends BaseComponentTestCase
 
         frame.renderComponent(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 }

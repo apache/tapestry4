@@ -14,8 +14,11 @@
 
 package org.apache.tapestry.engine.state;
 
-import org.apache.hivemind.test.HiveMindTestCase;
-import org.easymock.MockControl;
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
+import org.apache.tapestry.BaseComponentTestCase;
 
 /**
  * Tests for {@link org.apache.tapestry.engine.state.ApplicationStateManagerImpl}.
@@ -23,17 +26,14 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestApplicationStateManager extends HiveMindTestCase
+public class TestApplicationStateManager extends BaseComponentTestCase
 {
     private StateObjectManagerRegistry newRegistry(String name,
             StateObjectManager manager)
     {
-        MockControl c = newControl(StateObjectManagerRegistry.class);
-        StateObjectManagerRegistry result = (StateObjectManagerRegistry) c
-                .getMock();
+        StateObjectManagerRegistry result = newMock(StateObjectManagerRegistry.class);
 
-        result.get(name);
-        c.setReturnValue(manager);
+        expect(result.get(name)).andReturn(manager);
 
         return result;
     }
@@ -41,16 +41,14 @@ public class TestApplicationStateManager extends HiveMindTestCase
     public void testExistsInCache()
     {
         Object stateObject = new Object();
+        
+        StateObjectManager m = newMock(StateObjectManager.class);
 
-        MockControl c = newControl(StateObjectManager.class);
-        StateObjectManager m = (StateObjectManager) c.getMock();
-
-        m.get();
-        c.setReturnValue(stateObject);
+        expect(m.get()).andReturn(stateObject);
 
         StateObjectManagerRegistry r = newRegistry("fred", m);
 
-        replayControls();
+        replay();
 
         ApplicationStateManagerImpl asm = new ApplicationStateManagerImpl();
         asm.setRegistry(r);
@@ -59,71 +57,62 @@ public class TestApplicationStateManager extends HiveMindTestCase
 
         assertEquals(true, asm.exists("fred"));
 
-        verifyControls();
+        verify();
     }
 
     public void testNotExist()
     {
 
-        MockControl c = newControl(StateObjectManager.class);
-        StateObjectManager m = (StateObjectManager) c.getMock();
+        StateObjectManager m = newMock(StateObjectManager.class);
 
-        m.exists();
-        c.setReturnValue(false);
+        expect(m.exists()).andReturn(false);
 
         StateObjectManagerRegistry r = newRegistry("barney", m);
 
-        replayControls();
+        replay();
 
         ApplicationStateManagerImpl asm = new ApplicationStateManagerImpl();
         asm.setRegistry(r);
 
         assertEquals(false, asm.exists("barney"));
 
-        verifyControls();
+        verify();
     }
 
     public void testGet()
     {
         Object stateObject = new Object();
 
-        MockControl c = newControl(StateObjectManager.class);
-        StateObjectManager m = (StateObjectManager) c.getMock();
+        StateObjectManager m = newMock(StateObjectManager.class);
 
-        m.get();
-        c.setReturnValue(stateObject);
+        expect(m.get()).andReturn(stateObject);
+        
+        StateObjectManagerRegistry r = newMock(StateObjectManagerRegistry.class);
 
-        MockControl rc = newControl(StateObjectManagerRegistry.class);
-        StateObjectManagerRegistry r = (StateObjectManagerRegistry) rc
-                .getMock();
+        expect(r.get("barney")).andReturn(m);
 
-        r.get("barney");
-        rc.setReturnValue(m);
-
-        replayControls();
+        replay();
 
         ApplicationStateManagerImpl asm = new ApplicationStateManagerImpl();
         asm.setRegistry(r);
 
         assertSame(stateObject, asm.get("barney"));
 
-        verifyControls();
+        verify();
 
-        replayControls();
+        replay();
 
         // Note: doesn't affect the SOPM
 
         assertSame(stateObject, asm.get("barney"));
 
-        verifyControls();
+        verify();
 
-        r.get("barney");
-        rc.setReturnValue(m);
+        expect(r.get("barney")).andReturn(m);
 
-        m.get();
-        c.setReturnValue(stateObject);
+        expect(m.get()).andReturn(stateObject);
 
-        replayControls();
+        replay();
 
         // Clear the cache
         asm.passivateService();
@@ -131,44 +120,38 @@ public class TestApplicationStateManager extends HiveMindTestCase
         // This invoked on the SOPM
         assertSame(stateObject, asm.get("barney"));
 
-        verifyControls();
+        verify();
     }
 
     public void testFlush()
     {
         Object stateObject = new Object();
 
-        MockControl c = newControl(StateObjectManager.class);
-        StateObjectManager m = (StateObjectManager) c.getMock();
+        StateObjectManager m = newMock(StateObjectManager.class);
 
-        m.get();
-        c.setReturnValue(stateObject);
+        expect(m.get()).andReturn(stateObject);
 
-        MockControl rc = newControl(StateObjectManagerRegistry.class);
-        StateObjectManagerRegistry r = (StateObjectManagerRegistry) rc
-                .getMock();
+        StateObjectManagerRegistry r = newMock(StateObjectManagerRegistry.class);
 
-        r.get("barney");
-        rc.setReturnValue(m);
+        expect(r.get("barney")).andReturn(m);
 
-        replayControls();
+        replay();
 
         ApplicationStateManagerImpl asm = new ApplicationStateManagerImpl();
         asm.setRegistry(r);
 
         assertSame(stateObject, asm.get("barney"));
 
-        verifyControls();
+        verify();
 
-        r.get("barney");
-        rc.setReturnValue(m);
+        expect(r.get("barney")).andReturn(m);
 
         m.store(stateObject);
 
-        replayControls();
+        replay();
 
         asm.flush();
 
-        verifyControls();
+        verify();
     }
 }

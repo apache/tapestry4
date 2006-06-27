@@ -14,6 +14,10 @@
 
 package org.apache.tapestry.form;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.testng.AssertJUnit.assertEquals;
+
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
@@ -21,7 +25,6 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidatorException;
-import org.easymock.MockControl;
 
 /**
  * Tests for the {@link org.apache.tapestry.form.Checkbox} component.
@@ -39,11 +42,11 @@ public class TestCheckbox extends BaseFormComponentTestCase
         IMarkupWriter writer = newBufferWriter();
         IRequestCycle cycle = newCycle();
 
-        replayControls();
+        replay();
 
         cb.renderFormComponent(writer, cycle);
 
-        verifyControls();
+        verify();
 
         assertBuffer("<input type=\"checkbox\" name=\"assignedName\" checked=\"checked\"/>");
     }
@@ -56,11 +59,11 @@ public class TestCheckbox extends BaseFormComponentTestCase
         IMarkupWriter writer = newBufferWriter();
         IRequestCycle cycle = newCycle();
 
-        replayControls();
+        replay();
 
         cb.renderFormComponent(writer, cycle);
 
-        verifyControls();
+        verify();
 
         assertBuffer("<input type=\"checkbox\" name=\"assignedName\" disabled=\"disabled\"/>");
     }
@@ -78,11 +81,11 @@ public class TestCheckbox extends BaseFormComponentTestCase
 
         cb.setBinding("informal", binding);
 
-        replayControls();
+        replay();
 
         cb.renderFormComponent(writer, cycle);
 
-        verifyControls();
+        verify();
 
         assertBuffer("<input type=\"checkbox\" name=\"assignedName\" checked=\"checked\" informal=\"informal-value\"/>");
     }
@@ -95,11 +98,11 @@ public class TestCheckbox extends BaseFormComponentTestCase
         IMarkupWriter writer = newBufferWriter();
         IRequestCycle cycle = newCycleGetUniqueId("foo", "foo$unique");
 
-        replayControls();
+        replay();
 
         cb.renderFormComponent(writer, cycle);
 
-        verifyControls();
+        verify();
 
         assertBuffer("<input type=\"checkbox\" name=\"assignedName\" checked=\"checked\" id=\"foo$unique\"/>");
     }
@@ -123,22 +126,19 @@ public class TestCheckbox extends BaseFormComponentTestCase
         	unreachable();
         }
     	
-        replayControls();
+        replay();
 
         cb.rewindFormComponent(writer, cycle);
         
-        verifyControls();
+        verify();
 
         assertEquals(false, cb.getValue());
     }
 
     public void testSubmitValidateFailed()
     {
-        MockControl vfsc = newControl(ValidatableFieldSupport.class);
-        ValidatableFieldSupport vfs = (ValidatableFieldSupport) vfsc.getMock();
-    	
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
+        ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
+        IForm form = newMock(IForm.class);
         
         IValidationDelegate delegate = newDelegate();
         
@@ -153,23 +153,22 @@ public class TestCheckbox extends BaseFormComponentTestCase
         try
         {
 	        vfs.validate(cb, writer, cycle, "foo");
-	        vfsc.setThrowable(exception);
+            expectLastCall().andThrow(exception);
 	    }
         catch (ValidatorException e)
         {
         	unreachable();
         }
 
-        form.getDelegate();
-        formc.setReturnValue(delegate);
+        expect(form.getDelegate()).andReturn(delegate);
         
         delegate.record(exception);
 
-        replayControls();
+        replay();
 
         cb.rewindFormComponent(writer, cycle);
         
-        verifyControls();
+        verify();
         
         assertEquals(false, cb.getValue());
     }
@@ -193,11 +192,11 @@ public class TestCheckbox extends BaseFormComponentTestCase
         	unreachable();
         }
         
-        replayControls();
+        replay();
 
         cb.rewindFormComponent(writer, cycle);
 
-        verifyControls();
+        verify();
 
         assertEquals(true, cb.getValue());
     }

@@ -14,12 +14,14 @@
 
 package org.apache.tapestry.web;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 
 /**
  * Common code used when testing the various container adapters.
@@ -27,7 +29,7 @@ import org.apache.hivemind.test.HiveMindTestCase;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public abstract class BaseWebTestCase extends HiveMindTestCase
+public abstract class BaseWebTestCase extends BaseComponentTestCase
 {
 
     protected Enumeration newEnumeration()

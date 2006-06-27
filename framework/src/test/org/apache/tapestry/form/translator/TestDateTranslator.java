@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.form.translator;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -26,7 +28,6 @@ import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
-import org.easymock.MockControl;
 
 /**
  * Test case for {@link DateTranslator}.
@@ -81,13 +82,13 @@ public class TestDateTranslator extends TranslatorTestCase
     {
         IFormComponent field = newField();
 
-        replayControls();
+        replay();
 
         String result = translator.format(field, Locale.ENGLISH, date);
 
         assertEquals(expected, result);
 
-        verifyControls();
+        verify();
     }
 
     public void testNullFormat()
@@ -156,13 +157,13 @@ public class TestDateTranslator extends TranslatorTestCase
 
         ValidationMessages messages = newValidationMessages(Locale.ENGLISH);
 
-        replayControls();
+        replay();
 
         Date result = (Date) translator.parse(field, messages, date);
 
         assertEquals(expected, result);
 
-        verifyControls();
+        verify();
     }
 
     public void testFailedParseDefaultMessage() throws Exception
@@ -186,15 +187,13 @@ public class TestDateTranslator extends TranslatorTestCase
             throws Exception
     {
         IFormComponent field = newField("My Field");
+        
+        ValidationMessages messages = newMock(ValidationMessages.class);
 
-        MockControl messagesc = newControl(ValidationMessages.class);
-        ValidationMessages messages = (ValidationMessages) messagesc.getMock();
-
-        trainGetLocale(messagesc, messages, Locale.ENGLISH);
-        trainGetLocale(messagesc, messages, Locale.ENGLISH);
+        trainGetLocale(messages, Locale.ENGLISH);
+        trainGetLocale(messages, Locale.ENGLISH);
 
         trainBuildMessage(
-                messagesc,
                 messages,
                 overrideMessage,
                 ValidationStrings.INVALID_DATE,
@@ -202,7 +201,7 @@ public class TestDateTranslator extends TranslatorTestCase
                 { "My Field", "MM/DD/YYYY" },
                 "final message");
 
-        replayControls();
+        replay();
 
         try
         {
@@ -216,7 +215,7 @@ public class TestDateTranslator extends TranslatorTestCase
             assertEquals(ValidationConstraint.DATE_FORMAT, e.getConstraint());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderContribution()
@@ -241,14 +240,14 @@ public class TestDateTranslator extends TranslatorTestCase
 
         trainTrim(context, "foo");
 
-        replayControls();
+        replay();
 
         DateTranslator dt = new DateTranslator();
         dt.setTrim(true);
 
         dt.renderContribution(writer, cycle, context, field);
 
-        verifyControls();
+        verify();
 
     }
 }

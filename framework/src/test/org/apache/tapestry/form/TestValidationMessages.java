@@ -14,13 +14,16 @@
 
 package org.apache.tapestry.form;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.Locale;
 
 import org.apache.hivemind.Messages;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.valid.ValidationStrings;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.form.ValidationMessagesImpl}.
@@ -28,7 +31,7 @@ import org.easymock.MockControl;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class TestValidationMessages extends HiveMindTestCase
+public class TestValidationMessages extends BaseComponentTestCase
 {
     private IFormComponent newField()
     {
@@ -41,7 +44,7 @@ public class TestValidationMessages extends HiveMindTestCase
 
         ValidationMessages m = new ValidationMessagesImpl(field, Locale.ENGLISH);
 
-        replayControls();
+        replay();
 
         assertEquals("You must enter a value for My Field.", m.formatValidationMessage(
                 null,
@@ -57,7 +60,7 @@ public class TestValidationMessages extends HiveMindTestCase
                 new Object[]
                 { "My Field" }));
 
-        verifyControls();
+        verify();
     }
 
     public void testGetLocale()
@@ -66,11 +69,11 @@ public class TestValidationMessages extends HiveMindTestCase
 
         ValidationMessages m = new ValidationMessagesImpl(field, Locale.ENGLISH);
 
-        replayControls();
+        replay();
 
         assertSame(Locale.ENGLISH, m.getLocale());
 
-        verifyControls();
+        verify();
     }
 
     public void testMessageOverride()
@@ -79,7 +82,7 @@ public class TestValidationMessages extends HiveMindTestCase
 
         ValidationMessages m = new ValidationMessagesImpl(field, Locale.ENGLISH);
 
-        replayControls();
+        replay();
 
         assertEquals("Gimme data for My Field.", m.formatValidationMessage(
                 "Gimme data for {0}.",
@@ -87,7 +90,7 @@ public class TestValidationMessages extends HiveMindTestCase
                 new Object[]
                 { "My Field" }));
 
-        verifyControls();
+        verify();
     }
 
     /**
@@ -102,7 +105,7 @@ public class TestValidationMessages extends HiveMindTestCase
 
         ValidationMessages m = new ValidationMessagesImpl(field, Locale.ENGLISH);
 
-        replayControls();
+        replay();
 
         assertEquals("Yo Dawg! Gimme a piece of My Field.", m.formatValidationMessage(
                 "%myfield-required",
@@ -110,38 +113,32 @@ public class TestValidationMessages extends HiveMindTestCase
                 new Object[]
                 { "My Field" }));
 
-        verifyControls();
+        verify();
     }
 
     private IFormComponent newField(IComponent container)
     {
-        MockControl control = newControl(IFormComponent.class);
-        IFormComponent field = (IFormComponent) control.getMock();
+        IFormComponent field = newMock(IFormComponent.class);
 
-        field.getContainer();
-        control.setReturnValue(container);
+        expect(field.getContainer()).andReturn(container);
 
         return field;
     }
 
     private IComponent newComponent(Messages messages)
     {
-        MockControl control = newControl(IComponent.class);
-        IComponent component = (IComponent) control.getMock();
+        IComponent component = newComponent();
 
-        component.getMessages();
-        control.setReturnValue(messages);
+        expect(component.getMessages()).andReturn(messages);
 
         return component;
     }
 
     private Messages newMessage(String key, String message)
     {
-        MockControl control = newControl(Messages.class);
-        Messages messages = (Messages) control.getMock();
+        Messages messages = newMock(Messages.class);
 
-        messages.getMessage(key);
-        control.setReturnValue(message);
+        expect(messages.getMessage(key)).andReturn(message);
 
         return messages;
     }

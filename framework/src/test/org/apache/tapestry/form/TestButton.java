@@ -30,11 +30,11 @@ public class TestButton extends BaseComponentTestCase
         IMarkupWriter writer = newBufferWriter();
         IRequestCycle cycle = newCycle();
 
-        replayControls();
+        replay();
 
         b.renderFormComponent(writer, cycle);
 
-        verifyControls();
+        verify();
 
         assertBuffer("<button type=\"button\" name=\"assignedName\"></button>");
     }
@@ -47,11 +47,11 @@ public class TestButton extends BaseComponentTestCase
         IMarkupWriter writer = newBufferWriter();
         IRequestCycle cycle = newCycle();
 
-        replayControls();
+        replay();
 
         b.renderFormComponent(writer, cycle);
 
-        verifyControls();
+        verify();
 
         assertBuffer("<button type=\"button\" name=\"assignedName\">Label</button>");
     }
@@ -68,11 +68,11 @@ public class TestButton extends BaseComponentTestCase
 
         b.setBinding("informal", binding);
 
-        replayControls();
+        replay();
 
         b.renderFormComponent(writer, cycle);
 
-        verifyControls();
+        verify();
 
         assertBuffer("<button type=\"button\" name=\"assignedName\" informal=\"informal-value\"></button>");
     }
@@ -85,11 +85,11 @@ public class TestButton extends BaseComponentTestCase
         IMarkupWriter writer = newBufferWriter();
         IRequestCycle cycle = newCycleGetUniqueId("foo", "foo$unique");
 
-        replayControls();
+        replay();
 
         b.renderFormComponent(writer, cycle);
 
-        verifyControls();
+        verify();
 
         assertBuffer("<button type=\"button\" name=\"assignedName\" id=\"foo$unique\"></button>");
     }
@@ -101,10 +101,10 @@ public class TestButton extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
 
-        replayControls();
+        replay();
 
         b.rewindFormComponent(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 }

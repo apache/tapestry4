@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.junit.script;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNull;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -74,11 +77,11 @@ public class TestScript extends TapestryTestCase
 
         IRequestCycle cycle = (IRequestCycle) newMock(IRequestCycle.class);
 
-        replayControls();
+        replay();
 
         script.execute(cycle, _processor, symbols);
 
-        verifyControls();
+        verify();
 
         return script;
     }

@@ -17,6 +17,7 @@ package org.apache.tapestry.dojo.form;
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isA;
+import static org.testng.AssertJUnit.assertEquals;
 
 import java.util.Map;
 
@@ -83,11 +84,11 @@ public class TestAutocompleter extends BaseFormComponentTestCase
             unreachable();
         }
         
-        replayControls();
+        replay();
         
         component.render(writer, cycle);
         
-        verifyControls();
+        verify();
         
         assertEquals(values[0], component.getValue());
     }
@@ -113,11 +114,11 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         trainIsRewinding(form, false);
         trainIsRewinding(cycle, true);
         
-        replayControls();
+        replay();
         
         component.render(writer, cycle);
         
-        verifyControls();
+        verify();
     }
     
     public void testRender()
@@ -177,11 +178,11 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         
         script.execute(eq(cycle), eq(prs), isA(Map.class));
         
-        replayControls();
+        replay();
         
         component.render(writer, cycle);
         
-        verifyControls();
+        verify();
         
         assertBuffer("<span class=\"prefix\"><select name=\"fred\" class=\"validation-delegate\"></select></span>");
     }
@@ -199,11 +200,11 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         { "name", "fred", "model", model,
             "filter", "l" });
         
-        replayControls();
+        replay();
         
         component.renderComponent(json, cycle);
         
-        verifyControls();
+        verify();
         
         assertEquals(json.length(), 2);
         assertEquals(json.get("3"), "yellow");
@@ -219,10 +220,10 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         
         expect(support.isRequired(field)).andReturn(true);
         
-        replayControls();
+        replay();
         
         assertEquals(true, field.isRequired());
 
-        verifyControls();
+        verify();
     }
 }

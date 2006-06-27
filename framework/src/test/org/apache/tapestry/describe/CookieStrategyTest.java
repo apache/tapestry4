@@ -29,7 +29,7 @@ public class CookieStrategyTest extends BaseDescribeTestCase
 
         receiver.title("a-name=some-value");
 
-        replayControls();
+        replay();
 
         Cookie cookie = new Cookie("a-name", "some-value");
 
@@ -37,7 +37,7 @@ public class CookieStrategyTest extends BaseDescribeTestCase
 
         strategy.describeObject(cookie, receiver);
 
-        verifyControls();
+        verify();
     }
 
 }

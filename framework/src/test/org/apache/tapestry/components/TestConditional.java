@@ -60,7 +60,7 @@ public class TestConditional extends BaseComponentTestCase
         IRequestCycle cycle = newCycle(false, writer);
         IRender body = newRender(writer, cycle);
 
-        replayControls();
+        replay();
 
         Conditional conditional = (Conditional) newInstance(Conditional.class, new Object[]
         { "condition", Boolean.TRUE });
@@ -68,7 +68,7 @@ public class TestConditional extends BaseComponentTestCase
 
         conditional.render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testIgnoreElementWhenRewinding()
@@ -77,7 +77,7 @@ public class TestConditional extends BaseComponentTestCase
         IRequestCycle cycle = newCycle(true, writer);
         IRender body = newRender(writer, cycle);
 
-        replayControls();
+        replay();
 
         Conditional conditional = (Conditional) newInstance(Conditional.class, new Object[]
         { "condition", Boolean.TRUE, "element", "div" });
@@ -85,7 +85,7 @@ public class TestConditional extends BaseComponentTestCase
 
         conditional.render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testElement()
@@ -108,7 +108,7 @@ public class TestConditional extends BaseComponentTestCase
 
         writer.end("div");
 
-        replayControls();
+        replay();
 
         Conditional conditional = (Conditional) newInstance(Conditional.class, new Object[]
         { "condition", Boolean.TRUE, "element", "div", "specification", spec });
@@ -117,6 +117,6 @@ public class TestConditional extends BaseComponentTestCase
 
         conditional.render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 }

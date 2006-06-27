@@ -14,14 +14,15 @@
 
 package org.apache.tapestry.form;
 
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.Locale;
 
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.service.ThreadLocale;
-import org.apache.hivemind.test.AggregateArgumentsMatcher;
-import org.apache.hivemind.test.ArgumentMatcher;
-import org.apache.hivemind.test.EqualsMatcher;
-import org.apache.hivemind.test.TypeMatcher;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IForm;
@@ -33,8 +34,6 @@ import org.apache.tapestry.form.translator.Translator;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidatorException;
-import org.easymock.MockControl;
-import org.easymock.internal.AlwaysMatcher;
 
 /**
  * Test case for {@link TranslatedFieldSupportImpl}.
@@ -46,32 +45,25 @@ public class TestTranslatedFieldSupportImpl extends BaseComponentTestCase
 {
     private ThreadLocale newThreadLocale()
     {
-        MockControl control = newControl(ThreadLocale.class);
-        ThreadLocale tl = (ThreadLocale) control.getMock();
+        ThreadLocale tl = newMock(ThreadLocale.class);
 
-        tl.getLocale();
-        control.setReturnValue(Locale.ENGLISH);
+        expect(tl.getLocale()).andReturn(Locale.ENGLISH);
 
         return tl;
     }
 
     private IRequestCycle newCycle(IComponent component)
     {
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IRequestCycle cycle = newCycle();
 
-        ClassResolver cr = (ClassResolver) newMock(ClassResolver.class);
+        ClassResolver cr = newMock(ClassResolver.class);
+        Infrastructure infra = newMock(Infrastructure.class);
 
-        MockControl infrac = newControl(Infrastructure.class);
-        Infrastructure infra = (Infrastructure) infrac.getMock();
+        PageRenderSupport prs = newMock(PageRenderSupport.class);
 
-        PageRenderSupport prs = (PageRenderSupport) newMock(PageRenderSupport.class);
+        expect(cycle.getInfrastructure()).andReturn(infra);
 
-        cycle.getInfrastructure();
-        cyclec.setReturnValue(infra);
-
-        infra.getClassResolver();
-        infrac.setReturnValue(cr);
+        expect(infra.getClassResolver()).andReturn(cr);
 
         trainGetAttribute(cycle, TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE, prs);
 
@@ -81,27 +73,22 @@ public class TestTranslatedFieldSupportImpl extends BaseComponentTestCase
     public void testRenderContributionsClientValidationDisabled()
     {
         TranslatedFieldSupportImpl support = new TranslatedFieldSupportImpl();
-
-        MockControl fieldControl = newControl(TranslatedField.class);
-        TranslatedField field = (TranslatedField) fieldControl.getMock();
-
-        MockControl formControl = newControl(IForm.class);
-        IForm form = (IForm) formControl.getMock();
+        
+        TranslatedField field = newMock(TranslatedField.class);
+        IForm form = newMock(IForm.class);
 
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
 
-        field.getForm();
-        fieldControl.setReturnValue(form);
+        expect(field.getForm()).andReturn(form);
 
-        form.isClientValidationEnabled();
-        formControl.setReturnValue(false);
+        expect(form.isClientValidationEnabled()).andReturn(false);
 
-        replayControls();
+        replay();
 
         support.renderContributions(field, writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderContributionsClientValidationEnabled()
@@ -109,132 +96,102 @@ public class TestTranslatedFieldSupportImpl extends BaseComponentTestCase
         TranslatedFieldSupportImpl support = new TranslatedFieldSupportImpl();
         support.setThreadLocale(newThreadLocale());
 
-        MockControl fieldControl = newControl(TranslatedField.class);
-        TranslatedField field = (TranslatedField) fieldControl.getMock();
-
-        MockControl formControl = newControl(IForm.class);
-        IForm form = (IForm) formControl.getMock();
+        TranslatedField field = newMock(TranslatedField.class);
+        IForm form = newMock(IForm.class);
 
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle(field);
+        
+        Translator translator = newMock(Translator.class);
 
-        MockControl translatorControl = newControl(Translator.class);
-        Translator translator = (Translator) translatorControl.getMock();
+        expect(field.getForm()).andReturn(form);
 
-        field.getForm();
-        fieldControl.setReturnValue(form);
+        expect(form.isClientValidationEnabled()).andReturn(true);
 
-        form.isClientValidationEnabled();
-        formControl.setReturnValue(true);
+        expect(field.getForm()).andReturn(form);
 
-        field.getForm();
-        fieldControl.setReturnValue(form);
+        expect(form.getName()).andReturn("myform");
 
-        form.getName();
-        formControl.setReturnValue("myform");
-
-        field.getTranslator();
-        fieldControl.setReturnValue(translator);
-
+        expect(field.getTranslator()).andReturn(translator);
+        
         translator.renderContribution(
-                writer,
-                cycle,
-                new FormComponentContributorContextImpl(field),
-                field);
-        translatorControl.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-        { new EqualsMatcher(), new EqualsMatcher(), new TypeMatcher(), new EqualsMatcher() }));
-
-        replayControls();
+                eq(writer),
+                eq(cycle),
+                isA(FormComponentContributorContextImpl.class),
+                eq(field));
+        
+        replay();
 
         support.renderContributions(field, writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testFormat() throws Exception
     {
         TranslatedFieldSupportImpl support = new TranslatedFieldSupportImpl();
-
-        MockControl fieldControl = newControl(TranslatedField.class);
-        TranslatedField field = (TranslatedField) fieldControl.getMock();
-
-        MockControl formControl = newControl(IForm.class);
-        IForm form = (IForm) formControl.getMock();
-
-        MockControl delegateControl = newControl(IValidationDelegate.class);
-        IValidationDelegate delegate = (IValidationDelegate) delegateControl.getMock();
-
-        MockControl translatorc = newControl(Translator.class);
-        Translator translator = (Translator) translatorc.getMock();
+        
+        TranslatedField field = newMock(TranslatedField.class);
+        IForm form = newMock(IForm.class);
+        
+        IValidationDelegate delegate = newMock(IValidationDelegate.class);
+        Translator translator = newMock(Translator.class);
 
         Object object = new Object();
         String expected = "result";
 
-        field.getForm();
-        fieldControl.setReturnValue(form);
+        expect(field.getForm()).andReturn(form);
 
-        form.getDelegate();
-        formControl.setReturnValue(delegate);
+        expect(form.getDelegate()).andReturn(delegate);
 
-        delegate.isInError();
-        delegateControl.setReturnValue(false);
+        expect(delegate.isInError()).andReturn(false);
 
-        field.getTranslator();
-        fieldControl.setReturnValue(translator);
+        expect(field.getTranslator()).andReturn(translator);
 
-        trainFormat(translatorc, translator, field, object, expected);
+        trainFormat(translator, field, object, expected);
 
         support.setThreadLocale(newThreadLocale());
 
-        replayControls();
+        replay();
 
         String result = support.format(field, object);
 
-        verifyControls();
+        verify();
 
         assertSame(expected, result);
     }
 
-    private void trainFormat(MockControl control, Translator translator, TranslatedField field,
+    private void trainFormat(Translator translator, TranslatedField field,
             Object input, String result)
     {
 
-        translator.format(field, Locale.ENGLISH, input);
-        control.setReturnValue(result);
+        expect(translator.format(field, Locale.ENGLISH, input)).andReturn(result);
     }
 
     public void testFormatInError()
     {
         TranslatedFieldSupportImpl support = new TranslatedFieldSupportImpl();
 
-        MockControl fieldControl = newControl(TranslatedField.class);
-        TranslatedField field = (TranslatedField) fieldControl.getMock();
-
-        MockControl formControl = newControl(IForm.class);
-        IForm form = (IForm) formControl.getMock();
-
-        MockControl delegateControl = newControl(IValidationDelegate.class);
-        IValidationDelegate delegate = (IValidationDelegate) delegateControl.getMock();
+        TranslatedField field = newMock(TranslatedField.class);
+        IForm form = newMock(IForm.class);
+        
+        IValidationDelegate delegate = newMock(IValidationDelegate.class);
 
         String expected = "result";
 
-        field.getForm();
-        fieldControl.setReturnValue(form);
+        expect(field.getForm()).andReturn(form);
 
-        form.getDelegate();
-        formControl.setReturnValue(delegate);
+        expect(form.getDelegate()).andReturn(delegate);
 
-        delegate.isInError();
-        delegateControl.setReturnValue(true);
+        expect(delegate.isInError()).andReturn(true);
 
-        delegate.getFieldInputValue();
-        delegateControl.setReturnValue(expected);
+        expect(delegate.getFieldInputValue()).andReturn(expected);
 
-        replayControls();
+        replay();
 
         String result = support.format(field, new Object());
 
-        verifyControls();
+        verify();
 
         assertSame(expected, result);
     }
@@ -243,55 +200,43 @@ public class TestTranslatedFieldSupportImpl extends BaseComponentTestCase
     {
         TranslatedFieldSupportImpl support = new TranslatedFieldSupportImpl();
 
-        MockControl fieldControl = newControl(TranslatedField.class);
-        TranslatedField field = (TranslatedField) fieldControl.getMock();
-
-        MockControl formControl = newControl(IForm.class);
-        IForm form = (IForm) formControl.getMock();
-
-        MockControl delegateControl = newControl(IValidationDelegate.class);
-        IValidationDelegate delegate = (IValidationDelegate) delegateControl.getMock();
-
-        MockControl translatorControl = newControl(Translator.class);
-        Translator translator = (Translator) translatorControl.getMock();
+        TranslatedField field = newMock(TranslatedField.class);
+        IForm form = newMock(IForm.class);
+        
+        IValidationDelegate delegate = newMock(IValidationDelegate.class);
+        Translator translator = newMock(Translator.class);
 
         String text = "test";
         Object expected = new Object();
 
-        field.getForm();
-        fieldControl.setReturnValue(form);
+        expect(field.getForm()).andReturn(form);
 
-        form.getDelegate();
-        formControl.setReturnValue(delegate);
+        expect(form.getDelegate()).andReturn(delegate);
 
         delegate.recordFieldInputValue(text);
 
-        field.getTranslator();
-        fieldControl.setReturnValue(translator);
+        expect(field.getTranslator()).andReturn(translator);
 
         support.setThreadLocale(newThreadLocale());
 
-        trainParse(translatorControl, translator, field, text, expected);
+        trainParse(translator, field, text, expected);
 
-        replayControls();
+        replay();
 
         Object result = support.parse(field, text);
 
-        verifyControls();
+        verify();
 
         assertSame(expected, result);
 
     }
 
-    private void trainParse(MockControl control, Translator translator, TranslatedField field,
+    private void trainParse(Translator translator, TranslatedField field,
             String text, Object result) throws ValidatorException
     {
-        ValidationMessages messages = new ValidationMessagesImpl(field, Locale.ENGLISH);
+        // ValidationMessages messages = new ValidationMessagesImpl(field, Locale.ENGLISH);
 
-        translator.parse(field, messages, text);
-        control.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-        { null, new TypeMatcher() }));
-        control.setReturnValue(result);
+        expect(translator.parse(eq(field), isA(ValidationMessages.class), eq(text))).andReturn(result);
     }
 
     public void testParseFailed() throws Exception
@@ -300,40 +245,30 @@ public class TestTranslatedFieldSupportImpl extends BaseComponentTestCase
 
         support.setThreadLocale(newThreadLocale());
 
-        MockControl fieldControl = newControl(TranslatedField.class);
-        TranslatedField field = (TranslatedField) fieldControl.getMock();
-
-        MockControl formControl = newControl(IForm.class);
-        IForm form = (IForm) formControl.getMock();
-
-        MockControl delegateControl = newControl(IValidationDelegate.class);
-        IValidationDelegate delegate = (IValidationDelegate) delegateControl.getMock();
-
-        MockControl translatorControl = newControl(Translator.class);
-        Translator translator = (Translator) translatorControl.getMock();
+        TranslatedField field = newMock(TranslatedField.class);
+        IForm form = newMock(IForm.class);
+        
+        IValidationDelegate delegate = newMock(IValidationDelegate.class);
+        Translator translator = newMock(Translator.class);
 
         String text = "test";
 
-        field.getForm();
-        fieldControl.setReturnValue(form);
+        expect(field.getForm()).andReturn(form);
 
-        form.getDelegate();
-        formControl.setReturnValue(delegate);
+        expect(form.getDelegate()).andReturn(delegate);
 
         delegate.recordFieldInputValue(text);
 
-        field.getTranslator();
-        fieldControl.setReturnValue(translator);
-
+        expect(field.getTranslator()).andReturn(translator);
+        
         ValidatorException expected = new ValidatorException("Failure");
 
-        ValidationMessages messages = new ValidationMessagesImpl(field, Locale.ENGLISH);
-
-        translator.parse(field, messages, text);
-        translatorControl.setMatcher(new AlwaysMatcher());
-        translatorControl.setThrowable(expected);
-
-        replayControls();
+        //ValidationMessages messages = new ValidationMessagesImpl(field, Locale.ENGLISH);
+        
+        expect(translator.parse(isA(TranslatedField.class), 
+                isA(ValidationMessages.class), isA(String.class))).andThrow(expected);
+        
+        replay();
 
         try
         {
@@ -343,7 +278,7 @@ public class TestTranslatedFieldSupportImpl extends BaseComponentTestCase
         }
         catch (ValidatorException e)
         {
-            verifyControls();
+            verify();
 
             assertSame(expected, e);
         }

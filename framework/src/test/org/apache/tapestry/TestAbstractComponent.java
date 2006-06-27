@@ -14,10 +14,13 @@
 
 package org.apache.tapestry;
 
-import static org.easymock.EasyMock.*;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.spec.IContainedComponent;
 import org.apache.tapestry.test.Creator;
+import org.testng.annotations.Test;
 
 /**
  * Tests a few new features of {@link org.apache.tapestry.AbstractComponent}&nbsp;added in release
@@ -26,6 +29,7 @@ import org.apache.tapestry.test.Creator;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestAbstractComponent extends BaseComponentTestCase
 {
     private static class ConcreteComponent extends AbstractComponent
@@ -71,7 +75,7 @@ public class TestAbstractComponent extends BaseComponentTestCase
 
         IContainedComponent cc = newContainedComponent();
 
-        replayControls();
+        replay();
 
         IComponent component = (IComponent) creator.newInstance(BaseComponent.class);
 
@@ -79,7 +83,7 @@ public class TestAbstractComponent extends BaseComponentTestCase
 
         assertSame(cc, component.getContainedComponent());
 
-        verifyControls();
+        verify();
     }
 
     public void testContainedComponentConflict()
@@ -93,7 +97,7 @@ public class TestAbstractComponent extends BaseComponentTestCase
 
         trainGetIdPath(page, null);
         
-        replayControls();
+        replay();
         replay();
 
         IComponent component = (IComponent) creator.newInstance(BaseComponent.class, new Object[]
@@ -113,12 +117,12 @@ public class TestAbstractComponent extends BaseComponentTestCase
                     ex.getMessage());
         }
 
-        verifyControls();
+        verify();
         verify();
     }
 
     private IContainedComponent newContainedComponent()
     {
-        return (IContainedComponent) newMock(IContainedComponent.class);
+        return newMock(IContainedComponent.class);
     }
 }

@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.engine;
 
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,11 +43,11 @@ public class PageServiceTest extends ServiceTestCase
 
         trainConstructLink(lf, ps, false, parameters, true, link);
 
-        replayControls();
+        replay();
 
         assertSame(link, ps.getLink(false, "TargetPage"));
 
-        verifyControls();
+        verify();
     }
 
     public void testService() throws Exception
@@ -59,13 +61,13 @@ public class PageServiceTest extends ServiceTestCase
 
         rr.renderResponse(cycle);
 
-        replayControls();
+        replay();
 
         PageService ps = new PageService();
         ps.setResponseRenderer(rr);
 
         ps.service(cycle);
 
-        verifyControls();
+        verify();
     }
 }

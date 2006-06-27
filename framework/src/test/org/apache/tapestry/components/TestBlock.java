@@ -14,13 +14,16 @@
 
 package org.apache.tapestry.components;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertNull;
+import static org.testng.AssertJUnit.assertSame;
+
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.components.Block}.
@@ -39,7 +42,7 @@ public class TestBlock extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle(writer);
 
-        replayControls();
+        replay();
 
         IRender body = new IRender()
         {
@@ -58,7 +61,7 @@ public class TestBlock extends BaseComponentTestCase
 
         assertNull(block.getInvoker());
 
-        verifyControls();
+        verify();
     }
 
     public void testGetParameter()
@@ -66,14 +69,10 @@ public class TestBlock extends BaseComponentTestCase
         Object parameterValue = new Object();
 
         IBinding binding = newBinding(parameterValue);
+        IComponent component = newComponent();
 
-        MockControl control = newControl(IComponent.class);
-        IComponent component = (IComponent) control.getMock();
-
-        component.getBinding("fred");
-        control.setReturnValue(binding);
-
-        replayControls();
+        expect(component.getBinding("fred")).andReturn(binding);
+        replay();
 
         Block block = (Block) newInstance(Block.class);
 
@@ -81,7 +80,7 @@ public class TestBlock extends BaseComponentTestCase
 
         assertSame(parameterValue, block.getParameter("fred"));
 
-        verifyControls();
+        verify();
     }
 
 }

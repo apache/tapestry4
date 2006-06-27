@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.engine;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,11 +54,11 @@ public class ResetServiceTest extends ServiceTestCase
 
         trainConstructLink(lf, s, false, parameters, true, link);
 
-        replayControls();
+        replay();
 
         assertSame(link, s.getLink(false, null));
 
-        verifyControls();
+        verify();
     }
 
     public void testService() throws Exception
@@ -72,7 +75,7 @@ public class ResetServiceTest extends ServiceTestCase
 
         rr.renderResponse(cycle);
 
-        replayControls();
+        replay();
 
         ResetService rs = new ResetService();
         rs.setEnabled(true);
@@ -81,7 +84,7 @@ public class ResetServiceTest extends ServiceTestCase
 
         rs.service(cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testServiceNotEnabled() throws Exception
@@ -96,7 +99,7 @@ public class ResetServiceTest extends ServiceTestCase
 
         rr.renderResponse(cycle);
 
-        replayControls();
+        replay();
 
         ResetService rs = new ResetService();
         rs.setEnabled(false);
@@ -105,7 +108,7 @@ public class ResetServiceTest extends ServiceTestCase
 
         rs.service(cycle);
 
-        verifyControls();
+        verify();
 
     }
 

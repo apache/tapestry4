@@ -14,15 +14,16 @@
 
 package org.apache.tapestry.services.impl;
 
+import static org.easymock.EasyMock.expectLastCall;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.services.ResetEventHub;
 import org.apache.tapestry.services.WebRequestServicer;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.DisableCachingFilter}.
@@ -30,13 +31,8 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestDisableCachingFilter extends HiveMindTestCase
+public class TestDisableCachingFilter extends BaseComponentTestCase
 {
-    private WebRequest newRequest()
-    {
-        return (WebRequest) newMock(WebRequest.class);
-    }
-
     private WebResponse newResponse()
     {
         return (WebResponse) newMock(WebResponse.class);
@@ -62,14 +58,14 @@ public class TestDisableCachingFilter extends HiveMindTestCase
         servicer.service(request, response);
         rec.fireResetEvent();
 
-        replayControls();
+        replay();
 
         DisableCachingFilter f = new DisableCachingFilter();
         f.setResetEventHub(rec);
 
         f.service(request, response, servicer);
 
-        verifyControls();
+        verify();
     }
 
     public void testResetFailure() throws Exception
@@ -77,8 +73,8 @@ public class TestDisableCachingFilter extends HiveMindTestCase
         WebRequest request = newRequest();
         WebResponse response = newResponse();
         WebRequestServicer servicer = newServicer();
-        MockControl control = newControl(ResetEventHub.class);
-        ResetEventHub rec = (ResetEventHub) control.getMock();
+        
+        ResetEventHub rec = newMock(ResetEventHub.class);
         ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
 
         Location l = fabricateLocation(99);
@@ -88,11 +84,11 @@ public class TestDisableCachingFilter extends HiveMindTestCase
         servicer.service(request, response);
 
         rec.fireResetEvent();
-        control.setThrowable(t);
+        expectLastCall().andThrow(t);
 
         log.error(ImplMessages.errorResetting(t), l, t);
 
-        replayControls();
+        replay();
 
         DisableCachingFilter f = new DisableCachingFilter();
         f.setResetEventHub(rec);
@@ -100,7 +96,7 @@ public class TestDisableCachingFilter extends HiveMindTestCase
 
         f.service(request, response, servicer);
 
-        verifyControls();
+        verify();
     }
 
 }

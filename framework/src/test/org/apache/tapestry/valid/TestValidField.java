@@ -14,6 +14,10 @@
 
 package org.apache.tapestry.valid;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import org.apache.hivemind.Location;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IBinding;
@@ -25,7 +29,6 @@ import org.apache.tapestry.form.BaseFormComponentTestCase;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.MockDelegate;
 import org.apache.tapestry.html.BasePage;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.valid.ValidField}.
@@ -38,11 +41,8 @@ public class TestValidField extends BaseFormComponentTestCase
 
     public void testWasPrerendered()
     {
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
+        IRequestCycle cycle = newCycle();
+        IForm form = newMock(IForm.class);
 
         IMarkupWriter writer = newWriter();
 
@@ -52,11 +52,11 @@ public class TestValidField extends BaseFormComponentTestCase
 
         trainWasPrerendered(form, writer, component, true);
 
-        replayControls();
+        replay();
 
         component.render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     /**
@@ -68,16 +68,11 @@ public class TestValidField extends BaseFormComponentTestCase
     {
         ValidField component = (ValidField) newInstance(ValidField.class);
 
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
+        IRequestCycle cycle = newCycle();
+        IForm form = newMock(IForm.class);
 
         IMarkupWriter writer = newWriter();
-
-        MockControl delegatec = newControl(IValidationDelegate.class);
-        IValidationDelegate delegate = (IValidationDelegate) delegatec.getMock();
+        IValidationDelegate delegate = newDelegate();
 
         trainGetForm(cycle, form);
         trainWasPrerendered(form, writer, component, false);
@@ -89,40 +84,33 @@ public class TestValidField extends BaseFormComponentTestCase
         trainIsRewinding(form, false);
         trainIsRewinding(cycle, true);
 
-        replayControls();
+        replay();
 
         component.render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
-    private void trainToObject(MockControl control, IValidator validator, IFormComponent component,
+    private void trainToObject(IValidator validator, IFormComponent component,
             String fieldValue, Object translatedValue) throws ValidatorException
     {
-        validator.toObject(component, fieldValue);
-
-        control.setReturnValue(translatedValue);
+        expect(validator.toObject(component, fieldValue)).andReturn(translatedValue);
     }
 
     public void testRewind() throws Exception
     {
         Object translatedValue = new Object();
-
-        MockControl validatorc = newControl(IValidator.class);
-        IValidator validator = (IValidator) validatorc.getMock();
+        
+        IValidator validator = newMock(IValidator.class);
 
         ValidField component = (ValidField) newInstance(ValidField.class, "validator", validator);
 
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
+        IRequestCycle cycle = newCycle();
+        IForm form = newMock(IForm.class);
 
         IMarkupWriter writer = newWriter();
 
-        MockControl delegatec = newControl(IValidationDelegate.class);
-        IValidationDelegate delegate = (IValidationDelegate) delegatec.getMock();
+        IValidationDelegate delegate = newDelegate();
 
         trainGetForm(cycle, form);
         trainWasPrerendered(form, writer, component, false);
@@ -139,13 +127,13 @@ public class TestValidField extends BaseFormComponentTestCase
 
         delegate.recordFieldInputValue("fred-value");
 
-        trainToObject(validatorc, validator, component, "fred-value", translatedValue);
+        trainToObject(validator, component, "fred-value", translatedValue);
 
-        replayControls();
+        replay();
 
         component.render(writer, cycle);
 
-        verifyControls();
+        verify();
 
         assertSame(translatedValue, component.getProperty("value"));
     }
@@ -159,21 +147,17 @@ public class TestValidField extends BaseFormComponentTestCase
         IPage page = (IPage) newInstance(BasePage.class);
         page.setPageName("Barney");
 
-        ValidField component = (ValidField) newInstance(ValidField.class, new Object[]
+        ValidField component = newInstance(ValidField.class, new Object[]
         { "page", page, "id", "inputFred", "container", page });
 
         component.setBinding("validator", binding);
 
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
+        IRequestCycle cycle = newCycle();
+        IForm form = newMock(IForm.class);
 
         IMarkupWriter writer = newWriter();
-
-        MockControl delegatec = newControl(IValidationDelegate.class);
-        IValidationDelegate delegate = (IValidationDelegate) delegatec.getMock();
+        
+        IValidationDelegate delegate = newDelegate();
 
         trainGetForm(cycle, form);
         trainWasPrerendered(form, writer, component, false);
@@ -186,7 +170,7 @@ public class TestValidField extends BaseFormComponentTestCase
 
         trainGetParameter(cycle, "fred", "fred-value");
 
-        replayControls();
+        replay();
 
         try
         {
@@ -202,23 +186,20 @@ public class TestValidField extends BaseFormComponentTestCase
             assertSame(binding, ex.getBinding());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testRender()
     {
         Object value = new Object();
-        MockControl validatorc = newControl(IValidator.class);
-        IValidator validator = (IValidator) validatorc.getMock();
+        
+        IValidator validator = newMock(IValidator.class);
 
-        ValidField component = (ValidField) newInstance(ValidField.class, new Object[]
+        ValidField component = newInstance(ValidField.class, new Object[]
         { "value", value, "validator", validator });
 
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
+        IRequestCycle cycle = newCycle();
+        IForm form = newMock(IForm.class);
 
         IMarkupWriter writer = newBufferWriter();
 
@@ -235,49 +216,43 @@ public class TestValidField extends BaseFormComponentTestCase
         trainGetDelegate(form, delegate);
         trainGetDelegate(form, delegate);
 
-        trainToString(validatorc, validator, component, value, "fred value");
+        trainToString(validator, component, value, "fred value");
 
-        validator.isRequired();
-        validatorc.setReturnValue(false);
+        expect(validator.isRequired()).andReturn(false);
 
         // Would be nice to have this do something so we could check the timing, but ...
 
         validator.renderValidatorContribution(component, writer, cycle);
 
-        replayControls();
+        replay();
 
         component.render(writer, cycle);
 
-        verifyControls();
+        verify();
 
         assertSame(component, delegate.getFormComponent());
         assertBuffer("<span class=\"prefix\"><input type=\"text\" name=\"fred\" value=\"fred value\" class=\"validation-delegate\"/></span>");
     }
 
-    private void trainToString(MockControl validatorc, IValidator validator,
+    private void trainToString(IValidator validator,
             IFormComponent component, Object value, String string)
     {
-        validator.toString(component, value);
-        validatorc.setReturnValue(string);
+        expect(validator.toString(component, value)).andReturn(string);
     }
 
     public void testRenderNull()
     {
         IPage page = (IPage) newInstance(BasePage.class);
+        IValidator validator = newMock(IValidator.class);
 
-        MockControl validatorc = newControl(IValidator.class);
-        IValidator validator = (IValidator) validatorc.getMock();
-
-        ValidField component = (ValidField) newInstance(ValidField.class, new Object[]
+        ValidField component = newInstance(ValidField.class, new Object[]
         { "validator", validator, "page", page, "container", page });
-
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        
+        IRequestCycle cycle = newCycle();
 
         page.attach(null, cycle);
-
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
+        
+        IForm form = newMock(IForm.class);
 
         IMarkupWriter writer = newBufferWriter();
 
@@ -294,10 +269,9 @@ public class TestValidField extends BaseFormComponentTestCase
         trainGetDelegate(form, delegate);
         trainGetDelegate(form, delegate);
 
-        trainToString(validatorc, validator, component, null, null);
+        trainToString(validator, component, null, null);
 
-        validator.isRequired();
-        validatorc.setReturnValue(false);
+        expect(validator.isRequired()).andReturn(false);
 
         // Would be nice to have this do something so we could check the timing, but ...
 
@@ -306,11 +280,11 @@ public class TestValidField extends BaseFormComponentTestCase
         // Short cut this here, so that it appears some other field is
         // taking the honors ...
 
-        replayControls();
+        replay();
 
         component.render(writer, cycle);
 
-        verifyControls();
+        verify();
 
         assertSame(component, delegate.getFormComponent());
         assertBuffer("<span class=\"prefix\"><input type=\"text\" name=\"fred\" class=\"validation-delegate\"/></span>");
@@ -319,16 +293,13 @@ public class TestValidField extends BaseFormComponentTestCase
     public void testRenderWithError()
     {
         Object value = new Object();
-        MockControl validatorc = newControl(IValidator.class);
-        IValidator validator = (IValidator) validatorc.getMock();
+        
+        IValidator validator = newMock(IValidator.class);
+        
+        IRequestCycle cycle = newCycle();
+        IForm form = newMock(IForm.class);
 
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
-
-        ValidField component = (ValidField) newInstance(ValidField.class, new Object[]
+        ValidField component = newInstance(ValidField.class, new Object[]
         { "value", value, "validator", validator, "form", form, "name", "fred" });
 
         IMarkupWriter writer = newBufferWriter();
@@ -347,18 +318,17 @@ public class TestValidField extends BaseFormComponentTestCase
         trainGetDelegate(form, delegate);
         trainGetDelegate(form, delegate);
 
-        validator.isRequired();
-        validatorc.setReturnValue(true);
+        expect(validator.isRequired()).andReturn(true);
 
         // Would be nice to have this do something so we could check the timing, but ...
 
         validator.renderValidatorContribution(component, writer, cycle);
 
-        replayControls();
+        replay();
 
         component.render(writer, cycle);
 
-        verifyControls();
+        verify();
 
         assertSame(component, delegate.getFormComponent());
         assertBuffer("<span class=\"prefix\"><input type=\"text\" name=\"fred\" value=\"recorded field value\" class=\"validation-delegate\"/></span>");

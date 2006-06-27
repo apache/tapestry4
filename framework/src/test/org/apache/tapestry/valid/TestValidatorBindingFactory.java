@@ -14,13 +14,15 @@
 
 package org.apache.tapestry.valid;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertSame;
+
 import org.apache.hivemind.Location;
 import org.apache.hivemind.lib.BeanFactory;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.engine.IScriptSource;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.valid.ValidatorBindingFactory}.
@@ -28,26 +30,24 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestValidatorBindingFactory extends HiveMindTestCase
+public class TestValidatorBindingFactory extends BaseComponentTestCase
 {
     public void testFactory()
     {
         IValidator validator = (IValidator) newMock(IValidator.class);
         ValueConverter vc = (ValueConverter) newMock(ValueConverter.class);
-
-        MockControl vbfc = newControl(BeanFactory.class);
-        BeanFactory vbf = (BeanFactory) vbfc.getMock();
+        
+        BeanFactory vbf = newMock(BeanFactory.class);
 
         IScriptSource scriptSource = (IScriptSource)newMock(IScriptSource.class);
         
-        vbf.get("foo,bar=baz");
-        vbfc.setReturnValue(validator);
+        expect(vbf.get("foo,bar=baz")).andReturn(validator);
         
         Location l = newLocation();
         
         validator.setScriptSource(scriptSource);
         
-        replayControls();
+        replay();
 
         ValidatorBindingFactory factory = new ValidatorBindingFactory();
         factory.setValueConverter(vc);
@@ -59,6 +59,6 @@ public class TestValidatorBindingFactory extends HiveMindTestCase
         assertSame(validator, binding.getObject());
         assertSame(l, binding.getLocation());
 
-        verifyControls();
+        verify();
     }
 }

@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.describe;
 
+import static org.easymock.EasyMock.expect;
+
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.event.ReportStatusEvent;
 import org.apache.tapestry.event.ReportStatusListener;
@@ -31,9 +33,7 @@ public class ReportStatusHubTest extends BaseDescribeTestCase
     {
         RootDescriptionReceiverFactory factory = newReceiverFactory();
 
-        factory.newRootDescriptionReceiver(writer);
-
-        setReturnValue(factory, receiver);
+        expect(factory.newRootDescriptionReceiver(writer)).andReturn(receiver);
 
         return factory;
     }
@@ -63,7 +63,7 @@ public class ReportStatusHubTest extends BaseDescribeTestCase
 
         receiver.finishUp();
 
-        replayControls();
+        replay();
 
         ReportStatusHubImpl hub = new ReportStatusHubImpl();
 
@@ -73,7 +73,7 @@ public class ReportStatusHubTest extends BaseDescribeTestCase
 
         hub.fireReportStatus(writer);
 
-        verifyControls();
+        verify();
     }
 
     public void testRemove()
@@ -81,7 +81,7 @@ public class ReportStatusHubTest extends BaseDescribeTestCase
         IMarkupWriter writer = newWriter();
         RootDescriptionReceiverFactory factory = newReceiverFactory();
 
-        replayControls();
+        replay();
 
         ReportStatusHubImpl hub = new ReportStatusHubImpl();
 
@@ -93,7 +93,7 @@ public class ReportStatusHubTest extends BaseDescribeTestCase
 
         hub.fireReportStatus(writer);
 
-        verifyControls();
+        verify();
 
     }
 

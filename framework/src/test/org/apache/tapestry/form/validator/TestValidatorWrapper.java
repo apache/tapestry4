@@ -14,12 +14,14 @@
 
 package org.apache.tapestry.form.validator;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.form.validator.AbstractValidatorWrapper}
@@ -59,11 +61,11 @@ public class TestValidatorWrapper extends BaseValidatorTestCase
 
         delegate.validate(field, messages, value);
 
-        replayControls();
+        replay();
 
         new Fixture(delegate).validate(field, messages, value);
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderContribution()
@@ -77,62 +79,56 @@ public class TestValidatorWrapper extends BaseValidatorTestCase
 
         delegate.renderContribution(writer, cycle, context, field);
 
-        replayControls();
+        replay();
 
         new Fixture(delegate).renderContribution(writer, cycle, context, field);
 
-        verifyControls();
+        verify();
     }
 
     public void testGetAcceptsNull()
     {
-        MockControl delegatec = newControl(Validator.class);
-        Validator delegate = (Validator) delegatec.getMock();
+        Validator delegate = newMock(Validator.class);
 
-        delegate.getAcceptsNull();
-        delegatec.setReturnValue(true);
+        expect(delegate.getAcceptsNull()).andReturn(true);
 
-        replayControls();
+        replay();
 
         Validator wrapper = new Fixture(delegate);
 
         assertEquals(true, wrapper.getAcceptsNull());
 
-        verifyControls();
+        verify();
 
-        delegate.getAcceptsNull();
-        delegatec.setReturnValue(false);
+        expect(delegate.getAcceptsNull()).andReturn(false);
 
-        replayControls();
+        replay();
 
         assertEquals(false, wrapper.getAcceptsNull());
 
-        verifyControls();
+        verify();
     }
 
     public void testIsRequired()
     {
-        MockControl delegatec = newControl(Validator.class);
-        Validator delegate = (Validator) delegatec.getMock();
+        Validator delegate = newMock(Validator.class);
 
-        delegate.isRequired();
-        delegatec.setReturnValue(true);
+        expect(delegate.isRequired()).andReturn(true);
 
-        replayControls();
+        replay();
 
         Validator wrapper = new Fixture(delegate);
 
         assertEquals(true, wrapper.isRequired());
 
-        verifyControls();
+        verify();
 
-        delegate.isRequired();
-        delegatec.setReturnValue(false);
+        expect(delegate.isRequired()).andReturn(false);
 
-        replayControls();
+        replay();
 
         assertEquals(false, wrapper.isRequired());
 
-        verifyControls();
+        verify();
     }
 }

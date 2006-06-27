@@ -14,6 +14,11 @@
 
 package org.apache.tapestry.record;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNull;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -22,14 +27,13 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.event.ObservedChangeEvent;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IPropertySpecification;
 import org.apache.tapestry.test.Creator;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.record.PageRecorderImpl}.
@@ -37,27 +41,24 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestPageRecorder extends HiveMindTestCase
+public class TestPageRecorder extends BaseComponentTestCase
 {
-    private ErrorLog newLog()
+    private ErrorLog newErrorLog()
     {
         return (ErrorLog) newMock(ErrorLog.class);
     }
 
     public void testGetChanges()
     {
-        ErrorLog log = newLog();
-
-        MockControl sourcec = newControl(PropertyPersistenceStrategySource.class);
-        PropertyPersistenceStrategySource source = (PropertyPersistenceStrategySource) sourcec
-                .getMock();
+        ErrorLog log = newErrorLog();
+        
+        PropertyPersistenceStrategySource source = newMock(PropertyPersistenceStrategySource.class);
 
         Collection expected = new ArrayList();
 
-        source.getAllStoredChanges("Foo");
-        sourcec.setReturnValue(expected);
+        expect(source.getAllStoredChanges("Foo")).andReturn(expected);
 
-        replayControls();
+        replay();
 
         PageRecorderImpl pr = new PageRecorderImpl("Foo", source, log);
 
@@ -65,55 +66,45 @@ public class TestPageRecorder extends HiveMindTestCase
 
         assertSame(expected, actual);
 
-        verifyControls();
+        verify();
     }
 
     private IComponentSpecification newSpec(String propertyName, String persistence)
     {
-        MockControl specc = newControl(IComponentSpecification.class);
-        IComponentSpecification spec = (IComponentSpecification) specc.getMock();
+        IComponentSpecification spec = newSpec();
+        
+        IPropertySpecification ps = newMock(IPropertySpecification.class);
 
-        MockControl psc = newControl(IPropertySpecification.class);
-        IPropertySpecification ps = (IPropertySpecification) psc.getMock();
+        expect(spec.getPropertySpecification(propertyName)).andReturn(ps);
 
-        spec.getPropertySpecification(propertyName);
-        specc.setReturnValue(ps);
-
-        ps.getPersistence();
-        psc.setReturnValue(persistence);
+        expect(ps.getPersistence()).andReturn(persistence);
 
         return spec;
     }
 
     public void testObserveChange()
     {
-        ErrorLog log = newLog();
-
-        MockControl pagec = newControl(IPage.class);
-        IPage page = (IPage) pagec.getMock();
+        ErrorLog log = newErrorLog();
+        
+        IPage page = newPage();
 
         IComponentSpecification spec = newSpec("foobar", "session");
 
-        page.getSpecification();
-        pagec.setReturnValue(spec);
+        expect(page.getSpecification()).andReturn(spec);
 
-        page.getIdPath();
-        pagec.setReturnValue(null);
+        expect(page.getIdPath()).andReturn(null);
 
-        MockControl sourcec = newControl(PropertyPersistenceStrategySource.class);
-        PropertyPersistenceStrategySource source = (PropertyPersistenceStrategySource) sourcec
-                .getMock();
+        PropertyPersistenceStrategySource source = newMock(PropertyPersistenceStrategySource.class);
 
-        PropertyPersistenceStrategy strategy = (PropertyPersistenceStrategy) newMock(PropertyPersistenceStrategy.class);
+        PropertyPersistenceStrategy strategy = newMock(PropertyPersistenceStrategy.class);
 
-        source.getStrategy("session");
-        sourcec.setReturnValue(strategy);
+        expect(source.getStrategy("session")).andReturn(strategy);
 
         Object newValue = new Object();
 
         strategy.store("Foo", null, "foobar", newValue);
 
-        replayControls();
+        replay();
 
         PageRecorderImpl pr = new PageRecorderImpl("Foo", source, log);
 
@@ -121,72 +112,59 @@ public class TestPageRecorder extends HiveMindTestCase
 
         pr.observeChange(event);
 
-        verifyControls();
+        verify();
     }
 
     public void testUnknownStategy()
     {
         Location l = fabricateLocation(12);
         Throwable inner = new ApplicationRuntimeException("Simulated error.");
-        ErrorLog log = newLog();
+        ErrorLog log = newErrorLog();
 
-        MockControl sourcec = newControl(PropertyPersistenceStrategySource.class);
-        PropertyPersistenceStrategySource source = (PropertyPersistenceStrategySource) sourcec
-                .getMock();
+        PropertyPersistenceStrategySource source = newMock(PropertyPersistenceStrategySource.class);
 
-        MockControl componentc = newControl(IComponent.class);
-        IComponent component = (IComponent) componentc.getMock();
+        IComponent component = newComponent();
+        
+        IComponentSpecification spec = newSpec();
+        
+        IPropertySpecification ps = newMock(IPropertySpecification.class);
 
-        MockControl specc = newControl(IComponentSpecification.class);
-        IComponentSpecification spec = (IComponentSpecification) specc.getMock();
+        expect(component.getSpecification()).andReturn(spec);
 
-        MockControl psc = newControl(IPropertySpecification.class);
-        IPropertySpecification ps = (IPropertySpecification) psc.getMock();
+        expect(spec.getPropertySpecification("zip")).andReturn(ps);
 
-        component.getSpecification();
-        componentc.setReturnValue(spec);
+        expect(ps.getPersistence()).andReturn("unknown");
 
-        spec.getPropertySpecification("zip");
-        specc.setReturnValue(ps);
+        expect(source.getStrategy("unknown")).andThrow(inner);
 
-        ps.getPersistence();
-        psc.setReturnValue("unknown");
-
-        source.getStrategy("unknown");
-        sourcec.setThrowable(inner);
-
-        ps.getLocation();
-        psc.setReturnValue(l);
+        expect(ps.getLocation()).andReturn(l);
 
         log.error("Simulated error.", l, inner);
 
-        replayControls();
+        replay();
 
         PageRecorderImpl pr = new PageRecorderImpl("SomePage", source, log);
 
         assertNull(pr.findStrategy(component, "zip"));
 
-        verifyControls();
+        verify();
     }
 
     public void testRollbackPageProperty()
     {
-        ErrorLog log = newLog();
+        ErrorLog log = newErrorLog();
 
         Creator creator = new Creator();
 
         PageFixture page = (PageFixture) creator.newInstance(PageFixture.class);
 
-        MockControl sourcec = newControl(PropertyPersistenceStrategySource.class);
-        PropertyPersistenceStrategySource source = (PropertyPersistenceStrategySource) sourcec
-                .getMock();
+        PropertyPersistenceStrategySource source = newMock(PropertyPersistenceStrategySource.class);
 
         PropertyChange pc = new PropertyChangeImpl(null, "cartoonName", "Dexter's Laboratory");
 
-        source.getAllStoredChanges("MyPage");
-        sourcec.setReturnValue(Collections.singletonList(pc));
+        expect(source.getAllStoredChanges("MyPage")).andReturn(Collections.singletonList(pc));
 
-        replayControls();
+        replay();
 
         PageRecorderImpl pr = new PageRecorderImpl("MyPage", source, log);
 
@@ -194,52 +172,45 @@ public class TestPageRecorder extends HiveMindTestCase
 
         assertEquals("Dexter's Laboratory", page.getCartoonName());
 
-        verifyControls();
+        verify();
     }
 
     public void testRollbackComponentProperty()
     {
-        ErrorLog log = newLog();
-
-        MockControl pagec = newControl(IPage.class);
-        IPage page = (IPage) pagec.getMock();
+        ErrorLog log = newErrorLog();
+        
+        IPage page = newPage();
 
         IComponent component = (IComponent) newMock(IComponent.class);
 
-        MockControl sourcec = newControl(PropertyPersistenceStrategySource.class);
-        PropertyPersistenceStrategySource source = (PropertyPersistenceStrategySource) sourcec
-                .getMock();
+        PropertyPersistenceStrategySource source = newMock(PropertyPersistenceStrategySource.class);
 
         PropertyChange pc = new PropertyChangeImpl("fred.barney", "id", "ziff");
 
-        source.getAllStoredChanges("MyPage");
-        sourcec.setReturnValue(Collections.singletonList(pc));
+        expect(source.getAllStoredChanges("MyPage")).andReturn(Collections.singletonList(pc));
 
-        page.getNestedComponent("fred.barney");
-        pagec.setReturnValue(component);
+        expect(page.getNestedComponent("fred.barney")).andReturn(component);
 
         component.setId("ziff");
 
-        replayControls();
+        replay();
 
         PageRecorderImpl pr = new PageRecorderImpl("MyPage", source, log);
 
         pr.rollback(page);
 
-        verifyControls();
+        verify();
     }
 
     public void testChangeWhileLocked()
     {
-        ErrorLog log = newLog();
+        ErrorLog log = newErrorLog();
+        
+        IPage page = newPage();
 
-        MockControl pagec = newControl(IPage.class);
-        IPage page = (IPage) pagec.getMock();
+        PropertyPersistenceStrategySource source = newMock(PropertyPersistenceStrategySource.class);
 
-        PropertyPersistenceStrategySource source = (PropertyPersistenceStrategySource) newMock(PropertyPersistenceStrategySource.class);
-
-        page.getExtendedId();
-        pagec.setReturnValue("MyPage");
+        expect(page.getExtendedId()).andReturn("MyPage");
 
         log
                 .error(
@@ -248,7 +219,7 @@ public class TestPageRecorder extends HiveMindTestCase
                         null,
                         null);
 
-        replayControls();
+        replay();
 
         PageRecorderImpl pr = new PageRecorderImpl("MyPage", source, log);
 
@@ -258,36 +229,29 @@ public class TestPageRecorder extends HiveMindTestCase
 
         pr.observeChange(event);
 
-        verifyControls();
+        verify();
     }
 
     public void testChangeToNonSpecifiedProperty()
     {
         Resource r = fabricateLocation(99).getResource();
-        ErrorLog log = newLog();
+        ErrorLog log = newErrorLog();
+        
+        IPage page = newPage();
+        
+        IComponentSpecification spec = newSpec();
 
-        MockControl pagec = newControl(IPage.class);
-        IPage page = (IPage) pagec.getMock();
+        PropertyPersistenceStrategySource source = newMock(PropertyPersistenceStrategySource.class);
 
-        MockControl specc = newControl(IComponentSpecification.class);
-        IComponentSpecification spec = (IComponentSpecification) specc.getMock();
+        expect(page.getSpecification()).andReturn(spec);
 
-        PropertyPersistenceStrategySource source = (PropertyPersistenceStrategySource) newMock(PropertyPersistenceStrategySource.class);
+        expect(spec.getPropertySpecification("foobar")).andReturn(null);
 
-        page.getSpecification();
-        pagec.setReturnValue(spec);
+        expect(page.getExtendedId()).andReturn("TestPage");
 
-        spec.getPropertySpecification("foobar");
-        specc.setReturnValue(null);
+        expect(page.getSpecification()).andReturn(spec);
 
-        page.getExtendedId();
-        pagec.setReturnValue("TestPage");
-
-        page.getSpecification();
-        pagec.setReturnValue(spec);
-
-        spec.getSpecificationLocation();
-        specc.setReturnValue(r);
+        expect(spec.getSpecificationLocation()).andReturn(r);
 
         log.error(
                 "A property change event for property foobar of TestPage was observed, "
@@ -295,7 +259,7 @@ public class TestPageRecorder extends HiveMindTestCase
                 null,
                 null);
 
-        replayControls();
+        replay();
 
         PageRecorderImpl pr = new PageRecorderImpl("TestPage", source, log);
 
@@ -303,6 +267,6 @@ public class TestPageRecorder extends HiveMindTestCase
 
         pr.observeChange(event);
 
-        verifyControls();
+        verify();
     }
 }

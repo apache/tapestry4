@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.components;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.text.DateFormat;
 import java.text.Format;
 import java.util.Date;
@@ -53,27 +56,27 @@ public class TestInsert extends BaseComponentTestCase
     {
         IRequestCycle cycle = newCycle(true, false);
 
-        replayControls();
+        replay();
 
         Insert insert = (Insert) newInstance(Insert.class);
 
         insert.render(null, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testNullValue()
     {
         IRequestCycle cycle = newCycle(false, false);
 
-        replayControls();
+        replay();
 
         Insert insert = (Insert) newInstance(Insert.class, new Object[]
         { "value", null });
 
         insert.render(null, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testNoFormat()
@@ -83,14 +86,14 @@ public class TestInsert extends BaseComponentTestCase
         
         writer.print("42", false);
         
-        replayControls();
+        replay();
         
         Insert insert = (Insert) newInstance(Insert.class, new Object[]
         { "value", new Integer(42) });
         
         insert.render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testFormat()
@@ -104,14 +107,14 @@ public class TestInsert extends BaseComponentTestCase
         
         writer.print(expected, false);
         
-        replayControls();
+        replay();
         
         Insert insert = (Insert) newInstance(Insert.class, new Object[]
         { "value", date, "format", format });
 
         insert.render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testUnableToFormat()
@@ -127,7 +130,7 @@ public class TestInsert extends BaseComponentTestCase
         
         IPage page = newBasePage("Flintstone");
         
-        replayControls();
+        replay();
         
         Insert insert = (Insert) newInstance(Insert.class, new Object[]
         { "value", value, "format", format });
@@ -150,7 +153,7 @@ public class TestInsert extends BaseComponentTestCase
             assertSame(l, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testRaw()
@@ -160,14 +163,14 @@ public class TestInsert extends BaseComponentTestCase
 
         writer.print("42", true);
 
-        replayControls();
+        replay();
 
         Insert insert = (Insert) newInstance(Insert.class, new Object[]
         { "value", new Integer(42), "raw", Boolean.TRUE });
 
         insert.render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testStyleClass()
@@ -184,7 +187,7 @@ public class TestInsert extends BaseComponentTestCase
         writer.print("42", false);
         writer.end();
 
-        replayControls();
+        replay();
 
         Insert insert = (Insert) newInstance(Insert.class, new Object[]
         { "value", "42", "specification", spec, "styleClass", "paisley" });
@@ -193,6 +196,6 @@ public class TestInsert extends BaseComponentTestCase
 
         insert.render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 }

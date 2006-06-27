@@ -14,11 +14,15 @@
 
 package org.apache.tapestry.record;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNotSame;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.hivemind.test.HiveMindTestCase;
-import org.easymock.MockControl;
+import org.apache.tapestry.BaseComponentTestCase;
 
 /**
  * Tests for {@link org.apache.tapestry.record.PersistentPropertyData}.
@@ -26,7 +30,7 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestPersistentPropertyData extends HiveMindTestCase
+public class TestPersistentPropertyData extends BaseComponentTestCase
 {
 
     public void testStoreChange()
@@ -34,28 +38,28 @@ public class TestPersistentPropertyData extends HiveMindTestCase
         Object newObject1 = new Object();
         Object newObject2 = new Object();
 
-        PersistentPropertyDataEncoder encoder = (PersistentPropertyDataEncoder) newMock(PersistentPropertyDataEncoder.class);
+        PersistentPropertyDataEncoder encoder = newMock(PersistentPropertyDataEncoder.class);
 
-        replayControls();
+        replay();
 
         PersistentPropertyData ppd = new PersistentPropertyData(encoder);
 
         ppd.store("foo", "bar", newObject1);
 
-        assertListsEqual(new Object[]
+        assertEquals(new Object[]
         { new PropertyChangeImpl("foo", "bar", newObject1) }, ppd.getPageChanges());
 
         // Check for overwriting.
 
         ppd.store("foo", "bar", newObject2);
 
-        assertListsEqual(new Object[]
+        assertEquals(new Object[]
         { new PropertyChangeImpl("foo", "bar", newObject2) }, ppd.getPageChanges());
 
         // We only add the one value, because the output order
         // is indeterminate.
 
-        verifyControls();
+        verify();
     }
 
     public void testDecode()
@@ -64,13 +68,11 @@ public class TestPersistentPropertyData extends HiveMindTestCase
         String encoded = "ENCODED";
         List decoded = Collections.singletonList(new PropertyChangeImpl("foo", "bar", newObject));
 
-        MockControl control = newControl(PersistentPropertyDataEncoder.class);
-        PersistentPropertyDataEncoder encoder = (PersistentPropertyDataEncoder) control.getMock();
+        PersistentPropertyDataEncoder encoder = newMock(PersistentPropertyDataEncoder.class);
 
-        encoder.decodePageChanges(encoded);
-        control.setReturnValue(decoded);
+        expect(encoder.decodePageChanges(encoded)).andReturn(decoded);
 
-        replayControls();
+        replay();
 
         PersistentPropertyData ppd = new PersistentPropertyData(encoder);
 
@@ -78,17 +80,17 @@ public class TestPersistentPropertyData extends HiveMindTestCase
 
         List l1 = ppd.getPageChanges();
 
-        assertListsEqual(new Object[]
+        assertEquals(new Object[]
         { new PropertyChangeImpl("foo", "bar", newObject) }, l1);
 
         List l2 = ppd.getPageChanges();
 
         assertNotSame(l1, l2);
 
-        assertListsEqual(new Object[]
+        assertEquals(new Object[]
         { new PropertyChangeImpl("foo", "bar", newObject) }, l2);
 
-        verifyControls();
+        verify();
     }
 
     public void testEncode()
@@ -97,13 +99,11 @@ public class TestPersistentPropertyData extends HiveMindTestCase
         Object newObject = new Object();
         List changes = Collections.singletonList(new PropertyChangeImpl("foo", "bar", newObject));
 
-        MockControl control = newControl(PersistentPropertyDataEncoder.class);
-        PersistentPropertyDataEncoder encoder = (PersistentPropertyDataEncoder) control.getMock();
+        PersistentPropertyDataEncoder encoder = newMock(PersistentPropertyDataEncoder.class);
 
-        encoder.encodePageChanges(changes);
-        control.setReturnValue(encoded);
+        expect(encoder.encodePageChanges(changes)).andReturn(encoded);
 
-        replayControls();
+        replay();
 
         PersistentPropertyData ppd = new PersistentPropertyData(encoder);
 
@@ -112,6 +112,6 @@ public class TestPersistentPropertyData extends HiveMindTestCase
         assertSame(encoded, ppd.getEncoded());
         assertSame(encoded, ppd.getEncoded());
 
-        verifyControls();
+        verify();
     }
 }

@@ -92,6 +92,17 @@
             <version>1.2.9</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>4.7</version>
+            <classifier>jdk15</classifier>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.javaforge.tapestry</groupId>
+            <artifactId>tapestry-testng</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -228,7 +239,9 @@
                         <link>http://jakarta.apache.org/commons/logging/apidocs/</link>
                         <link>http://www.ognl.org/2.6.9/Documentation/javadoc/</link>
                     </links>
-                    <stylesheetfile>${basedir}/../src/site/resources/css/jdstyle.css</stylesheetfile>
+                    <stylesheetfile>
+                        ${basedir}/../src/site/resources/css/jdstyle.css
+                    </stylesheetfile>
                 </configuration>
             </plugin>
             <plugin>

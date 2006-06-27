@@ -14,10 +14,13 @@
 
 package org.apache.tapestry.script;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
-import org.apache.hivemind.test.HiveMindTestCase;
-import org.easymock.MockControl;
+import org.apache.tapestry.BaseComponentTestCase;
 
 /**
  * Tests {@link org.apache.tapestry.script.IfToken}, the basis for the &lt;if&gt; and
@@ -26,76 +29,70 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestIfToken extends HiveMindTestCase
+public class TestIfToken extends BaseComponentTestCase
 {
     public void testEvaluateTrue()
     {
-        MockControl sc = newControl(ScriptSession.class);
-        ScriptSession s = (ScriptSession) sc.getMock();
+        ScriptSession s = newMock(ScriptSession.class);
 
-        IScriptToken nested = (IScriptToken) newMock(IScriptToken.class);
+        IScriptToken nested = newMock(IScriptToken.class);
 
-        s.evaluate("EXPRESSION", Boolean.class);
-        sc.setReturnValue(Boolean.TRUE);
+        expect(s.evaluate("EXPRESSION", Boolean.class)).andReturn(Boolean.TRUE);
 
         StringBuffer buffer = new StringBuffer();
 
         nested.write(buffer, s);
 
-        replayControls();
+        replay();
 
         IfToken t = new IfToken(true, "EXPRESSION", null);
         t.addToken(nested);
 
         t.write(buffer, s);
 
-        verifyControls();
+        verify();
     }
 
     public void testEvaluateFalse()
     {
-        MockControl sc = newControl(ScriptSession.class);
-        ScriptSession s = (ScriptSession) sc.getMock();
+        ScriptSession s = newMock(ScriptSession.class);
 
         IScriptToken nested = (IScriptToken) newMock(IScriptToken.class);
 
-        s.evaluate("EXPRESSION", Boolean.class);
-        sc.setReturnValue(Boolean.FALSE);
+        expect(s.evaluate("EXPRESSION", Boolean.class)).andReturn(Boolean.FALSE);
 
         StringBuffer buffer = new StringBuffer();
 
-        replayControls();
+        replay();
 
         IfToken t = new IfToken(true, "EXPRESSION", null);
         t.addToken(nested);
 
         t.write(buffer, s);
 
-        verifyControls();
+        verify();
     }
 
     public void testEvaluateMatch()
     {
-        MockControl sc = newControl(ScriptSession.class);
-        ScriptSession s = (ScriptSession) sc.getMock();
+        ScriptSession s = newMock(ScriptSession.class);
 
         IScriptToken nested = (IScriptToken) newMock(IScriptToken.class);
 
-        s.evaluate("EXPRESSION", Boolean.class);
-        sc.setReturnValue(Boolean.FALSE);
+        expect(s.evaluate("EXPRESSION", Boolean.class)).andReturn(Boolean.FALSE);
 
         StringBuffer buffer = new StringBuffer();
 
         nested.write(buffer, s);
 
-        replayControls();
+        replay();
 
         IfToken t = new IfToken(false, "EXPRESSION", null);
         t.addToken(nested);
 
         t.write(buffer, s);
 
-        verifyControls();
+        verify();
     }
 
     public void testEvaluateFailure()
@@ -103,13 +100,11 @@ public class TestIfToken extends HiveMindTestCase
         Location l = fabricateLocation(8);
         Throwable inner = new ApplicationRuntimeException("Simulated error.");
 
-        MockControl sc = newControl(ScriptSession.class);
-        ScriptSession s = (ScriptSession) sc.getMock();
+        ScriptSession s = newMock(ScriptSession.class);
 
-        s.evaluate("EXPRESSION", Boolean.class);
-        sc.setThrowable(inner);
+        expect(s.evaluate("EXPRESSION", Boolean.class)).andThrow(inner);
 
-        replayControls();
+        replay();
 
         IfToken t = new IfToken(false, "EXPRESSION", l);
 

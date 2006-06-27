@@ -14,6 +14,10 @@
 
 package org.apache.tapestry.web;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.io.CharArrayWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -23,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.util.ContentType;
 
 /**
@@ -32,7 +36,7 @@ import org.apache.tapestry.util.ContentType;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class ServletWebResponseTest extends HiveMindTestCase
+public class ServletWebResponseTest extends BaseComponentTestCase
 {
     private static class MockServletOutputStream extends ServletOutputStream
     {
@@ -48,16 +52,15 @@ public class ServletWebResponseTest extends HiveMindTestCase
         ServletOutputStream stream = new MockServletOutputStream();
 
         response.setContentType("foo/bar");
-        response.getOutputStream();
-        setReturnValue(response, stream);
+        expect(response.getOutputStream()).andReturn(stream);
 
-        replayControls();
+        replay();
 
         ServletWebResponse swr = new ServletWebResponse(response);
 
         assertSame(stream, swr.getOutputStream(new ContentType("foo/bar")));
 
-        verifyControls();
+        verify();
     }
 
     public void testGetOutputStreamFailure() throws Exception
@@ -67,10 +70,9 @@ public class ServletWebResponseTest extends HiveMindTestCase
         Throwable t = new IOException("Simulated failure.");
 
         response.setContentType("foo/bar");
-        response.getOutputStream();
-        setThrowable(response, t);
+        expect(response.getOutputStream()).andThrow(t);
 
-        replayControls();
+        replay();
 
         ServletWebResponse swr = new ServletWebResponse(response);
 
@@ -98,19 +100,18 @@ public class ServletWebResponseTest extends HiveMindTestCase
         
         trainGetWriter(response, writer);
 
-        replayControls();
+        replay();
 
         ServletWebResponse swr = new ServletWebResponse(response);
 
         assertSame(writer, swr.getPrintWriter(new ContentType("foo/bar")));
 
-        verifyControls();
+        verify();
     }
 
     private void trainGetWriter(HttpServletResponse response, PrintWriter writer) throws IOException
     {
-        response.getWriter();
-        setReturnValue(response, writer);
+        expect(response.getWriter()).andReturn(writer);
     }
     
     
@@ -126,24 +127,24 @@ public class ServletWebResponseTest extends HiveMindTestCase
         
         trainGetWriter(response, writer1);
         
-        replayControls();
+        replay();
 
         ServletWebResponse swr = new ServletWebResponse(response);
 
         assertSame(writer1, swr.getPrintWriter(new ContentType("foo/bar")));
 
-        verifyControls();
+        verify();
 
         response.reset();
         response.setContentType("biff/bazz");
         
         trainGetWriter(response, writer2);
         
-        replayControls();
+        replay();
 
         assertSame(writer2, swr.getPrintWriter(new ContentType("biff/bazz")));
 
-        verifyControls();
+        verify();
     }
     
     public void testGetSecondPrintWriterTomcatPatch() throws Exception
@@ -158,23 +159,23 @@ public class ServletWebResponseTest extends HiveMindTestCase
         
         trainGetWriter(response, writer1);
         
-        replayControls();
+        replay();
 
         ServletWebResponse swr = new ServletWebResponse(response, log, true);
 
         assertSame(writer1, swr.getPrintWriter(new ContentType("foo/bar")));
 
-        verifyControls();
+        verify();
 
         response.reset();
 
         trainGetWriter(response, writer2);
         
-        replayControls();
+        replay();
 
         assertSame(writer2, swr.getPrintWriter(new ContentType("foo/bar")));
 
-        verifyControls();
+        verify();
     }
     
     public void testGetSecondPrintWriterDifferentContentTypeTomcatPatch() throws Exception
@@ -189,13 +190,13 @@ public class ServletWebResponseTest extends HiveMindTestCase
         
         trainGetWriter(response, writer1);
         
-        replayControls();
+        replay();
 
         ServletWebResponse swr = new ServletWebResponse(response, log, true);
 
         assertSame(writer1, swr.getPrintWriter(new ContentType("foo/bar")));
 
-        verifyControls();
+        verify();
 
         response.reset();
         
@@ -203,16 +204,11 @@ public class ServletWebResponseTest extends HiveMindTestCase
         
         trainGetWriter(response, writer2);
         
-        replayControls();
+        replay();
 
         assertSame(writer2, swr.getPrintWriter(new ContentType("biff/bazz")));
 
-        verifyControls();
-    }    
-
-    private Log newLog()
-    {
-        return (Log)newMock(Log.class);
+        verify();
     }    
 
     public void testGetPrintWriterFailure() throws Exception
@@ -222,10 +218,9 @@ public class ServletWebResponseTest extends HiveMindTestCase
         Throwable t = new IOException("Simulated failure.");
 
         response.setContentType("foo/bar");
-        response.getWriter();
-        setThrowable(response, t);
+        expect(response.getWriter()).andThrow(t);
 
-        replayControls();
+        replay();
 
         ServletWebResponse swr = new ServletWebResponse(response);
 
@@ -249,13 +244,13 @@ public class ServletWebResponseTest extends HiveMindTestCase
 
         response.reset();
 
-        replayControls();
+        replay();
 
         ServletWebResponse swr = new ServletWebResponse(response);
 
         swr.reset();
 
-        verifyControls();
+        verify();
     }
 
     private HttpServletResponse newResponse()
@@ -272,7 +267,7 @@ public class ServletWebResponseTest extends HiveMindTestCase
         response.setIntHeader("size", 33);
         response.sendError(99, "foo!");
 
-        replayControls();
+        replay();
 
         ServletWebResponse swr = new ServletWebResponse(response);
 
@@ -281,7 +276,7 @@ public class ServletWebResponseTest extends HiveMindTestCase
         swr.setIntHeader("size", 33);
         swr.sendError(99, "foo!");
 
-        verifyControls();
+        verify();
 
     }
 

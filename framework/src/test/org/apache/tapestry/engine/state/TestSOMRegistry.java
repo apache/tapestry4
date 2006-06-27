@@ -14,6 +14,10 @@
 
 package org.apache.tapestry.engine.state;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,8 +25,7 @@ import java.util.Map;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
-import org.apache.hivemind.test.HiveMindTestCase;
-import org.easymock.MockControl;
+import org.apache.tapestry.BaseComponentTestCase;
 
 /**
  * Tests {@link TestSOMRegistry}.
@@ -30,18 +33,17 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestSOMRegistry extends HiveMindTestCase
+public class TestSOMRegistry extends BaseComponentTestCase
 {
     public void testInitializeAndGet()
     {
         Object stateObject = new Object();
-        MockControl pmc = newControl(StateObjectPersistenceManager.class);
-        StateObjectPersistenceManager pm = (StateObjectPersistenceManager) pmc.getMock();
+        
+        StateObjectPersistenceManager pm = newMock(StateObjectPersistenceManager.class);
 
-        StateObjectFactory f = (StateObjectFactory) newMock(StateObjectFactory.class);
+        StateObjectFactory f = newMock(StateObjectFactory.class);
 
-        pm.get("fred", f);
-        pmc.setReturnValue(stateObject);
+        expect(pm.get("fred", f)).andReturn(stateObject);
 
         StateObjectContribution c = new StateObjectContribution();
         c.setName("fred");
@@ -54,7 +56,7 @@ public class TestSOMRegistry extends HiveMindTestCase
         Map persistenceManagers = new HashMap();
         persistenceManagers.put("wierd", pm);
 
-        replayControls();
+        replay();
 
         SOMRegistryImpl r = new SOMRegistryImpl();
         r.setApplicationContributions(applicationContributions);
@@ -66,7 +68,7 @@ public class TestSOMRegistry extends HiveMindTestCase
 
         assertSame(stateObject, som.get());
 
-        verifyControls();
+        verify();
     }
 
     public void testInitializeUnknownScope()
@@ -84,7 +86,7 @@ public class TestSOMRegistry extends HiveMindTestCase
 
         log.error(StateMessages.unknownScope("fred", "wierd"), l, null);
 
-        replayControls();
+        replay();
 
         SOMRegistryImpl r = new SOMRegistryImpl();
         r.setApplicationContributions(applicationContributions);
@@ -93,7 +95,7 @@ public class TestSOMRegistry extends HiveMindTestCase
         r.setErrorLog(log);
         r.initializeService();
 
-        verifyControls();
+        verify();
     }
 
     public void testGetUnknownObjectName()

@@ -15,6 +15,9 @@
 package org.apache.tapestry.form.validator;
 
 import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNotNull;
+import static org.testng.AssertJUnit.assertSame;
 
 import java.util.Collections;
 
@@ -23,6 +26,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
+import org.apache.tapestry.json.JSONArray;
 import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.valid.ValidationConstants;
 import org.apache.tapestry.valid.ValidationConstraint;
@@ -42,11 +46,11 @@ public class TestRequired extends BaseValidatorTestCase
         IFormComponent field = newField();
         ValidationMessages messages = newMessages();
 
-        replayControls();
+        replay();
 
         new Required().validate(field, messages, "not null");
 
-        verifyControls();
+        verify();
     }
 
     public void testValidateNull() throws Exception
@@ -59,7 +63,7 @@ public class TestRequired extends BaseValidatorTestCase
                 { "Fred" },
                 "Default Message for Fred.");
 
-        replayControls();
+        replay();
 
         try
         {
@@ -72,7 +76,7 @@ public class TestRequired extends BaseValidatorTestCase
             assertSame(ValidationConstraint.REQUIRED, ex.getConstraint());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testValidateEmptyString() throws Exception
@@ -85,7 +89,7 @@ public class TestRequired extends BaseValidatorTestCase
                 { "Fred" },
                 "Default Message for Fred.");
 
-        replayControls();
+        replay();
 
         try
         {
@@ -98,7 +102,7 @@ public class TestRequired extends BaseValidatorTestCase
             assertSame(ValidationConstraint.REQUIRED, ex.getConstraint());
         }
         
-        verifyControls();
+        verify();
     }
 
     public void testValidateEmptyCollection() throws Exception
@@ -111,7 +115,7 @@ public class TestRequired extends BaseValidatorTestCase
                 { "Fred" },
                 "Default Message for Fred.");
 
-        replayControls();
+        replay();
 
         try
         {
@@ -124,7 +128,7 @@ public class TestRequired extends BaseValidatorTestCase
             assertSame(ValidationConstraint.REQUIRED, ex.getConstraint());
         }
         
-        verifyControls();
+        verify();
     }
 
     public void testValidateNullCustomMessage() throws Exception
@@ -137,7 +141,7 @@ public class TestRequired extends BaseValidatorTestCase
                 { "Fred" },
                 "Custom Message for Fred.");
 
-        replayControls();
+        replay();
 
         try
         {
@@ -152,14 +156,14 @@ public class TestRequired extends BaseValidatorTestCase
             assertSame(ValidationConstraint.REQUIRED, ex.getConstraint());
         }
 
-        verifyControls();
+        verify();
     }
-
-    // TODO: Need to validate JSON object contributions!
+    
     public void testRenderContribution()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
+        JSONObject json = new JSONObject();
         
         FormComponentContributorContext context = 
             (FormComponentContributorContext)newMock(FormComponentContributorContext.class);
@@ -168,7 +172,7 @@ public class TestRequired extends BaseValidatorTestCase
         
         context.registerForFocus(ValidationConstants.REQUIRED_FIELD);
         
-        expect(context.getProfile()).andReturn(new JSONObject());
+        expect(context.getProfile()).andReturn(json);
         
         trainFormatMessage(
                 context,
@@ -178,12 +182,21 @@ public class TestRequired extends BaseValidatorTestCase
                 { "Fred" },
                 "Default\\Message for Fred.");
         
-        replayControls();
+        replay();
         
         new Required().renderContribution(writer, cycle, context, field);
-        verifyControls();
+        
+        verify();
+        
+        assertNotNull(json.get(ValidationConstants.REQUIRED));
+        JSONArray arr = json.getJSONArray(ValidationConstants.REQUIRED);
+        assertEquals("fred", arr.getString(0));
+        
+        assertNotNull(json.get("fred"));
+        JSONObject obj = json.getJSONObject("fred");
+        assertEquals("Default\\Message for Fred.", obj.getString(ValidationConstants.REQUIRED));
     }
-
+    
     public void testIsRequired()
     {
         assertEquals(true, new Required().isRequired());

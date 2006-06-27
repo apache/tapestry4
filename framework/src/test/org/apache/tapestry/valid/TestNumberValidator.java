@@ -14,13 +14,12 @@
 
 package org.apache.tapestry.valid;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import org.apache.tapestry.form.IFormComponent;
-import org.apache.tapestry.valid.NumberValidator;
-import org.apache.tapestry.valid.ValidationConstraint;
-import org.apache.tapestry.valid.ValidatorException;
 
 /**
  * Test the {@link NumberValidator}.
@@ -37,11 +36,11 @@ public class TestNumberValidator extends BaseValidatorTestCase
     {
         IFormComponent field = newField();
 
-        replayControls();
+        replay();
 
         testPassThru(field, valueTypeClass, input);
 
-        verifyControls();
+        verify();
     }
 
     private void testPassThru(IFormComponent field, Class valueTypeClass, Number input)
@@ -98,7 +97,7 @@ public class TestNumberValidator extends BaseValidatorTestCase
     {
         IFormComponent field = newField("testUnderMinimum");
 
-        replayControls();
+        replay();
 
         v.setMinimum(new Integer(100));
         v.setMaximum(new Integer(200));
@@ -115,14 +114,14 @@ public class TestNumberValidator extends BaseValidatorTestCase
             assertEquals(ValidationConstraint.TOO_SMALL, ex.getConstraint());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testOverrideNumberTooSmallMessage()
     {
         IFormComponent field = newField("underMinimum");
 
-        replayControls();
+        replay();
 
         v.setMinimum(new Integer(100));
         v.setNumberTooSmallMessage("Anything under 100 for {0} is worth jack.");
@@ -137,14 +136,14 @@ public class TestNumberValidator extends BaseValidatorTestCase
             assertEquals("Anything under 100 for underMinimum is worth jack.", ex.getMessage());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testOverMaximum()
     {
         IFormComponent field = newField("overMaximum");
 
-        replayControls();
+        replay();
 
         v.setMinimum(new Integer(100));
         v.setMaximum(new Integer(200));
@@ -161,14 +160,14 @@ public class TestNumberValidator extends BaseValidatorTestCase
             assertEquals(ValidationConstraint.TOO_LARGE, ex.getConstraint());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testOverrideNumberTooLargeMessage()
     {
         IFormComponent field = newField("overMaximum");
 
-        replayControls();
+        replay();
 
         v.setMaximum(new Integer(200));
         v.setNumberTooLargeMessage("You think I want a value larger than {1} for {0}?");
@@ -184,7 +183,7 @@ public class TestNumberValidator extends BaseValidatorTestCase
                     .getMessage());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testInvalidFormat()
@@ -192,7 +191,7 @@ public class TestNumberValidator extends BaseValidatorTestCase
         v.setValueTypeClass(Integer.class);
         IFormComponent field = newField("invalidFormat");
 
-        replayControls();
+        replay();
 
         try
         {
@@ -205,7 +204,7 @@ public class TestNumberValidator extends BaseValidatorTestCase
             assertEquals(ValidationConstraint.NUMBER_FORMAT, ex.getConstraint());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testOverrideInvalidNumericFormatMessage()
@@ -215,7 +214,7 @@ public class TestNumberValidator extends BaseValidatorTestCase
 
         IFormComponent field = newField("invalidFormat");
 
-        replayControls();
+        replay();
 
         try
         {
@@ -228,7 +227,7 @@ public class TestNumberValidator extends BaseValidatorTestCase
             assertEquals(ValidationConstraint.NUMBER_FORMAT, ex.getConstraint());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testBigInteger() throws ValidatorException

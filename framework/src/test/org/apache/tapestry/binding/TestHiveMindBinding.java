@@ -14,11 +14,14 @@
 
 package org.apache.tapestry.binding;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertSame;
+
 import org.apache.hivemind.Location;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.services.InjectedValueProvider;
-import org.easymock.MockControl;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.binding.HiveMindBinding}and
@@ -27,6 +30,7 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestHiveMindBinding extends BindingTestCase
 {
     private IBinding newBinding(ValueConverter converter, InjectedValueProvider provider,
@@ -44,21 +48,19 @@ public class TestHiveMindBinding extends BindingTestCase
     {
         Object injectedValue = new Object();
         Location l = fabricateLocation(12);
+        
+        InjectedValueProvider provider = newMock(InjectedValueProvider.class);
 
-        MockControl control = newControl(InjectedValueProvider.class);
-        InjectedValueProvider provider = (InjectedValueProvider) control.getMock();
-
-        provider.obtainValue("spring:bean", l);
-        control.setReturnValue(injectedValue);
+        expect(provider.obtainValue("spring:bean", l)).andReturn(injectedValue);
 
         ValueConverter converter = newValueConverter();
 
-        replayControls();
+        replay();
 
         IBinding binding = newBinding(converter, provider, "spring:bean", l);
 
         assertSame(injectedValue, binding.getObject());
 
-        verifyControls();
+        verify();
     }
 }

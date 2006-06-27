@@ -14,13 +14,16 @@
 
 package org.apache.tapestry.asset;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+
 import java.net.URL;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.impl.DefaultClassResolver;
-import org.apache.hivemind.test.HiveMindTestCase;
-import org.easymock.MockControl;
+import org.apache.tapestry.BaseComponentTestCase;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.asset.ResourceDigestSourceImpl}.
@@ -28,7 +31,8 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestResourceDigestSource extends HiveMindTestCase
+@Test
+public class TestResourceDigestSource extends BaseComponentTestCase
 {
     public void testSuccess()
     {
@@ -57,15 +61,13 @@ public class TestResourceDigestSource extends HiveMindTestCase
 
     public void testCache()
     {
-        MockControl control = newControl(ClassResolver.class);
-        ClassResolver resolver = (ClassResolver) control.getMock();
+        ClassResolver resolver = newMock(ClassResolver.class);
 
         URL url = getClass().getResource("tapestry-in-action.png");
 
-        resolver.getResource("/foo");
-        control.setReturnValue(url);
+        expect(resolver.getResource("/foo")).andReturn(url);
 
-        replayControls();
+        replay();
 
         ResourceDigestSourceImpl s = new ResourceDigestSourceImpl();
         s.setClassResolver(resolver);
@@ -77,12 +79,11 @@ public class TestResourceDigestSource extends HiveMindTestCase
 
         assertEquals("a5f4663532ea3efe22084df086482290", s.getDigestForResource("/foo"));
 
-        verifyControls();
+        verify();
 
-        resolver.getResource("/foo");
-        control.setReturnValue(url);
+        expect(resolver.getResource("/foo")).andReturn(url);
 
-        replayControls();
+        replay();
 
         // This clears the cache
 
@@ -92,7 +93,7 @@ public class TestResourceDigestSource extends HiveMindTestCase
 
         assertEquals("a5f4663532ea3efe22084df086482290", s.getDigestForResource("/foo"));
 
-        verifyControls();
+        verify();
 
     }
 }

@@ -14,11 +14,17 @@
 
 package org.apache.tapestry.record;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNull;
+import static org.testng.AssertJUnit.assertSame;
+import static org.testng.AssertJUnit.assertTrue;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.engine.ServiceEncoding;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebSession;
@@ -29,7 +35,7 @@ import org.apache.tapestry.web.WebSession;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class SessionPropertyPersistenceStrategyTest extends HiveMindTestCase
+public class SessionPropertyPersistenceStrategyTest extends BaseComponentTestCase
 {
     private ServiceEncoding newEncoding()
     {
@@ -40,9 +46,7 @@ public class SessionPropertyPersistenceStrategyTest extends HiveMindTestCase
     {
         WebRequest request = (WebRequest) newMock(WebRequest.class);
 
-        request.getSession(create);
-
-        setReturnValue(request, session);
+        expect(request.getSession(create)).andReturn(session);
 
         return request;
     }
@@ -68,10 +72,8 @@ public class SessionPropertyPersistenceStrategyTest extends HiveMindTestCase
     {
         WebSession session = (WebSession) newMock(WebSession.class);
 
-        session.getAttributeNames();
-
-        setReturnValue(session, Collections.singletonList(attributeName));
-
+        expect(session.getAttributeNames()).andReturn(Collections.singletonList(attributeName));
+        
         if (value != null)
             trainGetAttribute(session, attributeName, value);
 
@@ -82,13 +84,13 @@ public class SessionPropertyPersistenceStrategyTest extends HiveMindTestCase
     {
         ServiceEncoding encoding = newEncoding();
 
-        replayControls();
+        replay();
 
         SessionPropertyPersistenceStrategy strategy = new SessionPropertyPersistenceStrategy();
 
         strategy.addParametersForPersistentProperties(encoding, false);
 
-        verifyControls();
+        verify();
     }
 
     public void testClearPageProperty()
@@ -98,7 +100,7 @@ public class SessionPropertyPersistenceStrategyTest extends HiveMindTestCase
 
         session.setAttribute("session,myapp,Help,bar", null);
 
-        replayControls();
+        replay();
 
         SessionPropertyPersistenceStrategy s = new SessionPropertyPersistenceStrategy();
 
@@ -107,7 +109,7 @@ public class SessionPropertyPersistenceStrategyTest extends HiveMindTestCase
 
         s.store("Help", null, "bar", null);
 
-        verifyControls();
+        verify();
     }
 
     public void testDiscardChangesNoMatch()
@@ -115,28 +117,28 @@ public class SessionPropertyPersistenceStrategyTest extends HiveMindTestCase
         WebSession session = newSession("session,myapp,Home,foo", false);
         WebRequest request = newRequest(false, session);
 
-        replayControls();
+        replay();
 
         SessionPropertyPersistenceStrategy s = new SessionPropertyPersistenceStrategy();
         s.setRequest(request);
         s.setApplicationId("myapp");
 
         s.discardStoredChanges("Foo");
-        verifyControls();
+        verify();
     }
 
     public void testDiscardChangesNoSession()
     {
         WebRequest request = newRequest(false, null);
 
-        replayControls();
+        replay();
 
         SessionPropertyPersistenceStrategy s = new SessionPropertyPersistenceStrategy();
         s.setRequest(request);
 
         s.discardStoredChanges("Foo");
 
-        verifyControls();
+        verify();
     }
 
     public void testDiscardChangesWithMatch()
@@ -144,7 +146,7 @@ public class SessionPropertyPersistenceStrategyTest extends HiveMindTestCase
         WebSession session = newSession("session,myapp,Home,foo", true);
         WebRequest request = newRequest(false, session);
 
-        replayControls();
+        replay();
 
         SessionPropertyPersistenceStrategy s = new SessionPropertyPersistenceStrategy();
         s.setRequest(request);
@@ -152,7 +154,7 @@ public class SessionPropertyPersistenceStrategyTest extends HiveMindTestCase
 
         s.discardStoredChanges("Home");
 
-        verifyControls();
+        verify();
     }
 
     public void testGetStoreChangesNoMatch()
@@ -160,7 +162,7 @@ public class SessionPropertyPersistenceStrategyTest extends HiveMindTestCase
         WebSession session = newSession("session,myapp,Home,foo,bar", null);
         WebRequest request = newRequest(false, session);
 
-        replayControls();
+        replay();
 
         SessionPropertyPersistenceStrategy s = new SessionPropertyPersistenceStrategy();
         s.setRequest(request);
@@ -170,21 +172,21 @@ public class SessionPropertyPersistenceStrategyTest extends HiveMindTestCase
 
         assertTrue(actual.isEmpty());
 
-        verifyControls();
+        verify();
     }
 
     public void testGetStoredChangesNoSession()
     {
         WebRequest request = newRequest(false, null);
 
-        replayControls();
+        replay();
 
         SessionPropertyPersistenceStrategy s = new SessionPropertyPersistenceStrategy();
         s.setRequest(request);
 
         assertTrue(s.getStoredChanges("Foo").isEmpty());
 
-        verifyControls();
+        verify();
     }
 
     public void testGetStoredComponentProperty()
@@ -193,7 +195,7 @@ public class SessionPropertyPersistenceStrategyTest extends HiveMindTestCase
         WebSession session = newSession("session,myapp,Help,zap.biff,bar", value);
         WebRequest request = newRequest(false, session);
 
-        replayControls();
+        replay();
 
         SessionPropertyPersistenceStrategy s = new SessionPropertyPersistenceStrategy();
         s.setRequest(request);
@@ -209,7 +211,7 @@ public class SessionPropertyPersistenceStrategyTest extends HiveMindTestCase
         assertEquals("bar", pc.getPropertyName());
         assertSame(value, pc.getNewValue());
 
-        verifyControls();
+        verify();
     }
 
     public void testGetStoredPageProperty()
@@ -218,7 +220,7 @@ public class SessionPropertyPersistenceStrategyTest extends HiveMindTestCase
         WebSession session = newSession("session,myapp,Help,bar", value);
         WebRequest request = newRequest(false, session);
 
-        replayControls();
+        replay();
 
         SessionPropertyPersistenceStrategy s = new SessionPropertyPersistenceStrategy();
         s.setRequest(request);
@@ -234,7 +236,7 @@ public class SessionPropertyPersistenceStrategyTest extends HiveMindTestCase
         assertEquals("bar", pc.getPropertyName());
         assertSame(value, pc.getNewValue());
 
-        verifyControls();
+        verify();
     }
 
     public void testStoreComponentProperty()
@@ -246,7 +248,7 @@ public class SessionPropertyPersistenceStrategyTest extends HiveMindTestCase
 
         session.setAttribute("session,gloop,Nerf,zip.zap,spaz", value);
 
-        replayControls();
+        replay();
 
         SessionPropertyPersistenceStrategy s = new SessionPropertyPersistenceStrategy();
 
@@ -255,7 +257,7 @@ public class SessionPropertyPersistenceStrategyTest extends HiveMindTestCase
 
         s.store("Nerf", "zip.zap", "spaz", value);
 
-        verifyControls();
+        verify();
     }
 
     public void testStorePageProperty()
@@ -267,7 +269,7 @@ public class SessionPropertyPersistenceStrategyTest extends HiveMindTestCase
 
         session.setAttribute("session,myapp,Home,foo", value);
 
-        replayControls();
+        replay();
 
         SessionPropertyPersistenceStrategy s = new SessionPropertyPersistenceStrategy();
 
@@ -276,18 +278,16 @@ public class SessionPropertyPersistenceStrategyTest extends HiveMindTestCase
 
         s.store("Home", null, "foo", value);
 
-        verifyControls();
+        verify();
     }
 
     private void trainGetAttribute(WebSession session, String attributeName, Object value)
     {
-        session.getAttribute(attributeName);
-        setReturnValue(session, value);
+        expect(session.getAttribute(attributeName)).andReturn(value);
     }
 
     private void trainGetAttributeNames(WebSession session, List names)
     {
-        session.getAttributeNames();
-        setReturnValue(session, names);
+        expect(session.getAttributeNames()).andReturn(names);
     }
 }

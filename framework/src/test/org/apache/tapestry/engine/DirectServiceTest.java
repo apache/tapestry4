@@ -14,7 +14,10 @@
 
 package org.apache.tapestry.engine;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -75,11 +78,11 @@ public class DirectServiceTest extends ServiceTestCase
 
         trainConstructLink(lf, ds, false, parameters, true, link);
 
-        replayControls();
+        replay();
 
         assertSame(link, ds.getLink(false, new DirectServiceParameter(c, serviceParameters)));
 
-        verifyControls();
+        verify();
     }
 
     public void testGetLinkOnSamePageForPost()
@@ -113,11 +116,11 @@ public class DirectServiceTest extends ServiceTestCase
 
         trainConstructLink(lf, ds, true, parameters, true, link);
 
-        replayControls();
+        replay();
 
         assertSame(link, ds.getLink(true, new DirectServiceParameter(c, serviceParameters)));
 
-        verifyControls();
+        verify();
     }
 
     public void testGetLinkOnSamePageStateful()
@@ -151,11 +154,11 @@ public class DirectServiceTest extends ServiceTestCase
 
         trainConstructLink(lf, ds, false, parameters, true, link);
 
-        replayControls();
+        replay();
 
         assertSame(link, ds.getLink(false, new DirectServiceParameter(c, serviceParameters)));
 
-        verifyControls();
+        verify();
     }
 
     public void testGetLinkOnDifferentPage()
@@ -189,11 +192,11 @@ public class DirectServiceTest extends ServiceTestCase
 
         trainConstructLink(lf, ds, false, parameters, true, link);
 
-        replayControls();
+        replay();
 
         assertSame(link, ds.getLink(false, new DirectServiceParameter(c, serviceParameters)));
 
-        verifyControls();
+        verify();
     }
 
     public void testServiceSimple() throws Exception
@@ -223,7 +226,7 @@ public class DirectServiceTest extends ServiceTestCase
 
         rr.renderResponse(cycle);
 
-        replayControls();
+        replay();
 
         DirectService ds = new DirectService();
         ds.setLinkFactory(lf);
@@ -231,7 +234,7 @@ public class DirectServiceTest extends ServiceTestCase
 
         ds.service(cycle);
 
-        verifyControls();
+        verify();
     }
 
     /**
@@ -269,7 +272,7 @@ public class DirectServiceTest extends ServiceTestCase
 
         rr.renderResponse(cycle);
 
-        replayControls();
+        replay();
 
         DirectService ds = new DirectService();
         ds.setLinkFactory(lf);
@@ -277,7 +280,7 @@ public class DirectServiceTest extends ServiceTestCase
 
         ds.service(cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testServiceNotDirect() throws Exception
@@ -300,7 +303,7 @@ public class DirectServiceTest extends ServiceTestCase
         trainGetExtendedId(c, "ActivePage/fred.barney");
         trainGetLocation(c, l);
 
-        replayControls();
+        replay();
 
         DirectService ds = new DirectService();
 
@@ -318,7 +321,7 @@ public class DirectServiceTest extends ServiceTestCase
             assertSame(l, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testSessionActiveAndRequired() throws Exception
@@ -352,7 +355,7 @@ public class DirectServiceTest extends ServiceTestCase
 
         rr.renderResponse(cycle);
 
-        replayControls();
+        replay();
 
         DirectService ds = new DirectService();
         ds.setLinkFactory(lf);
@@ -361,7 +364,7 @@ public class DirectServiceTest extends ServiceTestCase
 
         ds.service(cycle);
 
-        verifyControls();
+        verify();
     }
 
     protected void trainIsStateful(IDirect direct, boolean isStateful)
@@ -393,7 +396,7 @@ public class DirectServiceTest extends ServiceTestCase
         trainGetLocation(page, l);
         trainGetPageName(page, "ActivePage");
 
-        replayControls();
+        replay();
 
         DirectService ds = new DirectService();
         ds.setRequest(request);
@@ -414,6 +417,6 @@ public class DirectServiceTest extends ServiceTestCase
             assertSame(page, ex.getPage());
         }
 
-        verifyControls();
+        verify();
     }
 }

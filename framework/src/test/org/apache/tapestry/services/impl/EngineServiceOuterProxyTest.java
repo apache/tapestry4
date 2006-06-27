@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.services.impl;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
@@ -47,7 +50,7 @@ public class EngineServiceOuterProxyTest extends AbstractEngineServiceProxyTestC
 
         delegate.service(cycle);
 
-        replayControls();
+        replay();
 
         EngineServiceOuterProxy proxy = new EngineServiceOuterProxy("xxx");
         proxy.installDelegate(delegate);
@@ -56,7 +59,7 @@ public class EngineServiceOuterProxyTest extends AbstractEngineServiceProxyTestC
 
         proxy.service(cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testGetLink() throws Exception
@@ -67,21 +70,21 @@ public class EngineServiceOuterProxyTest extends AbstractEngineServiceProxyTestC
 
         trainGetLink(delegate, false, parameter, link);
 
-        replayControls();
+        replay();
 
         EngineServiceOuterProxy proxy = new EngineServiceOuterProxy("xxx");
         proxy.installDelegate(delegate);
 
         assertSame(link, proxy.getLink(false, parameter));
 
-        verifyControls();
+        verify();
 
         trainGetLink(delegate, true, parameter, link);
 
-        replayControls();
+        replay();
 
         assertSame(link, proxy.getLink(true, parameter));
 
-        verifyControls();
+        verify();
     }
 }

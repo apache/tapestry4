@@ -14,11 +14,16 @@
 
 package org.apache.tapestry.web;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNull;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.net.URL;
 import java.util.Locale;
 
 import org.apache.hivemind.Resource;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 
 /**
  * Tests for {@link org.apache.tapestry.web.WebContextResource}.
@@ -26,7 +31,7 @@ import org.apache.hivemind.test.HiveMindTestCase;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class WebContextResourceTest extends HiveMindTestCase
+public class WebContextResourceTest extends BaseComponentTestCase
 {
     private WebContext newContext()
     {
@@ -37,7 +42,7 @@ public class WebContextResourceTest extends HiveMindTestCase
     {
         WebContext context = newContext();
 
-        replayControls();
+        replay();
 
         Resource r = new WebContextResource(context, "/foo/bar/baz_en.html", Locale.ENGLISH);
 
@@ -49,7 +54,7 @@ public class WebContextResourceTest extends HiveMindTestCase
 
         assertEquals(Locale.ENGLISH, r.getLocale());
 
-        verifyControls();
+        verify();
     }
 
     public void testLocalizationExists() throws Exception
@@ -58,7 +63,7 @@ public class WebContextResourceTest extends HiveMindTestCase
 
         trainGetResource(context, "/foo/bar/baz_en.html", new URL("http://foo.com"));
 
-        replayControls();
+        replay();
 
         Resource r1 = new WebContextResource(context, "/foo/bar/baz.html");
 
@@ -67,13 +72,12 @@ public class WebContextResourceTest extends HiveMindTestCase
         assertEquals("/foo/bar/baz_en.html", r2.getPath());
         assertEquals(Locale.ENGLISH, r2.getLocale());
 
-        verifyControls();
+        verify();
     }
 
     private void trainGetResource(WebContext context, String path, URL url)
     {
-        context.getResource(path);
-        setReturnValue(context, url);
+        expect(context.getResource(path)).andReturn(url);
     }
 
     public void testLocalizationSame() throws Exception
@@ -83,7 +87,7 @@ public class WebContextResourceTest extends HiveMindTestCase
         trainGetResource(context, "/foo/bar/baz_en.html", null);
         trainGetResource(context, "/foo/bar/baz.html", new URL("http://foo.com"));
 
-        replayControls();
+        replay();
 
         Resource r1 = new WebContextResource(context, "/foo/bar/baz.html");
 
@@ -91,7 +95,7 @@ public class WebContextResourceTest extends HiveMindTestCase
 
         assertSame(r2, r1);
 
-        verifyControls();
+        verify();
     }
 
     public void testLocalizationMissing() throws Exception
@@ -101,27 +105,27 @@ public class WebContextResourceTest extends HiveMindTestCase
         trainGetResource(context, "/foo/bar/baz_en.html", null);
         trainGetResource(context, "/foo/bar/baz.html", null);
 
-        replayControls();
+        replay();
 
         Resource r1 = new WebContextResource(context, "/foo/bar/baz.html");
 
         assertNull(r1.getLocalization(Locale.ENGLISH));
 
-        verifyControls();
+        verify();
     }
 
     public void testGetRelativeResource()
     {
         WebContext context = newContext();
 
-        replayControls();
+        replay();
 
         Resource r1 = new WebContextResource(context, "/foo/bar/baz.html");
         Resource r2 = r1.getRelativeResource("baz.gif");
 
         assertEquals("/foo/bar/baz.gif", r2.getPath());
 
-        verifyControls();
+        verify();
     }
 
     public void testGetExtensionlessResource() throws Exception
@@ -130,7 +134,7 @@ public class WebContextResourceTest extends HiveMindTestCase
 
         trainGetResource(context, "/foo/bar/baz_en", new URL("http://foo.com"));
 
-        replayControls();
+        replay();
 
         Resource r1 = new WebContextResource(context, "/foo/bar/baz");
 
@@ -139,6 +143,6 @@ public class WebContextResourceTest extends HiveMindTestCase
         assertEquals("/foo/bar/baz_en", r2.getPath());
         assertEquals(Locale.ENGLISH, r2.getLocale());
 
-        verifyControls();
+        verify();
     }
 }

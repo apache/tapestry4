@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.services.impl;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -23,7 +26,7 @@ import java.util.Map;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorLog;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IEngineService;
@@ -44,16 +47,11 @@ import org.apache.tapestry.web.WebRequest;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class LinkFactoryTest extends HiveMindTestCase
+public class LinkFactoryTest extends BaseComponentTestCase
 {
     private ErrorLog newErrorLog()
     {
-        return (ErrorLog) newMock(ErrorLog.class);
-    }
-
-    private WebRequest newRequest()
-    {
-        return (WebRequest) newMock(WebRequest.class);
+        return newMock(ErrorLog.class);
     }
 
     private static class NoopEncoder implements ServiceEncoder
@@ -105,24 +103,12 @@ public class LinkFactoryTest extends HiveMindTestCase
 
     private IEngine newEngine()
     {
-        return (IEngine) newMock(IEngine.class);
-    }
-
-    private IRequestCycle newCycle()
-    {
-        return (IRequestCycle) newMock(IRequestCycle.class);
+        return newMock(IEngine.class);
     }
 
     private void trainGetOutputEncoding(IEngine engine, String outputEncoding)
     {
-        engine.getOutputEncoding();
-        setReturnValue(engine, outputEncoding);
-    }
-
-    private void trainGetEngine(IRequestCycle cycle, IEngine engine)
-    {
-        cycle.getEngine();
-        setReturnValue(cycle, engine);
+        expect(engine.getOutputEncoding()).andReturn(outputEncoding);
     }
 
     public void testNoEncoders()
@@ -138,7 +124,7 @@ public class LinkFactoryTest extends HiveMindTestCase
 
         trainEncodeURL(cycle, "/context/app?service=myservice", "/context/app?service=myservice");
         
-        replayControls();
+        replay();
 
         LinkFactoryImpl lf = new LinkFactoryImpl();
 
@@ -157,15 +143,14 @@ public class LinkFactoryTest extends HiveMindTestCase
 
         assertEquals("/context/app?service=myservice", link.getURL());
         
-        verifyControls();
+        verify();
     }
 
     private IEngineService newService(String name)
     {
-        IEngineService service = (IEngineService) newMock(IEngineService.class);
+        IEngineService service = newMock(IEngineService.class);
 
-        service.getName();
-        setReturnValue(service, name);
+        expect(service.getName()).andReturn(name);
 
         return service;
     }
@@ -183,7 +168,7 @@ public class LinkFactoryTest extends HiveMindTestCase
 
         trainEncodeURL(cycle, "/context/app?foo=bar&service=myservice", "{encoded}");
 
-        replayControls();
+        replay();
 
         LinkFactoryImpl lf = new LinkFactoryImpl();
 
@@ -203,13 +188,7 @@ public class LinkFactoryTest extends HiveMindTestCase
 
         assertEquals("{encoded}", link.getURL());
 
-        verifyControls();
-    }
-
-    private void trainEncodeURL(IRequestCycle cycle, String inputURL, String encodeURL)
-    {
-        cycle.encodeURL(inputURL);
-        setReturnValue(cycle, encodeURL);
+        verify();
     }
 
     public void testNoopEncoders()
@@ -224,7 +203,7 @@ public class LinkFactoryTest extends HiveMindTestCase
         trainGetOutputEncoding(engine, "utf-8");
         trainEncodeURL(cycle, "/context/app?service=myservice", "/context/app?service=myservice");
 
-        replayControls();
+        replay();
 
         List l = new ArrayList();
         l.add(newContribution("fred", new NoopEncoder()));
@@ -247,7 +226,7 @@ public class LinkFactoryTest extends HiveMindTestCase
 
         assertEquals("/context/app?service=myservice", link.getURL());
         
-        verifyControls();
+        verify();
     }
 
     public void testActiveEncoder()
@@ -262,7 +241,7 @@ public class LinkFactoryTest extends HiveMindTestCase
         trainGetOutputEncoding(engine, "utf-8");
         trainEncodeURL(cycle, "/context/Barney.html", "/context/Barney.html");
 
-        replayControls();
+        replay();
 
         PageServiceEncoder e = new PageServiceEncoder();
         e.setServiceName("page");
@@ -288,7 +267,7 @@ public class LinkFactoryTest extends HiveMindTestCase
 
         assertEquals("/context/Barney.html", link.getURL());
 
-        verifyControls();
+        verify();
     }
 
     public void testServiceNameIsNull()
@@ -297,7 +276,7 @@ public class LinkFactoryTest extends HiveMindTestCase
 
         Map parameters = new HashMap();
 
-        replayControls();
+        replay();
 
         LinkFactory lf = new LinkFactoryImpl();
 
@@ -311,7 +290,7 @@ public class LinkFactoryTest extends HiveMindTestCase
             assertEquals(ImplMessages.serviceNameIsNull(), ex.getMessage());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testWithServiceParameters()
@@ -326,7 +305,7 @@ public class LinkFactoryTest extends HiveMindTestCase
         trainGetOutputEncoding(engine, "utf-8");
         trainEncodeURL(cycle, "/context/Barney.ext?sp=T", "/context/Barney.ext?sp=T");
 
-        replayControls();
+        replay();
 
         PageServiceEncoder e = new PageServiceEncoder();
         e.setServiceName("external");
@@ -355,6 +334,6 @@ public class LinkFactoryTest extends HiveMindTestCase
 
         assertEquals("/context/Barney.ext?sp=T", link.getURL());
 
-        verifyControls();
+        verify();
     }
 }

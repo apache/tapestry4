@@ -14,13 +14,15 @@
 
 package org.apache.tapestry.script;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.hivemind.test.HiveMindTestCase;
-import org.easymock.MockControl;
+import org.apache.tapestry.BaseComponentTestCase;
 
 /**
  * Tests {@link org.apache.tapestry.script.ForeachToken}.
@@ -28,7 +30,7 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestForeachToken extends HiveMindTestCase
+public class TestForeachToken extends BaseComponentTestCase
 {
     private static class EchoToken extends AbstractToken
     {
@@ -53,22 +55,19 @@ public class TestForeachToken extends HiveMindTestCase
     public void testFull()
     {
         Map symbols = new HashMap();
-
-        MockControl sc = newControl(ScriptSession.class);
-        ScriptSession s = (ScriptSession) sc.getMock();
+        
+        ScriptSession s = newMock(ScriptSession.class);
 
         StringBuffer buffer = new StringBuffer();
 
         Iterator i = Arrays.asList(new String[]
         { "buffy", "angel" }).iterator();
 
-        s.evaluate("EXPRESSION", Iterator.class);
-        sc.setReturnValue(i);
+        expect(s.evaluate("EXPRESSION", Iterator.class)).andReturn(i);
 
-        s.getSymbols();
-        sc.setReturnValue(symbols, 5);
+        expect(s.getSymbols()).andReturn(symbols).times(5);
 
-        replayControls();
+        replay();
 
         ForeachToken t = new ForeachToken("value", "index", "EXPRESSION", null);
         t.addToken(new EchoToken("value"));
@@ -76,7 +75,7 @@ public class TestForeachToken extends HiveMindTestCase
 
         t.write(buffer, s);
 
-        verifyControls();
+        verify();
 
         assertEquals("buffy\n0\nangel\n1\n", buffer.toString());
 
@@ -90,21 +89,18 @@ public class TestForeachToken extends HiveMindTestCase
 
         symbols.put("index", "none");
 
-        MockControl sc = newControl(ScriptSession.class);
-        ScriptSession s = (ScriptSession) sc.getMock();
+        ScriptSession s = newMock(ScriptSession.class);
 
         StringBuffer buffer = new StringBuffer();
 
         Iterator i = Arrays.asList(new String[]
         { "buffy", "angel" }).iterator();
 
-        s.evaluate("EXPRESSION", Iterator.class);
-        sc.setReturnValue(i);
+        expect(s.evaluate("EXPRESSION", Iterator.class)).andReturn(i);
 
-        s.getSymbols();
-        sc.setReturnValue(symbols, 5);
+        expect(s.getSymbols()).andReturn(symbols).times(5);
 
-        replayControls();
+        replay();
 
         ForeachToken t = new ForeachToken("value", null, "EXPRESSION", null);
         t.addToken(new EchoToken("value"));
@@ -112,7 +108,7 @@ public class TestForeachToken extends HiveMindTestCase
 
         t.write(buffer, s);
 
-        verifyControls();
+        verify();
 
         assertEquals("buffy\nnone\nangel\nnone\n", buffer.toString());
 
@@ -122,20 +118,18 @@ public class TestForeachToken extends HiveMindTestCase
 
     public void testNullIterator()
     {
-        MockControl sc = newControl(ScriptSession.class);
-        ScriptSession s = (ScriptSession) sc.getMock();
+        ScriptSession s = newMock(ScriptSession.class);
 
-        s.evaluate("EXPRESSION", Iterator.class);
-        sc.setReturnValue(null);
+        expect(s.evaluate("EXPRESSION", Iterator.class)).andReturn(null);
 
-        IScriptToken inner = (IScriptToken) newMock(IScriptToken.class);
+        IScriptToken inner = newMock(IScriptToken.class);
 
-        replayControls();
+        replay();
         ForeachToken t = new ForeachToken("value", "index", "EXPRESSION", null);
         t.addToken(inner);
 
         t.write(null, s);
 
-        verifyControls();
+        verify();
     }
 }

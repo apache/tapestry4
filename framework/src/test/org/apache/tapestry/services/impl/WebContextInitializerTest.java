@@ -14,10 +14,14 @@
 
 package org.apache.tapestry.services.impl;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertNotNull;
+import static org.testng.AssertJUnit.assertSame;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.services.ApplicationGlobals;
 
 /**
@@ -26,7 +30,7 @@ import org.apache.tapestry.services.ApplicationGlobals;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class WebContextInitializerTest extends HiveMindTestCase
+public class WebContextInitializerTest extends BaseComponentTestCase
 {
 
     public void testInitializer()
@@ -34,10 +38,9 @@ public class WebContextInitializerTest extends HiveMindTestCase
         HttpServlet servlet = (HttpServlet) newMock(HttpServlet.class);
         ServletContext servletContext = (ServletContext) newMock(ServletContext.class);
 
-        servlet.getServletContext();
-        setReturnValue(servlet,servletContext);
+        expect(servlet.getServletContext()).andReturn(servletContext);
 
-        replayControls();
+        replay();
 
         ApplicationGlobals globals = new ApplicationGlobalsImpl();
 
@@ -47,7 +50,7 @@ public class WebContextInitializerTest extends HiveMindTestCase
 
         initializer.initialize(servlet);
 
-        verifyControls();
+        verify();
 
         assertSame(servletContext, globals.getServletContext());
         assertNotNull(globals.getWebContext());

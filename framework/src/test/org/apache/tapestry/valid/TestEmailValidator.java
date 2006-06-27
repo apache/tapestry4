@@ -14,10 +14,9 @@
 
 package org.apache.tapestry.valid;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 import org.apache.tapestry.form.IFormComponent;
-import org.apache.tapestry.valid.EmailValidator;
-import org.apache.tapestry.valid.ValidationConstraint;
-import org.apache.tapestry.valid.ValidatorException;
 
 /**
  * Tests for {@link org.apache.tapestry.valid.EmailValidator}.
@@ -34,20 +33,20 @@ public class TestEmailValidator extends BaseValidatorTestCase
     {
         IFormComponent field = newField();
 
-        replayControls();
+        replay();
 
         Object result = v.toObject(field, "foo@bar.com");
 
         assertEquals("foo@bar.com", result);
 
-        verifyControls();
+        verify();
     }
 
     public void testInvalidEmail()
     {
         IFormComponent field = newField("email");
 
-        replayControls();
+        replay();
 
         try
         {
@@ -61,14 +60,14 @@ public class TestEmailValidator extends BaseValidatorTestCase
                     .getMessage());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testOverrideInvalidEmailFormatMessage()
     {
         IFormComponent field = newField("email");
 
-        replayControls();
+        replay();
 
         v
                 .setInvalidEmailFormatMessage("Try a valid e-mail address (for {0}), like ''dick@wad.com.''");
@@ -84,14 +83,14 @@ public class TestEmailValidator extends BaseValidatorTestCase
                     .getMessage());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testTooShort()
     {
         IFormComponent field = newField("short");
 
-        replayControls();
+        replay();
 
         v.setMinimumLength(20);
 
@@ -106,14 +105,14 @@ public class TestEmailValidator extends BaseValidatorTestCase
             assertEquals("You must enter at least 20 characters for short.", ex.getMessage());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testOverrideMinimumLengthMessage()
     {
         IFormComponent field = newField("short");
 
-        replayControls();
+        replay();
 
         v.setMinimumLength(20);
         v.setMinimumLengthMessage("E-mail addresses must be at least 20 characters.");
@@ -128,6 +127,6 @@ public class TestEmailValidator extends BaseValidatorTestCase
             assertEquals("E-mail addresses must be at least 20 characters.", ex.getMessage());
         }
 
-        verifyControls();
+        verify();
     }
 }

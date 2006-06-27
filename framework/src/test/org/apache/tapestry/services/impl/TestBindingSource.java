@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.services.impl;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.Collections;
 
 import org.apache.hivemind.Location;
@@ -44,10 +47,9 @@ public class TestBindingSource extends BaseComponentTestCase
 
         // Training
 
-        factory.createBinding(component, "foo", "a literal value without a prefix", l);
-        setReturnValue(factory,binding);
+        expect(factory.createBinding(component, "foo", "a literal value without a prefix", l)).andReturn(binding);
 
-        replayControls();
+        replay();
 
         BindingSourceImpl bs = new BindingSourceImpl();
         bs.setContributions(Collections.singletonList(c));
@@ -63,7 +65,7 @@ public class TestBindingSource extends BaseComponentTestCase
 
         assertSame(binding, actual);
 
-        verifyControls();
+        verify();
     }
 
     public void testNoPrefixWithDefault()
@@ -75,14 +77,13 @@ public class TestBindingSource extends BaseComponentTestCase
 
         // Training
 
-        factory.createBinding(component, "foo", "an-expression", l);
-        setReturnValue(factory,binding);
+        expect(factory.createBinding(component, "foo", "an-expression", l)).andReturn(binding);
 
         BindingPrefixContribution c = new BindingPrefixContribution();
         c.setPrefix(BindingConstants.OGNL_PREFIX);
         c.setFactory(factory);
 
-        replayControls();
+        replay();
 
         BindingSourceImpl bs = new BindingSourceImpl();
         bs.setContributions(Collections.singletonList(c));
@@ -97,7 +98,7 @@ public class TestBindingSource extends BaseComponentTestCase
 
         assertSame(binding, actual);
 
-        verifyControls();
+        verify();
     }
 
     public void testKnownPrefix()
@@ -109,14 +110,13 @@ public class TestBindingSource extends BaseComponentTestCase
 
         // Training
 
-        factory.createBinding(component, "bar", "path part of locator", l);
-        setReturnValue(factory,binding);
+        expect(factory.createBinding(component, "bar", "path part of locator", l)).andReturn(binding);
 
         BindingPrefixContribution c = new BindingPrefixContribution();
         c.setPrefix("prefix");
         c.setFactory(factory);
 
-        replayControls();
+        replay();
 
         BindingSourceImpl bs = new BindingSourceImpl();
         bs.setContributions(Collections.singletonList(c));
@@ -132,7 +132,7 @@ public class TestBindingSource extends BaseComponentTestCase
 
         assertSame(binding, actual);
 
-        verifyControls();
+        verify();
     }
 
     public void testPrefixNoMatch()
@@ -144,14 +144,13 @@ public class TestBindingSource extends BaseComponentTestCase
 
         // Training
 
-        factory.createBinding(component, "zip", "unknown:path part of locator", l);
-        setReturnValue(factory,binding);
+        expect(factory.createBinding(component, "zip", "unknown:path part of locator", l)).andReturn(binding);
 
         BindingPrefixContribution c = new BindingPrefixContribution();
         c.setPrefix(BindingConstants.LITERAL_PREFIX);
         c.setFactory(factory);
 
-        replayControls();
+        replay();
 
         BindingSourceImpl bs = new BindingSourceImpl();
         bs.setContributions(Collections.singletonList(c));
@@ -167,7 +166,7 @@ public class TestBindingSource extends BaseComponentTestCase
 
         assertSame(binding, actual);
 
-        verifyControls();
+        verify();
     }
 
     protected BindingFactory newFactory()

@@ -14,6 +14,11 @@
 
 package org.apache.tapestry.form.validator;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+import static org.testng.AssertJUnit.assertTrue;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +30,6 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.junit.TapestryTestCase;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.form.validator.ValidatorFactoryImpl}.
@@ -57,20 +61,20 @@ public class TestValidatorFactory extends TapestryTestCase
         IComponent component = newComponent();
         ValidatorFactoryImpl vf = new ValidatorFactoryImpl();
 
-        replayControls();
+        replay();
 
         List result = vf.constructValidatorList(component, "");
 
         assertTrue(result.isEmpty());
 
-        verifyControls();
+        verify();
     }
 
     public void testSingle()
     {
         IComponent component = newComponent();
 
-        replayControls();
+        replay();
 
         ValidatorFactoryImpl vf = new ValidatorFactoryImpl();
         vf.setValidators(buildContributions("value", true));
@@ -81,14 +85,14 @@ public class TestValidatorFactory extends TapestryTestCase
 
         assertEquals("foo", fixture.getValue());
 
-        verifyControls();
+        verify();
     }
 
     public void testMessage()
     {
         IComponent component = newComponent();
 
-        replayControls();
+        replay();
 
         ValidatorFactoryImpl vf = new ValidatorFactoryImpl();
         vf.setValidators(buildContributions("fred", false));
@@ -99,14 +103,14 @@ public class TestValidatorFactory extends TapestryTestCase
 
         assertEquals("fred's message", fixture.getMessage());
 
-        verifyControls();
+        verify();
     }
 
     public void testConfigureAndMessage()
     {
         IComponent component = newComponent();
 
-        replayControls();
+        replay();
 
         ValidatorFactoryImpl vf = new ValidatorFactoryImpl();
         vf.setValidators(buildContributions("value", true));
@@ -118,14 +122,14 @@ public class TestValidatorFactory extends TapestryTestCase
         assertEquals("biff", fixture.getValue());
         assertEquals("fred's message", fixture.getMessage());
 
-        verifyControls();
+        verify();
     }
 
     public void testMissingConfiguration()
     {
         IComponent component = newComponent();
 
-        replayControls();
+        replay();
 
         ValidatorFactoryImpl vf = new ValidatorFactoryImpl();
         vf.setValidators(buildContributions("fred", true));
@@ -141,14 +145,14 @@ public class TestValidatorFactory extends TapestryTestCase
                     + "The value is configured by changing 'name' to 'name=value'.", ex.getMessage());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testMultiple()
     {
         IComponent component = newComponent();
 
-        replayControls();
+        replay();
 
         Map map = new HashMap();
         map.put("required", newContribution(false, Required.class));
@@ -173,14 +177,14 @@ public class TestValidatorFactory extends TapestryTestCase
         assertEquals(10, minLength.getMinLength());
         assertEquals("EMail must be at least ten characters long", minLength.getMessage());
 
-        verifyControls();
+        verify();
     }
 
     public void testUnparseable()
     {
         IComponent component = newComponent();
 
-        replayControls();
+        replay();
 
         ValidatorFactoryImpl vf = new ValidatorFactoryImpl();
         vf.setValidators(buildContributions("fred", false));
@@ -194,14 +198,14 @@ public class TestValidatorFactory extends TapestryTestCase
             assertEquals("Unable to parse 'fred,=foo' into a list of validators.", ex.getMessage());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testUnwantedConfiguration()
     {
         IComponent component = newComponent();
 
-        replayControls();
+        replay();
 
         ValidatorFactoryImpl vf = new ValidatorFactoryImpl();
         vf.setValidators(buildContributions("fred", false));
@@ -217,14 +221,14 @@ public class TestValidatorFactory extends TapestryTestCase
                     .getMessage());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testMissingValidator()
     {
         IComponent component = newComponent();
 
-        replayControls();
+        replay();
 
         ValidatorFactoryImpl vf = new ValidatorFactoryImpl();
         vf.setValidators(Collections.EMPTY_MAP);
@@ -239,14 +243,14 @@ public class TestValidatorFactory extends TapestryTestCase
             assertEquals("No validator named 'missing' has been defined.", ex.getMessage());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testInstantiateFailure()
     {
         IComponent component = newComponent();
 
-        replayControls();
+        replay();
 
         Map map = new HashMap();
 
@@ -266,7 +270,7 @@ public class TestValidatorFactory extends TapestryTestCase
                     "Error initializing validator 'fred' (class java.lang.Object): java.lang.Object"));
         }
 
-        verifyControls();
+        verify();
     }
 
     private Validator newValidator()
@@ -276,22 +280,18 @@ public class TestValidatorFactory extends TapestryTestCase
 
     private IBeanProvider newBeanProvider(String beanName, Object bean)
     {
-        MockControl control = newControl(IBeanProvider.class);
-        IBeanProvider provider = (IBeanProvider) control.getMock();
+        IBeanProvider provider = newMock(IBeanProvider.class);
 
-        provider.getBean(beanName);
-        control.setReturnValue(bean);
+        expect(provider.getBean(beanName)).andReturn(bean);
 
         return provider;
     }
 
     private IComponent newComponent(IBeanProvider provider)
     {
-        MockControl control = newControl(IComponent.class);
-        IComponent component = (IComponent) control.getMock();
+        IComponent component = newComponent();
 
-        component.getBeans();
-        control.setReturnValue(provider);
+        expect(component.getBeans()).andReturn(provider);
 
         return component;
     }
@@ -309,7 +309,7 @@ public class TestValidatorFactory extends TapestryTestCase
 
         validator.validate(field, messages, value);
 
-        replayControls();
+        replay();
 
         ValidatorFactoryImpl vf = new ValidatorFactoryImpl();
         vf.setValidators(Collections.EMPTY_MAP);
@@ -322,7 +322,7 @@ public class TestValidatorFactory extends TapestryTestCase
 
         wrapper.validate(field, messages, value);
 
-        verifyControls();
+        verify();
     }
 
     private ValidationMessages newMessages()
@@ -341,7 +341,7 @@ public class TestValidatorFactory extends TapestryTestCase
         IBeanProvider provider = newBeanProvider("fred", bean);
         IComponent component = newComponent(provider);
 
-        replayControls();
+        replay();
 
         ValidatorFactoryImpl vf = new ValidatorFactoryImpl();
         vf.setValidators(Collections.EMPTY_MAP);
@@ -363,14 +363,14 @@ public class TestValidatorFactory extends TapestryTestCase
             assertSame(bean, ex.getComponent());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testBeanReferenceWithValue()
     {
         IComponent component = newComponent();
 
-        replayControls();
+        replay();
 
         ValidatorFactoryImpl vf = new ValidatorFactoryImpl();
         vf.setValidators(Collections.EMPTY_MAP);
@@ -387,14 +387,14 @@ public class TestValidatorFactory extends TapestryTestCase
                     ex.getMessage());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testBeanReferenceWithMessage()
     {
         IComponent component = newComponent();
 
-        replayControls();
+        replay();
 
         ValidatorFactoryImpl vf = new ValidatorFactoryImpl();
         vf.setValidators(Collections.EMPTY_MAP);
@@ -411,6 +411,6 @@ public class TestValidatorFactory extends TapestryTestCase
                     ex.getMessage());
         }
 
-        verifyControls();
+        verify();
     }
 }

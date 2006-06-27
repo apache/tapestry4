@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.form.validator;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 import java.util.Date;
 
 import org.apache.tapestry.IMarkupWriter;
@@ -45,14 +47,14 @@ public class TestMinDate extends BaseValidatorTestCase
         IFormComponent field = newField();
         ValidationMessages message = newMessages();
 
-        replayControls();
+        replay();
 
         MinDate v = new MinDate();
         v.setMinDate(yesterday);
 
         v.validate(field, message, today);
 
-        verifyControls();
+        verify();
     }
 
     public void testFail() throws Exception
@@ -70,7 +72,7 @@ public class TestMinDate extends BaseValidatorTestCase
                 { "Fred", tomorrow },
                 "default message");
 
-        replayControls();
+        replay();
 
         MinDate v = new MinDate();
         v.setMinDate(tomorrow);
@@ -86,7 +88,7 @@ public class TestMinDate extends BaseValidatorTestCase
             assertEquals(ValidationConstraint.TOO_SMALL, ex.getConstraint());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testFailCustomMessage() throws Exception
@@ -104,7 +106,7 @@ public class TestMinDate extends BaseValidatorTestCase
                 { "Fred", tomorrow },
                 "custom message");
 
-        replayControls();
+        replay();
 
         MinDate v = new MinDate("message=custom");
         v.setMinDate(tomorrow);
@@ -120,7 +122,7 @@ public class TestMinDate extends BaseValidatorTestCase
             assertEquals(ValidationConstraint.TOO_SMALL, ex.getConstraint());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderComponentNoOp()
@@ -130,10 +132,10 @@ public class TestMinDate extends BaseValidatorTestCase
         FormComponentContributorContext context = newContext();
         IFormComponent field = newField();
 
-        replayControls();
+        replay();
 
         new MinDate().renderContribution(writer, cycle, context, field);
 
-        verifyControls();
+        verify();
     }
 }

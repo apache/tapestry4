@@ -14,7 +14,9 @@
 
 package org.apache.tapestry.event;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import static org.testng.AssertJUnit.assertSame;
+
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.describe.DescriptionReceiver;
 
 /**
@@ -23,7 +25,7 @@ import org.apache.tapestry.describe.DescriptionReceiver;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class ReportStatusEventTest extends HiveMindTestCase
+public class ReportStatusEventTest extends BaseComponentTestCase
 {
     protected DescriptionReceiver newReceiver()
     {
@@ -34,13 +36,13 @@ public class ReportStatusEventTest extends HiveMindTestCase
     {
         DescriptionReceiver receiver = newReceiver();
 
-        replayControls();
+        replay();
 
         ReportStatusEvent event = new ReportStatusEvent(this, receiver);
 
         assertSame(this, event.getSource());
 
-        verifyControls();
+        verify();
     }
 
     public void testDelegation()
@@ -66,7 +68,7 @@ public class ReportStatusEventTest extends HiveMindTestCase
         receiver.section("Section");
         receiver.title("Title");
 
-        replayControls();
+        replay();
 
         ReportStatusEvent event = new ReportStatusEvent(this, receiver);
 
@@ -85,7 +87,7 @@ public class ReportStatusEventTest extends HiveMindTestCase
         event.section("Section");
         event.title("Title");
 
-        verifyControls();
+        verify();
 
     }
 }

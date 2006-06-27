@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.junit.utils;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertTrue;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.util.RegexpMatch;
@@ -104,7 +107,7 @@ public class TestRegexpMatcher extends TapestryTestCase
 
         String[] matches = m.getMatches("\\d+", "57,232 89 147", 0);
 
-        assertListsEqual(new String[]
+        assertEquals(new String[]
         { "57", "232", "89", "147" }, matches);
     }
 
@@ -147,7 +150,7 @@ public class TestRegexpMatcher extends TapestryTestCase
 
         String matches[] = m.getMatches("A(B|C|fred)", "AA AC AB Afred AA AC", 1);
 
-        assertListsEqual(new String[]
+        assertEquals(new String[]
         { "C", "B", "fred", "C" }, matches);
     }
 

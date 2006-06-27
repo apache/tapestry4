@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.services.impl;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +24,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.CookieSourceImpl}.
@@ -29,7 +32,7 @@ import org.apache.hivemind.test.HiveMindTestCase;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class CookieSourceTest extends HiveMindTestCase
+public class CookieSourceTest extends BaseComponentTestCase
 {
     // In seconds
 
@@ -79,15 +82,14 @@ public class CookieSourceTest extends HiveMindTestCase
             cookies = (Cookie[]) l.toArray(new Cookie[l.size()]);
         }
 
-        HttpServletRequest request = newRequest();
+        HttpServletRequest request = newHttpRequest();
 
-        request.getCookies();
-        setReturnValue(request, cookies);
+        expect(request.getCookies()).andReturn(cookies);
 
         return request;
     }
 
-    protected HttpServletRequest newRequest()
+    protected HttpServletRequest newHttpRequest()
     {
         return (HttpServletRequest) newMock(HttpServletRequest.class);
     }
@@ -100,13 +102,13 @@ public class CookieSourceTest extends HiveMindTestCase
 
         cs.setRequest(request);
 
-        replayControls();
+        replay();
 
         String actual = cs.readCookieValue(name);
 
         assertEquals(expected, actual);
 
-        verifyControls();
+        verify();
     }
 
     public void testNoCookies()
@@ -128,7 +130,7 @@ public class CookieSourceTest extends HiveMindTestCase
 
     public void testWriteCookie()
     {
-        HttpServletRequest request = newRequest();
+        HttpServletRequest request = newHttpRequest();
         HttpServletResponse response = newResponse();
 
         // Training
@@ -140,7 +142,7 @@ public class CookieSourceTest extends HiveMindTestCase
 
         response.addCookie(cookie);
 
-        replayControls();
+        replay();
 
         CookieSourceImpl cs = new CookieSourceImpl();
         cs.setRequest(request);
@@ -149,12 +151,12 @@ public class CookieSourceTest extends HiveMindTestCase
 
         cs.writeCookieValue("foo", "bar");
 
-        verifyControls();
+        verify();
     }
 
     public void testWriteCookieWithMaxAge()
     {
-        HttpServletRequest request = newRequest();
+        HttpServletRequest request = newHttpRequest();
         HttpServletResponse response = newResponse();
 
         // Training
@@ -166,7 +168,7 @@ public class CookieSourceTest extends HiveMindTestCase
 
         response.addCookie(cookie);
 
-        replayControls();
+        replay();
 
         CookieSourceImpl cs = new CookieSourceImpl();
         cs.setRequest(request);
@@ -175,13 +177,12 @@ public class CookieSourceTest extends HiveMindTestCase
 
         cs.writeCookieValue("foo", "bar", -1);
 
-        verifyControls();
+        verify();
     }
 
     private void trainGetContextPath(HttpServletRequest request, String contextPath)
     {
-        request.getContextPath();
-        setReturnValue(request, contextPath);
+        expect(request.getContextPath()).andReturn(contextPath);
     }
 
     private HttpServletResponse newResponse()
@@ -191,7 +192,7 @@ public class CookieSourceTest extends HiveMindTestCase
 
     public void testRemoveCookie()
     {
-        HttpServletRequest request = newRequest();
+        HttpServletRequest request = newHttpRequest();
         HttpServletResponse response = newResponse();
 
         // Training
@@ -203,7 +204,7 @@ public class CookieSourceTest extends HiveMindTestCase
 
         response.addCookie(cookie);
 
-        replayControls();
+        replay();
 
         CookieSourceImpl cs = new CookieSourceImpl();
         cs.setRequest(request);
@@ -211,6 +212,6 @@ public class CookieSourceTest extends HiveMindTestCase
 
         cs.removeCookieValue("foo");
 
-        verifyControls();
+        verify();
     }
 }

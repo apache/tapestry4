@@ -14,36 +14,38 @@
 
 package org.apache.tapestry.binding;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import org.apache.hivemind.Location;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.coerce.ValueConverter;
-import org.easymock.MockControl;
+import org.testng.annotations.Test;
 
 /**
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestAssetBinding extends BindingTestCase
 {
 
     public void testGetObject()
     {
-        IAsset asset = (IAsset) newMock(IAsset.class);
+        IAsset asset = newMock(IAsset.class);
+        IComponent component = newMock(IComponent.class);
 
-        MockControl componentc = newControl(IComponent.class);
-        IComponent component = (IComponent) componentc.getMock();
-
-        component.getAsset("fred");
-        componentc.setReturnValue(asset);
+        expect(component.getAsset("fred")).andReturn(asset);
 
         Location l = fabricateLocation(22);
 
         ValueConverter vc = newValueConverter();
 
-        replayControls();
+        replay();
 
         AssetBinding b = new AssetBinding("parameterName", vc, l, component, "fred");
 
@@ -54,25 +56,22 @@ public class TestAssetBinding extends BindingTestCase
 
         assertSame(component, b.getComponent());
 
-        verifyControls();
+        verify();
     }
 
     public void testAssetMissing()
     {
-        MockControl componentc = newControl(IComponent.class);
-        IComponent component = (IComponent) componentc.getMock();
+        IComponent component = newMock(IComponent.class);
 
-        component.getAsset("fred");
-        componentc.setReturnValue(null);
+        expect(component.getAsset("fred")).andReturn(null);
 
-        component.getExtendedId();
-        componentc.setReturnValue("Home/foo");
+        expect(component.getExtendedId()).andReturn("Home/foo");
 
         Location l = fabricateLocation(22);
 
         ValueConverter vc = newValueConverter();
 
-        replayControls();
+        replay();
 
         IBinding b = new AssetBinding("parameterName", vc, l, component, "fred");
 

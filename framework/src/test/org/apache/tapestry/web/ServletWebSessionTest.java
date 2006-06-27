@@ -14,6 +14,10 @@
 
 package org.apache.tapestry.web;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -30,10 +34,9 @@ public class ServletWebSessionTest extends BaseWebTestCase
     {
         HttpSession session = newSession();
 
-        session.getAttributeNames();
-        setReturnValue(session, newEnumeration());
+        expect(session.getAttributeNames()).andReturn(newEnumeration());
 
-        replayControls();
+        replay();
 
         WebSession ws = new ServletWebSession(session);
 
@@ -41,7 +44,7 @@ public class ServletWebSessionTest extends BaseWebTestCase
 
         checkList(l);
 
-        verifyControls();
+        verify();
     }
 
     private HttpSession newSession()
@@ -55,16 +58,15 @@ public class ServletWebSessionTest extends BaseWebTestCase
 
         HttpSession session = newSession();
 
-        session.getAttribute("attr");
-        setReturnValue(session, attribute);
+        expect(session.getAttribute("attr")).andReturn(attribute);
 
-        replayControls();
+        replay();
 
         WebSession ws = new ServletWebSession(session);
 
         assertSame(attribute, ws.getAttribute("attr"));
 
-        verifyControls();
+        verify();
     }
 
     public void testSetAttribute()
@@ -75,13 +77,13 @@ public class ServletWebSessionTest extends BaseWebTestCase
 
         session.setAttribute("name", attribute);
 
-        replayControls();
+        replay();
 
         WebSession ws = new ServletWebSession(session);
 
         ws.setAttribute("name", attribute);
 
-        verifyControls();
+        verify();
     }
 
     public void testSetAttributeToNull()
@@ -90,29 +92,28 @@ public class ServletWebSessionTest extends BaseWebTestCase
 
         session.removeAttribute("tonull");
 
-        replayControls();
+        replay();
 
         WebSession ws = new ServletWebSession(session);
 
         ws.setAttribute("tonull", null);
 
-        verifyControls();
+        verify();
     }
 
     public void testGetId()
     {
         HttpSession session = newSession();
 
-        session.getId();
-        setReturnValue(session, "abc");
+        expect(session.getId()).andReturn("abc");
 
-        replayControls();
+        replay();
 
         WebSession ws = new ServletWebSession(session);
 
         assertEquals("abc", ws.getId());
 
-        verifyControls();
+        verify();
     }
 
     public void testInvalidate()
@@ -121,12 +122,12 @@ public class ServletWebSessionTest extends BaseWebTestCase
 
         session.invalidate();
 
-        replayControls();
+        replay();
 
         WebSession ws = new ServletWebSession(session);
 
         ws.invalidate();
 
-        verifyControls();
+        verify();
     }
 }

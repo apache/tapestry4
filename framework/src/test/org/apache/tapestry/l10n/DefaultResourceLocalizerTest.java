@@ -14,10 +14,13 @@
 
 package org.apache.tapestry.l10n;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.Locale;
 
 import org.apache.hivemind.Resource;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 
 /**
  * Tests for {@link org.apache.tapestry.l10n.DefaultResourceLocalizer}.
@@ -25,7 +28,7 @@ import org.apache.hivemind.test.HiveMindTestCase;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class DefaultResourceLocalizerTest extends HiveMindTestCase
+public class DefaultResourceLocalizerTest extends BaseComponentTestCase
 {
     public void testLocalizer()
     {
@@ -33,20 +36,14 @@ public class DefaultResourceLocalizerTest extends HiveMindTestCase
         Resource localized = newResource();
         Locale locale = Locale.getDefault();
 
-        root.getLocalization(locale);
-        setReturnValue(root, localized);
+        expect(root.getLocalization(locale)).andReturn(localized);
 
-        replayControls();
+        replay();
 
         Resource actual = new DefaultResourceLocalizer().findLocalization(root, locale);
 
         assertSame(localized, actual);
 
-        verifyControls();
-    }
-
-    private Resource newResource()
-    {
-        return (Resource) newMock(Resource.class);
+        verify();
     }
 }

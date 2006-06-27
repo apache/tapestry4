@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.form.validator;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
@@ -37,11 +39,11 @@ public class TestEmail extends BaseValidatorTestCase
         IFormComponent field = newField();
         ValidationMessages messages = newMessages();
 
-        replayControls();
+        replay();
 
         new Email().validate(field, messages, "hlship@apache.org");
 
-        verifyControls();
+        verify();
     }
 
     public void testFail()
@@ -54,7 +56,7 @@ public class TestEmail extends BaseValidatorTestCase
                 { "My Email" },
                 "default message");
 
-        replayControls();
+        replay();
 
         try
         {
@@ -67,7 +69,7 @@ public class TestEmail extends BaseValidatorTestCase
             assertEquals(ValidationConstraint.EMAIL_FORMAT, ex.getConstraint());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testFailCustomMessage()
@@ -80,7 +82,7 @@ public class TestEmail extends BaseValidatorTestCase
                 { "My Email" },
                 "custom message");
 
-        replayControls();
+        replay();
 
         try
         {
@@ -93,7 +95,7 @@ public class TestEmail extends BaseValidatorTestCase
             assertEquals(ValidationConstraint.EMAIL_FORMAT, ex.getConstraint());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderContribution()
@@ -116,11 +118,11 @@ public class TestEmail extends BaseValidatorTestCase
         context.addSubmitHandler("function(event) { Tapestry.validate_regex(event, 'myfield', '"
                 + pattern + "', 'default\\\\message'); }");
 
-        replayControls();
+        replay();
 
         new Email().renderContribution(writer, cycle, context, field);
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderContributionCustomMessage()
@@ -148,11 +150,11 @@ public class TestEmail extends BaseValidatorTestCase
         context.addSubmitHandler("function(event) { Tapestry.validate_regex(event, 'barney', '"
                 + pattern + "', 'custom message'); }");
 
-        replayControls();
+        replay();
 
         new Email("message=custom").renderContribution(writer, cycle, context, field);
 
-        verifyControls();
+        verify();
 
     }
 }

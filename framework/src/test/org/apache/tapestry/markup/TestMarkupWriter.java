@@ -14,12 +14,15 @@
 
 package org.apache.tapestry.markup;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IMarkupWriter;
+import org.testng.annotations.Configuration;
 
 /**
  * Tests for {@link org.apache.tapestry.markup.MarkupWriterImpl}.
@@ -27,7 +30,7 @@ import org.apache.tapestry.IMarkupWriter;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestMarkupWriter extends HiveMindTestCase
+public class TestMarkupWriter extends BaseComponentTestCase
 {
     private static CharArrayWriter _writer;
 
@@ -65,11 +68,10 @@ public class TestMarkupWriter extends HiveMindTestCase
         return new PrintWriter(_writer);
     }
 
+    @Configuration(afterTestClass = true)
     protected void tearDown() throws Exception
     {
         _writer = null;
-
-        super.tearDown();
     }
 
     private void assertOutput(String expected)
@@ -84,7 +86,7 @@ public class TestMarkupWriter extends HiveMindTestCase
         MarkupFilter filter = newFilter();
         PrintWriter writer = newPrintWriter();
 
-        replayControls();
+        replay();
 
         IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
 
@@ -96,7 +98,7 @@ public class TestMarkupWriter extends HiveMindTestCase
 
         assertOutput(" width=\"5\"");
 
-        verifyControls();
+        verify();
     }
 
     public void testIntAttributeRequiresTag()
@@ -104,7 +106,7 @@ public class TestMarkupWriter extends HiveMindTestCase
         MarkupFilter filter = newFilter();
         PrintWriter writer = newPrintWriter();
 
-        replayControls();
+        replay();
 
         IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
 
@@ -118,7 +120,7 @@ public class TestMarkupWriter extends HiveMindTestCase
             // Expected.
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testBooleanAttribute()
@@ -126,7 +128,7 @@ public class TestMarkupWriter extends HiveMindTestCase
         MarkupFilter filter = newFilter();
         PrintWriter writer = newPrintWriter();
 
-        replayControls();
+        replay();
 
         IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
 
@@ -142,7 +144,7 @@ public class TestMarkupWriter extends HiveMindTestCase
 
         assertOutput(" false=\"false\"");
 
-        verifyControls();
+        verify();
     }
 
     public void testBooleanAttributeRequiresTag()
@@ -150,7 +152,7 @@ public class TestMarkupWriter extends HiveMindTestCase
         MarkupFilter filter = newFilter();
         PrintWriter writer = newPrintWriter();
 
-        replayControls();
+        replay();
 
         IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
 
@@ -164,7 +166,7 @@ public class TestMarkupWriter extends HiveMindTestCase
             // Expected.
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testAttribute()
@@ -187,7 +189,7 @@ public class TestMarkupWriter extends HiveMindTestCase
         MarkupFilter filter = newFilter();
         PrintWriter writer = newPrintWriter();
 
-        replayControls();
+        replay();
 
         IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
 
@@ -198,7 +200,7 @@ public class TestMarkupWriter extends HiveMindTestCase
 
         assertOutput("<span width=\"\"");
 
-        verifyControls();
+        verify();
     }
 
     public void testAttributeRequiresTag()
@@ -206,7 +208,7 @@ public class TestMarkupWriter extends HiveMindTestCase
         MarkupFilter filter = newFilter();
         PrintWriter writer = newPrintWriter();
 
-        replayControls();
+        replay();
 
         IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
 
@@ -220,7 +222,7 @@ public class TestMarkupWriter extends HiveMindTestCase
             // Expected.
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testEnd()
@@ -284,7 +286,7 @@ public class TestMarkupWriter extends HiveMindTestCase
         MarkupFilter filter = newFilter();
         PrintWriter writer = newPrintWriter();
 
-        replayControls();
+        replay();
 
         IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
 
@@ -294,7 +296,7 @@ public class TestMarkupWriter extends HiveMindTestCase
 
         assertOutput("<span></span>");
 
-        verifyControls();
+        verify();
     }
 
     public void testCloseTag()
@@ -302,7 +304,7 @@ public class TestMarkupWriter extends HiveMindTestCase
         MarkupFilter filter = newFilter();
         PrintWriter writer = newPrintWriter();
 
-        replayControls();
+        replay();
 
         IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
 
@@ -316,7 +318,7 @@ public class TestMarkupWriter extends HiveMindTestCase
 
         assertOutput("<img/>");
 
-        verifyControls();
+        verify();
     }
 
     public void testNestedEnd()
@@ -324,7 +326,7 @@ public class TestMarkupWriter extends HiveMindTestCase
         MarkupFilter filter = newFilter();
         PrintWriter writer = newPrintWriter();
 
-        replayControls();
+        replay();
 
         IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
 
@@ -350,7 +352,7 @@ public class TestMarkupWriter extends HiveMindTestCase
 
         assertOutput("</h1>");
 
-        verifyControls();
+        verify();
     }
 
     public void testEndNamed()
@@ -358,7 +360,7 @@ public class TestMarkupWriter extends HiveMindTestCase
         MarkupFilter filter = newFilter();
         PrintWriter writer = newPrintWriter();
 
-        replayControls();
+        replay();
 
         IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
 
@@ -376,7 +378,7 @@ public class TestMarkupWriter extends HiveMindTestCase
 
         assertOutput("</span></b></h1>");
 
-        verifyControls();
+        verify();
     }
 
     public void testClose()
@@ -408,7 +410,7 @@ public class TestMarkupWriter extends HiveMindTestCase
         MarkupFilter filter = newFilter();
         PrintWriter writer = newPrintWriter();
 
-        replayControls();
+        replay();
 
         IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
 
@@ -418,7 +420,7 @@ public class TestMarkupWriter extends HiveMindTestCase
 
         assertOutput("<!-- Tapestry Rocks! -->" + NEWLINE);
 
-        verifyControls();
+        verify();
     }
 
     public void testCommentClosesTag()
@@ -426,7 +428,7 @@ public class TestMarkupWriter extends HiveMindTestCase
         MarkupFilter filter = newFilter();
         PrintWriter writer = newPrintWriter();
 
-        replayControls();
+        replay();
 
         IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
 
@@ -437,7 +439,7 @@ public class TestMarkupWriter extends HiveMindTestCase
 
         assertOutput("<div><!-- Tapestry Rocks! -->" + NEWLINE);
 
-        verifyControls();
+        verify();
     }
 
     /*
@@ -454,13 +456,13 @@ public class TestMarkupWriter extends HiveMindTestCase
 
         writer.flush();
 
-        replayControls();
+        replay();
 
         IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
 
         mw.flush();
 
-        verifyControls();
+        verify();
     }
     
     */
@@ -523,7 +525,7 @@ public class TestMarkupWriter extends HiveMindTestCase
         MarkupFilter filter = newFilter();
         PrintWriter writer = newPrintWriter();
 
-        replayControls();
+        replay();
 
         IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
 
@@ -531,7 +533,7 @@ public class TestMarkupWriter extends HiveMindTestCase
 
         assertOutput(NEWLINE);
 
-        verifyControls();
+        verify();
     }
 
     public void testPrintLnClosesTag()
@@ -539,7 +541,7 @@ public class TestMarkupWriter extends HiveMindTestCase
         MarkupFilter filter = newFilter();
         PrintWriter writer = newPrintWriter();
 
-        replayControls();
+        replay();
 
         IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
 
@@ -551,7 +553,7 @@ public class TestMarkupWriter extends HiveMindTestCase
 
         assertOutput(">" + NEWLINE);
 
-        verifyControls();
+        verify();
     }
 
     public void testPrintRawCharArray()
@@ -559,7 +561,7 @@ public class TestMarkupWriter extends HiveMindTestCase
         MarkupFilter filter = newFilter();
         PrintWriter writer = newPrintWriter();
 
-        replayControls();
+        replay();
 
         IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
 
@@ -572,7 +574,7 @@ public class TestMarkupWriter extends HiveMindTestCase
 
         assertOutput(">bc");
 
-        verifyControls();
+        verify();
     }
 
     public void testPrintRawString()
@@ -580,7 +582,7 @@ public class TestMarkupWriter extends HiveMindTestCase
         MarkupFilter filter = newFilter();
         PrintWriter writer = newPrintWriter();
 
-        replayControls();
+        replay();
 
         IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
 
@@ -592,7 +594,7 @@ public class TestMarkupWriter extends HiveMindTestCase
 
         assertOutput(">Fred");
 
-        verifyControls();
+        verify();
     }
 
     public void testNestedWriter()

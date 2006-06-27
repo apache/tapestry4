@@ -14,159 +14,150 @@
 
 package org.apache.tapestry.enhance;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+
 import java.util.Map;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRender;
-import org.easymock.MockControl;
 
 /**
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestEnhanceUtils extends HiveMindTestCase
+public class TestEnhanceUtils extends BaseComponentTestCase
 {
+    protected EnhancementOperation newOp()
+    {
+        return newMock(EnhancementOperation.class);
+    }
+    
     public void testTypeUnspecifiedWithNoExistingProperty()
     {
-        MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+        EnhancementOperation op = newOp();
+        
+        expect(op.getPropertyType("wilma")).andReturn(null);
 
-        op.getPropertyType("wilma");
-        opc.setReturnValue(null);
-
-        replayControls();
+        replay();
 
         Class result = EnhanceUtils.extractPropertyType(op, "wilma", null);
 
         assertEquals(Object.class, result);
 
-        verifyControls();
+        verify();
     }
 
     public void testTypeUnspecifiedButExistingProperty()
     {
-        MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+        EnhancementOperation op = newOp();
 
-        op.getPropertyType("fred");
-        opc.setReturnValue(Map.class);
+        expect(op.getPropertyType("fred")).andReturn(Map.class);
 
-        replayControls();
+        replay();
 
         Class result = EnhanceUtils.extractPropertyType(op, "fred", null);
 
         assertEquals(Map.class, result);
 
-        verifyControls();
+        verify();
     }
 
     public void testTypeSpecified()
     {
-        MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+        EnhancementOperation op = newOp();
 
-        op.convertTypeName("int[]");
-        opc.setReturnValue(int[].class);
+        expect(op.convertTypeName("int[]")).andReturn(int[].class);
 
         op.validateProperty("betty", int[].class);
 
-        replayControls();
+        replay();
 
         Class result = EnhanceUtils.extractPropertyType(op, "betty", "int[]");
 
         assertEquals(int[].class, result);
 
-        verifyControls();
+        verify();
     }
 
     public void testCreateUnwrapForPrimitive()
     {
-        EnhancementOperation op = (EnhancementOperation) newMock(EnhancementOperation.class);
+        EnhancementOperation op = newOp();
 
-        replayControls();
+        replay();
 
         String result = EnhanceUtils.createUnwrapExpression(op, "mybinding", int.class);
 
         assertEquals("org.apache.tapestry.enhance.EnhanceUtils.toInt(mybinding)", result);
 
-        verifyControls();
+        verify();
     }
 
     public void testCreateUnwrapForObjectType()
     {
-        MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+        EnhancementOperation op = newOp();
 
-        op.getClassReference(String.class);
-        opc.setReturnValue("_$class$String");
+        expect(op.getClassReference(String.class)).andReturn("_$class$String");
 
-        replayControls();
+        replay();
 
         String result = EnhanceUtils.createUnwrapExpression(op, "thebinding", String.class);
 
         assertEquals("(java.lang.String) thebinding.getObject(_$class$String)", result);
 
-        verifyControls();
+        verify();
     }
 
     public void testVerifyPropertyTypeNoProperty()
     {
-        MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+        EnhancementOperation op = newOp();
 
-        op.getPropertyType("foo");
-        opc.setReturnValue(null);
+        expect(op.getPropertyType("foo")).andReturn(null);
 
-        replayControls();
+        replay();
 
         assertEquals(Object.class, EnhanceUtils.verifyPropertyType(op, "foo", String.class));
 
-        verifyControls();
+        verify();
     }
 
     public void testVerifyPropertyTypeSuccess()
     {
-        MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+        EnhancementOperation op = newOp();
 
-        op.getPropertyType("foo");
-        opc.setReturnValue(Object.class);
+        expect(op.getPropertyType("foo")).andReturn(Object.class);
 
-        replayControls();
+        replay();
 
         assertEquals(Object.class, EnhanceUtils.verifyPropertyType(op, "foo", String.class));
 
-        verifyControls();
+        verify();
     }
 
     public void testVerifyPropertyTypeWithDeclaredPropertyType()
     {
-        MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+        EnhancementOperation op = newOp();
 
-        op.getPropertyType("foo");
-        opc.setReturnValue(IRender.class);
+        expect(op.getPropertyType("foo")).andReturn(IRender.class);
 
-        replayControls();
+        replay();
 
         assertEquals(IRender.class, EnhanceUtils.verifyPropertyType(op, "foo", IComponent.class));
 
-        verifyControls();
+        verify();
 
     }
 
     public void testVerifyPropertyTypeFailure()
     {
-        MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+        EnhancementOperation op = newOp();
 
-        op.getPropertyType("foo");
-        opc.setReturnValue(String.class);
+        expect(op.getPropertyType("foo")).andReturn(String.class);
 
-        replayControls();
+        replay();
 
         try
         {
@@ -179,15 +170,14 @@ public class TestEnhanceUtils extends HiveMindTestCase
                     ex.getMessage());
         }
 
-        verifyControls();
+        verify();
     }
 
     protected IBinding newBinding(Class expectedType, Object value)
     {
-        IBinding binding = (IBinding) newMock(IBinding.class);
+        IBinding binding = newMock(IBinding.class);
 
-        binding.getObject(expectedType);
-        setReturnValue(binding, value);
+        expect(binding.getObject(expectedType)).andReturn(value);
 
         return binding;
     }
@@ -196,176 +186,176 @@ public class TestEnhanceUtils extends HiveMindTestCase
     {
         IBinding binding = newBinding(Boolean.class, null);
 
-        replayControls();
+        replay();
 
         assertEquals(false, EnhanceUtils.toBoolean(binding));
 
-        verifyControls();
+        verify();
     }
 
     public void testToBoolean()
     {
         IBinding binding = newBinding(Boolean.class, Boolean.TRUE);
 
-        replayControls();
+        replay();
 
         assertEquals(true, EnhanceUtils.toBoolean(binding));
 
-        verifyControls();
+        verify();
     }
 
     public void testToByteNull()
     {
         IBinding binding = newBinding(Byte.class, null);
 
-        replayControls();
+        replay();
 
         assertEquals(0, EnhanceUtils.toByte(binding));
 
-        verifyControls();
+        verify();
     }
 
     public void testToByte()
     {
         IBinding binding = newBinding(Byte.class, new Byte((byte) 37));
 
-        replayControls();
+        replay();
 
         assertEquals(37, EnhanceUtils.toByte(binding));
 
-        verifyControls();
+        verify();
     }
 
     public void testToCharNull()
     {
         IBinding binding = newBinding(Character.class, null);
 
-        replayControls();
+        replay();
 
         assertEquals(0, EnhanceUtils.toChar(binding));
 
-        verifyControls();
+        verify();
     }
 
     public void testToChar()
     {
         IBinding binding = newBinding(Character.class, new Character('q'));
 
-        replayControls();
+        replay();
 
         assertEquals('q', EnhanceUtils.toChar(binding));
 
-        verifyControls();
+        verify();
     }
 
     public void testToShortNull()
     {
         IBinding binding = newBinding(Short.class, null);
 
-        replayControls();
+        replay();
 
         assertEquals(0, EnhanceUtils.toShort(binding));
 
-        verifyControls();
+        verify();
     }
 
     public void testToShort()
     {
         IBinding binding = newBinding(Short.class, new Short((short) 99));
 
-        replayControls();
+        replay();
 
         assertEquals(99, EnhanceUtils.toShort(binding));
 
-        verifyControls();
+        verify();
     }
 
     public void testToIntNull()
     {
         IBinding binding = newBinding(Integer.class, null);
 
-        replayControls();
+        replay();
 
         assertEquals(0, EnhanceUtils.toInt(binding));
 
-        verifyControls();
+        verify();
     }
 
     public void testToInt()
     {
         IBinding binding = newBinding(Integer.class, new Integer(107));
 
-        replayControls();
+        replay();
 
         assertEquals(107, EnhanceUtils.toInt(binding));
 
-        verifyControls();
+        verify();
     }
 
     public void testToLongNull()
     {
         IBinding binding = newBinding(Long.class, null);
 
-        replayControls();
+        replay();
 
         assertEquals(0, EnhanceUtils.toLong(binding));
 
-        verifyControls();
+        verify();
     }
 
     public void testToLong()
     {
         IBinding binding = newBinding(Long.class, new Long(90000));
 
-        replayControls();
+        replay();
 
         assertEquals(90000, EnhanceUtils.toLong(binding));
 
-        verifyControls();
+        verify();
     }
 
     public void testToFloatNull()
     {
         IBinding binding = newBinding(Float.class, null);
 
-        replayControls();
+        replay();
 
         assertEquals(0.0f, EnhanceUtils.toFloat(binding), 0.0f);
 
-        verifyControls();
+        verify();
     }
 
     public void testToFloat()
     {
         IBinding binding = newBinding(Float.class, new Float(2.5f));
 
-        replayControls();
+        replay();
 
         assertEquals(2.5f, EnhanceUtils.toFloat(binding), 0.0f);
 
-        verifyControls();
+        verify();
     }
 
     public void testToDoubleNull()
     {
         IBinding binding = newBinding(Double.class, null);
 
-        replayControls();
+        replay();
 
         assertEquals(0.0d, EnhanceUtils.toDouble(binding), 0.0d);
 
-        verifyControls();
+        verify();
     }
 
     public void testToDouble()
     {
         IBinding binding = newBinding(Double.class, new Double(2.5d));
 
-        replayControls();
+        replay();
 
         assertEquals(2.5d, EnhanceUtils.toDouble(binding), 0.0d);
 
-        verifyControls();
+        verify();
     }
 
 }

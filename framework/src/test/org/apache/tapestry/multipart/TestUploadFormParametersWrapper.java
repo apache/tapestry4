@@ -14,13 +14,18 @@
 
 package org.apache.tapestry.multipart;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNotSame;
+import static org.testng.AssertJUnit.assertNull;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 
 /**
  * Tests for {@link org.apache.tapestry.multipart.UploadFormParametersWrapper}.
@@ -28,18 +33,18 @@ import org.apache.hivemind.test.HiveMindTestCase;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestUploadFormParametersWrapper extends HiveMindTestCase
+public class TestUploadFormParametersWrapper extends BaseComponentTestCase
 {
-    private HttpServletRequest newRequest()
+    private HttpServletRequest newHttpRequest()
     {
         return (HttpServletRequest) newMock(HttpServletRequest.class);
     }
 
     public void testMapIsNotModifiable()
     {
-        HttpServletRequest request = newRequest();
+        HttpServletRequest request = newHttpRequest();
 
-        replayControls();
+        replay();
 
         Map map = new HashMap();
 
@@ -64,27 +69,27 @@ public class TestUploadFormParametersWrapper extends HiveMindTestCase
             // Expected.
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testGetSingleParameterWhenNull()
     {
-        HttpServletRequest request = newRequest();
+        HttpServletRequest request = newHttpRequest();
 
-        replayControls();
+        replay();
 
         HttpServletRequest r = new UploadFormParametersWrapper(request, new HashMap());
 
         assertNull(r.getParameter("unknown-key"));
 
-        verifyControls();
+        verify();
     }
 
     public void testGetSingleParameterWhenEmptyArray()
     {
-        HttpServletRequest request = newRequest();
+        HttpServletRequest request = newHttpRequest();
 
-        replayControls();
+        replay();
 
         HashMap params = new HashMap();
 
@@ -94,7 +99,7 @@ public class TestUploadFormParametersWrapper extends HiveMindTestCase
 
         assertNull(r.getParameter("empty-key"));
 
-        verifyControls();
+        verify();
     }
 
     public void testGetParameterValues()
@@ -102,9 +107,9 @@ public class TestUploadFormParametersWrapper extends HiveMindTestCase
         String[] values =
         { "fred", "barney" };
 
-        HttpServletRequest request = newRequest();
+        HttpServletRequest request = newHttpRequest();
 
-        replayControls();
+        replay();
 
         HashMap params = new HashMap();
 
@@ -114,14 +119,14 @@ public class TestUploadFormParametersWrapper extends HiveMindTestCase
 
         assertSame(values, r.getParameterValues("key"));
 
-        verifyControls();
+        verify();
     }
 
     public void testGetParameterNames()
     {
-        HttpServletRequest request = newRequest();
+        HttpServletRequest request = newHttpRequest();
 
-        replayControls();
+        replay();
 
         HashMap params = new HashMap();
 
@@ -135,6 +140,6 @@ public class TestUploadFormParametersWrapper extends HiveMindTestCase
         assertEquals("key", e.nextElement());
         assertEquals(false, e.hasMoreElements());
 
-        verifyControls();
+        verify();
     }
 }

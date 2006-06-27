@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.form.validator;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
@@ -38,11 +40,11 @@ public class TestPattern extends BaseValidatorTestCase
         IFormComponent field = newField();
         ValidationMessages messages = newMessages();
 
-        replayControls();
+        replay();
 
         new Pattern("pattern=\\d+").validate(field, messages, "1232");
 
-        verifyControls();
+        verify();
     }
 
     public void testFail()
@@ -55,7 +57,7 @@ public class TestPattern extends BaseValidatorTestCase
                 { "My Pattern" },
                 "default message");
 
-        replayControls();
+        replay();
 
         try
         {
@@ -68,7 +70,7 @@ public class TestPattern extends BaseValidatorTestCase
             assertEquals(ValidationConstraint.PATTERN_MISMATCH, ex.getConstraint());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testFailCustomMessage()
@@ -81,7 +83,7 @@ public class TestPattern extends BaseValidatorTestCase
                 { "My Pattern" },
                 "custom message");
 
-        replayControls();
+        replay();
 
         try
         {
@@ -94,7 +96,7 @@ public class TestPattern extends BaseValidatorTestCase
             assertEquals(ValidationConstraint.PATTERN_MISMATCH, ex.getConstraint());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderContribution()
@@ -117,11 +119,11 @@ public class TestPattern extends BaseValidatorTestCase
                 .addSubmitHandler("function(event) { Tapestry.validate_regex(event, 'myfield', '"
                         + pattern + "', 'default message'); }");
 
-        replayControls();
+        replay();
 
         new Pattern("pattern=\\d+").renderContribution(writer, cycle, context, field);
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderContributionCustomMessage()
@@ -149,11 +151,11 @@ public class TestPattern extends BaseValidatorTestCase
                 .addSubmitHandler("function(event) { Tapestry.validate_regex(event, 'myfield', '"
                         + pattern + "', 'custom\\\\message'); }");
 
-        replayControls();
+        replay();
 
         new Pattern("pattern=\\d+,message=custom").renderContribution(writer, cycle, context, field);
 
-        verifyControls();
+        verify();
 
     }
 

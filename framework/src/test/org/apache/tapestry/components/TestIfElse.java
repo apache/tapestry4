@@ -15,6 +15,7 @@
 package org.apache.tapestry.components;
 
 import static org.easymock.EasyMock.expect;
+
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;
@@ -25,7 +26,6 @@ import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.util.io.DataSqueezerUtil;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.components.If}&nbsp;
@@ -65,7 +65,7 @@ public class TestIfElse extends BaseComponentTestCase
         IRender body = newRender(writer, cycle);
         IRender body2 = newRender();
         
-        replayControls();
+        replay();
         
         IfBean conditional = (IfBean) newInstance(IfBean.class, new Object[]
         { "condition", Boolean.TRUE });
@@ -77,35 +77,30 @@ public class TestIfElse extends BaseComponentTestCase
         reverse.addBody(body2);
         reverse.render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderPlainFalse()
     {
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IRequestCycle cycle = newCycle();
         IMarkupWriter writer = newWriter();
         
-        cycle.isRewinding();
-        cyclec.setReturnValue(false);
+        expect(cycle.isRewinding()).andReturn(false);
         
-        cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE);
-        cyclec.setReturnValue(null);
+        expect(cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE)).andReturn(null);
         
         cycle.setAttribute(IfBean.IF_VALUE_ATTRIBUTE, Boolean.FALSE);
         
-        cycle.getAttribute(IfBean.IF_VALUE_ATTRIBUTE);
-        cyclec.setReturnValue(Boolean.FALSE);
+        expect(cycle.getAttribute(IfBean.IF_VALUE_ATTRIBUTE)).andReturn(Boolean.FALSE);
         
-        cycle.isRewinding();
-        cyclec.setReturnValue(false);
+        expect(cycle.isRewinding()).andReturn(false);
         
         trainResponseBuilder(cycle, writer);
         
         IRender body = newRender();
         IRender body2 = newRender(writer, cycle);
 
-        replayControls();
+        replay();
 
         IfBean conditional = (IfBean) newInstance(IfBean.class, new Object[]
         { "condition", Boolean.FALSE });
@@ -116,7 +111,7 @@ public class TestIfElse extends BaseComponentTestCase
         reverse.addBody(body2);
         reverse.render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderInFormTrue()
@@ -126,20 +121,14 @@ public class TestIfElse extends BaseComponentTestCase
         IfBean conditional = (IfBean) newInstance(TestIfBean.class, 
         		new Object[] { "condition", Boolean.TRUE });
 
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
-        
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IForm form = newMock(IForm.class);
+        IRequestCycle cycle = newCycle();
 
-        cycle.isRewinding();
-        cyclec.setReturnValue(false);
+        expect(cycle.isRewinding()).andReturn(false);
         
-        cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE);
-        cyclec.setReturnValue(form);
+        expect(cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE)).andReturn(form);
 
-        form.getElementId(conditional);
-        formc.setReturnValue("If");
+        expect(form.getElementId(conditional)).andReturn("If");
         
         form.addHiddenValue("If", "T");
         
@@ -147,13 +136,12 @@ public class TestIfElse extends BaseComponentTestCase
         
         cycle.setAttribute(IfBean.IF_VALUE_ATTRIBUTE, Boolean.TRUE);
         
-        cycle.getAttribute(IfBean.IF_VALUE_ATTRIBUTE);
-        cyclec.setReturnValue(Boolean.TRUE);
+        expect(cycle.getAttribute(IfBean.IF_VALUE_ATTRIBUTE)).andReturn(Boolean.TRUE);
         
         IRender body = newRender(writer, cycle);
         IRender body2 = newRender();
 
-        replayControls();
+        replay();
 
 
         conditional.addBody(body);
@@ -163,7 +151,7 @@ public class TestIfElse extends BaseComponentTestCase
         reverse.addBody(body2);
         reverse.render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderInFormFalse()
@@ -173,37 +161,29 @@ public class TestIfElse extends BaseComponentTestCase
         IfBean conditional = (IfBean) newInstance(TestIfBean.class, 
         		new Object[] { "condition", Boolean.FALSE });
 
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IRequestCycle cycle = newCycle();
+        IForm form = newMock(IForm.class);
+        
+        expect(cycle.isRewinding()).andReturn(false);
+        
+        expect(cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE)).andReturn(form);
 
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
-        
-        cycle.isRewinding();
-        cyclec.setReturnValue(false);
-        
-        cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE);
-        cyclec.setReturnValue(form);
-        
-        form.getElementId(conditional);
-        formc.setReturnValue("If");
+        expect(form.getElementId(conditional)).andReturn("If");
         
         form.addHiddenValue("If", "F");
         
         cycle.setAttribute(IfBean.IF_VALUE_ATTRIBUTE, Boolean.FALSE);
         
-        cycle.getAttribute(IfBean.IF_VALUE_ATTRIBUTE);
-        cyclec.setReturnValue(Boolean.FALSE);
+        expect(cycle.getAttribute(IfBean.IF_VALUE_ATTRIBUTE)).andReturn(Boolean.FALSE);
         
-        cycle.isRewinding();
-        cyclec.setReturnValue(false);
+        expect(cycle.isRewinding()).andReturn(false);
         
         trainResponseBuilder(cycle, writer);
         
         IRender body = newRender();
         IRender body2 = newRender(writer, cycle);
 
-        replayControls();
+        replay();
 
 
         conditional.addBody(body);
@@ -213,7 +193,7 @@ public class TestIfElse extends BaseComponentTestCase
         reverse.addBody(body2);
         reverse.render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testIgnoreElementWhenRewindingTrue()
@@ -223,38 +203,29 @@ public class TestIfElse extends BaseComponentTestCase
         IfBean conditional = (IfBean) newInstance(TestIfBean.class, 
         		new Object[] { "condition", Boolean.TRUE, "element", "div" });
         
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
-        
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IForm form = newMock(IForm.class);
+        IRequestCycle cycle = newCycle();
 
-        cycle.isRewinding();
-        cyclec.setReturnValue(true);
+        expect(cycle.isRewinding()).andReturn(true);
         
-        cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE);
-        cyclec.setReturnValue(form);
+        expect(cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE)).andReturn(form);
         
-        form.isRewinding();
-        formc.setReturnValue(true);
+        expect(form.isRewinding()).andReturn(true);
         
-        form.getElementId(conditional);
-        formc.setReturnValue("If");
+        expect(form.getElementId(conditional)).andReturn("If");
         
-        cycle.getParameter("If");
-        cyclec.setReturnValue("T");
+        expect(cycle.getParameter("If")).andReturn("T");
 
         trainResponseBuilder(cycle, writer);
         
         cycle.setAttribute(IfBean.IF_VALUE_ATTRIBUTE, Boolean.TRUE);
 
-        cycle.getAttribute(IfBean.IF_VALUE_ATTRIBUTE);
-        cyclec.setReturnValue(Boolean.TRUE);
+        expect(cycle.getAttribute(IfBean.IF_VALUE_ATTRIBUTE)).andReturn(Boolean.TRUE);
 
         IRender body = newRender(writer, cycle);
         IRender body2 = newRender();
 
-        replayControls();
+        replay();
 
         conditional.addBody(body);
         conditional.render(writer, cycle);
@@ -263,7 +234,7 @@ public class TestIfElse extends BaseComponentTestCase
         reverse.addBody(body2);
         reverse.render(writer, cycle);
         
-        verifyControls();
+        verify();
     }
 
     public void testIgnoreElementWhenRewindingFalse()
@@ -273,41 +244,31 @@ public class TestIfElse extends BaseComponentTestCase
         IfBean conditional = (IfBean) newInstance(TestIfBean.class, 
         		new Object[] { "condition", Boolean.TRUE, "element", "div" });
         
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
-        
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IForm form = newMock(IForm.class);
+        IRequestCycle cycle = newCycle();
 
-        cycle.isRewinding();
-        cyclec.setReturnValue(true);
+        expect(cycle.isRewinding()).andReturn(true);
         
-        cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE);
-        cyclec.setReturnValue(form);
+        expect(cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE)).andReturn(form);
         
-        form.isRewinding();
-        formc.setReturnValue(true);
+        expect(form.isRewinding()).andReturn(true);
         
-        form.getElementId(conditional);
-        formc.setReturnValue("If");
+        expect(form.getElementId(conditional)).andReturn("If");
         
-        cycle.getParameter("If");
-        cyclec.setReturnValue("F");
+        expect(cycle.getParameter("If")).andReturn("F");
         
         cycle.setAttribute(IfBean.IF_VALUE_ATTRIBUTE, Boolean.FALSE);
         
-        cycle.getAttribute(IfBean.IF_VALUE_ATTRIBUTE);
-        cyclec.setReturnValue(Boolean.FALSE);
+        expect(cycle.getAttribute(IfBean.IF_VALUE_ATTRIBUTE)).andReturn(Boolean.FALSE);
         
-        cycle.isRewinding();
-        cyclec.setReturnValue(true);
+        expect(cycle.isRewinding()).andReturn(true);
         
         trainResponseBuilder(cycle, writer);
         
         IRender body = newRender();
         IRender body2 = newRender(writer, cycle);
 
-        replayControls();
+        replay();
 
         conditional.addBody(body);
         conditional.render(writer, cycle);
@@ -316,7 +277,7 @@ public class TestIfElse extends BaseComponentTestCase
         reverse.addBody(body2);
         reverse.render(writer, cycle);
         
-        verifyControls();
+        verify();
     }
 
     public void testElement()
@@ -325,15 +286,12 @@ public class TestIfElse extends BaseComponentTestCase
         
 		IBinding informal = newBinding("informal-value");
         IComponentSpecification spec = newSpec("informal", null);
-
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-
-        cycle.isRewinding();
-        cyclec.setReturnValue(false);
         
-        cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE);
-        cyclec.setReturnValue(null);
+        IRequestCycle cycle = newCycle();
+
+        expect(cycle.isRewinding()).andReturn(false);
+        
+        expect(cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE)).andReturn(null);
         
         IRender body = newRender(writer, cycle);
 
@@ -347,7 +305,7 @@ public class TestIfElse extends BaseComponentTestCase
         cycle.setAttribute(IfBean.IF_VALUE_ATTRIBUTE, Boolean.TRUE);
 
         
-        replayControls();
+        replay();
 
         IfBean conditional = (IfBean) newInstance(TestIfBean.class, new Object[]
         { "condition", Boolean.TRUE, "element", "div", "specification", spec });
@@ -356,7 +314,7 @@ public class TestIfElse extends BaseComponentTestCase
 
         conditional.render(writer, cycle);
 
-        verifyControls();
+        verify();
     }
     
     public static abstract class TestIfBean extends IfBean

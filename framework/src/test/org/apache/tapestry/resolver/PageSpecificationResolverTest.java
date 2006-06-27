@@ -14,6 +14,10 @@
 
 package org.apache.tapestry.resolver;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -169,8 +173,8 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
     {
         ComponentPropertySource source = (ComponentPropertySource) newMock(ComponentPropertySource.class);
 
-        source.getNamespaceProperty(namespace, Tapestry.TEMPLATE_EXTENSION_PROPERTY);
-        setReturnValue(source, "html");
+        expect(source.getNamespaceProperty(namespace, Tapestry.TEMPLATE_EXTENSION_PROPERTY))
+        .andReturn("html");
 
         return source;
     }
@@ -216,7 +220,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
 
         trainGetApplicationNamespace(source, application);
 
-        replayControls();
+        replay();
 
         PageSpecificationResolverImpl resolver = new PageSpecificationResolverImpl();
         resolver.setContextRoot(contextRoot);
@@ -229,7 +233,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
         assertSame(spec, resolver.getSpecification());
         assertSame(application, resolver.getNamespace());
 
-        verifyControls();
+        verify();
 
     }
 
@@ -249,7 +253,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
 
         trainGetFrameworkNamespace(source, framework);
 
-        replayControls();
+        replay();
 
         PageSpecificationResolverImpl resolver = new PageSpecificationResolverImpl();
         resolver.setContextRoot(contextRoot);
@@ -262,7 +266,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
         assertSame(spec, resolver.getSpecification());
         assertSame(framework, resolver.getNamespace());
 
-        verifyControls();
+        verify();
     }
 
     public void testFoundAsTemplate()
@@ -307,7 +311,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
 
         trainIsDebugEnabled(log, false);
 
-        replayControls();
+        replay();
 
         PageSpecificationResolverImpl resolver = new PageSpecificationResolverImpl();
         resolver.setContextRoot(contextRoot);
@@ -340,7 +344,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
         assertSame(spec, resolver.getSpecification());
         assertSame(application, resolver.getNamespace());
 
-        verifyControls();
+        verify();
     }
 
     public void testFoundInApplicationNamespace()
@@ -352,7 +356,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
         ISpecificationSource source = newSource(application, framework);
         IRequestCycle cycle = newCycle();
 
-        replayControls();
+        replay();
 
         PageSpecificationResolverImpl resolver = new PageSpecificationResolverImpl();
         resolver.setContextRoot(contextRoot);
@@ -365,7 +369,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
         assertSame(spec, resolver.getSpecification());
         assertSame(application, resolver.getNamespace());
 
-        verifyControls();
+        verify();
     }
 
     public void testFoundInChildNamespace()
@@ -382,7 +386,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
         ISpecificationSource source = newSource(application, framework);
         IRequestCycle cycle = newCycle();
 
-        replayControls();
+        replay();
 
         PageSpecificationResolverImpl resolver = new PageSpecificationResolverImpl();
         resolver.setContextRoot(contextRoot);
@@ -395,7 +399,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
         assertSame(spec, resolver.getSpecification());
         assertSame(child, resolver.getNamespace());
 
-        verifyControls();
+        verify();
     }
 
     public void testFoundInContextRootFolder()
@@ -436,7 +440,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
 
         application.installPageSpecification("ContextRootPage", spec);
 
-        replayControls();
+        replay();
 
         PageSpecificationResolverImpl resolver = new PageSpecificationResolverImpl();
         resolver.setContextRoot(contextRoot);
@@ -452,7 +456,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
         assertSame(spec, resolver.getSpecification());
         assertSame(application, resolver.getNamespace());
 
-        verifyControls();
+        verify();
     }
 
     public void testFoundInFramework()
@@ -493,7 +497,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
 
         train(log, ResolverMessages.foundFrameworkPage("FrameworkPage"));
 
-        replayControls();
+        replay();
 
         PageSpecificationResolverImpl resolver = new PageSpecificationResolverImpl();
         resolver.setContextRoot(contextRoot);
@@ -510,7 +514,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
         assertSame(spec, resolver.getSpecification());
         assertSame(framework, resolver.getNamespace());
 
-        verifyControls();
+        verify();
     }
 
     public void testFoundInNamespaceFolder()
@@ -542,7 +546,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
 
         application.installPageSpecification("NamespacePage", spec);
 
-        replayControls();
+        replay();
 
         PageSpecificationResolverImpl resolver = new PageSpecificationResolverImpl();
         resolver.setContextRoot(contextRoot);
@@ -556,7 +560,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
         assertSame(spec, resolver.getSpecification());
         assertSame(application, resolver.getNamespace());
 
-        verifyControls();
+        verify();
     }
 
     public void testFoundInWebInfAppFolder()
@@ -593,7 +597,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
 
         application.installPageSpecification("MyAppPage", spec);
 
-        replayControls();
+        replay();
 
         PageSpecificationResolverImpl resolver = new PageSpecificationResolverImpl();
         resolver.setContextRoot(contextRoot);
@@ -609,7 +613,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
         assertSame(spec, resolver.getSpecification());
         assertSame(application, resolver.getNamespace());
 
-        verifyControls();
+        verify();
     }
 
     public void testFoundInWebInfFolder()
@@ -651,7 +655,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
 
         application.installPageSpecification("MyWebInfPage", spec);
 
-        replayControls();
+        replay();
 
         PageSpecificationResolverImpl resolver = new PageSpecificationResolverImpl();
         resolver.setContextRoot(contextRoot);
@@ -667,7 +671,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
         assertSame(spec, resolver.getSpecification());
         assertSame(application, resolver.getNamespace());
 
-        verifyControls();
+        verify();
     }
 
     public void testWebInf()
@@ -684,7 +688,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
 
         trainIsDebugEnabled(log, false);
 
-        replayControls();
+        replay();
 
         PageSpecificationResolverImpl resolver = new PageSpecificationResolverImpl();
 
@@ -706,13 +710,13 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
                     ex.getMessage());
         }
 
-        verifyControls();
+        verify();
 
         trainContainsPage(application, "web-inf/BadName", false);
 
         trainIsDebugEnabled(log, false);
 
-        replayControls();
+        replay();
 
         try
         {
@@ -726,7 +730,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
                     ex.getMessage());
         }
 
-        verifyControls();
+        verify();
 
     }
 
@@ -760,7 +764,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
 
         trainGetNamespaceId(application, "<application namespace>");
 
-        replayControls();
+        replay();
 
         PageSpecificationResolverImpl resolver = new PageSpecificationResolverImpl();
         resolver.setContextRoot(contextRoot);
@@ -782,7 +786,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
                     .getMessage());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testProvidedByDelegate()
@@ -818,7 +822,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
 
         application.installPageSpecification("DelegatePage", spec);
 
-        replayControls();
+        replay();
 
         PageSpecificationResolverImpl resolver = new PageSpecificationResolverImpl();
         resolver.setContextRoot(contextRoot);
@@ -835,20 +839,18 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
         assertSame(spec, resolver.getSpecification());
         assertSame(application, resolver.getNamespace());
 
-        verifyControls();
+        verify();
     }
 
     private void trainGetPageSpecification(INamespace namespace, String pageName,
             IComponentSpecification spec)
     {
-        namespace.getPageSpecification(pageName);
-        setReturnValue(namespace, spec);
+        expect(namespace.getPageSpecification(pageName)).andReturn(spec);
     }
 
     private void trainGetPageSpecification(ISpecificationSource source, Resource resource,
             IComponentSpecification pageSpec)
     {
-        source.getPageSpecification(resource);
-        setReturnValue(source, pageSpec);
+        expect(source.getPageSpecification(resource)).andReturn(pageSpec);
     }
 }

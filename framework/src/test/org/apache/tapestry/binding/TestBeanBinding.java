@@ -14,45 +14,46 @@
 
 package org.apache.tapestry.binding;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import org.apache.hivemind.Location;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IBeanProvider;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.coerce.ValueConverter;
-import org.easymock.MockControl;
+import org.testng.annotations.Test;
 
 /**
  * @author Howard M. Lewis Ship
  */
-public class TestBeanBinding extends HiveMindTestCase
+@Test
+public class TestBeanBinding extends BaseComponentTestCase
 {
     public void testCreate()
     {
-        ValueConverter vc = (ValueConverter) newMock(ValueConverter.class);
-
-        MockControl componentc = newControl(IComponent.class);
-        IComponent component = (IComponent) componentc.getMock();
-
-        MockControl beanProviderc = newControl(IBeanProvider.class);
-        IBeanProvider beanProvider = (IBeanProvider) beanProviderc.getMock();
+        ValueConverter vc = newMock(ValueConverter.class);
+        
+        IComponent component = newComponent();
+        
+        IBeanProvider beanProvider = newMock(IBeanProvider.class);
 
         Location l = fabricateLocation(21);
 
         Object bean = new Object();
 
-        component.getBeans();
-        componentc.setReturnValue(beanProvider);
+        expect(component.getBeans()).andReturn(beanProvider);
 
-        beanProvider.getBean("fred");
-        beanProviderc.setReturnValue(bean);
+        expect(beanProvider.getBean("fred")).andReturn(bean);
 
-        replayControls();
+        replay();
 
         BeanBinding binding = new BeanBinding("param", vc, l, component, "fred");
 
         assertSame(bean, binding.getObject());
 
-        verifyControls();
+        verify();
 
         assertSame(component, binding.getComponent());
         assertSame(l, binding.getLocation());

@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.junit;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,8 +27,8 @@ import org.apache.hivemind.Registry;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.impl.RegistryBuilder;
-import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.hivemind.util.ClasspathResource;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.Tapestry;
@@ -46,7 +48,7 @@ import org.apache.tapestry.util.IPropertyHolder;
  * @since 2.2
  */
 
-public abstract class TapestryTestCase extends HiveMindTestCase
+public abstract class TapestryTestCase extends BaseComponentTestCase
 {
     protected static final boolean IS_JDK13 = System.getProperty("java.specification.version")
             .equals("1.3");

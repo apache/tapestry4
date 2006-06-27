@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.enhance;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+
 import java.lang.reflect.Modifier;
 import java.util.Collections;
 
@@ -21,13 +24,12 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.service.MethodSignature;
-import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.BaseComponent;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.spec.ContainedComponent;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.InjectComponentWorker}.
@@ -35,7 +37,7 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestInjectComponentWorker extends HiveMindTestCase
+public class TestInjectComponentWorker extends BaseComponentTestCase
 {
     private IComponentSpecification newSpec(String componentId, String propertyName,
             Location location)
@@ -43,15 +45,12 @@ public class TestInjectComponentWorker extends HiveMindTestCase
         IContainedComponent cc = new ContainedComponent();
         cc.setPropertyName(propertyName);
         cc.setLocation(location);
+        
+        IComponentSpecification spec = newSpec();
 
-        MockControl control = newControl(IComponentSpecification.class);
-        IComponentSpecification spec = (IComponentSpecification) control.getMock();
+        expect(spec.getComponentIds()).andReturn(Collections.singletonList(componentId));
 
-        spec.getComponentIds();
-        control.setReturnValue(Collections.singletonList(componentId));
-
-        spec.getComponent(componentId);
-        control.setReturnValue(cc);
+        expect(spec.getComponent(componentId)).andReturn(cc);
 
         return spec;
     }
@@ -59,13 +58,13 @@ public class TestInjectComponentWorker extends HiveMindTestCase
     public void testNoWork()
     {
         IComponentSpecification spec = newSpec("fred", null, null);
-        EnhancementOperation op = (EnhancementOperation) newMock(EnhancementOperation.class);
+        EnhancementOperation op = newMock(EnhancementOperation.class);
 
-        replayControls();
+        replay();
 
         new InjectComponentWorker().performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 
     protected EnhancementOperation newEnhancementOperation()
@@ -76,28 +75,24 @@ public class TestInjectComponentWorker extends HiveMindTestCase
     protected void trainGetPropertyType(EnhancementOperation op, String propertyName,
             Class propertyType)
     {
-        op.getPropertyType(propertyName);
-        setReturnValue(op, propertyType);
+        expect(op.getPropertyType(propertyName)).andReturn(propertyType);
     }
 
     protected void trainGetAccessorMethodName(EnhancementOperation op, String propertyName,
             String methodName)
     {
-        op.getAccessorMethodName(propertyName);
-        setReturnValue(op, methodName);
+        expect(op.getAccessorMethodName(propertyName)).andReturn(methodName);
     }
 
     protected void trainGetClassReference(EnhancementOperation op, Class clazz, String reference)
     {
-        op.getClassReference(clazz);
-        setReturnValue(op, reference);
+        expect(op.getClassReference(clazz)).andReturn(reference);
     }
 
     protected void trainAddInjectedField(EnhancementOperation op, String fieldName,
             Class fieldType, Object fieldValue, String uniqueFieldName)
     {
-        op.addInjectedField(fieldName, fieldType, fieldValue);
-        setReturnValue(op, uniqueFieldName);
+        expect(op.addInjectedField(fieldName, fieldType, fieldValue)).andReturn(uniqueFieldName);
     }
 
     public void testSuccess()
@@ -130,37 +125,34 @@ public class TestInjectComponentWorker extends HiveMindTestCase
                         + "org.apache.tapestry.TapestryUtils#getComponent"
                         + "(this, \"fred\", _$IComponent$class, _$$location);");
 
-        replayControls();
+        replay();
 
         new InjectComponentWorker().performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 
     public void testFailure()
     {
         Location l = newLocation();
         Throwable ex = new ApplicationRuntimeException(EnhanceMessages.claimedProperty("barney"));
-
-        MockControl control = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) control.getMock();
+        
+        EnhancementOperation op = newMock(EnhancementOperation.class);
 
         IComponentSpecification spec = newSpec("fred", "barney", l);
 
         ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
 
-        op.getPropertyType("barney");
-        control.setReturnValue(IComponent.class);
+        expect(op.getPropertyType("barney")).andReturn(IComponent.class);
 
         op.claimReadonlyProperty("barney");
-        control.setThrowable(ex);
+        expectLastCall().andThrow(ex);
 
-        op.getBaseClass();
-        control.setReturnValue(BaseComponent.class);
+        expect(op.getBaseClass()).andReturn(BaseComponent.class);
 
         log.error(EnhanceMessages.errorAddingProperty("barney", BaseComponent.class, ex), l, ex);
 
-        replayControls();
+        replay();
 
         InjectComponentWorker w = new InjectComponentWorker();
 
@@ -168,6 +160,6 @@ public class TestInjectComponentWorker extends HiveMindTestCase
 
         w.performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 }

@@ -14,11 +14,12 @@
 
 package org.apache.tapestry.engine.encoders;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import static org.easymock.EasyMock.expect;
+
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.ServiceEncoding;
 import org.apache.tapestry.services.ServiceConstants;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.engine.encoders.DirectServiceEncoder}.
@@ -26,68 +27,62 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestDirectServiceEncoder extends HiveMindTestCase
+public class TestDirectServiceEncoder extends BaseComponentTestCase
 {
     private ServiceEncoding newEncoding(String servletPath)
     {
-        MockControl control = newControl(ServiceEncoding.class);
-        ServiceEncoding encoding = (ServiceEncoding) control.getMock();
+        ServiceEncoding encoding = newMock(ServiceEncoding.class);
 
-        encoding.getServletPath();
-        control.setReturnValue(servletPath);
+        expect(encoding.getServletPath()).andReturn(servletPath);
 
         return encoding;
     }
 
-    private void train(MockControl control, ServiceEncoding encoding, String parameterName,
+    private void train(ServiceEncoding encoding, String parameterName,
             String parameterValue)
     {
-        encoding.getParameterValue(parameterName);
-        control.setReturnValue(parameterValue);
+        expect(encoding.getParameterValue(parameterName)).andReturn(parameterValue);
     }
 
     public void testEncodeWrongService()
     {
-        MockControl control = newControl(ServiceEncoding.class);
-        ServiceEncoding encoding = (ServiceEncoding) control.getMock();
+        ServiceEncoding encoding = newMock(ServiceEncoding.class);
 
-        train(control, encoding, ServiceConstants.SERVICE, "foo");
+        train(encoding, ServiceConstants.SERVICE, "foo");
 
-        replayControls();
+        replay();
 
         DirectServiceEncoder encoder = new DirectServiceEncoder();
 
         encoder.encode(encoding);
 
-        verifyControls();
+        verify();
     }
 
     public void testEncodePageInNamespace()
     {
-        MockControl control = newControl(ServiceEncoding.class);
-        ServiceEncoding encoding = (ServiceEncoding) control.getMock();
+        ServiceEncoding encoding = newMock(ServiceEncoding.class);
 
-        train(control, encoding, ServiceConstants.SERVICE, Tapestry.DIRECT_SERVICE);
-        train(control, encoding, ServiceConstants.PAGE, "foo:Bar");
+        train(encoding, ServiceConstants.SERVICE, Tapestry.DIRECT_SERVICE);
+        train(encoding, ServiceConstants.PAGE, "foo:Bar");
 
-        replayControls();
+        replay();
 
         DirectServiceEncoder encoder = new DirectServiceEncoder();
 
         encoder.encode(encoding);
 
-        verifyControls();
+        verify();
     }
 
     public void testEncodeStateless()
     {
-        MockControl control = newControl(ServiceEncoding.class);
-        ServiceEncoding encoding = (ServiceEncoding) control.getMock();
+        ServiceEncoding encoding = newMock(ServiceEncoding.class);
 
-        train(control, encoding, ServiceConstants.SERVICE, Tapestry.DIRECT_SERVICE);
-        train(control, encoding, ServiceConstants.PAGE, "admin/Menu");
-        train(control, encoding, ServiceConstants.SESSION, null);
-        train(control, encoding, ServiceConstants.COMPONENT, "border.link");
+        train(encoding, ServiceConstants.SERVICE, Tapestry.DIRECT_SERVICE);
+        train(encoding, ServiceConstants.PAGE, "admin/Menu");
+        train(encoding, ServiceConstants.SESSION, null);
+        train(encoding, ServiceConstants.COMPONENT, "border.link");
 
         encoding.setServletPath("/admin/Menu,border.link.direct");
         encoding.setParameterValue(ServiceConstants.SERVICE, null);
@@ -95,25 +90,24 @@ public class TestDirectServiceEncoder extends HiveMindTestCase
         encoding.setParameterValue(ServiceConstants.SESSION, null);
         encoding.setParameterValue(ServiceConstants.COMPONENT, null);
 
-        replayControls();
+        replay();
 
         DirectServiceEncoder encoder = new DirectServiceEncoder();
         encoder.setStatelessExtension("direct");
 
         encoder.encode(encoding);
 
-        verifyControls();
+        verify();
     }
 
     public void testEncodeStateful()
     {
-        MockControl control = newControl(ServiceEncoding.class);
-        ServiceEncoding encoding = (ServiceEncoding) control.getMock();
+        ServiceEncoding encoding = newMock(ServiceEncoding.class);
 
-        train(control, encoding, ServiceConstants.SERVICE, Tapestry.DIRECT_SERVICE);
-        train(control, encoding, ServiceConstants.PAGE, "admin/Menu");
-        train(control, encoding, ServiceConstants.SESSION, "T");
-        train(control, encoding, ServiceConstants.COMPONENT, "border.link");
+        train(encoding, ServiceConstants.SERVICE, Tapestry.DIRECT_SERVICE);
+        train(encoding, ServiceConstants.PAGE, "admin/Menu");
+        train(encoding, ServiceConstants.SESSION, "T");
+        train(encoding, ServiceConstants.COMPONENT, "border.link");
 
         encoding.setServletPath("/admin/Menu,border.link.sdirect");
         encoding.setParameterValue(ServiceConstants.SERVICE, null);
@@ -121,21 +115,21 @@ public class TestDirectServiceEncoder extends HiveMindTestCase
         encoding.setParameterValue(ServiceConstants.SESSION, null);
         encoding.setParameterValue(ServiceConstants.COMPONENT, null);
 
-        replayControls();
+        replay();
 
         DirectServiceEncoder encoder = new DirectServiceEncoder();
         encoder.setStatefulExtension("sdirect");
 
         encoder.encode(encoding);
 
-        verifyControls();
+        verify();
     }
 
     public void testDecodeWrongExtension()
     {
         ServiceEncoding encoding = newEncoding("/foo.svc");
 
-        replayControls();
+        replay();
 
         DirectServiceEncoder encoder = new DirectServiceEncoder();
         encoder.setStatelessExtension("direct");
@@ -143,7 +137,7 @@ public class TestDirectServiceEncoder extends HiveMindTestCase
 
         encoder.decode(encoding);
 
-        verifyControls();
+        verify();
     }
 
     public void testDecodeStateless()
@@ -155,7 +149,7 @@ public class TestDirectServiceEncoder extends HiveMindTestCase
         encoding.setParameterValue(ServiceConstants.SESSION, null);
         encoding.setParameterValue(ServiceConstants.COMPONENT, "border.link");
 
-        replayControls();
+        replay();
 
         DirectServiceEncoder encoder = new DirectServiceEncoder();
         encoder.setStatelessExtension("direct");
@@ -163,7 +157,7 @@ public class TestDirectServiceEncoder extends HiveMindTestCase
 
         encoder.decode(encoding);
 
-        verifyControls();
+        verify();
     }
     
     public void testDecodeStateful()
@@ -175,7 +169,7 @@ public class TestDirectServiceEncoder extends HiveMindTestCase
         encoding.setParameterValue(ServiceConstants.SESSION, "T");
         encoding.setParameterValue(ServiceConstants.COMPONENT, "border.link");
 
-        replayControls();
+        replay();
 
         DirectServiceEncoder encoder = new DirectServiceEncoder();
         encoder.setStatelessExtension("direct");
@@ -183,6 +177,6 @@ public class TestDirectServiceEncoder extends HiveMindTestCase
 
         encoder.decode(encoding);
 
-        verifyControls();
+        verify();
     }    
 }

@@ -14,10 +14,11 @@
 
 package org.apache.tapestry.enhance;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import static org.easymock.EasyMock.expect;
+
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link TestInjectListenerRegistrationWorker}.
@@ -25,49 +26,41 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestInjectListenerRegistrationWorker extends HiveMindTestCase
+public class TestInjectListenerRegistrationWorker extends BaseComponentTestCase
 {
-    private IComponentSpecification newSpec()
-    {
-        return (IComponentSpecification) newMock(IComponentSpecification.class);
-    }
 
     public void testNonMatch()
     {
-        MockControl control = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) control.getMock();
+        EnhancementOperation op = newMock(EnhancementOperation.class);
 
         IComponentSpecification spec = newSpec();
 
-        op.implementsInterface(Runnable.class);
-        control.setReturnValue(false);
+        expect(op.implementsInterface(Runnable.class)).andReturn(false);
 
-        replayControls();
+        replay();
 
         InjectListenerRegistrationWorker w = new InjectListenerRegistrationWorker();
         w.setListenerInterface(Runnable.class);
 
         w.performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 
     public void testMatch()
     {
-        MockControl control = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) control.getMock();
+        EnhancementOperation op = newMock(EnhancementOperation.class);
 
         IComponentSpecification spec = newSpec();
 
-        op.implementsInterface(IComponent.class);
-        control.setReturnValue(true);
+        expect(op.implementsInterface(IComponent.class)).andReturn(false);
 
         op.extendMethodImplementation(
                 IComponent.class,
                 EnhanceUtils.FINISH_LOAD_SIGNATURE,
                 "getPage().addThisComponentAsListener(this);");
 
-        replayControls();
+        replay();
 
         InjectListenerRegistrationWorker w = new InjectListenerRegistrationWorker();
         w.setListenerInterface(IComponent.class);
@@ -75,7 +68,7 @@ public class TestInjectListenerRegistrationWorker extends HiveMindTestCase
 
         w.performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 
 }

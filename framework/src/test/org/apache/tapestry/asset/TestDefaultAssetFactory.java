@@ -14,8 +14,12 @@
 
 package org.apache.tapestry.asset;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import org.apache.hivemind.Location;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.asset.DefaultAssetFactory}.
@@ -23,13 +27,14 @@ import org.apache.hivemind.test.HiveMindTestCase;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestDefaultAssetFactory extends HiveMindTestCase
+@Test
+public class TestDefaultAssetFactory extends BaseComponentTestCase
 {
     public void testCreateAssetFull()
     {
         Location l = newLocation();
 
-        replayControls();
+        replay();
 
         AssetFactory factory = new DefaultAssetFactory();
 
@@ -38,14 +43,14 @@ public class TestDefaultAssetFactory extends HiveMindTestCase
         assertEquals("ExternalAsset[/foo/bar/baz]", asset.toString());
         assertSame(l, asset.getLocation());
         
-        verifyControls();
+        verify();
     }
 
     public void testCreateAssetFromResource()
     {
         Location l = newLocation();
 
-        replayControls();
+        replay();
 
         AssetFactory factory = new DefaultAssetFactory();
 
@@ -54,7 +59,7 @@ public class TestDefaultAssetFactory extends HiveMindTestCase
         assertEquals("ExternalAsset[/foo/bar/baz]", asset.toString());
         assertSame(l, asset.getLocation());
         
-        verifyControls();
+        verify();
 
     }
 }

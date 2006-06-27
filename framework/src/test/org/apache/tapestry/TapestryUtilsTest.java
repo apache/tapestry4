@@ -14,9 +14,13 @@
 
 package org.apache.tapestry;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
-import org.easymock.MockControl;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.TapestryUtils}.
@@ -24,12 +28,13 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TapestryUtilsTest extends BaseComponentTestCase
 {
 
     private IRequestCycle newCycle(String key, Object attribute)
     {
-        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
+        IRequestCycle cycle = newMock(IRequestCycle.class);
 
         trainGetAttribute(cycle, key, attribute);
 
@@ -39,22 +44,19 @@ public class TapestryUtilsTest extends BaseComponentTestCase
     public void testStoreUniqueAttributeSuccess()
     {
         Object newInstance = new Object();
-
-        MockControl control = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) control.getMock();
+        IRequestCycle cycle = newCycle();
 
         String key = "foo.bar.Baz";
 
-        cycle.getAttribute(key);
-        control.setReturnValue(null);
+        expect(cycle.getAttribute(key)).andReturn(null);
 
         cycle.setAttribute(key, newInstance);
 
-        replayControls();
+        replay();
 
         TapestryUtils.storeUniqueAttribute(cycle, key, newInstance);
 
-        verifyControls();
+        verify();
     }
 
     public void testStoreUniqueAttributeFailure()
@@ -66,7 +68,7 @@ public class TapestryUtilsTest extends BaseComponentTestCase
 
         IRequestCycle cycle = newCycle(key, existing);
 
-        replayControls();
+        replay();
 
         try
         {
@@ -79,7 +81,7 @@ public class TapestryUtilsTest extends BaseComponentTestCase
                     .getMessage());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testGetPageRenderSupportSuccess()
@@ -88,39 +90,39 @@ public class TapestryUtilsTest extends BaseComponentTestCase
         PageRenderSupport support = newPageRenderSupport();
         IRequestCycle cycle = newCycle(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE, support);
 
-        replayControls();
+        replay();
 
         PageRenderSupport actual = TapestryUtils.getPageRenderSupport(cycle, component);
 
         assertSame(support, actual);
 
-        verifyControls();
+        verify();
     }
 
     public void testRemovePageRenderSupport()
     {
-        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
+        IRequestCycle cycle = newMock(IRequestCycle.class);
 
         cycle.removeAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE);
 
-        replayControls();
+        replay();
 
         TapestryUtils.removePageRenderSupport(cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testRemoveForm()
     {
-        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
+        IRequestCycle cycle = newMock(IRequestCycle.class);
 
         cycle.removeAttribute(TapestryUtils.FORM_ATTRIBUTE);
 
-        replayControls();
+        replay();
 
         TapestryUtils.removeForm(cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testGetFormSuccess()
@@ -129,33 +131,27 @@ public class TapestryUtilsTest extends BaseComponentTestCase
         IForm form = newForm();
         IRequestCycle cycle = newCycle(TapestryUtils.FORM_ATTRIBUTE, form);
 
-        replayControls();
+        replay();
 
         IForm actual = TapestryUtils.getForm(cycle, component);
 
         assertSame(form, actual);
 
-        verifyControls();
+        verify();
     }
 
     public void testGetPageRenderSupportFailure()
     {
         Location l = newLocation();
-        MockControl control = newControl(IComponent.class);
-        IComponent component = (IComponent) control.getMock();
+        IComponent component = newMock(IComponent.class);
 
-        component.getExtendedId();
-        control.setReturnValue("Foo/bar", 1);
-
-        component.getLocation();
-        control.setReturnValue(l);
-
-        component.getExtendedId();
-        control.setReturnValue("Foo/bar", 1);
+        expect(component.getExtendedId()).andReturn("Foo/bar").anyTimes();
+        
+        expect(component.getLocation()).andReturn(l);
 
         IRequestCycle cycle = newCycle(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE, null);
 
-        replayControls();
+        replay();
 
         try
         {
@@ -168,27 +164,21 @@ public class TapestryUtilsTest extends BaseComponentTestCase
             assertSame(l, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testGetFormFailure()
     {
         Location l = newLocation();
-        MockControl control = newControl(IComponent.class);
-        IComponent component = (IComponent) control.getMock();
+        IComponent component = newMock(IComponent.class);
 
-        component.getExtendedId();
-        control.setReturnValue("Foo/bar", 1);
-
-        component.getLocation();
-        control.setReturnValue(l);
-
-        component.getExtendedId();
-        control.setReturnValue("Foo/bar", 1);
+        expect(component.getExtendedId()).andReturn("Foo/bar").anyTimes();
+        
+        expect(component.getLocation()).andReturn(l);
 
         IRequestCycle cycle = newCycle(TapestryUtils.FORM_ATTRIBUTE, null);
 
-        replayControls();
+        replay();
 
         try
         {
@@ -201,42 +191,42 @@ public class TapestryUtilsTest extends BaseComponentTestCase
             assertSame(l, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testSplitBlank()
     {
-        assertListsEqual(new String[0], TapestryUtils.split(null));
-        assertListsEqual(new String[0], TapestryUtils.split(""));
+        assertEquals(new String[0], TapestryUtils.split(null));
+        assertEquals(new String[0], TapestryUtils.split(""));
     }
 
     public void testSplitWithDelimiter()
     {
-        assertListsEqual(new String[]
+        assertEquals(new String[]
         { "fred", "barney" }, TapestryUtils.split("fred|barney", '|'));
     }
 
     public void testSplitNormal()
     {
-        assertListsEqual(new String[]
+        assertEquals(new String[]
         { "fred", "barney" }, TapestryUtils.split("fred,barney"));
     }
 
     public void testSplitNoDelimiter()
     {
-        assertListsEqual(new String[]
+        assertEquals(new String[]
         { "no-delimiter" }, TapestryUtils.split("no-delimiter"));
     }
 
     public void testTrailingDelimiter()
     {
-        assertListsEqual(new String[]
+        assertEquals(new String[]
         { "fred", "barney", "" }, TapestryUtils.split("fred,barney,"));
     }
 
     public void testEveryDelimiterCounts()
     {
-        assertListsEqual(new String[]
+        assertEquals(new String[]
         { "", "fred", "", "barney", "", "" }, TapestryUtils.split(",fred,,barney,,"));
     }
 
@@ -276,11 +266,11 @@ public class TapestryUtilsTest extends BaseComponentTestCase
 
         trainGetComponent(container, "fred", containee);
 
-        replayControls();
+        replay();
 
         assertSame(containee, TapestryUtils.getComponent(container, "fred", IComponent.class, null));
 
-        verifyControls();
+        verify();
     }
 
     public void testGetComponentWrongType()
@@ -292,7 +282,7 @@ public class TapestryUtilsTest extends BaseComponentTestCase
         trainGetComponent(container, "fred", containee);
         trainGetExtendedId(containee, "Flintstone/fred");
 
-        replayControls();
+        replay();
 
         try
         {
@@ -307,7 +297,7 @@ public class TapestryUtilsTest extends BaseComponentTestCase
             assertSame(l, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
 
     }
 
@@ -318,10 +308,9 @@ public class TapestryUtilsTest extends BaseComponentTestCase
 
         Throwable t = new RuntimeException("Poof!");
 
-        container.getComponent("fred");
-        setThrowable(container, t);
+        expect(container.getComponent("fred")).andThrow(t);
 
-        replayControls();
+        replay();
 
         try
         {
@@ -335,6 +324,6 @@ public class TapestryUtilsTest extends BaseComponentTestCase
             assertSame(t, ex.getRootCause());
         }
 
-        verifyControls();
+        verify();
     }
 }

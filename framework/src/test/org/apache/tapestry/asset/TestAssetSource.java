@@ -14,15 +14,18 @@
 
 package org.apache.tapestry.asset;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IAsset;
-import org.easymock.MockControl;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.asset.AssetSourceImpl}.
@@ -30,7 +33,8 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestAssetSource extends HiveMindTestCase
+@Test
+public class TestAssetSource extends BaseComponentTestCase
 {
     private AssetFactoryContribution newContribution(String prefix, AssetFactory factory)
     {
@@ -46,28 +50,16 @@ public class TestAssetSource extends HiveMindTestCase
         return Collections.singletonList(newContribution(prefix, factory));
     }
 
-    private Resource newResource()
-    {
-        return (Resource) newMock(Resource.class);
-    }
-
     private AssetFactory newAssetFactory(Resource base, String path, Locale locale,
             Location location, IAsset asset)
     {
-        MockControl control = newControl(AssetFactory.class);
-        AssetFactory f = (AssetFactory) control.getMock();
+        AssetFactory f = newMock(AssetFactory.class);
 
-        f.createAsset(base, path, locale, location);
-        control.setReturnValue(asset);
+        expect(f.createAsset(base, path, locale, location)).andReturn(asset);
 
         return f;
     }
-
-    private IAsset newAsset()
-    {
-        return (IAsset) newMock(IAsset.class);
-    }
-
+    
     public void testKnownPrefix()
     {
         Location l = newLocation();
@@ -82,7 +74,7 @@ public class TestAssetSource extends HiveMindTestCase
                 l,
                 asset));
 
-        replayControls();
+        replay();
 
         AssetSourceImpl as = new AssetSourceImpl();
         as.setContributions(contributions);
@@ -93,7 +85,7 @@ public class TestAssetSource extends HiveMindTestCase
 
         assertSame(actual, asset);
 
-        verifyControls();
+        verify();
     }
 
     public void testUnknownPrefix()
@@ -105,7 +97,7 @@ public class TestAssetSource extends HiveMindTestCase
 
         AssetFactory f = newAssetFactory(r, "unknown:path/to/asset", Locale.ENGLISH, l, asset);
 
-        replayControls();
+        replay();
 
         AssetSourceImpl as = new AssetSourceImpl();
         as.setDefaultAssetFactory(f);
@@ -114,7 +106,7 @@ public class TestAssetSource extends HiveMindTestCase
 
         assertSame(actual, asset);
 
-        verifyControls();
+        verify();
     }
 
     public void testNoPrefix()
@@ -126,7 +118,7 @@ public class TestAssetSource extends HiveMindTestCase
 
         AssetFactory f = newAssetFactory(r, "path/to/asset", Locale.ENGLISH, l, asset);
 
-        replayControls();
+        replay();
 
         AssetSourceImpl as = new AssetSourceImpl();
         as.setLookupAssetFactory(f);
@@ -135,6 +127,6 @@ public class TestAssetSource extends HiveMindTestCase
 
         assertSame(actual, asset);
 
-        verifyControls();
+        verify();
     }
 }

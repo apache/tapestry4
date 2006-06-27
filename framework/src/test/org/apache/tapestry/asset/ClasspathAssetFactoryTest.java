@@ -14,31 +14,37 @@
 
 package org.apache.tapestry.asset;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+import static org.testng.AssertJUnit.assertTrue;
+
 import java.util.Locale;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.LocationImpl;
-import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.hivemind.util.ClasspathResource;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.l10n.DefaultResourceLocalizer;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.asset.ClasspathAssetFactory}.
  * 
  * @author Howard M. Lewis Ship
  */
-public class ClasspathAssetFactoryTest extends HiveMindTestCase
+@Test
+public class ClasspathAssetFactoryTest extends BaseComponentTestCase
 {
     public void testCreateAsset()
     {
         IEngineService assetService = newService();
         Location l = newLocation();
 
-        replayControls();
+        replay();
 
         ClasspathAssetFactory factory = new ClasspathAssetFactory();
         factory.setClassResolver(getClassResolver());
@@ -54,7 +60,7 @@ public class ClasspathAssetFactoryTest extends HiveMindTestCase
                 .getResourceLocation().getPath());
         assertSame(l, asset.getLocation());
 
-        verifyControls();
+        verify();
     }
 
     public void testCreateAssetMissing()
@@ -62,7 +68,7 @@ public class ClasspathAssetFactoryTest extends HiveMindTestCase
         IEngineService assetService = newService();
         Location l = newLocation();
 
-        replayControls();
+        replay();
 
         ClasspathAssetFactory factory = new ClasspathAssetFactory();
         factory.setClassResolver(getClassResolver());
@@ -84,7 +90,7 @@ public class ClasspathAssetFactoryTest extends HiveMindTestCase
             assertSame(l, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testCreateAbsoluteAsset()
@@ -92,7 +98,7 @@ public class ClasspathAssetFactoryTest extends HiveMindTestCase
         IEngineService assetService = newService();
         Location l = newLocation();
 
-        replayControls();
+        replay();
 
         ClasspathAssetFactory factory = new ClasspathAssetFactory();
         factory.setClassResolver(getClassResolver());
@@ -109,7 +115,7 @@ public class ClasspathAssetFactoryTest extends HiveMindTestCase
                 .getResourceLocation().getPath());
         assertSame(l, asset.getLocation());
 
-        verifyControls();
+        verify();
     }
 
     public void testCreateAbsoluteAssetMissing()
@@ -117,7 +123,7 @@ public class ClasspathAssetFactoryTest extends HiveMindTestCase
         IEngineService assetService = newService();
         Location l = newLocation();
 
-        replayControls();
+        replay();
 
         ClasspathAssetFactory factory = new ClasspathAssetFactory();
         factory.setClassResolver(getClassResolver());
@@ -140,7 +146,7 @@ public class ClasspathAssetFactoryTest extends HiveMindTestCase
             assertSame(l, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testCreateDirectoryAsset()
@@ -148,7 +154,7 @@ public class ClasspathAssetFactoryTest extends HiveMindTestCase
         IEngineService assetService = newService();
         Location l = newLocation();
         
-        replayControls();
+        replay();
         
         ClasspathAssetFactory factory = new ClasspathAssetFactory();
         factory.setClassResolver(getClassResolver());
@@ -165,7 +171,7 @@ public class ClasspathAssetFactoryTest extends HiveMindTestCase
                 .getResourceLocation().getPath());
         assertSame(l, asset.getLocation());
         
-        verifyControls();
+        verify();
     }
     
     public void testCreateRelativeDirectoryAsset()
@@ -175,7 +181,7 @@ public class ClasspathAssetFactoryTest extends HiveMindTestCase
             "/org/apache/tapestry/html/Shell.jwc");
         Location l = new LocationImpl(shell);
         
-        replayControls();
+        replay();
         
         ClasspathAssetFactory factory = new ClasspathAssetFactory();
         factory.setClassResolver(getClassResolver());
@@ -193,7 +199,7 @@ public class ClasspathAssetFactoryTest extends HiveMindTestCase
                 .getResourceLocation().getPath());
         assertSame(l, asset.getLocation());
         
-        verifyControls();
+        verify();
     }
     
     public void testCreateRelativeDirectoryMissingAsset()
@@ -203,7 +209,7 @@ public class ClasspathAssetFactoryTest extends HiveMindTestCase
             "/org/apache/tapestry/html/Shell.jwc");
         Location l = new LocationImpl(shell);
         
-        replayControls();
+        replay();
         
         ClasspathAssetFactory factory = new ClasspathAssetFactory();
         factory.setClassResolver(getClassResolver());
@@ -221,7 +227,7 @@ public class ClasspathAssetFactoryTest extends HiveMindTestCase
                 .getResourceLocation().getPath());
         assertSame(l, asset.getLocation());
         
-        verifyControls();
+        verify();
     }
     
     /**
@@ -232,7 +238,7 @@ public class ClasspathAssetFactoryTest extends HiveMindTestCase
         IEngineService assetService = newService();
         Location l = newLocation();
         
-        replayControls();
+        replay();
         
         ClasspathAssetFactory factory = new ClasspathAssetFactory();
         factory.setClassResolver(getClassResolver());
@@ -248,7 +254,7 @@ public class ClasspathAssetFactoryTest extends HiveMindTestCase
                 asset.getResourceLocation().getPath());
         assertSame(l, asset.getLocation());
         
-        verifyControls();
+        verify();
     }
     
     private ClasspathResource newBaseResource()
@@ -259,6 +265,6 @@ public class ClasspathAssetFactoryTest extends HiveMindTestCase
 
     private IEngineService newService()
     {
-        return (IEngineService) newMock(IEngineService.class);
+        return newMock(IEngineService.class);
     }
 }
