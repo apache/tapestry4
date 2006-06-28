@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.engine.state;
 
-import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.*;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertSame;
 
@@ -34,7 +34,7 @@ public class TestApplicationStateManager extends BaseComponentTestCase
             StateObjectManager manager)
     {
         StateObjectManagerRegistry result = newMock(StateObjectManagerRegistry.class);
-
+        
         expect(result.get(name)).andReturn(manager);
 
         return result;
@@ -45,13 +45,13 @@ public class TestApplicationStateManager extends BaseComponentTestCase
         Object stateObject = new Object();
         
         StateObjectManager m = newMock(StateObjectManager.class);
-
-        expect(m.get()).andReturn(stateObject);
-
+        
         StateObjectManagerRegistry r = newRegistry("fred", m);
-
+        
+        expect(m.get()).andReturn(stateObject);
+        
         replay();
-
+        
         ApplicationStateManagerImpl asm = new ApplicationStateManagerImpl();
         asm.setRegistry(r);
 
@@ -67,10 +67,10 @@ public class TestApplicationStateManager extends BaseComponentTestCase
 
         StateObjectManager m = newMock(StateObjectManager.class);
 
-        expect(m.exists()).andReturn(false);
-
         StateObjectManagerRegistry r = newRegistry("barney", m);
 
+        expect(m.exists()).andReturn(false);
+        
         replay();
 
         ApplicationStateManagerImpl asm = new ApplicationStateManagerImpl();
@@ -86,13 +86,13 @@ public class TestApplicationStateManager extends BaseComponentTestCase
         Object stateObject = new Object();
 
         StateObjectManager m = newMock(StateObjectManager.class);
-
-        expect(m.get()).andReturn(stateObject);
         
         StateObjectManagerRegistry r = newMock(StateObjectManagerRegistry.class);
-
+        
         expect(r.get("barney")).andReturn(m);
-
+        
+        expect(m.get()).andReturn(stateObject);
+        
         replay();
 
         ApplicationStateManagerImpl asm = new ApplicationStateManagerImpl();
@@ -109,9 +109,9 @@ public class TestApplicationStateManager extends BaseComponentTestCase
         assertSame(stateObject, asm.get("barney"));
 
         verify();
-
+        
         expect(r.get("barney")).andReturn(m);
-
+        
         expect(m.get()).andReturn(stateObject);
 
         replay();
@@ -131,19 +131,19 @@ public class TestApplicationStateManager extends BaseComponentTestCase
 
         StateObjectManager m = newMock(StateObjectManager.class);
 
-        expect(m.get()).andReturn(stateObject);
-
         StateObjectManagerRegistry r = newMock(StateObjectManagerRegistry.class);
-
+        
         expect(r.get("barney")).andReturn(m);
+        
+        expect(m.get()).andReturn(stateObject);
 
         replay();
 
         ApplicationStateManagerImpl asm = new ApplicationStateManagerImpl();
         asm.setRegistry(r);
-
+        
         assertSame(stateObject, asm.get("barney"));
-
+        
         verify();
 
         expect(r.get("barney")).andReturn(m);

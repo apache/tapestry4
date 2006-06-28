@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.form;
 
+import static org.easymock.EasyMock.aryEq;
+import static org.easymock.EasyMock.checkOrder;
+import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 
 import java.util.Locale;
@@ -26,7 +29,6 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.junit.TapestryTestCase;
-import org.testng.annotations.Test;
 
 /**
  * Abstract test case for {@link FormComponentContributor}.
@@ -34,7 +36,6 @@ import org.testng.annotations.Test;
  * @author Paul Ferraro
  * @since 4.0
  */
-@Test
 public abstract class FormComponentContributorTestCase extends TapestryTestCase
 {
     // Paul,
@@ -70,8 +71,10 @@ public abstract class FormComponentContributorTestCase extends TapestryTestCase
     protected IFormComponent newField(String displayName)
     {
         IFormComponent field = newMock(IFormComponent.class);
-
-        expect(field.getDisplayName()).andReturn(displayName);
+        
+        checkOrder(field, false);
+        
+        expect(field.getDisplayName()).andReturn(displayName).anyTimes();
 
         return field;
     }
@@ -100,13 +103,13 @@ public abstract class FormComponentContributorTestCase extends TapestryTestCase
     protected void trainBuildMessage(ValidationMessages messages,
             String overrideMessage, String key, Object[] parameters, String result)
     {
-        expect(messages.formatValidationMessage(overrideMessage, key, parameters))
+        expect(messages.formatValidationMessage(eq(overrideMessage), eq(key), aryEq(parameters)))
         .andReturn(result);
     }
 
     protected void trainGetLocale(ValidationMessages messages, Locale locale)
     {
-        expect(messages.getLocale()).andReturn(locale);
+        expect(messages.getLocale()).andReturn(locale).anyTimes();
     }
 
     protected IFormComponent newField()
@@ -128,7 +131,7 @@ public abstract class FormComponentContributorTestCase extends TapestryTestCase
     {
         ValidationMessages messages = newMock(ValidationMessages.class);
 
-        expect(messages.getLocale()).andReturn(locale);
+        expect(messages.getLocale()).andReturn(locale).anyTimes();
 
         return messages;
     }

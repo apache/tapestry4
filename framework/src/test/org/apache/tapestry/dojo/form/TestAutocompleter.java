@@ -166,8 +166,6 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         delegate.setFormComponent(component);
         
         trainGetDelegate(form, delegate);
-        trainGetDelegate(form, delegate);
-        trainGetDelegate(form, delegate);
         
         vfs.renderContributions(component, writer, cycle);
         

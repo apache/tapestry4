@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.valid;
 
+import static org.easymock.EasyMock.checkOrder;
 import static org.easymock.EasyMock.expect;
 
 import java.util.Locale;
@@ -21,7 +22,6 @@ import java.util.Locale;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.junit.TapestryTestCase;
-import org.testng.annotations.Test;
 
 /**
  * Base class for tests of different {@link org.apache.tapestry.valid.IValidator}implementations.
@@ -29,7 +29,6 @@ import org.testng.annotations.Test;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-@Test
 public abstract class BaseValidatorTestCase extends TapestryTestCase
 {
 
@@ -55,30 +54,24 @@ public abstract class BaseValidatorTestCase extends TapestryTestCase
 
     protected IFormComponent newField(String displayName, Locale locale, int count)
     {
-        IPage page = newPage(locale, count);
+        IPage page = newPage(locale);
         
         IFormComponent component = newMock(IFormComponent.class);
-
-        for (int i = 0; i < count; i++)
-        {
-            expect(component.getPage()).andReturn(page);
-
-            expect(component.getDisplayName()).andReturn(displayName);
-        }
+        
+        expect(component.getPage()).andReturn(page).anyTimes();
+        
+        expect(component.getDisplayName()).andReturn(displayName).anyTimes();
 
         return component;
     }
 
     protected IPage newPage(Locale locale)
     {
-        return newPage(locale, 1);
-    }
-
-    protected IPage newPage(Locale locale, int count)
-    {
         IPage page = newPage();
-
-        expect(page.getLocale()).andReturn(locale).times(count);
+        
+        checkOrder(page, false);
+        
+        expect(page.getLocale()).andReturn(locale).anyTimes();
 
         return page;
     }

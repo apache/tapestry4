@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.valid;
 
+import static org.easymock.EasyMock.checkOrder;
 import static org.easymock.EasyMock.expect;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertNotNull;
@@ -25,6 +26,7 @@ import java.util.List;
 
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.form.IFormComponent;
+import org.testng.annotations.Configuration;
 import org.testng.annotations.Test;
 
 /**
@@ -39,14 +41,21 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
     protected IFormComponent newField(String name, int count)
     {
         IFormComponent fc = newMock(IFormComponent.class);
-
-        expect(fc.getName()).andReturn(name).times(count);
+        checkOrder(fc, false);
+        
+        expect(fc.getName()).andReturn(name).anyTimes();
 
         return fc;
     }
 
     private ValidationDelegate d = new ValidationDelegate();
-
+    
+    @Configuration(afterTestMethod = true)
+    public void resetDelegate()
+    {
+        d.clear();
+    }
+    
     public void testHasErrorsEmpty()
     {
         assertEquals(false, d.getHasErrors());

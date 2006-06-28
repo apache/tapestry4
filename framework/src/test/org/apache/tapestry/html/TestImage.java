@@ -89,26 +89,26 @@ public class TestImage extends BaseComponentTestCase
     public void testRender()
     {
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle();
+        IRequestCycle cycle = newCycle(false);
+        
         IAsset asset = newAsset();
-        IBinding informal = newBinding("0");
-        IComponentSpecification spec = newSpec("border", null);
-
-        trainIsRewinding(cycle, false);
-
         trainBuildURL(asset, cycle, "/foo.gif");
-
+        
         writer.beginEmpty("img");
         writer.attribute("src", "/foo.gif");
+        
+        IComponentSpecification spec = newSpec("border", null);
+        IBinding informal = newBinding("0");
+        
         writer.attribute("border", "0");
 
         writer.closeTag();
-
+        
         replay();
-
+        
         Image image = newInstance(Image.class, new Object[]
         { "image", asset, "specification", spec });
-
+        
         image.setBinding("border", informal);
 
         image.renderComponent(writer, cycle);

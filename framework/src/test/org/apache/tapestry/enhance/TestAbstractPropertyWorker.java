@@ -86,9 +86,9 @@ public class TestAbstractPropertyWorker extends BaseEnhancementTestCase
     public void testFailure()
     {
         EnhancementOperation op = newOp();
-        IComponentSpecification spec = newSpec();
-
         Location l = fabricateLocation(21);
+        
+        IComponentSpecification spec = newSpec(l);
 
         ErrorLog log = newMock(ErrorLog.class);
 
@@ -98,9 +98,7 @@ public class TestAbstractPropertyWorker extends BaseEnhancementTestCase
         expect(op.getPropertyType("fred")).andThrow(ex);
 
         expect(op.getBaseClass()).andReturn(BaseComponent.class);
-
-        expect(spec.getLocation()).andReturn(l);
-
+        
         log.error(EnhanceMessages.errorAddingProperty("fred", BaseComponent.class, ex), l, ex);
 
         replay();

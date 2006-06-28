@@ -13,10 +13,12 @@
 // limitations under the License.
 package org.apache.tapestry.markup;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.json.IJSONWriter;
 import org.testng.annotations.Test;
 
@@ -27,7 +29,7 @@ import org.testng.annotations.Test;
  * @author jkuhnert
  */
 @Test
-public class TestJSONWriter extends HiveMindTestCase
+public class TestJSONWriter extends BaseComponentTestCase
 {
     
     /**
@@ -35,7 +37,7 @@ public class TestJSONWriter extends HiveMindTestCase
      */
     public void testPropertyList() 
     {
-        IJSONWriter writer = newWriter();
+        IJSONWriter writer = newJSONWriter();
         
         writer.put("red", "ball");
         writer.put("black", "cat");
@@ -46,20 +48,6 @@ public class TestJSONWriter extends HiveMindTestCase
         assertEquals(writer.get("orange"), "orange");
     }
     
-    /**
-     * Gets the stored string output from the 
-     * local <code>outputBuffer</code>, after first
-     * closing the passed in {@link IJSONWriter}.
-     * 
-     * @param writer
-     * @return The string output that was written.
-     */
-    public String output(IJSONWriter writer)
-    {
-        writer.close();
-        return outputBuffer.toString();
-    }
-    
     /* All writer content is written to this buffer */
     protected ByteArrayOutputStream outputBuffer;
     
@@ -68,7 +56,7 @@ public class TestJSONWriter extends HiveMindTestCase
      * against.
      * @return
      */
-    protected JSONWriterImpl newWriter()
+    protected JSONWriterImpl newJSONWriter()
     {
         outputBuffer = new ByteArrayOutputStream();
         PrintWriter pw = 
