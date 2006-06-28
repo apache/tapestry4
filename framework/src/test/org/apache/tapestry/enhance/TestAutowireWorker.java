@@ -36,7 +36,7 @@ public class TestAutowireWorker extends BaseEnhancementTestCase
 
     private static final String HELLO_SERVICE_PROPERTY = "helloService";
 
-    @Test
+    @Test(alwaysRun = true)
     public void testWithNoService() throws Exception
     {
         assertNotAutowired( RegistryBuilder.constructDefaultRegistry() );

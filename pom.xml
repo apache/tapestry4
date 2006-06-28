@@ -177,6 +177,12 @@
                 <artifactId>tapestry-testng</artifactId>
                 <version>0.0.1</version>
                 <scope>test</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>tapestry</groupId>
+                        <artifactId>tapestry</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -233,7 +239,7 @@
     <repositories>
         <repository>
             <id>apache.snapshots</id>
-            <url>http://apache.org/maven-snapshot-repository</url>
+            <url>http://people.apache.org/maven-snapshot-repository</url>
         </repository>
         <repository>
             <id>tapestry.javaforge</id>

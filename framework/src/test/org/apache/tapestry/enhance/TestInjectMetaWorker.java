@@ -53,6 +53,7 @@ public class TestInjectMetaWorker extends BaseComponentTestCase
         return newMock(ComponentPropertySource.class);
     }
 
+    @Test
     public void testPrimitive()
     {
         Location l = newLocation();
@@ -92,6 +93,7 @@ public class TestInjectMetaWorker extends BaseComponentTestCase
         verify();
     }
 
+    @Test
     public void testCharacter()
     {
         Location l = newLocation();
@@ -131,6 +133,7 @@ public class TestInjectMetaWorker extends BaseComponentTestCase
         verify();
     }
 
+    @Test
     public void testObject()
     {
         Location l = newLocation();

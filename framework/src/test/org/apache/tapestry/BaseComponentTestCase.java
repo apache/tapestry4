@@ -54,7 +54,6 @@ import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
 import org.apache.tapestry.test.Creator;
 import org.apache.tapestry.web.WebRequest;
-import org.testng.annotations.Test;
 
 import com.javaforge.tapestry.testng.TestBase;
 
@@ -67,8 +66,7 @@ import com.javaforge.tapestry.testng.TestBase;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-@Test
-public abstract class BaseComponentTestCase extends TestBase
+public class BaseComponentTestCase extends TestBase
 {
     private Creator _creator;
 
