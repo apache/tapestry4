@@ -63,6 +63,7 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         ComponentEventInvoker invoker = new ComponentEventInvoker();
         IEngineService engine = newMock(IEngineService.class);
         IRequestCycle cycle = newCycle();
+        checkOrder(cycle, false);
         IScriptSource scriptSource = newMock(IScriptSource.class);
         IScript script = newMock(IScript.class);
         
@@ -102,11 +103,11 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         expect(component.getId()).andReturn("comp1").anyTimes();
         expect(component.getClientId()).andReturn("comp1").anyTimes();
         
-        trainGetLinkCheckIgnoreParameter(engine, cycle, false, new Object(), link);
-        trainGetURL(link, "/some/url");
-        
         expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE))
         .andReturn(prs).anyTimes();
+        
+        trainGetLinkCheckIgnoreParameter(engine, cycle, false, new Object(), link);
+        trainGetURL(link, "/some/url");
         
         expect(scriptSource.getScript(compScriptResource)).andReturn(script);
         
@@ -125,18 +126,19 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         invoker.addEventListener("wid1", new String[] {"onSelect"}, "testMethod",
                 null, false);
         
-        assertTrue(invoker.hasEvents("wid1"));
-        
+        checkOrder(cycle, false);
         expect(cycle.isRewinding()).andReturn(false);
-     
-        expect(widget.getId()).andReturn("wid1").anyTimes();
-        expect(widget.getClientId()).andReturn("wid1").anyTimes();
-        
-        trainGetLinkCheckIgnoreParameter(engine, cycle, false, new Object(), link);
-        trainGetURL(link, "/some/url2");
         
         expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE))
         .andReturn(prs).anyTimes();
+        
+        expect(widget.getId()).andReturn("wid1").anyTimes();
+        expect(widget.getClientId()).andReturn("wid1").anyTimes();
+        
+        assertTrue(invoker.hasEvents("wid1"));
+        
+        trainGetLinkCheckIgnoreParameter(engine, cycle, false, new Object(), link);
+        trainGetURL(link, "/some/url2");
         
         expect(scriptSource.getScript(widScriptResource)).andReturn(script);
         

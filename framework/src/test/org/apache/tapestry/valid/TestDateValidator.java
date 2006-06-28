@@ -24,6 +24,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import org.apache.tapestry.form.IFormComponent;
+import org.testng.annotations.Configuration;
 import org.testng.annotations.Test;
 
 /**
@@ -39,6 +40,20 @@ public class TestDateValidator extends BaseValidatorTestCase
 
     private DateValidator v = new DateValidator();
 
+    @Configuration(afterTestMethod = true)
+    public void reset()
+    {
+        v.setRequired(false);
+        v.setRequiredMessage(null);
+        v.setDateTooEarlyMessage(null);
+        v.setDateTooLateMessage(null);
+        v.setDisplayFormat(DateValidator.DEFAULT_DISPLAY_FORMAT);
+        v.setInvalidDateFormatMessage(null);
+        v.setMaximum(null);
+        v.setMinimum(null);
+        v.setFormat(DateValidator.DEFAULT_DATE_FORMAT);
+    }
+    
     private Date buildDate(int month, int day, int year)
     {
         calendar.clear();

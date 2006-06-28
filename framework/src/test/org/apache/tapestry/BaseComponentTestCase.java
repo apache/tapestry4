@@ -162,8 +162,9 @@ public class BaseComponentTestCase extends TestBase
         IRequestCycle cycle = newRequestCycle();
 
         trainIsRewinding(cycle, rewinding);
-
-        trainResponseBuilder(cycle, writer);
+        
+        if (writer != null)
+            trainResponseBuilder(cycle, writer);
         
         return cycle;
     }

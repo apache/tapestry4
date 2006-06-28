@@ -58,7 +58,7 @@ public abstract class BaseFormComponentTestCase extends BaseComponentTestCase
 
     protected void trainGetDelegate(IForm form, IValidationDelegate delegate)
     {
-        expect(form.getDelegate()).andReturn(delegate);
+        expect(form.getDelegate()).andReturn(delegate).anyTimes();
     }
 
     protected void trainGetParameter(IRequestCycle cycle, String parameterName,

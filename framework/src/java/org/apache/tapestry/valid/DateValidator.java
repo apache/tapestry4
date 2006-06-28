@@ -37,9 +37,9 @@ import org.apache.tapestry.form.IFormComponent;
 
 public class DateValidator extends BaseValidator
 {
-    private static DateFormat defaultDateFormat = new SimpleDateFormat("MM/dd/yyyy");
-
-    private static final String defaultDateDisplayFormat = "MM/DD/YYYY";
+    public static final String DEFAULT_DISPLAY_FORMAT = "MM/DD/YYYY";
+    
+    public static final DateFormat DEFAULT_DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
     
     private DateFormat _format;
 
@@ -93,7 +93,7 @@ public class DateValidator extends BaseValidator
     public DateFormat getEffectiveFormat()
     {
         if (_format == null)
-            return defaultDateFormat;
+            return DEFAULT_DATE_FORMAT;
 
         return _format;
     }
@@ -123,7 +123,7 @@ public class DateValidator extends BaseValidator
             if (format instanceof SimpleDateFormat)
                 return ((SimpleDateFormat) format).toPattern();
 
-            return defaultDateDisplayFormat;
+            return DEFAULT_DISPLAY_FORMAT;
         }
 
         return _displayFormat;

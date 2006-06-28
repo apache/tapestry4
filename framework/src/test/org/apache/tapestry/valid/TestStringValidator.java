@@ -18,6 +18,7 @@ import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertNull;
 
 import org.apache.tapestry.form.IFormComponent;
+import org.testng.annotations.Configuration;
 import org.testng.annotations.Test;
 
 /**
@@ -31,6 +32,16 @@ public class TestStringValidator extends BaseValidatorTestCase
 {
     private StringValidator v = new StringValidator();
 
+    @Configuration(afterTestMethod = true)
+    public void resetValidator()
+    {
+        v.setMinimumLength(-1);
+        v.setMinimumLengthMessage(null);
+        v.setRequired(false);
+        v.setRequiredMessage(null);
+    }
+    
+    
     public void testToString()
     {
         IFormComponent field = newField();
@@ -107,9 +118,9 @@ public class TestStringValidator extends BaseValidatorTestCase
         IFormComponent field = newField();
 
         replay();
-
+        
         v.setRequired(true);
-
+        
         Object result = v.toObject(field, "stuff");
 
         assertEquals("Result.", "stuff", result);

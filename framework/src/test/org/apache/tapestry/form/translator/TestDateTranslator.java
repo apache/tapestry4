@@ -28,6 +28,7 @@ import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
+import org.testng.annotations.Configuration;
 import org.testng.annotations.Test;
 
 /**
@@ -44,6 +45,7 @@ public class TestDateTranslator extends TranslatorTestCase
     /**
      * @see junit.framework.TestCase#setUp()
      */
+    @Configuration(afterTestMethod = true)
     protected void setUp() throws Exception
     {
         _calendar.clear();
@@ -61,7 +63,7 @@ public class TestDateTranslator extends TranslatorTestCase
     public void testDefaultFormat()
     {
         DateTranslator translator = new DateTranslator();
-        testFormat(translator, buildDate(1976, Calendar.OCTOBER, 29), "10/29/1976");
+        trainFormat(translator, buildDate(1976, Calendar.OCTOBER, 29), "10/29/1976");
     }
 
     public void testCustomFormat()
@@ -70,17 +72,17 @@ public class TestDateTranslator extends TranslatorTestCase
 
         translator.setPattern("yyyy-MM-dd");
 
-        testFormat(translator, buildDate(1976, Calendar.OCTOBER, 29), "1976-10-29");
+        trainFormat(translator, buildDate(1976, Calendar.OCTOBER, 29), "1976-10-29");
     }
 
     public void testInitializerFormat()
     {
         DateTranslator translator = new DateTranslator("pattern=yyyy-MM-dd");
 
-        testFormat(translator, buildDate(1976, Calendar.OCTOBER, 29), "1976-10-29");
+        trainFormat(translator, buildDate(1976, Calendar.OCTOBER, 29), "1976-10-29");
     }
 
-    public void testFormat(DateTranslator translator, Date date, String expected)
+    private void trainFormat(DateTranslator translator, Date date, String expected)
     {
         IFormComponent field = newField();
 
@@ -172,7 +174,7 @@ public class TestDateTranslator extends TranslatorTestCase
     {
         DateTranslator translator = new DateTranslator();
 
-        testFailedParse(translator, null);
+        failedParse(translator, null);
     }
 
     public void testFailedParseCustomMessage() throws Exception
@@ -182,19 +184,16 @@ public class TestDateTranslator extends TranslatorTestCase
 
         translator.setMessage(message);
 
-        testFailedParse(translator, message);
+        failedParse(translator, message);
     }
 
-    private void testFailedParse(DateTranslator translator, String overrideMessage)
+    private void failedParse(DateTranslator translator, String overrideMessage)
             throws Exception
-    {
+    {   
         IFormComponent field = newField("My Field");
         
-        ValidationMessages messages = newMock(ValidationMessages.class);
-
-        trainGetLocale(messages, Locale.ENGLISH);
-        trainGetLocale(messages, Locale.ENGLISH);
-
+        ValidationMessages messages = newValidationMessages(Locale.ENGLISH);
+        
         trainBuildMessage(
                 messages,
                 overrideMessage,
@@ -202,7 +201,7 @@ public class TestDateTranslator extends TranslatorTestCase
                 new Object[]
                 { "My Field", "MM/DD/YYYY" },
                 "final message");
-
+        
         replay();
 
         try

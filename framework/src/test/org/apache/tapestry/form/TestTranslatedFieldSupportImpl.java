@@ -14,9 +14,7 @@
 
 package org.apache.tapestry.form;
 
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
+import static org.easymock.EasyMock.*;
 import static org.testng.AssertJUnit.assertSame;
 
 import java.util.Locale;
@@ -48,8 +46,9 @@ public class TestTranslatedFieldSupportImpl extends BaseComponentTestCase
     private ThreadLocale newThreadLocale()
     {
         ThreadLocale tl = newMock(ThreadLocale.class);
-
-        expect(tl.getLocale()).andReturn(Locale.ENGLISH);
+        checkOrder(tl, false);
+        
+        expect(tl.getLocale()).andReturn(Locale.ENGLISH).anyTimes();
 
         return tl;
     }
@@ -150,9 +149,9 @@ public class TestTranslatedFieldSupportImpl extends BaseComponentTestCase
 
         expect(field.getTranslator()).andReturn(translator);
 
-        trainFormat(translator, field, object, expected);
-
         support.setThreadLocale(newThreadLocale());
+        
+        trainFormat(translator, field, object, expected);
 
         replay();
 
@@ -216,13 +215,13 @@ public class TestTranslatedFieldSupportImpl extends BaseComponentTestCase
         expect(form.getDelegate()).andReturn(delegate);
 
         delegate.recordFieldInputValue(text);
-
-        expect(field.getTranslator()).andReturn(translator);
-
+        
         support.setThreadLocale(newThreadLocale());
-
+        
+        expect(field.getTranslator()).andReturn(translator);
+        
         trainParse(translator, field, text, expected);
-
+        
         replay();
 
         Object result = support.parse(field, text);
