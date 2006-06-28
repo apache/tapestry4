@@ -189,6 +189,11 @@ public class MockContext extends AttributeHolder implements ServletContext, Init
         return null;
     }
 
+    public String getContextPath()
+    {
+        return null;
+    }
+    
     public String getServerInfo()
     {
         return "Tapestry Mock Objects";

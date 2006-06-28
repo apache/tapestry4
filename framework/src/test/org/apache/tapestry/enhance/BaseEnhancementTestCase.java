@@ -27,7 +27,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public abstract class BaseEnhancementTestCase extends BaseComponentTestCase
+public class BaseEnhancementTestCase extends BaseComponentTestCase
 {
     public IComponentSpecification newSpec(Location location)
     {
