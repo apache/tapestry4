@@ -610,16 +610,24 @@ public class BaseComponentTestCase extends TestBase
         return new URLResource(url);
     }
     
+    public static boolean assertListEquals(Object[] expected, Object[] actual)
+    {
+        if (expected == null || actual == null)
+            notEquals(expected, actual);
+        
+        if (!Arrays.equals(expected, actual))
+            notEquals(expected, actual);
+        
+        return true;
+    }
+    
     public static boolean assertListEquals(Object[] expected, List actual)
     {
         if (expected == null || actual == null)
             notEquals(expected, actual);
         
         Object[] acarr = actual.toArray(new Object[actual.size()]);
-        if (!Arrays.equals(expected, acarr))
-            notEquals(expected, acarr);
-        
-        return true;
+        return assertListEquals(expected, acarr);
     }
     
     public static void notEquals(Object expected, Object actual)

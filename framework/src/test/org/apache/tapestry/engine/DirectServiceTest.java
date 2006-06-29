@@ -332,8 +332,7 @@ public class DirectServiceTest extends ServiceTestCase
         IRequestCycle cycle = newCycle();
         IPage page = newPage();
         IDirect d = newDirect();
-        WebSession session = newWebSession(false);
-        WebRequest request = newWebRequest(session);
+        
         LinkFactory lf = newLinkFactory();
         ResponseRenderer rr = newResponseRenderer();
 
@@ -349,6 +348,11 @@ public class DirectServiceTest extends ServiceTestCase
 
         trainIsStateful(d, true);
 
+        WebSession session = newMock(WebSession.class);
+        WebRequest request = newWebRequest(session);
+        
+        expect(session.isNew()).andReturn(false);
+        
         trainExtractListenerParameters(lf, cycle, parameters);
 
         cycle.setListenerParameters(parameters);
@@ -379,7 +383,7 @@ public class DirectServiceTest extends ServiceTestCase
         IRequestCycle cycle = newCycle();
         IPage page = newPage();
         IDirect d = newDirect();
-        WebRequest request = newWebRequest(null);
+        
         Location l = newLocation();
 
         trainGetParameter(cycle, ServiceConstants.COMPONENT, "fred.barney");
@@ -393,7 +397,9 @@ public class DirectServiceTest extends ServiceTestCase
         trainGetNestedComponent(page, "fred.barney", d);
 
         trainIsStateful(d, true);
-
+        
+        WebRequest request = newWebRequest(null);
+        
         trainGetExtendedId(d, "ActivePage/fred.barney");
         trainGetLocation(page, l);
         trainGetPageName(page, "ActivePage");

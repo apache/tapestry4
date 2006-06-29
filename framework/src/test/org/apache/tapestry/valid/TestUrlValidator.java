@@ -21,6 +21,7 @@ import java.util.Locale;
 
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.form.IFormComponent;
+import org.testng.annotations.Configuration;
 import org.testng.annotations.Test;
 
 /**
@@ -35,6 +36,18 @@ public class TestUrlValidator extends BaseValidatorTestCase
 {
     private UrlValidator v = new UrlValidator();
 
+    @Configuration(afterTestMethod = true)
+    public void reset()
+    {
+        v.setClientScriptingEnabled(false);
+        v.setDisallowedProtocolMessage(null);
+        v.setInvalidUrlFormatMessage(null);
+        v.setMinimumLength(-1);
+        v.setMinimumLengthMessage(null);
+        v.setRequired(false);
+        v.setRequiredMessage(null);
+    }
+    
     public void testValidUrl() throws ValidatorException
     {
         IFormComponent field = newField();

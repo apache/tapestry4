@@ -60,11 +60,12 @@ public class TestIfElse extends BaseComponentTestCase
         
         trainResponseBuilder(cycle, writer);
         
+        IRender body = newRender(writer, cycle);
+        
         cycle.setAttribute(IfBean.IF_VALUE_ATTRIBUTE, Boolean.TRUE);
         
         expect(cycle.getAttribute(IfBean.IF_VALUE_ATTRIBUTE)).andReturn(Boolean.TRUE);
         
-        IRender body = newRender(writer, cycle);
         IRender body2 = newRender();
         
         replay();
@@ -136,11 +137,12 @@ public class TestIfElse extends BaseComponentTestCase
         
         trainResponseBuilder(cycle, writer);
         
+        IRender body = newRender(writer, cycle);
+        
         cycle.setAttribute(IfBean.IF_VALUE_ATTRIBUTE, Boolean.TRUE);
         
         expect(cycle.getAttribute(IfBean.IF_VALUE_ATTRIBUTE)).andReturn(Boolean.TRUE);
         
-        IRender body = newRender(writer, cycle);
         IRender body2 = newRender();
 
         replay();
@@ -220,11 +222,12 @@ public class TestIfElse extends BaseComponentTestCase
 
         trainResponseBuilder(cycle, writer);
         
+        IRender body = newRender(writer, cycle);
+        
         cycle.setAttribute(IfBean.IF_VALUE_ATTRIBUTE, Boolean.TRUE);
 
         expect(cycle.getAttribute(IfBean.IF_VALUE_ATTRIBUTE)).andReturn(Boolean.TRUE);
-
-        IRender body = newRender(writer, cycle);
+        
         IRender body2 = newRender();
 
         replay();

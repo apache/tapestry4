@@ -109,7 +109,7 @@ public class TestRegexpMatcher extends TapestryTestCase
 
         String[] matches = m.getMatches("\\d+", "57,232 89 147", 0);
 
-        assertEquals(new String[]
+        assertListEquals(new String[]
         { "57", "232", "89", "147" }, matches);
     }
 
@@ -152,7 +152,7 @@ public class TestRegexpMatcher extends TapestryTestCase
 
         String matches[] = m.getMatches("A(B|C|fred)", "AA AC AB Afred AA AC", 1);
 
-        assertEquals(new String[]
+        assertListEquals(new String[]
         { "C", "B", "fred", "C" }, matches);
     }
 
