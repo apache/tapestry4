@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.record;
 
+
+import static org.testng.AssertJUnit.assertEquals;
+
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -25,7 +28,7 @@ import java.util.Random;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.impl.DefaultClassResolver;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.testng.annotations.Test;
 
 /**
@@ -35,7 +38,7 @@ import org.testng.annotations.Test;
  * @since 4.0
  */
 @Test
-public class PersistentPropertyDataEncoderTest extends HiveMindTestCase
+public class PersistentPropertyDataEncoderTest extends BaseComponentTestCase
 {
     /**
      * Test pushing minimal amounts of data, which should favor the non-GZipped version of the

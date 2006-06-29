@@ -22,7 +22,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.html.BasePage;
-import org.apache.tapestry.junit.mock.TestMocks;
+import org.apache.tapestry.junit.mock.TestMockApplications;
 import org.apache.tapestry.request.IUploadFile;
 
 /**
@@ -46,7 +46,7 @@ public abstract class Two extends BasePage
         InputStream expected = null;
         InputStream actual = null;
         
-        String baseDir = TestMocks.getBaseDirectory() + "/src/test-data/";
+        String baseDir = TestMockApplications.getBaseDirectory() + "/src/test-data/";
         
         try
         {

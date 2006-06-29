@@ -16,8 +16,7 @@ package org.apache.tapestry.binding;
 
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertSame;
+import static org.testng.AssertJUnit.*;
 
 import org.apache.hivemind.Location;
 import org.apache.tapestry.BindingException;
@@ -72,18 +71,16 @@ public class TestListenerMethodBinding extends BindingTestCase
         ValueConverter vc = newValueConverter();
 
         trainGetExtendedId(component, "Fred/barney");
-
+        
         replay();
-
+        
         ListenerMethodBinding b = new ListenerMethodBinding("param", vc, l, component, "foo");
 
         String toString = b.toString();
         String description = toString.substring(toString.indexOf('[') + 1, toString.length() - 1);
-
-        assertEquals(
-                "param, component=Fred/barney, methodName=foo, location=classpath:/org/apache/tapestry/binding/TestListenerMethodBinding, line 1",
-                description);
-
+        
+        assertTrue(description.indexOf("param, component=Fred/barney, methodName=foo, location=") > -1);
+        
         verify();
     }
 

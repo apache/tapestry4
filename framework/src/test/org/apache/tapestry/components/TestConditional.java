@@ -91,15 +91,15 @@ public class TestConditional extends BaseComponentTestCase
     }
 
     public void testElement()
-    {
-        IBinding informal = newBinding("informal-value");
-        IComponentSpecification spec = newSpec("informal", null);
-        
+    {   
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle(false, writer);
-        IRender body = newRender(writer, cycle);
-
+        IRequestCycle cycle = newCycle(false, null);
+        
         writer.begin("div");
+        
+        IComponentSpecification spec = newSpec("informal", null);
+        IBinding informal = newBinding("informal-value");
+        
         writer.attribute("informal", "informal-value");
 
         // We've trained body, but there's no way to ensure,
@@ -107,9 +107,13 @@ public class TestConditional extends BaseComponentTestCase
         // order. But sometimes you have to trust the code (
         // and trust that future developers won't break something
         // that obvious!).
-
+        
+        trainResponseBuilder(cycle, writer);
+        
+        IRender body = newRender(writer, cycle);
+        
         writer.end("div");
-
+        
         replay();
 
         Conditional conditional = newInstance(Conditional.class, new Object[]

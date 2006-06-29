@@ -15,14 +15,15 @@
 package org.apache.tapestry.record;
 
 import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+import static org.testng.AssertJUnit.assertTrue;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ServiceEncoding;
@@ -36,13 +37,8 @@ import org.testng.annotations.Test;
  * @since 4.0
  */
 @Test
-public class ClientPropertyPersistenceStrategyTest extends HiveMindTestCase
+public class ClientPropertyPersistenceStrategyTest extends BaseComponentTestCase
 {
-    private IRequestCycle newCycle()
-    {
-        return (IRequestCycle) newMock(IRequestCycle.class);
-    }
-
     private PersistentPropertyDataEncoder newEncoder()
     {
         PersistentPropertyDataEncoderImpl encoder = new PersistentPropertyDataEncoderImpl();
@@ -51,26 +47,16 @@ public class ClientPropertyPersistenceStrategyTest extends HiveMindTestCase
         return encoder;
     }
 
-    private IPage newPage()
-    {
-        return (IPage) newMock(IPage.class);
-    }
-
-    private WebRequest newRequest()
-    {
-        return (WebRequest) newMock(WebRequest.class);
-    }
-
     private ClientPropertyPersistenceScope newScope()
     {
-        return (ClientPropertyPersistenceScope) newMock(ClientPropertyPersistenceScope.class);
+        return newMock(ClientPropertyPersistenceScope.class);
     }
 
     public void testAddParametersForPersistentProperties()
     {
         WebRequest request = newRequest();
 
-        ServiceEncoding encoding = (ServiceEncoding) newMock(ServiceEncoding.class);
+        ServiceEncoding encoding = newMock(ServiceEncoding.class);
 
         trainGetParameterNames(request, new String[]
         { "bar", "appstate:MyPage" });
@@ -104,7 +90,7 @@ public class ClientPropertyPersistenceStrategyTest extends HiveMindTestCase
     {
         WebRequest request = newRequest();
         ClientPropertyPersistenceScope scope = newScope();
-        PersistentPropertyDataEncoder encoder = (PersistentPropertyDataEncoder) newMock(PersistentPropertyDataEncoder.class);
+        PersistentPropertyDataEncoder encoder = newMock(PersistentPropertyDataEncoder.class);
 
         trainGetParameterNames(request, new String[]
         { "foo", "state:MyPage" });
@@ -140,22 +126,20 @@ public class ClientPropertyPersistenceStrategyTest extends HiveMindTestCase
         IRequestCycle cycle = newCycle();
         IPage page = newPage();
 
-        ServiceEncoding encoding = (ServiceEncoding) newMock(ServiceEncoding.class);
-
-        trainGetPage(cycle, page);
-
-        trainGetPageName(page, "MyPage");
-
-        trainGetPage(cycle, page);
-        trainGetPageName(page, "MyPage");
-
-        trainGetParameterNames(request, new String[]
-        { "foo", "state:MyPage", "state:OtherPage" });
-
+        ServiceEncoding encoding = newMock(ServiceEncoding.class);
+        
+        trainGetParameterNames(request, new String[] { "foo", "state:MyPage", "state:OtherPage" });
+        
         trainGetParameterValue(request, "state:MyPage", "ENCODED1");
         trainGetParameterValue(request, "state:OtherPage", "ENCODED2");
-
+       
+        trainGetPage(cycle, page);
+        trainGetPageName(page, "MyPage");
+        
         encoding.setParameterValue("state:MyPage", "ENCODED1");
+
+        trainGetPage(cycle, page);
+        trainGetPageName(page, "MyPage");
 
         replay();
 
@@ -206,11 +190,6 @@ public class ClientPropertyPersistenceStrategyTest extends HiveMindTestCase
     private void trainGetPage(IRequestCycle cycle, IPage page)
     {
         expect(cycle.getPage()).andReturn(page);
-    }
-
-    private void trainGetPageName(IPage page, String pageName)
-    {
-        expect(page.getPageName()).andReturn(pageName);
     }
 
     private void trainGetParameterNames(WebRequest request, String[] names)

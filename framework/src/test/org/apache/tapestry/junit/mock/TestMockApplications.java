@@ -14,11 +14,15 @@
 
 package org.apache.tapestry.junit.mock;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +39,7 @@ import ognl.OgnlException;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Resource;
+import org.apache.hivemind.util.PropertyUtils;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.MatchResult;
 import org.apache.oro.text.regex.Pattern;
@@ -52,8 +57,10 @@ import org.apache.tapestry.test.mock.MockServletConfig;
 import org.apache.tapestry.util.xml.DocumentParseException;
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.testng.annotations.Configuration;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 /**
  * A complex class that reads an XML description of a test involving the Mock objects and executes
@@ -67,12 +74,22 @@ import org.jdom.input.SAXBuilder;
  * @since 2.2
  */
 
-public class MockTester
+public class TestMockApplications
 {
+    public static final String LOGS_DIR = "target/logs";
+
+    public static final String DEFAULT_BASE_DIR = "./";
+
+    public static final String SCRIPTS_DIR = "src/scripts";
+    
+    private static String _baseDir;
+    
     private String _testRootDirectory;
 
     private String _path;
 
+    private String _fileName;
+    
     private Document _document;
 
     private MockContext _context;
@@ -84,10 +101,10 @@ public class MockTester
     private MockRequest _request;
 
     private MockResponse _response;
-
+    
     private int _requestNumber = 0;
 
-    private Map _ognlContext;
+    private Map _ognlContext = Ognl.createDefaultContext(this);
 
     private Throwable _exception;
 
@@ -97,43 +114,85 @@ public class MockTester
 
     private static Map _patternCache = new HashMap();
 
-    private PatternMatcher _matcher;
+    private PatternMatcher _matcher = new Perl5Matcher();
 
-    private PatternCompiler _compiler;
+    private PatternCompiler _compiler = new Perl5Compiler();
 
+    private PrintStream _savedOut;
+
+    private PrintStream _savedErr;
+    
+    private SAXBuilder _builder = new SAXBuilder();
+    
     /**
-     * Constructs a new MockTester for the given resource path (which is the XML file to read).
+     * Closes System.out and System.err, then restores them to their original values.
      */
-
-    public MockTester(String testRootDirectory, String path) throws JDOMException,
-            ServletException, DocumentParseException, IOException
+    @Configuration(afterTestMethod = true)
+    protected void tearDown() throws Exception
     {
-        _testRootDirectory = testRootDirectory;
-        _path = path;
-
-        parse();
-
-        setup();
+        System.err.close();
+        System.setErr(_savedErr);
+        
+        System.out.close();
+        System.setOut(_savedOut);
+        
+        _requestNumber = 0;
     }
-
+    
+    @DataProvider(name = "mockTestScripts")
+    public Object[][] createTestParameters()
+    {
+        List data = new ArrayList();
+        
+        File scriptsDir = new File(getBaseDirectory() + SCRIPTS_DIR);
+        
+        String[] names = scriptsDir.list();
+        
+        for (int i = 0; i < names.length; i++)
+        {
+            String name = names[i];
+            
+            if (name.endsWith(".xml"))
+            {
+                data.add(new Object[] {
+                        getBaseDirectory() + "/src/test-data/",
+                        getBaseDirectory() + SCRIPTS_DIR + "/" + name,
+                        name
+                });
+            }
+        }
+        
+        return (Object[][])data.toArray(new Object[data.size()][3]);
+    }
+    
     public String toString()
     {
         StringBuffer buffer = new StringBuffer("MockTester[");
-
+        
         if (_document != null)
             buffer.append(_document);
-
+        
         buffer.append(']');
 
         return buffer.toString();
     }
-
+    
     /**
      * Invoked to execute the request cycle.
      */
-
-    public void execute() throws IOException, DocumentParseException
+    @Test(dataProvider = "mockTestScripts")
+    public void execute(String testRootDirectory, String path, String fileName) 
+    throws Exception
     {
+        _testRootDirectory = testRootDirectory;
+        _path = path;
+        _fileName = fileName;
+        
+        // setup and get environment ready
+        createLogs();
+        parse();
+        setup();
+        
         Element root = _document.getRootElement();
 
         List l = root.getChildren("request");
@@ -149,6 +208,8 @@ public class MockTester
         }
 
         _servlet.destroy();
+        
+        PropertyUtils.clearCache();
     }
 
     private void executeRequest(Element request) throws IOException, DocumentParseException
@@ -198,20 +259,19 @@ public class MockTester
         executeAssertions(request);
     }
 
-    private void parse() throws JDOMException, DocumentParseException, IOException
+    private void parse() 
+    throws Exception
     {
-        SAXBuilder builder = new SAXBuilder();
-
-        _document = builder.build(_path);
+        _document = _builder.build(_path);
     }
-
+    
     private void setup() throws ServletException
     {
         Element root = _document.getRootElement();
-
+        
         if (!root.getName().equals("mock-test"))
             throw new RuntimeException("Root element of " + _path + " must be 'mock-test'.");
-
+        
         setupContext(root);
         setupServlet(root);
     }
@@ -221,12 +281,12 @@ public class MockTester
         _context = new MockContext(_testRootDirectory);
 
         Element context = parent.getChild("context");
-
+        
         if (context == null)
             return;
-
+        
         String name = context.getAttributeValue("name");
-
+        
         if (name != null)
             _context.setServletContextName(name);
 
@@ -422,8 +482,8 @@ public class MockTester
 
     private boolean evaluate(String expression) throws DocumentParseException
     {
-        if (_ognlContext == null)
-            _ognlContext = Ognl.createDefaultContext(this);
+        // if (_ognlContext == null)
+           // _ognlContext = Ognl.createDefaultContext(this);
 
         Object value = null;
 
@@ -460,7 +520,8 @@ public class MockTester
      * Attribute name is used in error messages.
      */
 
-    private void executeRegexpAssertions(Element request) throws DocumentParseException
+    private void executeRegexpAssertions(Element request) 
+    throws DocumentParseException
     {
         String outputString = null;
 
@@ -492,7 +553,8 @@ public class MockTester
      * Attribute name is used in error messages.
      */
 
-    private void executeOutputAssertions(Element request) throws DocumentParseException
+    private void executeOutputAssertions(Element request) 
+    throws DocumentParseException
     {
         String outputString = null;
 
@@ -524,7 +586,8 @@ public class MockTester
      * Attribute name is used in error messages.
      */
 
-    private void executeNoOutputAssertions(Element request) throws DocumentParseException
+    private void executeNoOutputAssertions(Element request) 
+    throws DocumentParseException
     {
         String outputString = null;
 
@@ -551,21 +614,22 @@ public class MockTester
 
     private PatternMatcher getMatcher()
     {
-        if (_matcher == null)
-            _matcher = new Perl5Matcher();
+        //if (_matcher == null)
+          //  _matcher = new Perl5Matcher();
 
         return _matcher;
     }
 
-    private Pattern compile(String pattern) throws DocumentParseException
+    private Pattern compile(String pattern) 
+    throws DocumentParseException
     {
         Pattern result = (Pattern) _patternCache.get(pattern);
 
         if (result != null)
             return result;
 
-        if (_compiler == null)
-            _compiler = new Perl5Compiler();
+        // if (_compiler == null)
+           // _compiler = new Perl5Compiler();
 
         try
         {
@@ -587,12 +651,12 @@ public class MockTester
             throws DocumentParseException
     {
         Pattern compiled = compile(pattern);
-
+        
         if (getMatcher().contains(text, compiled))
             return;
-
+        
         System.err.println(text);
-
+        
         throw new AssertionFailedError(buildTestName(name)
                 + ": Response does not contain regular expression '" + pattern + "'.");
     }
@@ -803,7 +867,7 @@ public class MockTester
                     + actualContentType + "', expected '" + contentType + "'.");
 
         byte[] actualContent = _response.getResponseBytes();
-        byte[] expectedContent = getFileContent(TestMocks.getBaseDirectory() + "/" + path);
+        byte[] expectedContent = getFileContent(getBaseDirectory() + "/" + path);
 
         if (actualContent.length != expectedContent.length)
             throw new AssertionFailedError(buildTestName(name) + " actual length of "
@@ -851,5 +915,77 @@ public class MockTester
             throw new ApplicationRuntimeException("Unable to read file '" + path + "'.", ex);
         }
     }
+    
+    private void createLogs() 
+    throws Exception
+    {
+        File outDir = new File(getBaseDirectory() + LOGS_DIR);
+        
+        if (!outDir.isDirectory())
+            outDir.mkdirs();
+        
+        _savedOut = System.out;
+        _savedErr = System.err;
+        
+        System.setOut(createPrintStream(outDir.getPath() + "/" + _fileName, "out"));
+        System.setErr(createPrintStream(outDir.getPath() + "/" + _fileName, "err"));
+    }
+    
+    private PrintStream createPrintStream(String path, String extension) throws Exception
+    {
+        File file = new File(path + "." + extension);
+        
+        // Open and truncate file.
+        
+        FileOutputStream fos = new FileOutputStream(file);
 
+        BufferedOutputStream bos = new BufferedOutputStream(fos);
+
+        return new PrintStream(bos, true);
+    }
+    
+    @Configuration(afterSuite = true)
+    public static void deleteDir()
+    {
+        File file = new File(getBaseDirectory() + "/target/.private");
+        
+        if (!file.exists())
+            return;
+        
+        deleteRecursive(file);
+    }
+    
+    private static void deleteRecursive(File file)
+    {
+        if (file.isFile())
+        {
+            file.delete();
+            return;
+        }
+
+        String[] names = file.list();
+
+        for (int i = 0; i < names.length; i++)
+        {
+            File f = new File(file, names[i]);
+            deleteRecursive(f);
+        }
+
+        file.delete();
+    }
+    
+    public static String getBaseDirectory()
+    {
+        if (_baseDir == null) {
+            _baseDir = System.getProperty("BASEDIR", DEFAULT_BASE_DIR);
+            File test = new File(_baseDir + SCRIPTS_DIR);
+            if (!test.exists()) {
+                test = new File(_baseDir + "framework/" + SCRIPTS_DIR);
+                if (test.exists())
+                    _baseDir = _baseDir + "framework/";
+            }
+        }
+        
+        return _baseDir;
+    }
 }

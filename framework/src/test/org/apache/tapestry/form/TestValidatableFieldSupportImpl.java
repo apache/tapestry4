@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.form;
 
+import static org.easymock.EasyMock.checkOrder;
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
@@ -54,8 +55,9 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
     private ThreadLocale newThreadLocale()
     {
         ThreadLocale tl = newMock(ThreadLocale.class);
-
-        expect(tl.getLocale()).andReturn(Locale.ENGLISH);
+        checkOrder(tl, false);
+        
+        expect(tl.getLocale()).andReturn(Locale.ENGLISH).anyTimes();
 
         return tl;
     }
@@ -64,7 +66,7 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
      * Lots of work to set up the request cycle here, since we have to train it about getting the
      * ClassResolver and the PageRenderSupport.
      */
-    protected IRequestCycle newCycle(IComponent component)
+    private IRequestCycle newCycle(IComponent component)
     {
         IRequestCycle cycle = newCycle();
 
@@ -143,15 +145,12 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
         ValueConverter converter = newMock(ValueConverter.class);
         
         ValidatableFieldSupportImpl support = new ValidatableFieldSupportImpl();
-        support.setThreadLocale(newThreadLocale());
-        support.setValueConverter(converter);
         
         TranslatedField field = newMock(TranslatedField.class);
         
         IForm form = newMock(IForm.class);
         
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle(field);
         
         Validator validator = newMock(Validator.class);
         
@@ -159,6 +158,9 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
 
         expect(form.isClientValidationEnabled()).andReturn(true);
 
+        support.setThreadLocale(newThreadLocale());
+        support.setValueConverter(converter);
+        
         expect(field.getForm()).andReturn(form);
 
         expect(form.getName()).andReturn("myform");
@@ -166,7 +168,10 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
         expect(field.getValidators()).andReturn(validator);
         
         expect(converter.coerceValue(validator, Iterator.class))
-        .andReturn(Collections.singleton(validator).iterator());
+        .andReturn(Collections.singleton(validator).iterator());        
+
+        
+        IRequestCycle cycle = newCycle(field);
         
         validator.renderContribution(eq(writer), eq(cycle), 
                 isA(FormComponentContributorContext.class), eq(field));
@@ -221,8 +226,6 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
         ValueConverter converter = newMock(ValueConverter.class);
         
         ValidatableFieldSupportImpl support = new ValidatableFieldSupportImpl();
-        support.setThreadLocale(newThreadLocale());
-        support.setValueConverter(converter);
         
         TranslatedField field = newMock(TranslatedField.class);
         
@@ -237,6 +240,9 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
         
         expect(converter.coerceValue(validator, Iterator.class))
         .andReturn(Collections.singleton(validator).iterator());
+        
+        support.setThreadLocale(newThreadLocale());
+        support.setValueConverter(converter);
         
         ValidatorException expected = new ValidatorException("test");
         
@@ -264,8 +270,6 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
         ValueConverter converter = newMock(ValueConverter.class);
         
         ValidatableFieldSupportImpl support = new ValidatableFieldSupportImpl();
-        support.setThreadLocale(newThreadLocale());
-        support.setValueConverter(converter);
         
         TranslatedField field = newMock(TranslatedField.class);
         
@@ -278,6 +282,9 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
         
         expect(converter.coerceValue(null, Iterator.class))
         .andReturn(Collections.EMPTY_LIST.iterator());
+        
+        support.setThreadLocale(newThreadLocale());
+        support.setValueConverter(converter);
         
         try
         {
@@ -298,13 +305,10 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
         ValueConverter converter = newMock(ValueConverter.class);
         
         ValidatableFieldSupportImpl support = new ValidatableFieldSupportImpl();
-        support.setThreadLocale(newThreadLocale());
-        support.setValueConverter(converter);
         
         TranslatedField field = newMock(TranslatedField.class);
         
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle();
         
         Validator validator = newMock(Validator.class);
         
@@ -313,7 +317,12 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
         expect(converter.coerceValue(validator, Iterator.class))
         .andReturn(Collections.singleton(validator).iterator());
 
+        support.setThreadLocale(newThreadLocale());
+        support.setValueConverter(converter);
+        
         expect(validator.getAcceptsNull()).andReturn(true);
+        
+        IRequestCycle cycle = newCycle();
         
         try
         {
@@ -336,8 +345,6 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
         ValueConverter converter = newMock(ValueConverter.class);
         
         ValidatableFieldSupportImpl support = new ValidatableFieldSupportImpl();
-        support.setThreadLocale(newThreadLocale());
-        support.setValueConverter(converter);
         
         TranslatedField field = newMock(TranslatedField.class);
         
@@ -351,6 +358,9 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
         expect(converter.coerceValue(validator, Iterator.class))
         .andReturn(Collections.singleton(validator).iterator());
 
+        support.setThreadLocale(newThreadLocale());
+        support.setValueConverter(converter);
+        
         expect(validator.getAcceptsNull()).andReturn(false);
         
         try
@@ -388,7 +398,8 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
     private Validator newValidator(boolean isRequired)
     {
         Validator validator = newMock(Validator.class);
-
+        checkOrder(validator, false);
+        
         expect(validator.isRequired()).andReturn(isRequired);
 
         return validator;
@@ -415,7 +426,7 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
         Collection validators = Collections.singletonList(newValidator(false));
         ValidatableField field = newFieldGetValidators(validators);
         ValueConverter converter = newValueConverter(validators);
-
+        
         replay();
 
         ValidatableFieldSupportImpl support = new ValidatableFieldSupportImpl();

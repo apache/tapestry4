@@ -14,9 +14,7 @@
 
 package org.apache.tapestry.dojo.form;
 
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
+import static org.easymock.EasyMock.*;
 import static org.testng.AssertJUnit.assertEquals;
 
 import java.util.Map;
@@ -132,6 +130,9 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         
         IRequestCycle cycle = newMock(IRequestCycle.class);
         IForm form = newMock(IForm.class);
+        checkOrder(form, false);
+        
+        expect(form.getName()).andReturn("testform").anyTimes();
         
         IMarkupWriter writer = newBufferWriter();
         
@@ -155,6 +156,7 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         
         trainGetForm(cycle, form);
         trainWasPrerendered(form, writer, component, false);
+        
         trainGetDelegate(form, delegate);
         
         delegate.setFormComponent(component);
@@ -164,8 +166,6 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         trainIsRewinding(cycle, false);
         
         delegate.setFormComponent(component);
-        
-        trainGetDelegate(form, delegate);
         
         vfs.renderContributions(component, writer, cycle);
         

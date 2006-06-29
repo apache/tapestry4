@@ -72,14 +72,15 @@ public class TestBlock extends BaseComponentTestCase
 
         IBinding binding = newBinding(parameterValue);
         IComponent component = newComponent();
-
+        
         expect(component.getBinding("fred")).andReturn(binding);
+        
         replay();
-
+        
         Block block = (Block) newInstance(Block.class);
-
+        
         block.setInvoker(component);
-
+        
         assertSame(parameterValue, block.getParameter("fred"));
 
         verify();

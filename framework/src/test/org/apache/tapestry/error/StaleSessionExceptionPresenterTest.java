@@ -33,10 +33,11 @@ public class StaleSessionExceptionPresenterTest extends BaseErrorTestCase
     {
         IPage page = newPage();
         IRequestCycle cycle = newCycle("StaleSession", page);
-        ResponseRenderer renderer = newRenderer(cycle, null);
-
+        
         cycle.activate(page);
 
+        ResponseRenderer renderer = newRenderer(cycle, null);
+        
         replay();
 
         StaleSessionExceptionPresenterImpl presenter = new StaleSessionExceptionPresenterImpl();
