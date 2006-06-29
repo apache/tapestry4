@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.form.validator;
 
+import static org.easymock.EasyMock.checkOrder;
 import static org.easymock.EasyMock.expect;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertSame;
@@ -283,7 +284,8 @@ public class TestValidatorFactory extends TapestryTestCase
     private IBeanProvider newBeanProvider(String beanName, Object bean)
     {
         IBeanProvider provider = newMock(IBeanProvider.class);
-
+        checkOrder(provider, false);
+        
         expect(provider.getBean(beanName)).andReturn(bean);
 
         return provider;

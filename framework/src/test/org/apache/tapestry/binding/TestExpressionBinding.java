@@ -19,6 +19,7 @@ import static org.easymock.EasyMock.expectLastCall;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertSame;
 
+import org.apache.hivemind.Location;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.coerce.ValueConverter;
@@ -41,7 +42,8 @@ public class TestExpressionBinding extends BindingTestCase
         ExpressionEvaluator ev = newMock(ExpressionEvaluator.class);
         ExpressionCache ec = newMock(ExpressionCache.class);
         IComponent component = newMock(IComponent.class);
-
+        Location l = fabricateLocation(1);
+        
         Object compiled = new Object();
         
         Object expressionValue = "EXPRESSION-VALUE";
@@ -58,7 +60,7 @@ public class TestExpressionBinding extends BindingTestCase
         
         replay();
         
-        ExpressionBinding b = new ExpressionBinding("param", fabricateLocation(1), vc, component,
+        ExpressionBinding b = new ExpressionBinding("param", l, vc, component,
                 "exp", ev, ec);
         
         assertEquals(true, b.isInvariant());
@@ -83,7 +85,8 @@ public class TestExpressionBinding extends BindingTestCase
     {
         ExpressionEvaluator ev = newMock(ExpressionEvaluator.class);
         ExpressionCache ec = newMock(ExpressionCache.class);
-
+        Location l = fabricateLocation(1);
+        
         IComponent component = newComponent();
         Object compiled = new Object();
 
@@ -91,7 +94,7 @@ public class TestExpressionBinding extends BindingTestCase
         Object expressionValue2 = new Object();
 
         ValueConverter vc = newValueConverter();
-
+        
         expect(ec.getCompiledExpression("exp")).andReturn(compiled);
 
         expect(ev.isConstant("exp")).andReturn(false);
@@ -99,12 +102,12 @@ public class TestExpressionBinding extends BindingTestCase
         expect(ev.readCompiled(component, compiled)).andReturn(expressionValue1);
 
         expect(ev.readCompiled(component, compiled)).andReturn(expressionValue2);
-
+        
         replay();
-
-        ExpressionBinding b = new ExpressionBinding("param", fabricateLocation(1), vc, component,
+        
+        ExpressionBinding b = new ExpressionBinding("param", l, vc, component,
                 "exp", ev, ec);
-
+        
         assertEquals(false, b.isInvariant());
 
         // Check that the expression is re-evaluated on
@@ -121,7 +124,8 @@ public class TestExpressionBinding extends BindingTestCase
     {
         ExpressionEvaluator ev = newMock(ExpressionEvaluator.class);
         ExpressionCache ec = newMock(ExpressionCache.class);
-
+        Location l = fabricateLocation(1);
+        
         IComponent component = newComponent();
         Object compiled = new Object();
 
@@ -137,7 +141,7 @@ public class TestExpressionBinding extends BindingTestCase
 
         replay();
 
-        ExpressionBinding b = new ExpressionBinding("param", fabricateLocation(1), vc, component,
+        ExpressionBinding b = new ExpressionBinding("param", l, vc, component,
                 "exp", ev, ec);
 
         b.setObject(newValue);
@@ -149,10 +153,11 @@ public class TestExpressionBinding extends BindingTestCase
     {
         ExpressionEvaluator ev = newMock(ExpressionEvaluator.class);
         ExpressionCache ec = newMock(ExpressionCache.class);
-
+        Location l = fabricateLocation(1);
+        
         IComponent component = newComponent("Foo/bar.baz");
         Object compiled = new Object();
-
+        
         ValueConverter vc = newValueConverter();
 
         expect(ec.getCompiledExpression("exp")).andReturn(compiled);
@@ -161,7 +166,7 @@ public class TestExpressionBinding extends BindingTestCase
 
         replay();
 
-        ExpressionBinding b = new ExpressionBinding("parameter foo", fabricateLocation(1), vc, component,
+        ExpressionBinding b = new ExpressionBinding("parameter foo", l, vc, component,
                 "exp", ev, ec);
 
         try
@@ -183,7 +188,8 @@ public class TestExpressionBinding extends BindingTestCase
     {
         ExpressionEvaluator ev = newMock(ExpressionEvaluator.class);
         ExpressionCache ec = newMock(ExpressionCache.class);
-
+        Location l = fabricateLocation(1);
+        
         IComponent component = newComponent();
         Object compiled = new Object();
 
@@ -202,7 +208,7 @@ public class TestExpressionBinding extends BindingTestCase
 
         replay();
 
-        ExpressionBinding b = new ExpressionBinding("param", fabricateLocation(1), vc, component,
+        ExpressionBinding b = new ExpressionBinding("param", l, vc, component,
                 "exp", ev, ec);
 
         try
@@ -223,7 +229,8 @@ public class TestExpressionBinding extends BindingTestCase
     {
         ExpressionEvaluator ev = newMock(ExpressionEvaluator.class);
         ExpressionCache ec = newMock(ExpressionCache.class);
-
+        Location l = fabricateLocation(1);
+        
         IComponent component = newComponent();
         ValueConverter vc = newValueConverter();
 
@@ -233,7 +240,7 @@ public class TestExpressionBinding extends BindingTestCase
 
         replay();
 
-        ExpressionBinding b = new ExpressionBinding("param", fabricateLocation(1), vc, component,
+        ExpressionBinding b = new ExpressionBinding("param", l, vc, component,
                 "exp", ev, ec);
 
         try
@@ -254,7 +261,8 @@ public class TestExpressionBinding extends BindingTestCase
     {
         ExpressionEvaluator ev = newMock(ExpressionEvaluator.class);
         ExpressionCache ec = newMock(ExpressionCache.class);
-
+        Location l = fabricateLocation(1);
+        
         IComponent component = newComponent();
         Object compiled = new Object();
 
@@ -271,7 +279,7 @@ public class TestExpressionBinding extends BindingTestCase
 
         replay();
 
-        ExpressionBinding b = new ExpressionBinding("param", fabricateLocation(1), vc, component,
+        ExpressionBinding b = new ExpressionBinding("param", l, vc, component,
                 "exp", ev, ec);
 
         try

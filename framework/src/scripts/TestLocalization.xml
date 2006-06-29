@@ -57,7 +57,7 @@ Zees ees nawt cheeze!
 ]]>	
 		</assert-output>
 		
-			</request>
+	</request>
 
 	<request>
 	  	<parameter name="service" value="page"/>

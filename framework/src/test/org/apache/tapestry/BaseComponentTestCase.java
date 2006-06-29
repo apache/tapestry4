@@ -15,6 +15,7 @@
 package org.apache.tapestry;
 
 import static org.easymock.EasyMock.anyObject;
+import static org.easymock.EasyMock.checkOrder;
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.testng.AssertJUnit.assertEquals;
@@ -215,7 +216,8 @@ public class BaseComponentTestCase extends TestBase
     protected IBinding newBinding(Object value)
     {
         IBinding binding = newMock(IBinding.class);
-
+        checkOrder(binding, false);
+        
         expect(binding.getObject()).andReturn(value);
         return binding;
     }
@@ -264,6 +266,7 @@ public class BaseComponentTestCase extends TestBase
     protected IPage newPage(String name, int count)
     {
         IPage page = newMock(IPage.class);
+        checkOrder(page, false);
         
         expect(page.getPageName()).andReturn(name).times(count);
         
@@ -423,6 +426,8 @@ public class BaseComponentTestCase extends TestBase
     protected Location fabricateLocation(int line)
     {
         Location location = newLocation();
+        checkOrder(location, false);
+        
         expect(location.getLineNumber()).andReturn(line).anyTimes();
         
         return location;

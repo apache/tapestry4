@@ -18,6 +18,7 @@ import static org.easymock.EasyMock.expect;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertSame;
 
+import org.apache.hivemind.Location;
 import org.apache.hivemind.Messages;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.coerce.ValueConverter;
@@ -37,10 +38,11 @@ public class TestMessageBinding extends BindingTestCase
     {
         IComponent component = newMock(IComponent.class);
         ValueConverter vc = newValueConverter();
-
+        Location l = fabricateLocation(12);
+        
         replay();
 
-        MessageBinding b = new MessageBinding("param", vc, fabricateLocation(12), component, "key");
+        MessageBinding b = new MessageBinding("param", vc, l, component, "key");
 
         assertSame(component, b.getComponent());
         assertEquals("key", b.getKey());
@@ -52,12 +54,13 @@ public class TestMessageBinding extends BindingTestCase
     {
         IComponent component = newComponent();
         ValueConverter vc = newValueConverter();
-
+        Location l = fabricateLocation(12);
+        
         expect(component.getExtendedId()).andReturn("Foo/bar.baz");
 
         replay();
 
-        MessageBinding b = new MessageBinding("param", vc, fabricateLocation(12), component, "key");
+        MessageBinding b = new MessageBinding("param", vc, l, component, "key");
 
         assertEquals("StringBinding[Foo/bar.baz key]", b.toString());
 
@@ -68,7 +71,8 @@ public class TestMessageBinding extends BindingTestCase
     {
         Messages m = newMock(Messages.class);
         IComponent component = newComponent();
-
+        Location l = fabricateLocation(12);
+        
         ValueConverter vc = newValueConverter();
 
         expect(component.getMessages()).andReturn(m);
@@ -76,7 +80,7 @@ public class TestMessageBinding extends BindingTestCase
         expect(m.getMessage("key")).andReturn("value");
 
         replay();
-        MessageBinding b = new MessageBinding("param", vc, fabricateLocation(12), component, "key");
+        MessageBinding b = new MessageBinding("param", vc, l, component, "key");
 
         assertEquals("value", b.getObject());
 

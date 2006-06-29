@@ -42,9 +42,11 @@ public class FrameTest extends BaseComponentTestCase
         IRequestCycle cycle = newCycle();
 
         trainGetLink(pageService, cycle, false, "FramePage", link);
-        trainGetURL(link, "<LinkURL>");
 
         writer.beginEmpty("frame");
+        
+        trainGetURL(link, "<LinkURL>");
+        
         writer.attribute("src", "<LinkURL>");
 
         writer.closeTag();
@@ -61,18 +63,22 @@ public class FrameTest extends BaseComponentTestCase
 
     public void testRenderWithInformal()
     {
-        IBinding binding = newBinding("informal");
         IEngineService pageService = newEngineService();
         ILink link = newLink();
 
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
-
+        
         trainGetLink(pageService, cycle, false, "FramePage", link);
-        trainGetURL(link, "<LinkURL>");
-
+        
         writer.beginEmpty("frame");
+        
+        trainGetURL(link, "<LinkURL>");
+        
         writer.attribute("src", "<LinkURL>");
+        
+        IBinding binding = newBinding("informal");
+        
         writer.attribute("class", "informal");
 
         writer.closeTag();

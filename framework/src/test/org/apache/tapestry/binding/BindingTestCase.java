@@ -19,7 +19,6 @@ import static org.easymock.EasyMock.expect;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.coerce.ValueConverter;
-import org.testng.annotations.Test;
 
 /**
  * Base class for building tests for {@link org.apache.tapestry.IBinding}implementations.
@@ -27,7 +26,6 @@ import org.testng.annotations.Test;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-@Test
 public abstract class BindingTestCase extends BaseComponentTestCase
 {
     protected IComponent newComponent(String extendedId)

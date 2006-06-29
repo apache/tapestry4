@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.form;
 
+import static org.easymock.EasyMock.checkOrder;
 import static org.easymock.EasyMock.expect;
 
 import java.util.Locale;
@@ -41,7 +42,8 @@ public class TestFormComponentContributorContext extends BaseComponentTestCase
     private IForm newForm(String name)
     {
         IForm form = newMock(IForm.class);
-
+        checkOrder(form, false);
+        
         expect(form.getName()).andReturn(name);
 
         return form;

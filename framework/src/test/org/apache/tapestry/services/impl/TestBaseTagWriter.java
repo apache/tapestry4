@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.services.impl;
 
-import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.*;
 
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IMarkupWriter;
@@ -47,7 +47,8 @@ public class TestBaseTagWriter extends BaseComponentTestCase
     private INamespace newNamespace(String id)
     {
         INamespace ns = newMock(INamespace.class);
-
+        checkOrder(ns, false);
+        
         expect(ns.getId()).andReturn(id);
 
         return ns;
@@ -86,7 +87,7 @@ public class TestBaseTagWriter extends BaseComponentTestCase
 
         verify();
     }
-
+    
     public void testNotApplicationNamespace()
     {
         INamespace ns = newNamespace("library");
@@ -99,7 +100,8 @@ public class TestBaseTagWriter extends BaseComponentTestCase
     
     public void testInRoot()
     {
-        IPage page = newPage("Home");
+        INamespace ns = newNamespace("library");
+        IPage page = newPage(ns, null);
         IRequestCycle cycle = newRequestCycle(page, "/");
         IMarkupWriter writer = newWriter("http://foo.com/context/");
 
@@ -108,10 +110,11 @@ public class TestBaseTagWriter extends BaseComponentTestCase
     
     public void testInSubFolder()
     {
-        IPage page = newPage("admin/AdminMenu");
+        INamespace ns = newNamespace(null);
+        IPage page = newPage(ns, "admin/AdminMenu");
         IRequestCycle cycle = newRequestCycle(page, "/admin/");
         IMarkupWriter writer = newWriter("http://foo.com/context/admin/");
-
+        
         run(writer, cycle);   
     }
 }

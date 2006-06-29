@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.form;
 
+import static org.easymock.EasyMock.checkOrder;
 import static org.easymock.EasyMock.expect;
 import static org.testng.AssertJUnit.assertEquals;
 
@@ -42,7 +43,8 @@ public class TestImageSubmit extends BaseFormComponentTestCase
     protected IAsset newAsset(IRequestCycle cycle, String imageURL)
     {
         IAsset asset = newMock(IAsset.class);
-
+        checkOrder(asset, false);
+        
         expect(asset.buildURL()).andReturn(imageURL);
 
         return asset;
@@ -75,7 +77,7 @@ public class TestImageSubmit extends BaseFormComponentTestCase
         IRequestCycle cycle = newCycle();
         IMarkupWriter writer = newWriter();
         IAsset image = newAsset(cycle, "image-url");
-
+        
         Creator creator = new Creator();
         ImageSubmit submit = (ImageSubmit) creator.newInstance(ImageSubmit.class, new Object[]
         { "image", image });

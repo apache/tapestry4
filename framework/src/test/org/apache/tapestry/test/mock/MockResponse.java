@@ -268,7 +268,7 @@ public class MockResponse implements HttpServletResponse
     }
 
     /**
-     * Invoked by {@link org.apache.tapestry.junit.mock.MockTester}after the test is complete, to
+     * Invoked by {@link org.apache.tapestry.junit.mock.TestMockApplications}after the test is complete, to
      * close and otherwise finish up.
      */
 

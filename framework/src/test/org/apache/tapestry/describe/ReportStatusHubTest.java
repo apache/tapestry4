@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
 @Test
 public class ReportStatusHubTest extends BaseDescribeTestCase
 {
-    public RootDescriptionReceiverFactory newReceiverFactory(IMarkupWriter writer,
+    private RootDescriptionReceiverFactory newReceiverFactory(IMarkupWriter writer,
             RootDescriptionReciever receiver)
     {
         RootDescriptionReceiverFactory factory = newReceiverFactory();
@@ -40,12 +40,12 @@ public class ReportStatusHubTest extends BaseDescribeTestCase
         return factory;
     }
 
-    protected RootDescriptionReceiverFactory newReceiverFactory()
+    private RootDescriptionReceiverFactory newReceiverFactory()
     {
         return newMock(RootDescriptionReceiverFactory.class);
     }
 
-    public static class ListenerFixture implements ReportStatusListener
+    private static class ListenerFixture implements ReportStatusListener
     {
 
         public void reportStatus(ReportStatusEvent event)
@@ -99,7 +99,7 @@ public class ReportStatusHubTest extends BaseDescribeTestCase
 
     }
 
-    protected RootDescriptionReciever newRootReceiver()
+    private RootDescriptionReciever newRootReceiver()
     {
         return newMock(RootDescriptionReciever.class);
     }
