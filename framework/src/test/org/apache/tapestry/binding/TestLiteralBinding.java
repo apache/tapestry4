@@ -72,15 +72,15 @@ public class TestLiteralBinding extends BindingTestCase
     public void testGetObjectWithClass()
     {
         ValueConverter vc = newMock(ValueConverter.class);
-
+        Location l = fabricateLocation(99);
+        
         Date date = new Date();
 
         expect(vc.coerceValue("my-literal", Date.class)).andReturn(date);
 
         replay();
-
-        LiteralBinding b = new LiteralBinding("parameter foo", vc, fabricateLocation(99),
-                "my-literal");
+        
+        LiteralBinding b = new LiteralBinding("parameter foo", vc, l, "my-literal");
 
         assertSame(date, b.getObject(Date.class));
 
@@ -90,14 +90,14 @@ public class TestLiteralBinding extends BindingTestCase
     public void testGetObjectException()
     {
         ValueConverter vc = newMock(ValueConverter.class);
-
+        Location location = fabricateLocation(99);
+        
         Exception innerException = new RuntimeException("Failure");
 
         expect(vc.coerceValue("my-literal", Date.class)).andThrow(innerException);
-
+        
         replay();
-
-        Location location = fabricateLocation(99);
+        
         LiteralBinding b = new LiteralBinding("parameter foo", vc, location, "my-literal");
 
         try

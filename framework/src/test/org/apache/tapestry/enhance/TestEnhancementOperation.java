@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.enhance;
 
-import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.*;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertFalse;
 import static org.testng.AssertJUnit.assertNull;
@@ -47,6 +47,7 @@ import org.apache.tapestry.event.PageValidateListener;
 import org.apache.tapestry.link.ServiceLink;
 import org.apache.tapestry.services.ComponentConstructor;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.easymock.internal.matchers.Null;
 import org.testng.annotations.Configuration;
 import org.testng.annotations.Test;
 
@@ -59,7 +60,7 @@ import org.testng.annotations.Test;
 @Test
 public class TestEnhancementOperation extends BaseComponentTestCase
 {
-    @Configuration(beforeTestClass = true)
+    @Configuration(beforeTestMethod = true)
     protected void setUp() throws Exception
     {
         EnhancementOperationImpl._uid = 97;
@@ -441,12 +442,12 @@ public class TestEnhancementOperation extends BaseComponentTestCase
     public void testAddInjectedField()
     {
         IComponentSpecification spec = newSpec();
-
+        
         ClassFactory cf = newMock(ClassFactory.class);
         ClassFab fab = newMock(ClassFab.class);
-
+        
         expect(cf.newClass("$BaseComponent_97", BaseComponent.class)).andReturn(fab);
-
+        
         // String because "FRED_VALUE" is a String
 
         fab.addField("fred", String.class);
@@ -463,7 +464,7 @@ public class TestEnhancementOperation extends BaseComponentTestCase
         HashMap map = new HashMap();
 
         fab.addField("fred_0", Map.class);
-
+        
         replay();
 
         assertEquals("fred_0", eo.addInjectedField("fred", Map.class, map));
@@ -475,10 +476,9 @@ public class TestEnhancementOperation extends BaseComponentTestCase
         body.addln("fred = $1;");
         body.addln("fred_0 = $2;");
         body.end();
-
-        fab.addConstructor(new Class[]
-        { String.class, Map.class }, null, body.toString());
-
+        
+        fab.addConstructor(aryEq(new Class[] { String.class, Map.class }), isA(Class[].class), eq(body.toString()));
+        
         replay();
 
         eo.finalizeEnhancedClass();
@@ -547,10 +547,10 @@ public class TestEnhancementOperation extends BaseComponentTestCase
         }
         catch (ApplicationRuntimeException ex)
         {
-            assertEquals(
-                    "A new implementation of method 'void frob()' conflicts with an existing "
-                            + "implementation (at classpath:/org/apache/tapestry/enhance/TestEnhancementOperation, line 1).",
-                    ex.getMessage());
+            assertTrue(ex.getMessage()
+                    .indexOf("A new implementation of method 'void frob()' conflicts with an existing "
+                            + "implementation") > -1);
+            
             assertSame(secondLocation, ex.getLocation());
         }
 
@@ -904,11 +904,11 @@ public class TestEnhancementOperation extends BaseComponentTestCase
         Throwable t = new RuntimeException("Inconceivable!");
 
         expect(classFab.createClass()).andThrow(t);
-
+        
         ClassFactory cf = newClassFactory(ServiceLink.class, classFab);
-
+        
         replay();
-
+        
         EnhancementOperationImpl eo = new EnhancementOperationImpl(new DefaultClassResolver(),
                 spec, ServiceLink.class, cf, null);
 

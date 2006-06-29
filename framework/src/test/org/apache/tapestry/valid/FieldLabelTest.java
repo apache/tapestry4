@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.valid;
 
-import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.*;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertSame;
 
@@ -41,7 +41,8 @@ public class FieldLabelTest extends BaseFormComponentTestCase
     private IForm newForm(IValidationDelegate delegate)
     {
         IForm form = newMock(IForm.class);
-
+        checkOrder(form, false);
+        
         trainGetDelegate(delegate, form);
 
         return form;
@@ -71,7 +72,8 @@ public class FieldLabelTest extends BaseFormComponentTestCase
     private IFormComponent newField(String displayName, String clientId)
     {
         IFormComponent field = newMock(IFormComponent.class);
-
+        checkOrder(field, false);
+        
         trainGetDisplayName(field, displayName);
 
         trainGetClientId(clientId, field);
@@ -119,7 +121,7 @@ public class FieldLabelTest extends BaseFormComponentTestCase
         IForm form = newForm(delegate);
         IMarkupWriter writer = newBufferWriter();
         IRequestCycle cycle = newCycle();
-
+        
         trainGetForm(cycle, form);
 
         trainIsRewinding(cycle, false);
@@ -128,7 +130,7 @@ public class FieldLabelTest extends BaseFormComponentTestCase
 
         FieldLabel fl = newInstance(FieldLabel.class, new Object[]
         { "displayName", "FredFlintstone" });
-
+        
         fl.render(writer, cycle);
 
         assertBuffer("{LABEL-PREFIX}<label>FredFlintstone</label>{LABEL-SUFFIX}");
@@ -164,15 +166,16 @@ public class FieldLabelTest extends BaseFormComponentTestCase
         IForm form = newForm();
         IMarkupWriter writer = newBufferWriter();
         IRequestCycle cycle = newCycle();
-
+        
         Location l = newLocation();
-        IBinding binding = newBinding(l);
-        IPage page = newFred();
-
+        
         trainGetForm(cycle, form);
 
         trainIsRewinding(cycle, false);
-
+        
+        IPage page = newFred();
+        IBinding binding = newBinding(l);
+        
         replay();
 
         FieldLabel fl = newInstance(FieldLabel.class, new Object[]
@@ -264,22 +267,23 @@ public class FieldLabelTest extends BaseFormComponentTestCase
         IValidationDelegate delegate = new MockDelegate();
 
         IForm form = newForm();
-
+        
         IMarkupWriter writer = newBufferWriter();
-        IFormComponent field = newField("MyLabel", "clientId");
+        
         Location l = newLocation();
-
+        
         IRequestCycle cycle = newCycle();
-
+        
         trainGetForm(cycle, form);
-
+        
+        IFormComponent field = newField("MyLabel", "clientId");
+        form.prerenderField(writer, field, l);
+        
         trainIsRewinding(cycle, false);
-
+        
         FieldLabel fl = newInstance(FieldLabel.class, new Object[]
         { "location", l, "field", field, "prerender", true });
-
-        form.prerenderField(writer, field, l);
-
+        
         trainGetDelegate(form, delegate);
 
         replay();
@@ -296,24 +300,25 @@ public class FieldLabelTest extends BaseFormComponentTestCase
         IForm form = newForm();
         IMarkupWriter writer = newBufferWriter();
         IFormComponent field = newField();
-
-        IRequestCycle cycle = newCycle();
-
-        trainGetForm(cycle, form);
-
-        trainIsRewinding(cycle, false);
-
         Location l = newLocation();
+        
+        IRequestCycle cycle = newCycle();
+        
+        trainGetForm(cycle, form);
+        
+        form.prerenderField(writer, field, l);
+        
+        trainIsRewinding(cycle, false);
+        
+        trainGetDisplayName(field, null);
+        
         IPage page = newFred();
-
+        
+        trainGetExtendedId(field, "Fred/field");
+        
         FieldLabel fl = newInstance(FieldLabel.class, new Object[]
         { "id", "label", "location", l, "field", field, "page", page, "container", page,
                 "prerender", true });
-
-        form.prerenderField(writer, field, l);
-
-        trainGetDisplayName(field, null);
-        trainGetExtendedId(field, "Fred/field");
 
         replay();
 

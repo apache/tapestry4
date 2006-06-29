@@ -52,24 +52,24 @@ public class TestInjectListenerRegistrationWorker extends BaseComponentTestCase
     public void testMatch()
     {
         EnhancementOperation op = newMock(EnhancementOperation.class);
-
+        
         IComponentSpecification spec = newSpec();
-
-        expect(op.implementsInterface(IComponent.class)).andReturn(false);
-
+        
+        expect(op.implementsInterface(IComponent.class)).andReturn(true);
+        
         op.extendMethodImplementation(
                 IComponent.class,
                 EnhanceUtils.FINISH_LOAD_SIGNATURE,
                 "getPage().addThisComponentAsListener(this);");
-
+        
         replay();
-
+        
         InjectListenerRegistrationWorker w = new InjectListenerRegistrationWorker();
         w.setListenerInterface(IComponent.class);
         w.setRegisterMethodName("addThisComponentAsListener");
-
+        
         w.performEnhancement(op, spec);
-
+        
         verify();
     }
 

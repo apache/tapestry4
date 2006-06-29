@@ -15,7 +15,6 @@
 package org.apache.tapestry.record;
 
 import static org.easymock.EasyMock.expect;
-import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertNotSame;
 import static org.testng.AssertJUnit.assertSame;
 
@@ -47,15 +46,14 @@ public class TestPersistentPropertyData extends BaseComponentTestCase
         PersistentPropertyData ppd = new PersistentPropertyData(encoder);
 
         ppd.store("foo", "bar", newObject1);
-
-        assertEquals(new Object[]
-        { new PropertyChangeImpl("foo", "bar", newObject1) }, ppd.getPageChanges());
+        
+        assertListEquals(new Object[] { new PropertyChangeImpl("foo", "bar", newObject1) }, ppd.getPageChanges());
 
         // Check for overwriting.
 
         ppd.store("foo", "bar", newObject2);
 
-        assertEquals(new Object[]
+        assertListEquals(new Object[]
         { new PropertyChangeImpl("foo", "bar", newObject2) }, ppd.getPageChanges());
 
         // We only add the one value, because the output order
@@ -69,27 +67,26 @@ public class TestPersistentPropertyData extends BaseComponentTestCase
         Object newObject = new Object();
         String encoded = "ENCODED";
         List decoded = Collections.singletonList(new PropertyChangeImpl("foo", "bar", newObject));
-
+        
         PersistentPropertyDataEncoder encoder = newMock(PersistentPropertyDataEncoder.class);
-
+        
         expect(encoder.decodePageChanges(encoded)).andReturn(decoded);
-
+        
         replay();
-
+        
         PersistentPropertyData ppd = new PersistentPropertyData(encoder);
-
+        
         ppd.storeEncoded(encoded);
-
+        
         List l1 = ppd.getPageChanges();
-
-        assertEquals(new Object[]
-        { new PropertyChangeImpl("foo", "bar", newObject) }, l1);
+        
+        assertListEquals(new Object[] { new PropertyChangeImpl("foo", "bar", newObject) }, l1);
 
         List l2 = ppd.getPageChanges();
 
         assertNotSame(l1, l2);
 
-        assertEquals(new Object[]
+        assertListEquals(new Object[]
         { new PropertyChangeImpl("foo", "bar", newObject) }, l2);
 
         verify();

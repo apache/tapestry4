@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.services.impl;
 
-import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.*;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertNotNull;
 import static org.testng.AssertJUnit.assertSame;
@@ -315,16 +315,17 @@ public class TestApplicationSpecificationInitializer extends BaseComponentTestCa
         HttpServlet servlet = new ServletFixture();
         
         ServletConfig config = newMock(ServletConfig.class);
-
+        checkOrder(config, false);
+        
+        expect(config.getServletContext()).andReturn(context).anyTimes();
+        
+        expect(config.getServletName()).andReturn("dino").anyTimes();
+        
+        context.log("dino: init");
+        
         expect(config.getInitParameter(ApplicationSpecificationInitializer.APP_SPEC_PATH_PARAM))
         .andReturn(null);
-
-        expect(config.getServletContext()).andReturn(context).times(2);
-
-        expect(config.getServletName()).andReturn("dino").times(2);
-
-        context.log("dino: init");
-
+        
         expect(context.getResource("/WEB-INF/dino/dino.application"))
         .andReturn(getClass().getResource("ParseApp.application")).times(2);
 
