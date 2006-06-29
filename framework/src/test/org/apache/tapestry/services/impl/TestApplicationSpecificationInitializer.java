@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.services.impl;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.expect;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertNotNull;
 import static org.testng.AssertJUnit.assertSame;
@@ -48,7 +48,8 @@ import org.testng.annotations.Test;
  */
 @Test
 public class TestApplicationSpecificationInitializer extends BaseComponentTestCase
-{
+{   
+    
     public void testOnClasspath() throws Exception
     {
         DefaultClassResolver cr = new DefaultClassResolver();
@@ -65,24 +66,22 @@ public class TestApplicationSpecificationInitializer extends BaseComponentTestCa
         cf.setClassResolver(cr);
 
         i.setClasspathResourceFactory(cf);
-
+        
         HttpServlet servlet = new ServletFixture();
         
         ServletConfig config = newMock(ServletConfig.class);
-
-        trainForServletInit(config);
-
-        expect(config.getInitParameter(ApplicationSpecificationInitializer.APP_SPEC_PATH_PARAM))
-        .andReturn(appSpecResource.getPath());
-
+        
         IApplicationSpecification as = new ApplicationSpecification();
         
         ISpecificationParser parser = newMock(ISpecificationParser.class);
-
+        
         i.setParser(parser);
-
+        
+        expect(config.getInitParameter(ApplicationSpecificationInitializer.APP_SPEC_PATH_PARAM))
+        .andReturn(appSpecResource.getPath());
+        
         expect(parser.parseApplicationSpecification(appSpecResource)).andReturn(as);
-
+        
         ApplicationGlobals ag = new ApplicationGlobalsImpl();
 
         i.setGlobals(ag);
@@ -99,17 +98,6 @@ public class TestApplicationSpecificationInitializer extends BaseComponentTestCa
         assertSame(as, ag.getSpecification());
 
         verify();
-    }
-
-    private void trainForServletInit(ServletConfig config)
-    {
-        ServletContext context = newMock(ServletContext.class);
-
-        expect(config.getServletContext()).andReturn(context);
-
-        expect(config.getServletName()).andReturn("test");
-
-        context.log("test: init");
     }
 
     public void testInAppContextFolder() throws Exception
@@ -131,8 +119,6 @@ public class TestApplicationSpecificationInitializer extends BaseComponentTestCa
         HttpServlet servlet = new ServletFixture();
         
         ServletConfig config = newMock(ServletConfig.class);
-
-        trainForServletInit(config);
 
         expect(config.getInitParameter(ApplicationSpecificationInitializer.APP_SPEC_PATH_PARAM))
         .andReturn(null);
@@ -194,9 +180,7 @@ public class TestApplicationSpecificationInitializer extends BaseComponentTestCa
         HttpServlet servlet = new ServletFixture();
 
         ServletConfig config = newMock(ServletConfig.class);
-
-        trainForServletInit(config);
-
+        
         expect(config.getInitParameter(ApplicationSpecificationInitializer.APP_SPEC_PATH_PARAM))
         .andReturn(null);
 
@@ -260,8 +244,6 @@ public class TestApplicationSpecificationInitializer extends BaseComponentTestCa
 
         ServletConfig config = newMock(ServletConfig.class);
 
-        trainForServletInit(config);
-
         expect(config.getInitParameter(ApplicationSpecificationInitializer.APP_SPEC_PATH_PARAM)).andReturn(null);
 
         expect(config.getServletContext()).andReturn(context);
@@ -315,20 +297,17 @@ public class TestApplicationSpecificationInitializer extends BaseComponentTestCa
         HttpServlet servlet = new ServletFixture();
         
         ServletConfig config = newMock(ServletConfig.class);
-        checkOrder(config, false);
+        
+        expect(config.getInitParameter(ApplicationSpecificationInitializer.APP_SPEC_PATH_PARAM))
+        .andReturn(null);
         
         expect(config.getServletContext()).andReturn(context).anyTimes();
         
         expect(config.getServletName()).andReturn("dino").anyTimes();
         
-        context.log("dino: init");
-        
-        expect(config.getInitParameter(ApplicationSpecificationInitializer.APP_SPEC_PATH_PARAM))
-        .andReturn(null);
-        
         expect(context.getResource("/WEB-INF/dino/dino.application"))
         .andReturn(getClass().getResource("ParseApp.application")).times(2);
-
+        
         replay();
 
         servlet.init(config);
@@ -348,6 +327,7 @@ public class TestApplicationSpecificationInitializer extends BaseComponentTestCa
         assertEquals("ParseApp", ag.getSpecification().getName());
 
         verify();
-
+        
+        registry.shutdown();
     }
 }

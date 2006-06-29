@@ -47,7 +47,6 @@ import org.apache.tapestry.event.PageValidateListener;
 import org.apache.tapestry.link.ServiceLink;
 import org.apache.tapestry.services.ComponentConstructor;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.easymock.internal.matchers.Null;
 import org.testng.annotations.Configuration;
 import org.testng.annotations.Test;
 
@@ -451,9 +450,9 @@ public class TestEnhancementOperation extends BaseComponentTestCase
         // String because "FRED_VALUE" is a String
 
         fab.addField("fred", String.class);
-
+        
         replay();
-
+        
         EnhancementOperationImpl eo = new EnhancementOperationImpl(new DefaultClassResolver(),
                 spec, BaseComponent.class, cf, null);
 
@@ -477,7 +476,8 @@ public class TestEnhancementOperation extends BaseComponentTestCase
         body.addln("fred_0 = $2;");
         body.end();
         
-        fab.addConstructor(aryEq(new Class[] { String.class, Map.class }), isA(Class[].class), eq(body.toString()));
+        fab.addConstructor(aryEq(new Class[] { String.class, Map.class }), (Class[])isNull(), 
+                eq(body.toString()));
         
         replay();
 
@@ -718,10 +718,10 @@ public class TestEnhancementOperation extends BaseComponentTestCase
         
         ClassFab fab = newMock(ClassFab.class);
 
-        fab.addInterface(PageDetachListener.class);
-
         expect(cf.newClass("$BaseComponent_97", BaseComponent.class)).andReturn(fab);
 
+        fab.addInterface(PageDetachListener.class);
+        
         replay();
 
         EnhancementOperationImpl eo = new EnhancementOperationImpl(cr, spec, BaseComponent.class,
@@ -847,9 +847,9 @@ public class TestEnhancementOperation extends BaseComponentTestCase
         
         ClassFab fab = newMock(ClassFab.class);
 
-        expect(cf.newClass("$ExitingAbstractMethodFixture_97", ExistingAbstractMethodFixture.class))
+        expect(cf.newClass(endsWith("$ExistingAbstractMethodFixture_97"), eq(TestEnhancementOperation.ExistingAbstractMethodFixture.class)))
         .andReturn(fab);
-
+        
         replay();
 
         EnhancementOperationImpl eo = new EnhancementOperationImpl(cr, spec,
@@ -901,11 +901,11 @@ public class TestEnhancementOperation extends BaseComponentTestCase
         
         ClassFab classFab = newMock(ClassFab.class);
 
+        ClassFactory cf = newClassFactory(ServiceLink.class, classFab);
+        
         Throwable t = new RuntimeException("Inconceivable!");
 
         expect(classFab.createClass()).andThrow(t);
-        
-        ClassFactory cf = newClassFactory(ServiceLink.class, classFab);
         
         replay();
         
