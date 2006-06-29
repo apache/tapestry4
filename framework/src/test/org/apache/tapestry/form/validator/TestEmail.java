@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.form.validator;
 
+import static org.easymock.EasyMock.expect;
 import static org.testng.AssertJUnit.assertEquals;
 
 import org.apache.tapestry.IMarkupWriter;
@@ -21,7 +22,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
-import org.apache.tapestry.util.RegexpMatcher;
+import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
@@ -102,43 +103,48 @@ public class TestEmail extends BaseValidatorTestCase
 
     public void testRenderContribution()
     {
-        String pattern = new RegexpMatcher().getEscapedPatternString(Email.PATTERN);
-
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
+        JSONObject json = new JSONObject();
         
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
-
-        context.includeClasspathScript("/org/apache/tapestry/form/validator/RegExValidator.js");
-
+        
         IFormComponent field = newField("Fred", "myfield");
-
-        trainFormatMessage(context, null, ValidationStrings.INVALID_EMAIL, new Object[]
-        { "Fred" }, "default\\message");
-
-        context.addSubmitHandler("function(event) { Tapestry.validate_regex(event, 'myfield', '"
-                + pattern + "', 'default\\\\message'); }");
-
+        
+        expect(context.getProfile()).andReturn(json);
+        
+        trainFormatMessage(context, null, ValidationStrings.INVALID_EMAIL, 
+                new Object[] { "Fred" }, "default\\message");
+        
         replay();
 
         new Email().renderContribution(writer, cycle, context, field);
 
         verify();
+        
+        /*
+        assertNotNull(json.get(ValidationConstants.REQUIRED));
+        JSONArray arr = json.getJSONArray(ValidationConstants.REQUIRED);
+        assertEquals("fred", arr.getString(0));
+        
+        assertNotNull(json.get("fred"));
+        JSONObject obj = json.getJSONObject("fred");
+        assertEquals("Default\\Message for Fred.", obj.getString(ValidationConstants.REQUIRED));
+        */
     }
 
     public void testRenderContributionCustomMessage()
     {
-
-        String pattern = new RegexpMatcher().getEscapedPatternString(Email.PATTERN);
-
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
+        JSONObject json = new JSONObject();
+        
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
-
-        context.includeClasspathScript("/org/apache/tapestry/form/validator/RegExValidator.js");
-
+        
         IFormComponent field = newField("Fred", "barney");
-
+        
+        expect(context.getProfile()).andReturn(json);
+        
         trainFormatMessage(
                 context,
                 "custom",
@@ -146,15 +152,21 @@ public class TestEmail extends BaseValidatorTestCase
                 new Object[]
                 { "Fred" },
                 "custom message");
-
-        context.addSubmitHandler("function(event) { Tapestry.validate_regex(event, 'barney', '"
-                + pattern + "', 'custom message'); }");
-
+        
         replay();
-
+        
         new Email("message=custom").renderContribution(writer, cycle, context, field);
 
         verify();
-
+        
+        /*
+        assertNotNull(json.get(ValidationConstants.REQUIRED));
+        JSONArray arr = json.getJSONArray(ValidationConstants.REQUIRED);
+        assertEquals("fred", arr.getString(0));
+        
+        assertNotNull(json.get("fred"));
+        JSONObject obj = json.getJSONObject("fred");
+        assertEquals("Default\\Message for Fred.", obj.getString(ValidationConstants.REQUIRED));
+        */
     }
 }

@@ -41,7 +41,6 @@ public class TestAbstractComponent extends BaseComponentTestCase
 
     }
     
-    @Test
     public void testUnimplementedMethods()
     {
         IComponent component = new ConcreteComponent();
@@ -69,8 +68,7 @@ public class TestAbstractComponent extends BaseComponentTestCase
                     .getMessage());
         }
     }
-
-    @Test
+    
     public void testContainedComponent()
     {
         Creator creator = new Creator();
@@ -87,8 +85,7 @@ public class TestAbstractComponent extends BaseComponentTestCase
 
         verify();
     }
-
-    @Test
+    
     public void testContainedComponentConflict()
     {
         Creator creator = new Creator();
@@ -101,11 +98,10 @@ public class TestAbstractComponent extends BaseComponentTestCase
         trainGetIdPath(page, null);
         
         replay();
-        replay();
-
+        
         IComponent component = (IComponent) creator.newInstance(BaseComponent.class, new Object[]
         { "page", page, "container", page, "id", "barney" });
-
+        
         component.setContainedComponent(cc1);
 
         try
@@ -120,7 +116,6 @@ public class TestAbstractComponent extends BaseComponentTestCase
                     ex.getMessage());
         }
 
-        verify();
         verify();
     }
 

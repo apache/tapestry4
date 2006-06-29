@@ -25,6 +25,7 @@ import java.io.CharArrayWriter;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -607,5 +608,23 @@ public class BaseComponentTestCase extends TestBase
             throw new NullPointerException("No resource named '" + file + "'.");
 
         return new URLResource(url);
+    }
+    
+    public static boolean assertListEquals(Object[] expected, List actual)
+    {
+        if (expected == null || actual == null)
+            notEquals(expected, actual);
+        
+        Object[] acarr = actual.toArray(new Object[actual.size()]);
+        if (!Arrays.equals(expected, acarr))
+            notEquals(expected, acarr);
+        
+        return true;
+    }
+    
+    public static void notEquals(Object expected, Object actual)
+    {
+        throw new AssertionError("Parameters don't match, expected: <"
+                + expected + "> actual: <" + actual + ">");
     }
 }

@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.form;
 
-import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.*;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertSame;
 
@@ -102,11 +102,13 @@ public class TestValidationMessages extends BaseComponentTestCase
     public void testMessageOverrideAsReference()
     {
         Messages messages = newMessage("myfield-required", "Yo Dawg! Gimme a piece of {0}.");
+        
         IComponent container = newComponent(messages);
+        
         IFormComponent field = newField(container);
-
+        
         ValidationMessages m = new ValidationMessagesImpl(field, Locale.ENGLISH);
-
+        
         replay();
 
         assertEquals("Yo Dawg! Gimme a piece of My Field.", m.formatValidationMessage(
@@ -139,7 +141,8 @@ public class TestValidationMessages extends BaseComponentTestCase
     private Messages newMessage(String key, String message)
     {
         Messages messages = newMock(Messages.class);
-
+        checkOrder(messages, false);
+        
         expect(messages.getMessage(key)).andReturn(message);
 
         return messages;

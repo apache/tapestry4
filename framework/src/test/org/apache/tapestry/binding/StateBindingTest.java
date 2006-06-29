@@ -15,16 +15,15 @@
 package org.apache.tapestry.binding;
 
 import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.engine.state.ApplicationStateManager;
-import org.easymock.MockControl;
 import org.testng.annotations.Test;
 
 /**
@@ -35,12 +34,12 @@ import org.testng.annotations.Test;
  * @since 4.0
  */
 @Test
-public class StateBindingTest extends HiveMindTestCase
+public class StateBindingTest extends BaseComponentTestCase
 {
 
     private ValueConverter newValueConverter()
     {
-        return (ValueConverter) newMock(ValueConverter.class);
+        return newMock(ValueConverter.class);
     }
 
     private IBinding newBinding(String objectName, ValueConverter vc, ApplicationStateManager asm,
@@ -55,12 +54,10 @@ public class StateBindingTest extends HiveMindTestCase
 
     public void testSuccess()
     {
-        MockControl asmc = newControl(ApplicationStateManager.class);
-        ApplicationStateManager asm = (ApplicationStateManager) asmc.getMock();
-
-        asm.exists("fred");
-        asmc.setReturnValue(true);
-
+        ApplicationStateManager asm = newMock(ApplicationStateManager.class);
+        
+        expect(asm.exists("fred")).andReturn(true);
+        
         ValueConverter vc = newValueConverter();
 
         replay();
@@ -78,7 +75,7 @@ public class StateBindingTest extends HiveMindTestCase
         Location l = fabricateLocation(22);
 
         Throwable t = new RuntimeException("Nested exception.");
-        ApplicationStateManager asm = (ApplicationStateManager) newMock(ApplicationStateManager.class);
+        ApplicationStateManager asm = newMock(ApplicationStateManager.class);
 
         expect(asm.exists("fred")).andThrow(t);
         

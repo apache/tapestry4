@@ -14,12 +14,16 @@
 
 package org.apache.tapestry.valid;
 
+import static org.easymock.EasyMock.*;
 import static org.testng.AssertJUnit.assertEquals;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Locale;
 
+import org.apache.tapestry.IPage;
 import org.apache.tapestry.form.IFormComponent;
+import org.testng.annotations.Configuration;
 import org.testng.annotations.Test;
 
 /**
@@ -33,12 +37,33 @@ public class TestNumberValidator extends BaseValidatorTestCase
 {
     private NumberValidator v = new NumberValidator();
 
+    @Configuration(afterTestMethod = true)
+    public void reset()
+    {
+        v.setInvalidIntegerFormatMessage(null);
+        v.setInvalidNumericFormatMessage(null);
+        v.setMaximum(null);
+        v.setMinimum(null);
+        v.setNumberRangeMessage(null);
+        v.setNumberTooLargeMessage(null);
+        v.setNumberTooSmallMessage(null);
+        v.setRequired(false);
+        v.setRequiredMessage(null);
+    }
+    
     private void testPassThru(Class valueTypeClass, Number input) throws ValidatorException
     {
         IFormComponent field = newField();
-
+        IPage page = newMock(IPage.class);
+        
+        expect(field.getPage()).andReturn(page).anyTimes();
+        
+        expect(page.getLocale()).andReturn(Locale.GERMAN).anyTimes();
+        
+        expect(field.getDisplayName()).andReturn(null).anyTimes();
+        
         replay();
-
+        
         testPassThru(field, valueTypeClass, input);
 
         verify();
@@ -52,7 +77,7 @@ public class TestNumberValidator extends BaseValidatorTestCase
         String s = v.toString(field, input);
 
         Object o = v.toObject(field, s);
-
+        
         assertEquals("Input and output.", input, o);
     }
 
