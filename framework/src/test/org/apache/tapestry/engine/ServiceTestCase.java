@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.engine;
 
-import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.*;
 
 import java.util.Map;
 
@@ -45,7 +45,8 @@ public abstract class ServiceTestCase extends BaseComponentTestCase
     protected IPage newPage(String name)
     {
         IPage result = newMock(IPage.class);
-
+        checkOrder(result, false);
+        
         expect(result.getPageName()).andReturn(name);
         return result;
     }

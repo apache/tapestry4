@@ -129,6 +129,8 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         
         expect(listenerMap.getListener("fooListener")).andReturn(listener);
         
+        listenerInvoker.invokeListener(listener, comp, cycle);
+        
         replay();
         
         invoker.invokeListeners(comp, cycle, event);

@@ -128,7 +128,7 @@ public class TestMockApplications
      * Closes System.out and System.err, then restores them to their original values.
      */
     @Configuration(afterTestMethod = true)
-    protected void tearDown() throws Exception
+    public void tearDown() throws Exception
     {
         System.err.close();
         System.setErr(_savedErr);
@@ -137,6 +137,8 @@ public class TestMockApplications
         System.setOut(_savedOut);
         
         _requestNumber = 0;
+        _request = null;
+        _response = null;
     }
     
     @DataProvider(name = "mockTestScripts")
@@ -206,7 +208,7 @@ public class TestMockApplications
 
             executeRequest(request);
         }
-
+        
         _servlet.destroy();
         
         PropertyUtils.clearCache();
@@ -944,7 +946,7 @@ public class TestMockApplications
         return new PrintStream(bos, true);
     }
     
-    @Configuration(afterSuite = true)
+    @Configuration(afterTestClass = true)
     public static void deleteDir()
     {
         File file = new File(getBaseDirectory() + "/target/.private");

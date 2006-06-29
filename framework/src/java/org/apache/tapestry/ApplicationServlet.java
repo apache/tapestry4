@@ -319,5 +319,7 @@ public class ApplicationServlet extends HttpServlet
             _registry.shutdown();
             _registry = null;
         }
+        
+        super.destroy();
     }
 }

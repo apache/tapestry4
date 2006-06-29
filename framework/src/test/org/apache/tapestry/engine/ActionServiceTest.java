@@ -123,16 +123,19 @@ public class ActionServiceTest extends ServiceTestCase
     public void testGetLinkComplex()
     {
         IComponent component = newComponent();
-        WebRequest request = newWebRequest(false, newWebSession());
+        IRequestCycle cycle = newCycle();
+        
         IPage activePage = newPage("ActivePage");
         IPage componentPage = newPage("ComponentPage");
-        IRequestCycle cycle = newCycle();
-        LinkFactory lf = newLinkFactory();
-        ILink link = newLink();
-
+        
         trainGetPage(cycle, activePage);
         trainGetPage(component, componentPage);
-
+        
+        LinkFactory lf = newLinkFactory();
+        ILink link = newLink();
+        
+        WebRequest request = newWebRequest(false, newWebSession());
+        
         Map parameters = new HashMap();
 
         trainGetIdPath(component, "fred.barney");
@@ -202,8 +205,7 @@ public class ActionServiceTest extends ServiceTestCase
         IRequestCycle cycle = newCycle();
         IPage page = newPage();
         IAction action = newAction();
-        WebSession session = newWebSession(false);
-        WebRequest request = newWebRequest(session);
+        
         ResponseRenderer rr = newResponseRenderer();
 
         trainGetParameter(cycle, ServiceConstants.COMPONENT, "fred.barney");
@@ -217,9 +219,14 @@ public class ActionServiceTest extends ServiceTestCase
         cycle.activate(page);
 
         trainGetNestedComponent(page, "fred.barney", action);
-
+        
         trainGetRequiresSession(action, true);
-
+        
+        WebSession session = newMock(WebSession.class);
+        WebRequest request = newWebRequest(session);
+        
+        expect(session.isNew()).andReturn(false);
+        
         cycle.rewindPage("action-id", action);
 
         rr.renderResponse(cycle);
@@ -284,9 +291,9 @@ public class ActionServiceTest extends ServiceTestCase
         IRequestCycle cycle = newCycle();
         IPage page = newPage();
         IAction action = newAction();
-        WebRequest request = newWebRequest(null);
+        // WebRequest request = newWebRequest(null);
         Location l = newLocation();
-
+        
         trainGetParameter(cycle, ServiceConstants.COMPONENT, "fred.barney");
         trainGetParameter(cycle, ServiceConstants.CONTAINER, null);
         trainGetParameter(cycle, ServiceConstants.PAGE, "ActivePage");
@@ -294,13 +301,15 @@ public class ActionServiceTest extends ServiceTestCase
         trainGetParameter(cycle, ServiceConstants.SESSION, "T");
 
         trainGetPage(cycle, "ActivePage", page);
-
+        
         cycle.activate(page);
 
         trainGetNestedComponent(page, "fred.barney", action);
-
+        
         trainGetRequiresSession(action, true);
 
+        WebRequest request = newWebRequest(null);
+        
         trainGetExtendedId(action, "ActivePage/fred.barney");
 
         trainGetLocation(page, l);
