@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.enhance;
 
+import static org.easymock.EasyMock.checkOrder;
 import static org.easymock.EasyMock.expect;
 
 import org.apache.hivemind.Location;
@@ -32,7 +33,8 @@ public class BaseEnhancementTestCase extends BaseComponentTestCase
     public IComponentSpecification newSpec(Location location)
     {
         IComponentSpecification spec = newSpec();
-
+        checkOrder(spec, false);
+        
         expect(spec.getLocation()).andReturn(location);
 
         return spec;

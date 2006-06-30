@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.enhance;
 
+import static org.easymock.EasyMock.anyObject;
+import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 
 import java.lang.reflect.Modifier;
@@ -40,39 +42,26 @@ public class TestInjectScriptWorker extends BaseComponentTestCase
     {
         EnhancementOperation op = newMock(EnhancementOperation.class);
 
-        Location componentSpecLocation = newLocation();
-        final Resource scriptResource = componentSpecLocation.getResource().getRelativeResource(
-                "bar.script");
-
         final Location injectSpecLocation = newLocation();
 
         final IScriptSource source = newMock(IScriptSource.class);
+        
+        // Location componentSpecLocation = newLocation();
+        Resource scriptResource = newResource();
 
         op.claimReadonlyProperty("foo");
 
         expect(op.getPropertyType("foo")).andReturn(IScript.class);
 
         expect(op.getAccessorMethodName("foo")).andReturn("getFoo");
-
-        expect(op.addInjectedField("_$script", DeferredScript.class, new DeferredScriptImpl(scriptResource,
-                source, injectSpecLocation)))
-                .andReturn("_script");
-        /* opc.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-        { null, null, new ArgumentMatcher()
-        {
-
-            public boolean compareArguments(Object expected, Object actual)
-            {
-                DeferredScriptImpl ds = (DeferredScriptImpl) actual;
-
-                return ds._location == injectSpecLocation && ds._scriptSource == source
-                        && ds._scriptResource.equals(scriptResource);
-            }
-
-        }
-
-        }));*/
-
+        
+        expect(injectSpecLocation.getResource()).andReturn(scriptResource);
+        
+        expect(scriptResource.getRelativeResource("bar.script")).andReturn(scriptResource);
+        
+        expect(op.addInjectedField(eq("_$script"), eq(DeferredScript.class), anyObject()))
+        .andReturn("_script");
+        
         MethodSignature sig = new MethodSignature(IScript.class, "getFoo", null, null);
 
         op.addMethod(Modifier.PUBLIC, sig, "return _script.getScript();", injectSpecLocation);

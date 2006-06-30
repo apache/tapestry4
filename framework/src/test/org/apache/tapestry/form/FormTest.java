@@ -96,19 +96,19 @@ public class FormTest extends BaseComponentTestCase
 
         trainStoreForm(cycle, form);
 
-        trainIsRewinding(support, true);
-
         trainGetNextActionId(cycle, "7");
-
+        
+        trainIsRewinding(support, true);
+        
         expect(support.rewind()).andReturn(FormConstants.SUBMIT_NORMAL);
         
         expect(delegate.getHasErrors()).andReturn(false);
 
         invoker.invokeListener(listener, form, cycle);
-
-        delegate.setFormComponent(null);
-
+        
         TapestryUtils.removeForm(cycle);
+        
+        delegate.setFormComponent(null);
 
         replay();
 
@@ -147,14 +147,14 @@ public class FormTest extends BaseComponentTestCase
 
         trainStoreForm(cycle, form);
 
-        trainIsRewinding(support, false);
-
         trainGetNextActionId(cycle, "7");
-
+        
+        trainIsRewinding(support, false);
+        
         trainGetUniqueId(cycle, "myform", "myform_1");
 
         trainGetNamespace(response, "$ns");
-
+        
         trainGetLinkCheckIgnoreParameter(
                 direct,
                 cycle,
@@ -164,10 +164,10 @@ public class FormTest extends BaseComponentTestCase
 
         trainRender(support, link, render, null, null);
 
-        delegate.setFormComponent(null);
-
         TapestryUtils.removeForm(cycle);
 
+        delegate.setFormComponent(null);
+        
         replay();
 
         form.render(writer, cycle);
@@ -182,23 +182,24 @@ public class FormTest extends BaseComponentTestCase
         FormSupport support = newFormSupport();
         WebResponse response = newResponse();
         IEngineService direct = newEngineService();
+        
         ILink link = newLink();
         IRender render = newRender();
         IValidationDelegate delegate = newDelegate();
-
+        
         Form form = newInstance(FormFixture.class, new Object[]
         { "id", "myform", "direct", true, "expectedWriter", writer, "expectedRequestCycle", cycle,
                 "formSupport", support, "response", response, "directService", direct, "method",
                 "post", "delegate", delegate, "scheme", "https", "port", new Integer(443) });
-
+        
         trainStoreForm(cycle, form);
-
-        trainIsRewinding(support, false);
-
+        
         trainGetNextActionId(cycle, "7");
-
+        
+        trainIsRewinding(support, false);
+        
         trainGetUniqueId(cycle, "myform", "myform_1");
-
+        
         trainGetNamespace(response, "$ns");
 
         trainGetLinkCheckIgnoreParameter(
@@ -207,13 +208,13 @@ public class FormTest extends BaseComponentTestCase
                 true,
                 new DirectServiceParameter(form),
                 link);
-
+        
         trainRender(support, link, render, "https", new Integer(443));
-
-        delegate.setFormComponent(null);
-
+        
         TapestryUtils.removeForm(cycle);
-
+        
+        delegate.setFormComponent(null);
+        
         replay();
 
         form.render(writer, cycle);

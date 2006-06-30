@@ -14,7 +14,8 @@
 
 package org.apache.tapestry.engine;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.checkOrder;
+import static org.easymock.EasyMock.expect;
 
 import java.util.Map;
 
@@ -30,7 +31,6 @@ import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebSession;
-import org.testng.annotations.Test;
 
 /**
  * Common utilities for building tests for {@link org.apache.tapestry.engine.IEngineService}s.
@@ -38,7 +38,6 @@ import org.testng.annotations.Test;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-@Test
 public abstract class ServiceTestCase extends BaseComponentTestCase
 {
 
@@ -99,7 +98,8 @@ public abstract class ServiceTestCase extends BaseComponentTestCase
     protected WebSession newWebSession(boolean isNew)
     {
         WebSession session = newWebSession();
-
+        checkOrder(session, false);
+        
         expect(session.isNew()).andReturn(isNew);
 
         return session;

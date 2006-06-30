@@ -21,6 +21,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.valid.ValidatorException;
+import org.testng.annotations.Configuration;
 import org.testng.annotations.Test;
 
 /**
@@ -34,6 +35,14 @@ public class TestStringTranslator extends TranslatorTestCase
 {
     private StringTranslator _translator = new StringTranslator();
 
+    @Configuration(afterTestMethod = true)
+    public void reset()
+    {
+        _translator.setTrim(false);
+        _translator.setEmpty(null);
+        _translator.setMessage(null);
+    }
+    
     public void testFormat()
     {
         replay();

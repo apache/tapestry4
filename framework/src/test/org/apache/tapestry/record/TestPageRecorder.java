@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.record;
 
-import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.*;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertNull;
 import static org.testng.AssertJUnit.assertSame;
@@ -76,7 +76,8 @@ public class TestPageRecorder extends BaseComponentTestCase
         IComponentSpecification spec = newSpec();
         
         IPropertySpecification ps = newMock(IPropertySpecification.class);
-
+        checkOrder(ps, false);
+        
         expect(spec.getPropertySpecification(propertyName)).andReturn(ps);
 
         expect(ps.getPersistence()).andReturn(persistence);
@@ -91,7 +92,7 @@ public class TestPageRecorder extends BaseComponentTestCase
         IPage page = newPage();
 
         IComponentSpecification spec = newSpec("foobar", "session");
-
+        
         expect(page.getSpecification()).andReturn(spec);
 
         expect(page.getIdPath()).andReturn(null);
@@ -236,7 +237,8 @@ public class TestPageRecorder extends BaseComponentTestCase
 
     public void testChangeToNonSpecifiedProperty()
     {
-        Resource r = fabricateLocation(99).getResource();
+        Resource r = newResource();
+        
         ErrorLog log = newErrorLog();
         
         IPage page = newPage();

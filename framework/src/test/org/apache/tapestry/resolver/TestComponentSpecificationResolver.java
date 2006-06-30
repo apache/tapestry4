@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.resolver;
 
-import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.*;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertSame;
 
@@ -67,7 +67,8 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
             String type, IComponentSpecification spec)
     {
         ISpecificationResolverDelegate delegate = newMock(ISpecificationResolverDelegate.class);
-
+        checkOrder(delegate, false);
+        
         expect(delegate.findComponentSpecification(cycle, namespace, type)).andReturn(spec);
 
         return delegate;
@@ -115,8 +116,8 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
 
         Log log = newMock(Log.class);
 
-        log
-                .warn("Component 'MyComponent' (at classpath:/org/apache/tapestry/resolver/TestComponentSpecificationResolver, line 1) is deprecated, and will likely be removed in a later release. Consult its documentation to find a replacement component.");
+        log.warn(startsWith("Component 'MyComponent' ("));
+        // at classpath:/org/apache/tapestry/resolver/TestComponentSpecificationResolver, line 1) is deprecated, and will likely be removed in a later release. Consult its documentation to find a replacement component.");
 
         replay();
 
@@ -173,8 +174,6 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         Resource namespaceLocation = newResource("LibraryStandin.library");
         Resource specLocation = namespaceLocation.getRelativeResource("MyComponent.jwc");
 
-        ISpecificationSource source = newSource(specLocation, spec);
-
         expect(namespace.containsComponentType("MyComponent")).andReturn(false);
 
         train(log, ResolverMessages.resolvingComponent("MyComponent", namespace));
@@ -182,6 +181,9 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         expect(namespace.getSpecificationLocation()).andReturn(namespaceLocation);
 
         train(log, ResolverMessages.checkingResource(specLocation));
+        
+        ISpecificationSource source = newSource(specLocation, spec);
+        
         train(log, ResolverMessages.installingComponent("MyComponent", namespace, spec));
 
         namespace.installComponentSpecification("MyComponent", spec);
@@ -226,8 +228,9 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
 
         expect(namespace.isApplicationNamespace()).andReturn(false);
 
-        ClassFinder finder = newClassFinder("org.foo", "FrameworkComponent", null);
         trainGetPackages(namespace, "org.foo");
+        
+        ClassFinder finder = newClassFinder("org.foo", "FrameworkComponent", null);
 
         ISpecificationSource source = newSource(framework);
 
@@ -272,13 +275,13 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
                 namespace,
                 "DelegateComponent",
                 spec);
-
-        Resource namespaceLocation = newResource("LibraryStandin.library");
-
+        
         expect(namespace.containsComponentType("DelegateComponent")).andReturn(false);
 
         train(log, ResolverMessages.resolvingComponent("DelegateComponent", namespace));
 
+        Resource namespaceLocation = newResource("LibraryStandin.library");
+        
         expect(namespace.getSpecificationLocation()).andReturn(namespaceLocation);
 
         train(log, ResolverMessages.checkingResource(namespaceLocation
@@ -286,15 +289,15 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
 
         expect(namespace.isApplicationNamespace()).andReturn(false);
 
-        ISpecificationSource source = newSource(framework);
-
         expect(framework.containsComponentType("DelegateComponent")).andReturn(false);
 
         expect(log.isDebugEnabled()).andReturn(false);
 
         ClassFinder finder = newClassFinder("org.foo", "DelegateComponent", null);
         trainGetPackages(namespace, "org.foo");
-
+        
+        ISpecificationSource source = newSource(framework);
+        
         namespace.installComponentSpecification("DelegateComponent", spec);
 
         trainIsDeprecated(spec, false);
@@ -410,8 +413,6 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         Resource namespaceLocation = newResource("LibraryStandin.library");
         Resource specLocation = contextRoot.getRelativeResource("WEB-INF/myapp/MyAppComponent.jwc");
 
-        ISpecificationSource source = newSource(specLocation, spec);
-
         expect(namespace.containsComponentType("MyAppComponent")).andReturn(false);
 
         train(log, ResolverMessages.resolvingComponent("MyAppComponent", namespace));
@@ -420,12 +421,15 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
 
         train(log, ResolverMessages.checkingResource(namespaceLocation
                 .getRelativeResource("MyAppComponent.jwc")));
-
+        
         expect(namespace.isApplicationNamespace()).andReturn(true);
 
         train(log, ResolverMessages.checkingResource(specLocation));
+        
+        ISpecificationSource source = newSource(specLocation, spec);
+        
         train(log, ResolverMessages.installingComponent("MyAppComponent", namespace, spec));
-
+        
         namespace.installComponentSpecification("MyAppComponent", spec);
 
         trainIsDeprecated(spec, false);
@@ -461,11 +465,9 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
 
         Resource namespaceLocation = newResource("LibraryStandin.library");
         Resource specLocation = contextRoot.getRelativeResource("WEB-INF/MyWebInfComponent.jwc");
-
-        ISpecificationSource source = newSource(specLocation, spec);
-
+        
         expect(namespace.containsComponentType("MyWebInfComponent")).andReturn(false);
-
+        
         train(log, ResolverMessages.resolvingComponent("MyWebInfComponent", namespace));
 
         expect(namespace.getSpecificationLocation()).andReturn(namespaceLocation);
@@ -478,12 +480,15 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         train(log, ResolverMessages.checkingResource(contextRoot
                 .getRelativeResource("WEB-INF/myapp/MyWebInfComponent.jwc")));
         train(log, ResolverMessages.checkingResource(specLocation));
+        
+        ISpecificationSource source = newSource(specLocation, spec);
+        
         train(log, ResolverMessages.installingComponent("MyWebInfComponent", namespace, spec));
 
         namespace.installComponentSpecification("MyWebInfComponent", spec);
-
+        
         trainIsDeprecated(spec, false);
-
+        
         replay();
 
         ComponentSpecificationResolverImpl resolver = new ComponentSpecificationResolverImpl();
@@ -510,39 +515,43 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         Log log = newLog();
 
         Resource contextRoot = newResource("context/");
-
+        
         INamespace namespace = newMock(INamespace.class);
-
+        
         Resource namespaceLocation = newResource("LibraryStandin.library");
         Resource specLocation = contextRoot.getRelativeResource("ContextRootComponent.jwc");
-
-        ISpecificationSource source = newSource(specLocation, spec);
+        
+        
 
         expect(namespace.containsComponentType("ContextRootComponent")).andReturn(false);
 
         train(log, ResolverMessages.resolvingComponent("ContextRootComponent", namespace));
-
+        
         expect(namespace.getSpecificationLocation()).andReturn(namespaceLocation);
 
         train(log, ResolverMessages.checkingResource(namespaceLocation
                 .getRelativeResource("ContextRootComponent.jwc")));
-
+        
         expect(namespace.isApplicationNamespace()).andReturn(true);
 
         train(log, ResolverMessages.checkingResource(contextRoot
                 .getRelativeResource("WEB-INF/myapp/ContextRootComponent.jwc")));
         train(log, ResolverMessages.checkingResource(contextRoot
                 .getRelativeResource("WEB-INF/ContextRootComponent.jwc")));
+        
         train(log, ResolverMessages.checkingResource(specLocation));
+        
+        ISpecificationSource source = newSource(specLocation, spec);
+        
         train(log, ResolverMessages.installingComponent(
                 "ContextRootComponent",
                 namespace,
                 spec));
 
-        trainIsDeprecated(spec, false);
-
         namespace.installComponentSpecification("ContextRootComponent", spec);
 
+        trainIsDeprecated(spec, false);
+        
         replay();
 
         ComponentSpecificationResolverImpl resolver = new ComponentSpecificationResolverImpl();
@@ -561,15 +570,15 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
     }
 
     public void testFoundComponentClass()
-    {
-        Resource componentResource = newResource();
-        Resource namespaceResource = newResource("folder/MyComponent.jwc", componentResource);
-        
+    {   
         INamespace namespace = newMock(INamespace.class);
 
         trainGetPackages(namespace, "org.foo");
         ClassFinder finder = newClassFinder("org.foo", "folder.MyComponent", BaseComponent.class);
 
+        Resource componentResource = newResource();
+        Resource namespaceResource = newResource("folder/MyComponent.jwc", componentResource);
+        
         trainGetResource(namespace, namespaceResource);
 
         replay();
@@ -596,7 +605,8 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
     private Resource newResource(String relativePath, Resource relativeResource)
     {
         Resource resource = newMock(Resource.class);
-
+        checkOrder(resource, false);
+        
         expect(resource.getRelativeResource(relativePath)).andReturn(relativeResource);
 
         return resource;

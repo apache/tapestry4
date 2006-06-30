@@ -289,24 +289,27 @@ public class TestTextField extends BaseFormComponentTestCase
         trainGetForm(cycle, form);
         trainWasPrerendered(form, writer, component, false);
         trainGetDelegate(form, delegate);
-
+        
         delegate.setFormComponent(component);
 
         trainGetElementId(form, component, "fred");
         trainIsRewinding(form, false);
         trainIsRewinding(cycle, false);
-
+        
         delegate.setFormComponent(component);
-
-        trainGetDelegate(form, delegate);
-        trainGetDelegate(form, delegate);
-        trainGetDelegate(form, delegate);
-
+        
         expect(tfs.format(component, new Integer(10))).andReturn("10");
         
+        trainGetDelegate(form, delegate);
+        
         tfs.renderContributions(component, writer, cycle);
+        
+        trainGetDelegate(form, delegate);
+        
         vfs.renderContributions(component, writer, cycle);
 
+        trainGetDelegate(form, delegate);
+        
         replay();
 
         component.render(writer, cycle);
@@ -345,14 +348,19 @@ public class TestTextField extends BaseFormComponentTestCase
         delegate.setFormComponent(component);
 
         trainGetDelegate(form, delegate);
-        trainGetDelegate(form, delegate);
-        trainGetDelegate(form, delegate);
 
         expect(tfs.format(component, new Integer(10))).andReturn("10");
         
+        trainGetDelegate(form, delegate);
+        
         tfs.renderContributions(component, writer, cycle);
+
+        trainGetDelegate(form, delegate);
+        
         vfs.renderContributions(component, writer, cycle);
 
+        trainGetDelegate(form, delegate);
+        
         replay();
 
         component.render(writer, cycle);
@@ -391,14 +399,19 @@ public class TestTextField extends BaseFormComponentTestCase
         delegate.setFormComponent(component);
 
         trainGetDelegate(form, delegate);
-        trainGetDelegate(form, delegate);
-        trainGetDelegate(form, delegate);
 
         expect(tfs.format(component, new Integer(10))).andReturn("10");
         
+        trainGetDelegate(form, delegate);
+        
         tfs.renderContributions(component, writer, cycle);
+        
+        trainGetDelegate(form, delegate);
+        
         vfs.renderContributions(component, writer, cycle);
 
+        trainGetDelegate(form, delegate);
+        
         replay();
 
         component.render(writer, cycle);
@@ -431,24 +444,18 @@ public class TestTextField extends BaseFormComponentTestCase
         trainGetForm(cycle, form);
         trainWasPrerendered(form, writer, component, false);
         trainGetDelegate(form, delegate);
-
+        
         delegate.setFormComponent(component);
 
         trainGetElementId(form, component, "fred");
         trainIsRewinding(form, false);
         trainIsRewinding(cycle, false);
-
-        delegate.setFormComponent(component);
-
-        trainGetDelegate(form, delegate);
-        trainGetDelegate(form, delegate);
-        trainGetDelegate(form, delegate);
-
+        
         expect(tfs.format(component, new Integer(10))).andReturn("10");
         
         tfs.renderContributions(component, writer, cycle);
         vfs.renderContributions(component, writer, cycle);
-
+        
         replay();
 
         component.render(writer, cycle);
@@ -486,15 +493,18 @@ public class TestTextField extends BaseFormComponentTestCase
 
         delegate.setFormComponent(component);
 
-        trainGetDelegate(form, delegate);
-        trainGetDelegate(form, delegate);
-        trainGetDelegate(form, delegate);
-
         expect(tfs.format(component, null)).andReturn("");
         
+        trainGetDelegate(form, delegate);
+        
         tfs.renderContributions(component, writer, cycle);
+        
+        trainGetDelegate(form, delegate);
+        
         vfs.renderContributions(component, writer, cycle);
 
+        trainGetDelegate(form, delegate);
+        
         replay();
 
         component.render(writer, cycle);

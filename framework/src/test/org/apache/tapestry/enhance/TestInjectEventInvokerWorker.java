@@ -39,11 +39,10 @@ public class TestInjectEventInvokerWorker extends BaseEnhancementTestCase
 
     public void testSuccess() throws Exception
     {
-        Location l = newLocation();
-        
         EnhancementOperation op = newOp();
         ComponentEventInvoker invoker = new ComponentEventInvoker();
         
+        Location l = newLocation();
         IComponentSpecification spec = newSpec(l);
         
         op.claimReadonlyProperty("eventInvoker");

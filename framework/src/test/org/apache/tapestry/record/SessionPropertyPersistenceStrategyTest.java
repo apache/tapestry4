@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.record;
 
-import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.*;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertNull;
 import static org.testng.AssertJUnit.assertSame;
@@ -61,7 +61,8 @@ public class SessionPropertyPersistenceStrategyTest extends BaseComponentTestCas
     private WebSession newSession(String attributeName, boolean remove)
     {
         WebSession session = newSession();
-
+        checkOrder(session, false);
+        
         trainGetAttributeNames(session, Collections.singletonList(attributeName));
 
         if (remove)
@@ -73,7 +74,8 @@ public class SessionPropertyPersistenceStrategyTest extends BaseComponentTestCas
     private WebSession newSession(String attributeName, Object value)
     {
         WebSession session = newMock(WebSession.class);
-
+        checkOrder(session, false);
+        
         expect(session.getAttributeNames()).andReturn(Collections.singletonList(attributeName));
         
         if (value != null)
@@ -117,8 +119,10 @@ public class SessionPropertyPersistenceStrategyTest extends BaseComponentTestCas
     public void testDiscardChangesNoMatch()
     {
         WebSession session = newSession("session,myapp,Home,foo", false);
-        WebRequest request = newRequest(false, session);
-
+        
+        WebRequest request = newRequest();
+        expect(request.getSession(false)).andReturn(session);
+        
         replay();
 
         SessionPropertyPersistenceStrategy s = new SessionPropertyPersistenceStrategy();
@@ -146,8 +150,10 @@ public class SessionPropertyPersistenceStrategyTest extends BaseComponentTestCas
     public void testDiscardChangesWithMatch()
     {
         WebSession session = newSession("session,myapp,Home,foo", true);
-        WebRequest request = newRequest(false, session);
-
+        
+        WebRequest request = newRequest();
+        expect(request.getSession(false)).andReturn(session);
+        
         replay();
 
         SessionPropertyPersistenceStrategy s = new SessionPropertyPersistenceStrategy();
@@ -162,7 +168,8 @@ public class SessionPropertyPersistenceStrategyTest extends BaseComponentTestCas
     public void testGetStoreChangesNoMatch()
     {
         WebSession session = newSession("session,myapp,Home,foo,bar", null);
-        WebRequest request = newRequest(false, session);
+        WebRequest request = newRequest();
+        expect(request.getSession(false)).andReturn(session);
 
         replay();
 

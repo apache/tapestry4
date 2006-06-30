@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.valid;
 
-import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.*;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertSame;
 
@@ -141,35 +141,35 @@ public class TestValidField extends BaseFormComponentTestCase
     }
 
     public void testRewindNoValidator()
-    {
-        Location l = newLocation();
-
-        IBinding binding = newBinding(l);
-
+    {   
         IPage page = (IPage) newInstance(BasePage.class);
         page.setPageName("Barney");
-
+        
         ValidField component = newInstance(ValidField.class, new Object[]
         { "page", page, "id", "inputFred", "container", page });
-
-        component.setBinding("validator", binding);
-
+        
         IRequestCycle cycle = newCycle();
         IForm form = newMock(IForm.class);
-
+        
         IMarkupWriter writer = newWriter();
         
         IValidationDelegate delegate = newDelegate();
 
         trainGetForm(cycle, form);
+        
+        Location l = newLocation();
+        IBinding binding = newBinding(l);
+        
+        component.setBinding("validator", binding);
+        
         trainWasPrerendered(form, writer, component, false);
         trainGetDelegate(form, delegate);
-
+        
         delegate.setFormComponent(component);
-
+        
         trainGetElementId(form, component, "fred");
         trainIsRewinding(form, true);
-
+        
         trainGetParameter(cycle, "fred", "fred-value");
 
         replay();
@@ -202,7 +202,8 @@ public class TestValidField extends BaseFormComponentTestCase
 
         IRequestCycle cycle = newCycle();
         IForm form = newMock(IForm.class);
-
+        checkOrder(form, false);
+        
         IMarkupWriter writer = newBufferWriter();
 
         MockDelegate delegate = new MockDelegate();
@@ -214,9 +215,6 @@ public class TestValidField extends BaseFormComponentTestCase
         trainGetElementId(form, component, "fred");
         trainIsRewinding(form, false);
         trainIsRewinding(cycle, false);
-
-        trainGetDelegate(form, delegate);
-        trainGetDelegate(form, delegate);
 
         trainToString(validator, component, value, "fred value");
 
@@ -255,6 +253,7 @@ public class TestValidField extends BaseFormComponentTestCase
         page.attach(null, cycle);
         
         IForm form = newMock(IForm.class);
+        checkOrder(form, false);
 
         IMarkupWriter writer = newBufferWriter();
 
@@ -267,10 +266,7 @@ public class TestValidField extends BaseFormComponentTestCase
         trainGetElementId(form, component, "fred");
         trainIsRewinding(form, false);
         trainIsRewinding(cycle, false);
-
-        trainGetDelegate(form, delegate);
-        trainGetDelegate(form, delegate);
-
+        
         trainToString(validator, component, null, null);
 
         expect(validator.isRequired()).andReturn(false);
@@ -300,7 +296,8 @@ public class TestValidField extends BaseFormComponentTestCase
         
         IRequestCycle cycle = newCycle();
         IForm form = newMock(IForm.class);
-
+        checkOrder(form, false);
+        
         ValidField component = newInstance(ValidField.class, new Object[]
         { "value", value, "validator", validator, "form", form, "name", "fred" });
 
@@ -312,13 +309,10 @@ public class TestValidField extends BaseFormComponentTestCase
         trainGetForm(cycle, form);
         trainWasPrerendered(form, writer, component, false);
         trainGetDelegate(form, delegate);
-
+        
         trainGetElementId(form, component, "fred");
         trainIsRewinding(form, false);
         trainIsRewinding(cycle, false);
-
-        trainGetDelegate(form, delegate);
-        trainGetDelegate(form, delegate);
 
         expect(validator.isRequired()).andReturn(true);
 

@@ -69,7 +69,7 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
 
         verify();
 
-        assertEquals(new String[]
+        assertListEquals(new String[]
         { ServiceConstants.SERVICE, ServiceConstants.PARAMETER }, l.getParameterNames());
 
     }
