@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.form;
 
+import static org.easymock.EasyMock.checkOrder;
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isA;
@@ -33,6 +34,7 @@ import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.StaleLinkException;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.event.BrowserEvent;
+import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.services.impl.ComponentEventInvoker;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.testng.annotations.Test;
@@ -87,7 +89,8 @@ public class FormSupportTest extends BaseComponentTestCase
     private IFormComponent newFormComponent(String id, String name)
     {
         IFormComponent component = newMock(IFormComponent.class);
-
+        checkOrder(component, false);
+        
         trainGetId(component, id);
 
         component.setName(name);
@@ -220,11 +223,14 @@ public class FormSupportTest extends BaseComponentTestCase
         IRequestCycle cycle = newCycle();
         IValidationDelegate delegate = newDelegate();
         MockForm form = new MockForm(delegate);
-        ComponentEventInvoker invoker = newMock(ComponentEventInvoker.class);
+        ListenerInvoker listenerInvoker = newMock(ListenerInvoker.class);
+        
+        ComponentEventInvoker invoker = new ComponentEventInvoker();
+        invoker.setListenerInvoker(listenerInvoker);
         
         trainIsRewound(cycle, form, true);
         trainGetPageRenderSupport(cycle, null);
-
+        
         replay();
 
         final FormSupport fs = new FormSupportImpl(writer, cycle, form);
@@ -232,7 +238,7 @@ public class FormSupportTest extends BaseComponentTestCase
         verify();
 
         delegate.clear();
-
+        
         trainCycleForRewind(cycle, "barney,wilma,barney_0", null);
 
         final IFormComponent barney1 = newFormComponent("barney", "barney");
@@ -247,10 +253,10 @@ public class FormSupportTest extends BaseComponentTestCase
         
         trainExtractBrowserEvent(cycle);
         
-        invoker.invokeFormListeners(eq(fs), eq(cycle), isA(BrowserEvent.class));
-        
         replay();
-
+        
+        invoker.invokeFormListeners(fs, cycle, new BrowserEvent(null, null));
+        
         assertEquals(FormConstants.SUBMIT_NORMAL, fs.rewind());
 
         verify();
@@ -265,7 +271,7 @@ public class FormSupportTest extends BaseComponentTestCase
         PageRenderSupport support = newPageRenderSupport();
         ILink link = newLink();
         IRender render = newRender();
-
+        
         MockForm form = new MockForm(delegate);
 
         trainIsRewound(cycle, form, false);
@@ -276,7 +282,7 @@ public class FormSupportTest extends BaseComponentTestCase
         final FormSupport fs = new FormSupportImpl(writer, cycle, form);
 
         verify();
-
+        
         form.setBody(new IRender()
         {
             public void render(IMarkupWriter pwriter, IRequestCycle pcycle)
@@ -305,7 +311,10 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.attribute("name", "myform");
         writer.attribute("id", "myform");
-
+        
+        support.addInitializationScript("Tapestry.onsubmit('myform', function (event)"
+                + "\n{\n  mySubmit1();\n  mySubmit2();\n  mySubmit3();\n});\n");
+        
         render.render(writer, cycle);
 
         writer.println();
@@ -315,14 +324,11 @@ public class FormSupportTest extends BaseComponentTestCase
         nested.close();
 
         writer.end();
-
-        support
-                .addInitializationScript("Tapestry.onsubmit('myform', function (event)\n{\n  mySubmit1();\n  mySubmit2();\n  mySubmit3();\n});\n");
-
+        
         // Side test: what if no focus field?
 
         trainGetFocusField(delegate, null);
-
+        
         replay();
 
         fs.render("post", render, link, null, null);
@@ -737,9 +743,9 @@ public class FormSupportTest extends BaseComponentTestCase
         { "fred" });
 
         trainGetNestedWriter(writer, nested);
-
+        
         trainGetURL(link, null, "/app");
-
+        
         writer.begin("form");
         writer.attribute("method", "post");
         writer.attribute("action", "/app");
@@ -747,6 +753,9 @@ public class FormSupportTest extends BaseComponentTestCase
         writer.attribute("name", "myform");
         writer.attribute("id", "myform");
 
+        support.addInitializationScript("Tapestry.onreset('myform', function (event)"
+                + "\n{\n  myReset1();\n  myReset2();\n});\n");
+        
         render.render(writer, cycle);
 
         writer.println();
@@ -756,9 +765,6 @@ public class FormSupportTest extends BaseComponentTestCase
         nested.close();
 
         writer.end();
-
-        support
-                .addInitializationScript("Tapestry.onreset('myform', function (event)\n{\n  myReset1();\n  myReset2();\n});\n");
 
         trainGetFocusField(delegate, null);
 
@@ -1076,7 +1082,6 @@ public class FormSupportTest extends BaseComponentTestCase
 
         IRender body = new IRender()
         {
-
             public void render(final IMarkupWriter pwriter, IRequestCycle pcycle)
             {
                 fs.addDeferredRunnable(new Runnable()
@@ -1091,7 +1096,7 @@ public class FormSupportTest extends BaseComponentTestCase
             }
 
         };
-
+        
         form.setBody(body);
 
         trainRegister(support, form, "myform");
@@ -1102,7 +1107,9 @@ public class FormSupportTest extends BaseComponentTestCase
         { "fred" });
 
         trainGetNestedWriter(writer, nested);
-
+        
+        nested.print("DEFERRED");
+        
         trainGetURL(link, null, "/app");
 
         writer.begin("form");
@@ -1117,13 +1124,7 @@ public class FormSupportTest extends BaseComponentTestCase
         writer.println();
 
         trainHiddenBlock(writer, "fred", "");
-
-        // EasyMock can't fully verify that this gets called at the right moment, nor can we truly
-        // prove (well, except by looking at the code), that the deferred runnables execute at the
-        // right time.
-
-        nested.print("DEFERRED");
-
+        
         nested.close();
 
         writer.end();
@@ -1153,11 +1154,11 @@ public class FormSupportTest extends BaseComponentTestCase
         PageRenderSupport support = newPageRenderSupport();
 
         trainGetPageRenderSupport(cycle, support);
-
+        
         replay();
-
+        
         final FormSupport fs = new FormSupportImpl(writer, cycle, form);
-
+        
         verify();
 
         final IFormComponent component = newFormComponent("barney", "barney");
@@ -1271,9 +1272,9 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainCycleForRewind(cycle, "", null);
 
-        writer.print("DEFERRED");
-
         trainExtractBrowserEvent(cycle);
+        
+        writer.print("DEFERRED");
         
         invoker.invokeFormListeners(eq(fs), eq(cycle), isA(BrowserEvent.class));
         
@@ -1326,7 +1327,25 @@ public class FormSupportTest extends BaseComponentTestCase
         final FormSupport fs = new FormSupportImpl(writer, cycle, form);
 
         verify();
+        
+        trainRegister(support, form, "myform");
+        
+        trainGetParameterNames(link, new String[]
+        { "service" });
+        trainGetParameterValues(link, "service", new String[]
+        { "fred" });
+        
+        trainGetNestedWriter(writer, nested);
+        
+        trainGetURL(link, null, "/app");
 
+        writer.begin("form");
+        writer.attribute("method", "post");
+        writer.attribute("action", "/app");
+        
+        writer.attribute("name", "myform");
+        writer.attribute("id", "myform");
+        
         form.setBody(new IRender()
         {
             public void render(IMarkupWriter pwriter, IRequestCycle pcycle)
@@ -1334,27 +1353,12 @@ public class FormSupportTest extends BaseComponentTestCase
                 fs.addEventHandler(FormEventType.SUBMIT, "mySubmit()");
             }
         });
-
-        trainRegister(support, form, "myform");
-
-        trainGetParameterNames(link, new String[]
-        { "service" });
-        trainGetParameterValues(link, "service", new String[]
-        { "fred" });
-
-        trainGetNestedWriter(writer, nested);
-
-        trainGetURL(link, null, "/app");
-
-        writer.begin("form");
-        writer.attribute("method", "post");
-        writer.attribute("action", "/app");
-
-        writer.attribute("name", "myform");
-        writer.attribute("id", "myform");
-
+        
+        support.addInitializationScript("Tapestry.onsubmit('myform', function (event)"
+                + "\n{\n  mySubmit();\n});\n");
+        
         render.render(writer, cycle);
-
+        
         writer.println();
 
         trainHiddenBlock(writer, "fred", "");
@@ -1362,9 +1366,6 @@ public class FormSupportTest extends BaseComponentTestCase
         nested.close();
 
         writer.end();
-
-        support
-                .addInitializationScript("Tapestry.onsubmit('myform', function (event)\n{\n  mySubmit();\n});\n");
 
         trainGetFocusField(delegate, null);
 
@@ -1459,11 +1460,6 @@ public class FormSupportTest extends BaseComponentTestCase
 
     private void trainRegister(PageRenderSupport support, IForm form, String formId)
     {
-        /* support.addExternalScript(new ClasspathResource(getClassResolver(),
-                "/org/apache/tapestry/form/Form.js"));
-
-        support.addInitializationScript("Tapestry.register_form('myform');");
-        */
         support.addInitializationScript(form, "dojo.require(\"tapestry.form\");"
                 + "tapestry.form.registerForm('" + formId + "');");
     }

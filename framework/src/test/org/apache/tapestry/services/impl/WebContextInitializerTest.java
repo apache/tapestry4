@@ -18,6 +18,7 @@ import static org.easymock.EasyMock.expect;
 import static org.testng.AssertJUnit.assertNotNull;
 import static org.testng.AssertJUnit.assertSame;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 
@@ -36,24 +37,30 @@ public class WebContextInitializerTest extends BaseComponentTestCase
 {
 
     public void testInitializer()
+    throws Exception
     {
-        HttpServlet servlet = newMock(HttpServlet.class);
+        HttpServlet servlet = new ServletFixture();
+        
         ServletContext servletContext = newMock(ServletContext.class);
-
-        expect(servlet.getServletContext()).andReturn(servletContext);
-
+        
+        ServletConfig config = newMock(ServletConfig.class);
+        
+        expect(config.getServletContext()).andReturn(servletContext);
+        
         replay();
-
+        
+        servlet.init(config);
+        
         ApplicationGlobals globals = new ApplicationGlobalsImpl();
-
+        
         WebContextInitializer initializer = new WebContextInitializer();
-
+        
         initializer.setGlobals(globals);
-
+        
         initializer.initialize(servlet);
-
+        
         verify();
-
+        
         assertSame(servletContext, globals.getServletContext());
         assertNotNull(globals.getWebContext());
     }

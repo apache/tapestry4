@@ -26,7 +26,6 @@ import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.testng.annotations.Test;
 
 /**
  * Base class for testing specification resolvers.
@@ -34,7 +33,6 @@ import org.testng.annotations.Test;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-@Test
 public abstract class AbstractSpecificationResolverTestCase extends BaseComponentTestCase
 {
 
