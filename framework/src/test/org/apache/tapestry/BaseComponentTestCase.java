@@ -226,7 +226,8 @@ public class BaseComponentTestCase extends TestBase
     protected IBinding newBinding(Location location)
     {
         IBinding binding = newBinding();
-
+        checkOrder(binding, false);
+        
         trainGetLocation(binding, location);
 
         return binding;

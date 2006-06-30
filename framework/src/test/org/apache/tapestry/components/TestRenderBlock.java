@@ -44,7 +44,7 @@ public class TestRenderBlock extends BaseComponentTestCase
 
     public void testNonNullBlock()
     {
-        Block b = newMock(Block.class);
+        Block b = (Block)newInstance(Block.class);
 
         RenderBlock rb = newInstance(RenderBlock.class, new Object[]
         { "block", b });

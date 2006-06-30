@@ -142,15 +142,17 @@ public class TapestryUtilsTest extends BaseComponentTestCase
 
     public void testGetPageRenderSupportFailure()
     {
-        Location l = newLocation();
         IComponent component = newMock(IComponent.class);
-
+        
+        IRequestCycle cycle = newCycle(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE, null);
+        
         expect(component.getExtendedId()).andReturn("Foo/bar").anyTimes();
         
+        Location l = newLocation();
         expect(component.getLocation()).andReturn(l);
-
-        IRequestCycle cycle = newCycle(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE, null);
-
+        
+        expect(component.getExtendedId()).andReturn("Foo/bar").anyTimes();
+        
         replay();
 
         try
@@ -171,13 +173,15 @@ public class TapestryUtilsTest extends BaseComponentTestCase
     {
         Location l = newLocation();
         IComponent component = newMock(IComponent.class);
-
+        
+        IRequestCycle cycle = newCycle(TapestryUtils.FORM_ATTRIBUTE, null);
+        
         expect(component.getExtendedId()).andReturn("Foo/bar").anyTimes();
         
         expect(component.getLocation()).andReturn(l);
 
-        IRequestCycle cycle = newCycle(TapestryUtils.FORM_ATTRIBUTE, null);
-
+        expect(component.getExtendedId()).andReturn("Foo/bar").anyTimes();
+        
         replay();
 
         try
@@ -196,37 +200,37 @@ public class TapestryUtilsTest extends BaseComponentTestCase
 
     public void testSplitBlank()
     {
-        assertEquals(new String[0], TapestryUtils.split(null));
-        assertEquals(new String[0], TapestryUtils.split(""));
+        assertListEquals(new String[0], TapestryUtils.split(null));
+        assertListEquals(new String[0], TapestryUtils.split(""));
     }
 
     public void testSplitWithDelimiter()
     {
-        assertEquals(new String[]
+        assertListEquals(new String[]
         { "fred", "barney" }, TapestryUtils.split("fred|barney", '|'));
     }
 
     public void testSplitNormal()
     {
-        assertEquals(new String[]
+        assertListEquals(new String[]
         { "fred", "barney" }, TapestryUtils.split("fred,barney"));
     }
 
     public void testSplitNoDelimiter()
     {
-        assertEquals(new String[]
+        assertListEquals(new String[]
         { "no-delimiter" }, TapestryUtils.split("no-delimiter"));
     }
 
     public void testTrailingDelimiter()
     {
-        assertEquals(new String[]
+        assertListEquals(new String[]
         { "fred", "barney", "" }, TapestryUtils.split("fred,barney,"));
     }
 
     public void testEveryDelimiterCounts()
     {
-        assertEquals(new String[]
+        assertListEquals(new String[]
         { "", "fred", "", "barney", "", "" }, TapestryUtils.split(",fred,,barney,,"));
     }
 

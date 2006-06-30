@@ -199,12 +199,12 @@ public class TestListenerMapSource extends BaseComponentTestCase
 
     public void testReturnLink()
     {
-        ILink link = newLink("http://foo/bar");
-
         IRequestCycle cycle = newLCycle(null);
-
+        
+        ILink link = newLink("http://foo/bar");
+        
         cycle.sendRedirect("http://foo/bar");
-
+        
         ListenerMethodHolder holder = new ListenerMethodHolder(link);
 
         replay();
@@ -372,6 +372,6 @@ public class TestListenerMapSource extends BaseComponentTestCase
 
     private ListenerMethodHolder newHolder()
     {
-        return newMock(ListenerMethodHolder.class);
+        return (ListenerMethodHolder)newInstance(ListenerMethodHolder.class);
     }
 }

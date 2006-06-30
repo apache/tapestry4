@@ -1032,7 +1032,7 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals(false, ps.getCache());
 
         ps = spec.getParameter("withAliases");
-        assertEquals(new String[]
+        assertListEquals(new String[]
         { "fred", "barney" }, ps.getAliasNames().toArray());
 
         assertSame(ps, spec.getParameter("fred"));
@@ -1064,7 +1064,7 @@ public class TestSpecificationParser extends TapestryTestCase
 
         assertEquals("http://myexternal/asset", as.getPath());
 
-        assertEquals(new String[]
+        assertListEquals(new String[]
         { "mycontext", "myexternal", "myprivate" }, cs.getAssetNames());
     }
 

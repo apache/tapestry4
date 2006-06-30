@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.engine;
 
+import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isA;
 import static org.testng.AssertJUnit.assertEquals;
@@ -46,7 +47,7 @@ import org.testng.annotations.Test;
 @Test
 public class DirectEventServiceTest extends ServiceTestCase
 {
-    protected IDirectEvent newDirect()
+    private IDirectEvent newDirect()
     {
         return newMock(IDirectEvent.class);
     }
@@ -228,7 +229,7 @@ public class DirectEventServiceTest extends ServiceTestCase
         
         cycle.setListenerParameters(isA(Object[].class));
         
-        d.triggerEvent(cycle, isA(BrowserEvent.class));
+        d.triggerEvent(eq(cycle), isA(BrowserEvent.class));
         
         rr.renderResponse(cycle);
         
@@ -276,7 +277,7 @@ public class DirectEventServiceTest extends ServiceTestCase
         
         cycle.setListenerParameters(isA(Object[].class));
         
-        d.triggerEvent(cycle, isA(BrowserEvent.class));
+        d.triggerEvent(eq(cycle), isA(BrowserEvent.class));
 
         rr.renderResponse(cycle);
 
@@ -338,16 +339,15 @@ public class DirectEventServiceTest extends ServiceTestCase
         IRequestCycle cycle = newCycle();
         IPage page = newPage();
         IDirectEvent d = newDirect();
-        WebSession session = newWebSession(false);
-        WebRequest request = newWebRequest(session);
+        
         LinkFactory lf = newLinkFactory();
         ResponseRenderer rr = newResponseRenderer();
-
+        
         trainGetParameter(cycle, ServiceConstants.COMPONENT, "fred.barney");
         trainGetParameter(cycle, ServiceConstants.CONTAINER, null);
         trainGetParameter(cycle, ServiceConstants.PAGE, "ActivePage");
         trainGetParameter(cycle, ServiceConstants.SESSION, "T");
-
+        
         trainGetPage(cycle, "ActivePage", page);
         cycle.activate(page);
 
@@ -355,13 +355,16 @@ public class DirectEventServiceTest extends ServiceTestCase
 
         trainIsStateful(d, true);
 
+        WebSession session = newWebSession(false);
+        WebRequest request = newWebRequest(session);
+        
         trainExtractListenerParameters(lf, cycle, parameters);
 
         trainExtractBrowserEvent(cycle);
         
         cycle.setListenerParameters(isA(Object[].class));
         
-        d.triggerEvent(cycle, isA(BrowserEvent.class));
+        d.triggerEvent(eq(cycle), isA(BrowserEvent.class));
 
         rr.renderResponse(cycle);
 
@@ -382,7 +385,7 @@ public class DirectEventServiceTest extends ServiceTestCase
         IRequestCycle cycle = newCycle();
         IPage page = newPage();
         IDirectEvent d = newDirect();
-        WebRequest request = newWebRequest(null);
+        
         Location l = newLocation();
 
         trainGetParameter(cycle, ServiceConstants.COMPONENT, "fred.barney");
@@ -397,6 +400,8 @@ public class DirectEventServiceTest extends ServiceTestCase
 
         trainIsStateful(d, true);
 
+        WebRequest request = newWebRequest(null);
+        
         trainGetExtendedId(d, "ActivePage/fred.barney");
         trainGetLocation(page, l);
         trainGetPageName(page, "ActivePage");
@@ -464,7 +469,7 @@ public class DirectEventServiceTest extends ServiceTestCase
         verify();
     }
     
-    protected void trainIsStateful(IDirectEvent direct, boolean isStateful)
+    private void trainIsStateful(IDirectEvent direct, boolean isStateful)
     {
         expect(direct.isStateful()).andReturn(isStateful);
     }
