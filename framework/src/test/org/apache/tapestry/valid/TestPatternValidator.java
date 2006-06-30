@@ -22,6 +22,7 @@ import static org.testng.AssertJUnit.assertSame;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.form.IFormComponent;
+import org.testng.annotations.Configuration;
 import org.testng.annotations.Test;
 
 /**
@@ -35,6 +36,17 @@ public class TestPatternValidator extends BaseValidatorTestCase
 {
     PatternValidator pv = new PatternValidator();
 
+    @Configuration(afterTestMethod = true)
+    public void reset()
+    {
+        pv.setClientScriptingEnabled(false);
+        pv.setPatternDelegate(null);
+        pv.setPatternNotMatchedMessage(null);
+        pv.setPatternString("");
+        pv.setRequired(false);
+        pv.setRequiredMessage(null);
+    }
+    
     private void positiveTest(IFormComponent field, String input) throws ValidatorException
     {
         Object result = pv.toObject(field, input);

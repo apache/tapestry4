@@ -14,12 +14,13 @@
 
 package org.apache.tapestry.engine;
 
+import static org.easymock.EasyMock.checkOrder;
 import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
 
 import org.apache.hivemind.ErrorHandler;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.RedirectException;
@@ -39,67 +40,52 @@ import org.testng.annotations.Test;
  * @since 4.0
  */
 @Test
-public class RequestCycleTest extends HiveMindTestCase
+public class RequestCycleTest extends BaseComponentTestCase
 {
     private IEngine newEngine()
     {
-        return (IEngine) newMock(IEngine.class);
+        return newMock(IEngine.class);
     }
 
     private PropertyPersistenceStrategySource newStrategySource()
     {
-        return (PropertyPersistenceStrategySource) newMock(PropertyPersistenceStrategySource.class);
-    }
-
-    private PageSource newPageSource()
-    {
-        return (PageSource) newMock(PageSource.class);
-    }
-
-    private Infrastructure newInfrastructure()
-    {
-        return newInfrastructure(newPageSource());
+        return newMock(PropertyPersistenceStrategySource.class);
     }
 
     private ErrorHandler newErrorHandler()
     {
-        return (ErrorHandler) newMock(ErrorHandler.class);
+        return newMock(ErrorHandler.class);
     }
 
     private AbsoluteURLBuilder newBuilder()
     {
-        return (AbsoluteURLBuilder) newMock(AbsoluteURLBuilder.class);
-    }
-
-    private Infrastructure newInfrastructure(PageSource source)
-    {
-        Infrastructure infrastructure = (Infrastructure) newMock(Infrastructure.class);
-
-        expect(infrastructure.getPageSource()).andReturn(source);
-        
-        return infrastructure;
+        return newMock(AbsoluteURLBuilder.class);
     }
 
     private IEngineService newService()
     {
-        return (IEngineService) newMock(IEngineService.class);
+        return newMock(IEngineService.class);
     }
 
     public void testGetters()
     {
+        Infrastructure infrastructure = newMock(Infrastructure.class);
+        PageSource pageSource = new PageSource();
+        
+        expect(infrastructure.getPageSource()).andReturn(pageSource);
+        
         IEngineService service = newService();
         ServiceMap map = newServiceMap("fred", service);
-
-        Infrastructure infrastructure = newInfrastructure(newPageSource());
-
+        
         expect(infrastructure.getServiceMap()).andReturn(map);
         
         RequestCycleEnvironment env = new RequestCycleEnvironment(newErrorHandler(),
                 infrastructure, newStrategySource(), newBuilder());
+        
         IEngine engine = newEngine();
-
+        
         replay();
-
+        
         IRequestCycle cycle = new RequestCycle(engine, new QueryParameterMap(), "fred", env);
 
         assertSame(infrastructure, cycle.getInfrastructure());
@@ -111,8 +97,9 @@ public class RequestCycleTest extends HiveMindTestCase
 
     private ServiceMap newServiceMap(String serviceName, IEngineService service)
     {
-        ServiceMap map = (ServiceMap) newMock(ServiceMap.class);
-
+        ServiceMap map = newMock(ServiceMap.class);
+        checkOrder(map, false);
+        
         expect(map.getService(serviceName)).andReturn(service);
 
         return map;
@@ -120,7 +107,11 @@ public class RequestCycleTest extends HiveMindTestCase
 
     public void testForgetPage()
     {
-        Infrastructure infrastructure = newInfrastructure();
+        Infrastructure infrastructure = newMock(Infrastructure.class);
+        PageSource pageSource = new PageSource();
+        
+        expect(infrastructure.getPageSource()).andReturn(pageSource);
+        
         PropertyPersistenceStrategySource source = newStrategySource();
         RequestCycleEnvironment env = new RequestCycleEnvironment(newErrorHandler(),
                 infrastructure, source, newBuilder());

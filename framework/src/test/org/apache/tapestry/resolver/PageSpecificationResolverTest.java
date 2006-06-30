@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.resolver;
 
-import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.*;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertSame;
 
@@ -162,7 +162,8 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
     private INamespace newNamespace(String pageName, IComponentSpecification spec)
     {
         INamespace namespace = newNamespace();
-
+        checkOrder(namespace, false);
+        
         trainContainsPage(namespace, pageName, spec != null);
 
         if (spec != null)
@@ -196,7 +197,8 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
             Resource resource, IComponentSpecification pageSpec)
     {
         ISpecificationSource source = newSource();
-
+        checkOrder(source, false);
+        
         trainGetApplicationNamespace(source, application);
 
         trainGetFrameworkNamespace(source, framework);
@@ -245,9 +247,9 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
         IComponentSpecification spec = newSpecification();
         INamespace application = newNamespace();
         INamespace framework = newNamespace("ExistingPage", spec);
-
+        
         ISpecificationSource source = newSource();
-
+        
         trainGetApplicationNamespace(source, application);
         trainGetFrameworkNamespace(source, framework);
 
@@ -285,36 +287,38 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
         INamespace framework = newNamespace();
         ISpecificationSource source = newSource(application, framework);
         IRequestCycle cycle = newCycle();
-
-        ComponentPropertySource propertySource = newPropertySource(application);
-
+        
         train(log, ResolverMessages.resolvingPage("TemplatePage", application));
 
         train(log, ResolverMessages.checkingResource(contextRoot
                 .getRelativeResource("WEB-INF/TemplatePage.page")));
-
+        
         train(log, ResolverMessages.checkingResource(contextRoot
                 .getRelativeResource("WEB-INF/myapp/TemplatePage.page")));
         train(log, ResolverMessages.checkingResource(contextRoot
                 .getRelativeResource("WEB-INF/TemplatePage.page")));
+        
         train(log, ResolverMessages.checkingResource(contextRoot
                 .getRelativeResource("TemplatePage.page")));
+        
+        ComponentPropertySource propertySource = newPropertySource(application);
+        
         train(log, ResolverMessages.checkingResource(contextRoot
                 .getRelativeResource("TemplatePage.html")));
-
+        
         train(log, ResolverMessages.foundHTMLTemplate(resource));
-
+        
         IComponentSpecification expectedSpec = new ComponentSpecification();
         expectedSpec.setPageSpecification(true);
         expectedSpec.setSpecificationLocation(resource);
-
+        
         // The toString() on ComponentSpecification means we can't predict
         // what the string would be.
-
+        
         trainIsDebugEnabled(log, false);
-
+        
         replay();
-
+        
         PageSpecificationResolverImpl resolver = new PageSpecificationResolverImpl();
         resolver.setContextRoot(contextRoot);
         resolver.setSpecificationSource(source);
@@ -410,16 +414,18 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
 
         Resource contextRoot = newResource("context/");
         IComponentSpecification spec = newSpecification();
-
+        
         Resource resource = contextRoot.getRelativeResource("ContextRootPage.page");
-
+        
         INamespace application = newNamespace();
-
+        
         INamespace framework = newNamespace();
+        
         ISpecificationSource source = newSource(application, framework, resource, spec);
-        IRequestCycle cycle = newCycle();
-
+        
         trainContainsPage(application, "ContextRootPage", false);
+        
+        IRequestCycle cycle = newCycle();
 
         train(log, ResolverMessages.resolvingPage("ContextRootPage", application));
 
@@ -468,14 +474,15 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
 
         Resource contextRoot = newResource("context/");
         IComponentSpecification spec = newSpecification();
-
-        ComponentPropertySource propertySource = newPropertySource(application);
-
+        
         INamespace framework = newNamespace("FrameworkPage", spec);
+        
+        ComponentPropertySource propertySource = newPropertySource(application);
+        
+        trainContainsPage(application, "FrameworkPage", false);
+        
         ISpecificationSource source = newSource(application, framework);
         IRequestCycle cycle = newCycle();
-
-        trainContainsPage(application, "FrameworkPage", false);
 
         train(log, ResolverMessages.resolvingPage("FrameworkPage", application));
 

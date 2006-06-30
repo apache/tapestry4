@@ -110,19 +110,19 @@ public class TestApplicationSpecificationInitializer extends BaseComponentTestCa
         Log log = newLog();
 
         i.setLog(log);
-
+        
         ClasspathResourceFactoryImpl cf = new ClasspathResourceFactoryImpl();
         cf.setClassResolver(cr);
-
+        
         i.setClasspathResourceFactory(cf);
-
+        
         HttpServlet servlet = new ServletFixture();
         
         ServletConfig config = newMock(ServletConfig.class);
-
+        
         expect(config.getInitParameter(ApplicationSpecificationInitializer.APP_SPEC_PATH_PARAM))
         .andReturn(null);
-
+        
         expect(config.getServletContext()).andReturn(context);
 
         expect(config.getServletName()).andReturn("fred");

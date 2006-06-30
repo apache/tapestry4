@@ -399,11 +399,11 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
         trainGetNestedWriter(writer, nested);
 
         writer.print("AFTER-BODY-RENDER");
-
-        writer.closeTag();
-
+        
         component.renderAdditionalAttributes(writer, cycle);
-
+        
+        writer.closeTag();
+        
         cycle.removeAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME);
 
         replay();
