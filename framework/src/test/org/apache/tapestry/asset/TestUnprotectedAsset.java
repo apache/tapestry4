@@ -14,19 +14,24 @@
 
 package org.apache.tapestry.asset;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertFalse;
+import static org.testng.AssertJUnit.assertNull;
+import static org.testng.AssertJUnit.assertTrue;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.hivemind.impl.DefaultClassResolver;
-import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.Pattern;
 import org.apache.oro.text.regex.PatternCompiler;
 import org.apache.oro.text.regex.PatternMatcher;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.services.ServiceConstants;
 import org.testng.annotations.Test;
 
@@ -36,7 +41,7 @@ import org.testng.annotations.Test;
  * @author jkuhnert
  */
 @Test
-public class TestUnprotectedAsset extends HiveMindTestCase
+public class TestUnprotectedAsset extends BaseComponentTestCase
 {
 
     PatternCompiler compiler = new Perl5Compiler();
