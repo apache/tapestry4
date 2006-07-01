@@ -173,9 +173,12 @@
                 <configuration>
                     <source>1.5</source>
                     <target>1.5</target>
-                    <fork>true</fork>
-                    <verbose>true</verbose>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.1-SNAPSHOT</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -185,6 +188,7 @@
                     <licenseLocation>
                         ${user.home}/.m2/repository/com/cenqua/clover/clover.license
                     </licenseLocation>
+                    <jdk>1.5</jdk>
                 </configuration>
                 <executions>
                     <execution>
@@ -256,6 +260,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>2.2-SNAPSHOT</version>
                 <configuration>
                     <configLocation>${basedir}/../tapestry-checkstyle.xml</configLocation>
                 </configuration>
