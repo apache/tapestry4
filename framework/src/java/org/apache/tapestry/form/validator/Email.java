@@ -37,16 +37,16 @@ import org.apache.tapestry.valid.ValidatorException;
 public class Email extends BaseValidator
 {
     static final String PATTERN = "^\\w[-._\\w]*\\w@\\w[-._\\w]*\\w\\.\\w{2,6}$";
-
+    
     // TODO: Possible thread safety issue if the validator
     // is shared across threads, because the matcher
     // will be too.
     private RegexpMatcher _matcher = new RegexpMatcher();
-
+    
     public Email()
     {
     }
-
+    
     public Email(String initializer)
     {
         super(initializer);
@@ -74,6 +74,7 @@ public class Email extends BaseValidator
     public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
             FormComponentContributorContext context, IFormComponent field)
     {
+        context.addInitializationScript(field, "dojo.require(\"dojo.validate.web\");");
         
         JSONObject profile = context.getProfile();
         

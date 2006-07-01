@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.form;
 
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.json.JSONObject;
 
 /**
@@ -45,7 +46,16 @@ public interface FormComponentContributorContext extends ValidationMessages
      */
 
     void addSubmitHandler(String handler);
-
+    
+    /**
+     * Adds initialization javascript code that will be executed on page/content/etc load.
+     * @param target 
+     *          The component the script is being added for.
+     * @param script
+     *          The javascript code to execute.
+     */
+    void addInitializationScript(IComponent target, String script);
+    
     /**
      * Registers a field for automatic focus. The goal is for the first field that is in error to
      * get focus; failing that, the first required field; failing that, any field.

@@ -59,7 +59,9 @@ public abstract class TaskEntryPage extends BasePage
     public abstract Project getCurrentProject();
     
     @Component(type = "DropdownDatePicker", id = "datePicker",
-            bindings = {"value=date", "displayName=message:task.start.date"})
+            bindings = {"value=date", 
+            "displayName=message:task.start.date", 
+            "validators=validators:required,maxDate=05/29/2006"})
     public abstract DropdownDatePicker getDatePicker();
     public abstract Date getDate();
     
@@ -84,6 +86,8 @@ public abstract class TaskEntryPage extends BasePage
     
     @InjectObject("service:timetracker.dao.TaskDao")
     public abstract TaskDao getTaskDao();
+    
+    public abstract String getEmail();
     
     /**
      * Selection model for projects.

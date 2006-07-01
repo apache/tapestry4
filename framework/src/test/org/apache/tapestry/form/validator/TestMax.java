@@ -14,13 +14,18 @@
 
 package org.apache.tapestry.form.validator;
 
+import static org.easymock.EasyMock.*;
 import static org.testng.AssertJUnit.assertEquals;
+
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
+import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
@@ -100,34 +105,52 @@ public class TestMax extends BaseValidatorTestCase
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
+        JSONObject json = new JSONObject();
+        
         IFormComponent field = newField("My Field", "myfield");
         
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
-
-        context.includeClasspathScript("/org/apache/tapestry/form/validator/NumberValidator.js");
+        
+        Locale locale = Locale.FRANCE;
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
+        
+        expect(context.getLocale()).andReturn(locale);
+        
+        expect(context.getProfile()).andReturn(json);
         
         trainFormatMessage(context, null, ValidationStrings.VALUE_TOO_LARGE, new Object[]
         { "My Field", new Double(20) }, "default message");
-
-        context.addSubmitHandler("function(event) { Tapestry.validate_max_number(event, 'myfield', 20.0, 'default message'); }");
-
+        
         replay();
 
         new Max("max=20").renderContribution(writer, cycle, context, field);
 
         verify();
+        
+        assertEquals("{\"myfield\":{\"constraints\":\"default message\"},"
+                + "\"constraints\":{\"myfield\":[dojo.validate.isInRange,{max:20.0,decimal:\""
+                + symbols.getDecimalSeparator() + "\"]}}",
+                json.toString());
     }
-
+    
     public void testRenderContributionCustomMessage()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
+        
+        JSONObject json = new JSONObject();
+        
         IFormComponent field = newField("My Field", "myfield");
         
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
-
-        context.includeClasspathScript("/org/apache/tapestry/form/validator/NumberValidator.js");
-
+        
+        Locale locale = Locale.FRANCE;
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
+        
+        expect(context.getLocale()).andReturn(locale);
+        
+        expect(context.getProfile()).andReturn(json);
+        
         trainFormatMessage(
                 context,
                 "custom",
@@ -136,13 +159,16 @@ public class TestMax extends BaseValidatorTestCase
                 { "My Field", new Double(20) },
                 "custom\\message");
         
-        context.addSubmitHandler("function(event) { Tapestry.validate_max_number(event, 'myfield', 20.0, 'custom\\\\message'); }");
-
         replay();
-
+        
         new Max("max=20,message=custom").renderContribution(writer, cycle, context, field);
 
         verify();
+        
+        assertEquals("{\"myfield\":{\"constraints\":\"custom\\\\message\"},"
+                + "\"constraints\":{\"myfield\":[dojo.validate.isInRange,{max:20.0,decimal:\""
+                + symbols.getDecimalSeparator() + "\"]}}",
+                json.toString());
     }
 
 }
