@@ -198,5 +198,19 @@ tapestry.form.validation={
 							message:msg
 						}, node);
 		dialog.show();
+	},
+	
+	/**
+	 * Validates that the input value matches the given 
+	 * regexp pattern.
+	 * 
+	 * @param value The string value to be evaluated.
+	 * @param pattern The regexp pattern used to match against value.
+	 */
+	isValidPattern:function(value, pattern){
+		if (typeof value != "string" || typeof pattern != "string") { return false; }
+		
+		var re = new RegExp(pattern);
+		return re.test(value);
 	}
 }

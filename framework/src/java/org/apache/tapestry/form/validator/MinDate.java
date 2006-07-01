@@ -16,8 +16,16 @@ package org.apache.tapestry.form.validator;
 
 import java.util.Date;
 
+import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
+import org.apache.tapestry.form.translator.DateTranslator;
+import org.apache.tapestry.json.JSONLiteral;
+import org.apache.tapestry.json.JSONObject;
+import org.apache.tapestry.util.Strftime;
+import org.apache.tapestry.valid.ValidationConstants;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
@@ -41,29 +49,65 @@ public class MinDate extends BaseValidator
     {
         super(initializer);
     }
-
+    
     public void setMinDate(Date minDate)
     {
         _minDate = minDate;
     }
-
+    
     public void validate(IFormComponent field, ValidationMessages messages, Object object)
-            throws ValidatorException
+    throws ValidatorException
     {
         Date date = (Date) object;
-
+        DateTranslator translator = (DateTranslator) getFieldTranslator(field, DateTranslator.class);
+        
         if (date.before(_minDate))
-            throw new ValidatorException(buildMessage(messages, field),
+            throw new ValidatorException(buildMessage(messages, field, translator),
                     ValidationConstraint.TOO_SMALL);
-    }
 
-    private String buildMessage(ValidationMessages messages, IFormComponent field)
+    }
+    
+    private String buildMessage(ValidationMessages messages, IFormComponent field, 
+            DateTranslator translator)
     {
         return messages.formatValidationMessage(
                 getMessage(),
                 ValidationStrings.DATE_TOO_EARLY,
                 new Object[]
-                { field.getDisplayName(), _minDate });
+                           { field.getDisplayName(), 
+                    (translator != null) ? 
+                            translator.format(field, messages.getLocale(), _minDate)
+                            : _minDate});
     }
-
+    
+    public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
+            FormComponentContributorContext context, IFormComponent field)
+    {
+        // TODO: This is a little hacky, but validators need to be able to cooperate
+        // with translators during client side validation as well
+        DateTranslator translator = (DateTranslator) getFieldTranslator(field, DateTranslator.class);
+        if (translator == null)
+            return;
+        
+        JSONObject profile = context.getProfile();
+        
+        context.addInitializationScript(field, "dojo.require(\"tapestry.form.datetime\");");
+        
+        if (!profile.has(ValidationConstants.CONSTRAINTS)) {
+            profile.put(ValidationConstants.CONSTRAINTS, new JSONObject());
+        }
+        JSONObject cons = profile.getJSONObject(ValidationConstants.CONSTRAINTS);
+        
+        cons.put(field.getClientId(), 
+                new JSONLiteral("[tapestry.form.datetime.isValidDate,{"
+                        + "min:" 
+                        + JSONObject.quote(translator.format(field, context.getLocale(), _minDate))
+                        + ","
+                        + "format:" 
+                        + JSONObject.quote(Strftime.convertToPosixFormat(translator.getPattern()))
+                        + "}]"));
+        
+        setProfileProperty(field, profile, 
+                ValidationConstants.CONSTRAINTS, buildMessage(context, field, translator));
+    }
 }

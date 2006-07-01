@@ -20,10 +20,8 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
-import org.apache.tapestry.form.TranslatedField;
 import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.form.translator.DateTranslator;
-import org.apache.tapestry.form.translator.Translator;
 import org.apache.tapestry.json.JSONLiteral;
 import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.util.Strftime;
@@ -55,7 +53,7 @@ public class MaxDate extends BaseValidator
             throws ValidatorException
     {
         Date date = (Date) object;
-        DateTranslator translator = getFieldTranslator(field);
+        DateTranslator translator = (DateTranslator) getFieldTranslator(field, DateTranslator.class);
         
         if (date.after(_maxDate))
             throw new ValidatorException(buildMessage(messages, field, translator),
@@ -81,7 +79,7 @@ public class MaxDate extends BaseValidator
     {
         // TODO: This is a little hacky, but validators need to be able to cooperate
         // with translators during client side validation as well
-        DateTranslator translator = getFieldTranslator(field);
+        DateTranslator translator = (DateTranslator) getFieldTranslator(field, DateTranslator.class);
         if (translator == null)
             return;
         
@@ -105,25 +103,6 @@ public class MaxDate extends BaseValidator
         
         setProfileProperty(field, profile, 
                 ValidationConstants.CONSTRAINTS, buildMessage(context, field, translator));
-    }
-    
-    /**
-     * Used to grab the corresponding {@link DateTranslator} for 
-     * the field, if one exists.
-     * @param field
-     * @return The translator, or null if the required translator type 
-     *          doesn't exist.
-     */
-    private DateTranslator getFieldTranslator(IFormComponent field)
-    {
-        if (TranslatedField.class.isAssignableFrom(field.getClass())) {
-            Translator trans = ((TranslatedField)field).getTranslator();
-            if (DateTranslator.class.isInstance(trans)) {
-                return (DateTranslator)trans;
-            }
-        }
-        
-        return null;
     }
     
     public void setMaxDate(Date minDate)

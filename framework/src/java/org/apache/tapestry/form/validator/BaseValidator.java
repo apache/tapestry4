@@ -19,6 +19,8 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
+import org.apache.tapestry.form.TranslatedField;
+import org.apache.tapestry.form.translator.Translator;
 import org.apache.tapestry.json.JSONArray;
 import org.apache.tapestry.json.JSONObject;
 
@@ -115,5 +117,24 @@ public abstract class BaseValidator implements Validator
             profile.put(key, new JSONArray());
         
         profile.accumulate(key, value);
+    }
+    
+    /**
+     * Used to grab the corresponding {@link Translator} for 
+     * the field, if one exists.
+     * @param field
+     * @return The translator, or null if the required translator type 
+     *          doesn't exist.
+     */
+    public Translator getFieldTranslator(IFormComponent field, Class clazz)
+    {
+        if (TranslatedField.class.isAssignableFrom(field.getClass())) {
+            Translator trans = ((TranslatedField)field).getTranslator();
+            if (clazz.isInstance(trans)) {
+                return trans;
+            }
+        }
+        
+        return null;
     }
 }
