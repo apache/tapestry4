@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.form.validator;
 
+import static org.easymock.EasyMock.expect;
 import static org.testng.AssertJUnit.assertEquals;
 
 import org.apache.tapestry.IMarkupWriter;
@@ -21,6 +22,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
+import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
@@ -99,57 +101,62 @@ public class TestMinLength extends BaseValidatorTestCase
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
+        JSONObject json = new JSONObject();
+        
         IFormComponent field = newField("My Field", "myfield");
         
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
-
-        context.includeClasspathScript("/org/apache/tapestry/form/validator/StringValidator.js");
-
-        trainFormatMessage(context, null, ValidationStrings.VALUE_TOO_SHORT, new Object[]
-        { new Integer(20), "My Field" }, "default message");
-
-        context
-                .addSubmitHandler("function(event) { Tapestry.validate_min_length(event, 'myfield', 20, 'default message'); }");
-
+        
+        expect(context.getProfile()).andReturn(json);
+        
+        trainFormatMessage(context, null, ValidationStrings.VALUE_TOO_SHORT, 
+                new Object[] { new Integer(25), "My Field" }, "default\\message");
+        
         replay();
-
-        new MinLength("minLength=20").renderContribution(writer, cycle, context, field);
-
+        
+        new MinLength("minLength=25").renderContribution(writer, cycle, context, field);
+        
         verify();
+        
+        assertEquals("{\"myfield\":{\"constraints\":\"default\\\\message\"},"
+                + "\"constraints\":{\"myfield\":[dojo.validate.isText,{minlength:25}]}}",
+                json.toString());
     }
-
+    
     public void testRenderContributionCustomMessage()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
+        JSONObject json = new JSONObject();
+        
         IFormComponent field = newField("My Field", "customField");
         
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
 
-        context.includeClasspathScript("/org/apache/tapestry/form/validator/StringValidator.js");
-
+        expect(context.getProfile()).andReturn(json);
+        
         trainFormatMessage(
                 context,
                 "custom",
                 ValidationStrings.VALUE_TOO_SHORT,
-                new Object[]
-                { new Integer(25), "My Field" },
+                new Object[] { new Integer(25), "My Field" },
                 "custom\\message");
-
-        context
-                .addSubmitHandler("function(event) { Tapestry.validate_min_length(event, 'customField', 25, 'custom\\\\message'); }");
-
+        
         replay();
-
+        
         new MinLength("minLength=25,message=custom").renderContribution(
                 writer,
                 cycle,
                 context,
                 field);
-
+        
         verify();
+        
+        assertEquals("{\"customField\":{\"constraints\":\"custom\\\\message\"},"
+                + "\"constraints\":{\"customField\":[dojo.validate.isText,{minlength:25}]}}",
+                json.toString());
     }
-
+    
     public void testNotRequired()
     {
         assertEquals(false, new MinLength().isRequired());

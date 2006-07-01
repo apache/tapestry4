@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.form.validator;
 
+import static org.easymock.EasyMock.expect;
 import static org.testng.AssertJUnit.assertEquals;
 
 import org.apache.tapestry.IMarkupWriter;
@@ -21,6 +22,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
+import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.util.RegexpMatcher;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
@@ -51,12 +53,13 @@ public class TestPattern extends BaseValidatorTestCase
 
     public void testFail()
     {
+        String pattern = "\\d+";
         IFormComponent field = newField("My Pattern");
         ValidationMessages messages = newMessages(
                 null,
                 ValidationStrings.REGEX_MISMATCH,
                 new Object[]
-                { "My Pattern" },
+                { pattern, "My Pattern" },
                 "default message");
 
         replay();
@@ -77,16 +80,17 @@ public class TestPattern extends BaseValidatorTestCase
 
     public void testFailCustomMessage()
     {
+        String pattern = "\\d+";
         IFormComponent field = newField("My Pattern");
         ValidationMessages messages = newMessages(
                 "custom",
                 ValidationStrings.REGEX_MISMATCH,
                 new Object[]
-                { "My Pattern" },
+                { pattern, "My Pattern" },
                 "custom message");
-
+        
         replay();
-
+        
         try
         {
             new Pattern("pattern=\\d+,message=custom").validate(field, messages, "fred");
@@ -103,60 +107,67 @@ public class TestPattern extends BaseValidatorTestCase
 
     public void testRenderContribution()
     {
-        String pattern = new RegexpMatcher().getEscapedPatternString("\\d+");
-
+        String rawPattern = "\\d+";
+        String pattern = new RegexpMatcher().getEscapedPatternString(rawPattern);
+        
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
+        JSONObject json = new JSONObject();
+        
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
-
-        context.includeClasspathScript("/org/apache/tapestry/form/validator/RegExValidator.js");
-
+        
         IFormComponent field = newField("Fred", "myfield");
-
-        trainFormatMessage(context, null, ValidationStrings.REGEX_MISMATCH, new Object[]
-        { "Fred" }, "default message");
-
-        context
-                .addSubmitHandler("function(event) { Tapestry.validate_regex(event, 'myfield', '"
-                        + pattern + "', 'default message'); }");
-
+        
+        expect(context.getProfile()).andReturn(json);
+        
+        trainFormatMessage(context, null, ValidationStrings.REGEX_MISMATCH, 
+                new Object[] { rawPattern, "Fred" }, "default message");
+        
         replay();
-
+        
         new Pattern("pattern=\\d+").renderContribution(writer, cycle, context, field);
-
+        
         verify();
+        
+        assertEquals("{\"myfield\":{\"constraints\":\"default message\"},"
+                + "\"constraints\":{\"myfield\":[tapestry.form.validation.isValidPattern,\""
+                + pattern + "\"]}}",
+                json.toString());
     }
-
+    
     public void testRenderContributionCustomMessage()
     {
-        String pattern = new RegexpMatcher().getEscapedPatternString("\\d+");
-
+        String rawPattern = "\\d+";
+        String pattern = new RegexpMatcher().getEscapedPatternString(rawPattern);
+        
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
+        JSONObject json = new JSONObject();
+        
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
-
-        context.includeClasspathScript("/org/apache/tapestry/form/validator/RegExValidator.js");
-
+        
         IFormComponent field = newField("Fred", "myfield");
-
+        
+        expect(context.getProfile()).andReturn(json);
+        
         trainFormatMessage(
                 context,
                 "custom",
                 ValidationStrings.REGEX_MISMATCH,
                 new Object[]
-                { "Fred" },
+                { rawPattern, "Fred" },
                 "custom\\message");
-
-        context
-                .addSubmitHandler("function(event) { Tapestry.validate_regex(event, 'myfield', '"
-                        + pattern + "', 'custom\\\\message'); }");
-
+        
         replay();
-
+        
         new Pattern("pattern=\\d+,message=custom").renderContribution(writer, cycle, context, field);
-
+        
         verify();
-
+        
+        assertEquals("{\"myfield\":{\"constraints\":\"custom\\\\message\"},"
+                + "\"constraints\":{\"myfield\":[tapestry.form.validation.isValidPattern,\""
+                + pattern + "\"]}}",
+                json.toString());
     }
-
+    
 }

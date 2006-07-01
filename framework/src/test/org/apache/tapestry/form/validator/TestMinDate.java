@@ -14,15 +14,22 @@
 
 package org.apache.tapestry.form.validator;
 
+import static org.easymock.EasyMock.checkOrder;
+import static org.easymock.EasyMock.expect;
 import static org.testng.AssertJUnit.assertEquals;
 
 import java.util.Date;
+import java.util.Locale;
 
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
+import org.apache.tapestry.form.TranslatedField;
 import org.apache.tapestry.form.ValidationMessages;
+import org.apache.tapestry.form.translator.DateTranslator;
+import org.apache.tapestry.json.JSONObject;
+import org.apache.tapestry.util.Strftime;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
@@ -75,10 +82,10 @@ public class TestMinDate extends BaseValidatorTestCase
                 "default message");
 
         replay();
-
+        
         MinDate v = new MinDate();
         v.setMinDate(tomorrow);
-
+        
         try
         {
             v.validate(field, message, today);
@@ -126,18 +133,99 @@ public class TestMinDate extends BaseValidatorTestCase
 
         verify();
     }
-
-    public void testRenderComponentNoOp()
+    
+    public void testRenderContribution()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
-        FormComponentContributorContext context = newContext();
-        IFormComponent field = newField();
-
+        JSONObject json = new JSONObject();
+        
+        TranslatedField field = newMock(TranslatedField.class);
+        checkOrder(field, false);
+        
+        Date minDate = new Date(System.currentTimeMillis() + ONE_DAY);
+        DateTranslator translator = new DateTranslator();
+        
+        expect(field.getTranslator()).andReturn(translator);
+        
+        expect(field.getClientId()).andReturn("myfield").anyTimes();
+        
+        expect(field.getDisplayName()).andReturn("My Field");
+        
+        FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
+        
+        Locale locale = Locale.ENGLISH;
+        expect(context.getLocale()).andReturn(locale).anyTimes();
+        
+        expect(context.getProfile()).andReturn(json);
+        
+        context.addInitializationScript(field, "dojo.require(\"tapestry.form.datetime\");");
+        
+        String strMin = translator.format(field, locale, minDate);
+        
+        trainFormatMessage(context, null, ValidationStrings.DATE_TOO_EARLY, 
+                new Object[] { "My Field", strMin }, "default message");
+        
         replay();
-
-        new MinDate().renderContribution(writer, cycle, context, field);
-
+        
+        new MinDate("minDate="+strMin).renderContribution(writer, cycle, context, field);
+        
         verify();
+        
+        assertEquals("{\"myfield\":{\"constraints\":\"default message\"},"
+                + "\"constraints\":{\"myfield\":["
+                + "tapestry.form.datetime.isValidDate,{min:\""
+                + strMin + "\",format:"
+                + JSONObject.quote(Strftime.convertToPosixFormat(translator.getPattern())) 
+                + "}]}}",
+                json.toString());
+    }
+    
+    public void testRenderContributionCustomMessage()
+    {
+        IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle();
+        JSONObject json = new JSONObject();
+        
+        TranslatedField field = newMock(TranslatedField.class);
+        checkOrder(field, false);
+        
+        Date minDate = new Date(System.currentTimeMillis() + ONE_DAY);
+        DateTranslator translator = new DateTranslator();
+        
+        expect(field.getTranslator()).andReturn(translator);
+        
+        expect(field.getClientId()).andReturn("myfield").anyTimes();
+        
+        expect(field.getDisplayName()).andReturn("My Field");
+        
+        FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
+        
+        Locale locale = Locale.ENGLISH;
+        expect(context.getLocale()).andReturn(locale).anyTimes();
+        
+        expect(context.getProfile()).andReturn(json);
+        
+        context.addInitializationScript(field, "dojo.require(\"tapestry.form.datetime\");");
+        
+        String strMin = translator.format(field, locale, minDate);
+        
+        trainFormatMessage(context, "custom", ValidationStrings.DATE_TOO_EARLY, 
+                new Object[] { "My Field", strMin }, 
+                "custom\\message");
+        
+        replay();
+        
+        new MinDate("minDate=" + strMin + ",message=custom").renderContribution(writer, cycle, context, field);
+        
+        verify();
+        
+        assertEquals("{\"myfield\":{\"constraints\":\"custom\\\\message\"},"
+                + "\"constraints\":{\"myfield\":["
+                + "tapestry.form.datetime.isValidDate,{min:\""
+                + strMin + "\",format:"
+                + JSONObject.quote(Strftime.convertToPosixFormat(translator.getPattern())) 
+                + "}]}}",
+                json.toString());
     }
 }

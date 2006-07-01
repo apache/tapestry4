@@ -122,7 +122,7 @@ public class TestMax extends BaseValidatorTestCase
         { "My Field", new Double(20) }, "default message");
         
         replay();
-
+        
         new Max("max=20").renderContribution(writer, cycle, context, field);
 
         verify();

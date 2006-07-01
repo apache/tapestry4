@@ -14,12 +14,16 @@
 
 package org.apache.tapestry.form.validator;
 
+import java.text.DecimalFormatSymbols;
+
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
+import org.apache.tapestry.json.JSONLiteral;
+import org.apache.tapestry.json.JSONObject;
+import org.apache.tapestry.valid.ValidationConstants;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
@@ -65,23 +69,28 @@ public class Min extends BaseValidator
                 new Object[]
                 { field.getDisplayName(), new Double(_min) });
     }
-
+    
     public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
             FormComponentContributorContext context, IFormComponent field)
     {
-        context.includeClasspathScript("/org/apache/tapestry/form/validator/NumberValidator.js");
-
-        String message = buildMessage(context, field);
-
-        StringBuffer buffer = new StringBuffer("function(event) { Tapestry.validate_min_number(event, '");
-        buffer.append(field.getClientId());
-        buffer.append("', ");
-        buffer.append(_min);
-        buffer.append(", ");
-        buffer.append(TapestryUtils.enquote(message));
-        buffer.append("); }");
-
-        context.addSubmitHandler(buffer.toString());
+        JSONObject profile = context.getProfile();
+        
+        if (!profile.has(ValidationConstants.CONSTRAINTS)) {
+            profile.put(ValidationConstants.CONSTRAINTS, new JSONObject());
+        }
+        JSONObject cons = profile.getJSONObject(ValidationConstants.CONSTRAINTS);
+        
+        // TODO: Should find some way to provide this globally and cache.
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(context.getLocale());
+        
+        cons.put(field.getClientId(), 
+                new JSONLiteral("[dojo.validate.isInRange,{"
+                        + "min:" + _min + ","
+                        + "decimal:" + JSONObject.quote(symbols.getDecimalSeparator())
+                        + "]"));
+        
+        setProfileProperty(field, profile, 
+                ValidationConstants.CONSTRAINTS, buildMessage(context, field));
     }
 
     public void setMin(double min)

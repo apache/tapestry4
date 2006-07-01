@@ -16,11 +16,13 @@ package org.apache.tapestry.form.validator;
 
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
+import org.apache.tapestry.json.JSONLiteral;
+import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.util.RegexpMatcher;
+import org.apache.tapestry.valid.ValidationConstants;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
@@ -66,26 +68,27 @@ public class Pattern extends BaseValidator
                 getMessage(),
                 ValidationStrings.REGEX_MISMATCH,
                 new Object[]
-                { field.getDisplayName() });
+                { _pattern, field.getDisplayName() });
     }
-
+    
     public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
             FormComponentContributorContext context, IFormComponent field)
     {
-        context.includeClasspathScript("/org/apache/tapestry/form/validator/RegExValidator.js");
-
         String pattern = _matcher.getEscapedPatternString(_pattern);
-        String message = buildMessage(context, field);
-
-        StringBuffer buffer = new StringBuffer("function(event) { Tapestry.validate_regex(event, '");
-        buffer.append(field.getClientId());
-        buffer.append("', '");
-        buffer.append(pattern);
-        buffer.append("', ");
-        buffer.append(TapestryUtils.enquote(message));
-        buffer.append("); }");
-
-        context.addSubmitHandler(buffer.toString());
+        
+        JSONObject profile = context.getProfile();
+        
+        if (!profile.has(ValidationConstants.CONSTRAINTS)) {
+            profile.put(ValidationConstants.CONSTRAINTS, new JSONObject());
+        }
+        JSONObject cons = profile.getJSONObject(ValidationConstants.CONSTRAINTS);
+        
+        cons.put(field.getClientId(), 
+                new JSONLiteral("[tapestry.form.validation.isValidPattern,\""
+                        + pattern + "\"]"));
+        
+        setProfileProperty(field, profile, 
+                ValidationConstants.CONSTRAINTS, buildMessage(context, field));
     }
 
     public void setPattern(String pattern)
