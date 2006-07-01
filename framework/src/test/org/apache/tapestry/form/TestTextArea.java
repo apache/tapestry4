@@ -285,14 +285,19 @@ public class TestTextArea extends BaseFormComponentTestCase
         delegate.setFormComponent(component);
 
         trainGetDelegate(form, delegate);
-        trainGetDelegate(form, delegate);
-        trainGetDelegate(form, delegate);
 
         expect(tfs.format(component, " text area value ")).andReturn("text area value");
         
+        trainGetDelegate(form, delegate);
+        
         tfs.renderContributions(component, writer, cycle);
+        
+        trainGetDelegate(form, delegate);
+        
         vfs.renderContributions(component, writer, cycle);
 
+        trainGetDelegate(form, delegate);
+        
         replay();
 
         component.render(writer, cycle);
@@ -328,16 +333,19 @@ public class TestTextArea extends BaseFormComponentTestCase
         trainIsRewinding(cycle, false);
 
         delegate.setFormComponent(component);
-
-        trainGetDelegate(form, delegate);
-        trainGetDelegate(form, delegate);
-        trainGetDelegate(form, delegate);
-
+        
         expect(tfs.format(component, " text area value ")).andReturn("text area value");
         
+        trainGetDelegate(form, delegate);
+        
         tfs.renderContributions(component, writer, cycle);
+        
+        trainGetDelegate(form, delegate);
+        
         vfs.renderContributions(component, writer, cycle);
 
+        trainGetDelegate(form, delegate);
+        
         replay();
 
         component.render(writer, cycle);
@@ -377,10 +385,6 @@ public class TestTextArea extends BaseFormComponentTestCase
         trainIsRewinding(cycle, false);
 
         delegate.setFormComponent(component);
-
-        trainGetDelegate(form, delegate);
-        trainGetDelegate(form, delegate);
-        trainGetDelegate(form, delegate);
 
         expect(tfs.format(component, " text area value ")).andReturn("text area value");
         
@@ -423,15 +427,18 @@ public class TestTextArea extends BaseFormComponentTestCase
 
         delegate.setFormComponent(component);
 
-        trainGetDelegate(form, delegate);
-        trainGetDelegate(form, delegate);
-        trainGetDelegate(form, delegate);
-
         expect(tfs.format(component, null)).andReturn("");
         
+        trainGetDelegate(form, delegate);
+        
         tfs.renderContributions(component, writer, cycle);
+        
+        trainGetDelegate(form, delegate);
+        
         vfs.renderContributions(component, writer, cycle);
 
+        trainGetDelegate(form, delegate);
+        
         replay();
 
         component.render(writer, cycle);

@@ -38,6 +38,17 @@ public class MockScriptProcessor implements IScriptProcessor
 
     private IdAllocator _idAllocator = new IdAllocator();
 
+    public void reset()
+    {
+        if (_body != null)
+            _body.delete(0, _body.length());
+        if (_initialization != null)
+            _initialization.delete(0, _initialization.length());
+        if (_externalScripts != null)
+            _externalScripts.clear();
+        _idAllocator.clear();
+    }
+    
     public void addBodyScript(String script)
     {
         addBodyScript(null, script);
@@ -89,7 +100,7 @@ public class MockScriptProcessor implements IScriptProcessor
     {
         if (_externalScripts == null)
             _externalScripts = new ArrayList();
-
+        
         _externalScripts.add(scriptResource);
     }
 

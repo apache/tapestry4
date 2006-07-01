@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.engine.state;
 
+import static org.easymock.EasyMock.checkOrder;
 import static org.easymock.EasyMock.expect;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertSame;
@@ -54,7 +55,8 @@ public class TestSessionScopeManager extends BaseComponentTestCase
     private WebSession newSession(String key, Object value)
     {
         WebSession session = newSession();
-
+        checkOrder(session, false);
+        
         trainGetAttribute(session, key, value);
 
         return session;
@@ -87,7 +89,7 @@ public class TestSessionScopeManager extends BaseComponentTestCase
     {
         WebSession session = newSession("state:myapp:fred", null);
         WebRequest request = newRequest(false, session);
-
+        
         replay();
 
         SessionScopeManager m = new SessionScopeManager();
@@ -135,15 +137,16 @@ public class TestSessionScopeManager extends BaseComponentTestCase
     public void testGetAndCreate()
     {
         Object stateObject = new Object();
-        StateObjectFactory factory = newFactory(stateObject);
-
+        
         WebSession session = newSession();
-
+        
+        WebRequest request = newRequest(session);
+        
         trainGetAttribute(session, "state:myapp:fred", null);
 
+        StateObjectFactory factory = newFactory(stateObject);
+        
         session.setAttribute("state:myapp:fred", stateObject);
-
-        WebRequest request = newRequest(session);
 
         replay();
 
@@ -166,10 +169,9 @@ public class TestSessionScopeManager extends BaseComponentTestCase
         Object stateObject = new Object();
 
         WebSession session = newSession();
-
-        session.setAttribute("state:myapp:fred", stateObject);
-
         WebRequest request = newRequest(session);
+        
+        session.setAttribute("state:myapp:fred", stateObject);
 
         replay();
 
@@ -214,10 +216,9 @@ public class TestSessionScopeManager extends BaseComponentTestCase
         Object stateObject = newOptimized(true);
 
         WebSession session = newSession();
-
-        session.setAttribute("state:myapp:fred", stateObject);
-
         WebRequest request = newRequest(session);
+        
+        session.setAttribute("state:myapp:fred", stateObject);
 
         replay();
 

@@ -15,7 +15,6 @@
 package org.apache.tapestry.junit.script;
 
 import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertNull;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -37,6 +36,7 @@ import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.services.impl.ExpressionCacheImpl;
 import org.apache.tapestry.services.impl.ExpressionEvaluatorImpl;
 import org.apache.tapestry.util.xml.DocumentParseException;
+import org.testng.annotations.Configuration;
 import org.testng.annotations.Test;
 
 /**
@@ -50,6 +50,12 @@ public class TestScript extends TapestryTestCase
 {
     private MockScriptProcessor _processor = new MockScriptProcessor();
 
+    @Configuration(afterTestMethod = true)
+    public void reset()
+    {
+        _processor.reset();
+    }
+    
     protected static ExpressionEvaluator createExpressionEvaluator()
     {
         ExpressionCache cache = new ExpressionCacheImpl();
@@ -101,10 +107,12 @@ public class TestScript extends TapestryTestCase
     public void testSimple() throws Exception
     {
         execute("simple.script", null);
-
+        
         assertEquals("body", "\nBODY\n", _processor.getBody());
         assertEquals("initialization", "\nINITIALIZATION\n", _processor.getInitialization());
-        assertNull(_processor.getExternalScripts());
+        
+        assert _processor.getExternalScripts() == null 
+        || _processor.getExternalScripts().length == 0;
     }
 
     /**
@@ -132,9 +140,9 @@ public class TestScript extends TapestryTestCase
     public void testEmpty() throws Exception
     {
         execute("empty.script", null);
-
-        assertNull("body", _processor.getBody());
-        assertNull("initialization", _processor.getInitialization());
+        
+        assert _processor.getBody() == null || _processor.getBody().length() == 0;
+        assert _processor.getInitialization() == null || _processor.getInitialization().length() == 0;
     }
 
     /**

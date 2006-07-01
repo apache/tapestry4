@@ -112,7 +112,7 @@ public class TestDirectCallback extends BaseComponentTestCase
         expect(component.getPage()).andReturn(page);
 
         expect(page.getPageName()).andReturn("Fred");
-
+        
         expect(component.getIdPath()).andReturn("foo.bar");
 
         replay();
@@ -124,10 +124,10 @@ public class TestDirectCallback extends BaseComponentTestCase
         verify();
 
         IRequestCycle cycle = newCycleGetPage("Fred", page);
-
+        
         Location l = newLocation();
         IComponent component2 = newComponent("Fred/foo.bar", l);
-
+        
         expect(page.getNestedComponent("foo.bar")).andReturn(component2);
 
         replay();

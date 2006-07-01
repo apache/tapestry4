@@ -75,7 +75,7 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         testFormat(translator, new Double(0.10), "10%");
     }
 
-    public void testFormat(Translator translator, Number number, String expected)
+    private void testFormat(Translator translator, Number number, String expected)
     {
         IFormComponent field = newField();
 
@@ -143,7 +143,7 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
     public void testFailedParseDefaultMessage()
     {
         NumberTranslator translator = new NumberTranslator();
-
+        
         testFailedParse(translator, null);
     }
 
@@ -164,7 +164,6 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         
         ValidationMessages messages = newMock(ValidationMessages.class);
 
-        trainGetLocale(messages, Locale.ENGLISH);
         trainGetLocale(messages, Locale.ENGLISH);
 
         trainBuildMessage(
@@ -195,24 +194,22 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
     public void testRenderContribution()
     {
         NumberTranslator translator = new NumberTranslator();
-
+        IFormComponent field = newField("Number Field", "numberField", 1);
+        
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
         
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
-
+        
         context.includeClasspathScript(translator.defaultScript());
-
+        
         trainGetLocale(context, Locale.ENGLISH);
-
+        
         trainBuildMessage(context, null, ValidationStrings.INVALID_NUMBER, new Object[]
         { "Number Field", "#" }, "invalid number message");
 
-        context
-                .addSubmitHandler("function(event) { Tapestry.validate_number(event, 'numberField', 'invalid number message'); }");
-
-        IFormComponent field = newField("Number Field", "numberField", 1);
-
+        context.addSubmitHandler("function(event) { Tapestry.validate_number(event, 'numberField', 'invalid number message'); }");
+        
         replay();
 
         translator.renderContribution(writer, cycle, context, field);
@@ -223,7 +220,8 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
     public void testMessageRenderContribution()
     {
         NumberTranslator translator = new NumberTranslator();
-
+        IFormComponent field = newField("Number Field", "myfield", 1);
+        
         String messageOverride = "You entered a bunk value for {0}. I should look like {1}. Watch out for ''this''!";
 
         IMarkupWriter writer = newWriter();
@@ -243,10 +241,7 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
                 { "Number Field", "#" },
                 "Blah Blah 'Field Name' Blah.");
 
-        context
-                .addSubmitHandler("function(event) { Tapestry.validate_number(event, 'myfield', 'Blah Blah \\'Field Name\\' Blah.'); }");
-
-        IFormComponent field = newField("Number Field", "myfield", 1);
+        context.addSubmitHandler("function(event) { Tapestry.validate_number(event, 'myfield', 'Blah Blah \\'Field Name\\' Blah.'); }");
 
         replay();
 
@@ -259,7 +254,6 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
 
     public void testTrimRenderContribution()
     {
-
         IFormComponent field = newField("Number Field", "myfield", 2);
 
         NumberTranslator translator = new NumberTranslator();
@@ -270,7 +264,7 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
 
         context.includeClasspathScript(translator.defaultScript());
-
+        
         trainTrim(context, "myfield");
 
         trainGetLocale(context, Locale.ENGLISH);

@@ -68,11 +68,11 @@ public class EngineServiceInnerProxyTest extends AbstractEngineServiceProxyTestC
         IEngineService service = newEngineService();
 
         Object parameter = new Object();
-
-        trainGetLink(service, false, parameter, link);
-
+        
         EngineServiceSource source = newSource("fred", service);
 
+        trainGetLink(service, false, parameter, link);
+        
         replay();
 
         EngineServiceOuterProxy outer = new EngineServiceOuterProxy("fred");
@@ -95,10 +95,10 @@ public class EngineServiceInnerProxyTest extends AbstractEngineServiceProxyTestC
 
         Object parameter = new Object();
 
-        trainGetLink(service, true, parameter, link);
-
         EngineServiceSource source = newSource("fred", service);
-
+        
+        trainGetLink(service, true, parameter, link);
+        
         replay();
 
         EngineServiceOuterProxy outer = new EngineServiceOuterProxy("fred");
@@ -116,11 +116,11 @@ public class EngineServiceInnerProxyTest extends AbstractEngineServiceProxyTestC
     {
         IRequestCycle cycle = newCycle();
         IEngineService service = newEngineService();
-
-        service.service(cycle);
-
+        
         EngineServiceSource source = newSource("fred", service);
-
+        
+        service.service(cycle);
+        
         replay();
 
         EngineServiceOuterProxy outer = new EngineServiceOuterProxy("fred");

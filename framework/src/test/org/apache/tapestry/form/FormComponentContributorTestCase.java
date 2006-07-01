@@ -82,7 +82,8 @@ public abstract class FormComponentContributorTestCase extends TapestryTestCase
     protected IFormComponent newField(String displayName, String clientId, int count)
     {
         IFormComponent field = newMock(IFormComponent.class);
-
+        checkOrder(field, false);
+        
         expect(field.getDisplayName()).andReturn(displayName);
 
         expect(field.getClientId()).andReturn(clientId).times(count);
