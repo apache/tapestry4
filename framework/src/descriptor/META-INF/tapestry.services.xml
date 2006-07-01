@@ -80,6 +80,7 @@
                 <set-service property="digestSource"
                     service-id="tapestry.asset.ResourceDigestSource" />
                 <set-service property="unprotectedMatcher" service-id="tapestry.asset.UnprotectedResourceMatcher" />
+                <event-listener service-id="tapestry.ResetEventHub"/>
             </construct>
         </invoke-factory>
     </service-point>
