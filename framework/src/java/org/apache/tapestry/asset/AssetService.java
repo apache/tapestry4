@@ -39,6 +39,7 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.error.RequestExceptionReporter;
+import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.ContentType;
@@ -60,7 +61,7 @@ import org.apache.tapestry.web.WebResponse;
  * @author Howard Lewis Ship
  */
 
-public class AssetService implements IEngineService
+public class AssetService implements IEngineService, ResetEventListener
 {
     /**
      * Query parameter that stores the path to the resource (with a leading slash).
@@ -141,6 +142,18 @@ public class AssetService implements IEngineService
     /** @since 4.0 */
 
     private RequestExceptionReporter _exceptionReporter;
+
+    /** Used to prevent caching of resources when in disabled caching mode. */
+    
+    private long _lastResetTime = -1;
+    
+    /** 
+     * {@inheritDoc}
+     */
+    public void resetEventDidOccur()
+    {
+        _lastResetTime = System.currentTimeMillis();
+    }
 
     /**
      * Builds a {@link ILink}for a {@link PrivateAsset}.
@@ -296,7 +309,8 @@ public class AssetService implements IEngineService
                 modify = CACHED_FORMAT.parse(header).getTime();
         } catch (ParseException e) { e.printStackTrace(); }
         
-        if (resource.lastModified() > modify)
+        if (resource.lastModified() > modify
+                || _lastResetTime > modify)
             return false;
         
         _response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
