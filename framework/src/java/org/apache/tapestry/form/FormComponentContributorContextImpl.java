@@ -19,6 +19,7 @@ import java.util.Locale;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.ClasspathResource;
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRenderSupport;
@@ -85,7 +86,12 @@ public class FormComponentContributorContextImpl extends ValidationMessagesImpl 
         _pageRenderSupport.addInitializationScript("Tapestry.onsubmit('" + _formId + "', "
                 + submitListener + ");");
     }
-
+    
+    public void addInitializationScript(IComponent target, String script)
+    {
+        _pageRenderSupport.addInitializationScript(target, script);
+    }
+    
     public void registerForFocus(int priority)
     {
         _form.registerForFocus(_field, priority);

@@ -111,6 +111,8 @@ public class TestEmail extends BaseValidatorTestCase
         
         IFormComponent field = newField("Fred", "myfield");
         
+        context.addInitializationScript(field, "dojo.require(\"dojo.validate.web\");");
+        
         expect(context.getProfile()).andReturn(json);
         
         trainFormatMessage(context, null, ValidationStrings.INVALID_EMAIL, 
@@ -122,15 +124,9 @@ public class TestEmail extends BaseValidatorTestCase
 
         verify();
         
-        /*
-        assertNotNull(json.get(ValidationConstants.REQUIRED));
-        JSONArray arr = json.getJSONArray(ValidationConstants.REQUIRED);
-        assertEquals("fred", arr.getString(0));
-        
-        assertNotNull(json.get("fred"));
-        JSONObject obj = json.getJSONObject("fred");
-        assertEquals("Default\\Message for Fred.", obj.getString(ValidationConstants.REQUIRED));
-        */
+        assertEquals("{\"myfield\":{\"constraints\":\"default\\\\message\"},"
+                + "\"constraints\":{\"myfield\":[dojo.validate.isEmailAddress,false,true]}}",
+                json.toString());
     }
 
     public void testRenderContributionCustomMessage()
@@ -142,6 +138,8 @@ public class TestEmail extends BaseValidatorTestCase
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
         
         IFormComponent field = newField("Fred", "barney");
+        
+        context.addInitializationScript(field, "dojo.require(\"dojo.validate.web\");");
         
         expect(context.getProfile()).andReturn(json);
         
@@ -156,17 +154,11 @@ public class TestEmail extends BaseValidatorTestCase
         replay();
         
         new Email("message=custom").renderContribution(writer, cycle, context, field);
-
+        
         verify();
         
-        /*
-        assertNotNull(json.get(ValidationConstants.REQUIRED));
-        JSONArray arr = json.getJSONArray(ValidationConstants.REQUIRED);
-        assertEquals("fred", arr.getString(0));
-        
-        assertNotNull(json.get("fred"));
-        JSONObject obj = json.getJSONObject("fred");
-        assertEquals("Default\\Message for Fred.", obj.getString(ValidationConstants.REQUIRED));
-        */
+        assertEquals("{\"constraints\":{\"barney\":[dojo.validate.isEmailAddress,false,true]},"
+                + "\"barney\":{\"constraints\":\"custom message\"}}",
+                json.toString());
     }
 }

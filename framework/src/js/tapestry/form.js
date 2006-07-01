@@ -2,7 +2,6 @@ dojo.provide("tapestry.form");
 
 dojo.require("dojo.event");
 dojo.require("dojo.event.browser");
-dojo.require("dojo.validate.web");
 
 dojo.require("tapestry.core");
 

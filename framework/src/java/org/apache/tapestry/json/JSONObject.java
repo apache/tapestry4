@@ -639,6 +639,16 @@ public class JSONObject
     }
 
     /**
+     * @see {{@link #quote(String)}.
+     * @param value
+     * @return
+     */
+    public static String quote(char value)
+    {
+        return quote(new String(new char[]{value}));
+    }
+    
+    /**
      * Produce a string in double quotes with backslash sequences in all the
      * right places.
      * 
