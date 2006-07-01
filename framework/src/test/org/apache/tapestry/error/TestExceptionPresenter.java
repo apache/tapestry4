@@ -68,16 +68,16 @@ public class TestExceptionPresenter extends BaseErrorTestCase
         IPage page = newPage();
 
         IRequestCycle cycle = newCycle("Exception", page);
-        ResponseRenderer renderer = newRenderer(cycle, renderCause);
+        
         RequestExceptionReporter reporter = newReporter();
-
+        
         cycle.activate(page);
-
+        
         reporter.reportRequestException(ErrorMessages.unableToProcessClientRequest(cause), cause);
-        reporter.reportRequestException(
-                ErrorMessages.unableToPresentExceptionPage(renderCause),
-                renderCause);
-
+        reporter.reportRequestException(ErrorMessages.unableToPresentExceptionPage(renderCause), renderCause);
+        
+        ResponseRenderer renderer = newRenderer(cycle, renderCause);
+        
         replay();
 
         ExceptionPresenterImpl ep = new ExceptionPresenterImpl();

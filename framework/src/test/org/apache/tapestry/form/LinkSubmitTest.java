@@ -157,9 +157,9 @@ public class LinkSubmitTest extends BaseComponentTestCase
         }
         catch (ApplicationRuntimeException ex)
         {
-            assertEquals(
-                    "LinkSubmit MyPage/fred may not be enclosed by another LinkSubmit (MyPage/barney, at classpath:/org/apache/tapestry/form/LinkSubmitTest, line 1).",
-                    ex.getMessage());
+            assert ex.getMessage()
+            .indexOf("LinkSubmit MyPage/fred may not be enclosed by another LinkSubmit ") > -1;
+            
             assertSame(linkSubmit, ex.getComponent());
             assertSame(floc, ex.getLocation());
         }
@@ -230,12 +230,12 @@ public class LinkSubmitTest extends BaseComponentTestCase
 
         trainGetDelegate(form, delegate);
 
-        trainGetElementId(form, linkSubmit, "fred");
-
         delegate.setFormComponent(linkSubmit);
-
+        
+        trainGetElementId(form, linkSubmit, "fred");
+        
         trainIsRewinding(form, true);
-
+        
         // Finally, code inside LinkSubmit ...
 
         trainGetParameter(cycle, FormConstants.SUBMIT_NAME_PARAMETER, null);

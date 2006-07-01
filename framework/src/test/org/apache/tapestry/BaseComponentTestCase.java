@@ -162,7 +162,8 @@ public class BaseComponentTestCase extends TestBase
     protected IRequestCycle newCycle(boolean rewinding, IMarkupWriter writer)
     {
         IRequestCycle cycle = newRequestCycle();
-
+        checkOrder(cycle, false);
+        
         trainIsRewinding(cycle, rewinding);
         
         if (writer != null)
@@ -236,7 +237,8 @@ public class BaseComponentTestCase extends TestBase
     protected IComponent newComponent(String extendedId, Location location)
     {
         IComponent component = newMock(IComponent.class);
-
+        checkOrder(component, false);
+        
         expect(component.getExtendedId()).andReturn(extendedId);
         expect(component.getLocation()).andReturn(location);
         return component;

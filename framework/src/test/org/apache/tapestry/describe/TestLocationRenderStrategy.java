@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.describe;
 
-import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.*;
 
 import java.net.URL;
 
@@ -38,7 +38,8 @@ public class TestLocationRenderStrategy extends BaseDescribeTestCase
     private Resource newResource(URL url)
     {
         Resource resource = newMock(Resource.class);
-
+        checkOrder(resource, false);
+        
         expect(resource.getResourceURL()).andReturn(url);
 
         return resource;
@@ -88,10 +89,10 @@ public class TestLocationRenderStrategy extends BaseDescribeTestCase
         IRequestCycle cycle = newCycle();
         Location l = newLocation();
 
-        expect(l.getLineNumber()).andReturn(0);
-
         writer.print(l.toString());
-
+        
+        expect(l.getLineNumber()).andReturn(0);
+        
         replay();
 
         new LocationRenderStrategy().renderObject(l, writer, cycle);

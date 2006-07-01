@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.util;
 
-import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.*;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertSame;
 
@@ -51,7 +51,8 @@ public class TestPageRenderSupport extends BaseComponentTestCase
     private IAsset newAsset(IRequestCycle cycle, String url)
     {
         IAsset asset = newMock(IAsset.class);
-
+        checkOrder(asset, false);
+        
         expect(asset.buildURL()).andReturn(url);
 
         return asset;
@@ -252,13 +253,14 @@ public class TestPageRenderSupport extends BaseComponentTestCase
         String newline = System.getProperty("line.separator");
 
         IRequestCycle cycle = newCycle();
-
+        
         IMarkupWriter writer = createWriter();
         
         AssetFactory assetFactory = newMock(AssetFactory.class);
-
+        
         Resource script1 = newResource();
         IAsset asset1 = newAsset(cycle, "/script1.js");
+        
         Resource script2 = newResource();
         IAsset asset2 = newAsset(cycle, "/script2.js");
 

@@ -14,8 +14,9 @@
 
 package org.apache.tapestry.pageload;
 
+import static org.easymock.EasyMock.endsWith;
 import static org.easymock.EasyMock.expect;
-import static org.testng.AssertJUnit.assertEquals;
+import static org.easymock.EasyMock.startsWith;
 import static org.testng.AssertJUnit.assertSame;
 
 import org.apache.commons.logging.Log;
@@ -64,9 +65,8 @@ public class PageLoaderTest extends BaseComponentTestCase
         }
         catch (ApplicationRuntimeException ex)
         {
-            assertEquals(
-                    "A binding for parameter dupe conflicts with a previous binding (at classpath:/org/apache/tapestry/pageload/PageLoaderTest, line 1).",
-                    ex.getMessage());
+            assert ex.getMessage()
+            .indexOf("A binding for parameter dupe conflicts with a previous binding") > -1;
             assertSame(component, ex.getComponent());
             assertSame(l2, ex.getLocation());
         }
@@ -100,8 +100,7 @@ public class PageLoaderTest extends BaseComponentTestCase
 
         trainGetSpecification(component, spec);
 
-        log
-                .warn("Parameter barney (for component FredComponent, at classpath:/org/apache/tapestry/pageload/PageLoaderTest, line 1) was bound; this parameter has been deprecated, bind parameter fred instead.");
+        log.warn(startsWith("Parameter barney (for component FredComponent, at "));
 
         trainCreateBinding(
                 source,
@@ -167,10 +166,9 @@ public class PageLoaderTest extends BaseComponentTestCase
 
         trainGetSpecification(component, spec);
 
-        log
-                .warn("Parameter fred (at classpath:/org/apache/tapestry/pageload/PageLoaderTest, line 1) has been deprecated, "
+        log.warn(endsWith("has been deprecated, "
                         + "and may be removed in a future release. Consult the documentation for component FredComponent to "
-                        + "determine an appropriate replacement.");
+                        + "determine an appropriate replacement."));
 
         trainCreateBinding(source, container, "parameter fred", "an-expression", "ognl", l, binding);
 

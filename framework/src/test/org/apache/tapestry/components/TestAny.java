@@ -66,10 +66,10 @@ public class TestAny extends BaseComponentTestCase
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle(false, writer);
-        IRender body = newRender();
-
+        
         writer.begin("span");
-
+        
+        IRender body = newRender();
         body.render(writer, cycle);
 
         writer.end("span");

@@ -14,8 +14,7 @@
 
 package org.apache.tapestry.error;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.*;
 
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IPage;
@@ -43,6 +42,7 @@ public abstract class BaseErrorTestCase extends BaseComponentTestCase
     protected IRequestCycle newCycle(String pageName, IPage page)
     {
         IRequestCycle cycle = newCycle();
+        checkOrder(cycle, false);
         
         expect(cycle.getPage(pageName)).andReturn(page);
     
