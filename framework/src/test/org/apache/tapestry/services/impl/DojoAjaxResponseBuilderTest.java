@@ -144,7 +144,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         
         nested.begin("response");
         nested.attribute("id", "id1");
-        nested.attribute("type", DojoAjaxResponseBuilder.ELEMENT_TYPE);
+        nested.attribute("type", ResponseBuilder.ELEMENT_TYPE);
         
         comp1.render(nested, cycle);
         

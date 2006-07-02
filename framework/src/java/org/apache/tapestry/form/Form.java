@@ -452,4 +452,20 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     {
         return _formSupport.getProfile();
     }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public boolean isFormFieldUpdating()
+    {
+        return _formSupport.isFormFieldUpdating();
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public void setFormFieldUpdating(boolean value)
+    {
+        _formSupport.setFormFieldUpdating(value);
+    }
 }

@@ -48,10 +48,10 @@ public class GoFormSupportImpl extends FormSupportImpl
     {
         // The super-implementation writes a <div> tag that's not
         // valid as WML.
-
-        writeHiddenFieldList();
+        
+        writeHiddenFieldList(getHiddenFieldWriter());
     }
-
+    
     protected void writeHiddenField(IMarkupWriter writer, String name,
             String id, String value)
     {

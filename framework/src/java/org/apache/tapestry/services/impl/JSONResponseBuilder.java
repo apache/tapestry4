@@ -41,13 +41,6 @@ import org.apache.tapestry.web.WebResponse;
  */
 public class JSONResponseBuilder implements ResponseBuilder
 {
-    /**
-     * Inside a {@link org.apache.tapestry.util.ContentType}, the output encoding is called
-     * "charset".
-     */
-    
-    public static final String ENCODING_KEY = "charset";
-
     /** Writer that creates JSON output response. */
     protected IJSONWriter _writer;
     /** Passed in to bypass normal rendering. */
@@ -80,6 +73,15 @@ public class JSONResponseBuilder implements ResponseBuilder
         _localeManager = localeManager;
         _markupWriterSource = markupWriterSource;
         _webResponse = webResponse;
+    }
+    
+    /**
+     * 
+     * {@inheritDoc}
+     */
+    public boolean isDynamic()
+    {
+        return Boolean.TRUE;
     }
     
     /**

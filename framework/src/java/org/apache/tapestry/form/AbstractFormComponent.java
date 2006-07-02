@@ -19,6 +19,7 @@ import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.engine.NullWriter;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidationConstants;
 
@@ -98,31 +99,34 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
         IForm form = TapestryUtils.getForm(cycle, this);
 
         setForm(form);
-
+        
         if (form.wasPrerendered(writer, this))
             return;
 
         IValidationDelegate delegate = form.getDelegate();
 
         delegate.setFormComponent(this);
-
+        
         setName(form);
-
+        
         if (form.isRewinding())
         {
             if (!isDisabled())
             {
                 rewindFormComponent(writer, cycle);
             }
-
+            
             // This is for the benefit of the couple of components (LinkSubmit) that allow a body.
             // The body should render when the component rewinds.
-
+            
             if (getRenderBodyOnRewind())
                 renderBody(writer, cycle);
         }
         else if (!cycle.isRewinding())
         {
+            if (!NullWriter.class.isInstance(writer))
+                form.setFormFieldUpdating(true);
+            
             renderFormComponent(writer, cycle);
 
             if (getCanTakeFocus() && !isDisabled())

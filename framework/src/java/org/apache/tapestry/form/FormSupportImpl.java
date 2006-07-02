@@ -41,6 +41,7 @@ import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.json.JSONObject;
+import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.IdAllocator;
 import org.apache.tapestry.valid.IValidationDelegate;
@@ -160,6 +161,8 @@ public class FormSupportImpl implements FormSupport
 
     private final JSONObject _profile;
     
+    private boolean _fieldUpdating;
+    
     public FormSupportImpl(IMarkupWriter writer, IRequestCycle cycle, IForm form)
     {
         Defense.notNull(writer, "writer");
@@ -170,7 +173,7 @@ public class FormSupportImpl implements FormSupport
         _cycle = cycle;
         _form = form;
         _delegate = form.getDelegate();
-
+        
         _rewinding = cycle.isRewound(form);
         _allocatedIdIndex = 0;
         
@@ -268,14 +271,14 @@ public class FormSupportImpl implements FormSupport
                 sep = ",";
                 hasExtra = true;
             }
-
+            
             addHiddenFieldsForLinkParameter(link, name);
         }
-
+        
         if (hasExtra)
             addHiddenValue(RESERVED_FORM_IDS, extraIds.toString());
     }
-
+    
     public void addHiddenValue(String name, String value)
     {
         _hiddenValues.add(new HiddenFieldData(name, value));
@@ -638,17 +641,12 @@ public class FormSupportImpl implements FormSupport
         writer.beginEmpty("input");
         writer.attribute("type", "hidden");
         writer.attribute("name", name);
-
+        
         if (HiveMind.isNonBlank(id))
             writer.attribute("id", id);
-
+        
         writer.attribute("value", value == null ? "" : value);
         writer.println();
-    }
-
-    private void writeHiddenField(String name, String id, String value)
-    {
-        writeHiddenField(_writer, name, id, value);
     }
 
     /**
@@ -657,35 +655,56 @@ public class FormSupportImpl implements FormSupport
      * {@link #writeHiddenFieldList()}. Overriden by
      * {@link org.apache.tapestry.wml.GoFormSupportImpl}.
      */
-
+    
     protected void writeHiddenFields()
     {
-        _writer.begin("div");
-        _writer.attribute("style", "display:none;");
-
-        writeHiddenFieldList();
-
-        _writer.end();
+        IMarkupWriter writer = getHiddenFieldWriter();
+        
+        writer.begin("div");
+        writer.attribute("style", "display:none;");
+        writer.attribute("id", _form.getName() + "hidden");
+        
+        writeHiddenFieldList(writer);
+        
+        writer.end();
     }
-
+    
     /**
      * Writes out all hidden values previously added by
      * {@link #addHiddenValue(String, String, String)}, plus the allocated id list.
      */
-
-    protected void writeHiddenFieldList()
+    
+    protected void writeHiddenFieldList(IMarkupWriter writer)
     {
-        writeHiddenField(FORM_IDS, null, buildAllocatedIdList());
-
+        writeHiddenField(writer, FORM_IDS, null, buildAllocatedIdList());
+        
         Iterator i = _hiddenValues.iterator();
         while (i.hasNext())
         {
             HiddenFieldData data = (HiddenFieldData) i.next();
-
-            writeHiddenField(data.getName(), data.getId(), data.getValue());
+            
+            writeHiddenField(writer, data.getName(), data.getId(), data.getValue());
         }
     }
-
+    
+    /**
+     * Determines if a hidden field change has occurred, which would require
+     * that we write hidden form fields using the {@link ResponseBuilder} 
+     * writer.
+     * 
+     * @return The default {@link IMarkupWriter} if not doing a managed ajax/json
+     *          response, else whatever is returned from {@link ResponseBuilder}.
+     */
+    protected IMarkupWriter getHiddenFieldWriter()
+    {
+        if (!_fieldUpdating || !_cycle.getResponseBuilder().isDynamic()) {
+            return _writer;
+        }
+        
+        return _cycle.getResponseBuilder().getWriter(_form.getName() + "hidden", 
+                ResponseBuilder.ELEMENT_TYPE);
+    }
+    
     private void addHiddenFieldsForLinkParameter(ILink link, String parameterName)
     {
         String[] values = link.getParameterValues(parameterName);
@@ -763,5 +782,21 @@ public class FormSupportImpl implements FormSupport
     public JSONObject getProfile()
     {
         return _profile;
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public boolean isFormFieldUpdating()
+    {
+        return _fieldUpdating;
+    }
+    
+    /** 
+     * {@inheritDoc}
+     */
+    public void setFormFieldUpdating(boolean value)
+    {
+        _fieldUpdating = value;
     }
 }

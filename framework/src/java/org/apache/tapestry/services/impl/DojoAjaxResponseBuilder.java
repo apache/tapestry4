@@ -46,29 +46,11 @@ import org.apache.tapestry.web.WebResponse;
  */
 public class DojoAjaxResponseBuilder implements ResponseBuilder
 {
-    /**
-     * Inside a {@link org.apache.tapestry.util.ContentType}, the output encoding is called
-     * "charset".
-     */
-    public static final String ENCODING_KEY = "charset";
-    /**
-     * The content type of the response that will be returned.
-     */
-    public static final String CONTENT_TYPE = "text/xml";
-    /**
-     * The response element type.
-     */
-    public static final String ELEMENT_TYPE = "element";
-    /**
-     * The response exception type.
-     */
-    public static final String EXCEPTION_TYPE = "exception";
-    
     // used to create IMarkupWriter
     private RequestLocaleManager _localeManager;
     private MarkupWriterSource _markupWriterSource;
     private WebResponse _webResponse;
-    private String _exceptionPageName;
+    private List _errorPages;
     
     // our response writer
     private IMarkupWriter _writer;
@@ -106,12 +88,21 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      */
     public DojoAjaxResponseBuilder(RequestLocaleManager localeManager, 
             MarkupWriterSource markupWriterSource,
-            WebResponse webResponse, String exceptionPageName)
+            WebResponse webResponse, List errorPages)
     {
         _localeManager = localeManager;
         _markupWriterSource = markupWriterSource;
         _webResponse = webResponse;
-        _exceptionPageName = exceptionPageName;
+        _errorPages = errorPages;
+    }
+    
+    /**
+     * 
+     * {@inheritDoc}
+     */
+    public boolean isDynamic()
+    {
+        return Boolean.TRUE;
     }
     
     /** 
@@ -266,7 +257,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         writer.printRaw("\n//]]>\n");
         writer.end();
     }
-
+    
     /** 
      * {@inheritDoc}
      */
@@ -277,10 +268,12 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
             return;
         }
         
-        if (IPage.class.isInstance(render)
-                && ((IPage)render).getPageName().indexOf(_exceptionPageName) > -1) {
-            render.render(getWriter(_exceptionPageName, EXCEPTION_TYPE), cycle);
-            return;
+        if (IPage.class.isInstance(render)) {
+            String errorPage = getErrorPage(((IPage)render).getPageName());
+            if (errorPage != null) {
+                render.render(getWriter(errorPage, EXCEPTION_TYPE), cycle);
+                return;
+            }
         }
         
         if (IComponent.class.isInstance(render)
@@ -291,6 +284,17 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         }
         
         render.render(NullWriter.getSharedInstance(), cycle);
+    }
+    
+    private String getErrorPage(String pageName)
+    {
+        for (int i=0; i < _errorPages.size(); i++) {
+            String page = (String)_errorPages.get(i);
+            if (pageName.indexOf(page) > -1)
+                return page;
+        }
+        
+        return null;
     }
     
     /**

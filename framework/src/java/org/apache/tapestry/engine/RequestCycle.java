@@ -288,7 +288,7 @@ public class RequestCycle implements IRequestCycle
 
         return result;
     }
-
+    
     public void setResponseBuilder(ResponseBuilder builder)
     {
         //if (_responseBuilder != null)

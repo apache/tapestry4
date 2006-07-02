@@ -15,8 +15,6 @@ package org.apache.tapestry.timetracker.page;
 
 import java.util.Date;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.Component;
 import org.apache.tapestry.annotations.EventListener;
@@ -42,7 +40,6 @@ import org.apache.tapestry.timetracker.model.Task;
  */
 public abstract class TaskEntryPage extends BasePage
 {
-    private static final Log _log = LogFactory.getLog(TaskEntryPage.class);
     
     @Component(type = "Autocompleter", id = "projectChoose",
             bindings = { "model=projectModel", "value=selectedProject",
@@ -61,7 +58,7 @@ public abstract class TaskEntryPage extends BasePage
     @Component(type = "DropdownDatePicker", id = "datePicker",
             bindings = {"value=date", 
             "displayName=message:task.start.date", 
-            "validators=validators:required,maxDate=05/29/2006"})
+            "validators=validators:required"})
     public abstract DropdownDatePicker getDatePicker();
     public abstract Date getDate();
     
@@ -87,7 +84,7 @@ public abstract class TaskEntryPage extends BasePage
     @InjectObject("service:timetracker.dao.TaskDao")
     public abstract TaskDao getTaskDao();
     
-    public abstract String getEmail();
+    public abstract String getFeedback();
     
     /**
      * Selection model for projects.
@@ -106,8 +103,8 @@ public abstract class TaskEntryPage extends BasePage
             submitForm = "taskForm")
     public void projectSelected(IRequestCycle cycle)
     {
-        _log.debug("projectSelected() " + getSelectedProject());
         cycle.getResponseBuilder().updateComponent("projectDescription");
+        cycle.getResponseBuilder().updateComponent("feedbackBlock");
     }
     
     /**

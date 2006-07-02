@@ -28,7 +28,7 @@ public interface IFormComponent extends IComponent
 {
     /**
      * Returns the {@link org.apache.tapestry.IForm} which contains the component, or null if the
-     * component is not contained by a form, of if the containing Form is not currently renderring.
+     * component is not contained by a form, or if the containing Form is not currently rendering.
      */
 
     IForm getForm();
