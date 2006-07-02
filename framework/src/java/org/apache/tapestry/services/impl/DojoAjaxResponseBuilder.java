@@ -237,10 +237,10 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     {
         IMarkupWriter writer = getWriter(ResponseBuilder.INCLUDE_SCRIPT, ResponseBuilder.SCRIPT_TYPE);
         
-        writer.begin("script");
-        writer.attribute("type", "text/javascript");
-        writer.attribute("src", url);
-        writer.end();
+        writer.printRaw("tapestry.loadScriptFromUrl(\"");
+        writer.print(url);
+        writer.printRaw("\");");
+        
         writer.println();
     }
     

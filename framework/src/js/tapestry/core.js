@@ -60,7 +60,8 @@ tapestry={
 		}
 		
 		var elms=resp[0].childNodes;
-		var scripts=[];
+		var bodyScripts=[];
+		var initScripts=[];
 		for (var i=0; i<elms.length; i++) {
 			var type=elms[i].getAttribute("type");
 			var id=elms[i].getAttribute("id");
@@ -71,13 +72,24 @@ tapestry={
 				return;
 			}
 			
+			// handle javascript evaluations
 			if (type == "script") {
-				scripts.push(elms[i]);
-				continue;
+				
+				if (id == "initializationscript") {
+					initScripts.push(elms[i]);
+					continue;
+				} else if (id == "bodyScripts") {
+					bodyScripts.push(elms[i]);
+					continue;
+				} else if (id == "includescript") {
+					// includes get processed immediately (syncrhonously)
+					tapestry.loadScriptContent(elms[i], false);
+				}
+				
 			}
 			
 			if (!id) {
-				dojo.raise("No element id found in ajax-response node.");
+			dojo.raise("No element id found in ajax-response node.");
 				return;
 			}
 			
@@ -90,8 +102,12 @@ tapestry={
 			tapestry.loadContent(id, node, elms[i]);
 		}
 		
-		for (var i=0; i<scripts.length; i++) {
-			tapestry.loadScriptContent(scripts[i], true);
+		// load body scripts before initialization
+		for (var i=0; i<bodyScripts.length; i++) {
+			tapestry.loadScriptContent(bodyScripts[i], true);
+		}
+		for (var i=0; i<initScripts.length; i++) {
+			tapestry.loadScriptContent(initScripts[i], true);
 		}
 	},
 	
@@ -130,38 +146,44 @@ tapestry={
 		
         match = new RegExp(tapestry.ScriptFragment, 'im');
         if (async) {
-        	setTimeout(function() {
-        		tapestry.scriptInFlight = true;
-        		
-                for (var i=0; i<scripts.length; i++) {
-                    var scr = scripts[i].match(match)[1];
-                    try {
-                        dojo.log.debug("evaluating script:" + scr);
-                        eval(scr);
-                    } catch (e) {
-                    	tapestry.scriptInFlight = false;
-                        dojo.log.exception("Error evaluating script: " + scr, e, false);
-                    }
-                }
-                
-                tapestry.scriptInFlight = false;
-            }, 60);
+        	setTimeout(function() { 
+        		tapestry.evaluateScripts(scripts, match); 
+        	}, 60);
         } else {
-        	tapestry.scriptInFlight = true;
-        	
-            for (var i=0; i<scripts.length; i++) {
-                var scr = scripts[i].match(match)[1];
-                try {
-                    dojo.log.debug("synchronous eval of script:" + scr);
-                    eval(scr);
-                } catch (e) {
-                	tapestry.scriptInFlight = false;
-                    dojo.log.exception("Error synchronously evaluating script: " + scr, e, false);
-                }
-            }
-            
-            tapestry.scriptInFlight = false;
+        	tapestry.evaluateScripts(scripts, match);
         }
+	},
+	
+	evaluateScripts:function(scripts, match){
+		tapestry.scriptInFlight = true;
+       	
+        for (var i=0; i<scripts.length; i++) {
+            var scr = scripts[i].match(match)[1];
+            try {
+                dojo.log.debug("evaluating script:" + scr);
+                eval(scr);
+            } catch (e) {
+            	tapestry.scriptInFlight = false;
+                dojo.log.exception("Error evaluating script: " + scr, e, false);
+            }
+        }
+        
+        tapestry.scriptInFlight = false;
+	},
+	
+	loadScriptFromUrl:function(url){
+	    var scripts = window.document.getElementsByTagName("script");
+	    for (var i = 0; i < scripts.length; i++) {
+	        var src = scripts[i].src;
+	        if (src && src.length > 0 && src.indexOf(url)>=0 ) {
+	            return;
+	        }
+	    }
+		
+	    var e = document.createElement("script");
+	    e.src = url;
+	    e.type = "text/javascript";
+	    document.getElementsByTagName("head")[0].appendChild(e);
 	},
 	
 	presentException:function(node, kwArgs) {
