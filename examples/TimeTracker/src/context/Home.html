@@ -53,7 +53,7 @@ using them.
     	<span jwcid="@If" condition="ognl:selectedProject">
     		<label jwcid="@FieldLabel" field="component:feedbackField" />
     		<input jwcid="feedbackField@TextField" displayName="message:feedback" 
-    				value="ognl:feedback" />
+    				value="ognl:feedback" validators="validators:required,minLength=6" />
     	</span>
     </div>
     

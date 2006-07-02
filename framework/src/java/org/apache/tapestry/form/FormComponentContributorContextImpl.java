@@ -89,7 +89,7 @@ public class FormComponentContributorContextImpl extends ValidationMessagesImpl 
     
     public void addInitializationScript(IComponent target, String script)
     {
-        _pageRenderSupport.addInitializationScript(target, script);
+        _pageRenderSupport.addInitializationScript(_form, script);
     }
     
     public void registerForFocus(int priority)
