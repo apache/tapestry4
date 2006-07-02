@@ -245,7 +245,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         DojoAjaxResponseBuilder builder = new DojoAjaxResponseBuilder(mw, null);
         
         String script1 = "http://noname/js/package.js";
-        String script2 = "http://noname/js/package.js";
+        String script2 = "http://noname/js/package2.js";
         
         verify();
         replay();
@@ -261,9 +261,9 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         assertOutput("<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\" [\n" + 
                 "<!ENTITY nbsp \'&#160;\'>\n" + 
                 "]>\n" + 
-                "<ajax-response><response id=\"includescript\" type=\"script\"><script type=\"text/javascript\" src=\"http://noname/js/package.js\"></script>" + 
+                "<ajax-response><response id=\"includescript\" type=\"script\">tapestry.loadScriptFromUrl(\"http://noname/js/package.js\");" + 
                 LINE_SEPERATOR +
-                "<script type=\"text/javascript\" src=\"http://noname/js/package.js\"></script>" +
+                "tapestry.loadScriptFromUrl(\"http://noname/js/package2.js\");" +
                 LINE_SEPERATOR +
                 "</response></ajax-response>");
         
