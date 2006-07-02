@@ -96,6 +96,8 @@ public class TestImageSubmit extends BaseFormComponentTestCase
 
         trainIsRewinding(cycle, false);
 
+        form.setFormFieldUpdating(true);
+        
         writer.beginEmpty("input");
         writer.attribute("type", "image");
         writer.attribute("name", "fred");
@@ -141,6 +143,8 @@ public class TestImageSubmit extends BaseFormComponentTestCase
 
         trainIsRewinding(cycle, false);
 
+        form.setFormFieldUpdating(true);
+        
         writer.beginEmpty("input");
         writer.attribute("type", "image");
         writer.attribute("name", "fred");
@@ -183,6 +187,8 @@ public class TestImageSubmit extends BaseFormComponentTestCase
 
         trainIsRewinding(cycle, false);
 
+        form.setFormFieldUpdating(true);
+        
         writer.beginEmpty("input");
         writer.attribute("type", "image");
         writer.attribute("name", "fred");
@@ -225,6 +231,8 @@ public class TestImageSubmit extends BaseFormComponentTestCase
 
         trainIsRewinding(cycle, false);
 
+        form.setFormFieldUpdating(true);
+        
         writer.beginEmpty("input");
         writer.attribute("type", "image");
         writer.attribute("name", "barney$0");

@@ -296,6 +296,8 @@ public class TestTextField extends BaseFormComponentTestCase
         trainIsRewinding(form, false);
         trainIsRewinding(cycle, false);
         
+        form.setFormFieldUpdating(true);
+        
         delegate.setFormComponent(component);
         
         expect(tfs.format(component, new Integer(10))).andReturn("10");
@@ -345,6 +347,8 @@ public class TestTextField extends BaseFormComponentTestCase
         trainIsRewinding(form, false);
         trainIsRewinding(cycle, false);
 
+        form.setFormFieldUpdating(true);
+        
         delegate.setFormComponent(component);
 
         trainGetDelegate(form, delegate);
@@ -396,6 +400,8 @@ public class TestTextField extends BaseFormComponentTestCase
         trainIsRewinding(form, false);
         trainIsRewinding(cycle, false);
 
+        form.setFormFieldUpdating(true);
+        
         delegate.setFormComponent(component);
 
         trainGetDelegate(form, delegate);
@@ -451,6 +457,8 @@ public class TestTextField extends BaseFormComponentTestCase
         trainIsRewinding(form, false);
         trainIsRewinding(cycle, false);
         
+        form.setFormFieldUpdating(true);
+        
         expect(tfs.format(component, new Integer(10))).andReturn("10");
         
         tfs.renderContributions(component, writer, cycle);
@@ -491,6 +499,8 @@ public class TestTextField extends BaseFormComponentTestCase
         trainIsRewinding(form, false);
         trainIsRewinding(cycle, false);
 
+        form.setFormFieldUpdating(true);
+        
         delegate.setFormComponent(component);
 
         expect(tfs.format(component, null)).andReturn("");

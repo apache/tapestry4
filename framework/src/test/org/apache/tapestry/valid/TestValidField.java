@@ -216,6 +216,8 @@ public class TestValidField extends BaseFormComponentTestCase
         trainIsRewinding(form, false);
         trainIsRewinding(cycle, false);
 
+        form.setFormFieldUpdating(true);
+        
         trainToString(validator, component, value, "fred value");
 
         expect(validator.isRequired()).andReturn(false);
@@ -267,6 +269,8 @@ public class TestValidField extends BaseFormComponentTestCase
         trainIsRewinding(form, false);
         trainIsRewinding(cycle, false);
         
+        form.setFormFieldUpdating(true);
+        
         trainToString(validator, component, null, null);
 
         expect(validator.isRequired()).andReturn(false);
@@ -314,6 +318,8 @@ public class TestValidField extends BaseFormComponentTestCase
         trainIsRewinding(form, false);
         trainIsRewinding(cycle, false);
 
+        form.setFormFieldUpdating(true);
+        
         expect(validator.isRequired()).andReturn(true);
 
         // Would be nice to have this do something so we could check the timing, but ...

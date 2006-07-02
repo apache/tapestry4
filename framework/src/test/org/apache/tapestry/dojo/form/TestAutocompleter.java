@@ -134,6 +134,8 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         
         expect(form.getName()).andReturn("testform").anyTimes();
         
+        form.setFormFieldUpdating(true);
+        
         IMarkupWriter writer = newBufferWriter();
         
         MockDelegate delegate = new MockDelegate();

@@ -197,7 +197,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        trainHiddenBlock(writer, "fred", "barney,wilma,barney_0");
+        trainHiddenBlock(writer, form, "fred", "barney,wilma,barney_0");
 
         nested.close();
 
@@ -319,7 +319,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        trainHiddenBlock(writer, "fred", "");
+        trainHiddenBlock(writer, form, "fred", "");
 
         nested.close();
 
@@ -389,7 +389,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        trainHiddenBlock(writer, "fred", "");
+        trainHiddenBlock(writer, form, "fred", "");
 
         nested.close();
 
@@ -506,7 +506,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        trainDiv(writer);
+        trainDiv(writer, form);
 
         trainHidden(writer, "formids", "");
         trainHidden(writer, "service", "fred");
@@ -680,7 +680,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        trainDiv(writer);
+        trainDiv(writer, form);
 
         trainHidden(writer, "formids", "action_0");
         trainHidden(writer, "action", "fred");
@@ -760,7 +760,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        trainHiddenBlock(writer, "fred", "");
+        trainHiddenBlock(writer, form, "fred", "");
 
         nested.close();
 
@@ -1038,7 +1038,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        trainHiddenBlock(writer, "fred", "barney");
+        trainHiddenBlock(writer, form, "fred", "barney");
 
         nested.close();
 
@@ -1123,7 +1123,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        trainHiddenBlock(writer, "fred", "");
+        trainHiddenBlock(writer, form, "fred", "");
         
         nested.close();
 
@@ -1189,7 +1189,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        trainHiddenBlock(writer, "fred", "barney");
+        trainHiddenBlock(writer, form, "fred", "barney");
 
         nested.close();
 
@@ -1361,7 +1361,7 @@ public class FormSupportTest extends BaseComponentTestCase
         
         writer.println();
 
-        trainHiddenBlock(writer, "fred", "");
+        trainHiddenBlock(writer, form, "fred", "");
 
         nested.close();
 
@@ -1389,10 +1389,11 @@ public class FormSupportTest extends BaseComponentTestCase
         trainGetParameter(cycle, FormSupportImpl.RESERVED_FORM_IDS, reservedIds);
     }
 
-    protected void trainDiv(IMarkupWriter writer)
+    protected void trainDiv(IMarkupWriter writer, IForm form)
     {
         writer.begin("div");
         writer.attribute("style", "display:none;");
+        writer.attribute("id", form.getName() + "hidden");
     }
 
     private void trainFocus(PageRenderSupport support, IForm form)
@@ -1441,10 +1442,10 @@ public class FormSupportTest extends BaseComponentTestCase
         writer.println();
     }
 
-    protected void trainHiddenBlock(IMarkupWriter writer, String serviceName, String formIds)
+    protected void trainHiddenBlock(IMarkupWriter writer, IForm form, String serviceName, String formIds)
     {
-        trainDiv(writer);
-
+        trainDiv(writer, form);
+        
         trainHidden(writer, "formids", formIds);
         trainHidden(writer, "service", serviceName);
         trainHidden(writer, "submitmode", "");

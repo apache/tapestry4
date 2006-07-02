@@ -86,6 +86,8 @@ public class TestSubmit extends BaseFormComponentTestCase
 
         trainIsRewinding(cycle, false);
 
+        form.setFormFieldUpdating(true);
+        
         writer.beginEmpty("input");
         writer.attribute("type", "submit");
         writer.attribute("name", "fred");
@@ -127,6 +129,8 @@ public class TestSubmit extends BaseFormComponentTestCase
 
         trainIsRewinding(cycle, false);
 
+        form.setFormFieldUpdating(true);
+        
         writer.beginEmpty("input");
         writer.attribute("type", "submit");
         writer.attribute("name", "fred");
@@ -158,13 +162,15 @@ public class TestSubmit extends BaseFormComponentTestCase
         trainGetDelegate(form, delegate);
 
         delegate.setFormComponent(submit);
-
+        
         trainGetElementId(form, submit, "fred");
 
         trainIsRewinding(form, false);
-
+        
         trainIsRewinding(cycle, false);
 
+        form.setFormFieldUpdating(true);
+        
         writer.beginEmpty("input");
         writer.attribute("type", "submit");
         writer.attribute("name", "fred");
