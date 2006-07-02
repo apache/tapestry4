@@ -14,6 +14,8 @@
 package org.apache.tapestry.services.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.markup.MarkupWriterSource;
@@ -43,14 +45,23 @@ public class DojoAjaxResponseContributorImpl implements ResponseContributor
     
     private String _exceptionPageName;
     
+    private String _staleSessionPageName;
+    
+    private String _staleLinkPageName;
+    
     /** 
      * {@inheritDoc}
      */
     public ResponseBuilder createBuilder(IRequestCycle cycle)
         throws IOException
     {
+        List errorPages = new ArrayList();
+        errorPages.add(_exceptionPageName);
+        errorPages.add(_staleSessionPageName);
+        errorPages.add(_staleLinkPageName);
+        
         return new DojoAjaxResponseBuilder(_localeManager, _markupWriterSource,
-                _webResponse, _exceptionPageName);
+                _webResponse, errorPages);
     }
     
     /** 
@@ -84,5 +95,15 @@ public class DojoAjaxResponseContributorImpl implements ResponseContributor
     public void setExceptionPageName(String name)
     {
         _exceptionPageName = name;
+    }
+    
+    public void setStaleSessionPageName(String name)
+    {
+        _staleSessionPageName = name;
+    }
+    
+    public void setStaleLinkPageName(String name)
+    {
+        _staleLinkPageName = name;
     }
 }

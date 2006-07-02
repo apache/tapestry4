@@ -30,6 +30,27 @@ import org.apache.tapestry.IRequestCycle;
  */
 public interface ResponseBuilder {
     
+    /**
+     * Inside a {@link org.apache.tapestry.util.ContentType}, the output encoding is called
+     * "charset".
+     */
+    String ENCODING_KEY = "charset";
+
+    /**
+     * The content type of the response that will be returned.
+     */
+    String CONTENT_TYPE = "text/xml";
+
+    /**
+     * The response element type.
+     */
+    String ELEMENT_TYPE = "element";
+
+    /**
+     * The response exception type.
+     */
+    String EXCEPTION_TYPE = "exception";
+
     String SCRIPT_TYPE = "script";
     
     String BODY_SCRIPT = "bodyscript";
@@ -37,6 +58,13 @@ public interface ResponseBuilder {
     String INCLUDE_SCRIPT = "includescript";
     
     String INITIALIZATION_SCRIPT = "initializationscript";
+    
+    /**
+     * Implementors that manage content writes dynamically (ie {@link DojoAjaxResponseBuilder}) should
+     * return true to denote that dynamic behaviour is on for a particular response.
+     * @return
+     */
+    boolean isDynamic();
     
     /**
      * Renders the response to a client. Handles transitioning logic

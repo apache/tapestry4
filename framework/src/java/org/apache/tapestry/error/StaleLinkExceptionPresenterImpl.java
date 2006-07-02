@@ -44,7 +44,7 @@ public class StaleLinkExceptionPresenterImpl implements
         throws IOException
     {
         IPage exceptionPage = cycle.getPage(_pageName);
-
+        
         PropertyUtils.write(exceptionPage, "message", cause.getMessage());
 
         cycle.activate(exceptionPage);

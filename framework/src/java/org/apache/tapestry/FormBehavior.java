@@ -168,4 +168,29 @@ public interface FormBehavior
      * @return {@link JSONObject} profile.
      */
     JSONObject getProfile();
+    
+    /**
+     * Sets a flag denoting whether or not an {@link IFormComponent} field has been
+     * updated according to the logic defined in 
+     * {@link org.apache.tapestry.services.ResponseBuilder#updateComponent(String)}.
+     * 
+     * <p>
+     * Currently this flag is used during ajax/json responses so that cooperating 
+     * {@link ResponseBuilder}s can be worked with to ensure form state is properly
+     * updated on the client. Specifically, that the hidden form input fields and 
+     * any associated validation profiles are updated.
+     * </p>
+     * 
+     * @param value 
+     *          The value to set.
+     */
+    void setFormFieldUpdating(boolean value);
+    
+    /**
+     * Checks to see if a form field has been updated. 
+     * 
+     * @see #setFormFieldUpdating(boolean)
+     * @return
+     */
+    boolean isFormFieldUpdating();
 }

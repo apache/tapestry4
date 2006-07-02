@@ -38,13 +38,6 @@ import org.apache.tapestry.web.WebResponse;
  */
 public class DefaultResponseBuilder implements ResponseBuilder
 {   
-    /**
-     * Inside a {@link org.apache.tapestry.util.ContentType}, the output encoding is called
-     * "charset".
-     */
-    
-    public static final String ENCODING_KEY = "charset";
-    
     private RequestLocaleManager _localeManager;
     
     private MarkupWriterSource _markupWriterSource;
@@ -84,6 +77,15 @@ public class DefaultResponseBuilder implements ResponseBuilder
         _markupWriterSource = markupWriterSource;
         _webResponse = webResponse;
         _renderWorker = renderWorker;
+    }
+    
+    /**
+     * 
+     * {@inheritDoc}
+     */
+    public boolean isDynamic()
+    {
+        return Boolean.FALSE;
     }
     
     /**

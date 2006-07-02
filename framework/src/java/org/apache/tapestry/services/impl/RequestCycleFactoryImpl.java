@@ -72,9 +72,9 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
         WebRequest request = _infrastructure.getRequest();
         
         QueryParameterMap parameters = extractParameters(request);
-
+        
         decodeParameters(request.getActivationPath(), request.getPathInfo(), parameters);
-
+        
         String serviceName = findService(parameters);
         
         IRequestCycle cycle = new RequestCycle(engine, parameters, serviceName, _environment);

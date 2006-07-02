@@ -47,18 +47,16 @@ using them.
       </td>
     </tr>
     
-    <!--
-    <tr>
-    	<td>
-    		<div class="field required">
-    			<input jwcid="emailInput@TextField" value="ognl:email" 
-    					validators="validators:email,required" />
-    		</div>
-    	</td>
-    </tr>
-    -->
-    
     </table>
+    
+    <div jwcid="feedbackBlock@Any">
+    	<span jwcid="@If" condition="ognl:selectedProject">
+    		<label jwcid="@FieldLabel" field="component:feedbackField" />
+    		<input jwcid="feedbackField@TextField" displayName="message:feedback" 
+    				value="ognl:feedback" />
+    	</span>
+    </div>
+    
     </fieldset>
 </form>
 

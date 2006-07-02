@@ -383,4 +383,20 @@ public class MockForm implements IForm
     {
         return _profile;
     }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public boolean isFormFieldUpdating()
+    {
+        return false;
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public void setFormFieldUpdating(boolean value)
+    {
+        
+    }
 }
