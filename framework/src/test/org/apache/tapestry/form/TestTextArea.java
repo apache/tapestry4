@@ -282,6 +282,8 @@ public class TestTextArea extends BaseFormComponentTestCase
         trainIsRewinding(form, false);
         trainIsRewinding(cycle, false);
 
+        form.setFormFieldUpdating(true);
+        
         delegate.setFormComponent(component);
 
         trainGetDelegate(form, delegate);
@@ -332,6 +334,8 @@ public class TestTextArea extends BaseFormComponentTestCase
         trainIsRewinding(form, false);
         trainIsRewinding(cycle, false);
 
+        form.setFormFieldUpdating(true);
+        
         delegate.setFormComponent(component);
         
         expect(tfs.format(component, " text area value ")).andReturn("text area value");
@@ -384,6 +388,8 @@ public class TestTextArea extends BaseFormComponentTestCase
         trainIsRewinding(form, false);
         trainIsRewinding(cycle, false);
 
+        form.setFormFieldUpdating(true);
+        
         delegate.setFormComponent(component);
 
         expect(tfs.format(component, " text area value ")).andReturn("text area value");
@@ -425,6 +431,8 @@ public class TestTextArea extends BaseFormComponentTestCase
         trainIsRewinding(form, false);
         trainIsRewinding(cycle, false);
 
+        form.setFormFieldUpdating(true);
+        
         delegate.setFormComponent(component);
 
         expect(tfs.format(component, null)).andReturn("");
