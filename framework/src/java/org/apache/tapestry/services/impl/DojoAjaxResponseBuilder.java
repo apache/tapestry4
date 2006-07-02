@@ -23,6 +23,7 @@ import java.util.Map;
 
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IComponent;
+import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRender;
@@ -163,6 +164,11 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      */
     public boolean isBodyScriptAllowed(IComponent target)
     {
+        if (target != null 
+                && IForm.class.isInstance(target)
+                && ((IForm)target).isFormFieldUpdating())
+            return true;
+        
         return contains(target);
     }
     
@@ -171,6 +177,11 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      */
     public boolean isExternalScriptAllowed(IComponent target)
     {
+        if (target != null 
+                && IForm.class.isInstance(target)
+                && ((IForm)target).isFormFieldUpdating())
+            return true;
+        
         return contains(target);
     }
     
@@ -179,6 +190,11 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      */
     public boolean isInitializationScriptAllowed(IComponent target)
     {
+        if (target != null 
+                && IForm.class.isInstance(target)
+                && ((IForm)target).isFormFieldUpdating())
+            return true;
+        
         return contains(target);
     }
     

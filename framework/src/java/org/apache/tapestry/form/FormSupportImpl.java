@@ -521,7 +521,7 @@ public class FormSupportImpl implements FormSupport
         writeHiddenFields();
 
         // Close the nested writer, inserting its contents.
-
+        
         nested.close();
 
         // Close the <form> tag.
@@ -545,7 +545,8 @@ public class FormSupportImpl implements FormSupport
         // register the validation profile with client side form manager
         
         if (_form.isClientValidationEnabled()) {
-            _pageRenderSupport.addInitializationScript(_form, "tapestry.form.registerProfile('" + formId + "'," 
+            _pageRenderSupport.addInitializationScript(_form, "tapestry.form.clearProfiles('"
+                    + formId + "'); tapestry.form.registerProfile('" + formId + "'," 
                     + _profile.toString() + ");");
         }
     }

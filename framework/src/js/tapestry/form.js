@@ -152,6 +152,23 @@ tapestry.form={
 	},
 
 	/**
+	 * Clears any previously registered validation profiles 
+	 * on the specified form. Normally called during XHR requests
+	 * by returned JS response to ensure new validation logic coming
+	 * in from potentially new form fields is accounted for.
+	 * 
+	 * @param id The form id to clear profiles for.
+	 */
+	clearProfiles:function(id){
+		if (!this.forms[id]) return;
+		
+		for (var i=0; i < this.forms[id].profiles.length; i++) {
+			delete this.forms[id].profiles[i];
+		}
+		this.forms[id].profiles=[];
+	},
+
+	/**
 	 * If a form registered with the specified formId
 	 * exists a local property will be set that causes
 	 * validation to be turned on/off depending on the argument.

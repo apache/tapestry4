@@ -12,6 +12,8 @@ dojo.require("dojo.html");
 tapestry={
 	
 	version:"4.1",
+	scriptInFlight:false,
+	ScriptFragment:'(?:<script.*?>)((\n|.|\r)*?)(?:<\/script>)',
 	
 	/**
 	 * Global XHR bind function for tapestry internals. The 
@@ -58,6 +60,7 @@ tapestry={
 		}
 		
 		var elms=resp[0].childNodes;
+		var scripts=[];
 		for (var i=0; i<elms.length; i++) {
 			var type=elms[i].getAttribute("type");
 			var id=elms[i].getAttribute("id");
@@ -66,6 +69,11 @@ tapestry={
 				dojo.log.err("Remote server exception received.");
 				tapestry.presentException(elms[i], kwArgs);
 				return;
+			}
+			
+			if (type == "script") {
+				scripts.push(elms[i]);
+				continue;
 			}
 			
 			if (!id) {
@@ -80,6 +88,10 @@ tapestry={
 			}
 			
 			tapestry.loadContent(id, node, elms[i]);
+		}
+		
+		for (var i=0; i<scripts.length; i++) {
+			tapestry.loadScriptContent(scripts[i], true);
 		}
 	},
 	
@@ -97,6 +109,59 @@ tapestry={
     	}
     	
     	node.innerHTML=tapestry.html.getContentAsString(element);
+	},
+	
+	loadScriptContent:function(element, async){
+		if (typeof async == "undefined") async = true;
+		
+		var text=tapestry.html.getContentAsString(element);
+		
+		if (tapestry.scriptInFlight) {
+			dojo.log.debug("loadScriptContent(): scriptInFlight is true, sleeping");
+			setTimeout(function() { tapestry.loadScriptContent(text, async);}, 5);
+			return;
+		}
+		
+		var match = new RegExp(tapestry.ScriptFragment, 'img');
+	    var response = text.replace(match, '');
+	    var scripts = text.match(match);
+		
+		if (!scripts) return;
+		
+        match = new RegExp(tapestry.ScriptFragment, 'im');
+        if (async) {
+        	setTimeout(function() {
+        		tapestry.scriptInFlight = true;
+        		
+                for (var i=0; i<scripts.length; i++) {
+                    var scr = scripts[i].match(match)[1];
+                    try {
+                        dojo.log.debug("evaluating script:" + scr);
+                        eval(scr);
+                    } catch (e) {
+                    	tapestry.scriptInFlight = false;
+                        dojo.log.exception("Error evaluating script: " + scr, e, false);
+                    }
+                }
+                
+                tapestry.scriptInFlight = false;
+            }, 60);
+        } else {
+        	tapestry.scriptInFlight = true;
+        	
+            for (var i=0; i<scripts.length; i++) {
+                var scr = scripts[i].match(match)[1];
+                try {
+                    dojo.log.debug("synchronous eval of script:" + scr);
+                    eval(scr);
+                } catch (e) {
+                	tapestry.scriptInFlight = false;
+                    dojo.log.exception("Error synchronously evaluating script: " + scr, e, false);
+                }
+            }
+            
+            tapestry.scriptInFlight = false;
+        }
 	},
 	
 	presentException:function(node, kwArgs) {
