@@ -21,7 +21,7 @@
     </properties>
     <body>
 
-        <release version="4.1.0" date="unreleased">
+        <release version="4.1.0" date="unreleased" desc="Ajax integrated dojo release">
             <action type="update" dev="JK">
                 Cleaned up warnings/imports showing on eclipse problem pane.
             </action>

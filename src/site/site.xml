@@ -39,26 +39,36 @@
         </menu>
         
         <menu name="Documentation" inherit="top">
+            
             <item name="Users Guide" href="/UsersGuide/index.html" collapse="true">
-                <item name="Introduction" href="/UsersGuide/index.html" collapse="true"/>
-                <item name="Templates" href="/UsersGuide/template.html" collapse="true"/>
-                <item name="Bindings" href="/UsersGuide/bindings.html" collapse="true"/>
-                <item name="Listeners" href="/UsersGuide/listenermethods.html" collapse="true"/>
-                <item name="Page Classes" href="/UsersGuide/page-class.html" collapse="true"/>
-                <item name="Input Validation" href="/UsersGuide/validation.html" collapse="true" />
-                <item name="Creating Components" href="/UsersGuide/components.html" collapse="true"/>
-                <item name="Property Injection" href="/UsersGuide/injection.html" collapse="true"/>
-                <item name="Localization" href="/UsersGuide/localization.html" collapse="true"/>
-                <item name="State Management" href="/UsersGuide/state.html" collapse="true"/>
-                <item name="IOC (HiveMind)" href="/UsersGuide/hivemind.html" collapse="true"/>
-                <item name="Friendly URLs" href="/UsersGuide/friendly-urls.html" collapse="true"/>
-                <item name="Page Events" href="/UsersGuide/events.html" collapse="true"/>
-                <item name="Configuration" href="/UsersGuide/configuration.html" collapse="true"/>
-                <item name="Shared Properties" href="/UsersGuide/properties.html" collapse="true"/>
-                <item name="Upgrading from 3.0" href="/UsersGuide/upgrade.html" collapse="true"/>
-                <item name="Specification DTD" href="/UsersGuide/spec.html" collapse="true"/>
-                <item name="Script Template DTD" href="/UsersGuide/script.html" collapse="true"/>
+                <item name="Introduction" href="/UsersGuide/index.html" />
+                <item name="Templates" href="/UsersGuide/template.html" />
+                <item name="Bindings" href="/UsersGuide/bindings.html" />
+                <item name="Listeners" href="/UsersGuide/listenermethods.html" />
+                <item name="Page Classes" href="/UsersGuide/page-class.html" />
+                <item name="Input Validation" href="/UsersGuide/validation.html"  />
+                <item name="Creating Components" href="/UsersGuide/components.html" />
+                <item name="Property Injection" href="/UsersGuide/injection.html" />
+                <item name="Localization" href="/UsersGuide/localization.html" />
+                <item name="State Management" href="/UsersGuide/state.html" />
+                <item name="IOC (HiveMind)" href="/UsersGuide/hivemind.html" />
+                <item name="Friendly URLs" href="/UsersGuide/friendly-urls.html" />
+                <item name="Page Events" href="/UsersGuide/events.html" />
+                <item name="Configuration" href="/UsersGuide/configuration.html" />
+                <item name="Shared Properties" href="/UsersGuide/properties.html" />
+                <item name="Upgrading from 3.0" href="/UsersGuide/upgrade.html" />
+                <item name="Specification DTD" href="/UsersGuide/spec.html" />
+                <item name="Script Template DTD" href="/UsersGuide/script.html" />
             </item>
+            
+            <item name="Quick Start" href="/QuickStart/helloworld.html" collapse="true">
+                <item name="Hello World" href="/QuickStart/helloworld.html" />
+                <item name="Direct Links" href="/QuickStart/directlink.html" />
+                <item name="Forms" href="/QuickStart/forms.html" />
+            </item>
+            
+            <item name="Examples" href="/exampleapps/index.html" />
+            
         </menu>
         
         <menu ref="modules" />

@@ -3,10 +3,6 @@ a.externalLink,a.externalLink:link,a.externalLink:visited,a.externalLink:active,
     padding-right: 0;
 }
 
-body {
-    font-family: Lucida Grande, Arial, Helvetica, sans-serif;
-}
-
 body ul {
     list-style-type: square;
 }
@@ -42,35 +38,6 @@ body ul {
     font-size: smaller;
 }
 
-.info {
-    float: left;
-    display: block;
-    margin: 0 1em 2em 2em;
-    padding: 1em;
-    border: 1px solid #aaa;
-    background-color: #efefef;
-}
-
-.warn {
-    float: left;
-    display: block;
-    margin: 0 1em 2em 2em;
-    padding: 1em;
-    border: 2px solid #474747;
-    background-color: #B8AC30;
-}
-
-.section p a {
-    color: #539126;
-    font-weight: bolder;
-}
-
-.section p a:hover {
-    text-decoration: underline;
-}
-
-code {
-    border: 1px dotted #aaa;
-    background: #efefef;
-    padding: 1px;
+.section ul li {
+    margin-top: 8px;
 }

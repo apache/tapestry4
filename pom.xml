@@ -255,6 +255,7 @@
                             <report>license</report>
                             <report>scm</report>
                             <report>index</report>
+                            <report>dependencies</report>
                         </reports>
                     </reportSet>
                 </reportSets>
