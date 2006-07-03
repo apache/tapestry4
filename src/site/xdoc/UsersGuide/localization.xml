@@ -239,7 +239,7 @@ format retrieved from the message catalog as key 'billing-info'.
    
   
 <p>
-In order to change the locale, you must obtain the <a href="../tapestry/apidocs/org/apache/tapestry/IEngine.html">IEngine</a> and invoke <code>setLocale()</code> on it.
+In order to change the locale, you must obtain the <a href="../tapestry-framework/apidocs/org/apache/tapestry/IEngine.html">IEngine</a> and invoke <code>setLocale()</code> on it.
 This will change the value stored in the engine (which is used when loading new pages), and:
 </p>
 
@@ -264,7 +264,7 @@ This will change the value stored in the engine (which is used when loading new 
 <p>
 When pages are created, or obtained from the page pool, the engine's locale is
 taken into account.  Pages are obtained when they are used by a service,
-or when accessed via <a href="../tapestry/apidocs/org/apache/tapestry/IRequestCycle.html">IRequestCycle</a>.getPage().
+or when accessed via <a href="../tapestry-framework/apidocs/org/apache/tapestry/IRequestCycle.html">IRequestCycle</a>.getPage().
 </p>      
       
 <p>

@@ -246,7 +246,7 @@ package mypackage;
 
 import org.apache.tapestry.html.BasePage;
 	
-public abstract class MyPage extends <a href="../tapestry/apidocs/org/apache/tapestry/html/BasePage.html">BasePage</a>
+public abstract class MyPage extends <a href="../tapestry-framework/apidocs/org/apache/tapestry/html/BasePage.html">BasePage</a>
 {
     abstract public int getItemsPerPage();
 	
@@ -414,7 +414,7 @@ time it is referenced, an instance of RegistrationData is created and stored int
 <p>
 If your data object can't be created using a simple constructor, then you can supply an &lt;invoke-factory&gt; element instead
 of &lt;create-instance&gt;.  &lt;invoke-factory&gt; allows you to reference an object or service that implements
-the <a href="../tapestry/apidocs/org/apache/tapestry/engine/state/StateObjectFactory.html">StateObjectFactory</a> interface.
+the <a href="../tapestry-framework/apidocs/org/apache/tapestry/engine/state/StateObjectFactory.html">StateObjectFactory</a> interface.
 </p>
 
 <p>
@@ -452,7 +452,7 @@ accessors for this property, in which case you should be sure that the applicati
 <p>
 <strong>Warning:</strong>
 <br/>
-The <a href="../tapestry/apidocs/org/apache/tapestry/IPage.html">IPage</a> interface defines two read-only properties: <code>visit</code> and <code>global</code>. These are both
+The <a href="../tapestry-framework/apidocs/org/apache/tapestry/IPage.html">IPage</a> interface defines two read-only properties: <code>visit</code> and <code>global</code>. These are both
 type Object. This is a holdover from Tapestry 3.0, which only supported these two application
 state objects.  If you want to access the visit or the global application state objects without needing casts,
 you will have to inject as a differently named property (say <code>appVisit</code> or <code>visitObject</code>).
@@ -477,7 +477,7 @@ you will have to inject as a differently named property (say <code>appVisit</cod
 </p>
 
 <p>
-  To control this, ASOs may <em>optionally</em> implement the <a href="../tapestry/apidocs/org/apache/tapestry/SessionStoreOptimized.html">SessionStoreOptimized</a> interface.
+  To control this, ASOs may <em>optionally</em> implement the <a href="../tapestry-framework/apidocs/org/apache/tapestry/SessionStoreOptimized.html">SessionStoreOptimized</a> interface.
   The method isStoreToSessionNeeded() will be checked; if it returns false, the object will 
   <em>not</em> be stored.
 </p>
@@ -490,7 +490,7 @@ you will have to inject as a differently named property (say <code>appVisit</cod
 </p>
 
 <p>
-  A base class, <a href="../tapestry/apidocs/org/apache/tapestry/BaseSessionStoreOptimized.html">BaseSessionStoreOptimized</a>, implements this behavior.
+  A base class, <a href="../tapestry-framework/apidocs/org/apache/tapestry/BaseSessionStoreOptimized.html">BaseSessionStoreOptimized</a>, implements this behavior.
 </p>
   
 </subsection>

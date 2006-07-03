@@ -22,7 +22,7 @@
     <p> Tapestry 4.0 is intimately integrated into the <a href="http://jakarta.apache.org/hivemind/">HiveMind</a> microkernel. Building a complex system onto a 
       dependency injection microkernel such as HiveMind has many benefits; the code is easier to write, test and 
       maintain. HiveMind's flexible approach makes it easy to provide extension points ... many of the common kinds of 
-      customizations in Tapestry 3.0 that required code changes (such as subclassing <a href="../tapestry/apidocs/org/apache/tapestry/engine/BaseEngine.html">BaseEngine</a>) are now accomplished 
+      customizations in Tapestry 3.0 that required code changes (such as subclassing <a href="../tapestry-framework/apidocs/org/apache/tapestry/engine/BaseEngine.html">BaseEngine</a>) are now accomplished 
       by providing objects via a HiveMind module descriptor for your application. </p>
     <p> In fact, you should not think of HiveMind as just Tapestry's infrastructure, but as infrastructure for your 
       application as well. A very succesful design pattern in Tapestry is to keep pages and components very simple, and 
@@ -77,7 +77,7 @@
         </tr>
         <tr>
           <td>engine-service</td>
-          <td>The locator is the name of an engine service (an instance of <a href="../tapestry/apidocs/org/apache/tapestry/engine/IEngineService.html">IEngineService</a>).</td>
+          <td>The locator is the name of an engine service (an instance of <a href="../tapestry-framework/apidocs/org/apache/tapestry/engine/IEngineService.html">IEngineService</a>).</td>
           <td>engine-service:page</td>
         </tr>
         <tr>
@@ -134,7 +134,7 @@ public abstract class MyPage extends BasePage
      
     <section name="Bootstrapping the Registry">
       
-      <p> The <a href="../tapestry/apidocs/org/apache/tapestry/ApplicationServlet.html">ApplicationServlet</a> is responsible for initializing HiveMind's Registry on startup. </p>
+      <p> The <a href="../tapestry-framework/apidocs/org/apache/tapestry/ApplicationServlet.html">ApplicationServlet</a> is responsible for initializing HiveMind's Registry on startup. </p>
       <p>
 <strong>Note:</strong>
 <br/> The ApplicationServlet takes over all the roles usually supplied by HiveMind's HiveMindFilter. This 

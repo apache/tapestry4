@@ -141,7 +141,7 @@
     
     <p>
       Friendly URLs are controlled by
-      <a href="../tapestry/apidocs/org/apache/tapestry/engine/ServiceEncoder.html">ServiceEncoder</a>s. Getting Tapestry to output friendly URLs is a matter of
+      <a href="../tapestry-framework/apidocs/org/apache/tapestry/engine/ServiceEncoder.html">ServiceEncoder</a>s. Getting Tapestry to output friendly URLs is a matter of
       plugging encoders into the correct pipeline ... this is all done using HiveMind.
     </p>
     
@@ -160,7 +160,7 @@
       
       <p>
         This contribution to the <a href="../tapestry/hivedocs/config/tapestry.url.ServiceEncoders.html">tapestry.url.ServiceEncoders</a> configuration point
-        creates a <a href="../tapestry/apidocs/org/apache/tapestry/engine/ServiceEncoder.html">ServiceEncoder</a> that maps the <code>.html</code> extension (on the URL path)
+        creates a <a href="../tapestry-framework/apidocs/org/apache/tapestry/engine/ServiceEncoder.html">ServiceEncoder</a> that maps the <code>.html</code> extension (on the URL path)
         to the page service. The <code>id</code> attribute must be unique for all
         contributed encoders.
       </p>
@@ -317,7 +317,7 @@
 
   <p>
     Finally, when one of the pre-defined encoders is insufficient, you can define your own.
-    The &lt;encoder&gt; element allows an arbitrary object that implements the <a href="../tapestry/apidocs/org/apache/tapestry/engine/ServiceEncoder.html">ServiceEncoder</a>
+    The &lt;encoder&gt; element allows an arbitrary object that implements the <a href="../tapestry-framework/apidocs/org/apache/tapestry/engine/ServiceEncoder.html">ServiceEncoder</a>
     interface to be plugged into the pipeline.  The &lt;encoder&gt; element 
     supports the (required) id attribute, and the optional before and
     after attributes.
@@ -371,7 +371,7 @@
   <p>
     The encode() method must check to see if the link being generated is the right page name
     and the right service, returning (without doing anything) if not.  The link
-    being constructed is represented as an instance of <a href="../tapestry/apidocs/org/apache/tapestry/engine/ServiceEncoding.html">ServiceEncoding</a>:
+    being constructed is represented as an instance of <a href="../tapestry-framework/apidocs/org/apache/tapestry/engine/ServiceEncoding.html">ServiceEncoding</a>:
   </p>
   
   <source xml:space="preserve">
