@@ -33,7 +33,7 @@ and you can use a listener: <a href="bindings.html">binding reference</a> to use
 <p>
 <strong>Note:</strong>
 <br/>
-The parameter type for listeners is <a href="../tapestry/apidocs/org/apache/tapestry/IActionListener.html">IActionListener</a>.  Internally, Tapestry creates an object that implements
+The parameter type for listeners is <a href="../tapestry-framework/apidocs/org/apache/tapestry/IActionListener.html">IActionListener</a>.  Internally, Tapestry creates an object that implements
 that interface and uses reflection to invoke the corrsponding method  on your page or component instance. On rare
 occasions, it is useful to create objects that implement the interface directly.  For pages, components and the
 engine, there is a listeners property whose keys are the names of listener methods, but the listener: binding reference
@@ -49,7 +49,7 @@ return void or certain other types.
   
   
 <p>
-A listener method may return void, may return a string, or may return an object that implements <a href="../tapestry/apidocs/org/apache/tapestry/IPage.html">IPage</a>.
+A listener method may return void, may return a string, or may return an object that implements <a href="../tapestry-framework/apidocs/org/apache/tapestry/IPage.html">IPage</a>.
 The last two options are used to change the <em>active page</em>, the page which will render
 the response. Returning null will not change the active page (it defaults to the page containing the
 link or form components which invoked the listener method).
@@ -64,17 +64,17 @@ link or form components which invoked the listener method).
 null does not change the active page.</dd>
 
 <dt>
-<a href="../tapestry/apidocs/org/apache/tapestry/IPage.html">IPage</a>
+<a href="../tapestry-framework/apidocs/org/apache/tapestry/IPage.html">IPage</a>
 </dt>
-<dd>A non-null <a href="../tapestry/apidocs/org/apache/tapestry/IPage.html">IPage</a> will activate that page instance. The page object may be obtained
+<dd>A non-null <a href="../tapestry-framework/apidocs/org/apache/tapestry/IPage.html">IPage</a> will activate that page instance. The page object may be obtained
 from the request cycle, or via <a href="injection.html#injection.page">page injection</a>.
 </dd>
 
 <dt>
-<a href="../tapestry/apidocs/org/apache/tapestry/engine/ILink.html">ILink</a>
+<a href="../tapestry-framework/apidocs/org/apache/tapestry/engine/ILink.html">ILink</a>
 </dt>
 <dd>
-Returning a non-null <a href="../tapestry/apidocs/org/apache/tapestry/engine/ILink.html">ILink</a> will send a redirect to the client for the URL associated with the link.
+Returning a non-null <a href="../tapestry-framework/apidocs/org/apache/tapestry/engine/ILink.html">ILink</a> will send a redirect to the client for the URL associated with the link.
 This is commonly used to perform a <em>redirect-after-post</em>.
 </dd>
 </dl>
@@ -95,14 +95,14 @@ are encoded into the URL and will be available in a later request, when the list
 <strong>Note:</strong>
 <br/>
 In Tapestry 3.0 and earlier, <em>listener parameters</em> were known as <em>service parameters</em>.  In addition,
-listener methods had to be in a very fixed form, taking exactly one parameter of type <a href="../tapestry/apidocs/org/apache/tapestry/IRequestCycle.html">IRequestCycle</a> and returning void.
+listener methods had to be in a very fixed form, taking exactly one parameter of type <a href="../tapestry-framework/apidocs/org/apache/tapestry/IRequestCycle.html">IRequestCycle</a> and returning void.
 </p>
 
 <p>
 The listener can gain access these parameters in one of two ways:</p>
 
 <ul>
-  <li>By invoking the <code>getListenerParameters()</code> method of <a href="../tapestry/apidocs/org/apache/tapestry/IRequestCycle.html">IRequestCycle</a>
+  <li>By invoking the <code>getListenerParameters()</code> method of <a href="../tapestry-framework/apidocs/org/apache/tapestry/IRequestCycle.html">IRequestCycle</a>
 </li>
   <li>By declaring a method parameter for <em>each</em> listener parameter (in order)</li>  
 </ul>
@@ -180,7 +180,7 @@ the parameter values (so you can use <code>int</code> and <code>java.lang.Intege
 
 <p>
 When creating components that accept a listener as a parameter, you should not invoke the
-<a href="../tapestry/apidocs/org/apache/tapestry/IActionListener.html">IActionListener</a> directly, instead, you should inject the infrastructure:ListenerInvoker service 
+<a href="../tapestry-framework/apidocs/org/apache/tapestry/IActionListener.html">IActionListener</a> directly, instead, you should inject the infrastructure:ListenerInvoker service 
 into your component, and have it invoke the listener.  The ListenerInvoker is extensible, and 
 application logic may depend on ListenerInvoker's behavior (commonly, it is used to mark
 transactions boundaries).

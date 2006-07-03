@@ -25,8 +25,8 @@
 </p>
 
 <p>
-Tapestry pages implement the <a href="../tapestry/apidocs/org/apache/tapestry/IPage.html">IPage</a> interface.  Because this is a large interface,
-you will typically extends the <a href="../tapestry/apidocs/org/apache/tapestry/html/BasePage.html">BasePage</a> base class (for HTML pages).
+Tapestry pages implement the <a href="../tapestry-framework/apidocs/org/apache/tapestry/IPage.html">IPage</a> interface.  Because this is a large interface,
+you will typically extends the <a href="../tapestry-framework/apidocs/org/apache/tapestry/html/BasePage.html">BasePage</a> base class (for HTML pages).
 </p>
 
 <p>
@@ -100,7 +100,7 @@ A similar search occurs for components (again, with the express desire that the 
     meta data property (if any)</li>
   <li>In the default package</li>
   <li>
-<a href="../tapestry/apidocs/org/apache/tapestry/BaseComponent.html">BaseComponent</a> is the final default</li>
+<a href="../tapestry-framework/apidocs/org/apache/tapestry/BaseComponent.html">BaseComponent</a> is the final default</li>
 </ul>
 
 <p>

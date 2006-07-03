@@ -414,7 +414,7 @@ public abstract class AddProject extends BasePage
 <p>
   Listening for these lifecycle events is simple; you just need to select the correct listener interface
   and implement it; Tapestry will automatically register your page to receive the notifications.  Here,
-  the interface is <a href="../tapestry/apidocs/org/apache/tapestry/event/PageBeginRenderListener.html">PageBeginRenderListener</a>:
+  the interface is <a href="../tapestry-framework/apidocs/org/apache/tapestry/event/PageBeginRenderListener.html">PageBeginRenderListener</a>:
 </p>
 
 <source xml:space="preserve">package tutorial.forms.pages;
@@ -526,7 +526,7 @@ public abstract class AddProject extends BasePage implements PageBeginRenderList
   
   <p>
   A lot is going on here in a very small amount of code.  First off, this method is no longer void, it returns
-  a page (<a href="../tapestry/apidocs/org/apache/tapestry/IPage.html">IPage</a> is the interface all page classes must implement). When a listener method returns a page,
+  a page (<a href="../tapestry-framework/apidocs/org/apache/tapestry/IPage.html">IPage</a> is the interface all page classes must implement). When a listener method returns a page,
   that page becomes the <em>active page</em>, the page which will render the response to the client.
   </p>
   

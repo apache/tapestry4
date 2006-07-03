@@ -106,21 +106,21 @@ value is to be interpreted.  The prefix identifies the <em>binding type</em>:
   
   <tr>
     <td>translator</td>
-    <td>Initializer used to obtain and configure a <a href="../tapestry/apidocs/org/apache/tapestry/form/translator/Translator.html">Translator</a> instance.</td>
+    <td>Initializer used to obtain and configure a <a href="../tapestry-framework/apidocs/org/apache/tapestry/form/translator/Translator.html">Translator</a> instance.</td>
     <td>translator:number,pattern=#</td>
     <td/>
   </tr>
   
   <tr>
     <td>validator</td>
-    <td>Initializer used to obtain and configure an <a href="../tapestry/apidocs/org/apache/tapestry/valid/IValidator.html">IValidator</a> instance (used with <a href="site:ValidField">ValidField</a>).</td>
+    <td>Initializer used to obtain and configure an <a href="../tapestry-framework/apidocs/org/apache/tapestry/valid/IValidator.html">IValidator</a> instance (used with <a href="site:ValidField">ValidField</a>).</td>
     <td>validator:string,required,minimumLength=5</td>
     <td/>
   </tr>
   
   <tr>
     <td>validators</td>
-    <td>List of configured <a href="../tapestry/apidocs/org/apache/tapestry/form/validator/Validator.html">Validator</a> instances (used with <a href="site:TextField">TextField</a> and others). </td>
+    <td>List of configured <a href="../tapestry-framework/apidocs/org/apache/tapestry/form/validator/Validator.html">Validator</a> instances (used with <a href="site:TextField">TextField</a> and others). </td>
     <td>validators:email,required,minLength=10</td>
     <td/>
   </tr>

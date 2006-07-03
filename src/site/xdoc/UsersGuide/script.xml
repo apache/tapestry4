@@ -36,7 +36,7 @@
         
         <p>
             Script template files are parsed into memory as 
-            instances of <a href="../tapestry/apidocs/org/apache/tapestry/IScript.html">IScript</a>. These script template <em>objects</em>
+            instances of <a href="../tapestry-framework/apidocs/org/apache/tapestry/IScript.html">IScript</a>. These script template <em>objects</em>
             may be executed to generate the JavaScript.            
         </p>        
         
@@ -51,7 +51,7 @@
         </p>
         
         <p>
-            Executing a script template requires access to an <a href="../tapestry/apidocs/org/apache/tapestry/IScriptProcessor.html">IScriptProcessor</a> instance;
+            Executing a script template requires access to an <a href="../tapestry-framework/apidocs/org/apache/tapestry/IScriptProcessor.html">IScriptProcessor</a> instance;
             this is usually provided by the <a href="site:Body">Body</a> component.  The script processor
             is responsible for managing the buffers of JavaScript, and assists
             with generating unique ids for client-side variables and functions.            

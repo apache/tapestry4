@@ -79,7 +79,7 @@ The &lt;service&gt; element in a Tapestry 3.0 DTD is now <strong>ignored</strong
 </p>
 
 <p>
-The <a href="../tapestry/apidocs/org/apache/tapestry/engine/IEngineService.html">IEngineService</a> interface has changed in non-backwards compatible ways. If your application created
+The <a href="../tapestry-framework/apidocs/org/apache/tapestry/engine/IEngineService.html">IEngineService</a> interface has changed in non-backwards compatible ways. If your application created
 custom engine services, you will have to make changes to your code. If your custom service was
 based on the <code>org.apache.tapestry.engine.AbstractService</code> class, that class has been removed
 so you will have significant rewrites. As a suggested course of action, find the service
@@ -156,7 +156,7 @@ auto than was available in Tapestry 3.0).
 
 <p>
 This may be of concern if your component used the custom parameter direction. In Tapestry 3.0, direction custom meant that your code
-would directly access the <a href="../tapestry/apidocs/org/apache/tapestry/IBinding.html">IBinding</a> object for the parameter, and no property for the parameter would be created.  In Tapestry 4.0, 
+would directly access the <a href="../tapestry-framework/apidocs/org/apache/tapestry/IBinding.html">IBinding</a> object for the parameter, and no property for the parameter would be created.  In Tapestry 4.0, 
 a property <em>will</em> be created ... even if you continue to use the 3.0 DTD and specify direction custom.
 </p>
 
@@ -232,7 +232,7 @@ Tapestry takes care of de-referencing the binding (if the parameter is bound), a
   
   
 <p>
-In Tapestry 3.0, it was possible to access a <a href="../tapestry/apidocs/org/apache/tapestry/IBinding.html">IBinding</a> object for a parameter by defining an additional property in your component's
+In Tapestry 3.0, it was possible to access a <a href="../tapestry-framework/apidocs/org/apache/tapestry/IBinding.html">IBinding</a> object for a parameter by defining an additional property in your component's
 Java code:
 </p>
 
@@ -284,7 +284,7 @@ equivalent:
   
   
 <p>
-Tapestry 3.0 included an &lt;inherited-binding&gt; element, this was a way to directly pass the <a href="../tapestry/apidocs/org/apache/tapestry/IBinding.html">IBinding</a> object for a component parameter
+Tapestry 3.0 included an &lt;inherited-binding&gt; element, this was a way to directly pass the <a href="../tapestry-framework/apidocs/org/apache/tapestry/IBinding.html">IBinding</a> object for a component parameter
 to a parameter of a nested component. This is no longer supported in Tapestry 4.0; instead, the property for the component parameter should be 
 bound to the nested component parameter:
 </p>
@@ -374,7 +374,7 @@ value.
 <p>
 Part of the transition to Tapestry 4.0, and targetting (in a later release) a minimum JDK of 1.5, is the <em>removal</em> of support for the
 Jakarta commons-lang library.  commons-lang defined an Enum class that makes it impossible to compile code for JDK 1.5 ("enum" is a reserved word
-in JDK 1.5).  With the loss of that dependency, so goes org.apache.tapestry.form.EnumPropertySelectionModel, an <a href="../tapestry/apidocs/org/apache/tapestry/form/IPropertySelectionModel.html">IPropertySelectionModel</a> implementation.
+in JDK 1.5).  With the loss of that dependency, so goes org.apache.tapestry.form.EnumPropertySelectionModel, an <a href="../tapestry-framework/apidocs/org/apache/tapestry/form/IPropertySelectionModel.html">IPropertySelectionModel</a> implementation.
 </p>
   
 </section>
@@ -387,7 +387,7 @@ A number of more subtle, and more rarely used, changes exist between the 3.0 and
 </p>  
 
 <p>
-The contract for <a href="../tapestry/apidocs/org/apache/tapestry/resolver/ISpecificationResolverDelegate.html">ISpecificationResolverDelegate</a> has changed.  The specifications returned by the delegate are now cached by Tapestry
+The contract for <a href="../tapestry-framework/apidocs/org/apache/tapestry/resolver/ISpecificationResolverDelegate.html">ISpecificationResolverDelegate</a> has changed.  The specifications returned by the delegate are now cached by Tapestry
 exactly as if they had been read from files on the classpath or web context.
 </p>
   

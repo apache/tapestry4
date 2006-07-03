@@ -340,7 +340,7 @@ Two final notes about informal parameters:
   <li>
     Informal parameters are normally converted to string values and
     added as additional attributes in the output markup.  A special case
-    is when the value for an informal parameter is an <a href="../tapestry/apidocs/org/apache/tapestry/IAsset.html">IAsset</a>
+    is when the value for an informal parameter is an <a href="../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">IAsset</a>
     (possibly specified with the "asset:" prefix), in which case the
     attribute value will be the <em>URL</em> for the asset.
   </li>
