@@ -16,7 +16,7 @@
 -->
 
 <!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN"
-	"./dtd/document-v12.dtd">
+	"http://forrest.apache.org/dtd/document-v12.dtd">
 <document>
 	<header>
 		<title>SVN Access</title>

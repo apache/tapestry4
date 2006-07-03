@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+   Copyright 2004, 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<document>
+<properties>
+<title>Tapestry Object Properties</title>
+</properties>
+<body>
+<p>
+When using Tapestry, an important aspect of your work is to leverage the properties exposed
+by the various objects within Tapestry. A page has properties (inherited from base classes
+such as <a href="../tapestry/apidocs/org/apache/tapestry/AbstractComponent.html">AbstractComponent</a> and <a href="../tapestry/apidocs/org/apache/tapestry/html/BasePage.html">BasePage</a>) and contains components and other objects
+with more properties. Pages are connected to an engine, which exports its own set of properties.
+This table is a quick guide to the most common objects and their properties.	
+</p>
+
+<table>
+			<tr>
+				<th>Property name</th>
+				<th>Defining class</th>
+				<th>Property type</th>
+				<th>Description</th>
+			</tr>	
+			
+			
+<tr>
+	<td>assets</td>
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IComponent.html">IComponent</a>
+</td>
+	<td>Map of <a href="../tapestry/apidocs/org/apache/tapestry/IAsset.html">IAsset</a>
+</td>
+	<td>
+	Localized assets as defined in the component's specification.	
+	</td>
+</tr>			
+
+
+
+<tr>
+	<td>beans</td>
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IComponent.html">IComponent</a>
+</td>
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IBeanProvider.html">IBeanProvider</a>
+</td>
+	<td>Used to access beans defined using the <a href="spec.html#spec.bean">&lt;bean&gt;</a> specification element.</td>
+</tr>
+			
+			
+<tr>
+	<td>bindingNames</td>	
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IComponent.html">IComponent</a>
+</td>
+	<td>Collection of String</td>
+	<td>
+	The names of all formal and informal parameter bindings for the component.
+	</td>
+</tr>
+
+<tr>
+	<td>bindings</td>	
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IComponent.html">IComponent</a>
+</td>
+	<td>Map of <a href="../tapestry/apidocs/org/apache/tapestry/IBinding.html">IBinding</a>
+</td>
+	<td>
+	All bindings (for both formal and informal parameters) for this component, keyed on
+	the parameter name.
+	</td>
+</tr>		
+
+<tr>
+	<td>body</td>	
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/AbstractComponent.html">AbstractComponent</a>
+</td>
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IRender.html">IRender</a>[]</td>
+	<td>
+	The body of the component: the text (as <a href="../tapestry/apidocs/org/apache/tapestry/IRender.html">IRender</a>) and components (which inherit from
+	<a href="../tapestry/apidocs/org/apache/tapestry/IRender.html">IRender</a>) that the component directly encloses within its container's template.
+	</td>
+</tr>
+
+<tr>
+	<td>bodyCount</td>	
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/AbstractComponent.html">AbstractComponent</a>
+</td>
+	<td>int</td>
+	<td>
+	The active number of elements in the body property array.
+	</td>
+</tr>
+
+
+<tr>
+	<td>components</td>	
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IComponent.html">IComponent</a>
+</td>
+	<td>Map of <a href="../tapestry/apidocs/org/apache/tapestry/IComponent.html">IComponent</a>
+</td>
+	<td>
+	All components contained by this component, keyed on the component id.	
+	</td>
+</tr>
+
+
+<tr>
+	<td>changeObserver</td>	
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IPage.html">IPage</a>
+</td>
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/event/ChangeObserver.html">ChangeObserver</a>
+</td>
+	<td>An object that recieves notifications about changes to persistent page properties.</td>
+</tr>
+
+<tr>
+<td>classResolver</td>	
+<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IEngine.html">IEngine</a>
+</td>
+<td>ClassResolver</td>
+<td>
+Object responsible for locating classes and classpath resources.	
+</td>
+</tr>
+
+<tr>
+<td>componentMessagesSource</td>	
+<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IEngine.html">IEngine</a>
+</td>
+<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/engine/IComponentMessagesSource.html">IComponentMessagesSource</a>
+</td>
+<td>
+	An object that allows components to find their set of localized messages. 
+	</td>
+</tr>
+
+<tr>
+	<td>container</td>	
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IComponent.html">IComponent</a>
+</td>
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IComponent.html">IComponent</a>
+</td>
+	<td>
+	The page or component which contains this component.  Pages will return null.	
+	</td>
+</tr>	
+
+
+
+<tr>
+	<td>disabled</td>	
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/form/IFormComponent.html">IFormComponent</a>
+</td>
+	<td>boolean</td>
+	<td>
+	If true, the component should be disabled (and not respond to query parameters passed up in the request).	
+	</td>
+</tr>
+
+<tr>
+	<td>displayName</td>	
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/form/IFormComponent.html">IFormComponent</a>
+</td>
+	<td>String</td>
+	<td>
+	Localized string to be displayed as a label for the form control. Most implementations leave this
+	undefined (as null).	
+	</td>
+</tr>
+
+<tr>
+	<td>engine</td>	
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IPage.html">IPage</a>
+</td>
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IEngine.html">IEngine</a>
+</td>
+	<td>The engine to which the page is currently attached.</td>
+</tr>
+
+<tr>
+	<td>extendedId</td>	
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IComponent.html">IComponent</a>
+</td>
+	<td>String</td>
+	<td>
+	An "extended" version of the idPath	 property that
+	includes the name of the page containing the component as well.
+	</td>
+</tr>
+
+<tr>
+	<td>form</td>
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/form/IFormComponent.html">IFormComponent</a>
+</td>
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IForm.html">IForm</a>
+</td>
+	<td>
+	The form which encloses the form control component.	
+	</td>
+</tr>
+
+<tr>
+	<td>global</td>	
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IEngine.html">IEngine</a>, <a href="../tapestry/apidocs/org/apache/tapestry/IPage.html">IPage</a>
+</td>
+	<td>Object</td>
+	<td>
+	The Global object for the application.	
+	</td>
+</tr>
+
+<tr>
+	<td>hasVisit</td>	
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/engine/AbstractEngine.html">AbstractEngine</a>
+</td>
+	<td>boolean</td>
+	<td>
+	Returns true if the Visit object has been created, false initially.	
+	</td>
+</tr>
+
+<tr>
+	<td>id</td>	
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IComponent.html">IComponent</a>
+</td>
+	<td>String</td>
+	<td>
+	The id of the component, which is unique within its container. In many cases, the framework
+	may have assigned an automatically generated id. Pages do not have an id and return null.
+	</td>
+</tr>
+
+<tr>
+	<td>idPath</td>	
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IComponent.html">IComponent</a>
+</td>
+	<td>String</td>
+	<td>A sequence of id's used to locate a component within a page.  A component <code>bar</code>
+		within a component <code>foo</code> within a page will have an idPath
+		of <code>foo.bar</code>. Pages return null.
+		</td>
+</tr>
+
+<tr>
+	<td>listeners</td>	
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/AbstractComponent.html">AbstractComponent</a>, <a href="../tapestry/apidocs/org/apache/tapestry/engine/AbstractEngine.html">AbstractEngine</a>
+</td>
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/listener/ListenerMap.html">ListenerMap</a>
+</td>
+	<td>
+	Used to map listener methods as objects that implement the <a href="../tapestry/apidocs/org/apache/tapestry/IActionListener.html">IActionListener</a> interface.
+	</td>
+</tr>
+
+<tr>
+	<td>locale</td>	
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IEngine.html">IEngine</a>
+</td>
+	<td>Locale</td>
+	<td>
+	The locale for the current client; this is used when loading pages from the page pool, or
+	when instantiating new page instances.	
+	</td>
+</tr>
+
+<tr>
+	<td>locale</td>
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IPage.html">IPage</a>
+</td>
+	<td>Locale</td>
+	<td>
+	The locale to which the page and all components within the page is localized.	
+	</td>
+</tr>
+
+
+
+
+
+<tr>
+	<td>location</td>	
+	<td>
+<em>many</em>
+</td>
+	<td>Location</td>
+	<td>
+	The location that should be used with any error messages generated about the object. This is
+	ultimately the file, line (and even column) of the template or specification file responsible
+	for defining the object (be it a component, a page, or some other kind of object).
+	</td>
+</tr>
+
+<tr>
+	<td>messages</td>	
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IComponent.html">IComponent</a>
+</td>
+	<td>Messages</td>
+	<td>
+	Localized messages for the component.	
+	</td>
+</tr>
+
+<tr>
+	<td>name</td>	
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/form/IFormComponent.html">IFormComponent</a>
+</td>
+	<td>String</td>
+	<td>
+	The name, or element id, assigned to the form control by the <a href="../tapestry/apidocs/org/apache/tapestry/IForm.html">IForm</a>. This is set as the component
+	renders (but the property can then be read after the component renders).	
+	</td>
+</tr>
+
+<tr>
+	<td>namespace</td>	
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IComponent.html">IComponent</a>
+</td>
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/INamespace.html">INamespace</a>
+</td>
+	<td>The namespace containing the component. Components are always within <em>some</em>
+		namespace, whether it is the default (application) namespace, the framework namespace,
+		or a namespace for a component library.</td>
+</tr>
+
+<tr>
+	<td>outputEncoding</td>	
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/AbstractPage.html">AbstractPage</a>
+</td>
+	<td>String</td>
+	<td>
+	Output encoding for the page.	
+	</td>
+</tr>
+
+<tr>
+	<td>page</td>	
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IComponent.html">IComponent</a>
+</td>
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IPage.html">IPage</a>
+</td>
+	<td>
+	The page which ultimately contains the component.	
+	</td>
+</tr>
+
+<tr>
+	<td>propertySource</td>	
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IEngine.html">IEngine</a>
+</td>
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/engine/IPropertySource.html">IPropertySource</a>
+</td>
+	<td>
+	Source for configuration properties.	
+	</td>
+</tr>
+
+<tr>
+	<td>pageName</td>	
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IPage.html">IPage</a>
+</td>
+	<td>String</td>
+	<td>
+	The fully qualified page name (possibly including a namespace prefix).
+	</td>
+</tr>
+
+<tr>
+	<td>pageSource</td>	
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IEngine.html">IEngine</a>
+</td>
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/engine/IPageSource.html">IPageSource</a>
+</td>
+	<td>
+	The object used to obtain page instances.	
+	</td>
+</tr>
+
+
+<tr>
+  <td>rendering</td>
+  <td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IComponent.html">IComponent</a>
+</td>
+  <td>boolean</td>
+  <td>
+    True if the component is actively rendering (inside it's <code>render()</code> method).
+  </td>
+</tr>
+
+<tr>
+	<td>requestCycle</td>	
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IPage.html">IPage</a>
+</td>	
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IRequestCycle.html">IRequestCycle</a>
+</td>
+	<td>
+	The request cycle to which the page is currently attached.
+	</td>
+</tr>
+
+<tr>
+<td>scriptSource</td>	
+<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IEngine.html">IEngine</a>
+</td>
+<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/engine/IScriptSource.html">IScriptSource</a>
+</td>
+<td>
+Object that parses and caches script specifications.	
+</td>
+</tr>
+
+
+<tr>
+	<td>specification</td>	
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IComponent.html">IComponent</a>
+</td>
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/spec/IComponentSpecification.html">IComponentSpecification</a>
+</td>
+	<td>
+	The specification which defines this component.	Often used to access
+	meta data defined in the component's specification using the
+	<a href="spec.html#spec.meta">&lt;meta&gt;</a> element.
+	</td>
+</tr>
+
+<tr>
+	<td>specification</td>	
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IEngine.html">IEngine</a>
+</td>
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/spec/IApplicationSpecification.html">IApplicationSpecification</a>
+</td>
+	<td>
+	The specification for the application.	
+	</td>
+</tr>
+
+<tr>
+	<td>specificationSource</td>	
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IEngine.html">IEngine</a>
+</td>
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/engine/ISpecificationSource.html">ISpecificationSource</a>
+</td>
+	<td>Object responsible for reading and caching page and component specifications.</td>
+</tr>
+
+<tr>
+		<td>visit</td>
+		<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IEngine.html">IEngine</a>
+</td>
+		<td>Object</td>
+		<td>
+		Returns the Visit object for the current client, or null if the Visit object
+		has not yet been created.	
+		</td>
+</tr>
+
+<tr>
+	<td>visit</td>	
+	<td>
+<a href="../tapestry/apidocs/org/apache/tapestry/IPage.html">IPage</a>
+</td>
+	<td>Object</td>
+	<td>
+	Returns the Visit object for the current client, creating it if necessary.	
+	</td>
+</tr>
+
+
+			
+
+</table>
+
+</body>
+</document>

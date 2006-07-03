@@ -1,4 +1,6 @@
 <?xml version="1.0"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN"
+    "http://maven.apache.org/dtd/xdoc_1_0.dtd">
 <document>
     <properties>
         <title>Tapestry 4.1 - Dojo Integrated</title>

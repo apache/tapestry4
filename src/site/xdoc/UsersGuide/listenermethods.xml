@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+   Copyright 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<document>
+<properties>
+<title>Listener Methods</title>
+</properties>
+<body>
+
+<p>
+Listener methods are the main approach by which you add application-specific behavior to your application.
+</p>  
+
+<p>
+Listener methods are a kind of call back; they are triggered when a form is submitted or a link is clicked.  The listener methods
+exist within your page and component classes.  Components such as <a href="site:DirectLink">DirectLink</a> and <a href="site:Form">Form</a> take a listener parameter,
+and you can use a listener: <a href="bindings.html">binding reference</a> to use a listener method in your class as the listener.
+</p>
+
+<p>
+<strong>Note:</strong>
+<br/>
+The parameter type for listeners is <a href="../tapestry/apidocs/org/apache/tapestry/IActionListener.html">IActionListener</a>.  Internally, Tapestry creates an object that implements
+that interface and uses reflection to invoke the corrsponding method  on your page or component instance. On rare
+occasions, it is useful to create objects that implement the interface directly.  For pages, components and the
+engine, there is a listeners property whose keys are the names of listener methods, but the listener: binding reference
+is easier to use.
+</p>
+
+<p>
+A listener method is always a public  instance method.   It may take parameters, or not, and may
+return void or certain other types.
+</p>
+
+<section name="Return Type">
+  
+  
+<p>
+A listener method may return void, may return a string, or may return an object that implements <a href="../tapestry/apidocs/org/apache/tapestry/IPage.html">IPage</a>.
+The last two options are used to change the <em>active page</em>, the page which will render
+the response. Returning null will not change the active page (it defaults to the page containing the
+link or form components which invoked the listener method).
+</p>
+
+<dl>
+ <dt>void</dt>
+ <dd>The listener method does not change the active page.</dd>
+
+<dt>java.lang.String</dt>
+<dd>The listener method may return the name of a page to activate (and render the response). Returning
+null does not change the active page.</dd>
+
+<dt>
+<a href="../tapestry/apidocs/org/apache/tapestry/IPage.html">IPage</a>
+</dt>
+<dd>A non-null <a href="../tapestry/apidocs/org/apache/tapestry/IPage.html">IPage</a> will activate that page instance. The page object may be obtained
+from the request cycle, or via <a href="injection.html#injection.page">page injection</a>.
+</dd>
+
+<dt>
+<a href="../tapestry/apidocs/org/apache/tapestry/engine/ILink.html">ILink</a>
+</dt>
+<dd>
+Returning a non-null <a href="../tapestry/apidocs/org/apache/tapestry/engine/ILink.html">ILink</a> will send a redirect to the client for the URL associated with the link.
+This is commonly used to perform a <em>redirect-after-post</em>.
+</dd>
+</dl>
+
+</section> <!-- listenermethods.return -->
+
+
+
+<section name="Listener Method Parameters">
+  
+
+<p>
+When using the <a href="site:DirectLink">DirectLink</a> component, you may specify additional <em>listener parameters</em>.  The listener parameters
+are encoded into the URL and will be available in a later request, when the listener is triggered.
+</p>
+
+<p>
+<strong>Note:</strong>
+<br/>
+In Tapestry 3.0 and earlier, <em>listener parameters</em> were known as <em>service parameters</em>.  In addition,
+listener methods had to be in a very fixed form, taking exactly one parameter of type <a href="../tapestry/apidocs/org/apache/tapestry/IRequestCycle.html">IRequestCycle</a> and returning void.
+</p>
+
+<p>
+The listener can gain access these parameters in one of two ways:</p>
+
+<ul>
+  <li>By invoking the <code>getListenerParameters()</code> method of <a href="../tapestry/apidocs/org/apache/tapestry/IRequestCycle.html">IRequestCycle</a>
+</li>
+  <li>By declaring a method parameter for <em>each</em> listener parameter (in order)</li>  
+</ul>
+
+<p>
+Using the second method is usually the best way.  The link parameter values are <em>not</em> simply
+converted into strings, they are encoded as strings but maintain their type; therefore, the listener method
+parameters must be of the correct type.
+</p>
+
+<p>
+For example, suppose that the link encoded a String objectId and an integer index.  The component
+in the template names the listener method, and the two parameters are passed into the DirectLink as an OGNL
+list expression:
+</p>
+
+<source xml:space="preserve">
+&lt;a jwcid="@DirectLink" listener="listener:doClick" parameters="ognl:{ objectId, index }"&gt; . . . &lt;/a&gt;
+</source>
+
+<p>
+In the Java class, the listener method might look like:
+</p>
+
+<source xml:space="preserve">
+public void doClick(String objectId, int index)
+{
+  . . .
+}
+</source>
+
+<p>
+Alternately, the listener method could look like:
+</p>
+
+<source xml:space="preserve">
+public void doClick(IRequestCycle cycle)
+{
+  Object[] parameters = cycle.getListenerParameters();
+  String objectId = (String)parameters[0];
+  int index = ((Integer)parameters[1]).intValue();
+  
+  . . .
+}
+</source>
+
+<p>
+This second case is maintained in Tapestry 4.0 mostly for backwards compatibility, or to handle the case
+where a single listener method must handle an indeterminate number of listener parameters.
+</p>
+
+<p>
+In fact, Tapestry does a search for the most appropriate method, given the number of listener parameters:
+</p>
+
+<ul>
+  <li>public <em>type</em> <em>method</em>(<em>parameters</em>)</li>
+  <li>public <em>type</em> <em>method</em>(IRequestCycle cycle, <em>parameters</em>)</li>
+  <li>public <em>type</em> <em>method</em>()</li>
+  <li>public <em>type</em> <em>method</em>(IRequestCycle cycle)</li>
+</ul>
+
+<p>
+Tapestry 3.0 and earlier only accepted the final variation (and it had to return void).  Don't get too tricky with multiple overloadings
+of the method; Tapestry doesn't attempt to match the listener parameter types to the method parameter types (it
+works just by comparing the <em>number</em> of parameters).  However, you can count on Java boxing and autoboxing
+the parameter values (so you can use <code>int</code> and <code>java.lang.Integer</code> interchangeably).
+</p>
+
+</section> <!-- listenermethods.parameters -->
+
+<section name="Invoking Listener Methods">
+  
+
+
+<p>
+When creating components that accept a listener as a parameter, you should not invoke the
+<a href="../tapestry/apidocs/org/apache/tapestry/IActionListener.html">IActionListener</a> directly, instead, you should inject the infrastructure:ListenerInvoker service 
+into your component, and have it invoke the listener.  The ListenerInvoker is extensible, and 
+application logic may depend on ListenerInvoker's behavior (commonly, it is used to mark
+transactions boundaries).
+</p>
+
+<p>
+In your component specification:
+</p>
+
+<source xml:space="preserve">
+  &lt;parameter name="listener" required="yes"/&gt;
+
+  &lt;inject property="listenerInvoker" object="infrastructure:listenerInvoker"/&gt;
+</source>
+
+<p>
+In your source code:
+</p>
+
+<source xml:space="preserve">
+  public abstract IActionListener getListener();
+  
+  public abstract ListenerInvoker getListenerInvoker();
+  
+  . . .
+  
+  IActionListener listener = getListener();
+  ListenerInvoker invoker = getListenerInvoker();
+  
+  invoker.invokeListener(listener, this, cycle);
+</source>
+
+<p>
+It is acceptible to pass null as the listener; this saves you the necessity of checking for null
+when the listener is an optional parameter.
+</p>
+
+</section> <!-- listenermethods.invoking -->
+</body>
+</document>
