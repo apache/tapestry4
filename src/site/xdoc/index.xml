@@ -7,11 +7,53 @@
         <author email="jkuhnert@apache.org">Jesse Kuhnert</author>
     </properties>
     <body>
-        <section name="Upcoming Release">
+        <section name="Tapestry 4.1 - Dojo Integrated">
             <p>
                 This development series is focused around providing a full layer of support for building
-                highly dynamic web applications(XHR/ajax/dhtml) using all of the resources that modern browsers allow. 
+                highly dynamic web applications(XHR/ajax/dhtml) to enable development of rich web-based 
+                applications.
+                
+                <img style="float:right;margin-top:8px;margin-left:8px" src="./images/autocompleter.png" alt="Autocompleting select component" />
             </p>
+            
+            <p><strong>New Features:</strong></p>
+            <ul>
+                <li><b>JSON -</b>  Brand new API enabling data communication 
+                                   via the <a href="http://json.org/">JSON</a>(JavaScript Object Notation) 
+                                   standard. New component classes and rendering schemes also accompany 
+                                   the API addition, allowing anyone to easily add JSON communication 
+                                   to an existing component or new components. </li>
+                <li><b>XHR -</b>  The ever popular XML communication format has also been added into the 
+                                  Tapestry core, allowing most of the common <em>ajax</em> concepts to be
+                                  easily developed in yours and existing Tapestry components.</li>
+                <li><b><a href="http://dojotoolkit.org">Dojo</a> bundled -</b> As all of the functionality 
+                                  in this release is based around the <a href="http://dojotoolkit.org">dojo</a>
+                                   javascript toolkit, we have provided it bundled with the core Tapestry jar 
+                                   files. No profile building/installation necessary. Just drop the jars in and
+                                   get at all of the client side goodies you like.</li>
+                <li><b>Widgets -</b> New <a href="http://dojotoolkit.org">dojo</a> toolkit based widget components
+                                   and complimenting foundation Component classes make it easy for anyone to create
+                                   dojo widgets and use them as Tapestry components. The initial 4.1 release won't be
+                                   as focused on providing new components as it will solid infrastructure support, but
+                                   more and more will be included as the release matures. Currently included are 
+                                   <em>Autocomplete,DropdownDatePicker,DropdownTimePicker</em>.</li>
+                <li><b>Client Side Validation -</b> The client side validation support in Tapestry has been completely
+                                    replaced with a new <a href="http://dojotoolkit.org">dojo</a> based API, providing
+                                    richer and more complete validation than has been seen in previous releases. All of the
+                                    validation constraints that can be specified on the server now have client side functional
+                                    equivalents. Default logic for displaying validation errors/interactions on the client side
+                                    UI has also been updated a great deal. The old alert box mechanism has been replaced by field
+                                    decorators that apply css rules to your form fields, as well as dhtml dialog boxes displaying
+                                    summaries of errors. Much much more is planned in this area, but the current set of functionality
+                                    should be more than enough to make many happy.</li>
+                <li><b>New Annotations -</b> Perhaps the most exciting new addition, a new <strong>@EventListener</strong>
+                                    annotation has been added. This will allow people to bind one of their page/component 
+                                    class listeners to virtually any client side widget/html event concievable. The API also supports
+                                    varying types of listening, such as being able to submit a form when a particular event happens, 
+                                    or simplying using the new <b>BrowserEvent</b> object to determine the client side state when
+                                    the event happened. <em>(Such as x/y coordinates of mouse clicks, event targets, etc..This is pretty
+                                    much a literal one-to-one mapping to real browser generated Events.)</em></li>
+            </ul>
             
             <p>
                 Tapestry is an open-source framework for creating dynamic, robust, highly scalable
@@ -20,12 +62,14 @@
             </p>
         </section>
         
-        <section name="Dojo - The JavaScript Toolkit">
+        <section name="Dojo">
             <p>
-                Most of the functionality in this series is based entirely on the wonderful <a href="http://dojotoolkit.org">Dojo</a>
-                javascript toolkit library. Not to say that you won't easily be able to plug in another toolkit if
-                you like, just that the defaults will all be based around dojo.
+                Most of the functionality in this series is based entirely on the wonderful 
+                <a href="http://dojotoolkit.org">Dojo</a> javascript toolkit library. Not to 
+                say that you won't easily be able to plug in another toolkit if you like, just 
+                that the defaults will all be based around dojo.
             </p>
         </section>
+        
     </body>
 </document>

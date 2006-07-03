@@ -115,7 +115,7 @@
   </parameter>
   
   <parameter name="ajaxEnabled" 
-             default-value="false" >
+             default-value="true" >
      <description>
      If set to true, will include the required javascript libraries that make all
      of the ajax functionality possible.
