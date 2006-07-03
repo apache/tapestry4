@@ -85,35 +85,8 @@
                 </excludes>
             </testResource>
         </testResources>
-
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.2</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-clover-plugin</artifactId>
-                <version>2.1</version>
-                <configuration>
-                    <licenseLocation>
-                        ${user.home}/.m2/repository/com/cenqua/clover/clover.license
-                    </licenseLocation>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>pre-site</phase>
-                        <goals>
-                            <goal>instrument</goal>
-                            <goal>aggregate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
     </build>
-
+    
     <reporting>
         <outputDirectory>../target/site/contrib</outputDirectory>
         <plugins>

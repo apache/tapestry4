@@ -14,12 +14,14 @@
     </parent>
     <name>Examples</name>
     <inceptionYear>2006</inceptionYear>
+    
     <modules>
         <module>Vlib</module>
         <module>VlibBeans</module>
         <module>TimeTracker</module>
         <module>Workbench</module>
     </modules>
+    
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -39,6 +41,7 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+    
     <reporting>
         <outputDirectory>../target/site/examples</outputDirectory>
         <plugins>
