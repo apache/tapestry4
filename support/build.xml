@@ -28,7 +28,22 @@
 	<property name="export.dir" value="export"/>
 	<property name="module" value="jakarta-tapestry"/>
 	<property name="work.dir" value="${export.dir}/${module}"/>
-		
+	
+	<target name="convert-docs" >
+		<xslt basedir="../src/documentation/content/xdocs" destdir="tmp"
+		       extension=".xml" includes="**/*.xml" 
+				excludes="**/site.xml,**/*.ent,**/*.aart,**/tabs.xml"
+				style="forrest2maven-xdoc.xsl" >
+			
+			<xmlcatalog>
+				<entity publicId="links" 
+					location="links.ent" />
+				<entity publicId="common" 
+					location="common.ent" />
+			</xmlcatalog>
+		</xslt>
+	</target>
+	
 	<target name="setup"
 		description="Sets up the directory, gets the files via CVS.">
 		

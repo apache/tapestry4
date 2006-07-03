@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+   Copyright 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<document>
+<properties>
+<title>Page Events</title>
+</properties>
+<body>
+
+<p>
+Tapestry component and page classes may implement <em>optional listener interfaces</em>. This interfaces
+allow the component (or page) to be notified when certain lifecycle events occur.  Each interface
+consists of a single method.
+</p>    
+    
+<p>
+It is merely necessary to implement the interface; the framework will automatically register
+the component (or page) to receive the notification.    It is perfectly acceptible to implement
+multiple interfaces.
+</p>
+
+<table>
+  <tr>
+    <th>Interface</th>
+    <th>Invoked</th>
+    <th>Notes</th>
+  </tr>
+  <tr>
+    <td>
+<a href="../tapestry/apidocs/org/apache/tapestry/event/PageAttachListener.html">PageAttachListener</a>
+</td>
+    <td>When a page is first attached to the current request.  After
+      the page's persistent properties have been rolled back.</td>
+    <td>
+      Set up the page's properties based on the current session state, possibly
+      by pulling data from an <a href="state.html#state.aso">application state object</a>.
+    </td>
+  </tr>
+  <tr>
+    <td>
+<a href="../tapestry/apidocs/org/apache/tapestry/event/PageValidateListener.html">PageValidateListener</a>
+</td>
+    <td>When a page is activated (selected to render the reponse).  Throw <a href="../tapestry/apidocs/org/apache/tapestry/PageRedirectException.html">PageRedirectException</a>
+      to activate a different page.</td>
+      <td>
+        Typically, checking the user's allowed access to a page, based on application-specific
+        security rules.
+      </td>
+  </tr>
+  <tr>
+    <td>
+<a href="../tapestry/apidocs/org/apache/tapestry/event/PageBeginRenderListener.html">PageBeginRenderListener</a>
+</td>
+    <td>Just before the page begins to render. This is the last chance to update
+      persistent page properties.</td>
+    <td/>
+  </tr>
+  <tr>
+    <td>
+<a href="../tapestry/apidocs/org/apache/tapestry/event/PageEndRenderListener.html">PageEndRenderListener</a>
+</td>
+    <td>At the end of the page render (even if an exception is thrown while the page
+      renders).</td>
+    <td/>
+  </tr>
+  <tr>
+    <td>
+<a href="../tapestry/apidocs/org/apache/tapestry/event/PageDetachListener.html">PageDetachListener</a>
+</td>
+    <td>As the page is detached from the request and returned to the shared page
+      pool.</td>
+    <td>
+      Final cleanups to "scrub" the page, remove any client-specific state, and otherwise
+      return it to a pristine state.
+    </td>
+  </tr>
+</table>
+    
+<p>
+<strong>Note:</strong>
+<br/>
+  Tapestry 3.0 defined a single <a href="../tapestry/apidocs/org/apache/tapestry/event/PageRenderListener.html">PageRenderListener</a> interface instead of
+  <a href="../tapestry/apidocs/org/apache/tapestry/event/PageBeginRenderListener.html">PageBeginRenderListener</a> and <a href="../tapestry/apidocs/org/apache/tapestry/event/PageEndRenderListener.html">PageEndRenderListener</a>. This is still supported in 4.0 (it
+  has been redefined as extending the other two interfaces), but will likely be removed
+  in a future release.
+</p>
+</body>
+</document>
