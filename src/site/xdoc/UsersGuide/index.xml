@@ -46,7 +46,7 @@
                 logic). Tapestry takes care of the plumbing necessary to connect these user actions
                 with the objects.
             </p>
-
+            
             <p>
                 This can take some getting used to. You don't write servlets in Tapestry, you write
                 <a href="listenermethods.html">listener method</a>
@@ -109,7 +109,7 @@
                     any query parameters, so that you can pass along the information you need in the
                     URL.
                 </p>
-
+                
                 <p>
                     You are also responsible for connecting your output pages (whether they are
                     JSPs,
@@ -150,7 +150,7 @@
                     .
                 </p>
 
-                <p>
+                <span class="info">
                     <strong>Note:</strong>
                     <br />
                     Listener methods in Tapestry are very similar in intent to
@@ -159,7 +159,7 @@
                     an object. Calling this a "listener" or a "listener method" is a bit of a naming
                     snafu; it should be called a "delegate" and a "delegate method" but the existing
                     naming is too deeply entrenched to change any time soon.
-                </p>
+                </span>
 
                 <p>
                     You supply just the listener method ... not an entire servlet. Tapestry takes

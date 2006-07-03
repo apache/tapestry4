@@ -1,181 +1,245 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-   Copyright 2005 The Apache Software Foundation
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+    Copyright 2005 The Apache Software Foundation
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
 -->
 <document>
-<properties>
-<title>Component Bindings</title>
-</properties>
-<body>
-  
-<p>
-Components are configured by <em>binding</em> their parameters.  Binding of parameters
-may occur inside a page or component template, or a page or component specification.
-</p>  
-  
-<p>
-When binding a component parameter, the value to be bound may be just a literal string, or
-it could be an <a href="http://www.ognl.org">OGNL</a> expression, or subject to any of a number of other interpretations.  Tapestry
-uses a <em>prefix</em>   value, such as "ognl:", or "message:", to identify how the rest of the
-value is to be interpreted.  The prefix identifies the <em>binding type</em>:
-</p>  
+    <properties>
+        <title>Component Bindings</title>
+    </properties>
+    <body>
     
+    <section name="Component Bindings">
+        <p>
+            Components are configured by
+            <em>binding</em>
+            their parameters. Binding of parameters may occur inside a page or component template,
+            or a page or component specification.
+        </p>
 
-<table>
-  <tr>
-    <th>Binding Type</th>
-    <th>Description</th>
-    <th>Example</th>
-    <th>OGNL Equivalent</th>
-  </tr>
-  
-  <tr>
-    <td>asset</td>
-    <td>References an asset of the component.</td>
-    <td>asset:stylesheet </td>
-    <td>ognl:assets.stylesheet</td>
-  </tr>
-  
-  <tr>
-    <td>bean</td>
-    <td>References a named bean (defined by a <a href="spec.html#spec.bean">&lt;bean&gt;</a> element).</td>
-    <td>bean:validationDelegate</td>
-    <td>ognl:beans.validationDelegate</td>
-  </tr>
-  
-  <tr>
-    <td>component</td>
-    <td>References a nested component with the provided component id.</td>
-    <td>component:form</td>
-    <td>ognl:components.form</td>
-  </tr>
-  
-  <tr>
-    <td>hivemind</td>
-    <td>References a HiveMind object, much like <a href="spec.html#spec.inject">&lt;inject&gt;</a>.</td>
-    <td>hivemind:service:app.MyService</td>
-    <td/>
-  </tr>
-  
-  <tr>
-    <td>listener</td>
-    <td>The name of a <a href="listenermethods.html">listener method</a>.</td>
-    <td>listener:formSubmit</td>
-    <td>ognl:listeners.formSubmit</td>
-  </tr>
-  
-  <tr>
-    <td>literal</td>
-    <td>Used to "escape" a binding prefix, marking the suffix as a literal value.</td>
-    <td>literal:ognl:not-an-expression</td>
-    <td/>
-  </tr>
-  
-  <tr>
-    <td>message</td>
-    <td>References a localized message from the component's message catalog.</td>
-    <td>message:page-title</td>
-    <td>ognl:messages.getMessage("page-title")</td>
-  </tr>
-  
-  <tr>
-    <td>ognl</td>
-    <td>An OGNL expression to be evaluated.</td>
-    <td>ognl:engine.visit.admin</td>    
-    <td/>
-  </tr>
-  
-  <tr>
-    <td>state</td>
-    <td>True of false dependening on whether the named <a href="state.html#state.aso">application state object</a> exists.</td>
-    <td>state:visit</td>
-    <td/>
-  </tr>
-  
-  <tr>
-    <td>translator</td>
-    <td>Initializer used to obtain and configure a <a href="../tapestry-framework/apidocs/org/apache/tapestry/form/translator/Translator.html">Translator</a> instance.</td>
-    <td>translator:number,pattern=#</td>
-    <td/>
-  </tr>
-  
-  <tr>
-    <td>validator</td>
-    <td>Initializer used to obtain and configure an <a href="../tapestry-framework/apidocs/org/apache/tapestry/valid/IValidator.html">IValidator</a> instance (used with <a href="site:ValidField">ValidField</a>).</td>
-    <td>validator:string,required,minimumLength=5</td>
-    <td/>
-  </tr>
-  
-  <tr>
-    <td>validators</td>
-    <td>List of configured <a href="../tapestry-framework/apidocs/org/apache/tapestry/form/validator/Validator.html">Validator</a> instances (used with <a href="site:TextField">TextField</a> and others). </td>
-    <td>validators:email,required,minLength=10</td>
-    <td/>
-  </tr>
-</table>
-
-<p>
- Most of these are quite straight forward; the 
-  <a href="validation.html#validation.validator-binding">validator, validators and translator</a> prefixes
- require some additional description.
-</p>
-
-<p>
-<strong>Note:</strong>
-<br/>
-  You can define your own prefixes by contributing into the tapestry.bindings.BindingFactories configuration point.
-</p>  
-
-<p>
-What happens when you omit a binding prefix?  In a page or component <em>template</em>, the value it is assumed to be a literal string, as with the "literal:" prefix.
-In a page or component specification, or inside a Java annotation, the value is assumed to be an <a href="http://www.ognl.org">OGNL</a> expression, as with the "ognl:" prefix
-(but even this can be configured).  You will occasionally have
-to use an explicit "literal:" prefix inside such files.
-</p>
+        <p>
+            When binding a component parameter, the value to be bound may be just a literal string,
+            or it could be an
+            <a href="http://www.ognl.org">OGNL</a>
+            expression, or subject to any of a number of other interpretations. Tapestry uses a
+            <em>prefix</em>
+            value, such as <code>ognl:</code>, or <code>message:</code>, to identify how the rest of the value is to be
+            interpreted. The prefix identifies the
+            <em>binding type</em>
+            :
+        </p>
 
 
-<p>
-  Many of the bindings are driven by a HiveMind configuration; the configuration will
-  define the available values, and contributing the configuration allows
-  new values to be defined.
-</p>
+        <table>
+            <tr>
+                <th>Binding Type</th>
+                <th>Description</th>
+                <th>Example</th>
+                <th>OGNL Equivalent</th>
+            </tr>
 
-<table>
-  <tr>
-    <th>Binding Prefix</th>
-    <th>Configuration</th>
-  </tr>
-  <tr>
-    <td>translator</td>
-    <td>
-<a href="../tapestry/hivedocs/config/tapestry.form.translator.Translators.html">tapestry.form.translator.Translators</a>
-</td>
-  </tr>
-  <tr>
-    <td>state</td>
-    <td>
-<a href="../tapestry/hivedocs/config/tapestry.state.ApplicationObjects.html">tapestry.state.ApplicationObjects</a>
-</td>
-  </tr>
-  <tr>
-    <td>validator</td>
-    <td>
-<a href="../tapestry/hivedocs/config/tapestry.valid.Validators.html">tapestry.valid.Validators</a>
-</td>
-  </tr>
-</table>
-  
-</body>
+            <tr>
+                <td>asset</td>
+                <td>References an asset of the component.</td>
+                <td>asset:stylesheet</td>
+                <td>ognl:assets.stylesheet</td>
+            </tr>
+
+            <tr>
+                <td>bean</td>
+                <td>
+                    References a named bean (defined by a
+                    <a href="spec.html#spec.bean">&lt;bean&gt;</a>
+                    element).
+                </td>
+                <td>bean:validationDelegate</td>
+                <td>ognl:beans.validationDelegate</td>
+            </tr>
+
+            <tr>
+                <td>component</td>
+                <td>References a nested component with the provided component id.</td>
+                <td>component:form</td>
+                <td>ognl:components.form</td>
+            </tr>
+
+            <tr>
+                <td>hivemind</td>
+                <td>
+                    References a HiveMind object, much like
+                    <a href="spec.html#spec.inject">&lt;inject&gt;</a>
+                    .
+                </td>
+                <td>hivemind:service:app.MyService</td>
+                <td />
+            </tr>
+
+            <tr>
+                <td>listener</td>
+                <td>
+                    The name of a
+                    <a href="listenermethods.html">listener method</a>
+                    .
+                </td>
+                <td>listener:formSubmit</td>
+                <td>ognl:listeners.formSubmit</td>
+            </tr>
+
+            <tr>
+                <td>literal</td>
+                <td>Used to "escape" a binding prefix, marking the suffix as a literal value.</td>
+                <td>literal:ognl:not-an-expression</td>
+                <td />
+            </tr>
+
+            <tr>
+                <td>message</td>
+                <td>References a localized message from the component's message catalog.</td>
+                <td>message:page-title</td>
+                <td>ognl:messages.getMessage("page-title")</td>
+            </tr>
+
+            <tr>
+                <td>ognl</td>
+                <td>An OGNL expression to be evaluated.</td>
+                <td>ognl:engine.visit.admin</td>
+                <td />
+            </tr>
+
+            <tr>
+                <td>state</td>
+                <td>
+                    True of false dependening on whether the named
+                    <a href="state.html#state.aso">application state object</a>
+                    exists.
+                </td>
+                <td>state:visit</td>
+                <td />
+            </tr>
+
+            <tr>
+                <td>translator</td>
+                <td>
+                    Initializer used to obtain and configure a
+                    <a
+                        href="../tapestry-framework/apidocs/org/apache/tapestry/form/translator/Translator.html">
+                        Translator
+                    </a>
+                    instance.
+                </td>
+                <td>translator:number,pattern=#</td>
+                <td />
+            </tr>
+
+            <tr>
+                <td>validator</td>
+                <td>
+                    Initializer used to obtain and configure an
+                    <a
+                        href="../tapestry-framework/apidocs/org/apache/tapestry/valid/IValidator.html">
+                        IValidator
+                    </a>
+                    instance (used with
+                    <a href="site:ValidField">ValidField</a>
+                    ).
+                </td>
+                <td>validator:string,required,minimumLength=5</td>
+                <td />
+            </tr>
+
+            <tr>
+                <td>validators</td>
+                <td>
+                    List of configured
+                    <a
+                        href="../tapestry-framework/apidocs/org/apache/tapestry/form/validator/Validator.html">
+                        Validator
+                    </a>
+                    instances (used with
+                    <a href="site:TextField">TextField</a>
+                    and others).
+                </td>
+                <td>validators:email,required,minLength=10</td>
+                <td />
+            </tr>
+        </table>
+
+        <p>
+            Most of these are quite straight forward; the
+            <a href="validation.html#validation.validator-binding">
+                validator, validators and translator
+            </a>
+            prefixes require some additional description.
+        </p>
+
+        <span class="info">
+            <strong>Note:</strong>
+            <br />
+            You can define your own prefixes by contributing into the
+            tapestry.bindings.BindingFactories configuration point.
+        </span>
+
+        <p>
+            What happens when you omit a binding prefix? In a page or component
+            <em>template</em>
+            , the value it is assumed to be a literal string, as with the "literal:" prefix. In a
+            page or component specification, or inside a Java annotation, the value is assumed to be
+            an
+            <a href="http://www.ognl.org">OGNL</a>
+            expression, as with the "ognl:" prefix (but even this can be configured). You will
+            occasionally have to use an explicit "literal:" prefix inside such files.
+        </p>
+
+
+        <p>
+            Many of the bindings are driven by a HiveMind configuration; the configuration will
+            define the available values, and contributing the configuration allows new values to be
+            defined.
+        </p>
+
+        <table>
+            <tr>
+                <th>Binding Prefix</th>
+                <th>Configuration</th>
+            </tr>
+            <tr>
+                <td>translator</td>
+                <td>
+                    <a
+                        href="../tapestry/hivedocs/config/tapestry.form.translator.Translators.html">
+                        tapestry.form.translator.Translators
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>state</td>
+                <td>
+                    <a href="../tapestry/hivedocs/config/tapestry.state.ApplicationObjects.html">
+                        tapestry.state.ApplicationObjects
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>validator</td>
+                <td>
+                    <a href="../tapestry/hivedocs/config/tapestry.valid.Validators.html">
+                        tapestry.valid.Validators
+                    </a>
+                </td>
+            </tr>
+        </table>
+    
+    </section>
+    </body>
 </document>
