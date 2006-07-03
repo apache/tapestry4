@@ -155,50 +155,8 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.3-SNAPSHOT</version>
-                <configuration>
-                    <systemProperties>
-                        <property>
-                            <name>user.language</name>
-                            <value>en_US</value>
-                        </property>
-                    </systemProperties>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.0.2-SNAPSHOT</version>
-                <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.1-SNAPSHOT</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-clover-plugin</artifactId>
-                <version>2.1</version>
-                <configuration>
-                    <licenseLocation>
-                        ${user.home}/.m2/repository/com/cenqua/clover/clover.license
-                    </licenseLocation>
-                    <jdk>1.5</jdk>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>pre-site</phase>
-                        <goals>
-                            <goal>instrument</goal>
-                            <goal>aggregate</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
@@ -276,12 +234,5 @@
             </plugin>
         </plugins>
     </reporting>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>apache.snapshots</id>
-            <url>http://people.apache.org/maven-snapshot-repository</url>
-        </pluginRepository>
-    </pluginRepositories>
 
 </project>
