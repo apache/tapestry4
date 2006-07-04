@@ -30,9 +30,10 @@
         
         <span class="info">
             <strong>Note:</strong>
-            <br />
+            <p>
             While the main source distribution does not require a 1.5 JDK, the examples do as they
             make use of features such as annotations.
+            </p>
         </span>
         
         <p>

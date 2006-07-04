@@ -40,7 +40,7 @@
 
         <span class="info">
             <strong>Note:</strong>
-            <br />
+            <p>
             The parameter type for listeners is
             <a href="../tapestry-framework/apidocs/org/apache/tapestry/IActionListener.html">
                 IActionListener
@@ -50,6 +50,7 @@
             occasions, it is useful to create objects that implement the interface directly. For
             pages, components and the engine, there is a listeners property whose keys are the names
             of listener methods, but the listener: binding reference is easier to use.
+            </p>
         </span>
 
         <p>
@@ -128,7 +129,7 @@
 
             <span class="info">
                 <strong>Note:</strong>
-                <br />
+                <p>
                 In Tapestry 3.0 and earlier,
                 <em>listener parameters</em>
                 were known as
@@ -139,6 +140,7 @@
                     IRequestCycle
                 </a>
                 and returning void.
+                </p>
             </span>
 
             <p>The listener can gain access these parameters in one of two ways:</p>

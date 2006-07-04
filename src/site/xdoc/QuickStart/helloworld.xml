@@ -397,6 +397,8 @@
         </section>
         
         <span class="info">
+        <strong>Note:</strong>
+        <p>
             <sup>1</sup>
             Session encoding is an aspect of the Servlet API. Encoding a URL adds information about
             the server-side session (the HttpSession) if there is one. Although this information can
@@ -405,6 +407,7 @@
             for you in Tapestry. It's another example of the basic Tapestry principle:
             <em>make the simplest choice the correct choice</em>
             .
+        </p>
         </span>
         
         </section>

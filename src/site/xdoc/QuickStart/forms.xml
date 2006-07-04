@@ -623,11 +623,14 @@ public abstract class AddProject extends BasePage implements PageBeginRenderList
         </section>
             
             <span class="info">
+            <strong>Note:</strong>
+            <p>
                 <sup>1</sup>
                 Of course, annotations required JDK 1.5, which you'll need for these tutorials. If
                 you can't use JDK 1.5 in production, that's OK. Tapestry is compatible with JDK 1.3
                 and has another approach, based on XML, for injecting pages or doing just about
                 anything else that shows up as an annotation in the tutorials.
+            </p>
             </span>
             
         </section>

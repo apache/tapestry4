@@ -152,13 +152,14 @@
 
                 <span class="info">
                     <strong>Note:</strong>
-                    <br />
+                    <p>
                     Listener methods in Tapestry are very similar in intent to
                     <em>delegates</em>
                     in C#. In both cases, a method of a particular object instance is represented as
                     an object. Calling this a "listener" or a "listener method" is a bit of a naming
                     snafu; it should be called a "delegate" and a "delegate method" but the existing
                     naming is too deeply entrenched to change any time soon.
+                    </p>
                 </span>
 
                 <p>
