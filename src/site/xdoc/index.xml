@@ -10,8 +10,10 @@
         <section name="Tapestry 4.1 - Dojo Integrated">
             <p>
                 This development series is focused around providing a full layer of support for building
-                highly dynamic web applications(XHR/ajax/dhtml) to enable development of rich web-based 
-                applications.
+                highly dynamic web applications (XHR/ajax/dhtml).  Whether you would like to sprinkle in a
+                few tiny ajax effects in an existing application, or build a full featured <em>heavy client</em> 
+                type application Tapestry(and <a href="http://dojotoolkit.org">dojo</a>) should be able to 
+                support your needs.
                 
                 <img style="float:right;margin-top:8px;margin-left:8px" src="./images/autocompleter.png" alt="Autocompleting select component" />
             </p>
