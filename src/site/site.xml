@@ -37,7 +37,7 @@
         
         <menu name="Quick Links" inherit="top" >
             <item name="Home" href="/index.html" />
-            <item name="Download" href="/download.html" />
+            <item name="Download" href="http://tapestry.apache.org/tapestry4.1/download.html" />
             <item name="Wiki" href="http://wiki.apache.org/tapestry/" />
         </menu>
         
