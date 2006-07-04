@@ -20,7 +20,9 @@
   "http://tapestry.apache.org/dtd/Tapestry_4_0.dtd">
 
 <page-specification class="org.apache.tapestry.workbench.fields.Fields">
-
+  
+  <inject type="state" property="visit" object="session-data" />
+  
   <property name="clientValidationEnabled" persist="client" initial-value="true"/>
   
   <bean name="required" class="org.apache.tapestry.form.validator.Required"/>

@@ -87,7 +87,7 @@ public class Max extends BaseValidator
                 new JSONLiteral("[dojo.validate.isInRange,{"
                         + "max:" + _max + ","
                         + "decimal:" + JSONObject.quote(symbols.getDecimalSeparator())
-                        + "]"));
+                        + "}]"));
         
         setProfileProperty(field, profile, 
                 ValidationConstants.CONSTRAINTS, buildMessage(context, field));

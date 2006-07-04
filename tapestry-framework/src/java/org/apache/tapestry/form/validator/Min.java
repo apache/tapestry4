@@ -87,7 +87,7 @@ public class Min extends BaseValidator
                 new JSONLiteral("[dojo.validate.isInRange,{"
                         + "min:" + _min + ","
                         + "decimal:" + JSONObject.quote(symbols.getDecimalSeparator())
-                        + "]"));
+                        + "}]"));
         
         setProfileProperty(field, profile, 
                 ValidationConstants.CONSTRAINTS, buildMessage(context, field));

@@ -15,9 +15,9 @@
 	<classpathentry path="config" kind="lib"/>
 	<classpathentry path="org.eclipse.jdt.launching.JRE_CONTAINER" kind="con"/>
 	<classpathentry path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER" kind="con"/>
-	<classpathentry path="tapestry-annotations/src/descriptor/META-INF" kind="lib"/>
-	<classpathentry path="tapestry-contrib/src/descriptor/META-INF" kind="lib"/>
-	<classpathentry path="tapestry-framework/src/descriptor/META-INF" kind="lib"/>
-	<classpathentry path="tapestry-portlet/src/descriptor/META-INF" kind="lib"/>
+	<classpathentry path="tapestry-annotations/src/descriptor" kind="lib"/>
+	<classpathentry path="tapestry-contrib/src/descriptor" kind="lib"/>
+	<classpathentry path="tapestry-framework/src/descriptor" kind="lib"/>
+	<classpathentry path="tapestry-portlet/src/descriptor" kind="lib"/>
 	<classpathentry path="bin" kind="output"/>
 </classpath>
