@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+   Copyright 2004, 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://tapestry.apache.org/dtd/Tapestry_4_0.dtd">
+	
+<component-specification class="org.apache.tapestry.html.Shell" allow-informal-parameters="no">
+
+  <description>
+  Provides the outer tags in an HTML page: &lt;html&gt;, &lt;head&gt; and &lt;title&gt;.
+  </description>
+
+  <parameter name="title"
+  	required="yes">
+    <description>
+    The title for the page.
+    </description>
+  </parameter>
+  
+  <parameter 
+  	name="raw" 
+  	default-value="false">
+    <description>
+  	If false (the default), then HTML characters in the title are escaped.  If
+  	true, then value is emitted exactly as is.
+    </description>
+  </parameter>
+
+
+  <parameter name="stylesheet">
+    <description>
+    If specified, provides an external stylesheet for the page.
+    </description>
+  </parameter>
+  
+  <parameter name="stylesheets">
+  	<description>
+  	Array or collection of stylesheet assets.
+  	</description>	
+  </parameter>
+
+  <parameter name="doctype"
+  	default-value='literal:HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"'>
+    <description>
+    Used to specify the full definition of the DOCTYPE element in the response page,
+    for example 'math SYSTEM "http://www.w3.org/Math/DTD/mathml1/mathml.dtd"' 
+
+    The default value is for the HTML 4.01 Transitional DTD.
+        
+    The list of currently valid DOCTYPE settings can be found here:
+    http://www.w3.org/QA/2002/04/valid-dtd-list.html
+
+    If the parameter is null or empty, no DOCTYPE tag will be rendered
+    </description>
+  </parameter>
+  
+  <parameter 
+  	name="renderContentType"
+  	default-value="true">
+    <description>
+    Determines whether to render an http-equiv element with the Content Type of this response.
+    </description>
+  </parameter>
+  
+  <parameter 
+  	name="refresh">
+    <description>
+    If specified, the page will refresh itself after the specified delay (in seconds).
+    </description>
+  </parameter>
+  
+  <parameter 
+  	name="delegate">
+    <description>
+    If specified, the delegate is rendered before the close of the &lt;head&gt;
+    tag (typically used to provide &lt;meta&gt; tags).
+    </description>
+  </parameter>
+  
+  <parameter name="renderBaseTag" default-value="true" >
+  	<description>
+  		Specifies whether or not to render the html basetag element in the document
+  		head.
+  	</description>
+  </parameter>
+  
+  <parameter name="ajaxDelegate" 
+             default-value="bean:coreAjaxDelegate" >
+     <description>
+     If specified, allows for the default ajaxDelegate that renders the dojo script
+     includes to be overriden.
+     </description>
+  </parameter>
+  
+  <parameter name="browserLogLevel" default-value="literal:WARNING">
+    <description>
+    Sets the default browser based log level. Default value is INFO. Uses
+    the dojo.log API.
+    </description>
+  </parameter>
+  
+  <parameter name="ajaxEnabled" 
+             default-value="true" >
+     <description>
+     If set to true, will include the required javascript libraries that make all
+     of the ajax functionality possible.
+     </description>
+  </parameter>
+  
+  <parameter name="tapestrySource" 
+             default-value="asset:defaultTapestrySource" >
+     <description>
+     If specified, allows for the default tapestry source included to be overriden.
+     </description>
+  </parameter>
+  
+  <parameter name="dojoSource" 
+             default-value="asset:defaultDojoSource" >
+     <description>
+     If specified, allows for the default dojo source included to be overriden.
+     </description>
+  </parameter>
+  
+  <parameter name="dojoPath" 
+             default-value="asset:defaultDojoPath" >
+     <description>
+     Specifies the default path to the root dojo folder, not the dojo.js file itself. This
+     is used by the djConfig.baseRelativePath javascript configuration variable in dojo.
+     </description>
+  </parameter>
+  
+  <inject property="valueConverter" object="service:tapestry.coerce.ValueConverter"/>
+  <inject property="pageService" object="engine-service:page"/>
+  <inject property="applicationSpecification" object="infrastructure:applicationSpecification"/>
+  <inject property="baseTagWriter" object="service:tapestry.url.BaseTagWriter"/>
+  <inject property="assetService" object="service:tapestry.services.Asset"/>
+  
+  <bean name="coreAjaxDelegate" class="org.apache.tapestry.dojo.AjaxShellDelegate">
+   <set name="dojoSource" value="dojoSource" />
+   <set name="assetService" value="assetService" />
+   <set name="dojoPath" value="dojoPath" />
+   <set name="tapestrySource" value="tapestrySource" />
+   <set name="logLevel" value="browserLogLevel" />
+  </bean>
+  
+  <asset name="defaultDojoSource" path="classpath:/dojo/dojo.js" />
+  <asset name="defaultDojoPath" path="classpath:/dojo/" />
+  <asset name="defaultTapestrySource" path="classpath:/tapestry/core.js" />
+</component-specification>
