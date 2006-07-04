@@ -52,6 +52,40 @@
                 </includes>
             </testResource>
         </testResources>
+        
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.1-SNAPSHOT</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <inherited>true</inherited>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clover-plugin</artifactId>
+                <version>2.1</version>
+                <inherited>true</inherited>
+                <configuration>
+                    <licenseLocation>
+                        ${user.home}/.m2/repository/com/cenqua/clover/clover.license
+                    </licenseLocation>
+                    <jdk>1.5</jdk>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>pre-site</phase>
+                        <goals>
+                            <goal>instrument</goal>
+                            <goal>aggregate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 
     <dependencies>
@@ -97,12 +131,8 @@
     </dependencies>
 
     <reporting>
-        <outputDirectory>../target/site/portlet</outputDirectory>
+        <outputDirectory>../target/site/tapestry-portlet</outputDirectory>
         <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>surefire-report-maven-plugin</artifactId>
-            </plugin>
             <plugin>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
                 <reportSets>
@@ -118,7 +148,7 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <configuration>
                     <linksource>true</linksource>
-                    <destDir>../target/site/portlet/apidocs</destDir>
+                    <destDir>../target/site/tapestry-portlet/apidocs</destDir>
                     <tags>
                         <tag>
                             <name>todo</name>
@@ -145,14 +175,6 @@
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <configuration>
                     <configLocation>${basedir}/../tapestry-checkstyle.xml</configLocation>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-clover-plugin</artifactId>
-                <configuration>
-                    <licenseLocation>
-                        ${user.home}/.m2/repository/com/cenqua/clover/clover.license
-                    </licenseLocation>
                 </configuration>
             </plugin>
         </plugins>

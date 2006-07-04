@@ -43,7 +43,7 @@
     </dependencyManagement>
     
     <reporting>
-        <outputDirectory>../target/site/examples</outputDirectory>
+        <outputDirectory>../target/site/tapestry-examples</outputDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
