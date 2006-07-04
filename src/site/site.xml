@@ -65,6 +65,7 @@
                 <item name="Hello World" href="/QuickStart/helloworld.html" />
                 <item name="Direct Links" href="/QuickStart/directlink.html" />
                 <item name="Forms" href="/QuickStart/forms.html" />
+                <item name="Contributed" href="/QuickStart/contributed.html" />
             </item>
             
             <item name="Examples" href="/exampleapps/index.html" />
