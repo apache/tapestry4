@@ -76,4 +76,36 @@ public class ServletWebSession implements WebSession
     {
         _httpSession.invalidate();
     }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public long getCreationTime()
+    {
+        return _httpSession.getCreationTime();
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public long getLastAccessedTime()
+    {
+        return _httpSession.getLastAccessedTime();
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public int getMaxInactiveInterval()
+    {
+        return _httpSession.getMaxInactiveInterval();
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public void setMaxInactiveInterval(int interval)
+    {
+        _httpSession.setMaxInactiveInterval(interval);
+    }
 }

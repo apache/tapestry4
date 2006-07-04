@@ -77,4 +77,36 @@ public class PortletWebSession implements WebSession
         _portletSession.invalidate();
     }
 
+    /** 
+     * {@inheritDoc}
+     */
+    public long getCreationTime()
+    {
+        return _portletSession.getCreationTime();
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public long getLastAccessedTime()
+    {
+        return _portletSession.getLastAccessedTime();
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public int getMaxInactiveInterval()
+    {
+        return _portletSession.getMaxInactiveInterval();
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public void setMaxInactiveInterval(int interval)
+    {
+        _portletSession.setMaxInactiveInterval(interval);
+    }
+    
 }

@@ -43,7 +43,7 @@ public abstract class Border extends BaseComponent implements PageBeginRenderLis
 
     private static String[] _tabOrder;
 
-    @InjectState("visit")
+    @InjectState("session-data")
     public abstract Visit getVisit();
 
     @Message

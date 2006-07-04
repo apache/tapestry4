@@ -17,6 +17,12 @@
 
 <module id="workbench" version="1.0.0" package="org.apache.tapestry.workbench">
   
+  <contribution configuration-id="tapestry.state.ApplicationObjects" >
+    <state-object name="session-data" scope="session" >
+        <create-instance class="org.apache.tapestry.workbench.Visit" />
+    </state-object>
+  </contribution>
+  
   <contribution configuration-id="tapestry.services.ApplicationServices">
     <service name="home" object="service:Home"/>
     <service name="chart" object="service:Chart"/>

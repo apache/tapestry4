@@ -52,7 +52,7 @@ public abstract class Timeout extends BaseComponent
     
     protected int getSessionTime()
     {
-        return Integer.parseInt((String)getSession().getAttribute("maxInactiveInterval"));
+        return getSession().getMaxInactiveInterval();
     }
     
     public boolean isInSession()
@@ -67,7 +67,7 @@ public abstract class Timeout extends BaseComponent
         if (nTimeToMessage < 0) nTimeToMessage = 0;
         int nRemainingTime = nSessionTime - nTimeToMessage;
         int nAutoProlongTime = nSessionTime - getAutoProlongTime();
-
+        
         Map mapSymbols = new HashMap();
         mapSymbols.put("confirmTimeout", new Integer(nTimeToMessage * 1000));
         mapSymbols.put("expirationTimeout", new Integer(nRemainingTime * 1000));
