@@ -238,13 +238,12 @@
 
                 <span class="info">
                     <strong>Note:</strong>
-                    <br />
-
+                    <p>
                     More correct would be to say "its container's template" as a component may be
                     contained within another component. For simplicities sake, we'll describe this
                     as if it was always a simple two-level heirarchy even though practical Tapestry
                     applications can be many levels deep.
-
+                    </p>
                 </span>
 
                 <img alt="Component templates and bodies"
@@ -277,11 +276,12 @@
                 
                 <span class="info">
                     <strong>Warning:</strong>
-                    <br />
+                    <p>
                     If you put a component inside the body of an
                     <a href="site:Insert">Insert</a>
                     (or any other component that discards its body), then Tapestry will throw an
                     exception. You aren't allowed to create a component simply to discard it.
+                    </p>
                 </span>
 
             </subsection><!-- templates.components.body -->

@@ -571,6 +571,7 @@ http://localhost:8080/directlink/app?component=inc&amp;page=Home&amp;service=dir
         </section>
         
         <span class="info">
+        <strong>Note:</strong>
         <p>
             <sup>1</sup>
             This is my (Howard Lewis Ship's) least favorite thing in Tapestry 4.0; it is something
