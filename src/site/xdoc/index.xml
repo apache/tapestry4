@@ -12,7 +12,7 @@
                 This development series is focused around providing a full layer of support for building
                 highly dynamic web applications (XHR/ajax/dhtml).  Whether you would like to sprinkle in a
                 few tiny ajax effects in an existing application, or build a full featured <em>heavy client</em> 
-                type application Tapestry(and <a href="http://dojotoolkit.org">dojo</a>) should be able to 
+                application Tapestry(and <a href="http://dojotoolkit.org">dojo</a>) should be able to 
                 support your needs.
                 
                 <img style="float:right;margin-top:8px;margin-left:8px" src="./images/autocompleter.png" alt="Autocompleting select component" />
@@ -66,6 +66,7 @@
         
         <section name="Dojo">
             <p>
+                <a href="http://dojotoolkit.org"><img src="./images/small-dojo-logo.png" alt="Dojo Toolkit" style="float:right" /></a>
                 Most of the functionality in this series is based entirely on the wonderful 
                 <a href="http://dojotoolkit.org">Dojo</a> javascript toolkit library. Not to 
                 say that you won't easily be able to plug in another toolkit if you like, just 
