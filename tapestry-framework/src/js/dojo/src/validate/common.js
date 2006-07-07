@@ -126,7 +126,7 @@ dojo.validate.isInRange = function(value, flags) {
 	// replace decimal with ".". The minus sign '-' could be the decimal!
 	pattern = "(\\d)[" + dec + "](\\d)";
 	value = value.replace(RegExp(pattern, "g"), "$1.$2");
-
+	
 	value = Number(value);
 	if ( value < min || value > max ) { return false; }
 

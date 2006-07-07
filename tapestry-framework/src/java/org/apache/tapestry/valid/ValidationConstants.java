@@ -35,4 +35,6 @@ public final class ValidationConstants
     public static final String REQUIRED_MESSAGE = "required-message";
     
     public static final String CONSTRAINTS = "constraints";
+    
+    public static final String TRIM = "trim";
 }

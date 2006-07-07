@@ -129,7 +129,7 @@ public class TestMax extends BaseValidatorTestCase
         
         assertEquals("{\"myfield\":{\"constraints\":\"default message\"},"
                 + "\"constraints\":{\"myfield\":[dojo.validate.isInRange,{max:20.0,decimal:\""
-                + symbols.getDecimalSeparator() + "\"]}}",
+                + symbols.getDecimalSeparator() + "\"}]}}",
                 json.toString());
     }
     
@@ -167,7 +167,7 @@ public class TestMax extends BaseValidatorTestCase
         
         assertEquals("{\"myfield\":{\"constraints\":\"custom\\\\message\"},"
                 + "\"constraints\":{\"myfield\":[dojo.validate.isInRange,{max:20.0,decimal:\""
-                + symbols.getDecimalSeparator() + "\"]}}",
+                + symbols.getDecimalSeparator() + "\"}]}}",
                 json.toString());
     }
 

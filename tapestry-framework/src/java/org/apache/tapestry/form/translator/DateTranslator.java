@@ -30,17 +30,17 @@ import org.apache.tapestry.valid.ValidationStrings;
  */
 public class DateTranslator extends FormatTranslator
 {
-
+    
     public DateTranslator()
     {
     }
-
+    
     // Needed until HIVEMIND-134 fix is available
     public DateTranslator(String initializer)
     {
         super(initializer);
     }
-
+    
     /**
      * @see org.apache.tapestry.form.translator.FormatTranslator#defaultPattern()
      */
@@ -48,7 +48,7 @@ public class DateTranslator extends FormatTranslator
     {
         return "MM/dd/yyyy";
     }
-
+    
     /**
      * @see org.apache.tapestry.form.translator.FormatTranslator#getFormat(java.util.Locale)
      */
@@ -56,12 +56,12 @@ public class DateTranslator extends FormatTranslator
     {
         return getDateFormat(locale);
     }
-
+    
     public SimpleDateFormat getDateFormat(Locale locale)
     {
         return new SimpleDateFormat(getPattern(), new DateFormatSymbols(locale));
     }
-
+    
     /**
      * @see org.apache.tapestry.form.translator.FormatTranslator#getMessageKey()
      */
@@ -69,7 +69,7 @@ public class DateTranslator extends FormatTranslator
     {
         return ValidationStrings.INVALID_DATE;
     }
-
+    
     /**
      * @see org.apache.tapestry.form.translator.AbstractTranslator#getMessageParameters(java.util.Locale,
      *      java.lang.String)
@@ -77,9 +77,8 @@ public class DateTranslator extends FormatTranslator
     protected Object[] getMessageParameters(Locale locale, String label)
     {
         String pattern = getDateFormat(locale).toLocalizedPattern().toUpperCase(locale);
-
-        return new Object[]
-        { label, pattern };
+        
+        return new Object[] { label, pattern };
     }
 
     /**

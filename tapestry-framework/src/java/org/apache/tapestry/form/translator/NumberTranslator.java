@@ -25,6 +25,9 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
+import org.apache.tapestry.json.JSONLiteral;
+import org.apache.tapestry.json.JSONObject;
+import org.apache.tapestry.valid.ValidationConstants;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 
@@ -63,14 +66,6 @@ public class NumberTranslator extends FormatTranslator
     }
 
     /**
-     * @see org.apache.tapestry.form.AbstractFormComponentContributor#defaultScript()
-     */
-    protected String defaultScript()
-    {
-        return "/org/apache/tapestry/form/translator/NumberTranslator.js";
-    }
-
-    /**
      * @see org.apache.tapestry.form.translator.FormatTranslator#defaultPattern()
      */
     protected String defaultPattern()
@@ -106,9 +101,8 @@ public class NumberTranslator extends FormatTranslator
     protected Object[] getMessageParameters(Locale locale, String label)
     {
         String pattern = getDecimalFormat(locale).toLocalizedPattern();
-
-        return new Object[]
-        { label, pattern };
+        
+        return new Object[] { label, pattern };
     }
 
     /**
@@ -120,11 +114,28 @@ public class NumberTranslator extends FormatTranslator
             FormComponentContributorContext context, IFormComponent field)
     {
         super.renderContribution(writer, cycle, context, field);
-
+        
         String message = TapestryUtils.enquote(buildMessage(context, field, getMessageKey()));
-
-        context.addSubmitHandler("function(event) { Tapestry.validate_number(event, '"
-                + field.getClientId() + "', " + message + "); }");
+        
+        JSONObject profile = context.getProfile();
+        
+        if (!profile.has(ValidationConstants.CONSTRAINTS)) {
+            profile.put(ValidationConstants.CONSTRAINTS, new JSONObject());
+        }
+        JSONObject cons = profile.getJSONObject(ValidationConstants.CONSTRAINTS);
+        
+        DecimalFormat format = getDecimalFormat(context.getLocale());
+        
+        cons.put(field.getClientId(), 
+                new JSONLiteral("[dojo.validate.isRealNumber,{"
+                        + "places:" + format.getMaximumIntegerDigits()) + ","
+                        + "decimal:" 
+                        + JSONObject.quote(format.getDecimalFormatSymbols().getDecimalSeparator()) + ","
+                        + "separator:" + JSONObject.quote(format.getDecimalFormatSymbols().getGroupingSeparator())
+                        + "}]");
+        
+        setProfileProperty(field, profile, 
+                ValidationConstants.CONSTRAINTS, message);
     }
 
     /**
