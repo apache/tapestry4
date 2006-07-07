@@ -75,7 +75,7 @@ public abstract class FormatTranslator extends AbstractTranslator
             throws ValidatorException
     {
         Format format = getFormat(messages.getLocale());
-
+        
         try
         {
             return format.parseObject(text);

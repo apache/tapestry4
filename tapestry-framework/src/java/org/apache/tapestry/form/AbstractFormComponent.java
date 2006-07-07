@@ -75,14 +75,14 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
     {
         // If the user explicitly sets the id parameter to null, then
         // we honor that!
-
+        
         String rawId = getIdParameter();
-
+        
         if (rawId == null)
             return;
-
+        
         String id = cycle.getUniqueId(TapestryUtils.convertTapestryIdToNMToken(rawId));
-
+        
         // Store for later access by the FieldLabel (or JavaScript).
 
         setClientId(id);

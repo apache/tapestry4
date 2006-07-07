@@ -17,6 +17,8 @@ package org.apache.tapestry.form;
 import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.json.JSONArray;
+import org.apache.tapestry.json.JSONObject;
 
 /**
  * Abstract {@link FormComponentContributor} implementation that adds an optional static javscript
@@ -43,7 +45,7 @@ public abstract class AbstractFormComponentContributor implements FormComponentC
      * Defines the default JavaScript file used by this contributor. Overriden by most subclasses
      * that use JavaScript.
      */
-    protected String defaultScript()
+    public String defaultScript()
     {
         return null;
     }
@@ -68,5 +70,43 @@ public abstract class AbstractFormComponentContributor implements FormComponentC
     {
         if (_script != null)
             context.includeClasspathScript(_script);
+    }
+    
+    /**
+     * Utility used to append onto an existing property represented as an
+     * object array. 
+     * @param profile
+     * @param key
+     * @param value
+     */
+    public void accumulateProperty(JSONObject profile, String key, Object value)
+    {
+        if (!profile.has(key))
+            profile.put(key, new JSONArray());
+        
+        profile.accumulate(key, value);
+    }
+    
+    /**
+     * Utility method to store a field specific profile property which can later
+     * be used by client side validation. 
+     * 
+     * @param field
+     *          The field to store the property for, will key off of {@link IFormComponent#getClientId()}.
+     * @param profile
+     *          The profile for the form.
+     * @param key
+     *          The property key to store.
+     * @param property
+     *          The property to store.
+     */
+    public void setProfileProperty(IFormComponent field, JSONObject profile, 
+            String key, Object property)
+    {
+        if (!profile.has(field.getClientId())) 
+            profile.put(field.getClientId(), new JSONObject());
+        
+        JSONObject fieldProps = profile.getJSONObject(field.getClientId());
+        fieldProps.put(key, property);
     }
 }

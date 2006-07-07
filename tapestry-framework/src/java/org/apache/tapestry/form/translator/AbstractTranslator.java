@@ -23,6 +23,8 @@ import org.apache.tapestry.form.AbstractFormComponentContributor;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
+import org.apache.tapestry.json.JSONObject;
+import org.apache.tapestry.valid.ValidationConstants;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
@@ -102,8 +104,7 @@ public abstract class AbstractTranslator extends AbstractFormComponentContributo
 
     protected Object[] getMessageParameters(Locale locale, String label)
     {
-        return new Object[]
-        { label };
+        return new Object[] { label };
     }
 
     /**
@@ -114,10 +115,12 @@ public abstract class AbstractTranslator extends AbstractFormComponentContributo
             FormComponentContributorContext context, IFormComponent field)
     {
         super.renderContribution(writer, cycle, context, field);
-
-        if (_trim)
-            context.addSubmitHandler("function (event) { Tapestry.trim_field_value('"
-                    + field.getClientId() + "'); }");
+        
+        if (!_trim) {
+            JSONObject profile = context.getProfile();
+            
+            accumulateProperty(profile, ValidationConstants.TRIM, field.getClientId());
+        }
     }
 
     public boolean isTrim()

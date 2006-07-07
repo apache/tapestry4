@@ -133,6 +133,9 @@ tapestry.form.validation={
 	 */
 	clearValidationDecorations:function(form, props){
 		for (var i=0; i<form.elements.length; i++) {
+			if (typeof form.elements[i].type == "undefined"
+				|| form.elements[i].type == "submit" 
+				|| form.elements[i].type == "hidden") { continue; }
 			dojo.html.removeClass(form.elements[i], this.missingClass);
 			dojo.html.removeClass(form.elements[i], this.invalidClass);
 		}
