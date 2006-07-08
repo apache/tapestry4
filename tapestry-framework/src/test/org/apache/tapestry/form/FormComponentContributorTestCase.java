@@ -85,9 +85,9 @@ public abstract class FormComponentContributorTestCase extends TapestryTestCase
         checkOrder(field, false);
         
         expect(field.getDisplayName()).andReturn(displayName);
-
-        expect(field.getClientId()).andReturn(clientId).times(count);
-
+        
+        expect(field.getClientId()).andReturn(clientId).anyTimes();
+        
         return field;
     }
     

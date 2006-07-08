@@ -83,11 +83,11 @@ public class Pattern extends BaseValidator
         }
         JSONObject cons = profile.getJSONObject(ValidationConstants.CONSTRAINTS);
         
-        cons.put(field.getClientId(), 
+        accumulateProperty(cons, field.getClientId(), 
                 new JSONLiteral("[tapestry.form.validation.isValidPattern,\""
                         + pattern + "\"]"));
         
-        setProfileProperty(field, profile, 
+        accumulateProfileProperty(field, profile, 
                 ValidationConstants.CONSTRAINTS, buildMessage(context, field));
     }
 

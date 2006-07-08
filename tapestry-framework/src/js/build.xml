@@ -22,14 +22,6 @@
 -->
 <project name="Tapestry Javascript" default="package">
 
-	<!-- ====================================================== -->
-	<!-- Properties/environment checks							-->
-	<!-- ====================================================== -->
-	<property name="module.name" value="framework-js" />
-	<property name="module.javac.target" value="1.5" />
-	<property name="module.javac.source" value="1.5" />
-	<property name="module.install.dir" value="${root.dir}/target/js" />
-	
 	<property name="root.dir" value="../../.." />
 	<property file="${root.dir}/config/build.properties" />
 	<property name="profile.file" value="tapestry.profile.js" />
@@ -38,8 +30,6 @@
 	
 	<taskdef name="dojo-test" classname="org.dojotoolkit.ant.DojoTestTask" 
 			classpath="lib/ant-dojotest.jar" />
-	
-	<import file="${hivebuild.dir}/module.xml" />
 	
 	<target name="check-dependencies" description="Ensures that dojo.dir is set.">
 
@@ -68,10 +58,6 @@
 				<exclude name="dojo/tests/**" />
 			</fileset>
 		</copy>
-	</target>
-	
-	<target name="install" >
-	
 	</target>
 	
 	<!-- ====================================================== -->

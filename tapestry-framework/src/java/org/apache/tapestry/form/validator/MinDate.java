@@ -98,7 +98,7 @@ public class MinDate extends BaseValidator
         }
         JSONObject cons = profile.getJSONObject(ValidationConstants.CONSTRAINTS);
         
-        cons.put(field.getClientId(), 
+        accumulateProperty(cons, field.getClientId(), 
                 new JSONLiteral("[tapestry.form.datetime.isValidDate,{"
                         + "min:" 
                         + JSONObject.quote(translator.format(field, context.getLocale(), _minDate))
@@ -107,7 +107,7 @@ public class MinDate extends BaseValidator
                         + JSONObject.quote(Strftime.convertToPosixFormat(translator.getPattern()))
                         + "}]"));
         
-        setProfileProperty(field, profile, 
+        accumulateProfileProperty(field, profile, 
                 ValidationConstants.CONSTRAINTS, buildMessage(context, field, translator));
     }
 }

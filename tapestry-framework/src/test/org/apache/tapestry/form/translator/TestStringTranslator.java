@@ -14,12 +14,15 @@
 
 package org.apache.tapestry.form.translator;
 
+import static org.easymock.EasyMock.expect;
 import static org.testng.AssertJUnit.assertEquals;
 
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
+import org.apache.tapestry.form.FormComponentContributorTestCase;
 import org.apache.tapestry.form.IFormComponent;
+import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.valid.ValidatorException;
 import org.testng.annotations.Configuration;
 import org.testng.annotations.Test;
@@ -31,7 +34,7 @@ import org.testng.annotations.Test;
  * @since 4.0
  */
 @Test
-public class TestStringTranslator extends TranslatorTestCase
+public class TestStringTranslator extends FormComponentContributorTestCase
 {
     private StringTranslator _translator = new StringTranslator();
 
@@ -163,12 +166,14 @@ public class TestStringTranslator extends TranslatorTestCase
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
         
+        JSONObject json = new JSONObject();
+        
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
-
+        
+        expect(context.getProfile()).andReturn(json);
+        
         IFormComponent field = newFieldWithClientId("myfield");
-
-        trainTrim(context, "myfield");
-
+        
         replay();
 
         Translator t = new StringTranslator("trim");
@@ -176,6 +181,9 @@ public class TestStringTranslator extends TranslatorTestCase
         t.renderContribution(writer, cycle, context, field);
 
         verify();
+        
+        assertEquals("{\"trim\":\"myfield\"}",
+                json.toString());
     }
 
 }

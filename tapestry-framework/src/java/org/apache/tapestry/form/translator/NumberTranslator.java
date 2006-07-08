@@ -22,7 +22,6 @@ import java.util.Locale;
 import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.json.JSONLiteral;
@@ -115,27 +114,27 @@ public class NumberTranslator extends FormatTranslator
     {
         super.renderContribution(writer, cycle, context, field);
         
-        String message = TapestryUtils.enquote(buildMessage(context, field, getMessageKey()));
+        String message = buildMessage(context, field, getMessageKey());
         
         JSONObject profile = context.getProfile();
-        
         if (!profile.has(ValidationConstants.CONSTRAINTS)) {
             profile.put(ValidationConstants.CONSTRAINTS, new JSONObject());
         }
+        
         JSONObject cons = profile.getJSONObject(ValidationConstants.CONSTRAINTS);
         
         DecimalFormat format = getDecimalFormat(context.getLocale());
         
-        cons.put(field.getClientId(), 
+        cons.accumulate(field.getClientId(),
                 new JSONLiteral("[dojo.validate.isRealNumber,{"
-                        + "places:" + format.getMaximumIntegerDigits()) + ","
+                        + ((format.getMaximumFractionDigits() > 0) 
+                        ? "" : "places:" + format.getMaximumFractionDigits() + ",")
                         + "decimal:" 
                         + JSONObject.quote(format.getDecimalFormatSymbols().getDecimalSeparator()) + ","
                         + "separator:" + JSONObject.quote(format.getDecimalFormatSymbols().getGroupingSeparator())
-                        + "}]");
+                        + "}]"));
         
-        setProfileProperty(field, profile, 
-                ValidationConstants.CONSTRAINTS, message);
+        accumulateProfileProperty(field, profile, ValidationConstants.CONSTRAINTS, message);
     }
 
     /**

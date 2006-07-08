@@ -16,7 +16,6 @@ package org.apache.tapestry.form.validator;
 
 import static org.easymock.EasyMock.expect;
 import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertNotNull;
 import static org.testng.AssertJUnit.assertSame;
 
 import java.util.Collections;
@@ -26,7 +25,6 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
-import org.apache.tapestry.json.JSONArray;
 import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.valid.ValidationConstants;
 import org.apache.tapestry.valid.ValidationConstraint;
@@ -189,13 +187,8 @@ public class TestRequired extends BaseValidatorTestCase
         
         verify();
         
-        assertNotNull(json.get(ValidationConstants.REQUIRED));
-        JSONArray arr = json.getJSONArray(ValidationConstants.REQUIRED);
-        assertEquals("fred", arr.getString(0));
-        
-        assertNotNull(json.get("fred"));
-        JSONObject obj = json.getJSONObject("fred");
-        assertEquals("Default\\Message for Fred.", obj.getString(ValidationConstants.REQUIRED));
+        assertEquals("{\"fred\":{\"required\":\"Default\\\\Message for Fred.\"},\"required\":\"fred\"}",
+                json.toString());
     }
     
     public void testIsRequired()

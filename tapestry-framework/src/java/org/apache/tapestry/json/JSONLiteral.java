@@ -22,7 +22,6 @@ package org.apache.tapestry.json;
  */
 public class JSONLiteral
 {
-
     private String _value;
     
     public JSONLiteral(String value)

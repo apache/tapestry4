@@ -156,8 +156,11 @@ public class EngineServiceLink implements ILink
 
         String result = buffer.toString();
 
-        result = _cycle.encodeURL(result);
-
+        //TODO: Portlets need this result encoded again via IRequestCycle.encodeURL(), need
+        // to find a way to do this that doesn't conflict with existing URL construction semantics. (the
+        // isStateful parameter would effectively be ignored in this class if we encoded the url again
+        // because that method adds sessionID information from the servlet container ) JIRA issue TAPESTRY-802
+        
         return result;
     }
 

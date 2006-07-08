@@ -14,10 +14,13 @@
 
 package org.apache.tapestry.util;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNull;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.testng.annotations.Test;
 
 /**
@@ -27,7 +30,7 @@ import org.testng.annotations.Test;
  * @since 4.0
  */
 @Test
-public class TestQueryParameterMap extends HiveMindTestCase
+public class TestQueryParameterMap extends BaseComponentTestCase
 {
     public void testUnknownKey()
     {
@@ -44,7 +47,7 @@ public class TestQueryParameterMap extends HiveMindTestCase
         m.setParameterValue("fred", "flintstone");
 
         assertEquals("flintstone", m.getParameterValue("fred"));
-        assertListsEqual(new String[]
+        assertListEquals(new String[]
         { "flintstone" }, m.getParameterValues("fred"));
     }
 
@@ -57,11 +60,11 @@ public class TestQueryParameterMap extends HiveMindTestCase
 
         m.setParameterValues("flintstone", values);
 
-        assertListsEqual(values, m.getParameterValues("flintstone"));
+        assertListEquals(values, m.getParameterValues("flintstone"));
 
         m.setParameterValue("rubble", "barney");
 
-        assertListsEqual(new String[]
+        assertListEquals(new String[]
         { "barney" }, m.getParameterValues("rubble"));
     }
 
@@ -72,7 +75,7 @@ public class TestQueryParameterMap extends HiveMindTestCase
         m.setParameterValue("fred", "flintstone");
         m.setParameterValue("barney", "rubble");
 
-        assertListsEqual(new String[]
+        assertListEquals(new String[]
         { "barney", "fred" }, m.getParameterNames());
     }
 

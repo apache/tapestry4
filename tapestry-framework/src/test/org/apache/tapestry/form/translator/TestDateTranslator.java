@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.form.translator;
 
+import static org.easymock.EasyMock.expect;
 import static org.testng.AssertJUnit.assertEquals;
 
 import java.util.Calendar;
@@ -23,8 +24,10 @@ import java.util.Locale;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
+import org.apache.tapestry.form.FormComponentContributorTestCase;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
+import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
@@ -38,7 +41,7 @@ import org.testng.annotations.Test;
  * @since 4.0
  */
 @Test
-public class TestDateTranslator extends TranslatorTestCase
+public class TestDateTranslator extends FormComponentContributorTestCase
 {
     private Calendar _calendar = Calendar.getInstance();
 
@@ -234,12 +237,14 @@ public class TestDateTranslator extends TranslatorTestCase
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
-
-        IFormComponent field = newFieldWithClientId("foo");
-
+        
+        JSONObject json = new JSONObject();
+        
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
 
-        trainTrim(context, "foo");
+        expect(context.getProfile()).andReturn(json);
+        
+        IFormComponent field = newFieldWithClientId("foo");
 
         replay();
 
@@ -249,6 +254,8 @@ public class TestDateTranslator extends TranslatorTestCase
         dt.renderContribution(writer, cycle, context, field);
 
         verify();
-
+        
+        assertEquals("{\"trim\":\"foo\"}",
+                json.toString());
     }
 }

@@ -55,17 +55,12 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
         WebRequest request = newRequest();
         IRequestCycle rc = newCycle();
 
-        trainEncodeURL(
-                rc,
-                "/context/servlet?service=myservice",
-                "/context/servlet?service=myservice;encoded");
-
         EngineServiceLink l = new EngineServiceLink(rc, "/context/servlet", ENCODING, _urlCodec,
                 request, buildParameters("myservice", null), true);
 
         replay();
 
-        assertEquals("/context/servlet?service=myservice;encoded", l.getURL());
+        assertEquals("/context/servlet?service=myservice", l.getURL());
 
         verify();
 
@@ -82,10 +77,6 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
         EngineServiceLink l = new EngineServiceLink(rc, "/ctx/app", ENCODING, _urlCodec, request,
                 buildParameters("foo", new String[]
                 { "godzilla", "frodo" }), false);
-
-        trainEncodeURL(rc, 
-        		"/ctx/app?service=foo&sp=godzilla&sp=frodo", 
-        		"/ctx/app?service=foo&sp=godzilla&sp=frodo");
         
         replay();
 
@@ -104,11 +95,9 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
         EngineServiceLink l = new EngineServiceLink(rc, "/context/servlet", ENCODING, _urlCodec,
                 request, buildParameters("myservice", null), true);
 
-        trainEncodeURL(rc, "/context/servlet", "/context/servlet;encoded");
-
         replay();
-
-        assertEquals("/context/servlet;encoded", l.getURL(null, false));
+        
+        assertEquals("/context/servlet", l.getURL(null, false));
 
         verify();
     }
@@ -122,8 +111,6 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
 
         EngineServiceLink l = new EngineServiceLink(rc, "/context/servlet", ENCODING, _urlCodec,
                 request, buildParameters("myservice", null), false);
-
-        trainEncodeURL(rc, "/context/servlet#anchor", "/context/servlet#anchor");
         
         replay();
 
@@ -139,10 +126,6 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
 
         EngineServiceLink l = new EngineServiceLink(rc, "/context/servlet", ENCODING, _urlCodec,
                 request, buildParameters("myservice", null), false);
-
-        trainEncodeURL(rc, 
-        		"/context/servlet?service=myservice#anchor", 
-        		"/context/servlet?service=myservice#anchor");
         
         replay();
 
@@ -165,10 +148,6 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
         
         trainGetServerName(request, "TESTSERVER.COM");
         
-        trainEncodeURL(rc, 
-        		"HTTP://TESTSERVER.COM:9187/ctx/app?service=myservice", 
-        		"HTTP://TESTSERVER.COM:9187/ctx/app?service=myservice");
-        
         replay();
         
         assertEquals("HTTP://TESTSERVER.COM:9187/ctx/app?service=myservice", l.getAbsoluteURL());
@@ -183,10 +162,6 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
 
         EngineServiceLink l = new EngineServiceLink(rc, "/ctx/app", ENCODING, _urlCodec, request,
                 buildParameters("myservice", null), false);
-
-        trainEncodeURL(rc, 
-        		"https://myserver.net:9100/ctx/app?service=myservice", 
-        		"https://myserver.net:9100/ctx/app?service=myservice");
         
         replay();
 
@@ -208,10 +183,6 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
         trainGetScheme(request, "http");
         trainGetServerName(request, "myserver.net");
         trainGetServerPort(request, 80);
-
-        trainEncodeURL(rc, 
-        		"/ctx/app?service=myservice#myanchor", 
-        		"/ctx/app?service=myservice#myanchor");
         
         replay();
 
@@ -234,10 +205,6 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
         IRequestCycle rc = newCycle();
 
         trainGetScheme(request, "http");
-
-        trainEncodeURL(rc, 
-        		"https://override.net:8080/ctx/app?service=myservice#myanchor", 
-        		"https://override.net:8080/ctx/app?service=myservice#myanchor");
         
         replay();
 
