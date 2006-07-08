@@ -123,8 +123,6 @@ public class LinkFactoryTest extends BaseComponentTestCase
 
         trainGetEngine(cycle, engine);
         trainGetOutputEncoding(engine, "utf-8");
-
-        trainEncodeURL(cycle, "/context/app?service=myservice", "/context/app?service=myservice");
         
         replay();
 
@@ -167,9 +165,7 @@ public class LinkFactoryTest extends BaseComponentTestCase
 
         trainGetEngine(cycle, engine);
         trainGetOutputEncoding(engine, "utf-8");
-
-        trainEncodeURL(cycle, "/context/app?foo=bar&service=myservice", "{encoded}");
-
+        
         replay();
 
         LinkFactoryImpl lf = new LinkFactoryImpl();
@@ -181,14 +177,14 @@ public class LinkFactoryTest extends BaseComponentTestCase
         lf.setRequest(request);
         lf.setPersistenceStrategySource(new MockSource());
         lf.setRequestCycle(cycle);
-
+        
         lf.initializeService();
-
+        
         Map parameters = new HashMap();
-
+        
         ILink link = lf.constructLink(service, false, parameters, true);
-
-        assertEquals("{encoded}", link.getURL());
+        
+        assertEquals("/context/app?foo=bar&service=myservice", link.getURL());
 
         verify();
     }
@@ -203,8 +199,7 @@ public class LinkFactoryTest extends BaseComponentTestCase
 
         trainGetEngine(cycle, engine);
         trainGetOutputEncoding(engine, "utf-8");
-        trainEncodeURL(cycle, "/context/app?service=myservice", "/context/app?service=myservice");
-
+        
         replay();
 
         List l = new ArrayList();
@@ -241,7 +236,6 @@ public class LinkFactoryTest extends BaseComponentTestCase
 
         trainGetEngine(cycle, engine);
         trainGetOutputEncoding(engine, "utf-8");
-        trainEncodeURL(cycle, "/context/Barney.html", "/context/Barney.html");
 
         replay();
 
@@ -305,7 +299,6 @@ public class LinkFactoryTest extends BaseComponentTestCase
 
         trainGetEngine(cycle, engine);
         trainGetOutputEncoding(engine, "utf-8");
-        trainEncodeURL(cycle, "/context/Barney.ext?sp=T", "/context/Barney.ext?sp=T");
 
         replay();
 

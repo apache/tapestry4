@@ -13,7 +13,9 @@
 // limitations under the License.
 package org.apache.tapestry.util;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import static org.testng.AssertJUnit.assertEquals;
+
+import org.apache.tapestry.BaseComponentTestCase;
 import org.testng.annotations.Test;
 
 
@@ -24,7 +26,7 @@ import org.testng.annotations.Test;
  * @author jkuhnert
  */
 @Test
-public class StrftimeTest extends HiveMindTestCase
+public class StrftimeTest extends BaseComponentTestCase
 {
 
     public void testPosixFormat()

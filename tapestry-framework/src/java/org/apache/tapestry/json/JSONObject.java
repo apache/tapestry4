@@ -884,6 +884,8 @@ public class JSONObject
                 .toString(indentFactor, indent)); }
         if (value instanceof JSONArray) { return (((JSONArray) value).toString(
                 indentFactor, indent)); }
+        if (JSONLiteral.class.isAssignableFrom(value.getClass()))
+            return value.toString();
         return quote(value.toString());
     }
 }

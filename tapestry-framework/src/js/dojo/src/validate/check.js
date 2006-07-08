@@ -163,28 +163,40 @@ dojo.validate.check = function(form, profile) {
 	}
 
 	// Find invalid input fields.
-	if ( typeof profile.constraints == "object" ) {
+	if(dojo.lang.isObject(profile.constraints)){
 		// constraint properties are the names of fields to be validated
-		for (name in profile.constraints) {
+		for(name in profile.constraints){
 			var elem = form[name];
-			if ( elem.type != "text" && elem.type != "textarea" && elem.type != "password" ) { continue; }
-			// skip if blank - its optional unless required, in which case it is already listed as missing.
-			if ( /^\s*$/.test(elem.value) ) { continue; }
-
+			if(	(elem.type != "text")&&
+				(elem.type != "textarea")&&
+				(elem.type != "password")){
+				continue;
+			}
+			// skip if blank - its optional unless required, in which case it
+			// is already listed as missing.
+			if( /^\s*$/.test(elem.value)){ continue; }
+			
 			var isValid = true;
 			// case 1: constraint value is validation function
-			if ( typeof profile.constraints[name] == "function" ) {
+			if(dojo.lang.isFunction(profile.constraints[name])){
 				isValid = profile.constraints[name](elem.value);
+			}else if(dojo.lang.isArray(profile.constraints[name])){
+				// handle nested arrays for multiple constraints
+				if (dojo.lang.isArray(profile.constraints[name][0])) {
+					for (var i=0; i<profile.constraints[name].length; i++) {
+						isValid = dojo.validate.evaluateConstraint(profile, profile.constraints[name][i],
+												name, elem);
+						if (!isValid) { break; }
+					}
+				} else {
+					// case 2: constraint value is array, first elem is function,
+					// tail is parameters
+					isValid = dojo.validate.evaluateConstraint(profile, profile.constraints[name],
+												name, elem);
+				}
 			}
-			// case 2: constraint value is array, first elem is function, tail is parameters
-			else if ( profile.constraints[name] instanceof Array ) {
-				var isValidSomething = profile.constraints[name][0];
-				var params = profile.constraints[name].slice(1);
-				params.unshift(elem.value);
-				isValid = isValidSomething.apply(null, params);
-			}
-
-			if ( !isValid ) {	
+			
+			if(!isValid){	
 				invalid[invalid.length] = elem.name;
 			}
 		}
@@ -208,4 +220,41 @@ dojo.validate.check = function(form, profile) {
 	}
 
 	return results;
+}
+
+/**
+ * Evaluates dojo.validate.check() constraints that are specified as array
+ * arguments. The arrays are expected to be in the format of:
+ * 
+ * <pre>
+ * 	constraints:{
+ * 		fieldName: [functionToCall, param1, param2, etc.],
+ * 		fieldName: [[functionToCallFirst, param1],[functionToCallSecond,param2]]
+ * 	}
+ * </pre>
+ * 
+ * This function evaluates a single array function in the format of:
+ * <pre>
+ * 	[functionName, argument1, argument2, etc]
+ * </pre>
+ * 
+ * The function will be parsed out and evaluated against the incoming parameters.
+ * 
+ * @param profile - The dojo.validate.check() profile that this evaluation is against.
+ * @param constraint - The single [] array of function and arguments for the function.
+ * @param fieldName - The form dom name of the field being validated.
+ * @param elem - The form element field.
+ * 
+ * @return Boolean, True if constraint passed, false otherwise.
+ */
+dojo.validate.evaluateConstraint=function(profile, constraint, fieldName, elem){
+	var isValidSomething = constraint[0];
+	var params = constraint.slice(1);
+	params.unshift(elem.value);
+	
+	if(typeof isValidSomething != "undefined"){
+		return isValidSomething.apply(null, params);
+	}
+	
+	return false;
 }

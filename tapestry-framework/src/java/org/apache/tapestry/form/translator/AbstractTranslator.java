@@ -96,9 +96,9 @@ public abstract class AbstractTranslator extends AbstractFormComponentContributo
     protected String buildMessage(ValidationMessages messages, IFormComponent field, String key)
     {
         String label = field.getDisplayName();
-
+        
         Object[] parameters = getMessageParameters(messages.getLocale(), label);
-
+        
         return messages.formatValidationMessage(_message, key, parameters);
     }
 
@@ -116,7 +116,7 @@ public abstract class AbstractTranslator extends AbstractFormComponentContributo
     {
         super.renderContribution(writer, cycle, context, field);
         
-        if (!_trim) {
+        if (_trim) {
             JSONObject profile = context.getProfile();
             
             accumulateProperty(profile, ValidationConstants.TRIM, field.getClientId());

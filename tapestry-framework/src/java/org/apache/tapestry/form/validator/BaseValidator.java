@@ -21,7 +21,6 @@ import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.TranslatedField;
 import org.apache.tapestry.form.translator.Translator;
-import org.apache.tapestry.json.JSONArray;
 import org.apache.tapestry.json.JSONObject;
 
 /**
@@ -94,14 +93,15 @@ public abstract class BaseValidator implements Validator
      * @param property
      *          The property to store.
      */
-    public void setProfileProperty(IFormComponent field, JSONObject profile, 
+    public void accumulateProfileProperty(IFormComponent field, JSONObject profile, 
             String key, Object property)
     {
         if (!profile.has(field.getClientId())) 
             profile.put(field.getClientId(), new JSONObject());
         
         JSONObject fieldProps = profile.getJSONObject(field.getClientId());
-        fieldProps.put(key, property);
+        
+        accumulateProperty(fieldProps, key, property);
     }
     
     /**
@@ -113,9 +113,6 @@ public abstract class BaseValidator implements Validator
      */
     public void accumulateProperty(JSONObject profile, String key, Object value)
     {
-        if (!profile.has(key))
-            profile.put(key, new JSONArray());
-        
         profile.accumulate(key, value);
     }
     

@@ -17,7 +17,6 @@ package org.apache.tapestry.form;
 import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.json.JSONArray;
 import org.apache.tapestry.json.JSONObject;
 
 /**
@@ -81,9 +80,6 @@ public abstract class AbstractFormComponentContributor implements FormComponentC
      */
     public void accumulateProperty(JSONObject profile, String key, Object value)
     {
-        if (!profile.has(key))
-            profile.put(key, new JSONArray());
-        
         profile.accumulate(key, value);
     }
     
@@ -100,13 +96,14 @@ public abstract class AbstractFormComponentContributor implements FormComponentC
      * @param property
      *          The property to store.
      */
-    public void setProfileProperty(IFormComponent field, JSONObject profile, 
+    public void accumulateProfileProperty(IFormComponent field, JSONObject profile, 
             String key, Object property)
     {
         if (!profile.has(field.getClientId())) 
             profile.put(field.getClientId(), new JSONObject());
         
         JSONObject fieldProps = profile.getJSONObject(field.getClientId());
-        fieldProps.put(key, property);
+        
+        accumulateProperty(fieldProps, key, property);
     }
 }

@@ -13,9 +13,14 @@
 // limitations under the License.
 package org.apache.tapestry.util;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNotNull;
+import static org.testng.AssertJUnit.assertNull;
+import static org.testng.AssertJUnit.assertTrue;
+
 import org.apache.oro.text.perl.Perl5Util;
 import org.apache.oro.text.regex.MatchResult;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.testng.annotations.Test;
 
 
@@ -25,7 +30,7 @@ import org.testng.annotations.Test;
  * @author jkuhnert
  */
 @Test
-public class ScriptUtilsTest extends HiveMindTestCase
+public class ScriptUtilsTest extends BaseComponentTestCase
 {
     protected static final String JAVASCRIPT_NOCOMMENT = 
         "<script type=\"text/javascript\">"

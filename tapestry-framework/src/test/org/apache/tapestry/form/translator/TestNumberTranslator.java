@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.form.translator;
 
+import static org.easymock.EasyMock.expect;
 import static org.testng.AssertJUnit.assertEquals;
 
 import java.util.Locale;
@@ -24,6 +25,7 @@ import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.FormComponentContributorTestCase;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
+import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
@@ -196,25 +198,30 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         NumberTranslator translator = new NumberTranslator();
         IFormComponent field = newField("Number Field", "numberField", 1);
         
+        JSONObject json = new JSONObject();
+        
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
         
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
         
-        context.includeClasspathScript(translator.defaultScript());
+        expect(context.getProfile()).andReturn(json);
         
         trainGetLocale(context, Locale.ENGLISH);
         
-        trainBuildMessage(context, null, ValidationStrings.INVALID_NUMBER, new Object[]
-        { "Number Field", "#" }, "invalid number message");
-
-        context.addSubmitHandler("function(event) { Tapestry.validate_number(event, 'numberField', 'invalid number message'); }");
+        trainBuildMessage(context, null, ValidationStrings.INVALID_NUMBER, 
+                new Object[] { "Number Field", "#" }, "invalid number message");
         
         replay();
-
+        
         translator.renderContribution(writer, cycle, context, field);
-
+        
         verify();
+        
+        assertEquals("{\"numberField\":{\"constraints\":\"invalid number message\"},"
+                + "\"constraints\":{\"numberField\":[dojo.validate.isRealNumber,"
+                + "{places:0,decimal:\".\",separator:\",\"}]}}",
+                json.toString());
     }
 
     public void testMessageRenderContribution()
@@ -227,60 +234,69 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
         
+        JSONObject json = new JSONObject();
+        
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
 
-        context.includeClasspathScript(translator.defaultScript());
-
+        expect(context.getProfile()).andReturn(json);
+        
         trainGetLocale(context, Locale.ENGLISH);
 
         trainBuildMessage(
                 context,
                 messageOverride,
                 ValidationStrings.INVALID_NUMBER,
-                new Object[]
-                { "Number Field", "#" },
+                new Object[] { "Number Field", "#" },
                 "Blah Blah 'Field Name' Blah.");
-
-        context.addSubmitHandler("function(event) { Tapestry.validate_number(event, 'myfield', 'Blah Blah \\'Field Name\\' Blah.'); }");
-
+        
         replay();
 
         translator.setMessage(messageOverride);
 
         translator.renderContribution(writer, cycle, context, field);
-
+        
         verify();
+        
+        assertEquals("{\"myfield\":{\"constraints\":\"Blah Blah \'Field Name\' Blah.\"}," 
+                + "\"constraints\":{\"myfield\":[dojo.validate.isRealNumber,"
+                + "{places:0,decimal:\".\",separator:\",\"}]}}",
+                json.toString());
     }
-
+    
     public void testTrimRenderContribution()
     {
         IFormComponent field = newField("Number Field", "myfield", 2);
-
+        
         NumberTranslator translator = new NumberTranslator();
-
+        JSONObject json = new JSONObject();
+        
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
         
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
-
-        context.includeClasspathScript(translator.defaultScript());
         
-        trainTrim(context, "myfield");
-
+        expect(context.getProfile()).andReturn(json);
+        
         trainGetLocale(context, Locale.ENGLISH);
-
+        
         trainBuildMessage(context, null, ValidationStrings.INVALID_NUMBER, new Object[]
         { "Number Field", "#" }, "invalid number message");
-
-        context
-                .addSubmitHandler("function(event) { Tapestry.validate_number(event, 'myfield', 'invalid number message'); }");
-
+        
+        expect(context.getProfile()).andReturn(json);
+        
         replay();
 
         translator.setTrim(true);
-
+        
         translator.renderContribution(writer, cycle, context, field);
-
+        
         verify();
+        
+        assertEquals("{\"myfield\":{\"constraints\":\"invalid number message\"},"
+                + "\"constraints\":{\"myfield\":[dojo.validate.isRealNumber,"
+                + "{places:0,decimal:\".\",separator:\",\"}]},"
+                + "\"trim\":\"myfield\"}",
+                json.toString());
+                
     }
 }

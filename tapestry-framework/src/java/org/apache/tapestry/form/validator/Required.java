@@ -62,7 +62,7 @@ public class Required extends BaseValidator
             throw new ValidatorException(message, ValidationConstraint.REQUIRED);
         }
     }
-
+    
     private String buildMessage(ValidationMessages messages, IFormComponent field)
     {
         return messages.formatValidationMessage(
@@ -81,7 +81,7 @@ public class Required extends BaseValidator
         
         accumulateProperty(profile, ValidationConstants.REQUIRED, field.getClientId());
         
-        setProfileProperty(field, profile, 
+        accumulateProfileProperty(field, profile, 
                 ValidationConstants.REQUIRED, buildMessage(context, field));
     }
 

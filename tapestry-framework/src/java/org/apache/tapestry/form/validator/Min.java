@@ -83,13 +83,13 @@ public class Min extends BaseValidator
         // TODO: Should find some way to provide this globally and cache.
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(context.getLocale());
         
-        cons.put(field.getClientId(), 
+        accumulateProperty(cons, field.getClientId(), 
                 new JSONLiteral("[dojo.validate.isInRange,{"
                         + "min:" + _min + ","
                         + "decimal:" + JSONObject.quote(symbols.getDecimalSeparator())
                         + "}]"));
         
-        setProfileProperty(field, profile, 
+        accumulateProfileProperty(field, profile, 
                 ValidationConstants.CONSTRAINTS, buildMessage(context, field));
     }
 

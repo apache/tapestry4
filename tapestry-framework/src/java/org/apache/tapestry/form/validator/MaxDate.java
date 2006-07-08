@@ -92,7 +92,7 @@ public class MaxDate extends BaseValidator
         }
         JSONObject cons = profile.getJSONObject(ValidationConstants.CONSTRAINTS);
         
-        cons.put(field.getClientId(), 
+        accumulateProperty(cons, field.getClientId(), 
                 new JSONLiteral("[tapestry.form.datetime.isValidDate,{"
                         + "max:" 
                         + JSONObject.quote(translator.format(field, context.getLocale(), _maxDate))
@@ -101,7 +101,7 @@ public class MaxDate extends BaseValidator
                         + JSONObject.quote(Strftime.convertToPosixFormat(translator.getPattern()))
                         + "}]"));
         
-        setProfileProperty(field, profile, 
+        accumulateProfileProperty(field, profile, 
                 ValidationConstants.CONSTRAINTS, buildMessage(context, field, translator));
     }
     

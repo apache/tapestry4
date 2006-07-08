@@ -46,15 +46,23 @@ tapestry.form.validation={
 		if (!props) return true; // form exists but no profile? just submit I guess..
 		if (!props.validateForm) return true;
 		
-		this.clearValidationDecorations(form, props);
-		
-		for (var i=0; i < props.profiles.length; i++) {
-			var results=dojo.validate.check(form, props.profiles[i]);
+		try {
+			this.clearValidationDecorations(form, props);
 			
-			if (!this.processResults(form, results, props.profiles[i])) {
-				this.summarizeErrors(form, results, props.profiles[i]);
-				return false;
+			for (var i=0; i < props.profiles.length; i++) {
+				var results=dojo.validate.check(form, props.profiles[i]);
+				
+				if (!this.processResults(form, results, props.profiles[i])) {
+					this.summarizeErrors(form, results, props.profiles[i]);
+					return false;
+				}
 			}
+		} catch (e) { 
+			// since so many dynamic function calls may happen in here it's best that we 
+			// catch all of them and log them or else peoples forms might still get submitted
+			// and they'd never be able to figure out what was wrong
+			dojo.log.exception("Error validating", e, true);
+			return false;
 		}
 		
 		return true;
@@ -136,6 +144,7 @@ tapestry.form.validation={
 			if (typeof form.elements[i].type == "undefined"
 				|| form.elements[i].type == "submit" 
 				|| form.elements[i].type == "hidden") { continue; }
+			
 			dojo.html.removeClass(form.elements[i], this.missingClass);
 			dojo.html.removeClass(form.elements[i], this.invalidClass);
 		}
@@ -157,7 +166,11 @@ tapestry.form.validation={
 			var fields=results.getMissing();
 			for (var i=0; i<fields.length; i++){
 				if (profile[fields[i]] && profile[fields[i]]["required"]){
-					merrs.push(profile[fields[i]]["required"]);
+					if (dojo.lang.isArray(profile[fields[i]]["required"])) {
+						for (var z=0; z < profile[fields[i]]["required"].length; z++)
+							merrs.push(profile[fields[i]]["required"][z]);
+					} else
+						merrs.push(profile[fields[i]]["required"]);
 				}
 			}
 		}
@@ -165,7 +178,11 @@ tapestry.form.validation={
 			var fields=results.getInvalid();
 			for (var i=0; i<fields.length; i++){
 				if (profile[fields[i]] && profile[fields[i]]["constraints"]){
-					ierrs.push(profile[fields[i]]["constraints"]);
+					if (dojo.lang.isArray(profile[fields[i]]["constraints"])) {
+						for (var z=0; z < profile[fields[i]]["constraints"].length; z++)
+							ierrs.push(profile[fields[i]]["constraints"][z]);
+					} else
+						ierrs.push(profile[fields[i]]["constraints"]);
 				}
 			}
 		}

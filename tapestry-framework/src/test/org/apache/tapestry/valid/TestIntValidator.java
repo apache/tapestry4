@@ -97,7 +97,7 @@ public class TestIntValidator extends BaseValidatorTestCase
         }
         catch (ValidatorException ex)
         {
-            assertEquals("BamBam must be a numeric value.", ex.getMessage());
+            assertEquals("BamBam must be a numeric value. Format is {1}.", ex.getMessage());
             assertSame(ValidationConstraint.NUMBER_FORMAT, ex.getConstraint());
         }
     }
@@ -154,7 +154,7 @@ public class TestIntValidator extends BaseValidatorTestCase
 
         assertEquals(1, map.size());
 
-        assertEquals("Fred must be an integer value.", map.get("formatMessage"));
+        assertEquals("Fred must be an integer value. Format is {1}.", map.get("formatMessage"));
 
         verify();
     }
@@ -172,7 +172,7 @@ public class TestIntValidator extends BaseValidatorTestCase
         assertEquals(2, map.size());
 
         assertEquals("You must enter a value for Barney.", map.get("requiredMessage"));
-        assertEquals("Barney must be an integer value.", map.get("formatMessage"));
+        assertEquals("Barney must be an integer value. Format is {1}.", map.get("formatMessage"));
 
         verify();
     }
@@ -192,7 +192,7 @@ public class TestIntValidator extends BaseValidatorTestCase
         assertEquals(new Integer(5), map.get("minimum"));
         assertNull(map.get("maximum"));
         assertEquals("Barney must not be smaller than 5.", map.get("rangeMessage"));
-        assertEquals("Barney must be an integer value.", map.get("formatMessage"));
+        assertEquals("Barney must be an integer value. Format is {1}.", map.get("formatMessage"));
 
         verify();
     }
@@ -212,7 +212,7 @@ public class TestIntValidator extends BaseValidatorTestCase
         assertEquals(new Integer(5), map.get("maximum"));
         assertNull(map.get("minimum"));
         assertEquals("Barney must not be larger than 5.", map.get("rangeMessage"));
-        assertEquals("Barney must be an integer value.", map.get("formatMessage"));
+        assertEquals("Barney must be an integer value. Format is {1}.", map.get("formatMessage"));
 
         verify();
     }    
@@ -232,7 +232,7 @@ public class TestIntValidator extends BaseValidatorTestCase
         assertEquals(new Integer(1), map.get("minimum"));
         assertEquals(new Integer(5), map.get("maximum"));
         assertEquals("Barney must be between 1 and 5.", map.get("rangeMessage"));
-        assertEquals("Barney must be an integer value.", map.get("formatMessage"));
+        assertEquals("Barney must be an integer value. Format is {1}.", map.get("formatMessage"));
 
         verify();
     }
