@@ -1,64 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-   Copyright 2004, 2005 The Apache Software Foundation
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+    Copyright 2004, 2005 The Apache Software Foundation
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
 -->
 <document>
-<properties>
-<title>Upgrading from Tapestry 3.0</title>
-</properties>
-<body>
- 
-<p>
-One goal of Tapestry 4.0 is to make upgrading from release 3.0 as painless as possible.  
-</p>
- 
-<p>
-Tapestry 4.0 still supports the Tapestry 3.0 DTDs (with minor exceptions). 
-</p>
+    <properties>
+        <title>Upgrading from Tapestry 3.0</title>
+    </properties>
+    <body>
 
-<section name="Defining the servlet path">
-  
-  
-<p>
-In Tapestry 3.0, the framework could automatically determine the servlet path (used when constructing new URLs), because there was only a
-single mapping.  The convention was to map the servlet to "/app", but any path-based mapping would automatically work.
-</p>  
 
-<p>
-Because of <a href="friendly-urls.html">friendly URLs</a>, there are any number of
-possible servlet mappings in Tapestry 4.0, so you must inform Tapestry what the correct
-mapping is.  It is necessary to define, to Tapestry, what this mapping is,
-using the org.apache.tapestry.servlet-path <a href="configuration.html#configuration.properties">configuration property</a>.
-</p>
-  
-</section> <!-- upgrade.servlet-path -->
+        <section name="Upgrading from Tapestry 3.0">
 
-<section name="Defining Engine Services">
-  
-  
-<p>
-Tapestry 3.0 allowed engine services to be defined in the application specification using
-a &lt;service&gt; element. This is no longer supported in the 4.0 DTD.
-</p>
-  
-<p>
-Engine services are now defined using HiveMind, in the <code>tapestry.services.ApplicationServices</code> configuration point.
-The following is the chart service from the Workbench example:
-</p>
+            <p>
+                One goal of Tapestry 4.0 is to make upgrading from release 3.0 as painless as
+                possible.
+            </p>
 
-<source xml:space="preserve">
+            <p>Tapestry 4.0 still supports the Tapestry 3.0 DTDs (with minor exceptions).</p>
+
+            <section name="Defining the servlet path">
+
+
+                <p>
+                    In Tapestry 3.0, the framework could automatically determine the servlet path
+                    (used when constructing new URLs), because there was only a single mapping. The
+                    convention was to map the servlet to "/app", but any path-based mapping would
+                    automatically work.
+                </p>
+
+                <p>
+                    Because of
+                    <a href="friendly-urls.html">friendly URLs</a>
+                    , there are any number of possible servlet mappings in Tapestry 4.0, so you must
+                    inform Tapestry what the correct mapping is. It is necessary to define, to
+                    Tapestry, what this mapping is, using the org.apache.tapestry.servlet-path
+                    <a href="configuration.html#configuration.properties">configuration property</a>
+                    .
+                </p>
+
+            </section><!-- upgrade.servlet-path -->
+
+            <section name="Defining Engine Services">
+
+
+                <p>
+                    Tapestry 3.0 allowed engine services to be defined in the application
+                    specification using a &lt;service&gt; element. This is no longer supported in
+                    the 4.0 DTD.
+                </p>
+
+                <p>
+                    Engine services are now defined using HiveMind, in the
+                    <code>tapestry.services.ApplicationServices</code>
+                    configuration point. The following is the chart service from the Workbench
+                    example:
+                </p>
+
+                <source xml:space="preserve">
   &lt;contribution configuration-id="tapestry.services.ApplicationServices"&gt;
     &lt;service name="chart" object="service:Chart"/&gt;
   &lt;/contribution&gt;
@@ -74,111 +84,139 @@ The following is the chart service from the Workbench example:
   &lt;/service-point&gt;
 </source>
 
-<p>
-The &lt;service&gt; element in a Tapestry 3.0 DTD is now <strong>ignored</strong>.
-</p>
+                <p>
+                    The &lt;service&gt; element in a Tapestry 3.0 DTD is now
+                    <strong>ignored</strong>
+                    .
+                </p>
 
-<p>
-The <a href="../tapestry-framework/apidocs/org/apache/tapestry/engine/IEngineService.html">IEngineService</a> interface has changed in non-backwards compatible ways. If your application created
-custom engine services, you will have to make changes to your code. If your custom service was
-based on the <code>org.apache.tapestry.engine.AbstractService</code> class, that class has been removed
-so you will have significant rewrites. As a suggested course of action, find the service
-that the original service was based on, and build a new service based on that Tapestry service.
-For example, if the original service was based on <code>org.apache.tapestry.asset.AssetService</code>, then
-get the source for the AssetService, and model your service after the new implementation.
-</p>
+                <p>
+                    The
+                    <a
+                        href="../tapestry-framework/apidocs/org/apache/tapestry/engine/IEngineService.html">
+                        IEngineService
+                    </a>
+                    interface has changed in non-backwards compatible ways. If your application
+                    created custom engine services, you will have to make changes to your code. If
+                    your custom service was based on the
+                    <code>org.apache.tapestry.engine.AbstractService</code>
+                    class, that class has been removed so you will have significant rewrites. As a
+                    suggested course of action, find the service that the original service was based
+                    on, and build a new service based on that Tapestry service. For example, if the
+                    original service was based on
+                    <code>org.apache.tapestry.asset.AssetService</code>
+                    , then get the source for the AssetService, and model your service after the new
+                    implementation.
+                </p>
 
-</section>  <!-- upgrade.service -->
+            </section><!-- upgrade.service -->
 
-<section name="Component Parameters">
-  
-  
-<p>
-Tapestry 4.0 has greatly streamlined  <a href="components.html#components.parameters">component parameters</a>.
-</p>
+            <section name="Component Parameters">
 
-<subsection name="Parameter Type">
-  
 
-<p>
-In Tapestry 3.0, the <a href="spec.html#spec.parameter">&lt;parameter&gt;</a> element included a type attribute. This has been removed in Tapestry 4.0.  
-</p>
+                <p>
+                    Tapestry 4.0 has greatly streamlined
+                    <a href="components.html#components.parameters">component parameters</a>
+                    .
+                </p>
 
-<p>
-The parameter type is now determined from the Java class, by examining the accessor methods for the property.
-</p>
+                <subsection name="Parameter Type">
 
-<p>
-Tapestry 3.0 required an exact match on values bound to parameters. The bound value had to be assignable to the parameter's type.
-In Tapestry 4.0, parameters include built-in <em>coercion</em>; Tapestry will attempt to coerce the value extracted from the bound property 
-into the correct type.
-This is especially useful when using literal bindings for numeric properties.  For example, an HTML template may specify a numeric value
-to an attribute as a simple string:
-</p>
-  
-<source xml:space="preserve">
+
+                    <p>
+                        In Tapestry 3.0, the
+                        <a href="spec.html#spec.parameter">&lt;parameter&gt;</a>
+                        element included a type attribute. This has been removed in Tapestry 4.0.
+                    </p>
+
+                    <p>
+                        The parameter type is now determined from the Java class, by examining the
+                        accessor methods for the property.
+                    </p>
+
+                    <p>
+                        Tapestry 3.0 required an exact match on values bound to parameters. The
+                        bound value had to be assignable to the parameter's type. In Tapestry 4.0,
+                        parameters include built-in
+                        <em>coercion</em>
+                        ; Tapestry will attempt to coerce the value extracted from the bound
+                        property into the correct type. This is especially useful when using literal
+                        bindings for numeric properties. For example, an HTML template may specify a
+                        numeric value to an attribute as a simple string:
+                    </p>
+
+                    <source xml:space="preserve">
   &lt;span jwcid="@MyComponent" intParam="50"/&gt;
 </source>
 
-<p>
-The type of the parameter is determined from the accessor method:
-</p>
+                    <p>The type of the parameter is determined from the accessor method:</p>
 
-<source xml:space="preserve">
+                    <source xml:space="preserve">
 public abstract class MyComponent . . .
 
   public abstract int getIntParam();
 </source>
-  
-<p>
-Tapestry will convert the string value to an integer automatically.
-</p>  
 
-<p>
-The coercion rules are driven by a number of configuration points and services, starting with
-the <code>tapestry.coerce.ValueConverter</code> service.
-</p>
+                    <p>Tapestry will convert the string value to an integer automatically.</p>
 
-</subsection>
-  
-  
-<subsection name="Parameter Direction">
-  
+                    <p>
+                        The coercion rules are driven by a number of configuration points and
+                        services, starting with the
+                        <code>tapestry.coerce.ValueConverter</code>
+                        service.
+                    </p>
+
+                </subsection>
 
 
-<p>
-In Tapestry 3.0, it was necessary to inform Tapestry of how and when a component parameter property was accessed -- this
-was parameter direction.
-Parameter direction is now ignored; Tapestry 4.0 now generates smart, caching accessor methods for parameter properties that work properly
-in all cases.  In effect, all parameters are now of direction auto (but its a smarter, more flexible version of direction
-auto than was available in Tapestry 3.0).
-</p>
+                <subsection name="Parameter Direction">
 
-<p>
-This may be of concern if your component used the custom parameter direction. In Tapestry 3.0, direction custom meant that your code
-would directly access the <a href="../tapestry-framework/apidocs/org/apache/tapestry/IBinding.html">IBinding</a> object for the parameter, and no property for the parameter would be created.  In Tapestry 4.0, 
-a property <em>will</em> be created ... even if you continue to use the 3.0 DTD and specify direction custom.
-</p>
 
-<p>
-<strong>Warning:</strong>
-<br/>
-  You should search for all component parameters that use direction custom and update the Java class.
-</p>
 
-<p>
-For example, if you had a Tapestry 3.0 specification for a listener parameter:
-</p>
+                    <p>
+                        In Tapestry 3.0, it was necessary to inform Tapestry of how and when a
+                        component parameter property was accessed -- this was parameter direction.
+                        Parameter direction is now ignored; Tapestry 4.0 now generates smart,
+                        caching accessor methods for parameter properties that work properly in all
+                        cases. In effect, all parameters are now of direction auto (but its a
+                        smarter, more flexible version of direction auto than was available in
+                        Tapestry 3.0).
+                    </p>
 
-<source xml:space="preserve">
+                    <p>
+                        This may be of concern if your component used the custom parameter
+                        direction. In Tapestry 3.0, direction custom meant that your code would
+                        directly access the
+                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IBinding.html">
+                            IBinding
+                        </a>
+                        object for the parameter, and no property for the parameter would be
+                        created. In Tapestry 4.0, a property
+                        <em>will</em>
+                        be created ... even if you continue to use the 3.0 DTD and specify direction
+                        custom.
+                    </p>
+
+                    <span class="warn">
+                        <strong>Warning:</strong>
+                        <p>
+                            You should search for all component parameters that use direction custom
+                            and update the Java class.
+                        </p>
+                    </span>
+
+                    <p>
+                        For example, if you had a Tapestry 3.0 specification for a listener
+                        parameter:
+                    </p>
+
+                    <source xml:space="preserve">
   &lt;parameter name="listener" direction="custom" type="org.apache.tapestry.IActionListener"/&gt;  
 </source>
 
-<p>
-Then your 3.0 source code might look like:
-</p>
+                    <p>Then your 3.0 source code might look like:</p>
 
-<source xml:space="preserve">
+                    <source xml:space="preserve">
   public abstract IBinding getListenerBinding();
   
   public void someMethod(. . .)
@@ -196,19 +234,15 @@ Then your 3.0 source code might look like:
     . . .      
 </source>
 
-<p>
-In Tapestry 4.0, the specification is much simpler:
-</p>
+                    <p>In Tapestry 4.0, the specification is much simpler:</p>
 
-<source xml:space="preserve">
+                    <source xml:space="preserve">
   &lt;parameter name="listener"/&gt;
 </source>
 
-<p>
-As is the Java code:
-</p>
+                    <p>As is the Java code:</p>
 
-<source xml:space="preserve">
+                    <source xml:space="preserve">
   public abstract IActionListener getListener();
   
   public void someMethod(. . .)
@@ -222,74 +256,89 @@ As is the Java code:
   . . .
 </source>
 
-<p>
-Tapestry takes care of de-referencing the binding (if the parameter is bound), along with type checks or coercions.
-</p>
+                    <p>
+                        Tapestry takes care of de-referencing the binding (if the parameter is
+                        bound), along with type checks or coercions.
+                    </p>
 
-</subsection>
+                </subsection>
 
-<subsection name="Accessing binding objects">
-  
-  
-<p>
-In Tapestry 3.0, it was possible to access a <a href="../tapestry-framework/apidocs/org/apache/tapestry/IBinding.html">IBinding</a> object for a parameter by defining an additional property in your component's
-Java code:
-</p>
+                <subsection name="Accessing binding objects">
 
-<source xml:space="preserve">
+
+                    <p>
+                        In Tapestry 3.0, it was possible to access a
+                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IBinding.html">
+                            IBinding
+                        </a>
+                        object for a parameter by defining an additional property in your
+                        component's Java code:
+                    </p>
+
+                    <source xml:space="preserve">
   public abstract IBinding getListenerBinding();
 </source>
 
-<p>
-This is no longer supported; the correct way to obtain a binding object is via the getBinding() method.  
-</p>
+                    <p>
+                        This is no longer supported; the correct way to obtain a binding object is
+                        via the getBinding() method.
+                    </p>
 
-<p>
-<strong>Note:</strong>
-<br/>
-Because of the other improvements to parameters, it is virtually never necessary to obtain a binding object.
-</p>
-  
-</subsection>
+                    <span class="info">
+                        <strong>Note:</strong>
+                        <p>
+                        Because of the other improvements to parameters, it is virtually never
+                        necessary to obtain a binding object.
+                        </p>
+                    </span>
 
-<subsection name="Default value">
-  
-  
-<p>
-In the Tapestry 3.0 DTD, the optional default-value attribute was used to provide an OGNL expression to use for a parameter, if the
-parameter is not otherwise bound.  In the Tapestry 4.0 DTD, the default-value attribute is a <a href="bindings.html">binding reference</a>.  The following are
-equivalent:
-</p>
+                </subsection>
 
-<source xml:space="preserve">
+                <subsection name="Default value">
+
+
+                    <p>
+                        In the Tapestry 3.0 DTD, the optional default-value attribute was used to
+                        provide an OGNL expression to use for a parameter, if the parameter is not
+                        otherwise bound. In the Tapestry 4.0 DTD, the default-value attribute is a
+                        <a href="bindings.html">binding reference</a>
+                        . The following are equivalent:
+                    </p>
+
+                    <source xml:space="preserve">
   &lt;parameter name="foo" type="int" default-value="bar.baz"/&gt;  &lt;!-- 3.0 --&gt;
   
   &lt;parameter name="foo" default-value="bar.baz"/&gt;             &lt;!-- 4.0 --&gt;
 </source>
-  
 
-<source xml:space="preserve">
+
+                    <source xml:space="preserve">
   &lt;parameter name="bar" type="java.lang.String" 
     default-value="messages.getMessage('default-bar')"/&gt;      &lt;!-- 3.0 --&gt;
   
   &lt;parameter name="bar" default-value="message:default-bar"/&gt; &lt;!-- 4.0 --&gt; 
 </source>
-  
-  
-  
-  
-</subsection>
 
-<subsection name="Inherited binding">
-  
-  
-<p>
-Tapestry 3.0 included an &lt;inherited-binding&gt; element, this was a way to directly pass the <a href="../tapestry-framework/apidocs/org/apache/tapestry/IBinding.html">IBinding</a> object for a component parameter
-to a parameter of a nested component. This is no longer supported in Tapestry 4.0; instead, the property for the component parameter should be 
-bound to the nested component parameter:
-</p>
 
-<source xml:space="preserve">
+
+
+                </subsection>
+
+                <subsection name="Inherited binding">
+
+
+                    <p>
+                        Tapestry 3.0 included an &lt;inherited-binding&gt; element, this was a way
+                        to directly pass the
+                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IBinding.html">
+                            IBinding
+                        </a>
+                        object for a component parameter to a parameter of a nested component. This
+                        is no longer supported in Tapestry 4.0; instead, the property for the
+                        component parameter should be bound to the nested component parameter:
+                    </p>
+
+                    <source xml:space="preserve">
 
   &lt;!-- 3.0 --&gt;
   
@@ -309,104 +358,143 @@ bound to the nested component parameter:
 
 </source>
 
-<p>
-<strong>Warning:</strong>
-<br/>
-  inherited-binding may make a comeback in Tapestry 4.0!
-</p>
-  
-</subsection>
-  
-</section> <!-- upgrade.parameters -->
+                    <span class="warn">
+                        <strong>Warning:</strong>
+                        <p>inherited-binding may make a comeback in Tapestry 4.0!</p>
+                    </span>
+
+                </subsection>
+
+            </section><!-- upgrade.parameters -->
 
 
-<section name="Specified Properties">
-  
-  
-<p>
-Property specifications in Tapestry 4.0 have been simplified.  The specification element has changed
-from &lt;property-specification&gt; to the simpler, <a href="spec.html#spec.property">&lt;property&gt;</a>.
-</p>
+            <section name="Specified Properties">
 
-<p>
-In Tapestry 3.0, it was necessary to specify the type of the property; this is no longer necessary or possible. The type
-attribute has been removed, and the type is determined from the Java code (and defaults to Object if 
-the Java code does not define abstract accessors).
-</p>
-  
-<p>
-In addition, any abstract properties in the Java code will be converted into transient properties, even if there is no
-matching <a href="spec.html#spec.property">&lt;property&gt;</a> element.  Typically, the <a href="spec.html#spec.property">&lt;property&gt;</a> element is only used when the property is either
-not referenced inside Java code (such as a listener method), or when when the property must be persistent.
-</p>
 
-<p>
-In the 3.0 DTDs, properties could have an initial value set. The initial-value attribute was an OGNL expression used to
-initial the property when the page is first constructed, and when the page is detached (at the end of a request cycle). The initial value
-may instead be specified as the enclosed character data of the &lt;property-specification&gt; element.
-</p>
+                <p>
+                    Property specifications in Tapestry 4.0 have been simplified. The specification
+                    element has changed from &lt;property-specification&gt; to the simpler,
+                    <a href="spec.html#spec.property">&lt;property&gt;</a>
+                    .
+                </p>
 
-<p>
-Using the 4.0 DTDs, this is still true, but the initial-value attribute (or the enclosed character data) is a <a href="bindings.html">binding reference</a> with
-a default prefix of "ognl:".
-</p>
-  
-</section> <!-- upgrade.property -->
+                <p>
+                    In Tapestry 3.0, it was necessary to specify the type of the property; this is
+                    no longer necessary or possible. The type attribute has been removed, and the
+                    type is determined from the Java code (and defaults to Object if the Java code
+                    does not define abstract accessors).
+                </p>
 
-<section name="Managed beans">
-  
-  
-<p>
-The <a href="spec.html#spec.bean">&lt;bean&gt;</a> element is used to define managed beans. In Tapestry 3.0, it could contain &lt;set-property&gt; and &lt;set-message-property&gt;
-elements to configure the properties of the bean.
-</p>
-  
-<p>
-In Tapestry 4.0, these two elements have been replaced by the <a href="spec.html#spec.set">&lt;set&gt;</a> element, which uses a <a href="bindings.html">binding reference</a> to provide the 
-value.
-</p>
+                <p>
+                    In addition, any abstract properties in the Java code will be converted into
+                    transient properties, even if there is no matching
+                    <a href="spec.html#spec.property">&lt;property&gt;</a>
+                    element. Typically, the
+                    <a href="spec.html#spec.property">&lt;property&gt;</a>
+                    element is only used when the property is either not referenced inside Java code
+                    (such as a listener method), or when when the property must be persistent.
+                </p>
 
-</section>  <!-- upgrade.bean -->
+                <p>
+                    In the 3.0 DTDs, properties could have an initial value set. The initial-value
+                    attribute was an OGNL expression used to initial the property when the page is
+                    first constructed, and when the page is detached (at the end of a request
+                    cycle). The initial value may instead be specified as the enclosed character
+                    data of the &lt;property-specification&gt; element.
+                </p>
 
-<section name="Dependency Changes">
-  
-  
-<p>
-Part of the transition to Tapestry 4.0, and targetting (in a later release) a minimum JDK of 1.5, is the <em>removal</em> of support for the
-Jakarta commons-lang library.  commons-lang defined an Enum class that makes it impossible to compile code for JDK 1.5 ("enum" is a reserved word
-in JDK 1.5).  With the loss of that dependency, so goes org.apache.tapestry.form.EnumPropertySelectionModel, an <a href="../tapestry-framework/apidocs/org/apache/tapestry/form/IPropertySelectionModel.html">IPropertySelectionModel</a> implementation.
-</p>
-  
-</section>
+                <p>
+                    Using the 4.0 DTDs, this is still true, but the initial-value attribute (or the
+                    enclosed character data) is a
+                    <a href="bindings.html">binding reference</a>
+                    with a default prefix of "ognl:".
+                </p>
 
-<section name="Other code changes">
-  
-  
-<p>
-A number of more subtle, and more rarely used, changes exist between the 3.0 and 4.0 releases.
-</p>  
+            </section><!-- upgrade.property -->
 
-<p>
-The contract for <a href="../tapestry-framework/apidocs/org/apache/tapestry/resolver/ISpecificationResolverDelegate.html">ISpecificationResolverDelegate</a> has changed.  The specifications returned by the delegate are now cached by Tapestry
-exactly as if they had been read from files on the classpath or web context.
-</p>
-  
-</section>
+            <section name="Managed beans">
 
-<section name="Changes to Components">
-  
-  
-  <subsection name="Image and Rollover">
-    
-    
-    <p>
-      The border parameter of the <a href="site:Image">Image</a> and <a href="site:Rollover">Rollover</a> components has been removed, for XHTML compliance.
-      You may still specify a value for border as an informal parameter ... or better yet, handle this using CSS.
-    </p>
-      
-  </subsection>
-  
-</section>
 
-</body>
+                <p>
+                    The
+                    <a href="spec.html#spec.bean">&lt;bean&gt;</a>
+                    element is used to define managed beans. In Tapestry 3.0, it could contain
+                    &lt;set-property&gt; and &lt;set-message-property&gt; elements to configure the
+                    properties of the bean.
+                </p>
+
+                <p>
+                    In Tapestry 4.0, these two elements have been replaced by the
+                    <a href="spec.html#spec.set">&lt;set&gt;</a>
+                    element, which uses a
+                    <a href="bindings.html">binding reference</a>
+                    to provide the value.
+                </p>
+
+            </section><!-- upgrade.bean -->
+
+            <section name="Dependency Changes">
+
+
+                <p>
+                    Part of the transition to Tapestry 4.0, and targetting (in a later release) a
+                    minimum JDK of 1.5, is the
+                    <em>removal</em>
+                    of support for the Jakarta commons-lang library. commons-lang defined an Enum
+                    class that makes it impossible to compile code for JDK 1.5 ("enum" is a reserved
+                    word in JDK 1.5). With the loss of that dependency, so goes
+                    org.apache.tapestry.form.EnumPropertySelectionModel, an
+                    <a
+                        href="../tapestry-framework/apidocs/org/apache/tapestry/form/IPropertySelectionModel.html">
+                        IPropertySelectionModel
+                    </a>
+                    implementation.
+                </p>
+
+            </section>
+
+            <section name="Other code changes">
+
+
+                <p>
+                    A number of more subtle, and more rarely used, changes exist between the 3.0 and
+                    4.0 releases.
+                </p>
+
+                <p>
+                    The contract for
+                    <a
+                        href="../tapestry-framework/apidocs/org/apache/tapestry/resolver/ISpecificationResolverDelegate.html">
+                        ISpecificationResolverDelegate
+                    </a>
+                    has changed. The specifications returned by the delegate are now cached by
+                    Tapestry exactly as if they had been read from files on the classpath or web
+                    context.
+                </p>
+
+            </section>
+
+            <section name="Changes to Components">
+
+
+                <subsection name="Image and Rollover">
+
+
+                    <p>
+                        The border parameter of the
+                        <a href="site:Image">Image</a>
+                        and
+                        <a href="site:Rollover">Rollover</a>
+                        components has been removed, for XHTML compliance. You may still specify a
+                        value for border as an informal parameter ... or better yet, handle this
+                        using CSS.
+                    </p>
+
+                </subsection>
+
+            </section>
+
+        </section>
+
+    </body>
 </document>
