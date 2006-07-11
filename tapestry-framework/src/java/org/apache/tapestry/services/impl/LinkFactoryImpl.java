@@ -44,6 +44,17 @@ import org.apache.tapestry.web.WebRequest;
  */
 public class LinkFactoryImpl implements LinkFactory
 {
+ 
+    protected URLCodec _codec = new URLCodec();
+    
+    protected String _contextPath;
+    
+    protected PropertyPersistenceStrategySource _persistenceStrategySource;
+    
+    protected IRequestCycle _requestCycle;
+    
+    protected WebRequest _request;
+    
     private DataSqueezer _dataSqueezer;
 
     private ErrorLog _errorLog;
@@ -56,20 +67,11 @@ public class LinkFactoryImpl implements LinkFactory
 
     private ServiceEncoder[] _encoders;
 
-    private String _contextPath;
-
     private String _servletPath;
 
     private final Object[] _empty = new Object[0];
-
-    private URLCodec _codec = new URLCodec();
-
-    private WebRequest _request;
-
-    private IRequestCycle _requestCycle;
-
-    private PropertyPersistenceStrategySource _persistenceStrategySource;
-
+    
+    
     public void initializeService()
     {
         Orderer orderer = new Orderer(_errorLog, "encoder");
@@ -113,8 +115,8 @@ public class LinkFactoryImpl implements LinkFactory
             _persistenceStrategySource.addParametersForPersistentProperties(serviceEncoding, post);
 
         String fullServletPath = _contextPath + serviceEncoding.getServletPath();
-
-        return new EngineServiceLink(_requestCycle, fullServletPath, engine.getOutputEncoding(),
+        
+        return new EngineServiceLink(fullServletPath, engine.getOutputEncoding(),
                 _codec, _request, parameters, stateful);
     }
 
@@ -142,7 +144,7 @@ public class LinkFactoryImpl implements LinkFactory
      * Creates a new service encoding, and allows the encoders to modify it before returning.
      */
 
-    private ServiceEncoding createServiceEncoding(Map parameters)
+    protected ServiceEncoding createServiceEncoding(Map parameters)
     {
         ServiceEncodingImpl result = new ServiceEncodingImpl(_servletPath, parameters);
 

@@ -40,12 +40,12 @@ public class EngineServiceLink implements ILink
 {
     private static final int DEFAULT_HTTP_PORT = 80;
 
-    private final IRequestCycle _cycle;
-
     private final String _servletPath;
 
     private final URLCodec _codec;
 
+    private IRequestCycle _cycle;
+    
     private String _encoding;
 
     /** @since 4.0 */
@@ -54,9 +54,43 @@ public class EngineServiceLink implements ILink
     /** @since 4.0 */
 
     private final WebRequest _request;
-
+    
     /**
      * Creates a new EngineServiceLink.
+     * 
+     * @param servletPath
+     *            The path used to invoke the Tapestry servlet.
+     * @param codec
+     *            A codec for converting strings into URL-safe formats.
+     * @param encoding
+     *            The output encoding for the request.
+     * @param parameters
+     *            The query parameters to be encoded into the url. Keys are strings, values are
+     *            null, string or array of string. The map is retained, not copied.
+     * @param stateful
+     *            if true, the service which generated the EngineServiceLink is stateful and expects
+     *            that the final URL will be passed through {@link IRequestCycle#encodeURL(String)}.
+     */
+    
+    public EngineServiceLink(String servletPath, String encoding,
+            URLCodec codec, WebRequest request, Map parameters, boolean stateful)
+    {
+        Defense.notNull(servletPath, "servletPath");
+        Defense.notNull(encoding, "encoding");
+        Defense.notNull(codec, "codec");
+        Defense.notNull(request, "request");
+        Defense.notNull(parameters, "parameters");
+        
+        _servletPath = servletPath;
+        _encoding = encoding;
+        _codec = codec;
+        _request = request;
+        _parameters = new QueryParameterMap(parameters);
+    }
+    
+    /**
+     * Creates a new EngineServiceLink. Primarily used in portlet applications with the
+     * additional {@link IRequestCycle} parameter being used to encode asset urls.
      * 
      * @param cycle
      *            The {@link IRequestCycle}&nbsp; the EngineServiceLink is to be created for.
@@ -83,7 +117,7 @@ public class EngineServiceLink implements ILink
         Defense.notNull(codec, "codec");
         Defense.notNull(request, "request");
         Defense.notNull(parameters, "parameters");
-
+        
         _cycle = cycle;
         _servletPath = servletPath;
         _encoding = encoding;
@@ -155,11 +189,10 @@ public class EngineServiceLink implements ILink
         }
 
         String result = buffer.toString();
-
-        //TODO: Portlets need this result encoded again via IRequestCycle.encodeURL(), need
-        // to find a way to do this that doesn't conflict with existing URL construction semantics. (the
-        // isStateful parameter would effectively be ignored in this class if we encoded the url again
-        // because that method adds sessionID information from the servlet container ) JIRA issue TAPESTRY-802
+        
+        // TODO: This is somewhat questionable right now, was added in to support TAPESTRY-802
+        if (_cycle != null)
+            result = _cycle.encodeURL(result);
         
         return result;
     }

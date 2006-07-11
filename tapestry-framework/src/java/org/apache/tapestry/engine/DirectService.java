@@ -82,10 +82,19 @@ public class DirectService implements IEngineService
         parameters.put(ServiceConstants.CONTAINER, componentPage == activePage ? null
                 : componentPage.getPageName());
         parameters.put(ServiceConstants.SESSION, stateful ? "T" : null);
-        if (dsp.getUpdateParts() != null && dsp.getUpdateParts().length > 0)
-            parameters.put(ServiceConstants.UPDATE_PARTS, dsp.getUpdateParts());
-        if (dsp.isJSON())
-            parameters.put("json", String.valueOf(dsp.isJSON()));
+        
+        // handle dynamic XHR/JSON parameters
+        if (dsp.isAsync() || dsp.isJson()) {
+            
+            if (dsp.getUpdateParts() != null && dsp.getUpdateParts().length > 0)
+                parameters.put(ServiceConstants.UPDATE_PARTS, dsp.getUpdateParts());
+            
+            if (dsp.isJson())
+                parameters.put("json", String.valueOf(dsp.isJson()));
+            
+            // don't need to put isAsync parameter in as that is handled via http headers
+        }
+        
         parameters.put(ServiceConstants.PARAMETER, dsp.getServiceParameters());
         
         return _linkFactory.constructLink(this, post, parameters, true);

@@ -11,30 +11,43 @@ dojo.require("dojo.html");
 
 tapestry={
 	
-	version:"4.1",
-	scriptInFlight:false,
-	ScriptFragment:'(?:<script.*?>)((\n|.|\r)*?)(?:<\/script>)',
+	version:"4.1", // tapestry script version
+	scriptInFlight:false, // whether or not javascript is currently being eval'd
+	ScriptFragment:'(?:<script.*?>)((\n|.|\r)*?)(?:<\/script>)', // regexp for script elements
 	
 	/**
 	 * Global XHR bind function for tapestry internals. The 
-	 * error/load functions of this same package are used to handle
+	 * error/load functions defined in this package are used to handle
 	 * load/error of dojo.io.bind.
 	 * 
-	 * @param url The url to bind the request to.
-	 * @param content A properties map of optional extra content to send.
+	 * @param url 
+	 * 			The url to bind the request to.
+	 * @param content 
+	 * 			A properties map of optional extra content to send.
+	 * @param json 
+	 * 			Boolean, optional parameter specifying whether or not to create a json request.
+	 * 			If not specified the default is to use XHR.
 	 */
-	bind:function(url, content){
-		dojo.io.bind({
+	bind:function(url, content, json){
+		var parms = {
 			url:url,
 			content:content,
-            headers:{"dojo-ajax-request":true},
             useCache:true,
             preventCache:true,
             load: (function(){tapestry.load.apply(this, arguments);}),
-            error: (function(){tapestry.error.apply(this, arguments);}),
-            mimetype: "text/xml",
-            encoding: "UTF-8"
-        });
+            error: (function(){tapestry.error.apply(this, arguments);})
+		};
+		
+		// setup content type
+		if (typeof json != "undefined" && json) {
+			parms.mimetype = "text/json";
+		} else {
+			parms.headers={"dojo-ajax-request":true};
+			parms.mimetype="text/xml";
+			parms.encoding="UTF-8";
+		}
+		
+		dojo.io.bind(parms);
 	},
 	
 	/**
@@ -53,6 +66,7 @@ tapestry={
 			dojo.log.err("No data received in response.");
 			return;
 		}
+		
 		var resp=data.getElementsByTagName("ajax-response");
 		if (!resp || resp.length < 1 || !resp[0].childNodes) {
 			dojo.log.warn("No ajax-response elements recieved.");
@@ -88,8 +102,8 @@ tapestry={
 				
 			}
 			
-			if (!id) {
-			dojo.raise("No element id found in ajax-response node.");
+			if (!id){
+				dojo.raise("No element id found in ajax-response node.");
 				return;
 			}
 			

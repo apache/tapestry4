@@ -65,10 +65,12 @@
       <construct class="org.apache.tapestry.asset.AssetService">
         <set-object property="exceptionReporter" value="infrastructure:requestExceptionReporter"/>
         <!-- The big change: use the servlet LinkFactory, not the portlet LinkFactory. -->
-        <set-service property="linkFactory" service-id="tapestry.url.LinkFactory"/>
+        <set-service property="linkFactory" service-id="tapestry.portlet.PortletAssetLinkFactory"/>
         <set-service property="context" service-id="tapestry.globals.WebContext"/>
         <set-object property="response" value="service:tapestry.globals.WebResponse"/>
         <set-service property="digestSource" service-id="tapestry.asset.ResourceDigestSource"/>
+        <set-service property="unprotectedMatcher" service-id="tapestry.asset.UnprotectedResourceMatcher" />
+        <event-listener service-id="tapestry.ResetEventHub"/>
       </construct>
     </invoke-factory>
   </service-point>  

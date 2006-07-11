@@ -21,7 +21,6 @@ import java.util.Map;
 
 import org.apache.commons.codec.net.URLCodec;
 import org.apache.tapestry.BaseComponentTestCase;
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.web.WebRequest;
 import org.testng.annotations.Test;
@@ -53,9 +52,8 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
     public void testGetURLWithParameters()
     {
         WebRequest request = newRequest();
-        IRequestCycle rc = newCycle();
 
-        EngineServiceLink l = new EngineServiceLink(rc, "/context/servlet", ENCODING, _urlCodec,
+        EngineServiceLink l = new EngineServiceLink("/context/servlet", ENCODING, _urlCodec,
                 request, buildParameters("myservice", null), true);
 
         replay();
@@ -72,9 +70,8 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
     public void testGetURLWithServiceParameters()
     {
         WebRequest request = newRequest();
-        IRequestCycle rc = newCycle();
 
-        EngineServiceLink l = new EngineServiceLink(rc, "/ctx/app", ENCODING, _urlCodec, request,
+        EngineServiceLink l = new EngineServiceLink("/ctx/app", ENCODING, _urlCodec, request,
                 buildParameters("foo", new String[]
                 { "godzilla", "frodo" }), false);
         
@@ -90,9 +87,8 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
     public void testGetURLSansParameters()
     {
         WebRequest request = newRequest();
-        IRequestCycle rc = newCycle();
 
-        EngineServiceLink l = new EngineServiceLink(rc, "/context/servlet", ENCODING, _urlCodec,
+        EngineServiceLink l = new EngineServiceLink("/context/servlet", ENCODING, _urlCodec,
                 request, buildParameters("myservice", null), true);
 
         replay();
@@ -107,9 +103,8 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
     public void testGetURLWithAnchor()
     {
         WebRequest request = newRequest();
-        IRequestCycle rc = newMock(IRequestCycle.class);
 
-        EngineServiceLink l = new EngineServiceLink(rc, "/context/servlet", ENCODING, _urlCodec,
+        EngineServiceLink l = new EngineServiceLink("/context/servlet", ENCODING, _urlCodec,
                 request, buildParameters("myservice", null), false);
         
         replay();
@@ -122,9 +117,8 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
     public void testGetURLWithAnchorAndParameters() throws Exception
     {
         WebRequest request = newRequest();
-        IRequestCycle rc = newCycle();
 
-        EngineServiceLink l = new EngineServiceLink(rc, "/context/servlet", ENCODING, _urlCodec,
+        EngineServiceLink l = new EngineServiceLink("/context/servlet", ENCODING, _urlCodec,
                 request, buildParameters("myservice", null), false);
         
         replay();
@@ -137,9 +131,8 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
     public void testGetAbsoluteURL() throws Exception
     {
         WebRequest request = newRequest();
-        IRequestCycle rc = newCycle();
 
-        EngineServiceLink l = new EngineServiceLink(rc, "/ctx/app", ENCODING, _urlCodec, request,
+        EngineServiceLink l = new EngineServiceLink("/ctx/app", ENCODING, _urlCodec, request,
                 buildParameters("myservice", null), false);
 
         trainGetServerPort(request, 9187);
@@ -158,9 +151,8 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
     public void testGetAbsoluteURLWithOverrides() throws Exception
     {
         WebRequest request = newRequest();
-        IRequestCycle rc = newCycle();
 
-        EngineServiceLink l = new EngineServiceLink(rc, "/ctx/app", ENCODING, _urlCodec, request,
+        EngineServiceLink l = new EngineServiceLink("/ctx/app", ENCODING, _urlCodec, request,
                 buildParameters("myservice", null), false);
         
         replay();
@@ -178,7 +170,6 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
     public void testGetURLNotAbsolute()
     {
         WebRequest request = newRequest();
-        IRequestCycle rc = newCycle();
 
         trainGetScheme(request, "http");
         trainGetServerName(request, "myserver.net");
@@ -186,7 +177,7 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
         
         replay();
 
-        EngineServiceLink l = new EngineServiceLink(rc, "/ctx/app", ENCODING, _urlCodec, request,
+        EngineServiceLink l = new EngineServiceLink("/ctx/app", ENCODING, _urlCodec, request,
                 buildParameters("myservice", null), false);
 
         assertEquals("/ctx/app?service=myservice#myanchor", l.getURL(
@@ -202,13 +193,12 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
     public void testGetURLAbsolute()
     {
         WebRequest request = newRequest();
-        IRequestCycle rc = newCycle();
 
         trainGetScheme(request, "http");
         
         replay();
 
-        EngineServiceLink l = new EngineServiceLink(rc, "/ctx/app", ENCODING, _urlCodec, request,
+        EngineServiceLink l = new EngineServiceLink("/ctx/app", ENCODING, _urlCodec, request,
                 buildParameters("myservice", null), false);
 
         assertEquals("https://override.net:8080/ctx/app?service=myservice#myanchor", l.getURL(

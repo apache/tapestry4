@@ -23,7 +23,6 @@ import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.NullWriter;
 import org.apache.tapestry.markup.MarkupWriterSource;
-import org.apache.tapestry.services.ComponentRenderWorker;
 import org.apache.tapestry.services.RequestLocaleManager;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.util.ContentType;
@@ -43,8 +42,6 @@ public class DefaultResponseBuilder implements ResponseBuilder
     private MarkupWriterSource _markupWriterSource;
 
     private WebResponse _webResponse;
-    
-    private ComponentRenderWorker _renderWorker;
     
     /** Writer that creates JSON output response. */
     private IMarkupWriter _writer;
@@ -70,13 +67,11 @@ public class DefaultResponseBuilder implements ResponseBuilder
      *          Web response for output stream.
      */
     public DefaultResponseBuilder(RequestLocaleManager localeManager, 
-            MarkupWriterSource markupWriterSource,
-            WebResponse webResponse, ComponentRenderWorker renderWorker)
+            MarkupWriterSource markupWriterSource, WebResponse webResponse)
     {
         _localeManager = localeManager;
         _markupWriterSource = markupWriterSource;
         _webResponse = webResponse;
-        _renderWorker = renderWorker;
     }
     
     /**
@@ -135,9 +130,6 @@ public class DefaultResponseBuilder implements ResponseBuilder
             render.render(_writer, cycle);
         else
             render.render(writer, cycle);
-        
-        if (IComponent.class.isInstance(render))
-            _renderWorker.renderComponent(cycle, (IComponent)render);
     }
     
     /** 
@@ -146,7 +138,7 @@ public class DefaultResponseBuilder implements ResponseBuilder
     public void updateComponent(String id)
     {
     }
-
+    
     /** 
      * {@inheritDoc}
      */

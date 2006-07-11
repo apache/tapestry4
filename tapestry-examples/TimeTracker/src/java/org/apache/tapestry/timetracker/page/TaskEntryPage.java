@@ -107,6 +107,10 @@ public abstract class TaskEntryPage extends BasePage
         cycle.getResponseBuilder().updateComponent("feedbackBlock");
     }
     
+    public void linkUpdateClicked()
+    {
+    }
+    
     /**
      * Invoked by form to add a new task.
      */

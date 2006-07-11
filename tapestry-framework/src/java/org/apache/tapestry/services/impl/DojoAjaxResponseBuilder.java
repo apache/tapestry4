@@ -237,6 +237,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     {
         IMarkupWriter writer = getWriter(ResponseBuilder.INCLUDE_SCRIPT, ResponseBuilder.SCRIPT_TYPE);
         
+        // causes asset includes to be loaded dynamically into document head
         writer.printRaw("tapestry.loadScriptFromUrl(\"");
         writer.print(url);
         writer.printRaw("\");");
@@ -254,7 +255,9 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         writer.printRaw("\n\nvar " + preloadName + " = new Array();\n");
         writer.printRaw("if (document.images)\n");
         writer.printRaw("{\n");
+        
         writer.printRaw(script);
+        
         writer.printRaw("}\n");
     }
     
@@ -266,11 +269,14 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         IMarkupWriter writer = getWriter(ResponseBuilder.INITIALIZATION_SCRIPT, ResponseBuilder.SCRIPT_TYPE);
         
         writer.begin("script");
+        
+        // return is in XML so must escape any potentially non-xml compliant content
         writer.printRaw("\n//<![CDATA[\n");
         
         writer.printRaw(script);
         
         writer.printRaw("\n//]]>\n");
+        
         writer.end();
     }
     
@@ -279,11 +285,13 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      */
     public void render(IMarkupWriter writer, IRender render, IRequestCycle cycle)
     {
+        // must be a valid writer already
         if (NestedMarkupWriterImpl.class.isInstance(writer)) {
             render.render(writer, cycle);
             return;
         }
         
+        // check for page exception renders and write content to writer so client can display them
         if (IPage.class.isInstance(render)) {
             String errorPage = getErrorPage(((IPage)render).getPageName());
             if (errorPage != null) {
@@ -299,6 +307,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
             return;
         }
         
+        // Nothing else found, throw out response
         render.render(NullWriter.getSharedInstance(), cycle);
     }
     
@@ -306,6 +315,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     {
         for (int i=0; i < _errorPages.size(); i++) {
             String page = (String)_errorPages.get(i);
+            
             if (pageName.indexOf(page) > -1)
                 return page;
         }
@@ -325,6 +335,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     IMarkupWriter getComponentWriter(IComponent target)
     {
         String id = getComponentId(target);
+        
         return getWriter(id, ELEMENT_TYPE);
     }
     
@@ -337,12 +348,14 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         Defense.notNull(id, "id can't be null");
         
         IMarkupWriter w = (IMarkupWriter)_writers.get(id);
-        if (w != null) return w;
+        if (w != null) 
+            return w;
         
-        //Make component write to a "nested" writer
-        //so that element begin/ends don't conflict
-        //with xml element response begin/ends. This is very
-        //important.
+        // Make component write to a "nested" writer
+        // so that element begin/ends don't conflict
+        // with xml element response begin/ends. This is very
+        // important.
+        
         IMarkupWriter nestedWriter = _writer.getNestedWriter();
         nestedWriter.begin("response");
         nestedWriter.attribute("id", id);
@@ -408,7 +421,8 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      */
     boolean isScriptWriter(String key)
     {
-        if (key == null) return false;
+        if (key == null) 
+            return false;
         
         if (ResponseBuilder.BODY_SCRIPT.equals(key)
                 || ResponseBuilder.INCLUDE_SCRIPT.equals(key)
@@ -427,8 +441,8 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      */
     void parseParameters(IRequestCycle cycle)
     {
-        Object[] updateParts = cycle
-                .getParameters(ServiceConstants.UPDATE_PARTS);
+        Object[] updateParts = cycle.getParameters(ServiceConstants.UPDATE_PARTS);
+        
         if (updateParts == null)
             return;
         
@@ -445,7 +459,9 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      */
     boolean contains(IComponent target)
     {
-        if (target == null) return false;
+        if (target == null) 
+            return false;
+        
         return _parts.contains(getComponentId(target));
     }
     

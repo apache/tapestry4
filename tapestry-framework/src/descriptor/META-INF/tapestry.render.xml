@@ -55,8 +55,25 @@
   
   </service-point>
   
+  <service-point id="DirectLinkWorker" 
+                interface="org.apache.tapestry.services.ComponentRenderWorker">
+    
+    Wires the optional parameters updateComponents/async/json shared by all IDirect components
+    to client side javascript IO events if specified.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.link.DirectLinkWorker"
+                 initialize-method="initialize" >
+        <set property="script" value="/org/apache/tapestry/link/DirectLinkWorker.script" />
+        <set-service property="scriptSource" service-id="tapestry.script.ScriptSource"/>
+      </construct>
+    </invoke-factory>
+  
+  </service-point>
+  
   <contribution configuration-id="ComponentRenderWorkers">
     <command id="component-event-connection" object="service:ComponentEventConnectionWorker" />
+    <command id="direct-link-worker" object="service:DirectLinkWorker" />
   </contribution>
   
 </module>

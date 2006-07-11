@@ -42,9 +42,9 @@ import org.apache.tapestry.engine.ILink;
 public abstract class AbstractLinkComponent extends AbstractComponent implements ILinkComponent
 {
     private Map _eventHandlers;
-
+    
     public abstract boolean isDisabled();
-
+    
     /**
      * Adds an event handler (typically, from a wrapped component such as a
      * {@link org.apache.tapestry.html.Rollover}).
@@ -143,7 +143,7 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
             wrapperFunctionName = attributeName + "_" + finalName;
 
             StringBuffer buffer = new StringBuffer();
-
+            
             buffer.append("function ");
             buffer.append(wrapperFunctionName);
             buffer.append(" ()\n{\n");
@@ -175,13 +175,15 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
 
     public void renderAdditionalAttributes(IMarkupWriter writer, IRequestCycle cycle)
     {
+        renderIdAttribute(writer, cycle);
+        
         writeEventHandlers(writer, cycle);
-
+        
         // Generate additional attributes from informal parameters.
-
+        
         renderInformalParameters(writer, cycle);
     }
-
+    
     public abstract String getAnchor();
 
     public ILink getLink(IRequestCycle cycle)

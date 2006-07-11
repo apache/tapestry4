@@ -14,10 +14,11 @@
 
 package org.apache.tapestry.engine;
 
-import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.*;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertSame;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,15 +45,24 @@ import org.testng.annotations.Test;
 @Test
 public class DirectServiceTest extends ServiceTestCase
 {
-    protected IDirect newDirect()
+    protected IDirect newDirect(boolean checkParameters)
     {
-        return newMock(IDirect.class);
+        IDirect c = newMock(IDirect.class);
+        
+        if (checkParameters) {
+            checkOrder(c, false);
+            expect(c.getUpdateComponents()).andReturn(Collections.EMPTY_LIST);
+            expect(c.isJson()).andReturn(false);
+            expect(c.isAsync()).andReturn(false);
+        }
+        
+        return c;
     }
 
     public void testGetLinkOnSamePage()
     {
         IPage page = newPage("ThePage");
-        IDirect c = newDirect();
+        IDirect c = newDirect(true);
         IRequestCycle cycle = newCycle();
         WebRequest request = newWebRequest(false, null);
         LinkFactory lf = newLinkFactory();
@@ -90,7 +100,7 @@ public class DirectServiceTest extends ServiceTestCase
     public void testGetLinkOnSamePageForPost()
     {
         IPage page = newPage("ThePage");
-        IDirect c = newDirect();
+        IDirect c = newDirect(true);
         IRequestCycle cycle = newCycle();
         WebRequest request = newWebRequest(false, null);
         LinkFactory lf = newLinkFactory();
@@ -126,15 +136,16 @@ public class DirectServiceTest extends ServiceTestCase
     }
 
     public void testGetLinkOnSamePageStateful()
-    {
+    {   
+        IDirect c = newDirect(true);
+        
         IPage page = newPage("ThePage");
-        IDirect c = newDirect();
         IRequestCycle cycle = newCycle();
         WebSession session = newWebSession();
         WebRequest request = newWebRequest(false, session);
         LinkFactory lf = newLinkFactory();
         ILink link = newLink();
-
+        
         trainGetPage(cycle, page);
         trainGetPage(c, page);
         trainGetIdPath(c, "fred.barney");
@@ -153,11 +164,11 @@ public class DirectServiceTest extends ServiceTestCase
         ds.setLinkFactory(lf);
         ds.setRequest(request);
         ds.setRequestCycle(cycle);
-
+        
         trainConstructLink(lf, ds, false, parameters, true, link);
-
+        
         replay();
-
+        
         assertSame(link, ds.getLink(false, new DirectServiceParameter(c, serviceParameters)));
 
         verify();
@@ -167,7 +178,7 @@ public class DirectServiceTest extends ServiceTestCase
     {
         IPage page = newPage("ActivePage");
         IPage componentPage = newPage("ComponentPage");
-        IDirect c = newDirect();
+        IDirect c = newDirect(true);
         IRequestCycle cycle = newCycle();
         WebRequest request = newWebRequest(false, null);
         LinkFactory lf = newLinkFactory();
@@ -206,7 +217,7 @@ public class DirectServiceTest extends ServiceTestCase
         Object[] parameters = new Object[0];
         IRequestCycle cycle = newCycle();
         IPage page = newPage();
-        IDirect d = newDirect();
+        IDirect d = newDirect(false);
         LinkFactory lf = newLinkFactory();
         ResponseRenderer rr = newResponseRenderer();
 
@@ -249,7 +260,7 @@ public class DirectServiceTest extends ServiceTestCase
         IRequestCycle cycle = newCycle();
         IPage page = newPage();
         IPage componentPage = newPage();
-        IDirect d = newDirect();
+        IDirect d = newDirect(false);
         LinkFactory lf = newLinkFactory();
         ResponseRenderer rr = newResponseRenderer();
 
@@ -331,7 +342,7 @@ public class DirectServiceTest extends ServiceTestCase
         Object[] parameters = new Object[0];
         IRequestCycle cycle = newCycle();
         IPage page = newPage();
-        IDirect d = newDirect();
+        IDirect d = newDirect(false);
         
         LinkFactory lf = newLinkFactory();
         ResponseRenderer rr = newResponseRenderer();
@@ -382,7 +393,7 @@ public class DirectServiceTest extends ServiceTestCase
     {
         IRequestCycle cycle = newCycle();
         IPage page = newPage();
-        IDirect d = newDirect();
+        IDirect d = newDirect(false);
         
         Location l = newLocation();
 

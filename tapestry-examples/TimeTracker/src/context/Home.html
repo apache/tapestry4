@@ -60,6 +60,12 @@ using them.
     </fieldset>
 </form>
 
+<p>
+Click this link to manually update the project description. 
+	<a jwcid="@DirectLink" listener="listener:linkUpdateClicked" 
+		updateComponents="ognl:{'projectDescription'}" async="true" >Update</a>
+</p>
+
 <div jwcid="projectDescription@Any" >
 	<span jwcid="@If" condition="ognl:selectedProject">
 		<h2 style="clear:left" ><span jwcid="@Insert" value="ognl:selectedProject.name" /></h2>

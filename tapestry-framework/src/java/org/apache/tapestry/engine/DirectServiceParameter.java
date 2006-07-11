@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.engine;
 
+import java.util.Collection;
+
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IDirect;
 
@@ -25,43 +27,38 @@ import org.apache.tapestry.IDirect;
  */
 public class DirectServiceParameter
 {
-    protected IDirect _direct;
+    private IDirect _direct;
 
-    protected Object[] _serviceParameters;
+    private Object[] _serviceParameters;
 
-    protected String[] _updateParts;
+    private String[] _updateParts;
     
-    protected boolean _json;
+    private boolean _json;
+    
+    private boolean _async;
     
     public DirectServiceParameter(IDirect direct)
     {
-        this(direct, null, null, false);
-    }
-
-    public DirectServiceParameter(IDirect direct, Object[] serviceParameters)
-    {
-        this(direct, serviceParameters, null, false);
+        this(direct, null);
     }
     
-    /**
-     * Creates a new direct service parameter map. 
-     * 
-     * @param direct The object implementing the direct triggerable interface
-     * @param serviceParameters The parameters for the triggered object
-     * @param updateParts The parts expected to be updated on any returned response
-     * triggerd by this direct call.
-     */
-    public DirectServiceParameter(IDirect direct, Object[] serviceParameters,
-            String[] updateParts, boolean json)
+    public DirectServiceParameter(IDirect direct, Object[] serviceParameters)
     {
         Defense.notNull(direct, "direct");
         
         _direct = direct;
         _serviceParameters = serviceParameters;
-        _updateParts = updateParts;
-        _json = json;
+        
+        Collection comps = direct.getUpdateComponents();
+        if (comps == null)
+            _updateParts = new String[0];
+        else
+            _updateParts = (String[])comps.toArray(new String[comps.size()]);
+        
+        _json = direct.isJson();
+        _async = direct.isAsync();
     }
-
+    
     public IDirect getDirect()
     {
         return _direct;
@@ -77,8 +74,13 @@ public class DirectServiceParameter
         return _updateParts;
     }
     
-    public boolean isJSON()
+    public boolean isJson()
     {
         return _json;
+    }
+    
+    public boolean isAsync()
+    {
+        return _async;
     }
 }

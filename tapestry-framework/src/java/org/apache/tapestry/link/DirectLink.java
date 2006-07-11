@@ -41,9 +41,9 @@ public abstract class DirectLink extends AbstractLinkComponent implements IDirec
      * Returns true if the stateful parameter is bound to a true value. If stateful is not bound,
      * also returns the default, true.
      */
-
+    
     public abstract boolean isStateful();
-
+    
     public ILink getLink(IRequestCycle cycle)
     {
         Object[] serviceParameters = constructServiceParameters(getParameters());
@@ -52,7 +52,7 @@ public abstract class DirectLink extends AbstractLinkComponent implements IDirec
         
         return getEngine().getLink(isStateful(), dsp);
     }
-
+    
     /**
      * Converts a service parameters value to an array of objects. This is used by the
      * {@link DirectLink},{@link ServiceLink}and {@link ExternalLink}components.
@@ -101,7 +101,7 @@ public abstract class DirectLink extends AbstractLinkComponent implements IDirec
 
         if (listener == null)
             throw Tapestry.createRequiredParameterException(this, "listener");
-
+        
         getListenerInvoker().invokeListener(listener, this, cycle);
     }
 

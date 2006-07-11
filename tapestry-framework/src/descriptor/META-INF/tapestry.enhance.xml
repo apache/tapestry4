@@ -82,6 +82,7 @@
     <command id="inject-messages" object="service:InjectMessagesWorker" before="abstract-property"/>    
     <command id="inject-specification" object="service:InjectSpecificationWorker" before="abstract-property"/>
     <command id="inject-event-invoker" object="service:InjectEventInvokerWorker" before="abstract-property"/>
+    <command id="inject-render-worker" object="service:InjectRenderWorker" before="abstract-property"/>
     <command id="specified-property" object="service:SpecifiedPropertyWorker" before="abstract-property"/>
     <command id="parameter" object="service:ParameterPropertyWorker" before="abstract-property"/>
     <command id="dispatch-inject" object="service:DispatchToInjectWorker" before="abstract-property"/>
@@ -183,6 +184,18 @@
     <invoke-factory>
       <construct class="InjectEventInvokerWorker">
         <set-service property="componentEventInvoker" service-id="tapestry.event.ComponentEventInvoker" />
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <service-point id="InjectRenderWorker" interface="EnhancementWorker">
+    
+    Injects the ComponentRenderWorker property into all components.
+    
+    <invoke-factory>
+      <construct class="InjectRenderWorker">
+        <set-service property="renderWorker" service-id="tapestry.render.ComponentRenderChain" />
       </construct>
     </invoke-factory>
     
