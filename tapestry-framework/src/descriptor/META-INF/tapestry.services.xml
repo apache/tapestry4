@@ -261,7 +261,6 @@
                 <set-service property="localeManager" service-id="tapestry.request.RequestLocaleManager"/>
                 <set-object property="markupWriterSource"  value="infrastructure:markupWriterSource"/>
                 <set-object property="webResponse" value="infrastructure:response"/>
-                <set-service property="componentRenderWorker" service-id="tapestry.render.ComponentRenderChain" />
             </construct>
         </invoke-factory>
     </service-point>

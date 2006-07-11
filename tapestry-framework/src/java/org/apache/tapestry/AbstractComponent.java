@@ -32,6 +32,7 @@ import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.listener.ListenerMap;
+import org.apache.tapestry.services.ComponentRenderWorker;
 import org.apache.tapestry.services.impl.ComponentEventInvoker;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
@@ -306,14 +307,14 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
         // try to generate a client id if needed/possible
         if (_clientId == null) {
             String id = getBoundId();
+            
             if (id == null) id = getId();
             
-            _clientId = 
-                cycle.getUniqueId(TapestryUtils
-                        .convertTapestryIdToNMToken(id));
+            _clientId =  cycle.getUniqueId(TapestryUtils.convertTapestryIdToNMToken(id));
         }
         
         String id = getClientId();
+        
         if (id != null)
             writer.attribute("id", id);
     }
@@ -672,6 +673,8 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
             prepareForRender(cycle);
             
             renderComponent(writer, cycle);
+            
+            getRenderWorker().renderComponent(cycle, this);
         }
         finally
         {
@@ -931,6 +934,14 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
     public void triggerEvent(IRequestCycle cycle, BrowserEvent event)
     {
         getEventInvoker().invokeListeners(this, cycle, event);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ComponentRenderWorker getRenderWorker()
+    {
+        throw new IllegalStateException(TapestryMessages.providedByEnhancement("getRenderWorker"));
     }
     
     /**

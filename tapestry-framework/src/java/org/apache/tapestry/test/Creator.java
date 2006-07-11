@@ -33,7 +33,9 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.enhance.AbstractPropertyWorker;
 import org.apache.tapestry.enhance.EnhancementOperationImpl;
 import org.apache.tapestry.enhance.EnhancementWorker;
+import org.apache.tapestry.enhance.InjectRenderWorker;
 import org.apache.tapestry.services.ComponentConstructor;
+import org.apache.tapestry.services.ComponentRenderWorker;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.util.DescribedLocation;
@@ -73,18 +75,26 @@ public class Creator
 
     private final Location _creatorLocation = new DescribedLocation(_creatorResource,
             "Creator Location");
-
+    
+    private final ComponentRenderWorker _renderWorker = new MockComponentRenderWorker();
+    
+    private final InjectRenderWorker _injectRender = new InjectRenderWorker();
+    
     {
+        
+        _injectRender.setRenderWorker(_renderWorker);
+        
         // Overrride AbstractComponent's implementations of
         // these two properties (making them read/write).
 
         _workers.add(new CreatePropertyWorker("messages", _creatorLocation));
         _workers.add(new CreatePropertyWorker("specification", _creatorLocation));
-
+        _workers.add(_injectRender);
+        
         // Implement any abstract properties.
         // Note that we don't bother setting the errorLog property
         // so failures may turn into NPEs.
-
+        
         _workers.add(new AbstractPropertyWorker());
     }
 

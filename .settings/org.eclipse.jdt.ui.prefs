@@ -1,4 +1,4 @@
-#Sat Jul 01 12:53:42 EDT 2006
+#Sun Jul 09 12:08:50 EDT 2006
 eclipse.preferences.version=1
 formatter_profile=_tapestry
 formatter_settings_version=10
@@ -6,7 +6,7 @@ internal.default.compliance=default
 org.eclipse.jdt.ui.exception.name=ex
 org.eclipse.jdt.ui.gettersetter.use.is=true
 org.eclipse.jdt.ui.ignorelowercasenames=true
-org.eclipse.jdt.ui.importorder=java;javax;org;com;
+org.eclipse.jdt.ui.importorder=java;org;com;javax;
 org.eclipse.jdt.ui.javadoc=true
 org.eclipse.jdt.ui.keywordthis=false
 org.eclipse.jdt.ui.ondemandthreshold=99

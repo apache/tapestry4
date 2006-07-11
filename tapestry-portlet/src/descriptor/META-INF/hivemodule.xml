@@ -204,6 +204,25 @@
     
   </service-point>
   
+  <service-point id="PortletAssetLinkFactory" interface="org.apache.tapestry.services.LinkFactory">
+    Implementation of LinkFactory for portlet assets. Uses servlet paths to generate asset links
+    as is normally done, but also re encodes the URL's using IRequestCycle.encodeUrl(string).
+    
+    <invoke-factory>
+      <construct class="PortletAssetLinkFactoryImpl">
+        <set-object property="dataSqueezer" value="infrastructure:dataSqueezer"/>
+        <set-configuration property="contributions" configuration-id="tapestry.url.ServiceEncoders"/>
+        <set-object property="servletPath" value="app-property:org.apache.tapestry.servlet-path"/>
+        <set-object property="contextPath" value="infrastructure:contextPath"/>
+        <set-object property="request" value="infrastructure:request"/>
+        <set-object property="requestCycle" value="infrastructure:requestCycle"/>
+        <set-service property="persistenceStrategySource" 
+          service-id="tapestry.persist.PropertyPersistenceStrategySource"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
  <service-point id="SetupPortletApplicationGlobals" interface="PortletApplicationInitializer">
   
   Contributed into the tapestry.init.ApplicationInitializers configuration point

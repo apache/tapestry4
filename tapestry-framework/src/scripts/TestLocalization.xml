@@ -118,7 +118,7 @@ Zees ees nawt cheeze!
 		
 		<assert-output name="DirectLink switch URL still stateless">
 <![CDATA[		
-href="/mock/app?component=link&amp;page=Home&amp;service=direct&amp;sp=2&amp;sp=d3.5&amp;sp=SHello"
+href="/mock/app?component=link&amp;page=Home&amp;service=direct&amp;sp=2&amp;sp=d3.5&amp;sp=SHello" id="link"
 ]]>
 		</assert-output>			
 	</request>			

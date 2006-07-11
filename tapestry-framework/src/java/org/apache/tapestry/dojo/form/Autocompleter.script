@@ -9,7 +9,6 @@
     <body>
         <unique>
             dojo.require("dojo.io");
-            dojo.require("dojo.json");
             dojo.require("dojo.event");
             dojo.require("dojo.widget.Manager");
             dojo.require("dojo.widget.Select");

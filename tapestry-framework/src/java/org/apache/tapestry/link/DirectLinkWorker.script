@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE script PUBLIC
+  "-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
+  "http://jakarta.apache.org/tapestry/dtd/Script_3_0.dtd">
+<script>
+<input-symbol key="component" required="yes" />
+<input-symbol key="json" required="yes" />
+    <body>
+        <unique>
+            dojo.require("dojo.event");
+            dojo.require("tapestry.*");
+        </unique>
+    </body>
+    <initialization>
+        dojo.event.connect(dojo.byId("${component.clientId}"), "onclick", function(e){
+            dojo.event.browser.stopEvent(e);
+            
+            var content={beventname:"onClick"};
+            tapestry.event.buildEventProperties(e, content);
+            if (!content["beventtarget.id"]) content["beventtarget.id"]="${component.clientId}";
+            
+            if (typeof e == "undefined" || typeof e.target == "undefined"
+                || typeof e.target["getAttribute"] == "undefined"
+                || !e.target.getAttribute("href")) {
+                dojo.raise("Error, link target not found or invalid " + e);
+                return;    
+            }
+            
+            tapestry.bind(e.target.getAttribute("href"), content, ${json});
+        });
+    </initialization>
+</script>

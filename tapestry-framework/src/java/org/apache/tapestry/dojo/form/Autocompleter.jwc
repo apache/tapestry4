@@ -32,8 +32,8 @@
   <parameter name="model" required="yes"/>
   	
   <parameter name="disabled"/>
-
-  <parameter name="filterOnChange" default-value="false" />
+  
+  <parameter name="filterOnChange" default-value="true" />
   
   <parameter name="autocomplete" default-value="true" />
   
@@ -47,7 +47,7 @@
   <parameter name="validators"/>
   
   <parameter name="id" property="idParameter" default-value="id"/>
-
+  
   <reserved-parameter name="name"/>
   
   <inject property="validatableFieldSupport" object="service:tapestry.form.ValidatableFieldSupport"/>

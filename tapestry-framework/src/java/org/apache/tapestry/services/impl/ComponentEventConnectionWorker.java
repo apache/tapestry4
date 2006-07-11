@@ -50,11 +50,13 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
     /** Stored in {@link IRequestCycle} with associated forms. */
     public static final String FORM_NAME_LIST = 
         "org.apache.tapestry.services.impl.ComponentEventConnectionFormNames-";
+    
     // holds mapped event listener info
     private ComponentEventInvoker _invoker;
     
     // generates links for scripts
     private IEngineService _eventEngine;
+    
     // handles resolving and loading different component event 
     // connection script types
     private IScriptSource _scriptSource;
@@ -113,6 +115,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
         
         PageRenderSupport prs = TapestryUtils.getPageRenderSupport(cycle, component);
         Resource resource = getScript(component);
+        
         _scriptSource.getScript(resource).execute(cycle, prs, parms);
     }
     
@@ -158,6 +161,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
     void mapFormNames(IRequestCycle cycle, IForm form)
     {
         List names = (List)cycle.getAttribute(FORM_NAME_LIST + form.getId());
+        
         if (names == null) {
             names = new ArrayList();
             cycle.setAttribute(FORM_NAME_LIST + form.getId(), names);
@@ -169,7 +173,9 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
     void linkDeferredForm(IRequestCycle cycle, IForm form)
     {
         List deferred = (List)_deferredFormConnections.remove(form.getId());
+        
         for (int i=0; i < deferred.size(); i++) {
+            
             Object[] val = (Object[])deferred.get(i);
             
             Map scriptParms = (Map)val[0];
@@ -185,6 +191,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
             // execute script
             PageRenderSupport prs = TapestryUtils.getPageRenderSupport(cycle, component);
             Resource resource = getScript(component);
+            
             _scriptSource.getScript(resource).execute(cycle, prs, scriptParms);
         }
     }
@@ -196,8 +203,10 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
         
         Iterator it = events.iterator();
         while (it.hasNext()) {
+            
             String event = (String)it.next();
             retval.add(new Object[]{event, formNames});
+            
         }
         
         return (Object[][])retval.toArray(new Object[retval.size()][2]);
@@ -206,14 +215,18 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
     Resource getScript(IComponent component)
     {
         if (IWidget.class.isInstance(component)) {
+            
             if (_widgetResource == null) 
                 _widgetResource = new ClasspathResource(_resolver, _widgetScript);
+            
             return _widgetResource;
         }
         
         if (Body.class.isInstance(component)) {
+            
             if (_elementResource == null) 
                 _elementResource = new ClasspathResource(_resolver, _elementScript);
+            
             return _elementResource;
         }
         
@@ -246,12 +259,15 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
     Object[][] filterFormEvents(ComponentEventProperty prop, Map scriptParms, IRequestCycle cycle)
     {
         Set events = prop.getFormEvents();
-        if (events.size() < 1) return new Object[0][0];
+        
+        if (events.size() < 1) 
+            return new Object[0][0];
         
         List retval = new ArrayList();
         
         Iterator it = events.iterator();
         while (it.hasNext()) {
+            
             String event = (String)it.next();
             Iterator lit = prop.getFormEventListeners(event).iterator();
             
@@ -263,6 +279,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
                 
                 // defer connection until form is rendered
                 if (formNames == null) {
+                    
                     deferFormConnection(formId, scriptParms);
                     continue;
                 }
@@ -293,7 +310,9 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
     void deferFormConnection(String formId, Map scriptParms)
     {
         List deferred = (List)_deferredFormConnections.get(formId);
+        
         if (deferred == null) {
+            
             deferred = new ArrayList();
             _deferredFormConnections.put(formId, deferred);
         }

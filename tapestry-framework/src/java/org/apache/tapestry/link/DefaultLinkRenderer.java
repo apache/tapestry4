@@ -52,7 +52,7 @@ public class DefaultLinkRenderer implements ILinkRenderer
 
         cycle.setAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME,
                 linkComponent);
-
+        
         boolean hasBody = getHasBody();
 
         boolean disabled = linkComponent.isDisabled() || cycle.isRewinding();
@@ -77,32 +77,30 @@ public class DefaultLinkRenderer implements ILinkRenderer
             // Allow the wrapped components a chance to render.
             // Along the way, they may interact with this component
             // and cause the name variable to get set.
-
+            
             wrappedWriter = writer.getNestedWriter();
-        }
-        else 
+        } else 
             wrappedWriter = writer;
-
-        if (hasBody) linkComponent.renderBody(wrappedWriter, cycle);
-
-        if (!disabled)
-        {
+        
+        if (hasBody) 
+            linkComponent.renderBody(wrappedWriter, cycle);
+        
+        if (!disabled) {
+            
             afterBodyRender(writer, cycle, linkComponent);
             
             linkComponent.renderAdditionalAttributes(writer, cycle);
             
-            if (hasBody)
-            {
+            if (hasBody) {
                 wrappedWriter.close();
                 
                 // Close the <element> tag
                 
                 writer.end();
-            }
-            else 
+            } else 
                 writer.closeTag();
         }
-
+        
         cycle.removeAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME);
     }
 
@@ -116,12 +114,12 @@ public class DefaultLinkRenderer implements ILinkRenderer
     protected String constructURL(ILinkComponent component, IRequestCycle cycle)
     {
         ILink link = component.getLink(cycle);
-
+        
         String scheme = component.getScheme();
         Integer port = component.getPort();
         int portI = (port == null) ? 0 : port.intValue();
         String anchor = component.getAnchor();
-
+        
         return link.getURL(scheme, null, portI, anchor, true);
     }
 

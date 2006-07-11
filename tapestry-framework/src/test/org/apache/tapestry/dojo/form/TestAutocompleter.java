@@ -14,7 +14,10 @@
 
 package org.apache.tapestry.dojo.form;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.checkOrder;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
 import static org.testng.AssertJUnit.assertEquals;
 
 import java.util.Map;
@@ -51,8 +54,8 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         StringPropertySelectionModel model = new StringPropertySelectionModel(values);
         ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
         
-        Autocompleter component = newInstance(Autocompleter.class, new Object[]
-        { "model", model, "validatableFieldSupport", vfs });
+        Autocompleter component = newInstance(Autocompleter.class, 
+                new Object[] { "model", model, "validatableFieldSupport", vfs});
         
         IRequestCycle cycle = newMock(IRequestCycle.class);
         IForm form = newMock(IForm.class);
@@ -145,16 +148,17 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         
         IScript script = newMock(IScript.class);
         
-        Autocompleter component = newInstance(Autocompleter.class, new Object[]
-        { "name", "fred", "model", model, 
+        Autocompleter component = newInstance(Autocompleter.class, 
+                new Object[] { 
+            "name", "fred", "model", model, 
             "directService", engine,
             "script", script,
             "validatableFieldSupport", vfs, 
-            "value", values[1] });
+            "value", values[1]
+        });
         
         DirectServiceParameter dsp = 
-            new DirectServiceParameter(component, new Object[]{}, 
-                    new String[]{"fred"}, true);
+            new DirectServiceParameter(component);
         
         trainGetForm(cycle, form);
         trainWasPrerendered(form, writer, component, false);
@@ -217,8 +221,8 @@ public class TestAutocompleter extends BaseFormComponentTestCase
     {
         ValidatableFieldSupport support = newMock(ValidatableFieldSupport.class);
         
-        Autocompleter field = newInstance(Autocompleter.class, new Object[]
-        { "validatableFieldSupport", support, });
+        Autocompleter field = newInstance(Autocompleter.class, 
+                new Object[] { "validatableFieldSupport", support, });
         
         expect(support.isRequired(field)).andReturn(true);
         

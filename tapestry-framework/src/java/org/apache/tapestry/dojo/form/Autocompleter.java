@@ -13,7 +13,10 @@
 // limitations under the License.
 package org.apache.tapestry.dojo.form;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.tapestry.IDirect;
@@ -72,10 +75,7 @@ public abstract class Autocompleter extends AbstractFormWidget
         writer.end();
         renderDelegateSuffix(writer, cycle);
         
-        DirectServiceParameter dsp = 
-            new DirectServiceParameter(this, new Object[]{}, 
-                    new String[]{getId()}, true);
-        ILink link = getDirectService().getLink(true, dsp);
+        ILink link = getDirectService().getLink(true, new DirectServiceParameter(this));
         
         Map parms = new HashMap();
         parms.put("id", getClientId());
@@ -184,7 +184,7 @@ public abstract class Autocompleter extends AbstractFormWidget
      */
     public boolean isStateful()
     {
-        return false;
+        return true;
     }
     
     /**
@@ -249,5 +249,32 @@ public abstract class Autocompleter extends AbstractFormWidget
     public boolean isRequired()
     {
         return getValidatableFieldSupport().isRequired(this);
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public Collection getUpdateComponents()
+    {
+        List comps = new ArrayList();
+        comps.add(getId());
+        
+        return comps;
+    }
+    
+    /** 
+     * {@inheritDoc}
+     */
+    public boolean isAsync()
+    {
+        return Boolean.TRUE;
+    }
+    
+    /** 
+     * {@inheritDoc}
+     */
+    public boolean isJson()
+    {
+        return Boolean.TRUE;
     }
 }
