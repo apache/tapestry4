@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.annotations;
 
+import static org.testng.AssertJUnit.*;
 import java.lang.reflect.Method;
 
 import org.apache.hivemind.Location;
@@ -23,6 +24,7 @@ import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IBindingSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.annotations.ComponentAnnotationWorker}
@@ -30,6 +32,7 @@ import org.apache.tapestry.spec.IContainedComponent;
  * @author Howard Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestComponentAnnotationWorker extends BaseAnnotationTestCase
 {
     private IContainedComponent run(String id, String methodName, Location location)
@@ -38,13 +41,13 @@ public class TestComponentAnnotationWorker extends BaseAnnotationTestCase
 
         EnhancementOperation op = newOp();
 
-        replayControls();
+        replay();
 
         IComponentSpecification spec = new ComponentSpecification();
 
         new ComponentAnnotationWorker().performEnhancement(op, spec, method, location);
 
-        verifyControls();
+        verify();
 
         return spec.getComponent(id);
     }

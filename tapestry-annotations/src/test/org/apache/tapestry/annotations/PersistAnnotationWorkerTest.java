@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.annotations;
 
+import static org.testng.AssertJUnit.*;
 import java.lang.reflect.Method;
 
 import org.apache.hivemind.Location;
@@ -21,6 +22,7 @@ import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IPropertySpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.annotations.PersistAnnotationWorker}.
@@ -28,6 +30,7 @@ import org.apache.tapestry.spec.IPropertySpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class PersistAnnotationWorkerTest extends AnnotationEnhancementWorkerTest
 {
     public void testDefaultStrategy()
@@ -37,13 +40,13 @@ public class PersistAnnotationWorkerTest extends AnnotationEnhancementWorkerTest
         EnhancementOperation op = newOp();
         IComponentSpecification spec = new ComponentSpecification();
 
-        replayControls();
+        replay();
 
         Method m = findMethod(AnnotatedPage.class, "getPersistentProperty");
 
         new PersistAnnotationWorker().performEnhancement(op, spec, m, l);
 
-        verifyControls();
+        verify();
 
         IPropertySpecification ps = spec.getPropertySpecification("persistentProperty");
 
@@ -60,13 +63,13 @@ public class PersistAnnotationWorkerTest extends AnnotationEnhancementWorkerTest
         EnhancementOperation op = newOp();
         IComponentSpecification spec = new ComponentSpecification();
 
-        replayControls();
+        replay();
 
         Method m = findMethod(AnnotatedPage.class, "getClientPersistentProperty");
 
         new PersistAnnotationWorker().performEnhancement(op, spec, m, l);
 
-        verifyControls();
+        verify();
 
         IPropertySpecification ps = spec.getPropertySpecification("clientPersistentProperty");
 
@@ -83,13 +86,13 @@ public class PersistAnnotationWorkerTest extends AnnotationEnhancementWorkerTest
         EnhancementOperation op = newOp();
         IComponentSpecification spec = new ComponentSpecification();
 
-        replayControls();
+        replay();
 
         Method m = findMethod(AnnotatedPage.class, "getPersistentPropertyWithInitialValue");
 
         new PersistAnnotationWorker().performEnhancement(op, spec, m, l);
 
-        verifyControls();
+        verify();
 
         IPropertySpecification ps = spec
                 .getPropertySpecification("persistentPropertyWithInitialValue");

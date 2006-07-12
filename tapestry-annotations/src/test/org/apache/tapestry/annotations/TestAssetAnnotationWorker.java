@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.annotations;
 
+import static org.testng.AssertJUnit.*;
 import java.lang.reflect.Method;
 
 import org.apache.hivemind.Location;
@@ -23,6 +24,7 @@ import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IAssetSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.util.DescribedLocation;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.annotations.AssetAnnotationWorker}.
@@ -30,23 +32,24 @@ import org.apache.tapestry.util.DescribedLocation;
  * @author Howard Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestAssetAnnotationWorker extends BaseAnnotationTestCase
 {
     public void testSuccess()
     {
         Location l = newLocation();
-        Resource r = (Resource) newMock(Resource.class);
+        Resource r = newMock(Resource.class);
         EnhancementOperation op = newOp();
         IComponentSpecification spec = new ComponentSpecification();
         spec.setSpecificationLocation(r);
 
-        replayControls();
+        replay();
 
         Method m = findMethod(AnnotatedPage.class, "getGlobalStylesheet");
 
         new AssetAnnotationWorker().performEnhancement(op, spec, m, l);
 
-        verifyControls();
+        verify();
 
         IAssetSpecification as = spec.getAsset("globalStylesheet");
         assertEquals("/style/global.css", as.getPath());

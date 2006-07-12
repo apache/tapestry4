@@ -14,6 +14,10 @@
 
 package org.apache.tapestry.annotations;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.lang.reflect.Method;
 
 import org.apache.hivemind.Location;
@@ -21,7 +25,7 @@ import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
-import org.easymock.MockControl;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.annotations.ParameterAnnotationWorker}.
@@ -29,6 +33,7 @@ import org.easymock.MockControl;
  * @author Howard Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestParameterAnnotationWorker extends BaseAnnotationTestCase
 {
     private IParameterSpecification attempt(String propertyName, Location location)
@@ -41,20 +46,18 @@ public class TestParameterAnnotationWorker extends BaseAnnotationTestCase
     {
         Method m = findMethod(AnnotatedPage.class, "get"
                 + propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1));
-
-        MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) opc.getMock();
-
-        op.getPropertyType(propertyName);
-        opc.setReturnValue(m.getReturnType());
-
+        
+        EnhancementOperation op = newMock(EnhancementOperation.class);
+        
+        expect(op.getPropertyType(propertyName)).andReturn(m.getReturnType());
+        
         IComponentSpecification spec = new ComponentSpecification();
 
-        replayControls();
+        replay();
 
         new ParameterAnnotationWorker().performEnhancement(op, spec, m, location);
 
-        verifyControls();
+        verify();
 
         return spec.getParameter(parameterName);
     }
@@ -65,7 +68,7 @@ public class TestParameterAnnotationWorker extends BaseAnnotationTestCase
 
         IParameterSpecification ps = attempt("simpleParameter", l);
 
-        assertListsEqual(new Object[] {}, ps.getAliasNames().toArray());
+        assertListEquals(new Object[] {}, ps.getAliasNames().toArray());
         assertEquals(true, ps.getCache());
         assertEquals(null, ps.getDefaultValue());
         assertEquals(null, ps.getDescription());
@@ -93,8 +96,7 @@ public class TestParameterAnnotationWorker extends BaseAnnotationTestCase
     {
         IParameterSpecification ps = attempt("aliasedParameter", null);
 
-        assertListsEqual(new String[]
-        { "fred" }, ps.getAliasNames().toArray());
+        assertListEquals(new String[]{ "fred" }, ps.getAliasNames().toArray());
     }
 
     public void testDeprecated()

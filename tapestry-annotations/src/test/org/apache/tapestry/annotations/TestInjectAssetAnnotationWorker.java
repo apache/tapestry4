@@ -14,12 +14,19 @@
 
 package org.apache.tapestry.annotations;
 
+import static org.easymock.EasyMock.*;
+import static org.testng.AssertJUnit.assertNotNull;
+
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
 import org.apache.hivemind.Location;
+import org.apache.hivemind.service.MethodSignature;
+import org.apache.tapestry.IAsset;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.enhance.InjectAssetWorker;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.annotations.InjectAssetAnnotationWorker}.
@@ -27,6 +34,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestInjectAssetAnnotationWorker extends BaseAnnotationTestCase
 {
     public void testDefault()
@@ -41,20 +49,28 @@ public class TestInjectAssetAnnotationWorker extends BaseAnnotationTestCase
         Location l = newLocation();
 
         EnhancementOperation op = newOp();
+        
         IComponentSpecification spec = newSpec();
-
-        InjectAssetWorker delegate = (InjectAssetWorker) newMock(InjectAssetWorker.class);
-
+        
+        InjectAssetWorker delegate = new InjectAssetWorker();
+        
         Method m = findMethod(AnnotatedPage.class, "getStylesheetAsset");
-
-        delegate.injectAsset(op, "stylesheet", "stylesheetAsset", l);
-
-        replayControls();
-
+        
+        expect(op.getPropertyType("stylesheetAsset")).andReturn(IAsset.class);
+        
+        op.claimReadonlyProperty("stylesheetAsset");
+        
+        expect(op.getAccessorMethodName("stylesheetAsset")).andReturn("getStylesheetAsset");
+        
+        op.addMethod(eq(Modifier.PUBLIC), isA(MethodSignature.class), 
+                eq("return getAsset(\"stylesheet\");"), eq(l));
+        
         InjectAssetAnnotationWorker worker = new InjectAssetAnnotationWorker(delegate);
+        
+        replay();
 
         worker.performEnhancement(op, spec, m, l);
 
-        verifyControls();
+        verify();
     }
 }

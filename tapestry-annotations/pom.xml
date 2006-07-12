@@ -14,7 +14,7 @@
     </parent>
     <name>Annotations</name>
     <inceptionYear>2006</inceptionYear>
-    
+
     <dependencies>
         <dependency>
             <groupId>org.apache.tapestry</groupId>
@@ -39,19 +39,28 @@
             <artifactId>easymockclassextension</artifactId>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.9</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>4.7</version>
+            <classifier>jdk15</classifier>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.javaforge.tapestry</groupId>
+            <artifactId>tapestry-testng</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tapestry</groupId>
+            <artifactId>tapestry-test</artifactId>
+        </dependency>
     </dependencies>
-    
+
     <build>
         <sourceDirectory>src/java</sourceDirectory>
         <resources>
@@ -91,7 +100,7 @@
                 </includes>
             </testResource>
         </testResources>
-        
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -126,7 +135,7 @@
             </plugin>
         </plugins>
     </build>
-    
+
     <reporting>
         <outputDirectory>../target/site/tapestry-annotations</outputDirectory>
         <plugins>
@@ -179,7 +188,9 @@
                         <link>http://jakarta.apache.org/commons/logging/apidocs/</link>
                         <link>http://www.ognl.org/2.6.9/Documentation/javadoc/</link>
                     </links>
-                    <stylesheetfile>${basedir}/../src/site/resources/css/jdstyle.css</stylesheetfile>
+                    <stylesheetfile>
+                        ${basedir}/../src/site/resources/css/jdstyle.css
+                    </stylesheetfile>
                 </configuration>
             </plugin>
         </plugins>

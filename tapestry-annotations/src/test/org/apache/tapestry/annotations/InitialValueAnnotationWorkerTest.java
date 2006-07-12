@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.annotations;
 
+import static org.testng.AssertJUnit.*;
 import java.lang.reflect.Method;
 
 import org.apache.hivemind.Location;
@@ -22,12 +23,14 @@ import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IPropertySpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.annotations.InitialValueAnnotationWorker}.
  * 
  * @author Howard M. Lewis Ship
  */
+@Test
 public class InitialValueAnnotationWorkerTest extends BaseAnnotationTestCase
 {
     public void testCanEnhance()
@@ -47,13 +50,13 @@ public class InitialValueAnnotationWorkerTest extends BaseAnnotationTestCase
         Method method = findMethod(AnnotatedPage.class, "getMapBean");
         Resource resource = newResource(AnnotatedPage.class);
 
-        replayControls();
+        replay();
 
         InitialValueAnnotationWorker worker = new InitialValueAnnotationWorker();
 
         worker.peformEnhancement(op, spec, method, resource);
 
-        verifyControls();
+        verify();
     }
 
     public void testEnhancePersistAnnotationPresent()
@@ -63,13 +66,13 @@ public class InitialValueAnnotationWorkerTest extends BaseAnnotationTestCase
         Method method = findMethod(AnnotatedPage.class, "getPersistentPropertyWithInitialValue");
         Resource resource = newResource(AnnotatedPage.class);
 
-        replayControls();
+        replay();
 
         InitialValueAnnotationWorker worker = new InitialValueAnnotationWorker();
 
         worker.peformEnhancement(op, spec, method, resource);
 
-        verifyControls();
+        verify();
     }
 
     public void testJustInitialValue()
@@ -79,13 +82,13 @@ public class InitialValueAnnotationWorkerTest extends BaseAnnotationTestCase
         Method method = findMethod(AnnotatedPage.class, "getPropertyWithInitialValue");
         Resource resource = newResource(AnnotatedPage.class);
 
-        replayControls();
+        replay();
 
         InitialValueAnnotationWorker worker = new InitialValueAnnotationWorker();
 
         worker.peformEnhancement(op, spec, method, resource);
 
-        verifyControls();
+        verify();
 
         IPropertySpecification ps = spec.getPropertySpecification("propertyWithInitialValue");
 

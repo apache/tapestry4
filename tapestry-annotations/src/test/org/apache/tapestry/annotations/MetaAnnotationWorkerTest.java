@@ -14,10 +14,12 @@
 
 package org.apache.tapestry.annotations;
 
+import static org.testng.AssertJUnit.*;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Test case for {@link org.apache.tapestry.annotations.MetaAnnotationWorker}.
@@ -25,6 +27,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class MetaAnnotationWorkerTest extends BaseAnnotationTestCase
 {
 
@@ -37,11 +40,11 @@ public class MetaAnnotationWorkerTest extends BaseAnnotationTestCase
         spec.setProperty("foo", "bar");
         spec.setProperty("biff", "bazz");
 
-        replayControls();
+        replay();
 
         new MetaAnnotationWorker().performEnhancement(op, spec, MetaPage.class, l);
 
-        verifyControls();
+        verify();
     }
 
     public void testMetaInSubclass()
@@ -57,11 +60,11 @@ public class MetaAnnotationWorkerTest extends BaseAnnotationTestCase
         // From MetaPageSubclass
         spec.setProperty("in-subclass", "true");
 
-        replayControls();
+        replay();
 
         new MetaAnnotationWorker().performEnhancement(op, spec, MetaPageSubclass.class, l);
 
-        verifyControls();
+        verify();
 
     }
 
@@ -71,7 +74,7 @@ public class MetaAnnotationWorkerTest extends BaseAnnotationTestCase
         IComponentSpecification spec = newSpec();
         Location l = newLocation();
 
-        replayControls();
+        replay();
 
         MetaAnnotationWorker worker = new MetaAnnotationWorker();
 
@@ -87,7 +90,7 @@ public class MetaAnnotationWorkerTest extends BaseAnnotationTestCase
             assertSame(l, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
 
     }
 }

@@ -14,9 +14,11 @@
 
 package org.apache.tapestry.annotations;
 
+import static org.testng.AssertJUnit.*;
 import java.lang.reflect.Method;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.annotations.AnnotationUtils}.
@@ -24,6 +26,7 @@ import org.apache.hivemind.ApplicationRuntimeException;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestAnnotationUtils extends BaseAnnotationTestCase
 {
     private String attemptGetPropertyName(Class clazz, String name)

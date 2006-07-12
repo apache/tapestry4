@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.annotations;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.lang.reflect.Method;
 
 import org.apache.hivemind.Location;
@@ -21,6 +24,7 @@ import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.InjectSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Test for the "simple" annotation workers, that collect basic information and update the component
@@ -29,6 +33,7 @@ import org.apache.tapestry.spec.InjectSpecification;
  * @author Howard Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestSimpleAnnotationWorkers extends BaseAnnotationTestCase
 {
     public void testInjectPage()
@@ -108,11 +113,11 @@ public class TestSimpleAnnotationWorkers extends BaseAnnotationTestCase
 
         Method method = findMethod(AnnotatedPage.class, methodName);
 
-        replayControls();
+        replay();
 
         worker.performEnhancement(op, spec, method, location);
 
-        verifyControls();
+        verify();
 
         return spec;
     }

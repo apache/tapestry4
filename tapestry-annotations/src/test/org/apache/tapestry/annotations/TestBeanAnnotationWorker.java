@@ -14,6 +14,11 @@
 
 package org.apache.tapestry.annotations;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNull;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +30,7 @@ import org.apache.tapestry.spec.BeanLifecycle;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IBeanSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.easymock.MockControl;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.annotations.BeanAnnotationWorker}.
@@ -33,7 +38,7 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-
+@Test
 public class TestBeanAnnotationWorker extends BaseAnnotationTestCase
 {
     public void testBeanClassSpecified()
@@ -44,11 +49,11 @@ public class TestBeanAnnotationWorker extends BaseAnnotationTestCase
 
         Method m = findMethod(AnnotatedPage.class, "getMapBean");
 
-        replayControls();
+        replay();
 
         new BeanAnnotationWorker().performEnhancement(op, spec, m, l);
 
-        verifyControls();
+        verify();
 
         IBeanSpecification bs = spec.getBeanSpecification("mapBean");
 
@@ -61,11 +66,9 @@ public class TestBeanAnnotationWorker extends BaseAnnotationTestCase
 
     private EnhancementOperation newOp(String propertyName, Class propertyType)
     {
-        MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) opc.getMock();
-
-        op.getPropertyType(propertyName);
-        opc.setReturnValue(propertyType);
+        EnhancementOperation op = newMock(EnhancementOperation.class);
+        
+        expect(op.getPropertyType(propertyName)).andReturn(propertyType);
 
         return op;
     }
@@ -78,11 +81,11 @@ public class TestBeanAnnotationWorker extends BaseAnnotationTestCase
 
         Method m = findMethod(AnnotatedPage.class, "getHashMapBean");
 
-        replayControls();
+        replay();
 
         new BeanAnnotationWorker().performEnhancement(op, spec, m, l);
 
-        verifyControls();
+        verify();
 
         IBeanSpecification bs = spec.getBeanSpecification("hashMapBean");
 
@@ -100,11 +103,11 @@ public class TestBeanAnnotationWorker extends BaseAnnotationTestCase
 
         Method m = findMethod(AnnotatedPage.class, "getBeanWithInitializer");
 
-        replayControls();
+        replay();
 
         new BeanAnnotationWorker().performEnhancement(op, spec, m, null);
 
-        verifyControls();
+        verify();
 
         IBeanSpecification bs = spec.getBeanSpecification("beanWithInitializer");
 
@@ -121,11 +124,11 @@ public class TestBeanAnnotationWorker extends BaseAnnotationTestCase
 
         Method m = findMethod(AnnotatedPage.class, "getRenderLifecycleBean");
 
-        replayControls();
+        replay();
 
         new BeanAnnotationWorker().performEnhancement(op, spec, m, null);
 
-        verifyControls();
+        verify();
 
         IBeanSpecification bs = spec.getBeanSpecification("renderLifecycleBean");
 

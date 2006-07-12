@@ -128,6 +128,10 @@
             <artifactId>portlet-api</artifactId>
             <version>1.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.tapestry</groupId>
+            <artifactId>tapestry-test</artifactId>
+        </dependency>
     </dependencies>
 
     <reporting>
