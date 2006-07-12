@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.annotations;
 
+import static org.testng.AssertJUnit.assertNotNull;
+
 import java.lang.reflect.Method;
 
 import org.apache.hivemind.Location;
@@ -21,6 +23,7 @@ import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.enhance.InjectObjectWorker;
 import org.apache.tapestry.services.InjectedValueProvider;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.annotations.InjectObjectAnnotationWorker}.
@@ -28,7 +31,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-
+@Test
 public class TestInjectObjectAnnotationWorker extends BaseAnnotationTestCase
 {
     public void testDefault()
@@ -45,28 +48,31 @@ public class TestInjectObjectAnnotationWorker extends BaseAnnotationTestCase
         EnhancementOperation op = newOp();
         IComponentSpecification spec = newSpec();
 
-        InjectObjectWorker delegate = (InjectObjectWorker) newMock(InjectObjectWorker.class);
+        InjectObjectWorker delegate = org.easymock.classextension.EasyMock.createNiceMock(InjectObjectWorker.class);
 
-        InjectedValueProvider provider = (InjectedValueProvider) newMock(InjectedValueProvider.class);
+        InjectedValueProvider provider = newMock(InjectedValueProvider.class);
 
         delegate.setProvider(provider);
-
-        replayControls();
-
+        
+        replay();
+        org.easymock.classextension.EasyMock.replay(delegate);
+        
         InjectObjectAnnotationWorker worker = new InjectObjectAnnotationWorker(delegate);
         worker.setProvider(provider);
-
-        verifyControls();
-
+        
+        verify();
+        org.easymock.classextension.EasyMock.verify(delegate);
+        
         Method m = findMethod(AnnotatedPage.class, "getInjectedObject");
-
+        
         delegate.injectObject(op, "barney", "injectedObject", l);
-
-        replayControls();
-
+        
+        replay();
+        
         worker.performEnhancement(op, spec, m, l);
-
-        verifyControls();
+        
+        verify();
+        org.easymock.classextension.EasyMock.verify(delegate);
     }
 
 }

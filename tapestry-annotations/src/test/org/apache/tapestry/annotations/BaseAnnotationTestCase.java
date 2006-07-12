@@ -19,8 +19,8 @@ import java.lang.reflect.Method;
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
-import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.hivemind.util.ClasspathResource;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.IComponentSpecification;
 
@@ -29,7 +29,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @since 4.0
  */
 
-public abstract class BaseAnnotationTestCase extends HiveMindTestCase
+public abstract class BaseAnnotationTestCase extends BaseComponentTestCase
 {
 
     protected Method findMethod(Class clazz, String name)
@@ -45,12 +45,12 @@ public abstract class BaseAnnotationTestCase extends HiveMindTestCase
 
     protected IComponentSpecification newSpec()
     {
-        return (IComponentSpecification) newMock(IComponentSpecification.class);
+        return newMock(IComponentSpecification.class);
     }
 
     protected EnhancementOperation newOp()
     {
-        return (EnhancementOperation) newMock(EnhancementOperation.class);
+        return newMock(EnhancementOperation.class);
     }
 
     protected Resource newResource(Class clazz)
@@ -58,9 +58,9 @@ public abstract class BaseAnnotationTestCase extends HiveMindTestCase
         return new ClasspathResource(getClassResolver(), clazz.getName().replace('.', '/'));
     }
 
-    protected ErrorLog newLog()
+    protected ErrorLog newErrorLog()
     {
-        return (ErrorLog) newMock(ErrorLog.class);
+        return newMock(ErrorLog.class);
     }
 
     protected Location newMethodLocation(Class baseClass, Method m, Class annotationClass)

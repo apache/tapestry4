@@ -28,6 +28,7 @@ import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.util.DescribedLocation;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.annotations.AnnotationEnhancementWorker}.
@@ -35,12 +36,12 @@ import org.apache.tapestry.util.DescribedLocation;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-
+@Test
 public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
 {
     protected EnhancementOperation newOp(Class baseClass)
     {
-        EnhancementOperation op = (EnhancementOperation) newMock(EnhancementOperation.class);
+        EnhancementOperation op = newMock(EnhancementOperation.class);
 
         expect(op.getBaseClass()).andReturn(baseClass);
 
@@ -73,7 +74,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
         EnhancementOperation op = newOp(AnnotatedPage.class);
         IComponentSpecification spec = newSpec();
 
-        replayControls();
+        replay();
 
         AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
         worker.setMethodWorkers(Collections.EMPTY_MAP);
@@ -81,7 +82,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
 
         worker.performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 
     public void testAnnotationMatch()
@@ -99,7 +100,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
 
         methodWorker.performEnhancement(op, spec, m, location);
 
-        replayControls();
+        replay();
 
         AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
         worker.setMethodWorkers(newMap(InjectObject.class, methodWorker));
@@ -108,12 +109,12 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
 
         worker.performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 
     protected MethodAnnotationEnhancementWorker newMethodAnnotationEnhancementWorker()
     {
-        return (MethodAnnotationEnhancementWorker) newMock(MethodAnnotationEnhancementWorker.class);
+        return newMock(MethodAnnotationEnhancementWorker.class);
     }
 
     private DescribedLocation newClassLocation(Class baseClass, Class annotationClass)
@@ -141,7 +142,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
 
         methodWorker.performEnhancement(op, spec, m, location);
 
-        replayControls();
+        replay();
 
         AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
         worker.setMethodWorkers(newMap(InjectObject.class, methodWorker));
@@ -150,14 +151,14 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
 
         worker.performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 
     public void testAnnotationFailure()
     {
         ClassResolver resolver = new DefaultClassResolver();
 
-        ErrorLog log = newLog();
+        ErrorLog log = newErrorLog();
         Throwable t = new RuntimeException("Woops!");
 
         EnhancementOperation op = newOp(AnnotatedPage.class);
@@ -170,17 +171,15 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
         Location location = newMethodLocation(AnnotatedPage.class, m, InjectObject.class);
 
         methodWorker.performEnhancement(op, spec, m, location);
-        setThrowable(methodWorker, t);
+        expectLastCall().andThrow(t);
 
-        log
-                .error(
-                        "An error occured processing annotation "
-                                + "@org.apache.tapestry.annotations.InjectObject(value=barney) of "
-                                + "public abstract java.lang.Object org.apache.tapestry.annotations.AnnotatedPage.getInjectedObject(): Woops!",
-                        null,
-                        t);
+        log.error("An error occured processing annotation "
+                + "@org.apache.tapestry.annotations.InjectObject(value=barney) of "
+                + "public abstract java.lang.Object org.apache.tapestry.annotations.AnnotatedPage.getInjectedObject(): Woops!",
+                null,
+                t);
 
-        replayControls();
+        replay();
 
         AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
         worker.setMethodWorkers(newMap(InjectObject.class, methodWorker));
@@ -190,7 +189,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
 
         worker.performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 
     public void testClassAnnotation()
@@ -200,13 +199,13 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
         EnhancementOperation op = newOp(DeprecatedBean.class);
         IComponentSpecification spec = newSpec();
 
-        ClassAnnotationEnhancementWorker classWorker = (ClassAnnotationEnhancementWorker) newMock(ClassAnnotationEnhancementWorker.class);
+        ClassAnnotationEnhancementWorker classWorker = newMock(ClassAnnotationEnhancementWorker.class);
 
         DescribedLocation location = newClassLocation(DeprecatedBean.class, Deprecated.class);
 
         classWorker.performEnhancement(op, spec, DeprecatedBean.class, location);
 
-        replayControls();
+        replay();
 
         AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
         worker.setClassWorkers(newMap(Deprecated.class, classWorker));
@@ -215,32 +214,32 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
 
         worker.performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 
     public void testClassAnnotationFailure()
     {
         ClassResolver resolver = new DefaultClassResolver();
 
-        ErrorLog log = newLog();
+        ErrorLog log = newErrorLog();
         EnhancementOperation op = newOp(DeprecatedBean.class);
         IComponentSpecification spec = newSpec();
 
-        ClassAnnotationEnhancementWorker classWorker = (ClassAnnotationEnhancementWorker) newMock(ClassAnnotationEnhancementWorker.class);
+        ClassAnnotationEnhancementWorker classWorker = newMock(ClassAnnotationEnhancementWorker.class);
 
         Throwable t = new RuntimeException("Simulated failure.");
 
         DescribedLocation location = newClassLocation(DeprecatedBean.class, Deprecated.class);
 
         classWorker.performEnhancement(op, spec, DeprecatedBean.class, location);
-        setThrowable(classWorker, t);
+        expectLastCall().andThrow(t);
 
         log.error("An error occured processing annotation @java.lang.Deprecated() of "
                 + "class org.apache.tapestry.annotations.DeprecatedBean: Simulated failure.",
                 null,
                 t);
 
-        replayControls();
+        replay();
 
         AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
         worker.setClassWorkers(newMap(Deprecated.class, classWorker));
@@ -250,7 +249,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
 
         worker.performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 
     public void testClassAnnotationNoMatch()
@@ -258,7 +257,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
         EnhancementOperation op = newOp(DeprecatedBean.class);
         IComponentSpecification spec = newSpec();
 
-        replayControls();
+        replay();
 
         AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
         worker.setClassWorkers(Collections.EMPTY_MAP);
@@ -266,7 +265,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
 
         worker.performEnhancement(op, spec);
 
-        verifyControls();
+        verify();
     }
 
     public void testSecondaryEnhancementWorker()
@@ -283,7 +282,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
 
         secondary.peformEnhancement(op, spec, method, classResource);
 
-        replayControls();
+        replay();
 
         AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
         worker.setSecondaryAnnotationWorker(secondary);
@@ -291,7 +290,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
 
         worker.performMethodEnhancement(op, spec, method, classResource);
 
-        verifyControls();
+        verify();
     }
 
     public void testSecondaryEnhancementWorkerFailure()
@@ -300,7 +299,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
 
         EnhancementOperation op = newOp();
         IComponentSpecification spec = newSpec();
-        ErrorLog log = newLog();
+        ErrorLog log = newErrorLog();
 
         Method method = findMethod(AnnotatedPage.class, "getPropertyWithInitialValue");
 
@@ -312,7 +311,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
         
         log.error(AnnotationMessages.failureEnhancingMethod(method, cause), null, cause);
         
-        replayControls();
+        replay();
         
         AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
         worker.setSecondaryAnnotationWorker(secondary);
@@ -321,11 +320,11 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
 
         worker.performMethodEnhancement(op, spec, method, classResource);
 
-        verifyControls();
+        verify();
     }
 
     protected SecondaryAnnotationWorker newSecondaryAnnotationWorker()
     {
-        return (SecondaryAnnotationWorker) newMock(SecondaryAnnotationWorker.class);
+        return newMock(SecondaryAnnotationWorker.class);
     }
 }

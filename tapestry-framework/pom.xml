@@ -96,6 +96,10 @@
             <groupId>com.javaforge.tapestry</groupId>
             <artifactId>tapestry-testng</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.tapestry</groupId>
+            <artifactId>tapestry-test</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

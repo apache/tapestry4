@@ -13,6 +13,11 @@
 // limitations under the License.
 package org.apache.tapestry.annotations;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertFalse;
+import static org.testng.AssertJUnit.assertNotNull;
+import static org.testng.AssertJUnit.assertTrue;
+
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -23,12 +28,14 @@ import org.apache.tapestry.internal.event.ComponentEventProperty;
 import org.apache.tapestry.internal.event.EventBoundListener;
 import org.apache.tapestry.services.impl.ComponentEventInvoker;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.testng.annotations.Test;
 
 
 /**
  * Tests functionality of {@link TestEventListenerAnnotationWorker}.
  * @author jkuhnert
  */
+@Test
 public class TestEventListenerAnnotationWorker extends BaseAnnotationTestCase
 {
 
@@ -42,7 +49,7 @@ public class TestEventListenerAnnotationWorker extends BaseAnnotationTestCase
         ComponentEventInvoker invoker = new ComponentEventInvoker();
         worker.setComponentEventInvoker(invoker);
         
-        replayControls();
+        replay();
         
         Method m = findMethod(AnnotatedPage.class, "eventListener");
         
@@ -50,7 +57,7 @@ public class TestEventListenerAnnotationWorker extends BaseAnnotationTestCase
         assertFalse(worker.canEnhance(findMethod(AnnotatedPage.class, "getPersistentProperty")));
         worker.peformEnhancement(op, spec, m, resource);
         
-        verifyControls();
+        verify();
         
         ComponentEventProperty property = invoker.getComponentEvents("email");
         assertNotNull(property);
@@ -77,14 +84,14 @@ public class TestEventListenerAnnotationWorker extends BaseAnnotationTestCase
         ComponentEventInvoker invoker = new ComponentEventInvoker();
         worker.setComponentEventInvoker(invoker);
         
-        replayControls();
+        replay();
         
         Method m = findMethod(AnnotatedPage.class, "formListener");
         
         assertTrue(worker.canEnhance(m));
         worker.peformEnhancement(op, spec, m, resource);
         
-        verifyControls();
+        verify();
         
         ComponentEventProperty property = invoker.getComponentEvents("email");
         assertNotNull(property);
@@ -105,7 +112,7 @@ public class TestEventListenerAnnotationWorker extends BaseAnnotationTestCase
         
         EventListenerAnnotationWorker worker = new EventListenerAnnotationWorker();
         
-        replayControls();
+        replay();
         
         Method m = findMethod(AnnotatedPage.class, "brokenTargetListener");
         
@@ -118,6 +125,25 @@ public class TestEventListenerAnnotationWorker extends BaseAnnotationTestCase
             assertExceptionSubstring(e, "No targets found for");
         }
         
-        verifyControls();
+        verify();
+    }
+    
+    public void testCanEnhance()
+    {
+        EnhancementOperation op = newOp();
+        IComponentSpecification spec = newSpec();
+        Resource resource = newResource(AnnotatedPage.class);
+        
+        EventListenerAnnotationWorker worker = new EventListenerAnnotationWorker();
+        
+        replay();
+        
+        Method m = findMethod(AnnotatedPage.class, "getDefaultPageSize");
+        
+        assertFalse(worker.canEnhance(m));
+        
+        worker.peformEnhancement(op, spec, m, resource);
+        
+        verify();
     }
 }

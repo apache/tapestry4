@@ -14,10 +14,13 @@
 
 package org.apache.tapestry.annotations;
 
+import static org.testng.AssertJUnit.assertNotNull;
+
 import org.apache.hivemind.Location;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.enhance.InjectComponentWorker;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.annotations.InjectComponentAnnotationWorker}.
@@ -25,6 +28,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestInjectComponentAnnotationWorker extends BaseAnnotationTestCase
 {
 
@@ -41,16 +45,18 @@ public class TestInjectComponentAnnotationWorker extends BaseAnnotationTestCase
         EnhancementOperation op = newOp();
         IComponentSpecification spec = newSpec();
 
-        InjectComponentWorker delegate = (InjectComponentWorker) newMock(InjectComponentWorker.class);
-
+        InjectComponentWorker delegate = org.easymock.classextension.EasyMock.createMock(InjectComponentWorker.class);
+        
         delegate.injectComponent(op, "fred", "fredField", l);
-
-        replayControls();
-
+        
+        replay();
+        org.easymock.classextension.EasyMock.replay(delegate);
+        
         InjectComponentAnnotationWorker worker = new InjectComponentAnnotationWorker(delegate);
 
         worker.performEnhancement(op, spec, findMethod(AnnotatedPage.class, "getFredField"), l);
-
-        verifyControls();
+        
+        verify();
+        org.easymock.classextension.EasyMock.verify(delegate);
     }
 }

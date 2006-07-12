@@ -14,10 +14,12 @@
 
 package org.apache.tapestry.annotations;
 
+import static org.testng.AssertJUnit.*;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.annotations.ComponentClassAnnotationWorker}.
@@ -25,6 +27,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @author Howard Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestComponentClassAnnotationWorker extends BaseAnnotationTestCase
 {
     private IComponentSpecification attempt(Class baseClass, Location location)
@@ -32,11 +35,11 @@ public class TestComponentClassAnnotationWorker extends BaseAnnotationTestCase
         EnhancementOperation op = newOp();
         IComponentSpecification spec = new ComponentSpecification();
 
-        replayControls();
+        replay();
 
         new ComponentClassAnnotationWorker().performEnhancement(op, spec, baseClass, location);
 
-        verifyControls();
+        verify();
 
         return spec;
     }

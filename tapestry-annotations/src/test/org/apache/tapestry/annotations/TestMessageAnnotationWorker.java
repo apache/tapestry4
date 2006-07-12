@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.annotations;
 
+import static org.easymock.EasyMock.*;
+import static org.testng.AssertJUnit.assertEquals;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
@@ -28,9 +31,9 @@ import org.apache.tapestry.enhance.EnhancementOperationImpl;
 import org.apache.tapestry.services.ComponentConstructor;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.easymock.MockControl;
-import org.easymock.internal.ArrayMatcher;
+import org.testng.annotations.Test;
 
+@Test
 public class TestMessageAnnotationWorker extends BaseAnnotationTestCase
 {
     public void testConvertMethodNameToKeyName()
@@ -78,7 +81,7 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase
 
         Method method = findMethod(AnnotatedPage.class, "voidMessage");
 
-        replayControls();
+        replay();
 
         try
         {
@@ -92,7 +95,7 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase
                     ex.getMessage());
         }
 
-        verifyControls();
+        verify();
 
     }
 
@@ -111,11 +114,11 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase
                 l);
         op.claimReadonlyProperty("likeGetter");
 
-        replayControls();
+        replay();
 
         new MessageAnnotationWorker().performEnhancement(op, spec, method, l);
 
-        verifyControls();
+        verify();
     }
 
     private void attempt(String methodName, String codeBlock)
@@ -128,11 +131,11 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase
 
         op.addMethod(Modifier.PUBLIC, new MethodSignature(method), codeBlock, l);
 
-        replayControls();
+        replay();
 
         new MessageAnnotationWorker().performEnhancement(op, spec, method, l);
 
-        verifyControls();
+        verify();
     }
 
     private Object construct(Class baseClass, String methodName, Messages messages)
@@ -158,68 +161,59 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase
 
     public void testNoParams()
     {
-        MockControl control = newControl(Messages.class);
-        Messages messages = (Messages) control.getMock();
-
-        messages.getMessage("no-params");
-        control.setReturnValue("<no params>");
+        Messages messages = newMock(Messages.class);
+        
+        expect(messages.getMessage("no-params")).andReturn("<no params>");
 
         MessagesTarget mt = (MessagesTarget) construct(MessagesTarget.class, "noParams", messages);
 
-        replayControls();
+        replay();
 
         assertEquals("<no params>", mt.noParams());
 
-        verifyControls();
+        verify();
     }
 
     public void testObjectParam()
     {
-        MockControl control = newControl(Messages.class);
-        Messages messages = (Messages) control.getMock();
+        Messages messages = newMock(Messages.class);
 
         Object[] params = new Object[]
         { "PinkFloyd" };
 
-        messages.format("object-param", params);
-        control.setMatcher(new ArrayMatcher());
-        control.setReturnValue("<object param>");
-
+        expect(messages.format(eq("object-param"), aryEq(params))).andReturn("<object param>");
+        
         MessagesTarget mt = (MessagesTarget) construct(
                 MessagesTarget.class,
                 "objectParam",
                 messages);
 
-        replayControls();
+        replay();
 
         assertEquals("<object param>", mt.objectParam("PinkFloyd"));
 
-        verifyControls();
+        verify();
     }
 
     public void testPrimitiveParam()
     {
-
-        MockControl control = newControl(Messages.class);
-        Messages messages = (Messages) control.getMock();
+        Messages messages = newMock(Messages.class);
 
         Object[] params = new Object[]
         { 451 };
 
-        messages.format("primitive-param", params);
-        control.setMatcher(new ArrayMatcher());
-        control.setReturnValue("<primitive param>");
-
+        expect(messages.format(eq("primitive-param"), aryEq(params))).andReturn("<primitive param>");
+        
         MessagesTarget mt = (MessagesTarget) construct(
                 MessagesTarget.class,
                 "primitiveParam",
                 messages);
 
-        replayControls();
+        replay();
 
         assertEquals("<primitive param>", mt.primitiveParam(451));
 
-        verifyControls();
+        verify();
 
     }
 
