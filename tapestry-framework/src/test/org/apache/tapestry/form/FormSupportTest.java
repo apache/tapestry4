@@ -32,6 +32,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.NestedMarkupWriter;
 import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.StaleLinkException;
+import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.listener.ListenerInvoker;
@@ -415,17 +416,22 @@ public class FormSupportTest extends BaseComponentTestCase
         trainGetExtendedId(field, "foo.bar");
 
         trainGetNestedWriter(writer, nested);
-
+        
+        expect(cycle.getAttribute(TapestryUtils.FIELD_PRERENDER)).andReturn(null);
+        cycle.setAttribute(TapestryUtils.FIELD_PRERENDER, field);
+        
         field.render(nested, cycle);
-
+        
+        cycle.removeAttribute(TapestryUtils.FIELD_PRERENDER);
+        
         expect(nested.getBuffer()).andReturn("NESTED CONTENT");
 
         replay();
 
         FormSupport fs = new FormSupportImpl(cycle);
-
+        
         fs.prerenderField(writer, field, l);
-
+        
         verify();
 
         trainGetExtendedId(field, "foo.bar");

@@ -675,6 +675,7 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
             renderComponent(writer, cycle);
             
             getRenderWorker().renderComponent(cycle, this);
+            
         }
         finally
         {

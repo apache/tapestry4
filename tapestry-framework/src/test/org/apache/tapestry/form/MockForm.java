@@ -72,6 +72,14 @@ public class MockForm implements IForm
         this(null, location);
     }
 
+    /** 
+     * {@inheritDoc}
+     */
+    public boolean isPrerendered(IComponent field)
+    {
+        return false;
+    }
+
     public MockForm(IValidationDelegate delegate)
     {
         this(delegate, null);

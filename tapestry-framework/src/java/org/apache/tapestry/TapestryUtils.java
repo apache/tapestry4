@@ -34,6 +34,8 @@ public final class TapestryUtils
 
     public static final String FORM_ATTRIBUTE = "org.apache.tapestry.Form";
     
+    public static final String FIELD_PRERENDER = "org.apache.tapestry.form.Prerender";
+    
     private static final char QUOTE = '\'';
 
     private static final char BACKSLASH = '\\';
@@ -92,6 +94,17 @@ public final class TapestryUtils
     }
 
     /**
+     * Stores the {@link IComponent} into the cycle by FormSupport before doing a field
+     * prerender.
+     * @param cycle
+     * @param component
+     */
+    public static void storePrerender(IRequestCycle cycle, IComponent component)
+    {
+        storeUniqueAttribute(cycle, FIELD_PRERENDER, component);
+    }
+    
+    /**
      * Gets the previously stored {@link org.apache.tapestry.PageRenderSupport}&nbsp;object.
      * 
      * @param cycle
@@ -147,7 +160,12 @@ public final class TapestryUtils
     {
         cycle.removeAttribute(FORM_ATTRIBUTE);
     }
-
+    
+    public static void removePrerender(IRequestCycle cycle)
+    {
+        cycle.removeAttribute(FIELD_PRERENDER);
+    }
+    
     /**
      * Returns the {@link PageRenderSupport}&nbsp;object if previously stored, or null otherwise.
      * This is used in the rare case that a component wishes to adjust its behavior based on whether

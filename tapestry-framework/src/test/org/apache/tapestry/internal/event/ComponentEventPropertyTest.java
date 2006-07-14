@@ -13,11 +13,18 @@
 // limitations under the License.
 package org.apache.tapestry.internal.event;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertFalse;
+import static org.testng.AssertJUnit.assertNotNull;
+import static org.testng.AssertJUnit.assertNull;
+import static org.testng.AssertJUnit.assertTrue;
+
 import java.util.List;
 
-import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.event.BrowserEvent;
 import org.testng.annotations.Test;
+
+import com.javaforge.tapestry.testng.TestBase;
 
 
 /**
@@ -26,7 +33,7 @@ import org.testng.annotations.Test;
  * @author jkuhnert
  */
 @Test
-public class ComponentEventPropertyTest extends HiveMindTestCase
+public class ComponentEventPropertyTest extends TestBase
 {
 
     public void testAddEventListener()
@@ -34,7 +41,7 @@ public class ComponentEventPropertyTest extends HiveMindTestCase
         String[] events = {"onClick", "onFoo"};
         ComponentEventProperty prop = new ComponentEventProperty("compid");
         
-        prop.addListener(events, "doFoo", null, false);
+        prop.addListener(events, "doFoo", null, false, false);
         
         assertEquals("compid", prop.getComponentId());
         assertEquals(2, prop.getEvents().size());
@@ -56,7 +63,7 @@ public class ComponentEventPropertyTest extends HiveMindTestCase
         String[] events = {"onFoo"};
         ComponentEventProperty prop = new ComponentEventProperty("compid");
         
-        prop.addListener(events, "doFoo", "formid", false);
+        prop.addListener(events, "doFoo", "formid", false, true);
         
         assertEquals("compid", prop.getComponentId());
         assertEquals(0, prop.getEvents().size());
@@ -71,6 +78,9 @@ public class ComponentEventPropertyTest extends HiveMindTestCase
         assertEquals("compid", listener.getComponentId());
         assertEquals("formid", listener.getFormId());
         assertFalse(listener.isValidateForm());
+        assertTrue(listener.isAsync());
+        
+        assertEquals(1, prop.getFormEvents().size());
         
         assertEquals("doFoo", listener.getMethodName());
     }
@@ -81,7 +91,7 @@ public class ComponentEventPropertyTest extends HiveMindTestCase
         ComponentEventProperty prop = new ComponentEventProperty("compid");
         BrowserEvent event = new BrowserEvent("onFoo", null);
         
-        prop.addListener(events, "doFoo", "formid", false);
+        prop.addListener(events, "doFoo", "formid", false, false);
         
         List listeners = prop.getFormEventListeners("formid", event, null);
         assertEquals(1, listeners.size());

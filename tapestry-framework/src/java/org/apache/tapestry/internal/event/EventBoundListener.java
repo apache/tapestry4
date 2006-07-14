@@ -30,6 +30,8 @@ public class EventBoundListener
     private boolean _validateForm;
     // The targeted component to listen to events on
     private String _componentId;
+    // If targeting a form, whether or not to submit it asynchronously
+    private boolean _async;
     
     /**
      * Creates a new listener binding. 
@@ -52,12 +54,13 @@ public class EventBoundListener
      *          If formId is set, whether or not to validate form when submitting.
      */
     public EventBoundListener(String methodName, String formId, 
-            boolean validateForm, String componentId)
+            boolean validateForm, String componentId, boolean async)
     {
         _methodName = methodName;
         _formId = formId;
         _validateForm = validateForm;
         _componentId = componentId;
+        _async = async;
     }
     
     /**
@@ -91,14 +94,26 @@ public class EventBoundListener
     {
         return _validateForm;
     }
-
+    
+    /**
+     * Whether or not listener should submit form
+     * asynchronously.
+     * @return
+     */
+    public boolean isAsync()
+    {
+        return _async;
+    }
+    
     /** 
      * {@inheritDoc}
      */
+    @Override
     public int hashCode()
     {
         final int prime = 31;
-        int result = 1;
+        int result = super.hashCode();
+        result = prime * result + ((_componentId == null) ? 0 : _componentId.hashCode());
         result = prime * result + ((_methodName == null) ? 0 : _methodName.hashCode());
         return result;
     }
@@ -106,12 +121,16 @@ public class EventBoundListener
     /** 
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object obj)
     {
         if (this == obj) return true;
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
         final EventBoundListener other = (EventBoundListener) obj;
+        if (_componentId == null) {
+            if (other._componentId != null) return false;
+        } else if (!_componentId.equals(other._componentId)) return false;
         if (_methodName == null) {
             if (other._methodName != null) return false;
         } else if (!_methodName.equals(other._methodName)) return false;

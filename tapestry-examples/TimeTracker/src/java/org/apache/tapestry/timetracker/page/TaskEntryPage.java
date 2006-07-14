@@ -100,11 +100,11 @@ public abstract class TaskEntryPage extends BasePage
      * selection list.
      */
     @EventListener(events = "selectOption", targets = "projectChoose",
-            submitForm = "taskForm")
+            submitForm = "taskForm", async=false)
     public void projectSelected(IRequestCycle cycle)
     {
-        cycle.getResponseBuilder().updateComponent("projectDescription");
-        cycle.getResponseBuilder().updateComponent("feedbackBlock");
+        //cycle.getResponseBuilder().updateComponent("projectDescription");
+        //cycle.getResponseBuilder().updateComponent("feedbackBlock");
     }
     
     public void linkUpdateClicked()

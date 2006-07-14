@@ -62,4 +62,12 @@ public @interface EventListener
      * @return
      */
     boolean validateForm() default false;
+    
+    /**
+     * If used in conjunction with {@link #submitForm()}, will either submit the form
+     * normally or asynchronously. Default is asyncrhonous. 
+     * 
+     * @return True if form should be submitted asynchronously, false otherwise.
+     */
+    boolean async() default true;
 }

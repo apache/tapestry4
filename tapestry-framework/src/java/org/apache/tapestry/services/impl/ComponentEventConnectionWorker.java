@@ -81,6 +81,11 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
                 || TapestryUtils.getOptionalPageRenderSupport(cycle) == null) 
             return;
         
+        // Don't render fields being pre-rendered, otherwise we'll render twice 
+        IComponent field = (IComponent)cycle.getAttribute(TapestryUtils.FIELD_PRERENDER);
+        if (field != null && field == component)
+            return;
+        
         if (_invoker.hasEvents(component.getId()))
             linkComponent(cycle, component);
         
@@ -182,7 +187,8 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
             IComponent component = (IComponent)scriptParms.get("component");
             
             ComponentEventProperty props = _invoker.getComponentEvents(component.getId());
-            Object[][] formEvents = buildFormEvents(cycle, form.getId(), props.getFormEvents());
+            Object[][] formEvents = buildFormEvents(cycle, form.getId(), 
+                    props.getFormEvents(), (Boolean)val[1]);
             
             // don't want any events accidently connected again
             scriptParms.remove("events");
@@ -196,20 +202,21 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
         }
     }
     
-    Object[][] buildFormEvents(IRequestCycle cycle, String formId, Set events)
+    Object[][] buildFormEvents(IRequestCycle cycle, String formId, Set events, Boolean async)
     {
         List formNames = (List)cycle.getAttribute(FORM_NAME_LIST + formId);
         List retval = new ArrayList();
         
         Iterator it = events.iterator();
+        
         while (it.hasNext()) {
             
             String event = (String)it.next();
-            retval.add(new Object[]{event, formNames});
+            retval.add(new Object[]{event, formNames, async});
             
         }
         
-        return (Object[][])retval.toArray(new Object[retval.size()][2]);
+        return (Object[][])retval.toArray(new Object[retval.size()][3]);
     }
     
     Resource getScript(IComponent component)
@@ -280,16 +287,16 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
                 // defer connection until form is rendered
                 if (formNames == null) {
                     
-                    deferFormConnection(formId, scriptParms);
+                    deferFormConnection(formId, scriptParms, listener.isAsync());
                     continue;
                 }
                 
                 // form has been rendered so go ahead
-                retval.add(new Object[] {event, formNames});
+                retval.add(new Object[] {event, formNames, Boolean.valueOf(listener.isAsync())});
             }
         }
         
-        return (Object[][])retval.toArray(new Object[retval.size()][2]);
+        return (Object[][])retval.toArray(new Object[retval.size()][3]);
     }
     
     /**
@@ -306,8 +313,9 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
      * 
      * @param formId
      * @param scriptParms
+     * @param async
      */
-    void deferFormConnection(String formId, Map scriptParms)
+    void deferFormConnection(String formId, Map scriptParms, boolean async)
     {
         List deferred = (List)_deferredFormConnections.get(formId);
         
@@ -317,7 +325,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
             _deferredFormConnections.put(formId, deferred);
         }
         
-        deferred.add(new Object[] {scriptParms});
+        deferred.add(new Object[] {scriptParms, Boolean.valueOf(async)});
     }
     
     // for testing
