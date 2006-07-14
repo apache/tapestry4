@@ -33,10 +33,13 @@
                     tapestry.event.buildEventProperties(e, content);
                     if (!content["beventtarget.id"]) content["beventtarget.id"]="${clientId}";
                     
-                    dojo.log.debug("Connected to formEvent!");
-                    
-                    <foreach expression="formEvent[1]" key="formName">
+                   <foreach expression="formEvent[1]" key="formName">
+                    <if expression="formEvent[2]">
                     tapestry.form.submitAsync("${formName}", content);
+                    </if>
+                    <if-not expression="formEvent[2]">
+                    tapestry.form.submit("${formName}");
+                    </if-not>
                     </foreach>
                 });
             </foreach>

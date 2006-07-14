@@ -741,11 +741,15 @@ public class FormSupportImpl implements FormSupport
         
         NestedMarkupWriter nested = writer.getNestedWriter();
         
+        TapestryUtils.storePrerender(_cycle, field);
+        
         field.render(nested, _cycle);
+        
+        TapestryUtils.removePrerender(_cycle);
         
         _prerenderMap.put(key, nested.getBuffer());
     }
-
+    
     public boolean wasPrerendered(IMarkupWriter writer, IComponent field)
     {
         String key = field.getExtendedId();
@@ -764,7 +768,7 @@ public class FormSupportImpl implements FormSupport
 
         return true;
     }
-
+    
     public void addDeferredRunnable(Runnable runnable)
     {
         Defense.notNull(runnable, "runnable");

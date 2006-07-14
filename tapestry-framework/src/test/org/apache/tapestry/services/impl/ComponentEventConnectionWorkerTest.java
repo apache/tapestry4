@@ -96,9 +96,11 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         // now test render
         invoker.addEventListener("comp1", new String[] {"onclick"}, 
-                "testMethod", null, false);
+                "testMethod", null, false, false);
         
         expect(cycle.isRewinding()).andReturn(false);
+        
+        expect(cycle.getAttribute(TapestryUtils.FIELD_PRERENDER)).andReturn(null);
         
         expect(component.getId()).andReturn("comp1").anyTimes();
         expect(component.getClientId()).andReturn("comp1").anyTimes();
@@ -124,13 +126,15 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         // test widget render
         
         invoker.addEventListener("wid1", new String[] {"onSelect"}, "testMethod",
-                null, false);
+                null, false, false);
         
         checkOrder(cycle, false);
         expect(cycle.isRewinding()).andReturn(false);
         
         expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE))
         .andReturn(prs).anyTimes();
+        
+        expect(cycle.getAttribute(TapestryUtils.FIELD_PRERENDER)).andReturn(null);
         
         expect(widget.getId()).andReturn("wid1").anyTimes();
         expect(widget.getClientId()).andReturn("wid1").anyTimes();
@@ -198,11 +202,13 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         // now test render
         invoker.addEventListener("comp1", new String[] {"onclick"}, 
-                "testMethod", "form1", false);
+                "testMethod", "form1", false, false);
         
         expect(cycle.isRewinding()).andReturn(false);
         
         expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE)).andReturn(prs);
+        
+        expect(cycle.getAttribute(TapestryUtils.FIELD_PRERENDER)).andReturn(null);
         
         expect(component.getId()).andReturn("comp1").anyTimes();
         expect(component.getClientId()).andReturn("comp1").anyTimes();
@@ -222,8 +228,11 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         assertEquals(1, deferred.size());
         
         Object[] parms = (Object[])deferred.get(0);
-        assertEquals(1, parms.length);
+        assertEquals(2, parms.length);
         Map parm = (Map)parms[0];
+        
+        Boolean async = (Boolean)parms[1];
+        assertTrue(!async.booleanValue());
         
         assertNotNull(parm.get("clientId"));
         assertNotNull(parm.get("component"));
@@ -262,11 +271,13 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         // now test render
         invoker.addEventListener("comp1", new String[] {"onclick"}, 
-                "testMethod", "form1", false);
+                "testMethod", "form1", false, false);
         
         expect(cycle.isRewinding()).andReturn(false);
         
         expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE)).andReturn(prs);
+        
+        expect(cycle.getAttribute(TapestryUtils.FIELD_PRERENDER)).andReturn(null);
         
         expect(component.getId()).andReturn("comp1").anyTimes();
         expect(component.getClientId()).andReturn("comp1").anyTimes();
@@ -287,6 +298,8 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         expect(cycle.isRewinding()).andReturn(false);
         
         expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE)).andReturn(prs);
+        
+        expect(cycle.getAttribute(TapestryUtils.FIELD_PRERENDER)).andReturn(null);
         
         expect(form.getId()).andReturn("form1").anyTimes();
         
@@ -350,6 +363,44 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         assertEquals(elementScript, worker.getScript(body).getPath());
         
         replay();
+        
+        verify();
+    }
+    
+    public void testPrerenderedField()
+    {   
+        ClassResolver resolver = new DefaultClassResolver();
+        
+        ComponentEventInvoker invoker = new ComponentEventInvoker();
+        IEngineService engine = newMock(IEngineService.class);
+        IRequestCycle cycle = newCycle();
+        checkOrder(cycle, false);
+        
+        PageRenderSupport prs = newPageRenderSupport();
+        
+        IScriptSource scriptSource = newMock(IScriptSource.class);
+        
+        ComponentEventConnectionWorker worker = new ComponentEventConnectionWorker();
+        worker.setClassResolver(resolver);
+        worker.setComponentEventInvoker(invoker);
+        worker.setEventEngine(engine);
+        worker.setScriptSource(scriptSource);
+        
+        IDirectEvent component = newMock(IDirectEvent.class);
+        
+        // now test render
+        invoker.addEventListener("comp1", new String[] {"onclick"}, 
+                "testMethod", "form1", false, false);
+        
+        expect(cycle.isRewinding()).andReturn(false);
+        
+        expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE)).andReturn(prs);
+        
+        expect(cycle.getAttribute(TapestryUtils.FIELD_PRERENDER)).andReturn(component);
+        
+        replay();
+        
+        worker.renderComponent(cycle, component);
         
         verify();
     }

@@ -102,9 +102,9 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
         
         if (form.wasPrerendered(writer, this))
             return;
-
+        
         IValidationDelegate delegate = form.getDelegate();
-
+        
         delegate.setFormComponent(this);
         
         setName(form);

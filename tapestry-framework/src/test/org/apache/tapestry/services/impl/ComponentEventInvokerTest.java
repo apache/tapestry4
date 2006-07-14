@@ -51,7 +51,7 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         ComponentEventInvoker invoker = new ComponentEventInvoker();
         
         invoker.addEventListener("comp1", new String[] {"onClick"}, "testFoo", 
-                null, false);
+                null, false, false);
         assertTrue(invoker.hasEvents("comp1"));
         
         ComponentEventProperty prop = invoker.getComponentEvents("comp1");
@@ -84,7 +84,7 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         invoker.setListenerInvoker(listenerInvoker);
         
         invoker.addEventListener("testId", new String[] { "onSelect" }, "fooListener",
-                null, false);
+                null, false, false);
         
         expect(comp.getId()).andReturn("testId");
         
@@ -119,7 +119,7 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         invoker.setListenerInvoker(listenerInvoker);
         
         invoker.addElementEventListener("testId", new String[] { "onSelect" }, 
-                "fooListener", null, false);
+                "fooListener", null, false, false);
         
         expect(comp.getId()).andReturn("testId");
         
@@ -156,7 +156,7 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         invoker.setListenerInvoker(listenerInvoker);
         
         invoker.addEventListener("testId", new String[] { "onSelect" }, "fooListener",
-                "form1", false);
+                "form1", false, false);
         
         expect(formSupport.getForm()).andReturn(form);
         

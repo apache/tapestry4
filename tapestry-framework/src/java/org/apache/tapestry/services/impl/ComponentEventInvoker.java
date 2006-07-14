@@ -147,13 +147,15 @@ public class ComponentEventInvoker implements ResetEventListener
      * @param methodName
      *          The page/component listener name that should be executed when
      *          one of the supplied events occurs.
+     * @param async 
+     *          If submitting a form, whether or not to do it asynchronously.
      */
     public void addEventListener(String componentId, String[] events, 
-            String methodName, String formId, boolean validateForm)
+            String methodName, String formId, boolean validateForm, boolean async)
     {
         ComponentEventProperty property = getComponentEvents(componentId);
         
-        property.addListener(events, methodName, formId, validateForm);
+        property.addListener(events, methodName, formId, validateForm, async);
     }
     
     /**
@@ -162,13 +164,15 @@ public class ComponentEventInvoker implements ResetEventListener
      * @param elementId
      * @param events
      * @param methodName
+     * @param async 
+     *          If submitting a form, whether or not to do it asynchronously.
      */
     public void addElementEventListener(String elementId, String[] events, 
-            String methodName, String formId, boolean validateForm)
+            String methodName, String formId, boolean validateForm, boolean async)
     {
         ComponentEventProperty property = getElementEvents(elementId);
         
-        property.addListener(events, methodName, formId, validateForm);
+        property.addListener(events, methodName, formId, validateForm, async);
     }
     
     /**

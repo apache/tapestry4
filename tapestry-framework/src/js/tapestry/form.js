@@ -116,6 +116,9 @@ tapestry.form={
 			return;
 		}
 		
+		// make sure id is correct just in case node passed in
+		id=(form.getAttribute("id") ) ? form.getAttribute("id") : form.getAttribute("name");
+		
 		if (!this.forms[id]) {
 			this.forms[id]={};
 			this.forms[id].validateForm=true;
@@ -195,6 +198,13 @@ tapestry.form={
 		
 		var id=evt.target.getAttribute("id");
 		if (!id) return;
+		
+		var form = dojo.byId(id);
+		if (form.submitmode.value 
+			&& (form.submitmode.value == "cancel" || form.submitmode.value == "refresh")) {
+			return;
+		}
+		
 		if (!tapestry.form.validation.validateForm(evt.target, this.forms[id])) {
 			dojo.event.browser.stopEvent(evt);
 		}
@@ -220,6 +230,30 @@ tapestry.form={
 			form.submitname.value=submitName;
 		}
 		form.submit();
+	},
+	
+	cancel:function(form){
+		var form=dojo.byId(form);
+		if (!form){
+			dojo.raise("Form not found with id " + form);
+			return;
+		}
+		
+		form.submitmode.value="cancel";
+		
+		this.submit(form);
+	},
+	
+	refresh:function(form){
+		var form=dojo.byId(form);
+		if (!form){
+			dojo.raise("Form not found with id " + form);
+			return;
+		}
+		
+		form.submitmode.value="refresh";
+		
+		this.submit(form);
 	},
 	
 	/**
