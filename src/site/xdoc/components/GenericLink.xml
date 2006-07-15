@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Copyright 2004, 2005 The Apache Software Foundation
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<document>
+    <properties>
+        <title>GenericLink</title>
+    </properties>
+    <body>
+
+        <section name="GenericLink">
+
+            <p>Creates an &lt;a&gt; hyperlink for an arbitrary URL.</p>
+            <p>
+                Although a GenericLink can be accomplished using an
+                <a href="Any.html">Any</a>
+                component, a GenericLink is more flexible: it can be disabled, like a
+                <a href="DirectLink.html">DirectLink</a>
+                and can also wrap around
+                <a href="Rollover.html">Rollover</a>
+                components. GenericLinks are often used with javascript: URLs to perform client-side
+                scripting.
+            </p>
+
+            <p>
+                <strong>
+                    See also:
+                    <a href="DirectLink.html">DirectLink</a>
+                    ,
+                    <a href="ExternalLink.html">ExternalLink</a>
+                    ,
+                    <a href="PageLink.html">PageLink</a>
+                    ,
+                    <a href="Rollover.html">Rollover</a>
+                    ,
+                    <a href="ServiceLink.html">ServiceLink</a>
+                </strong>
+
+            </p>
+
+            <section name="Parameters">
+
+
+
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Direction</th>
+                        <th>Required</th>
+                        <th>Default</th>
+
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>href</td>
+                        <td>String</td>
+
+                        <td>in</td>
+
+                        <td>yes</td>
+                        <td />
+                        <td>
+                            The URL to trigger when the link is clicked. This is often of the form:
+                            &lt;a&gt; href="javascript:functionName('param')"&gt;
+                        </td>
+                    </tr>
+                    <tr>
+
+                        <td>disabled</td>
+                        <td>boolean</td>
+                        <td>in</td>
+                        <td>no</td>
+                        <td>false</td>
+
+                        <td>
+
+                            Controls whether the link is produced. If disabled, the portion of the
+                            template the link surrounds is still rendered, but not the link itself.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>anchor</td>
+
+                        <td>String</td>
+                        <td>in</td>
+
+                        <td>no</td>
+                        <td />
+                        <td>
+                            The name of an anchor or element to link to. The final URL will have '#'
+                            and the anchor appended to it.
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>renderer</td>
+
+                        <td>
+                            <a
+                                href="../../tapestry-framework/apidocs/org/apache/tapestry/link/ILinkRenderer.html">
+                                ILinkRenderer
+                            </a>
+                        </td>
+                        <td>in</td>
+                        <td>no</td>
+                        <td />
+
+                        <td>The object which will actually render the link.</td>
+                    </tr>
+
+                </table>
+
+                <p>
+                    Body:
+                    <strong>rendered</strong>
+                </p>
+
+                <p>
+
+                    Informal parameters:
+                    <strong>allowed</strong>
+                </p>
+
+                <p>
+                    Reserved parameters:
+                    <em>none</em>
+                </p>
+
+            </section>
+
+            <section name="Examples">
+
+                <p>
+                    Under Construction.
+
+                </p>
+            </section>
+
+        </section>
+
+    </body>
+</document>

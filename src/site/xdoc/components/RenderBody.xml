@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Copyright 2004, 2005 The Apache Software Foundation
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<document>
+    <properties>
+        <title>RenderBody</title>
+    </properties>
+    <body>
+
+        <section name="RenderBody">
+
+            <p>
+                Renders the body (static HTML and components) wrapped by the container of the
+                RenderBody component. Components which have HTML templates and can wrap other
+                elements should include exactly one RenderBody component in their template.
+            </p>
+            <p>
+                This component is very useful for creating a common navigational component used by
+                multiple pages of an application. Typically you create a common navigational
+                component which contains navigational links
+                <a href="PageLink.html">PageLink</a>
+                to other pages and a RenderBody component which will insert the actual content of
+                the page. The application pages then use the navigational component as their first
+                element, and then their usual content. When the pages renders, it renders the
+                surrounding navigational component and then the page's content.
+            </p>
+            <p>
+                <strong>See also:</strong>
+                <a href="Block.html">Block</a>
+                ,
+                <a href="Insert.html">Insert</a>
+                ,
+                <a href="RenderBlock.html">RenderBlock</a>
+                ,
+                <a href="InsertText.html">InsertText</a>
+            </p>
+
+            <section name="Parameters">
+                <table>
+                    <tr>
+                        <td>None</td>
+                    </tr>
+                </table>
+
+                <p>
+                    Body:
+                    <strong>removed</strong>
+                </p>
+
+                <p>
+                    Informal parameters:
+                    <strong>forbidden</strong>
+                </p>
+
+                <p>
+                    Reserved parameters:
+                    <em>none</em>
+                </p>
+
+            </section>
+
+            <section name="Examples">
+
+                <p>
+                    This example shows an implementation of the classical Border component, an
+                    application specific component. It is a common practice to use a Border
+                    component to provide common layout to almost all of application pages.
+                </p>
+                <img src="../../images/tapestry/ComponentReference/RenderBody.png"
+                    alt="RenderBody Screen Shot" />
+                <p>Template</p>
+                <source xml:space="preserve">
+&lt;span jwcid="@Border"&gt;
+&lt;H1 align=center&gt;&lt;FONT color=#ff3333&gt;Agnosis&lt;/FONT&gt;&lt;/H1&gt;
+&lt;TABLE align=center border=0&gt;
+   &lt;TR&gt;
+      &lt;TD&gt;
+         &lt;P&gt;
+            &lt;B&gt;A&lt;/B&gt;GNOSIS feliz
+            &lt;BR/&gt;
+            &lt;B&gt;G&lt;/B&gt;racias al ciego destino
+            &lt;BR/&gt;
+            &lt;B&gt;N&lt;/B&gt;ada es constante
+            &lt;BR/&gt;
+            &lt;B&gt;O&lt;/B&gt;lvidados por el Hado
+            &lt;BR/&gt;
+            &lt;B&gt;S&lt;/B&gt;i El existe
+            &lt;BR/&gt;
+            &lt;B&gt;I&lt;/B&gt;ncomprensible y eterno
+            &lt;BR/&gt;
+            &lt;B&gt;S&lt;/B&gt;ilencio
+         &lt;/P&gt;
+      &lt;/TD&gt;
+   &lt;/TR&gt;
+&lt;/TABLE&gt;
+&lt;br/&gt;
+&lt;/span&gt;
+</source>
+                <p>Border.html</p>
+                <source xml:space="preserve">
+&lt;html jwcid="@Shell" title="RenderBody Example"&gt;
+   &lt;body jwcid="@Body"&gt;
+      &lt;table width="100%" cellspacing="0" border="0"&gt;
+         &lt;tr&gt;
+           &lt;td valign="top" style="text-align:justify;"&gt;
+              &lt;span jwcid="@RenderBody"&gt;Page content goes here.&lt;/span&gt;
+           &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+           &lt;td valign="bottom"&gt;
+              &lt;table width="100%" cellspacing="0" border="0"&gt;
+                 &lt;tr&gt;
+                    &lt;td align="center"&gt;
+                       &lt;a href="http://jakarta.apache.org/tapestry"&gt;&lt;img src="images/poweredbyTapestry.gif" width="79" height="33" border="0" alt="Tapestry"&gt;&lt;/a&gt;
+                       &lt;br/&gt;
+                       &lt;br/&gt;
+                    &lt;/td&gt;
+                 &lt;/tr&gt;
+              &lt;/table&gt;
+           &lt;/td&gt;
+        &lt;/tr&gt;
+     &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</source>
+                <p>Border.jwc</p>
+                <source xml:space="preserve">
+.....
+&lt;component-specification allow-body="yes" allow-informal-parameters="no"&gt;
+&lt;/component-specification&gt;
+.....
+</source>
+            </section>
+
+        </section>
+
+    </body>
+</document>
