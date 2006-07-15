@@ -58,7 +58,7 @@
                         <th>Description</th>
                     </tr>
                     <tr>
-                        <td>scriptPath</td>
+                        <td>script</td>
                         <td>String</td>
 
                         <td>in</td>
@@ -66,7 +66,7 @@
                         <td></td>
                         <td>
                             The path of a resource (on the classpath) containing the script. One of
-                            either scriptPath or scriptAsset must be specified.
+                            either <code>script</code> or <code>scriptAsset</code> must be specified.
                         </td>
                     </tr>
                     <tr>

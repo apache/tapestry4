@@ -47,9 +47,6 @@ public class EventListenerAnnotationWorker implements SecondaryAnnotationWorker
     {
         EventListener listener = method.getAnnotation(EventListener.class);
         
-        if (listener == null)
-            return;
-        
         String[] targets = listener.targets();
         String[] elements = listener.elements();
         String formId = listener.submitForm();

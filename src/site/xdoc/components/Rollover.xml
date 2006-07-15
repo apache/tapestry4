@@ -97,7 +97,7 @@
                         <td>
                             If provided (and the component is not disabled), then a JavaScript
                             onMouseOver event handler is added to change the image. An onMouseOut
-                            event handler is also provided, to change the button to either it's base
+                            event handler is also provided, to change the button to either its base
                             image, or its mouseOut image. Deprecated alias: focus.
                         </td>
                     </tr>
