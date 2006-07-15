@@ -14,11 +14,16 @@
 
 package org.apache.tapestry.portlet;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.List;
 
-import javax.portlet.PortletSession;
-
 import org.apache.tapestry.web.WebSession;
+import org.testng.annotations.Test;
+
+import javax.portlet.PortletSession;
 
 /**
  * Tests for {@link org.apache.tapestry.portlet.PortletWebSession}.
@@ -26,6 +31,7 @@ import org.apache.tapestry.web.WebSession;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class PortletWebSessionTest extends BasePortletWebTestCase
 {
 
@@ -33,23 +39,22 @@ public class PortletWebSessionTest extends BasePortletWebTestCase
     {
         PortletSession session = newSession();
 
-        session.getAttributeNames();
-        setReturnValue(session, newEnumeration());
+        expect(session.getAttributeNames()).andReturn(newEnumeration());
 
-        replayControls();
+        replay();
 
         WebSession ws = new PortletWebSession(session);
-
+        
         List l = ws.getAttributeNames();
 
         checkList(l);
 
-        verifyControls();
+        verify();
     }
 
     private PortletSession newSession()
     {
-        return (PortletSession) newMock(PortletSession.class);
+        return newMock(PortletSession.class);
     }
 
     public void testGetAttribute()
@@ -58,16 +63,15 @@ public class PortletWebSessionTest extends BasePortletWebTestCase
 
         PortletSession session = newSession();
 
-        session.getAttribute("attr");
-        setReturnValue(session, attribute);
-
-        replayControls();
+        expect(session.getAttribute("attr")).andReturn(attribute);
+        
+        replay();
 
         WebSession ws = new PortletWebSession(session);
 
         assertSame(attribute, ws.getAttribute("attr"));
 
-        verifyControls();
+        verify();
     }
 
     public void testSetAttribute()
@@ -78,29 +82,28 @@ public class PortletWebSessionTest extends BasePortletWebTestCase
 
         session.setAttribute("name", attribute);
 
-        replayControls();
+        replay();
 
         WebSession ws = new PortletWebSession(session);
 
         ws.setAttribute("name", attribute);
 
-        verifyControls();
+        verify();
     }
 
     public void testGetId()
     {
         PortletSession session = newSession();
 
-        session.getId();
-        setReturnValue(session, "abc");
-
-        replayControls();
+        expect(session.getId()).andReturn("abc");
+        
+        replay();
 
         WebSession ws = new PortletWebSession(session);
 
         assertEquals("abc", ws.getId());
 
-        verifyControls();
+        verify();
     }
 
     public void testInvalidate()
@@ -109,12 +112,12 @@ public class PortletWebSessionTest extends BasePortletWebTestCase
 
         session.invalidate();
 
-        replayControls();
+        replay();
 
         WebSession ws = new PortletWebSession(session);
 
         ws.invalidate();
 
-        verifyControls();
+        verify();
     }
 }

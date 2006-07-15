@@ -14,15 +14,20 @@
 
 package org.apache.tapestry.portlet;
 
+import static org.easymock.EasyMock.checkOrder;
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
-import org.easymock.MockControl;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.portlet.PortletHomeService}.
@@ -30,42 +35,35 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestPortletHomeService extends HiveMindTestCase
+@Test
+public class TestPortletHomeService extends BaseComponentTestCase
 {
     private ResponseRenderer newResponseRenderer()
     {
-        return (ResponseRenderer) newMock(ResponseRenderer.class);
-    }
-
-    private IRequestCycle newCycle()
-    {
-        return (IRequestCycle) newMock(IRequestCycle.class);
+        return newMock(ResponseRenderer.class);
     }
 
     private PortletRequestGlobals newRequestGlobals(boolean isRender)
     {
-        MockControl control = newControl(PortletRequestGlobals.class);
-        PortletRequestGlobals globals = (PortletRequestGlobals) control.getMock();
-
-        globals.isRenderRequest();
-        control.setReturnValue(isRender);
-
+        PortletRequestGlobals globals = newMock(PortletRequestGlobals.class);
+        checkOrder(globals, false);
+        
+        expect(globals.isRenderRequest()).andReturn(isRender);
+        
         return globals;
     }
 
     private PortletRenderer newPortletRenderer()
     {
-        return (PortletRenderer) newMock(PortletRenderer.class);
+        return newMock(PortletRenderer.class);
     }
 
     private PortletPageResolver newResolver(IRequestCycle cycle, String pageName)
     {
-        MockControl control = newControl(PortletPageResolver.class);
-        PortletPageResolver resolver = (PortletPageResolver) control.getMock();
+        PortletPageResolver resolver = newMock(PortletPageResolver.class);
 
-        resolver.getPageNameForRequest(cycle);
-        control.setReturnValue(pageName);
-
+        expect(resolver.getPageNameForRequest(cycle)).andReturn(pageName);
+        
         return resolver;
     }
 
@@ -78,7 +76,7 @@ public class TestPortletHomeService extends HiveMindTestCase
 
         renderer.renderPage(cycle, "ZePage");
 
-        replayControls();
+        replay();
 
         PortletHomeService phs = new PortletHomeService();
         phs.setPageResolver(resolver);
@@ -87,20 +85,22 @@ public class TestPortletHomeService extends HiveMindTestCase
 
         phs.service(cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testIsActionRequest() throws Exception
     {
         IRequestCycle cycle = newCycle();
         PortletRequestGlobals globals = newRequestGlobals(false);
+        
         ResponseRenderer renderer = newResponseRenderer();
+        
         PortletPageResolver resolver = newResolver(cycle, "ZePage");
-
+        
         cycle.activate("ZePage");
         renderer.renderResponse(cycle);
 
-        replayControls();
+        replay();
 
         PortletHomeService phs = new PortletHomeService();
         phs.setResponseRenderer(renderer);
@@ -109,27 +109,26 @@ public class TestPortletHomeService extends HiveMindTestCase
 
         phs.service(cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testGetLink()
     {
         Map parameters = new HashMap();
-
-        LinkFactory factory = (LinkFactory) newMock(LinkFactory.class);
-        ILink link = (ILink) newMock(ILink.class);
+        
+        LinkFactory factory = newMock(LinkFactory.class);
+        ILink link = newMock(ILink.class);
 
         PortletHomeService phs = new PortletHomeService();
         phs.setLinkFactory(factory);
+        
+        expect(factory.constructLink(phs, false, parameters, true)).andReturn(link);
 
-        factory.constructLink(phs, false, parameters, true);
-        setReturnValue(factory, link);
-
-        replayControls();
+        replay();
 
         assertSame(link, phs.getLink(false, null));
 
-        verifyControls();
+        verify();
     }
 
     public void testGetLinkWithParameter()

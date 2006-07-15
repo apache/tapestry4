@@ -14,14 +14,17 @@
 
 package org.apache.tapestry.portlet;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+
+import org.apache.tapestry.BaseComponentTestCase;
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.services.ServiceConstants;
+import org.testng.annotations.Test;
+
 import javax.portlet.PortletMode;
 import javax.portlet.PortletRequest;
 import javax.portlet.WindowState;
-
-import org.apache.hivemind.test.HiveMindTestCase;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.services.ServiceConstants;
-import org.easymock.MockControl;
 
 /**
  * Test for {@link org.apache.tapestry.portlet.RenderService}.
@@ -29,7 +32,8 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestRenderService extends HiveMindTestCase
+@Test
+public class TestRenderService extends BaseComponentTestCase
 {
     public void testGetLinkUnsupported()
     {
@@ -49,25 +53,22 @@ public class TestRenderService extends HiveMindTestCase
 
     public void testNormal() throws Exception
     {
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IRequestCycle cycle = newCycle();
+        PortletRequest request = newMock(PortletRequest.class);
 
-        MockControl requestc = newControl(PortletRequest.class);
-        PortletRequest request = (PortletRequest) requestc.getMock();
+        PortletRenderer renderer = newMock(PortletRenderer.class);
+        
+        trainGetParameter(cycle, PortletConstants.PORTLET_MODE, "view");
+        trainGetParameter(cycle, PortletConstants.WINDOW_STATE, "normal");
 
-        PortletRenderer renderer = (PortletRenderer) newMock(PortletRenderer.class);
+        trainGetPortletMode(request, PortletMode.VIEW);
+        trainGetWindowState(request, WindowState.NORMAL);
 
-        trainGetParameter(cyclec, cycle, PortletConstants.PORTLET_MODE, "view");
-        trainGetParameter(cyclec, cycle, PortletConstants.WINDOW_STATE, "normal");
-
-        trainGetPortletMode(requestc, request, PortletMode.VIEW);
-        trainGetWindowState(requestc, request, WindowState.NORMAL);
-
-        trainGetParameter(cyclec, cycle, ServiceConstants.PAGE, "Fred");
+        trainGetParameter(cycle, ServiceConstants.PAGE, "Fred");
 
         renderer.renderPage(cycle, "Fred");
 
-        replayControls();
+        replay();
 
         RenderService rs = new RenderService();
         rs.setPortletRenderer(renderer);
@@ -75,29 +76,26 @@ public class TestRenderService extends HiveMindTestCase
 
         rs.service(cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testPortletModeChanged() throws Exception
     {
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IRequestCycle cycle = newCycle();
+        PortletRequest request = newMock(PortletRequest.class);
 
-        MockControl requestc = newControl(PortletRequest.class);
-        PortletRequest request = (PortletRequest) requestc.getMock();
+        PortletRenderer renderer = newMock(PortletRenderer.class);
+        
+        trainGetParameter(cycle, PortletConstants.PORTLET_MODE, "view");
+        trainGetParameter(cycle, PortletConstants.WINDOW_STATE, "normal");
 
-        PortletRenderer renderer = (PortletRenderer) newMock(PortletRenderer.class);
-
+        trainGetPortletMode(request, PortletMode.EDIT);
+        
         PortletPageResolver resolver = newResolver(cycle, "Barney");
-
-        trainGetParameter(cyclec, cycle, PortletConstants.PORTLET_MODE, "view");
-        trainGetParameter(cyclec, cycle, PortletConstants.WINDOW_STATE, "normal");
-
-        trainGetPortletMode(requestc, request, PortletMode.EDIT);
-
+        
         renderer.renderPage(cycle, "Barney");
-
-        replayControls();
+        
+        replay();
 
         RenderService rs = new RenderService();
         rs.setPortletRenderer(renderer);
@@ -106,30 +104,27 @@ public class TestRenderService extends HiveMindTestCase
 
         rs.service(cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testWindowStateChanged() throws Exception
     {
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IRequestCycle cycle = newCycle();
+        PortletRequest request = newMock(PortletRequest.class);
 
-        MockControl requestc = newControl(PortletRequest.class);
-        PortletRequest request = (PortletRequest) requestc.getMock();
+        PortletRenderer renderer = newMock(PortletRenderer.class);
+        
+        trainGetParameter(cycle, PortletConstants.PORTLET_MODE, "view");
+        trainGetParameter(cycle, PortletConstants.WINDOW_STATE, "normal");
 
-        PortletRenderer renderer = (PortletRenderer) newMock(PortletRenderer.class);
-
+        trainGetPortletMode(request, PortletMode.VIEW);
+        trainGetWindowState(request, WindowState.MAXIMIZED);
+        
         PortletPageResolver resolver = newResolver(cycle, "Wilma");
-
-        trainGetParameter(cyclec, cycle, PortletConstants.PORTLET_MODE, "view");
-        trainGetParameter(cyclec, cycle, PortletConstants.WINDOW_STATE, "normal");
-
-        trainGetPortletMode(requestc, request, PortletMode.VIEW);
-        trainGetWindowState(requestc, request, WindowState.MAXIMIZED);
-
+        
         renderer.renderPage(cycle, "Wilma");
-
-        replayControls();
+        
+        replay();
 
         RenderService rs = new RenderService();
         rs.setPortletRenderer(renderer);
@@ -138,36 +133,25 @@ public class TestRenderService extends HiveMindTestCase
 
         rs.service(cycle);
 
-        verifyControls();
+        verify();
     }
 
     private PortletPageResolver newResolver(IRequestCycle cycle, String pageName)
     {
-        MockControl control = newControl(PortletPageResolver.class);
-        PortletPageResolver resolver = (PortletPageResolver) control.getMock();
-
-        resolver.getPageNameForRequest(cycle);
-        control.setReturnValue(pageName);
-
+        PortletPageResolver resolver = newMock(PortletPageResolver.class);
+        
+        expect(resolver.getPageNameForRequest(cycle)).andReturn(pageName);
+        
         return resolver;
     }
 
-    private void trainGetWindowState(MockControl control, PortletRequest request, WindowState state)
+    private void trainGetWindowState(PortletRequest request, WindowState state)
     {
-        request.getWindowState();
-        control.setReturnValue(state);
+        expect(request.getWindowState()).andReturn(state);
     }
 
-    private void trainGetPortletMode(MockControl control, PortletRequest request, PortletMode mode)
+    private void trainGetPortletMode(PortletRequest request, PortletMode mode)
     {
-        request.getPortletMode();
-        control.setReturnValue(mode);
-    }
-
-    private void trainGetParameter(MockControl control, IRequestCycle cycle, String name,
-            String value)
-    {
-        cycle.getParameter(name);
-        control.setReturnValue(value);
+        expect(request.getPortletMode()).andReturn(mode);
     }
 }

@@ -14,22 +14,22 @@
 
 package org.apache.tapestry.portlet;
 
+import static org.easymock.EasyMock.*;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.io.IOException;
+
+import org.apache.tapestry.BaseComponentTestCase;
+import org.apache.tapestry.services.WebRequestServicer;
+import org.apache.tapestry.web.WebRequest;
+import org.apache.tapestry.web.WebResponse;
+import org.testng.annotations.Test;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
-
-import org.apache.hivemind.test.AggregateArgumentsMatcher;
-import org.apache.hivemind.test.ArgumentMatcher;
-import org.apache.hivemind.test.HiveMindTestCase;
-import org.apache.hivemind.test.TypeMatcher;
-import org.apache.tapestry.services.WebRequestServicer;
-import org.apache.tapestry.web.WebRequest;
-import org.apache.tapestry.web.WebResponse;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link ActionRequestServicerToWebRequestServicerBridge}&nbsp;and
@@ -38,7 +38,8 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestPortletServicerBridges extends HiveMindTestCase
+@Test
+public class TestPortletServicerBridges extends BaseComponentTestCase
 {
     private class WebRequestServicerFixture implements WebRequestServicer
     {
@@ -56,23 +57,21 @@ public class TestPortletServicerBridges extends HiveMindTestCase
 
     public void testActionBridgeSuccess() throws Exception
     {
-        ActionRequest request = (ActionRequest) newMock(ActionRequest.class);
+        ActionRequest request = newMock(ActionRequest.class);
+        ActionResponse response = newMock(ActionResponse.class);
 
-        MockControl responsec = newControl(ActionResponse.class);
-        ActionResponse response = (ActionResponse) responsec.getMock();
-
-        PortletRequestGlobals prg = (PortletRequestGlobals) newMock(PortletRequestGlobals.class);
+        PortletRequestGlobals prg = newMock(PortletRequestGlobals.class);
         WebRequestServicerFixture wrs = new WebRequestServicerFixture();
 
         prg.store(request, response);
-
+        
         request.removeAttribute("FOO");
-        response.encodeURL("FOO");
-        responsec.setReturnValue(null);
+        expect(response.encodeURL("FOO")).andReturn(null);
 
-        replayControls();
+        replay();
 
-        ActionRequestServicerToWebRequestServicerBridge bridge = new ActionRequestServicerToWebRequestServicerBridge();
+        ActionRequestServicerToWebRequestServicerBridge bridge = 
+            new ActionRequestServicerToWebRequestServicerBridge();
         bridge.setPortletRequestGlobals(prg);
         bridge.setWebRequestServicer(wrs);
 
@@ -84,27 +83,26 @@ public class TestPortletServicerBridges extends HiveMindTestCase
         wrs._request.setAttribute("FOO", null);
         wrs._response.encodeURL("FOO");
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderBridgeSuccess() throws Exception
     {
-        RenderRequest request = (RenderRequest) newMock(RenderRequest.class);
+        RenderRequest request = newMock(RenderRequest.class);
+        RenderResponse response = newMock(RenderResponse.class);
 
-        MockControl responsec = newControl(RenderResponse.class);
-        RenderResponse response = (RenderResponse) responsec.getMock();
-
-        PortletRequestGlobals prg = (PortletRequestGlobals) newMock(PortletRequestGlobals.class);
+        PortletRequestGlobals prg = newMock(PortletRequestGlobals.class);
         WebRequestServicerFixture wrs = new WebRequestServicerFixture();
-
+        
         prg.store(request, response);
 
         request.removeAttribute("FOO");
         response.reset();
 
-        replayControls();
+        replay();
 
-        RenderRequestServicerToWebRequestServicerBridge bridge = new RenderRequestServicerToWebRequestServicerBridge();
+        RenderRequestServicerToWebRequestServicerBridge bridge = 
+            new RenderRequestServicerToWebRequestServicerBridge();
         bridge.setPortletRequestGlobals(prg);
         bridge.setWebRequestServicer(wrs);
 
@@ -119,27 +117,24 @@ public class TestPortletServicerBridges extends HiveMindTestCase
 
         wrs._response.reset();
 
-        verifyControls();
+        verify();
     }
 
     public void testActionBridgeFailure() throws Exception
     {
-        ActionRequest request = (ActionRequest) newMock(ActionRequest.class);
-        ActionResponse response = (ActionResponse) newMock(ActionResponse.class);
-        PortletRequestGlobals prg = (PortletRequestGlobals) newMock(PortletRequestGlobals.class);
-
-        MockControl control = newControl(WebRequestServicer.class);
-        WebRequestServicer servicer = (WebRequestServicer) control.getMock();
-
+        ActionRequest request = newMock(ActionRequest.class);
+        ActionResponse response = newMock(ActionResponse.class);
+        PortletRequestGlobals prg = newMock(PortletRequestGlobals.class);
+        
+        WebRequestServicer servicer = newMock(WebRequestServicer.class);
+        
         Throwable t = new RuntimeException("Failure.");
 
         prg.store(request, response);
-        servicer.service(new PortletWebRequest(request), new PortletWebResponse(response));
-        control.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-        { new TypeMatcher(), new TypeMatcher() }));
-        control.setThrowable(t);
-
-        replayControls();
+        servicer.service(isA(PortletWebRequest.class), isA(PortletWebResponse.class));
+        expectLastCall().andThrow(t);
+        
+        replay();
 
         ActionRequestServicerToWebRequestServicerBridge bridge = new ActionRequestServicerToWebRequestServicerBridge();
         bridge.setPortletRequestGlobals(prg);
@@ -161,32 +156,30 @@ public class TestPortletServicerBridges extends HiveMindTestCase
             assertSame(t, ex.getCause());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testRenderBridgeFailure() throws Exception
     {
-        RenderRequest request = (RenderRequest) newMock(RenderRequest.class);
-        RenderResponse response = (RenderResponse) newMock(RenderResponse.class);
-        PortletRequestGlobals prg = (PortletRequestGlobals) newMock(PortletRequestGlobals.class);
-
-        MockControl control = newControl(WebRequestServicer.class);
-        WebRequestServicer servicer = (WebRequestServicer) control.getMock();
-
+        RenderRequest request = newMock(RenderRequest.class);
+        RenderResponse response = newMock(RenderResponse.class);
+        PortletRequestGlobals prg = newMock(PortletRequestGlobals.class);
+        
+        WebRequestServicer servicer = newMock(WebRequestServicer.class);
+        
         Throwable t = new RuntimeException("Failure.");
 
         prg.store(request, response);
-        servicer.service(new PortletWebRequest(request), new RenderWebResponse(response));
-        control.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-        { new TypeMatcher(), new TypeMatcher() }));
-        control.setThrowable(t);
-
-        replayControls();
-
+        
+        servicer.service(isA(PortletWebRequest.class), isA(RenderWebResponse.class));
+        expectLastCall().andThrow(t);
+        
+        replay();
+        
         RenderRequestServicerToWebRequestServicerBridge bridge = new RenderRequestServicerToWebRequestServicerBridge();
         bridge.setPortletRequestGlobals(prg);
         bridge.setWebRequestServicer(servicer);
-
+        
         try
         {
 
@@ -203,6 +196,6 @@ public class TestPortletServicerBridges extends HiveMindTestCase
             assertSame(t, ex.getCause());
         }
 
-        verifyControls();
+        verify();
     }
 }

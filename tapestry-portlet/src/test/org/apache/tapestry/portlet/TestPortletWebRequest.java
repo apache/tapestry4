@@ -14,14 +14,19 @@
 
 package org.apache.tapestry.portlet;
 
-import java.util.List;
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNull;
+import static org.testng.AssertJUnit.assertSame;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletSession;
+import java.util.List;
 
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebSession;
-import org.easymock.MockControl;
+import org.testng.annotations.Test;
+
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletSession;
 
 /**
  * Tests for {@link org.apache.tapestry.web.PortletWebRequest}.
@@ -29,22 +34,21 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestPortletWebRequest extends BasePortletWebTestCase
 {
-    private PortletRequest newRequest()
+    private PortletRequest newPortletRequest()
     {
-        return (PortletRequest) newMock(PortletRequest.class);
+        return newMock(PortletRequest.class);
     }
 
     public void testGetParameterNames()
     {
-        MockControl control = newControl(PortletRequest.class);
-        PortletRequest request = (PortletRequest) control.getMock();
+        PortletRequest request = newPortletRequest();
 
-        request.getParameterNames();
-        control.setReturnValue(newEnumeration());
-
-        replayControls();
+        expect(request.getParameterNames()).andReturn(newEnumeration());
+        
+        replay();
 
         WebRequest wr = new PortletWebRequest(request);
 
@@ -52,73 +56,65 @@ public class TestPortletWebRequest extends BasePortletWebTestCase
 
         checkList(l);
 
-        verifyControls();
+        verify();
     }
 
     public void testGetParameterValue()
     {
         String value = "William Orbit";
+        
+        PortletRequest request = newPortletRequest();
 
-        MockControl control = newControl(PortletRequest.class);
-        PortletRequest request = (PortletRequest) control.getMock();
-
-        request.getParameter("artist");
-        control.setReturnValue(value);
-
-        replayControls();
+        expect(request.getParameter("artist")).andReturn(value);
+        
+        replay();
 
         WebRequest wr = new PortletWebRequest(request);
 
         assertSame(value, wr.getParameterValue("artist"));
 
-        verifyControls();
+        verify();
     }
 
     public void testGetParameterValues()
     {
-        String[] values =
-        { "William Orbit", "Steely Dan" };
-        MockControl control = newControl(PortletRequest.class);
-        PortletRequest request = (PortletRequest) control.getMock();
+        String[] values = { "William Orbit", "Steely Dan" };
+        
+        PortletRequest request = newPortletRequest();
 
-        request.getParameterValues("artist");
-        control.setReturnValue(values);
-
-        replayControls();
+        expect(request.getParameterValues("artist")).andReturn(values);
+        
+        replay();
 
         WebRequest wr = new PortletWebRequest(request);
-
+        
         assertSame(values, wr.getParameterValues("artist"));
 
-        verifyControls();
+        verify();
     }
 
     public void testGetContextPath()
     {
-        MockControl control = newControl(PortletRequest.class);
-        PortletRequest request = (PortletRequest) control.getMock();
+        PortletRequest request = newPortletRequest();
 
-        request.getContextPath();
-        control.setReturnValue("/foo");
+        expect(request.getContextPath()).andReturn("/foo");
 
-        replayControls();
+        replay();
 
         WebRequest wr = new PortletWebRequest(request);
 
         assertEquals("/foo", wr.getContextPath());
 
-        verifyControls();
+        verify();
     }
 
     public void testGetAttributeNames()
     {
-        MockControl control = newControl(PortletRequest.class);
-        PortletRequest request = (PortletRequest) control.getMock();
+        PortletRequest request = newPortletRequest();
 
-        request.getAttributeNames();
-        control.setReturnValue(newEnumeration());
+        expect(request.getAttributeNames()).andReturn(newEnumeration());
 
-        replayControls();
+        replay();
 
         WebRequest wr = new PortletWebRequest(request);
 
@@ -126,171 +122,158 @@ public class TestPortletWebRequest extends BasePortletWebTestCase
 
         checkList(l);
 
-        verifyControls();
+        verify();
     }
 
     public void testGetAttribute()
     {
         Object attribute = new Object();
-        MockControl control = newControl(PortletRequest.class);
-        PortletRequest request = (PortletRequest) control.getMock();
+        PortletRequest request = newPortletRequest();
 
-        request.getAttribute("attr");
-        control.setReturnValue(attribute);
+        expect(request.getAttribute("attr")).andReturn(attribute);
 
-        replayControls();
+        replay();
 
         WebRequest wr = new PortletWebRequest(request);
 
         assertSame(attribute, wr.getAttribute("attr"));
 
-        verifyControls();
+        verify();
     }
 
     public void testSetAttribute()
     {
         Object attribute = new Object();
 
-        MockControl control = newControl(PortletRequest.class);
-        PortletRequest request = (PortletRequest) control.getMock();
+        PortletRequest request = newPortletRequest();
 
         request.setAttribute("name", attribute);
 
-        replayControls();
+        replay();
 
         WebRequest wr = new PortletWebRequest(request);
 
         wr.setAttribute("name", attribute);
 
-        verifyControls();
+        verify();
     }
 
     public void testSetAttributeToNull()
     {
-        MockControl control = newControl(PortletRequest.class);
-        PortletRequest request = (PortletRequest) control.getMock();
+        PortletRequest request = newPortletRequest();
 
         request.removeAttribute("tonull");
 
-        replayControls();
+        replay();
 
         WebRequest wr = new PortletWebRequest(request);
 
         wr.setAttribute("tonull", null);
 
-        verifyControls();
+        verify();
     }
 
     public void testGetSession()
     {
-        MockControl control = newControl(PortletRequest.class);
-        PortletRequest request = (PortletRequest) control.getMock();
+        PortletRequest request = newPortletRequest();
 
-        PortletSession session = (PortletSession) newMock(PortletSession.class);
+        PortletSession session = newMock(PortletSession.class);
 
-        request.getPortletSession(false);
-        control.setReturnValue(null);
+        expect(request.getPortletSession(false)).andReturn(null);
 
         // Get it, doesn't exist, wreate false
 
-        replayControls();
+        replay();
 
         WebRequest wr = new PortletWebRequest(request);
 
         assertNull(wr.getSession(false));
 
-        verifyControls();
+        verify();
 
-        request.getPortletSession(true);
-        control.setReturnValue(session);
-
+        expect(request.getPortletSession(true)).andReturn(session);
+        
         // #2: Get it, wreate is true, it is wreated.
 
-        replayControls();
+        replay();
 
         WebSession cs = wr.getSession(true);
 
-        verifyControls();
+        verify();
 
         // #3: Cached in local variable, make sure same
         // think returned.
 
-        replayControls();
+        replay();
 
         assertSame(cs, wr.getSession(false));
 
-        verifyControls();
+        verify();
     }
 
     public void testGetScheme()
     {
-        MockControl control = newControl(PortletRequest.class);
-        PortletRequest request = (PortletRequest) control.getMock();
+        PortletRequest request = newPortletRequest();
 
-        request.getScheme();
-        control.setReturnValue("http");
-
-        replayControls();
+        expect(request.getScheme()).andReturn("http");
+        
+        replay();
 
         WebRequest wr = new PortletWebRequest(request);
 
         assertEquals("http", wr.getScheme());
 
-        verifyControls();
+        verify();
     }
 
     public void testGetServerName()
     {
-        MockControl control = newControl(PortletRequest.class);
-        PortletRequest request = (PortletRequest) control.getMock();
+        PortletRequest request = newPortletRequest();
 
-        request.getServerName();
-        control.setReturnValue("www.myhost.com");
-
-        replayControls();
+        expect(request.getServerName()).andReturn("www.myhost.com");
+        
+        replay();
 
         WebRequest wr = new PortletWebRequest(request);
 
         assertEquals("www.myhost.com", wr.getServerName());
 
-        verifyControls();
+        verify();
     }
 
     public void testGetServerPort()
     {
-        MockControl control = newControl(PortletRequest.class);
-        PortletRequest request = (PortletRequest) control.getMock();
+        PortletRequest request = newPortletRequest();
 
-        request.getServerPort();
-        control.setReturnValue(80);
+        expect(request.getServerPort()).andReturn(80);
 
-        replayControls();
+        replay();
 
         WebRequest wr = new PortletWebRequest(request);
 
         assertEquals(80, wr.getServerPort());
 
-        verifyControls();
+        verify();
     }
 
     public void testGetRequestURIUnsupported()
     {
-        PortletRequest request = newRequest();
+        PortletRequest request = newPortletRequest();
 
-        replayControls();
+        replay();
 
         WebRequest wr = new PortletWebRequest(request);
 
         assertEquals("<PortletRequest>", wr.getRequestURI());
 
-        verifyControls();
+        verify();
     }
 
     public void testForwardUnsupported()
     {
-        PortletRequest request = newRequest();
+        PortletRequest request = newPortletRequest();
 
-        replayControls();
+        replay();
 
         WebRequest wr = new PortletWebRequest(request);
 
@@ -304,19 +287,19 @@ public class TestPortletWebRequest extends BasePortletWebTestCase
             // Expected.
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testGetPathInfo()
     {
-        PortletRequest request = newRequest();
+        PortletRequest request = newPortletRequest();
 
-        replayControls();
+        replay();
 
         WebRequest wr = new PortletWebRequest(request);
 
         assertNull(wr.getPathInfo());
 
-        verifyControls();
+        verify();
     }
 }

@@ -14,18 +14,20 @@
 
 package org.apache.tapestry.portlet;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 
 /**
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public abstract class BasePortletWebTestCase extends HiveMindTestCase
+public abstract class BasePortletWebTestCase extends BaseComponentTestCase
 {
     protected Enumeration newEnumeration()
     {

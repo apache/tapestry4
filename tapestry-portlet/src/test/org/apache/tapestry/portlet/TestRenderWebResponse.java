@@ -14,10 +14,13 @@
 
 package org.apache.tapestry.portlet;
 
-import javax.portlet.RenderResponse;
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
 
 import org.apache.tapestry.util.ContentType;
-import org.easymock.MockControl;
+import org.testng.annotations.Test;
+
+import javax.portlet.RenderResponse;
 
 /**
  * Tests for {@link org.apache.tapestry.portlet.RenderWebResponse}.
@@ -25,11 +28,12 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestRenderWebResponse extends BasePortletWebTestCase
 {
     private RenderResponse newResponse()
     {
-        return (RenderResponse) newMock(RenderResponse.class);
+        return newMock(RenderResponse.class);
     }
 
     public void testReset()
@@ -38,20 +42,20 @@ public class TestRenderWebResponse extends BasePortletWebTestCase
 
         response.reset();
 
-        replayControls();
+        replay();
 
         RenderWebResponse rwr = new RenderWebResponse(response);
 
         rwr.reset();
 
-        verifyControls();
+        verify();
     }
 
     public void testGetOutputStream() throws Exception
     {
-        MockControl control = newControl(RenderResponse.class);
-        RenderResponse response = (RenderResponse) control.getMock();
-        replayControls();
+        RenderResponse response = newMock(RenderResponse.class);
+        
+        replay();
 
         RenderWebResponse rwr = new RenderWebResponse(response);
 
@@ -65,23 +69,21 @@ public class TestRenderWebResponse extends BasePortletWebTestCase
             // Expected.
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testGetNamespace()
     {
-        MockControl control = newControl(RenderResponse.class);
-        RenderResponse response = (RenderResponse) control.getMock();
-
-        response.getNamespace();
-        control.setReturnValue("_NAMESPACE_");
-
-        replayControls();
+        RenderResponse response = newMock(RenderResponse.class);
+        
+        expect(response.getNamespace()).andReturn("_NAMESPACE_");
+        
+        replay();
 
         RenderWebResponse rwr = new RenderWebResponse(response);
 
         assertEquals("_NAMESPACE_", rwr.getNamespace());
 
-        verifyControls();
+        verify();
     }
 }

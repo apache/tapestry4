@@ -14,19 +14,22 @@
 
 package org.apache.tapestry.portlet;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+
 import java.net.URL;
 
-import javax.portlet.PortletConfig;
-
 import org.apache.hivemind.Resource;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.parse.ISpecificationParser;
 import org.apache.tapestry.services.ApplicationGlobals;
 import org.apache.tapestry.services.impl.ApplicationGlobalsImpl;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.web.WebContext;
 import org.apache.tapestry.web.WebContextResource;
-import org.easymock.MockControl;
+import org.testng.annotations.Test;
+
+import javax.portlet.PortletConfig;
 
 /**
  * Tests for {@link PortletApplicationSpecificationInitializer}.
@@ -34,46 +37,42 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestPortletApplicationSpecificationInitializer extends HiveMindTestCase
+@Test
+public class TestPortletApplicationSpecificationInitializer extends BaseComponentTestCase
 {
     private PortletConfig newConfig(String name)
     {
-        MockControl control = newControl(PortletConfig.class);
-        PortletConfig config = (PortletConfig) control.getMock();
-
-        config.getPortletName();
-        control.setReturnValue(name);
-
+        PortletConfig config = newMock(PortletConfig.class);
+        
+        expect(config.getPortletName()).andReturn(name);
+        
         return config;
     }
 
     private IApplicationSpecification newSpecification()
     {
-        return (IApplicationSpecification) newMock(IApplicationSpecification.class);
+        return newMock(IApplicationSpecification.class);
     }
 
     private ISpecificationParser newParser(Resource input, IApplicationSpecification specification)
     {
-        MockControl control = newControl(ISpecificationParser.class);
-        ISpecificationParser parser = (ISpecificationParser) control.getMock();
+        ISpecificationParser parser = newMock(ISpecificationParser.class);
 
-        parser.parseApplicationSpecification(input);
-        control.setReturnValue(specification);
-
+        expect(parser.parseApplicationSpecification(input)).andReturn(specification);
+        
         return parser;
     }
 
     private ApplicationGlobals newGlobals()
     {
-        return (ApplicationGlobals) newMock(ApplicationGlobals.class);
+        return newMock(ApplicationGlobals.class);
     }
 
     public void testFoundInSubdir() throws Exception
     {
         PortletConfig config = newConfig("myportlet");
-
-        MockControl contextc = newControl(WebContext.class);
-        WebContext context = (WebContext) contextc.getMock();
+        
+        WebContext context = newMock(WebContext.class);
 
         IApplicationSpecification specification = newSpecification();
 
@@ -81,9 +80,8 @@ public class TestPortletApplicationSpecificationInitializer extends HiveMindTest
 
         URL fakeURL = getClass().getResource("hivemodule.xml");
 
-        context.getResource("/WEB-INF/myportlet/myportlet.application");
-        contextc.setReturnValue(fakeURL);
-
+        expect(context.getResource("/WEB-INF/myportlet/myportlet.application")).andReturn(fakeURL);
+        
         Resource expectedResource = new WebContextResource(context,
                 "/WEB-INF/myportlet/myportlet.application");
 
@@ -93,7 +91,7 @@ public class TestPortletApplicationSpecificationInitializer extends HiveMindTest
 
         globals.storeSpecification(specification);
 
-        replayControls();
+        replay();
 
         PortletApplicationSpecificationInitializer init = new PortletApplicationSpecificationInitializer();
         init.setContext(context);
@@ -102,15 +100,14 @@ public class TestPortletApplicationSpecificationInitializer extends HiveMindTest
 
         init.initialize(config);
 
-        verifyControls();
+        verify();
     }
 
     public void testFoundInRootDir() throws Exception
     {
         PortletConfig config = newConfig("myportlet");
 
-        MockControl contextc = newControl(WebContext.class);
-        WebContext context = (WebContext) contextc.getMock();
+        WebContext context = newMock(WebContext.class);
 
         IApplicationSpecification specification = newSpecification();
 
@@ -118,11 +115,9 @@ public class TestPortletApplicationSpecificationInitializer extends HiveMindTest
 
         URL fakeURL = getClass().getResource("hivemodule.xml");
 
-        context.getResource("/WEB-INF/myportlet/myportlet.application");
-        contextc.setReturnValue(null);
+        expect(context.getResource("/WEB-INF/myportlet/myportlet.application")).andReturn(null);
 
-        context.getResource("/WEB-INF/myportlet.application");
-        contextc.setReturnValue(fakeURL);
+        expect(context.getResource("/WEB-INF/myportlet.application")).andReturn(fakeURL);
 
         Resource expectedResource = new WebContextResource(context,
                 "/WEB-INF/myportlet.application");
@@ -133,7 +128,7 @@ public class TestPortletApplicationSpecificationInitializer extends HiveMindTest
 
         globals.storeSpecification(specification);
 
-        replayControls();
+        replay();
 
         PortletApplicationSpecificationInitializer init = new PortletApplicationSpecificationInitializer();
         init.setContext(context);
@@ -142,23 +137,20 @@ public class TestPortletApplicationSpecificationInitializer extends HiveMindTest
 
         init.initialize(config);
 
-        verifyControls();
+        verify();
     }
 
     public void testNotFound() throws Exception
     {
         PortletConfig config = newConfig("myportlet");
 
-        MockControl contextc = newControl(WebContext.class);
-        WebContext context = (WebContext) contextc.getMock();
+        WebContext context = newMock(WebContext.class);
 
-        context.getResource("/WEB-INF/myportlet/myportlet.application");
-        contextc.setReturnValue(null);
-
-        context.getResource("/WEB-INF/myportlet.application");
-        contextc.setReturnValue(null);
-
-        replayControls();
+        expect(context.getResource("/WEB-INF/myportlet/myportlet.application")).andReturn(null);
+        
+        expect(context.getResource("/WEB-INF/myportlet.application")).andReturn(null);
+        
+        replay();
 
         ApplicationGlobals globals = new ApplicationGlobalsImpl();
 
@@ -168,7 +160,7 @@ public class TestPortletApplicationSpecificationInitializer extends HiveMindTest
 
         init.initialize(config);
 
-        verifyControls();
+        verify();
 
         IApplicationSpecification spec = globals.getSpecification();
 

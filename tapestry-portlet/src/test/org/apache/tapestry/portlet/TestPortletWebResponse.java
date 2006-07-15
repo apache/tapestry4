@@ -14,10 +14,13 @@
 
 package org.apache.tapestry.portlet;
 
-import javax.portlet.PortletResponse;
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
 
 import org.apache.tapestry.util.ContentType;
-import org.easymock.MockControl;
+import org.testng.annotations.Test;
+
+import javax.portlet.PortletResponse;
 
 /**
  * Tests for {@link org.apache.tapestry.portlet.PortletWebResponse}.
@@ -25,18 +28,19 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestPortletWebResponse extends BasePortletWebTestCase
 {
     private PortletResponse newResponse()
     {
-        return (PortletResponse) newMock(PortletResponse.class);
+        return newMock(PortletResponse.class);
     }
 
     public void testGetOutputStreamUnsupported() throws Exception
     {
         PortletResponse response = newResponse();
 
-        replayControls();
+        replay();
 
         PortletWebResponse pwr = new PortletWebResponse(response);
 
@@ -50,27 +54,27 @@ public class TestPortletWebResponse extends BasePortletWebTestCase
             // Expected.
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testGetNamespace() throws Exception
     {
         PortletResponse response = newResponse();
 
-        replayControls();
+        replay();
 
         PortletWebResponse pwr = new PortletWebResponse(response);
 
         assertEquals("", pwr.getNamespace());
 
-        verifyControls();
+        verify();
     }
 
     public void testResetUnsupported()
     {
         PortletResponse response = newResponse();
 
-        replayControls();
+        replay();
 
         PortletWebResponse pwr = new PortletWebResponse(response);
 
@@ -84,14 +88,14 @@ public class TestPortletWebResponse extends BasePortletWebTestCase
             // Expected.
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testSetDateHeaderUnsupported()
     {
         PortletResponse response = newResponse();
 
-        replayControls();
+        replay();
 
         PortletWebResponse pwr = new PortletWebResponse(response);
 
@@ -105,14 +109,14 @@ public class TestPortletWebResponse extends BasePortletWebTestCase
             // Expected.
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testSetHeaderUnsupported()
     {
         PortletResponse response = newResponse();
 
-        replayControls();
+        replay();
 
         PortletWebResponse pwr = new PortletWebResponse(response);
 
@@ -126,14 +130,14 @@ public class TestPortletWebResponse extends BasePortletWebTestCase
             // Expected.
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testSetIntHeaderUnsupported()
     {
         PortletResponse response = newResponse();
 
-        replayControls();
+        replay();
 
         PortletWebResponse pwr = new PortletWebResponse(response);
 
@@ -147,14 +151,14 @@ public class TestPortletWebResponse extends BasePortletWebTestCase
             // Expected.
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testSendErrorUnsupported() throws Exception
     {
         PortletResponse response = newResponse();
 
-        replayControls();
+        replay();
 
         PortletWebResponse pwr = new PortletWebResponse(response);
 
@@ -168,23 +172,21 @@ public class TestPortletWebResponse extends BasePortletWebTestCase
             // Expected.
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testEncodeURL()
     {
-        MockControl control = newControl(PortletResponse.class);
-        PortletResponse response = (PortletResponse) control.getMock();
-
-        response.encodeURL("/foo");
-        control.setReturnValue("/foo;encoded");
-
-        replayControls();
-
+        PortletResponse response = newMock(PortletResponse.class);
+        
+        expect(response.encodeURL("/foo")).andReturn("/foo;encoded");
+        
+        replay();
+        
         PortletWebResponse pwr = new PortletWebResponse(response);
-
+        
         assertEquals("/foo;encoded", pwr.encodeURL("/foo"));
 
-        verifyControls();
+        verify();
     }
 }
