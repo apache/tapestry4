@@ -36,7 +36,7 @@ tapestry.html={
 			switch (node.childNodes[i].nodeType) {
 				case 1: // ELEMENT_NODE
 				case 5: // ENTITY_REFERENCE_NODE
-					s += tacos.getElementAsStringGeneric(node.childNodes[i]);
+					s += this.getElementAsStringGeneric(node.childNodes[i]);
 					break;
 				case 3: // TEXT_NODE
 				case 2: // ATTRIBUTE_NODE
@@ -48,5 +48,25 @@ tapestry.html={
 			}
 		}
 		return s;	
-	}	
+	},
+	
+	getElementAsStringGeneric:function(node){
+		if (!node) { return ""; }
+		
+		var s='<' + node.nodeName;
+		// add attributes
+		if (node.attributes && node.attributes.length>0) {
+			for (var i = 0; i < node.attributes.length; i++) {
+				s += " " + node.attributes[i].name 
+					+ "=\"" + node.attributes[i].value + "\"";	
+			}
+		}
+		// close start tag
+		s += '>';
+		// content of tag
+		s += this.getContentAsStringGeneric(node);
+		// end tag
+		s += '</' + thisNode.nodeName + '>';
+		return s;
+	}
 }
