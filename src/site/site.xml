@@ -41,7 +41,7 @@
             <item name="Wiki" href="http://wiki.apache.org/tapestry/" />
         </menu>
         
-        <menu name="Documentation" inherit="top">
+        <menu name="Documentation" >
             
             <item name="Users Guide" href="/UsersGuide/index.html" collapse="true">
                 <item name="Introduction" href="/UsersGuide/index.html" />
@@ -75,7 +75,7 @@
             
         </menu>
         
-        <menu name="Components" inherit="top">
+        <menu name="Components" >
             
             <item name="Core" href="/components/index.html" collapse="true">
                 <item name="Any" href="/components/Any.html" />

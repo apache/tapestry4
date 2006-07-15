@@ -141,7 +141,7 @@
                     Note Tapestry will not perform property substitutions in CDATA blocks when using
                     the &lt;expression&gt; style syntax, instead use the ${expression} syntax.
                 </p>
-                <img src="../../images/tapestry/ComponentReference/Script.png"
+                <img src="../images/ComponentReference/Script.png"
                     alt="Script Screen Shot" />
                 <p>
                     <strong>HTML Template</strong>
