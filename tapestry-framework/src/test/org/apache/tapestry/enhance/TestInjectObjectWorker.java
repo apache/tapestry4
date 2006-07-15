@@ -19,6 +19,8 @@ import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertSame;
 
 import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
@@ -196,6 +198,38 @@ public class TestInjectObjectWorker extends BaseComponentTestCase
                     ex.getMessage());
             assertSame(l, ex.getLocation());
         }
+
+        verify();
+    }
+    
+    public void testInjectMap()
+    {
+        Location l = newLocation();
+        Map injectedValue = new HashMap();
+        
+        InjectSpecification spec = newSpec("fred", "service:barney", l);
+        
+        EnhancementOperation op = newMock(EnhancementOperation.class);
+        
+        InjectedValueProvider p = newMock(InjectedValueProvider.class);
+        
+        expect(op.getPropertyType("fred")).andReturn(Map.class);
+        
+        op.claimReadonlyProperty("fred");
+        
+        expect(p.obtainValue("service:barney", l)).andReturn(new HashMap());
+        
+        expect(op.addInjectedField("_$fred", Map.class, injectedValue)).andReturn("_$fred");
+        
+        op.addMethod(Modifier.PUBLIC, new MethodSignature(Map.class, "getFred", null,
+                null), "return _$fred;", l);
+        
+        replay();
+        
+        InjectObjectWorker w = new InjectObjectWorker();
+        w.setProvider(p);
+        
+        w.performEnhancement(op, spec);
 
         verify();
     }

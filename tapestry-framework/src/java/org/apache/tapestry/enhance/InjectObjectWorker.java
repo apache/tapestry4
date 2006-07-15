@@ -58,19 +58,19 @@ public class InjectObjectWorker implements InjectEnhancementWorker
         op.claimReadonlyProperty(propertyName);
 
         Object injectedValue = _provider.obtainValue(objectReference, location);
-
+        
         if (injectedValue == null)
             throw new ApplicationRuntimeException(EnhanceMessages
                     .locatedValueIsNull(objectReference), location, null);
-
+        
         if (!propertyType.isAssignableFrom(injectedValue.getClass()))
             throw new ApplicationRuntimeException(EnhanceMessages
                     .incompatibleInjectType(objectReference, injectedValue,
                             propertyType), location, null);
-
+        
         String fieldName = op.addInjectedField("_$" + propertyName,
                 propertyType, injectedValue);
-
+        
         String methodName = EnhanceUtils.createAccessorMethodName(propertyName);
 
         op.addMethod(Modifier.PUBLIC, new MethodSignature(propertyType,
