@@ -14,7 +14,14 @@
 
 package org.apache.tapestry.portlet;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.checkOrder;
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNotNull;
+
+import org.apache.hivemind.Registry;
+import org.apache.tapestry.BaseComponentTestCase;
+import org.testng.annotations.Test;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -23,16 +30,14 @@ import javax.portlet.PortletContext;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
-import org.apache.hivemind.Registry;
-import org.apache.hivemind.test.HiveMindTestCase;
-
 /**
  * Tests for {@link org.apache.tapestry.portlet.ApplicationPortlet}.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestApplicationPortlet extends HiveMindTestCase
+@Test
+public class TestApplicationPortlet extends BaseComponentTestCase
 {
     public static class ApplicationPortletFixture extends ApplicationPortlet
     {
@@ -51,66 +56,67 @@ public class TestApplicationPortlet extends HiveMindTestCase
 
     private PortletApplicationInitializer newInitializer()
     {
-        return (PortletApplicationInitializer) newMock(PortletApplicationInitializer.class);
+        return newMock(PortletApplicationInitializer.class);
     }
 
     private ActionRequestServicer newActionRequestServicer()
     {
-        return (ActionRequestServicer) newMock(ActionRequestServicer.class);
+        return newMock(ActionRequestServicer.class);
     }
 
     private RenderRequestServicer newRenderRequestServicer()
     {
-        return (RenderRequestServicer) newMock(RenderRequestServicer.class);
+        return newMock(RenderRequestServicer.class);
     }
 
     private Registry newRegistry(PortletApplicationInitializer initializer,
             ActionRequestServicer actionRequestServicer, RenderRequestServicer renderRequestServicer)
     {
-        Registry registry = (Registry) newMock(Registry.class);
-
+        Registry registry = newMock(Registry.class);
+        checkOrder(registry, false);
+        
         expect(registry.getService(
                 "tapestry.portlet.PortletApplicationInitializer",
                 PortletApplicationInitializer.class)).andReturn(initializer);
-
+        
         expect(registry.getService("tapestry.portlet.ActionRequestServicer", ActionRequestServicer.class))
         .andReturn(actionRequestServicer);
-
+        
         expect(registry.getService("tapestry.portlet.RenderRequestServicer", RenderRequestServicer.class))
         .andReturn(renderRequestServicer);
-
+        
         return registry;
     }
 
     private PortletConfig newConfig()
     {
-        return (PortletConfig) newMock(PortletConfig.class);
+        return newMock(PortletConfig.class);
     }
 
     private ActionRequest newActionRequest()
     {
-        return (ActionRequest) newMock(ActionRequest.class);
+        return newMock(ActionRequest.class);
     }
 
     private ActionResponse newActionResponse()
     {
-        return (ActionResponse) newMock(ActionResponse.class);
+        return newMock(ActionResponse.class);
     }
 
     private RenderRequest newRenderRequest()
     {
-        return (RenderRequest) newMock(RenderRequest.class);
+        return newMock(RenderRequest.class);
     }
 
     private RenderResponse newRenderResponse()
     {
-        return (RenderResponse) newMock(RenderResponse.class);
+        return newMock(RenderResponse.class);
     }
 
     public void testParseOptionalDescriptors() throws Exception
     {
-        PortletConfig config = (PortletConfig)newMock(PortletConfig.class);
-        PortletContext context = (PortletContext)newMock(PortletContext.class);
+        PortletConfig config = newMock(PortletConfig.class);
+        PortletContext context = newMock(PortletContext.class);
 
         checkOrder(config, false);
         checkOrder(context, false);
@@ -132,18 +138,20 @@ public class TestApplicationPortlet extends HiveMindTestCase
 
         expect(context.getResource("/WEB-INF/myportlet.application")).andReturn(null);
 
-        replayControls();
+        replay();
 
         ApplicationPortlet ap = new ApplicationPortlet();
 
         ap.init(config);
-
+        
         assertNotNull(ap._registry);
         assertNotNull(ap._actionRequestServicer);
         assertNotNull(ap._renderRequestServicer);
 
         assertEquals("parsed", ap._registry.expandSymbols("${module-portlet}", null));
         assertEquals("parsed", ap._registry.expandSymbols("${module-plain}", null));
+        
+        verify();
     }
 
     public void testInitAndDestroy() throws Exception
@@ -157,21 +165,21 @@ public class TestApplicationPortlet extends HiveMindTestCase
 
         initializer.initialize(config);
 
-        replayControls();
+        replay();
 
         ApplicationPortletFixture portlet = new ApplicationPortletFixture(registry);
 
         portlet.init(config);
 
-        verifyControls();
+        verify();
 
         registry.shutdown();
 
-        replayControls();
+        replay();
 
         portlet.destroy();
 
-        verifyControls();
+        verify();
     }
 
     public void testProcessAction() throws Exception
@@ -179,20 +187,20 @@ public class TestApplicationPortlet extends HiveMindTestCase
         PortletApplicationInitializer initializer = newInitializer();
         ActionRequestServicer actionRequestServicer = newActionRequestServicer();
         RenderRequestServicer renderRequestServicer = newRenderRequestServicer();
-
+        
         Registry registry = newRegistry(initializer, actionRequestServicer, renderRequestServicer);
-
+        
         PortletConfig config = newConfig();
-
+        
         initializer.initialize(config);
 
-        replayControls();
+        replay();
 
         ApplicationPortletFixture portlet = new ApplicationPortletFixture(registry);
 
         portlet.init(config);
 
-        verifyControls();
+        verify();
 
         ActionRequest request = newActionRequest();
         ActionResponse response = newActionResponse();
@@ -203,11 +211,11 @@ public class TestApplicationPortlet extends HiveMindTestCase
 
         registry.cleanupThread();
 
-        replayControls();
+        replay();
 
         portlet.processAction(request, response);
 
-        verifyControls();
+        verify();
     }
 
     public void testProcessRender() throws Exception
@@ -222,13 +230,13 @@ public class TestApplicationPortlet extends HiveMindTestCase
 
         initializer.initialize(config);
 
-        replayControls();
+        replay();
 
         ApplicationPortletFixture portlet = new ApplicationPortletFixture(registry);
 
         portlet.init(config);
 
-        verifyControls();
+        verify();
 
         RenderRequest request = newRenderRequest();
         RenderResponse response = newRenderResponse();
@@ -239,10 +247,10 @@ public class TestApplicationPortlet extends HiveMindTestCase
 
         registry.cleanupThread();
 
-        replayControls();
+        replay();
 
         portlet.render(request, response);
 
-        verifyControls();
+        verify();
     }
 }

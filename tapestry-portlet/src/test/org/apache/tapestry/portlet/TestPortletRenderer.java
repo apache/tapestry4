@@ -14,25 +14,27 @@
 
 package org.apache.tapestry.portlet;
 
+import static org.easymock.EasyMock.checkOrder;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
+import static org.easymock.EasyMock.matches;
+
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
 
-import org.apache.hivemind.test.AggregateArgumentsMatcher;
-import org.apache.hivemind.test.ArgumentMatcher;
-import org.apache.hivemind.test.HiveMindTestCase;
-import org.apache.hivemind.test.RegexpMatcher;
-import org.apache.hivemind.test.TypeMatcher;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.NestedMarkupWriter;
+import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.markup.MarkupWriterSource;
-import org.apache.tapestry.services.impl.DefaultResponseBuilder;
+import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.util.ContentType;
-import org.apache.tapestry.util.PageRenderSupportImpl;
 import org.apache.tapestry.web.WebResponse;
-import org.easymock.MockControl;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.portlet.PortletRendererImpl}.
@@ -40,13 +42,10 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestPortletRenderer extends HiveMindTestCase
+@Test
+public class TestPortletRenderer extends BaseComponentTestCase
 {
-    private NestedMarkupWriter newNestedWriter()
-    {
-        return (NestedMarkupWriter) newMock(NestedMarkupWriter.class);
-    }
-
+    
     private PrintWriter newPrintWriter()
     {
         return new PrintWriter(new CharArrayWriter());
@@ -54,46 +53,39 @@ public class TestPortletRenderer extends HiveMindTestCase
 
     private AssetFactory newAssetFactory()
     {
-        return (AssetFactory) newMock(AssetFactory.class);
+        return newMock(AssetFactory.class);
     }
 
     private WebResponse newWebResponse(ContentType contentType, PrintWriter writer)
             throws Exception
     {
-        MockControl control = newControl(WebResponse.class);
-        WebResponse response = (WebResponse) control.getMock();
+        WebResponse response = newMock(WebResponse.class);
+        checkOrder(response, false);
+        
+        expect(response.getPrintWriter(contentType)).andReturn(writer);
 
-        response.getPrintWriter(contentType);
-        control.setReturnValue(writer);
-
-        response.getNamespace();
-        control.setReturnValue("NAMESPACE");
-
+        expect(response.getNamespace()).andReturn("NAMESPACE");
+        
         return response;
     }
 
     private MarkupWriterSource newSource(PrintWriter printWriter, ContentType contentType,
             IMarkupWriter writer)
     {
-        MockControl control = newControl(MarkupWriterSource.class);
-        MarkupWriterSource source = (MarkupWriterSource) control.getMock();
-
-        source.newMarkupWriter(printWriter, contentType);
-        control.setReturnValue(writer);
-
+        MarkupWriterSource source = newMock(MarkupWriterSource.class);
+        
+        expect(source.newMarkupWriter(printWriter, contentType)).andReturn(writer);
+        
         return source;
     }
 
     private IPage newPage(ContentType contentType)
     {
-        MockControl control = newControl(IPage.class);
-        IPage page = (IPage) control.getMock();
+        IPage page = newMock(IPage.class);
 
-        page.getResponseContentType();
-        control.setReturnValue(contentType);
-
-        page.getPageName();
-        control.setReturnValue("ZePage");
+        expect(page.getResponseContentType()).andReturn(contentType);
+        
+        expect(page.getPageName()).andReturn("ZePage");
 
         return page;
     }
@@ -104,27 +96,24 @@ public class TestPortletRenderer extends HiveMindTestCase
     }
     
     private IRequestCycle newCycle(String pageName, IPage page, IMarkupWriter writer)
-    {
-        MockControl control = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) control.getMock();
-
+    {   
+        IRequestCycle cycle = newCycle();
+        
         cycle.activate(pageName);
 
-        cycle.getPage();
-        control.setReturnValue(page);
-
-        cycle.getAttribute("org.apache.tapestry.PageRenderSupport");
-        control.setReturnValue(null);
-
+        expect(cycle.getPage()).andReturn(page);
+        
+        expect(cycle.getAttribute("org.apache.tapestry.PageRenderSupport")).andReturn(null);
+        
         // We can check that an instance of PageRenderSupport is passed in, but
         // we can't (easily) check thta it's configured the way we want.
-        cycle.setAttribute("org.apache.tapestry.PageRenderSupport", new PageRenderSupportImpl(
-                newAssetFactory(), "", null, new DefaultResponseBuilder(writer)));
-        control.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-        { null, new TypeMatcher() }));
         
-        cycle.renderPage(null);
-        control.setMatcher(MockControl.ALWAYS_MATCHER);
+        cycle.setAttribute(eq("org.apache.tapestry.PageRenderSupport"), 
+                isA(PageRenderSupport.class));
+                //new PageRenderSupportImpl(newAssetFactory(), "", 
+                  //      null, new DefaultResponseBuilder(writer))
+        
+        cycle.renderPage(isA(ResponseBuilder.class));
         
         return cycle;
     }
@@ -133,28 +122,27 @@ public class TestPortletRenderer extends HiveMindTestCase
     {
         ContentType ct = new ContentType("text/html");
         PrintWriter pw = newPrintWriter();
+        
         WebResponse response = newWebResponse(ct, pw);
+        
         IMarkupWriter nested = newNestedWriter();
-
-        MockControl control = newControl(IMarkupWriter.class);
-        IMarkupWriter writer = (IMarkupWriter) control.getMock();
-
-        writer.getNestedWriter();
-        control.setReturnValue(nested);
-
+        
+        IMarkupWriter writer = newWriter();
+        
+        expect(writer.getNestedWriter()).andReturn((NestedMarkupWriter)nested);
+        
         MarkupWriterSource source = newSource(pw, ct, writer);
         IPage page = newPage(ct);
         AssetFactory assetFactory = newAssetFactory();
-
+        
         IRequestCycle cycle = newCycle("ZePage", page);
         
         writer.comment("BEGIN Tapestry Portlet appId NAMESPACE");
         writer.comment("Page: ZePage");
-
-        writer.comment("Generated:.*");
-        control.setMatcher(new RegexpMatcher());
-
-        writer.comment("Framework version:.*");
+        
+        writer.comment(matches("Generated:.*"));
+        
+        writer.comment(matches("Framework version:.*"));
 
         nested.close();
 
@@ -162,17 +150,17 @@ public class TestPortletRenderer extends HiveMindTestCase
 
         writer.close();
 
-        replayControls();
-
+        replay();
+        
         PortletRendererImpl r = new PortletRendererImpl();
         r.setMarkupWriterSource(source);
         r.setResponse(response);
         r.setAssetFactory(assetFactory);
         r.setApplicationId("appId");
-
+        
         r.renderPage(cycle, "ZePage");
-
-        verifyControls();
+        
+        verify();
     }
 
     // TODO: Tests that prove the RenderPageSupport is working properly.

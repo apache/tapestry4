@@ -14,19 +14,24 @@
 
 package org.apache.tapestry.portlet;
 
+import static org.easymock.EasyMock.checkOrder;
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.portlet.PortletMode;
-import javax.portlet.PortletRequest;
-import javax.portlet.WindowState;
-
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageNotFoundException;
-import org.easymock.MockControl;
+import org.testng.annotations.Test;
+
+import javax.portlet.PortletMode;
+import javax.portlet.PortletRequest;
+import javax.portlet.WindowState;
 
 /**
  * Tests for {@link org.apache.tapestry.portlet.MatchingPortletPageResolver}.
@@ -34,27 +39,18 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestMatchingPortletPageResolver extends HiveMindTestCase
+@Test
+public class TestMatchingPortletPageResolver extends BaseComponentTestCase
 {
-    private IRequestCycle newCycle()
-    {
-        return (IRequestCycle) newMock(IRequestCycle.class);
-    }
-
-    private IPage newPage()
-    {
-        return (IPage) newMock(IPage.class);
-    }
-
+    
     private IRequestCycle newCycle(String pageName)
     {
         IPage page = newPage();
-
-        MockControl control = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) control.getMock();
-
-        cycle.getPage(pageName);
-        control.setReturnValue(page);
+        
+        IRequestCycle cycle = newCycle();
+        checkOrder(cycle, false);
+        
+        expect(cycle.getPage(pageName)).andReturn(page);
 
         return cycle;
     }
@@ -74,15 +70,14 @@ public class TestMatchingPortletPageResolver extends HiveMindTestCase
     public void testNoMatchOnContentType()
     {
         IRequestCycle cycle = newCycle();
-
-        MockControl requestc = newControl(PortletRequest.class);
-        PortletRequest request = (PortletRequest) requestc.getMock();
-
-        trainContentType(requestc, request, "text/xml");
+        
+        PortletRequest request = newMock(PortletRequest.class);
+        
+        trainContentType(request, "text/xml");
 
         List l = Collections.singletonList(newContribution("text/html", null, "wierd", "Wierd"));
 
-        replayControls();
+        replay();
 
         MatchingPortletPageResolver resolver = new MatchingPortletPageResolver();
         resolver.setContributions(l);
@@ -91,21 +86,20 @@ public class TestMatchingPortletPageResolver extends HiveMindTestCase
 
         assertNull(resolver.getPageNameForRequest(cycle));
 
-        verifyControls();
+        verify();
     }
 
     public void testNoMatchOnPortletMode()
     {
         IRequestCycle cycle = newCycle();
+        
+        PortletRequest request = newMock(PortletRequest.class);
 
-        MockControl requestc = newControl(PortletRequest.class);
-        PortletRequest request = (PortletRequest) requestc.getMock();
-
-        trainPortletMode(requestc, request, "edit");
-
+        trainPortletMode(request, "edit");
+        
         List l = Collections.singletonList(newContribution(null, "view", null, "Wierd"));
 
-        replayControls();
+        replay();
 
         MatchingPortletPageResolver resolver = new MatchingPortletPageResolver();
         resolver.setContributions(l);
@@ -114,21 +108,20 @@ public class TestMatchingPortletPageResolver extends HiveMindTestCase
 
         assertNull(resolver.getPageNameForRequest(cycle));
 
-        verifyControls();
+        verify();
     }
 
     public void testNoMatchOnWindowState()
     {
         IRequestCycle cycle = newCycle();
 
-        MockControl requestc = newControl(PortletRequest.class);
-        PortletRequest request = (PortletRequest) requestc.getMock();
+        PortletRequest request = newMock(PortletRequest.class);
 
-        trainWindowState(requestc, request, "huge");
+        trainWindowState(request, "huge");
 
         List l = Collections.singletonList(newContribution(null, null, "tiny", "Wierd"));
 
-        replayControls();
+        replay();
 
         MatchingPortletPageResolver resolver = new MatchingPortletPageResolver();
         resolver.setContributions(l);
@@ -137,24 +130,23 @@ public class TestMatchingPortletPageResolver extends HiveMindTestCase
 
         assertNull(resolver.getPageNameForRequest(cycle));
 
-        verifyControls();
+        verify();
     }
 
     public void testSortingCounts()
     {
         IRequestCycle cycle = newCycle("EditHuge");
 
-        MockControl requestc = newControl(PortletRequest.class);
-        PortletRequest request = (PortletRequest) requestc.getMock();
-
+        PortletRequest request = newMock(PortletRequest.class);
+        
         List l = new ArrayList();
         l.add(newContribution(null, "edit", null, "EditNormal"));
         l.add(newContribution(null, "edit", "huge", "EditHuge"));
+        
+        trainPortletMode(request, "edit");
+        trainWindowState(request, "huge");
 
-        trainPortletMode(requestc, request, "edit");
-        trainWindowState(requestc, request, "huge");
-
-        replayControls();
+        replay();
 
         MatchingPortletPageResolver resolver = new MatchingPortletPageResolver();
         resolver.setContributions(l);
@@ -163,35 +155,30 @@ public class TestMatchingPortletPageResolver extends HiveMindTestCase
 
         assertEquals("EditHuge", resolver.getPageNameForRequest(cycle));
 
-        verifyControls();
+        verify();
     }
 
     public void testPageMissing()
     {
         IPage page = newPage();
+        IRequestCycle cycle = newCycle();
 
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-
-        MockControl requestc = newControl(PortletRequest.class);
-        PortletRequest request = (PortletRequest) requestc.getMock();
+        PortletRequest request = newMock(PortletRequest.class);
 
         List l = new ArrayList();
         l.add(newContribution(null, "edit", null, "EditNormal"));
         l.add(newContribution(null, "edit", "huge", "EditHuge"));
 
-        trainPortletMode(requestc, request, "edit");
-        trainWindowState(requestc, request, "huge");
+        trainPortletMode(request, "edit");
+        trainWindowState(request, "huge");
 
-        cycle.getPage("EditHuge");
-        cyclec.setThrowable(new PageNotFoundException("missing!"));
+        expect(cycle.getPage("EditHuge")).andThrow(new PageNotFoundException("missing!"));
+        
+        trainPortletMode(request, "edit");
 
-        trainPortletMode(requestc, request, "edit");
-
-        cycle.getPage("EditNormal");
-        cyclec.setReturnValue(page);
-
-        replayControls();
+        expect(cycle.getPage("EditNormal")).andReturn(page);
+        
+        replay();
 
         MatchingPortletPageResolver resolver = new MatchingPortletPageResolver();
         resolver.setContributions(l);
@@ -200,28 +187,25 @@ public class TestMatchingPortletPageResolver extends HiveMindTestCase
 
         assertEquals("EditNormal", resolver.getPageNameForRequest(cycle));
 
-        verifyControls();
+        verify();
     }
 
-    private void trainContentType(MockControl control, PortletRequest request, String contentType)
+    private void trainContentType(PortletRequest request, String contentType)
     {
-        request.getResponseContentType();
-        control.setReturnValue(contentType);
+        expect(request.getResponseContentType()).andReturn(contentType);
     }
 
-    private void trainPortletMode(MockControl control, PortletRequest request, String modeName)
+    private void trainPortletMode(PortletRequest request, String modeName)
     {
         PortletMode mode = new PortletMode(modeName);
 
-        request.getPortletMode();
-        control.setReturnValue(mode);
+        expect(request.getPortletMode()).andReturn(mode);
     }
 
-    private void trainWindowState(MockControl control, PortletRequest request, String stateName)
+    private void trainWindowState(PortletRequest request, String stateName)
     {
         WindowState state = new WindowState(stateName);
 
-        request.getWindowState();
-        control.setReturnValue(state);
+        expect(request.getWindowState()).andReturn(state);
     }
 }

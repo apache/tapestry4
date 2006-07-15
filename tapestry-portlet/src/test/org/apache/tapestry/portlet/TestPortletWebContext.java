@@ -14,30 +14,33 @@
 
 package org.apache.tapestry.portlet;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertNull;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-import javax.portlet.PortletContext;
-
 import org.apache.tapestry.web.WebContext;
-import org.easymock.MockControl;
+import org.testng.annotations.Test;
+
+import javax.portlet.PortletContext;
 
 /**
  * @author Howard M. Lewis Ship
  */
+@Test
 public class TestPortletWebContext extends BasePortletWebTestCase
 {
 
     public void testGetInitParameterNames()
     {
-        MockControl control = newControl(PortletContext.class);
-        PortletContext context = (PortletContext) control.getMock();
+        PortletContext context = newMock(PortletContext.class);
 
-        context.getInitParameterNames();
-        control.setReturnValue(newEnumeration());
+        expect(context.getInitParameterNames()).andReturn(newEnumeration());
 
-        replayControls();
+        replay();
 
         WebContext wc = new PortletWebContext(context);
 
@@ -45,139 +48,123 @@ public class TestPortletWebContext extends BasePortletWebTestCase
 
         checkList(l);
 
-        verifyControls();
+        verify();
     }
 
     public void testGetInitParameterValue()
     {
         String value = "William Orbit";
+        
+        PortletContext context = newMock(PortletContext.class);
+        
+        expect(context.getInitParameter("artist")).andReturn(value);
 
-        MockControl control = newControl(PortletContext.class);
-        PortletContext context = (PortletContext) control.getMock();
-
-        context.getInitParameter("artist");
-        control.setReturnValue(value);
-
-        replayControls();
+        replay();
 
         WebContext wc = new PortletWebContext(context);
 
         assertSame(value, wc.getInitParameterValue("artist"));
 
-        verifyControls();
+        verify();
     }
 
     public void testGetAttributeNames()
     {
-        MockControl control = newControl(PortletContext.class);
-        PortletContext context = (PortletContext) control.getMock();
+        PortletContext context = newMock(PortletContext.class);
 
-        context.getAttributeNames();
-        control.setReturnValue(newEnumeration());
-
-        replayControls();
+        expect(context.getAttributeNames()).andReturn(newEnumeration());
+        
+        replay();
 
         WebContext wc = new PortletWebContext(context);
-
+        
         List l = wc.getAttributeNames();
 
         checkList(l);
 
-        verifyControls();
+        verify();
     }
 
     public void testGetAttribute()
     {
         Object attribute = new Object();
 
-        MockControl control = newControl(PortletContext.class);
-        PortletContext context = (PortletContext) control.getMock();
+        PortletContext context = newMock(PortletContext.class);
 
-        context.getAttribute("attr");
-        control.setReturnValue(attribute);
+        expect(context.getAttribute("attr")).andReturn(attribute);
 
-        replayControls();
+        replay();
 
         WebContext wc = new PortletWebContext(context);
 
         assertSame(attribute, wc.getAttribute("attr"));
 
-        verifyControls();
+        verify();
     }
 
     public void testSetAttribute()
     {
         Object attribute = new Object();
 
-        MockControl control = newControl(PortletContext.class);
-        PortletContext context = (PortletContext) control.getMock();
-
+        PortletContext context = newMock(PortletContext.class);
+        
         context.setAttribute("name", attribute);
 
-        replayControls();
+        replay();
 
         WebContext wc = new PortletWebContext(context);
 
         wc.setAttribute("name", attribute);
 
-        verifyControls();
+        verify();
     }
 
     public void testSetAttributeToNull()
     {
-        MockControl control = newControl(PortletContext.class);
-        PortletContext context = (PortletContext) control.getMock();
+        PortletContext context = newMock(PortletContext.class);
 
         context.removeAttribute("tonull");
 
-        replayControls();
+        replay();
 
         WebContext wc = new PortletWebContext(context);
 
         wc.setAttribute("tonull", null);
 
-        verifyControls();
+        verify();
     }
 
     public void testGetResource() throws Exception
     {
-        URL url = new URL("http://jakarta.apache.org/tapestry");
+        URL url = new URL("http://tapestry.apache.org/");
 
-        MockControl control = newControl(PortletContext.class);
-        PortletContext context = (PortletContext) control.getMock();
-
-        context.getResource("/tapestry");
-        control.setReturnValue(url);
-
-        replayControls();
+        PortletContext context = newMock(PortletContext.class);
+        
+        expect(context.getResource("/tapestry")).andReturn(url);
+        
+        replay();
 
         WebContext wc = new PortletWebContext(context);
-
+        
         assertSame(url, wc.getResource("/tapestry"));
-
-        verifyControls();
+        
+        verify();
     }
 
     public void testGetResourceFailure() throws Exception
     {
         Throwable t = new MalformedURLException("Like this ever happens.");
 
-        MockControl control = newControl(PortletContext.class);
-        PortletContext context = (PortletContext) control.getMock();
+        PortletContext context = newMock(PortletContext.class);
 
-        context.getResource("/tapestry");
-        control.setThrowable(t);
-
-        replayControls();
-
-        interceptLogging(PortletWebContext.class.getName());
-
+        expect(context.getResource("/tapestry")).andThrow(t);
+        
+        replay();
+        
         WebContext wc = new PortletWebContext(context);
 
         assertNull(wc.getResource("/tapestry"));
-
-        verifyControls();
-
-        assertLoggedMessage("Error getting portlet context resource '/tapestry': Like this ever happens.");
+        
+        verify();
     }
 }

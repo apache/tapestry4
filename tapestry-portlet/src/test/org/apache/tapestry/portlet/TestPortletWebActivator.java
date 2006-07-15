@@ -14,11 +14,15 @@
 
 package org.apache.tapestry.portlet;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.List;
 
-import javax.portlet.PortletConfig;
+import org.testng.annotations.Test;
 
-import org.easymock.MockControl;
+import javax.portlet.PortletConfig;
 
 /**
  * Tests for {@link org.apache.tapestry.portlet.PortletWebActivator}.
@@ -26,34 +30,31 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
+@Test
 public class TestPortletWebActivator extends BasePortletWebTestCase
 {
     public void testGetActivatorName()
     {
-        MockControl control = newControl(PortletConfig.class);
-        PortletConfig config = (PortletConfig) control.getMock();
+        PortletConfig config = newMock(PortletConfig.class);
 
-        config.getPortletName();
-        control.setReturnValue("portlet");
-
-        replayControls();
-
+        expect(config.getPortletName()).andReturn("portlet");
+        
+        replay();
+        
         PortletWebActivator pwa = new PortletWebActivator(config);
-
+        
         assertEquals("portlet", pwa.getActivatorName());
 
-        verifyControls();
+        verify();
     }
 
     public void testGetInitParameterNames()
     {
-        MockControl control = newControl(PortletConfig.class);
-        PortletConfig config = (PortletConfig) control.getMock();
+        PortletConfig config = newMock(PortletConfig.class);
 
-        config.getInitParameterNames();
-        control.setReturnValue(newEnumeration());
-
-        replayControls();
+        expect(config.getInitParameterNames()).andReturn(newEnumeration());
+        
+        replay();
 
         PortletWebActivator pwa = new PortletWebActivator(config);
 
@@ -61,25 +62,23 @@ public class TestPortletWebActivator extends BasePortletWebTestCase
 
         checkList(l);
 
-        verifyControls();
+        verify();
     }
 
     public void testGetInitParameterValue()
     {
         String value = "William Orbit";
+        
+        PortletConfig config = newMock(PortletConfig.class);
 
-        MockControl control = newControl(PortletConfig.class);
-        PortletConfig config = (PortletConfig) control.getMock();
-
-        config.getInitParameter("artist");
-        control.setReturnValue(value);
-
-        replayControls();
+        expect(config.getInitParameter("artist")).andReturn(value);
+        
+        replay();
 
         PortletWebActivator pwa = new PortletWebActivator(config);
 
         assertSame(value, pwa.getInitParameterValue("artist"));
 
-        verifyControls();
+        verify();
     }
 }

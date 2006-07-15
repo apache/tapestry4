@@ -14,7 +14,16 @@
 
 package org.apache.tapestry.portlet;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+
 import java.util.Map;
+
+import org.apache.tapestry.BaseComponentTestCase;
+import org.apache.tapestry.engine.ILink;
+import org.apache.tapestry.util.QueryParameterMap;
+import org.testng.annotations.Test;
 
 import javax.portlet.PortletMode;
 import javax.portlet.PortletModeException;
@@ -23,18 +32,14 @@ import javax.portlet.PortletURL;
 import javax.portlet.WindowState;
 import javax.portlet.WindowStateException;
 
-import org.apache.hivemind.test.HiveMindTestCase;
-import org.apache.tapestry.engine.ILink;
-import org.apache.tapestry.util.QueryParameterMap;
-import org.easymock.MockControl;
-
 /**
  * Tests for {@link org.apache.tapestry.portlet.PortletLink}.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestPortletLink extends HiveMindTestCase
+@Test
+public class TestPortletLink extends BaseComponentTestCase
 {
     private static class PortletURLFixture implements PortletURL
     {
@@ -78,21 +83,17 @@ public class TestPortletLink extends HiveMindTestCase
 
     private PortletURL newPortletURL()
     {
-        return (PortletURL) newMock(PortletURL.class);
-    }
-
-    private QueryParameterMap newParameters()
-    {
-        return (QueryParameterMap) newMock(QueryParameterMap.class);
+        return newMock(PortletURL.class);
     }
 
     public void testGetAbsoluteURL()
     {
         PortletURL url = newPortletURL();
-        QueryParameterMap parameters = newParameters();
+        QueryParameterMap parameters = org.easymock.classextension.EasyMock.createMock(QueryParameterMap.class);
 
-        replayControls();
-
+        replay();
+        org.easymock.classextension.EasyMock.replay(parameters);
+        
         ILink link = new PortletLink(url, parameters);
 
         try
@@ -115,90 +116,86 @@ public class TestPortletLink extends HiveMindTestCase
             // Accept.
         }
 
-        verifyControls();
+        verify();
+        org.easymock.classextension.EasyMock.verify(parameters);
     }
 
     public void testGetParameterNames()
     {
         PortletURL url = newPortletURL();
+        QueryParameterMap parameters = org.easymock.classextension.EasyMock.createMock(QueryParameterMap.class);
 
-        MockControl control = newControl(QueryParameterMap.class);
-        QueryParameterMap parameters = (QueryParameterMap) control.getMock();
+        String[] names = { "Fred", "Barney" };
 
-        String[] names =
-        { "Fred", "Barney" };
-
-        parameters.getParameterNames();
-        control.setReturnValue(names);
-
-        replayControls();
+        expect(parameters.getParameterNames()).andReturn(names);
+        
+        replay();
+        org.easymock.classextension.EasyMock.replay(parameters);
 
         ILink link = new PortletLink(url, parameters);
-
+        
         assertSame(names, link.getParameterNames());
-
-        verifyControls();
+        
+        verify();
+        org.easymock.classextension.EasyMock.verify(parameters);
     }
-
+    
     public void testGetParameterValues()
     {
         PortletURL url = newPortletURL();
+        
+        QueryParameterMap parameters = org.easymock.classextension.EasyMock.createMock(QueryParameterMap.class);
 
-        MockControl control = newControl(QueryParameterMap.class);
-        QueryParameterMap parameters = (QueryParameterMap) control.getMock();
+        String[] values = { "Fred", "Barney" };
 
-        String[] values =
-        { "Fred", "Barney" };
-
-        parameters.getParameterValues("bedrock");
-        control.setReturnValue(values);
-
-        replayControls();
+        expect(parameters.getParameterValues("bedrock")).andReturn(values);
+        
+        replay();
+        org.easymock.classextension.EasyMock.replay(parameters);
 
         ILink link = new PortletLink(url, parameters);
-
+        
         assertSame(values, link.getParameterValues("bedrock"));
 
-        verifyControls();
+        verify();
+        org.easymock.classextension.EasyMock.verify(parameters);
     }
 
     public void testGetURL()
     {
         PortletURL url = newPortletURL();
 
-        MockControl control = newControl(QueryParameterMap.class);
-        QueryParameterMap parameters = (QueryParameterMap) control.getMock();
+        QueryParameterMap parameters = org.easymock.classextension.EasyMock.createMock(QueryParameterMap.class);
 
-        parameters.getParameterNames();
-        control.setReturnValue(new String[0]);
-
-        replayControls();
+        expect(parameters.getParameterNames()).andReturn(new String[0]);
+        
+        replay();
+        org.easymock.classextension.EasyMock.replay(parameters);
 
         ILink link = new PortletLink(url, parameters);
 
         assertEquals(url.toString(), link.getURL());
 
-        verifyControls();
+        verify();
+        org.easymock.classextension.EasyMock.verify(parameters);
     }
 
     public void testGetURLLongForm()
     {
         PortletURL url = newPortletURL();
 
-        QueryParameterMap parameters = (QueryParameterMap) newMock(QueryParameterMap.class);
+        QueryParameterMap parameters = org.easymock.classextension.EasyMock.createMock(QueryParameterMap.class);
 
-        parameters.getParameterNames();
-        setReturnValue(parameters, new String[]
-        { "page" });
-
-        parameters.getParameterValues("page");
-        String[] values = new String[]
-        { "View" };
-        setReturnValue(parameters, values);
-
+        expect(parameters.getParameterNames()).andReturn(new String[] {"page"});
+        
+        String[] values = new String[] { "View" };
+        
+        expect(parameters.getParameterValues("page")).andReturn(values);
+        
         url.setParameter("page", values);
-
-        replayControls();
+        
+        replay();
+        org.easymock.classextension.EasyMock.replay(parameters);
 
         ILink link = new PortletLink(url, parameters);
 
@@ -209,66 +206,68 @@ public class TestPortletLink extends HiveMindTestCase
                 "anchor",
                 true));
 
-        verifyControls();
+        verify();
+        org.easymock.classextension.EasyMock.verify(parameters);
     }
 
     public void testGetURLUnencoding()
     {
         PortletURL url = new PortletURLFixture("this=foo&amp;that=bar");
 
-        QueryParameterMap parameters = (QueryParameterMap) newMock(QueryParameterMap.class);
+        QueryParameterMap parameters = org.easymock.classextension.EasyMock.createMock(QueryParameterMap.class);
 
-        parameters.getParameterNames();
-        setReturnValue(parameters, new String[0]);
-
-        replayControls();
+        expect(parameters.getParameterNames()).andReturn(new String[0]);
+        
+        replay();
+        org.easymock.classextension.EasyMock.replay(parameters);
 
         ILink link = new PortletLink(url, parameters);
 
         assertEquals("this=foo&that=bar", link.getURL());
 
-        verifyControls();
+        verify();
+        org.easymock.classextension.EasyMock.verify(parameters);
     }
 
     public void testGetURLIncludeParameters()
     {
         PortletURL url = newPortletURL();
-
-        MockControl control = newControl(QueryParameterMap.class);
-        QueryParameterMap parameters = (QueryParameterMap) control.getMock();
-
-        String[] values =
-        { "Fred", "Barney" };
-
-        parameters.getParameterNames();
-        control.setReturnValue(new String[]
-        { "bedrock" });
-        parameters.getParameterValues("bedrock");
-        control.setReturnValue(values);
-
+        
+        QueryParameterMap parameters = org.easymock.classextension.EasyMock.createMock(QueryParameterMap.class);
+        
+        String[] values = { "Fred", "Barney" };
+        
+        expect(parameters.getParameterNames()).andReturn(new String[]{"bedrock"});
+        
+        expect(parameters.getParameterValues("bedrock")).andReturn(values);
+        
         url.setParameter("bedrock", values);
 
-        replayControls();
+        replay();
+        org.easymock.classextension.EasyMock.replay(parameters);
 
         ILink link = new PortletLink(url, parameters);
 
         assertEquals(url.toString(), link.getURL());
 
-        verifyControls();
+        verify();
+        org.easymock.classextension.EasyMock.verify(parameters);
     }
 
     public void testGetURLWithAnchor()
     {
         PortletURL url = newPortletURL();
 
-        QueryParameterMap parameters = newParameters();
+        QueryParameterMap parameters = org.easymock.classextension.EasyMock.createMock(QueryParameterMap.class);
 
-        replayControls();
+        replay();
+        org.easymock.classextension.EasyMock.replay(parameters);
 
         ILink link = new PortletLink(url, parameters);
 
         assertEquals("EasyMock for interface javax.portlet.PortletURL#anchor", link.getURL("anchor", false));
-
-        verifyControls();
+        
+        verify();
+        org.easymock.classextension.EasyMock.verify(parameters);
     }
 }
