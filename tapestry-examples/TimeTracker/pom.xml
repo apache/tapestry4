@@ -14,7 +14,7 @@
     </parent>
     <name>Tapestry Core Library</name>
     <inceptionYear>2006</inceptionYear>
-    
+
     <dependencies>
         <dependency>
             <groupId>org.apache.tapestry</groupId>
@@ -40,12 +40,6 @@
         <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.1</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -89,11 +83,12 @@
     <build>
         <sourceDirectory>src/java</sourceDirectory>
         <testSourceDirectory>src/test</testSourceDirectory>
-
+        
         <plugins>
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
                 <artifactId>maven-jetty6-plugin</artifactId>
+                <version>6.0-SNAPSHOT</version>
                 <configuration>
                     <webAppSourceDirectory>${basedir}/src/context</webAppSourceDirectory>
                     <scanIntervalSeconds>10</scanIntervalSeconds>
@@ -129,4 +124,13 @@
             </plugin>
         </plugins>
     </reporting>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>mortbay-repo</id>
+            <name>mortbay-repo</name>
+            <url>http://www.mortbay.org/maven2/snapshot</url>
+        </pluginRepository>
+    </pluginRepositories>
+
 </project>
