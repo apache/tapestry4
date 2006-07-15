@@ -16,6 +16,7 @@ package org.apache.tapestry.annotations;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.hivemind.ClassResolver;
@@ -47,7 +48,7 @@ public class AnnotationEnhancementWorker implements EnhancementWorker
 
     private Map _classWorkers;
 
-    private SecondaryAnnotationWorker _secondaryAnnotationWorker;
+    private List<SecondaryAnnotationWorker> _secondaryAnnotationWorkers;
 
     public void setClassWorkers(Map classWorkers)
     {
@@ -112,11 +113,11 @@ public class AnnotationEnhancementWorker implements EnhancementWorker
 
         try
         {
-            // Remember; _secondaryWorker is a chain-of-command, so this returns true
-            // if any command in the chain returns true.
-
-            if (_secondaryAnnotationWorker.canEnhance(method))
-                _secondaryAnnotationWorker.peformEnhancement(op, spec, method, classResource);
+            
+            for (SecondaryAnnotationWorker worker : _secondaryAnnotationWorkers)
+                if (worker.canEnhance(method))
+                    worker.peformEnhancement(op, spec, method, classResource);
+            
         }
         catch (Exception ex)
         {
@@ -166,8 +167,8 @@ public class AnnotationEnhancementWorker implements EnhancementWorker
         _classResolver = classResolver;
     }
 
-    public void setSecondaryAnnotationWorker(SecondaryAnnotationWorker secondaryWorker)
+    public void setSecondaryAnnotationWorkers(List<SecondaryAnnotationWorker> workers)
     {
-        _secondaryAnnotationWorker = secondaryWorker;
+        _secondaryAnnotationWorkers = workers;
     }
 }

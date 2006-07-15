@@ -28,7 +28,7 @@
       <construct class="AnnotationEnhancementWorker">
         <set-configuration property="methodWorkers" configuration-id="MethodWorkers"/>
         <set-configuration property="classWorkers" configuration-id="ClassWorkers"/>
-        <set-service property="secondaryAnnotationWorker" service-id="SecondaryAnnotationWorkers"/>
+        <set-configuration property="secondaryAnnotationWorkers" configuration-id="SecondaryAnnotationWorkers"/>
       </construct>
     </invoke-factory>
     
@@ -148,25 +148,30 @@
     
   </service-point>
   
-  <configuration-point id="SecondaryAnnotationWorkers" schema-id="hivemind.lib.ChainContribution">
+  <configuration-point id="SecondaryAnnotationWorkers">
     
-    Defines a chain of command for secondary annotation workers; workers that operate after
-    any MethodWorkers.
+    Configures a list of secondary annotation workers.
+    <schema>
+      <element name="worker">
+        
+        <attribute name="object" translator="object" required="true">
+          
+          An object that implements the SecondaryAnnotationEnhancementWorker interface.
+        </attribute>
+        
+        <rules>
+          <push-attribute attribute="object"/>
+          <invoke-parent method="addElement"/>
+        </rules>
+        
+      </element>
+    </schema>
     
   </configuration-point>
   
   <contribution configuration-id="SecondaryAnnotationWorkers"> 
-    <command id="initial-value" object="instance:InitialValueAnnotationWorker"/>
-    <command id="event-listener" object="service:EventListenerAnnotationWorker"/>
+    <worker object="instance:InitialValueAnnotationWorker"/>
+    <worker object="service:EventListenerAnnotationWorker"/>
   </contribution>
-  
-  <service-point id="SecondaryAnnotationWorkers" interface="SecondaryAnnotationWorker">
-    
-    Chain of command for secondary annnotation workers that operate after any MethodWorkers.
-    
-    <invoke-factory service-id="hivemind.lib.ChainFactory">
-      <construct configuration-id="SecondaryAnnotationWorkers"/>
-    </invoke-factory>    
-  </service-point>
   
 </module>

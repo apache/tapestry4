@@ -14,10 +14,14 @@
 
 package org.apache.tapestry.annotations;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.hivemind.ClassResolver;
@@ -52,20 +56,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
     {
         return Collections.singletonMap(annotationClass, worker);
     }
-
-    private class NoOp implements SecondaryAnnotationWorker
-    {
-        public boolean canEnhance(Method method)
-        {
-            return false;
-        }
-
-        public void peformEnhancement(EnhancementOperation op, IComponentSpecification spec,
-                Method method, Resource classResource)
-        {
-        }
-    }
-
+    
     /**
      * No method annotations registered.
      */
@@ -78,8 +69,8 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
 
         AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
         worker.setMethodWorkers(Collections.EMPTY_MAP);
-        worker.setSecondaryAnnotationWorker(new NoOp());
-
+        worker.setSecondaryAnnotationWorkers(Collections.EMPTY_LIST);
+        
         worker.performEnhancement(op, spec);
 
         verify();
@@ -105,8 +96,8 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
         AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
         worker.setMethodWorkers(newMap(InjectObject.class, methodWorker));
         worker.setClassResolver(resolver);
-        worker.setSecondaryAnnotationWorker(new NoOp());
-
+        worker.setSecondaryAnnotationWorkers(Collections.EMPTY_LIST);
+        
         worker.performEnhancement(op, spec);
 
         verify();
@@ -147,8 +138,8 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
         AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
         worker.setMethodWorkers(newMap(InjectObject.class, methodWorker));
         worker.setClassResolver(resolver);
-        worker.setSecondaryAnnotationWorker(new NoOp());
-
+        worker.setSecondaryAnnotationWorkers(Collections.EMPTY_LIST);
+        
         worker.performEnhancement(op, spec);
 
         verify();
@@ -185,8 +176,8 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
         worker.setMethodWorkers(newMap(InjectObject.class, methodWorker));
         worker.setErrorLog(log);
         worker.setClassResolver(resolver);
-        worker.setSecondaryAnnotationWorker(new NoOp());
-
+        worker.setSecondaryAnnotationWorkers(Collections.EMPTY_LIST);
+        
         worker.performEnhancement(op, spec);
 
         verify();
@@ -210,8 +201,8 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
         AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
         worker.setClassWorkers(newMap(Deprecated.class, classWorker));
         worker.setClassResolver(resolver);
-        worker.setSecondaryAnnotationWorker(new NoOp());
-
+        worker.setSecondaryAnnotationWorkers(Collections.EMPTY_LIST);
+        
         worker.performEnhancement(op, spec);
 
         verify();
@@ -245,8 +236,8 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
         worker.setClassWorkers(newMap(Deprecated.class, classWorker));
         worker.setErrorLog(log);
         worker.setClassResolver(resolver);
-        worker.setSecondaryAnnotationWorker(new NoOp());
-
+        worker.setSecondaryAnnotationWorkers(Collections.EMPTY_LIST);
+        
         worker.performEnhancement(op, spec);
 
         verify();
@@ -261,8 +252,8 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
 
         AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
         worker.setClassWorkers(Collections.EMPTY_MAP);
-        worker.setSecondaryAnnotationWorker(new NoOp());
-
+        worker.setSecondaryAnnotationWorkers(Collections.EMPTY_LIST);
+        
         worker.performEnhancement(op, spec);
 
         verify();
@@ -271,7 +262,10 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
     public void testSecondaryEnhancementWorker()
     {
         SecondaryAnnotationWorker secondary = newSecondaryAnnotationWorker();
-
+        
+        List<SecondaryAnnotationWorker> secWorkers = new ArrayList<SecondaryAnnotationWorker>();
+        secWorkers.add(secondary);
+        
         EnhancementOperation op = newOp();
         IComponentSpecification spec = newSpec();
         Method method = findMethod(AnnotatedPage.class, "getPropertyWithInitialValue");
@@ -283,11 +277,11 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
         secondary.peformEnhancement(op, spec, method, classResource);
 
         replay();
-
+        
         AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
-        worker.setSecondaryAnnotationWorker(secondary);
+        worker.setSecondaryAnnotationWorkers(secWorkers);
         worker.setMethodWorkers(Collections.EMPTY_MAP);
-
+        
         worker.performMethodEnhancement(op, spec, method, classResource);
 
         verify();
@@ -296,7 +290,10 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
     public void testSecondaryEnhancementWorkerFailure()
     {
         SecondaryAnnotationWorker secondary = newSecondaryAnnotationWorker();
-
+        
+        List<SecondaryAnnotationWorker> secWorkers = new ArrayList<SecondaryAnnotationWorker>();
+        secWorkers.add(secondary);
+        
         EnhancementOperation op = newOp();
         IComponentSpecification spec = newSpec();
         ErrorLog log = newErrorLog();
@@ -314,10 +311,10 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
         replay();
         
         AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
-        worker.setSecondaryAnnotationWorker(secondary);
+        worker.setSecondaryAnnotationWorkers(secWorkers);
         worker.setMethodWorkers(Collections.EMPTY_MAP);
         worker.setErrorLog(log);
-
+        
         worker.performMethodEnhancement(op, spec, method, classResource);
 
         verify();
