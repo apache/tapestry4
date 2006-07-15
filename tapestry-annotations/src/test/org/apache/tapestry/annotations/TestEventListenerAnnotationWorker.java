@@ -130,10 +130,6 @@ public class TestEventListenerAnnotationWorker extends BaseAnnotationTestCase
     
     public void testCanEnhance()
     {
-        EnhancementOperation op = newOp();
-        IComponentSpecification spec = newSpec();
-        Resource resource = newResource(AnnotatedPage.class);
-        
         EventListenerAnnotationWorker worker = new EventListenerAnnotationWorker();
         
         replay();
@@ -141,8 +137,6 @@ public class TestEventListenerAnnotationWorker extends BaseAnnotationTestCase
         Method m = findMethod(AnnotatedPage.class, "getDefaultPageSize");
         
         assertFalse(worker.canEnhance(m));
-        
-        worker.peformEnhancement(op, spec, m, resource);
         
         verify();
     }
