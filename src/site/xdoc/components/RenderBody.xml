@@ -79,7 +79,7 @@
                     application specific component. It is a common practice to use a Border
                     component to provide common layout to almost all of application pages.
                 </p>
-                <img src="../../images/tapestry/ComponentReference/RenderBody.png"
+                <img src="../images/ComponentReference/RenderBody.png"
                     alt="RenderBody Screen Shot" />
                 <p>Template</p>
                 <source xml:space="preserve">

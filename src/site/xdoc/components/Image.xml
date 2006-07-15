@@ -89,7 +89,7 @@
                     <br />
                     This example uses a &lt;context-asset&gt; to reference the image.
                 </p>
-                <img src="./images/ComponentReference/PoweredByTapestry.png"
+                <img src="../images/ComponentReference/PoweredByTapestry.png"
                     alt="PoweredByTapestry Screen Shot" />
                 <p>HTML Template</p>
                 <source xml:space="preserve">
@@ -122,7 +122,7 @@
                     </a>
                     to reference the image's URL.
                 </p>
-                <img src="./images/ComponentReference/Image.png"
+                <img src="../images/ComponentReference/Image.png"
                     alt="Image Screen Shot" />
                 <p>HTML Template</p>
                 <source xml:space="preserve">

@@ -137,7 +137,7 @@
 
                 </p>
 
-                <img src="../../images/tapestry/ComponentReference/RenderBlock.png"
+                <img src="../images/ComponentReference/RenderBlock.png"
                     alt="RenderBlock Screen Shot" />
 
                 <p>First we'll show a page that makes use of the TabPanel component.</p>
