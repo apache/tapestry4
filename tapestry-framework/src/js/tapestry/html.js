@@ -55,10 +55,9 @@ tapestry.html={
 		
 		var s='<' + node.nodeName;
 		// add attributes
-		if (node.attributes && node.attributes.length>0) {
-			for (var i = 0; i < node.attributes.length; i++) {
-				s += " " + node.attributes[i].name 
-					+ "=\"" + node.attributes[i].value + "\"";	
+		if (node.attributes && node.attributes.length > 0) {
+			for (var i=0; i < node.attributes.length; i++) {
+				s += " " + node.attributes[i].name + "=\"" + node.attributes[i].value + "\"";	
 			}
 		}
 		// close start tag
@@ -66,7 +65,7 @@ tapestry.html={
 		// content of tag
 		s += this.getContentAsStringGeneric(node);
 		// end tag
-		s += '</' + thisNode.nodeName + '>';
+		s += '</' + node.nodeName + '>';
 		return s;
 	}
 }
