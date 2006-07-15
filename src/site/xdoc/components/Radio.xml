@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Copyright 2005 The Apache Software Foundation
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<document>
+    <properties>
+        <title>Radio</title>
+    </properties>
+    <body>
+
+        <section name="Radio">
+
+            <p>
+                Provides a HTML &lt;input type="radio"&gt; form element. The Radio component must be
+                wrapped (possibly indirectly) inside a
+                <a href="RadioGroup.html">RadioGroup</a>
+                component.
+            </p>
+
+            <p>
+                Generally the
+                <a href="PropertySelection.html">PropertySelection</a>
+                component is used in preference to the Radio and
+                <a href="RadioGroup.html">RadioGroup</a>
+                , except in special cases.
+            </p>
+            <p>
+                <strong>
+                    See also:
+                    <a href="../../tapestry-framework/apidocs/org/apache/tapestry/form/Radio.html">
+                        org.apache.tapestry.form.Radio
+                    </a>
+                    ,
+                    <a href="Form.html">Form</a>
+                    ,
+                    <a href="Option.html">Option</a>
+                    ,
+                    <a href="PropertySelection.html">PropertySelection</a>
+                    ,
+                    <a href="RadioGroup.html">RadioGroup</a>
+                    ,
+                    <a href="Select.html">Select</a>
+                </strong>
+
+            </p>
+
+            <section name="Parameters">
+
+
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Direction</th>
+
+                        <th>Required</th>
+                        <th>Default</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>value</td>
+                        <td>Object</td>
+
+                        <td>in</td>
+                        <td>no</td>
+                        <td />
+                        <td>
+                            The value is used to determine if the radio button is initially selected
+                            (when rendering) and is the value assigned to the selected parameter
+                            when the form is submitted, if the HTML radio button is selected.
+                        </td>
+                    </tr>
+                    <tr>
+
+                        <td>disabled</td>
+                        <td>boolean</td>
+                        <td>in</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+
+                            If true, then the Radio is disabled. It will write a "disabled"
+                            attribute into its tag when rendering, and will not update its selected
+                            binding. A Radio may also be disabled if its containing RadioGroup is
+                            disabled.
+                        </td>
+                    </tr>
+
+                </table>
+
+                <p>
+                    Body:
+                    <strong>removed</strong>
+                </p>
+
+                <p>
+                    Informal parameters:
+                    <strong>allowed</strong>
+
+                </p>
+
+                <p>Reserved parameters: checked, name, type</p>
+
+            </section>
+
+            <section name="Examples">
+
+
+                <p>
+                    See
+                    <a href="RadioGroup.html">RadioGroup</a>
+                    for a Radio component example.
+                </p>
+
+            </section>
+
+        </section>
+
+    </body>
+</document>

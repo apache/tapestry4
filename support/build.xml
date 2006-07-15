@@ -30,14 +30,14 @@
 	<property name="work.dir" value="${export.dir}/${module}"/>
 	
 	<target name="convert-docs" >
-		<xslt basedir="../src/documentation/content/xdocs" destdir="tmp"
+		<xslt basedir="../tapestry-framework/src/documentation/content/xdocs/tapestry/ComponentReference" destdir="tmp"
 		       extension=".xml" includes="**/*.xml" 
 				excludes="**/site.xml,**/*.ent,**/*.aart,**/tabs.xml"
 				style="forrest2maven-xdoc.xsl" >
 			
 			<xmlcatalog>
 				<entity publicId="links" 
-					location="links.ent" />
+					location="../../links.ent" />
 				<entity publicId="common" 
 					location="common.ent" />
 			</xmlcatalog>
