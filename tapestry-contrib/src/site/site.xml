@@ -35,12 +35,6 @@
         
         <menu ref="parent" />
         
-        <menu name="Quick Links" inherit="top" >
-            <item name="Home" href="/index.html" />
-            <item name="Download" href="http://tapestry.apache.org/tapestry4.1/download.html" />
-            <item name="Wiki" href="http://wiki.apache.org/tapestry/" />
-        </menu>
-        
         <menu name="Documentation">
                 
                 <item name="Overview" href="/index.html" />
