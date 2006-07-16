@@ -26,7 +26,6 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.RenderRewoundException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.TapestryUtils;
-import org.apache.tapestry.engine.ActionServiceParameter;
 import org.apache.tapestry.engine.DirectServiceParameter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
@@ -115,24 +114,6 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
      */
 
     public abstract IEngineService getDirectService();
-
-    /**
-     * Injected.
-     * 
-     * @since 4.0
-     */
-
-    public abstract IEngineService getActionService();
-
-    /**
-     * Returns true if this Form is configured to use the direct service.
-     * <p>
-     * This is derived from the direct parameter, and defaults to true if not bound.
-     * 
-     * @since 1.0.2
-     */
-
-    public abstract boolean isDirect();
 
     /**
      * Returns true if the stateful parameter is bound to a true value. If stateful is not bound,
@@ -241,11 +222,10 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
         // Note: not safe to invoke getNamespace() in Portlet world
         // except during a RenderRequest.
 
-        String baseName = isDirect() ? constructFormNameForDirectService(cycle)
-                : constructFormNameForActionService(actionId);
-
+        String baseName = constructFormNameForDirectService(cycle);
+        
         _name = baseName + getResponse().getNamespace();
-
+        
         if (_renderInformalParameters == null)
             _renderInformalParameters = new RenderInformalParameters();
 
@@ -350,17 +330,8 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
     private ILink getLink(IRequestCycle cycle, String actionId)
     {
-        if (isDirect())
-        {
-            Object parameter = new DirectServiceParameter(this);
-            return getDirectService().getLink(true, parameter);
-        }
-
-        // I'd love to pull out support for the action service entirely!
-
-        Object parameter = new ActionServiceParameter(this, actionId);
-
-        return getActionService().getLink(true, parameter);
+        Object parameter = new DirectServiceParameter(this);
+        return getDirectService().getLink(true, parameter);
     }
 
     /** Injected. */

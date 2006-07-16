@@ -111,11 +111,9 @@
             ]]>
             <match>u</match>
             <match>formids</match>
-            <match>action</match>
             <match>component</match>
             <match>page</match>
             <match>service</match>
-            <match>reservedids</match>     
             <match>submitmode</match>       
             <match>submitname</match>
             <match>l</match>
@@ -129,9 +127,7 @@
             <match>0</match>
             <match>go</match>
             <match>Home</match>
-            <match>action</match>
-            <match>action</match>
-            <match></match>
+            <match>direct</match>
             <match></match>
             <match>$(username)</match>
             <match>$(l)</match>
@@ -140,12 +136,12 @@
     </request>
 
     <request>
-        <parameter name="service" value="action"/>
+        <parameter name="service" value="direct"/>
         <parameter name="page" value="Home"/>
-        <parameter name="action" value="0"/>
+        <parameter name="direct" value="0"/>
         <parameter name="component" value="go"/>
         <parameter name="formids" value="u,l"/>
-        <parameter name="reservedids" value="action"/>
+        <parameter name="reservedids" value="direct"/>
         <parameter name="u" value="newbie"/>
         <parameter name="l" value="0"/>
 

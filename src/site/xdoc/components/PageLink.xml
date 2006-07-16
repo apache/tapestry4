@@ -89,7 +89,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>disable</td>
+                        <td>disabled</td>
                         <td>boolean</td>
 
                         <td>in</td>

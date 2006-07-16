@@ -90,7 +90,7 @@ public class FormTest extends BaseComponentTestCase
         ListenerInvoker invoker = newListenerInvoker();
 
         Form form = newInstance(FormFixture.class, new Object[]
-        { "id", "myform", "direct", true, "expectedWriter", writer, "expectedRequestCycle", cycle,
+        { "id", "myform", "expectedWriter", writer, "expectedRequestCycle", cycle,
                 "formSupport", support, "listener", listener, "listenerInvoker", invoker,
                 "delegate", delegate });
 
@@ -141,7 +141,7 @@ public class FormTest extends BaseComponentTestCase
         IValidationDelegate delegate = newDelegate();
 
         Form form = newInstance(FormFixture.class, new Object[]
-        { "id", "myform", "direct", true, "expectedWriter", writer, "expectedRequestCycle", cycle,
+        { "id", "myform", "expectedWriter", writer, "expectedRequestCycle", cycle,
                 "formSupport", support, "response", response, "directService", direct, "method",
                 "post", "delegate", delegate });
 
@@ -188,7 +188,7 @@ public class FormTest extends BaseComponentTestCase
         IValidationDelegate delegate = newDelegate();
         
         Form form = newInstance(FormFixture.class, new Object[]
-        { "id", "myform", "direct", true, "expectedWriter", writer, "expectedRequestCycle", cycle,
+        { "id", "myform", "expectedWriter", writer, "expectedRequestCycle", cycle,
                 "formSupport", support, "response", response, "directService", direct, "method",
                 "post", "delegate", delegate, "scheme", "https", "port", new Integer(443) });
         
