@@ -35,6 +35,7 @@ import org.apache.tapestry.services.ResponseBuilder;
  * <li>Tracking changes to page properties, and restoring pages to prior states
  * <li>Pooling of page objects
  * </ul>
+ * 
  * <p>
  * A request cycle is broken up into two phases. The <em>rewind</em> phase is optional, as it tied
  * to {@link org.apache.tapestry.link.ActionLink}or {@link org.apache.tapestry.form.Form}
@@ -45,10 +46,12 @@ import org.apache.tapestry.services.ResponseBuilder;
  * {@link org.apache.tapestry.components.Conditional}, etc.). Once this component is reached, it
  * can notify its {@link IActionListener}. The listener has the ability to update the state of any
  * pages and select a new result page.
+ * </p>
+ * 
  * <p>
  * Following the rewind phase is the <em>render</em> phase. During the render phase, a page is
  * actually rendered and output sent to the client web browser.
- * 
+ * </p>
  * @author Howard Lewis Ship
  */
 
@@ -82,16 +85,6 @@ public interface IRequestCycle
      */
 
     Object getAttribute(String name);
-
-    /**
-     * Returns the next action id. ActionLink ids are used to identify different actions on a page
-     * (URLs that are related to dynamic page state).
-     * 
-     * @deprecated To be removed in release 4.1 with no replacement.
-     * @see #getUniqueId(String)
-     */
-
-    String getNextActionId();
 
     /**
      * Identifies the active page, the page which will ultimately render the response.
@@ -159,17 +152,6 @@ public interface IRequestCycle
      */
 
     void renderPage(ResponseBuilder builder);
-
-    /**
-     * Rewinds a page and executes some form of action when the component with the specified action
-     * id is reached.
-     * 
-     * @see IAction
-     * @see org.apache.tapestry.link.ActionLink
-     * @deprecated To be removed in 4.1 with no replacement.
-     */
-
-    void rewindPage(String targetActionId, IComponent targetComponent);
 
     /**
      * Allows a temporary object to be stored in the request cycle, which allows otherwise unrelated

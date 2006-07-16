@@ -71,10 +71,9 @@ public class FormLinkRenderer extends DefaultLinkRenderer
 
         cycle.setAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME,
                 linkComponent);
-
-        String actionId = cycle.getNextActionId();
-        String formName = "LinkForm" + actionId;
-
+        
+        String formName = cycle.getUniqueId("LinkForm");
+        
         boolean hasBody = getHasBody();
 
         boolean disabled = linkComponent.isDisabled();

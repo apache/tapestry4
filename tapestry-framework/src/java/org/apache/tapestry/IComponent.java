@@ -282,30 +282,6 @@ public interface IComponent extends IRender, LocationHolder
     void setNamespace(INamespace namespace);
 
     /**
-     * Sets a property of a component.
-     * 
-     * @param propertyName
-     *            the property name
-     * @param value
-     *            the provided value
-     * @deprecated To be removed in 4.1. Use
-     *             {@link org.apache.hivemind.util.PropertyUtils#read(java.lang.Object, java.lang.String) instead.
-     */
-    void setProperty(String propertyName, Object value);
-
-    /**
-     * Gets a property of a component.
-     * 
-     * @param propertyName
-     *            the property name
-     * @return Object the value of property
-     * @deprecated To be removed in 4.1. Use
-     *             {@link org.apache.hivemind.util.PropertyUtils#read(java.lang.Object, java.lang.String)}
-     *             instead
-     */
-    Object getProperty(String propertyName);
-
-    /**
      * Returns true if the component is currently rendering.
      * 
      * @since 4.0
@@ -341,20 +317,6 @@ public interface IComponent extends IRender, LocationHolder
      */
 
     ListenerMap getListeners();
-
-    /**
-     * Returns a localized string message. Each component has an optional set of localized message
-     * strings that are read from properties files.
-     * 
-     * @param key
-     *            the key used to locate the message
-     * @return the localized message for the key, or a placeholder if no message is defined for the
-     *         key.
-     * @since 3.0
-     * @deprecated To be removed in release 4.1. Use {@link #getMessages()} instead.
-     */
-
-    String getMessage(String key);
 
     /**
      * Returns the {@link org.apache.tapestry.spec.IContainedComponent}. This will be null for

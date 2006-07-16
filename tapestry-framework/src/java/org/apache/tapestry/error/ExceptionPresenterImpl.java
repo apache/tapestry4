@@ -15,6 +15,7 @@
 package org.apache.tapestry.error;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.services.ResponseRenderer;
@@ -39,9 +40,9 @@ public class ExceptionPresenterImpl implements ExceptionPresenter
         try
         {
             IPage exceptionPage = cycle.getPage(_exceptionPageName);
-
-            exceptionPage.setProperty("exception", cause);
-
+            
+            PropertyUtils.write(exceptionPage, "exception", cause);
+            
             cycle.activate(exceptionPage);
 
             _responseRenderer.renderResponse(cycle);

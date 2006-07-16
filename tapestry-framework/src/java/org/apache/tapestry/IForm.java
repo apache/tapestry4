@@ -29,16 +29,6 @@ import org.apache.tapestry.valid.IValidationDelegate;
 
 public interface IForm extends IComponent, FormBehavior
 {
-
-    /**
-     * Attribute name used with the request cycle; allows other components to locate the IForm.
-     * 
-     * @since 1.0.5
-     * @deprecated To be removed; use {@link TapestryUtils#FORM_ATTRIBUTE}instead.
-     */
-
-    String ATTRIBUTE_NAME = TapestryUtils.FORM_ATTRIBUTE;
-
     /**
      * Invoked by the {@link IRequestCycle}to allow a form that uses the direct service, to respond
      * to the form submission.

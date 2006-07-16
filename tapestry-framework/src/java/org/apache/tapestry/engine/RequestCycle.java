@@ -104,8 +104,6 @@ public class RequestCycle implements IRequestCycle
 
     private Map _attributes = new HashMap();
 
-    private int _actionId;
-
     private int _targetActionId;
 
     private IComponent _targetComponent;
@@ -205,12 +203,6 @@ public class RequestCycle implements IRequestCycle
     public Object getAttribute(String name)
     {
         return _attributes.get(name);
-    }
-
-    /** @deprecated */
-    public String getNextActionId()
-    {
-        return Integer.toHexString(++_actionId);
     }
 
     public IPage getPage()
@@ -313,9 +305,6 @@ public class RequestCycle implements IRequestCycle
         if (!_rewinding)
             return false;
 
-        if (_actionId != _targetActionId)
-            return false;
-
         // OK, we're there, is the page is good order?
 
         if (component == _targetComponent)
@@ -343,8 +332,6 @@ public class RequestCycle implements IRequestCycle
     public void renderPage(ResponseBuilder builder)
     {
         _rewinding = false;
-        _actionId = -1;
-        _targetActionId = 0;
 
         try
         {
@@ -377,8 +364,6 @@ public class RequestCycle implements IRequestCycle
 
     private void reset()
     {
-        _actionId = 0;
-        _targetActionId = 0;
         _attributes.clear();
         _idAllocator.clear();
     }
@@ -399,16 +384,7 @@ public class RequestCycle implements IRequestCycle
     {
         IPage page = form.getPage();
         _rewinding = true;
-
-        // Fake things a little for getNextActionId() / isRewound()
-        // This used to be more involved (and include service parameters, and a parameter
-        // to this method), when the actionId was part of the Form name. That's not longer
-        // necessary (no service parameters), and we can fake things here easily enough with
-        // fixed actionId of 0.
-
-        _targetActionId = 0;
-        _actionId = -1;
-
+        
         _targetComponent = form;
 
         try
@@ -446,63 +422,6 @@ public class RequestCycle implements IRequestCycle
             reset();
             _rewinding = false;
         }
-    }
-
-    /**
-     * Rewinds the page by invoking {@link IPage#renderPage(ResponseBuilder, IRequestCycle)}.
-     * <p>
-     * The process is expected to end with a {@link RenderRewoundException}. If the entire page is
-     * renderred without this exception being thrown, it means that the target action id was not
-     * valid, and a {@link ApplicationRuntimeException}is thrown.
-     * <p>
-     * This clears all attributes.
-     * 
-     * @deprecated To be removed in 4.1 with no replacement.
-     */
-
-    public void rewindPage(String targetActionId, IComponent targetComponent)
-    {
-        _rewinding = true;
-
-        _actionId = -1;
-        
-        // Parse the action Id as hex since that's whats generated
-        // by getNextActionId()
-        _targetActionId = Integer.parseInt(targetActionId, 16);
-        _targetComponent = targetComponent;
-        
-        try
-        {
-            _page.renderPage(getResponseBuilder(), this);
-            
-            // Shouldn't get this far, because the target component should
-            // throw the RenderRewoundException.
-
-            throw new StaleLinkException(_page, targetActionId, targetComponent.getExtendedId());
-        }
-        catch (RenderRewoundException ex)
-        {
-            // This is acceptible and expected.
-        }
-        catch (ApplicationRuntimeException ex)
-        {
-            // ApplicationRuntimeExceptions don't need to be wrapped.
-            throw ex;
-        }
-        catch (Throwable ex)
-        {
-            // But wrap other exceptions in a RequestCycleException ... this
-            // will ensure that some of the context is available.
-
-            throw new ApplicationRuntimeException(ex.getMessage(), _page, null, ex);
-        }
-        finally
-        {
-            _rewinding = false;
-
-            reset();
-        }
-
     }
 
     public void setAttribute(String name, Object value)

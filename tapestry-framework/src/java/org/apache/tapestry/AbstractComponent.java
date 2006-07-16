@@ -26,7 +26,6 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.BaseLocatable;
 import org.apache.hivemind.util.Defense;
-import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.bean.BeanProvider;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.event.BrowserEvent;
@@ -770,30 +769,6 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
     }
 
     /**
-     * Sets a property of a component.
-     * 
-     * @see IComponent
-     * @since 3.0
-     * @deprecated
-     */
-    public void setProperty(String propertyName, Object value)
-    {
-        PropertyUtils.write(this, propertyName, value);
-    }
-
-    /**
-     * Gets a property of a component.
-     * 
-     * @see IComponent
-     * @since 3.0
-     * @deprecated
-     */
-    public Object getProperty(String propertyName)
-    {
-        return PropertyUtils.read(this, propertyName);
-    }
-
-    /**
      * @since 4.0
      */
 
@@ -836,71 +811,6 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
     public IComponentSpecification getSpecification()
     {
         throw new IllegalStateException(TapestryMessages.providedByEnhancement("getSpecification"));
-    }
-
-    /**
-     * Returns a localized message.
-     * 
-     * @since 3.0
-     * @deprecated To be removed in 4.1. Use {@link #getMessages()} instead.
-     */
-
-    public String getMessage(String key)
-    {
-        return getMessages().getMessage(key);
-    }
-
-    /**
-     * Formats a localized message string, using
-     * {@link Messages#format(java.lang.String, java.lang.Object[])}.
-     * 
-     * @param key
-     *            the key used to obtain a localized pattern
-     * @param arguments
-     *            passed to the formatter
-     * @since 3.0
-     * @deprecated To be removed in 4.1. Use {@link #getMessages()} instead.
-     */
-
-    public String format(String key, Object[] arguments)
-    {
-        return getMessages().format(key, arguments);
-    }
-
-    /**
-     * Convienience method for invoking {@link IMessages#format(String, Locale, Object)}.
-     * 
-     * @since 3.0
-     * @deprecated To be removed in 4.1. Use {@link #getMessages()} instead.
-     */
-
-    public String format(String key, Object argument)
-    {
-        return getMessages().format(key, argument);
-    }
-
-    /**
-     * Convienience method for invoking {@link Messages#format(String, Object, Object)}.
-     * 
-     * @since 3.0
-     * @deprecated To be removed in 4.1. Use {@link #getMessages()} instead.
-     */
-
-    public String format(String key, Object argument1, Object argument2)
-    {
-        return getMessages().format(key, argument1, argument2);
-    }
-
-    /**
-     * Convienience method for {@link Messages#format(String, Object, Object, Object)}.
-     * 
-     * @since 3.0
-     * @deprecated To be removed in 4.1. Use {@link #getMessages()} instead.
-     */
-
-    public String format(String key, Object argument1, Object argument2, Object argument3)
-    {
-        return getMessages().format(key, argument1, argument2, argument3);
     }
 
     /** @since 4.0 */

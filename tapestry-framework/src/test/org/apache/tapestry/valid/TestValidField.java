@@ -19,6 +19,7 @@ import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertSame;
 
 import org.apache.hivemind.Location;
+import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;
@@ -137,7 +138,7 @@ public class TestValidField extends BaseFormComponentTestCase
 
         verify();
 
-        assertSame(translatedValue, component.getProperty("value"));
+        assertSame(translatedValue, PropertyUtils.read(component, "value"));
     }
 
     public void testRewindNoValidator()

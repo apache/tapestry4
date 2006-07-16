@@ -51,7 +51,7 @@ public class TestComponentMessageAccess extends BaseComponentTestCase
 
         replay();
 
-        assertEquals("flintstone", ac.getMessage("fred"));
+        assertEquals("flintstone", ac.getMessages().getMessage("fred"));
 
         verify();
     }
@@ -67,7 +67,7 @@ public class TestComponentMessageAccess extends BaseComponentTestCase
 
         replay();
 
-        assertEquals("Fred Flintstone", ac.format("fred", "flintstone"));
+        assertEquals("Fred Flintstone", ac.getMessages().format("fred", "flintstone"));
 
         verify();
 
@@ -75,7 +75,7 @@ public class TestComponentMessageAccess extends BaseComponentTestCase
 
         replay();
 
-        assertEquals("flintstone family", ac.format("fred", "wilma", "dino"));
+        assertEquals("flintstone family", ac.getMessages().format("fred", "wilma", "dino"));
 
         verify();
 
@@ -83,7 +83,7 @@ public class TestComponentMessageAccess extends BaseComponentTestCase
 
         replay();
 
-        assertEquals("flintstone family 2", ac.format("fred", "wilma", "dino", "pebbles"));
+        assertEquals("flintstone family 2", ac.getMessages().format("fred", "wilma", "dino", "pebbles"));
 
         verify();
 
@@ -94,7 +94,7 @@ public class TestComponentMessageAccess extends BaseComponentTestCase
 
         replay();
 
-        assertEquals("flintstone family 3", ac.format("fred", arguments));
+        assertEquals("flintstone family 3", ac.getMessages().format("fred", arguments));
 
         verify();
 
