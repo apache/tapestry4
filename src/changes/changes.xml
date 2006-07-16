@@ -1,0 +1,1999 @@
+<?xml version="1.0"?>
+<!-- 
+    Copyright 2006 The Apache Software Foundation
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<document>
+    <properties>
+        <title>Changes</title>
+        <author email="jkuhnert@apache.org">Jesse Kuhnert</author>
+    </properties>
+    <body>
+
+        <release version="4.1.0" date="unreleased" desc="Ajax integrated dojo release">
+            <action type="update" dev="JK">
+                Cleaned up warnings/imports showing on eclipse problem pane.
+            </action>
+            <action type="add" dev="JK" fixes-bug="TAPESTRY-821">
+                ResourceMatcher service added with configurable regexp pattern hivemind
+                contributions to conditionally allow some resources to not require md5sum digest
+                checks.
+            </action>
+            <action type="add" dev="JK" fixes-bug="TAPESTRY-812" due-to="Takashi Okamoto">
+                Added japanese localized validator strings.
+            </action>
+            <action type="update" dev="JK">
+                Cleaned up warnings/imports showing on eclipse problem pane.
+            </action>
+            <action type="add" dev="JK" fixes-bug="TAPESTRY-821">
+                ResourceMatcher service added with configurable regexp pattern hivemind
+                contributions to conditionally allow some resources to not require md5sum digest
+                checks.
+            </action>
+            <action type="add" dev="JK" fixes-bug="TAPESTRY-812" due-to="Takashi Okamoto">
+                Added japanese localized validator strings.
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-787">
+                Port late bug fixes from 4.0 branch to trunk
+            </action>
+            <action type="update" dev="HLS">
+                Add a checkstyle configuration for the project, and fix a number of related warnings
+                and errors
+            </action>
+            <action type="add" dev="JK" due-to="Gabriel Handford">
+                Added a new utility implementation of IPropertySelectionModel that uses
+                commons-beanutils to select values from a standard POJO object.
+            </action>
+            <action type="add" dev="JK" due-to="James Carman" fixes-bug="TAPESTRY-917">
+                Applied patch that adds enhanced hivemind autowiring of services to
+                components/pages.
+            </action>
+            <action type="update" dev="JK" fixes-bug="TAPESTRY-917">
+                Added isReadOnly method to EnhancementOperation interface to support discovering
+                properties without having to throw exceptions.
+            </action>
+            <action type="fix" dev="JK" due-to="Marcel Juffermans" fixes-bug="TAPESTRY-955">
+                Asset service incorrectly calculating expiration time, was causing numeric overflow
+                operations.
+            </action>
+            <action type="add" dev="JK" due-to="James Carman" fixes-bug="TAPESTRY-947">
+                Changed data squeezer to be a pipeline, allowing for a more flexible
+                contribution/configuration.
+            </action>
+            <action type="add" dev="JK">
+                Added new IComponent.getClientId for global element id resolution on all components.
+            </action>
+            <action type="add" dev="AA" fixes-bug="TAPESTRY-929">
+                Added configuration point for contributing OGNL null handlers.
+            </action>
+            <action type="fix" dev="AA" fixes-bug="TAPESTRY-935">
+                Improve output of base tag (for IE).
+            </action>
+            <action type="fix" dev="AA" fixes-bug="TAPESTRY-829" due-to="Ido M. Tamir">
+                FormLinkRenderer throws NPE with DirectlLinks.
+            </action>
+            <action type="fix" dev="JK" fixes-bug="TAPESTRY-952">
+                Added logic to asset service that checks for incoming css file relative paths.
+            </action>
+        </release>
+        <release version="4.0.1" date="unreleased">
+            <action type="fix" dev="JK" fixes-bug="TAPESTRY-863" due-to="unknown contributor">
+                Form.set_focus() not compatible with some ie fields. Patch adds logic to check more
+                cross-browser friendly functions for setting focus.
+            </action>
+            <action type="fix" dev="JK" fixes-bug="TAPESTRY-635" due-to="Raphael Jean">
+                Applied patch upgrading tapestry to use commons-fileupload 1.1 as well as adding new
+                functionality enabling a more dynamic fileupload system for normal or portlet
+                environments.
+            </action>
+            <action type="fix" dev="JK" fixes-bug="TAPESTRY-831">
+                Added error hint to encode message properties. It seems that 80% of the time the
+                error is caused by a class that doesn't implement Serializable. Added message
+                hinting at this in error strings.
+            </action>
+            <action type="fix" dev="JK" fixes-bug="TAPESTRY-234" due-to="Matt Raible">
+                Display name of SimpleTableColumn now replaces all instances of "." character with
+                "_".
+            </action>
+            <action type="fix" dev="JK" fixes-bug="TAPESTRY-802" due-to="Raphael Jean">
+                In portlet mode, the portlet URLs obtained by createActionURL() or createRenderURL()
+                should NOT be encoded.
+            </action>
+            <action type="fix" dev="JK" fixes-bug="TAPESTRY-525" due-to="Raphael Jean">
+                When a Link component attempts to render its link during rewind, the
+                PortletLinkFactoryImpl crashes because _renderResponse is null.
+            </action>
+            <action type="fix" dev="JK" due-to="Andreas Andreou">
+                Upload test was failing due to incorrect line number matching for "Contents Match."
+                string assertion.
+            </action>
+            <action type="fix" dev="JK" due-to="Zedros Schwart">
+                Fixed links.ent reference to ExternalAsset, was missing asset package.
+            </action>
+            <action type="fix" dev="JK" fixes-bug="TAPESTRY-875"
+                due-to="Matthias Zitzmann/Brian K. Wallace">
+                Using the DatePicker for a date format containing no "word delimiter" doesn't work
+                because of an inefficient limitational replacement-method in DatePicker.js. I added
+                a patch for this, because I've to work with a date format of ddMMyy (without
+                delimiter). With that patch it won't break any more neither for regular date formats
+                nor for this delimiter-free format used in financial or touristics for example.
+            </action>
+            <action type="fix" dev="JK" fixes-bug="TAPESTRY-170"
+                due-to="Vjeran Marcinko/Brian K. Wallace">
+                Modified contrib table column headers to use inlined style and css classes to do
+                table and image style definitions. Much more compatible with css now.
+            </action>
+            <action type="fix" dev="JK" fixes-bug="TAPESTRY-876" due-to="Brian K. Wallace">
+                Tapestry's resource finder throws a StringIndexOutOfBoundsException when an asset
+                doesn't contains a "." (the search result of 'lastIndexOf' is -1).
+
+                The patch against trunk simply adds a check in the lastIndexOf as it is assumed to
+                be > -1 although the results of the check are used differently
+            </action>
+            <action type="fix" dev="JK" fixes-bug="TAPESTRY-880" due-to="Fernando Padilla">
+                need 'port' parameter to supplement 'scheme' parameter for correct generation of
+                urls
+            </action>
+            <action type="fix" dev="JK" fixes-bug="TAPESTRY-879" due-to="Olve Sæther Hansen">
+                http://jakarta.apache.org/tapestry/UsersGuide/page-class.html Has broken links to
+                documentation about tapestry.page.PageClassProviderChain and
+                tapestry.page.ComponentClassProviderChain
+            </action>
+            <action type="fix" dev="JK" fixes-bug="TAPESTRY-453">
+                Added new scriptAsset parameter, as well as param checking to be sure that only one
+                of scriptPath or scriptAsset can be set.
+            </action>
+            <action type="fix" dev="JK" fixes-bug="TAPESTRY-794" due-to="Brian K. Wallace">
+                Removed the space between the message binding and the message key for Timeout.jwc.
+            </action>
+            <action type="fix" dev="JK" fixes-bug="TAPESTRY-774" due-to="Brian K. Wallace">
+                It seems that DirectLink and/or PopupLinkRenderer should be checking for Form rewind
+                and not rendering in that case.
+            </action>
+            <action type="fix" dev="JK" fixes-bug="TAPESTRY-221" due-to="Brian K. Wallace">
+                Added informal-parameters to jwc and html for TableFormPages
+            </action>
+            <action type="fix" dev="JK" fixes-bug="TAPESTRY-884" due-to="Jarek Woloszyn">
+                ValidationStrings wasn't being resolved correctly in non en environments, added a
+                ValidationStrings_en.properties file to help.
+            </action>
+            <action type="fix" dev="JK" fixes-bug="TAPESTRY-885"
+                due-to="Diogenes Alberto Moreira">
+                Incorrect usage of inject documentation on state page. Updated.
+            </action>
+        </release>
+        <release version="4.0" date="Jan 6 2006">
+            <action type="update" dev="HLS">Add link to DeveloperWorks Tapestry article</action>
+        </release>
+        <release version="4.0-rc-3" date="Dec 27 2005">
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-815">
+                PageAttachListener not called on initial page load
+            </action>
+        </release>
+        <release version="4.0-rc-2" date="Dec 18 2005">
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-789">
+                DefaultResourceLocalizerTest is under framework/src not framework/test
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-658"
+                due-to="Leonardo Quijano Vincenzi">
+                LabeledPropertySelectionModel throws NPE on null value
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-808">
+                Engine Service proxies don't correctly forward "post" parameter of
+                IEngineService.getLink
+            </action>
+            <action type="add" dev="HLS" fixes-bug="TAPESTRY-790">
+                Add Tapestry @ JavaForge as related project
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-760">
+                Application startup fails occasionally because of undefined order of contributions
+            </action>
+            <action type="add" dev="JK">Document validation inside the Users Guide</action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-459" due-to="Andreas Andreou">
+                Documentation for DatePicker component is incomplete
+            </action>
+        </release>
+        <release version="4.0-rc-1" date="Dec 6 2005">
+            <action type="update" dev="HLS">Make default binding prefix configurable</action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-752">
+                XTile service passes null list of listener parameters to listener method
+            </action>
+            <action type="update" dev="HLS">
+                Make the logic for localizing resources extensible
+            </action>
+            <action type="update" dev="HLS">More work on the QuickStart documentation</action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-759">
+                Body.get(cycle) throws exception
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-763">
+                RequestCycle is not available during page initialization
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-756">
+                FieldLabel's prerender property should default to true
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-748">
+                NumberTranslator.js missing semicolon
+            </action>
+            <action type="add" dev="HLS">
+                Add missing documentation for Tapestry script template specifications
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-769">
+                StateBinding doesn't override isInvariant()
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-768">
+                FormMessages class has typo in message key for fieldAlreadyPrerendered()
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-275" due-to="Igor Grimaylo">
+                Single quotes in a localization of DatePicker strings causes a failure
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-701">
+                NPE creating a link from pageValidate() when there are client-persistent properties
+                with page scope
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-607">
+                Output encoding problem with some versions of Tomcat 5
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-776">
+                URLs for portlet links and forms are null
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-778" due-to="Jeff Lubetkin">
+                ORO Perl5Matcher and Perl5Compiler are used in thread-unsafe manner
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-767">
+                tapestry.url.ServiceEncoders has reversed the descriptions of the after and before
+                attributes
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-739">
+                Change return type to inteface for: ListenerMapSource.createListenerMethodInvoker()
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-387" due-to="Kevin J. Menard, Jr.">
+                Typographical Errors in Documentation
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-724">
+                Tapestry may, in some cases, look for a page class in the wrong package
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-783">
+                contrib:Tree fails with NullPointerException
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-784" due-to="Brian Nelson">
+                Double click doesn't work on 'Available' side of Palette component
+            </action>
+        </release>
+        <release version="4.0-beta-13" date="Nov 12 2005">
+            <action type="update" dev="HLS">Switch to HiveMind 1.1 (final)</action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-678">
+                LinkSubmit does not work correctly when the browser's back button is used and the
+                form resubmitted normally
+            </action>
+            <action type="add" dev="HLS" fixes-bug="TAPESTRY-731">
+                Extend RequestDisplay component (used on the Exception page) to also report the
+                internal status of key Tapestry services
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-742">
+                LinkSubmit renders overly verbose JavaScript
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-620">
+                Expose the current IRequestCycle as an injectable service
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-517">
+                Using a FieldLabel component after the decorated form component causes the
+                FieldLabel's id attribute to be wrong
+            </action>
+            <action type="fix" dev="HLS"
+                fixes-bug="TAPESTRY-669,TAPESTRY-233,TAPESTRY-690,TAPESTRY-228">
+                Fix a number of bugs in the DatePicker component's JavaScript
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-734">
+                Rollover component parameter names are wrong
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-298">
+                Wrong org.apache.tapestry.specification-path in javadoc
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-302">
+                Palette component select arrows appear enabled on load
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-359">
+                Localization directive cuts trailing space
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-741">
+                PopupLinkRenderer overrides wrong method of DefaultLinkRenderer
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-652">
+                Checkbox does not support FieldLabel
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-328">
+                When an engine implementation is missing Tapestry does not throw an appropriate
+                error
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-720">
+                Tapestry should validate that all engine services provide a non-null service
+                parameter
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-719">
+                If an engine service returns null from getName(), an NPE occurs
+            </action>
+        </release>
+        <release version="4.0-beta-12" date="Oct 30 2005">
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-718">
+                Asset injection makes assets appear as null inside finishLoad()
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-580">
+                Form, PageLink, DirectLink, etc. should support a scheme parameter for controlling
+                the scheme of the generated URL
+            </action>
+            <action type="update" dev="HLS">
+                Deprecate the Action component and ActionService
+            </action>
+            <action type="update" dev="HLS">
+                Change the examples distribution to be a pre-configured JBoss distribution
+            </action>
+            <action type="update" dev="HLS">
+                Deprecate IMonitor and IMonitorFactory (for removal in 4.1)
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-699">
+                &lt;div&gt; tag around form hidden fields should not be visible
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-711">
+                Do not give focus to disabled fields
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-715">
+                LinkSubmit component should render its body, even when disabled
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-602">
+                Add annotation to define default value of property
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-723">
+                The "empty" property of StringTranslator is broken
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-526" due-to="Marcus Brito">
+                Tapestry throws a NPE if you try to configure an asset without an extension
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-571">
+                CookieSource service stores only session cookies (despite documentation) and
+                provides no way to store a persistent cookie
+            </action>
+        </release>
+        <release version="4.0-beta-11" date="Oct 16 2005">
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-650">
+                ClassNotFoundException thrown when deserializing an object from a client persistent
+                property
+            </action>
+            <action type="fix" dev="DS" fixes-bug="TAPESTRY-493">
+                Document MultiplePropertySelection component
+            </action>
+            <action type="fix" dev="DS" fixes-bug="TAPESTRY-496">Document Palette component</action>
+            <action type="fix" dev="DS" fixes-bug="TAPESTRY-460, TAPESTRY-462, TAPESTRY-468"
+                due-to="Warner Onstine">
+                Document Delegator, ExceptionDisplay, Hidden components
+            </action>
+            <action type="fix" dev="DS" fixes-bug="TAPESTRY-472">
+                Document LinkSubmit component
+            </action>
+            <action type="fix" dev="DS" fixes-bug="TAPESTRY-470">Document Image component</action>
+            <action type="fix" dev="DS" fixes-bug="TAPESTRY-482">Document Script component</action>
+            <action type="update" dev="HLS">
+                Complete the renovation of the Virtual Library to take advantage of Tapestry 4.0
+                features
+            </action>
+            <action type="fix" dev="DS" fixes-bug="TAPESTRY-455">
+                Missing framework component documentation
+            </action>
+        </release>
+        <release version="4.0-beta-10" date="Oct 8 2005">
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-344">
+                Unimplemented abstract method check broken
+            </action>
+            <action type="add" dev="HLS">
+                Add DefaultPrimaryKeyConverter for use with the For component
+            </action>
+            <action type="update" dev="HLS">
+                Change For component to interleave rendering/rewinding with access to its primary
+                key converter
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-696">
+                Race condition during page loading can cause anomalous exceptions related to
+                annotations
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-685">
+                Asset service sends a 200 response even when the provided md5 checksum is invalid
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-564">
+                Automatically create an IPropertySelection model from a string
+            </action>
+            <action type="remove" dev="HLS">
+                Remove support for &lt;listener-binding&gt; and the dependency on Bean Scripting
+                Framework
+            </action>
+        </release>
+        <release version="4.0-beta-9" date="Oct 1 2005">
+            <action type="fix" dev="DS" fixes-bug="TAPESTRY-663">Document Button component</action>
+            <action type="fix" dev="DS" fixes-bug="TAPESTRY-491">
+                Document Inspector component
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-601">
+                EnhanceUtils needs null checks in the primitive unwrapper methods
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-676">
+                Tapestry Inspector can throw an exception on the properties page, if a property is
+                an array containing nulls
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-680">
+                Need an injection type comparable to the state: binding prefix
+            </action>
+            <action type="update" dev="HLS">
+                Re-organize Tapestry project site navigation to be more consistent
+            </action>
+            <action type="update" dev="HLS">
+                Rework build to create a seperate Tapestry examples distribution (which will be
+                hosted from a non-ASF host)
+            </action>
+            <action type="fix" dev="DS" fixes-bug="TAPESTRY-492">
+                Document MaskEdit component
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-622">
+                Add streamlined API for recording errors into a validation delegate
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-667">
+                Methods marked deprecated in IComponent need to also be deprecated in
+                AbstractComponent to avoid compiler warnings (when subclassing)
+            </action>
+        </release>
+        <release version="4.0-beta-8" date="Sep 24 2005">
+            <action type="fix" dev="DS" fixes-bug="TAPESTRY-465">Document Foreach component</action>
+            <action type="fix" dev="MB" fixes-bug="TAPESTRY-654">
+                Foreach and For cache the 'source' parameter even when they should not
+            </action>
+            <action type="fix" dev="DS" fixes-bug="TAPESTRY-473">
+                Document ListEdit component
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-653">
+                InspectorButton component renders poorly
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-649">
+                ValidField component creates javascript referencing handle_invalid_field() method
+                that no longer exists
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-657">
+                LinkSubmit does not render its body when rewinding
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-647" due-to="Eli Doran">
+                RedirectException being caught from listener methods as an application exception
+                rather than causing the redirect
+            </action>
+            <action type="fix" dev="MB" fixes-bug="TAPESTRY-656">
+                Invalid bindings in FormTable.jwc
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-641">
+                The path used when writing the locale cookie means that the locale can get "lost"
+                when navigating around the application
+            </action>
+            <action type="fix" dev="DS" fixes-bug="TAPESTRY-466" due-to="Warner Onstine">
+                Document Frame component
+            </action>
+            <action type="fix" dev="DS" fixes-bug="TAPESTRY-476" due-to="Pierre-Yves Nicolas">
+                Document PropertySelection component
+            </action>
+            <action type="fix" dev="DS" fixes-bug="TAPESTRY-485" due-to="Pierre-Yves Nicolas">
+                Document Upload component
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-660">
+                Injecting meta data generates incorrect code for boolean properties
+            </action>
+            <action type="update" dev="HLS">
+                Improve exception reporting of certain objects, including object arrays
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-639">
+                Expose the ServletContext as service tapestry.globals.ServletContext
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-655">
+                In some circumstances, using the classpath: or context: prefixes on paths fails to
+                work
+            </action>
+            <action type="update" dev="HLS">
+                Rename certain test-related classes to be picked up properly by the Ant build
+                scripts
+            </action>
+            <action type="remove" dev="HLS">Remove some code that is no longer used</action>
+            <action type="fix" dev="DS" fixes-bug="TAPESTRY-488, TAPESTRY-494, TAPESTRY-513">
+                Document DateField, NumericField, ValidatingTextField components
+            </action>
+            <action type="add" dev="HLS" fixes-bug="TAPESTRY-661">
+                Add @Meta annotation, for defining meta data
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-665">
+                The @ComponentClass annotation is not inherited by sub-classes
+            </action>
+            <action type="fix" dev="MB" fixes-bug="TAPESTRY-666">
+                The 'defer' parameter of Submit, LinkSubmit, and ImageSubmit with default of 'true'
+                tends to cause user issues
+            </action>
+        </release>
+        <release version="4.0-beta-7" date="Sep 17 2005">
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-341">
+                Need better line-precise reporting for listener methods
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-307">
+                Report location of errors initializing managed beans
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-270" due-to="Andy Hedges">
+                FAQ Code example contains bug
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-583">
+                Spurious ERROR message (probably should be WARN or INFO) when template does not
+                refer to components in page spec
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-535">
+                Colons in an OGNL expression may force it to be intepreted as a literal string, not
+                an expression
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-556">
+                Literal bindings in template override bindings in specification for the same
+                informal parameter
+            </action>
+            <action type="fix" dev="DS" fixes-bug="TAPESTRY-459">
+                Document DatePicker component
+            </action>
+            <action type="fix" dev="MB" fixes-bug="TAPESTRY-632">
+                Bug with "ForBean" when upgrade from beta5 to beta6
+            </action>
+            <action type="fix" dev="MB" fixes-bug="TAPESTRY-469">Document If component</action>
+            <action type="fix" dev="MB" fixes-bug="TAPESTRY-464">Document For component</action>
+            <action type="fix" dev="DS" fixes-bug="TAPESTRY-489">
+                Document FormConditional component
+            </action>
+            <action type="add" dev="HLS" fixes-bug="TAPESTRY-637">
+                Application state objects are stored back to the session, even if unchanged
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-380" due-to="Laurent Prudhon">
+                Framework unit test suite fails for non-English developers due to localization
+                issues
+            </action>
+            <action type="fix" dev="MB" fixes-bug="TAPESTRY-467">
+                Document GenericLink component
+            </action>
+            <action type="fix" dev="MB" fixes-bug="TAPESTRY-480">
+                Document Rollover component
+            </action>
+            <action type="fix" dev="MB" fixes-bug="TAPESTRY-484">
+                Document ServiceLink component
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-579">
+                Using component types with slashes in the HTML template fails
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-595">
+                Resource prefixes not honored inside &lt;page&gt;'s specification-path attribute
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-569">
+                WebResponse does not expose a way to set headers
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-349">
+                Search path for managed bean classes
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-642">
+                Injections that cause bad casts need better reporting
+            </action>
+        </release>
+        <release version="4.0-beta-6" date="Sep 7 2005">
+            <action type="update" dev="HLS" due-to="Henri Yandell">
+                Convert Tapestry repository from CVS to SVN
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-611">
+                Pattern validator invokes wrong client-side JavaScript function
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-610">
+                $bean syntax for validators: binding prefix is broken
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-609">
+                Tapestry.set_focus() seems to be passed the form components elementId (i.e. name
+                attribute) not clientId (i.e. id attribute), which keeps focus from being set
+            </action>
+            <action type="fix" dev="HLS"
+                fixes-bug="TAPESTRY-478, TAPESTRY-477, TAPESTRY-463, TAPESTRY-474"
+                due-to="Pierre-Yves Nicolas">
+                Document RadioGroup, Radio, ExternalLink, Option components
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-613">
+                Javascript problem with @LinkSubmit
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-386">
+                Big overhaul of the Tapestry Inspector
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-626">
+                Form component can render id tag twice
+            </action>
+            <action type="add" dev="HLS">Add documentation for the Describe component</action>
+            <action type="fix" dev="DS" fixes-bug="TAPESTRY-487, TAPESTRY-495, TAPESTRY-514">
+                Document Choose, Otherwise, When components
+            </action>
+            <action type="fix" dev="DS" fixes-bug="TAPESTRY-458" due-to="Jesse Bouwman">
+                Document Conditional component
+            </action>
+            <action type="fix" dev="DS" fixes-bug="TAPESTRY-456" due-to="Warner Onstine">
+                Document ActionLink component
+            </action>
+            <action type="fix" dev="DS" fixes-bug="TAPESTRY-483" due-to="Pierre-Yves Nicolas">
+                Document Select component
+            </action>
+            <action type="fix" dev="DS" fixes-bug="TAPESTRY-475" due-to="liigo">
+                Document PageLink component
+            </action>
+            <action type="fix" dev="DS" fixes-bug="TAPESTRY-479" due-to="Pierre-Yves Nicolas">
+                Document RenderBody component
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-606">
+                ListEdit components should not attempt to take focus
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-546">
+                Build uploads vlibbeans-xxx.jar to java repository (and thence to the maven
+                repository)
+            </action>
+            <action type="fix" dev="DS" fixes-bug="TAPESTRY-461" due-to="Warner Onstine">
+                Document DirectLink component
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-600">
+                Intermixing FieldLabels and form components can force a StaleLinkException
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-240">
+                XHTML 1.0 Strict compliance
+            </action>
+        </release>
+        <release version="4.0-beta-5" date="Aug 26 2005">
+            <action type="fix" dev="MB,HLS" fixes-bug="TAPESTRY-552">
+                Improperly configured SerializableAdaptor (for DataSqueezer) prevents serialized
+                objects from being de-serialized
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-554">
+                Hook needed on client side to control how validation errors are presented to the
+                user
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-528">
+                Add IComponentSpecification.getReservedParameterNames()
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-557">
+                Remove unused org.apache.tapestry.IResourceLocation (replaced by
+                org.apache.hivemind.Resource)
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-553">
+                Rename property-name attribute of configure element to "property" (matching the code
+                in SpecificationParser, as well as other similar elements in the DTD)
+            </action>
+            <action type="fix" dev="MB" fixes-bug="TAPESTRY-555">
+                IfBean has a logic error in it
+            </action>
+            <action type="fix" dev="MB" fixes-bug="TAPESTRY-290">
+                Incorrect binding type converter for array of int[]
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-549">
+                Method clearErrors() of IValidationDelegate is missing in 4.0
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-94">
+                PropertySelection does not submit Palette properly
+            </action>
+            <action type="fix" dev="MB" fixes-bug="TAPESTRY-540">
+                All For and If components in the non-form table family should be declared as
+                volatile
+            </action>
+            <action type="fix" dev="MB" fixes-bug="TAPESTRY-296">
+                Configurable location of Table component's page navigation links
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-417">
+                validators: binding prefix should have way to reference the component's managed
+                beans
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-437" due-to="Nick Westgate">
+                Select component exception when used twice on a page
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-568">
+                Engine services should use getName() when constructing thier parameter maps so that
+                they may be more easily subclassed and extended
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-566">
+                Annotations jar on classpath breaks Tapestry if not running on JDK 1.5
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-563">
+                NumberValidator should allow a special case for rendering zero
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-395">
+                Rename framework javascript functions to avoid potential name collisions
+            </action>
+            <action type="remove" dev="HLS">
+                Remove the AssetExternalizer and externalization logic, since the asset service is
+                better and as efficient
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-447">
+                Messages in org.apache.tapestry.engine.EngineMessages should be public
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-157">
+                Make it easier to subclass DirectService
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-584">
+                Form should have an element id when rendered (same applies to various FormComponents
+                as well)
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-585">
+                $ signs in generated element names / ids are illegal in XHTML
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-579">
+                E-mail validator pattern doesn't take new TLDs into account
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-581">
+                Tapestry attempts to invoke focus() on client-side objects that don't implement it
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-222">IE Error in DataPicker.js</action>
+            <action type="fix" dev="PF" fixes-bug="TAPESTRY-586">
+                Do not bind form component values unless all validators succeed.
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-588">
+                Including the tapestry-portlet jar in the classpath for a servlet application causes
+                exceptions
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-592">
+                Optimize generated JavaScript to reduce the verbosity
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-560">
+                Poor reporting of missing specification file
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-596">
+                Form: have a success listener that is invoked only when the form is submitted
+                normally and the delegate records no errors
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-589">
+                Deprecated IPage methods are not marked as such in AbstractPage
+            </action>
+            <action type="update" dev="PF">
+                Refactored ButtonLinkRenderer to the contrib library
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-596">
+                Form: have a success listener that is invoked only when the form is submitted
+                normally and the delegate records no errors
+            </action>
+        </release>
+        <release version="4.0-beta-4" date="Aug 10 2005">
+            <action type="fix" dev="HLS">Add getComponent() method to IComponent.</action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-445" due-to="Markus Joschko">
+                ContextAssetFactory assembles wrong filename for assets
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-444">
+                regexp validator(Email) script function name mismatch
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-446">
+                Changes to assets are not picked up, even when caching is disabled
+            </action>
+            <action type="fix" dev="HLS"
+                fixes-bug="TAPESTRY-435,TAPESTRY-325,TAPESTRY-309,TAPESTRY-311,TAPESTRY-252,TAPESTRY-254,TAPESTRY-327,TAPESTRY-333"
+                due-to="Our many international users">
+                Add many translations of ValidationStrings.properties.
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-441">
+                Poor reporting of duplicate method implementations
+            </action>
+            <action type="update" dev="HLS">
+                Remove default-binding attribute from &lt;parameter&gt; element
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-515">
+                Deprecate out-of-date contrib components
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-481">
+                Enhancement Workers that create read-only properties should flag setter methods as
+                an error
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-413">
+                Allow access to component message catalog from validators: binding string
+            </action>
+            <action type="fix" dev="PF" fixes-bug="TAPESTRY-520">
+                Button component needs to implement rewindFormComponent() method
+            </action>
+            <action type="fix" dev="PF" fixes-bug="TAPESTRY-521">
+                Button component creates invalid markup
+            </action>
+            <action type="update" dev="PF">Deprecate label parameter of Button component</action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-527,TAPESTRY-542">
+                Tapestry 4.0 DTD invalid
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-524" due-to="Adam Greene">
+                Client Side Persistence Scopes can conflict with each other
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-519" due-to="Raphael Jean">
+                NestedMarkupWriterImpl doesn't close the current open tag when getBuffer() is called
+            </action>
+            <action type="fix" dev="PF" fixes-bug="TAPESTRY-407">
+                Unable to override default pattern of DateTranslator and NumberTranslator when
+                initialized via the translator binding
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-529">
+                Provide application: prefix to reference the application (root) namespace (from a
+                library)
+            </action>
+            <action type="update" dev="HLS">
+                Enable Eclipse project-specific compile options, activate additional checks as
+                errors, and fix those errors in the code base
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-534">
+                WebRequest interface doesn't expose getRemoteUser(), isUserInRole() or
+                getUserPrincipal()
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-530" due-to="Raphael Jean">
+                Namespace messages are retrieved using page's locale rather than engine's locale
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-354">
+                Components without a .jwc file not visible
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-533" due-to="Raphael Jean">
+                Generated client-side javascript is wrong when error message or field display name
+                contains single-quote characters or backslashes
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-365">
+                Set the location for a page that has no specification (just a template) to be
+                relative to the application (or library) specification
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-537">
+                Allow listener methods to return ILink, to support redirect-after-post
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-539">
+                Abstract properties (without a &lt;property&gt; element) do not clear out their
+                values
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-351">
+                Add isRequired() to IFieldComponent
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-452">
+                Tapestry 4.0 (excluding annotations) not source compatible with JDK 1.3
+            </action>
+            <action type="fix" dev="PF" fixes-bug="TAPESTRY-350">
+                Replaced RequirableField logic and 'required' parameter in PropertySelection,
+                RadioGroup, Select, Upload, contrib:MultiplePropertySelection, and contrib:Palette
+                with more general ValidatableField logic that adds a 'validators' parameter.
+            </action>
+            <action type="update" dev="PF">Checkbox component is now validatable.</action>
+            <action type="update" dev="PF">
+                Required validator additionally detects empty strings and empty collections.
+            </action>
+            <action type="fix" dev="PF" fixes-bug="TAPESTRY-531">
+                contrib:MultiplePropertySelection isn't setting it's own name before rendering
+            </action>
+            <action type="update" dev="HLS">
+                Remove incomplete and unused integration test code
+            </action>
+            <action type="update" dev="HLS">
+                Add post parameter to IEngineService.getLink() to support building links differently
+                for form posts vs. link gets
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-541" due-to="Markus Wiederkehr">
+                Add a configuration point for creating additional SqueezeAdaptors
+            </action>
+            <action type="update" dev="HLS">
+                Change SerializableAdaptor to encode with and without compression, and use the
+                shorter of the two
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-543">
+                DateField.jwc is 4.0 DTD but uses the type attribute of &lt;parameter&gt;
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-570">
+                Number translator generates incorrect javascript, preventing validation that the
+                input value is numeric
+            </action>
+        </release>
+        <release version="4.0-beta-3" date="Jul 22 2005">
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-398" due-to="Jonas Maurus">
+                HiveMind configuration error breaks the useage of the state: binding prefix
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-405">
+                Submit component should deprecate its label parameter
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-404">
+                Checkbox selected parameter should be named "value"
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-428">
+                Parameters with aliases cause class enhancement exceptions
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-385">
+                Restore "zebra-striping" to the Exception page
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-427">
+                InspectorButton ignores its disabled parameter
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-383, TAPESTRY-224">
+                Properly position cursor into form fields
+            </action>
+            <action type="fix" dev="HLS" due-to="Kent Tong" fixes-bug="TAPESTRY-406">
+                Bean Property does not get updated from component parameter
+            </action>
+            <action type="fix" dev="HLS" due-to="Laurent Etiemble" fixes-bug="TAPESTRY-425">
+                Foreach components cannot handle primitive arrays
+            </action>
+            <action type="fix" dev="HLS" due-to="Fernando" fixes-bug="TAPESTRY-424">
+                RestartService creates HttpSession wrongfully
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-408">
+                OGNL can't access a static field in a class in the webapp context
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-432" due-to="Geoff Longman">
+                Change TemplateParser to throw an exception and stop parsing when duplicate
+                attributes are found in a tag
+            </action>
+        </release>
+        <release version="4.0-beta-2" date="Jul 9 2005">
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-356">
+                FormConditional extends BaseComponent but has no template
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-357">
+                AbstractComponent: getMessages() and format() were removed, but should have been
+                deprecated
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-361">
+                Using @Asset annotation causes NullPointerException
+            </action>
+            <action type="fix" dev="PF" fixes-bug="TAPESTRY-367">
+                Removed obsolete "format" parameter from DatePicker
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-355">
+                Annotations bypass line precise exception reporting
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-378">
+                Add @Documented annotation to the Tapestry annotations
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-372">
+                Don't attempt to display source if no line number
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-370">
+                @Message does not work with parameters
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-388">
+                Wrong property type on injected assets fails with confusing message
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-389">
+                asset service: send 304 status code when appropriate
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-374" due-to="Paul Green">
+                Script component is not picking up the symbols parameter
+            </action>
+            <action type="add" dev="HLS">Add blank component reference pages for If and For</action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-391">
+                Cannot inject the same bean twice
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-384">
+                Client Side Validation inconsistent
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-393">
+                InvokeListener component is not in Framework.library
+            </action>
+        </release>
+        <release version="4.0-beta-1" date="Jun 24 2005">
+            <action type="add" dev="HLS">Add InvokeListener component</action>
+            <action type="add" dev="HLS">
+                Add getErrorRenderers() method to IValidationDelegate
+            </action>
+            <action type="add" dev="HLS">Add purgeDeletedKeys() method to ListEditMap</action>
+            <action type="add" dev="HLS">
+                Add checks for multiple specification elements "claiming" the same injected
+                property.
+            </action>
+            <action type="add" dev="HLS">Add support for validation decoration to TextArea</action>
+            <action type="add" dev="HLS">Add raw parameter to InsertText</action>
+            <action type="add" dev="HLS">
+                Add aliases attribute to &lt;parmeter&gt; element, to allow parameters to be renamed
+            </action>
+            <action type="fix" dev="HLS">
+                Properly wire the assetFactory property of the
+                tapestry.portlet.services.PortletRenderer service
+            </action>
+            <action type="fix" dev="HLS">
+                Fix some missing default bindings for the Table component (and subcomponents)
+            </action>
+            <action type="add" dev="HLS">
+                Add getRequiredParameters() method to IComponentSpecification.
+            </action>
+            <action type="fix" dev="HLS">
+                Make inherited bindings (a holdover from the 3.0 DTDs) override (quietly) default
+                parameter bindings
+            </action>
+            <action type="fix" dev="HLS">
+                Properly identify when portal mode or window state has changed
+            </action>
+            <action type="add" dev="HLS">
+                Add deprecated attribute to &lt;component-specification&gt; and &lt;parameter&gt;
+            </action>
+            <action type="add" dev="HLS">
+                Add configuration property org.apache.tapestry.accepted-locales, used to limit
+                localization to a finite set of locales
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-335">
+                Injection uses actual type of injected object, which may not be available (due to
+                AOP, or due to use of JDK Proxies)
+            </action>
+            <action type="add" dev="HLS">Add page listing the project voting history</action>
+            <action type="add" dev="HLS">
+                Add annotation support (in tapestry-annotation module)
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-321">
+                Add lightweight initialization for managed beans
+            </action>
+            <action type="add" dev="HLS">
+                Add a command chain for resolving component classes
+            </action>
+            <action type="update" dev="HLS">
+                Cache specification provided by the specification resolver delegate
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-342">
+                @Parameter does not work for required
+            </action>
+            <action type="add" dev="HLS" fixes-bug="TAPESTRY-96">
+                Add a page explicitly discussing JDK and library dependencies
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-337">
+                Incorrect link to Spring integration docs in FAQ
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-304">
+                Non thread safe documentation example
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-261">
+                ListEditMap can return null from getDeletedKeys()
+            </action>
+            <action type="fix" dev="HLS">
+                Fix injection problems; InjectScriptWorker injects a DeferredScript, not an IScript.
+                Add super-verbose exception output when there's a failure instantiating a component
+                class.
+            </action>
+            <action type="add" dev="PF">
+                Refactored and expanded validation functionality to include DatePicker,
+                PropertySelection, RadioGroup, Select, TextArea, TextField, Upload, contrib:Palette,
+                and contrib:MultiplePropertySelection
+            </action>
+            <action type="update" dev="HLS">
+                Rework form event management to be primarily a client-side concern
+            </action>
+            <action type="add" dev="HLS">Add translator binding prefix</action>
+            <action type="add" dev="HLS">Add cancel and refresh listener parameters to Form</action>
+            <action type="add" dev="HLS">
+                Listener methods may now return a page name, or a page instance, to activate and
+                render the response
+            </action>
+            <action type="add" dev="HLS">Add injection of pages</action>
+            <action type="add" dev="HLS">Add InjectPage annotation</action>
+            <action type="add" dev="HLS">
+                Add validators: binding prefix, which allows validators to be specified as a
+                succinct list
+            </action>
+            <action type="add" dev="HLS">Rename Component annotation to ComponentClass</action>
+            <action type="add" dev="HLS">
+                Add Component, Message, InjectMeta and InjectScript annotations
+            </action>
+            <action type="update" dev="HLS">
+                Renamed property-name attribute to property in the DTD for consistency
+            </action>
+            <action type="add" dev="HLS" fixes-bug="TAPESTRY-314">
+                Change FieldLabel to output a &lt;label&gt; element, and add support for generating
+                a client-side id to form control components
+            </action>
+        </release>
+        <release version="4.0-alpha-3" date="May 16 2005">
+            <action type="add" dev="HLS">
+                Add initial support for the validator: binding prefix
+            </action>
+            <action type="add" dev="PF" fixes-bug="TAPESTRY-317">
+                Fix workbench build script so that generated war file will include the required ognl
+                jar
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-166">
+                Allow Submits to defer invoking their listener
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-320">
+                Properly seperate data from different users stored using the
+                tapestry.persist.ClientPropertyPersistenceStrategy service
+            </action>
+            <action type="add" dev="HLS">
+                Store the Registry as a ServletContext attribute, so that it may be accessed from
+                other servlets.
+            </action>
+            <action type="add" dev="HLS" fixes-bug="TAPESTRY-323">
+                Allow control over the ErrorHandler used when building the HiveMind Registry.
+            </action>
+            <action type="update" dev="HLS">
+                Remove &lt;inject-state&gt;, and add type attribute to &lt;inject&gt;
+            </action>
+            <action type="fix" due-to="Richard Hensley">
+                Fix some problems with the TestRestartService test suite
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-294">
+                Make it possible to add behavior before and/or after invoking listener methods.
+            </action>
+            <action type="add" dev="HLS">Add meta and script injection types</action>
+            <action type="add" dev="RLS" fixes-bug="TAPESTRY-325">
+                Add defer parameters parameter to LinkSubmit
+            </action>
+            <action type="add" dev="RLS" fixes-bug="TAPESTRY-326">
+                Add listener parameters to Form submitting components
+            </action>
+        </release>
+        <release version="4.0-alpha-2" date="May 5 2005">
+            <action type="update" dev="HLS">
+                Coordinate Locale changes with the hivemind.ThreadLocale service.
+            </action>
+            <action type="add" dev="HLS">
+                Add lookup mechanism to determine page class from page name.
+            </action>
+            <action type="add" dev="HLS">
+                Allow the name of the initial page to be overriden using the
+                org.apache.tapestry.home-page application property.
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-281">
+                Include a message digest, as a credential, inside asset URLs.
+            </action>
+            <action type="add" dev="HLS">
+                Add asset-encoding that encodes and decodes a friendly URL for the asset service.
+            </action>
+            <action type="update" dev="HLS">
+                Add an extra level of indirection, so that engine services can be wired together
+                using the engine-service: object provider.
+            </action>
+            <action type="add" dev="HLS">
+                Add methods to IMarkupWriter that allow filtering to be specified using a parameter.
+            </action>
+            <action type="add" dev="HLS" fixes-bug="TAPESTRY-291">
+                Allow component parameters to have a default binding type.
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-285,TAPESTRY-293">
+                Set form name from component id, and disallow name as an informal parameter.
+            </action>
+            <action type="add" dev="HLS">Add 'client' property persistence strategy.</action>
+            <action type="add" dev="HLS">
+                Enhance listener methods, allowing them to include the request cycle optionally, and
+                also optionally accept listener parameters.
+            </action>
+            <action type="update" dev="HLS">
+                Replace references to release 3.1 with release 4.0.
+            </action>
+            <action type="update" dev="HLS">Upgrade to Javassist 3.0.</action>
+            <action type="add" dev="HLS">Add DirectServiceEncoder.</action>
+            <action type="fix" dev="EH" fixes-bug="TAPESTRY-303">
+                Add quotes around attribute values in contrib:Table &lt;table&gt; elements
+            </action>
+            <action type="update" dev="HLS">Upgrade to HiveMind 1.0-beta-1.</action>
+            <action type="add" dev="HLS">Add cache attribute to &lt;parameter&gt; element</action>
+            <action type="add" dev="HLS" fixes-bug="TAPESTRY-279">
+                Add Trails as a related project.
+            </action>
+            <action type="add" dev="HLS">Add AppFuse as a related project.</action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-259">
+                Validation error renderers should implement toString.
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-246">
+                Roll IValidationDelegate change, adding getCurrentFieldTracking(), forward from
+                3.0.2 into 4.0
+            </action>
+            <action type="add" dev="HLS" fixes-bug="TAPESTRY-210">
+                Add methods to IMarkupWriter that allow filtering to be specified using a parameter.
+            </action>
+            <action type="update" dev="HLS" fixes-bug="TAPESTRY-108">
+                Change FieldLabel to pre-render its associated field, so that decorations stay
+                synchronized, even in a loop.
+            </action>
+            <action type="add" dev="HLS" fixes-bug="TAPESTRY-181">
+                Add PageAttachListener event interface
+            </action>
+        </release>
+        <release version="3.0.3" date="Mar 26 2005">
+            <action type="fix" dev="PF" fixes-bug="TAPESTRY-278">
+                Fix security flaw in asset service.
+            </action>
+            <action type="fix" dev="PF" fixes-bug="TAPESTRY-230">
+                JanitorThread now terminates explicitly when servlet is destroyed. Interruption
+                properly terminates thread during sweep operation.
+            </action>
+            <action type="fix" dev="PF" fixes-bug="TAPESTRY-238">
+                Fix bug preventing DatePicker calendar window from closing automatically if onchange
+                event handler is not specified.
+            </action>
+            <action type="fix" dev="PF" fixes-bug="TAPESTRY-277">
+                DatePicker onchange event now only fires when date changes.
+            </action>
+            <action type="fix" dev="PF" due-to="Xi Ping Wang" fixes-bug="TAPESTRY-255">
+                Patch for bad translation in ValidationStrings_zh_TW.properties
+            </action>
+            <action type="fix" dev="PF" due-to="Xi Ping Wang" fixes-bug="TAPESTRY-251">
+                Patch for bad translation in ValidationStrings_zh_CN.properties
+            </action>
+            <action type="fix" dev="PF" due-to="Michael Hamilton" fixes-bug="TAPESTRY-1">
+                Fix incorrect test for enabling rendering of element in FormConditional component.
+            </action>
+            <action type="fix" dev="PF" due-to="Markus Wiederkehr" fixes-bug="TAPESTRY-283">
+                Fix missing type attribute of script tag in Body component.
+            </action>
+            <action type="fix" dev="PF" due-to="Matthew Mead" fixes-bug="TAPESTRY-284">
+                Fix improper engine cleanup when client aborts a request.
+            </action>
+            <action type="update" dev="PF">Build scripts are now Java 1.5 friendly.</action>
+        </release>
+        <release version="3.1-alpha-1" date="Feb 21 2005">
+            <action type="update" dev="HLS">
+                Remove dependencies on Jakarta digester, collections and beanutils. Add dependency
+                on Jakarta HiveMind.
+            </action>
+            <action type="update" dev="HLS">
+                Remove support for the &lt;service&gt; element in specifications (in favor of the
+                tapestry.services.ApplicationServices configuration point).
+            </action>
+            <action type="update" dev="HLS">
+                Significant rework of how Tapestry URLs are formatted.
+            </action>
+            <action type="update" dev="HLS">
+                Remove support for the Tapestry JSP taglib. This can now be accomplished using
+                service paths recognized by service encoders.
+            </action>
+            <action type="update" dev="HLS">
+                Change Form to prevent collisions between query parameters supplied by services (in
+                an ILink) and form element ids.
+            </action>
+            <action type="update" dev="HLS">
+                Change Form (and WML Go) to have the direct and action services injected.
+            </action>
+            <action type="update" dev="HLS">
+                Refactoring to move application state object management out of IEngine and
+                generalize it.
+            </action>
+            <action type="add" dev="HLS">
+                Add &lt;inject-state&gt; element to specifications.
+            </action>
+            <action type="add" dev="HLS">
+                Add property attribute to &lt;component&gt;, &lt;bean&gt; and &lt;asset&gt; and add
+                enhancement workers to inject these objects as properties.
+            </action>
+            <action type="add" dev="HLS">Add hivemind: binding prefix.</action>
+            <action type="update" dev="HLS">
+                Make the Body component output initializations in a script block at the end of the
+                page (just before the close tag), rather than in a window.onload event handler.
+            </action>
+            <action type="update" dev="HLS" fixes-bug="TAPESTRY-262">
+                Support more boolean values.
+            </action>
+            <action type="update" dev="HLS">
+                Inject Messages into components; this means that all Tapestry page and component
+                classes are abstract.
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-242">
+                Allow namespaces to define localized messages, providing defaults for pages and
+                components within the namespace.
+            </action>
+            <action type="update" dev="HLS">
+                Change handling of initial values for properties to be based on injected logic.
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-265" due-to="Michael Frericks">
+                Fix bad link in UsersGuide/spec.xml.
+            </action>
+            <action type="add" dev="HLS">
+                Add new ComponentPropertySource service for accessing component meta-data
+                properties.
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-165">
+                Allow control over attribute name for components in templates.
+            </action>
+            <action type="update" dev="HLS">Inject specification into components.</action>
+            <action type="update" dev="HLS">
+                Use enhancement to inject page event registration into components.
+            </action>
+            <action type="add" dev="PF">
+                Add LabeledPropertySelectionModel that decorates an IPropertySelectionModel with an
+                label row.
+            </action>
+            <action type="add" dev="PF">
+                New ButtonLinkRenderer, an ILinkRenderer implementation that renders a link
+                component as a button.
+            </action>
+            <action type="update" dev="HLS">
+                Split PageRenderListener into PageBeginRenderListener and PageEndRenderListener.
+            </action>
+        </release>
+        <release version="3.0.2" date="Feb 14 2005">
+            <action type="fix" dev="EH" fixes-bug="TAPESTRY-214, TAPESTRY-216, TAPESTRY-227">
+                Fix build settings for JDOM and Jetty.
+            </action>
+            <action type="fix" dev="EH">
+                Upgrade OGNL to 2.6.7. This should move to 2.7.0 as soon as it is released.
+            </action>
+            <action type="fix" dev="EH" fixes-bug="TAPESTRY-238">
+                Added call to onchange for DatePicker pop-up selections.
+            </action>
+            <action type="fix" dev="HLS" due-to="Xi Ping Wang" fixes-bug="TAPESTRY-249">
+                Provide localized validation messages for Simplified Chinese (zh_CN).
+            </action>
+            <action type="fix" dev="HLS" due-to="Niklas Ekman" fixes-bug="TAPESTRY-139">
+                Provide localized validation messages for Swedish.
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-230">
+                Ignored interruptedException prevents Janitorthread termination.
+            </action>
+            <action type="fix" dev="HLS" due-to="Morten Holm" fixes-bug="TAPESTRY-248">
+                The online Tapestry component reference for 3.0.1 for @Foreach component has an
+                error in the example section.
+            </action>
+            <action type="fix" dev="HLS" due-to="Michael Frericks" fixes-bug="TAPESTRY-218">
+                Persistent properties can't be set to null.
+            </action>
+            <action type="fix" dev="HLS" due-to="Sadanori Ito" fixes-bug="TAPESTRY-200">
+                ListEdit component reference should list source and value as required.
+            </action>
+            <action type="fix" dev="HLS" due-to="Wouter de Vaal" fixes-bug="TAPESTRY-189">
+                FAQ link to Spring integration document is broken.
+            </action>
+            <action type="fix" dev="HLS" due-to="Dominik Kreutz" fixes-bug="TAPESTRY-167">
+                [PATCH] ValidationStrings_de.properties
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-258">
+                Have RenderString implement useful toString().
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="TAPESTRY-260">
+                Change ListEditMap to never return null from getDeletedKeys().
+            </action>
+        </release>
+        <release version="3.0.1" date="Oct 16 2004">
+            <action type="update" dev="DS">
+                Add PopupLinkRenderer to contrib, this renderer emits javascript to launch the link
+                in a new window.
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="29850">
+                Ensure that the page's requestCycle property is set before finishLoad() is invoked
+                on any component.
+            </action>
+            <action type="update" dev="HLS">
+                Make IMessages smartly expand exceptions into their message, or their class name.
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="29871">
+                Fix NPE in ValidationDelegate when the form has errors recorded for fields that did
+                not render.
+            </action>
+            <action type="update" dev="HLS" fixes-bug="30261">
+                Provide a public implementation of ITemplateParserDelegate.
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="30384">
+                Palette does not clear its selected list when no selections are made.
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="26967">
+                Allow abstract pages/components even if no specified properties (or other
+                enhancements)
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="30086">
+                Shell component should allow informal parameters
+            </action>
+            <action type="update" dev="HLS">
+                Added a clearErrors() method to IValidationDelegate.
+            </action>
+        </release>
+        <release version="3.0" date="Apr 18 2004">
+            <action type="fix" dev="HLS" fixes-bug="28345">
+                Workbench/Upload exception when no file specified
+            </action>
+            <action type="fix" dev="DS" fixes-bug="28396">
+                Add FormConditional to Component Reference
+            </action>
+            <action type="fix" dev="DS" fixes-bug="28422">
+                Add element parameter to contrib:Choose
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="28454">
+                Remove a small optimization that compromised storage of mutable objects as
+                persistent page properties.
+            </action>
+        </release>
+        <!-- Use due-to to give acknowledgement for patches. -->
+        <release version="3.0-rc-3" date="Apr 7 2004">
+            <action type="update" dev="HLS">Add docs on how to report problems.</action>
+            <action type="fix" dev="HLS" fixes-bug="28202" due-to="Mats Forst&#246;f">
+                Pass the java.security.ProtectionDomain to the parent class loader when creating an
+                enhanced class, to allow Tapestry operation inside secure environments such as
+                Tomcat.
+            </action>
+            <action type="fix" dev="DS" fixes-bug="28177" due-to="sito@htf.highway.ne.jp">
+                NPE in org.apache.tapestry.form.LinkSubmit.
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="27956">
+                Make checks for unimplemented abstract methods optional, to work around a bug in IBM
+                JDK 1.3.1 (used with Websphere 4.x).
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="28235">
+                Allow more primitive types to be used with parameter direction
+                <code>auto</code>
+                (byte, char, short, float and long) in addition to the previously accepted types
+                (boolean, int, double and objects).
+            </action>
+        </release>
+        <release version="3.0-rc-2" date="Apr 1 2004">
+            <action type="fix" dev="HLS" fixes-bug="28057">
+                Fix problems in the binary distribution.
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="27954">
+                Create proper OGNL context when checking for invariant OGNL expressions (when
+                initializing component properties).
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="27628">
+                DataSqueezer: Incorrect exception message
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="28010">
+                ExpressionBinding optimizes expressions incorrectly
+            </action>
+        </release>
+        <release version="3.0-rc-1" date="Mar 15 2004">
+            <action type="fix" dev="EH" fixes-bug="27656">
+                ValidationDelegate.writeLabelPrefix/Suffix does not have IValidator access
+            </action>
+            <action type="fix" dev="DS" fixes-bug="27630, 27631" due-to="Michael M. Brzycki">
+                Fix javadoc.
+            </action>
+            <action type="fix" dev="DS" fixes-bug="27567">Incorrect example code.</action>
+            <action type="fix" dev="DS" fixes-bug="27551" due-to="Michael M. Brzycki">
+                InspectorButton docs have incorrect links.
+            </action>
+            <action type="update" dev="DS">Update Component Reference to use 3.0 syntax</action>
+            <action type="update" dev="HLS">
+                Update the license to Apache Software License 2.0.
+            </action>
+            <action type="update" dev="EH">Added 'raw' attribute to FieldLabel component.</action>
+            <action type="update" dev="HLS">Removed the out-of-date Tutorial.</action>
+            <action type="fix" dev="HLS" fixes-bug="18288">
+                Palette doesn't retain user-specified sort order
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="23544">
+                Don't use
+                <code>request.getRemoteHost()</code>
+                since that requires an expensive reverse DNS lookup.
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="27071" due-to="basile.chandesris">
+                Fix typos and inaccuracies in the 3.0 DTD comments.
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="27202,27203,27227"
+                due-to="Jamie Orchard-Hays">
+                Fix logic in client-side validation.
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="27110" due-to="Karel Miarka">
+                DatePicker doesn't use the current Locale in its formatter
+            </action>
+            <action type="update" dev="HLS">
+                Update DatePicker to use a graphic icon to hide and show the calendar.
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="20932">
+                Check for duplication of ids between the HTML template and the specification.
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="27082">
+                Fix some number conversion problems inside NumberValidator.
+            </action>
+            <action type="update" dev="HLS">
+                Dynamically download OGNL and Javassist libraries (in accordance with ASF directives
+                about non-ASL code).
+                <b>
+                    Unfortunately, this means that we no longer can distribute precompiled examples
+                    that include those libraries
+                </b>
+            </action>
+        </release>
+        <release version="3.0-beta-4" date="Feb 5 2004">
+            <action type="update" dev="DS">
+                Change direction of parameter model for WML components, SelectionField and
+                PropertySelection
+            </action>
+            <action type="fix" dev="DS">
+                Fixed the byte[] mapping in org.apache.tapestry.enhance.JavaClassMapping
+            </action>
+            <action type="update" dev="HLS" due-to="Tetsuya Kitahata">
+                Convert the Tapestry home page to build using
+                <link href="http://xml.apache.org/forrest/">Forrest</link>
+                .
+            </action>
+            <action type="update" due-to="Michael M. Brzycki">
+                Updated javadoc build target to link to JDK 1.3
+            </action>
+            <action type="add" dev="HK">Added new validator, Pattern Validator</action>
+            <action type="fix" dev="HK">
+                Fixed the null pointer exception from FieldLabel when not enclosed by Form or when
+                IValidationDelegate is not provided
+            </action>
+            <action type="fix" dev="HK">
+                The key attribute of the script foreach is changed to not be a required attribute
+            </action>
+            <action type="fix" dev="EH">
+                Added support for OGNL TypeConverter in expression bindings
+            </action>
+            <action type="update" dev="DS">Updated Component Reference for WML components</action>
+            <action type="update" dev="RLS">
+                Made DateValidator's getEffectiveFormat()/getEffectiveDisplayFormat() public
+            </action>
+            <action type="update" dev="RLS">
+                Updated to use DocBook 1.62.4 XSL stylesheets for documentation generation
+            </action>
+            <action type="update" dev="RLS">Moved info priority logging to debug priority</action>
+            <action type="update" dev="RLS">
+                Custom parameter binding properties only enhanced if abstract
+            </action>
+            <action type="update" dev="MB">
+                Updated the Table components to have an easier interface, similar to that of
+                Foreach.
+            </action>
+            <action type="fix" dev="MB" fixes-bug="21833">
+                build.properties.sample does not include jython.dir
+            </action>
+            <action type="fix" dev="MB" fixes-bug="22840">
+                Table component doesn't sort fine when there are null values
+            </action>
+            <action type="fix" dev="MB" fixes-bug="22640">Wrong Package in link</action>
+            <action type="fix" dev="MB" fixes-bug="22641">
+                JavaDoc: should IField be IFieldTracking??
+            </action>
+            <action type="fix" dev="MB" fixes-bug="23668">
+                contrib:PopupLink ignores informal parameters
+            </action>
+            <action type="fix" dev="MB" fixes-bug="22635">Wrong Package in link</action>
+            <action type="fix" dev="MB" fixes-bug="22634">
+                Typo: "In a IListenerBindingSpecification"
+            </action>
+            <action type="fix" dev="MB" fixes-bug="22694">
+                Add url parameter to Shell component
+            </action>
+            <action type="update" dev="MB" fixes-bug="23870">
+                current OGNL 2.6.3 needs to be used
+            </action>
+            <action type="fix" dev="MB" fixes-bug="23511">
+                Problem with URL encodings at EngineServiceLink.java
+            </action>
+            <action type="fix" dev="MB" fixes-bug="23227">
+                The source parameter of Foreach should be required
+            </action>
+            <action type="fix" dev="MB" fixes-bug="20252">tests failing under JDK 1.3</action>
+            <action type="fix" dev="MB" fixes-bug="23500">
+                Name attribute gets duplicated in TextField
+            </action>
+            <action type="fix" dev="MB" fixes-bug="22835">
+                DateField component throws an ApplicationRuntimeException
+            </action>
+            <action type="fix" dev="MB" fixes-bug="22836">
+                NumericField component throws an ApplicationRuntimeException
+            </action>
+            <action type="fix" dev="MB" fixes-bug="22837">
+                Using NumericField cause a ClassCastException
+            </action>
+            <action type="fix" dev="MB" fixes-bug="24467">
+                Compatibility of the AbstractEngine to servlet-api 2.2
+            </action>
+            <action type="fix" dev="MB" fixes-bug="24298" due-to="Colin Sampaleanu">
+                patch to allow workbench to work with JDK 1.4.2 and current Jetty
+            </action>
+            <action type="fix" dev="MB" fixes-bug="24425">
+                race condition in class enhancement
+            </action>
+            <action type="fix" dev="MB" fixes-bug="23916">
+                The Dates tab in the Workbench contains an empty popup link
+            </action>
+            <action type="fix" dev="MB" fixes-bug="24008">
+                ApplicationRuntime Exception loses root cause...
+            </action>
+            <action type="fix" dev="MB" fixes-bug="22958">
+                NumberValidator forces to input a value
+            </action>
+            <action type="fix" dev="MB" fixes-bug="21871">
+                junit.jar needed to build junit subproject
+            </action>
+            <action type="fix" dev="MB" fixes-bug="20253">
+                JUnit XML tests broken under JDK with no XML parser (eg. 1.3)
+            </action>
+            <action type="fix" dev="MB" fixes-bug="24393">
+                No JVM requirements mentioned in docs
+            </action>
+            <action type="fix" dev="MB" fixes-bug="24874" due-to="Zhenbang Wei">
+                [PATCH]ValidationStrings_zh_TW.properties
+            </action>
+            <action type="fix" dev="EH" fixes-bug="25117">
+                PageService.getLink throws ClassCastException if parameters arg is Object[]
+            </action>
+            <action type="fix" dev="RLS" fixes-bug="25462">
+                NumericField does not pass on its type parameter
+            </action>
+            <action type="fix" dev="RLS" fixes-bug="25585">
+                ValidationDelegate throws NPE for some new FieldLabel/ValidField
+            </action>
+            <action type="fix" dev="MB" fixes-bug="25642">
+                properties cannot be of complex array types
+            </action>
+            <action type="fix" dev="EH" fixes-bug="25766">
+                fixed broken links in doc\src\common\TapestryLinks.xml
+            </action>
+            <action type="fix" dev="MB" fixes-bug="26395">
+                Inherited parameters do not pick up default values
+            </action>
+            <action type="update" dev="HLS">
+                Changed code to no longer invoke
+                <code>StringUtils.isEmpty() / isNonEmpty()</code>
+                (this is because the behavior of the method is changing between jakarta-commons 1.0
+                and 2.0).
+            </action>
+            <action type="update" dev="HLS">
+                Add an implementation of
+                <code>toString()</code>
+                to
+                <code>RequestCycle</code>
+                .
+            </action>
+            <action type="update" dev="HLS">Update all copyrights for 2004.</action>
+            <action type="fix" dev="HLS">Add download links.</action>
+            <action type="update" dev="HLS">
+                Remove unncessary constructor from test case classes.
+            </action>
+            <action type="update" dev="HLS">
+                Changed mock unit tests to redirect System.out and System.err to log files rather
+                than the console.
+            </action>
+            <action type="update" dev="HLS" due-to="Glen Stampoultzis">
+                Improve the documentation for the Palette component, providing a real example of CSS
+                styles used with the component.
+            </action>
+            <action type="fix" dev="HLS" fixes-bug="26416">
+                Component parameters with direction 'form' should not allow static bindings.
+            </action>
+            <action type="fix" dev="HK" fixes-bug="26599">
+                Fixed NPE in PatternValidator.toString().
+            </action>
+            <action type="fix" dev="HLS">Fix TestMocks to not use JDK 1.4 API.</action>
+            <action type="fix" dev="MB">
+                Fixing property initializers to be evaluated every time (unless they are invariant)
+            </action>
+            <action type="update" dev="MB">
+                Added Servlet API 2.4 from Tomcat 5 and ejb.jar from Geronimo. Made the mock objects
+                compatible with Servlet API 2.4.
+            </action>
+            <action type="update" dev="MB">
+                Evaluate the string 'false' as Boolean.FALSE. All other non-empty strings continue
+                to be evaluated as Boolean.TRUE.
+            </action>
+            <action type="update" dev="MB">
+                Automatically download external dependencies (such as Forrest and McKoi DB).
+            </action>
+            <action type="fix" dev="HK" due-to="Anatol Pomazau">
+                DatePicker positioning problem fixed.
+            </action>
+            <action type="fix" dev="HK" fixes-bug="24336">
+                Automatic rendering of the maxlength and size attributes have been removed.
+                DatePicker now allows informal attributes that will be applied to the field.
+            </action>
+            <action type="fix" dev="MB" fixes-bug="25611">
+                Fixed one more place where the encoding needs to be set
+            </action>
+        </release>
+
+        <vote title="Andreas Andreou as Tapestry Committer" date="Mar 10 2006" dev="JK">
+            <motion>
+                Andreas has been a very active tapestry user for a long time now, as well as more or
+                less taking the lead role lately on the tacos project. I've been very impressed with
+                his dedication to performance/browser compatibility/etc as well as his overall
+                knowledge of javascript, which will be key with tapestry 4.1 and onward.
+
+                Besides all of these things, there is also a very real need for more day to day
+                support of tapestry as a whole. I can't currently think of anyone (that I know) more
+                qualified to come on board.
+            </motion>
+            <response>HLS, JK, RLS, PF, MB, GL, HK, DS: +1</response>
+        </vote>
+        <vote title="4.0 Final Release" date="Dec 30 2005" dev="HLS">
+            <motion>
+                I think 4.0 is ready for a wider release and a new release announcement to ring in
+                2006. I know I'm anxious to start putting together 4.1 features. The most critical
+                missing documentation, about validation, has been remedied by Jesse and some
+                irritating bugs have been fixed.
+            </motion>
+            <response>HLS: JK, KT, EH, RLS, GL, PF, HK, DS: +1</response>
+        </vote>
+        <vote title="4.0 Final Release" date="Dec 15 2005" dev="HLS">
+            <motion>
+                I think it is high time for a final 4.0 release. The release candidate has exposed a
+                couple of minor issues, now fixed in the trunk, and there's nothing stopping us from
+                following up with a 4.0.1 release if anything else turns up.
+            </motion>
+            <response>HLS, JK, DS, HK: +1</response>
+            <response>GL: +0</response>
+            <response>KT: -1</response>
+        </vote>
+        <vote title="Tapestry 4.0-rc-1" date="Nov 30 2005" dev="HLS">
+            <motion>
+                By the time this vote ends, we'll have some kind of fix for TAPESTRY-724. I think,
+                with that, Tapestry 4.0 is ready for prime time. We've already had the discussion of
+                outstanding bugs needing fixing. I think we should get 4.0 out the door.
+            </motion>
+            <response>HLS, JK, HK, TK, RLS, PF: +1</response>
+            <response>GL: -0</response>
+        </vote>
+        <vote title="Kent Tong as Tapestry Committer" date="Nov 23 2005" dev="HLS">
+            <motion>
+                Kent Tong has been a great booster for Tapestry over the last year or two; not only
+                has he been a constant presense on the mailing list, mentoring new and experienced
+                users, as well as contributing bugs and patches ... but he's written an entire book
+                on Tapestry. I think Kent would make a great addition to the team.
+            </motion>
+            <response>HLS, GL, RLS, PF, DS, HK: +1</response>
+        </vote>
+        <vote title="Jesse Kuhnert as Tapestry Committer" date="Nov 21 2005" dev="HLS">
+            <motion>
+                Jesse Kuhnert has been doing some outstanding work with Tacos (http://tacos.sf.net),
+                powerful Ajax components for Tapestry. Further, he's been very active on the mailing
+                lists, providing support to new users and to Tacos users here and on the Tacos
+                mailing lists. I think Jesse would be a valuable addition to the team. We've talked
+                about the emphasis for Tapestry 4.1 being on the components, and Jesse brings a lot
+                of expertise in that area ... and he uses Tapestry at his day job. All of these
+                indicate he has a place on the commiter list.
+            </motion>
+            <response>HLS, RLS, GL, HK, PF, DS, MB: +1</response>
+        </vote>
+        <vote title="Regular beta releases" date="Sep 3 2005" dev="HLS">
+            <motion>
+                As per the ongoing discussion, this is a vote to introduce a new procedure: regular
+                weekly beta releases until Tapestry 4.0 is ready for release. I will take primary
+                responsibility for producing the release and the release announcements, though
+                volunteers will also be welcome. Work will primarily occur on the weekend.
+            </motion>
+            <response>HLS, DS, PF, HK, GL, RLS: +1</response>
+        </vote>
+        <vote title="Tapestry 4.0-beta-5" date="Aug 26 2005">
+            <motion>
+                Release early; release often. Lots of good fixes here, and I like releasing a beta
+                every week or so.
+            </motion>
+            <response>HLS, PF, MB, RLS, GL, HK, DS: +1</response>
+        </vote>
+        <vote title="Tapestry 4.0-beta-4" date="Aug 9 2005" dev="HLS">
+            <motion>
+                Since we've found and fixed a couple of real show-stopper bugs in beta-3, and its
+                been a couple of weeks, I'd like to release beta-4.
+            </motion>
+            <response>HLS, GL, HK, EH, DS, PF, RLS: +1</response>
+        </vote>
+        <vote title="Remove default-binding" dev="HLS" date="Jul 31 2005">
+            <motion>
+                OK ... this discussion has gone on long enough. I'm willing to strip out the
+                default-binding stuff and replace it with a simpler approach. Attributes will be
+                intepreted as literals (unless prefixed) in the template, and as OGNL expressions
+                (unless prefixed) elsewhere. This is a potentially de-stabilizing change; I am
+                willing to do the work, but will expect others to pitch in and test (that is, pull
+                down code and build apps against it), to help track down any latent errors.
+            </motion>
+            <response>HLS, RLS, EH, PF, GL, HK: +1</response>
+        </vote>
+        <vote title="Tapestry 4.0-beta-3" date="Jul 21 2005" dev="HLS">
+            <motion>
+                Things have been cranking along, and we have a number of important fixes out there,
+                and likely more by the time this vote completes.
+            </motion>
+            <response>HLS, PF, EH, DS, RLS, GL: +1</response>
+        </vote>
+        <vote title="Tapestry 4.0-beta-2" date="Jul 10 2005" dev="HLS">
+            <motion>
+                Release early, release often. Let's do a short vote and release beta-2 as soon as
+                possible.
+            </motion>
+            <response>HLS, GL, EH, PF, DS, RLS, MB: +1</response>
+        </vote>
+        <vote title="Tapestry 4.0-beta-1" date="Jun 24 2005" dev="HLS">
+            <motion>
+                I know this is unusual, but I'd like to make a vote pending some other developments.
+                I'm anxious to announce beta-1 when I'm at JavaOne. There are a couple of changes
+                "in the queue" by various committers; I would like the first beta release to follow
+                those changes being checked in. MindBridge is readying his If and For components
+                (form-aware version of Conditional and Foreach). Paul is about to check in his
+                improved validation support. I will follow with some improvements to client-side
+                event management. A +1 vote indicates a desire for the beta-1 release to follow
+                these developments. We can then focus on fixing bugs and documentation.
+            </motion>
+            <response>HLS, PF, EH, DS, HK, RLS: +1</response>
+            <response>GL: +0</response>
+        </vote>
+        <vote title="Tapestry 4.0-alpha-3" date="May 12 2005" dev="HLS">
+            <motion>
+                Although it hasn't been long since alpha-2, I'd like to release the next alpha of
+                Tapestry 4.0. Why? A few things have settled down, some bugs have been fixed, a few
+                really key features have been added, and I think the Portlet support is now
+                complete.
+            </motion>
+            <response>HLS, PF, HK, EH, RLS, DS, GL, TSV: +1</response>
+        </vote>
+        <vote title="Tapestry 4.0-alpha-2" date="May 5 2005" dev="HLS">
+            <motion>
+                Now that HiveMind 1.1 has entered beta, I believe it's time to release a new alpha
+                of Tapestry 4.0 (Picasso). This will give people a chance to see more of the
+                (incomplete) Portlet support and many of the other recent fixes and improvements.
+            </motion>
+            <response>HLS, RLS, EH, TSV, DS, PF, GL, MB: +1</response>
+        </vote>
+        <vote title="Tapestry 4.0" date="Apr 15 2005" dev="HLS">
+            <motion>
+                The sentiment of the community seems to be that the next major release of Tapestry
+                (i.e., HiveMind infrastructure, Portlet support, etc.) is too different from
+                Tapestry 3.0 to be called "Tapestry 3.1". This release will only be largely
+                backwards compatible; applications that sub-class BaseEngine or make use of custom
+                Tapestry engine services will require some amount of re-work. In a small number of
+                cases, component parameters (espcially those using direction "auto" or "custom")
+                will not work exactly as before. I feel it is completely reasonable to not call this
+                release 3.1, but to continue to bend over backwards for backwards compatibility. A
+                +1 vote signals that you concur, and that the next release should be numbered 4.0.
+                This will affect the code in a very limited way: Much code has been added with a
+                @since 3.1 javadoc tag; this will change to @since 4.,0. Likewise, the 3.1 numbering
+                is in documentation, and inside some of the specification DTDs; these will also
+                change.
+            </motion>
+            <response>HLS, GL, PF, EH, DS, RLS: +1</response>
+            <response>MB, HK, TSV: +0</response>
+        </vote>
+        <vote title="Tapestry 3.0.3" date="Mar 26 2005" dev="PF">
+            <motion>
+                I finished patching/fixing all of the big issues identified with the last release.
+                With any luck, this will be the last release for the 3.0 branch. This vote will run
+                for one week. A +1 vote is to release Tapestry 3.0.3. I will be able to start the
+                release once the votes are tallied.
+            </motion>
+            <response>PF, HK, MB, HLS, TS, DS, EH, GL: +1</response>
+            <response>RLS: +0</response>
+        </vote>
+        <vote title="Tapestry 3.1-alpha-1" date="Feb 15 2005" dev="HLS">
+            <motion>
+                I think it's high time we provide people with a peek at 3.1. The code base has
+                stabilized quite a bit in the last week or two, and although there's a huge amount
+                of work to come, I think the community would benefit from an easy preview of what's
+                coming. This will also be a chance to work through the release checklist I prepared
+                last week.
+            </motion>
+            <response>HLS, EH, HK, PF, RLS, DS, GL, TSV: +1</response>
+        </vote>
+        <vote title="Tapestry 3.0.2" date="Feb 14 2005" dev="HLS">
+            <motion>
+                I think we should just be done with 3.0.2. All the bugs that are going to get fixed,
+                have been. The next version of OGNL should just drop in, and since its not shipped
+                with the framework anyway, its not a big deal.
+            </motion>
+            <response>HLS, PF, GL, RLS, DS, EH: +1</response>
+            <response>HK, TSV, MB: +0</response>
+        </vote>
+        <vote title="Nominate Paul Ferraro as committer" date="Aug 24 2004" dev="RLS">
+            <motion>
+                I would like to nominate Paul Ferraro as a Tapestry committer. Paul has shown a very
+                good understanding of Tapestry, and recently made a large contribution with friendly
+                URLs. (Paul has indicated he is very interested)
+            </motion>
+            <response>RLS, EH, HK, GL, DS: +1</response>
+            <response>HLS, MB, TS, NC: +0</response>
+        </vote>
+        <!-- Vote for 3.0.1 release is missing! -->
+        <vote title="Tapestry 3.0 FINAL" date="Apr 14 2004" dev="HLS">
+            <motion>
+                Despite a last minute flurry of bug fixes, the motion has passed and we'll be
+                releasing the final Tapestry 3.0 release shortly. I'll be creating tagging and
+                creating the final release shortly. Alas, it looks like Neil Clayton is no longer
+                contributing to the Tapestry project.
+            </motion>
+            <response>HLS, RLS, EH, HK, DS, TSV, MB: +1</response>
+            <response>GL, NC: +0</response>
+        </vote>
+        <vote title="release 3.0-rc-3" date="Apr 7 2004" dev="HLS">
+            <motion>
+                I've had some more time to knock down a the remaining blocker bugs in 3.0-rc-2.
+                Assuming that there are no further blocker bugs added in the meantime, I'd like to
+                release rc-3. A +1 vote indicates that we should release rc-3, unless a new blocker
+                bug is added in the meantime. Please respond in the next 24 hours (by Wednesday
+                afternoon, EST). Missing responses will be treated as a +0.
+            </motion>
+            <response>HLS, EH, HK, DS: +1</response>
+            <response>NC, RLS, MB, TSV, GL: +0</response>
+        </vote>
+        <vote title="release 3.0-rc-2" date="Apr 1 2004" dev="HLS">
+            <motion>
+                3.0-rc-1 has been out for about two weeks now. A couple of notable bugs have been
+                identified and fixed. I believe we should roll out rc-2 to keep the momentum going.
+            </motion>
+            <response>HLS, DS, EH, HK, TSV, RLS, MB: +1</response>
+            <response>NC, GL: +0</response>
+        </vote>
+        <vote title="release 3.0rc1" date="Mar 13 2004" dev="RLS">
+            <motion>
+                Looks like things are pretty much in place for the next release - 3.0 release
+                candidate 1. Let's vote on it to make it official. Release current code as rc1?
+            </motion>
+            <response>RLS, GL, HK, EH, DS, MB, HLS: +1</response>
+        </vote>
+        <vote title="Can the Tutorial" date="Feb 19 2004" dev="HLS">
+            <motion>
+                I think its pretty obvious by now that no work is going to get done on the Tutorial
+                for 3.0. I think it would be best to remove the Tutorial, perhaps replace it with a
+                link to Kevin Dorff's site until we can actually put something useful together ...
+                even if that is after 3.0 is released. A +1 vote would delete the Tutorial code, the
+                docbook source and links to the old tutorial on the web site.
+            </motion>
+            <response>HLS, EH, DS, GL, MB, HK: +1</response>
+        </vote>
+        <vote date="Sep 5 2003" title="Release 3.0-beta-3" dev="HLS">
+            <motion>
+                People have been itching for the next release of Tapestry; one where the demos work
+                (woops!) including JavaScript and the Palette. Documentation is still not ready for
+                an rc release, but I think a beta release is a good idea.
+            </motion>
+            <response>HLS, GL, RLS, DS, HK, EH, MB, TS, NC: +1</response>
+        </vote>
+        <vote date="Sep 3 2003" title="Erik Hatcher as commiter" dev="GL">
+            <motion>
+                I nominate Erik Hatcher. He knows the score in jakarta-land. I think its a great
+                idea.
+            </motion>
+            <response>GL, HLS, MB, DS, RLS: +1</response>
+            <response>NC: +0 (no vote)</response>
+        </vote>
+        <vote date="Sep 3 2003" title="Tsvetelin Saykov as committer" dev="MB">
+            <motion>
+                I would like to nominate Tsvetelin Saykov as a committer. Tsvetelin has more than an
+                year and a half of Tapestry experience, has worked with many large web projects, and
+                can be very helpful overall for the development of the framework, especially in the
+                area of dynamic pages with layout determined at runtime. (not to mention that he
+                would need CVS access to work on the Tree)
+            </motion>
+            <response>MB, HLS, GL, DS, NC, RLS: +1</response>
+        </vote>
+        <vote date="Sep 2 2003" title="Harish Krishnaswamy as committer" dev="HLS">
+            <motion>
+                I would like to nominate Harish; he has been very actively and enthusiastically
+                supporting Tapestry in the mailing lists. I think he would be an excellent and
+                valuable asset to the team. And hell, he's relatively local --- I might actually get
+                to meet a Tapestry committer in person!
+            </motion>
+            <response>HLS, GL, DS, MB, RLS: +1</response>
+            <response>NC: +0 (no vote)</response>
+        </vote>
+        <vote date="Jul 13 2003" title="Release 3.0-beta-2" dev="HLS">
+            <motion>
+                We informally discussed this not too long ago; I think we are at a good point for
+                beta-2. There have been some significant improvements since beta-1a that will
+                largely be invisible to most users (the correct thing for a beta release); at the
+                same time, I think we're all anxious to push forward and get Tapestry 3.0-xxx into
+                wider distribution. Although there are still several outstanding bugs (one or two
+                that are problematic) I think this is a good time to keep momentum going and release
+                the next beta. A +1 vote will procede with beta-2, tagging the repository and
+                pushing the new releases out to the Apache distribution mirrors.
+            </motion>
+            <response>HLS, MB, NC, RLS, GL, DS: +1</response>
+        </vote>
+        <vote date="Jun 3 2003" title="Release 3.0-beta-1a" dev="RLS">
+            <motion>release 3.0-beta-1a ASAP (containing fixes for JDK 1.3)</motion>
+            <response>HLS, MB, NC, RLS, GL, DS: +1</response>
+        </vote>
+        <vote date="May 30 2003" title="Release 3.0-beta-1" dev="HLS">
+            <motion>
+                Release 3.0-beta-1 as soon as possible.
+                <br />
+                Release notes will state that the API is now stable, with the exception of IMonitor.
+            </motion>
+            <response>HLS, MB, NC, RLS, GL, DS: +1</response>
+        </vote>
+        <vote date="Apr 17 2003" title="Tapestry NextGen released as 3.0" dev="HLS">
+            <motion>
+                PROPOSAL: the next major release of Tapestry (previously known as 2.4 or NextGen) be
+                released as version number 3.0.
+            </motion>
+            <response>HLS, MB, RLS, GL, DS: +1</response>
+            <response>NC: +0 (no vote)</response>
+        </vote>
+        <vote date="Mar 7 2003" title="Nominate David Solis as Tapestry Commiter" dev="HLS">
+            <motion>
+                <p>
+                    There really didn't seem to be much discussion ... everyone seems to be in
+                    favor. Mind Bridge seems very absent of late.
+                </p>
+                <p>Let's put it to a vote. No answer within 24 hours will be treated as a +0.</p>
+                <p>
+                    If voted in, David Solis will be invited to become a Tapestry committer; will be
+                    granted voting rights and update access to the CVS repository.
+                </p>
+            </motion>
+            <response>HLS, NC, RLS, GL: +1</response>
+            <response>MB, ME: +0</response>
+        </vote>
+
+    </body>
+</document>

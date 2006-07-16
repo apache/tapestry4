@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Copyright 2005 The Apache Software Foundation
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<document>
+    <properties>
+        <title>CheckboxGroup</title>
+    </properties>
+    <body>
+
+        <section name="CheckboxGroup">
+
+            <p>
+                A component defining a group of checkboxes that will be controlled together.
+                Typically the ControlCheckbox and ControlledCheckbox components are placed in the
+                body of this component.
+            </p>
+
+            <p>
+                <strong>
+                    See also:
+                    <a href="site:ControlCheckbox">ControlCheckbox</a>
+                    ,
+                    <a href="site:ControlledCheckbox">ControlledCheckbox</a>
+                </strong>
+            </p>
+
+            <subsection name="Parameters">
+
+
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Direction</th>
+                        <th>Required</th>
+                        <th>Default</th>
+                        <th>Description</th>
+                    </tr>
+
+                    <tr>
+                        <td colspan="6">No parameters defined.</td>
+                    </tr>
+
+                </table>
+
+                <p>
+                    Body:
+                    <strong>allowed</strong>
+                </p>
+
+                <p>
+                    Informal parameters:
+                    <strong>forbidden</strong>
+                </p>
+
+                <p>
+                    Reserved parameters:
+                    <em>none</em>
+                </p>
+
+            </subsection>
+
+            <subsection name="Examples">
+
+                <p>Template</p>
+                <source xml:space="preserve">	
+&lt;form jwcid="form"&gt;
+    &lt;span jwcid="checkboxGroup"&gt;
+    	&lt;input jwcid="controlCheckbox"/&gt;	
+    		&lt;input jwcid="controlledCheckbox1"/&gt;
+    		&lt;input jwcid="controlledCheckbox2"/&gt;
+    		&lt;input jwcid="controlledCheckbox3"/&gt;                        
+    &lt;/span&gt;    
+    ...
+&lt;/form&gt;    
+	</source>
+
+                <p>Specification</p>
+                <source xml:space="preserve">
+&lt;property name="state1" persist="session" initial-value="false"/&gt;
+&lt;property name="state2" persist="session" initial-value="false"/&gt;
+&lt;property name="state3" persist="session" initial-value="false"/&gt;        
+	
+   &lt;component id="checkboxGroup" type="contrib:CheckboxGroup"/&gt;    
+   &lt;component id="controlCheckbox" type="contrib:ControlCheckbox"/&gt;
+   
+&lt;component id="controlledCheckbox1" type="contrib:ControlledCheckbox"&gt;
+	&lt;binding name="value" value="state1"/&gt;
+&lt;/component&gt;   
+&lt;component id="controlledCheckbox2" type="contrib:ControlledCheckbox"&gt;
+	&lt;binding name="value" value="state2"/&gt;
+&lt;/component&gt; 
+&lt;component id="controlledCheckbox3" type="contrib:ControlledCheckbox"&gt;
+	&lt;binding name="value" value="state3"/&gt;
+&lt;/component&gt;  
+	</source>
+            </subsection>
+
+        </section>
+
+    </body>
+</document>
