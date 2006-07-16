@@ -80,19 +80,6 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     private IRender _renderInformalParameters;
 
     /**
-     * Returns the currently active {@link IForm}, or null if no form is active. This is a
-     * convienience method, the result will be null, or an instance of {@link IForm}, but not
-     * necessarily a <code>Form</code>.
-     * 
-     * @deprecated Use {@link TapestryUtils#getForm(IRequestCycle, IComponent)} instead.
-     */
-
-    public static IForm get(IRequestCycle cycle)
-    {
-        return (IForm) cycle.getAttribute(ATTRIBUTE_NAME);
-    }
-
-    /**
      * Indicates to any wrapped form components that they should respond to the form submission.
      * 
      * @throws ApplicationRuntimeException
@@ -202,10 +189,8 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        String actionId = cycle.getNextActionId();
-
         _formSupport = newFormSupport(writer, cycle);
-
+        
         if (isRewinding())
         {
             String submitType = _formSupport.rewind();
@@ -221,15 +206,15 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
         // Note: not safe to invoke getNamespace() in Portlet world
         // except during a RenderRequest.
-
+        
         String baseName = constructFormNameForDirectService(cycle);
         
         _name = baseName + getResponse().getNamespace();
         
         if (_renderInformalParameters == null)
             _renderInformalParameters = new RenderInformalParameters();
-
-        ILink link = getLink(cycle, actionId);
+        
+        ILink link = getLink(cycle);
         
         _formSupport.render(getMethod(), _renderInformalParameters, link, getScheme(), getPort());
     }
@@ -253,18 +238,6 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
             result = getListener();
 
         return result;
-    }
-
-    /**
-     * Construct a form name for use with the action service. This implementation returns "Form"
-     * appended with the actionId.
-     * 
-     * @since 4.0
-     */
-
-    protected String constructFormNameForActionService(String actionId)
-    {
-        return "Form" + actionId;
     }
 
     /**
@@ -323,12 +296,12 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     }
     
     /**
-     * Builds the EngineServiceLink for the form, using either the direct or action service.
+     * Builds the EngineServiceLink for the form.
      * 
      * @since 1.0.3
      */
 
-    private ILink getLink(IRequestCycle cycle, String actionId)
+    private ILink getLink(IRequestCycle cycle)
     {
         Object parameter = new DirectServiceParameter(this);
         return getDirectService().getLink(true, parameter);

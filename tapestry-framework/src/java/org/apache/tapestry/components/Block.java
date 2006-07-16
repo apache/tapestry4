@@ -82,14 +82,6 @@ public abstract class Block extends AbstractComponent
     }
 
     /**
-     * @deprecated Use {@link #getInvoker()} instead.
-     */
-    public IComponent getInserter()
-    {
-        return _invoker;
-    }
-
-    /**
      * Returns the object which invoked this Block's
      * {@link #renderForComponent(IMarkupWriter, IRequestCycle, IComponent)} method. This is often
      * used to access the informal parameters of a {@link RenderBlock} component.

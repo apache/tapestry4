@@ -17,6 +17,7 @@ package org.apache.tapestry.error;
 import static org.testng.AssertJUnit.assertSame;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.html.BasePage;
@@ -57,7 +58,7 @@ public class TestExceptionPresenter extends BaseErrorTestCase
 
         verify();
 
-        assertSame(cause, page.getProperty("exception"));
+        assertSame(cause, PropertyUtils.read(page, "exception"));
     }
 
     public void testFailure() throws Exception
@@ -96,7 +97,7 @@ public class TestExceptionPresenter extends BaseErrorTestCase
         }
 
         verify();
-
-        assertSame(cause, page.getProperty("exception"));
+        
+        assertSame(cause, PropertyUtils.read(page, "exception"));
     }
 }

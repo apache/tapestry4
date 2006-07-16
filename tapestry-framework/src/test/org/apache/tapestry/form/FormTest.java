@@ -55,11 +55,6 @@ public class FormTest extends BaseComponentTestCase
         return newMock(FormSupport.class);
     }
 
-    protected void trainGetNextActionId(IRequestCycle cycle, String actionId)
-    {
-        expect(cycle.getNextActionId()).andReturn(actionId);
-    }
-
     protected void trainGetUniqueId(IRequestCycle cycle, String baseId, String uniqueId)
     {
         expect(cycle.getUniqueId(baseId)).andReturn(uniqueId);
@@ -95,8 +90,6 @@ public class FormTest extends BaseComponentTestCase
                 "delegate", delegate });
 
         trainStoreForm(cycle, form);
-
-        trainGetNextActionId(cycle, "7");
         
         trainIsRewinding(support, true);
         
@@ -146,8 +139,6 @@ public class FormTest extends BaseComponentTestCase
                 "post", "delegate", delegate });
 
         trainStoreForm(cycle, form);
-
-        trainGetNextActionId(cycle, "7");
         
         trainIsRewinding(support, false);
         
@@ -193,8 +184,6 @@ public class FormTest extends BaseComponentTestCase
                 "post", "delegate", delegate, "scheme", "https", "port", new Integer(443) });
         
         trainStoreForm(cycle, form);
-        
-        trainGetNextActionId(cycle, "7");
         
         trainIsRewinding(support, false);
         

@@ -51,7 +51,6 @@ public class TestBlock extends BaseComponentTestCase
             public void render(IMarkupWriter pwriter, IRequestCycle pcycle)
             {
                 assertSame(block.getInvoker(), invoker);
-                assertSame(block.getInserter(), invoker);
             }
         };
 

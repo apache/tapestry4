@@ -390,7 +390,7 @@ public class FormSupportImpl implements FormSupport
     public String getElementId(IFormComponent component, String baseId)
     {
         // $ is not a valid character in an XML/XHTML id, so convert it to an underscore.
-
+        
         String filteredId = TapestryUtils.convertTapestryIdToNMToken(baseId);
 
         String result = _elementIdAllocator.allocateId(filteredId);
@@ -404,7 +404,7 @@ public class FormSupportImpl implements FormSupport
             }
 
             String expected = (String) _allocatedIds.get(_allocatedIdIndex);
-
+            
             if (!result.equals(expected))
                 throw new StaleLinkException(FormMessages.formIdMismatch(
                         _form,
@@ -589,11 +589,11 @@ public class FormSupportImpl implements FormSupport
         // The other case, _allocatedIdIndex > expected, is
         // checked for inside getElementId(). Remember that
         // _allocatedIdIndex is incremented after allocating.
-
+        
         if (_allocatedIdIndex < expected)
         {
             String nextExpectedId = (String) _allocatedIds.get(_allocatedIdIndex);
-
+            
             throw new StaleLinkException(FormMessages.formTooFewIds(_form, expected
                     - _allocatedIdIndex, nextExpectedId), _form);
         }

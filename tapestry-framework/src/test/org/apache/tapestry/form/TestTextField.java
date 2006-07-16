@@ -19,6 +19,7 @@ import static org.easymock.EasyMock.expectLastCall;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertNull;
 
+import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
@@ -265,7 +266,7 @@ public class TestTextField extends BaseFormComponentTestCase
 
         component.render(writer, cycle);
 
-        assertNull(component.getProperty("value"));
+        assertNull(PropertyUtils.read(component, "value"));
 
         verify();
     }
