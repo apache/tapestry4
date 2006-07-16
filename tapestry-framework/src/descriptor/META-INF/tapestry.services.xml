@@ -51,7 +51,6 @@
 
     <contribution configuration-id="FactoryServices">
         <service name="home" object="service:Home" />
-        <service name="action" object="service:Action" />
         <service name="direct" object="service:Direct" />
         <service name="page" object="service:Page" />
         <service name="reset" object="service:Reset" />
@@ -103,17 +102,6 @@
                 <set-object property="responseRenderer" value="infrastructure:responseRenderer" />
                 <set-object property="linkFactory" value="infrastructure:linkFactory" />
                 <set-object property="pageName" value="app-property:org.apache.tapestry.home-page" />
-            </construct>
-        </invoke-factory>
-    </service-point>
-
-    <service-point id="Action" interface="IEngineService">
-        <invoke-factory>
-            <construct class="ActionService">
-                <set-object property="responseRenderer" value="infrastructure:responseRenderer" />
-                <set-object property="request" value="infrastructure:request" />
-                <set-object property="linkFactory" value="infrastructure:linkFactory" />
-                <set-object property="requestCycle" value="infrastructure:requestCycle" />
             </construct>
         </invoke-factory>
     </service-point>

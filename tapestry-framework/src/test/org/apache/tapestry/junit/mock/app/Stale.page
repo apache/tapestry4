@@ -29,10 +29,6 @@
   	<binding name="listener" expression="listeners.noop"/>
   </component>
   
-  <component id="actionLink" type="ActionLink">
-  	<binding name="listener" expression="listeners.noop"/>
-  </component>
-  
   <component id="form" type="Form">
   	<binding name="listener" expression="listeners.noop"/>
   </component>

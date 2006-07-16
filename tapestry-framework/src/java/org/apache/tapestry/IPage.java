@@ -28,7 +28,7 @@ import org.apache.tapestry.util.ContentType;
 /**
  * A root level component responsible for generating an entire a page within the application.
  * <p>
- * Pages are created dynamically from thier class names (part of the
+ * Pages are created dynamically from their class names (part of the
  * {@link org.apache.tapestry.spec.IComponentSpecification}).
  * 
  * @see org.apache.tapestry.engine.IPageSource

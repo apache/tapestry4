@@ -73,13 +73,6 @@
     </description>
   </parameter>
   
-  <parameter name="direct" default-value="true">
-    <description>
-    If true (the default), then the more efficient direct service is used.
-    If false, then the action service is used.
-    </description>
-  </parameter>
-  
   <parameter name="delegate" default-value="bean:defaultDelegate">
     <description>
     Specifies the delegate to be used by fields to track input errors. If not specified, the
@@ -124,7 +117,6 @@
   <reserved-parameter name="id"/>
   
   <inject property="directService" object="engine-service:direct"/>
-  <inject property="actionService" object="engine-service:action"/>
   <inject property="response" object="infrastructure:response"/>
   <inject property="listenerInvoker" object="infrastructure:listenerInvoker"/>
 </component-specification>

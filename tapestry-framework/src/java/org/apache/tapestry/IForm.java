@@ -27,7 +27,7 @@ import org.apache.tapestry.valid.IValidationDelegate;
  * @since 1.0.2
  */
 
-public interface IForm extends IAction, FormBehavior
+public interface IForm extends IComponent, FormBehavior
 {
 
     /**

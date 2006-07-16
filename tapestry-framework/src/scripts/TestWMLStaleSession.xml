@@ -48,13 +48,6 @@
             ]]>
         </assert-output>
 
-
-        <assert-output name="ActionLink URL">
-            <![CDATA[
-            href="/mock/app?action=0&amp;component=actionLink&amp;page=Stale&amp;service=action"
-            ]]>
-        </assert-output>
-
         <assert-output-matches name="Go Parameter Names" subgroup="1">
             <![CDATA[
             <postfield name="(.*?)".*?/>
@@ -89,20 +82,6 @@
 
 
         <assert-output name="StaleSession (DirectLink)">
-            <![CDATA[
-            <card id="StaleSession" title="StaleSession">
-            ]]>
-        </assert-output>
-    </request>
-
-    <request>
-        <parameter name="service" value="action"/>
-        <parameter name="session" value="T"/>
-        <parameter name="page" value="Stale"/>
-        <parameter name="action" value="0"/>
-        <parameter name="component" value="actionLink"/>
-
-        <assert-output name="StaleSession (ActionLink)">
             <![CDATA[
             <card id="StaleSession" title="StaleSession">
             ]]>

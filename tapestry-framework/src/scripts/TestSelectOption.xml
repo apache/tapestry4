@@ -290,7 +290,7 @@ Selections: none.
 		
 		<assert-output name="Second Form">
 <![CDATA[
-<form method="post" action="/selopt/app" name="Form1" id="Form1">
+<form method="post" action="/selopt/app" name="Form_0" id="Form_0" direct="false">
 ]]>	
 		</assert-output>
 	</request>
@@ -298,8 +298,8 @@ Selections: none.
 	<!-- Submit the second form. -->
 	
 	<request>
-		<parameter name="service" value="action"/>
-    <parameter name="action" value="1"/>
+		<parameter name="service" value="direct"/>
+    <parameter name="direct" value="1"/>
     <parameter name="session" value="1"/>
     <parameter name="page" value="Four"/>
     <parameter name="component" value="$Form_0"/>
