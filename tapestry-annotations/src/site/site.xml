@@ -35,12 +35,8 @@
         
         <menu ref="parent" />
         
-        <menu name="Documentation" >
-            
+        <menu name="Documentation">
             <item name="Overview" href="/index.html" />
-            <item name="Configuration" href="/configuration.html" />
-            <item name="Coding Issues" href="/coding-issues.html" />
-            
         </menu>
         
         ${reports} 
