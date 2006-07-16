@@ -15,9 +15,11 @@
 package org.apache.tapestry.record;
 
 
-import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.*;
 
 import java.io.File;
+import java.io.Serializable;
+import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ import java.util.Random;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.impl.DefaultClassResolver;
+import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.testng.annotations.Test;
 
@@ -175,20 +178,18 @@ public class PersistentPropertyDataEncoderTest extends BaseComponentTestCase
      * 
      * @see org.apache.tapestry.junit.utils.TestDataSqueezer#testClassLoader()
      */
-    /*
     public void testEncodeDecodeCustomClass() throws Exception
     {
-        File tempDir = new File(System.getProperty("java.io.tmpdir"));
-        File projectRoot = new File(tempDir, "jakarta-tapestry");
-        File springJAR = new File(projectRoot,
-                "tapestry/target/module-lib/test-subject/spring/spring-1.1.jar");
-
+        File springJAR = new File("tapestry-framework/src/test-data/spring-1.1.jar");
+        if (!springJAR.exists())
+            springJAR = new File("src/test-data/spring-1.1.jar");
+        
         if (!springJAR.exists())
             throw new RuntimeException("File " + springJAR
                     + " does not exist; this should have been downloaded by the Ant build scripts.");
-
+        
         ClassResolver resolver1 = newClassResolver(springJAR);
-
+        
         Class propertyValueClass = resolver1.findClass("org.springframework.beans.PropertyValue");
         Constructor constructor = propertyValueClass.getConstructor(new Class[]
         { String.class, Object.class });
@@ -222,11 +223,10 @@ public class PersistentPropertyDataEncoderTest extends BaseComponentTestCase
         Object instance2 = pc.getNewValue();
 
         assertNotSame(instance, instance2);
-
+        
         assertEquals("fred", PropertyUtils.read(instance2, "name"));
         assertEquals("flintstone", PropertyUtils.read(instance2, "value"));
     }
-*/
     private ClassResolver newClassResolver(File jarFile) throws Exception
     {
         URLClassLoader classLoader = new URLClassLoader(new URL[]

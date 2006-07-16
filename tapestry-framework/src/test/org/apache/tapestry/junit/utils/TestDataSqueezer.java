@@ -19,6 +19,7 @@ import static org.testng.AssertJUnit.assertNull;
 
 import java.io.File;
 import java.io.Serializable;
+import java.lang.reflect.Constructor;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -30,6 +31,7 @@ import junit.framework.AssertionFailedError;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.impl.DefaultClassResolver;
+import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.util.ComponentAddress;
@@ -379,14 +381,13 @@ public class TestDataSqueezer extends BaseComponentTestCase
         {
         }
     }
-/*
+
     public void testClassLoader() throws Exception
     {
-        File tempDir = new File(System.getProperty("java.io.tmpdir"));
-        File projectRoot = new File(tempDir, "jakarta-tapestry");
-        File springJAR = new File(projectRoot,
-                "tapestry/target/module-lib/test-subject/spring/spring-1.1.jar");
-
+        File springJAR = new File("tapestry-framework/src/test-data/spring-1.1.jar");
+        if (!springJAR.exists())
+            springJAR = new File("src/test-data/spring-1.1.jar");
+        
         if (!springJAR.exists())
             throw new RuntimeException("File " + springJAR
                     + " does not exist; this should have been downloaded by the Ant build scripts.");
@@ -419,7 +420,7 @@ public class TestDataSqueezer extends BaseComponentTestCase
         assertEquals("fred", PropertyUtils.read(output, "name"));
         assertEquals("flintstone", PropertyUtils.read(output, "value"));
     }
-*/
+
     private ClassResolver newClassResolver(File jarFile) throws Exception
     {
         URLClassLoader classLoader = new URLClassLoader(new URL[]
