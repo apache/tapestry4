@@ -40,20 +40,20 @@
     <mailingLists>
         <mailingList>
             <name>Tapestry User List</name>
-            <subscribe>tapestry-users-subscribe@tapestry.apache.org</subscribe>
-            <unsubscribe>tapestry-users-unsubscribe@tapestry.apache.org</unsubscribe>
+            <subscribe>users-subscribe@tapestry.apache.org</subscribe>
+            <unsubscribe>users-unsubscribe@tapestry.apache.org</unsubscribe>
             <archive>http://mail-archives.apache.org/mod_mbox/tapestry-users/</archive>
         </mailingList>
         <mailingList>
             <name>Tapestry Developer List</name>
-            <subscribe>tapestry-dev-subscribe@tapestry.apache.org</subscribe>
-            <unsubscribe>tapestry-dev-unsubscribe@tapestry.apache.org</unsubscribe>
+            <subscribe>dev-subscribe@tapestry.apache.org</subscribe>
+            <unsubscribe>dev-unsubscribe@tapestry.apache.org</unsubscribe>
             <archive>http://mail-archives.apache.org/mod_mbox/tapestry-dev/</archive>
         </mailingList>
         <mailingList>
             <name>Tapestry Commits List</name>
-            <subscribe>tapestry-commits-subscribe@tapestry.apache.org</subscribe>
-            <unsubscribe>tapestry-commits-unsubscribe@tapestry.apache.org</unsubscribe>
+            <subscribe>commits-subscribe@tapestry.apache.org</subscribe>
+            <unsubscribe>commits-unsubscribe@tapestry.apache.org</unsubscribe>
             <archive>http://mail-archives.apache.org/mod_mbox/tapestry-commits/</archive>
         </mailingList>
     </mailingLists>
