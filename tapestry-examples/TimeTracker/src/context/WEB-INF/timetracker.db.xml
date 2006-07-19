@@ -61,7 +61,7 @@
         DB Connection for derby database
         <invoke-factory service-id="HsqlConnProxyFactory" model="threaded" />
     </service-point>
-    
+   
     <service-point id="DatabaseInstaller" interface="DatabaseInstaller">
         Ensures the database has been created/initialised. 
         <invoke-factory service-id="hivemind.BuilderFactory">
