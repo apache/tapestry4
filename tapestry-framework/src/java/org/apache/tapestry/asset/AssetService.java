@@ -310,7 +310,7 @@ public class AssetService implements IEngineService, ResetEventListener
         } catch (ParseException e) { e.printStackTrace(); }
         
         if (resource.lastModified() > modify
-                || _lastResetTime > modify)
+                || (_lastResetTime > modify))
             return false;
         
         _response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);

@@ -520,7 +520,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
     private Constructor findConstructor()
     {
         Class componentClass = _classFab.createClass();
-
+        
         // The fabricated base class always has exactly one constructor
 
         return componentClass.getConstructors()[0];
