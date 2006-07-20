@@ -10,7 +10,7 @@ Download Tapestry 4.1.0 Snapshot
 
   The Tapestry snapshot builds are currently only available via the maven2 repository at
   
-  {{{http://people.apache.org/maven-snapshot-repository/}}}
+  {{{http://people.apache.org/repo/m2-snapshot-repository/}}}
 	
   This release is currently under active development and should not be considered stable. To add this repository
   to your own projects pom.xml you will need a section that looks like:
@@ -19,7 +19,7 @@ Download Tapestry 4.1.0 Snapshot
 <repositories>
 	<repository>
     	<id>apache.snapshots</id>
-        <url>http://people.apache.org/maven-snapshot-repository</url>
+        <url>http://people.apache.org/repo/m2-snapshot-repository</url>
     </repository>
 </repositories>
 +---------------------------------------------------------
