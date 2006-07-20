@@ -332,7 +332,7 @@
     <repositories>
         <repository>
             <id>apache.snapshots</id>
-            <url>http://people.apache.org/maven-snapshot-repository</url>
+            <url>http://people.apache.org/repo/m2-snapshot-repository</url>
         </repository>
         <repository>
             <id>tapestry.javaforge</id>
@@ -343,7 +343,7 @@
     <pluginRepositories>
         <pluginRepository>
             <id>apache.snapshots</id>
-            <url>http://people.apache.org/maven-snapshot-repository</url>
+            <url>http://people.apache.org/repo/m2-snapshot-repository</url>
         </pluginRepository>
         <pluginRepository>
             <id>tapestry.javaforge</id>
