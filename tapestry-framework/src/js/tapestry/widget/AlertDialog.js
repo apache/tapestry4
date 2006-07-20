@@ -30,8 +30,8 @@ dojo.widget.defineWidget(
 			var buttNode=document.createElement("div");
 			buttNode.appendChild(document.createTextNode("ok"));
 			content.appendChild(buttNode);
+			this.show(); // to fix bug in button
 			this.okButton=dojo.widget.createWidget("Button",{}, buttNode);
-			
 			dojo.event.connect(this.okButton, "onClick", this, "hide");
 		},
 		

@@ -92,11 +92,11 @@ dojo.validate.check = function(form, profile) {
 			if ( typeof profile.required[i] != "string" ) { continue; }
 			var elem = form[profile.required[i]];
 			// Are textbox, textarea, or password fields blank.
-			if ( (elem.type == "text" || elem.type == "textarea" || elem.type == "password") && /^\s*$/.test(elem.value) ) {	
+			if (!dj_undef("type", elem) && (elem.type == "text" || elem.type == "textarea" || elem.type == "password") && /^\s*$/.test(elem.value) ) {	
 				missing[missing.length] = elem.name;
 			}
 			// Does drop-down box have option selected.
-			else if ( (elem.type == "select-one" || elem.type == "select-multiple") && elem.selectedIndex == -1 ) {
+			else if (!dj_undef("type", elem) && (elem.type == "select-one" || elem.type == "select-multiple") && elem.selectedIndex == -1 ) {
 				missing[missing.length] = elem.name;
 			}
 			// Does radio button group (or check box group) have option checked.
