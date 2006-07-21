@@ -116,10 +116,6 @@
                             <!-- this is relative to the pom.xml directory -->
                             <directory>src/context</directory>
                         </resource>
-                        <resource>
-                            <directory>src/config</directory>
-                            <targetPath>/WEB-INF</targetPath>
-                        </resource>
                     </webResources>
                 </configuration>
             </plugin>
