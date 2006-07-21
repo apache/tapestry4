@@ -243,7 +243,8 @@
     
     <service-point id="DefaultResponseContributor" interface="org.apache.tapestry.services.ResponseContributor">
         Defines the factory service that is responsible for determining if a particular request is
-        one that should recieve a JSON response.
+        one that should recieve a normal Html response. This will probably be the one chosen in
+        the majority of cases.
         <invoke-factory>
             <construct class="org.apache.tapestry.services.impl.DefaultResponseContributorImpl" >
                 <set-service property="localeManager" service-id="tapestry.request.RequestLocaleManager"/>

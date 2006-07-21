@@ -41,7 +41,10 @@ import org.apache.tapestry.web.WebResponse;
 
 
 /**
- * Main class that handles dojo based ajax responses.
+ * Main class that handles dojo based ajax responses. These responses are wrapped
+ * by an xml document format that segments off invididual component/javascript response
+ * types into easy to manage xml elements that can then be interpreted and managed by 
+ * running client-side javascript.
  * 
  * @author jkuhnert
  */

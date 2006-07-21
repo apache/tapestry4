@@ -30,9 +30,8 @@ import org.apache.tapestry.web.WebResponse;
 
 
 /**
- * Class that implements JSON responses in tapestry.
+ * Manages normal html responses for tapestry request/response cycles.
  * 
- * @see <a href="http://json.org">json.org</a>
  * @author jkuhnert
  */
 public class DefaultResponseBuilder implements ResponseBuilder

@@ -23,8 +23,10 @@ import org.apache.tapestry.services.ResponseContributor;
 import org.apache.tapestry.web.WebResponse;
 
 /**
- * Determines if incoming request is a valid dojo request via the javascript
- * added parameter of "dojoRequest" = "true".
+ * Factory that is used if no other has been chosen, handles normal html
+ * responses.
+ * 
+ * TODO: Should probably implement this as a hivemind pipeline.
  * 
  * @author jkuhnert
  */
