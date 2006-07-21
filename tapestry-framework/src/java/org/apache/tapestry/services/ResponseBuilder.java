@@ -22,8 +22,29 @@ import org.apache.tapestry.IRequestCycle;
 
 
 /**
- * Represents the class responsible for interacting
- * with components for an ajax request library version and type.
+ * Represents the service responsible for managing all content output that is sent
+ * to the client. In the case of normal http responses this management would inlude 
+ * handing out {@link IMarkupWriter} instances to render components with, as well as 
+ * managing any javascript written to the output using Script templates.
+ *
+ * <p>
+ *  This is a major internal change in terms of the way tapestry renders pages/components.
+ *  Traditionally a response has been rendered via:
+ *  <em>
+ *  IPage.render(writer, cycle);
+ *  </em>
+ *  The logic has now changed somewhat, while the IPage.render(writer, cycle) does still happen, this
+ *  service is the primary invoker of all renders, even nested component bodies. That means that in the majority
+ *  of cases the ResponseBuilder service is used to invoke IComponent.render() throught the entire render
+ *  cycle, creating a great deal of flexibility in terms of what can be done to control the output of a given
+ *  response.
+ * </p>
+ *
+ * <p>
+ * This service was primarily created to help bolster support for more dynamic content responses, such 
+ * as XHR/JSON/etc - where controlling individual component output (and javascript) becomes very important
+ * when managaing client side browser state. 
+ * </p>
  *
  * @author jkuhnert
  * @since 4.1
