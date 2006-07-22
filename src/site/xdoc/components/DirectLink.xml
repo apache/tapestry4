@@ -54,8 +54,7 @@
                     <tr>
                         <th>Name</th>
                         <th>Type</th>
-                        <th>Direction</th>
-
+                        
                         <th>Required</th>
                         <th>Default</th>
 
@@ -65,15 +64,14 @@
                         <td>listener</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/IActionListener.html">
+                                href="../tapestry-framework/apidocs/org/apache/tapestry/IActionListener.html">
                                 IActionListener
                             </a>
                         </td>
-
-                        <td>in</td>
+                        
                         <td>yes</td>
 
-                        <td />
+                        <td></td>
                         <td>
                             Specifies an object that is notified when the link is clicked, which is
                             typically a listener method of its container (for example, listeners.
@@ -91,10 +89,8 @@
                             <br />
                             List
                         </td>
-
-                        <td>in</td>
                         <td>no</td>
-                        <td />
+                        <td></td>
                         <td>
                             <p>
                                 An array of objects to be encoded into the URL. These parameters
@@ -127,7 +123,7 @@
                                 may now be of any type; type will be maintained when the parameters
                                 are later retrieved by a listener. See
                                 <a
-                                    href="../../tapestry-framework/apidocs/org/apache/tapestry/util/io/DataSqueezer.html">
+                                    href="../tapestry-framework/apidocs/org/apache/tapestry/util/io/DataSqueezer.html">
                                     DataSqueezer
                                 </a>
                                 for more details.
@@ -138,7 +134,6 @@
                     <tr>
                         <td>disabled</td>
                         <td>boolean</td>
-                        <td>in</td>
                         <td>no</td>
                         <td>false</td>
 
@@ -150,15 +145,13 @@
                     <tr>
                         <td>stateful</td>
                         <td>boolean</td>
-                        <td>in</td>
-
                         <td>no</td>
                         <td>true</td>
                         <td>
                             If true (the default), then the component requires an active (i.e.,
                             non-new) HttpSession when triggered. Failing that, it throws a
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/StaleLinkException.html">
+                                href="../tapestry-framework/apidocs/org/apache/tapestry/StaleLinkException.html">
                                 StaleLinkException
                             </a>
                             . If false, then no check is necessary. The latter works well with links
@@ -170,7 +163,6 @@
                         <td>anchor</td>
 
                         <td>String</td>
-                        <td>in</td>
                         <td>no</td>
                         <td />
                         <td>
@@ -184,9 +176,8 @@
                     <tr>
                         <td>scheme</td>
                         <td>String</td>
-                        <td>in</td>
                         <td>no</td>
-                        <td />
+                        <td></td>
                         <td>
                             The required scheme ("http" or "https", typically) for the URL. This
                             will force the creation of an absolute URL when the current request's
@@ -200,9 +191,8 @@
                     <tr>
                         <td>port</td>
                         <td>Integer</td>
-                        <td>in</td>
                         <td>no</td>
-                        <td />
+                        <td></td>
                         <td>
                             The required port (80, 443, 8080. 8443, typically) for the URL. This
                             will force the creation of an absolute URL when the current request's
@@ -218,16 +208,51 @@
                         <td>renderer</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/link/ILinkRenderer.html">
+                                href="../tapestry-framework/apidocs/org/apache/tapestry/link/ILinkRenderer.html">
                                 ILinkRenderer
                             </a>
                         </td>
-                        <td>in</td>
                         <td>no</td>
 
-                        <td />
+                        <td></td>
 
                         <td>The object which will actually render the link.</td>
+                    </tr>
+                    <tr>
+                        <td>updateComponents</td>
+                        <td>String[],Collection</td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            In an asynchronous request, specifies which components should have their content
+                            rendered back to the client. These are expected to be unique component ids. 
+                            
+                            <p>
+                            See: <a href="../tapestry-framework/apidocs/org/apache/tapestry/services/ResponseBuilder.html">ResponseBuilder</a>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>json</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            Causes the request to be asynchronous and the response to be captured/rendered via
+                            the <a href="../tapestry-framework/apidocs/org/apache/tapestry/services/impl/JSONResponseBuilder.html">JSONResponseBuilder</a>
+                            renderer.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>async</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            Causes the request to be asynchronous and the response to be captured/rendered via
+                            the <a href="../tapestry-framework/apidocs/org/apache/tapestry/services/impl/DojoAjaxResponseBuilder.html">DojoAjaxResponseBuilder</a>
+                            renderer.
+                        </td>
                     </tr>
                 </table>
 

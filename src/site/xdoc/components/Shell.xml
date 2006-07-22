@@ -45,7 +45,7 @@
             <p>
                 <strong>
                     See also:
-                    <a href="../../tapestry-framework/apidocs/org/apache/tapestry/html/Shell.html">
+                    <a href="../tapestry-framework/apidocs/org/apache/tapestry/html/Shell.html">
                         org.apache.tapestry.html.Shell
                     </a>
                     ,
@@ -62,7 +62,6 @@
                     <tr>
                         <th>Name</th>
                         <th>Type</th>
-                        <th>Direction</th>
                         <th>Required</th>
                         <th>Default</th>
                         <th>Description</th>
@@ -71,7 +70,6 @@
                     <tr>
                         <td>title</td>
                         <td>String</td>
-                        <td>in</td>
                         <td>yes</td>
                         <td></td>
                         <td>The title for the page, used to render the &lt;title&gt; tag.</td>
@@ -80,7 +78,6 @@
                     <tr>
                         <td>raw</td>
                         <td>boolean</td>
-                        <td>in</td>
                         <td>no</td>
                         <td>false</td>
                         <td>
@@ -92,11 +89,10 @@
                     <tr>
                         <td>stylesheet</td>
                         <td>
-                            <a href="../../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
+                            <a href="../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
                                 IAsset
                             </a>
                         </td>
-                        <td>in</td>
                         <td>no</td>
                         <td></td>
                         <td>If provided, then a &lt;link&gt; to the stylesheet is generated.</td>
@@ -106,11 +102,10 @@
                         <td>stylesheets</td>
                         <td>
                             Array or collection of
-                            <a href="../../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
+                            <a href="../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
                                 IAsset
                             </a>
                         </td>
-                        <td>in</td>
                         <td>no</td>
                         <td></td>
                         <td>
@@ -122,7 +117,6 @@
                     <tr>
                         <td>doctype</td>
                         <td>String</td>
-                        <td>in</td>
                         <td>no</td>
                         <td>
                             HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
@@ -137,7 +131,6 @@
                     <tr>
                         <td>renderContentType</td>
                         <td>boolean</td>
-                        <td>in</td>
                         <td>no</td>
                         <td>true</td>
                         <td>
@@ -149,7 +142,6 @@
                     <tr>
                         <td>refresh</td>
                         <td>int</td>
-                        <td>in</td>
                         <td>no</td>
                         <td></td>
                         <td>
@@ -162,11 +154,10 @@
                     <tr>
                         <td>delegate</td>
                         <td>
-                            <a href="../../tapestry-framework/apidocs/org/apache/tapestry/IRender.html">
+                            <a href="../tapestry-framework/apidocs/org/apache/tapestry/IRender.html">
                                 IRender
                             </a>
                         </td>
-                        <td>in</td>
                         <td>no</td>
                         <td></td>
                         <td>
@@ -178,7 +169,6 @@
                     <tr>
                         <td>renderBaseTag</td>
                         <td>boolean</td>
-                        <td>in</td>
                         <td>no</td>
                         <td>true</td>
                         <td>
@@ -186,8 +176,105 @@
                             document head.
                         </td>
                     </tr>
-
-
+                    <tr>
+                        <td>ajaxDelegate</td>
+                        <td>
+                            <a href="../tapestry-framework/apidocs/org/apache/tapestry/IRender.html">
+                            IRender
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td>
+                            <a href="../tapestry-framework/apidocs/org/apache/tapestry/dojo/AjaxShellDelegate.html">
+                            AjaxShellDelegate
+                            </a>
+                        </td>
+                        <td>
+                            If specified, allows for the default ajaxDelegate that renders the dojo script
+                            includes to be overriden.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>browserLogLevel</td>
+                        <td>String - One of [DEBUG,INFO,WARNING,ERROR,CRITICAL]</td>
+                        <td>no</td>
+                        <td>WARNING</td>
+                        <td>
+                            Sets the default browser based javascript log level to use to debug client side
+                            interactions. If you specify an html element id to place the debug content it will be
+                            written there. Otherwise, the default is to write to an element with id "debug", or append to
+                            the document body if none exists.
+                            
+                            <p>
+                            See the dojo docs for more information about logging, but the basic idea is that you can write
+                            statements like <code>dojo.log.info("Doing some operation");</code> in javascript and have them
+                            appropriately filtered based on the log level used.
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>ajaxEnabled</td>
+                        <td>boolean</td>
+                        <td>yes</td>
+                        <td>true</td>
+                        <td>
+                            Controls whether or not the 
+                            <a href="../tapestry-framework/apidocs/org/apache/tapestry/dojo/AjaxShellDelegate.html">
+                            AjaxShellDelegate
+                            </a> is used to write out javascript include headers for dojo and tapestry core javascript
+                            libraries. 
+                            
+                            <p>
+                            <strong>WARNING:</strong> Turning this off effectively disables javascript for many standard
+                            tapestry operations, such as form validation. Be careful about turning it off unless you know
+                            it is what you want. Most of the dynamic ajax features aren't used by default unless you 
+                            specifically use a component / parmater that causes them to happen.
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>tapestrySource</td>
+                        <td>
+                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
+                            IAsset
+                        </a>
+                        </td>
+                        <td>false</td>
+                        <td>classpath:/tapestry/core.js</td>
+                        <td>
+                            Controls what the root source inclusion is for tapestry javascript packages. Override if you
+                            want to replace the built in defaults with a version of your own.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>dojoSource</td>
+                        <td>
+                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
+                            IAsset
+                        </a>
+                        </td>
+                        <td>false</td>
+                        <td>classpath:/dojo/dojo.js</td>
+                        <td>
+                            Controls what the root source inclusion is for the dojo javascript packages. Override if you
+                            want to replace the built in defaults with a version of your own.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>dojoPath</td>
+                        <td>
+                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
+                            IAsset
+                        </a>
+                        </td>
+                        <td>false</td>
+                        <td>classpath:/dojo/</td>
+                        <td>
+                            Specifies the default path to the root dojo folder, not the dojo.js file itself. This
+                            is used by the <code>djConfig.baseRelativePath</code> javascript configuration property in dojo
+                            to resolve relative resource includes - like widgets/images/js/css/etc..
+                        </td>
+                    </tr>
                 </table>
 
                 <p>
