@@ -168,14 +168,19 @@ public class AssetService implements IEngineService, ResetEventListener
         Defense.isAssignable(parameter, String.class, "parameter");
 
         String path = (String) parameter;
-
-        String digest = _digestSource.getDigestForResource(path);
-
+        
+        String digest = null;
+        
+        if(!_unprotectedMatcher.containsResource(path))
+            digest = _digestSource.getDigestForResource(path);
+        
         Map parameters = new TreeMap(new AssetComparator());
         
         parameters.put(ServiceConstants.SERVICE, getName());
         parameters.put(PATH, path);
-        parameters.put(DIGEST, digest);
+        
+        if (digest != null)
+            parameters.put(DIGEST, digest);
         
         // Service is stateless, which is the exception to the rule.
         

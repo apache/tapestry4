@@ -125,4 +125,48 @@ public class AssetEncoderTest extends TestBase
     {
         expect(encoding.getPathInfo()).andReturn(pathInfo);
     }
+    
+    public void test_Encode_Unprotected()
+    {
+        ServiceEncoding encoding = newEncoding();
+
+        trainGetParameterValue(encoding, ServiceConstants.SERVICE, Tapestry.ASSET_SERVICE);
+        trainGetParameterValue(encoding, AssetService.PATH, "/foo/bar/Baz.gif");
+        trainGetParameterValue(encoding, AssetService.DIGEST, null);
+        
+        encoding.setServletPath("/assets/" + AssetEncoder.DIGEST_STATIC + "/foo/bar/Baz.gif");
+        encoding.setParameterValue(AssetService.PATH, null);
+        encoding.setParameterValue(AssetService.DIGEST, null);
+        encoding.setParameterValue(ServiceConstants.SERVICE, null);
+
+        replay();
+
+        AssetEncoder encoder = new AssetEncoder();
+        encoder.setPath("/assets");
+
+        encoder.encode(encoding);
+
+        verify();
+    }
+    
+    public void test_Decode_Unprotected()
+    {
+        ServiceEncoding encoding = newEncoding();
+        
+        trainGetServletPath(encoding, "/assets");
+        trainGetPathInfo(encoding, "/" + AssetEncoder.DIGEST_STATIC + "/foo/bar/Baz.gif");
+        
+        encoding.setParameterValue(ServiceConstants.SERVICE, Tapestry.ASSET_SERVICE);
+        encoding.setParameterValue(AssetService.DIGEST, AssetEncoder.DIGEST_STATIC);
+        encoding.setParameterValue(AssetService.PATH, "/foo/bar/Baz.gif");
+
+        replay();
+
+        AssetEncoder encoder = new AssetEncoder();
+        encoder.setPath("/assets");
+
+        encoder.decode(encoding);
+
+        verify();
+    }
 }

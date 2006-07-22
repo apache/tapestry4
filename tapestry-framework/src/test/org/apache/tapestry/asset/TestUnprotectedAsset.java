@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.asset;
 
+import static org.easymock.EasyMock.*;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertFalse;
 import static org.testng.AssertJUnit.assertNull;
@@ -32,6 +33,8 @@ import org.apache.oro.text.regex.PatternMatcher;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
 import org.apache.tapestry.BaseComponentTestCase;
+import org.apache.tapestry.engine.ILink;
+import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ServiceConstants;
 import org.testng.annotations.Test;
 
@@ -173,5 +176,31 @@ public class TestUnprotectedAsset extends BaseComponentTestCase
         assertEquals("/things/mytemplate.css",
                 service.translateCssPath("/things/mytemplate.css"));
         assertNull(service.translateCssPath(null));
+    }
+    
+    public void test_Resource_Link_Paths()
+    {
+        LinkFactory factory = newMock(LinkFactory.class);
+        ILink link = newMock(ILink.class);
+        
+        AssetService service = new AssetService();
+        
+        ResourceMatcherImpl rm = new ResourceMatcherImpl();
+        List patterns = new ArrayList();
+        patterns.add("tapestry/*");
+        patterns.add("dojo/*");
+        rm.setContributions(patterns);
+        rm.initializeService();
+        
+        service.setUnprotectedMatcher(rm);
+        service.setLinkFactory(factory);
+        
+        expect(factory.constructLink(eq(service), eq(false), isA(Map.class), eq(false))).andReturn(link);
+        
+        replay();
+        
+        service.getLink(false, "dojo/src/html.js");
+        
+        verify();
     }
 }
