@@ -30,7 +30,7 @@
             <p>
                 <strong>
                     See also:
-                    <a href="../../tapestry-framework/apidocs/org/apache/tapestry/link/PageLink.html">
+                    <a href="../tapestry-framework/apidocs/org/apache/tapestry/link/PageLink.html">
                         org.apache.tapestry.link.PageLink
                     </a>
                     ,
@@ -72,7 +72,7 @@
                     <tr>
                         <td>namespace</td>
                         <td>
-                            <a href="../../tapestry-framework/apidocs/org/apache/tapestry/INamespace.html">
+                            <a href="../tapestry-framework/apidocs/org/apache/tapestry/INamespace.html">
                                 INamespace
                             </a>
                         </td>
@@ -160,7 +160,7 @@
 
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/link/ILinkRenderer.html">
+                                href="../tapestry-framework/apidocs/org/apache/tapestry/link/ILinkRenderer.html">
                                 ILinkRenderer
                             </a>
                         </td>

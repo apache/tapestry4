@@ -38,12 +38,12 @@
             <p>
                 <strong>
                     See also:
-                    <a href="../../tapestry-framework/apidocs/org/apache/tapestry/form/Form.html">
+                    <a href="../tapestry-framework/apidocs/org/apache/tapestry/form/Form.html">
                         org.apache.tapestry.form.Form
                     </a>
                     ,
                     <a
-                        href="../../tapestry-framework/apidocs/org/apache/tapestry/valid/IValidationDelegate.html">
+                        href="../tapestry-framework/apidocs/org/apache/tapestry/valid/IValidationDelegate.html">
                         IValidationDelegate
                     </a>
                 </strong>
@@ -71,7 +71,7 @@
                         <td>success</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/IActionListener.html">
+                                href="../tapestry-framework/apidocs/org/apache/tapestry/IActionListener.html">
                                 IActionListener
                             </a>
                         </td>
@@ -89,7 +89,7 @@
                         <td>cancel</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/IActionListener.html">
+                                href="../tapestry-framework/apidocs/org/apache/tapestry/IActionListener.html">
                                 IActionListener
                             </a>
                         </td>
@@ -111,7 +111,7 @@
                         <td>refresh</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/IActionListener.html">
+                                href="../tapestry-framework/apidocs/org/apache/tapestry/IActionListener.html">
                                 IActionListener
                             </a>
                         </td>
@@ -129,7 +129,7 @@
                         <td>listener</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/IActionListener.html">
+                                href="../tapestry-framework/apidocs/org/apache/tapestry/IActionListener.html">
                                 IActionListener
                             </a>
                         </td>
@@ -168,7 +168,7 @@
                         <td>delegate</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/valid/IValidationDelegate.html">
+                                href="../tapestry-framework/apidocs/org/apache/tapestry/valid/IValidationDelegate.html">
                                 IValidationDelegate
                             </a>
                         </td>

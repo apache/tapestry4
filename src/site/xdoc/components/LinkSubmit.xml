@@ -33,7 +33,7 @@
             <p>
                 <strong>
                     See also:
-                    <a href="../../tapestry-framework/apidocs/org/apache/tapestry/form/LinkSubmit.html">
+                    <a href="../tapestry-framework/apidocs/org/apache/tapestry/form/LinkSubmit.html">
                         org.apache.tapestry.form.LinkSubmit
                     </a>
                     ,
@@ -95,7 +95,7 @@
                         <td>listener</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/IActionListener.html">
+                                href="../tapestry-framework/apidocs/org/apache/tapestry/IActionListener.html">
                                 IActionListener
                             </a>
                         </td>
@@ -113,7 +113,7 @@
                         <td>action</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/IActionListener.html">
+                                href="../tapestry-framework/apidocs/org/apache/tapestry/IActionListener.html">
                                 IActionListener
                             </a>
                         </td>

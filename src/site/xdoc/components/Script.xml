@@ -72,7 +72,7 @@
                     <tr>
                         <td>scriptAsset</td>
                         <td>
-                            <a href="../../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
+                            <a href="../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
                                 IAsset
                             </a>
                         </td>
@@ -82,7 +82,7 @@
                         <td></td>
                         <td>
                             A reference to a script as an
-                            <a href="../../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
+                            <a href="../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
                                 IAsset
                             </a>
                             parameter. One of either scriptPath or scriptAsset must be specified.
@@ -97,7 +97,7 @@
                         <td></td>
                         <td>
                             The base set of symbols to be provided to the
-                            <a href="../../tapestry-framework/apidocs/org/apache/tapestry/IScript.html">
+                            <a href="../tapestry-framework/apidocs/org/apache/tapestry/IScript.html">
                                 IScript
                             </a>
                             . To this is added (in a copy of the Map) any informal parameters.

@@ -24,7 +24,7 @@
 
             <p>
                 Creates a &lt;a&gt; hyperlink to an
-                <a href="../../tapestry-framework/apidocs/org/apache/tapestry/IExternalPage.html">
+                <a href="../tapestry-framework/apidocs/org/apache/tapestry/IExternalPage.html">
                     IExternalPage
                 </a>
                 which may be bookmarked using the hyperlink's URL.
@@ -33,7 +33,7 @@
             <p>
                 <strong>
                     See also:
-                    <a href="../../tapestry-framework/apidocs/org/apache/tapestry/link/ExternalLink.html">
+                    <a href="../tapestry-framework/apidocs/org/apache/tapestry/link/ExternalLink.html">
                         org.apache.tapestry.link.ExternalLink
                     </a>
                     ,
@@ -146,7 +146,7 @@
                         <td>renderer</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/link/ILinkRenderer.html">
+                                href="../tapestry-framework/apidocs/org/apache/tapestry/link/ILinkRenderer.html">
                                 ILinkRenderer
                             </a>
                         </td>

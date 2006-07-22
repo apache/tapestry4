@@ -36,7 +36,7 @@
             <p>
                 <strong>
                     See also:
-                    <a href="../../tapestry-framework/apidocs/org/apache/tapestry/form/ImageSubmit.html">
+                    <a href="../tapestry-framework/apidocs/org/apache/tapestry/form/ImageSubmit.html">
                         org.apache.tapestry.form.ImageSubmit
                     </a>
                     ,
@@ -64,7 +64,7 @@
                     <tr>
                         <td>image</td>
                         <td>
-                            <a href="../../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
+                            <a href="../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
                                 IAsset
                             </a>
                         </td>
@@ -103,7 +103,7 @@
                     <tr>
                         <td>disabledImage</td>
                         <td>
-                            <a href="../../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
+                            <a href="../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
                                 IAsset
                             </a>
                         </td>
@@ -154,7 +154,7 @@
                         <td>listener</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/IActionListener.html">
+                                href="../tapestry-framework/apidocs/org/apache/tapestry/IActionListener.html">
                                 IActionListener
                             </a>
                         </td>
@@ -170,7 +170,7 @@
                         <td>action</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/IActionListener.html">
+                                href="../tapestry-framework/apidocs/org/apache/tapestry/IActionListener.html">
                                 IActionListener
                             </a>
                         </td>

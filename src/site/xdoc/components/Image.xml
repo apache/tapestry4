@@ -53,7 +53,7 @@
                     <tr>
                         <td>image</td>
                         <td>
-                            <a href="../../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
+                            <a href="../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
                                 IAsset
                             </a>
                         </td>
@@ -117,7 +117,7 @@
                     Inserts the dynamic image obtained from the page's NewsItem property.
                     <br />
                     This example uses the
-                    <a href="../../tapestry-framework/apidocs/org/apache/tapestry/asset/ExternalAsset.html">
+                    <a href="../tapestry-framework/apidocs/org/apache/tapestry/asset/ExternalAsset.html">
                         ExternalAsset
                     </a>
                     to reference the image's URL.

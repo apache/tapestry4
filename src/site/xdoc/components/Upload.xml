@@ -25,7 +25,7 @@
             <p>
                 A form element used to handle file uploads. The uploaded file is represented by an
                 instance of
-                <a href="../../tapestry-framework/apidocs/org/apache/tapestry/request/IUploadFile.html">
+                <a href="../tapestry-framework/apidocs/org/apache/tapestry/request/IUploadFile.html">
                     IUploadFile
                 </a>
                 .
@@ -34,7 +34,7 @@
             <p>
                 The maximum upload size of a file can be set by configuring the
                 <a
-                    href="../../tapestry-framework/apidocs/org/apache/tapestry/multipart/MultipartDecoder.html">
+                    href="../tapestry-framework/apidocs/org/apache/tapestry/multipart/MultipartDecoder.html">
                     MultipartDecoder
                 </a>
                 service in hivemind. The default is 10000000(10kb).
@@ -53,7 +53,7 @@
                 <strong>
                     See also:
 
-                    <a href="../../tapestry-framework/apidocs/org/apache/tapestry/form/Upload.html">
+                    <a href="../tapestry-framework/apidocs/org/apache/tapestry/form/Upload.html">
                         org.apache.tapestry.form.Upload
                     </a>
                     ,
@@ -61,7 +61,7 @@
                 </strong>
                 ,
                 <a
-                    href="../../tapestry-framework/apidocs/org/apache/tapestry/multipart/ServletMultipartDecoder.html">
+                    href="../tapestry-framework/apidocs/org/apache/tapestry/multipart/ServletMultipartDecoder.html">
                     ServletMultipartDecoder
                 </a>
             </p>
@@ -93,7 +93,7 @@
                         <td>file</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/request/IUploadFile.html">
+                                href="../tapestry-framework/apidocs/org/apache/tapestry/request/IUploadFile.html">
                                 IUploadFile
                             </a>
                         </td>
@@ -135,12 +135,12 @@
                         <td>
                             Array or collection of
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/form/validator/Validator.html">
+                                href="../tapestry-framework/apidocs/org/apache/tapestry/form/validator/Validator.html">
                                 Validator
                             </a>
                             , or
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/form/validator/Validator.html">
+                                href="../tapestry-framework/apidocs/org/apache/tapestry/form/validator/Validator.html">
                                 Validator
                             </a>
                         </td>

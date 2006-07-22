@@ -33,7 +33,7 @@
                 <strong>
                     See also:
                     <a
-                        href="../../tapestry-framework/apidocs/org/apache/tapestry/components/Any.html">
+                        href="../tapestry-framework/apidocs/org/apache/tapestry/components/Any.html">
                         org.apache.tapestry.components.Any
                     </a>
                     ,
@@ -135,7 +135,7 @@
 
                 <p>
                     The
-                    <a href="site:RenderBlock">RenderBlock</a>
+                    <a href="RenderBlock.html">RenderBlock</a>
                     component contains an extensive example that includes the use of the Any
                     component.
                 </p>
