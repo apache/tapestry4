@@ -123,8 +123,8 @@
                                 may now be of any type; type will be maintained when the parameters
                                 are later retrieved by a listener. See
                                 <a
-                                    href="../tapestry-framework/apidocs/org/apache/tapestry/util/io/DataSqueezer.html">
-                                    DataSqueezer
+                                    href="../tapestry-framework/apidocs/org/apache/tapestry/util/io/SqueezAdaptor.html">
+                                    SqueezAdaptor
                                 </a>
                                 for more details.
                             </p>

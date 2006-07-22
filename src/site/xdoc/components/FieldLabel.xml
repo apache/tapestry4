@@ -45,12 +45,12 @@
             <p>
                 <strong>
                     See also:
-                    <a href="../../tapestry-framework/apidocs/org/apache/tapestry/valid/FieldLabel.html">
+                    <a href="../tapestry-framework/apidocs/org/apache/tapestry/valid/FieldLabel.html">
                         org.apache.tapestry.valid.FieldLabel
                     </a>
                     ,
                     <a
-                        href="../../tapestry-framework/apidocs/org/apache/tapestry/valid/IValidationDelegate.html">
+                        href="../tapestry-framework/apidocs/org/apache/tapestry/valid/IValidationDelegate.html">
                         IValidationDelegate
                     </a>
                 </strong>
@@ -73,7 +73,7 @@
                         <td>field</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/form/IFormComponent.html">
+                                href="../tapestry-framework/apidocs/org/apache/tapestry/form/IFormComponent.html">
                                 IFormComponent
                             </a>
                         </td>

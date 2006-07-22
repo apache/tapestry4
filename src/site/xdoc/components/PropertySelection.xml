@@ -29,7 +29,7 @@
             <p>
                 Uses a
                 <a
-                    href="../../tapestry-framework/apidocs/org/apache/tapestry/form/IPropertySelectionModel.html">
+                    href="../tapestry-framework/apidocs/org/apache/tapestry/form/IPropertySelectionModel.html">
                     IPropertySelectionModel
                 </a>
                 to map between Java values that will be assigned, and textual labels that will
@@ -38,7 +38,7 @@
             <p>
                 A useful property selection model is available (
                 <a
-                    href="../../tapestry-framework/apidocs/org/apache/tapestry/form/StringPropertySelectionModel.html">
+                    href="../tapestry-framework/apidocs/org/apache/tapestry/form/StringPropertySelectionModel.html">
                     StringPropertySelectionModel
                 </a>
                 ). You can also create your own model, as illustrated in the examples below.
@@ -62,7 +62,7 @@
                 <strong>
                     See also:
                     <a
-                        href="../../tapestry-framework/apidocs/org/apache/tapestry/form/PropertySelection.html">
+                        href="../tapestry-framework/apidocs/org/apache/tapestry/form/PropertySelection.html">
                         org.apache.tapestry.form.PropertySelection
                     </a>
                     ,
@@ -113,7 +113,7 @@
                         <td>model</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/form/IPropertySelectionModel.html">
+                                href="../tapestry-framework/apidocs/org/apache/tapestry/form/IPropertySelectionModel.html">
                                 IPropertySelectionModel
                             </a>
                         </td>
@@ -173,12 +173,12 @@
                         <td>
                             Array or collection of
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/form/validator/Validator.html">
+                                href="../tapestry-framework/apidocs/org/apache/tapestry/form/validator/Validator.html">
                                 Validator
                             </a>
                             , or
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/form/validator/Validator.html">
+                                href="../tapestry-framework/apidocs/org/apache/tapestry/form/validator/Validator.html">
                                 Validator
                             </a>
                         </td>
@@ -231,7 +231,7 @@
                         The PropertySelection component provides Gender selection drop down list
                         using a
                         <a
-                            href="../../tapestry-framework/apidocs/org/apache/tapestry/form/StringPropertySelectionModel.html">
+                            href="../tapestry-framework/apidocs/org/apache/tapestry/form/StringPropertySelectionModel.html">
                             StringPropertySelectionModel
                         </a>
                     </p>

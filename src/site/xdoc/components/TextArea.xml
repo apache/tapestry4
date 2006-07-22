@@ -30,7 +30,7 @@
             <p>
                 <strong>
                     See also:
-                    <a href="../../tapestry-framework/apidocs/org/apache/tapestry/form/TextArea.html">
+                    <a href="../tapestry-framework/apidocs/org/apache/tapestry/form/TextArea.html">
                         org.apache.tapestry.form.TextArea
                     </a>
                     ,
@@ -108,7 +108,7 @@
                 <p>
                     TextArea components may not have a validator, but they will be decorated by a
                     <a
-                        href="../../tapestry-framework/apidocs/org/apache/tapestry/valid/IValidationDelegate.html">
+                        href="../tapestry-framework/apidocs/org/apache/tapestry/valid/IValidationDelegate.html">
                         IValidationDelegate
                     </a>
                     if in error. Since there is no validator, such errors would be set within a

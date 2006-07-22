@@ -39,6 +39,7 @@
             <item name="Home" href="/index.html" />
             <item name="Download" href="http://tapestry.apache.org/tapestry4.1/download.html" />
             <item name="Wiki" href="http://wiki.apache.org/tapestry/" />
+            <item name="FAQ" href="http://tapestry.apache.org/tapestry4.1/faq.html" />
         </menu>
         
         <menu name="Documentation" >

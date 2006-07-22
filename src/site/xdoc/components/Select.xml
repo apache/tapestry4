@@ -40,7 +40,7 @@
             <p>
                 <strong>
                     See also:
-                    <a href="../../tapestry-framework/apidocs/org/apache/tapestry/form/Select.html">
+                    <a href="../tapestry-framework/apidocs/org/apache/tapestry/form/Select.html">
                         org.apache.tapestry.form.Select
                     </a>
                     ,
@@ -110,12 +110,12 @@
                         <td>
                             Array or collection of
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/form/validator/Validator.html">
+                                href="../tapestry-framework/apidocs/org/apache/tapestry/form/validator/Validator.html">
                                 Validator
                             </a>
                             , or
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/form/validator/Validator.html">
+                                href="../tapestry-framework/apidocs/org/apache/tapestry/form/validator/Validator.html">
                                 Validator
                             </a>
                         </td>

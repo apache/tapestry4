@@ -60,7 +60,7 @@
                             when the HTML response is generated, and then written when the form is
                             submitted. A
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/util/io/DataSqueezer.html">
+                                href="../tapestry-framework/apidocs/org/apache/tapestry/util/io/DataSqueezer.html">
                                 DataSqueezer
                             </a>
                             is used to convert the value between an arbitrary type and a String.
@@ -83,7 +83,7 @@
                         <td>listener</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/IActionListener.html">
+                                href="../tapestry-framework/apidocs/org/apache/tapestry/IActionListener.html">
                                 IActionListener
                             </a>
                         </td>
@@ -117,7 +117,7 @@
                             <p>
                                 If true (the default) a
                                 <a
-                                    href="../../tapestry-framework/apidocs/org/apache/tapestry/util/io/DataSqueezer.html">
+                                    href="../tapestry-framework/apidocs/org/apache/tapestry/util/io/DataSqueezer.html">
                                     DataSqueezer
                                 </a>
                                 is used to transform the value Object into the HTML value string,
@@ -129,7 +129,7 @@
                                 in JavaScript (which is not able to interpret even Strings encoded
                                 by
                                 <a
-                                    href="../../tapestry-framework/apidocs/org/apache/tapestry/util/io/DataSqueezer.html">
+                                    href="../tapestry-framework/apidocs/org/apache/tapestry/util/io/DataSqueezer.html">
                                     DataSqueezer
                                 </a>
                                 ). If you find yourself getting strange errors during the form

@@ -32,11 +32,11 @@
             <p>
                 <strong>
                     See also:
-                    <a href="../../tapestry-framework/apidocs/org/apache/tapestry/html/InsertText.html">
+                    <a href="../tapestry-framework/apidocs/org/apache/tapestry/html/InsertText.html">
                         org.apache.tapestry.html.InsertText
                     </a>
                     ,
-                    <a href="../../tapestry-framework/apidocs/org/apache/tapestry/html/InsertTextMode.html">
+                    <a href="../tapestry-framework/apidocs/org/apache/tapestry/html/InsertTextMode.html">
                         org.apache.tapestry.html.InsertTextMode
                     </a>
                     ,
@@ -70,7 +70,7 @@
                         <td>mode</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/html/InsertTextMode.html">
+                                href="../tapestry-framework/apidocs/org/apache/tapestry/html/InsertTextMode.html">
                                 InsertTextMode
                             </a>
                         </td>
