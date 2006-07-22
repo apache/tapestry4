@@ -47,7 +47,7 @@
             </p>
 
             <subsection name="Asset">
-            
+
                 <p>
                     The
                     <a href="apidocs/org/apache/tapestry/annotations/Asset.html">Asset</a>
@@ -235,6 +235,129 @@ public abstact class YeOldeComponent extends AbstractComponent
 ...
 </source>
 
+
+            </subsection>
+
+            <subsection name="EventListener">
+
+
+                <p>
+                    The
+                    <a
+                        href="../tapestry-framework/apidocs/org/apache/tapestry/annotations/EventListener.html">
+                        EventListener
+                    </a>
+                    annotation is attached to
+                    <a href="../tapestry-framework/apidocs/org/apache/tapestry/IActionListener">
+                        listener
+                    </a>
+                    methods to dynamically bind and listen to client side browser events.
+                </p>
+
+                <p>
+                    This annotation is capable of a variety of tasks, but most of them are centered
+                    around the
+                    <a href="http://dojotoolkit.org">dojo</a>
+                    javascript toolkit event API for binding and listening to javascript events in
+                    an AOP fashion.
+                </p>
+
+                <p>
+                    As an example, this page form listener method will be called when the component
+                    with id "projectChoose" has it's javascript functional equivalent
+                    <code>selectOption</code>
+                    function called:
+                </p>
+
+                <source xml:space="preserve">
+@EventListener(events = "selectOption", targets = "projectChoose",
+submitForm = "taskForm", async=true)
+public void projectSelected(IRequestCycle cycle)
+{
+        cycle.getResponseBuilder().updateComponent("projectDescription");
+        cycle.getResponseBuilder().updateComponent("feedbackBlock");
+}
+                </source>
+
+                <subsection name="Parameters">
+
+                    <table>
+
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td>targets</td>
+                            <td>String[],String</td>
+                            <td>no</td>
+                            <td></td>
+                            <td>
+                                Specifies the components/widgets to listen to events on, in the form of unique
+                                component ids. One of either elements OR targets must be supplied.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>elements</td>
+                            <td>String[],String</td>
+                            <td>no</td>
+                            <td></td>
+                            <td>
+                                Specifies the unique html element dom node ID's to listen to events on. One of
+                                either elements OR targets must be supplied.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>events</td>
+                            <td>String[],String</td>
+                            <td>yes</td>
+                            <td></td>
+                            <td>
+                                Specifies which javascript "events" to listen for. Just as with the dojo api, these
+                                events can be simple things like <code>onClick</code> or <code>onSubmit</code>, but can
+                                also be bound to specific functions if they exist on the component/widget you are targeting.
+                                
+                                <p>
+                                For example, the Autocomplete component wraps a dojo ComboBox widget that has a function named 
+                                <code>selectOption</code> that is called when an item in the list is selected. 
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>submitForm</td>
+                            <td>String</td>
+                            <td>no</td>
+                            <td></td>
+                            <td>
+                                If specified, the form matching the passed in form ID will be submitted before calling your
+                                listener method.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>validateForm</td>
+                            <td>boolean</td>
+                            <td>no</td>
+                            <td>false</td>
+                            <td>
+                                When used in conjunction with the <code>submitForm</code> parameter, optionally enables/disables
+                                client side validation when the form is submitted.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>async</td>
+                            <td>boolean</td>
+                            <td>no</td>
+                            <td>true</td>
+                            <td>
+                                When used in conjunction with the <code>submitForm</code> parameter, optionally submits the form
+                                via a dynamic asynchronous request, or submits it using normal http IO POST methods.
+                            </td>
+                        </tr>
+                    </table>
+                </subsection>
 
             </subsection>
 

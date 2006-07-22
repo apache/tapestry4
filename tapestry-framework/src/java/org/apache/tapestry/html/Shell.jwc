@@ -110,7 +110,7 @@
   <parameter name="browserLogLevel" default-value="literal:WARNING">
     <description>
     Sets the default browser based log level. Default value is INFO. Uses
-    the dojo.log API.
+    the dojo.logging API.
     </description>
   </parameter>
   
