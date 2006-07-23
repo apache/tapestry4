@@ -35,7 +35,7 @@ function palette_sort(element, sorter)
   var options = element.options;
   var list = new Array();
   var index = 0;
-  var isNavigator = (navigator.family == "nn4" || navigator.family == "gecko");
+  var isNavigator = dojo.render.html.mozilla;
   
   while (options.length > 0)
   {
@@ -44,15 +44,11 @@ function palette_sort(element, sorter)
     if (isNavigator)
     {
       // Can't transfer option in nn4, nn6
-      
-     if (navigator.family == 'gecko')
-      	var copy = document.createElement("OPTION");
-     else
-        var copy = new Option(option.text, option.value);
+      var copy = new Option(option.text, option.value);
 
-      	copy.text = option.text;
-      	copy.value = option.value;
-      	copy.selected = options.selected;
+      copy.text = option.text;
+      copy.value = option.value;
+      copy.selected = options.selected;
       	
       list[index++] = copy;
     }
@@ -128,7 +124,7 @@ function palette_transfer_selections(source, target)
     if (option.selected)
     {
 
-       if (navigator.family == 'nn4' || navigator.family == 'gecko')
+       if (dojo.render.html.mozilla)
        {
            // Can't share options between selects in NN4
            
@@ -162,8 +158,7 @@ function palette_swap_options(options, selectedIndex, targetIndex)
 
   // It's very hard to reorder options in NN4
   
-  if (navigator.family == 'nn4' || navigator.family == 'gecko')
-  {
+  if (dojo.render.html.mozilla) {
     var swap = options[targetIndex];
     
     var hold = swap.text;

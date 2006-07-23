@@ -47,8 +47,6 @@ output symbols:
   upOnClickScript - the script to assign to the up link's onclick attribute
   downOnClickScript - the script to assign to the down link's onclick attribute
 -->
-
-<include-script resource-path="/org/apache/tapestry/html/PracticalBrowserSniffer.js"/>
 <include-script resource-path="/org/apache/tapestry/contrib/palette/PaletteFunctions.js"/>
 
 <input-symbol key="palette" class="org.apache.tapestry.contrib.palette.Palette" required="yes"/>
