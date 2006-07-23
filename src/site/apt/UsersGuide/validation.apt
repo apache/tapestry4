@@ -20,7 +20,7 @@ Input Validation
   
   Validation has evolved over time (the first attempt at proper validation using
   Tapestry occured back in 2001). Through Tapestry 3, validation was limited to the
-  <<ValidField>> component (which is now deprecated). For Tapestry 4, the APIs related to 
+  <<ValidField>> component (which is now gone). For Tapestry 4, the APIs related to 
   validation were effectively rewritten, resulting in a more powerful, more extensible approach
   that can be used with all kinds of form element components.
   
@@ -28,7 +28,7 @@ Input Validation
 
   Generally speaking, every form input component ({{{../components/TextField.html}TextField}}, etc.) will 
   be paired with a {{{../components/FieldLabel.html}FieldLabel}} component. The FieldLabel is responsible 
-  for generating the HTML \<label\> element, which is extremely effective for accessible user 
+  for generating the HTML <<<\<label\>>>> element, which is extremely effective for accessible user 
   interfaces (user interfaces that work for people with visual disabilities). Typical usage:
   
 +------------------------------------------
@@ -44,7 +44,7 @@ Input Validation
 +------------------------------------------
 <tr>
    <td><label for="userName">User Name</label></td>
-  <td><input name="userName" id="userName" value="" size="30"/>
+  <td><input name="userName" id="userName" value="" size="30"/></td>
 </tr>
 +------------------------------------------
 
@@ -74,7 +74,7 @@ Input Validation
 
   Validation for form element components, such as {{{../components/TextField.html}TextField}}
   , is controlled by three common component parameters provided by all such 
-  components: validators / translators / and displayName.
+  components: <<<validators>>> / <<<translators>>> / and <<<displayName>>>.
   
   The validators parameter provides a list of validator objects, objects that implement the
   {{{../tapestry-framework/apidocs/org/apache/tapestry/form/validator/Validator.html}Validator}} 
@@ -82,6 +82,11 @@ Input Validation
   <<<constraint>>>. Contraints are things like minimum string length, maximum string length,
   minimum numeric value, etc. This is a very fine grained approach, and one that is easily extensible 
   to new contraints.
+  
+  The <<<translator>>> parameter configures how the resulting input value should be translated from
+  its generic String input form to the targeted type, like a <<<Date>>> or double. All translators implement
+  the {{{../tapestry-framework/apidocs/org/apache/tapestry/form/translator/Translator.html}Translator}}
+  interface. 
   
   The displayName parameter is used to provide the label for the component (perhaps some day, this 
   parameter will be renamed to "label"; why it has such a cumbersome name has been forgotten). 
@@ -156,6 +161,41 @@ required,email[%email-format],minLength=20[Email addresses must be at least 20 c
  {{{../tapestry-framework/apidocs/org/apache/tapestry/form/validator/MinDate.html}MinDate}} | <<< minDate=<minimum date, 04/23/05> >>>
 *-----------------+-------------------------------------------+
  {{{../tapestry-framework/apidocs/org/apache/tapestry/form/validator/MinLength.html}MinLength}} | <<< minLength=<minmum length, 15> >>>
+*-----------------+-------------------------------------------+
+
+** translator: binding prefix
+
+  Much like the <<<validators:>>> binding, the 
+  {{{../tapestry-framework/apidocs/org/apache/tapestry/form/translator/Translator.html}translator}} 
+  binding can be configured with a simple comma-seperated string list to provide rules on how your 
+  incoming data should be translated. Some of these bindings are also used on the client side validation 
+  API to ensure the input format matches your translator parameters.
+
+  For example, to validate and translate a TextField bound to a date object you might do something like:
+  
++----------------------------------------------------------
+<component id="inputDate" type="TextField">
+  <binding name="value" value="person.dateValue"/>
+  <binding name="translator" value="translator:date,pattern=MM-dd-yyyy"/>
+  <binding name="validators" value="validators:required"/>
+  <binding name="displayName" value="literal:Date Field"/>
+</component>
++----------------------------------------------------------
+
+  Currently available translator bindings:
+  
+*-----------------+-------------------------------------------+
+| {{{../tapestry-framework/apidocs/org/apache/tapestry/form/translator/Translator.html}Translator}} | attributes |
+*-----------------+-------------------------------------------+
+ {{{../tapestry-framework/apidocs/org/apache/tapestry/form/translator/AbstractTransaltor.html}AbstractTranslator}} | <<< trim=<true/false> >>>
+*-----------------+-------------------------------------------+
+ {{{../tapestry-framework/apidocs/org/apache/tapestry/form/translator/StringTranslator.html}StringTranslator}} | <<< trim=<true/false>,empty=<default value if input is empty> >>>
+*-----------------+-------------------------------------------+
+ {{{../tapestry-framework/apidocs/org/apache/tapestry/form/translator/FormatTransaltor.html}FormatTranslator}} | <<< trim=<true/false>,pattern=<any pattern supported by {{{http://java.sun.com/j2se/1.4.2/docs/api/java/text/Format.html}Format}}> >>>
+*-----------------+-------------------------------------------+
+ {{{../tapestry-framework/apidocs/org/apache/tapestry/form/translator/DateTransaltor.html}DatetTranslator}} | <<< trim=<true/false>,pattern=<any pattern supported by {{{http://java.sun.com/j2se/1.4.2/docs/api/java/text/DateFormat.html}DateFormat}}> >>>
+*-----------------+-------------------------------------------+
+ {{{../tapestry-framework/apidocs/org/apache/tapestry/form/translator/NumberTransaltor.html}NumberTranslator}} | <<< trim=<true/false>,pattern=<any pattern supported by {{{http://java.sun.com/j2se/1.4.2/docs/api/java/text/NumberFormat.html}NumberFormat}}>,omitZero=<true/false> >>> If true (which is the default for the property), then values that are 0 are rendered to an empty string, not "0" or "0.00". This is useful in most cases where the field is optional; it allows the field to render blank when no value is present.
 *-----------------+-------------------------------------------+
 
 * Extending ValidationDelegate
