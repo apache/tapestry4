@@ -9,6 +9,8 @@ dojo.require("dojo.widget.*");
 dojo.require("dojo.widget.Dialog");
 dojo.require("dojo.html");
 
+dojo.require("tapestry.html");
+
 tapestry={
 	
 	version:"4.1", // tapestry script version
@@ -225,4 +227,4 @@ tapestry={
 	}
 }
 
-dojo.require("tapestry.html");
+// dojo.require("tapestry.html");

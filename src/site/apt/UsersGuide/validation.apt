@@ -1,0 +1,40 @@
+ ------
+Input Validation
+ ------
+Jesse Kuhnert
+ ------
+22 July 2006
+ ------
+ 
+Input Validation
+
+  The tapestry validation system provides a very powerful means of validating data 
+  intuitively on most of the form element components, such as {{{../components/TextField.html}TextField}}, 
+  {{{../components/TextArea.html}TextArea}}, {{{../components/Checkbox.html}Checkbox}}, and so forth.  All of these 
+  components implement the interface {{{../tapestry-framework/apidocs/org/apache/tapestry/form/IFormComponent.html}IFormComponent}}
+  , and include the necessary hooks to fit into the overall validation framework.
+  
+  Localization, server-side, and client side validation are handled by the framework,
+  as well as the ability to extend or override most of the built in functionality to
+  suit your purposes as you see fit.
+  
+  Validation has evolved over time (the first attempt at proper validation using
+  Tapestry occured back in 2001). Through Tapestry 3, validation was limited to the
+  <<ValidField>> component (which is now deprecated). For Tapestry 4, the APIs related to 
+  validation were effectively rewritten, resulting in a more powerful, more extensible approach
+  that can be used with all kinds of form element components.
+  
+* FieldLabel component
+
+  Generally speaking, every form input component ({{{../components/TextField.html}TextField}}, etc.) will 
+  be paired with a {{{../components/FieldLabel.html}FieldLabel}} component. The FieldLabel is responsible 
+  for generating the HTML \<label\> element, which is extremely effective for accessible user 
+  interfaces (user interfaces that work for people with visual disabilities). Typical usage:
+  
++------------------------------------------
+&lt;tr&gt;
+   &lt;td&gt;&lt;label jwcid="@FieldLabel" field="component:userName"&gt;User Name&lt;/label&gt;&lt;/td&gt;
+   &lt;td&gt;&lt;input jwcid="userName@TextField" value="ognl:userName" validators="validators:required" 
+   displayName="User Name" size="30"/&gt;
+&lt;/tr&gt;
++------------------------------------------
