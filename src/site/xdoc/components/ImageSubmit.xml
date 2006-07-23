@@ -162,8 +162,14 @@
                         <td>no</td>
                         <td></td>
                         <td>
-                            An optional listener (typically specified as the name of a listener
-                            method), notified when the Submit is triggered.
+                            A listener that is notified if this component is triggered just before
+                            the form's listener, after all components enclosed by the Form have had
+                            a chance to update their properties.
+                            
+                            <p>
+                            This parameter now behaves exactly like the current action= parameter, making
+                            action deprecated.
+                            </p>
                         </td>
                     </tr>
                     <tr>
@@ -181,6 +187,10 @@
                             A listener that is notified if this component is triggered just before
                             the form's listener, after all components enclosed by the Form have had
                             a chance to update their properties.
+                            
+                            <p>
+                            This parameter is now deprecated and marked for removal in Tapestry 4.2.
+                            </p>
                         </td>
                     </tr>
                     <tr>

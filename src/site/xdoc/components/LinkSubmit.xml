@@ -103,10 +103,14 @@
                         <td>no</td>
                         <td></td>
                         <td>
-                            If specified, the listener is notified. This notification occurs as the
-                            component is rewinded, i.e., prior to the Form's listener. In addition,
-                            the selected property (if bound) will be updated before the listener is
-                            notified.
+                            A listener that is notified if this component is triggered just before
+                            the form's listener, after all components enclosed by the Form have had
+                            a chance to update their properties.
+                            
+                            <p>
+                            This parameter now behaves exactly like the current action= parameter, making
+                            action deprecated.
+                            </p>
                         </td>
                     </tr>
                     <tr>
@@ -124,6 +128,10 @@
                             A listener that is notified if this component is triggered just before
                             the form's listener, after all components enclosed by the Form have had
                             a chance to update their properties.
+                            
+                            <p>
+                            This parameter is now deprecated and marked for removal in Tapestry 4.2.
+                            </p>
                         </td>
                     </tr>
                     <tr>
