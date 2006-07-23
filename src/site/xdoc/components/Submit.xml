@@ -144,15 +144,13 @@
                         <td>no</td>
                         <td></td>
                         <td>
-                            An optional listener (typically specified as the name of a listener
-                            method), notified when the Submit is triggered.
+                            A listener that is notified if this component is triggered just before
+                            the form's listener, after all components enclosed by the Form have had
+                            a chance to update their properties.
                             
                             <p>
-                            This parameter should <strong>not</strong> be used in the majority of cases as the
-                            listener is notified before all form data has been captured on the server. Only use
-                            this when you know you are going to redirect or do some other cancelling sort of action
-                            that isn't likely to alter form state. Use <em>action</em> as your preferred listener
-                            method parameter.
+                            This parameter now behaves exactly like the current action= parameter, making
+                            action deprecated.
                             </p>
                         </td>
                     </tr>
@@ -173,8 +171,7 @@
                             a chance to update their properties.
                             
                             <p>
-                            If you are going to notify a listener, this is probably the parameter you want 
-                            to bind to.
+                            This parameter is now deprecated and marked for removal in Tapestry 4.2.
                             </p>
                         </td>
                     </tr>
