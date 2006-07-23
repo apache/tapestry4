@@ -148,7 +148,7 @@ public class NumberTranslator extends FormatTranslator
     /**
      * If true (which is the default for the property), then values that are 0 are rendered to an
      * empty string, not "0" or "0.00". This is useful in most cases where the field is optional; it
-     * allow the field to render blank when no value is present.
+     * allows the field to render blank when no value is present.
      */
 
     public void setOmitZero(boolean omitZero)
