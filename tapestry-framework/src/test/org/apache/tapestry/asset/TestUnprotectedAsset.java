@@ -168,14 +168,14 @@ public class TestUnprotectedAsset extends BaseComponentTestCase
         AssetService service = new AssetService();
         String path = "/dojo/src/widget/template/HtmlComboBox.cssimages/foo.gif";
         
-        assertEquals("/dojo/src/widget/template/images/foo.gif", service.translateCssPath(path));
+        assertEquals("/dojo/src/widget/template/images/foo.gif", service.translatePath(path));
         assertEquals("/boo/templates/things/", 
-                service.translateCssPath("/boo/templates/somethingdumb.cssthings/"));
+                service.translatePath("/boo/templates/somethingdumb.cssthings/"));
         assertEquals("/foo/path/css/images.png", 
-                service.translateCssPath("/foo/path/css/images.png"));
+                service.translatePath("/foo/path/css/images.png"));
         assertEquals("/things/mytemplate.css",
-                service.translateCssPath("/things/mytemplate.css"));
-        assertNull(service.translateCssPath(null));
+                service.translatePath("/things/mytemplate.css"));
+        assertNull(service.translatePath(null));
     }
     
     public void test_Resource_Link_Paths()

@@ -242,7 +242,7 @@ public class AssetService implements IEngineService, ResetEventListener
                 return;
             }
             
-            URL resourceURL = _classResolver.getResource(FilenameUtils.normalize(translateCssPath(path)));
+            URL resourceURL = _classResolver.getResource(translatePath(path));
             
             if (resourceURL == null)
                 throw new ApplicationRuntimeException(AssetMessages.noSuchResource(path));
@@ -265,28 +265,32 @@ public class AssetService implements IEngineService, ResetEventListener
 
     /**
      * Utility that helps to resolve css file relative resources included
-     * in a css temlpate via "url('../images/foo.gif')" style css.
+     * in a css temlpate via "url('../images/foo.gif')" or fix paths containing 
+     * relative resource ".." style notation.
      * 
-     * @param path The incoming path to check for css resource relativity
+     * @param path The incoming path to check for relativity.
      * @return The path unchanged if not containing a css relative path, otherwise
      *          returns the path without the css filename in it so the resource is resolvable
      *          directly from the path.
      */
-    String translateCssPath(String path)
+    String translatePath(String path)
     {
         if (path == null) return null;
         
-        // don't parse out actual css files
-        if (path.endsWith(".css")) return path;
+        String ret = FilenameUtils.normalize(path);
+        ret = FilenameUtils.separatorsToUnix(ret);
         
-        int index = path.lastIndexOf(".css");
-        if (index <= -1) return path;
+        // don't parse out actual css files
+        if (ret.endsWith(".css")) return ret;
+        
+        int index = ret.lastIndexOf(".css");
+        if (index <= -1) return ret;
         
         // now need to parse out whatever css file was referenced to get the real path
-        int pathEnd = path.lastIndexOf("/", index);
-        if (pathEnd <= -1) return path;
+        int pathEnd = ret.lastIndexOf("/", index);
+        if (pathEnd <= -1) return ret;
         
-        return path.substring(0, pathEnd + 1) + path.substring(index + 4, path.length());
+        return ret.substring(0, pathEnd + 1) + ret.substring(index + 4, ret.length());
     }
     
     /**
@@ -300,7 +304,7 @@ public class AssetService implements IEngineService, ResetEventListener
      * @since 4.1
      */
     
-    protected boolean cachedResource(URL resourceURL)
+    boolean cachedResource(URL resourceURL)
     {
         File resource = new File(resourceURL.getFile());
         if (!resource.exists()) return false;
