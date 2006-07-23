@@ -32,9 +32,181 @@ Input Validation
   interfaces (user interfaces that work for people with visual disabilities). Typical usage:
   
 +------------------------------------------
-&lt;tr&gt;
-   &lt;td&gt;&lt;label jwcid="@FieldLabel" field="component:userName"&gt;User Name&lt;/label&gt;&lt;/td&gt;
-   &lt;td&gt;&lt;input jwcid="userName@TextField" value="ognl:userName" validators="validators:required" 
-   displayName="User Name" size="30"/&gt;
-&lt;/tr&gt;
+<tr>
+   <td><label jwcid="@FieldLabel" field="component:userName">User Name</label></td>
+   <td><input jwcid="userName@TextField" value="ognl:userName" validators="validators:required" 
+   		displayName="User Name" size="30"/></td>
+</tr>
 +------------------------------------------
+
+  At runtime, this may render as:
+  
++------------------------------------------
+<tr>
+   <td><label for="userName">User Name</label></td>
+  <td><input name="userName" id="userName" value="" size="30"/>
+</tr>
++------------------------------------------
+
+  However, this is not all there is to FieldLabel. An important part of validation is
+  <<<decoration>>> of fields, to mark when they contain errors. This is one of the 
+  responsibilities of {{{../tapestry-framework/apidocs/org/apache/tapestry/valid/IValidationDelegate.html}IValidationDelegate}}
+  ... decorating fields and labels.
+  
+  If the above form is submitted without specifying a user name, the userName field will be 
+  in error. The page will be redisplayed to show the user the error message and the decorated 
+  fields and labels. The <<<default>>> decoration is primitive, but effective:
+  
++----------------------------------------------
+<tr>
+   <td><font color="red"><label for="userName">User Name</label></font></td>
+   <td><input name="userName" id="userName" value="" size="30"/> <font color="red">**</font></td>
+</tr>
++----------------------------------------------
+
+  By subclassing the default implementation of {{{../tapestry-framework/apidocs/org/apache/tapestry/valid/IValidationDelegate.html}IValidationDelegate}}
+  (the {{{../tapestry-framework/apidocs/org/apache/tapestry/valid/ValidationDelegate.html}ValidationDelegate}} 
+  class), you can change how these decorations are rendered. It then becomes a matter of providing this custom 
+  validation delegate to the {{{../components/Form.html}Form}} component, via its delegate parameter. This is 
+  covered in more detail shortly.
+  
+* Field validation
+
+  Validation for form element components, such as {{{../components/TextField.html}TextField}}
+  , is controlled by three common component parameters provided by all such 
+  components: validators / translators / and displayName.
+  
+  The validators parameter provides a list of validator objects, objects that implement the
+  {{{../tapestry-framework/apidocs/org/apache/tapestry/form/validator/Validator.html}Validator}} 
+  interface. Why a list? Unlike Tapestry 3 validation, each individual validator checks just a single
+  <<<constraint>>>. Contraints are things like minimum string length, maximum string length,
+  minimum numeric value, etc. This is a very fine grained approach, and one that is easily extensible 
+  to new contraints.
+  
+  The displayName parameter is used to provide the label for the component (perhaps some day, this 
+  parameter will be renamed to "label"; why it has such a cumbersome name has been forgotten). 
+  In any case, this label is used by the matching {{{../components/FieldLabel.html}FieldLabel}} 
+  component, and is also incorporated into an error messages created for the component.
+  
+** validators: binding prefix
+
+  The validators: binding prefix is a powerful shorthand for constructing a list of configured
+  {{{../tapestry-framework/apidocs/org/apache/tapestry/form/validator/Validator.html}Validator}} objects. 
+  It allows a very declarative style; for example, to state that a field is required with a minimum 
+  length of four characters, the following parameter binding could be used 
+  (in a page or component specification):
+  
++-------------------------------------------
+<binding name="validators" value="validators:required,minLength=4"/>
++-------------------------------------------
+
+  Notice that the actual type of the data isn't specified in this instance, it is implied by 
+  which parameters you specify. A specification is a comma-seperated list of entries. 
+  Each entry is in one of the following forms:
+  
+  * <<<name>>>
+  
+  * <<<name>>> = <<<value>>>
+  
+  * <<<name[message]>>>
+  
+  * <<<name = value[message]>>>
+  
+  * $<<<name>>>
+  
+  []
+  
+  Most validator classes are <<<configurable>>>: they have a property that matches their name. 
+  For example, {{{../tapestry-framework/apidocs/org/apache/tapestry/form/validator/MinDate.html}MinDate}} 
+  (which is named "minDate" has a <<<minDate>>> property. A few validators are not configurable 
+  ("required" => {{{../tapestry-framework/apidocs/org/apache/tapestry/form/validator/Required.html}Required}}, 
+  for example).
+  
+  Validators are expected to have a public no-args constructor. They are also expected to have a 
+  <<<message>>> property which is set from the value in brackets. The message is either a
+  literal string, or may be prefixed with a '%' character, to indicate a localized key, resolved 
+  using the component's message catalog.
+  
+  When the name is prefixed with a dollary sign, it indicates a reference to a 
+  <<<bean>>> with the given name.
+  
+  A full validator specification might be:
+
++------------------------------
+required,email[%email-format],minLength=20[Email addresses must be at least 20 characters long.]
++------------------------------
+
+  Here is a partial list of the validator classes provided and their configurable attributes.
+  
+*-----------------+-------------------------------------------+
+| {{{../tapestry-framework/apidocs/org/apache/tapestry/form/validator/Validator.html}Validator}} | attributes |
+*-----------------+-------------------------------------------+
+ {{{../tapestry-framework/apidocs/org/apache/tapestry/form/validator/BaseValidator.html}BaseValidator}} | <<<message>>>
+*-----------------+-------------------------------------------+
+ {{{../tapestry-framework/apidocs/org/apache/tapestry/form/validator/Email.html}Email}} | <<<none, uses standard email regexp "^\\w[-._\\w]*\\w@\\w[-._\\w]*\\w\\.\\w{2,6}$">>>
+*-----------------+-------------------------------------------+
+ {{{../tapestry-framework/apidocs/org/apache/tapestry/form/validator/Max.html}Max}} | <<<max=<maximum value, 10>>>>
+*-----------------+-------------------------------------------+
+ {{{../tapestry-framework/apidocs/org/apache/tapestry/form/validator/MaxDate.html}MaxDate}} | <<<maxDate=<maximum date, 06/09/2010> >>>
+*-----------------+-------------------------------------------+
+ {{{../tapestry-framework/apidocs/org/apache/tapestry/form/validator/MaxLength.html}MaxLength}} | <<< maxLength=<maximum length, 23> >>>
+*-----------------+-------------------------------------------+
+ {{{../tapestry-framework/apidocs/org/apache/tapestry/form/validator/Min.html}Min}} | <<< min=<minimum value, 0.718> >>>
+*-----------------+-------------------------------------------+
+ {{{../tapestry-framework/apidocs/org/apache/tapestry/form/validator/MinDate.html}MinDate}} | <<< minDate=<minimum date, 04/23/05> >>>
+*-----------------+-------------------------------------------+
+ {{{../tapestry-framework/apidocs/org/apache/tapestry/form/validator/MinLength.html}MinLength}} | <<< minLength=<minmum length, 15> >>>
+*-----------------+-------------------------------------------+
+
+* Extending ValidationDelegate
+
+  There are a lot of scenerios where you may wish to do something more than that provided by the 
+  default, like apply a CSS class to labels in error, or even provide the ability to render the 
+  error message directly in or around the label or field.
+  
+  Below is a typical subclass of ValidationDelegate that provides more application-specific decorations:
+  
++---------------------------------------------------------------
+/**
+ * Provides more intelligent validation delegate support.
+ */
+public class MyValidationDelegate extends ValidationDelegate {
+
+/**
+ * This method is overwritten so that the error message generated during 
+ * server-side validation actually appears next to the field in question.
+ *
+ * Don't be confused by the method names, there is a complimenting writeSuffix
+ * for fields, as well as a pair of writeLabelSuffix/writeLabelPrefix methods to
+ * do the same to labels.
+ * {@inheritDoc}
+ */
+ public void writePrefix(IMarkupWriter writer, IRequestCycle cycle, 
+         IFormComponent component, IValidator validator)
+ {
+     IFieldTracking ft = getCurrentFieldTracking();
+     
+     // There is a default error renderer for fields 
+     // which simply writes the message, which is what 
+     // we want to have happen in this case.
+     
+     if (ft != null && ft.getErrorRenderer() != null) 
+         ft.getErrorRenderer().render(writer, cycle);
+ }
+ 
+ /**
+  * Adds a class style attribute to the label if in error
+  * {@inheritDoc}
+  */
+ public void writeLabelAttributes(IMarkupWriter writer, IRequestCycle cycle, 
+  IFormComponent component) 
+ {
+      if (isInError(component))
+      {
+         writer.attribute("class", "labelError");
+      }
+ }
+ 
+ }
++---------------------------------------------------------------
+
