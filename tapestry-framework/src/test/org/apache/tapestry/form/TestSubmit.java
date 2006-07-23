@@ -319,18 +319,24 @@ public class TestSubmit extends BaseFormComponentTestCase
     public void testTriggerWithListener()
     {
         IActionListener listener = newListener();
-        IForm form = newForm();
+        MockForm form = new MockForm();
         IRequestCycle cycle = newCycle();
 
         Creator creator = new Creator();
         Submit submit = (Submit) creator.newInstance(Submit.class, new Object[]
         { "listener", listener, "listenerInvoker", new ListenerInvokerTerminator() });
+        
+        replay();
 
+        submit.handleClick(cycle, form);
+
+        verify();
+        
         listener.actionTriggered(submit, cycle);
 
         replay();
 
-        submit.handleClick(cycle, form);
+        form.runDeferred();
 
         verify();
     }
@@ -434,17 +440,17 @@ public class TestSubmit extends BaseFormComponentTestCase
         Submit submit = (Submit) creator.newInstance(Submit.class, new Object[]
         { "listener", listener, "action", action, "listenerInvoker",
                 new ListenerInvokerTerminator() });
-
-        listener.actionTriggered(submit, cycle);
         
         replay();
 
         submit.handleClick(cycle, form);
 
         verify();
-
+        
+        listener.actionTriggered(submit, cycle);
+        
         action.actionTriggered(submit, cycle);
-
+        
         replay();
 
         form.runDeferred();
