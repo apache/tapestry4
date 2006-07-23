@@ -31,6 +31,7 @@ import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.util.Defense;
@@ -241,7 +242,7 @@ public class AssetService implements IEngineService, ResetEventListener
                 return;
             }
             
-            URL resourceURL = _classResolver.getResource(translateCssPath(path));
+            URL resourceURL = _classResolver.getResource(FilenameUtils.normalize(translateCssPath(path)));
             
             if (resourceURL == null)
                 throw new ApplicationRuntimeException(AssetMessages.noSuchResource(path));
