@@ -160,8 +160,9 @@ public abstract class DatePicker extends AbstractFormComponent implements Transl
 
         writer.beginEmpty("img");
         writer.attribute("src", icon.buildURL());
+        writer.attribute("alt", getMessages().getMessage("alt"));
         writer.attribute("border", 0);
-
+        
         if (!disabled)
             writer.end();
 
