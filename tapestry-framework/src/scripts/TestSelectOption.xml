@@ -30,7 +30,7 @@
 		
 		<assert-output name="Form">
 <![CDATA[
-<form method="post" action="/selopt/app" name="Form" id="Form">
+<form method="post" action="/selopt/app" id="Form">
 ]]>
 		</assert-output>
 		
@@ -119,7 +119,7 @@ Selections: vegetable.
 		
 		<assert-output name="Form">
 <![CDATA[
-<form method="post" action="/selopt/app" name="Form" id="Form">
+<form method="post" action="/selopt/app" id="Form">
 ]]>
 		</assert-output>
 		
@@ -215,7 +215,7 @@ Selections: vegetable, mineral.
 		
 		<assert-output name="Form">
 <![CDATA[
-<form method="post" action="/selopt/app" name="Form" id="Form">
+<form method="post" action="/selopt/app" id="Form">
 ]]>
 		</assert-output>
 		
@@ -290,7 +290,7 @@ Selections: none.
 		
 		<assert-output name="Second Form">
 <![CDATA[
-<form method="post" action="/selopt/app" name="Form_0" id="Form_0" direct="false">
+<form method="post" action="/selopt/app" id="Form_0" direct="false">
 ]]>	
 		</assert-output>
 	</request>

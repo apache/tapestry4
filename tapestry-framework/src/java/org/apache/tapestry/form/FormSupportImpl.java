@@ -499,9 +499,6 @@ public class FormSupportImpl implements FormSupport
         int portI = (port == null) ? 0 : port.intValue();
         writeTag(_writer, method, link.getURL(scheme, null, portI, null, false));
         
-        // For HTML compatibility
-        _writer.attribute("name", formId);
-
         // For XHTML compatibility
         _writer.attribute("id", formId);
 
