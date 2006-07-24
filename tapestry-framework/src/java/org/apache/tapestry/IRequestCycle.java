@@ -244,6 +244,21 @@ public interface IRequestCycle
     void activate(IPage page);
 
     /**
+     * Same behaviour as {@link #activate(IPage)}, except the page is/isn't validated based on the passed
+     * in boolean. The default behaviour of page activation is that the activated page <i>is</i> validate.
+     * 
+     * <p>
+     *  This is currenty implemented to support activating externally linked pages by the ExternalService.
+     * </p>
+     * 
+     * @param page 
+     *          The page to activate.
+     * @param validate
+     *          Whether or not to validate the page in addition to activating it.
+     */
+    void activate(IPage page, boolean validate);
+    
+    /**
      * Returns a query parameter value, or null if not provided in the request. If multiple values
      * are provided, returns the first value.
      * 

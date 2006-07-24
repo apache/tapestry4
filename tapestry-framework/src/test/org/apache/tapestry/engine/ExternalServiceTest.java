@@ -39,7 +39,7 @@ import org.testng.annotations.Test;
 @Test
 public class ExternalServiceTest extends ServiceTestCase
 {
-    public void testGetLink()
+    public void test_Get_Link()
     {
         Object[] serviceParameters = new Object[0];
         LinkFactory lf = newLinkFactory();
@@ -63,25 +63,27 @@ public class ExternalServiceTest extends ServiceTestCase
         verify();
     }
 
-    public void testService() throws Exception
+    public void test_Service() throws Exception
     {
         IRequestCycle cycle = newCycle();
-        IExternalPage page = newMock(IExternalPage.class);
+        IExternalPage page = newInstance(ExternalLinkPage.class, new Object[0]);
         Object[] parameters = new Object[0];
         LinkFactory lf = newLinkFactory();
         ResponseRenderer rr = newResponseRenderer();
-
+        
         trainGetParameter(cycle, ServiceConstants.PAGE, "ActivePage");
-
+        
         trainGetPage(cycle, "ActivePage", page);
-
+        
         trainExtractListenerParameters(lf, cycle, parameters);
-
+        
         cycle.setListenerParameters(parameters);
-        cycle.activate(page);
-
+        cycle.activate(page, false);
+        
         page.activateExternalPage(parameters, cycle);
-
+        
+        page.validate(cycle);
+        
         rr.renderResponse(cycle);
 
         replay();
@@ -95,7 +97,7 @@ public class ExternalServiceTest extends ServiceTestCase
         verify();
     }
 
-    public void testServiceWrongType() throws Exception
+    public void test_Service_Wrong_Type() throws Exception
     {
 
         IRequestCycle cycle = newCycle();

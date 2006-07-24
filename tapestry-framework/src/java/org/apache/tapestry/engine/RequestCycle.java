@@ -505,20 +505,30 @@ public class RequestCycle implements IRequestCycle
 
     public void activate(IPage page)
     {
+        activate(page, true);
+    }
+
+    /** @since 4.1 */
+    
+    public void activate(IPage page, boolean validate)
+    {
         Defense.notNull(page, "page");
 
         if (LOG.isDebugEnabled())
             LOG.debug("Activating page " + page);
 
-        Tapestry.clearMethodInvocations();
+        if (validate) {
+            
+            Tapestry.clearMethodInvocations();
 
-        page.validate(this);
+            page.validate(this);
 
-        Tapestry.checkMethodInvocation(Tapestry.ABSTRACTPAGE_VALIDATE_METHOD_ID, "validate()", page);
-
+            Tapestry.checkMethodInvocation(Tapestry.ABSTRACTPAGE_VALIDATE_METHOD_ID, "validate()", page);
+        }
+        
         _page = page;
     }
-
+    
     /** @since 4.0 */
     public String getParameter(String name)
     {

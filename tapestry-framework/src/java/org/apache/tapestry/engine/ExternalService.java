@@ -160,10 +160,18 @@ public class ExternalService implements IEngineService
 
         cycle.setListenerParameters(parameters);
 
-        cycle.activate(page);
+        cycle.activate(page, false);
 
         page.activateExternalPage(parameters, cycle);
+        
+        // perform page validation ~after~ external link activation
+        
+        Tapestry.clearMethodInvocations();
 
+        page.validate(cycle);
+        
+        Tapestry.checkMethodInvocation(Tapestry.ABSTRACTPAGE_VALIDATE_METHOD_ID, "validate()", page);
+        
         _responseRenderer.renderResponse(cycle);
     }
 
