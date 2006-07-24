@@ -34,7 +34,7 @@
   
   <component id="inputEnabled" type="Checkbox">
     <binding name="value" value="clientValidationEnabled"/> 
-    <binding name="onchange" value="literal:javascript:this.form.events.submit();"/>
+    <binding name="onchange" value="literal:tapestry.form.submit(this.form)"/>
   </component>
   
   <component id="showError" type="ShowError">

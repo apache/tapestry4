@@ -190,8 +190,7 @@ public class FormSupportTest extends BaseComponentTestCase
         writer.begin("form");
         writer.attribute("method", "post");
         writer.attribute("action", "/app");
-
-        writer.attribute("name", "myform");
+        
         writer.attribute("id", "myform");
 
         render.render(writer, cycle);
@@ -310,7 +309,6 @@ public class FormSupportTest extends BaseComponentTestCase
         writer.attribute("method", "post");
         writer.attribute("action", "/app");
 
-        writer.attribute("name", "myform");
         writer.attribute("id", "myform");
         
         support.addInitializationScript("Tapestry.onsubmit('myform', function (event)"
@@ -382,7 +380,7 @@ public class FormSupportTest extends BaseComponentTestCase
         writer.begin("form");
         writer.attribute("method", "post");
         writer.attribute("action", "/app");
-        writer.attribute("name", "myform");
+        
         writer.attribute("id", "myform");
         writer.attribute("enctype", "foo/bar");
 
@@ -504,8 +502,7 @@ public class FormSupportTest extends BaseComponentTestCase
         writer.begin("form");
         writer.attribute("method", "post");
         writer.attribute("action", "/app");
-
-        writer.attribute("name", "myform");
+        
         writer.attribute("id", "myform");
 
         render.render(writer, cycle);
@@ -678,8 +675,7 @@ public class FormSupportTest extends BaseComponentTestCase
         writer.begin("form");
         writer.attribute("method", "post");
         writer.attribute("action", "/app");
-
-        writer.attribute("name", "myform");
+        
         writer.attribute("id", "myform");
 
         render.render(writer, cycle);
@@ -755,8 +751,7 @@ public class FormSupportTest extends BaseComponentTestCase
         writer.begin("form");
         writer.attribute("method", "post");
         writer.attribute("action", "/app");
-
-        writer.attribute("name", "myform");
+        
         writer.attribute("id", "myform");
 
         support.addInitializationScript("Tapestry.onreset('myform', function (event)"
@@ -1036,8 +1031,7 @@ public class FormSupportTest extends BaseComponentTestCase
         writer.begin("form");
         writer.attribute("method", "post");
         writer.attribute("action", "/app");
-
-        writer.attribute("name", "myform");
+        
         writer.attribute("id", "myform");
 
         render.render(writer, cycle);
@@ -1121,8 +1115,7 @@ public class FormSupportTest extends BaseComponentTestCase
         writer.begin("form");
         writer.attribute("method", "post");
         writer.attribute("action", "/app");
-
-        writer.attribute("name", "myform");
+        
         writer.attribute("id", "myform");
 
         render.render(writer, cycle);
@@ -1187,8 +1180,7 @@ public class FormSupportTest extends BaseComponentTestCase
         writer.begin("form");
         writer.attribute("method", "post");
         writer.attribute("action", "https://foo.bar/app");
-
-        writer.attribute("name", "myform");
+        
         writer.attribute("id", "myform");
 
         render.render(writer, cycle);
@@ -1349,7 +1341,6 @@ public class FormSupportTest extends BaseComponentTestCase
         writer.attribute("method", "post");
         writer.attribute("action", "/app");
         
-        writer.attribute("name", "myform");
         writer.attribute("id", "myform");
         
         form.setBody(new IRender()
