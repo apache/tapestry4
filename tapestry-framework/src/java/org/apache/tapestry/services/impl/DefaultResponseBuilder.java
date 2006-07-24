@@ -42,7 +42,7 @@ public class DefaultResponseBuilder implements ResponseBuilder
 
     private WebResponse _webResponse;
     
-    /** Writer that creates JSON output response. */
+    /** Default writer for rendering html output. */
     private IMarkupWriter _writer;
     
     /**
