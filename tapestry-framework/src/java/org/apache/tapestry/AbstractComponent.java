@@ -689,8 +689,8 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
 
     /**
      * Invoked by {@link #render(IMarkupWriter, IRequestCycle)}to prepare the component to render.
-     * This implementation sets JavaBeans properties from matching bound parameters. This
-     * implementation does nothing.
+     * This implementation sets JavaBeans properties from matching bound parameters. The default
+     * implementation of this method is empty.
      * 
      * @since 2.0.3
      */

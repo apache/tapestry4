@@ -150,7 +150,16 @@
                             refresh.
                         </td>
                     </tr>
-
+                    <tr>
+                        <td>disableCaching</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            If provided, then a &lt;meta&gt; tag will be written setting the
+                            content="nocache" value to try and prevent browser caching of page.
+                        </td>
+                    </tr>
                     <tr>
                         <td>delegate</td>
                         <td>
