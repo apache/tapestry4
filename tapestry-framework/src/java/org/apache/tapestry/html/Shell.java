@@ -72,6 +72,9 @@ public abstract class Shell extends AbstractComponent
 
             writeMetaTag(writer, "name", "generator", GENERATOR_CONTENT);
             
+            if (isDisableCaching())
+                writeMetaTag(writer, "http-equiv", "content", "no-cache");
+            
             if (getRenderContentType())
                 writeMetaTag(writer, "http-equiv", "Content-Type", writer.getContentType());
             
@@ -181,6 +184,8 @@ public abstract class Shell extends AbstractComponent
         writer.attribute("content", content);
         writer.println();
     }
+    
+    public abstract boolean isDisableCaching();
     
     public abstract boolean isAjaxEnabled();
     

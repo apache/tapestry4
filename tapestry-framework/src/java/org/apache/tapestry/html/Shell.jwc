@@ -99,6 +99,13 @@
   	</description>
   </parameter>
   
+  <parameter name="disableCaching" default-value="false" >
+    <description>
+        If set, causes a META tag to be written with a value of no-cache to prevent browser caching of 
+        whichever page is rendered.
+    </description>
+  </parameter>
+  
   <parameter name="ajaxDelegate" 
              default-value="bean:coreAjaxDelegate" >
      <description>

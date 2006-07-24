@@ -57,9 +57,7 @@
   
   <parameter name="listener">
   	<description>
-  	A listener that is notified if this component is triggered
-    just before the form's listener, after all components 
-    enclosed by the Form have had a chance to update their properties.
+  	Notified when the button is clicked.
   	</description>
   </parameter>
   

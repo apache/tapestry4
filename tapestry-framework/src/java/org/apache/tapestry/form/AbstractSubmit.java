@@ -75,19 +75,10 @@ abstract class AbstractSubmit extends AbstractFormComponent
                 { parameters });
             }
         }
-
-        // Defer 'listener' for later
-        if (listener != null) {
-            Runnable notify = new Runnable()
-            {
-                public void run()
-                {
-                    listenerInvoker.invokeListener(listener, AbstractSubmit.this, cycle);
-                }
-            };
-            
-            form.addDeferredRunnable(notify);
-        }
+        
+        // Invoke 'listener' now, but defer 'action' for later
+        if (listener != null)
+            listenerInvoker.invokeListener(listener, AbstractSubmit.this, cycle);
         
         if (action != null) {
             Runnable notify = new Runnable()
@@ -104,13 +95,8 @@ abstract class AbstractSubmit extends AbstractFormComponent
 
     /** parameter. */
     public abstract IActionListener getListener();
-
-    /**
-     * Parameter for which listener to call when submitted.
-     * 
-     * @deprecated To be completely removed in 4.2, use {@link #getListener()} instead.
-     * @return
-     */
+    
+    /** parameter. */
     public abstract IActionListener getAction();
 
     /** parameter. */
