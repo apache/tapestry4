@@ -32,10 +32,10 @@
 <![CDATA[
 <input type="radio" .*?> \w+
 ]]>
-			<match><![CDATA[<input type="radio" name="RadioGroup" value="0"/> Small]]></match>
-			<match><![CDATA[<input type="radio" name="RadioGroup" checked="checked" value="1"/> Medium]]></match>
-			<match><![CDATA[<input type="radio" name="RadioGroup" value="2"/> Large]]></match>
-			<match><![CDATA[<input type="radio" name="RadioGroup" disabled="disabled" value="3"/> Gargantuan]]></match>
+			<match><![CDATA[<input type="radio" name="RadioGroup" id="RadioGroup0" value="0"/> Small]]></match>
+			<match><![CDATA[<input type="radio" name="RadioGroup" id="RadioGroup1" checked="checked" value="1"/> Medium]]></match>
+			<match><![CDATA[<input type="radio" name="RadioGroup" id="RadioGroup2" value="2"/> Large]]></match>
+			<match><![CDATA[<input type="radio" name="RadioGroup" id="RadioGroup3" disabled="disabled" value="3"/> Gargantuan]]></match>
 									
 		</assert-output-matches>
 		
@@ -64,10 +64,10 @@
 <![CDATA[
 <input type="radio" .*?> \w+
 ]]>
-			<match><![CDATA[<input type="radio" name="RadioGroup" value="0"/> Small]]></match>
-			<match><![CDATA[<input type="radio" name="RadioGroup" value="1"/> Medium]]></match>
-			<match><![CDATA[<input type="radio" name="RadioGroup" checked="checked" value="2"/> Large]]></match>
-			<match><![CDATA[<input type="radio" name="RadioGroup" disabled="disabled" value="3"/> Gargantuan]]></match>
+			<match><![CDATA[<input type="radio" name="RadioGroup" id="RadioGroup0" value="0"/> Small]]></match>
+			<match><![CDATA[<input type="radio" name="RadioGroup" id="RadioGroup1" value="1"/> Medium]]></match>
+			<match><![CDATA[<input type="radio" name="RadioGroup" id="RadioGroup2" checked="checked" value="2"/> Large]]></match>
+			<match><![CDATA[<input type="radio" name="RadioGroup" id="RadioGroup3" disabled="disabled" value="3"/> Gargantuan]]></match>
 									
 		</assert-output-matches>
 		
@@ -95,10 +95,10 @@
 <![CDATA[
 <input type="radio" .*?> \w+
 ]]>
-			<match><![CDATA[<input type="radio" name="RadioGroup" value="0"/> Small]]></match>
-			<match><![CDATA[<input type="radio" name="RadioGroup" checked="checked" value="1"/> Medium]]></match>
-			<match><![CDATA[<input type="radio" name="RadioGroup" value="2"/> Large]]></match>
-			<match><![CDATA[<input type="radio" name="RadioGroup" disabled="disabled" value="3"/> Gargantuan]]></match>
+			<match><![CDATA[<input type="radio" name="RadioGroup" id="RadioGroup0" value="0"/> Small]]></match>
+			<match><![CDATA[<input type="radio" name="RadioGroup" id="RadioGroup1" checked="checked" value="1"/> Medium]]></match>
+			<match><![CDATA[<input type="radio" name="RadioGroup" id="RadioGroup2" value="2"/> Large]]></match>
+			<match><![CDATA[<input type="radio" name="RadioGroup" id="RadioGroup3" disabled="disabled" value="3"/> Gargantuan]]></match>
 									
 		</assert-output-matches>
 		
@@ -127,10 +127,10 @@
 <![CDATA[
 <input type="radio" .*?> \w+
 ]]>
-			<match><![CDATA[<input type="radio" name="RadioGroup" value="0"/> Small]]></match>
-			<match><![CDATA[<input type="radio" name="RadioGroup" checked="checked" value="1"/> Medium]]></match>
-			<match><![CDATA[<input type="radio" name="RadioGroup" value="2"/> Large]]></match>
-			<match><![CDATA[<input type="radio" name="RadioGroup" disabled="disabled" value="3"/> Gargantuan]]></match>
+			<match><![CDATA[<input type="radio" name="RadioGroup" id="RadioGroup0" value="0"/> Small]]></match>
+			<match><![CDATA[<input type="radio" name="RadioGroup" id="RadioGroup1" checked="checked" value="1"/> Medium]]></match>
+			<match><![CDATA[<input type="radio" name="RadioGroup" id="RadioGroup2" value="2"/> Large]]></match>
+			<match><![CDATA[<input type="radio" name="RadioGroup" id="RadioGroup3" disabled="disabled" value="3"/> Gargantuan]]></match>
 									
 		</assert-output-matches>
 		
@@ -159,10 +159,10 @@
 <![CDATA[
 <input type="radio" .*?> \w+
 ]]>
-			<match><![CDATA[<input type="radio" name="RadioGroup" value="0"/> Small]]></match>
-			<match><![CDATA[<input type="radio" name="RadioGroup" checked="checked" value="1"/> Medium]]></match>
-			<match><![CDATA[<input type="radio" name="RadioGroup" value="2"/> Large]]></match>
-			<match><![CDATA[<input type="radio" name="RadioGroup" disabled="disabled" value="3"/> Gargantuan]]></match>
+			<match><![CDATA[<input type="radio" name="RadioGroup" id="RadioGroup0" value="0"/> Small]]></match>
+			<match><![CDATA[<input type="radio" name="RadioGroup" id="RadioGroup1" checked="checked" value="1"/> Medium]]></match>
+			<match><![CDATA[<input type="radio" name="RadioGroup" id="RadioGroup2" value="2"/> Large]]></match>
+			<match><![CDATA[<input type="radio" name="RadioGroup" id="RadioGroup3" disabled="disabled" value="3"/> Gargantuan]]></match>
 									
 		</assert-output-matches>
 		
@@ -189,10 +189,10 @@
 <![CDATA[
 <input type="radio" .*?> \w+
 ]]>
-			<match><![CDATA[<input type="radio" name="RadioGroup" disabled="disabled" value="0"/> Small]]></match>
-			<match><![CDATA[<input type="radio" name="RadioGroup" checked="checked" disabled="disabled" value="1"/> Medium]]></match>
-			<match><![CDATA[<input type="radio" name="RadioGroup" disabled="disabled" value="2"/> Large]]></match>
-			<match><![CDATA[<input type="radio" name="RadioGroup" disabled="disabled" value="3"/> Gargantuan]]></match>
+			<match><![CDATA[<input type="radio" name="RadioGroup" id="RadioGroup0" disabled="disabled" value="0"/> Small]]></match>
+			<match><![CDATA[<input type="radio" name="RadioGroup" id="RadioGroup1" checked="checked" disabled="disabled" value="1"/> Medium]]></match>
+			<match><![CDATA[<input type="radio" name="RadioGroup" id="RadioGroup2" disabled="disabled" value="2"/> Large]]></match>
+			<match><![CDATA[<input type="radio" name="RadioGroup" id="RadioGroup3" disabled="disabled" value="3"/> Gargantuan]]></match>
 									
 		</assert-output-matches>
 		
@@ -220,10 +220,10 @@
 <![CDATA[
 <input type="radio" .*?> \w+
 ]]>
-			<match><![CDATA[<input type="radio" name="RadioGroup" disabled="disabled" value="0"/> Small]]></match>
-			<match><![CDATA[<input type="radio" name="RadioGroup" checked="checked" disabled="disabled" value="1"/> Medium]]></match>
-			<match><![CDATA[<input type="radio" name="RadioGroup" disabled="disabled" value="2"/> Large]]></match>
-			<match><![CDATA[<input type="radio" name="RadioGroup" disabled="disabled" value="3"/> Gargantuan]]></match>
+			<match><![CDATA[<input type="radio" name="RadioGroup" id="RadioGroup0" disabled="disabled" value="0"/> Small]]></match>
+			<match><![CDATA[<input type="radio" name="RadioGroup" id="RadioGroup1" checked="checked" disabled="disabled" value="1"/> Medium]]></match>
+			<match><![CDATA[<input type="radio" name="RadioGroup" id="RadioGroup2" disabled="disabled" value="2"/> Large]]></match>
+			<match><![CDATA[<input type="radio" name="RadioGroup" id="RadioGroup3" disabled="disabled" value="3"/> Gargantuan]]></match>
 									
 		</assert-output-matches>
 		
@@ -290,19 +290,19 @@
 			</assert-output>
 			
 			<assert-output name="No Choice">
-<![CDATA[<input type="radio" name="group" checked="checked" value="0"/> No Choice]]>				
+<![CDATA[<input type="radio" name="group" id="group0" checked="checked" value="0"/> No Choice]]>				
 			</assert-output>
 			
 			<assert-output name="Tapestry">
-<![CDATA[<input type="radio" name="group" value="1"/> Tapestry]]>				
+<![CDATA[<input type="radio" name="group" id="group1" value="1"/> Tapestry]]>				
 			</assert-output>
 
 			<assert-output name="Struts">
-<![CDATA[<input type="radio" name="group" value="2"/> Struts]]>				
+<![CDATA[<input type="radio" name="group" id="group2" value="2"/> Struts]]>				
 			</assert-output>
 			
 			<assert-output name="WebWork">
-<![CDATA[<input type="radio" name="group" value="3"/> WebWork]]>				
+<![CDATA[<input type="radio" name="group" id="group3" value="3"/> WebWork]]>				
 			</assert-output>
 			
 			<assert-output name="Selection">
@@ -322,19 +322,19 @@ Framework: []
 		<parameter name="group" value="1"/>
 		
 			<assert-output name="No Choice">
-<![CDATA[<input type="radio" name="group" value="0"/> No Choice]]>				
+<![CDATA[<input type="radio" name="group" id="group0" value="0"/> No Choice]]>				
 			</assert-output>
 					
 			<assert-output name="Tapestry">
-<![CDATA[<input type="radio" name="group" checked="checked" value="1"/> Tapestry]]>				
+<![CDATA[<input type="radio" name="group" id="group1" checked="checked" value="1"/> Tapestry]]>				
 			</assert-output>
 
 			<assert-output name="Struts">
-<![CDATA[<input type="radio" name="group" value="2"/> Struts]]>				
+<![CDATA[<input type="radio" name="group" id="group2" value="2"/> Struts]]>				
 			</assert-output>
 			
 			<assert-output name="WebWork">
-<![CDATA[<input type="radio" name="group" value="3"/> WebWork]]>				
+<![CDATA[<input type="radio" name="group" id="group3" value="3"/> WebWork]]>				
 			</assert-output>
 			
 			<assert-output name="Selection">
@@ -351,19 +351,19 @@ Framework: [tapestry]
 		<parameter name="formids" value="group"/>	
 
 			<assert-output name="No Choice">
-<![CDATA[<input type="radio" name="group" checked="checked" value="0"/> No Choice]]>				
+<![CDATA[<input type="radio" name="group" id="group0" checked="checked" value="0"/> No Choice]]>				
 			</assert-output>
 			
 			<assert-output name="Tapestry">
-<![CDATA[<input type="radio" name="group" value="1"/> Tapestry]]>				
+<![CDATA[<input type="radio" name="group" id="group1" value="1"/> Tapestry]]>				
 			</assert-output>
 
 			<assert-output name="Struts">
-<![CDATA[<input type="radio" name="group" value="2"/> Struts]]>				
+<![CDATA[<input type="radio" name="group" id="group2" value="2"/> Struts]]>				
 			</assert-output>
 			
 			<assert-output name="WebWork">
-<![CDATA[<input type="radio" name="group" value="3"/> WebWork]]>				
+<![CDATA[<input type="radio" name="group" id="group3" value="3"/> WebWork]]>				
 			</assert-output>
 			
 			<assert-output name="Selection">
@@ -381,15 +381,15 @@ Framework: []
 		</assert-output>
 		
 		<assert-output name="Java">
-<![CDATA[<input type="radio" name="group" value="0"/> Java]]>					
+<![CDATA[<input type="radio" name="group" id="group0" value="0"/> Java]]>					
 		</assert-output>
 
 		<assert-output name="C#">
-<![CDATA[<input type="radio" name="group" value="1"/> C#]]>					
+<![CDATA[<input type="radio" name="group" id="group1" value="1"/> C#]]>					
 		</assert-output>
 			
 		<assert-output name="C#">
-<![CDATA[<input type="radio" name="group" value="2"/> Python]]>					
+<![CDATA[<input type="radio" name="group" id="group2" value="2"/> Python]]>					
 		</assert-output>			
 		</request>
 		
@@ -407,15 +407,15 @@ Framework: []
 		</assert-output>
 		
 		<assert-output name="Java">
-<![CDATA[<input type="radio" name="group" value="0"/> Java]]>					
+<![CDATA[<input type="radio" name="group" id="group0" value="0"/> Java]]>					
 		</assert-output>
 
 		<assert-output name="C#">
-<![CDATA[<input type="radio" name="group" value="1"/> C#]]>					
+<![CDATA[<input type="radio" name="group" id="group1" value="1"/> C#]]>					
 		</assert-output>
 			
 		<assert-output name="C#">
-<![CDATA[<input type="radio" name="group" checked="checked" value="2"/> Python]]>					
+<![CDATA[<input type="radio" name="group" id="group2" checked="checked" value="2"/> Python]]>					
 		</assert-output>			
 		</request>
 			

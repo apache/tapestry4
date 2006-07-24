@@ -514,8 +514,7 @@ public class RequestCycle implements IRequestCycle
 
         page.validate(this);
 
-        Tapestry
-                .checkMethodInvocation(Tapestry.ABSTRACTPAGE_VALIDATE_METHOD_ID, "validate()", page);
+        Tapestry.checkMethodInvocation(Tapestry.ABSTRACTPAGE_VALIDATE_METHOD_ID, "validate()", page);
 
         _page = page;
     }
