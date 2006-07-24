@@ -78,7 +78,9 @@ public abstract class Radio extends AbstractComponent
         writer.attribute("type", "radio");
 
         writer.attribute("name", group.getName());
-
+        
+        writer.attribute("id", group.getName()+option);
+        
         // As the group if the value for this Radio matches the selection
         // for the group as a whole; if so this is the default radio and is checked.
 
