@@ -52,14 +52,6 @@ var content={chosenBook:"Cryptonomicon",numberOfCopies:"10"};
 tapestry.bind(url, content);
 +-----------------------------------
 
-+-------------------------
-<script type="text/javascript">
-	dojo.require("tapestry.form");
-	
-	tapestry.form.submit(dojo.byId("myform"));
-</script>
-+-------------------------
-
 * tapestry.error(type, exception, http, kwArgs)
 
   Global error handling function for dojo.io.bind requests. This function is used by all of the IO
