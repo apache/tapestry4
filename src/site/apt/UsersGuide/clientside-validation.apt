@@ -1,0 +1,95 @@
+ ------
+Client-Side Validation
+ ------
+Jesse Kuhnert
+ ------
+26 July 2006
+ ------
+
+Client-Side Validation
+
+  Client side validation in Tapestry is now moving towards being just as powerful as its 
+  server side counterpart,  if not more so. To use the client side API all you need to do
+  is set the <<<clientValidationEnabled>>> parameter to <<<true>>> on your 
+  {{{../components/Form.html}Form}} and it will automatically be setup for you.
+  
+  This document will focus on how you can customize and interact with the default tapestry javascript
+  validation system, leaving the normal {{{validation.html}Input Validation}} guide as the core resource
+  for configuring and using validation in general.
+  
+  <<See also:>> Tapestry {{{../javascript/form.html}Form}} JavaScript API reference.
+  
+* Configuring CSS definitions
+
+  One of the largest changes made to Tapestry 4.1 was the complete replacement of most of the javascript
+  functions in the framework, including validation. As part of this change the new validation API doesn't
+  use window <<<alert>>> <alert('Clicked!')> dialogs anymore. The new system uses a 
+  combination of {{{http://dojotoolkit.org}dojo}} dhtml widgets and <<<CSSS>>> rules to apply UI hints
+  to form fields with missing or invalid data.
+  
+  There are now two core CSS classes that you must define for your input fields. There names are:
+  
+  * <<fieldMissing>> - Applied to form input fields that are required and missing a selection/input value.
+  
+  * <<fieldInvalid>> - Applied to form input fields that have <invalid> data. A field could be invalid for
+  					   a number of reasons, like an integer value not being within a certain range or a 
+  					   {{{../components/DatePicker.html}date}} field being in an invalid format.
+  					   
+  []
+  
+  By default Tapestry <<does not>> define these two css classes, you must define them yourself in order to 
+  see the classes applied to your forms. The TimeTracker demo application has defined these two css classes
+  as:
+  
++----------------------------------------------
+.fieldMissing {
+    background: #bedef4;
+}
+
+.fieldInvalid {
+    background: #ffaf7e;
+    font-weight: bold;
+}
++----------------------------------------------
+
+** Dojo dialog CSS definitions
+
+  This is still a questionable default, but for now the new way that error messages are presented to users
+  is with a client side {{{http://dojotoolkit.org}dojo}} Dialog widget. 
+  
+[../images/UsersGuide/validation-dialog.png] Validation dialog example.
+  
+  Much like the core validation system, the presentation of the validation dialog is also controlled by user
+  defined css rules:
+  
+  * <<missingList>> - Applied to a block of <<< <ul><li>Message</li></ul> >>> html content for messages 
+  					  resulting from missing fields.
+  					
+  * <<invalidList>> - Applied to a block of <<< <ul><li>Message</li></ul> >>> html content for messages 
+  					  resulting from invalid fields.
+
+  []
+
+  The TimeTracker demo application also defines a default set of classes to handle the dialog classes:
+  
++-----------------------------------------------
+.missingList, .invalidList {
+    padding: 0.6em;
+    padding-top: 0.2em;
+    width:100%;
+    display:block;
+}
+
+.missingList {
+    border-top: 4px solid #bedef4;
+}
+
+.invalidList {
+    border-top: 4px solid #ffaf7e;
+}
+
+.missingList li, .invalidList li {
+    list-style:none;
+    font-style:italic;
+}
++-----------------------------------------------

@@ -240,9 +240,9 @@
                     <em>type, src, border</em>
                 </p>
 
-                <p>
+                <span class="warn">
                     <strong>Warning:</strong>
-                    <br />
+                    <p>
                     In Tapestry 3.0, the behavior of the ImageSubmit was
                     <em>undeferred</em>
                     , the equivalent of setting the defer parameter to false. The default for the
@@ -250,7 +250,8 @@
                     <strong>true</strong>
                     , which may in rare cases, cause problems when upgrading an applicaton from 3.0
                     to 4.0.
-                </p>
+                    </p>
+                </span>
 
 
             </section>
@@ -295,7 +296,7 @@
 
                 <p>
                     This is a variation of the example for the
-                    <a href="site:Submit">Submit</a>
+                    <a href="Submit.html">Submit</a>
                     component; it uses images instead of ordinary clickable buttons for the help and
                     login actions.
                 </p>

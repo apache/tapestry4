@@ -35,6 +35,8 @@ public abstract class Checkbox extends AbstractFormComponent implements Validata
      */
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
+        renderDelegatePrefix(writer, cycle);
+        
         writer.beginEmpty("input");
         writer.attribute("type", "checkbox");
 
@@ -48,9 +50,13 @@ public abstract class Checkbox extends AbstractFormComponent implements Validata
 
         renderIdAttribute(writer, cycle);
 
+        getValidatableFieldSupport().renderContributions(this, writer, cycle);
+        
         renderInformalParameters(writer, cycle);
 
         writer.closeTag();
+        
+        renderDelegateSuffix(writer, cycle);
     }
 
     /**

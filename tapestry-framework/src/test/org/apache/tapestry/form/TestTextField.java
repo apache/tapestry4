@@ -53,7 +53,7 @@ public class TestTextField extends BaseFormComponentTestCase
         IMarkupWriter writer = newWriter();
 
         IValidationDelegate delegate = newDelegate();
-
+        
         trainGetForm(cycle, form);
         trainWasPrerendered(form, writer, component, false);
         trainGetDelegate(form, delegate);
