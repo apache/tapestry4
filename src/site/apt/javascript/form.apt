@@ -76,7 +76,7 @@ tapestry.form.registerForm("myform");
   The new tapestry client side validation API relies completely on the logic provided by the
   <<<dojo.validate.check(form, profile)>>> function. This section will probably be undergoing more extensive
   documentation at some point, but for now the jsdoc comments in dojo are pasted in below. <(tapestry profile
-  specifics are covered in the javascript {{{validation.html}Validation}} section)>.
+  specifics are covered in the javascript {{{form-validation.html}Validation}} section)>.
   
   <<See also:>> <<<dojo.validate.common>>> {{{http://archive.dojotoolkit.org/nightly/src/validate/common.js}source}}
   
@@ -188,6 +188,15 @@ isInvalid(field):  Returns true if the field has an invalid value.
 *----------------------*---------------*------------*----------*----------------------------------------------+
   submitName 		   | String        |   no       |          | Optional submit name string to use when submitting.
 *----------------------*---------------*------------*----------*----------------------------------------------+
+
+** Example
++-------------------------
+<script type="text/javascript">
+	dojo.require("tapestry.form");
+	
+	tapestry.form.submit(dojo.byId("myform"));
+</script>
++-------------------------
 
 * tapestry.form.cancel(form)
 
