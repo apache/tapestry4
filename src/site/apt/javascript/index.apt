@@ -1,0 +1,35 @@
+ ------
+JavaScript Reference - Introduction
+ ------
+Jesse Kuhnert
+ ------
+26 July 2006
+ ------
+ 
+Introduction
+
+  Tapestry makes extensive use of the {{{http://dojotoolkit.org}dojo}} toolkit library to facilitate
+  easier client side management / communication. Without a better way to automate the documentation process
+  for javascript this section will attemp to define the most important Tapestry javascript functions/objects
+  available.
+  
+  By default, the {{{../components/Shell.html}Shell}} component will include the core 
+  {{{http://dojotoolkit.org}dojo}} javascript object <<<dojo.js>>>, as well as the new core
+  Tapestry javascript object - <<<core.js>>>. This means that you don't have to worry about how to include
+  dojo or Tapestry javascript on any of your pages, they will already be available.
+  
+  All of the Tapestry javascript is heavily documented in <<<jsdoc>>> style javadoc formatting. If you 
+  would like to see the source yourself and bypass the online docs you may view it 
+  {{{http://svn.apache.org/viewvc/tapestry/tapestry4/trunk/tapestry-framework/src/js/tapestry/}here}}.
+
+* Dojo documentation
+
+  For documentation related to {{{http://dojotoolkit.org}dojo}}, please see the resources available on
+  the dojo website:
+  
+  * {{http://manual.dojotoolkit.org/}} - The dojo manual.
+  
+  * {{http://dojo.jot.com}} - The dojo wiki.
+  
+  []
+  

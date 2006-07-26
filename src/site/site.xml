@@ -37,12 +37,20 @@
         
         <menu name="Quick Links" inherit="top" >
             <item name="Home" href="/index.html" />
+            <item name="Blog" href="http://howardlewisship.com/blog/" />
             <item name="Download" href="http://tapestry.apache.org/tapestry4.1/download.html" />
             <item name="Wiki" href="http://wiki.apache.org/tapestry/" />
             <item name="FAQ" href="http://tapestry.apache.org/tapestry4.1/faq.html" />
         </menu>
         
         <menu name="Documentation" >
+            
+            <item name="Quick Start" href="/QuickStart/helloworld.html" collapse="true">
+                <item name="Hello World" href="/QuickStart/helloworld.html" />
+                <item name="Direct Links" href="/QuickStart/directlink.html" />
+                <item name="Forms" href="/QuickStart/forms.html" />
+                <item name="Contributed" href="/QuickStart/contributed.html" />
+            </item>
             
             <item name="Users Guide" href="/UsersGuide/index.html" collapse="true">
                 <item name="Introduction" href="/UsersGuide/index.html" />
@@ -51,6 +59,7 @@
                 <item name="Listeners" href="/UsersGuide/listenermethods.html" />
                 <item name="Page Classes" href="/UsersGuide/page-class.html" />
                 <item name="Input Validation" href="/UsersGuide/validation.html"  />
+                <item name="Client-Side Validation" href="/UsersGuide/clientside-validation.html" />
                 <item name="Creating Components" href="/UsersGuide/components.html" />
                 <item name="Property Injection" href="/UsersGuide/injection.html" />
                 <item name="Localization" href="/UsersGuide/localization.html" />
@@ -65,11 +74,13 @@
                 <item name="Script Template DTD" href="/UsersGuide/script.html" />
             </item>
             
-            <item name="Quick Start" href="/QuickStart/helloworld.html" collapse="true">
-                <item name="Hello World" href="/QuickStart/helloworld.html" />
-                <item name="Direct Links" href="/QuickStart/directlink.html" />
-                <item name="Forms" href="/QuickStart/forms.html" />
-                <item name="Contributed" href="/QuickStart/contributed.html" />
+            <item name="JavaScript Reference" href="/javascript/index.html" collapse="true">
+                <item name="Introduction" href="/javascript/index.html" />
+                <item name="Packaging" href="/javascript/packaging.html" />
+                <item name="Core" href="/javascript/core.html" />
+                <item name="Html" href="/javascript/html.html" />
+                <item name="Form" href="/javascript/form.html" />
+                <item name="Validation" href="/javascript/form-validation.html" />
             </item>
             
             <item name="Examples" href="/exampleapps/index.html" />
