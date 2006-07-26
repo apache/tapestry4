@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.contrib.components;
 
-import static org.easymock.EasyMock.expect;
+import static org.testng.AssertJUnit.assertEquals;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -23,10 +23,11 @@ import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.io.Reader;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.test.Creator;
+import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.contrib.components.DumpObject}
@@ -34,7 +35,8 @@ import org.apache.tapestry.test.Creator;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class TestDumpObject extends HiveMindTestCase
+@Test
+public class TestDumpObject extends BaseComponentTestCase
 {
     /**
      * Reads the content of a file, and forms a string. Converts line-number endings in the file
@@ -92,11 +94,11 @@ public class TestDumpObject extends HiveMindTestCase
         Creator creator = new Creator();
         DumpObject dumpObject = (DumpObject) creator.newInstance(DumpObject.class);
 
-        replayControls();
+        replay();
 
         dumpObject.renderComponent(writer, cycle);
 
-        verifyControls();
+        verify();
     }
 
     public void testNormal() throws Exception
@@ -112,24 +114,10 @@ public class TestDumpObject extends HiveMindTestCase
 
         writer.print(expected);
 
-        replayControls();
+        replay();
 
         dumpObject.renderComponent(writer, cycle);
 
-        verifyControls();
-    }
-
-    private IRequestCycle newCycle(boolean isRewinding)
-    {
-        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
-        
-        expect(cycle.isRewinding()).andReturn(isRewinding);
-        
-        return cycle;
-    }
-    
-    private IMarkupWriter newWriter()
-    {
-        return (IMarkupWriter) newMock(IMarkupWriter.class);
+        verify();
     }
 }

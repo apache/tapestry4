@@ -66,7 +66,7 @@ public class ExternalServiceTest extends ServiceTestCase
     public void test_Service() throws Exception
     {
         IRequestCycle cycle = newCycle();
-        IExternalPage page = newInstance(ExternalLinkPage.class, new Object[0]);
+        IExternalPage page = newMock(IExternalPage.class);
         Object[] parameters = new Object[0];
         LinkFactory lf = newLinkFactory();
         ResponseRenderer rr = newResponseRenderer();
@@ -78,11 +78,9 @@ public class ExternalServiceTest extends ServiceTestCase
         trainExtractListenerParameters(lf, cycle, parameters);
         
         cycle.setListenerParameters(parameters);
-        cycle.activate(page, false);
+        cycle.activate(page);
         
         page.activateExternalPage(parameters, cycle);
-        
-        page.validate(cycle);
         
         rr.renderResponse(cycle);
 

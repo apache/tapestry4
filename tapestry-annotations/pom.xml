@@ -14,7 +14,7 @@
     </parent>
     <name>Annotations</name>
     <inceptionYear>2006</inceptionYear>
-
+    
     <dependencies>
         <dependency>
             <groupId>org.apache.tapestry</groupId>
@@ -49,11 +49,7 @@
             <artifactId>testng</artifactId>
             <version>4.7</version>
             <classifier>jdk15</classifier>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.javaforge.tapestry</groupId>
-            <artifactId>tapestry-testng</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.tapestry</groupId>
@@ -81,7 +77,7 @@
                 </excludes>
             </resource>
         </resources>
-
+        
         <testSourceDirectory>src/test</testSourceDirectory>
         <testResources>
             <testResource>
