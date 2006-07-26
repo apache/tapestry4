@@ -29,7 +29,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @since 4.0
  */
 
-public abstract class BaseAnnotationTestCase extends BaseComponentTestCase
+public class BaseAnnotationTestCase extends BaseComponentTestCase
 {
 
     protected Method findMethod(Class clazz, String name)
