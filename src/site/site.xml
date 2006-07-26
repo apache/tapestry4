@@ -74,6 +74,11 @@
                 <item name="Script Template DTD" href="/UsersGuide/script.html" />
             </item>
             
+            <item name="XHR/DHTML Guide" href="/ajax/index.html" collapse="true">
+                <item name="Introduction" href="/ajax/index.html" />
+                <item name="EventListener" href="/ajax/EventListener.html" />
+            </item>
+            
             <item name="JavaScript Reference" href="/javascript/index.html" collapse="true">
                 <item name="Introduction" href="/javascript/index.html" />
                 <item name="Packaging" href="/javascript/packaging.html" />
