@@ -325,6 +325,50 @@ public class FormTest extends BaseComponentTestCase
         verify();
     }
 
+    public void test_Focus_Disabled()
+    {
+        IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle();
+        FormSupport support = newFormSupport();
+        WebResponse response = newResponse();
+        IEngineService direct = newEngineService();
+        ILink link = newLink();
+        IRender render = newRender();
+        IValidationDelegate delegate = newDelegate();
+        
+        Form form = newInstance(FormFixture.class, new Object[]
+        { "id", "myform", "expectedWriter", writer, "expectedRequestCycle", cycle,
+                "formSupport", support, "response", response, "directService", direct, "method",
+                "post", "delegate", delegate, "focus", false });
+
+        trainStoreForm(cycle, form);
+        
+        trainIsRewinding(support, false);
+        
+        trainGetUniqueId(cycle, "myform", "myform_1");
+        
+        trainGetNamespace(response, "$ns");
+        
+        trainGetLinkCheckIgnoreParameter(
+                direct,
+                cycle,
+                true,
+                new DirectServiceParameter(form),
+                link);
+        
+        trainRender(support, link, render, null, null);
+        
+        TapestryUtils.removeForm(cycle);
+
+        delegate.setFormComponent(null);
+        
+        replay();
+
+        form.render(writer, cycle);
+
+        verify();
+    }
+    
     private IValidationDelegate newDelegate(boolean hasErrors)
     {
         IValidationDelegate delegate = newMock(IValidationDelegate.class);
