@@ -48,7 +48,6 @@ dojo.require("tapestry.form");
 // could also be tapestry.form.registerForm(dojo.byId("myform"))
 tapestry.form.registerForm("myform");
 </script>
-
 +----------------------------
 
 * tapestry.form.registerProfile(form, profile)
@@ -190,6 +189,7 @@ isInvalid(field):  Returns true if the field has an invalid value.
 *----------------------*---------------*------------*----------*----------------------------------------------+
 
 ** Example
+
 +-------------------------
 <script type="text/javascript">
 	dojo.require("tapestry.form");
