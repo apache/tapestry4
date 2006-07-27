@@ -533,11 +533,11 @@ public class FormSupportImpl implements FormSupport
         // If the form doesn't support focus, or the focus has already been set by a different form,
         // then do nothing.
 
-        if (!_form.getFocus() || _cycle.getAttribute(FIELD_FOCUS_ATTRIBUTE) != null)
-            return;
-        
-        _pageRenderSupport.addInitializationScript(_form, "tapestry.form.focusField('" + fieldId + "');");
-        _cycle.setAttribute(FIELD_FOCUS_ATTRIBUTE, Boolean.TRUE);
+        if (_form.getFocus() && _cycle.getAttribute(FIELD_FOCUS_ATTRIBUTE) != null) {
+            
+            _pageRenderSupport.addInitializationScript(_form, "tapestry.form.focusField('" + fieldId + "');");
+            _cycle.setAttribute(FIELD_FOCUS_ATTRIBUTE, Boolean.TRUE);
+        }
         
         // register the validation profile with client side form manager
         
