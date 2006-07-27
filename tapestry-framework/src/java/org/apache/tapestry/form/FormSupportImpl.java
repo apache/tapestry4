@@ -526,14 +526,15 @@ public class FormSupportImpl implements FormSupport
         _writer.end();
 
         String fieldId = _delegate.getFocusField();
-
-        if (fieldId == null || _pageRenderSupport == null)
+        
+        if (_pageRenderSupport == null)
             return;
-
+        
         // If the form doesn't support focus, or the focus has already been set by a different form,
         // then do nothing.
-
-        if (_form.getFocus() && _cycle.getAttribute(FIELD_FOCUS_ATTRIBUTE) != null) {
+        
+        if (fieldId != null && _form.getFocus() 
+                && _cycle.getAttribute(FIELD_FOCUS_ATTRIBUTE) != null) {
             
             _pageRenderSupport.addInitializationScript(_form, "tapestry.form.focusField('" + fieldId + "');");
             _cycle.setAttribute(FIELD_FOCUS_ATTRIBUTE, Boolean.TRUE);

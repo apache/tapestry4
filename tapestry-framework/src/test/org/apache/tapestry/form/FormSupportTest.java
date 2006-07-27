@@ -156,7 +156,7 @@ public class FormSupportTest extends BaseComponentTestCase
         MockForm form = new MockForm(delegate);
 
         trainIsRewound(cycle, form, false);
-
+        
         PageRenderSupport support = newPageRenderSupport();
 
         trainGetPageRenderSupport(cycle, support);
@@ -202,13 +202,12 @@ public class FormSupportTest extends BaseComponentTestCase
         nested.close();
 
         writer.end();
-
+        
         trainGetFocusField(delegate, "wilma");
+        
+        // effectively means someone else has already claimed focus
+        
         trainGetFieldFocus(cycle, null);
-
-        trainFocus(support, form);
-
-        trainSetFieldFocus(cycle);
 
         replay();
 
@@ -1049,7 +1048,11 @@ public class FormSupportTest extends BaseComponentTestCase
         // Side test: check for another form already grabbing focus
 
         trainGetFieldFocus(cycle, Boolean.TRUE);
-
+        
+        support.addInitializationScript(form, "tapestry.form.focusField('barney');");
+        
+        cycle.setAttribute(FormSupportImpl.FIELD_FOCUS_ATTRIBUTE, Boolean.TRUE);
+        
         replay();
 
         fs.render("post", render, link, null, null);
@@ -1198,7 +1201,11 @@ public class FormSupportTest extends BaseComponentTestCase
         // Side test: check for another form already grabbing focus
 
         trainGetFieldFocus(cycle, Boolean.TRUE);
-
+        
+        support.addInitializationScript(form, "tapestry.form.focusField('barney');");
+        
+        cycle.setAttribute(FormSupportImpl.FIELD_FOCUS_ATTRIBUTE, true);
+        
         replay();
 
         fs.render("post", render, link, "https", new Integer(443));
@@ -1393,11 +1400,6 @@ public class FormSupportTest extends BaseComponentTestCase
         writer.attribute("id", form.getName() + "hidden");
     }
 
-    private void trainFocus(PageRenderSupport support, IForm form)
-    {
-        support.addInitializationScript(form, "tapestry.form.focusField('wilma');");
-    }
-
     private void trainGetFieldFocus(IRequestCycle cycle, Object value)
     {
         expect(cycle.getAttribute(FormSupportImpl.FIELD_FOCUS_ATTRIBUTE)).andReturn(value);
@@ -1460,10 +1462,5 @@ public class FormSupportTest extends BaseComponentTestCase
     {
         support.addInitializationScript(form, "dojo.require(\"tapestry.form\");"
                 + "tapestry.form.registerForm('" + formId + "');");
-    }
-
-    private void trainSetFieldFocus(IRequestCycle cycle)
-    {
-        cycle.setAttribute(FormSupportImpl.FIELD_FOCUS_ATTRIBUTE, Boolean.TRUE);
     }
 }
