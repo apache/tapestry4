@@ -57,8 +57,7 @@ public abstract class TaskEntryPage extends BasePage
     
     @Component(type = "DropdownDatePicker", id = "datePicker",
             bindings = {"value=date", 
-            "displayName=message:task.start.date", 
-            "validators=validators:required"})
+            "displayName=message:task.start.date"})
     public abstract DropdownDatePicker getDatePicker();
     public abstract Date getDate();
     
@@ -77,7 +76,7 @@ public abstract class TaskEntryPage extends BasePage
     @Component(type = "TextField", id = "descriptionField",
             bindings = { "value=description", 
             "displayName=message:task.description",
-            "validators=validators:required"})
+            "validators=validators:required,maxLength=20"})
     public abstract TextField getDescriptionField();
     public abstract String getDescription();
     
