@@ -274,9 +274,22 @@
                     <artifactId>maven-release-plugin</artifactId>
                     <version>2.0-beta-5-SNAPSHOT</version>
                     <configuration>
-                        <tagBase>
-                            https://svn.apache.org/repos/asf/tapestry/tapestry4/tags/
-                        </tagBase>
+                        <tagBase>https://svn.apache.org/repos/asf/tapestry/tapestry4/tags/</tagBase>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-repository-plugin</artifactId>
+                    <version>2.1-SNAPSHOT</version>
+                    <inherited>true</inherited>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>2.2-SNAPSHOT</version>
+                    <inherited>true</inherited>
+                    <configuration>
+                        <descriptor>src/main/assembly/dep.xml</descriptor>
                     </configuration>
                 </plugin>
             </plugins>
