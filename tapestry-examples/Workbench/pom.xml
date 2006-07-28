@@ -5,13 +5,13 @@
     <groupId>org.apache.tapestry</groupId>
     <artifactId>tapestry-Workbench</artifactId>
     <packaging>war</packaging>
-    <version>4.1.0-SNAPSHOT</version>
+    <version>4.1</version>
     
     <!-- This should change to tapestry-project -->
     <parent>
         <groupId>org.apache.tapestry</groupId>
         <artifactId>tapestry-examples</artifactId>
-        <version>4.1.0-SNAPSHOT</version>
+        <version>4.1</version>
     </parent>
     
     <name>Tapestry Workbench</name>
