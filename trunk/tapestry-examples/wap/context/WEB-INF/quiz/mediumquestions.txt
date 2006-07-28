@@ -1,0 +1,11 @@
+Beaver's teeth grow continuously.;1;true;false
+How many Amur Tigers live in the wild?;2;100;200;1000
+How many polar bears are there worldwide?;3;1500;11000;28000
+What's a young lion called?;1;A cub;A calf;A fawn
+How many different breeds of dogs are there?;3;40;120;140
+Both male and female reindeer have antlers.;1;true;false
+Penguins fall over when they watch flying aeroplanes.;2;true;false
+What does a herbivore eat?;2;Meat;Plants;Fish
+Where do tigers live?;3;South America;Africa;Asia
+The noise a sea lion makes sounds like:;2;Lion's roar;Dog's bark;Cat's miaow
+

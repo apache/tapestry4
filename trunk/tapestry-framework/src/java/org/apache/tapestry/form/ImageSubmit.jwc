@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+   Copyright 2004, 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://tapestry.apache.org/dtd/Tapestry_4_0.dtd">
+  
+<component-specification class="org.apache.tapestry.form.ImageSubmit" allow-body="no">
+
+  <description>
+  Creates a clickable image within a form.
+  </description>
+
+  <parameter name="image" required="yes">
+  	<description>
+  	Image used for the button.
+  	</description>
+  </parameter>
+  	
+  <parameter name="name" property="nameOverride"/>
+  	
+  <parameter name="disabledImage">
+  	<description>
+  	Image used for the button, if disabled.
+  	</description>
+  </parameter>
+  	
+  <parameter name="disabled"/>
+  	
+  <parameter name="point"/>
+  
+  <parameter name="selected">
+  	<description>
+  	Property updated when the button is clicked.
+  	</description>
+  </parameter>
+  
+  <parameter name="tag">
+  	<description>
+  	Value used when updating the selected parameter.
+  	</description>
+  </parameter>
+  
+  <parameter name="listener">
+  	<description>
+  	Notified when the button is clicked.
+  	</description>
+  </parameter>
+  
+  <parameter name="action" deprecated="yes">
+      <description>
+          A listener that is notified if this component is triggered
+          just before the form's listener, after all components 
+          enclosed by the Form have had a chance to update their properties.
+      </description>
+  </parameter>
+
+  <parameter name="parameters">
+    <description>
+      An object, or list of objects, gathered when the button is triggered and 
+      made available as listener parameters in the request cycle, making
+      the parameters available to a deferred listener.
+    </description>
+  </parameter>
+  <parameter name="id" property="idParameter"	default-value="id"/>
+
+  		  
+  <reserved-parameter name="type"/>
+  <reserved-parameter name="src"/>
+  <reserved-parameter name="border"/>
+
+  <inject property="listenerInvoker" object="infrastructure:listenerInvoker"/>
+
+</component-specification>

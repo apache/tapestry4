@@ -1,0 +1,100 @@
+Changed SortColumn from (common-lang) Enum to JDK 1.5 enum.
+
+VlibLibraryEngine
+
+activateExceptionPage()
+	- Changed signature (ResponseOutputStream no longer exists)
+	
+handleStaleSessionException()
+	- Changed signature (ResponseOutputStream no longer exists)
+
+
+Border.java
+
+	getBrowserBinding()
+		- No longer exists (no binding properties, just connected parameter properties)
+	selectBrowserPage() (listener method)
+		- removed IRequestCycle parameter (no longer needed)
+		- added page parameter
+	
+Login.java
+	- Changed interface from PageRenderListener to PageBeginRenderListener
+	loginUser()
+		- IEngine.getServletPath() has been removed, as has RequestContext.addCookie()
+		- Replaced with calls to infrastructure:cookieSource [TAPESTRY-438]
+		- Replace IEngine.forgetPage() with IRequestCycle.forgetPage()
+	pageBeginRender()
+		- Replaced with calls to infrastructure:cookieSource (to read the user's email)
+	
+application.xml
+	Can't deploy vlib.war as "/" due to conflict with built-in JBoss default app, 
+	deployed as "/vlib" (for the moment)
+	
+Publisher.script
+	org.apache.tapestry.form.AbstractTextField no longer exists, replaced with
+	org.apache.tapestry.form.IFormComponent
+	
+EditBook.html
+	Inline inputPublisher conflicted with <component> in EditBook.page and was removed
+	Converted Form to specified component
+	Converted ValidFields to TextFields
+	Removed the Hidden for the bookId property
+	
+EditBook.page
+	Updated to 4.0 DTD
+	Removed <property-specification>s
+	Made displayName attributes reference global messages keys
+	
+EditBook.java
+	Change return type of formSubmit() to IPage
+	Used @Message annotation
+	Made the bookId property persist on the client
+		
+
+	
+vlib.css
+	Added IMG {border:none;} because Tapestry Image/Rollover/etc. components 
+	no longer render border="0" automatically.
+	
+web.xml/hivemodule.xml
+	Added boilerplate friendly URL support
+	
+	
+vlib.application
+	Set up org.apache.tapestry.vlib.pages as the default page package
+	
+vlib.properties
+	Created to hold common strings
+	
+Protected.java
+	Made getValidationDelegate() and abstract property, with @Bean
+	Uses @InjectState and @InjectPage inside pageValidate()
+	
+MyLibrary.html
+	Used If not Conditional
+	
+MyLibrary.java
+	Use @Persist for sortColumn descending, ownedQuery properties
+	Set default for sortColumn in finishLoad()
+	Use @InjectComponent for browser property
+	
+ConfirmBookDelete.java
+	@Meta for page-type
+	
+EditBook.html
+	Made use of proper binding prefixes
+	
+Border
+	Moved parameters to Border.java using @Parameter
+	Converted @Conditional to @If
+	Converted XML to 4.0 DTD
+	Made use of binding prefixes
+	
+BookMatches
+	Standard changes
+	
+BorrowedBooks
+	Standard changes
+	
+		
+	

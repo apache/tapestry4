@@ -1,0 +1,59 @@
+// Copyright 2004, 2005 The Apache Software Foundation
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package org.apache.tapestry.services;
+
+/**
+ * Used by other services to obtain cookie values for the current request.
+ * 
+ * @author Howard Lewis Ship
+ * @since 4.0
+ */
+public interface CookieSource
+{
+    /**
+     * Returns the value of the first cookie whose name matches. Returns null if no such cookie
+     * exists. This method is only aware of cookies that are part of the incoming request; it does
+     * not know about additional cookies added since then (via
+     * {@link #writeCookieValue(String, String)}).
+     */
+    String readCookieValue(String name);
+
+    /**
+     * Creates or updates a cookie value. The value is stored using a max age (in seconds) defined
+     * by the symbol <code>org.apache.tapestry.default-cookie-max-age</code>. The factory default
+     * for this value is the equivalent of one week.
+     */
+
+    void writeCookieValue(String name, String value);
+
+    /**
+     * As with {@link #writeCookieValue(String, String)} but an explicit maximum age may be set.
+     * 
+     * @param name
+     *            the name of the cookie
+     * @param value
+     *            the value to be stored in the cookie
+     * @param maxAge
+     *            the maximum age, in seconds, to store the cookie
+     */
+
+    void writeCookieValue(String name, String value, int maxAge);
+
+    /**
+     * Removes a previously written cookie, by writing a new cookie with a maxAge of 0.
+     */
+
+    void removeCookieValue(String name);
+}

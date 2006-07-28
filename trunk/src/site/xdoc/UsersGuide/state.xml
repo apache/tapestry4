@@ -1,0 +1,727 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Copyright 2004, 2005 The Apache Software Foundation
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<document>
+    <properties>
+        <title>Managing server-side state</title>
+    </properties>
+    <body>
+
+        <section name="Managing server-side state">
+
+            <p>
+                Server-side state is any information that exists on the server, and persists between
+                requests. This can be anything from a single flag all the way up to a large database
+                result set. In a typical application, server-side state is the identity of the user
+                (once the user logs in) and, perhaps, a few important domain objects (or, at the
+                very least, primary keys for those objects).
+            </p>
+
+            <p>
+                In an ordinary servlet application, managing server-side state is entirely the
+                application's responsibility. The Servlet API provides just the HttpSession, which
+                acts like a Map, relating keys to arbitrary objects. It is the application's
+                responsibility to obtain values from the session, and to update values into the
+                session when they change.
+            </p>
+
+            <p>
+                Tapestry takes a different tack; it defines server side state in terms of either
+                entire objects (
+                <a href="state.html#state.aso">application state object</a>
+                s) or by allowing specific page or component properties to be persistent.
+            </p>
+
+            <section name="Understanding servlet state">
+
+
+
+                <p>
+                    Managing server-side state is one of the most complicated and error-prone
+                    aspects of web application design, and one of the areas where Tapestry provides
+                    the most benefit. Generally speaking, Tapestry applications which are functional
+                    within a single server will be functional within a cluster with no additional
+                    effort. This doesn't mean planning for clustering, and testing of clustering, is
+                    not necessary; it just means that, when using Tapestry, it is possible to narrow
+                    the design and testing focus. The Tapestry framework embraces the correct
+                    best-practices for managing client state on either a single server or a cluster
+                    of services.
+                </p>
+
+                <p>
+                    The point of server-side state is to ensure that information about the user
+                    acquired during the session is available later in the same session. The
+                    canonical example is an application that requires some form of login to access
+                    some or all of its content; the identify of the user must be collected at some
+                    point (in a login page) and be generally available to other pages.
+                </p>
+
+                <p>
+                    The other aspect of server-side state concerns failover. Failover is an aspect
+                    of highly-available computing where the processing of the application is spread
+                    across many servers. A group of servers used in this way is referred to as a
+                    <em>cluster</em>
+                    . Generally speaking (and this may vary significantly between vendor's
+                    implementations) requests from a particular client will be routed to the same
+                    server within the cluster.
+                </p>
+
+                <p>
+                    In the event that the particular server in question fails (crashes unexpectedly,
+                    or otherwise brought out of service), future requests from the client will be
+                    routed to a different, surviving server within the cluster. This failover event
+                    should occur in such a way that the client is unaware that anything exceptional
+                    has occured with the web application; and this means that any server-side state
+                    gathered by the original server must be available to the backup server.
+                </p>
+
+                <p>
+                    The main mechanism for handling this using the Java Servlet API is the
+                    HttpSession. The session can store
+                    <em>attributes</em>
+                    , much like a Map. Attributes are object values referenced with a string key. In
+                    the event of a failover, all such attributes are expected to be available on the
+                    new, backup server, to which the client's requests are routed.
+                </p>
+
+                <p>
+                    Different application servers implement HttpSession replication and failover in
+                    different ways; the servlet API specification is delibrately non-specific on how
+                    this implementation should take place. Tapestry follows the conventions of the
+                    most limited interpretation of the servlet specification; it assumes that
+                    attribute replication only occurs when the HttpSession
+                    <code>setAttribute()</code>
+                    method is invoked.
+                </p>
+
+                <span class="info">
+                    <strong>Note:</strong>
+                    <p>
+                    This is the replication strategy employed by BEA's WebLogic server.
+                    </p>
+                </span>
+
+                <p>
+                    Attribute replication was envisioned as a way to replicate simple, immutable
+                    objects such as String or Integer. Attempting to store mutable objects, such as
+                    List, Map or some user-defined class, can be problematic. For example, modifying
+                    an attribute value after it has been stored into the HttpSession may cause a
+                    failover error. Effectively, the backup server sees a snapshot of the object at
+                    the time that
+                    <code>setAttribute()</code>
+                    was invoked; any later change to the object's internal state is
+                    <em>not</em>
+                    replicated to the other servers in the cluster! This can result in strange and
+                    unpredictable behavior following a failover.
+                </p>
+
+                <p>
+                    Tapestry attempts to sort out the issues involving server-side state in such a
+                    way that they are invisible to the developer. Most applications will not need to
+                    explicitly access the HttpSession at all, but may still have significant amounts
+                    of server-side state. The following sections go into more detail about how
+                    Tapestry approaches these issues.
+                </p>
+
+
+            </section><!-- state.general -->
+
+            <section name="Persistent page properties">
+
+
+                <p>
+                    Servlets, and by extension, JavaServer Pages, are inherently stateless. That is,
+                    they will be used simultaneously by many threads and clients. Because of this,
+                    they must not store (in instance variables) any properties or values that are
+                    specific to any single client.
+                </p>
+
+                <p>
+                    This creates a frustration for developers, because ordinary programming
+                    techniques must be avoided. Instead, client-specific state and data must be
+                    stored in the HttpSession or as HttpServletRequest attributes. This is an
+                    awkward and limiting way to handle both
+                    <em>transient</em>
+                    state (state that is only needed during the actual processing of the request)
+                    and
+                    <em>persistent</em>
+                    state (state that should be available during the processing of this and
+                    subsequent requests).
+                </p>
+
+                <p>
+                    Tapestry bypasses most of these issues by
+                    <em>not</em>
+                    sharing objects between threads and clients. Tapestry uses an
+                    <em>object pool</em>
+                    to store constructed page instances. As a page is needed, it is removed from the
+                    page pool. If there are no available pages in the pool, a fresh page instance is
+                    constructed.
+                </p>
+
+                <p>
+                    For the duration of a request, a page and all components within the page are
+                    reserved to the single request. There is no chance of conflicts because only the
+                    single thread processing the request will have access to the page. At the end of
+                    the request cycle, the page is reset back to a pristine state and returned to
+                    the shared pool, ready for reuse by the same client, or by a different client.
+                </p>
+
+                <p>
+                    In fact, even in a high-volume Tapestry application, there will rarely be more
+                    than a few instances of any particular page in the page pool.
+                </p>
+
+                <p>
+                    For this scheme to work it is important that, at the end of the request cycle,
+                    the page be returned to its
+                    <em>pristine state</em>
+                    . The prisitine state is equivalent to a freshly created instance of the page.
+                    In other words, any properties of the page that changed during the processing of
+                    the request must be returned to their initial values.
+                </p>
+
+                <p>
+                    The page is then returned to the page pool, where it will wait to be used in a
+                    future request. That request may be for the same end user, or for another user
+                    entirely.
+                </p>
+
+                <span class="warn">
+                    <strong>Warning:</strong>
+                    <p>
+                    Imagine a page containing a form in which a user enters their address and credit
+                    card information. When the form is submitted, properties of the page will be
+                    updated with the values supplied by the user. Those values must be cleared out
+                    before the page is stored into the page pool ... if not, then the
+                    <em>next</em>
+                    user who accesses the page will see the previous user's address and credit card
+                    information as default values for the form fields!
+                    </p>
+                </span>
+
+                <p>
+                    Tapestry separates the persistent state of a page from any instance of the page.
+                    This is very important, because from one request cycle to another, a different
+                    instance of the page may be used ... even when clustering is not used. Tapestry
+                    has many copies of any page in a pool, and pulls an arbitrary instance out of
+                    the pool for each request.
+                </p>
+
+                <p>
+                    In Tapestry, a page may have many properties and may have many components, each
+                    with many properties, but only a tiny number of all those properties needs to
+                    persist between request cycles. On a later request, the same or different page
+                    instance may be used. With a little assistance from the developer, the Tapestry
+                    framework can create the illusion that the same page instance is being used in a
+                    later request, even though the request may use a different page instance (from
+                    the page pool) ... or (in a clustering environment) may be handled by a
+                    completely different server.
+                </p>
+
+                <p>
+                    Tapestry is flexible about how these properties are ultimately stored. Tapestry
+                    3.0 and earlier were less so ... persistent page properties were always stored
+                    in the HttpSession. Starting in release 4.0, persistent page properties may be
+                    stored in the session, or on the client.
+                </p>
+
+                <subsection name="Using Persistent Page Properties">
+
+
+                    <p>
+                        Persistent properties make use of a
+                        <a href="spec.html#spec.property">&lt;property&gt;</a>
+                        element in the page or component specification. Tapestry does something
+                        special when a component contains any such elements; it dynamically
+                        fabricates a subclass that provides the desired fields, methods and whatever
+                        extra initialization or cleanup is required.
+                    </p>
+
+                    <p>
+                        You may also, optionally, make your page or component class abstract, and
+                        define abstract accessor methods that will be filled in by Tapestry in the
+                        fabricated subclass. This allows you to read and update properties inside
+                        your Java code, such as inside listener methods.
+                    </p>
+
+                    <span class="info">
+                        <strong>Note:</strong>
+                        <p>
+                        You only need to define abstract accessor methods if you are going to invoke
+                        those accesor methods in your code, such as in a
+                        <a href="listenermethods.html">listener method</a>
+                        . Tapestry will create an enhanced subclass that contains the new field, a
+                        getter method and a setter method, plus any necessary initialization
+                        methods. If you are only going to access the property using OGNL
+                        expressions, then there's no need to define either accessor method.
+                        </p>
+                    </span>
+
+                    <span class="info">
+                        <strong>Note:</strong>
+                        <p>
+                        Properties defined this way may be either transient or persistent. For
+                        transient properties (properties which do not persist between requests), it
+                        is only necessary to specify the property (with a
+                        <a href="spec.html#spec.property">&lt;property&gt;</a>
+                        element) if it has an initial value. Tapestry scans the component class
+                        looking for abstract properties that don't match up against component
+                        parameters or
+                        <a href="spec.html#spec.property">&lt;property&gt;</a>
+                        elements; for each of these unclaimed properties, a concrete property is
+                        created. The property is a transient property, exactly as if a
+                        <a href="spec.html#spec.property">&lt;property&gt;</a>
+                        element
+                        <em>did</em>
+                        exist for it.
+                        </p>
+                    </span>
+
+                    <p>A page class that uses a specified property:</p>
+                    <source xml:space="preserve">
+package mypackage;
+
+import org.apache.tapestry.html.BasePage;
+	
+public abstract class MyPage extends <a
+                            href="../tapestry-framework/apidocs/org/apache/tapestry/html/BasePage.html">BasePage</a>
+{
+    abstract public int getItemsPerPage();
+	
+    abstract public void setItemsPerPage(int itemsPerPage);
+}
+</source>
+
+                    <p>
+                        This is combined with a
+                        <a href="spec.html#spec.property">&lt;property&gt;</a>
+                        element in the page's specification:
+                    </p>
+
+                    <source xml:space="preserve">
+
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE page-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://tapestry.apache.org/dtd/Tapestry_4_0.dtd"&gt;
+	
+&lt;page-specification class="mypackage.MyPage"&gt;
+
+  &lt;property
+    name="itemsPerPage"
+    persist="session"
+    initial-value="10"/&gt;
+
+&lt;/page-specification&gt;
+
+</source>
+
+                    <p>
+                        Again, making the class abstract, and defining abstract accessors is
+                        <em>optional</em>
+                        . It is only useful when a method within the class will need to read or
+                        update the property. It is also valid to just implement one of the two
+                        accessors. The enhanced subclass will always include both a getter and a
+                        setter.
+                    </p>
+
+                    <span class="info">
+                        <strong>Note:</strong>
+                        <p>
+                        In Tapestry 3.0, many users were frustrated that they had to specify the
+                        type of property in both the Java code and in the page specification. This
+                        is a violation of the
+                        <a href="http://c2.com/cgi/wiki?DontRepeatYourself">Dont Repeat Yourself</a>
+                        principal -- requiring coordination is just an invitation for the two sides
+                        to get out of synchronization. Starting with Tapestry 4.0, there is no type
+                        attribute on the
+                        <a href="spec.html#spec.property">&lt;property&gt;</a>
+                        element; instead Tapestry matches the type to the property type of any
+                        existing accessor methods, and simply uses Object when there are no accessor
+                        methods. In this example, the persistent itemsPerPage property will be type
+                        int, because of the abstract accessor methods.
+                        </p>
+                    </span>
+
+                    <p>
+                        This exact same technique can be used with components as well as pages, the
+                        component specification also supports the
+                        <a href="spec.html#spec.property">&lt;property&gt;</a>
+                        element.
+                    </p>
+
+                    <p>
+                        When an initial-value is provided, it is evaluated once inside
+                        <code>finishLoad()</code>
+                        , but then again every time the page is detached (returned to pristine
+                        state) before being stored into the page pool for later re-use. By default,
+                        it is an
+                        <a href="http://www.ognl.org">OGNL</a>
+                        expression, but this can be overriden by providing a
+                        <a href="bindings.html">binding reference</a>
+                        prefix.
+                    </p>
+
+
+                    <p>
+                        This means that you may perform initialization for the property inside
+                        <code>finishLoad()</code>
+                        (instead of providing an initial-value). However, don't attempt to update
+                        the property from
+                        <code>initialize()</code>
+                        ... the order of operations when the page detaches is not defined and is
+                        subject to change.
+                    </p>
+
+                    <span class="warn">
+                        <strong>Warning:</strong>
+                        <p>
+                        If the values stored as a persistent property is
+                        <em>mutable</em>
+                        (for example, a List, or a Map, or some custom Java class), you should
+                        <em>not</em>
+                        modify its internal state once it has been stored into the persistent page
+                        property. Changes to internal state of a persistent property, after it has
+                        been stored, may
+                        <em>not</em>
+                        be propogated to other servers in the cluster (this is really a function of
+                        how session replication is implemented by the application server, it has
+                        very little to do with Tapestry). Similar problems concerning mis-matched
+                        state can occur with client persistence.
+                        </p>
+                    </span>
+
+                </subsection><!-- state.page-properties.using -->
+
+                <subsection name="Persistence Types">
+
+
+                    <p>
+                        Tapestry defines two basic types of property persistence. The type of
+                        persistence (internally known as the
+                        <em>property persistence strategy</em>
+                        ) is defined by the value of the persist attribute (in the
+                        <a href="spec.html#spec.property">&lt;property&gt;</a>
+                        element). Omitting the persist attribute, or not providing a
+                        <a href="spec.html#spec.property">&lt;property&gt;</a>
+                        element, indicates a
+                        <em>transient</em>
+                        page property, one which does not persist from request to request.
+                    </p>
+
+                    <dl>
+                        <dt>client</dt>
+                        <dd>
+                            Client properties are stored on the client, in the form of query
+                            parameters. All persistent properties for each page are encoded into a
+                            single query parameter, named
+                            <code>state:</code>
+                            <em>PageName</em>
+                            . The query parameter value is a MIME encoded byte stream. This can get
+                            quite long if there are many client persistent properties on the page
+                            ... which may quickly run into limitations on the maximum size of a URL
+                            (approximately 4000 characters is a good guideline). This is less a
+                            problem for forms.
+                        </dd>
+                        <dt>session</dt>
+                        <dd>
+                            The traditional style of property persistence (and the only kind
+                            available in Tapestry 3.0 and earlier). Each persistent property is
+                            mapped to a HttpSession attribute.
+                        </dd>
+                    </dl>
+
+                    <p>
+                        More such stategies are expected; these will give more control over the
+                        lifecycle of the page property.
+                    </p>
+
+                    <span class="info">
+                        <strong>Fixme:</strong>
+                        <p>
+                        Mind Bridge has added (or changed) these, adding a concept of "scope" for
+                        how long a property will persist. This documentation needs to be updated.
+                        </p>
+                    </span>
+                </subsection><!-- state.page-properties.types -->
+
+            </section><!-- state.page-properties -->
+
+            <section name="Application state objects">
+
+
+                <p>
+                    What happens when you have objects that are needed by multiple pages? For that,
+                    you need an
+                    <em>application state object</em>
+                    . ASO's are global objects that can be
+                    <a href="#state.aso.access">accessed</a>
+                    from any page or component in the application. Each ASO has a unique name (the
+                    two default ASO's are called "visit" and "global" for historical reasons). An
+                    ASO is created when first referenced by any page. ASO's with session scope are
+                    stored into the HttpSession at the end of the request (and
+                    <a href="#state.stateless">may force the creation of the session</a>
+                    ). ASOs in the application scope are available to any and all users.
+                </p>
+
+                <span class="info">
+                    <strong>Note:</strong>
+                    <p>
+                    Tapestry 3.0 had a more limited form of ASO: The Visit object and the Global
+                    object. The Visit object is session scope, the Global object is application
+                    scope. This concept has been extended in Tapestry 4.0 to allow any number of
+                    ASOs with any desired scope, and lots of flexibility on how ASOs get created.
+                    The Visit and Global still exist in 4.0, as default ASOs you can use or
+                    override.
+                    </p>
+                </span>
+
+                <subsection name="Defining new Application State Objects">
+
+
+                    <p>
+                        To create a new ASO, you must update your
+                        <a href="site:hivemind">HiveMind module deployment descriptor</a>
+                        and add a contribution to the
+                        <a
+                            href="../tapestry/hivedocs/config/tapestry.state.ApplicationObjects.html">
+                            tapestry.state.ApplicationObjects
+                        </a>
+                        configuration point:
+                    </p>
+
+                    <source xml:space="preserve">
+&lt;contribution configuration-id="tapestry.state.ApplicationObjects"&gt;
+  &lt;state-object name="registration-data" scope="session"&gt;
+    &lt;create-instance class="org.example.registration.RegistrationData"/&gt;
+  &lt;/state-object&gt;  
+&lt;/contribution&gt;
+</source>
+
+                    <p>
+                        This defines an ASO named registration-data that is session scoped (stored
+                        in the HttpSession once created). The first time it is referenced, an
+                        instance of RegistrationData is created and stored into the session.
+                    </p>
+
+                    <p>
+                        If your data object can't be created using a simple constructor, then you
+                        can supply an &lt;invoke-factory&gt; element instead of
+                        &lt;create-instance&gt;. &lt;invoke-factory&gt; allows you to reference an
+                        object or service that implements the
+                        <a
+                            href="../tapestry-framework/apidocs/org/apache/tapestry/engine/state/StateObjectFactory.html">
+                            StateObjectFactory
+                        </a>
+                        interface.
+                    </p>
+
+                    <span class="info">
+                        <strong>Note:</strong>
+                        <p>
+                        The two default ASOs, "visit" and "global", are defined in the
+                        hivemind.state.FactoryObjects configuration point. Definitions in the
+                        ApplicationObjects configuration point override definitions in
+                        FactoryObjects with the same name.
+                        </p>
+                    </span>
+
+                </subsection><!-- state.aso.defining -->
+
+                <subsection name="Accessing Application State Objects">
+
+
+                    <p>
+                        Tapestry provides an
+                        <a href="spec.html#spec.inject">&lt;inject&gt;</a>
+                        element to support access to the application state objects. This element can
+                        be used in any page or component specification to create a new property.
+                        Reading the property will obtain the corresponding state object (which will
+                        be created if necessary). The property may be updated, which will store a
+                        new application state object, overwriting the automatically created one.
+                    </p>
+
+                    <p>For example:</p>
+
+                    <source xml:space="preserve">
+&lt;inject property="registration" type="state" object="registration-data"/&gt;
+</source>
+
+                    <p>
+                        This will create a
+                        <code>registration</code>
+                        property, which can be wired to components. Your class may define accessors
+                        for this property, in which case you should be sure that the application
+                        state object is assignable.
+                    </p>
+
+                    <span class="warn">
+                        <strong>Warning:</strong>
+                        <p>
+                        The
+                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IPage.html">
+                            IPage
+                        </a>
+                        interface defines two read-only properties:
+                        <code>visit</code>
+                        and
+                        <code>global</code>
+                        . These are both type Object. This is a holdover from Tapestry 3.0, which
+                        only supported these two application state objects. If you want to access
+                        the visit or the global application state objects without needing casts, you
+                        will have to inject as a differently named property (say
+                        <code>appVisit</code>
+                        or
+                        <code>visitObject</code>
+                        ).
+                        </p>
+                    </span>
+
+
+                </subsection><!-- state.aso.access -->
+
+                <subsection name="Optimizing Storage">
+
+
+                    <p>
+                        Normally, Tapestry has no way of knowing when the internal state of an ASO
+                        has changed. On any request where the ASO is accessed, Tapestry assumes that
+                        its internal state has changed. The ASO is re-stored at the end of the
+                        request. For session-scoped ASOs in a cluster, this is critical to ensure
+                        that information is properly distributed around the cluster.
+                    </p>
+
+                    <p>
+                        However, it can also be expensive. Assuming that your application mostly
+                        <em>reads</em>
+                        information out of the ASO, that means a lot of wasted resources needlessly
+                        copying the ASO around the cluster.
+                    </p>
+
+                    <p>
+                        To control this, ASOs may
+                        <em>optionally</em>
+                        implement the
+                        <a
+                            href="../tapestry-framework/apidocs/org/apache/tapestry/SessionStoreOptimized.html">
+                            SessionStoreOptimized
+                        </a>
+                        interface. The method isStoreToSessionNeeded() will be checked; if it
+                        returns false, the object will
+                        <em>not</em>
+                        be stored.
+                    </p>
+
+                    <p>
+                        Typically, the ASO will store a dirty flag, and will set the dirty flag on
+                        any change to internal state. The flag will be returned by
+                        isStoreToSessionNeeded(). The ASO will also implement the
+                        HttpSessionBindingListener interface, and clear the flag in valueBound().
+                    </p>
+
+                    <p>
+                        A base class,
+                        <a
+                            href="../tapestry-framework/apidocs/org/apache/tapestry/BaseSessionStoreOptimized.html">
+                            BaseSessionStoreOptimized
+                        </a>
+                        , implements this behavior.
+                    </p>
+
+                </subsection>
+
+            </section><!-- state.aso -->
+
+            <section name="Stateless applications">
+
+
+                <p>
+                    In a Tapestry application, the framework acts as a buffer between the
+                    application code and the Servlet API ... in particular, it manages how data is
+                    stored into the HttpSession. In fact, the framework controls
+                    <em>when</em>
+                    the session is first created.
+                </p>
+
+                <p>
+                    This is important and powerful, because an application that runs, even just
+                    initially, without a session consumes far less resources than a stateful
+                    application. This is even more important in a clustered environment with
+                    multiple servers; any data stored into the HttpSession will have to be
+                    replicated to other servers in the cluster, which can be expensive in terms of
+                    resources (CPU time, network bandwidth, and so forth). Using less resources
+                    means better throughput and more concurrent clients, always a good thing in a
+                    web application.
+                </p>
+
+                <p>
+                    Tapestry defers creation of the HttpSession until one of two things happens:
+                    When a session-scoped
+                    <a href="state.html#state.aso">application state object</a>
+                    is first created, or when the first persistent page property is recorded. At
+                    this point, Tapestry will create the HttpSession to hold the object or property.
+                </p>
+
+
+                <p>
+                    For the most part, your application will be unaware of when it is stateful or
+                    stateless; statefulness just happens on its own. Ideally, at least the first, or
+                    <code>Home</code>
+                    page, should be stateless (it should be organized in such a way that the Visit
+                    object is not created, and no persistent state is stored). This will help speed
+                    the initial display of the application, since no processing time will be used in
+                    creating the HttpSession.
+                </p>
+
+                <p>
+                    The
+                    <code>state:</code>
+                    <a href="bindings.html">binding reference</a>
+                    combined with the
+                    <a href="site:If">If</a>
+                    component makes it easy for you to skip portions of a page if a particular ASO
+                    does not already exist; this allows you to avoid accidentally forcing its
+                    creation on first reference.
+                </p>
+
+                <p>
+                    The application may be
+                    <em>stateless</em>
+                    even when it has persistent page properties, if those properties use the
+                    <em>client</em>
+                    persistence strategy (which encodes pesistent page data into URLs as query
+                    parameters). This can be a very powerful approach, though it introduces its own
+                    problems:
+                </p>
+
+                <ul>
+                    <li>
+                        The query parameters are an encoding of Java objects, and could be decoded
+                        to expose privileged information.
+                    </li>
+                    <li>
+                        The encoding of page state can result in very long strings included as part
+                        of URLs, possibly extending beyond the 3000 to 4000 character effective
+                        maximum URL length.
+                    </li>
+                </ul>
+            </section><!-- state.stateless -->
+
+        </section>
+
+    </body>
+</document>

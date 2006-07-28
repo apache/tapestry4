@@ -1,0 +1,220 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2004, 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<module id="tapestry.url" version="4.0.0" package="org.apache.tapestry.services">
+
+  Control over constructing and recognizing URLs for Tapestry engine services.
+  
+  <service-point id="LinkFactory" interface="LinkFactory">
+    
+    A source of ILinks for engine services.
+    
+    <invoke-factory>
+      <construct class="impl.LinkFactoryImpl">
+        <set-object property="dataSqueezer" value="infrastructure:dataSqueezer"/>
+        <set-configuration property="contributions" configuration-id="ServiceEncoders"/>
+        <set-object property="servletPath" value="app-property:org.apache.tapestry.servlet-path"/>
+        <set-object property="contextPath" value="infrastructure:contextPath"/>
+		<set-object property="request" value="infrastructure:request"/>
+        <set-object property="requestCycle" value="infrastructure:requestCycle"/>
+        <set-service property="persistenceStrategySource" 
+          service-id="tapestry.persist.PropertyPersistenceStrategySource"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <contribution configuration-id="hivemind.FactoryDefaults">
+    <default symbol="org.apache.tapestry.servlet-path" value="/app"/>
+  </contribution>
+  
+  <contribution configuration-id="tapestry.Infrastructure">
+    <property name="linkFactory" object="service:LinkFactory"/>
+  </contribution>  
+
+  <configuration-point id="ServiceEncoders">
+    
+    Defines a number of encoders that can encode and decode service requests.
+    
+    <schema>
+      
+      <element name="encoder">
+        
+        A flexible encoder provided as an object.
+        
+        <attribute name="id" required="true" unique="true">
+          Unique id for this encoder, used when ordering encoder order.
+        </attribute>
+        <attribute name="before">
+          List of ids of encoders that must follow this encoder.
+        </attribute>
+        <attribute name="after">
+          List of ids of encoders that must precede this encoder.
+        </attribute>
+        <attribute name="object" required="true" translator="object">
+          The object that implements the ServiceEncoder interface.
+        </attribute>
+        
+        <conversion class="impl.ServiceEncoderContribution">
+          <map attribute="object" property="encoder"/>
+        </conversion>
+      </element>
+      
+      <element name="direct-service-encoder">
+        
+        An encoder specialized for the direct service; it encodes the page name
+        and the component id into the servlet path, and uses one of two
+        extensions to indicate whether the link is stateful or stateless.
+        
+        <attribute name="id" required="true" unique="true">
+          Unique id for this encoder, used when ordering encoder order.
+        </attribute>
+        <attribute name="before">
+          List of ids of encoders that must come before this encoder.
+        </attribute>
+        <attribute name="after">
+          List of ids of encoders that must follow this encoder.
+        </attribute>
+        <attribute name="stateless-extension" required="true">
+          The path extension to use for stateless links.
+        </attribute>
+        <attribute name="stateful-extension" required="true">
+          The path extension to use for stateful links.
+        </attribute>
+        
+        <rules>
+          <create-object class="impl.ServiceEncoderContribution"/>
+          <read-attribute attribute="id" property="id"/>
+          <read-attribute attribute="before" property="before"/>
+          <read-attribute attribute="after" property="after"/>
+          <invoke-parent method="addElement"/>
+          
+          <create-object class="org.apache.tapestry.engine.encoders.DirectServiceEncoder"/>
+          <read-attribute attribute="stateless-extension" property="statelessExtension"/>
+          <read-attribute attribute="stateful-extension" property="statefulExtension"/>
+          <invoke-parent method="setEncoder"/>          
+        </rules>        
+      </element>
+      
+      <element name="page-service-encoder">
+        
+        An encoder that identifies the service as a pathname extension, and encodes the page as the
+        servlet path.
+        
+        <attribute name="id" required="true" unique="true">
+          Unique id for this encoder, used when ordering encoder order.
+        </attribute>
+        <attribute name="before">
+          List of ids of encoders that must come before this encoder.
+        </attribute>
+        <attribute name="after">
+          List of ids of encoders that must follow this encoder.
+        </attribute>
+        <attribute name="extension" required="true">
+          The extension used to represent the service, i.e., "html".
+        </attribute>
+        <attribute name="service" required="true">
+          The name of the service mapped to the extension, i.e., "page".
+        </attribute>
+        
+        <rules>
+          <create-object class="impl.ServiceEncoderContribution"/>
+          <read-attribute attribute="id" property="id"/>
+          <read-attribute attribute="before" property="before"/>
+          <read-attribute attribute="after" property="after"/>
+          <invoke-parent method="addElement"/>
+          
+          <create-object class="org.apache.tapestry.engine.encoders.PageServiceEncoder"/>
+          <read-attribute attribute="extension" property="extension"/>
+          <read-attribute attribute="service" property="serviceName"/>
+          <invoke-parent method="setEncoder"/>          
+        </rules>
+        
+      </element>
+      
+      <element name="extension-encoder">
+        
+        An encoder that encodes just the service id, as /service.extension.
+        
+        <attribute name="id" required="true" unique="true">
+          Unique id for this encoder, used when ordering encoder order.
+        </attribute>
+        <attribute name="before">
+          List of ids of encoders that must come before this encoder.
+        </attribute>
+        <attribute name="after">
+          List of ids of encoders that must follow this encoder.
+        </attribute>
+        <attribute name="extension" required="true">
+          The extension used, such as "svc".
+        </attribute>
+        
+        <rules>
+          <create-object class="impl.ServiceEncoderContribution"/>
+          <read-attribute attribute="id" property="id"/>
+          <read-attribute attribute="before" property="before"/>
+          <read-attribute attribute="after" property="after"/>
+          <invoke-parent method="addElement"/>
+          
+          <create-object class="org.apache.tapestry.engine.encoders.ServiceExtensionEncoder"/>
+          <read-attribute attribute="extension" property="extension"/>
+          <invoke-parent method="setEncoder"/>          
+        </rules>
+        
+      </element>      
+      
+      <element name="asset-encoder">
+        
+        <attribute name="id" required="true" unique="true">
+          Unique id for this encoder, used when ordering encoder order.
+        </attribute>
+        <attribute name="before">
+          List of ids of encoders that must come before this encoder.
+        </attribute>
+        <attribute name="after">
+          List of ids of encoders that must follow this encoder.
+        </attribute>
+        <attribute name="path" required="true">
+          The path to map to the asset service, typically "/assets/".
+        </attribute>        
+        
+        <rules>
+          <create-object class="impl.ServiceEncoderContribution"/>
+          <read-attribute attribute="id" property="id"/>
+          <read-attribute attribute="before" property="before"/>
+          <read-attribute attribute="after" property="after"/>
+          <invoke-parent method="addElement"/>
+          
+          <create-object class="org.apache.tapestry.engine.encoders.AssetEncoder"/>
+          <read-attribute attribute="path" property="path"/>
+          <invoke-parent method="setEncoder"/>          
+        </rules>        
+        
+      </element>
+      
+    </schema>
+    
+  </configuration-point>
+  
+  <service-point id="BaseTagWriter" interface="org.apache.tapestry.IRender">
+    
+    Used by the Shell component to write the &lt;base&gt; tag.
+    
+    <create-instance class="impl.BaseTagWriter"/>
+    
+  </service-point>
+</module>

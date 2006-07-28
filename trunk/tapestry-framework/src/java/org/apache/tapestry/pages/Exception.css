@@ -1,0 +1,165 @@
+P  {}
+
+H1  {}
+
+H2  {}
+
+H3  {}
+
+A  {}
+
+A:Visited  {}
+
+A:Active  {}
+
+A:Hover  {}
+
+BODY  {}
+
+TABLE.exception-display TR.even  {
+	top : auto;
+}
+
+TABLE.exception-display TR.odd  {
+	top : auto;
+	background-color : #C0C0FF;
+}
+
+TABLE.exception-display TH  {
+	text-align : right;
+	font-weight : bold;
+}
+
+TABLE.exception-display TD  {
+	text-align : left;
+	width : 100%;	
+}
+
+TABLE.exception-display TR.stack-trace  {
+	font-size : small;
+	font-family : sans-serif;
+	text-align : left;
+}
+
+SPAN.exception-header  {
+	font-size : large;
+	font-weight : bold;
+	color : Red;
+}
+
+SPAN.exception-message {
+	font-weight: bold;
+}
+
+UL  {
+	margin-top : 0px;
+	margin-bottom : 0px;
+	margin-left : 20px;
+}
+
+TABLE.exception-display TR.exception-name TD  {
+	font-size : larger;
+	font-weight : bold;
+	text-align : center;
+	background-color : Blue;
+	color : White;
+}
+
+TABLE.exception-display  {
+	width : 100%;
+}
+
+TABLE.exception-display TR.exception-message TD  {
+	border-width : 1;
+	border-color : Black;
+	border-style : solid;
+	padding : 2;
+	text-align : left;
+	font-style : italic;
+}
+
+TABLE.exception-display TR.strack-trace-label TD  {
+	margin : 2;
+	border-width : 1;
+	border-color : Black;
+	border-style : solid;
+	text-align : center;
+}
+
+TABLE.location-content
+{
+  border: 1px solid black;
+}
+
+TABLE.location-content TR.target-line TD
+{
+  background-color: yellow;
+}
+
+TABLE.location-content TR
+{
+  padding: 0px;
+  margin: 0px; 
+}
+
+TABLE.location-content TD.line-number
+{
+  width: 1px; // Minimum; will expand to fit line numbers.
+  align: right;
+  border-right: 1px dotted grey;
+}
+
+TABLE.location-content TD
+{
+  font: terminal;
+  padding: 0px;
+  margin: 0px; 
+}
+
+DIV.described-object-title
+{
+  font-size: large;
+  font-weight: bold;
+  color: white;
+  background-color: blue;
+}
+
+TABLE.described-object
+{
+  border: 1px solid black;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+TABLE.described-object TR.section TH
+{
+  color: white;
+  background-color: blue;
+  text-align: center;
+}
+
+TABLE.described-object TH
+{
+  text-align: right;
+  width: 1px; // Will stretch to fit.
+}
+
+TABLE.described-object TR.even
+{
+  background-color: white;
+}
+
+TABLE.described-object TR.odd
+{
+  background-color: #C0C0FF;
+}
+
+a.toggle {
+    text-decoration:none;
+    color: #4066A0;
+    font-weight:bold;
+}
+
+a.toggle:hover {
+    border-bottom: 2px solid #EDCC5F;
+}

@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<!DOCTYPE script PUBLIC
+	"-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
+	"http://jakarta.apache.org/tapestry/dtd/Script_3_0.dtd">
+	
+<!-- 
+
+  Creates a script for validating that a date field is required.  Eventually,
+  this will also do client-side input validation.
+  
+  Input symbols:
+     field, form, validator:  As normal for a validation script.
+	 requiredMessage: Message to display if the field is required yet blank.
+     
+-->
+	
+<script>
+  
+<input-symbol key="field" class="org.apache.tapestry.valid.ValidField" required="yes"/>
+<input-symbol key="form" class="org.apache.tapestry.IForm" required="yes"/>
+<input-symbol key="validator" class="org.apache.tapestry.valid.DateValidator" required="yes"/>
+<input-symbol key="requiredMessage" class="java.lang.String"/>
+
+<let key="function" unique="yes">
+validate_${field.name}
+</let>
+
+<body>
+function ${function}(event)
+{
+  var field = document.${form.name}.${field.name}; 
+
+  if (field.value.length == 0)
+     event.invalid_field(field, "${requiredMessage}");
+}
+</body>
+
+<initialization>
+Tapestry.onsubmit('${form.name}', ${function});
+</initialization>
+
+</script>

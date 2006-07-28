@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+   Copyright 2004, 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<mock-test>
+    <context name="mock"/>
+  	
+    <servlet name="app" class="org.apache.tapestry.ApplicationServlet">
+  		<init-parameter
+  			name="org.apache.tapestry.application-specification"
+  			value="/org/apache/tapestry/junit/mock/app/Mock.application"/>
+  	</servlet>
+  		
+  	<!--  Get a view of the page -->
+  	
+	<request>
+  		<parameter name="service" value="page"/>
+      <parameter name="page" value="ProtectedLink"/>
+  		
+  		<assert-output name="Title">
+<![CDATA[
+<title>ProtectedLink</title>
+]]>
+		</assert-output>
+		
+		<assert-output name="Link URL">
+<![CDATA[
+href="/mock/app?component=link&amp;page=ProtectedLink&amp;service=direct&amp;sp=6&amp;sp=13&amp;sp=1999"
+]]>
+		</assert-output>
+  		
+	</request>
+	
+	<request>
+		<parameter name="service" value="direct"/>
+    <parameter name="page" value="ProtectedLink"/>
+    <parameter name="component" value="link"/>
+		<parameter name="sp">
+			<value>6</value>
+			<value>13</value>
+			<value>1999</value>
+		</parameter>  		
+  		
+  		<assert-output name="Title">
+<![CDATA[
+<title>Guard</title>
+]]>
+		</assert-output>
+		
+		<assert-output name="Link URL">
+<![CDATA[
+href="/mock/app?component=link&amp;page=Guard&amp;service=direct&amp;session=T"
+]]>
+		</assert-output>
+		
+		<assert-output name="Callback">
+<![CDATA[
+Callback: DirectCallback[ProtectedLink/link 6, 13, 1999]
+]]>		
+		</assert-output>		
+  	</request>
+  	
+  	<!-- Simulate clicking the Guard page link, which should send the
+  	     user to the Protected page.  -->
+  	     
+  	<request>
+  		<parameter name="service" value="direct"/>
+      <parameter name="session" value="T"/>
+      <parameter name="page" value="Guard"/>
+      <parameter name="component" value="link"/>
+         
+  		<assert-output name="Title">
+<![CDATA[
+<title>ProtectedLink: Result</title>
+]]>
+		</assert-output>
+		
+		<assert-output-matches name="Parameters" subgroup="1">
+<![CDATA[
+<li>(.*?)</li>
+]]>
+			<match>6</match>
+			<match>13</match>
+			<match>1999</match>
+		</assert-output-matches>
+
+	</request>
+		  	
+	<!-- Go back and click the original link now that the Guard
+	 	 page has been visited. -->		  	
+		  	
+  	<request>
+		<parameter name="service" value="direct"/>
+    <parameter name="session" value="T"/>
+    <parameter name="page" value="ProtectedLink"/>
+    <parameter name="component" value="link"/>
+		<parameter name="sp">
+			<value>6</value>
+			<value>13</value>
+			<value>1999</value>
+		</parameter>  
+		  		
+  		<assert-output name="Title">
+<![CDATA[
+<title>ProtectedLink: Result</title>
+]]>
+		</assert-output>
+		
+		<assert-output-matches name="Parameters" subgroup="1">
+<![CDATA[
+<li>(.*?)</li>
+]]>
+			<match>6</match>
+			<match>13</match>
+			<match>1999</match>
+		</assert-output-matches>
+
+	</request>		  	
+</mock-test>

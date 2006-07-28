@@ -1,0 +1,125 @@
+<!--
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>DatePicker Test</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+
+<script type="text/javascript">
+var djConfig = {
+    isDebug: true
+};
+</script>
+<script type="text/javascript" src="../../dojo/dojo.js"></script>
+<script type="text/javascript" src="../../tapestry/core.js"></script>
+<style type="text/css">
+body { font-family : sans-serif; }
+
+.datePickerContainer {
+    margin:0.5em 2em 0.5em 0.8em;
+    width:10em;
+    float:left;
+}
+
+.previousMonth {
+    background-color:#f4f9ff;
+}
+
+.currentMonth {
+    background-color:#EAF1F8;
+}
+
+.nextMonth {
+    background-color:#f4f9ff;
+}
+
+.currentDate {
+    text-decoration:underline;
+    font-style:italic;
+}
+
+.selectedItem {
+    background-color:#D6AE33;
+    color:#ffffff;
+    border: 1px solid #8A5E21;
+}
+
+.calendarContainer {
+    width:100%;
+    border-collapse:collapse;
+    border-spacing:0;
+    border-bottom:1px solid #e6e6e6;
+}
+
+.calendarContainer thead{
+    background-color:#2A78B0;
+    border-bottom:1px solid #e6e6e6;
+    color:#fff;
+}
+
+.calendarContainer td {
+    font-size:12px !important;
+    padding:0.15em;
+    text-align:center;
+    cursor:pointer;cursor:hand;
+}
+
+.monthLabel {
+    font-size:15px !important;
+    font-weight:400;
+    margin:0;
+    text-align:center;
+}
+
+.monthLabel .month {
+    padding:0 0.4em 0 0.4em;
+}
+
+.yearLabel {
+    font-size:12px !important;
+    font-weight:400;
+    margin:0.25em 0 0 0;
+    text-align:right;
+    color:#a3a3a3;
+}
+
+.yearLabel .selectedYear {
+    color:#000;
+    padding:0 0.2em;
+}
+
+.nextYear, .previousYear {
+    cursor:pointer;cursor:hand;
+}
+
+.incrementControl {
+    cursor:pointer;cursor:hand;
+    width:1em;
+}
+
+.dropDownContainer {
+    display:none;
+    position:absolute;
+    width:12em;
+    background-color:#fff; 
+    border:1px solid #215E8A;
+    font-size:1.2em;
+}
+</style>
+
+</head>
+<script type="text/javascript">
+	dojo.require("tapestry.widget.*");
+    dojo.require("tapestry.widget.DropdownDateTimePicker");
+</script>
+<body>
+
+<p>
+<div dojoType="DropdownDateTimePicker" widgetId="date1" ></div>
+</p>
+
+</body>
+</html>

@@ -1,0 +1,18 @@
+<html jwcid="@Shell" title="Six">
+<body jwcid="@Body">
+
+<form jwcid="@Form">
+
+	<select jwcid="outer@Select">
+	<select jwcid="inner@Select">
+		<option/>
+		<option jwcid="@Option" selected="ognl:animal" label="Animal"/>
+		<option jwcid="@Option" selected="ognl:vegetable" label="Vegetable"/>
+		<option jwcid="@Option" selected="ognl:mineral">Mineral (or unknown)</option>
+	</select>
+	</select>
+	<input type="submit" value="Go"/>	
+</form>
+
+</body>
+</html>

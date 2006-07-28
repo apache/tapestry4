@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Copyright 2004, 2005 The Apache Software Foundation
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<document>
+    <properties>
+        <title>Rollover</title>
+    </properties>
+    <body>
+
+        <section name="Rollover">
+
+            <p>
+                The Rollover component provides a rollover image button for use with any kind of
+                link component. A rollover button image changes when the mouse move over it or off
+                of it. A Rollover is disabled if the link that wraps it is disabled (in which case
+                it doesn't respond to the mouse). If this dynamic behavior isn't required use the
+                simpler
+                <a href="Image.html">Image</a>
+                component.
+            </p>
+            <p>
+                The component provides all the necessary JavaScript to swap the image when the mouse
+                enters and exits the button. However, the Rollover must be wrapped (ultimately) by a
+                <a href="Body.html">Body</a>
+                component.
+            </p>
+
+            <p>
+                <strong>
+                    See also:
+                    <a href="Body.html">Body</a>
+                    ,
+                    <a href="GenericLink.html">GenericLink</a>
+                    ,
+                    <a href="Image.html">Image</a>
+                    ,
+                    <a href="PageLink.html">PageLink</a>
+                    ,
+                    <a href="Script.html">Script</a>
+                </strong>
+            </p>
+
+            <section name="Parameters">
+
+
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Direction</th>
+                        <th>Required</th>
+                        <th>Default</th>
+                        <th>Description</th>
+                    </tr>
+
+                    <tr>
+                        <td>image</td>
+                        <td>
+                            <a href="../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
+                                IAsset
+                            </a>
+                        </td>
+
+                        <td>in</td>
+                        <td>yes</td>
+                        <td />
+                        <td>
+                            The initial image to show, if the surrounding link component is not
+                            disabled.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>mouseOver</td>
+                        <td>
+                            <a href="../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
+                                IAsset
+                            </a>
+                        </td>
+                        <td>in</td>
+                        <td>no</td>
+                        <td />
+
+                        <td>
+                            If provided (and the component is not disabled), then a JavaScript
+                            onMouseOver event handler is added to change the image. An onMouseOut
+                            event handler is also provided, to change the button to either its base
+                            image, or its mouseOut image. Deprecated alias: focus.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>mouseOut</td>
+                        <td>
+                            <a href="../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
+                                IAsset
+                            </a>
+                        </td>
+                        <td>in</td>
+
+                        <td>no</td>
+                        <td />
+                        <td>
+                            If provided (and the component is not disabled), then a JavaScript
+                            onMouseOut event handler is added to change the image when the mouse is
+                            moved off of the image. Deprecated alias: blur.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>disabled</td>
+
+                        <td>
+                            <a href="../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
+                                IAsset
+                            </a>
+                        </td>
+                        <td>in</td>
+                        <td>no</td>
+                        <td />
+                        <td>
+                            <p>
+                                Image used when the Rollover is disabled. A Rollover is disabled
+                                when the link component containing it is disabled. Note that the
+                                Rollover component is wrapped by a link component such as the
+                                <a href="PageLink.html">PageLink</a>
+                                component.
+                            </p>
+                            <p>
+                                If no disabled asset is specified, then image asset is used instead.
+                                A disabled Rollover does not respond to the mouse.
+                            </p>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>renderer</td>
+                        <td>
+                            <a
+                                href="../tapestry-framework/apidocs/org/apache/tapestry/link/ILinkRenderer.html">
+                                ILinkRenderer
+                            </a>
+                        </td>
+                        <td>in</td>
+                        <td>no</td>
+                        <td />
+
+                        <td>The object which will actually render the link.</td>
+                    </tr>
+                </table>
+
+                <p>
+                    Body:
+                    <strong>removed</strong>
+                </p>
+
+                <p>
+                    Informal parameters:
+                    <strong>allowed</strong>
+                </p>
+
+                <p>
+                    Reserved parameters:
+                    <em>name, src, border</em>
+                </p>
+
+            </section>
+
+            <section name="Examples">
+
+                <p>This example is under construction.</p>
+
+            </section>
+
+        </section>
+
+    </body>
+</document>

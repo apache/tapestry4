@@ -1,0 +1,638 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Copyright 2005 The Apache Software Foundation
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<document>
+    <properties>
+        <title>QuickStart: Forms</title>
+    </properties>
+    <body>
+
+        <section name="QuickStart: Forms">
+            <p>
+                In this tutorial, we'll cover the basics of Tapestry forms, and gain an
+                understanding of the lifecycle of a Tapestry application. We'll also see how to
+                transfer information from one page to another.
+            </p>
+
+            <p>
+                The theme of this tutorial is an application used to track third-party libraries for
+                Tapestry. Each project will have a number of properties:
+            </p>
+
+            <ul>
+                <li>name</li>
+                <li>release ID</li>
+                <li>short and long description</li>
+                <li>category</li>
+                <li>supported Tapestry version</li>
+                <li>release date</li>
+                <li>public (visible to others) or private (visible only to the owner)</li>
+            </ul>
+
+            <p>
+                Later tutorials will return to this theme, and cover the issues related to accessing
+                data from a database. For this tutorial, we're just going to collect the above data
+                (in an Add Project page), and then echo it back to the user.
+            </p>
+
+        <section name="Home Page">
+
+
+            <p>
+                The Home page for our application is very simple, it doesn't require a Java class:
+            </p>
+
+            <source xml:space="preserve">
+&lt;html jwcid="@Shell" title="Tapestry Component Database"&gt;
+&lt;body&gt;
+	
+&lt;h1&gt;Tapestry Component Database&lt;/h1&gt;
+
+&lt;p&gt;
+  Options:
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a jwcid="@PageLink" page="AddProject"&gt;Add New Project&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+	
+	
+&lt;/body&gt;
+&lt;/html&gt;
+</source>
+
+            <p>
+                We've introduced another handy component,
+                <a href="site:Shell">Shell</a>
+                . This component is just a convienience for generating the &lt;html&gt;,
+                &lt;head&gt;, and &lt;title&gt; tags (though it has quite a few other tricks up its
+                sleeve).
+            </p>
+
+
+        </section>
+
+        <section name="Value Object">
+
+
+            <p>
+                One of the cornerstones of Tapestry is the ability to edit properties of value
+                objects directly. These value objects, in a real application, will be read from the
+                database, editted by Tapestry components, then written back into the database.
+            </p>
+
+            <p>
+                Objects editted by Tapestry in this manner have
+                <em>no</em>
+                requirements. Unlike pages, they don't have to extend a base class or implement an
+                interface. They are truly the
+                <strong>Model</strong>
+                in the
+                <strong>Model-View-Controller Pattern</strong>
+                .
+            </p>
+
+            <p>For this tutorial, we're using a very simple value object:</p>
+
+            <source xml:space="preserve">package tutorial.forms.data;
+
+import java.util.Date;
+
+/**
+ * Contains the name and description of a release of a project.
+ * 
+ * @author Howard M. Lewis Ship
+ */
+public class ProjectRelease
+{
+    private String _name;
+
+    private String _releaseId;
+
+    private String _shortDescription;
+
+    private String _longDescription;
+
+    private String _category;
+
+    private String _tapestryVersion;
+
+    private Date _releaseDate;
+
+    private boolean _public;
+
+    /**
+     * A user-specified category, used to group similar projects.
+     */
+    public String getCategory()
+    {
+        return _category;
+    }
+
+    public void setCategory(String category)
+    {
+        _category = category;
+    }
+
+    /**
+     * A longer description used on a detail page.
+     */
+    public String getLongDescription()
+    {
+        return _longDescription;
+    }
+
+    public void setLongDescription(String longDescription)
+    {
+        _longDescription = longDescription;
+    }
+
+    /**
+     * The name of the project.
+     */
+    public String getName()
+    {
+        return _name;
+    }
+
+    public void setName(String name)
+    {
+        _name = name;
+    }
+
+    /**
+     * If true, the project is visible to other users. If false, then the project is not visible.
+     * This is used as a "draft" mode, when information about the project is not complete.
+     */
+    public boolean isPublic()
+    {
+        return _public;
+    }
+
+    public void setPublic(boolean public1)
+    {
+        _public = public1;
+    }
+
+    /**
+     * The date when the project was released. Used to generate a chronological listing.
+     */
+    public Date getReleaseDate()
+    {
+        return _releaseDate;
+    }
+
+    public void setReleaseDate(Date releaseDate)
+    {
+        _releaseDate = releaseDate;
+    }
+
+    /**
+     * The version number of the project that was released.
+     */
+    public String getReleaseId()
+    {
+        return _releaseId;
+    }
+
+    public void setReleaseId(String releaseId)
+    {
+        _releaseId = releaseId;
+    }
+
+    /**
+     * A single-line description used in an overview listing.
+     */
+    public String getShortDescription()
+    {
+        return _shortDescription;
+    }
+
+    public void setShortDescription(String shortDescription)
+    {
+        _shortDescription = shortDescription;
+    }
+
+    /**
+     * The version of Tapestry required for the project.
+     */
+    public String getTapestryVersion()
+    {
+        return _tapestryVersion;
+    }
+
+    public void setTapestryVersion(String tapestryVersion)
+    {
+        _tapestryVersion = tapestryVersion;
+    }
+}
+</source>
+
+        </section>
+
+        <section name="AddProject Page">
+
+
+            <p>
+                As we've seen, the Home page includes a link to the AddProject page; the AddProject
+                page will contain the form that collects the data about the project before storing
+                it into a database. We don't have a database in this example, but we can still
+                collect the data.
+            </p>
+
+            <subsection name="HTML Template">
+
+
+                <source xml:space="preserve">&lt;html jwcid="@Shell" title="Add New Project"&gt;
+  &lt;body jwcid="@Body"&gt;
+    &lt;h1&gt;Add New Project&lt;/h1&gt;
+    &lt;form jwcid="form@Form" success="listener:doSubmit"&gt;
+      &lt;table&gt;
+        &lt;tr&gt;
+          &lt;th&gt;Name&lt;/th&gt;
+          &lt;td&gt;
+            &lt;input jwcid="name@TextField" value="ognl:project.name" size="40"/&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;th&gt;Release ID&lt;/th&gt;
+          &lt;td&gt;
+            &lt;input jwcid="release@TextField" value="ognl:project.releaseId" size="20"/&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;th&gt;Short Description&lt;/th&gt;
+          &lt;td&gt;
+            &lt;input jwcid="short@TextField" value="ognl:project.shortDescription" size="40"/&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;th&gt;Long Description&lt;/th&gt;
+          &lt;td&gt;
+            &lt;textarea jwcid="long@TextArea" value="ognl:project.longDescription" rows="10" cols="40"/&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;th&gt;Tapestry Version&lt;/th&gt;
+          &lt;td&gt;
+            &lt;input jwcid="tapestryVersion@TextField" value="ognl:project.tapestryVersion" size="20"/&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;th&gt;Release Date&lt;/th&gt;
+          &lt;td&gt;
+            &lt;input jwcid="releaseDate@DatePicker" value="ognl:project.releaseDate"/&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;th&gt;Public&lt;/th&gt;
+          &lt;td&gt;
+            &lt;input jwcid="public@Checkbox" value="ognl:project.public"/&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/table&gt;
+      &lt;input type="submit" value="Add Project"/&gt;
+    &lt;/form&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</source>
+
+                <p>This template introduces a number of new components:</p>
+
+                <ul>
+                    <li>
+                        <a href="site:Body">Body</a>
+                        -- organizes the JavaScript generated for the page (needed to use the
+                        <a href="site:DatePicker">DatePicker</a>
+                        )
+                    </li>
+                    <li>
+                        <a href="site:Form">Form</a>
+                        -- generates an HTML form and controls the submit behavior
+                    </li>
+                    <li>
+                        <a href="site:TextField">TextField</a>
+                        -- creates a text field (&lt;input type="text"/&gt;) used to
+                        <em>edit</em>
+                        (read and update) a property of the page
+                    </li>
+                    <li>
+                        <a href="site:TextArea">TextArea</a>
+                        -- as with
+                        <a href="site:TextField">TextField</a>
+                        , but generates a multi-line &lt;textarea&gt;
+                    </li>
+                    <li>
+                        <a href="site:DatePicker">DatePicker</a>
+                        -- a JavaScript popup calendar
+                    </li>
+                    <li>
+                        <a href="site:Checkbox">Checkbox</a>
+                        -- edits a
+                        <em>boolean</em>
+                        property of the page
+                    </li>
+                </ul>
+
+                <p>
+                    The
+                    <a href="site:Form">Form</a>
+                    's success parameter is linked to a listener method. It is invoked only when
+                    there are no validation errors. We'll discuss validation in a later tutorial.
+                </p>
+
+                <p>
+                    The
+                    <a href="site:Body">Body</a>
+                    component plays a crucial role in Tapestry; it organizes all the JavaScript
+                    generated when a page renders. It assists components with generated unique names
+                    for client-side variables and functions, and organizes all the JavaScript
+                    generated by all the component within the page into two large blocks (one at the
+                    top of the page, one at the bottom). The
+                    <a href="site:DatePicker">DatePicker</a>
+                    component will not operate unless it is enclosed by a
+                    <a href="site:Body">Body</a>
+                    component.
+                </p>
+
+                <p>
+                    The
+                    <a href="site:TextField">TextField</a>
+                    and
+                    <a href="site:TextArea">TextArea</a>
+                    components edit properties of the page. Because the value parameter is an
+                    <a href="http://www.ognl.org">OGNL</a>
+                    expression, it is not limited to editting properties directly exposed by the
+                    page class; it can follow property paths. We'll see how to define the project
+                    property of the page shortly.
+                </p>
+
+                <p>
+                    As you can see, Tapestry offers a number of components for editting specific
+                    types of properties. In addition, we'll see in a bit how the existing components
+                    can be configured for editting other types as well.
+                </p>
+
+                <p>
+                    As the template shows, this page is reliant on having a specific Java class,
+                    with a doSubmit() listener method and a project property. Let's create that
+                    next.
+                </p>
+
+            </subsection>
+
+            <subsection name="AddProject Page Class">
+
+
+                <p>Let's start with the minimum for this class and add details as necessary.</p>
+
+                <source xml:space="preserve">package tutorial.forms.pages;
+
+import org.apache.tapestry.html.BasePage;
+
+import tutorial.forms.data.ProjectRelease;
+
+/**
+ * Java class for the AddProject page; contains a form used to collect data for creating a new
+ * {@link tutorial.forms.data.ProjectRelease}.
+ * 
+ * @author Howard M. Lewis Ship
+ */
+public abstract class AddProject extends BasePage
+{
+    public abstract ProjectRelease getProject();
+
+    public void doSubmit()
+    {
+
+    }
+}
+</source>
+
+                <p>
+                    Maybe this is too minimal; if we launch the application and choose the Add New
+                    Project link, we get an exception:
+                </p>
+
+                <img src="../images/QuickStart/forms1.png" alt="Null Pointer Exception" />
+
+                <p>
+                    The root of this exception is a null value: we defined a place to store a
+                    ProjectRelease object but didn't actually provide an instance.
+                    <a href="http://www.ognl.org">OGNL</a>
+                    attempted to dereference through the null value and threw the OgnlException.
+                    Here we can see the advantage of Tapestry's exception reporting ... showing the
+                    stack of exceptions gave us context into our application (the line in the
+                    template associated with the error) without obscuring the underlying cause.
+                </p>
+
+                <p>
+                    What we need to do is create an instance of ProjectRelease and store it into the
+                    property so that the
+                    <a href="site:TextField">TextField</a>
+                    components can edit it. We have to be careful because in a live application,
+                    pages will be pooled and reused constantly.
+                </p>
+
+                <p>
+                    For this situation, the right approach is to listen for the PageBeginRender
+                    event, and store the new instance into the property then. The ProjectRelease
+                    object will be used for the duration of the request, then discarded at the end
+                    of the request.
+                </p>
+
+                <p>
+                    Listening for these lifecycle events is simple; you just need to select the
+                    correct listener interface and implement it; Tapestry will automatically
+                    register your page to receive the notifications. Here, the interface is
+                    <a
+                        href="../tapestry-framework/apidocs/org/apache/tapestry/event/PageBeginRenderListener.html">
+                        PageBeginRenderListener
+                    </a>
+                    :
+                </p>
+
+                <source xml:space="preserve">package tutorial.forms.pages;
+
+import java.util.Date;
+
+import org.apache.tapestry.event.PageBeginRenderListener;
+import org.apache.tapestry.event.PageEvent;
+import org.apache.tapestry.html.BasePage;
+
+import tutorial.forms.data.ProjectRelease;
+
+/**
+ * Java class for the AddProject page; contains a form used to collect data for creating a new
+ * {@link tutorial.forms.data.ProjectRelease}.
+ * 
+ * @author Howard M. Lewis Ship
+ */
+public abstract class AddProject extends BasePage implements PageBeginRenderListener
+{
+    public abstract ProjectRelease getProject();
+
+    public abstract void setProject(ProjectRelease project);
+
+    public void pageBeginRender(PageEvent event)
+    {
+        ProjectRelease project = new ProjectRelease();
+
+        project.setReleaseDate(new Date());
+
+        setProject(project);
+    }
+
+    public void doSubmit()
+    {
+
+    }
+}
+</source>
+
+                <p>
+                    The pageBeginRender() method will be invoked whenever the page renders. It is
+                    also, due to a useful quirk of Tapestry, invoked when a form within the page is
+                    submitted. Not only can we create an instance, but we have the opportunity to
+                    set some initial values for fields.
+                </p>
+
+                <p>
+                    With this in place, the page will now render, and we can begin entering some
+                    data into it:
+                </p>
+
+                <img src="../images/QuickStart/forms2.png" alt="AddProject Page" />
+
+
+            </subsection>
+
+            <subsection name="Form Submission">
+
+
+                <p>
+                    As implemented above, submitting the form doesn't appear to do anything. Sure,
+                    the form submits, and information is pulled out of the request and applied to
+                    the properties of the ProjectRelease object, but then the AddProject page is
+                    re-rendered.
+                </p>
+
+                <p>
+                    So ... how did the ProjectRelease object stick around? Shouldn't we have gotten
+                    a NullPointerException again, when the form submitted and the
+                    <a href="site:TextField">TextField</a>
+                    component updated property project.name? What actually happened is that the
+                    ProjectRelease object was discarded ... but when a form is submitted on a page,
+                    the PageBeginRender interface is triggered again, just like for a form render.
+                    This means that the existing code does create a new ProjectRelease instance,
+                    giving the TextField components a place to store the values from the form.
+                </p>
+
+
+                <p>
+                    As wonderful as it is that the new ProjectRelease object gets updated, what we
+                    really want is for
+                    <em>something to happen</em>
+                    . We're going to change things so that a different page is displayed when the
+                    form is submitted. Further, that form will show the same information collected
+                    by the AddProject page.
+                </p>
+
+                <p>
+                    To accomplish this, we're going to change the doSubmit() method, and have it
+                    obtain the ShowProject page. The easiest way to make different pages work
+                    together is by
+                    <em>injecting</em>
+                    one page into another. This can be done using an annotation
+                    <sup>1</sup>
+                    :
+                </p>
+
+                <source xml:space="preserve">
+    @InjectPage("ShowProject")
+    public abstract ShowProject getShowProject();   </source>
+
+                <p>
+                    This code, part of AddProject.java, establishes the connection from the
+                    AddProject page to the ShowProject page.
+                </p>
+
+                <p>
+                    We can leverage that code inside doSubmit() to pass information from the
+                    AddProject page to the ShowProject page; we can also
+                    <em>activate</em>
+                    the ShowProject page, so that it renders the response.
+                </p>
+
+                <source xml:space="preserve">  
+  public IPage doSubmit()
+  {
+    ShowProject showProject = getShowProject();
+
+    showProject.setProject(getProject());
+
+    return showProject;
+  }  </source>
+
+                <p>
+                    A lot is going on here in a very small amount of code. First off, this method is
+                    no longer void, it returns a page (
+                    <a href="../tapestry-framework/apidocs/org/apache/tapestry/IPage.html">IPage</a>
+                    is the interface all page classes must implement). When a listener method
+                    returns a page, that page becomes the
+                    <em>active page</em>
+                    , the page which will render the response to the client.
+                </p>
+
+                <p>
+                    This is an example of what we mean when we talk about objects, methods and
+                    properties. We don't talk about the "ShowProject.html" template ... we talk
+                    about the ShowProject page, and leave the details about where its template is
+                    and what's on that template to the ShowProject page. Further, to pass
+                    information from the AddProject page to the ShowProject page, we don't muck
+                    about with HttpServletRequest attributes ... we store an object into a property
+                    of the ShowProject page.
+                </p>
+
+                <p>
+                    With all this in place, we can now submit the form and see the ShowProject page:
+                </p>
+
+                <img src="../images/QuickStart/forms3.png" alt="ShowProject Page" />
+
+            </subsection>
+
+        </section>
+
+        <section name="Next: ???">
+            <p>
+                <em>More coming soon ...</em>
+            </p>
+        </section>
+            
+            <span class="info">
+            <strong>Note:</strong>
+            <p>
+                <sup>1</sup>
+                Of course, annotations required JDK 1.5, which you'll need for these tutorials. If
+                you can't use JDK 1.5 in production, that's OK. Tapestry is compatible with JDK 1.3
+                and has another approach, based on XML, for injecting pages or doing just about
+                anything else that shows up as an annotation in the tutorials.
+            </p>
+            </span>
+            
+        </section>
+    </body>
+</document>

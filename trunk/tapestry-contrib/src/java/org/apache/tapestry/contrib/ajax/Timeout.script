@@ -1,0 +1,172 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<!DOCTYPE script PUBLIC
+	"-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
+	"http://jakarta.apache.org/tapestry/dtd/Script_3_0.dtd">
+<script>
+	<input-symbol key="confirmTimeout" class="java.lang.Integer"/>
+	<input-symbol key="expirationTimeout" class="java.lang.Integer"/>
+	<input-symbol key="prolongSessionPeriod" class="java.lang.Integer"/>
+
+	<input-symbol key="confirmMessage" class="java.lang.String"/>
+	<input-symbol key="expirationMessage" class="java.lang.String"/>
+
+	<input-symbol key="disableWarning" class="java.lang.Boolean"/>
+	<input-symbol key="disableAutoProlong" class="java.lang.Boolean"/>
+	
+	<input-symbol key="expirationFunction" class="java.lang.String"/>
+
+	<body>
+    var TimeoutTimerConfirm;
+    var TimeoutProlongSessionTime;
+    var TimeoutExpirationTime;
+    
+    <if expression="!disableWarning">
+    function TimeoutConfirm()
+    {
+    	TimeoutClearConfirmTimer();
+    
+    	var exp = new Date();
+    	exp.setTime(exp.getTime() + ${expirationTimeout});
+	    var hrs = exp.getHours();
+    	var min = exp.getMinutes();
+    	if (min &lt; 10)
+            mins = "0" + min;
+        else
+            mins = min;
+    
+    	var confirmMessage = "${confirmMessage}";
+    	confirmMessage = confirmMessage.replace("{0}", Math.round(${confirmTimeout}/60000));
+    	confirmMessage = confirmMessage.replace("{1}", hrs + ":" + mins);
+
+    	var val = confirm(confirmMessage);
+        if (!val) {
+		    <if expression="expirationFunction != null">
+		    ${expirationFunction}();
+		    </if>
+        	return;
+        }
+            
+        var current = new Date();
+        if (current.getTime() &gt; exp.getTime()) {
+            alert("${expirationMessage}");
+		    <if expression="expirationFunction != null">
+		    ${expirationFunction}();
+		    </if>
+        }
+        else {
+    		TimeoutProlongSession();
+        }
+    }
+    </if>
+    
+    function TimeoutProlongSession()
+    {
+	    TimeoutUpdateProlongSessionTime();
+		TimeoutRenewSession();
+    }
+    
+    function TimeoutSessionRenewed()
+    {
+    	TimeoutClearConfirmTimer();
+    	TimeoutInitConfirmTimer();
+    }
+    
+    function TimeoutClearConfirmTimer()
+    {
+    	window.clearTimeout(TimeoutTimerConfirm);
+    }
+    
+    function TimeoutInitConfirmTimer()
+    {
+	    <if expression="!disableWarning">
+    	TimeoutTimerConfirm = window.setTimeout("TimeoutConfirm()", ${confirmTimeout});
+    	</if>
+
+    	TimeoutExpirationTime = new Date();
+    	TimeoutExpirationTime.setTime(TimeoutExpirationTime.getTime() + ${confirmTimeout} + ${expirationTimeout});
+
+		TimeoutUpdateProlongSessionTime();
+    }
+    
+    function TimeoutUpdateProlongSessionTime()
+    {
+    	TimeoutProlongSessionTime = new Date();
+    	TimeoutProlongSessionTime.setTime(TimeoutProlongSessionTime.getTime() + ${prolongSessionPeriod});
+    }
+
+    <if expression="!disableAutoProlong">
+	var TimeoutPreviousOnClick;
+	var TimeoutPreviousOnMouseMove;
+	var TimeoutPreviousOnKeyPress;
+	var TimeoutPreviousOnScroll;
+	
+    function TimeoutInitChangeObserver()
+    {
+    	TimeoutPreviousOnClick = document.body.onclick;
+        document.body.onclick = TimeoutHandleOnClick;
+        
+        TimeoutPreviousMouseMove = document.body.onmousemove;
+        document.body.onmousemove = TimeoutHandleOnMouseMove;
+        
+        TimeoutPreviousOnKeyPress = document.body.onkeydown;
+        document.body.onkeydown = TimeoutHandleOnKeyPress;
+        
+        TimeoutPreviousOnScroll = window.onscroll;
+        window.onscroll = TimeoutHandleOnScroll;
+    }
+    
+    function TimeoutHandleOnClick() {
+    	if (TimeoutPreviousOnClick) TimeoutPreviousOnClick();
+    	TimeoutRegisterUserAction();
+    }
+    
+    function TimeoutHandleOnMouseMove() {
+    	if (TimeoutPreviousOnMouseMove) TimeoutPreviousOnMouseMove();
+    	TimeoutRegisterUserAction();
+    }
+    
+    function TimeoutHandleOnKeyPress() {
+    	if (TimeoutPreviousOnKeyPress) TimeoutPreviousOnKeyPress();
+    	TimeoutRegisterUserAction();
+    }
+    
+    function TimeoutHandleOnScroll() {
+    	if (TimeoutPreviousOnScroll) TimeoutPreviousOnScroll();
+    	TimeoutRegisterUserAction();
+    }
+    
+    function TimeoutRegisterUserAction()
+    {
+    	var now = new Date();
+    	if (now.getTime() &gt; TimeoutProlongSessionTime.getTime() &amp;&amp;
+    		now.getTime() &lt; TimeoutExpirationTime.getTime())
+    		TimeoutProlongSession();
+        return true;
+    }
+    </if>
+	</body>
+	
+	<initialization>
+	    <if expression="!disableAutoProlong">
+	    TimeoutInitChangeObserver();
+	    </if>
+	    TimeoutInitConfirmTimer();
+	</initialization>
+	
+</script>

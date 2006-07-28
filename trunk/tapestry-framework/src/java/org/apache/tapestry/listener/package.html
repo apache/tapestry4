@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<body>
+
+<p>Support classes that allows an object
+to expose listener <em>methods</em> instead of listener <em>properties</em>.
+
+<p>
+Normally, a listener property must be an object that implement
+{@link org.apache.tapestry.IActionListener}.  This can be cumbersome, in practice, as it
+typically involves creating an anonymous inner class.
+
+<p>
+Using this mechanism, classes can instead implement listener <em>methods</em>.
+A listener method takes the form:
+
+<pre>
+public void <em>method-name</em>({@link org.apache.tapestry.IRequestCycle} cycle) 
+throws {@link org.apache.tapestry.ApplicationRuntimeException}</code>
+</pre>
+
+<p>The <code>throws</code> clause is optional, but may not throw any 
+additional exceptions.
+
+<p>Tapestry will create an appropriate listener object that will invoke the
+corresponding method.
+
+<p>The methods can be accessed using the property path "<code>listeners.<em>method-name</em></code>"
+
+@see org.apache.tapestry.listener.ListenerMap
+@see org.apache.tapestry.AbstractComponent#getListeners()
+@see org.apache.tapestry.engine.AbstractEngine#getListeners()
+@since 1.0.2
+
+@author Howard Lewis Ship <a href="mailto:hlship@apache.org">hlship@apache.org</a>
+
+</body>
+</html>

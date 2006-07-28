@@ -1,0 +1,13 @@
+bin
+private
+dist
+.temp
+target
+maven.log
+velocity.log
+*.out
+build
+${destdir}
+ext-package
+cachedir
+.clover

@@ -1,0 +1,38 @@
+<span jwcid="$content$">
+<a href="" class="toggle" 
+	onClick="return toggleDisplay('requestDisplay')">[&nbsp;+/-&nbsp;] Request</a>
+<div id="requestDisplay" style="display:none">
+<span jwcid="@Describe" object="ognl:request"/>
+</div>
+
+<span jwcid="@If" condition="ognl:request.getSession(false) != null">
+<a href="" class="toggle" 
+	onClick="return toggleDisplay('sessionDisplay')">[&nbsp;+/-&nbsp;] Session</a>
+<div id="sessionDisplay" style="display:none;">
+<span jwcid="@Describe" object="ognl:request.getSession(false)"/>
+</div>
+</span>
+
+<br/>
+<a href="" class="toggle" 
+	onClick="return toggleDisplay('contextDisplay')">[&nbsp;+/-&nbsp;] Context</a>
+<div id="contextDisplay" style="display:none;">
+<span jwcid="@Describe" object="ognl:activator"/>
+<span jwcid="@Describe" object="ognl:context"/>
+</div>
+
+<br/>
+<a href="" class="toggle" 
+	onClick="return toggleDisplay('statusDisplay')">[&nbsp;+/-&nbsp;] Status</a>
+<div id="statusDisplay" style="display:none;">
+<span jwcid="@Delegator" delegate="ognl:reportStatusRenderer"/>
+</div>
+
+<br/>
+<a href="" class="toggle" 
+	onClick="return toggleDisplay('sysPropDisplay')">[&nbsp;+/-&nbsp;] System Properties</a>
+<div id="sysPropDisplay" style="display:none;">
+<span jwcid="@Delegator" delegate="ognl:systemPropertiesRenderer"/> 
+</div>
+
+</span>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+   Copyright 2004, 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<mock-test>
+    <context name="c31" root="context31"/>
+
+  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet"/>
+
+	<request>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Home</title>
+]]>	
+		</assert-output>
+
+		<assert-output name="Hidden">
+<![CDATA[
+<input type="hidden" name="hidden" value="1234567890"/>
+]]>	
+		</assert-output>
+		
+		<assert-output name="HiddenWithID">
+<![CDATA[
+<input type="hidden" name="hiddenWithID" id="0987654321" value="1234567890-with id"/>
+]]>	
+		</assert-output>
+
+		<assert-output name="HiddenWithEncoding">
+<![CDATA[
+<input type="hidden" name="hiddenWithEncoding" value="S1234567890-with encoding"/>
+]]>	
+		</assert-output>
+
+	</request>
+	
+	<request>
+		<parameter name="service" value="direct"/>
+    <parameter name="page" value="Home"/>
+    <parameter name="component" value="$Form"/>
+		<parameter name="hidden" value="updated-1234567890"/>
+		<parameter name="hiddenWithID" value="updated-1234567890-with id"/>
+		<parameter name="hiddenWithEncoding" value="Supdated-1234567890-with encoding"/>
+		<parameter name="hiddenBoolean" value="T"/>
+		<parameter name="formids" value="hidden,hiddenWithID,hiddenWithEncoding,hiddenBoolean"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Two</title>
+]]>
+		</assert-output>
+			
+		<assert-output name="Value">
+Value: [updated-1234567890]
+		</assert-output>
+		
+		<assert-output name="Hidden">
+HiddenID: [0987654321]
+		</assert-output>
+		
+		<assert-output name="Hidden">
+HiddenWithEncoding: [updated-1234567890-with encoding]
+		</assert-output>
+	</request>
+</mock-test>

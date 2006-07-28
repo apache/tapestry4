@@ -1,0 +1,806 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Copyright 2005 The Apache Software Foundation
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<document>
+    <properties>
+        <title>Tapestry Annotations</title>
+    </properties>
+    <body>
+
+
+        <section name="Tapestry Annotations">
+            <p>
+                This library does not contain components; instead it provides Tapestry specific
+                <em>annotations</em>
+                (annotations are a a
+                <a href="http://java.sun.com/j2se/1.5.0/docs/guide/language/annotations.html">
+                    new feature in JDK 1.5
+                </a>
+                ). These annotations allow you to perform some operations inside Java code that
+                otherwise would be specified in the page or component specification. This is very
+                useful when using inheritance, because base classes can provide annotations that are
+                inherited by subclasses.
+            </p>
+
+            <p>The annotations are all in the package org.apache.tapestry.annotations.</p>
+
+            <p>
+                Remember that a single method should only have, at most, one of these annotations!
+                Having multiple annotations, or conflicts between method annotations and directives
+                in the specification, will result in runtime exceptions. In addition, annotations
+                don't provide the kind of line precise location data that the XML specifications or
+                the templates do (but most exceptions will clearly identify the class and method,
+                which should be sufficient).
+            </p>
+
+            <subsection name="Asset">
+
+                <p>
+                    The
+                    <a href="apidocs/org/apache/tapestry/annotations/Asset.html">Asset</a>
+                    annotation is the equivalent of the
+                    <a href="#spec.asset">&lt;asset&gt;</a>
+                    element in a specification. The value attribute is the path to the asset
+                    (possibly prefixed to indicate the domain for the path):
+                </p>
+
+                <source xml:space="preserve">
+  @Asset("/style/global.css")
+  public abstract IAsset getGlobalStylesheet();
+</source>
+
+                <p>
+                    The asset will be available using the property name using the "asset:" binding
+                    prefix.
+                </p>
+
+
+            </subsection>
+
+
+            <subsection name="Bean">
+
+
+                <p>
+                    The
+                    <a href="apidocs/org/apache/tapestry/annotations/Bean.html">Bean</a>
+                    annotation is the equivalent of the
+                    <a href="#spec.bean">&lt;bean&gt;</a>
+                    element in a specification.
+                </p>
+
+                <p>
+                    The property type will be used as the Java class to instantiate for the bean;
+                    alternately, the value attribute may be specified (this is useful when, for
+                    example, the property type is an interface).
+                </p>
+
+                <p>The examples below both define a bean of type HashMap:</p>
+
+                <source xml:space="preserve">
+  @Bean
+  public abstract HashMap getHashMapBean();
+
+  @Bean(HashMap.class)
+  public abstract Map getMapBean();
+</source>
+
+                <p>
+                    A bean defined this way will be stored into the component's beans property,
+                    exactly as if specified using XML; its name will be the property name.
+                </p>
+
+                <p>
+                    An additional attribute, lifecycle, controls the bean's lifecycle. The default
+                    is
+                    <a href="apidocs/org/apache/tapestry/annotations/Lifecycle.html">Lifecycle</a>
+                    .REQUEST, and additional values are NONE, PAGE, and RENDER:
+                </p>
+
+                <source xml:space="preserve">
+  @Bean(lifecycle = Lifecycle.RENDER)
+  public abstract Map getRenderLifecycleBean();
+</source>
+
+                <p>
+                    Lastly, for
+                    <em>simple</em>
+                    configuration of the bean, there's the initializer attribute. This allows
+                    <em>lightweight initialization</em>
+                    , where the string is a series of name=value properties, seperated by commas
+                    (for boolean properties, the value is optional).
+                </p>
+
+                <source xml:space="preserve">
+  @Bean(initializer = "maxRetries=3")
+  public abstract LoginController getController();  
+</source>
+
+            </subsection>
+
+            <subsection name="Component">
+
+
+                <p>
+                    The
+                    <a href="apidocs/org/apache/tapestry/annotations/Component.html">Component</a>
+                    annotation is attached to an accessor method and allows a component type to be
+                    defined in place, as with the
+                    <a href="#spec.component">&lt;component&gt;</a>
+                    element.
+                </p>
+
+                <p>
+                    The type must be specified. By default, the component id will match the property
+                    name:
+                </p>
+
+                <source xml:space="preserve">
+    @Component(type = "TextField")
+    public abstract TextField getEmail();  
+</source>
+
+                <p>When the two must differ, then the id attibute can be specified:</p>
+
+
+                <source xml:space="preserve">
+    @Component(id = "email" type = "TextField")
+    public abstract TextField getEmailField();  
+</source>
+
+                <p>
+                    Component bindings are specified with an array of strings. The individual
+                    strings identify the parameter name and the binding reference:
+                </p>
+
+                <source xml:space="preserve">
+    @Component(type = "Conditional", bindings =
+    { "condition=message", "element=div" })
+    public abstract IComponent getIfMessage();  
+</source>
+
+            </subsection>
+
+            <subsection name="ComponentClass">
+
+
+                <p>
+
+                    The
+                    <a href="apidocs/org/apache/tapestry/annotations/ComponentClass.html">
+                        ComponentClass
+                    </a>
+                    annotation is used to mark a Java class as a component, and allows several
+                    properties normally specified using the
+                    <a href="#spec.component-specification">&lt;component-specification&gt;</a>
+                    element.
+                </p>
+
+                <source xml:space="preserve">
+@ComponentClass
+public abstract class MyComponent extends BaseComponent
+{
+...
+</source>
+
+                <p>
+                    The defaults for allowBody and allowInformalParameters are true; components may
+                    override:
+                </p>
+
+                <source xml:space="preserve">
+@ComponentClass(allowBody = false, allowInformalParameters = false)
+{
+...
+</source>
+
+                <p>
+                    Note that simply having a @ComponentClass annotation will
+                    <em>override</em>
+                    those two properties.
+                </p>
+
+                <p>If a component has reserved parameters, they can be specified as well:</p>
+
+                <source xml:space="preserve">
+@ComponentClass(reservedParameters = "href,name")
+public abstract class LinkWriter extends BaseComponent
+{
+...
+</source>
+
+                <p>
+                    Finally, the presence of the @Deprecated annotation will mark the component as
+                    deprecated (and cause a warning to be output whenever the component is
+                    referenced):
+                </p>
+
+                <source xml:space="preserve">
+@ComponentClass @Deprecated
+public abstact class YeOldeComponent extends AbstractComponent
+{
+...
+</source>
+
+
+            </subsection>
+
+            <subsection name="EventListener">
+
+
+                <p>
+                    The
+                    <a
+                        href="../tapestry-framework/apidocs/org/apache/tapestry/annotations/EventListener.html">
+                        EventListener
+                    </a>
+                    annotation is attached to
+                    <a href="../tapestry-framework/apidocs/org/apache/tapestry/IActionListener">
+                        listener
+                    </a>
+                    methods to dynamically bind and listen to client side browser events.
+                </p>
+
+                <p>
+                    This annotation is capable of a variety of tasks, but most of them are centered
+                    around the
+                    <a href="http://dojotoolkit.org">dojo</a>
+                    javascript toolkit event API for binding and listening to javascript events in
+                    an AOP fashion.
+                </p>
+
+                <p>
+                    As an example, this page form listener method will be called when the component
+                    with id "projectChoose" has it's javascript functional equivalent
+                    <code>selectOption</code>
+                    function called:
+                </p>
+
+                <source xml:space="preserve">
+@EventListener(events = "selectOption", targets = "projectChoose",
+submitForm = "taskForm", async=true)
+public void projectSelected(IRequestCycle cycle)
+{
+        cycle.getResponseBuilder().updateComponent("projectDescription");
+        cycle.getResponseBuilder().updateComponent("feedbackBlock");
+}
+                </source>
+
+                <subsection name="Parameters">
+
+                    <table>
+
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td>targets</td>
+                            <td>String[],String</td>
+                            <td>no</td>
+                            <td></td>
+                            <td>
+                                Specifies the components/widgets to listen to events on, in the form of unique
+                                component ids. One of either elements OR targets must be supplied.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>elements</td>
+                            <td>String[],String</td>
+                            <td>no</td>
+                            <td></td>
+                            <td>
+                                Specifies the unique html element dom node ID's to listen to events on. One of
+                                either elements OR targets must be supplied.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>events</td>
+                            <td>String[],String</td>
+                            <td>yes</td>
+                            <td></td>
+                            <td>
+                                Specifies which javascript "events" to listen for. Just as with the dojo api, these
+                                events can be simple things like <code>onClick</code> or <code>onSubmit</code>, but can
+                                also be bound to specific functions if they exist on the component/widget you are targeting.
+                                
+                                <p>
+                                For example, the Autocomplete component wraps a dojo ComboBox widget that has a function named 
+                                <code>selectOption</code> that is called when an item in the list is selected. 
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>submitForm</td>
+                            <td>String</td>
+                            <td>no</td>
+                            <td></td>
+                            <td>
+                                If specified, the form matching the passed in form ID will be submitted before calling your
+                                listener method.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>validateForm</td>
+                            <td>boolean</td>
+                            <td>no</td>
+                            <td>false</td>
+                            <td>
+                                When used in conjunction with the <code>submitForm</code> parameter, optionally enables/disables
+                                client side validation when the form is submitted.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>async</td>
+                            <td>boolean</td>
+                            <td>no</td>
+                            <td>true</td>
+                            <td>
+                                When used in conjunction with the <code>submitForm</code> parameter, optionally submits the form
+                                via a dynamic asynchronous request, or submits it using normal http IO POST methods.
+                            </td>
+                        </tr>
+                    </table>
+                </subsection>
+
+            </subsection>
+
+            <subsection name="InitialValue">
+
+
+
+                <p>
+                    The
+                    <a href="apidocs/org/apache/tapestry/annotations/InitialValue.html">
+                        InitialValue
+                    </a>
+                    annotation allows a default value to be specified for a property. The property
+                    may also be persistent (via the
+                    <a href="#Persist">@Persist</a>
+                    annotation).
+                </p>
+
+                <p>
+                    The value is a binding reference; the reference will be evaluated when the page
+                    is first loaded, and again when the page is detached and returned to the page
+                    pool. The default binding prefix is "ognl:".
+                </p>
+
+                <p>The annotation is attached to an accessor method:</p>
+
+                <source xml:space="preserve">
+  @InitialValue("request.serverName")
+  public abstract String getServerName();        
+      </source>
+
+
+                <p>
+                    In many cases, where the initial value is a constant, a better approach is to
+                    set the initial value from the component's finishLoad() method.
+                </p>
+
+
+                <source xml:space="preserve">
+  public abstract int getMaxAttempts();
+  
+  public abstract void setMaxAttempts(int maxAttempts);
+  
+  protected void finishLoad()
+  {
+    setMaxAttempts(5);
+  }        
+      </source>
+
+
+            </subsection>
+
+            <subsection name="InjectAsset">
+
+
+                <p>
+                    The
+                    <a href="apidocs/org/apache/tapestry/annotations/InjectAsset.html">
+                        InjectAsset
+                    </a>
+                    annotation allows assets defined in the page or component specification to be
+                    exposed as read-only properties. It is attached to an accessor method:
+                </p>
+
+                <source xml:space="preserve">
+  @InjectAsset("stylesheet")
+  public abstract IAsset getStylesheet();
+</source>
+
+                <p>
+                    This is equivalent to specifying the property attribute of the
+                    <a href="#spec.asset">&lt;asset&gt;</a>
+                    element.
+                </p>
+
+            </subsection>
+
+            <subsection name="InjectComponent">
+
+
+                <p>
+                    The
+                    <a href="apidocs/org/apache/tapestry/annotations/InjectComponent.html">
+                        InjectComponent
+                    </a>
+                    annotation allows nested components to be injected as read-only properties. It
+                    is attached to an accessor method:
+                </p>
+
+                <source xml:space="preserve">
+  @InjectComponent("inputUserName")
+  public abstract TextField getUserInput();
+</source>
+
+                <p>
+                    This is functionally the same as providing the property attribute of the
+                    <a href="#spec.component">&lt;component&gt;</a>
+                    element.
+                </p>
+
+            </subsection>
+
+            <subsection name="InjectMeta">
+
+
+                <p>
+                    The
+                    <a href="apidocs/org/apache/tapestry/annotations/InjectMeta.html">InjectMeta</a>
+                    annotation allows meta data from the specification (
+                    <a href="#spec.meta">&lt;meta&gt; elements)</a>
+                    to be exposed as properties.
+                </p>
+
+                <source xml:space="preserve">
+  @InjectMeta("page-title")
+  public abstract String getPageTitle();
+</source>
+
+                <p>
+                    The new property does not have to be type String; an automatic type conversion
+                    takes place.
+                </p>
+
+            </subsection>
+
+            <subsection name="InjectObject">
+
+
+                <p>
+                    The
+                    <a href="apidocs/org/apache/tapestry/annotations/InjectObject.html">
+                        InjectObject
+                    </a>
+                    annotation allows HiveMind objects to be injected. It is attached to an accessor
+                    method:
+                </p>
+
+                <source xml:space="preserve">
+  @InjectObject("infrastructure:request")
+  public abstract WebRequest getRequest();
+</source>
+
+                <p>
+                    The end result is the same as using the
+                    <a href="#spec.inject">&lt;inject&gt;</a>
+                    element, with the default type of "object".
+                </p>
+
+            </subsection>
+
+            <subsection name="InjectPage">
+
+
+                <p>
+                    The
+                    <a href="apidocs/org/apache/tapestry/annotations/InjectPage.html">InjectPage</a>
+                    annotation allows a page to be injected into another page or component. It is
+                    attached to an accessor method:
+                </p>
+
+                <source xml:space="preserve">
+  @InjectPage("Details")
+  public abstract Details getDetailsPage();
+</source>
+
+                <p>Injecting other pages is most commonly used as part of a listener method.</p>
+
+            </subsection>
+
+            <subsection name="InjectScript">
+
+
+                <p>
+                    The
+                    <a href="apidocs/org/apache/tapestry/annotations/InjectScript.html">
+                        InjectScript
+                    </a>
+                    annotation allows JavaScript templates to be exposed as properties. The
+                    annotation's value is the path to the script (relative to the page or component
+                    specification, if it exists, or relative to the template otherwise).
+                </p>
+
+                <source xml:space="preserve">
+  @InjectScript("scripts/VerifyAccountId.script")
+  public abstract IScript getVerifyAccountIdScript();
+</source>
+
+            </subsection>
+
+            <subsection name="InjectState">
+
+
+                <p>
+                    The
+                    <a href="apidocs/org/apache/tapestry/annotations/InjectState.html">
+                        InjectState
+                    </a>
+                    annotation allows an Application State Object to be injected and a read/write
+                    property. It is attached to an accessor method:
+                </p>
+
+                <source xml:space="preserve">
+  @InjectState("visit")
+  public abstract MyAppVisit getVisit();
+</source>
+
+                <p>
+                    The end result is equivalent to using the
+                    <a href="#spec.inject">&lt;inject&gt;</a>
+                    element, with a type of "state".
+                </p>
+
+            </subsection>
+
+            <subsection name="InjectStateFlag">
+
+
+                <p>
+                    The
+                    <a href="apidocs/org/apache/tapestry/annotations/InjectStateFlag.html">
+                        InjectStateFlag
+                    </a>
+                    annotation implements a read-only boolean property that returns true if the
+                    identified application state object exists. This is useful for avoiding the
+                    accidental creation of the ASO, which helps avoid the unneccessary creation of
+                    the HttpSession.
+                </p>
+
+                <source xml:space="preserve">
+    @InjectStateFlag("visit")
+    public abstract boolean getVisitExists();
+  </source>
+
+                <p>
+                    The end result is equivalent to using the
+                    <a href="#spec.inject">&lt;inject&gt;</a>
+                    element, with a type of "state-flag".
+                </p>
+
+            </subsection>
+
+            <subsection name="Message">
+
+
+                <p>
+                    The
+                    <a href="apidocs/org/apache/tapestry/annotations/Message.html">Message</a>
+                    annotation provides easy access to localized messages. It is attached to a
+                    method that returns a String, and takes any number of parameters. In its most
+                    basic form, it is used alone:
+                </p>
+
+                <source xml:space="preserve">
+    @Message
+    public abstract String getPageTitle();
+</source>
+
+                <p>
+                    As used here, the method name is converted into a message property key:
+                    <code>page-title</code>
+                    :
+                </p>
+
+                <ul>
+                    <li>The prefix "get" is stripped off (if present)</li>
+                    <li>The letter following "get" is converted to lower case</li>
+                    <li>
+                        Other capitalized letters are converted to lower case and preceded with a
+                        dash ("-")
+                    </li>
+                </ul>
+
+                <p>The end result is equivalent to:</p>
+
+                <source xml:space="preserve">
+  public String getPageTitle()
+  {
+    return getMessages().getMessage("page-title");
+  }
+</source>
+
+                <p>
+                    When these method-name to property key conversion rules don't yield the correct
+                    key, it may be specified explicitly:
+                </p>
+
+                <source xml:space="preserve">
+  @Message("get-a-life")
+  public abstract String getALife();
+</source>
+
+                <p>
+                    The method may take parameters as well; these parameter will be converted into
+                    message arguments, which can be referenced inside the message as {0}, {1}, etc.
+                </p>
+
+                <source xml:space="preserve">
+  @Message
+  public abstract String getLineTotal(BigDecimal total);
+</source>
+
+                <p>This is equivalent to:</p>
+
+                <source xml:space="preserve">
+  public String getLineTotal(BigDecimal total)
+  {
+    return getMessages().format("line-total", new Object[] { total });
+  }
+</source>
+
+                <p>
+                    Primitive types passed in as parameters are automatically converted to wrapper
+                    types.
+                </p>
+            </subsection>
+
+            <subsection name="Meta">
+
+
+                <p>
+                    The
+                    <a href="apidocs/org/apache/tapestry/annotations/Meta.html">Meta</a>
+                    annotation is used to define a meta data value on a page or component class, as
+                    with the
+                    <a href="#spec.meta">&lt;meta&gt;</a>
+                    element in an XML component or page specification.
+                </p>
+
+                <p>
+                    Meta data from base classes is merged into subclasses; when there's a name
+                    conflict, the subclass overrides the base class. This allows a base class to set
+                    a default that can be naturally overriden in a subclass.
+                </p>
+
+                <source xml:space="preserve">
+@Meta({ "requires-login=false", "show-ad-banner=true" })
+public abstract class AppBasePage extends BasePage
+{
+...
+</source>
+
+                <p>
+                    Subclasses of AppBasePage could provide a @Meta annotatioun that defines new
+                    meta data, or overrides either of these values.
+                </p>
+
+                <p>
+                    Often, you only want to define a single meta value; the compiler allows you to
+                    omit the curly braces for this case:
+                </p>
+
+                <source xml:space="preserve">
+@Meta("org.apache.tapestry.jwcid-attribute-name=id")
+public abstract class MyComponent extends BaseComponent
+{
+...
+</source>
+            </subsection>
+
+            <subsection name="Parameter">
+
+
+                <p>
+                    The
+                    <a href="apidocs/org/apache/tapestry/annotations/Parameter.html">Parameter</a>
+                    annotation defines a new property, as with
+                    <a href="#spec.parameter">&lt;parameter&gt;</a>
+                    element in an XML component specification.
+                </p>
+
+                <p>
+                    This most simple use of this annotation is to simply mark a property as an
+                    optional parameter:
+                </p>
+
+                <source xml:space="preserve">
+  @Parameter
+  public abstract void MyType getMyParameter();
+</source>
+
+                <p>
+                    The parameter name will generally match the property name (as determined from
+                    the method to which the annotation is attached). This can be overriden with the
+                    name attribute:
+                </p>
+
+                <source xml:space="preserve">
+  @Parameter(name = "page")
+  public abstract String getTargetPage();
+</source>
+
+                <p>
+                    Parameters may be marked as deprecated if the method is marked deprecated (using
+                    the java.lang.Deprecated annotation):
+                </p>
+
+                <source xml:space="preserve">
+  @Deprecated @Parameter
+  public abstract int getRows();
+</source>
+
+                <p>
+                    The annotation supports several additional attributes, consult its
+                    <a href="apidocs/org/apache/tapestry/annotations/Parameter.html">JavaDoc</a>
+                    for the full details.
+                </p>
+
+            </subsection>
+
+            <subsection name="Persist">
+
+
+                <p>
+                    The
+                    <a href="apidocs/org/apache/tapestry/annotations/Persist.html">Persist</a>
+                    annotation allows a property to be marked as persistent. Remember that any
+                    otherwise unclaimed abstract property will become a
+                    <em>transient</em>
+                    property automatically (in Tapestry 4.0), so Persist is only needed to mark a
+                    property as persistent.
+                </p>
+
+                <p>The value of the Persist annotation defaults to "session":</p>
+
+                <source xml:space="preserve">
+  @Persist
+  public abstract int getSessionPersistentProperty();
+  
+  @Persist("client")
+  public abstract double getClientPersistentProperty();
+</source>
+
+                <p>
+                    This annotation works exactly like a
+                    <a href="#spec.property">&lt;property&gt;</a>
+                    element, except that the initial-value attribute can't be specified. Use the
+                    <a href="#InitialValue">@InitialValue</a>
+                    annotation to set the property's initial value.
+                </p>
+
+            </subsection>
+
+        </section>
+
+    </body>
+</document>

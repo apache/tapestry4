@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+   Copyright 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<!DOCTYPE script PUBLIC
+	"-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
+	"http://jakarta.apache.org/tapestry/dtd/Script_3_0.dtd">
+  
+<script>
+
+<include-script resource-path="DatePicker.js"/>
+
+<input-symbol key="name"  class="java.lang.String" required="yes"/>
+<input-symbol key="formName" class="java.lang.String" required="yes"/>
+<input-symbol key="monthNames"  required="yes"/>
+<input-symbol key="shortMonthNames" required="yes"/>
+<input-symbol key="weekDayNames" required="yes"/>
+<input-symbol key="shortWeekDayNames"  required="yes"/>
+<input-symbol key="firstDayInWeek" required="yes"/>
+<input-symbol key="minimalDaysInFirstWeek" required="yes"/>
+<input-symbol key="format" required="yes"/>
+<input-symbol key="includeWeek" required="yes"/>
+<input-symbol key="clearButtonLabel" required="yes"/>
+<input-symbol key="value" required="no"/>
+
+<let key="calendarObject" unique="yes">
+	calendar_${name}	
+</let>
+
+<let key="buttonOnclickHandler">
+  javascript:${calendarObject}.toggle(document.${formName}.${name});	
+</let>
+
+<body>
+var ${calendarObject};
+</body>
+
+<initialization>	
+<if expression="value == null">
+${calendarObject} = new Calendar();
+</if>
+<if expression="value != null">
+${calendarObject} = new Calendar(${value.time});
+</if>	
+${calendarObject}.initialize([${monthNames}],
+  [${shortMonthNames}],
+  [${weekDayNames}],
+  [${shortWeekDayNames}],
+  "${format}", ${firstDayInWeek}, ${includeWeek}, ${minimalDaysInFirstWeek}, "${clearButtonLabel}");	
+${calendarObject}.onchange = function() {
+  var field = document.${formName}.${name};
+  var value = ${calendarObject}.formatDate();
+	if (field.value != value) {
+    field.value = value;
+    if (field.onchange) field.onchange();
+  }
+}
+</initialization>
+</script>
+

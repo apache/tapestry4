@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Copyright 2005 The Apache Software Foundation
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<document>
+    <properties>
+        <title>TableFormPages</title>
+    </properties>
+    <body>
+
+        <section name="TableFormPages">
+
+            <p>
+                A version of
+                <a href="/TablePages.html">TablePages</a>
+                that is designed for operation in a form. It is a low level Table component that
+                renders the pages in the table. This component must be wrapped by
+                <a href="/TableView.html">TableView</a>
+                .
+            </p>
+            <p>
+                The component generates a list of pages in the
+                <a href="/Table.html">Table</a>
+                centered around the current one and allows you to navigate to other pages.
+            </p>
+
+            <p>
+                <strong>
+                    See also:
+                    <a href="/Table.html">Table</a>
+                    ,
+                    <a href="/TableView.html">TableView</a>
+                    ,
+                    <a href="/TablePages.html">TablePages</a>
+                    ,
+                    <a href="/TableRows.html">TableRows</a>
+                    ,
+                    <a href="/TableValues.html">TableValues</a>
+                    ,
+                    <a href="/TableColumns.html">TableColumns</a>
+                </strong>
+            </p>
+
+            <subsection name="Parameters">
+
+
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Direction</th>
+                        <th>Required</th>
+                        <th>Default</th>
+                        <th>Description</th>
+                    </tr>
+
+                    <tr>
+                        <td>pagesDisplayed</td>
+                        <td>int</td>
+                        <td>auto</td>
+                        <td>no</td>
+                        <td>7</td>
+
+                        <td>
+                            Determines the maximum number of pages to be displayed in the page list
+                            when the table has more than one page.
+                            <br />
+                            For example, if the table has 20 pages, and 10 is the current page,
+                            pages from 7 to 13 in the page list will be shown if this parameter has
+                            a value of 7.
+                        </td>
+                    </tr>
+
+                </table>
+
+                <p>
+                    Body:
+                    <strong>removed</strong>
+                </p>
+
+                <p>
+                    Informal parameters:
+                    <strong>allowed</strong>
+                </p>
+
+                <p>
+                    Reserved parameters:
+                    <em>none</em>
+                </p>
+
+            </subsection>
+
+        </section>
+
+    </body>
+</document>

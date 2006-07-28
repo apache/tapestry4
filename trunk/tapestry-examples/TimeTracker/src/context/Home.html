@@ -1,0 +1,75 @@
+<span jwcid="@Border">
+
+<p>
+This is the Tapestry TimeTracker application. It is a demonstration of some of the new
+core features available in tapestry, as well as how a sample application might be built
+using them.
+</p>
+
+<form jwcid="taskForm@Form" class="container" clientValidationEnabled="true" >
+<h3><span jwcid="@Insert" value="message:new.task"/></h3>
+	<fieldset>
+    <table width="90%" class="form" cellpadding="2" cellspacing="0" >
+    <tr>
+      <td><label jwcid="@FieldLabel" field="component:projectChoose" /></td>
+      <td><label jwcid="@FieldLabel" field="component:descriptionField" /></td>
+      <td><label>Duration</label></td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td><div class="field required"><span jwcid="projectChoose" /></div></td>
+      <td><div class="field required"><input jwcid="descriptionField" /></div></td>
+      <td><div jwcid="duration@Any">18 minutes</div></td>
+      <td>&nbsp;</td>
+    </tr>
+    
+    <tr>
+      <td><label jwcid="@FieldLabel" field="component:datePicker" /></td>
+      <td><label jwcid="@FieldLabel" field="component:startPicker" /></td>
+      <td><label jwcid="@FieldLabel" field="component:endPicker" /></td>
+      <td>&nbsp;</td>
+    </tr>
+    
+    <tr>
+	  <td><div class="field required"><input jwcid="datePicker" /></div></td>
+      <td>
+      	<div class="field required">
+      		<input jwcid="startPicker" />
+      	</div>
+      </td>
+      <td>
+      	<div class="field required">
+      		<input jwcid="endPicker" />
+      	</div>
+      </td>
+      <td>
+      	<input jwcid="@Submit" value="message:button.add" class="submitButton" action="listener:addTask" />
+      </td>
+    </tr>
+    
+    </table>
+    
+    <div jwcid="feedbackBlock@Any">
+    	<span jwcid="@If" condition="ognl:selectedProject">
+    		<label jwcid="@FieldLabel" field="component:feedbackField" />
+    		<input jwcid="feedbackField@TextField" displayName="message:feedback" 
+    				value="ognl:feedback" validators="validators:required,minLength=6" />
+    	</span>
+    </div>
+    
+    </fieldset>
+</form>
+
+<p>
+Click this link to manually update the project description. 
+	<a jwcid="@DirectLink" listener="listener:linkUpdateClicked" 
+		updateComponents="ognl:{'projectDescription'}" async="true" >Update</a>
+</p>
+
+<div jwcid="projectDescription@Any" >
+	<span jwcid="@If" condition="ognl:selectedProject">
+		<h2 style="clear:left" ><span jwcid="@Insert" value="ognl:selectedProject.name" /></h2>
+	</span>
+</div>
+
+</span>

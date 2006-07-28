@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2004, 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<module id="tapestry.coerce" version="4.0.0" package="org.apache.tapestry.coerce">
+  
+  Module used to coerce data types from one type to another. This is used primarily to convert strings
+  into other types (numbers, booleans, etc.) or to convert various types into booleans (to be used
+  as conditions).
+  
+  <schema id="Converters">
+    
+    Schema used to define converters for a specific type.
+    
+    <element name="converter">
+      <attribute name="class" translator="class" unique="true" required="true">
+        The name of the class to register a type converter for.
+      </attribute>
+      
+      <attribute name="object" translator="object" required="true">
+        The object, which implements TypeConverter, to be registered for the class.
+      </attribute>
+      
+      <conversion class="TypeConverterContribution">
+        <map attribute="class" property="subjectClass"/>
+        <map attribute="object" property="converter"/>
+      </conversion>
+      
+    </element>
+    
+    
+  </schema>
+  
+  <configuration-point id="BooleanConverters" schema-id="Converters"/>
+    
+  <contribution configuration-id="BooleanConverters">
+    <converter class="java.lang.Object" object="instance:ObjectToBooleanConverter"/>
+    <converter class="java.lang.Number" object="instance:NumberToBooleanConverter"/>
+    <converter class="java.lang.String" object="instance:StringToBooleanConverter"/>
+    <converter class="java.util.Collection" object="instance:CollectionToBooleanConverter"/>
+    <converter class="java.util.Map" object="instance:MapToBooleanConverter"/>
+  </contribution>
+  
+  <service-point id="BooleanConverter" interface="TypeConverter">
+    <invoke-factory>
+      <construct class="TypeConverterWrapper">
+        <set-configuration property="contributions" configuration-id="BooleanConverters"/>
+        <set-object property="nullConverter" value="instance:NullToBooleanConverter"/>
+      </construct>
+    </invoke-factory>
+  </service-point>
+  
+  <configuration-point id="IteratorConverters" schema-id="Converters"/>
+  
+  <contribution configuration-id="IteratorConverters">
+    <converter class="java.lang.Object" object="instance:ObjectToIteratorConverter"/>
+    <converter class="java.util.Collection" object="instance:CollectionToIteratorConverter"/>
+    <converter class="java.lang.Object[]" object="instance:ObjectArrayToIteratorConverter"/>
+    <converter class="int[]" object="instance:IntArrayToIteratorConverter"/>
+    <converter class="char[]" object="instance:CharArrayToIteratorConverter"/>
+    <converter class="boolean[]" object="instance:BooleanArrayToIteratorConverter"/>    
+  </contribution>
+  
+  <service-point id="IteratorConverter" interface="TypeConverter">
+    <invoke-factory>
+      <construct class="TypeConverterWrapper">
+        <set-configuration property="contributions" configuration-id="IteratorConverters"/>
+        <set-object property="nullConverter" value="instance:NullToIteratorConverter"/>
+      </construct>
+    </invoke-factory>
+  </service-point>  
+  
+  <configuration-point id="ListConverters" schema-id="Converters"/>
+  
+  <contribution configuration-id="ListConverters">
+    <converter class="java.lang.Object" object="instance:ObjectToListConverter"/>
+    <converter class="java.util.Collection" object="instance:CollectionToListConverter"/>
+    <converter class="java.util.Iterator" object="instance:IteratorToListConverter"/>
+    <converter class="java.lang.Object[]" object="instance:ObjectArrayToListConverter"/>
+    <converter class="int[]" object="instance:IntArrayToListConverter"/>
+    <converter class="char[]" object="instance:CharArrayToListConverter"/>
+    <converter class="boolean[]" object="instance:BooleanArrayToListConverter"/>    
+  </contribution>
+  
+  <service-point id="ListConverter" interface="TypeConverter">
+    <invoke-factory>
+      <construct class="TypeConverterWrapper">
+        <set-configuration property="contributions" configuration-id="ListConverters"/>
+        <set-object property="nullConverter" value="instance:NullToListConverter"/>
+      </construct>
+    </invoke-factory>
+  </service-point>  
+  
+  <configuration-point id="TypeConverters" schema-id="Converters">
+    
+    Defines converters used by the ValueConverter service; the class identifies the 
+    class to convert to, and the converter is responsible for converting arbitrary objects
+    to instances of that class.
+    
+  </configuration-point>
+  
+  <configuration-point id="PropertySelectionModelConverters" schema-id="Converters"/>
+  
+  <contribution configuration-id="PropertySelectionModelConverters">
+    <converter class="java.lang.String" object="instance:StringToPropertySelectionModelConverter"/>
+  </contribution>
+    
+  <service-point id="PropertySelectionModelConverter" interface="TypeConverter">
+    <invoke-factory>
+      <construct class="TypeConverterWrapper">
+        <set-configuration property="contributions" configuration-id="PropertySelectionModelConverters"/>
+      </construct>
+    </invoke-factory>   
+  </service-point>
+    
+  <contribution configuration-id="TypeConverters">
+    <converter class="java.lang.Boolean" object="service:BooleanConverter"/>
+    <converter class="java.util.Iterator" object="service:IteratorConverter"/>
+    <converter class="java.util.List" object="service:ListConverter"/>
+    <converter class="java.lang.String" object="instance:ObjectToStringConverter"/>
+    <converter class="org.apache.tapestry.form.IPropertySelectionModel" object="service:PropertySelectionModelConverter"/>
+  </contribution>  
+  
+  <service-point id="ValueConverter" interface="ValueConverter">
+    
+    Used, especially by bindings, to convert arbitrary objects into instances of a particular type.
+    Delegates out to various TypeConverter services defined in the TypeConverters configuration point.
+    
+    <invoke-factory>
+      <construct class="ValueConverterImpl">
+        <set-configuration property="contributions" configuration-id="TypeConverters"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <contribution configuration-id="tapestry.Infrastructure">
+    <property name="valueConverter" object="service:ValueConverter"/>
+  </contribution>
+  
+</module>

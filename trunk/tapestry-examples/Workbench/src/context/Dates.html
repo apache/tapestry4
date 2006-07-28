@@ -1,0 +1,50 @@
+<span jwcid="@Border">
+
+This page is used to demonstrate the DatePicker component.
+
+<form jwcid="valid@Form">
+<input jwcid="inputEnabled"/> Enable Client Side Validation
+</form>
+
+<span jwcid="showError"/>
+
+<form jwcid="@Form" delegate="bean:delegate" clientValidationEnabled="ognl:clientValidationEnabled">
+
+<table valign="middle">
+ <tr>
+ 	<td></td>
+ 	<td><input type="checkbox" jwcid="@Checkbox" value="ognl:includeWeek"
+ 		onclick="javascript:this.form.submit();"/>
+ 		Include weeks in DatePicker UI.
+ 		</td>
+ 	</tr>
+ <tr>
+  <td><span jwcid="@FieldLabel" field="component:startDate"/>:</td>
+  <td><input jwcid="startDate@DatePicker" includeWeek="ognl:includeWeek" value="ognl:startDate" displayName="Start Date" validators="ognl:{beans.required,beans.maxDate}"/></td> 
+ </tr>
+ <tr>
+  <td><span jwcid="@FieldLabel" field="component:endDate"/>:</td>
+  <td><input jwcid="endDate@DatePicker" includeWeek="ognl:includeWeek" value="ognl:endDate" displayName="End Date" validators="ognl:{beans.required,beans.minDate}"/></td>
+ </tr>
+ <tr>
+  <td></td>
+  <td><input type="submit" value="Submit"/></td>
+ </tr>
+</table>
+
+</form>
+
+<u>Submitted Dates</u><br/>
+
+<table valign="middle">
+	<tr>
+<th>Start date:</th>
+<td> <span jwcid="@Insert" value="ognl:startDate"/></td>
+</tr>
+	<tr>
+<th>End date:</th> 
+	<td>
+		<span jwcid="@Insert" value="ognl:endDate"/>
+		</td></tr>
+</table>
+</span>

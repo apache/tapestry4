@@ -1,0 +1,2 @@
+Used in JUnit testing to support an important case where an application specification
+in the context references a library.

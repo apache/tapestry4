@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+   Copyright 2004, 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<mock-test>
+    <context name="c34" root="context34"/>
+
+  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet"/>
+    
+    <request>
+
+		<assert-output name="Test If 1">
+Show text!
+		</assert-output>
+
+		<assert-no-output name="Test If 2">
+Do not show this
+		</assert-no-output>
+
+		<assert-no-output name="Test If 3">
+Do not show this either
+		</assert-no-output>
+
+		<assert-output name="Test If 4">
+But show this too!
+		</assert-output>
+
+		<assert-output name="Test Form If 1">
+Show form text!
+		</assert-output>
+
+		<assert-no-output name="Test Form If 2">
+Do not show form text
+		</assert-no-output>
+
+		<assert-no-output name="Test Form If 3">
+Do not show this form text either
+		</assert-no-output>
+
+		<assert-output name="Test If 4">
+But show this form text too!
+		</assert-output>
+        
+	</request>		
+
+	<request>
+	  	<parameter name="formids" value="If_1,If_2,for2,for3,for4,for5,for6"/>
+	  	<parameter name="component" value="$Form"/>
+	  	<parameter name="page" value="Home"/>
+	  	<parameter name="service" value="direct"/>
+	  	<parameter name="submitmode" value=""/>
+	  	<parameter name="If_1" value="T"/>
+	  	<parameter name="If_2" value="F"/>
+	  	<parameter name="for2">
+              <value>VSuno</value>
+              <value>VSdue</value>
+        </parameter>
+	  	<parameter name="for3">
+              <value>PSbg_BG</value>
+              <value>PSde_DE</value>
+        </parameter>
+	  	<parameter name="for4">
+              <value>PSen_US</value>
+              <value>PSbg_BG</value>
+        </parameter>
+	  	<parameter name="for5">
+              <value>VOrO0ABXNyACdvcmcuYXBhY2hlLnRhcGVzdHJ5Lmp1bml0Lm1vY2suYzM0Lkl0ZW0AAAAAAAAAAQIAAUwABl92YWx1ZXQAEkxqYXZhL2xhbmcvU3RyaW5nO3hwdAAGdmFsdWUx</value>
+              <value>VOrO0ABXNyACdvcmcuYXBhY2hlLnRhcGVzdHJ5Lmp1bml0Lm1vY2suYzM0Lkl0ZW0AAAAAAAAAAQIAAUwABl92YWx1ZXQAEkxqYXZhL2xhbmcvU3RyaW5nO3hwdAAGdmFsdWUz</value>
+              <value>VOrO0ABXNyACdvcmcuYXBhY2hlLnRhcGVzdHJ5Lmp1bml0Lm1vY2suYzM0Lkl0ZW0AAAAAAAAAAQIAAUwABl92YWx1ZXQAEkxqYXZhL2xhbmcvU3RyaW5nO3hwdAAGdmFsdWU2</value>
+        </parameter>
+	  	<parameter name="for6">
+              <value>VOrO0ABXNyACdvcmcuYXBhY2hlLnRhcGVzdHJ5Lmp1bml0Lm1vY2suYzM0Lkl0ZW0AAAAAAAAAAQIAAUwABl92YWx1ZXQAEkxqYXZhL2xhbmcvU3RyaW5nO3hwdAAGdmFsdWUx</value>
+              <value>VOrO0ABXNyACdvcmcuYXBhY2hlLnRhcGVzdHJ5Lmp1bml0Lm1vY2suYzM0Lkl0ZW0AAAAAAAAAAQIAAUwABl92YWx1ZXQAEkxqYXZhL2xhbmcvU3RyaW5nO3hwdAAGdmFsdWUz</value>
+        </parameter>
+
+		<assert-output name="Test If 1">
+Show text!
+		</assert-output>
+
+		<assert-no-output name="Test If 2">
+Do not show this
+		</assert-no-output>
+
+		<assert-no-output name="Test If 3">
+Do not show this either
+		</assert-no-output>
+
+		<assert-output name="Test If 4">
+But show this too!
+		</assert-output>
+
+		<assert-output name="Test Form If 1">
+Show form text!
+		</assert-output>
+
+		<assert-no-output name="Test Form If 2">
+Do not show form text
+		</assert-no-output>
+
+		<assert-no-output name="Test Form If 3">
+Do not show this form text either
+		</assert-no-output>
+
+		<assert-output name="Test If 4">
+But show this form text too!
+		</assert-output>
+        
+		<assert-output name="Test For index count">
+Rewinded index count: 11
+		</assert-output>
+                  
+		<assert-output name="Test For index 0">
+Rewinded index 0 is 0
+		</assert-output>
+                  
+		<assert-output name="Test For index 1">
+Rewinded index 1 is 1
+		</assert-output>
+                  
+		<assert-output name="Test For index 2">
+Rewinded index 2 is 0
+		</assert-output>
+                  
+		<assert-output name="Test For index 3">
+Rewinded index 3 is 1
+		</assert-output>
+                  
+		<assert-output name="Test For index 4">
+Rewinded index 4 is 0
+		</assert-output>
+                  
+		<assert-output name="Test For index 5">
+Rewinded index 5 is 1
+		</assert-output>
+                  
+		<assert-output name="Test For index 6">
+Rewinded index 6 is 0
+		</assert-output>
+                  
+		<assert-output name="Test For index 7">
+Rewinded index 7 is 1
+		</assert-output>
+                  
+		<assert-output name="Test For index 8">
+Rewinded index 8 is 2
+		</assert-output>
+                  
+		<assert-output name="Test For index 9">
+Rewinded index 9 is 0
+		</assert-output>
+                  
+		<assert-output name="Test For index 10">
+Rewinded index 10 is 1
+		</assert-output>
+                  
+		<assert-output name="Test For value count">
+Rewinded value count: 11
+		</assert-output>
+                  
+		<assert-output name="Test For value 0">
+Rewinded value 0 is uno
+		</assert-output>
+                  
+		<assert-output name="Test For value 1">
+Rewinded value 1 is due
+		</assert-output>
+                  
+		<assert-output name="Test For value 2">
+Rewinded value 2 is bg_BG
+		</assert-output>
+                  
+		<assert-output name="Test For value 3">
+Rewinded value 3 is de_DE
+		</assert-output>
+                  
+		<assert-output name="Test For value 4">
+Rewinded value 4 is en_US
+		</assert-output>
+                  
+		<assert-output name="Test For value 5">
+Rewinded value 5 is en
+		</assert-output>
+                  
+		<assert-output name="Test For value 6">
+Rewinded value 6 is Item[id1 : value1]
+		</assert-output>
+                  
+		<assert-output name="Test For value 7">
+Rewinded value 7 is Item[id3 : value3]
+		</assert-output>
+                  
+		<assert-output name="Test For value 8">
+Rewinded value 8 is Item[null : value6]
+		</assert-output>
+                  
+		<assert-output name="Test For value 9">
+Rewinded value 9 is Item[null : value1]
+		</assert-output>
+                  
+		<assert-output name="Test For value 10">
+Rewinded value 10 is Item[null : value3]
+		</assert-output>
+                  
+	</request>		
+    
+</mock-test>
+    	

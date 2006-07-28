@@ -1,0 +1,71 @@
+<!-- 
+   Copyright 2004, 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<!-- 
+	See dojo license information in dojo/LICENSE for dojo licensing specifics.
+	
+	The dojo sources may be obtained via the subversion repository at
+	http://svn.dojotoolkit.org
+-->
+<project name="Tapestry Javascript" default="package">
+
+	<property name="root.dir" value="../../.." />
+	<property file="${root.dir}/config/build.properties" />
+	<property name="profile.file" value="tapestry.profile.js" />
+	
+	<property name="release.dir" value="${dojo.dir}/../release/" />
+	
+	<taskdef name="dojo-test" classname="org.dojotoolkit.ant.DojoTestTask" 
+			classpath="lib/ant-dojotest.jar" />
+	
+	<target name="check-dependencies" description="Ensures that dojo.dir is set.">
+
+		<fail message="dojo.dir not set" unless="dojo.dir" />
+	</target>
+	
+	<!-- ====================================================== -->
+	<!-- Building												-->
+	<!-- ====================================================== -->
+
+	<target name="package" depends="check-dependencies" description="Builds tapestry dojo package and copies it into source tree.">
+		<echo>Building dojo package</echo>
+
+		<echo>Copying tapestry profile to dojo build directory.</echo>
+		<copy todir="${dojo.dir}/profiles" file="${profile.file}" />
+
+		<echo>Building dojo tapestry release</echo>
+		<ant dir="${dojo.dir}" target="release">
+			<property name="docless" value="true" />
+			<property name="profile" value="tapestry" />
+		</ant>
+		
+		<copy todir="${java.classes.dir}/dojo" overwrite="true">
+			<fileset dir="${release.dir}">
+				<exclude name="dojo/demos/**" />
+				<exclude name="dojo/tests/**" />
+			</fileset>
+		</copy>
+	</target>
+	
+	<!-- ====================================================== -->
+	<!-- Testing												-->
+	<!-- ====================================================== -->
+	
+	<target name="test" description="Tests tapestry js package with dojo test utils." >
+		 <dojo-test dojosrc="./dojo/" testsrc="tests"/>
+	</target>
+	
+</project>

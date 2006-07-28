@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+   <!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.2//EN"
+   "http://www.wapforum.org/DTD/wml12.dtd">
+
+<!-- Animal Quiz game home page. -->
+
+<wml>
+
+    <head>
+        <meta http-equiv="Cache-Control" content="must-revalidate" forua="true"/>
+        <meta http-equiv="Cache-Control" content="no-cache" forua="true"/>
+    </head>
+
+    <!-- Provides a way back using the prev element -->
+    <template>
+        <do type="prev">
+            <prev/>
+        </do>
+    </template>
+
+    <!-- First card shows the zoo logo -->
+    <card id="card0" title="Animal QUIZ" ontimer="#card1" newcontext="true">
+        <timer name="t" value="20"/>
+        <p align="center">
+            <br/>
+            <img jwcid="@wml:Image" image="ognl:assets.logo" alt="WMLZoo"/>
+            <br/>
+            <strong>Animal QUIZ</strong>
+            <br/>
+        </p>
+    </card>
+
+    <!-- Second card asks the user name and difficulty level. Start the game! -->
+    <card id="card1" title="Animal QUIZ" newcontext="true">
+        <p>Welcome!
+            <br/>
+            Your name:
+            <input jwcid="userInput" name="username" title="Your name" value=""/>
+        </p>
+        <p>
+            Difficulty:
+            <b jwcid="selectLevel"/>
+        </p>
+        <p>
+            <do type="help" label="Instructions">
+                <go href="#help"/>
+            </do>
+            <do type="options" label="Zoo home">
+                <go jwcid="@ServiceLink" service="ognl:@org.apache.tapestry.Tapestry@HOME_SERVICE" renderer="ognl:@org.apache.tapestry.wml.GoLinkRenderer@SHARED_INSTANCE" href=""/>
+            </do>
+        </p>
+        <p>
+           <anchor title="Start">Start
+                <go jwcid="go">
+                    <postfield jwcid="username" name="username" value="username"/>
+                    <postfield jwcid="level" name="level" value="level"/>
+                </go>
+            </anchor>
+            <br/>
+            <anchor title="Instructions">Instructions
+                <go href="#help"/>
+            </anchor>
+        </p>
+    </card>
+
+    <!-- Instructions -->
+
+    <card id="help" title="Instructions">
+        <p>The quiz will test your knowledge about the world of animals. There are
+            "easy", "medium" and "hard" questions. For each correct
+            answer to an easy question you receive one point, a medium question two points, and a hard
+            question three points. The questions will become more difficult as you go along.
+            You can also select the starting difficulty level.
+            After the first wrong answer the game will end. Good luck!</p>
+    </card>
+
+</wml>
