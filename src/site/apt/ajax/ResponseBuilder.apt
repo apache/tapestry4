@@ -1,0 +1,57 @@
+ ------
+Ajax/DHTML Guide - ResponseBuilder
+ ------
+Jesse Kuhnert
+ ------
+28 July 2006
+ ------
+ 
+Overview
+
+  One of the largest changes made to Tapestry 4.1 was the rendering cycle. Traditionally, responses were made
+  using one basic {{{../tapestry-framework/apidocs/org/apache/tapestry/IMarkupWriter.html}IMarkupWriter}} instance
+  to capture and render output back to the browser. <(this isn't entirely true, NullWriter instances are used 
+  in some instances, like rewinding {{{../components/Form.html}Form}} components)>
+  
+  The new method looks basically the same on the surface, but rendering output is now managed by specific
+  {{{../tapestry-framework/apidocs/org/apache/tapestry/services/ResponseBuilder.html}ResponseBuilder}} instances,
+  depending on the type of request. These classes are responsible for calling 
+  {{{../tapestry-framework/apidocs/org/apache/tapestry/AbstractComponent.html#render(org.apache.tapestry.IMarkupWriter,%20org.apache.tapestry.IRequestCycle)}AbstractComponent.html#render(IMarkupWriter writer, IRequestCycle cycle}}
+  for all component renders. They are also responsible for managing javascript output from script templates.
+  
+  You can always get a reference to the correct {{{../tapestry-framework/apidocs/org/apache/tapestry/services/ResponseBuilder.html}ResponseBuilder}} for 
+  the current request by calling <<<cycle.getResponseBuilder()>>> on your {{{../tapestry-framework/apidocs/org/apache/tapestry/IRequestCycle.html}IRequestCycle}} 
+  instance.
+  
+  <<See also:>> {{{../tapestry-framework/apidocs/org/apache/tapestry/services/ResponseBuilder.html}ResponseBuilder}}, 
+  {{{../tapestry-framework/apidocs/org/apache/tapestry/services/impl/DojoAjaxResponseBuilder.html}DojoAjaxResponseBuilder}},
+  {{{../tapestry-framework/apidocs/org/apache/tapestry/services/impl/JSONResponseBuilder.html}JSONResponseBuilder}}
+  
+* Using ResponseBuilder to dynamically update content
+
+  Based on the type of request made, one of the three available {{{../tapestry-framework/apidocs/org/apache/tapestry/services/ResponseBuilder.html}ResponseBuilder}}s 
+  will be chosen to handle it. In the case of a request made using the {{{EventListener.html}EventListener}} annotation, the
+  builder used will <(not in all cases, if you specify async=false on your annotation the request will be a 
+  normal http post)> be {{{../tapestry-framework/apidocs/org/apache/tapestry/services/impl/DojoAjaxResponseBuilder.html}DojoAjaxResponseBuilder}}.
+  
+  Building on the example started in the {{{EventListener.html}EventListener}} overview, this is how you
+  would dynamically update the contents of a component:
+  
++-----------------------------------------------------------------------
+....
+
+@EventListener(targets = "projectChoose", events = "selectOption",
+          submitForm = "myForm")
+public void projectSelected(IRequestCycle cycle)
+{
+	cycle.getResponseBuilder().updateComponent("myComponentId");
+}
+
+....
++-----------------------------------------------------------------------
+
+  The string value passed in to <<<updateComponent(String componentId)>>> is the component id of the component
+  you would like to update. 
+  
+  Tapestry will correctly manage and render all javascript/form state/etc needed, depending on the component 
+  type you are requesting an update on. 

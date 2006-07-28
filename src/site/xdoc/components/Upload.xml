@@ -37,7 +37,8 @@
                     href="../tapestry-framework/apidocs/org/apache/tapestry/multipart/MultipartDecoder.html">
                     MultipartDecoder
                 </a>
-                service in hivemind. The default is 10000000(10kb).
+                service in hivemind. The default is 10000000(10mb). The <code>maxSize</code> parameter is 
+                specified in bytes, so you will have to give it the long form.
             </p>
 
             <section name="Example override of default maximum file upload size.">
