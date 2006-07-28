@@ -15,7 +15,7 @@
                 application Tapestry(and <a href="http://dojotoolkit.org">dojo</a>) should be able to 
                 support your needs.
                 
-                <img style="float:right;margin-top:8px;margin-left:8px" src="./images/autocompleter.png" alt="Autocompleting select component" />
+                <a href="http://opencomponentry.com:8080/timetracker"><img style="float:right;margin-top:8px;margin-left:8px" src="./images/autocompleter.png" alt="Autocompleting select component" /></a>
             </p>
             
             <p><strong>New Features:</strong></p>
