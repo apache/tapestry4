@@ -1,17 +1,25 @@
  ------
-Download Tapestry 4.1.0 Snapshot
+Download Tapestry 4.1
  ------
 Jesse Kuhnert
  ------
 18 June 2006
  ------
 
-Download Tapestry 4.1.0 Snapshot
+Download Tapestry 4.1
 
-  The Tapestry snapshot builds are currently only available via the maven2 repository at
+  If you are looking for the official jar-only form of Tapestry 4.1 they can be downloaded here 
+  {{http://tapestry.apache.org/download.html}}.
+  
+  The Tapestry snapshot builds are currently available via the ibiblio maven2 and apache.org snapshot 
+  repositories. To download the official 4.1 release you shouldn't need to change your pom settings at 
+  all, other than including the right artifacts to download Tapestry.
+  
+  In order to download the snapshot release versions of Tapestry you will need to add the following repository
+  to your project's pom <(if not already present)>:
   
   {{{http://people.apache.org/repo/m2-snapshot-repository/}}}
-	
+
   This release is currently under active development and should not be considered stable. To add this repository
   to your own projects pom.xml you will need a section that looks like:
 
@@ -40,4 +48,4 @@ Download Tapestry 4.1.0 Snapshot
 </dependency>
 +---------------------------------------------------------
 
-  Tapestry 4.1.0 is distributed under the {{{http://tapestry.apache.org/license.html} Apache License, version 2.0}}.
+  Tapestry 4.1 is distributed under the {{{http://tapestry.apache.org/license.html} Apache License, version 2.0}}.
