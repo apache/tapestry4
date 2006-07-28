@@ -22,6 +22,7 @@ import java.sql.SQLException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.tapestry.services.ApplicationGlobals;
 
 
 /**
@@ -35,12 +36,16 @@ public class DatabaseInstaller
 {
     /** File ISO format. */
     public static final String ISO_FORMAT = "ISO8859_1";
+    
     protected static Log _log = LogFactory.getLog(DatabaseInstaller.class);
     
-    /** threaded db conn. */
-    protected Connection _conn;
+    /** servlet context. */
+    protected ApplicationGlobals _globals;
+    
     /** db installer file path. */
     protected String _filePath;
+    
+    private boolean _initialised = false;
     
     /** default constructor. */
     public DatabaseInstaller() { }
@@ -48,13 +53,18 @@ public class DatabaseInstaller
     /**
      * Invoked to cause initialization of db checks.
      */
-    public void initialise()
+    public void initialise(Connection conn)
     throws Exception
     {
+        if (_initialised)
+            return;
+        
         assert _filePath != null;
         
-        if (!tablesExist())
-            createDatabase();
+        if (!tablesExist(conn))
+            createDatabase(conn);
+        
+        _initialised = true;
     }
     
     /**
@@ -62,14 +72,14 @@ public class DatabaseInstaller
      * @return True, if any row exists in a table called "projects".
      * @throws SQLException on error
      */
-    public boolean tablesExist()
+    public boolean tablesExist(Connection conn)
     throws SQLException
     {
         PreparedStatement ps = null;
         ResultSet rs = null;
         
         try {
-            ps = _conn.prepareStatement("select 'x' from INFORMATION_SCHEMA.SYSTEM_TABLES where TABLE_NAME = 'PROJECTS'");
+            ps = conn.prepareStatement("select 'x' from INFORMATION_SCHEMA.SYSTEM_TABLES where TABLE_NAME = 'PROJECTS'");
             rs = ps.executeQuery();
             
             return rs.next();
@@ -86,32 +96,33 @@ public class DatabaseInstaller
      * database. 
      * @throws Exception If any io/db errors occur.
      */
-    protected void createDatabase()
+    protected void createDatabase(Connection conn)
     throws Exception
     {
         _log.debug("createDatabase() creating database tables..");
         PreparedStatement ps = null;
         try {
             
-            ps = _conn.prepareStatement(FileUtils.readFileToString(new File(_filePath), ISO_FORMAT));
+            ps = conn.prepareStatement(FileUtils.readFileToString(
+                    new File(_globals.getServletContext().getRealPath(_filePath)), ISO_FORMAT));
+            
             ps.execute();
             
+            conn.commit();
         } catch (Throwable t) {
             _log.error("Error creating database.", t);
-            try { if (_conn != null) _conn.rollback(); } catch (Exception e) { }
+            try { if (conn != null) conn.rollback(); } catch (Exception e) { }
             throw new RuntimeException(t);
         } finally {
             try { if (ps != null) ps.close(); } catch (Exception e) { }
+            
         }
     }
     
-    /**
-     * Sets db connection.
-     * @param conn
-     */
-    public void setConnection(Connection conn)
+    /** Injected. */
+    public void setGlobals(ApplicationGlobals globals)
     {
-        _conn = conn;
+        _globals = globals;
     }
     
     /**

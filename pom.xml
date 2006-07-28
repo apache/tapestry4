@@ -176,6 +176,7 @@
                 <groupId>org.apache.tapestry</groupId>
                 <artifactId>tapestry-test</artifactId>
                 <version>4.1.0-SNAPSHOT</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>com.javaforge.tapestry</groupId>

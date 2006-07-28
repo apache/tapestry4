@@ -16,11 +16,7 @@
 -->
 
 <module id="timetracker" version="1.0.0" package="org.apache.tapestry.timetracker">
-    
-    <contribution configuration-id="hivemind.EagerLoad">
-        <load service-id="timetracker.db.DatabaseInstaller" />
-    </contribution>
-    
+
     <contribution configuration-id="tapestry.url.ServiceEncoders">
         <asset-encoder id="asset" path="/assets" />
         <extension-encoder id="extension" extension="svc" after="*"/>
