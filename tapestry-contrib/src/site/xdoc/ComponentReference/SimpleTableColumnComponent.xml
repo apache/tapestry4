@@ -29,25 +29,6 @@
                 the sorting order to be reversed.
             </p>
 
-            <span class="info">
-                <strong>Note:</strong>
-                <p>
-                The column header rendered by this component has two main css class definitions. The
-                embedded table html markup within each
-                <code>td</code>
-                element for a sorted column has the class
-                <code>tableHeaderImage</code>
-                . The image used to sort table columns has an embedded style class definition for
-                <code>tableHeaderImage</code>
-                that defines
-                <code>align:center</code>
-                .
-                <br />
-
-                You may override these definitions with your own css rules.
-                </p>
-            </span>
-
             <p>
                 <strong>
                     See also:
