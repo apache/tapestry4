@@ -15,7 +15,6 @@ package org.apache.tapestry.timetracker.jdbc;
 
 import java.lang.reflect.Proxy;
 import java.sql.Connection;
-import java.sql.SQLException;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.commons.logging.Log;
@@ -31,13 +30,15 @@ import org.apache.hivemind.events.RegistryShutdownListener;
  *
  * @author jkuhnert
  */
-public class DataSourceProxyFactory implements ServiceImplementationFactory, 
-RegistryShutdownListener
+public class DataSourceProxyFactory implements ServiceImplementationFactory, RegistryShutdownListener
 {
     /* logger */
     protected Log _log;
+    
     /* jdbc pool */
     protected BasicDataSource _dataSource;
+    
+    private DatabaseInstaller _installer;
     
     /**
      * {@inheritDoc}
@@ -51,10 +52,12 @@ RegistryShutdownListener
         try {
             Connection conn = _dataSource.getConnection();
             
+            _installer.initialise(conn);
+            
             return Proxy.newProxyInstance(this.getClass()
                     .getClassLoader(), new Class[] { Connection.class,
                 Discardable.class }, new JdbcConnectionProxy(_log, conn));
-        } catch (SQLException e) {
+        } catch (Exception e) {
             _log.fatal("Unable to create a new DB connection", e);
             throw new RuntimeException(e);
         }
@@ -79,5 +82,11 @@ RegistryShutdownListener
     public void setDataSource(BasicDataSource dataSource)
     {
         _dataSource = dataSource;
+    }
+    
+    /** Injected. */
+    public void setInstaller(DatabaseInstaller installer)
+    {
+        _installer = installer;
     }
 }

@@ -31,6 +31,7 @@
         <invoke-factory service-id="hivemind.BuilderFactory">
             <construct class="DataSourceProxyFactory" autowire-services="false">
                 <set-service property="dataSource" service-id="HsqlDataSource" />
+                <set-service property="installer" service-id="DatabaseInstaller" />
             </construct>
         </invoke-factory>
     </service-point>
@@ -65,10 +66,9 @@
     <service-point id="DatabaseInstaller" interface="DatabaseInstaller">
         Ensures the database has been created/initialised. 
         <invoke-factory service-id="hivemind.BuilderFactory">
-            <construct class="DatabaseInstaller" autowire-services="false"
-                       initialize-method="initialise" >
-                <set-service property="connection" service-id="HsqlConnection" />
-                <set property="filePath" value="src/config/createDatabase.sql" />
+            <construct class="DatabaseInstaller" autowire-services="true" >
+                <set-service property="globals" service-id="tapestry.globals.ApplicationGlobals" />
+                <set property="filePath" value="WEB-INF/createDatabase.sql" />
             </construct>
         </invoke-factory>
     </service-point>
