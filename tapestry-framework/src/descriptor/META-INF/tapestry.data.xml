@@ -36,6 +36,10 @@
   data squeezer.
   </configuration-point>
   
+  <contribution configuration-id="DataSqueezerFilters">
+        <filter name="NullDataSqueezerFilter" before="*" object="instance:org.apache.tapestry.data.NullDataSqueezerFilter" />
+  </contribution>
+  
   <service-point id="DataSqueezerTerminator" 
                  visibility="private" 
                  interface="org.apache.tapestry.services.DataSqueezer">
