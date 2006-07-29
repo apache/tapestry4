@@ -128,7 +128,7 @@ tapestry={
 	loadContent:function(id, node, element){
     	if (element.childNodes && element.childNodes.length > 0) {
         	for (var i = 0; i < element.childNodes.length; i++) {
-            	if (element.childNodes[i].nodeType != 1) continue;
+            	if (element.childNodes[i].nodeType != 1) { continue; }
 				
             	var nodeId = element.childNodes[i].getAttribute("id");
             	if (nodeId && nodeId == id) {
@@ -142,7 +142,7 @@ tapestry={
 	},
 	
 	loadScriptContent:function(element, async){
-		if (typeof async == "undefined") async = true;
+		if (typeof async == "undefined") { async = true; }
 		
 		var text=tapestry.html.getContentAsString(element);
 		
@@ -156,7 +156,7 @@ tapestry={
 	    var response = text.replace(match, '');
 	    var scripts = text.match(match);
 		
-		if (!scripts) return;
+		if (!scripts) { return; }
 		
         match = new RegExp(tapestry.ScriptFragment, 'im');
         if (async) {
