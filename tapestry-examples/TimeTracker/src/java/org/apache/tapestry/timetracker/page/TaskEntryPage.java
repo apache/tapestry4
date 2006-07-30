@@ -21,10 +21,10 @@ import org.apache.tapestry.annotations.EventListener;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.Persist;
 import org.apache.tapestry.dojo.form.Autocompleter;
+import org.apache.tapestry.dojo.form.DefaultAutocompleteModel;
 import org.apache.tapestry.dojo.form.DropdownDatePicker;
 import org.apache.tapestry.dojo.form.DropdownTimePicker;
-import org.apache.tapestry.form.BeanPropertySelectionModel;
-import org.apache.tapestry.form.IPropertySelectionModel;
+import org.apache.tapestry.dojo.form.IAutocompleteModel;
 import org.apache.tapestry.form.TextField;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.timetracker.dao.ProjectDao;
@@ -89,9 +89,9 @@ public abstract class TaskEntryPage extends BasePage
      * Selection model for projects.
      * @return
      */
-    public IPropertySelectionModel getProjectModel()
+    public IAutocompleteModel getProjectModel()
     {
-        return new BeanPropertySelectionModel(getProjectDao().listProjects(), "name");
+        return new DefaultAutocompleteModel(getProjectDao().listProjects(), "id", "name");
     }
     
     /**

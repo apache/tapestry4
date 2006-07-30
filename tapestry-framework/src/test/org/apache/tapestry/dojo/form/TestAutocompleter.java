@@ -20,6 +20,8 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isA;
 import static org.testng.AssertJUnit.assertEquals;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.tapestry.IForm;
@@ -32,7 +34,6 @@ import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.form.BaseFormComponentTestCase;
 import org.apache.tapestry.form.MockDelegate;
-import org.apache.tapestry.form.StringPropertySelectionModel;
 import org.apache.tapestry.form.ValidatableFieldSupport;
 import org.apache.tapestry.json.IJSONWriter;
 import org.apache.tapestry.valid.IValidationDelegate;
@@ -48,10 +49,24 @@ import org.testng.annotations.Test;
 @Test
 public class TestAutocompleter extends BaseFormComponentTestCase
 {
+    private IAutocompleteModel createModel()
+    {
+        List values = new ArrayList();
+        
+        SimpleBean s1 = new SimpleBean(new Integer(1), "Simple 1", 100);
+        SimpleBean s2 = new SimpleBean(new Integer(2), "Simple 2", 200);
+        SimpleBean s3 = new SimpleBean(new Integer(3), "Simple 3", 300);
+        
+        values.add(s1);
+        values.add(s2);
+        values.add(s3);
+        
+        return new DefaultAutocompleteModel(values, "id", "label");
+    }
+    
     public void testRewind()
     {
-        String[] values = { "red", "green", "blue" };
-        StringPropertySelectionModel model = new StringPropertySelectionModel(values);
+        IAutocompleteModel model = createModel();
         ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
         
         Autocompleter component = newInstance(Autocompleter.class, 
@@ -73,14 +88,13 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         trainGetElementId(form, component, "barney");
         trainIsRewinding(form, true);
         
-        String key = "0";
-        String value = values[0];
+        trainGetParameter(cycle, "barney", "1");
         
-        trainGetParameter(cycle, "barney", key);
+        SimpleBean match = new SimpleBean(new Integer(1), null, -1);
         
         try
         {
-            vfs.validate(component, writer, cycle, value);
+            vfs.validate(component, writer, cycle, match);
         }
         catch (ValidatorException e)
         {
@@ -93,7 +107,7 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         
         verify();
         
-        assertEquals(values[0], component.getValue());
+        assertEquals(match, component.getValue());
     }
     
     public void testRewindNotForm()
@@ -126,9 +140,7 @@ public class TestAutocompleter extends BaseFormComponentTestCase
     
     public void testRender()
     {
-        String[] values = { "red", "green", "blue" };
-        StringPropertySelectionModel model = new StringPropertySelectionModel(values);
-        
+        IAutocompleteModel model = createModel();
         ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
         
         IRequestCycle cycle = newMock(IRequestCycle.class);
@@ -148,13 +160,15 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         
         IScript script = newMock(IScript.class);
         
+        SimpleBean match = new SimpleBean(new Integer(2), "Simple 2", 200);
+        
         Autocompleter component = newInstance(Autocompleter.class, 
                 new Object[] { 
             "name", "fred", "model", model, 
             "directService", engine,
             "script", script,
             "validatableFieldSupport", vfs, 
-            "value", values[1]
+            "value", match
         });
         
         DirectServiceParameter dsp = 
@@ -195,9 +209,7 @@ public class TestAutocompleter extends BaseFormComponentTestCase
     
     public void testRenderJSON()
     {
-        String[] values = { "red", "green", "blue", "yellow" };
-        StringPropertySelectionModel model = new StringPropertySelectionModel(values);
-        
+        IAutocompleteModel model = createModel();
         IRequestCycle cycle = newMock(IRequestCycle.class);
         
         IJSONWriter json = newBufferJSONWriter();
@@ -212,9 +224,10 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         
         verify();
         
-        assertEquals(json.length(), 2);
-        assertEquals(json.get("3"), "yellow");
-        assertEquals(json.get("2"), "blue");
+        assertEquals(json.length(), 3);
+        assertEquals(json.get("1"), "Simple 1");
+        assertEquals(json.get("2"), "Simple 2");
+        assertEquals(json.get("3"), "Simple 3");
     }
     
     public void testIsRequired()

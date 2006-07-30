@@ -16,6 +16,7 @@ package org.apache.tapestry.dojo.form;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +31,6 @@ import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.engine.DirectServiceParameter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
-import org.apache.tapestry.form.IPropertySelectionModel;
 import org.apache.tapestry.form.ValidatableField;
 import org.apache.tapestry.form.ValidatableFieldSupport;
 import org.apache.tapestry.json.IJSONWriter;
@@ -40,6 +40,9 @@ import org.apache.tapestry.valid.ValidatorException;
 /**
  * An html field similar to a <code>select</code> input field that 
  * is wrapped by a dojo ComboBox widget.
+ * 
+ * This component uses the {@link IAutocompleteModel} to retrieve and match against
+ * selected values.
  * 
  * @author jkuhnert
  */
@@ -86,21 +89,17 @@ public abstract class Autocompleter extends AbstractFormWidget
         json.put("widgetId", getName());
         json.put("name", getName());
         
-        IPropertySelectionModel model = getModel();
+        IAutocompleteModel model = getModel();
         if (model == null)
             throw Tapestry.createRequiredParameterException(this, "model");
         
-        int count = model.getOptionCount();
         Object value = getValue();
+        Object key = value != null ? model.getPrimaryKey(value) : null;
         
-        for (int i = 0; i < count; i++) {
-            Object option = model.getOption(i);
+        if (value != null && key != null) {
             
-            if (isEqual(option, value)) {
-                json.put("value", model.getValue(i));
-                json.put("label", model.getLabel(i));
-                break;
-            }
+            json.put("value", key);
+            json.put("label", model.getLabelFor(value));
         }
         
         parms.put("props", json.toString());
@@ -115,30 +114,26 @@ public abstract class Autocompleter extends AbstractFormWidget
      */
     public void renderComponent(IJSONWriter writer, IRequestCycle cycle)
     {
-        IPropertySelectionModel model = getModel();
+        IAutocompleteModel model = getModel();
         
         if (model == null)
             throw Tapestry.createRequiredParameterException(this, "model");
         
-        int count = model.getOptionCount();
+        Map filteredValues = model.filterValues(getFilter());
         
-        for (int i = 0; i < count; i++)
-        {
-            String value = model.getValue(i);
-            String label = model.getLabel(i);
+        if (filteredValues == null)
+            return;
+        
+        Iterator it = filteredValues.keySet().iterator();
+        Object key = null;
+        
+        while (it.hasNext()) {
             
-            if (getFilter() == null || getFilter().trim().length() <= 0) {
-                writer.put(value, label);
-                continue;
-            }
+            key = it.next();
             
-            // primitive filter, for now
-            // TODO: Create filter interface in IPropertySelectionModel
-            if (getFilter() != null 
-                    && label.toLowerCase().indexOf(getFilter().toLowerCase()) > -1) {
-                writer.put(value, label);
-            }
+            writer.put(key.toString(), filteredValues.get(key));
         }
+        
     }
     
     /**
@@ -148,7 +143,7 @@ public abstract class Autocompleter extends AbstractFormWidget
     {
         String value = cycle.getParameter(getName());
         
-        Object object = getModel().translateValue(value);
+        Object object = getModel().getValue(value);
         
         try
         {
@@ -160,23 +155,6 @@ public abstract class Autocompleter extends AbstractFormWidget
         {
             getForm().getDelegate().record(e);
         }
-    }
-    
-    private boolean isEqual(Object left, Object right)
-    {
-        // Both null, or same object, then are equal
-        
-        if (left == right)
-            return true;
-        
-        // If one is null, the other isn't, then not equal.
-        
-        if (left == null || right == null)
-            return false;
-        
-        // Both non-null; use standard comparison.
-        
-        return left.equals(right);
     }
     
     /** 
@@ -197,7 +175,7 @@ public abstract class Autocompleter extends AbstractFormWidget
         setFilter(cycle.getParameter("filter"));
     }
     
-    public abstract IPropertySelectionModel getModel();
+    public abstract IAutocompleteModel getModel();
     
     /** @since 4.1 */
     public abstract boolean isFilterOnChange();
