@@ -27,6 +27,7 @@ package org.apache.tapestry.json;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
@@ -136,7 +137,7 @@ public class JSONObject
      */
     public JSONObject()
     {
-        this.myHashMap = new HashMap();
+        this.myHashMap = new LinkedHashMap();
     }
 
     /**
@@ -322,11 +323,11 @@ public class JSONObject
     }
 
     /**
-     * Get the HashMap the holds that contents of the JSONObject.
+     * Get the Map the holds that contents of the JSONObject.
      * 
      * @return The getHashMap.
      */
-    HashMap getHashMap()
+    Map getMap()
     {
         return this.myHashMap;
     }

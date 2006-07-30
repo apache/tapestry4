@@ -16,8 +16,8 @@ package org.apache.tapestry.record;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +41,7 @@ public class ClientPropertyPersistenceStrategy implements PropertyPersistenceStr
      * Keyed on page name (String), values are
      * {@link org.apache.tapestry.record.PersistentPropertyData}.
      */
-    private final Map _data = new HashMap();
+    private final Map _data = new LinkedHashMap();
 
     private PersistentPropertyDataEncoder _encoder;
 

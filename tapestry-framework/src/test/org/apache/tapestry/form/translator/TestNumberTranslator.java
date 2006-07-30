@@ -218,9 +218,9 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         
         verify();
         
-        assertEquals("{\"numberField\":{\"constraints\":\"invalid number message\"},"
-                + "\"constraints\":{\"numberField\":[dojo.validate.isRealNumber,"
-                + "{places:0,decimal:\".\",separator:\",\"}]}}",
+        assertEquals( "{\"constraints\":{\"numberField\":[dojo.validate.isRealNumber,"
+                + "{places:0,decimal:\".\",separator:\",\"}]},"
+                + "\"numberField\":{\"constraints\":\"invalid number message\"}}",
                 json.toString());
     }
 
@@ -257,9 +257,9 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         
         verify();
         
-        assertEquals("{\"myfield\":{\"constraints\":\"Blah Blah \'Field Name\' Blah.\"}," 
-                + "\"constraints\":{\"myfield\":[dojo.validate.isRealNumber,"
-                + "{places:0,decimal:\".\",separator:\",\"}]}}",
+        assertEquals("{\"constraints\":{\"myfield\":[dojo.validate.isRealNumber,"
+                + "{places:0,decimal:\".\",separator:\",\"}]},"
+                + "\"myfield\":{\"constraints\":\"Blah Blah \'Field Name\' Blah.\"}}",
                 json.toString());
     }
     
@@ -292,10 +292,10 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         
         verify();
         
-        assertEquals("{\"myfield\":{\"constraints\":\"invalid number message\"},"
+        assertEquals("{\"trim\":\"myfield\","
                 + "\"constraints\":{\"myfield\":[dojo.validate.isRealNumber,"
                 + "{places:0,decimal:\".\",separator:\",\"}]},"
-                + "\"trim\":\"myfield\"}",
+                + "\"myfield\":{\"constraints\":\"invalid number message\"}}",
                 json.toString());
                 
     }
