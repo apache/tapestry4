@@ -3,21 +3,21 @@
     <parent>
         <groupId>org.apache.tapestry</groupId>
         <artifactId>tapestry-project</artifactId>
-        <version>4.1</version>
+        <version>4.1.1-SNAPSHOT</version>
     </parent>
     
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.tapestry</groupId>
     <artifactId>tapestry-portlet</artifactId>
     <name>Portlet</name>
-    <version>4.1</version>
+    <version>4.1.1-SNAPSHOT</version>
     <inceptionYear>2006</inceptionYear>
 
     <dependencies>
         <dependency>
             <groupId>org.apache.tapestry</groupId>
             <artifactId>tapestry-framework</artifactId>
-            <version>4.1</version>
+            <version>4.1.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>hivemind</groupId>
@@ -45,7 +45,7 @@
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>4.7</version>
+            <version>5.0.1</version>
             <classifier>jdk15</classifier>
             <scope>test</scope>
         </dependency>

@@ -5,7 +5,7 @@
     <groupId>org.apache.tapestry</groupId>
     <artifactId>tapestry-project</artifactId>
     <packaging>pom</packaging>
-    <version>4.1</version>
+    <version>4.1.1-SNAPSHOT</version>
     <description>Java Web Application Framework</description>
     <name>Tapestry</name>
     <inceptionYear>2006</inceptionYear>
@@ -138,7 +138,7 @@
             <dependency>
                 <groupId>org.testng</groupId>
                 <artifactId>testng</artifactId>
-                <version>4.7</version>
+                <version>5.0.1</version>
                 <classifier>jdk15</classifier>
                 <scope>test</scope>
             </dependency>
