@@ -153,18 +153,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>direct</td>
-                        <td>boolean</td>
-                        <td>in</td>
-                        <td>no</td>
-                        <td>true</td>
-                        <td>
-                            If true (the default), then the more efficient direct service is used.
-                            If false, then the action service is used. The action service requires
-                            rewinding of the entire page, and is rarely (if ever) used.
-                        </td>
-                    </tr>
-                    <tr>
                         <td>delegate</td>
                         <td>
                             <a
