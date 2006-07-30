@@ -187,7 +187,7 @@ public class TestRequired extends BaseValidatorTestCase
         
         verify();
         
-        assertEquals("{\"fred\":{\"required\":\"Default\\\\Message for Fred.\"},\"required\":\"fred\"}",
+        assertEquals("{\"required\":\"fred\",\"fred\":{\"required\":\"Default\\\\Message for Fred.\"}}",
                 json.toString());
     }
     

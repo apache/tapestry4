@@ -124,8 +124,8 @@ public class TestEmail extends BaseValidatorTestCase
 
         verify();
         
-        assertEquals("{\"myfield\":{\"constraints\":\"default\\\\message\"},"
-                + "\"constraints\":{\"myfield\":[dojo.validate.isEmailAddress,false,true]}}",
+        assertEquals("{\"constraints\":{\"myfield\":[dojo.validate.isEmailAddress,false,true]},"
+                +"\"myfield\":{\"constraints\":\"default\\\\message\"}}",
                 json.toString());
     }
 

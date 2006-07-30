@@ -141,6 +141,7 @@ public class ClientPropertyPersistenceStrategyTest extends BaseComponentTestCase
         trainGetPage(cycle, page);
         trainGetPageName(page, "MyPage");
 
+
         replay();
 
         PageClientPropertyPersistenceScope scope = new PageClientPropertyPersistenceScope();

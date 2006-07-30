@@ -14,8 +14,7 @@
 
 package org.apache.tapestry.valid;
 
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertNull;
+import static org.testng.AssertJUnit.*;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -133,8 +132,8 @@ public class TestDateValidator extends BaseValidatorTestCase
         }
         catch (ValidatorException ex)
         {
-            assertEquals("Invalid date format for badDatesIndy.  Format is MM/dd/yyyy.", ex
-                    .getMessage());
+            assertEquals("Invalid date format for badDatesIndy.  Format is MM/DD/YYYY.".toLowerCase(), ex
+                    .getMessage().toLowerCase());
             assertEquals(ValidationConstraint.DATE_FORMAT, ex.getConstraint());
         }
 

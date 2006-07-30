@@ -118,8 +118,8 @@ public class TestMinLength extends BaseValidatorTestCase
         
         verify();
         
-        assertEquals("{\"myfield\":{\"constraints\":\"default\\\\message\"},"
-                + "\"constraints\":{\"myfield\":[dojo.validate.isText,{minlength:25}]}}",
+        assertEquals("{\"constraints\":{\"myfield\":[dojo.validate.isText,{minlength:25}]},"
+                +"\"myfield\":{\"constraints\":\"default\\\\message\"}}",
                 json.toString());
     }
     
@@ -152,8 +152,8 @@ public class TestMinLength extends BaseValidatorTestCase
         
         verify();
         
-        assertEquals("{\"customField\":{\"constraints\":\"custom\\\\message\"},"
-                + "\"constraints\":{\"customField\":[dojo.validate.isText,{minlength:25}]}}",
+        assertEquals("{\"constraints\":{\"customField\":[dojo.validate.isText,{minlength:25}]},"
+                + "\"customField\":{\"constraints\":\"custom\\\\message\"}}",
                 json.toString());
     }
     

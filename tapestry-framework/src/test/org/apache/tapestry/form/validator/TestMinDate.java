@@ -172,12 +172,12 @@ public class TestMinDate extends BaseValidatorTestCase
         
         verify();
         
-        assertEquals("{\"myfield\":{\"constraints\":\"default message\"},"
-                + "\"constraints\":{\"myfield\":["
+        assertEquals("{\"constraints\":{\"myfield\":["
                 + "tapestry.form.datetime.isValidDate,{min:\""
                 + strMin + "\",format:"
                 + JSONObject.quote(Strftime.convertToPosixFormat(translator.getPattern())) 
-                + "}]}}",
+                + "}]},"
+                + "\"myfield\":{\"constraints\":\"default message\"}}",
                 json.toString());
     }
     
@@ -220,12 +220,12 @@ public class TestMinDate extends BaseValidatorTestCase
         
         verify();
         
-        assertEquals("{\"myfield\":{\"constraints\":\"custom\\\\message\"},"
-                + "\"constraints\":{\"myfield\":["
+        assertEquals("{\"constraints\":{\"myfield\":["
                 + "tapestry.form.datetime.isValidDate,{min:\""
                 + strMin + "\",format:"
                 + JSONObject.quote(Strftime.convertToPosixFormat(translator.getPattern())) 
-                + "}]}}",
+                + "}]},"
+                +"\"myfield\":{\"constraints\":\"custom\\\\message\"}}",
                 json.toString());
     }
 }

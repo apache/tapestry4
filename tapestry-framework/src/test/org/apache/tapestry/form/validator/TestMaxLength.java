@@ -117,8 +117,8 @@ public class TestMaxLength extends BaseValidatorTestCase
         
         verify();
         
-        assertEquals("{\"myfield\":{\"constraints\":\"default\\\\message\"},"
-                + "\"constraints\":{\"myfield\":[dojo.validate.isText,{maxlength:20}]}}",
+        assertEquals("{\"constraints\":{\"myfield\":[dojo.validate.isText,{maxlength:20}]},"
+                +"\"myfield\":{\"constraints\":\"default\\\\message\"}}",
                 json.toString());
     }
 }
