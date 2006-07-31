@@ -46,7 +46,7 @@ import org.testng.annotations.Test;
 public class ComponentEventInvokerTest extends BaseComponentTestCase
 {
     
-    public void testEventProperties()
+    public void test_Event_Properties()
     {
         ComponentEventInvoker invoker = new ComponentEventInvoker();
         
@@ -68,7 +68,7 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         assertEquals(listeners.size(), 0);
     }
     
-    public void testInvokeComponentListener()
+    public void test_Invoke_Component_Listener()
     {
         IRequestCycle cycle = newCycle();
         IComponent comp = newComponent();
@@ -92,6 +92,10 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         
         expect(comp.getListeners()).andReturn(listenerMap);
         
+        expect(listenerMap.canProvideListener("fooListener")).andReturn(Boolean.TRUE);
+        
+        expect(comp.getListeners()).andReturn(listenerMap);
+        
         expect(listenerMap.getListener("fooListener")).andReturn(listener);
         
         listenerInvoker.invokeListener(listener, comp, cycle);
@@ -103,7 +107,7 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         verify();
     }
     
-    public void testInvokeElementListener()
+    public void test_Invoke_Element_Listener()
     {
         IRequestCycle cycle = newCycle();
         IComponent comp = newComponent();
@@ -127,6 +131,10 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         
         expect(comp.getListeners()).andReturn(listenerMap);
         
+        expect(listenerMap.canProvideListener("fooListener")).andReturn(Boolean.TRUE);
+        
+        expect(comp.getListeners()).andReturn(listenerMap);
+        
         expect(listenerMap.getListener("fooListener")).andReturn(listener);
         
         listenerInvoker.invokeListener(listener, comp, cycle);
@@ -138,7 +146,7 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         verify();
     }
     
-    public void testInvokeFormListener()
+    public void test_Invoke_Form_Listener()
     {
         IRequestCycle cycle = newCycle();
         IForm form = newForm();

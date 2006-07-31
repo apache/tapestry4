@@ -156,7 +156,7 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
         
         if (_initializationScript == null)
             _initializationScript = new StringBuffer(script.length() + 1);
-
+        
         _initializationScript.append(script);
         _initializationScript.append('\n');
     }

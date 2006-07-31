@@ -18,6 +18,7 @@ import java.util.Map;
 
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.IScriptProcessor;
@@ -69,7 +70,19 @@ public class ParsedScript extends AbstractToken implements IScript
 
         writeChildren(null, session);
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void execute(IComponent target, IRequestCycle cycle, IScriptProcessor processor,
+            Map symbols)
+    {
+        ScriptSession session = new ScriptSessionImpl(_scriptResource, target, cycle,
+                processor, _evaluator, _valueConverter, symbols);
 
+        writeChildren(null, session);
+    }
+    
     /**
      * Does nothing; never invoked.
      */

@@ -39,11 +39,11 @@ class InitToken extends AbstractToken
         if (buffer != null) throw new IllegalArgumentException();
 
         StringBuffer useBuffer = new StringBuffer(_bufferLengthHighwater);
-
+        
         writeChildren(useBuffer, session);
-
+        
         session.addInitializationScript(useBuffer.toString());
-
+        
         // Store the buffer length from this run for the next run, since its
         // going to be approximately the right size.
 

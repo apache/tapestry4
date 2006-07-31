@@ -135,6 +135,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
         Map parms = new HashMap();
         DirectEventServiceParameter dsp =
             new DirectEventServiceParameter(component, new Object[] {}, new String[] {}, false);
+        
         String url = _eventEngine.getLink(false, dsp).getURL();
         
         PageRenderSupport prs = TapestryUtils.getPageRenderSupport(cycle, component);

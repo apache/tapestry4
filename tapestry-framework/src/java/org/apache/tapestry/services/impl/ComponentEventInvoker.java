@@ -49,6 +49,7 @@ public class ComponentEventInvoker implements ResetEventListener
     /**
      * Causes the configured listeners for the passed component to
      * be invoked.
+     * 
      * @param component
      *          The component that recieved the invocations.
      * @param cycle
@@ -76,7 +77,7 @@ public class ComponentEventInvoker implements ResetEventListener
         
         if (hasElementEvents(targetId)) {
             
-            ComponentEventProperty prop = getElementEvents(id);
+            ComponentEventProperty prop = getElementEvents(targetId);
             invokeListeners(prop, component, cycle, event);
         }
     }
@@ -92,8 +93,18 @@ public class ComponentEventInvoker implements ResetEventListener
             if (container == null) // only IPage has no container
                 container = component; 
             
-            IActionListener listener = 
-                container.getListeners().getListener(eventListener.getMethodName());
+            IActionListener listener = null;
+            
+            if (container.getListeners().canProvideListener(eventListener.getMethodName())) {
+                
+                listener = container.getListeners().getListener(eventListener.getMethodName());
+                
+            } else if (container.getPage().getListeners().canProvideListener(eventListener.getMethodName())) {
+                
+                listener = container.getPage().getListeners().getListener(eventListener.getMethodName());
+                
+            }
+            
             _invoker.invokeListener(listener, container, cycle);
         }
     }
@@ -258,7 +269,7 @@ public class ComponentEventInvoker implements ResetEventListener
     }
     
     /**
-     * Gets event properties fro the specified component, creates a new
+     * Gets event properties for the specified component, creates a new
      * instance if one doesn't exist already.
      * 
      * @param id The component id 

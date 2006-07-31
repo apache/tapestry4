@@ -51,12 +51,29 @@ public class ScriptSessionImpl implements ScriptSession
     /** @since 4.0 */
     private ValueConverter _valueConverter;
 
+    private IComponent _component;
+    
     public ScriptSessionImpl(Resource scriptTemplateResource,
             IRequestCycle cycle, IScriptProcessor processor,
             ExpressionEvaluator evaluator, ValueConverter valueConverter,
             Map symbols)
     {
         _scriptTemplateResource = scriptTemplateResource;
+        _cycle = cycle;
+        _processor = processor;
+        _symbols = symbols;
+        _evaluator = evaluator;
+        _valueConverter = valueConverter;
+    }
+    
+    public ScriptSessionImpl(Resource scriptTemplateResource,
+            IComponent component, 
+            IRequestCycle cycle, IScriptProcessor processor,
+            ExpressionEvaluator evaluator, ValueConverter valueConverter,
+            Map symbols)
+    {
+        _scriptTemplateResource = scriptTemplateResource;
+        _component = component;
         _cycle = cycle;
         _processor = processor;
         _symbols = symbols;
@@ -93,7 +110,7 @@ public class ScriptSessionImpl implements ScriptSession
 
     public void addBodyScript(String script)
     {
-        addBodyScript(null, script);
+        addBodyScript(_component, script);
     }
     
     public void addBodyScript(IComponent target, String script)
@@ -103,7 +120,7 @@ public class ScriptSessionImpl implements ScriptSession
     
     public void addExternalScript(Resource resource)
     {
-        addExternalScript(null, resource);
+        addExternalScript(_component, resource);
     }
     
     public void addExternalScript(IComponent target, Resource resource)
@@ -113,7 +130,7 @@ public class ScriptSessionImpl implements ScriptSession
 
     public void addInitializationScript(String script)
     {
-        addInitializationScript(null, script);
+        addInitializationScript(_component, script);
     }
 
     public void addInitializationScript(IComponent target, String script)

@@ -74,7 +74,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         _writer.reset();
     }
     
-    public void testNullRender() 
+    public void test_Null_Render() 
     {
         IRender render = newMock(IRender.class);
         IRequestCycle cycle = newMock(IRequestCycle.class);
@@ -92,7 +92,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         assertSame(builder.getWriter(), null);
     }
     
-    public void testNormalRender()
+    public void test_Normal_Render()
     {
         IRender render = newMock(IRender.class);
         IRequestCycle cycle = newMock(IRequestCycle.class);
@@ -111,7 +111,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         assertSame(builder.getWriter(), writer);
     }
     
-    public void testNullContains() 
+    public void test_Null_Contains() 
     {
         ResponseBuilder builder = new DojoAjaxResponseBuilder(null, null);
         
@@ -122,7 +122,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         verify();
     }
     
-    public void testPartialRender()
+    public void test_Partial_Render()
     {
         IRender render = newMock(IRender.class);
         
@@ -162,7 +162,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         assertSame(builder.getWriter(), writer);
     }
     
-    public void testAllowedScripts()
+    public void test_Allowed_Scripts()
     {
         IComponent comp = newMock(IComponent.class);
         List parts = new ArrayList();
@@ -172,9 +172,13 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         
         expect(comp.getClientId()).andReturn("comp");
         
+        expect(comp.getParent()).andReturn(null);
+        
         expect(comp.getClientId()).andReturn("comp1");
         
         expect(comp.getClientId()).andReturn("comp");
+        
+        expect(comp.getParent()).andReturn(null);
         
         replay();
         
@@ -185,7 +189,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         verify();
     }
     
-    public void testWriteBodyScript()
+    public void test_Write_Body_Script()
     {
         MarkupFilter filter = new UTFMarkupFilter();
         PrintWriter writer = newPrintWriter();
@@ -233,7 +237,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         verify();
     }
     
-    public void testWriteExternalScripts()
+    public void test_Write_External_Scripts()
     {
         MarkupFilter filter = new UTFMarkupFilter();
         PrintWriter writer = newPrintWriter();
@@ -270,7 +274,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         verify();
     }
     
-    public void testWriteInitializationScript()
+    public void test_Write_Initialization_Script()
     {
         MarkupFilter filter = new UTFMarkupFilter();
         PrintWriter writer = newPrintWriter();

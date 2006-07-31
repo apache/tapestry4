@@ -72,4 +72,13 @@ Click this link to manually update the project description.
 	</span>
 </div>
 
+<div jwcid="textListen@Any">This is some text at the bottom of the screen.</div>
+
+<div jwcid="refresh@Any">
+	<span jwcid="@If" condition="ognl:eventReceived">
+		<p>I must have been refreshed!</p>
+		<span jwcid="@Script" script="TestScript.script" />
+	</span>
+</div>
+
 </span>
