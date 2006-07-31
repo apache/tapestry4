@@ -59,6 +59,15 @@ public class LinkSubmitTest extends BaseComponentTestCase
             symbols.put("href", "HREF");
         }
 
+        public void execute(IComponent target, IRequestCycle cycle, IScriptProcessor processor, Map symbols)
+        {
+            assertNotNull(cycle);
+            assertNotNull(processor);
+            assertNotNull(symbols);
+
+            symbols.put("href", "HREF");
+        }
+        
         public Resource getScriptResource()
         {
             return null;

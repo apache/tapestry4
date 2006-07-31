@@ -149,6 +149,9 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
 
     private IContainedComponent _containedComponent;
     
+    /** @since 4.1 */
+    private IComponent _parent;
+    
     public void addAsset(String name, IAsset asset)
     {
         Defense.notNull(name, "name");
@@ -184,13 +187,13 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
     public void addBody(IRender element)
     {
         Defense.notNull(element, "element");
-
-        // TODO: Tweak the ordering of operations inside the PageLoader so that this
-        // check is allowable. Currently, the component is entering active state
-        // before it loads its template.
-
-        // checkActiveLock();
-
+        
+        // Check to set parent/child relationships on components where the container
+        // logic doesn't always make sense.
+        
+        if (IComponent.class.isAssignableFrom(element.getClass()))
+            ((IComponent)element).setParent(this);
+        
         // Should check the specification to see if this component
         // allows body. Curently, this is checked by the component
         // in render(), which is silly.
@@ -220,6 +223,16 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
         _body[_bodyCount++] = element;
     }
 
+    public IComponent getParent()
+    {
+        return _parent;
+    }
+    
+    public void setParent(IComponent parent)
+    {
+        _parent = parent;
+    }
+    
     /**
      * Invokes {@link #finishLoad()}. Subclasses may overide as needed, but must invoke this
      * implementation. {@link BaseComponent} loads its HTML template.

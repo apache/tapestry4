@@ -149,10 +149,10 @@ public abstract class Script extends AbstractComponent
         {
             PageRenderSupport pageRenderSupport = TapestryUtils
                     .getPageRenderSupport(cycle, this);
-
+            
             _symbols = getInputSymbols();
-
-            getParsedScript().execute(cycle, pageRenderSupport, _symbols);
+            
+            getParsedScript().execute(this, cycle, pageRenderSupport, _symbols);
         }
 
         // Render the body of the Script;

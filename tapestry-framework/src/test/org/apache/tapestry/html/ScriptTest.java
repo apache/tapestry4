@@ -57,6 +57,11 @@ public class ScriptTest extends BaseComponentTestCase
             _symbols = symbols;
         }
 
+        public void execute(IComponent target, IRequestCycle cycle, IScriptProcessor processor, Map symbols)
+        {
+            _symbols = symbols;
+        }
+        
         public Resource getScriptResource()
         {
             // TODO Auto-generated method stub
@@ -68,7 +73,7 @@ public class ScriptTest extends BaseComponentTestCase
     /**
      * No input symbols, no informal parameters.
      */
-    public void testMinimalRender()
+    public void test_Minimal_Render()
     {
         IScriptSource source = newScriptSource();
         IScript script = newScript();
@@ -96,7 +101,7 @@ public class ScriptTest extends BaseComponentTestCase
         
         trainGetScript(source, scriptLocation, script);
 
-        script.execute(cycle, support, new HashMap());
+        script.execute(component, cycle, support, new HashMap());
 
         trainResponseBuilder(cycle, writer);
         
@@ -113,7 +118,7 @@ public class ScriptTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testWithSymbolsMap()
+    public void test_With_Symbols_Map()
     {
         IScriptSource source = newScriptSource();
         MockScript script = new MockScript();
@@ -159,7 +164,7 @@ public class ScriptTest extends BaseComponentTestCase
         assertNotSame(baseSymbols, script._symbols);
     }
 
-    public void testWithSymbolsMapAndInformalParameters()
+    public void test_With_Symbols_Map_And_Informal_Parameters()
     {
         IScriptSource source = newScriptSource();
         MockScript script = new MockScript();
@@ -211,7 +216,7 @@ public class ScriptTest extends BaseComponentTestCase
         assertSame(script._symbols, component.getSymbols());
     }
 
-    public void testRewinding()
+    public void test_Rewinding()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle(true, writer);
@@ -232,7 +237,7 @@ public class ScriptTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testMultiParamException() 
+    public void test_MultiParam_Exception() 
     {
     	IScriptSource source = newScriptSource();
         
@@ -266,7 +271,7 @@ public class ScriptTest extends BaseComponentTestCase
         verify();
     }
     
-    public void testIAssetParamRender()
+    public void test_IAsset_ParamRender()
     {
         IScriptSource source = newScriptSource();
         IScript script = newScript();
@@ -293,7 +298,7 @@ public class ScriptTest extends BaseComponentTestCase
         
         trainGetScript(source, scriptLocation, script);
         
-        script.execute(cycle, support, new HashMap());
+        script.execute(component, cycle, support, new HashMap());
         
         trainResponseBuilder(cycle, writer);
         

@@ -18,6 +18,7 @@ import java.util.Date;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.Component;
 import org.apache.tapestry.annotations.EventListener;
+import org.apache.tapestry.annotations.InitialValue;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.Persist;
 import org.apache.tapestry.dojo.form.Autocompleter;
@@ -85,6 +86,11 @@ public abstract class TaskEntryPage extends BasePage
     
     public abstract String getFeedback();
     
+    @InitialValue("ognl:false")
+    public abstract boolean isEventReceived();
+    
+    public abstract void setEventReceived(boolean value);
+    
     /**
      * Selection model for projects.
      * @return
@@ -108,6 +114,13 @@ public abstract class TaskEntryPage extends BasePage
     
     public void linkUpdateClicked()
     {
+    }
+    
+    @EventListener(events = "onclick", elements = "textListen")
+    public void textSelected(IRequestCycle cycle)
+    {
+        setEventReceived(true);
+        cycle.getResponseBuilder().updateComponent("refresh");
     }
     
     /**

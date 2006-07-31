@@ -465,7 +465,17 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         if (target == null) 
             return false;
         
-        return _parts.contains(getComponentId(target));
+        String id = getComponentId(target);
+        
+        if (_parts.contains(id))
+            return true;
+        
+        IComponent parent = target.getParent();
+        
+        if (parent != null)
+            return contains(parent);
+        
+        return false;
     }
     
     /**

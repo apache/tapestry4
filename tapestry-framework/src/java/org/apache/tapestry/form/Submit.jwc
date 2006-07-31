@@ -55,7 +55,7 @@
           A listener that is notified if this component is triggered.
       </description>
   </parameter>
-  <parameter name="action" deprecated="yes">
+  <parameter name="action">
       <description>
           A listener that is notified if this component is triggered
           just before the form's listener, after all components 

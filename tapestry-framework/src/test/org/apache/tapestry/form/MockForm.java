@@ -407,4 +407,20 @@ public class MockForm implements IForm
     {
         
     }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public IComponent getParent()
+    {
+        return null;
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public void setParent(IComponent parent)
+    {
+        
+    }
 }
