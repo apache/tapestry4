@@ -42,11 +42,10 @@ import org.apache.tapestry.timetracker.model.Task;
 public abstract class TaskEntryPage extends BasePage
 {
     
-    @Component(type = "Autocompleter", id = "projectChoose",
-            bindings = { "model=projectModel", "value=selectedProject",
+    @Component(bindings = { "model=projectModel", "value=selectedProject",
             "displayName=message:choose.project", "filterOnChange=true",
             "validators=validators:required"})
-    public abstract Autocompleter getProjectSelection();
+    public abstract Autocompleter getProjectChoose();
     
     @InjectObject("service:timetracker.dao.ProjectDao")
     public abstract ProjectDao getProjectDao();
@@ -56,26 +55,22 @@ public abstract class TaskEntryPage extends BasePage
     
     public abstract Project getCurrentProject();
     
-    @Component(type = "DropdownDatePicker", id = "datePicker",
-            bindings = {"value=date", 
+    @Component(bindings = {"value=date", 
             "displayName=message:task.start.date"})
     public abstract DropdownDatePicker getDatePicker();
     public abstract Date getDate();
     
-    @Component(type = "DropdownTimePicker", id = "startPicker",
-            bindings = {"value=startTime", "displayName=message:task.start.time",
+    @Component(bindings = {"value=startTime", "displayName=message:task.start.time",
             "validators=validators:required"})
     public abstract DropdownTimePicker getStartPicker();
     public abstract Date getStartTime();
     
-    @Component(type = "DropdownTimePicker", id = "endPicker",
-            bindings = {"value=endTime", "displayName=message:task.end.time",
+    @Component(bindings = {"value=endTime", "displayName=message:task.end.time",
             "validators=validators:required"})
     public abstract DropdownTimePicker getEndPicker();
     public abstract Date getEndTime();
     
-    @Component(type = "TextField", id = "descriptionField",
-            bindings = { "value=description", 
+    @Component(bindings = { "value=description", 
             "displayName=message:task.description",
             "validators=validators:required,maxLength=20"})
     public abstract TextField getDescriptionField();
