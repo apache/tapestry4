@@ -65,6 +65,13 @@ public class TestComponentAnnotationWorker extends BaseAnnotationTestCase
         assertEquals(true, cc.getBindingNames().isEmpty());
         assertEquals("textField", cc.getPropertyName());
     }
+    
+    public void testWithoutType()
+    {
+        IContainedComponent cc = run("usernameField", "getUsernameField", null);
+        
+        assertEquals("TextField", cc.getType());
+    }
 
     public void testExplicitId()
     {

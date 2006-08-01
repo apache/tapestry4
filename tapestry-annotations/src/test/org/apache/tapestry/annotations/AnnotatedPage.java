@@ -100,6 +100,9 @@ public abstract class AnnotatedPage extends BasePage
 
     @InjectPage("SomePageName")
     public abstract IPage getMyPage();
+    
+    @Component
+    public abstract TextField getUsernameField();
 
     @Component(type = "TextField")
     public abstract TextField getTextField();

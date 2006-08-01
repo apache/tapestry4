@@ -41,10 +41,10 @@ public @interface Component {
     String id() default "";
 
     /**
-     * The component type.
+     * The component type. Defaults to the return type class name if left unspecified.
      */
 
-    String type();
+    String type() default "";
 
     /**
      * If true, then the component inherits informal parameters from its container.

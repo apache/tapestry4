@@ -44,11 +44,17 @@ public class ComponentAnnotationWorker implements MethodAnnotationEnhancementWor
         Component component = method.getAnnotation(Component.class);
 
         String propertyName = AnnotationUtils.getPropertyName(method);
+        String type = component.type();
+        if (type.equals(""))
+        {
+            Class retTypeClazz = method.getReturnType();
+            type = retTypeClazz.getSimpleName();
+        }
 
         IContainedComponent cc = new ContainedComponent();
 
         cc.setInheritInformalParameters(component.inheritInformalParameters());
-        cc.setType(component.type());
+        cc.setType(type);
         cc.setPropertyName(propertyName);
         cc.setLocation(location);
 
