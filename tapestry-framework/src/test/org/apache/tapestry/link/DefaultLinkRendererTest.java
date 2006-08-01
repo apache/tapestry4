@@ -97,7 +97,6 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
         @Override
         protected boolean getHasBody()
         {
-            // TODO Auto-generated method stub
             return _hasBody;
         }
 
