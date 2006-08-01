@@ -33,7 +33,12 @@ dojo.require("dojo.style");
 function toggleDisplay(id){
 	dojo.style.toggleShowing(dojo.byId(id));
 	return false;
-}
+}    
+    
+dojo.lang.forEach(
+	dojo.html.getElementsByClass('toggleContent'),
+	function(item) {toggleDisplay(item.id);}
+	);
 </script>
 
 </body>

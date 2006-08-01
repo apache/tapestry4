@@ -11,7 +11,7 @@
 	   onClick="ognl:'return toggleDisplay(\'excdisplay'+index+'\')'">[&nbsp;+/-&nbsp;] Exception:</a>
 	   <span jwcid="@Insert" value="ognl:exception.message">A message describing the exception.</span>
 	
-	<div jwcid="@Any" id="ognl:'excdisplay' + index" style="display:none;">
+	<div jwcid="@Any" id="ognl:'excdisplay' + index" class="toggleContent">
 	<table class="exception-display">
 		<tr class="exception-name">
 			<td colspan="2"><span jwcid="insertClass">some.exception.Class</span></td>
