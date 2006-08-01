@@ -89,7 +89,8 @@ public class DirectLinkWorker implements ComponentRenderWorker
         parms.put("json", Boolean.valueOf(direct.isJson()));
         
         // execute script template
-        _scriptSource.getScript(_script).execute(cycle, prs, parms);
+        
+        _scriptSource.getScript(_script).execute(component, cycle, prs, parms);
     }
     
     /** 
