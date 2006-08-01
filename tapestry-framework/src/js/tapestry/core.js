@@ -92,7 +92,7 @@ tapestry={
 				if (id == "initializationscript") {
 					initScripts.push(elms[i]);
 					continue;
-				} else if (id == "bodyScripts") {
+				} else if (id == "bodyscript") {
 					bodyScripts.push(elms[i]);
 					continue;
 				} else if (id == "includescript") {

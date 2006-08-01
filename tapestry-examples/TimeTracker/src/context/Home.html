@@ -69,6 +69,7 @@ Click this link to manually update the project description.
 <div jwcid="projectDescription@Any" >
 	<span jwcid="@If" condition="ognl:selectedProject">
 		<h2 style="clear:left" ><span jwcid="@Insert" value="ognl:selectedProject.name" /></h2>
+		<a jwcid="@DirectLink" listener="listener:linkUpdateClicked" async="true">Another link!</a>
 	</span>
 </div>
 
