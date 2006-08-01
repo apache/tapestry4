@@ -20,7 +20,7 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.INamespace;
 
 /**
- * Enapsulates the logic for searching for component meta-data. Deployed as service
+ * Encapsulates the logic for searching for component meta-data. Deployed as service
  * tapestry.props.ComponentPropertySource.
  * <p>
  * TODO: Adjust name, since it now provides access to namespace properties as well as component

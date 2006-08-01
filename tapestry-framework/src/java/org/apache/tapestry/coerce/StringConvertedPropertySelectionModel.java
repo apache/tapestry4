@@ -89,7 +89,6 @@ public final class StringConvertedPropertySelectionModel implements IPropertySel
 
     public String getLabel(int index)
     {
-        // TODO Auto-generated method stub
         return getEntry(index)._label;
     }
 
