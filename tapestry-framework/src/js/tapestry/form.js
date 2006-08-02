@@ -42,7 +42,7 @@ tapestry.form={
 		if (field.disabled || field.clientWidth < 1) return;
 		
         if (typeof field.focus != "undefined") { field.focus(); }
-        
+        // TODO: clarify next statement
         if (field.isContentEditable 
         	|| field.isContentEditable == null
         	&& typeof field.select != "undefined") {
@@ -60,10 +60,10 @@ tapestry.form={
 		
 		var elm=dojo.byId(id);
 		if (!elm) return;
-		if ( elem.type != "text" && elem.type != "textarea" 
-			&& elem.type != "password" ) { return; }
+		if ( elm.type != "text" && elm.type != "textarea"
+			&& elm.type != "password" ) { return; }
 		
-		elem.value = elem.value.replace(/(^\s*|\s*$)/g, "");
+		elm.value = elm.value.replace(/(^\s*|\s*$)/g, "");
 	},
 	
 	/**
@@ -181,8 +181,8 @@ tapestry.form={
 	 * 				   not specified assumes true.
 	 */
 	setFormValidating:function(formId, validate){
-		if (this.forms[id]){
-			this.forms[id].validateForm = validate ? true : false;
+		if (this.forms[formId]){
+			this.forms[formId].validateForm = validate ? true : false;
 		}
 	},
 	
