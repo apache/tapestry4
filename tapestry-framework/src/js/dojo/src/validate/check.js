@@ -86,6 +86,10 @@ dojo.validate.check = function(form, profile) {
 		}
 	}
 
+	if (dj_undef(profile, "required") && !(profile.required instanceof Array)) {
+		profile.required=[profile["required"]];
+	}
+
 	// See if required input fields have values missing.
 	if ( profile.required instanceof Array ) {
 		for (var i = 0; i < profile.required.length; i++) { 

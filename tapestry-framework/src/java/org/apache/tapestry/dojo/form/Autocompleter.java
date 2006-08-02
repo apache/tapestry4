@@ -89,6 +89,8 @@ public abstract class Autocompleter extends AbstractFormWidget
         json.put("mode", MODE_REMOTE);
         json.put("widgetId", getName());
         json.put("name", getName());
+        json.put("searchDelay", getSearchDelay());
+        json.put("fadeTime", getFadeTime());
         
         IAutocompleteModel model = getModel();
         if (model == null)
