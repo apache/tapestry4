@@ -36,6 +36,7 @@ import org.apache.tapestry.form.BaseFormComponentTestCase;
 import org.apache.tapestry.form.MockDelegate;
 import org.apache.tapestry.form.ValidatableFieldSupport;
 import org.apache.tapestry.json.IJSONWriter;
+import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidatorException;
 import org.testng.annotations.Test;
@@ -64,13 +65,15 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         return new DefaultAutocompleteModel(values, "id", "label");
     }
     
-    public void testRewind()
+    public void test_Rewind()
     {
         IAutocompleteModel model = createModel();
         ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
+        DataSqueezer ds = newMock(DataSqueezer.class);
         
         Autocompleter component = newInstance(Autocompleter.class, 
-                new Object[] { "model", model, "validatableFieldSupport", vfs});
+                new Object[] { "model", model, "validatableFieldSupport", vfs,
+            "dataSqueezer", ds});
         
         IRequestCycle cycle = newMock(IRequestCycle.class);
         IForm form = newMock(IForm.class);
@@ -89,6 +92,8 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         trainIsRewinding(form, true);
         
         trainGetParameter(cycle, "barney", "1");
+        
+        expect(ds.unsqueeze("1")).andReturn(new Integer(1));
         
         SimpleBean match = new SimpleBean(new Integer(1), null, -1);
         
@@ -110,7 +115,7 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         assertEquals(match, component.getValue());
     }
     
-    public void testRewindNotForm()
+    public void test_Rewind_NotForm()
     {
         Autocompleter component = (Autocompleter) newInstance(Autocompleter.class);
         
@@ -138,10 +143,11 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         verify();
     }
     
-    public void testRender()
+    public void test_Render()
     {
         IAutocompleteModel model = createModel();
         ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
+        DataSqueezer ds = newMock(DataSqueezer.class);
         
         IRequestCycle cycle = newMock(IRequestCycle.class);
         IForm form = newMock(IForm.class);
@@ -168,7 +174,8 @@ public class TestAutocompleter extends BaseFormComponentTestCase
             "directService", engine,
             "script", script,
             "validatableFieldSupport", vfs, 
-            "value", match
+            "value", match,
+            "dataSqueezer", ds
         });
         
         DirectServiceParameter dsp = 
@@ -196,7 +203,9 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         PageRenderSupport prs = newPageRenderSupport();
         trainGetPageRenderSupport(cycle, prs);
         
-        script.execute(eq(cycle), eq(prs), isA(Map.class));
+        expect(ds.squeeze(2)).andReturn("2p");
+        
+        script.execute(eq(component), eq(cycle), eq(prs), isA(Map.class));
         
         replay();
         
@@ -207,16 +216,21 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         assertBuffer("<span class=\"prefix\"><select name=\"fred\" class=\"validation-delegate\"></select></span>");
     }
     
-    public void testRenderJSON()
+    public void test_Render_JSON()
     {
         IAutocompleteModel model = createModel();
         IRequestCycle cycle = newMock(IRequestCycle.class);
+        DataSqueezer ds = newMock(DataSqueezer.class);
         
         IJSONWriter json = newBufferJSONWriter();
         
         Autocompleter component = newInstance(Autocompleter.class, new Object[]
         { "name", "fred", "model", model,
-            "filter", "l" });
+            "filter", "l", "dataSqueezer", ds });
+        
+        expect(ds.squeeze(1)).andReturn("1");
+        expect(ds.squeeze(2)).andReturn("2");
+        expect(ds.squeeze(3)).andReturn("3");
         
         replay();
         
@@ -230,7 +244,7 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         assertEquals(json.get("3"), "Simple 3");
     }
     
-    public void testIsRequired()
+    public void test_Is_Required()
     {
         ValidatableFieldSupport support = newMock(ValidatableFieldSupport.class);
         

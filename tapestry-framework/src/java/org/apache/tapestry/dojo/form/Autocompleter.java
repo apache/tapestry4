@@ -35,6 +35,7 @@ import org.apache.tapestry.form.ValidatableField;
 import org.apache.tapestry.form.ValidatableFieldSupport;
 import org.apache.tapestry.json.IJSONWriter;
 import org.apache.tapestry.json.JSONObject;
+import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
@@ -98,7 +99,7 @@ public abstract class Autocompleter extends AbstractFormWidget
         
         if (value != null && key != null) {
             
-            json.put("value", key);
+            json.put("value", getDataSqueezer().squeeze(key));
             json.put("label", model.getLabelFor(value));
         }
         
@@ -106,7 +107,7 @@ public abstract class Autocompleter extends AbstractFormWidget
         parms.put("form", getForm().getName());
         
         PageRenderSupport prs = TapestryUtils.getPageRenderSupport(cycle, this);
-        getScript().execute(cycle, prs, parms);
+        getScript().execute(this, cycle, prs, parms);
     }
     
     /**
@@ -131,7 +132,7 @@ public abstract class Autocompleter extends AbstractFormWidget
             
             key = it.next();
             
-            writer.put(key.toString(), filteredValues.get(key));
+            writer.put(getDataSqueezer().squeeze(key), filteredValues.get(key));
         }
         
     }
@@ -143,7 +144,7 @@ public abstract class Autocompleter extends AbstractFormWidget
     {
         String value = cycle.getParameter(getName());
         
-        Object object = getModel().getValue(value);
+        Object object = getModel().getValue(getDataSqueezer().unsqueeze(value));
         
         try
         {
@@ -203,6 +204,9 @@ public abstract class Autocompleter extends AbstractFormWidget
     
     /** @since 4.1 */
     public abstract String getFilter();
+    
+    /** Injected. */
+    public abstract DataSqueezer getDataSqueezer();
     
     /**
      * Injected.
