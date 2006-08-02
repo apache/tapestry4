@@ -30,6 +30,12 @@ public class RelationBean
     private String _rev;
     /** Specifies the MIME type of the target URL. */
     private String _type;
+    /** Title of the relation. */
+    private String _title;
+    
+    public RelationBean()
+    {        
+    }
     
     public String getHref()
     {
@@ -80,4 +86,56 @@ public class RelationBean
     {
         _type = type;
     }
+    
+    public String getTitle()
+    {
+        return _title;
+    }
+    
+    public void setTitle(String title)
+    {
+        _title = title;
+    }
+
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((_href == null) ? 0 : _href.hashCode());
+        result = prime * result + ((_media == null) ? 0 : _media.hashCode());
+        result = prime * result + ((_rel == null) ? 0 : _rel.hashCode());
+        result = prime * result + ((_rev == null) ? 0 : _rev.hashCode());
+        result = prime * result + ((_title == null) ? 0 : _title.hashCode());
+        result = prime * result + ((_type == null) ? 0 : _type.hashCode());
+        return result;
+    }
+
+    public boolean equals(Object obj)
+    {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+        final RelationBean other = (RelationBean) obj;
+        if (_href == null) {
+            if (other._href != null) return false;
+        } else if (!_href.equals(other._href)) return false;
+        if (_media == null) {
+            if (other._media != null) return false;
+        } else if (!_media.equals(other._media)) return false;
+        if (_rel == null) {
+            if (other._rel != null) return false;
+        } else if (!_rel.equals(other._rel)) return false;
+        if (_rev == null) {
+            if (other._rev != null) return false;
+        } else if (!_rev.equals(other._rev)) return false;
+        if (_title == null) {
+            if (other._title != null) return false;
+        } else if (!_title.equals(other._title)) return false;
+        if (_type == null) {
+            if (other._type != null) return false;
+        } else if (!_type.equals(other._type)) return false;
+        return true;
+    }  
+    
+    
 }

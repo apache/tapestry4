@@ -19,7 +19,7 @@ import org.apache.tapestry.IRequestCycle;
 
 /**
  * Works with the {@link Shell} component to define and append a 
- * relationship between docuements (typically a stylesheet) to 
+ * relationship between documents (typically a stylesheet) to 
  * the HTML response. 
  * 
  * @author andyhot
