@@ -41,7 +41,7 @@
 </let>
 
 <let key="buttonOnclickHandler">
-  javascript:${calendarObject}.toggle(document.${formName}.${name});	
+  javascript:${calendarObject}.toggle(dojo.byId("${formName}"));	
 </let>
 
 <body>
@@ -61,7 +61,7 @@ ${calendarObject}.initialize([${monthNames}],
   [${shortWeekDayNames}],
   "${format}", ${firstDayInWeek}, ${includeWeek}, ${minimalDaysInFirstWeek}, "${clearButtonLabel}");	
 ${calendarObject}.onchange = function() {
-  var field = document.${formName}.${name};
+  var field = dojo.byId("${formName}").${name};
   var value = ${calendarObject}.formatDate();
 	if (field.value != value) {
     field.value = value;
