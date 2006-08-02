@@ -52,6 +52,8 @@
   
   <inject property="validatableFieldSupport" object="service:tapestry.form.ValidatableFieldSupport"/>
   
+  <inject property="dataSqueezer" object="service:tapestry.data.DataSqueezer"/>
+  
   <inject property="directService" object="service:tapestry.services.Direct"/>
   <inject property="script" type="script" object="Autocompleter.script"/>
   
