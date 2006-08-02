@@ -169,7 +169,7 @@ public final class TapestryUtils
     /**
      * Returns the {@link PageRenderSupport}&nbsp;object if previously stored, or null otherwise.
      * This is used in the rare case that a component wishes to adjust its behavior based on whether
-     * the page render support services are avaiable (typically, adjust for whether enclosed by a
+     * the page render support services are available (typically, adjust for whether enclosed by a
      * Body component, or not).
      */
 
