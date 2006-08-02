@@ -34,6 +34,28 @@ function test_validate_realNumber(){
 	jum.assertFalse(value, dojo.validate.isRealNumber(value, {places:0,decimal:".",separator:","}));
 }
 
+function test_validate_required(){
+	// A generic form
+	var f = {
+		
+		tx1: {type: "text", value: " 1001 ",  name: "tx1"},
+		tx2: {type: "text", value: " ",  name: "tx2"},
+		tx3: {type: "text", value: "10/19/2005",  name: "tx3"},
+		
+	};
+
+	// Profile for form input
+	var profile = {
+		// required fields
+		required: "tx2"
+	};
+	
+	// results object
+	var results = dojo.validate.check(f, profile);
+	
+	jum.assertTrue("missing_tx2", results.isMissing("tx2"));
+}
+
 /*
 dojo.event.browser.stopEvent=function(e){
 	if (e) {
