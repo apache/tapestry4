@@ -121,7 +121,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
         PageRenderSupport prs = TapestryUtils.getPageRenderSupport(cycle, component);
         Resource resource = getScript(component);
         
-        _scriptSource.getScript(resource).execute(cycle, prs, parms);
+        _scriptSource.getScript(resource).execute(component, cycle, prs, parms);
     }
     
     /**
@@ -155,7 +155,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
             parms.put("events", prop.getEvents());
             parms.put("formEvents", filterFormEvents(prop, parms, cycle));
             
-            _scriptSource.getScript(resource).execute(cycle, prs, parms);
+            _scriptSource.getScript(resource).execute(component, cycle, prs, parms);
             
             parms.clear();
         }
@@ -199,7 +199,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
             PageRenderSupport prs = TapestryUtils.getPageRenderSupport(cycle, component);
             Resource resource = getScript(component);
             
-            _scriptSource.getScript(resource).execute(cycle, prs, scriptParms);
+            _scriptSource.getScript(resource).execute(form, cycle, prs, scriptParms);
         }
     }
     

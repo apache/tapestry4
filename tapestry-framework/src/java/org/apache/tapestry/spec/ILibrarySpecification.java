@@ -81,30 +81,6 @@ public interface ILibrarySpecification extends IPropertyHolder, LocationHolder
     List getComponentTypes();
 
     /**
-     * @throws UnsupportedOperationException
-     *             always
-     * @deprecated to be removed in release 4.1
-     */
-
-    String getServiceClassName(String name);
-
-    /**
-     * Returns a sorted list of service names (or an empty list, but not null).
-     * 
-     * @returns an empty list (as of release 4.0)
-     * @deprecated to be removed in release 4.1
-     */
-
-    List getServiceNames();
-
-    /**
-     * @deprecated To be removed in release 4.1.
-     * @throws UnsupportedOperationException
-     *             always
-     */
-    void setServiceClassName(String name, String className);
-
-    /**
      * Returns the documentation for this library..
      */
 

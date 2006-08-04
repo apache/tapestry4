@@ -296,7 +296,7 @@ public abstract class BaseValidator implements IValidator
 
         PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, field);
 
-        script.execute(cycle, pageRenderSupport, finalSymbols);
+        script.execute(field, cycle, pageRenderSupport, finalSymbols);
     }
 
     /**

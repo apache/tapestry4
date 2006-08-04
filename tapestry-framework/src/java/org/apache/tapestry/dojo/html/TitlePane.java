@@ -76,7 +76,9 @@ public abstract class TitlePane extends AbstractComponent implements IWidget, ID
         Map scriptParms = new HashMap();
         scriptParms.put("id", getIdParameter());
         scriptParms.put("props", obj.toString());
+        
         PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, this);
-        getScript().execute(cycle, pageRenderSupport, scriptParms);
+        
+        getScript().execute(this, cycle, pageRenderSupport, scriptParms);
     }
 }

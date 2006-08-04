@@ -113,7 +113,7 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         expect(scriptSource.getScript(compScriptResource)).andReturn(script);
         
-        script.execute(eq(cycle), eq(prs), isA(Map.class));
+        script.execute(eq(component), eq(cycle), eq(prs), isA(Map.class));
         
         replay();
         
@@ -146,7 +146,7 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         expect(scriptSource.getScript(widScriptResource)).andReturn(script);
         
-        script.execute(eq(cycle), eq(prs), isA(Map.class));
+        script.execute(eq(widget), eq(cycle), eq(prs), isA(Map.class));
         
         replay();
         
@@ -323,7 +323,7 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         expect(scriptSource.getScript(compScriptResource)).andReturn(script);
         
-        script.execute(eq(cycle), eq(prs), isA(Map.class));
+        script.execute(eq(form), eq(cycle), eq(prs), isA(Map.class));
         
         replay();
         

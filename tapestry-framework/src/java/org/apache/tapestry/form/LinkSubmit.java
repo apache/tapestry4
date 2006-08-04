@@ -75,7 +75,7 @@ public abstract class LinkSubmit extends AbstractSubmit
             symbols.put("form", form);
             symbols.put("name", name);
 
-            getScript().execute(cycle, pageRenderSupport, symbols);
+            getScript().execute(this, cycle, pageRenderSupport, symbols);
 
             writer.begin("a");
             writer.attribute("href", (String) symbols.get("href"));

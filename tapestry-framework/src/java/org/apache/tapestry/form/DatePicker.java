@@ -126,7 +126,7 @@ public abstract class DatePicker extends AbstractFormComponent implements Transl
         symbols.put(SYM_FORMNAME, getForm().getName());
         symbols.put(SYM_VALUE, getValue());
 
-        getScript().execute(cycle, pageRenderSupport, symbols);
+        getScript().execute(this, cycle, pageRenderSupport, symbols);
 
         renderDelegatePrefix(writer, cycle);
 

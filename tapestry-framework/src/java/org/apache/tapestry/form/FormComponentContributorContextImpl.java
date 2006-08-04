@@ -77,13 +77,13 @@ public class FormComponentContributorContextImpl extends ValidationMessagesImpl 
     public void includeClasspathScript(String path)
     {
         Resource resource = new ClasspathResource(_resolver, path);
-
-        _pageRenderSupport.addExternalScript(resource);
+        
+        _pageRenderSupport.addExternalScript(_form, resource);
     }
 
     public void addSubmitHandler(String submitListener)
     {
-        _pageRenderSupport.addInitializationScript("Tapestry.onsubmit('" + _formId + "', "
+        _pageRenderSupport.addInitializationScript(_form, "Tapestry.onsubmit('" + _formId + "', "
                 + submitListener + ");");
     }
     
