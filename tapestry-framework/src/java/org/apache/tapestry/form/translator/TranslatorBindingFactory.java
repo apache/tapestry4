@@ -28,8 +28,6 @@ import org.apache.tapestry.binding.AbstractBindingFactory;
  * 
  * @author Howard Lewis Ship
  * @since 4.0
- * @deprecated Support for the translator: will be removed in release 4.1, along with
- *             {@link org.apache.tapestry.valid.ValidField}.
  */
 public class TranslatorBindingFactory extends AbstractBindingFactory
 {

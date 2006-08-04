@@ -142,7 +142,7 @@ public abstract class Rollover extends AbstractComponent
         symbols.put("mouseOverImageURL", preloadedMouseOverImageURL);
         symbols.put("mouseOutImageURL", preloadedMouseOutImageURL);
 
-        getScript().execute(cycle, pageRenderSupport, symbols);
+        getScript().execute(this, cycle, pageRenderSupport, symbols);
 
         // Add attributes to the link to control mouse over/out.
         // Because the script is written before the <body> tag,

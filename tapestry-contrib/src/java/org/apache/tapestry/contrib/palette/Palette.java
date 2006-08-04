@@ -353,7 +353,7 @@ public abstract class Palette extends BaseComponent implements ValidatableField
 
         _symbols.put("palette", this);
 
-        getScript().execute(cycle, pageRenderSupport, _symbols);
+        getScript().execute(this, cycle, pageRenderSupport, _symbols);
     }
 
     /**

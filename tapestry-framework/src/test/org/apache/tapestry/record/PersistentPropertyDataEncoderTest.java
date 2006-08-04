@@ -227,10 +227,10 @@ public class PersistentPropertyDataEncoderTest extends BaseComponentTestCase
         assertEquals("fred", PropertyUtils.read(instance2, "name"));
         assertEquals("flintstone", PropertyUtils.read(instance2, "value"));
     }
+    
     private ClassResolver newClassResolver(File jarFile) throws Exception
     {
-        URLClassLoader classLoader = new URLClassLoader(new URL[]
-        { jarFile.toURL() });
+        URLClassLoader classLoader = new URLClassLoader(new URL[] { jarFile.toURI().toURL() });
 
         return new DefaultClassResolver(classLoader);
 

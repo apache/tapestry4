@@ -160,21 +160,6 @@ public class LibrarySpecification extends LocatablePropertyHolder implements
         return sortedKeys(_components);
     }
 
-    public String getServiceClassName(String name)
-    {
-        throw new UnsupportedOperationException();
-    }
-
-    public List getServiceNames()
-    {
-        return Collections.EMPTY_LIST;
-    }
-
-    public void setServiceClassName(String name, String className)
-    {
-        throw new UnsupportedOperationException();
-    }
-
     private List sortedKeys(Map map)
     {
         if (map == null) return Collections.EMPTY_LIST;

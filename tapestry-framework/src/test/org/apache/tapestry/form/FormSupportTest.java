@@ -310,7 +310,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.attribute("id", "myform");
         
-        support.addInitializationScript("Tapestry.onsubmit('myform', function (event)"
+        support.addInitializationScript(form, "Tapestry.onsubmit('myform', function (event)"
                 + "\n{\n  mySubmit1();\n  mySubmit2();\n  mySubmit3();\n});\n");
         
         render.render(writer, cycle);
@@ -753,7 +753,7 @@ public class FormSupportTest extends BaseComponentTestCase
         
         writer.attribute("id", "myform");
 
-        support.addInitializationScript("Tapestry.onreset('myform', function (event)"
+        support.addInitializationScript(form, "Tapestry.onreset('myform', function (event)"
                 + "\n{\n  myReset1();\n  myReset2();\n});\n");
         
         render.render(writer, cycle);
@@ -1358,7 +1358,7 @@ public class FormSupportTest extends BaseComponentTestCase
             }
         });
         
-        support.addInitializationScript("Tapestry.onsubmit('myform', function (event)"
+        support.addInitializationScript(form, "Tapestry.onsubmit('myform', function (event)"
                 + "\n{\n  mySubmit();\n});\n");
         
         render.render(writer, cycle);

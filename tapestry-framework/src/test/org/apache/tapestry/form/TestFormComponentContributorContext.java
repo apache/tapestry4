@@ -88,7 +88,7 @@ public class TestFormComponentContributorContext extends BaseComponentTestCase
 
         Resource expected = new ClasspathResource(resolver, "/foo.js");
 
-        prs.addExternalScript(expected);
+        prs.addExternalScript(form, expected);
 
         trainGetAttribute(cycle, TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE, prs);
 
@@ -116,7 +116,7 @@ public class TestFormComponentContributorContext extends BaseComponentTestCase
 
         PageRenderSupport prs = newSupport();
 
-        prs.addInitializationScript("Tapestry.onsubmit('myform', foo);");
+        prs.addInitializationScript(form, "Tapestry.onsubmit('myform', foo);");
 
         trainGetAttribute(cycle, TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE, prs);
 

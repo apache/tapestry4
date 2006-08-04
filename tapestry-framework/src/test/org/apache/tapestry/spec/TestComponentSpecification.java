@@ -14,9 +14,13 @@
 
 package org.apache.tapestry.spec;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertSame;
+import static org.testng.AssertJUnit.assertTrue;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.testng.annotations.Test;
 
 /**
@@ -29,7 +33,7 @@ import org.testng.annotations.Test;
  * @since 4.0
  */
 @Test
-public class TestComponentSpecification extends HiveMindTestCase
+public class TestComponentSpecification extends BaseComponentTestCase
 {
     public void testClaimPropertyOK()
     {
@@ -217,7 +221,6 @@ public class TestComponentSpecification extends HiveMindTestCase
 
         cs.addParameter(ps);
 
-        assertListsEqual(new Object[]
-        { ps }, cs.getRequiredParameters().toArray());
+        assertListEquals(new Object[] { ps }, cs.getRequiredParameters().toArray());
     }
 }

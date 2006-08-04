@@ -49,7 +49,10 @@
   
   <contribution configuration-id="MarkupFilters">
     <content type="text/html" filter="instance:AsciiMarkupFilter"/>
-    <content type="text/html;charset=utf-8" filter="instance:UTFMarkupFilter"/>    
+    <content type="text/html;charset=utf-8" filter="instance:UTFMarkupFilter"/>
+    <content type="text/plain" filter="instance:AsciiMarkupFilter"/>
+    <content type="text/xml;charset=utf-8" filter="instance:UTFMarkupFilter"/>
+    <content type="text/xml" filter="instance:XmlMarkupFilter"/>
     <content type="text/vnd.wap.wml" filter="instance:org.apache.tapestry.wml.WMLMarkupFilter"/>
   </contribution>
   

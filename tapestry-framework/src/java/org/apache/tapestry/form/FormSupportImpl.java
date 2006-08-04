@@ -361,7 +361,7 @@ public class FormSupportImpl implements FormSupport
 
         // TODO: If PRS is null ...
 
-        _pageRenderSupport.addInitializationScript(buffer.toString());
+        _pageRenderSupport.addInitializationScript(_form, buffer.toString());
     }
 
     /**

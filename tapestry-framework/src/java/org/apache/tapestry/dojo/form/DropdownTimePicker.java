@@ -90,7 +90,7 @@ public abstract class DropdownTimePicker extends AbstractFormWidget
         parms.put("clientId", getClientId());
         parms.put("props", json.toString());
         
-        getScript().execute(cycle, TapestryUtils.getPageRenderSupport(cycle, this), parms);
+        getScript().execute(this, cycle, TapestryUtils.getPageRenderSupport(cycle, this), parms);
     }
     
     /**
