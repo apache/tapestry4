@@ -168,14 +168,14 @@ public class ExceptionAnalyzer
             if (message != null && message.equals(value))
                 continue;
 
-            // Skip Throwables ... but the first non-null
-            // found is the next exception. We kind of count
-            // on there being no more than one Throwable
-            // property per Exception.
+            // Skip Throwables ... but the first non-null found is the next 
+            // exception (unless it refers to the current one - some 3rd party
+            // libaries do this). We kind of count on there being no more 
+            // than one Throwable property per Exception.
 
             if (value instanceof Throwable)
             {
-                if (next == null)
+                if (next == null && value != exception)
                     next = (Throwable) value;
 
                 continue;
