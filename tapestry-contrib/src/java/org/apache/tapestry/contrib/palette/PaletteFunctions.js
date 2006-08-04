@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Requires: /org/apache/tapestry/html/PracticalBrowserSniffer.js
-
 function palette_clear_selections(element)
 {
   var options = element.options;
@@ -35,7 +33,7 @@ function palette_sort(element, sorter)
   var options = element.options;
   var list = new Array();
   var index = 0;
-  var isNavigator = dojo.render.html.mozilla;
+  var isNavigator = dojo.render.html.mozilla || !options.remove;
   
   while (options.length > 0)
   {
@@ -124,7 +122,7 @@ function palette_transfer_selections(source, target)
     if (option.selected)
     {
 
-       if (dojo.render.html.mozilla)
+       if (dojo.render.html.mozilla || !sourceOptions.remove)
        {
            // Can't share options between selects in NN4
            
@@ -158,7 +156,7 @@ function palette_swap_options(options, selectedIndex, targetIndex)
 
   // It's very hard to reorder options in NN4
   
-  if (dojo.render.html.mozilla) {
+  if (dojo.render.html.mozilla || !options.remove) {
     var swap = options[targetIndex];
     
     var hold = swap.text;
