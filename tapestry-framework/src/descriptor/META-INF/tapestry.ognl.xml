@@ -56,7 +56,7 @@
         </attribute>
         
         <attribute name="object" required="true" translator="object">
-          An object implementing the OGNL accessor interface.
+          An object implementing the OGNL NullHandler interface.
         </attribute>
         
         <conversion class="impl.NullHandlerContribution">
