@@ -34,12 +34,20 @@
                     if (!content["beventtarget.id"]) content["beventtarget.id"]="${clientId}";
                     
                     <foreach expression="formEvent[1]" key="formName">
+                   var validateState=tapestry.form.forms["${formName}"].validateForm;
+                   var validateForm=${formEvent[3]};
+                   tapestry.form.setFormValidating("${formname}", validateForm);
+                   
                     <if expression="formEvent[2]">
-                    tapestry.form.submitAsync("${formName}", content);
+                    tapestry.form.submitAsync("${formName}", content, null, validateForm);
                     </if>
                     <if-not expression="formEvent[2]">
                     tapestry.form.submit("${formName}");
                     </if-not>
+                    
+                    if (!dj_undef("validateState", this)) { 
+                        tapestry.form.setFormValidating("${formName}", validateState);
+                    }
                     </foreach>
                 });
             </foreach>

@@ -222,7 +222,7 @@ isInvalid(field):  Returns true if the field has an invalid value.
   form 				   | String element id / HTMLForm node |  yes  |          | The element id of the form, or the form html element itself.
 *----------------------*---------------*------------*----------*----------------------------------------------+
 
-* tapestry.form.submitAsync(form, content, submitName)
+* tapestry.form.submitAsync(form, content, submitName, validate)
 
   Similar to the {{{core.html}tapestry.bind}} function call, in that it submits the request asynchronously and
   expects a valid tapestry xml content response. This is the core function used by Tapestry when submitting
@@ -236,4 +236,6 @@ isInvalid(field):  Returns true if the field has an invalid value.
   content 			   | json          |  no        |          | A properties map of optional extra content to send. This will be sent <in addition> to the content encapsulated by your form. 
 *----------------------*---------------*------------*----------*----------------------------------------------+
   submitName 		   | String        |  no        |          | Optional submit name string to use when submitting to bind the request to a specific {{{../components/Submit.html}Submit}} component.
+*----------------------*---------------*------------*----------*----------------------------------------------+
+  validate 		       | boolean       |  no        |   false  | Controls whether or not to invoke client side validation.
 *----------------------*---------------*------------*----------*----------------------------------------------+

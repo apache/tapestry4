@@ -126,7 +126,7 @@ tapestry.form={
 			
 			dojo.event.connect(form, "onsubmit", this, "onFormSubmit");
 		} else {
-			dojo.log.warn("registerForm(" + id + ") Form already registered.");
+			dojo.log.warn("egisterForm(" + id + ") Form already registered.");
 		}
 	},
 	
@@ -265,11 +265,18 @@ tapestry.form={
 	 * 				  event parameters to form submission, but can be any
 	 * 				  typical form/value pair.
 	 * @param submitName Optional submit name string to use when submitting.
+	 * @param validate Whether or not to validate form, default is false.
 	 */
-	submitAsync:function(form, content, submitName){
+	submitAsync:function(form, content, submitName, validate){
 		var form=dojo.byId(form);
 		if (!form) {
 			dojo.raise("Form not found with id " + id);
+			return;
+		}
+		var formId=form.getAttribute("id");
+		
+		if (validate && !tapestry.form.validation.validateForm(form, this.forms[formId])) {
+			dojo.log.debug("Form validation failed for form with id " + formId);
 			return;
 		}
 		

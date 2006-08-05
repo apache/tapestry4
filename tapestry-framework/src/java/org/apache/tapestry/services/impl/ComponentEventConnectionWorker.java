@@ -60,10 +60,16 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
     // handles resolving and loading different component event 
     // connection script types
     private IScriptSource _scriptSource;
+    
+    // script path references
     private String _componentScript;
     private String _widgetScript;
     private String _elementScript;
+    
+    // resolves classpath relative resources
     private ClassResolver _resolver;
+    
+    // wrappers around resolved script templates
     private ClasspathResource _componentResource;
     private ClasspathResource _widgetResource;
     private ClasspathResource _elementResource;
@@ -188,8 +194,9 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
             IComponent component = (IComponent)scriptParms.get("component");
             
             ComponentEventProperty props = _invoker.getComponentEvents(component.getId());
+            
             Object[][] formEvents = buildFormEvents(cycle, form.getId(), 
-                    props.getFormEvents(), (Boolean)val[1]);
+                    props.getFormEvents(), (Boolean)val[1], (Boolean)val[2]);
             
             // don't want any events accidently connected again
             scriptParms.remove("events");
@@ -203,7 +210,8 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
         }
     }
     
-    Object[][] buildFormEvents(IRequestCycle cycle, String formId, Set events, Boolean async)
+    Object[][] buildFormEvents(IRequestCycle cycle, String formId, 
+            Set events, Boolean async, Boolean validate)
     {
         List formNames = (List)cycle.getAttribute(FORM_NAME_LIST + formId);
         List retval = new ArrayList();
@@ -213,11 +221,11 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
         while (it.hasNext()) {
             
             String event = (String)it.next();
-            retval.add(new Object[]{event, formNames, async});
+            retval.add(new Object[]{event, formNames, async, validate});
             
         }
         
-        return (Object[][])retval.toArray(new Object[retval.size()][3]);
+        return (Object[][])retval.toArray(new Object[retval.size()][4]);
     }
     
     Resource getScript(IComponent component)
@@ -288,16 +296,21 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
                 // defer connection until form is rendered
                 if (formNames == null) {
                     
-                    deferFormConnection(formId, scriptParms, listener.isAsync());
+                    deferFormConnection(formId, scriptParms, 
+                            listener.isAsync(), listener.isValidateForm());
                     continue;
                 }
                 
                 // form has been rendered so go ahead
-                retval.add(new Object[] {event, formNames, Boolean.valueOf(listener.isAsync())});
+                retval.add(new Object[] {
+                        event, formNames, 
+                        Boolean.valueOf(listener.isAsync()), 
+                        Boolean.valueOf(listener.isValidateForm())
+                });
             }
         }
         
-        return (Object[][])retval.toArray(new Object[retval.size()][3]);
+        return (Object[][])retval.toArray(new Object[retval.size()][4]);
     }
     
     /**
@@ -312,11 +325,12 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
      * deferred list.
      * </p>
      * 
-     * @param formId
-     * @param scriptParms
-     * @param async
+     * @param formId The form to defer event connection for.
+     * @param scriptParms The initial map of parameters for the connection @Script component.
+     * @param async Whether or not the action taken should be asynchronous.
+     * @param validate Whether or not the form should have client side validation run befor submitting.
      */
-    void deferFormConnection(String formId, Map scriptParms, boolean async)
+    void deferFormConnection(String formId, Map scriptParms, boolean async, boolean validate)
     {
         List deferred = (List)_deferredFormConnections.get(formId);
         
@@ -326,7 +340,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
             _deferredFormConnections.put(formId, deferred);
         }
         
-        deferred.add(new Object[] {scriptParms, Boolean.valueOf(async)});
+        deferred.add(new Object[] {scriptParms, Boolean.valueOf(async), Boolean.valueOf(validate)});
     }
     
     // for testing
