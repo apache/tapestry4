@@ -19,7 +19,6 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isA;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertNotNull;
-import static org.testng.AssertJUnit.assertNull;
 import static org.testng.AssertJUnit.assertTrue;
 
 import java.util.ArrayList;
@@ -56,7 +55,7 @@ import org.testng.annotations.Test;
 public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
 {
 
-    public void testEventRenderChain()
+    public void test_Event_Render_Chain()
     {   
         ClassResolver resolver = new DefaultClassResolver();
         
@@ -155,7 +154,7 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         verify();
     }
     
-    public void testRewindRender()
+    public void test_Rewind_Render()
     {
         IRequestCycle cycle = newCycle();
         
@@ -170,7 +169,7 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         verify();
     }
     
-    public void testNullPageSupport()
+    public void test_Null_PageSupport()
     {
         IRequestCycle cycle = newCycle();
         
@@ -187,7 +186,7 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         verify();
     }
     
-    public void testDeferredConnection()
+    public void test_Deferred_Connection()
     {
         ComponentEventInvoker invoker = new ComponentEventInvoker();
         IEngineService engine = newMock(IEngineService.class);
@@ -202,7 +201,7 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         // now test render
         invoker.addEventListener("comp1", new String[] {"onclick"}, 
-                "testMethod", "form1", false, false);
+                "testMethod", "form1", true, false);
         
         expect(cycle.isRewinding()).andReturn(false);
         
@@ -224,27 +223,32 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         assertEquals(1, worker.getDefferedFormConnections().size());
         
         List deferred = (List)worker.getDefferedFormConnections().get("form1");
-        assertNotNull(deferred);
+        
+        assert deferred != null;
         assertEquals(1, deferred.size());
         
         Object[] parms = (Object[])deferred.get(0);
-        assertEquals(2, parms.length);
+        assertEquals(3, parms.length);
+        
+        // assert async is false
+        assert (Boolean)parms[1] == false;
+        
+        // assert validate form is true
+        assert (Boolean)parms[2] == true;
+        
         Map parm = (Map)parms[0];
         
-        Boolean async = (Boolean)parms[1];
-        assertTrue(!async.booleanValue());
-        
-        assertNotNull(parm.get("clientId"));
-        assertNotNull(parm.get("component"));
-        assertNull(parm.get("url"));
-        assertNull(parm.get("formEvents"));
-        assertNull(parm.get("target"));
+        assert parm.get("clientId") != null;
+        assert parm.get("component") != null;
+        assert parm.get("url") == null;
+        assert parm.get("formEvents") == null;
+        assert parm.get("target") == null;
         
         assertEquals("comp1", parm.get("clientId"));
         assertEquals(component, parm.get("component"));
     }
     
-    public void testFormRenderDeffered()
+    public void test_Form_Render_Deffered()
     {
         ClassResolver resolver = new DefaultClassResolver();
         
@@ -332,7 +336,7 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         verify();
     }
     
-    public void testScriptResource()
+    public void test_Script_Resource()
     {   
         ClassResolver resolver = new DefaultClassResolver();
         ComponentEventInvoker invoker = new ComponentEventInvoker();
@@ -367,7 +371,7 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         verify();
     }
     
-    public void testPrerenderedField()
+    public void test_Prerendered_Field()
     {   
         ClassResolver resolver = new DefaultClassResolver();
         

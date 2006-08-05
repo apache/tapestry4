@@ -32,6 +32,7 @@
       value supplied in the query parameter on form submit).
     </description>
   </parameter>
+  
   <parameter name="disabled">
       <description>
           If true, then the component is disabled, which will be reflected in the
@@ -39,22 +40,26 @@
           during the form submission.
       </description>
   </parameter>
+  
   <parameter name="selected">
       <description>
           If bound, then this parameter will be updated with the value of the
           tag parameter, if the Submit is triggered.
        </description>
   </parameter>
+  
   <parameter name="tag">
       <description>
           A tag value used to identify this Submit as the triggered component.
       </description>
   </parameter>
+  
   <parameter name="listener">
       <description>
           A listener that is notified if this component is triggered.
       </description>
   </parameter>
+  
   <parameter name="action">
       <description>
           A listener that is notified if this component is triggered
@@ -62,6 +67,7 @@
           enclosed by the Form have had a chance to update their properties.
       </description>
   </parameter>
+  
   <parameter name="parameters">
     <description>
     An object, or list of objects, gathered when the button is triggered and 
@@ -69,6 +75,7 @@
     the parameters available to a deferred listener.
     </description>
   </parameter>
+  
   <parameter name="id" property="idParameter" default-value="id"/>
   		  
   <reserved-parameter name="name"/>
