@@ -251,7 +251,7 @@ public abstract class Autocompleter extends AbstractFormWidget
      */
     public boolean isAsync()
     {
-        return Boolean.TRUE;
+        return true;
     }
     
     /** 
@@ -259,6 +259,6 @@ public abstract class Autocompleter extends AbstractFormWidget
      */
     public boolean isJson()
     {
-        return Boolean.TRUE;
+        return true;
     }
 }
