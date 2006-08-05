@@ -48,7 +48,7 @@ public interface IScript
      * @param symbols Map of input symbols; execution of the script may modify the map,
      * creating new output symbols
      * 
-     * @see TapestryUtils#getPageRenderSupport(IRequestCycle, Object)
+     * @see TapestryUtils#getPageRenderSupport(IRequestCycle, IComponent)
      * @deprecated To be removed in Tapestry 4.2. 
      *              Use the new {@link #execute(IComponent, IRequestCycle, IScriptProcessor, Map)} method instead.
      */
@@ -67,7 +67,7 @@ public interface IScript
      * @param symbols Map of input symbols; execution of the script may modify the map,
      * creating new output symbols
      * 
-     * @see TapestryUtils#getPageRenderSupport(IRequestCycle, Object)
+     * @see TapestryUtils#getPageRenderSupport(IRequestCycle, IComponent)
      *
      */
 

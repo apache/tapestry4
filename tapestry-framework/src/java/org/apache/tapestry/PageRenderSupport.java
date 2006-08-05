@@ -21,7 +21,7 @@ package org.apache.tapestry;
  * @author Howard M. Lewis Ship
  * @since 4.0
  * @see org.apache.tapestry.html.Body
- * @see org.apache.tapestry.TapestryUtils#getPageRenderSupport(IRequestCycle, Object)
+ * @see org.apache.tapestry.TapestryUtils#getPageRenderSupport(IRequestCycle, IComponent)
  */
 public interface PageRenderSupport extends IScriptProcessor
 {
