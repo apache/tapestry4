@@ -132,22 +132,22 @@
     }
     
     function TimeoutHandleOnClick() {
-    	if (TimeoutPreviousOnClick) TimeoutPreviousOnClick();
+    	if (!dj_undef("TimeoutPreviousOnClick")) TimeoutPreviousOnClick();
     	TimeoutRegisterUserAction();
     }
     
     function TimeoutHandleOnMouseMove() {
-    	if (TimeoutPreviousOnMouseMove) TimeoutPreviousOnMouseMove();
+    	if (!dj_undef("TimeoutPreviousOnMouseMove")) TimeoutPreviousOnMouseMove();
     	TimeoutRegisterUserAction();
     }
     
     function TimeoutHandleOnKeyPress() {
-    	if (TimeoutPreviousOnKeyPress) TimeoutPreviousOnKeyPress();
+    	if (!dj_undef("TimeoutPreviousOnKeyPress")) TimeoutPreviousOnKeyPress();
     	TimeoutRegisterUserAction();
     }
     
     function TimeoutHandleOnScroll() {
-    	if (TimeoutPreviousOnScroll) TimeoutPreviousOnScroll();
+    	if (!dj_undef("TimeoutPreviousOnScroll")) TimeoutPreviousOnScroll();
     	TimeoutRegisterUserAction();
     }
     

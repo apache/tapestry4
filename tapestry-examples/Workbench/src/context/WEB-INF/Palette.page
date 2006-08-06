@@ -34,14 +34,14 @@
   
   <component id="inputEnabled" type="Checkbox">
     <binding name="value" value="clientValidationEnabled"/> 
-    <binding name="onchange" value="literal:javascript:this.form.events.submit();"/>
+    <binding name="onchange" value="literal:tapestry.form.submit(this.form);"/>
   </component>
 
   <component id="inputColorSort" type="PropertySelection">
   	<binding name="value" value="sort"/>
   	<binding name="model" value="literal:None=NONE,Label=LABEL,Value=VALUE,Manual=USER"/>
     <binding name="onchange">
-      literal:javascript:this.form.events.refresh();
+      literal:tapestry.form.refresh(this.form);
     </binding>
   </component>
   
