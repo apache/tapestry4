@@ -63,7 +63,9 @@ public abstract class Submit extends AbstractSubmit
         renderIdAttribute(writer, cycle);
 
         renderInformalParameters(writer, cycle);
-
+        
+        renderSubmitType(writer, cycle);
+        
         writer.closeTag();
     }
 

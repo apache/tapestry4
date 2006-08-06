@@ -14,12 +14,12 @@
 
 package org.apache.tapestry.form;
 
-import static org.easymock.EasyMock.aryEq;
-import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.*;
 import static org.testng.AssertJUnit.assertEquals;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Map;
 
 import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IActionListener;
@@ -27,6 +27,8 @@ import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.IScript;
+import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.listener.ListenerInvokerTerminator;
 import org.apache.tapestry.test.Creator;
 import org.apache.tapestry.valid.IValidationDelegate;
@@ -42,7 +44,7 @@ import org.testng.annotations.Test;
 @Test
 public class TestSubmit extends BaseFormComponentTestCase
 {
-    public void testPrerendered()
+    public void test_Prerendered()
     {
         Creator creator = new Creator();
         Submit submit = (Submit) creator.newInstance(Submit.class);
@@ -62,10 +64,10 @@ public class TestSubmit extends BaseFormComponentTestCase
         verify();
     }
 
-    public void testRender()
+    public void test_Render()
     {
         Creator creator = new Creator();
-        Submit submit = (Submit) creator.newInstance(Submit.class);
+        Submit submit = (Submit) creator.newInstance(Submit.class, new Object[] {"submitType", "submit"});
 
         IValidationDelegate delegate = newDelegate();
         IForm form = newForm();
@@ -104,11 +106,11 @@ public class TestSubmit extends BaseFormComponentTestCase
         verify();
     }
 
-    public void testRenderDisabled()
+    public void test_Render_Disabled()
     {
         Creator creator = new Creator();
         Submit submit = (Submit) creator.newInstance(Submit.class, new Object[]
-        { "disabled", Boolean.TRUE });
+        { "disabled", Boolean.TRUE, "submitType", "submit" });
 
         IValidationDelegate delegate = newDelegate();
         IForm form = newForm();
@@ -144,11 +146,11 @@ public class TestSubmit extends BaseFormComponentTestCase
         verify();
     }
 
-    public void testRenderWithLabel()
+    public void test_Render_With_Label()
     {
         Creator creator = new Creator();
         Submit submit = (Submit) creator.newInstance(Submit.class, new Object[]
-        { "label", "flintstone" });
+        { "label", "flintstone", "submitType", "submit" });
 
         IValidationDelegate delegate = newDelegate();
         IForm form = newForm();
@@ -188,7 +190,82 @@ public class TestSubmit extends BaseFormComponentTestCase
         verify();
     }
 
-    public void testRewindingDisabled()
+    public void test_SubmitType_OnClick()
+    {
+        IScript script = newMock(IScript.class);
+        Submit submit = newInstance(Submit.class, 
+                new Object[] {"submitType", "cancel", "submitTypeScript", script});
+        
+        IValidationDelegate delegate = newDelegate();
+        IForm form = newForm();
+        IRequestCycle cycle = newCycle();
+        IMarkupWriter writer = newWriter();
+
+        trainGetForm(cycle, form);
+
+        trainWasPrerendered(form, writer, submit, false);
+
+        trainGetDelegate(form, delegate);
+        
+        delegate.setFormComponent(submit);
+
+        trainGetElementId(form, submit, "fred");
+
+        trainIsRewinding(form, false);
+
+        trainIsRewinding(cycle, false);
+
+        form.setFormFieldUpdating(true);
+        
+        writer.beginEmpty("input");
+        writer.attribute("type", "submit");
+        writer.attribute("name", "fred");
+        
+        expect(form.getClientId()).andReturn("formtest");
+        
+        writer.attribute("onClick", "tapestry.form.cancel('formtest', 'fred')");
+        
+        writer.closeTag();
+
+        trainIsInError(delegate, false);
+
+        delegate.registerForFocus(submit, ValidationConstants.NORMAL_FIELD);
+
+        replay();
+
+        submit.renderComponent(writer, cycle);
+
+        verify();
+    }
+    
+    public void test_SubmitType_Script_OnClick()
+    {
+        IScript script = newMock(IScript.class);
+        IForm form = newForm();
+        IBinding binding = newMock(IBinding.class);
+        
+        Submit submit = newInstance(Submit.class, 
+                new Object[] {"submitType", "cancel", 
+            "submitTypeScript", script, "form", form});
+        
+        submit.setBinding("onClick", binding);
+        
+        IRequestCycle cycle = newCycle();
+        IMarkupWriter writer = newWriter();
+        
+        PageRenderSupport prs = newPageRenderSupport();
+        trainGetPageRenderSupport(cycle, prs);
+        
+        script.execute(eq(submit), eq(cycle), eq(prs), isA(Map.class));
+        
+        replay();
+        
+        submit.renderSubmitType(writer, cycle);
+
+        verify();
+    }
+    
+    public void test_Rewinding_Disabled()
     {
         Creator creator = new Creator();
         Submit submit = (Submit) creator.newInstance(Submit.class, new Object[]
@@ -218,7 +295,7 @@ public class TestSubmit extends BaseFormComponentTestCase
         verify();
     }
 
-    public void testRewindNotForm()
+    public void test_Rewind_Not_Form()
     {
         Creator creator = new Creator();
         Submit submit = (Submit) creator.newInstance(Submit.class);
@@ -248,7 +325,7 @@ public class TestSubmit extends BaseFormComponentTestCase
         verify();
     }
 
-    public void testRewindNotTrigger()
+    public void test_Rewind_Not_Trigger()
     {
         Creator creator = new Creator();
         Submit submit = (Submit) creator.newInstance(Submit.class);
@@ -279,7 +356,7 @@ public class TestSubmit extends BaseFormComponentTestCase
         verify();
     }
 
-    public void testRewindTriggered()
+    public void test_Rewind_Triggered()
     {
         Creator creator = new Creator();
         Submit submit = (Submit) creator.newInstance(Submit.class, new Object[]
@@ -316,7 +393,7 @@ public class TestSubmit extends BaseFormComponentTestCase
         verify();
     }
 
-    public void testTriggerWithListener()
+    public void test_Trigger_With_Listener()
     {
         IActionListener listener = newListener();
         IForm form = newForm();
@@ -335,7 +412,7 @@ public class TestSubmit extends BaseFormComponentTestCase
         verify();
     }
 
-    public void testTriggerWithAction()
+    public void test_Trigger_With_Action()
     {
         IActionListener action = newListener();
         MockForm form = new MockForm();
@@ -361,7 +438,7 @@ public class TestSubmit extends BaseFormComponentTestCase
         verify();
     }
 
-    public void testTriggerWithActionAndSingleParameter()
+    public void test_Trigger_With_Action_And_Single_Parameter()
     {
         IActionListener action = newListener();
         MockForm form = new MockForm();
@@ -390,7 +467,7 @@ public class TestSubmit extends BaseFormComponentTestCase
         verify();
     }
 
-    public void testTriggerWithDActionAndMultipleParameters()
+    public void test_Trigger_With_Action_And_Multiple_Parameters()
     {
         IActionListener action = newListener();
         MockForm form = new MockForm();
@@ -422,7 +499,7 @@ public class TestSubmit extends BaseFormComponentTestCase
         verify();
     }
     
-    public void testTriggerWithListenerAndAction()
+    public void test_Trigger_With_Listener_And_Action()
     {
         IActionListener listener = newListener();
         IActionListener action = newListener();
@@ -451,5 +528,5 @@ public class TestSubmit extends BaseFormComponentTestCase
 
         verify();
     }
-    
+   
 }

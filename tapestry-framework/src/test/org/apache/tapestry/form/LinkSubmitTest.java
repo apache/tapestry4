@@ -85,13 +85,15 @@ public class LinkSubmitTest extends BaseComponentTestCase
         IForm form = newForm();
 
         LinkSubmit linkSubmit = newInstance(LinkSubmit.class, new Object[]
-        { "form", form, "name", "fred_1", "script", script, "idParameter", "fred_id" });
+        { "form", form, "name", "fred_1", "script", script, 
+            "idParameter", "fred_id", "submitType", "submit" });
+        
         linkSubmit.addBody(newBody());
 
         trainGetSupport(cycle, support);
 
         trainGetUniqueId(cycle, "fred_id", "fred_id_unique");
-
+        
         trainResponseBuilder(cycle, writer);
         
         replay();

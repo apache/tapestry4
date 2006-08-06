@@ -198,7 +198,7 @@ isInvalid(field):  Returns true if the field has an invalid value.
 </script>
 +-------------------------
 
-* tapestry.form.cancel(form)
+* tapestry.form.cancel(form, submitName)
 
   Submits the form specified, and also sets the hidden form input field controlled by tapestry that
   specifies the <<<submitmode>>> used so that if you have registered a <<<cancel listener>>> on your
@@ -209,8 +209,10 @@ isInvalid(field):  Returns true if the field has an invalid value.
 *----------------------*---------------*------------*----------*----------------------------------------------+
   form 				   | String element id / HTMLForm node |  yes  |          | The element id of the form, or the form html element itself.
 *----------------------*---------------*------------*----------*----------------------------------------------+
+  submitName 		   | String        |   no       |          | Optional submit name string to use when submitting.
+*----------------------*---------------*------------*----------*----------------------------------------------+
 
-* tapestry.form.refresh(form)
+* tapestry.form.refresh(form, submitName)
 
   Submits the form specified, and also sets the hidden form input field controlled by tapestry that
   specifies the <<<submitmode>>> used so that if you have registered a <<<refresh listener>>> on your
@@ -220,6 +222,8 @@ isInvalid(field):  Returns true if the field has an invalid value.
   Parameter            |    Type	   |  Required  | Default  | 		Description
 *----------------------*---------------*------------*----------*----------------------------------------------+
   form 				   | String element id / HTMLForm node |  yes  |          | The element id of the form, or the form html element itself.
+*----------------------*---------------*------------*----------*----------------------------------------------+
+  submitName 		   | String        |   no       |          | Optional submit name string to use when submitting.
 *----------------------*---------------*------------*----------*----------------------------------------------+
 
 * tapestry.form.submitAsync(form, content, submitName, validate)

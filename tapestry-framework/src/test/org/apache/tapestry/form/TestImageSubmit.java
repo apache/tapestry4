@@ -80,7 +80,7 @@ public class TestImageSubmit extends BaseFormComponentTestCase
         
         Creator creator = new Creator();
         ImageSubmit submit = (ImageSubmit) creator.newInstance(ImageSubmit.class, new Object[]
-        { "image", image });
+        { "image", image , "submitType", "submit"});
 
         trainGetForm(cycle, form);
 
@@ -127,7 +127,7 @@ public class TestImageSubmit extends BaseFormComponentTestCase
 
         Creator creator = new Creator();
         ImageSubmit submit = (ImageSubmit) creator.newInstance(ImageSubmit.class, new Object[]
-        { "disabledImage", image, "disabled", Boolean.TRUE });
+        { "disabledImage", image, "disabled", Boolean.TRUE, "submitType", "submit" });
 
         trainGetForm(cycle, form);
 
@@ -171,7 +171,7 @@ public class TestImageSubmit extends BaseFormComponentTestCase
 
         Creator creator = new Creator();
         ImageSubmit submit = (ImageSubmit) creator.newInstance(ImageSubmit.class, new Object[]
-        { "image", image, "disabled", Boolean.TRUE });
+        { "image", image, "disabled", Boolean.TRUE, "submitType", "submit" });
 
         trainGetForm(cycle, form);
 
@@ -215,7 +215,7 @@ public class TestImageSubmit extends BaseFormComponentTestCase
 
         Creator creator = new Creator();
         ImageSubmit submit = (ImageSubmit) creator.newInstance(ImageSubmit.class, new Object[]
-        { "image", image, "nameOverride", "barney" });
+        { "image", image, "nameOverride", "barney", "submitType", "submit" });
 
         trainGetForm(cycle, form);
 

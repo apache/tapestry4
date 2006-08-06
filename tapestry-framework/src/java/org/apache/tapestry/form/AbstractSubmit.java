@@ -15,11 +15,17 @@
 package org.apache.tapestry.form;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.IScript;
+import org.apache.tapestry.PageRenderSupport;
+import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.listener.ListenerInvoker;
 
 /**
@@ -30,7 +36,7 @@ import org.apache.tapestry.listener.ListenerInvoker;
  */
 
 abstract class AbstractSubmit extends AbstractFormComponent
-{
+{   
     /**
      * Determine if this submit component was clicked.
      * 
@@ -93,6 +99,33 @@ abstract class AbstractSubmit extends AbstractFormComponent
         }
     }
 
+    protected void renderSubmitType(IMarkupWriter writer, IRequestCycle cycle)
+    {
+        String type = getSubmitType();
+        
+        Defense.notNull(type, "submitType");
+        
+        if (type.equals(FormConstants.SUBMIT_NORMAL))
+            return;
+        
+        if (!isParameterBound("onClick")) {
+            
+            writer.attribute("onClick", 
+                    "tapestry.form." + type + "('" + getForm().getClientId() 
+                    + "', '" + getName() + "')");
+        } else {
+            
+            PageRenderSupport prs = TapestryUtils.getPageRenderSupport(cycle, this);
+            
+            Map parms = new HashMap();
+            
+            parms.put("submit", this);
+            parms.put("type", type);
+            
+            getSubmitTypeScript().execute(this, cycle, prs, parms);
+        }
+    }
+    
     /** parameter. */
     public abstract IActionListener getListener();
     
@@ -111,6 +144,12 @@ abstract class AbstractSubmit extends AbstractFormComponent
     /** parameter. */
     public abstract Object getParameters();
 
+    /** The type of submission, normal/cancel/refresh. */
+    public abstract String getSubmitType();
+    
     /** Injected. */
     public abstract ListenerInvoker getListenerInvoker();
+    
+    /** Injected. */
+    public abstract IScript getSubmitTypeScript();
 }
