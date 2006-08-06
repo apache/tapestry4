@@ -47,7 +47,7 @@ validate_${field.name}
 <body>
 function ${function}(event)
 {
-  var field = document.${form.name}.${field.name};
+  var field = dojo.byId("${field.name}");
 
   strValue = field.value.replace(/ /g,"");
 
@@ -56,7 +56,8 @@ function ${function}(event)
 <if expression="validator.required">
   if (strValue.length == 0)
   {
-    event.invalid_field(field, "${requiredMessage}");
+    tapestry.form.invalid_field(field, "${requiredMessage}");
+    dojo.event.browser.stopEvent(event);
     return;
   }
 </if>
@@ -69,14 +70,17 @@ function ${function}(event)
 <if expression="validator.minimumLength">
   if (strValue.length &lt; ${validator.minimumLength})
   {
-    event.invalid_field(field, "${minimumLengthMessage}");
+    tapestry.form.invalid_field(field, "${minimumLengthMessage}");
+    dojo.event.browser.stopEvent(event);
     return;
    }
 </if>
 
   atIndex = strValue.indexOf("@");
-  if ((atIndex == -1) || (atIndex == 0) || (atIndex == strValue.length -1))
-    event.invalid_field(field, "${emailFormatMessage}");
+  if ((atIndex == -1) || (atIndex == 0) || (atIndex == strValue.length -1)) {
+    tapestry.form.invalid_field(field, "${emailFormatMessage}");
+    dojo.event.browser.stopEvent(event);
+  }
 }
 </body>
 

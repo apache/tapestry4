@@ -66,9 +66,9 @@ public class Pattern extends BaseValidator
     {
         return messages.formatValidationMessage(
                 getMessage(),
-                ValidationStrings.REGEX_MISMATCH,
+                ValidationStrings.PATTERN_MISMATCH,
                 new Object[]
-                { _pattern, field.getDisplayName() });
+                {field.getDisplayName(), _pattern });
     }
     
     public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,

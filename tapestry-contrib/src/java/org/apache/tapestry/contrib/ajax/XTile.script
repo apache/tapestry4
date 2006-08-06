@@ -41,7 +41,7 @@
 	    var arguments = ${sendFunctionName}.arguments;
 	    var argumentCount = arguments.length;
 	    for (i = 0; i &lt; argumentCount; i++) {
-	    	url = url + "&amp;sp=" + quoteUrl(arguments[i]);
+	    	url = url + "&amp;sp=" + encodeUri(arguments[i]);
 	    }
 	    
 	    <if expression="disableCaching != null">
@@ -86,11 +86,6 @@
 		  xmlhttp = new XMLHttpRequest();
 		}
 		return xmlhttp;
-	}
-	
-	function quoteUrl(text)
-	{
-		return escape(text).replace(/\+/g, '%2C').replace(/\"/g,'%22').replace(/\'/g, '%27');
 	}
 	
 	function extractData(response)

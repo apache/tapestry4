@@ -31,9 +31,14 @@ import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.components.Block;
+import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IPropertySelectionModel;
-import org.apache.tapestry.form.ValidatableField;
+import org.apache.tapestry.form.ValidatableFieldExtension;
 import org.apache.tapestry.form.ValidatableFieldSupport;
+import org.apache.tapestry.form.validator.Required;
+import org.apache.tapestry.form.validator.Validator;
+import org.apache.tapestry.json.JSONLiteral;
+import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidationConstants;
 import org.apache.tapestry.valid.ValidatorException;
@@ -156,13 +161,6 @@ import org.apache.tapestry.valid.ValidatorException;
  * use to format the palette component:
  * 
  * <pre>
- *      
- *       
- *        
- *         
- *          
- *           
- *            
  *                             TABLE.tapestry-palette TH
  *                             {
  *                               font-size: 9pt;
@@ -203,11 +201,12 @@ import org.apache.tapestry.valid.ValidatorException;
  * 
  * <p>
  * As of 4.0, this component can be validated.
+ * </p>
  * 
  * @author Howard Lewis Ship
  */
 
-public abstract class Palette extends BaseComponent implements ValidatableField
+public abstract class Palette extends BaseComponent implements ValidatableFieldExtension
 {
     private static final int MAP_SIZE = 7;
 
@@ -319,6 +318,40 @@ public abstract class Palette extends BaseComponent implements ValidatableField
         {
             getForm().getDelegate().record(e);
         }
+    }
+    
+    /** 
+     * {@inheritDoc}
+     */
+    public void overrideContributions(Validator validator, FormComponentContributorContext context,
+            IMarkupWriter writer, IRequestCycle cycle)
+    {
+        // we know this has to be a Required validator
+        Required required = (Required)validator;
+        
+        JSONObject profile = context.getProfile();
+        
+        if (!profile.has(ValidationConstants.CONSTRAINTS)) {
+            profile.put(ValidationConstants.CONSTRAINTS, new JSONObject());
+        }
+        JSONObject cons = profile.getJSONObject(ValidationConstants.CONSTRAINTS);
+        
+        required.accumulateProperty(cons, getClientId(), 
+                new JSONLiteral("[tapestry.form.validation.isPalleteSelected]"));
+        
+        required.accumulateProfileProperty(this, profile, 
+                ValidationConstants.CONSTRAINTS, required.buildMessage(context, this));
+    }
+    
+    /** 
+     * {@inheritDoc}
+     */
+    public boolean overrideValidator(Validator validator, IRequestCycle cycle)
+    {
+        if (Required.class.isAssignableFrom(validator.getClass()))
+            return true;
+        
+        return false;
     }
 
     protected void cleanupAfterRender(IRequestCycle cycle)
