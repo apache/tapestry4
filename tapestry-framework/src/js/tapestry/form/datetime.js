@@ -22,10 +22,6 @@ tapestry.form.datetime={
 		if (!flags || typeof flags.format != "string") 
 			return dojo.validate.isValidDate(value);
 		
-		// basic format validation
-		if (!dojo.validate.isValidDate(value, flags.format)) 
-			return false;
-		
 		// parse date value
 		var dateValue=null;
 		try {
@@ -34,6 +30,15 @@ tapestry.form.datetime={
 			dojo.log.exception("Error parsing input date.", e, true);
 			return false;
 		}
+		
+		// convert to format that is validatable
+		value = dojo.date.format(dateValue, flags.format);
+		
+		// TODO: This is totally useless right now, doesn't even accept formats with string equivs
+		// See a better method http://www.mattkruse.com/javascript/date/source.html 
+		// basic format validation
+		// if (!dojo.validate.isValidDate(value, flags.format)) 
+			//return false;
 		
 		// max date
 		if (typeof flags.max == "string") {

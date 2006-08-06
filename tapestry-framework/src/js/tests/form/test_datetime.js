@@ -42,3 +42,10 @@ function test_datetime_minDate(){
 	jum.assertTrue(value, tapestry.form.datetime.isValidDate(value, 
 									{min:minValue, format:"MM/DD/YYYY"}));
 }
+
+function test_datetime_posixFormat(){
+	var value = "18 Aug 2006";
+	
+	jum.assertFalse(value, tapestry.form.datetime.isValidDate(value, {max:"06 Aug 2006",format:"%d %h %Y"}));
+	jum.assertTrue(value, tapestry.form.datetime.isValidDate(value, {max:"19 Aug 2006",format:"%d %h %Y"}));
+}
