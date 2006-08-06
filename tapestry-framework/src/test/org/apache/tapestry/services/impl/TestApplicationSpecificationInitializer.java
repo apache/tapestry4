@@ -50,7 +50,7 @@ import org.testng.annotations.Test;
 public class TestApplicationSpecificationInitializer extends BaseComponentTestCase
 {   
     
-    public void testOnClasspath() throws Exception
+    public void test_On_Classpath() throws Exception
     {
         DefaultClassResolver cr = new DefaultClassResolver();
 
@@ -100,7 +100,7 @@ public class TestApplicationSpecificationInitializer extends BaseComponentTestCa
         verify();
     }
 
-    public void testInAppContextFolder() throws Exception
+    public void test_In_App_Context_Folder() throws Exception
     {
         DefaultClassResolver cr = new DefaultClassResolver();
 
@@ -161,7 +161,7 @@ public class TestApplicationSpecificationInitializer extends BaseComponentTestCa
         verify();
     }
 
-    public void testInWebInfFolder() throws Exception
+    public void test_In_Web_Inf_Folder() throws Exception
     {
         DefaultClassResolver cr = new DefaultClassResolver();
 
@@ -224,7 +224,7 @@ public class TestApplicationSpecificationInitializer extends BaseComponentTestCa
         verify();
     }
 
-    public void testNoAppSpec() throws Exception
+    public void test_No_App_Spec() throws Exception
     {
         DefaultClassResolver cr = new DefaultClassResolver();
 
@@ -260,7 +260,7 @@ public class TestApplicationSpecificationInitializer extends BaseComponentTestCa
 
         expect(config.getServletName()).andReturn("wilma");
 
-        log.debug("Could not find an application specification for application servlet wilma.");
+        log.warn("Could not find an application specification for application servlet wilma.");
 
         expect(config.getServletName()).andReturn("wilma");
 
@@ -290,7 +290,7 @@ public class TestApplicationSpecificationInitializer extends BaseComponentTestCa
     /**
      * Test within the Registry, to ensure the module deployment descriptor is well configured.
      */
-    public void testIntegration() throws Exception
+    public void test_Integration() throws Exception
     {
         ServletContext context = newMock(ServletContext.class);
 

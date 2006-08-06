@@ -76,6 +76,14 @@
       the parameters available to a deferred listener.
     </description>
   </parameter>
+  
+  <parameter name="submitType" default-value="literal:submit" >
+    <description>
+        The type of submission this component should cause. Valid values are 
+        submit, cancel, and refresh. 
+    </description>
+  </parameter>
+  
   <parameter name="id" property="idParameter"	default-value="id"/>
 
   		  
@@ -84,5 +92,6 @@
   <reserved-parameter name="border"/>
 
   <inject property="listenerInvoker" object="infrastructure:listenerInvoker"/>
-
+  <inject property="submitTypeScript" type="script" object="SubmitType.script"/>
+  
 </component-specification>

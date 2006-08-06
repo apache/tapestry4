@@ -77,7 +77,9 @@ public abstract class ImageSubmit extends Submit
         renderIdAttribute(writer, cycle);
 
         renderInformalParameters(writer, cycle);
-
+        
+        renderSubmitType(writer, cycle);
+        
         writer.closeTag();
     }
 

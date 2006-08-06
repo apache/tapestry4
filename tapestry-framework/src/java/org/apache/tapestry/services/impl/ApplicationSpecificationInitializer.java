@@ -55,7 +55,7 @@ public class ApplicationSpecificationInitializer implements ApplicationInitializ
 
         if (specResource == null)
         {
-            _log.debug(ImplMessages.noApplicationSpecification(servlet));
+            _log.warn(ImplMessages.noApplicationSpecification(servlet));
 
             spec = constructStandinSpecification(servlet);
         }

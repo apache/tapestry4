@@ -28,6 +28,7 @@
   <parameter name="disabled"/>
   <parameter name="selected"/>
   <parameter name="tag"/>
+  
   <parameter name="id" property="idParameter" default-value="id"/>
     
   <parameter name="listener">
@@ -52,10 +53,18 @@
     </description>
   </parameter>
 
+  <parameter name="submitType" default-value="literal:submit" >
+    <description>
+        The type of submission this component should cause. Valid values are 
+        submit, cancel, and refresh. 
+    </description>
+  </parameter>
+
   <reserved-parameter name="name"/>
   <reserved-parameter name="href"/>
   
   <inject property="listenerInvoker" object="infrastructure:listenerInvoker"/>
   <inject property="script" type="script" object="LinkSubmit.script"/>
+  <inject property="submitTypeScript" type="script" object="SubmitType.script"/>
   
 </component-specification>

@@ -79,10 +79,12 @@ public abstract class LinkSubmit extends AbstractSubmit
 
             writer.begin("a");
             writer.attribute("href", (String) symbols.get("href"));
-
+            
             renderIdAttribute(writer, cycle);
 
             renderInformalParameters(writer, cycle);
+            
+            renderSubmitType(writer, cycle);
         }
 
         renderBody(writer, cycle);

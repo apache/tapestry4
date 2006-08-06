@@ -222,7 +222,20 @@
                             </p>
                         </td>
                     </tr>
-
+                    <tr>
+                        <td>submitType</td>
+                        <td>String - [submit,cancel,refresh]</td>
+                        <td></td>
+                        <td>yes</td>
+                        <td>submit</td>
+                        <td>
+                            Controls the type of submission that this component invokes. Using javascript
+                            this parameter will cause the invocation of the component to be recognized as 
+                            a cancel/refresh/normal form submission depending on the value given. If you 
+                            have a cancel="listener" or refresh="listener" parameter set on your 
+                            <a href="Form.html">Form</a> they will be invoked accordingly.
+                        </td>
+                    </tr>
                 </table>
 
                 <p>

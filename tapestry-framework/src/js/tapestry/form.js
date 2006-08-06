@@ -228,7 +228,7 @@ tapestry.form={
 		form.submit();
 	},
 	
-	cancel:function(form){
+	cancel:function(form, submitName){
 		var form=dojo.byId(form);
 		if (!form){
 			dojo.raise("Form not found with id " + form);
@@ -237,10 +237,10 @@ tapestry.form={
 		
 		form.submitmode.value="cancel";
 		
-		this.submit(form);
+		this.submit(form, submitName);
 	},
 	
-	refresh:function(form){
+	refresh:function(form, submitName){
 		var form=dojo.byId(form);
 		if (!form){
 			dojo.raise("Form not found with id " + form);
@@ -249,7 +249,7 @@ tapestry.form={
 		
 		form.submitmode.value="refresh";
 		
-		this.submit(form);
+		this.submit(form, submitName);
 	},
 	
 	/**
