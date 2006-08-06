@@ -45,23 +45,24 @@ validate_${field.name}
 <body>
 function ${function}(event)
 {
-  var field = document.${form.name}.${field.name};
+  var field = dojo.byId("${field.name}");
 <if expression="validator.required">
   if (field.value.length == 0)
   {
-    event.invalid_field(field, "${requiredMessage}");
+    tapestry.form.invalid_field(field, "${requiredMessage}");
+    dojo.event.browser.stopEvent(event);
     return;
   }
 </if>
 <if-not expression="validator.required">
-  if (field.value.length == 0)
-     return;
+  if (field.value.length == 0) { return; }
 </if-not>
 
 <if expression="validator.minimumLength">
   if (field.value.length &lt; ${validator.minimumLength})
   {
-    event.invalid_field(field, "${minimumLengthMessage}");
+    tapestry.form.invalid_field(field, "${minimumLengthMessage}");
+    dojo.event.browser.stopEvent(event);
     return;
   }
 </if>

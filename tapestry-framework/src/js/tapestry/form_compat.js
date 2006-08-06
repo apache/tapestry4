@@ -5,10 +5,16 @@ dojo.provide("Tapestry");
 // Should only be included by tapestry.form, don't dojo.require() this module.
 
 // global used to deprecate old event connection methods
-tapestry.form.deprecateConnect=function(){
-	dojo.deprecated("Tapestry.on<event>",
+tapestry.form.deprecateConnect=function(formName, fnc, event, advice){
+	dojo.deprecated("Tapestry.on"+event,
 					"use dojo.event.connect instead",
 					"4.1.1");
+	
+	if (advice) {
+		dojo.event.connect(advice, dojo.byId(formName), event, fnc);
+	} else {
+		dojo.event.connect(dojo.byId(formName), event, fnc);
+	}
 }
 
 // BEGIN old function definitions
@@ -34,12 +40,12 @@ Tapestry.register_form=function(formId){
 	tapestry.form.registerForm(formId);
 }
 
-Tapestry.onpresubmit=tapestry.form.deprecateConnect;
-Tapestry.onsubmit=tapestry.form.deprecateConnect;
-Tapestry.onpostsubmit=tapestry.form.deprecateConnect;
-Tapestry.onreset=tapestry.form.deprecateConnect;
-Tapestry.onrefresh=tapestry.form.deprecateConnect;
-Tapestry.oncancel=tapestry.form.deprecateConnect;
+Tapestry.onpresubmit=function(formName, fnc){ tapestry.form.deprecateConnect(formName, fnc, "onsubmit", "before"); };
+Tapestry.onsubmit=function(formName, fnc){ tapestry.form.deprecateConnect(formName, fnc, "onsubmit"); };
+Tapestry.onpostsubmit=function(formName, fnc){ tapestry.form.deprecateConnect(formName, fnc, "onsubmit", "after"); };
+Tapestry.onreset=function(formName, fnc){ tapestry.form.deprecateConnect(formName, fnc, "onreset"); };
+Tapestry.onrefresh=function(formName, fnc){ tapestry.form.deprecateConnect(formName, fnc, "onrefresh"); };
+Tapestry.oncancel=function(formName, fnc){ tapestry.form.deprecateConnect(formName, fnc, "oncancel"); };
 
 Tapestry.set_focus=function (field){
 	dojo.deprecated("Tapestry.set_focus",

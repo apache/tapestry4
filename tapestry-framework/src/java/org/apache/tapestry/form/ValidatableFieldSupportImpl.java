@@ -57,6 +57,10 @@ public class ValidatableFieldSupportImpl implements ValidatableFieldSupport
     public void renderContributions(ValidatableField component, IMarkupWriter writer,
             IRequestCycle cycle)
     {
+        ValidatableFieldExtension extension = null;
+        if (ValidatableFieldExtension.class.isInstance(component))
+            extension = (ValidatableFieldExtension)component;
+        
         if (component.getForm().isClientValidationEnabled())
         {
             FormComponentContributorContext context = new FormComponentContributorContextImpl(
@@ -67,8 +71,11 @@ public class ValidatableFieldSupportImpl implements ValidatableFieldSupport
             while (validators.hasNext())
             {
                 Validator validator = (Validator) validators.next();
-
-                validator.renderContribution(writer, cycle, context, component);
+                
+                if (extension != null && extension.overrideValidator(validator, cycle))
+                    extension.overrideContributions(validator, context, writer, cycle);
+                else
+                    validator.renderContribution(writer, cycle, context, component);
             }
         }
     }

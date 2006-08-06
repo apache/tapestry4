@@ -168,8 +168,7 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
         expect(field.getValidators()).andReturn(validator);
         
         expect(converter.coerceValue(validator, Iterator.class))
-        .andReturn(Collections.singleton(validator).iterator());        
-
+        .andReturn(Collections.singleton(validator).iterator());
         
         IRequestCycle cycle = newCycle(field);
         

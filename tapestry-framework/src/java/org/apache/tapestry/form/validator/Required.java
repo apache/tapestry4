@@ -63,7 +63,7 @@ public class Required extends BaseValidator
         }
     }
     
-    private String buildMessage(ValidationMessages messages, IFormComponent field)
+    public String buildMessage(ValidationMessages messages, IFormComponent field)
     {
         return messages.formatValidationMessage(
                 getMessage(),

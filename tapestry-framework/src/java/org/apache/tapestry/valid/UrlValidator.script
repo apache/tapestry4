@@ -56,13 +56,16 @@ function regexpTestUrl(sUrl) {
 ]]></unique>    
 
 		function ${function}(event) {
-			var field = document.${form.name}.${field.name};
+			var field = dojo.byId("${field.name}");
 			strValue = field.value.replace(/ /g,"");
 			field.value = strValue;
 
 		<if expression="validator.required">
-			if (strValue.length == 0)
-				return event.invalid_field(field, "${requiredMessage}");
+			if (strValue.length == 0) {
+				tapestry.form.invalid_field(field, "${requiredMessage}");
+                dojo.event.browser.stopEvent(event);
+                return;
+            }
 		</if>
 
 		<if-not expression="validator.required">
@@ -71,17 +74,25 @@ function regexpTestUrl(sUrl) {
 		</if-not>
 
 		<if expression="validator.minimumLength">
-			if (strValue.length &lt; ${validator.minimumLength})
-				return event.invalid_field(field, "${minimumLengthMessage}");
+			if (strValue.length &lt; ${validator.minimumLength}) {
+				tapestry.form.invalid_field(field, "${minimumLengthMessage}");
+                dojo.event.browser.stopEvent(event);
+                return;
+            }
 		</if>
 
-			if(!regexpTestUrl(strValue))
-				return event.invalid_field(field, "${urlFormatMessage}");
-
+			if(!regexpTestUrl(strValue)) {
+				tapestry.form.invalid_field(field, "${urlFormatMessage}");
+                dojo.event.browser.stopEvent(event);
+                return;
+            }
 		<if expression="null != urlRegexpProtocols">
 			var protoRegExp = ${urlRegexpProtocols};
-			if(!protoRegExp.test(strValue))
-				return event.invalid_field(field, "${urlDisallowedProtocolMessage}");
+			if(!protoRegExp.test(strValue)) {
+			     tapestry.form.invalid_field(field, "${urlDisallowedProtocolMessage}");
+                 dojo.event.browser.stopEvent(event);
+                 return;
+            }
 		</if>
 		}
 	</body>

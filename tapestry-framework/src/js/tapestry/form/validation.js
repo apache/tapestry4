@@ -232,5 +232,11 @@ tapestry.form.validation={
 		
 		var re = new RegExp(pattern);
 		return re.test(value);
+	},
+	
+	isPalleteSelected:function(elem){
+		if (elem.length > 0) { return true; }
+		
+		return false;
 	}
 }

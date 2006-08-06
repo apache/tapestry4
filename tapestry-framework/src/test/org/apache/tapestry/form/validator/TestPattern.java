@@ -39,7 +39,7 @@ import org.testng.annotations.Test;
 public class TestPattern extends BaseValidatorTestCase
 {
 
-    public void testOK() throws Exception
+    public void test_OK() throws Exception
     {
         IFormComponent field = newField();
         ValidationMessages messages = newMessages();
@@ -51,15 +51,15 @@ public class TestPattern extends BaseValidatorTestCase
         verify();
     }
 
-    public void testFail()
+    public void test_Fail()
     {
         String pattern = "\\d+";
         IFormComponent field = newField("My Pattern");
         ValidationMessages messages = newMessages(
                 null,
-                ValidationStrings.REGEX_MISMATCH,
+                ValidationStrings.PATTERN_MISMATCH,
                 new Object[]
-                { pattern, "My Pattern" },
+                { "My Pattern", pattern },
                 "default message");
 
         replay();
@@ -78,15 +78,15 @@ public class TestPattern extends BaseValidatorTestCase
         verify();
     }
 
-    public void testFailCustomMessage()
+    public void test_Fail_Custom_Message()
     {
         String pattern = "\\d+";
         IFormComponent field = newField("My Pattern");
         ValidationMessages messages = newMessages(
                 "custom",
-                ValidationStrings.REGEX_MISMATCH,
+                ValidationStrings.PATTERN_MISMATCH,
                 new Object[]
-                { pattern, "My Pattern" },
+                { "My Pattern", pattern },
                 "custom message");
         
         replay();
@@ -105,7 +105,7 @@ public class TestPattern extends BaseValidatorTestCase
         verify();
     }
 
-    public void testRenderContribution()
+    public void test_Render_Contribution()
     {
         String rawPattern = "\\d+";
         String pattern = new RegexpMatcher().getEscapedPatternString(rawPattern);
@@ -120,8 +120,8 @@ public class TestPattern extends BaseValidatorTestCase
         
         expect(context.getProfile()).andReturn(json);
         
-        trainFormatMessage(context, null, ValidationStrings.REGEX_MISMATCH, 
-                new Object[] { rawPattern, "Fred" }, "default message");
+        trainFormatMessage(context, null, ValidationStrings.PATTERN_MISMATCH, 
+                new Object[] { "Fred", rawPattern }, "default message");
         
         replay();
         
@@ -135,7 +135,7 @@ public class TestPattern extends BaseValidatorTestCase
                 json.toString());
     }
     
-    public void testRenderContributionCustomMessage()
+    public void test_Render_Contribution_CustomMessage()
     {
         String rawPattern = "\\d+";
         String pattern = new RegexpMatcher().getEscapedPatternString(rawPattern);
@@ -153,9 +153,8 @@ public class TestPattern extends BaseValidatorTestCase
         trainFormatMessage(
                 context,
                 "custom",
-                ValidationStrings.REGEX_MISMATCH,
-                new Object[]
-                { rawPattern, "Fred" },
+                ValidationStrings.PATTERN_MISMATCH,
+                new Object[] { "Fred", rawPattern },
                 "custom\\message");
         
         replay();

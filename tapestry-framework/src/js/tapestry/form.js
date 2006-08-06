@@ -24,9 +24,11 @@ tapestry.form={
 	invalidField:function(field, message){
 		if (field.disabled) return;
 		
-    	this.focusField(field);
     	window.alert(message);
+    	this.focusField(field);
 	},
+	
+	invalid_field:function(field, message){tapestry.form.invalidField(field, message); },
 	
 	/**
 	 * If possible, brings keyboard input focus
@@ -40,14 +42,8 @@ tapestry.form={
 		field = dojo.byId(field);
 		if (!field) return;
 		if (field.disabled || field.clientWidth < 1) return;
-		
-        if (typeof field.focus != "undefined") { field.focus(); }
-        // TODO: clarify next statement
-        if (field.isContentEditable 
-        	|| field.isContentEditable == null
-        	&& typeof field.select != "undefined") {
-        	field.select();
-        }
+        
+        dojo.html.selectInputText(field);
 	},
 	
 	/**

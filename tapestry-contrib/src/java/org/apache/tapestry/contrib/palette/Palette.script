@@ -357,5 +357,6 @@ ${availablePath}.onchange = ${availableChangeFunctionName};
 ${availablePath}.ondblclick = ${selectFunctionName};
 ${updateFunctionName}();
 Tapestry.onrefresh('${formName}', ${formSubmitFunctionName});
+Tapestry.onsubmit('${formName}', ${formSubmitFunctionName});
 </initialization>
 </script>

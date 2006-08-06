@@ -23,7 +23,7 @@ function palette_clear_selections(element)
 function palette_select_all(element)
 {
   var options = element.options;
-
+  dojo.log.info("palette_select_all");
   for (var i = 0; i < options.length; i++)
     options[i].selected = true;
 }

@@ -19,19 +19,20 @@
 	"-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
 	"http://jakarta.apache.org/tapestry/dtd/Script_3_0.dtd">
 <script>
-	<input-symbol key="confirmTimeout" class="java.lang.Integer"/>
-	<input-symbol key="expirationTimeout" class="java.lang.Integer"/>
-	<input-symbol key="prolongSessionPeriod" class="java.lang.Integer"/>
+	<input-symbol key="confirmTimeout" />
+	<input-symbol key="expirationTimeout" />
+	<input-symbol key="prolongSessionPeriod" />
 
-	<input-symbol key="confirmMessage" class="java.lang.String"/>
-	<input-symbol key="expirationMessage" class="java.lang.String"/>
+	<input-symbol key="confirmMessage" />
+	<input-symbol key="expirationMessage" />
 
-	<input-symbol key="disableWarning" class="java.lang.Boolean"/>
-	<input-symbol key="disableAutoProlong" class="java.lang.Boolean"/>
+	<input-symbol key="disableWarning" />
+	<input-symbol key="disableAutoProlong" />
 	
-	<input-symbol key="expirationFunction" class="java.lang.String"/>
+	<input-symbol key="expirationFunction" />
 
 	<body>
+    dojo.event.connect("after", window, "onload", function(){
     var TimeoutTimerConfirm;
     var TimeoutProlongSessionTime;
     var TimeoutExpirationTime;
@@ -132,22 +133,22 @@
     }
     
     function TimeoutHandleOnClick() {
-    	if (!dj_undef("TimeoutPreviousOnClick")) TimeoutPreviousOnClick();
+    	if (!dj_undef("TimeoutPreviousOnClick", this)) TimeoutPreviousOnClick();
     	TimeoutRegisterUserAction();
     }
     
     function TimeoutHandleOnMouseMove() {
-    	if (!dj_undef("TimeoutPreviousOnMouseMove")) TimeoutPreviousOnMouseMove();
+    	if (!dj_undef("TimeoutPreviousOnMouseMove", this)) TimeoutPreviousOnMouseMove();
     	TimeoutRegisterUserAction();
     }
     
     function TimeoutHandleOnKeyPress() {
-    	if (!dj_undef("TimeoutPreviousOnKeyPress")) TimeoutPreviousOnKeyPress();
+    	if (!dj_undef("TimeoutPreviousOnKeyPress", this)) TimeoutPreviousOnKeyPress();
     	TimeoutRegisterUserAction();
     }
     
     function TimeoutHandleOnScroll() {
-    	if (!dj_undef("TimeoutPreviousOnScroll")) TimeoutPreviousOnScroll();
+    	if (!dj_undef("TimeoutPreviousOnScroll", this)) TimeoutPreviousOnScroll();
     	TimeoutRegisterUserAction();
     }
     
@@ -160,13 +161,11 @@
         return true;
     }
     </if>
+    
+    <if expression="!disableAutoProlong">
+    TimeoutInitChangeObserver();
+    </if>
+    TimeoutInitConfirmTimer();
+    });
 	</body>
-	
-	<initialization>
-	    <if expression="!disableAutoProlong">
-	    TimeoutInitChangeObserver();
-	    </if>
-	    TimeoutInitConfirmTimer();
-	</initialization>
-	
 </script>

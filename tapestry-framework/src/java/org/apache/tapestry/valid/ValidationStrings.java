@@ -32,6 +32,8 @@ public final class ValidationStrings
     
     public static final String REGEX_MISMATCH = "regex-mismatch";
     
+    public static final String PATTERN_MISMATCH = "pattern-not-matched";
+    
     public static final String VALUE_TOO_SHORT = "field-too-short";
     public static final String VALUE_TOO_LONG = "field-too-long";
     
