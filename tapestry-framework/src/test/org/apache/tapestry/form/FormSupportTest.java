@@ -36,6 +36,7 @@ import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.listener.ListenerInvoker;
+import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.services.impl.ComponentEventInvoker;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.testng.annotations.Test;
@@ -110,7 +111,7 @@ public class FormSupportTest extends BaseComponentTestCase
         return component;
     }
 
-    public void testCancelRewind()
+    public void test_Cancel_Rewind()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
@@ -144,7 +145,7 @@ public class FormSupportTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testComplexRender()
+    public void test_Complex_Render()
     {
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
@@ -216,7 +217,7 @@ public class FormSupportTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testComplexRewind()
+    public void test_Complex_Rewind()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
@@ -261,7 +262,7 @@ public class FormSupportTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testComplexSubmitEventHandler()
+    public void test_Complex_Submit_Event_Handler()
     {
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
@@ -334,7 +335,7 @@ public class FormSupportTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testEncodingType()
+    public void test_Encoding_Type()
     {
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
@@ -402,13 +403,15 @@ public class FormSupportTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testFieldPrerenderTwice()
+    public void test_Field_Prerender_Twice()
     {
         IFormComponent field = newField();
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
         IRequestCycle cycle = newCycle();
         Location l = newLocation();
+        
+        ResponseBuilder builder = newMock(ResponseBuilder.class);
 
         trainGetExtendedId(field, "foo.bar");
 
@@ -417,7 +420,9 @@ public class FormSupportTest extends BaseComponentTestCase
         expect(cycle.getAttribute(TapestryUtils.FIELD_PRERENDER)).andReturn(null);
         cycle.setAttribute(TapestryUtils.FIELD_PRERENDER, field);
         
-        field.render(nested, cycle);
+        expect(cycle.getResponseBuilder()).andReturn(builder);
+        
+        builder.render(nested, field, cycle);
         
         cycle.removeAttribute(TapestryUtils.FIELD_PRERENDER);
         
@@ -455,7 +460,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
     }
 
-    public void testHiddenValues()
+    public void test_Hidden_Values()
     {
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
@@ -532,7 +537,7 @@ public class FormSupportTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testInvalidEncodingType()
+    public void test_Invalid_Encoding_Type()
     {
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
@@ -591,7 +596,7 @@ public class FormSupportTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testRefreshRewind()
+    public void test_Refresh_Rewind()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
@@ -631,7 +636,7 @@ public class FormSupportTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testRenderExtraReservedIds()
+    public void test_Render_Extra_Reserved_Ids()
     {
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
@@ -704,7 +709,7 @@ public class FormSupportTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testResetEventHandler()
+    public void test_Reset_Event_Handler()
     {
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
@@ -775,7 +780,7 @@ public class FormSupportTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testRewindExtraReservedIds()
+    public void test_Rewind_Extra_Reserved_Ids()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
@@ -817,7 +822,7 @@ public class FormSupportTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testRewindMismatch()
+    public void test_Rewind_Mismatch()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
@@ -872,7 +877,7 @@ public class FormSupportTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testRewindTooLong()
+    public void test_Rewind_Too_Long()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
@@ -927,7 +932,7 @@ public class FormSupportTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testRewindTooShort()
+    public void test_Rewind_Too_Short()
     {
         Location l = newLocation();
         IMarkupWriter writer = newWriter();
@@ -987,7 +992,7 @@ public class FormSupportTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testSimpleRender()
+    public void test_Simple_Render()
     {
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
@@ -1060,7 +1065,7 @@ public class FormSupportTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testSimpleRenderWithDeferredRunnable()
+    public void test_Simple_Render_With_Deferred_Runnable()
     {
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
@@ -1140,7 +1145,7 @@ public class FormSupportTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testSimpleRenderWithScheme()
+    public void test_Simple_Render_With_Scheme()
     {
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
@@ -1213,7 +1218,7 @@ public class FormSupportTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testSimpleRewind()
+    public void test_Simple_Rewind()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
@@ -1254,7 +1259,7 @@ public class FormSupportTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testSimpleRewindWithDeferredRunnable()
+    public void test_Simple_Rewind_With_Deferred_Runnable()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
@@ -1310,7 +1315,7 @@ public class FormSupportTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testSimpleSubmitEventHandler()
+    public void test_Simple_Submit_Event_Handler()
     {
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
