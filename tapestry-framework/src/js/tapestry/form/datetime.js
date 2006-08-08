@@ -43,7 +43,7 @@ tapestry.form.datetime={
 		// max date
 		if (typeof flags.max == "string") {
 			var max = new Date(flags.max);
-			if (dojo.date.compare(dateValue, max, dojo.date.compareTypes.DATE) >= 0)
+			if (dojo.date.compare(dateValue, max, dojo.date.compareTypes.DATE) > 0)
 				return false;
 		}
 		
