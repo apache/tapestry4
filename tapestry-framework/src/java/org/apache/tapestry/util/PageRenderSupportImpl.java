@@ -200,7 +200,7 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
             // Note: important to use begin(), not beginEmpty(), because browser don't
             // interpret <script .../> properly.
             
-            _builder.writeExternalScript(url, cycle);
+            _builder.writeExternalScript(writer, url, cycle);
         }
     }
     
@@ -223,19 +223,19 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
         if (!(any(_bodyScript) || any(_imageInitializations)))
             return;
         
-        _builder.beginBodyScript(cycle);
+        _builder.beginBodyScript(writer, cycle);
         
         if (any(_imageInitializations))
         {
-            _builder.writeImageInitializations(_imageInitializations.toString(), _preloadName, cycle);
+            _builder.writeImageInitializations(writer, _imageInitializations.toString(), _preloadName, cycle);
         }
 
         if (any(_bodyScript))
         {
-            _builder.writeBodyScript(_bodyScript.toString(), cycle);
+            _builder.writeBodyScript(writer, _bodyScript.toString(), cycle);
         }
         
-        _builder.endBodyScript(cycle);
+        _builder.endBodyScript(writer, cycle);
     }
     
     /**
@@ -249,7 +249,7 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
         if (!any(_initializationScript))
             return;
         
-        _builder.writeInitializationScript(_initializationScript.toString());
+        _builder.writeInitializationScript(writer, _initializationScript.toString());
     }
 
     private boolean any(StringBuffer buffer)

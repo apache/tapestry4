@@ -131,29 +131,38 @@ public interface ResponseBuilder {
      * <code>
      * <script type="text/javascript" src="url"></script>
      * </code>.
-     * 
+     *
+     * @param writer
+     *          The markup writer to use, this may be ignored or swapped
+     *          out for a different writer depending on the implementation being used.
      * @param url
      *          The absolute url to the .js package to be included.
      * @param cycle
      *          The associated request.
      */    
-    void writeExternalScript(String url, IRequestCycle cycle);
+    void writeExternalScript(IMarkupWriter writer, String url, IRequestCycle cycle);
     
     /**
      * Marks the beginning of the core body script.
-     * 
+     *
+     * @param writer
+     *          The markup writer to use, this may be ignored or swapped
+     *          out for a different writer depending on the implementation being used.
      * @param cycle
      *          The associated request.
      */
-    void beginBodyScript(IRequestCycle cycle);
+    void beginBodyScript(IMarkupWriter writer, IRequestCycle cycle);
     
     /**
      * Intended to be written within the confines of the body script, should
-     * be invoked once just after {@link #beginBodyScript(IRequestCycle)} is called
+     * be invoked once just after {@link #beginBodyScript(IMarkupWriter, IRequestCycle)} is called
      * to include any image initializations. This method should only be called if
      * there are actually images that need pre-initialization. Ie in many instances 
      * it will not be called at all.
-     * 
+     *
+     * @param writer
+     *          The markup writer to use, this may be ignored or swapped
+     *          out for a different writer depending on the implementation being used.
      * @param script
      *          The non null value of the script images to include. 
      * @param preloadName 
@@ -161,29 +170,35 @@ public interface ResponseBuilder {
      * @param cycle
      *          The associated request.
      */
-    void writeImageInitializations(String script, String preloadName, IRequestCycle cycle);
+    void writeImageInitializations(IMarkupWriter writer, String script, String preloadName, IRequestCycle cycle);
     
     /**
-     * Called after {@link #beginBodyScript(IRequestCycle)} to write the containing
+     * Called after {@link #beginBodyScript(IMarkupWriter, IRequestCycle)} to write the containing
      * body script. This method may not be called at all if there is no js body 
      * to write into the response.
-     * 
+     *
+     * @param writer
+     *          The markup writer to use, this may be ignored or swapped
+     *          out for a different writer depending on the implementation being used.
      * @param script
      *          The script to write into the body response.
      * @param cycle
      *          The associated request.
      */
-    void writeBodyScript(String script, IRequestCycle cycle);
+    void writeBodyScript(IMarkupWriter writer, String script, IRequestCycle cycle);
     
     /**
      * Marks the end of the body block being called. This method will 
-     * always be called if {@link #beginBodyScript(IRequestCycle)} was previously
+     * always be called if {@link #beginBodyScript(IMarkupWriter, IRequestCycle)} was previously
      * called. 
-     * 
+     *
+     * @param writer
+     *          The markup writer to use, this may be ignored or swapped
+     *          out for a different writer depending on the implementation being used.
      * @param cycle
      *          The associated request.
      */
-    void endBodyScript(IRequestCycle cycle);
+    void endBodyScript(IMarkupWriter writer, IRequestCycle cycle);
     
     /**
      * Writes any javascript that should only execute after all other items
@@ -193,11 +208,14 @@ public interface ResponseBuilder {
      * 
      * This method will ~only~ be called if there is any queued intialization script 
      * to write.
-     * 
+     *
+     * @param writer
+     *          The markup writer to use, this may be ignored or swapped
+     *          out for a different writer depending on the implementation being used.
      * @param script
      *          The initialzation script to write.
      */
-    void writeInitializationScript(String script);
+    void writeInitializationScript(IMarkupWriter writer, String script);
     
     /**
      * Returns the IMarkupWriter associated with this response, it may or may

@@ -187,10 +187,8 @@ public class DefaultResponseBuilder implements ResponseBuilder
     /** 
      * {@inheritDoc}
      */
-    public void beginBodyScript(IRequestCycle cycle)
+    public void beginBodyScript(IMarkupWriter writer, IRequestCycle cycle)
     {
-        IMarkupWriter writer = getWriter();
-        
         writer.begin("script");
         writer.attribute("type", "text/javascript");
         writer.printRaw("<!--");
@@ -199,10 +197,8 @@ public class DefaultResponseBuilder implements ResponseBuilder
     /** 
      * {@inheritDoc}
      */
-    public void endBodyScript(IRequestCycle cycle)
+    public void endBodyScript(IMarkupWriter writer, IRequestCycle cycle)
     {
-        IMarkupWriter writer = getWriter();
-        
         writer.printRaw("\n\n// -->");
         writer.end();
     }
@@ -210,10 +206,8 @@ public class DefaultResponseBuilder implements ResponseBuilder
     /** 
      * {@inheritDoc}
      */
-    public void writeBodyScript(String script, IRequestCycle cycle)
+    public void writeBodyScript(IMarkupWriter writer, String script, IRequestCycle cycle)
     {
-        IMarkupWriter writer = getWriter();
-        
         writer.printRaw("\n\n");
         writer.printRaw(script);
     }
@@ -221,10 +215,8 @@ public class DefaultResponseBuilder implements ResponseBuilder
     /** 
      * {@inheritDoc}
      */
-    public void writeExternalScript(String url, IRequestCycle cycle)
-    {
-        IMarkupWriter writer = getWriter();
-        
+    public void writeExternalScript(IMarkupWriter writer, String url, IRequestCycle cycle)
+    {        
         writer.begin("script");
         writer.attribute("type", "text/javascript");
         writer.attribute("src", url);
@@ -235,10 +227,8 @@ public class DefaultResponseBuilder implements ResponseBuilder
     /** 
      * {@inheritDoc}
      */
-    public void writeImageInitializations(String script, String preloadName, IRequestCycle cycle)
+    public void writeImageInitializations(IMarkupWriter writer, String script, String preloadName, IRequestCycle cycle)
     {
-        IMarkupWriter writer = getWriter();
-        
         writer.printRaw("\n\nvar " + preloadName + " = new Array();\n");
         writer.printRaw("if (document.images)\n");
         writer.printRaw("{\n");
@@ -249,10 +239,8 @@ public class DefaultResponseBuilder implements ResponseBuilder
     /** 
      * {@inheritDoc}
      */
-    public void writeInitializationScript(String script)
+    public void writeInitializationScript(IMarkupWriter writer, String script)
     {
-        IMarkupWriter writer = getWriter();
-        
         writer.begin("script");
         writer.attribute("type", "text/javascript");
         writer.printRaw("<!--\n");
