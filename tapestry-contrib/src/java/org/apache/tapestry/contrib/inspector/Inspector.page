@@ -21,7 +21,7 @@
 	
 <page-specification class="org.apache.tapestry.contrib.inspector.Inspector">
 
-  <property name="view" persist="session" initial-value="@org.apache.tapestry.contrib.inspector.View@SPECIFICATION"/>
+  <property name="view" persist="session" initial-value="ognl:@org.apache.tapestry.contrib.inspector.View@SPECIFICATION"/>
   <property name="inspectedPageName" persist="session"/>
   <property name="inspectedIdPath" persist="session"/>
   

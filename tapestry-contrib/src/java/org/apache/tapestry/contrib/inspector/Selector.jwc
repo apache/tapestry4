@@ -28,7 +28,7 @@
   <component id="selectPage" type="PropertySelection">
     <binding name="value" value="page.inspectedPageName"/>
     <binding name="model" value="pageModel"/>
-    <binding name="onchange" value="literal:javascript:this.form.events.submit();"/>
+    <binding name="onchange" value="literal:tapestry.form.submit(this.form)"/>
   </component>
 
   <component id="page" type="DirectLink">
