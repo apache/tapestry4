@@ -16,7 +16,6 @@ package org.apache.tapestry.contrib.inspector;
 
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IRequestCycle;
 
 /**
  * Component of the {@link Inspector} page used to select the view.
@@ -55,7 +54,7 @@ public abstract class ViewTabs extends BaseComponent
             buffer.append("_focus");
 
         String key = buffer.toString();
-
+        
         return (IAsset) getAssets().get(key);
     }
 
@@ -73,14 +72,15 @@ public abstract class ViewTabs extends BaseComponent
     {
         Inspector inspector = (Inspector) getPage();
         String selectedView = inspector.getView();
+        
         String key = selectedView + "_banner";
-
+        
         return (IAsset) getAssets().get(key);
     }
 
-    public void selectTab(IRequestCycle cycle)
+    public void selectTab(String view)
     {
         Inspector inspector = (Inspector) getPage();
-        inspector.setView(getView());
+        inspector.setView(view);
     }
 }
