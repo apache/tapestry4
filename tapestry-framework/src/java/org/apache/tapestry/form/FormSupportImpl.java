@@ -741,7 +741,7 @@ public class FormSupportImpl implements FormSupport
         
         TapestryUtils.storePrerender(_cycle, field);
         
-        field.render(nested, _cycle);
+        _cycle.getResponseBuilder().render(nested, field, _cycle);
         
         TapestryUtils.removePrerender(_cycle);
         

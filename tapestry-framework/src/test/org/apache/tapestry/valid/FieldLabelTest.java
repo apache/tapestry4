@@ -231,7 +231,7 @@ public class FieldLabelTest extends BaseFormComponentTestCase
 
         verify();
     }
-
+    
     public void testPrerenderOff()
     {
         IValidationDelegate delegate = new MockDelegate();
@@ -262,7 +262,7 @@ public class FieldLabelTest extends BaseFormComponentTestCase
         verify();
     }
 
-    public void testFieldWithClientId()
+    public void test_Field_With_Client_Id()
     {
         IValidationDelegate delegate = new MockDelegate();
 

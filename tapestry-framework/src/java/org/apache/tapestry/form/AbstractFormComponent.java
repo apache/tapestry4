@@ -128,7 +128,7 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
                 form.setFormFieldUpdating(true);
             
             renderFormComponent(writer, cycle);
-
+            
             if (getCanTakeFocus() && !isDisabled())
             {
                 delegate.registerForFocus(

@@ -35,7 +35,7 @@ import org.apache.tapestry.markup.MarkupFilter;
 import org.apache.tapestry.markup.MarkupWriterImpl;
 import org.apache.tapestry.markup.UTFMarkupFilter;
 import org.apache.tapestry.services.ResponseBuilder;
-import org.testng.annotations.Configuration;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 
 
@@ -61,7 +61,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         return new PrintWriter(_writer);
     }
 
-    @Configuration(afterTestClass = true)
+    @AfterClass
     protected void tearDown() throws Exception
     {
         _writer = null;
