@@ -27,6 +27,11 @@ function test_datetime_maxDate(){
 	value = "08/15/2020";
 	jum.assertTrue(value, tapestry.form.datetime.isValidDate(value, 
 									{max:maxValue, format:"MM/DD/YYYY"}));
+				
+	jum.assertTrue("09/28/2020", tapestry.form.datetime.isValidDate(
+			"09/28/2020",
+			{max:maxValue, format:"MM/DD/YYYY"})
+	);
 }
 
 function test_datetime_minDate(){
