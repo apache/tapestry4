@@ -204,7 +204,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     /** 
      * {@inheritDoc}
      */
-    public void beginBodyScript(IRequestCycle cycle)
+    public void beginBodyScript(IMarkupWriter normalWriter, IRequestCycle cycle)
     {
         IMarkupWriter writer = getWriter(ResponseBuilder.BODY_SCRIPT, ResponseBuilder.SCRIPT_TYPE);
         
@@ -215,7 +215,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     /** 
      * {@inheritDoc}
      */
-    public void endBodyScript(IRequestCycle cycle)
+    public void endBodyScript(IMarkupWriter normalWriter, IRequestCycle cycle)
     {
         IMarkupWriter writer = getWriter(ResponseBuilder.BODY_SCRIPT, ResponseBuilder.SCRIPT_TYPE);
         
@@ -226,7 +226,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     /** 
      * {@inheritDoc}
      */
-    public void writeBodyScript(String script, IRequestCycle cycle)
+    public void writeBodyScript(IMarkupWriter normalWriter, String script, IRequestCycle cycle)
     {
         IMarkupWriter writer = getWriter(ResponseBuilder.BODY_SCRIPT, ResponseBuilder.SCRIPT_TYPE);
         
@@ -236,7 +236,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     /** 
      * {@inheritDoc}
      */
-    public void writeExternalScript(String url, IRequestCycle cycle)
+    public void writeExternalScript(IMarkupWriter normalWriter, String url, IRequestCycle cycle)
     {
         IMarkupWriter writer = getWriter(ResponseBuilder.INCLUDE_SCRIPT, ResponseBuilder.SCRIPT_TYPE);
         
@@ -251,7 +251,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     /** 
      * {@inheritDoc}
      */
-    public void writeImageInitializations(String script, String preloadName, IRequestCycle cycle)
+    public void writeImageInitializations(IMarkupWriter normalWriter, String script, String preloadName, IRequestCycle cycle)
     {
         IMarkupWriter writer = getWriter(ResponseBuilder.BODY_SCRIPT, ResponseBuilder.SCRIPT_TYPE);
         
@@ -267,7 +267,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     /** 
      * {@inheritDoc}
      */
-    public void writeInitializationScript(String script)
+    public void writeInitializationScript(IMarkupWriter normalWriter, String script)
     {
         IMarkupWriter writer = getWriter(ResponseBuilder.INITIALIZATION_SCRIPT, ResponseBuilder.SCRIPT_TYPE);
         

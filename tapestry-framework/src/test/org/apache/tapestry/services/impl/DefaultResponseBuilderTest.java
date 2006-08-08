@@ -142,21 +142,21 @@ public class DefaultResponseBuilderTest extends BaseComponentTestCase
         verify();
         replay();
         
-        builder.beginBodyScript(cycle);
+        builder.beginBodyScript(mw, cycle);
         
         assertOutput("<script type=\"text/javascript\"><!--");
         
-        builder.writeImageInitializations(imageInit, preload, cycle);
+        builder.writeImageInitializations(mw, imageInit, preload, cycle);
         
         assertOutput("\n\nvar " + preload + " = new Array();\n"
                 + "if (document.images)\n"
                 + "{\n" + imageInit + "}\n");
         
-        builder.writeBodyScript(bscript, cycle);
+        builder.writeBodyScript(mw, bscript, cycle);
         
         assertOutput("\n\n" + bscript);
         
-        builder.endBodyScript(cycle);
+        builder.endBodyScript(mw, cycle);
         
         assertOutput("\n\n// --></script>");
         
@@ -180,12 +180,12 @@ public class DefaultResponseBuilderTest extends BaseComponentTestCase
         verify();
         replay();
         
-        builder.writeExternalScript(script1, cycle);
+        builder.writeExternalScript(mw, script1, cycle);
         
         assertOutput("<script type=\"text/javascript\" src=\""
                 + script1 + "\"></script>" + LINE_SEPERATOR);
         
-        builder.writeExternalScript(script2, cycle);
+        builder.writeExternalScript(mw, script2, cycle);
         
         assertOutput("<script type=\"text/javascript\" src=\""
                 + script2 + "\"></script>" + LINE_SEPERATOR);
@@ -208,7 +208,7 @@ public class DefaultResponseBuilderTest extends BaseComponentTestCase
         verify();
         replay();
         
-        builder.writeInitializationScript(script);
+        builder.writeInitializationScript(mw, script);
         
         assertOutput("<script type=\"text/javascript\"><!--\n"
                 + "dojo.event.connect(window, 'onload', function(e) {\n"

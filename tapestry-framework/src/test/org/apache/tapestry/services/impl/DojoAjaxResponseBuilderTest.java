@@ -209,13 +209,13 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         
         builder.beginResponse();
         
-        builder.beginBodyScript(cycle);
+        builder.beginBodyScript(mw, cycle);
         
-        builder.writeImageInitializations(imageInit, preload, cycle);
+        builder.writeImageInitializations(mw, imageInit, preload, cycle);
         
-        builder.writeBodyScript(bscript, cycle);
+        builder.writeBodyScript(mw, bscript, cycle);
         
-        builder.endBodyScript(cycle);
+        builder.endBodyScript(mw, cycle);
         
         builder.endResponse();
         
@@ -256,9 +256,9 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         
         builder.beginResponse();
         
-        builder.writeExternalScript(script1, cycle);
+        builder.writeExternalScript(mw, script1, cycle);
         
-        builder.writeExternalScript(script2, cycle);
+        builder.writeExternalScript(mw, script2, cycle);
         
         builder.endResponse();
         
@@ -291,7 +291,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         
         builder.beginResponse();
         
-        builder.writeInitializationScript(script);
+        builder.writeInitializationScript(mw, script);
         
         builder.endResponse();
         

@@ -208,7 +208,7 @@ public class JSONResponseBuilder implements ResponseBuilder
     /** 
      * {@inheritDoc}
      */
-    public void beginBodyScript(IRequestCycle cycle)
+    public void beginBodyScript(IMarkupWriter writer, IRequestCycle cycle)
     {
         // does nothing
     }
@@ -216,7 +216,7 @@ public class JSONResponseBuilder implements ResponseBuilder
     /** 
      * {@inheritDoc}
      */
-    public void endBodyScript(IRequestCycle cycle)
+    public void endBodyScript(IMarkupWriter writer, IRequestCycle cycle)
     {
         // does nothing
     }
@@ -224,7 +224,7 @@ public class JSONResponseBuilder implements ResponseBuilder
     /** 
      * {@inheritDoc}
      */
-    public void writeBodyScript(String script, IRequestCycle cycle)
+    public void writeBodyScript(IMarkupWriter writer, String script, IRequestCycle cycle)
     {
         // does nothing
     }
@@ -232,7 +232,7 @@ public class JSONResponseBuilder implements ResponseBuilder
     /** 
      * {@inheritDoc}
      */
-    public void writeExternalScript(String url, IRequestCycle cycle)
+    public void writeExternalScript(IMarkupWriter normalWriter, String url, IRequestCycle cycle)
     {
         // does nothing
     }
@@ -240,7 +240,7 @@ public class JSONResponseBuilder implements ResponseBuilder
     /** 
      * {@inheritDoc}
      */
-    public void writeImageInitializations(String script, String preloadName, IRequestCycle cycle)
+    public void writeImageInitializations(IMarkupWriter writer, String script, String preloadName, IRequestCycle cycle)
     {
         // does nothing
     }
@@ -248,7 +248,7 @@ public class JSONResponseBuilder implements ResponseBuilder
     /** 
      * {@inheritDoc}
      */
-    public void writeInitializationScript(String script)
+    public void writeInitializationScript(IMarkupWriter writer, String script)
     {
         // does nothing
     }
