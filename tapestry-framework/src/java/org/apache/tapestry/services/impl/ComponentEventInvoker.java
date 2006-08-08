@@ -57,8 +57,7 @@ public class ComponentEventInvoker implements ResetEventListener
      * @param event
      *          The event that started it all.
      */
-    public void invokeListeners(IComponent component, IRequestCycle cycle, 
-            BrowserEvent event)
+    public void invokeListeners(IComponent component, IRequestCycle cycle, BrowserEvent event)
     {
         Defense.notNull(component, "component");
         Defense.notNull(cycle, "cycle");
@@ -72,7 +71,7 @@ public class ComponentEventInvoker implements ResetEventListener
             invokeListeners(prop, component, cycle, event);
         }
         
-        // else, may be an element invoked event
+        // Javascript event target element id
         String targetId = (String)event.getTarget().get("id");
         
         if (hasElementEvents(targetId)) {
@@ -86,8 +85,13 @@ public class ComponentEventInvoker implements ResetEventListener
             IRequestCycle cycle, BrowserEvent event)
     {
         List listeners = prop.getEventListeners(event.getName());
+        
         for (int i=0; i < listeners.size(); i++) {
             EventBoundListener eventListener = (EventBoundListener)listeners.get(i);
+            
+            // ensure ~only~ the method that targeted this event gets called!
+            if (!eventListener.getComponentId().equals(event.getTarget().get("id")))
+                continue;
             
             IComponent container = component.getContainer();
             if (container == null) // only IPage has no container
@@ -130,6 +134,10 @@ public class ComponentEventInvoker implements ResetEventListener
         
         for (int i=0; i < listeners.size(); i++) {
             EventBoundListener eventListener = (EventBoundListener)listeners.get(i);
+            
+            // ensure ~only~ the method that targeted this event gets called!
+            if (!eventListener.getComponentId().equals(event.getTarget().get("id")))
+                continue;
             
             final IComponent container = 
                 (component.getContainer() == null) ? component : component.getContainer();

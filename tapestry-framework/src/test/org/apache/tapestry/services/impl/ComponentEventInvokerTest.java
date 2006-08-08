@@ -74,7 +74,8 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         IComponent comp = newComponent();
         ListenerInvoker listenerInvoker = newMock(ListenerInvoker.class);
         ListenerMap listenerMap = newMock(ListenerMap.class);
-        IActionListener listener = newMock(IActionListener.class);
+        
+        IActionListener listener1 = newMock(IActionListener.class);
         
         Map tprops = new HashMap();
         tprops.put("id", "testId");
@@ -83,8 +84,8 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         ComponentEventInvoker invoker = new ComponentEventInvoker();
         invoker.setListenerInvoker(listenerInvoker);
         
-        invoker.addEventListener("testId", new String[] { "onSelect" }, "fooListener",
-                null, false, false);
+        invoker.addEventListener("testId", new String[] { "onSelect" }, 
+                "fooListener", null, false, false);
         
         expect(comp.getId()).andReturn("testId");
         
@@ -96,9 +97,9 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         
         expect(comp.getListeners()).andReturn(listenerMap);
         
-        expect(listenerMap.getListener("fooListener")).andReturn(listener);
+        expect(listenerMap.getListener("fooListener")).andReturn(listener1);
         
-        listenerInvoker.invokeListener(listener, comp, cycle);
+        listenerInvoker.invokeListener(listener1, comp, cycle);
         
         replay();
         
@@ -155,6 +156,7 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         ListenerInvoker listenerInvoker = newMock(ListenerInvoker.class);
         ListenerMap listenerMap = newMock(ListenerMap.class);
         IActionListener listener = newMock(IActionListener.class);
+        //IActionListener listener2 = newMock(IActionListener.class);
         
         Map tprops = new HashMap();
         tprops.put("id", "testId");
@@ -164,6 +166,9 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         invoker.setListenerInvoker(listenerInvoker);
         
         invoker.addEventListener("testId", new String[] { "onSelect" }, "fooListener",
+                "form1", false, false);
+        
+        invoker.addEventListener("testId2", new String[] { "onSelect" }, "fooListener2",
                 "form1", false, false);
         
         expect(formSupport.getForm()).andReturn(form);
@@ -184,4 +189,6 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         
         verify();
     }
+    
+    
 }

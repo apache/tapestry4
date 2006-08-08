@@ -99,8 +99,7 @@ public abstract class TaskEntryPage extends BasePage
      * Invoked when an item is selected from the project
      * selection list.
      */
-    @EventListener(events = "selectOption", targets = "projectChoose",
-            submitForm = "taskForm", validateForm = true)
+    @EventListener(events = "selectOption", targets = "projectChoose", submitForm = "taskForm")
     public void projectSelected(IRequestCycle cycle)
     {
         cycle.getResponseBuilder().updateComponent("projectDescription");
@@ -131,4 +130,5 @@ public abstract class TaskEntryPage extends BasePage
         
         getTaskDao().addTask(task);
     }
+    
 }

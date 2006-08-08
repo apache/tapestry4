@@ -36,7 +36,7 @@
                     <foreach expression="formEvent[1]" key="formName">
                    var validateState=tapestry.form.forms["${formName}"].validateForm;
                    var validateForm=${formEvent[3]};
-                   tapestry.form.setFormValidating("${formname}", validateForm);
+                   tapestry.form.setFormValidating("${formName}", validateForm);
                    
                     <if expression="formEvent[2]">
                     tapestry.form.submitAsync("${formName}", content, null, validateForm);
