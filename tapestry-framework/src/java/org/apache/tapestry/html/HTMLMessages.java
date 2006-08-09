@@ -45,4 +45,14 @@ final class HTMLMessages
     {
         return _formatter.getMessage("script-required-path-error");
     }
+
+    static String shellComponentRequired()
+    {
+        return _formatter.getMessage("shell-component-required");
+    }
+
+    static String stringOrIAssetExpected()
+    {
+        return _formatter.getMessage("string-iasset-expected");
+    }
 }

@@ -14,8 +14,10 @@
 
 package org.apache.tapestry.html;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.AbstractComponent;
@@ -25,6 +27,7 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
@@ -45,12 +48,20 @@ public abstract class Shell extends AbstractComponent
 {
     private static final String GENERATOR_CONTENT = "Tapestry Application Framework, version "
             + Tapestry.VERSION;
+    
+    public static final String SHELL_ATTRIBUTE = "org.apache.tapestry.html.Shell";
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
+        TapestryUtils.storeUniqueAttribute(cycle, SHELL_ATTRIBUTE, this);
+        
         long startTime = 0;
 
         boolean rewinding = cycle.isRewinding();
+        
+        IMarkupWriter nested = writer.getNestedWriter();
+        // Render the body, the actual page content        
+        renderBody(nested, cycle);
 
         if (!rewinding)
         {
@@ -96,6 +107,10 @@ public abstract class Shell extends AbstractComponent
             
             if (isAjaxEnabled() && ajaxDelegate != null)
                 ajaxDelegate.render(writer, cycle);
+
+            List relations = getRelations();
+            if (relations != null)
+                writeRelations(writer, relations);            
             
             IAsset stylesheet = getStylesheet();
             
@@ -118,9 +133,7 @@ public abstract class Shell extends AbstractComponent
             writer.end(); // head
         }
         
-        // Render the body, the actual page content
-        
-        renderBody(writer, cycle);
+        nested.close();
         
         if (!rewinding)
         {
@@ -129,11 +142,18 @@ public abstract class Shell extends AbstractComponent
 
             long endTime = System.currentTimeMillis();
 
-            writer.comment("Render time: ~ " + (endTime - startTime) + " ms");
+            writer.comment("Render time: ~ " + (endTime - startTime) + " ms");                    
         }
 
     }
 
+    protected void cleanupAfterRender(IRequestCycle cycle)
+    {
+        super.cleanupAfterRender(cycle);
+
+        cycle.removeAttribute(SHELL_ATTRIBUTE);
+    }    
+    
     private void writeDocType(IMarkupWriter writer, IRequestCycle cycle)
     {
         // This is the real code
@@ -185,6 +205,74 @@ public abstract class Shell extends AbstractComponent
         writer.println();
     }
     
+    private void writeRelations(IMarkupWriter writer, List relations)
+    {
+        Iterator i = relations.iterator();
+        while (i.hasNext())
+        {
+            RelationBean relationBean = (RelationBean) i.next();
+            if (relationBean != null)
+                writeRelation(writer, relationBean);
+        }
+    }
+    
+    private void writeRelation(IMarkupWriter writer, RelationBean relationBean)
+    {
+            writer.beginEmpty("link");
+            writeAttributeIfNotNull(writer, "rel", relationBean.getRel());
+            writeAttributeIfNotNull(writer, "rev", relationBean.getRev());            
+            writeAttributeIfNotNull(writer, "type", relationBean.getType());
+            writeAttributeIfNotNull(writer, "media", relationBean.getMedia());
+            writeAttributeIfNotNull(writer, "title", relationBean.getTitle());
+            writeAttributeIfNotNull(writer, "href", relationBean.getHref());
+            writer.println();
+    }
+    
+    private void writeAttributeIfNotNull(IMarkupWriter writer, String name, String value)
+    {
+        if (value != null)
+            writer.attribute(name, value);
+    }
+    
+    /**
+     * Retrieves the {@link Shell} that was stored into the request
+     * cycle. This allows components wrapped by the {@link Shell} to
+     * locate it and access the services it provides.
+     * 
+     * @since 4.1.1
+     */
+    public static Shell get(IRequestCycle cycle)
+    {
+        return (Shell) cycle.getAttribute(SHELL_ATTRIBUTE);
+    }    
+    
+    /**
+     * Adds a relation (stylesheets, favicon, e.t.c.) to the page.
+     *
+     * @since 4.1.1
+     */
+    public void addRelation(RelationBean relation)
+    {
+        List relations = getRelations();
+        if (relations == null)
+            relations = new ArrayList();
+
+        if (!relations.contains(relation))
+            relations.add(relation);
+        setRelations(relations);             
+    }
+
+    /**
+     * Adds additional styles to the header of a page.
+     * @param style
+     *
+     * @since 4.1.1
+     */
+    public void addInlineStyle(String style)
+    {
+        // TODO TAPESTRY-274: Implement this similar to Body.addBodyScript
+    }
+    
     public abstract boolean isDisableCaching();
     
     public abstract boolean isAjaxEnabled();
@@ -227,5 +315,13 @@ public abstract class Shell extends AbstractComponent
     /** @since 4.0.3 */
     
     public abstract boolean getRaw();
+    
+    /** @since 4.1.1 */
+    
+    public abstract List getRelations();
+    
+    /** @since 4.1.1 */
+    
+    public abstract void setRelations(List relations);
 
 }
