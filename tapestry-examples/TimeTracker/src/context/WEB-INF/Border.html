@@ -1,14 +1,10 @@
-<html jwcid="@Shell" 
+<html jwcid2="@Shell" 
 	  title="message:window.title" 
 	  ajaxEnabled="true" 
-	  browserLogLevel="DEBUG"
-	  delegate="ognl:new org.apache.tapestry.components.BlockRenderer(components.remainingHead)" >
-<head jwcid="remainingHead@Block">
-	<link rel="shortcut icon" href="favicon.ico" type="image/gif" />
-	<link href="css/timetracker.css" rel="stylesheet" type="text/css" media="all" />
-</head>
+	  browserLogLevel="DEBUG">
 <body jwcid="@Body">
-
+  <link jwcid="@Relation" href="favicon.ico" type="image/gif" rel="shortcut icon"/>    
+  <link jwcid="@Relation" href="css/timetracker.css" media="all"/>
 <div id="header" >
     <span class="headertxt"><span jwcid="@Insert" value="message:header.display"/> </span>
 </div>
