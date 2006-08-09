@@ -18,6 +18,7 @@ import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.NestedMarkupWriter;
 import org.apache.tapestry.test.Creator;
 import org.testng.annotations.Test;
 
@@ -40,20 +41,36 @@ public class TestShell extends BaseComponentTestCase
     public void testRewinding()
     {
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle(true, writer);
+        NestedMarkupWriter nested = newNestedWriter();
 
+        IRequestCycle cycle = newCycle(true, writer);
         IRender body = newRender();
 
-        body.render(writer, cycle);
+        Shell shell = (Shell) _creator.newInstance(Shell.class);
+        shell.addBody(body);
+
+        trainStoreShellInCycle(cycle, shell);
+        trainGetNestedWriter(writer, nested);
+        body.render(nested, cycle);
+        nested.close();
+        trainRemoveShellFromCycle(cycle);
 
         replay();
-
-        Shell shell = (Shell) _creator.newInstance(Shell.class);
-
-        shell.addBody(body);
 
         shell.render(writer, cycle);
 
         verify();
+    }
+
+    protected void trainStoreShellInCycle(IRequestCycle cycle, Shell shell)
+    {
+        cycle.getAttribute(Shell.SHELL_ATTRIBUTE);
+        setReturnValue(null);
+        cycle.setAttribute(Shell.SHELL_ATTRIBUTE, shell);
+    }
+
+    protected void trainRemoveShellFromCycle(IRequestCycle cycle)
+    {
+        cycle.removeAttribute(Shell.SHELL_ATTRIBUTE);
     }
 }

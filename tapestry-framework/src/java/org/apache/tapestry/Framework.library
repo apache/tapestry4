@@ -66,6 +66,7 @@
     <component-type type="PropertySelection" specification-path="form/PropertySelection.jwc"/>
     <component-type type="Radio" specification-path="form/Radio.jwc"/>
     <component-type type="RadioGroup" specification-path="form/RadioGroup.jwc"/>
+    <component-type type="Relation" specification-path="html/Relation.jwc"/>    
     <component-type type="RenderBlock" specification-path="components/RenderBlock.jwc"/>
     <component-type type="RenderBody" specification-path="components/RenderBody.jwc"/>
     <component-type type="RequestDisplay" specification-path="html/RequestDisplay.jwc"/>
