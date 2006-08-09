@@ -46,10 +46,10 @@ import org.apache.tapestry.spec.IApplicationSpecification;
 
 public abstract class Shell extends AbstractComponent
 {
+    public static final String SHELL_ATTRIBUTE = "org.apache.tapestry.html.Shell";
+    
     private static final String GENERATOR_CONTENT = "Tapestry Application Framework, version "
             + Tapestry.VERSION;
-    
-    public static final String SHELL_ATTRIBUTE = "org.apache.tapestry.html.Shell";
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
