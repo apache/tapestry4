@@ -51,7 +51,9 @@
 
 	<page name="ContextAssetTemplate" specification-path="ContextAssetTemplate.page"/>
 						
-	<page name="RelativeAssets" specification-path="RelativeAssets.page"/>						
+	<page name="RelativeAssets" specification-path="RelativeAssets.page"/>
+    
+    <page name="Styled" specification-path="Styled.page"/>						
 							
 	<library id="lib" specification-path="/org/apache/tapestry/junit/mock/lib/MockLibrary.library"/>
 	
