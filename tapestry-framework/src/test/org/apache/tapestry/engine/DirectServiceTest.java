@@ -29,6 +29,7 @@ import org.apache.tapestry.IDirect;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.StaleSessionException;
+import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
@@ -232,7 +233,9 @@ public class DirectServiceTest extends ServiceTestCase
         trainGetNestedComponent(page, "fred.barney", d);
 
         trainExtractListenerParameters(lf, cycle, parameters);
-
+        
+        expect(cycle.getParameter(BrowserEvent.NAME)).andReturn(null);
+        
         cycle.setListenerParameters(parameters);
 
         d.trigger(cycle);
@@ -250,6 +253,46 @@ public class DirectServiceTest extends ServiceTestCase
         verify();
     }
 
+    public void test_Service_Simple_Event() throws Exception
+    {
+        Object[] parameters = new Object[0];
+        IRequestCycle cycle = newCycle();
+        IPage page = newPage();
+        IDirect d = newDirect(false);
+        LinkFactory lf = newLinkFactory();
+        ResponseRenderer rr = newResponseRenderer();
+
+        trainGetParameter(cycle, ServiceConstants.COMPONENT, "fred.barney");
+        trainGetParameter(cycle, ServiceConstants.CONTAINER, null);
+        trainGetParameter(cycle, ServiceConstants.PAGE, "ActivePage");
+        trainGetParameter(cycle, ServiceConstants.SESSION, null);
+
+        trainGetPage(cycle, "ActivePage", page);
+        cycle.activate(page);
+
+        trainGetNestedComponent(page, "fred.barney", d);
+
+        trainExtractListenerParameters(lf, cycle, parameters);
+        
+        trainExtractBrowserEvent(cycle);
+        
+        cycle.setListenerParameters(isA(Object[].class));
+        
+        d.trigger(cycle);
+
+        rr.renderResponse(cycle);
+
+        replay();
+
+        DirectService ds = new DirectService();
+        ds.setLinkFactory(lf);
+        ds.setResponseRenderer(rr);
+
+        ds.service(cycle);
+
+        verify();
+    }
+    
     /**
      * The complex case is where the component is contained on a different page than the active (at
      * the time of render) page.
@@ -278,7 +321,9 @@ public class DirectServiceTest extends ServiceTestCase
         trainGetNestedComponent(componentPage, "fred.barney", d);
 
         trainExtractListenerParameters(lf, cycle, parameters);
-
+        
+        expect(cycle.getParameter(BrowserEvent.NAME)).andReturn(null);
+        
         cycle.setListenerParameters(parameters);
 
         d.trigger(cycle);
@@ -365,7 +410,9 @@ public class DirectServiceTest extends ServiceTestCase
         expect(session.isNew()).andReturn(false);
         
         trainExtractListenerParameters(lf, cycle, parameters);
-
+        
+        expect(cycle.getParameter(BrowserEvent.NAME)).andReturn(null);
+        
         cycle.setListenerParameters(parameters);
 
         d.trigger(cycle);

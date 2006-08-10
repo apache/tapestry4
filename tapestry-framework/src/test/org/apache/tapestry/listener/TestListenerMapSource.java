@@ -121,17 +121,17 @@ public class TestListenerMapSource extends BaseComponentTestCase
     public void testFoundWithAllParameters()
     {
         BrowserEvent event = new BrowserEvent("onClick", null);
-        IRequestCycle cycle = newLCycle(new Object[] { event, new Integer(8) });
+        IRequestCycle cycle = newLCycle(new Object[] { new Integer(8), event });
         ListenerMethodHolder holder = newHolder();
         
         holder.bangbangClicked(cycle, event, 8);
         
         replay();
-
+        
         ListenerMapSource source = new ListenerMapSourceImpl();
-
+        
         ListenerMap map = source.getListenerMapForObject(holder);
-
+        
         map.getListener("bangbangClicked").actionTriggered(null, cycle);
 
         verify();
@@ -257,7 +257,7 @@ public class TestListenerMapSource extends BaseComponentTestCase
         ListenerMapSource source = new ListenerMapSourceImpl();
 
         ListenerMap map = source.getListenerMapForObject(holder);
-
+        
         try
         {
             map.getListener("noMatch").actionTriggered(null, cycle);

@@ -26,6 +26,7 @@ import org.apache.tapestry.dojo.form.DefaultAutocompleteModel;
 import org.apache.tapestry.dojo.form.DropdownDatePicker;
 import org.apache.tapestry.dojo.form.DropdownTimePicker;
 import org.apache.tapestry.dojo.form.IAutocompleteModel;
+import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.form.TextField;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.timetracker.dao.ProjectDao;
@@ -100,10 +101,12 @@ public abstract class TaskEntryPage extends BasePage
      * selection list.
      */
     @EventListener(events = "selectOption", targets = "projectChoose", submitForm = "taskForm")
-    public void projectSelected(IRequestCycle cycle)
+    public void projectSelected(IRequestCycle cycle, BrowserEvent event)
     {
         cycle.getResponseBuilder().updateComponent("projectDescription");
         cycle.getResponseBuilder().updateComponent("feedbackBlock");
+        
+        System.out.println("Found event with name: " + event.getName());
     }
     
     public void linkUpdateClicked()

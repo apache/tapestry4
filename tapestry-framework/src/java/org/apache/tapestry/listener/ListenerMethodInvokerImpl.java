@@ -16,13 +16,15 @@ package org.apache.tapestry.listener;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.ILink;
+import org.apache.tapestry.event.BrowserEvent;
 
 /**
  * Logic for mapping a listener method name to an actual method invocation; this
@@ -61,97 +63,92 @@ public class ListenerMethodInvokerImpl implements ListenerMethodInvoker
     public void invokeListenerMethod(Object target, IRequestCycle cycle)
     {
         Object[] listenerParameters = cycle.getListenerParameters();
-
-        // method(parameters)
-        if (searchAndInvoke(target, false, true, cycle, listenerParameters))
+        
+        if (listenerParameters == null)
+            listenerParameters = new Object[0];
+        
+        if (searchAndInvoke(target, cycle, listenerParameters))
             return;
-
-        // method(IRequestCycle, parameters)
-        if (searchAndInvoke(target, true, true, cycle, listenerParameters))
-            return;
-
-        // method()
-        if (searchAndInvoke(target, false, false, cycle, listenerParameters))
-            return;
-
-        // method(IRequestCycle)
-        if (searchAndInvoke(target, true, false, cycle, listenerParameters))
-            return;
-
+        
         throw new ApplicationRuntimeException(ListenerMessages
                 .noListenerMethodFound(_name, listenerParameters, target),
                 target, null, null);
     }
-
-    private boolean searchAndInvoke(Object target, boolean includeCycle,
-            boolean includeParameters, IRequestCycle cycle,
-            Object[] listenerParameters)
+    
+    private boolean searchAndInvoke(Object target, IRequestCycle cycle, Object[] listenerParameters)
     {
-        int listenerParameterCount = Tapestry.size(listenerParameters);
-        int methodParameterCount = includeParameters ? listenerParameterCount
-                : 0;
-
-        if (includeCycle) methodParameterCount++;
-
-        for(int i = 0; i < _methods.length; i++)
-        {
-            Method m = _methods[i];
-
-            // Since the methods are sorted, descending, by parameter count,
-            // there's no point in searching past that point.
-
-            Class[] parameterTypes = m.getParameterTypes();
-
-            if (parameterTypes.length < methodParameterCount) break;
-
-            if (parameterTypes.length != methodParameterCount) continue;
-
-            boolean firstIsCycle = parameterTypes.length > 0
-                    && parameterTypes[0] == IRequestCycle.class;
-
-            // When we're searching for a "traditional" style listener method,
-            // one which takes the request cycle as its first parameter,
-            // then check that first parameter is *exactly* IRequestCycle
-            // On the other hand, if we're looking for new style
-            // listener methods (includeCycle is false), then ignore
-            // any methods whose first parameter is the request cycle
-            // (we'll catch those in a later search).
-
-            if (includeCycle != firstIsCycle) continue;
-
-            invokeListenerMethod(m, target, includeCycle, includeParameters,
-                    cycle, listenerParameters);
-
-            return true;
-        }
-
+        BrowserEvent event = null;
+        if (listenerParameters.length > 0 
+                && BrowserEvent.class.isInstance(listenerParameters[listenerParameters.length - 1]))
+            event = (BrowserEvent)listenerParameters[listenerParameters.length - 1];
+        
+        List invokeParms = new ArrayList();
+        
+        methods:
+            for (int i = 0; i < _methods.length; i++, invokeParms.clear()) {
+                
+                if (!_methods[i].getName().equals(_name))
+                   continue;
+                
+                Class[] parms = _methods[i].getParameterTypes();
+                
+                // impossible to call this
+                if (parms.length > (listenerParameters.length + 1) )
+                    continue;
+                
+                int listenerIndex = 0;
+                for (int p = 0; p < parms.length && listenerIndex < (listenerParameters.length + 1); p++) {
+                    
+                    // special case for BrowserEvent
+                    if (BrowserEvent.class.isAssignableFrom(parms[p])) {
+                        if (event == null)
+                            continue methods;
+                        
+                        if (!invokeParms.contains(event))
+                            invokeParms.add(event);
+                        
+                        continue;
+                    }
+                    
+                    // special case for request cycle
+                    if (IRequestCycle.class.isAssignableFrom(parms[p])) {
+                        invokeParms.add(cycle);
+                        continue;
+                    }
+                    
+                    if (event != null && listenerIndex < (listenerParameters.length + 1)
+                            || listenerIndex < listenerParameters.length) {
+                        invokeParms.add(listenerParameters[listenerIndex]);
+                        listenerIndex++;
+                    }
+                }
+                
+                if (invokeParms.size() != parms.length)
+                    continue;
+                
+                invokeListenerMethod(_methods[i], target, cycle,
+                        invokeParms.toArray(new Object[invokeParms.size()]));
+                
+                return true;
+            }
+        
         return false;
     }
-
+    
     private void invokeListenerMethod(Method listenerMethod, Object target,
-            boolean includeCycle, boolean includeParameters,
-            IRequestCycle cycle, Object[] listenerParameters)
+            IRequestCycle cycle, Object[] parameters)
     {
-        Object[] parameters = new Object[listenerMethod.getParameterTypes().length];
-        int cursor = 0;
-
-        if (includeCycle) parameters[cursor++] = cycle;
-
-        if (includeParameters)
-            for(int i = 0; i < Tapestry.size(listenerParameters); i++)
-                parameters[cursor++] = listenerParameters[i];
-
+        
         Object methodResult = null;
-
+        
         try
         {
-            methodResult = invokeTargetMethod(target, listenerMethod,
-                    parameters);
+            methodResult = invokeTargetMethod(target, listenerMethod, parameters);
         }
         catch (InvocationTargetException ex)
         {
             Throwable targetException = ex.getTargetException();
-
+            
             if (targetException instanceof ApplicationRuntimeException)
                 throw (ApplicationRuntimeException) targetException;
 
@@ -166,11 +163,11 @@ public class ListenerMethodInvokerImpl implements ListenerMethodInvoker
                     null, ex);
 
         }
-
+        
         // void methods return null
-
+        
         if (methodResult == null) return;
-
+        
         // The method scanner, inside ListenerMapSourceImpl,
         // ensures that only methods that return void, String,
         // or assignable to ILink or IPage are considered.
@@ -180,7 +177,7 @@ public class ListenerMethodInvokerImpl implements ListenerMethodInvoker
             cycle.activate((String) methodResult);
             return;
         }
-
+        
         if (methodResult instanceof ILink)
         {
             ILink link = (ILink) methodResult;
@@ -193,7 +190,7 @@ public class ListenerMethodInvokerImpl implements ListenerMethodInvoker
 
         cycle.activate((IPage) methodResult);
     }
-
+    
     /**
      * Provided as a hook so that subclasses can perform any additional work
      * before or after invoking the listener method.
