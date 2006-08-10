@@ -36,7 +36,7 @@ import org.testng.annotations.Test;
 @Test
 public class TestListenerMap extends BaseComponentTestCase
 {
-    public void testGetListener()
+    public void test_Get_Listener()
     {
         Object target = new Object();
         IRequestCycle cycle = newCycle();
@@ -60,7 +60,7 @@ public class TestListenerMap extends BaseComponentTestCase
         assertSame(l1, l2);
     }
 
-    public void testGetListenerNames()
+    public void test_GetListener_Names()
     {
         Object target = new Object();
         ListenerMethodInvoker invoker = newInvoker();
@@ -87,7 +87,7 @@ public class TestListenerMap extends BaseComponentTestCase
         }
     }
 
-    public void testCanProvideListener()
+    public void test_Can_Provide_Listener()
     {
         Object target = new Object();
         ListenerMethodInvoker invoker = newInvoker();
@@ -103,7 +103,7 @@ public class TestListenerMap extends BaseComponentTestCase
         verify();
     }
 
-    public void testMissingListener()
+    public void test_Missing_Listener()
     {
         Object target = "*TARGET*";
         ListenerMethodInvoker invoker = newInvoker();

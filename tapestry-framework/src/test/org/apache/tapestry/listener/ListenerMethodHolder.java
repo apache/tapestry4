@@ -37,7 +37,7 @@ public class ListenerMethodHolder
     private IPage _page;
 
     private ILink _link;
-
+    
     public ListenerMethodHolder()
     {
     }

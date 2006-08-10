@@ -26,6 +26,7 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.StaleSessionException;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
@@ -154,8 +155,18 @@ public class DirectService implements IEngineService
 
     protected void triggerComponent(IRequestCycle cycle, IDirect direct, Object[] parameters)
     {
-        cycle.setListenerParameters(parameters);
-
+        if (BrowserEvent.hasBrowserEvent(cycle)) {
+            
+            BrowserEvent event = new BrowserEvent(cycle);
+            
+            Object[] parms = new Object[parameters.length + 1];
+            System.arraycopy(parameters, 0, parms, 0, parameters.length);
+            parms[parms.length - 1] = event;
+            
+            cycle.setListenerParameters(parms);
+        } else
+            cycle.setListenerParameters(parameters);
+        
         direct.trigger(cycle);
     }
 

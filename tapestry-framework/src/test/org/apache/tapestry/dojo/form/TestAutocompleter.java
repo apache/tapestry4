@@ -255,7 +255,7 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         
         replay();
         
-        assertEquals(true, field.isRequired());
+        assert field.isRequired();
 
         verify();
     }
