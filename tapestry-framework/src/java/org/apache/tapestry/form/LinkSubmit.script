@@ -24,7 +24,7 @@
 <input-symbol key="form" class="org.apache.tapestry.IForm" required="yes"/>
 
 <let key="href">
-  tapestry.form.submit('${form.name}', '${name}');
+  javascript:tapestry.form.submit('${form.name}', '${name}');
 </let>
 
 </script>
