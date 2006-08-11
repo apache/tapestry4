@@ -144,20 +144,29 @@
                 </p>
 
                 <p>
-                    The type must be specified. By default, the component id will match the property
-                    name:
+                    By default, the component type will match the return type
+                    and the component id will match the property name:
                 </p>
-
+                
                 <source xml:space="preserve">
-    @Component(type = "TextField")
+    @Component
     public abstract TextField getEmail();  
 </source>
 
-                <p>When the two must differ, then the id attibute can be specified:</p>
+                <p>When component type and return type differ, 
+                then the type attibute should be specified:</p>                
+
+                <source xml:space="preserve">
+    @Component(type = "contrib:Table")
+    public abstract Table getResultsTable();  
+</source>
+
+                <p>Additionally, when component id and property name differ, 
+                then the id attibute can be specified:</p>
 
 
                 <source xml:space="preserve">
-    @Component(id = "email" type = "TextField")
+    @Component(id = "email")
     public abstract TextField getEmailField();  
 </source>
 
