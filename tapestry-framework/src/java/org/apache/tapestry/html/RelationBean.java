@@ -16,7 +16,8 @@ package org.apache.tapestry.html;
 /**
  * Defines a relationship between two documents.
  * 
- * @author andyhot
+ * @author Andreas Andreou
+ * @since 4.1.1 
  */
 public class RelationBean
 {

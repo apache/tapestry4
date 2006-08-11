@@ -14,12 +14,16 @@
 
 package org.apache.tapestry.html;
 
+import static org.easymock.EasyMock.expect;
+import static org.testng.Assert.assertEquals;
+
+import java.util.List;
+
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.NestedMarkupWriter;
-import org.apache.tapestry.test.Creator;
 import org.testng.annotations.Test;
 
 /**
@@ -31,7 +35,6 @@ import org.testng.annotations.Test;
 @Test
 public class TestShell extends BaseComponentTestCase
 {
-    private Creator _creator = new Creator();
 
     /**
      * Test that Shell does very little when the entire page is rewinding (which itself is a
@@ -46,7 +49,7 @@ public class TestShell extends BaseComponentTestCase
         IRequestCycle cycle = newCycle(true, writer);
         IRender body = newRender();
 
-        Shell shell = (Shell) _creator.newInstance(Shell.class);
+        Shell shell = newInstance(Shell.class, null);
         shell.addBody(body);
 
         trainStoreShellInCycle(cycle, shell);
@@ -61,11 +64,24 @@ public class TestShell extends BaseComponentTestCase
 
         verify();
     }
+    
+    public void testAddRelation()
+    {        
+        Shell shell = newInstance(Shell.class, null);
+        RelationBean css1 = new RelationBean();
+        css1.setHref("temp");
+        RelationBean css2 = new RelationBean();
+        css2.setHref("temp");
+        shell.addRelation(css1);
+        shell.addRelation(css2);
+        
+        List all = shell.getRelations();
+        assertEquals(all.size(), 1);   
+    }
 
     protected void trainStoreShellInCycle(IRequestCycle cycle, Shell shell)
     {
-        cycle.getAttribute(Shell.SHELL_ATTRIBUTE);
-        setReturnValue(null);
+        expect(cycle.getAttribute(Shell.SHELL_ATTRIBUTE)).andReturn(null);
         cycle.setAttribute(Shell.SHELL_ATTRIBUTE, shell);
     }
 
