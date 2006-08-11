@@ -221,6 +221,7 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         IAutocompleteModel model = createModel();
         IRequestCycle cycle = newMock(IRequestCycle.class);
         DataSqueezer ds = newMock(DataSqueezer.class);
+        checkOrder(ds, false);
         
         IJSONWriter json = newBufferJSONWriter();
         
