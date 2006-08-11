@@ -79,6 +79,16 @@
             </roles>
             <timezone>8</timezone>
         </developer>
+        <developer>
+            <id>aa</id>
+            <name>Andreas Andreou</name>
+            <email>andyhot@apache.org</email>
+            <url>http://andyhot.di.uoa.gr</url>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <timezone>-2</timezone>
+        </developer>        
     </developers>
 
     <modules>
