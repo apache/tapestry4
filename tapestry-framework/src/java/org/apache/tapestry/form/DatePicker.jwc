@@ -35,8 +35,12 @@
   <parameter name="translator" default-value="translator:date,pattern=dd MMM yyyy"/>
   <parameter name="validators"/>
   <parameter name="id" property="idParameter" default-value="id"/>
+  <parameter name="title"/>
   		
   <asset name="defaultIcon" path="DatePickerIcon.png"/>
+  
+  <reserved-parameter name="name"/>
+  <reserved-parameter name="type"/>  
        
   <inject property="script" type="script" object="DatePicker.script"/>
   <inject property="translatedFieldSupport" object="service:tapestry.form.TranslatedFieldSupport"/>
