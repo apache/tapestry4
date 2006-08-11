@@ -82,6 +82,11 @@ public abstract class DatePicker extends AbstractFormComponent implements Transl
     public abstract boolean getIncludeWeek();
 
     public abstract IAsset getIcon();
+    
+    /** 
+     * @since 4.1.1
+     */    
+    public abstract String getTitle();
 
     /**
      * Injected.
@@ -107,6 +112,10 @@ public abstract class DatePicker extends AbstractFormComponent implements Transl
         Calendar cal = Calendar.getInstance(locale);
 
         String name = getName();
+        
+        String title = getTitle();
+        if (title == null)
+            title = format.toLocalizedPattern();
 
         String value = getTranslatedFieldSupport().format(this, getValue());
 
@@ -134,7 +143,7 @@ public abstract class DatePicker extends AbstractFormComponent implements Transl
         writer.attribute("type", "text");
         writer.attribute("name", name);
         writer.attribute("value", value);
-        writer.attribute("title", format.toLocalizedPattern());
+        writer.attribute("title", title);
 
         if (disabled)
             writer.attribute("disabled", "disabled");
