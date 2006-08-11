@@ -24,7 +24,8 @@ import org.apache.tapestry.IRequestCycle;
  * relationship between documents (typically a stylesheet) to 
  * the HTML response. 
  * 
- * @author andyhot
+ * @author Andreas Andreou
+ * @since 4.1.1
  */
 public abstract class Relation extends AbstractComponent
 {
