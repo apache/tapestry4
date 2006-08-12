@@ -20,8 +20,11 @@
         <author email="jkuhnert@apache.org">Jesse Kuhnert</author>
     </properties>
     <body>
-
-        <release version="4.1.0" date="unreleased" desc="Ajax integrated dojo release">
+        
+        <release version="4.1.1" date="unreleased" desc="Ajax series">
+            
+        </release>
+        <release version="4.1" date="Aug 1 2006" desc="Ajax integrated dojo release">
             <action type="update" dev="JK">
                 Cleaned up warnings/imports showing on eclipse problem pane.
             </action>
@@ -87,7 +90,7 @@
                 Added logic to asset service that checks for incoming css file relative paths.
             </action>
         </release>
-        <release version="4.0.1" date="unreleased">
+        <release version="4.0.1" date="March 15 2006">
             <action type="fix" dev="JK" fixes-bug="TAPESTRY-863" due-to="unknown contributor">
                 Form.set_focus() not compatible with some ie fields. Patch adds logic to check more
                 cross-browser friendly functions for setting focus.
