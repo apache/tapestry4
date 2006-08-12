@@ -137,7 +137,15 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
         reset();
         _type = type;
 
-        INamespace namespace = findNamespaceForId(containerNamespace, libraryId);
+        INamespace namespace;
+        try
+        {
+            namespace = findNamespaceForId(containerNamespace, libraryId);
+        }
+        catch (ApplicationRuntimeException e)
+        {
+            throw new ApplicationRuntimeException(e.getMessage(), location, e);
+        }
 
         setNamespace(namespace);
 
