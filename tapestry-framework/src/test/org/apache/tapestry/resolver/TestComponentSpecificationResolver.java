@@ -73,6 +73,34 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
 
         return delegate;
     }
+    
+    public void testNotFoundInAnyNamespace()
+    {
+        IRequestCycle cycle = newCycle();
+        Location l = newLocation();
+        
+        INamespace namespace = newMock(INamespace.class);
+        
+        ApplicationRuntimeException exception = new ApplicationRuntimeException("");
+
+        expect(namespace.getChildNamespace("invalid")).andThrow(exception);
+        
+        replay();
+
+        ComponentSpecificationResolverImpl resolver = new ComponentSpecificationResolverImpl();
+
+        try
+        {
+            resolver.resolve(cycle, namespace, "invalid:MyComponent", l);
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertSame(ex.getCause(), exception);
+        }
+
+        verify();
+    }    
 
     public void testFoundInNamespace()
     {
