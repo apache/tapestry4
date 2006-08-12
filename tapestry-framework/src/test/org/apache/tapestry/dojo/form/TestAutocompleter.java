@@ -36,6 +36,7 @@ import org.apache.tapestry.form.BaseFormComponentTestCase;
 import org.apache.tapestry.form.MockDelegate;
 import org.apache.tapestry.form.ValidatableFieldSupport;
 import org.apache.tapestry.json.IJSONWriter;
+import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidatorException;
@@ -223,7 +224,7 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         DataSqueezer ds = newMock(DataSqueezer.class);
         checkOrder(ds, false);
         
-        IJSONWriter json = newBufferJSONWriter();
+        IJSONWriter writer = newBufferJSONWriter();
         
         Autocompleter component = newInstance(Autocompleter.class, new Object[]
         { "name", "fred", "model", model,
@@ -235,9 +236,11 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         
         replay();
         
-        component.renderComponent(json, cycle);
+        component.renderComponent(writer, cycle);
         
         verify();
+        
+        JSONObject json = writer.object();
         
         assertEquals(json.length(), 3);
         assertEquals(json.get("1"), "Simple 1");

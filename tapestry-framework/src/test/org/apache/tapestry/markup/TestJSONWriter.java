@@ -20,6 +20,7 @@ import java.io.PrintWriter;
 
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.json.IJSONWriter;
+import org.apache.tapestry.json.JSONObject;
 import org.testng.annotations.Test;
 
 
@@ -39,13 +40,15 @@ public class TestJSONWriter extends BaseComponentTestCase
     {
         IJSONWriter writer = newJSONWriter();
         
-        writer.put("red", "ball");
-        writer.put("black", "cat");
-        writer.put("orange", "orange");
+        JSONObject json = writer.object();
         
-        assertEquals(writer.get("red"), "ball");
-        assertEquals(writer.get("black"), "cat");
-        assertEquals(writer.get("orange"), "orange");
+        json.put("red", "ball");
+        json.put("black", "cat");
+        json.put("orange", "orange");
+        
+        assertEquals(json.get("red"), "ball");
+        assertEquals(json.get("black"), "cat");
+        assertEquals(json.get("orange"), "orange");
     }
     
     /* All writer content is written to this buffer */
