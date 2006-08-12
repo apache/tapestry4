@@ -105,8 +105,6 @@ public abstract class TaskEntryPage extends BasePage
     {
         cycle.getResponseBuilder().updateComponent("projectDescription");
         cycle.getResponseBuilder().updateComponent("feedbackBlock");
-        
-        System.out.println("Found event with name: " + event.getName());
     }
     
     public void linkUpdateClicked()
