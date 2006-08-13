@@ -8,7 +8,9 @@ This page is used to demonstrate the DatePicker component.
 
 <span jwcid="showError"/>
 
-<form jwcid="@Form" delegate="bean:delegate" clientValidationEnabled="ognl:clientValidationEnabled">
+<form jwcid="@Form" delegate="bean:delegate" 
+		clientValidationEnabled="ognl:clientValidationEnabled" 
+		async="ognl:true" updateComponents="ognl:{'dateDisplay'}" >
 
 <table valign="middle">
  <tr>
@@ -34,6 +36,7 @@ This page is used to demonstrate the DatePicker component.
 
 </form>
 
+<div jwcid="dateDisplay@Any">
 <u>Submitted Dates</u><br/>
 
 <table valign="middle">
@@ -47,4 +50,6 @@ This page is used to demonstrate the DatePicker component.
 		<span jwcid="@Insert" value="ognl:endDate"/>
 		</td></tr>
 </table>
+</div>
+
 </span>

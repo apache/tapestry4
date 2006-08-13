@@ -13,6 +13,7 @@
 // limitations under the License.
 
 // Define a Tapestry object to contain most functions.
+// WARNING!: This file is now deprecated, it will be removed in Tapestry 4.2
 
 var Tapestry = new Object();
 

@@ -105,9 +105,9 @@ public abstract class Shell extends AbstractComponent
             
             IRender ajaxDelegate = getAjaxDelegate();
             
-            if (isAjaxEnabled() && ajaxDelegate != null)
+            if (ajaxDelegate != null)
                 ajaxDelegate.render(writer, cycle);
-
+            
             List relations = getRelations();
             if (relations != null)
                 writeRelations(writer, relations);            
@@ -274,8 +274,6 @@ public abstract class Shell extends AbstractComponent
     }
     
     public abstract boolean isDisableCaching();
-    
-    public abstract boolean isAjaxEnabled();
     
     public abstract IRender getAjaxDelegate();
     

@@ -205,6 +205,14 @@ public class JSONResponseBuilder implements ResponseBuilder
         return false;
     }
     
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isImageInitializationAllowed(IComponent target)
+    {
+        return false;
+    }
+    
     /** 
      * {@inheritDoc}
      */

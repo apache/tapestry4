@@ -348,7 +348,15 @@ public class RequestCycle implements IRequestCycle
     {
         return _renderStack.search(render);
     }
-
+    
+    /**
+     * {@inheritDoc}
+     */
+    public Iterator renderStackIterator()
+    {
+        return _renderStack.iterator();
+    }
+    
     public boolean isRewinding()
     {
         return _rewinding;

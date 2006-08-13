@@ -497,6 +497,7 @@ public class FormSupportImpl implements FormSupport
         runDeferredRunnables();
         
         int portI = (port == null) ? 0 : port.intValue();
+        
         writeTag(_writer, method, link.getURL(scheme, null, portI, null, false));
         
         // For XHTML compatibility
@@ -558,8 +559,22 @@ public class FormSupportImpl implements FormSupport
         if (_pageRenderSupport == null)
             return;
         
-        _pageRenderSupport.addInitializationScript(_form, "dojo.require(\"tapestry.form\");"
-                + "tapestry.form.registerForm('" + formId + "');");
+        StringBuffer str = new StringBuffer("dojo.require(\"tapestry.form\");");
+        str.append("tapestry.form.registerForm(\"").append(formId).append("\"");
+        
+        if (_form.isAsync()) {
+            
+            str.append(", true");
+            
+            if (_form.isJson()) {
+                str.append(", true");
+            }
+        }
+        
+        str.append(");");
+        
+        
+        _pageRenderSupport.addInitializationScript(_form, str.toString());
     }
     
     public String rewind()

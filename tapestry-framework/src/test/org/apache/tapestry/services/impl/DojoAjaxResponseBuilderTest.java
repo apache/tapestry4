@@ -22,6 +22,7 @@ import static org.testng.AssertJUnit.assertTrue;
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.tapestry.BaseComponentTestCase;
@@ -179,13 +180,13 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         
         expect(comp.getClientId()).andReturn("comp");
         
-        expect(cycle.renderStackPeek()).andReturn(null);
+        expect(cycle.renderStackIterator()).andReturn(Collections.EMPTY_LIST.iterator());
         
         expect(comp.getClientId()).andReturn("comp1");
         
         expect(comp.getClientId()).andReturn("comp");
         
-        expect(cycle.renderStackPeek()).andReturn(null);
+        expect(cycle.renderStackIterator()).andReturn(Collections.EMPTY_LIST.iterator());
         
         replay();
         

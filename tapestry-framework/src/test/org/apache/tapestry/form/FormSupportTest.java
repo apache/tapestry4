@@ -757,7 +757,7 @@ public class FormSupportTest extends BaseComponentTestCase
         writer.attribute("action", "/app");
         
         writer.attribute("id", "myform");
-
+        
         support.addInitializationScript(form, "Tapestry.onreset('myform', function (event)"
                 + "\n{\n  myReset1();\n  myReset2();\n});\n");
         
@@ -1466,6 +1466,6 @@ public class FormSupportTest extends BaseComponentTestCase
     private void trainRegister(PageRenderSupport support, IForm form, String formId)
     {
         support.addInitializationScript(form, "dojo.require(\"tapestry.form\");"
-                + "tapestry.form.registerForm('" + formId + "');");
+                + "tapestry.form.registerForm(\"" + formId + "\");");
     }
 }

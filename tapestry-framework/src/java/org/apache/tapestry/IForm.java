@@ -27,7 +27,7 @@ import org.apache.tapestry.valid.IValidationDelegate;
  * @since 1.0.2
  */
 
-public interface IForm extends IComponent, FormBehavior
+public interface IForm extends IComponent, FormBehavior, IDirect
 {
     /**
      * Invoked by the {@link IRequestCycle}to allow a form that uses the direct service, to respond

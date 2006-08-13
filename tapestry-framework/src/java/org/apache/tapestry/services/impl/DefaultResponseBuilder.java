@@ -184,6 +184,14 @@ public class DefaultResponseBuilder implements ResponseBuilder
         return true;
     }
     
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isImageInitializationAllowed(IComponent target)
+    {
+        return true;
+    }
+    
     /** 
      * {@inheritDoc}
      */
