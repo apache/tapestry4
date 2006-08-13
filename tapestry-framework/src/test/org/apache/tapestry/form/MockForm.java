@@ -16,6 +16,7 @@ package org.apache.tapestry.form;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -423,4 +424,46 @@ public class MockForm implements IForm
     {
         
     }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public Collection getUpdateComponents()
+    {
+        return Collections.EMPTY_LIST;
+    }
+    
+    /** 
+     * {@inheritDoc}
+     */
+    public boolean isAsync()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public boolean isJson()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public boolean isStateful()
+    {
+        return false;
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public void trigger(IRequestCycle cycle)
+    {
+    }
+    
 }

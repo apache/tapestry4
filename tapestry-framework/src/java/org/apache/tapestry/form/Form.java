@@ -18,7 +18,6 @@ import org.apache.hivemind.Location;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IDirect;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
@@ -35,31 +34,32 @@ import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.web.WebResponse;
 
 /**
- * Component which contains form element components. Forms use the action or direct services to
- * handle the form submission. A Form will wrap other components and static HTML, including form
- * components such as {@link TextArea}, {@link TextField}, {@link Checkbox}, etc. [ <a
- * href="../../../../../ComponentReference/Form.html">Component Reference </a>]
+ * Component which contains form element components. A Form will wrap other components and 
+ * static HTML, including form components such as {@link TextArea}, {@link TextField}, 
+ * {@link Checkbox}, etc. [ <a href="../../../../../ComponentReference/Form.html">Component Reference </a>]
+ * 
  * <p>
  * When a form is submitted, it continues through the rewind cycle until <em>after</em> all of its
  * wrapped elements have renderred. As the form component render (in the rewind cycle), they will be
  * updating properties of the containing page and notifying thier listeners. Again: each form
  * component is responsible not only for rendering HTML (to present the form), but for handling it's
  * share of the form submission.
+ * </p>
+ * 
  * <p>
  * Only after all that is done will the Form notify its listener.
- * <p>
- * Starting in release 1.0.2, a Form can use either the direct service or the action service. The
- * default is the direct service, even though in earlier releases, only the action service was
- * available.
+ * </p>
+ * 
  * <p>
  * Release 4.0 adds two new listeners, {@link #getCancel()} and {@link #getRefresh()} and
  * corresponding client-side behavior to force a form to refresh (update, bypassing input field
  * validation) or cancel (update immediately).
+ * </p>
  * 
  * @author Howard Lewis Ship, David Solis
  */
 
-public abstract class Form extends AbstractComponent implements IForm, IDirect
+public abstract class Form extends AbstractComponent implements IForm
 {
     private String _name;
 
@@ -304,6 +304,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     private ILink getLink(IRequestCycle cycle)
     {
         Object parameter = new DirectServiceParameter(this);
+        
         return getDirectService().getLink(true, parameter);
     }
 

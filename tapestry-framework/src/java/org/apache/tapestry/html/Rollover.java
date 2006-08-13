@@ -132,9 +132,9 @@ public abstract class Rollover extends AbstractComponent
     {
         String imageId = pageRenderSupport.getUniqueString(getId());
         String preloadedMouseOverImageURL = pageRenderSupport
-                .getPreloadedImageReference(mouseOverImageURL);
+                .getPreloadedImageReference(this, mouseOverImageURL);
         String preloadedMouseOutImageURL = pageRenderSupport
-                .getPreloadedImageReference(mouseOutImageURL);
+                .getPreloadedImageReference(this, mouseOutImageURL);
 
         Map symbols = new HashMap();
 

@@ -14,6 +14,8 @@
 
 package org.apache.tapestry;
 
+import java.util.Iterator;
+
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.ResponseBuilder;
@@ -183,6 +185,13 @@ public interface IRequestCycle
      *          located; the return value -1  indicates that the object is not on the stack.
      */
     int renderStackSearch(IRender render);
+    
+    /**
+     * Creates a traversable iterator for moving through the stack.
+     * 
+     * @return An iterator over the current stack.
+     */
+    Iterator renderStackIterator();
     
     /**
      * Removes a previously stored attribute, if one with the given name exists.

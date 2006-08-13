@@ -39,8 +39,9 @@ tapestry={
 		};
 		
 		// setup content type
-		if (typeof json != "undefined" && json) {
+		if (typeof json != "undefined" && json == true) {
 			parms.mimetype = "text/json";
+			parms.headers={"json":true};
 		} else {
 			parms.headers={"dojo-ajax-request":true};
 			parms.mimetype="text/xml";

@@ -149,4 +149,30 @@ public class TestInsertText extends BaseComponentTestCase
 
         verify();
     }
+    
+    public void test_Render_Nested_Raw()
+    {
+        IMarkupWriter writer = newBufferWriter();
+        IRequestCycle cycle = newCycle(false);
+        
+        InsertText component = newInstance(InsertText.class, 
+                new Object[] { "value", "output\n<b>raw</b>", "raw", Boolean.TRUE });
+        
+        expect(cycle.renderStackPush(component)).andReturn(component);
+        
+        IMarkupWriter nested = writer.getNestedWriter();
+        
+        expect(cycle.renderStackPop()).andReturn(component);
+        
+        replay();
+
+        component.finishLoad(cycle, null, null);
+        component.render(nested, cycle);
+        
+        verify();
+        
+        nested.close();
+        
+        assertBuffer("output<br/><b>raw</b>");
+    }
 }

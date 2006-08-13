@@ -28,7 +28,9 @@ tapestry.form={
     	this.focusField(field);
 	},
 	
-	invalid_field:function(field, message){tapestry.form.invalidField(field, message); },
+	invalid_field:function(field, message){
+		tapestry.form.invalidField(field, message); 
+	},
 	
 	/**
 	 * If possible, brings keyboard input focus
@@ -103,24 +105,37 @@ tapestry.form={
 	/**
 	 * Registers the form with the local <code>forms</code> property so 
 	 * that there is a central reference of all tapestry forms.
+	 * 
 	 * @param id The form(form id) to register.
+	 * @param async Boolean, if true causes form submission to be asynchronous.
+	 * @param json Boolean, if true causes form submission to be asyncrhronous with an 
+	 * 			   expected JSON response.
 	 */
-	registerForm:function(id){
+	registerForm:function(id, async, json){
 		var form=dojo.byId(id);
 		if (!form) {
 			dojo.raise("Form not found with id " + id);
 			return;
 		}
 		
-		// make sure id is correct just in case node passed in
+		// make sure id is correct just in case node passed in has only name
 		id=(form.getAttribute("id") ) ? form.getAttribute("id") : form.getAttribute("name");
 		
 		if (!this.forms[id]) {
 			this.forms[id]={};
 			this.forms[id].validateForm=true;
 			this.forms[id].profiles=[];
+			this.forms[id].async=(typeof async != "undefined") ? async : false;
+			this.forms[id].json=(typeof json != "undefined") ? json : false;
 			
-			dojo.event.connect(form, "onsubmit", this, "onFormSubmit");
+			if (!this.forms[id].async) {
+				dojo.event.connect(form, "onsubmit", this, "onFormSubmit");
+			} else {
+				dojo.event.connect(form, "onsubmit", function(e) {
+					dojo.event.browser.stopEvent(e);
+					tapestry.form.submitAsync(form);
+				});
+			}
 		} else {
 			dojo.log.warn("registerForm(" + id + ") Form already registered.");
 		}
@@ -264,9 +279,8 @@ tapestry.form={
 	 * 				  event parameters to form submission, but can be any
 	 * 				  typical form/value pair.
 	 * @param submitName Optional submit name string to use when submitting.
-	 * @param validate Whether or not to validate form, default is false.
 	 */
-	submitAsync:function(form, content, submitName, validate){
+	submitAsync:function(form, content, submitName){
 		var form=dojo.byId(form);
 		if (!form) {
 			dojo.raise("Form not found with id " + id);
@@ -274,7 +288,7 @@ tapestry.form={
 		}
 		var formId=form.getAttribute("id");
 		
-		if (validate && !tapestry.form.validation.validateForm(form, this.forms[formId])) {
+		if (!tapestry.form.validation.validateForm(form, this.forms[formId])) {
 			dojo.log.debug("Form validation failed for form with id " + formId);
 			return;
 		}
@@ -282,17 +296,26 @@ tapestry.form={
 		if (submitName){
 			form.submitname.value=submitName;
 		}
-		dojo.io.bind({
+		
+		var parms={
 			formNode:form,
 			content:content,
-            headers:{"dojo-ajax-request":true},
             useCache:true,
             preventCache:true,
-            load: (function(){tapestry.load.apply(this, arguments);}),
             error: (function(){tapestry.error.apply(this, arguments);}),
-            mimetype: "text/xml",
             encoding: "UTF-8"
-        });
+		};
+		
+		if (this.forms[formId].json) {
+			parms.headers={"json":true};
+			parms.mimetype="text/json";
+		} else {
+			parms.headers={"dojo-ajax-request":true};
+			parms.mimetype="text/xml";
+			parms.load=(function(){tapestry.load.apply(this, arguments);});
+		}
+		
+		dojo.io.bind(parms);
 	}
 }
 

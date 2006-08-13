@@ -98,12 +98,20 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
     {
         return _location;
     }
-
+    
     public String getPreloadedImageReference(String URL)
     {
+        return getPreloadedImageReference(null, URL);
+    }
+    
+    public String getPreloadedImageReference(IComponent target, String URL)
+    {
+        if (target != null && !_builder.isImageInitializationAllowed(target))
+            return URL;
+        
         if (_imageMap == null)
             _imageMap = new HashMap();
-
+        
         String reference = (String) _imageMap.get(URL);
 
         if (reference == null)
@@ -207,7 +215,7 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
     /**
      * Writes a single large JavaScript block containing:
      * <ul>
-     * <li>Any image initializations (via {@link #getPreloadedImageReference(String)}).
+     * <li>Any image initializations (via {@link #getPreloadedImageReference(IComponent, String)}).
      * <li>Any included scripts (via {@link #addExternalScript(Resource)}).
      * <li>Any contributions (via {@link #addBodyScript(String)}).
      * </ul>

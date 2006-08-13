@@ -49,6 +49,8 @@ public class AjaxShellDelegate implements IRender
     
     private String _browserLogLevel = BROWSER_LOG_WARNING;
     
+    private boolean _debug;
+    
     /**
      * {@inheritDoc}
      */
@@ -58,7 +60,7 @@ public class AjaxShellDelegate implements IRender
         
         // first configure dojo, has to happen before package include
         StringBuffer str = new StringBuffer("<script type=\"text/javascript\">");
-        str.append("djConfig = { isDebug: true,")
+        str.append("djConfig = { isDebug: ").append(_debug).append(",")
         .append(" debugContainerId:'debug',")
         .append(" baseRelativePath:\"")
         .append(_assetService.getLink(true,
@@ -107,6 +109,16 @@ public class AjaxShellDelegate implements IRender
         Defense.notNull("level", level);
         
         _browserLogLevel = level;
+    }
+    
+    /**
+     * Allows for turning browser debugging on/off.
+     * 
+     * @param debug If false, no logging output will be written.
+     */
+    public void setDebug(boolean debug)
+    {
+        _debug = debug;
     }
     
     /**

@@ -213,6 +213,19 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         return contains(target);
     }
     
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isImageInitializationAllowed(IComponent target)
+    {
+        if (target != null 
+                && IForm.class.isInstance(target)
+                && ((IForm)target).isFormFieldUpdating())
+            return true;
+        
+        return contains(target);
+    }
+    
     /** 
      * {@inheritDoc}
      */
@@ -482,10 +495,15 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         if (_parts.contains(id))
             return true;
         
-        IComponent parent = (IComponent)_cycle.renderStackPeek();
-        
-        if (parent != null && parent != target)
-            return contains(parent);
+        Iterator it = _cycle.renderStackIterator();
+        while (it.hasNext()) {
+            
+            IComponent comp = (IComponent)it.next();
+            String compId = getComponentId(comp);
+            
+            if (comp != target && _parts.contains(compId))
+                return true;
+        }
         
         return false;
     }

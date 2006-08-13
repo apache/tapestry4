@@ -39,7 +39,7 @@
                    tapestry.form.setFormValidating("${formName}", validateForm);
                    
                     <if expression="formEvent[2]">
-                    tapestry.form.submitAsync("${formName}", content, null, validateForm);
+                    tapestry.form.submitAsync("${formName}", content);
                     </if>
                     <if-not expression="formEvent[2]">
                     tapestry.form.submit("${formName}");

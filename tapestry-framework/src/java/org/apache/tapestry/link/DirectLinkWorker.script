@@ -19,11 +19,10 @@
             tapestry.event.buildEventProperties(e, content);
             if (!content["beventtarget.id"]) content["beventtarget.id"]="${component.clientId}";
             
-            if (typeof e == "undefined" || typeof e.target == "undefined"
-                || typeof e.target["getAttribute"] == "undefined"
+            if (dj_undef("target", e) || dj_undef("getAttribute", e.target)
                 || !e.target.getAttribute("href")) {
                 dojo.raise("Error, link target not found or invalid " + e);
-                return;    
+                return;
             }
             
             tapestry.bind(e.target.getAttribute("href"), content, ${json});

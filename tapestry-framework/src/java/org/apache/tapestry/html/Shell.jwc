@@ -121,12 +121,10 @@
     </description>
   </parameter>
   
-  <parameter name="ajaxEnabled" 
-             default-value="true" >
-     <description>
-     If set to true, will include the required javascript libraries that make all
-     of the ajax functionality possible.
-     </description>
+  <parameter name="debugEnabled" default-value="ognl:true">
+    <description>
+    Allows turning browser debug logging statements on/off.
+    </description>
   </parameter>
   
   <parameter name="tapestrySource" 
@@ -163,6 +161,7 @@
    <set name="dojoPath" value="dojoPath" />
    <set name="tapestrySource" value="tapestrySource" />
    <set name="logLevel" value="browserLogLevel" />
+   <set name="debug" value="debugEnabled" />
   </bean>
   
   <asset name="defaultDojoSource" path="classpath:/dojo/dojo.js" />

@@ -40,12 +40,21 @@ public abstract class Body extends AbstractComponent implements PageRenderSuppor
     private PageRenderSupportImpl _pageRenderSupport;
 
     /**
+     * {@inheritDoc}
+     */
+    public String getPreloadedImageReference(IComponent target, String URL)
+    {
+        return _pageRenderSupport.getPreloadedImageReference(target, URL);
+    }
+    
+    /**
      * Adds to the script an initialization for the named variable as an Image(), to the given URL.
      * <p>
      * Returns a reference, a string that can be used to represent the preloaded image in a
      * JavaScript function.
      * 
      * @since 1.0.2
+     * @deprecated To be removed in 4.2, use {@link #getPreloadedImageReference(IComponent, String)} instead.
      */
 
     public String getPreloadedImageReference(String URL)

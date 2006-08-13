@@ -242,6 +242,16 @@ public interface ResponseBuilder {
     IMarkupWriter getWriter(String id, String type);
     
     /**
+     * Determines if the specified component should have any asset image URL
+     * references embedded in the response.
+     * 
+     * @param target
+     *          The component to allow/disallow image initialization script content from.
+     * @return True if the component script should be allowed.
+     */
+    boolean isImageInitializationAllowed(IComponent target);
+    
+    /**
      * Determines if the specified component should have its javascript 
      * body added to the response.
      * 
