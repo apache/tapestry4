@@ -122,7 +122,7 @@ tapestry.form={
 			
 			dojo.event.connect(form, "onsubmit", this, "onFormSubmit");
 		} else {
-			dojo.log.warn("egisterForm(" + id + ") Form already registered.");
+			dojo.log.warn("registerForm(" + id + ") Form already registered.");
 		}
 	},
 	
@@ -177,6 +177,7 @@ tapestry.form={
 	 * 				   not specified assumes true.
 	 */
 	setFormValidating:function(formId, validate){
+		dojo.log.warn("setFormValidating called with value " + validate);
 		if (this.forms[formId]){
 			this.forms[formId].validateForm = validate ? true : false;
 		}
@@ -193,10 +194,13 @@ tapestry.form={
 		}
 		
 		var id=evt.target.getAttribute("id");
-		if (!id) return;
+		if (!id) {
+			dojo.log.warn("Form had no id attribute.");
+			return;
+		}
 		
 		var form = dojo.byId(id);
-		if (form.submitmode.value 
+		if (!dj_undef("value", form.submitmode)
 			&& (form.submitmode.value == "cancel" || form.submitmode.value == "refresh")) {
 			return;
 		}

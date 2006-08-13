@@ -89,6 +89,8 @@ public class FormTest extends BaseComponentTestCase
                 "formSupport", support, "listener", listener, "listenerInvoker", invoker,
                 "delegate", delegate });
 
+        expect(cycle.renderStackPush(form)).andReturn(form);
+        
         trainStoreForm(cycle, form);
         
         trainIsRewinding(support, true);
@@ -102,7 +104,9 @@ public class FormTest extends BaseComponentTestCase
         TapestryUtils.removeForm(cycle);
         
         delegate.setFormComponent(null);
-
+        
+        expect(cycle.renderStackPop()).andReturn(form);
+        
         replay();
 
         try
@@ -137,7 +141,9 @@ public class FormTest extends BaseComponentTestCase
         { "id", "myform", "expectedWriter", writer, "expectedRequestCycle", cycle,
                 "formSupport", support, "response", response, "directService", direct, "method",
                 "post", "delegate", delegate });
-
+        
+        expect(cycle.renderStackPush(form)).andReturn(form);
+        
         trainStoreForm(cycle, form);
         
         trainIsRewinding(support, false);
@@ -158,6 +164,8 @@ public class FormTest extends BaseComponentTestCase
         TapestryUtils.removeForm(cycle);
 
         delegate.setFormComponent(null);
+            
+        expect(cycle.renderStackPop()).andReturn(form);
         
         replay();
 
@@ -183,6 +191,8 @@ public class FormTest extends BaseComponentTestCase
                 "formSupport", support, "response", response, "directService", direct, "method",
                 "post", "delegate", delegate, "scheme", "https", "port", new Integer(443) });
         
+        expect(cycle.renderStackPush(form)).andReturn(form);
+        
         trainStoreForm(cycle, form);
         
         trainIsRewinding(support, false);
@@ -203,6 +213,8 @@ public class FormTest extends BaseComponentTestCase
         TapestryUtils.removeForm(cycle);
         
         delegate.setFormComponent(null);
+        
+        expect(cycle.renderStackPop()).andReturn(form);
         
         replay();
 
@@ -341,6 +353,8 @@ public class FormTest extends BaseComponentTestCase
                 "formSupport", support, "response", response, "directService", direct, "method",
                 "post", "delegate", delegate, "focus", false });
 
+        expect(cycle.renderStackPush(form)).andReturn(form);
+        
         trainStoreForm(cycle, form);
         
         trainIsRewinding(support, false);
@@ -361,6 +375,8 @@ public class FormTest extends BaseComponentTestCase
         TapestryUtils.removeForm(cycle);
 
         delegate.setFormComponent(null);
+        
+        expect(cycle.renderStackPop()).andReturn(form);
         
         replay();
 

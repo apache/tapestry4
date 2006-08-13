@@ -149,8 +149,6 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
 
     private IContainedComponent _containedComponent;
     
-    /** @since 4.1 */
-    private IComponent _parent;
     
     public void addAsset(String name, IAsset asset)
     {
@@ -173,7 +171,7 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
 
         if (_components == null)
             _components = new HashMap(MAP_SIZE);
-
+        
         _components.put(component.getId(), component);
     }
 
@@ -187,12 +185,6 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
     public void addBody(IRender element)
     {
         Defense.notNull(element, "element");
-        
-        // Check to set parent/child relationships on components where the container
-        // logic doesn't always make sense.
-        
-        if (IComponent.class.isAssignableFrom(element.getClass()))
-            ((IComponent)element).setParent(this);
         
         // Should check the specification to see if this component
         // allows body. Curently, this is checked by the component
@@ -221,16 +213,6 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
         }
 
         _body[_bodyCount++] = element;
-    }
-
-    public IComponent getParent()
-    {
-        return _parent;
-    }
-    
-    public void setParent(IComponent parent)
-    {
-        _parent = parent;
     }
     
     /**
@@ -415,7 +397,7 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
     {
         if (_page == null)
             return null;
-
+        
         return _page.getPageName() + "/" + getIdPath();
     }
 
@@ -432,17 +414,17 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
 
         _id = value;
     }
-
+    
     public String getIdPath()
     {
         String containerIdPath;
-
+        
         if (_container == null)
             throw new NullPointerException(Tapestry
                     .format("AbstractComponent.null-container", this));
-
+        
         containerIdPath = _container.getIdPath();
-
+        
         if (containerIdPath == null)
             _idPath = _id;
         else
@@ -525,7 +507,7 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
     public String toString()
     {
         StringBuffer buffer;
-
+        
         buffer = new StringBuffer(super.toString());
 
         buffer.append('[');
@@ -682,6 +664,8 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
         {
             _rendering = true;
             
+            cycle.renderStackPush(this);
+            
             prepareForRender(cycle);
             
             renderComponent(writer, cycle);
@@ -697,6 +681,8 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
             
             // @since 4.1
             _clientId = null;
+            
+            cycle.renderStackPop();
         }
     }
 

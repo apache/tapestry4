@@ -140,6 +140,51 @@ public interface IRequestCycle
     ResponseBuilder getResponseBuilder();
     
     /**
+     * Tests if the render component chain is empty, meaning no components have
+     * been loaded onto the stack yet.
+     * 
+     * @return True, if the current stack is empty.
+     */
+    boolean renderStackEmpty();
+    
+    /**
+     * Looks at the object at the top of the render stack without removing 
+     * the {@link IRender} from the stack.
+     * 
+     * @return The last (parent) item added to the current render stack.
+     */
+    IRender renderStackPeek();
+    
+    /**
+     * Removes the {@link IRender} at the top of the stack, if any.
+     * 
+     * @return The removed {@link IRender}, if any.
+     */
+    IRender renderStackPop();
+    
+    /**
+     * Pushes the specified render onto the current render stack.
+     * 
+     * @param render The {@link IRender} object being pushed.
+     * @return The added {@link IRender}.
+     */
+    IRender renderStackPush(IRender render);
+    
+    /**
+     * Returns the 1-based position where an object is on this stack. If the object 
+     * o occurs as an item in this stack, this method returns the distance from the 
+     * top of the stack of the occurrence nearest the top of the stack; the topmost 
+     * item on the stack is considered to be at distance 1. The equals method is used 
+     * to compare o to the items in this stack.
+     * 
+     * @param render The {@link IRender} being searched for.
+     * 
+     * @return the 1-based position from the top of the stack where the object is 
+     *          located; the return value -1  indicates that the object is not on the stack.
+     */
+    int renderStackSearch(IRender render);
+    
+    /**
      * Removes a previously stored attribute, if one with the given name exists.
      */
 

@@ -78,18 +78,19 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
     {
         IRender render = newMock(IRender.class);
         IRequestCycle cycle = newMock(IRequestCycle.class);
+        IMarkupWriter writer = newWriter();
         
-        ResponseBuilder builder = new DojoAjaxResponseBuilder(null, null);
+        ResponseBuilder builder = new DojoAjaxResponseBuilder(cycle, writer, null);
         
         render.render(NullWriter.getSharedInstance(), cycle);
         
         replay();
         
-        builder.render(null, render, cycle);
+        builder.render(writer, render, cycle);
         
         verify();
         
-        assertSame(builder.getWriter(), null);
+        assertSame(builder.getWriter(), writer);
     }
     
     public void test_Normal_Render()
@@ -98,7 +99,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         IRequestCycle cycle = newMock(IRequestCycle.class);
         IMarkupWriter writer = newMock(IMarkupWriter.class);
         
-        ResponseBuilder builder = new DojoAjaxResponseBuilder(writer, null);
+        ResponseBuilder builder = new DojoAjaxResponseBuilder(cycle, writer, null);
         
         render.render(NullWriter.getSharedInstance(), cycle);
         
@@ -113,7 +114,10 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
     
     public void test_Null_Contains() 
     {
-        ResponseBuilder builder = new DojoAjaxResponseBuilder(null, null);
+        IRequestCycle cycle = newMock(IRequestCycle.class);
+        IMarkupWriter writer = newWriter();
+        
+        ResponseBuilder builder = new DojoAjaxResponseBuilder(cycle, writer, null);
         
         replay();
         
@@ -134,7 +138,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         List parts = new ArrayList();
         parts.add("id1");
         
-        DojoAjaxResponseBuilder builder = new DojoAjaxResponseBuilder(writer, parts);
+        DojoAjaxResponseBuilder builder = new DojoAjaxResponseBuilder(cycle, writer, parts);
         
         render.render(NullWriter.getSharedInstance(), cycle);
         
@@ -164,21 +168,24 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
     
     public void test_Allowed_Scripts()
     {
+        IRequestCycle cycle = newMock(IRequestCycle.class);
         IComponent comp = newMock(IComponent.class);
+        IMarkupWriter writer = newWriter();
+        
         List parts = new ArrayList();
         parts.add("comp1");
         
-        ResponseBuilder builder = new DojoAjaxResponseBuilder(null, parts);
+        ResponseBuilder builder = new DojoAjaxResponseBuilder(cycle, writer, parts);
         
         expect(comp.getClientId()).andReturn("comp");
         
-        expect(comp.getParent()).andReturn(null);
+        expect(cycle.renderStackPeek()).andReturn(null);
         
         expect(comp.getClientId()).andReturn("comp1");
         
         expect(comp.getClientId()).andReturn("comp");
         
-        expect(comp.getParent()).andReturn(null);
+        expect(cycle.renderStackPeek()).andReturn(null);
         
         replay();
         
@@ -198,7 +205,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         replay();
         
         IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
-        DojoAjaxResponseBuilder builder = new DojoAjaxResponseBuilder(mw, null);
+        DojoAjaxResponseBuilder builder = new DojoAjaxResponseBuilder(cycle, mw, null);
         
         String bscript = "var e=4;";
         String imageInit = "image initializations";
@@ -246,7 +253,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         replay();
         
         IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
-        DojoAjaxResponseBuilder builder = new DojoAjaxResponseBuilder(mw, null);
+        DojoAjaxResponseBuilder builder = new DojoAjaxResponseBuilder(cycle, mw, null);
         
         String script1 = "http://noname/js/package.js";
         String script2 = "http://noname/js/package2.js";
@@ -276,13 +283,14 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
     
     public void test_Write_Initialization_Script()
     {
+        IRequestCycle cycle = newMock(IRequestCycle.class);
         MarkupFilter filter = new UTFMarkupFilter();
         PrintWriter writer = newPrintWriter();
         
         replay();
         
         IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
-        DojoAjaxResponseBuilder builder = new DojoAjaxResponseBuilder(mw, null);
+        DojoAjaxResponseBuilder builder = new DojoAjaxResponseBuilder(cycle, mw, null);
         
         String script = "doThisInInit();";
         

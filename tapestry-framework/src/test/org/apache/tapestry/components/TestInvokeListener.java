@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.components;
 
+import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.testng.AssertJUnit.assertSame;
 
@@ -52,14 +53,22 @@ public class TestInvokeListener extends BaseComponentTestCase
         ListenerInvoker invoker = newInvoker();
 
         Object[] parameters = new Object[0];
-
-        InvokeListener component = newInstance(InvokeListener.class, new Object[]
-        { "listener", listener, "parameters", parameters, "listenerInvoker", invoker, });
-
+        
+        InvokeListener component = newInstance(InvokeListener.class, 
+                new Object[] { 
+            "listener", listener, 
+            "parameters", parameters, 
+            "listenerInvoker", invoker, 
+        });
+        
+        expect(cycle.renderStackPush(component)).andReturn(component);
+        
         cycle.setListenerParameters(parameters);
         invoker.invokeListener(listener, component, cycle);
         cycle.setListenerParameters(null);
 
+        expect(cycle.renderStackPop()).andReturn(component);
+        
         replay();
 
         component.render(writer, cycle);
@@ -71,7 +80,7 @@ public class TestInvokeListener extends BaseComponentTestCase
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newMock(IRequestCycle.class);
-
+        
         IActionListener listener = newListener();
         
         ListenerInvoker invoker = newMock(ListenerInvoker.class);
@@ -79,17 +88,25 @@ public class TestInvokeListener extends BaseComponentTestCase
         Throwable t = new RuntimeException();
 
         Object[] parameters = new Object[0];
-
-        InvokeListener component = newInstance(InvokeListener.class, new Object[]
-        { "listener", listener, "parameters", parameters, "listenerInvoker", invoker, });
-
+        
+        InvokeListener component = newInstance(InvokeListener.class, 
+                new Object[] { 
+            "listener", listener, 
+            "parameters", parameters, 
+            "listenerInvoker", invoker, 
+        });
+        
+        expect(cycle.renderStackPush(component)).andReturn(component);
+        
         cycle.setListenerParameters(parameters);
 
         invoker.invokeListener(listener, component, cycle);
         expectLastCall().andThrow(t);
-
+        
         cycle.setListenerParameters(null);
-
+        
+        expect(cycle.renderStackPop()).andReturn(component);
+        
         replay();
 
         try

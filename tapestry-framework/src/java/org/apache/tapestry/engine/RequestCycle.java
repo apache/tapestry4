@@ -17,6 +17,7 @@ package org.apache.tapestry.engine;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Stack;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,6 +30,7 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IPage;
+import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.RedirectException;
 import org.apache.tapestry.RenderRewoundException;
@@ -120,6 +122,8 @@ public class RequestCycle implements IRequestCycle
 
     private IdAllocator _idAllocator = new IdAllocator();
 
+    private Stack _renderStack = new Stack();
+    
     /**
      * Standard constructor used to render a response page.
      * 
@@ -182,7 +186,8 @@ public class RequestCycle implements IRequestCycle
 
         _loadedPages = null;
         _pageRecorders = null;
-
+        _renderStack.clear();
+        
     }
 
     public IEngineService getService()
@@ -283,8 +288,10 @@ public class RequestCycle implements IRequestCycle
     
     public void setResponseBuilder(ResponseBuilder builder)
     {
+        // TODO: What scenerio requires setting the builder after the fact?
         //if (_responseBuilder != null)
           //  throw new IllegalArgumentException("A ResponseBuilder has already been set on this response.");
+        
         _responseBuilder = builder;
     }
     
@@ -293,6 +300,55 @@ public class RequestCycle implements IRequestCycle
         return _responseBuilder;
     }
     
+    /** 
+     * {@inheritDoc}
+     */
+    public boolean renderStackEmpty()
+    {
+        return _renderStack.isEmpty();
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public IRender renderStackPeek()
+    {
+        if (_renderStack.size() < 1)
+            return null;
+        
+        return (IRender)_renderStack.peek();
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public IRender renderStackPop()
+    {
+        if (_renderStack.size() == 0)
+            return null;
+        
+        return (IRender)_renderStack.pop();
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public IRender renderStackPush(IRender render)
+    {
+        if (_renderStack.size() > 0 && _renderStack.peek() == render)
+            return render;
+        
+        return (IRender)_renderStack.push(render);
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public int renderStackSearch(IRender render)
+    {
+        return _renderStack.search(render);
+    }
+
     public boolean isRewinding()
     {
         return _rewinding;
@@ -336,7 +392,7 @@ public class RequestCycle implements IRequestCycle
         try
         {
             _page.renderPage(builder, this);
-
+            
         }
         catch (ApplicationRuntimeException ex)
         {

@@ -45,19 +45,27 @@ public class TestShell extends BaseComponentTestCase
     {
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
-
+        
         IRequestCycle cycle = newCycle(true, writer);
         IRender body = newRender();
-
+        
         Shell shell = newInstance(Shell.class, null);
+        
+        expect(cycle.renderStackPush(shell)).andReturn(shell);
+        
         shell.addBody(body);
 
         trainStoreShellInCycle(cycle, shell);
         trainGetNestedWriter(writer, nested);
+        
         body.render(nested, cycle);
+        
         nested.close();
+        
         trainRemoveShellFromCycle(cycle);
-
+        
+        expect(cycle.renderStackPop()).andReturn(shell);
+        
         replay();
 
         shell.render(writer, cycle);

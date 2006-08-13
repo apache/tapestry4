@@ -153,7 +153,7 @@ public class ComponentTemplateLoaderLogic
 
         if (!_activeComponent.getSpecification().getAllowBody())
             throw createBodylessComponentException(_activeComponent);
-
+        
         _activeComponent.addBody(token);
     }
 
@@ -190,7 +190,7 @@ public class ComponentTemplateLoaderLogic
 
             if (!_activeComponent.getSpecification().getAllowBody())
                 throw createBodylessComponentException(_activeComponent);
-
+            
             _activeComponent.addBody(component);
         }
 

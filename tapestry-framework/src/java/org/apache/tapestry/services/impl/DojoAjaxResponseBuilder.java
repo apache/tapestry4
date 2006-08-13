@@ -63,6 +63,8 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     // Map of specialized writers, like scripts
     private Map _writers = new HashMap();
     
+    private IRequestCycle _cycle;
+    
     /**
      * Creates a builder with a pre-configured {@link IMarkupWriter}. 
      * Currently only used for testing.
@@ -73,10 +75,16 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      *          A set of string ids of the components that may have 
      *          their responses rendered.
      */
-    public DojoAjaxResponseBuilder(IMarkupWriter writer, List parts)
+    public DojoAjaxResponseBuilder(IRequestCycle cycle, IMarkupWriter writer, List parts)
     {
+        Defense.notNull(cycle, "cycle");
+        Defense.notNull(writer, "writer");
+        
         _writer = writer;
-        if (parts != null) _parts.addAll(parts);
+        _cycle = cycle;
+        
+        if (parts != null) 
+            _parts.addAll(parts);
     }
     
     /**
@@ -90,10 +98,14 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      * @param webResponse
      *          Web response for output stream.
      */
-    public DojoAjaxResponseBuilder(RequestLocaleManager localeManager, 
+    public DojoAjaxResponseBuilder(IRequestCycle cycle, 
+            RequestLocaleManager localeManager, 
             MarkupWriterSource markupWriterSource,
             WebResponse webResponse, List errorPages)
     {
+        Defense.notNull(cycle, "cycle");
+        
+        _cycle = cycle;
         _localeManager = localeManager;
         _markupWriterSource = markupWriterSource;
         _webResponse = webResponse;
@@ -470,9 +482,9 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         if (_parts.contains(id))
             return true;
         
-        IComponent parent = target.getParent();
+        IComponent parent = (IComponent)_cycle.renderStackPeek();
         
-        if (parent != null)
+        if (parent != null && parent != target)
             return contains(parent);
         
         return false;

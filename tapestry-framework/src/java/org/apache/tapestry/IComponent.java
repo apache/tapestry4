@@ -66,20 +66,6 @@ public interface IComponent extends IRender, LocationHolder
     void addBody(IRender element);
     
     /**
-     * When {@link IComponent} instances are added to a {@link IComponent}s body, this method
-     * should be called to tell the instance who encloses them.
-     * 
-     * @param parent The component that contains this instance as a body element.
-     */
-    void setParent(IComponent parent);
-    
-    /**
-     * If this instance has a containing parent returns that instance.
-     * @return The containing parent, if any.
-     */
-    IComponent getParent();
-    
-    /**
      * Returns the asset map for the component, which may be empty but will not be null.
      * <p>
      * The return value is unmodifiable.

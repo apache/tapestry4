@@ -14,11 +14,14 @@
 
 package org.apache.tapestry.components;
 
+import static org.easymock.EasyMock.expect;
+
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.testng.annotations.Test;
 
@@ -34,7 +37,7 @@ public class TestConditional extends BaseComponentTestCase
     private IRender newRender(IMarkupWriter writer, IRequestCycle cycle)
     {
         IRender render = newMock(IRender.class);
-
+        
         render.render(writer, cycle);
 
         return render;
@@ -61,12 +64,17 @@ public class TestConditional extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle(false, writer);
         IRender body = newRender(writer, cycle);
-
-        replay();
-
-        Conditional conditional = newInstance(Conditional.class, new Object[]
-        { "condition", Boolean.TRUE });
+        
+        Conditional conditional = newInstance(Conditional.class, 
+                new Object[] { "condition", Boolean.TRUE });
+        
+        expect(cycle.renderStackPush(conditional)).andReturn(conditional);
+        
         conditional.addBody(body);
+        
+        expect(cycle.renderStackPop()).andReturn(conditional);
+        
+        replay();
 
         conditional.render(writer, cycle);
 
@@ -76,17 +84,30 @@ public class TestConditional extends BaseComponentTestCase
     public void testIgnoreElementWhenRewinding()
     {
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle(true, writer);
-        IRender body = newRender(writer, cycle);
-
+        IRequestCycle cycle = newCycle();
+        IRender body = newMock(IRender.class);
+        
+        ResponseBuilder builder = newMock(ResponseBuilder.class);
+        
+        Conditional conditional = newInstance(Conditional.class, 
+                new Object[] { "condition", Boolean.TRUE, "element", "div" });
+        
+        expect(cycle.renderStackPush(conditional)).andReturn(conditional);
+        
+        expect(cycle.isRewinding()).andReturn(true);
+        
+        expect(cycle.getResponseBuilder()).andReturn(builder);
+        
+        builder.render(writer, body, cycle);
+        
+        expect(cycle.renderStackPop()).andReturn(conditional);
+        
         replay();
-
-        Conditional conditional = newInstance(Conditional.class, new Object[]
-        { "condition", Boolean.TRUE, "element", "div" });
+        
         conditional.addBody(body);
-
+        
         conditional.render(writer, cycle);
-
+        
         verify();
     }
 
@@ -95,10 +116,24 @@ public class TestConditional extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle(false, null);
         
-        writer.begin("div");
-        
         IComponentSpecification spec = newSpec("informal", null);
         IBinding informal = newBinding("informal-value");
+        
+        IRender body = newRender(writer, cycle);
+        
+        Conditional conditional = newInstance(Conditional.class, 
+                new Object[] { 
+            "condition", Boolean.TRUE, 
+            "element", "div", 
+            "specification", spec 
+        });
+        
+        conditional.addBody(body);
+        conditional.setBinding("informal", informal);
+        
+        expect(cycle.renderStackPush(conditional)).andReturn(conditional);
+        
+        writer.begin("div");
         
         writer.attribute("informal", "informal-value");
 
@@ -110,16 +145,11 @@ public class TestConditional extends BaseComponentTestCase
         
         trainResponseBuilder(cycle, writer);
         
-        IRender body = newRender(writer, cycle);
-        
         writer.end("div");
         
+        expect(cycle.renderStackPop()).andReturn(conditional);
+        
         replay();
-
-        Conditional conditional = newInstance(Conditional.class, new Object[]
-        { "condition", Boolean.TRUE, "element", "div", "specification", spec });
-        conditional.addBody(body);
-        conditional.setBinding("informal", informal);
 
         conditional.render(writer, cycle);
 

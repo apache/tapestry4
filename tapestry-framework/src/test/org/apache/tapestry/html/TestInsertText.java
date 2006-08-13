@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.html;
 
+import static org.easymock.EasyMock.*;
+
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
@@ -31,11 +33,15 @@ public class TestInsertText extends BaseComponentTestCase
     public void testRewinding()
     {
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle(true, false);
-
-        replay();
-
+        IRequestCycle cycle = newCycle(true);
+        
         InsertText component = (InsertText) newInstance(InsertText.class);
+        
+        expect(cycle.renderStackPush(component)).andReturn(component);
+        
+        expect(cycle.renderStackPop()).andReturn(component);
+        
+        replay();
 
         component.render(writer, cycle);
 
@@ -45,11 +51,15 @@ public class TestInsertText extends BaseComponentTestCase
     public void testRenderNull()
     {
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle(false, false);
-
-        replay();
+        IRequestCycle cycle = newCycle(false);
 
         InsertText component = (InsertText) newInstance(InsertText.class);
+        
+        expect(cycle.renderStackPush(component)).andReturn(component);
+        
+        expect(cycle.renderStackPop()).andReturn(component);
+        
+        replay();
 
         component.render(writer, cycle);
 
@@ -59,20 +69,24 @@ public class TestInsertText extends BaseComponentTestCase
     public void testRenderBreaks()
     {
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle(false, false);
+        IRequestCycle cycle = newCycle(false);
 
+        InsertText component = (InsertText) newInstance(
+                InsertText.class,
+                "value",
+        "Now is the time\nfor all good men\nto come to the aid of their Tapestry.");
+
+        expect(cycle.renderStackPush(component)).andReturn(component);
+        
         writer.print("Now is the time", false);
         writer.beginEmpty("br");
         writer.print("for all good men", false);
         writer.beginEmpty("br");
         writer.print("to come to the aid of their Tapestry.", false);
-
+        
+        expect(cycle.renderStackPop()).andReturn(component);
+        
         replay();
-
-        InsertText component = (InsertText) newInstance(
-                InsertText.class,
-                "value",
-                "Now is the time\nfor all good men\nto come to the aid of their Tapestry.");
 
         component.finishLoad(cycle, null, null);
         component.render(writer, cycle);
@@ -83,8 +97,14 @@ public class TestInsertText extends BaseComponentTestCase
     public void testRenderParas()
     {
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle(false, false);
+        IRequestCycle cycle = newCycle(false);
 
+        InsertText component = newInstance(InsertText.class, 
+                new Object[] { "mode", InsertTextMode.PARAGRAPH, "value",
+        "Now is the time\nfor all good men\nto come to the aid of their Tapestry." });
+        
+        expect(cycle.renderStackPush(component)).andReturn(component);
+        
         writer.begin("p");
         writer.print("Now is the time", false);
         writer.end();
@@ -96,13 +116,11 @@ public class TestInsertText extends BaseComponentTestCase
         writer.begin("p");
         writer.print("to come to the aid of their Tapestry.", false);
         writer.end();
-
+        
+        expect(cycle.renderStackPop()).andReturn(component);
+        
         replay();
-
-        InsertText component = newInstance(InsertText.class, new Object[]
-        { "mode", InsertTextMode.PARAGRAPH, "value",
-                "Now is the time\nfor all good men\nto come to the aid of their Tapestry." });
-
+        
         component.render(writer, cycle);
 
         verify();
@@ -111,16 +129,20 @@ public class TestInsertText extends BaseComponentTestCase
     public void testRenderRaw()
     {
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle(false, false);
+        IRequestCycle cycle = newCycle(false);
 
+        InsertText component = newInstance(InsertText.class, 
+                new Object[] { "value", "output\n<b>raw</b>", "raw", Boolean.TRUE });
+        
+        expect(cycle.renderStackPush(component)).andReturn(component);
+        
         writer.print("output", true);
         writer.beginEmpty("br");
         writer.print("<b>raw</b>", true);
-
+        
+        expect(cycle.renderStackPop()).andReturn(component);
+        
         replay();
-
-        InsertText component = newInstance(InsertText.class, new Object[]
-        { "value", "output\n<b>raw</b>", "raw", Boolean.TRUE });
 
         component.finishLoad(cycle, null, null);
         component.render(writer, cycle);

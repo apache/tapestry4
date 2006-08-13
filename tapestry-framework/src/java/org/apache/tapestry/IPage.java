@@ -195,19 +195,6 @@ public interface IPage extends IComponent
     ContentType getResponseContentType();
 
     /**
-     * Invoked just before rendering of the page is initiated. This gives the page a chance to
-     * perform any additional setup. One possible behavior is to set HTTP headers and cookies before
-     * any output is generated.
-     * <p>
-     * The timing of this explicitly <em>before</em>
-     * {@link org.apache.tapestry.engine.IPageRecorder page recorder}changes are committed.
-     * Rendering occurs <em>after</em> the recorders are committed, when it is too late to make
-     * changes to dynamic page properties.
-     */
-
-    void beginResponse(IMarkupWriter writer, IRequestCycle cycle);
-
-    /**
      * Returns the current {@link IRequestCycle}. This is set when the page is loaded (or obtained
      * from the pool) and attached to the {@link IEngine engine}.
      */
