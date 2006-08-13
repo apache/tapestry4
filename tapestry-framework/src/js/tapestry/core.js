@@ -138,6 +138,8 @@ tapestry={
         	}
     	}
     	
+    	dojo.event.browser.clean(node); // prevent mem leaks in ie
+    	
     	if (djConfig["isDebug"]) {
     		var content=tapestry.html.getContentAsString(element);
     		dojo.log.debug("Received element content for id <" + id + "> of:\n" + content);
