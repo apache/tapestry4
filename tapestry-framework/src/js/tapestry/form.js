@@ -177,7 +177,6 @@ tapestry.form={
 	 * 				   not specified assumes true.
 	 */
 	setFormValidating:function(formId, validate){
-		dojo.log.warn("setFormValidating called with value " + validate);
 		if (this.forms[formId]){
 			this.forms[formId].validateForm = validate ? true : false;
 		}

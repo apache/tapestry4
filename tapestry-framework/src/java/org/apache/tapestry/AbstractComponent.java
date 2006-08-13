@@ -450,6 +450,11 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
         return boundId;
     }
     
+    protected void setClientId(String id)
+    {
+        _clientId = id;
+    }
+    
     String getBoundId()
     {
         if (_bindings == null)
