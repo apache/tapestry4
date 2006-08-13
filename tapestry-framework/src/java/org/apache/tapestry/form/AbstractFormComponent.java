@@ -60,12 +60,6 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
     public abstract String getIdParameter();
 
     /**
-     * Stores the actual id allocated (or null if the component doesn't support this).
-     */
-
-    public abstract void setClientId(String id);
-
-    /**
      * Invoked from {@link #renderFormComponent(IMarkupWriter, IRequestCycle)} (that is, an
      * implementation in a subclass), to obtain an id and render an id attribute. Reads
      * {@link #getIdParameter()}.
