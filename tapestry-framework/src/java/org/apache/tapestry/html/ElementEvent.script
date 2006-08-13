@@ -44,9 +44,7 @@
                     tapestry.form.submit("${formName}");
                     </if-not>
                     
-                    if (!dj_undef("validateState", this)) { 
-                        tapestry.form.setFormValidating("${formName}", validateState);
-                    }
+                    tapestry.form.setFormValidating("${formName}", validateState);
                     </foreach>
                 });
             </foreach>
