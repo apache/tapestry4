@@ -51,6 +51,8 @@ public class TestCheckbox extends BaseFormComponentTestCase
 
         IValidationDelegate delegate = newDelegate();
         
+        expect(cycle.renderStackPush(cb)).andReturn(cb);
+        
         trainGetForm(cycle, form);
         trainWasPrerendered(form, writer, cb, false);
         trainGetDelegate(form, delegate);
@@ -78,6 +80,8 @@ public class TestCheckbox extends BaseFormComponentTestCase
         expect(delegate.isInError()).andReturn(false);
         
         delegate.registerForFocus(cb, ValidationConstants.NORMAL_FIELD);
+        
+        expect(cycle.renderStackPop()).andReturn(cb);
         
         replay();
 

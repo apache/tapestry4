@@ -48,13 +48,17 @@ public class TestValidField extends BaseFormComponentTestCase
         IForm form = newMock(IForm.class);
 
         IMarkupWriter writer = newWriter();
-
-        trainGetForm(cycle, form);
-
+        
         ValidField component = (ValidField) newInstance(ValidField.class);
-
+        
+        expect(cycle.renderStackPush(component)).andReturn(component);
+        
+        trainGetForm(cycle, form);
+        
         trainWasPrerendered(form, writer, component, true);
-
+        
+        expect(cycle.renderStackPop()).andReturn(component);
+        
         replay();
 
         component.render(writer, cycle);
@@ -76,7 +80,9 @@ public class TestValidField extends BaseFormComponentTestCase
 
         IMarkupWriter writer = newWriter();
         IValidationDelegate delegate = newDelegate();
-
+        
+        expect(cycle.renderStackPush(component)).andReturn(component);
+        
         trainGetForm(cycle, form);
         trainWasPrerendered(form, writer, component, false);
         trainGetDelegate(form, delegate);
@@ -86,7 +92,9 @@ public class TestValidField extends BaseFormComponentTestCase
         trainGetElementId(form, component, "fred");
         trainIsRewinding(form, false);
         trainIsRewinding(cycle, true);
-
+        
+        expect(cycle.renderStackPop()).andReturn(component);
+        
         replay();
 
         component.render(writer, cycle);
@@ -114,7 +122,9 @@ public class TestValidField extends BaseFormComponentTestCase
         IMarkupWriter writer = newWriter();
 
         IValidationDelegate delegate = newDelegate();
-
+        
+        expect(cycle.renderStackPush(component)).andReturn(component);
+        
         trainGetForm(cycle, form);
         trainWasPrerendered(form, writer, component, false);
         trainGetDelegate(form, delegate);
@@ -131,7 +141,9 @@ public class TestValidField extends BaseFormComponentTestCase
         delegate.recordFieldInputValue("fred-value");
 
         trainToObject(validator, component, "fred-value", translatedValue);
-
+        
+        expect(cycle.renderStackPop()).andReturn(component);
+        
         replay();
 
         component.render(writer, cycle);
@@ -155,7 +167,9 @@ public class TestValidField extends BaseFormComponentTestCase
         IMarkupWriter writer = newWriter();
         
         IValidationDelegate delegate = newDelegate();
-
+        
+        expect(cycle.renderStackPush(component)).andReturn(component);
+        
         trainGetForm(cycle, form);
         
         Location l = newLocation();
@@ -173,6 +187,8 @@ public class TestValidField extends BaseFormComponentTestCase
         
         trainGetParameter(cycle, "fred", "fred-value");
 
+        expect(cycle.renderStackPop()).andReturn(component);
+        
         replay();
 
         try
@@ -208,7 +224,9 @@ public class TestValidField extends BaseFormComponentTestCase
         IMarkupWriter writer = newBufferWriter();
 
         MockDelegate delegate = new MockDelegate();
-
+        
+        expect(cycle.renderStackPush(component)).andReturn(component);
+        
         trainGetForm(cycle, form);
         trainWasPrerendered(form, writer, component, false);
         trainGetDelegate(form, delegate);
@@ -226,7 +244,9 @@ public class TestValidField extends BaseFormComponentTestCase
         // Would be nice to have this do something so we could check the timing, but ...
 
         validator.renderValidatorContribution(component, writer, cycle);
-
+        
+        expect(cycle.renderStackPop()).andReturn(component);
+        
         replay();
 
         component.render(writer, cycle);
@@ -252,8 +272,10 @@ public class TestValidField extends BaseFormComponentTestCase
         { "validator", validator, "page", page, "container", page });
         
         IRequestCycle cycle = newCycle();
-
+        
         page.attach(null, cycle);
+        
+        expect(cycle.renderStackPush(component)).andReturn(component);
         
         IForm form = newMock(IForm.class);
         checkOrder(form, false);
@@ -282,7 +304,9 @@ public class TestValidField extends BaseFormComponentTestCase
 
         // Short cut this here, so that it appears some other field is
         // taking the honors ...
-
+        
+        expect(cycle.renderStackPop()).andReturn(component);
+        
         replay();
 
         component.render(writer, cycle);
@@ -305,7 +329,9 @@ public class TestValidField extends BaseFormComponentTestCase
         
         ValidField component = newInstance(ValidField.class, new Object[]
         { "value", value, "validator", validator, "form", form, "name", "fred" });
-
+        
+        expect(cycle.renderStackPush(component)).andReturn(component);
+        
         IMarkupWriter writer = newBufferWriter();
 
         MockDelegate delegate = new MockDelegate(true);
@@ -326,7 +352,9 @@ public class TestValidField extends BaseFormComponentTestCase
         // Would be nice to have this do something so we could check the timing, but ...
 
         validator.renderValidatorContribution(component, writer, cycle);
-
+        
+        expect(cycle.renderStackPop()).andReturn(component);
+        
         replay();
 
         component.render(writer, cycle);

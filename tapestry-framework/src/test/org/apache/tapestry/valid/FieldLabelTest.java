@@ -14,16 +14,14 @@
 
 package org.apache.tapestry.valid;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.checkOrder;
+import static org.easymock.EasyMock.expect;
 import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertSame;
 
 import org.apache.hivemind.Location;
 import org.apache.tapestry.BindingException;
-import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.BaseFormComponentTestCase;
 import org.apache.tapestry.form.IFormComponent;
@@ -51,22 +49,6 @@ public class FieldLabelTest extends BaseFormComponentTestCase
     private void trainGetDelegate(IValidationDelegate delegate, IForm form)
     {
         expect(form.getDelegate()).andReturn(delegate);
-    }
-
-    private IPage newFred()
-    {
-        IPage page = newMock(IPage.class);
-
-        trainGetPageName(page, "Fred");
-
-        trainGetIdPath(page, null);
-
-        return page;
-    }
-
-    private void trainGetIdPath(IPage page, String idPath)
-    {
-        expect(page.getIdPath()).andReturn(idPath);
     }
 
     private IFormComponent newField(String displayName, String clientId)
@@ -98,17 +80,21 @@ public class FieldLabelTest extends BaseFormComponentTestCase
         IRequestCycle cycle = newCycle();
         IForm form = newForm();
         IFormComponent field = newField();
-
+        
+        FieldLabel fl = newInstance(FieldLabel.class, 
+                new Object[] { "field", field, "location", l, "prerender", true });
+        
+        expect(cycle.renderStackPush(fl)).andReturn(fl);
+        
         trainGetForm(cycle, form);
 
         form.prerenderField(writer, field, l);
 
         trainIsRewinding(cycle, true);
 
+        expect(cycle.renderStackPop()).andReturn(fl);
+        
         replay();
-
-        FieldLabel fl = newInstance(FieldLabel.class, new Object[]
-        { "field", field, "location", l, "prerender", true });
 
         fl.render(writer, cycle);
 
@@ -122,14 +108,18 @@ public class FieldLabelTest extends BaseFormComponentTestCase
         IMarkupWriter writer = newBufferWriter();
         IRequestCycle cycle = newCycle();
         
+        FieldLabel fl = newInstance(FieldLabel.class, 
+                new Object[] { "displayName", "FredFlintstone" });
+        
+        expect(cycle.renderStackPush(fl)).andReturn(fl);
+        
         trainGetForm(cycle, form);
 
         trainIsRewinding(cycle, false);
 
+        expect(cycle.renderStackPop()).andReturn(fl);
+        
         replay();
-
-        FieldLabel fl = newInstance(FieldLabel.class, new Object[]
-        { "displayName", "FredFlintstone" });
         
         fl.render(writer, cycle);
 
@@ -145,14 +135,18 @@ public class FieldLabelTest extends BaseFormComponentTestCase
         IMarkupWriter writer = newBufferWriter();
         IRequestCycle cycle = newCycle();
 
+        FieldLabel fl = newInstance(FieldLabel.class, 
+                new Object[] { "displayName", "<b>FredFlintstone</b>", "raw", Boolean.TRUE });
+        
+        expect(cycle.renderStackPush(fl)).andReturn(fl);
+        
         trainGetForm(cycle, form);
 
         trainIsRewinding(cycle, false);
-
+        
+        expect(cycle.renderStackPop()).andReturn(fl);
+        
         replay();
-
-        FieldLabel fl = newInstance(FieldLabel.class, new Object[]
-        { "displayName", "<b>FredFlintstone</b>", "raw", Boolean.TRUE });
 
         fl.render(writer, cycle);
 
@@ -160,29 +154,27 @@ public class FieldLabelTest extends BaseFormComponentTestCase
 
         verify();
     }
-
+    
     public void testNoFieldOrDisplayName()
     {
         IForm form = newForm();
-        IMarkupWriter writer = newBufferWriter();
+        IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
         
-        Location l = newLocation();
+        FieldLabel fl = newInstance(FieldLabel.class, 
+                new Object[] { "id", "label"
+        });
+        
+        expect(cycle.renderStackPush(fl)).andReturn(fl);
         
         trainGetForm(cycle, form);
-
+        
         trainIsRewinding(cycle, false);
         
-        IPage page = newFred();
-        IBinding binding = newBinding(l);
+        expect(cycle.renderStackPop()).andReturn(fl);
         
         replay();
-
-        FieldLabel fl = newInstance(FieldLabel.class, new Object[]
-        { "id", "label", "page", page, "container", page });
-
-        fl.setBinding("field", binding);
-
+        
         try
         {
             fl.render(writer, cycle);
@@ -190,16 +182,14 @@ public class FieldLabelTest extends BaseFormComponentTestCase
         }
         catch (BindingException ex)
         {
-            assertEquals(
-                    "Value for parameter 'field' in component Fred/label is null, and a non-null value is required.",
+            assertEquals("Value for parameter 'field' in component "
+                    + "null is null, and a non-null value is required.",
                     ex.getMessage());
-            assertSame(l, ex.getLocation());
-            assertSame(binding, ex.getBinding());
         }
 
         verify();
     }
-
+    
     public void testDisplayNameFromField()
     {
         IValidationDelegate delegate = new MockDelegate();
@@ -209,20 +199,24 @@ public class FieldLabelTest extends BaseFormComponentTestCase
         IMarkupWriter writer = newBufferWriter();
         IFormComponent field = newField("MyLabel", null);
         Location l = newLocation();
-
+        
         IRequestCycle cycle = newCycle();
 
+        FieldLabel fl = newInstance(FieldLabel.class, 
+                new Object[] { "location", l, "field", field, "prerender", true });
+        
+        expect(cycle.renderStackPush(fl)).andReturn(fl);
+        
         trainGetForm(cycle, form);
 
         trainIsRewinding(cycle, false);
-
-        FieldLabel fl = newInstance(FieldLabel.class, new Object[]
-        { "location", l, "field", field, "prerender", true });
 
         form.prerenderField(writer, field, l);
 
         trainGetDelegate(form, delegate);
 
+        expect(cycle.renderStackPop()).andReturn(fl);
+        
         replay();
 
         fl.render(writer, cycle);
@@ -243,16 +237,20 @@ public class FieldLabelTest extends BaseFormComponentTestCase
         Location l = newLocation();
 
         IRequestCycle cycle = newCycle();
-
+        
+        FieldLabel fl = newInstance(FieldLabel.class, 
+                new Object[] { "location", l, "field", field });
+        
+        expect(cycle.renderStackPush(fl)).andReturn(fl);
+        
         trainGetForm(cycle, form);
 
         trainIsRewinding(cycle, false);
-
-        FieldLabel fl = newInstance(FieldLabel.class, new Object[]
-        { "location", l, "field", field });
-
+        
         trainGetDelegate(form, delegate);
 
+        expect(cycle.renderStackPop()).andReturn(fl);
+        
         replay();
 
         fl.render(writer, cycle);
@@ -274,18 +272,23 @@ public class FieldLabelTest extends BaseFormComponentTestCase
         
         IRequestCycle cycle = newCycle();
         
+        IFormComponent field = newField("MyLabel", "clientId");
+        
+        FieldLabel fl = newInstance(FieldLabel.class, 
+                new Object[] { "location", l, "field", field, "prerender", true });
+        
+        expect(cycle.renderStackPush(fl)).andReturn(fl);
+        
         trainGetForm(cycle, form);
         
-        IFormComponent field = newField("MyLabel", "clientId");
         form.prerenderField(writer, field, l);
         
         trainIsRewinding(cycle, false);
         
-        FieldLabel fl = newInstance(FieldLabel.class, new Object[]
-        { "location", l, "field", field, "prerender", true });
-        
         trainGetDelegate(form, delegate);
-
+        
+        expect(cycle.renderStackPop()).andReturn(fl);
+        
         replay();
 
         fl.render(writer, cycle);
@@ -304,6 +307,14 @@ public class FieldLabelTest extends BaseFormComponentTestCase
         
         IRequestCycle cycle = newCycle();
         
+        FieldLabel fl = newInstance(FieldLabel.class, 
+                new Object[] { "id", "label", 
+            "location", l, 
+            "field", field, 
+            "prerender", true });
+        
+        expect(cycle.renderStackPush(fl)).andReturn(fl);
+        
         trainGetForm(cycle, form);
         
         form.prerenderField(writer, field, l);
@@ -312,14 +323,10 @@ public class FieldLabelTest extends BaseFormComponentTestCase
         
         trainGetDisplayName(field, null);
         
-        IPage page = newFred();
-        
         trainGetExtendedId(field, "Fred/field");
         
-        FieldLabel fl = newInstance(FieldLabel.class, new Object[]
-        { "id", "label", "location", l, "field", field, "page", page, "container", page,
-                "prerender", true });
-
+        expect(cycle.renderStackPop()).andReturn(fl);
+        
         replay();
 
         try
@@ -330,7 +337,7 @@ public class FieldLabelTest extends BaseFormComponentTestCase
         catch (BindingException ex)
         {
             assertEquals(
-                    "Display name for Fred/label was not specified and was not provided by field Fred/field.",
+                    "Display name for null was not specified and was not provided by field Fred/field.",
                     ex.getMessage());
         }
 

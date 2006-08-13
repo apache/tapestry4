@@ -41,11 +41,14 @@ public class TestRelation extends BaseComponentTestCase
     public void testRewinding()
     {
         IMarkupWriter writer = newWriter();
-
         IRequestCycle cycle = newCycle(true);
         
         Relation relation = newInstance(Relation.class, null);
-
+        
+        expect(cycle.renderStackPush(relation)).andReturn(relation);
+        
+        expect(cycle.renderStackPop()).andReturn(relation);
+        
         replay();
 
         relation.render(writer, cycle);
@@ -59,25 +62,27 @@ public class TestRelation extends BaseComponentTestCase
     public void testShellMissing()
     {
         IMarkupWriter writer = newWriter();
-
         IRequestCycle cycle = newCycle(false);
-        
         Location componentLocation = newMock(Location.class);
         
         Relation relation = newInstance(Relation.class, 
                 new Object[] {"location", componentLocation});
         
+        expect(cycle.renderStackPush(relation)).andReturn(relation);
+        
         trainGetShellFromCycle(cycle, null);
 
+        expect(cycle.renderStackPop()).andReturn(relation);
+        
         replay();
-
-        try
-        {
+        
+        try {
+            
             relation.render(writer, cycle);
             unreachable();
-        }
-        catch (ApplicationRuntimeException ex)
-        {
+            
+        } catch (ApplicationRuntimeException ex) {
+            
             assertEquals(ex.getLocation(), componentLocation);
         }
 
@@ -90,27 +95,29 @@ public class TestRelation extends BaseComponentTestCase
     public void testInvalidHrefParameter()
     {
         IMarkupWriter writer = newWriter();
-
         IRequestCycle cycle = newCycle(false);
-        
         Location componentLocation = newMock(Location.class);
         
-        Relation relation = newInstance(Relation.class, new Object[] 
-        {"location", componentLocation, "href", null});
+        Relation relation = newInstance(Relation.class, 
+                new Object[] {"location", componentLocation, "href", null});
         
         Shell shell = newInstance(Shell.class, null);
         
+        expect(cycle.renderStackPush(relation)).andReturn(relation);
+        
         trainGetShellFromCycle(cycle, shell);
 
+        expect(cycle.renderStackPop()).andReturn(relation);
+        
         replay();
-
-        try
-        {
+        
+        try {
+            
             relation.render(writer, cycle);
             unreachable();
-        }
-        catch (ApplicationRuntimeException ex)
-        {
+            
+        } catch (ApplicationRuntimeException ex) {
+            
             assertEquals(ex.getLocation(), componentLocation);
         }
 

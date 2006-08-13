@@ -242,8 +242,6 @@ public abstract class AbstractPage extends BaseComponent implements IPage
         {
             firePageBeginRender();
             
-            beginResponse(cycle.isRewinding() ? NullWriter.getSharedInstance() : builder.getWriter(), cycle);
-            
             if (!cycle.isRewinding())
                 cycle.commitPageChanges();
             
@@ -280,16 +278,6 @@ public abstract class AbstractPage extends BaseComponent implements IPage
         Tapestry.addMethodInvocation(Tapestry.ABSTRACTPAGE_VALIDATE_METHOD_ID);
 
         firePageValidate();
-    }
-
-    /**
-     * Does nothing, subclasses may override as needed.
-     * 
-     * @deprecated To be removed in 4.0. Implement {@link PageRenderListener}instead.
-     */
-
-    public void beginResponse(IMarkupWriter writer, IRequestCycle cycle)
-    {
     }
 
     public IRequestCycle getRequestCycle()

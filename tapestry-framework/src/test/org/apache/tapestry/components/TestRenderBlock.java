@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.components;
 
+import static org.easymock.EasyMock.expect;
+
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
@@ -31,10 +33,14 @@ public class TestRenderBlock extends BaseComponentTestCase
     public void testNullBlock()
     {
         RenderBlock rb = (RenderBlock) newInstance(RenderBlock.class);
-
+        
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newMock(IRequestCycle.class);
-
+        
+        expect(cycle.renderStackPush(rb)).andReturn(rb);
+        
+        expect(cycle.renderStackPop()).andReturn(rb);
+        
         replay();
 
         rb.render(writer, cycle);
@@ -46,14 +52,18 @@ public class TestRenderBlock extends BaseComponentTestCase
     {
         Block b = (Block)newInstance(Block.class);
 
-        RenderBlock rb = newInstance(RenderBlock.class, new Object[]
-        { "block", b });
-
+        RenderBlock rb = newInstance(RenderBlock.class, 
+                new Object[] { "block", b });
+        
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newMock(IRequestCycle.class);
-
+        
+        expect(cycle.renderStackPush(rb)).andReturn(rb);
+        
         b.renderForComponent(writer, cycle, rb);
 
+        expect(cycle.renderStackPop()).andReturn(rb);
+        
         replay();
 
         rb.render(writer, cycle);

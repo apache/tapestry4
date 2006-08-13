@@ -60,7 +60,8 @@ public class DojoAjaxResponseContributorImpl implements ResponseContributor
         errorPages.add(_staleSessionPageName);
         errorPages.add(_staleLinkPageName);
         
-        return new DojoAjaxResponseBuilder(_localeManager, _markupWriterSource,
+        return new DojoAjaxResponseBuilder(cycle, _localeManager, 
+                _markupWriterSource,
                 _webResponse, errorPages);
     }
     

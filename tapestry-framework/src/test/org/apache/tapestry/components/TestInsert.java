@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.components;
 
+import static org.easymock.EasyMock.expect;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertSame;
 
@@ -56,11 +57,15 @@ public class TestInsert extends BaseComponentTestCase
 
     public void testRewinding()
     {
-        IRequestCycle cycle = newCycle(true, false);
-
-        replay();
-
+        IRequestCycle cycle = newCycle(true);
+        
         Insert insert = (Insert) newInstance(Insert.class);
+        
+        expect(cycle.renderStackPush(insert)).andReturn(insert);
+        
+        expect(cycle.renderStackPop()).andReturn(insert);
+        
+        replay();
 
         insert.render(null, cycle);
 
@@ -69,13 +74,17 @@ public class TestInsert extends BaseComponentTestCase
 
     public void testNullValue()
     {
-        IRequestCycle cycle = newCycle(false, false);
-
+        IRequestCycle cycle = newCycle(false);
+        
+        Insert insert = newInstance(Insert.class, 
+                new Object[] { "value", null });
+        
+        expect(cycle.renderStackPush(insert)).andReturn(insert);
+        
+        expect(cycle.renderStackPop()).andReturn(insert);
+        
         replay();
-
-        Insert insert = newInstance(Insert.class, new Object[]
-        { "value", null });
-
+        
         insert.render(null, cycle);
 
         verify();
@@ -84,14 +93,18 @@ public class TestInsert extends BaseComponentTestCase
     public void testNoFormat()
     {
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle(false, false);
+        IRequestCycle cycle = newCycle(false);
+        
+        Insert insert = newInstance(Insert.class, 
+                new Object[] { "value", new Integer(42) });
+        
+        expect(cycle.renderStackPush(insert)).andReturn(insert);
         
         writer.print("42", false);
         
-        replay();
+        expect(cycle.renderStackPop()).andReturn(insert);
         
-        Insert insert = newInstance(Insert.class, new Object[]
-        { "value", new Integer(42) });
+        replay();
         
         insert.render(writer, cycle);
 
@@ -101,18 +114,22 @@ public class TestInsert extends BaseComponentTestCase
     public void testFormat()
     {
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle(false, false);
-
+        IRequestCycle cycle = newCycle(false);
+        
         Date date = new Date();
         DateFormat format = DateFormat.getDateInstance();
         String expected = format.format(date);
         
+        Insert insert = newInstance(Insert.class, 
+                new Object[]{ "value", date, "format", format });
+        
+        expect(cycle.renderStackPush(insert)).andReturn(insert);
+        
         writer.print(expected, false);
         
-        replay();
+        expect(cycle.renderStackPop()).andReturn(insert);
         
-        Insert insert = newInstance(Insert.class, new Object[]
-        { "value", date, "format", format });
+        replay();
 
         insert.render(writer, cycle);
 
@@ -127,15 +144,20 @@ public class TestInsert extends BaseComponentTestCase
         
         Format format = DateFormat.getInstance();
         
-        IRequestCycle cycle = newCycle(false, false);
+        Insert insert = newInstance(Insert.class, 
+                new Object[] { "value", value, "format", format });
+        
+        IRequestCycle cycle = newCycle(false);
         IMarkupWriter writer = newWriter();
         
         IPage page = newBasePage("Flintstone");
         
+        expect(cycle.renderStackPush(insert)).andReturn(insert);
+        
+        expect(cycle.renderStackPop()).andReturn(insert);
+        
         replay();
         
-        Insert insert = newInstance(Insert.class, new Object[]
-        { "value", value, "format", format });
         insert.setBinding("format", binding);
         insert.setId("fred");
         insert.setPage(page);
@@ -160,15 +182,19 @@ public class TestInsert extends BaseComponentTestCase
 
     public void testRaw()
     {
-        IRequestCycle cycle = newCycle(false, false);
+        IRequestCycle cycle = newCycle(false);
         IMarkupWriter writer = newWriter();
-
+        
+        Insert insert = newInstance(Insert.class, 
+                new Object[] { "value", new Integer(42), "raw", Boolean.TRUE });
+        
+        expect(cycle.renderStackPush(insert)).andReturn(insert);
+        
         writer.print("42", true);
-
+        
+        expect(cycle.renderStackPop()).andReturn(insert);
+        
         replay();
-
-        Insert insert = newInstance(Insert.class, new Object[]
-        { "value", new Integer(42), "raw", Boolean.TRUE });
 
         insert.render(writer, cycle);
 
@@ -182,18 +208,26 @@ public class TestInsert extends BaseComponentTestCase
         IRequestCycle cycle = newCycle(false, false);
         IMarkupWriter writer = newWriter();
         IComponentSpecification spec = newSpec("informal", null);
-
+        
+        Insert insert = newInstance(Insert.class, 
+                new Object[] { 
+            "value", "42", 
+            "specification", spec, 
+            "styleClass", "paisley" 
+        });
+        
+        expect(cycle.renderStackPush(insert)).andReturn(insert);
+        
         writer.begin("span");
         writer.attribute("class", "paisley");
         writer.attribute("informal", "informal-value");
         writer.print("42", false);
         writer.end();
-
+        
+        expect(cycle.renderStackPop()).andReturn(insert);
+        
         replay();
-
-        Insert insert = newInstance(Insert.class, new Object[]
-        { "value", "42", "specification", spec, "styleClass", "paisley" });
-
+        
         insert.setBinding("informal", informal);
 
         insert.render(writer, cycle);

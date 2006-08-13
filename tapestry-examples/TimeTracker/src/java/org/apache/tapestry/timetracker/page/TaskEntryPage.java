@@ -43,7 +43,7 @@ import org.apache.tapestry.timetracker.model.Task;
 public abstract class TaskEntryPage extends BasePage
 {
     
-    @Component(bindings = { "model=projectModel", "value=selectedProject",
+    @Component(id = "projectChoose", bindings = { "model=projectModel", "value=selectedProject",
             "displayName=message:choose.project", "filterOnChange=true",
             "validators=validators:required"})
     public abstract Autocompleter getProjectChoose();

@@ -51,8 +51,10 @@ public class TestTextField extends BaseFormComponentTestCase
         IForm form = newMock(IForm.class);
 
         IMarkupWriter writer = newWriter();
-
+        
         IValidationDelegate delegate = newDelegate();
+        
+        expect(cycle.renderStackPush(component)).andReturn(component);
         
         trainGetForm(cycle, form);
         trainWasPrerendered(form, writer, component, false);
@@ -78,6 +80,8 @@ public class TestTextField extends BaseFormComponentTestCase
             unreachable();
         }
         
+        expect(cycle.renderStackPop()).andReturn(component);
+        
         replay();
 
         component.render(writer, cycle);
@@ -102,7 +106,9 @@ public class TestTextField extends BaseFormComponentTestCase
         IMarkupWriter writer = newWriter();
 
         IValidationDelegate delegate = newDelegate();
-
+        
+        expect(cycle.renderStackPush(component)).andReturn(component);
+        
         trainGetForm(cycle, form);
         trainWasPrerendered(form, writer, component, false);
         trainGetDelegate(form, delegate);
@@ -128,6 +134,8 @@ public class TestTextField extends BaseFormComponentTestCase
         trainGetDelegate(form, delegate);
         delegate.record(exception);
         
+        expect(cycle.renderStackPop()).andReturn(component);
+        
         replay();
 
         component.render(writer, cycle);
@@ -152,7 +160,9 @@ public class TestTextField extends BaseFormComponentTestCase
         IMarkupWriter writer = newWriter();
 
         IValidationDelegate delegate = newDelegate();
-
+        
+        expect(cycle.renderStackPush(component)).andReturn(component);
+        
         trainGetForm(cycle, form);
         trainWasPrerendered(form, writer, component, false);
         trainGetDelegate(form, delegate);
@@ -183,6 +193,8 @@ public class TestTextField extends BaseFormComponentTestCase
         trainGetDelegate(form, delegate);
         delegate.record(exception);
         
+        expect(cycle.renderStackPop()).andReturn(component);
+        
         replay();
 
         component.render(writer, cycle);
@@ -199,12 +211,16 @@ public class TestTextField extends BaseFormComponentTestCase
         IRequestCycle cycle = newCycle();
         
         IForm form = newMock(IForm.class);
-
+        
         IMarkupWriter writer = newWriter();
 
+        expect(cycle.renderStackPush(component)).andReturn(component);
+        
         trainGetForm(cycle, form);
         trainWasPrerendered(form, writer, component, true);
 
+        expect(cycle.renderStackPop()).andReturn(component);
+        
         replay();
 
         component.render(writer, cycle);
@@ -223,7 +239,9 @@ public class TestTextField extends BaseFormComponentTestCase
         IMarkupWriter writer = newWriter();
 
         IValidationDelegate delegate = newDelegate();
-
+        
+        expect(cycle.renderStackPush(component)).andReturn(component);
+        
         trainGetForm(cycle, form);
         trainWasPrerendered(form, writer, component, false);
         trainGetDelegate(form, delegate);
@@ -233,7 +251,9 @@ public class TestTextField extends BaseFormComponentTestCase
         trainGetElementId(form, component, "barney");
         trainIsRewinding(form, false);
         trainIsRewinding(cycle, true);
-
+        
+        expect(cycle.renderStackPop()).andReturn(component);
+        
         replay();
 
         component.render(writer, cycle);
@@ -252,7 +272,9 @@ public class TestTextField extends BaseFormComponentTestCase
         IMarkupWriter writer = newWriter();
 
         IValidationDelegate delegate = newDelegate();
-
+        
+        expect(cycle.renderStackPush(component)).andReturn(component);
+        
         trainGetForm(cycle, form);
         trainWasPrerendered(form, writer, component, false);
         trainGetDelegate(form, delegate);
@@ -261,7 +283,9 @@ public class TestTextField extends BaseFormComponentTestCase
 
         trainGetElementId(form, component, "barney");
         trainIsRewinding(form, true);
-
+        
+        expect(cycle.renderStackPop()).andReturn(component);
+        
         replay();
 
         component.render(writer, cycle);
@@ -286,7 +310,9 @@ public class TestTextField extends BaseFormComponentTestCase
 
         TextField component = newInstance(TextField.class, new Object[]
         { "name", "fred", "translatedFieldSupport", tfs, "validatableFieldSupport", vfs, "value", new Integer(10) });
-
+        
+        expect(cycle.renderStackPush(component)).andReturn(component);
+        
         trainGetForm(cycle, form);
         trainWasPrerendered(form, writer, component, false);
         trainGetDelegate(form, delegate);
@@ -312,6 +338,8 @@ public class TestTextField extends BaseFormComponentTestCase
         vfs.renderContributions(component, writer, cycle);
 
         trainGetDelegate(form, delegate);
+        
+        expect(cycle.renderStackPop()).andReturn(component);
         
         replay();
 
@@ -337,7 +365,9 @@ public class TestTextField extends BaseFormComponentTestCase
 
         TextField component = newInstance(TextField.class, new Object[]
         { "name", "fred", "translatedFieldSupport", tfs, "validatableFieldSupport", vfs, "value", new Integer(10), "hidden", Boolean.TRUE });
-
+        
+        expect(cycle.renderStackPush(component)).andReturn(component);
+        
         trainGetForm(cycle, form);
         trainWasPrerendered(form, writer, component, false);
         trainGetDelegate(form, delegate);
@@ -365,6 +395,8 @@ public class TestTextField extends BaseFormComponentTestCase
         vfs.renderContributions(component, writer, cycle);
 
         trainGetDelegate(form, delegate);
+        
+        expect(cycle.renderStackPop()).andReturn(component);
         
         replay();
 
@@ -390,7 +422,9 @@ public class TestTextField extends BaseFormComponentTestCase
 
         TextField component = newInstance(TextField.class, new Object[]
         { "name", "fred", "translatedFieldSupport", tfs, "validatableFieldSupport", vfs, "value", new Integer(10), "disabled", Boolean.TRUE });
-
+        
+        expect(cycle.renderStackPush(component)).andReturn(component);
+        
         trainGetForm(cycle, form);
         trainWasPrerendered(form, writer, component, false);
         trainGetDelegate(form, delegate);
@@ -418,6 +452,8 @@ public class TestTextField extends BaseFormComponentTestCase
         vfs.renderContributions(component, writer, cycle);
 
         trainGetDelegate(form, delegate);
+        
+        expect(cycle.renderStackPop()).andReturn(component);
         
         replay();
 
@@ -445,9 +481,11 @@ public class TestTextField extends BaseFormComponentTestCase
 
         TextField component = newInstance(TextField.class, new Object[]
         { "name", "fred", "translatedFieldSupport", tfs, "validatableFieldSupport", vfs, "value", new Integer(10), "specification", new ComponentSpecification() });
-
+        
         component.setBinding("informal", binding);
-
+        
+        expect(cycle.renderStackPush(component)).andReturn(component);
+        
         trainGetForm(cycle, form);
         trainWasPrerendered(form, writer, component, false);
         trainGetDelegate(form, delegate);
@@ -464,6 +502,8 @@ public class TestTextField extends BaseFormComponentTestCase
         
         tfs.renderContributions(component, writer, cycle);
         vfs.renderContributions(component, writer, cycle);
+        
+        expect(cycle.renderStackPop()).andReturn(component);
         
         replay();
 
@@ -489,7 +529,9 @@ public class TestTextField extends BaseFormComponentTestCase
 
         TextField component = newInstance(TextField.class, new Object[]
         { "name", "fred", "translatedFieldSupport", tfs, "validatableFieldSupport", vfs });
-
+        
+        expect(cycle.renderStackPush(component)).andReturn(component);
+        
         trainGetForm(cycle, form);
         trainWasPrerendered(form, writer, component, false);
         trainGetDelegate(form, delegate);
@@ -516,6 +558,8 @@ public class TestTextField extends BaseFormComponentTestCase
 
         trainGetDelegate(form, delegate);
         
+        expect(cycle.renderStackPop()).andReturn(component);
+        
         replay();
 
         component.render(writer, cycle);
@@ -531,7 +575,7 @@ public class TestTextField extends BaseFormComponentTestCase
 
         TextField field = newInstance(TextField.class, new Object[]
         { "validatableFieldSupport", support, });
-
+        
         expect(support.isRequired(field)).andReturn(true);
 
         replay();

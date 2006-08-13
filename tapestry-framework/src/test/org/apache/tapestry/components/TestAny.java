@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.components;
 
+import static org.easymock.EasyMock.expect;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertSame;
 
@@ -43,9 +44,13 @@ public class TestAny extends BaseComponentTestCase
         IRequestCycle cycle = newMock(IRequestCycle.class);
         Location l = newLocation();
         
-        replay();
-        
         Any any = newInstance(Any.class, new Object[] { "location", l });
+        
+        expect(cycle.renderStackPush(any)).andReturn(any);
+        
+        expect(cycle.renderStackPop()).andReturn(any);
+        
+        replay();
 
         try
         {
@@ -67,18 +72,22 @@ public class TestAny extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle(false, writer);
         
+        Any any = newInstance(Any.class,
+                new Object[] { "element", "span" });
+        
+        expect(cycle.renderStackPush(any)).andReturn(any);
+        
         writer.begin("span");
         
         IRender body = newRender();
         body.render(writer, cycle);
 
         writer.end("span");
-
+        
+        expect(cycle.renderStackPop()).andReturn(any);
+        
         replay();
-
-        Any any = newInstance(Any.class,
-                new Object[] { "element", "span" });
-
+        
         any.addBody(body);
 
         any.render(writer, cycle);
@@ -92,18 +101,22 @@ public class TestAny extends BaseComponentTestCase
         IRequestCycle cycle = newCycle(false, writer);
         IRender body = newRender();
         IBinding binding = newBinding("fred");
-
+        
+        Any any = newInstance(Any.class, new Object[] { "element",
+            "span", "specification", new ComponentSpecification() });
+        
+        expect(cycle.renderStackPush(any)).andReturn(any);
+        
         writer.begin("span");
         writer.attribute("class", "fred");
 
         body.render(writer, cycle);
 
         writer.end("span");
-
+        
+        expect(cycle.renderStackPop()).andReturn(any);
+        
         replay();
-
-        Any any = newInstance(Any.class, new Object[] { "element",
-                "span", "specification", new ComponentSpecification() });
 
         any.addBody(body);
         any.setBinding("class", binding);
@@ -118,13 +131,17 @@ public class TestAny extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle(true, writer);
         IRender body = newRender();
-
-        body.render(writer, cycle);
-
-        replay();
-
+        
         Any any = newInstance(Any.class,
                 new Object[] { "element", "span" });
+        
+        expect(cycle.renderStackPush(any)).andReturn(any);
+        
+        body.render(writer, cycle);
+        
+        expect(cycle.renderStackPop()).andReturn(any);
+        
+        replay();
 
         any.addBody(body);
 

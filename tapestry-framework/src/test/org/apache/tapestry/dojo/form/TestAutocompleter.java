@@ -83,6 +83,8 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         
         IValidationDelegate delegate = newDelegate();
         
+        expect(cycle.renderStackPush(component)).andReturn(component);
+        
         trainGetForm(cycle, form);
         trainWasPrerendered(form, writer, component, false);
         trainGetDelegate(form, delegate);
@@ -107,6 +109,8 @@ public class TestAutocompleter extends BaseFormComponentTestCase
             unreachable();
         }
         
+        expect(cycle.renderStackPop()).andReturn(component);
+        
         replay();
         
         component.render(writer, cycle);
@@ -127,6 +131,8 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         
         IValidationDelegate delegate = newDelegate();
         
+        expect(cycle.renderStackPush(component)).andReturn(component);
+        
         trainGetForm(cycle, form);
         trainWasPrerendered(form, writer, component, false);
         trainGetDelegate(form, delegate);
@@ -136,6 +142,8 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         trainGetElementId(form, component, "barney");
         trainIsRewinding(form, false);
         trainIsRewinding(cycle, true);
+        
+        expect(cycle.renderStackPop()).andReturn(component);
         
         replay();
         
@@ -153,12 +161,6 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         IRequestCycle cycle = newMock(IRequestCycle.class);
         IForm form = newMock(IForm.class);
         checkOrder(form, false);
-        
-        expect(form.getName()).andReturn("testform").anyTimes();
-        
-        form.setFormFieldUpdating(true);
-        
-        IMarkupWriter writer = newBufferWriter();
         
         MockDelegate delegate = new MockDelegate();
         
@@ -178,6 +180,14 @@ public class TestAutocompleter extends BaseFormComponentTestCase
             "value", match,
             "dataSqueezer", ds
         });
+        
+        expect(cycle.renderStackPush(component)).andReturn(component);
+        
+        expect(form.getName()).andReturn("testform").anyTimes();
+        
+        form.setFormFieldUpdating(true);
+        
+        IMarkupWriter writer = newBufferWriter();
         
         DirectServiceParameter dsp = 
             new DirectServiceParameter(component);
@@ -207,6 +217,8 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         expect(ds.squeeze(2)).andReturn("2p");
         
         script.execute(eq(component), eq(cycle), eq(prs), isA(Map.class));
+        
+        expect(cycle.renderStackPop()).andReturn(component);
         
         replay();
         

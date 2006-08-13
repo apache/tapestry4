@@ -62,9 +62,9 @@ public abstract class FieldLabel extends AbstractComponent
         {
             if (field == null)
                 throw Tapestry.createRequiredParameterException(this, "field");
-
+            
             displayName = field.getDisplayName();
-
+            
             if (displayName == null)
                 throw new BindingException(ValidMessages.noDisplayName(this,
                         field), this, null, getBinding("field"), null);
@@ -73,16 +73,16 @@ public abstract class FieldLabel extends AbstractComponent
         IValidationDelegate delegate = form.getDelegate();
 
         String id = field == null ? null : field.getClientId();
-
+        
         delegate.writeLabelPrefix(field, writer, cycle);
-
+        
         writer.begin("label");
 
         if (id != null) writer.attribute("for", id);
-
+        
         delegate.writeLabelAttributes(writer, cycle, field);
         renderInformalParameters(writer, cycle);
-
+        
         writer.print(displayName, getRaw());
 
         writer.end();

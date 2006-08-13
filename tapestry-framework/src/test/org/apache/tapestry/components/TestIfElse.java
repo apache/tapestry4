@@ -54,6 +54,13 @@ public class TestIfElse extends BaseComponentTestCase
 
         IMarkupWriter writer = newWriter();
         
+        IfBean conditional = newInstance(IfBean.class, 
+                new Object[] { "condition", Boolean.TRUE });
+        
+        ElseBean reverse = (ElseBean) newInstance(ElseBean.class);
+        
+        expect(cycle.renderStackPush(conditional)).andReturn(conditional);
+        
         expect(cycle.isRewinding()).andReturn(false);
         
         expect(cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE)).andReturn(null);
@@ -64,19 +71,22 @@ public class TestIfElse extends BaseComponentTestCase
         
         cycle.setAttribute(IfBean.IF_VALUE_ATTRIBUTE, Boolean.TRUE);
         
+        expect(cycle.renderStackPop()).andReturn(conditional);
+        
+        expect(cycle.renderStackPush(reverse)).andReturn(reverse);
+        
         expect(cycle.getAttribute(IfBean.IF_VALUE_ATTRIBUTE)).andReturn(Boolean.TRUE);
+        
+        expect(cycle.renderStackPop()).andReturn(reverse);
         
         IRender body2 = newRender();
         
         replay();
         
-        IfBean conditional = newInstance(IfBean.class, new Object[]
-        { "condition", Boolean.TRUE });
         conditional.addBody(body);
         
         conditional.render(writer, cycle);
         
-        ElseBean reverse = (ElseBean) newInstance(ElseBean.class);
         reverse.addBody(body2);
         reverse.render(writer, cycle);
 
@@ -88,11 +98,22 @@ public class TestIfElse extends BaseComponentTestCase
         IRequestCycle cycle = newCycle();
         IMarkupWriter writer = newWriter();
         
+        IfBean conditional = newInstance(IfBean.class, 
+                new Object[] { "condition", Boolean.FALSE });
+        
+        ElseBean reverse = (ElseBean) newInstance(ElseBean.class);
+        
+        expect(cycle.renderStackPush(conditional)).andReturn(conditional);
+        
         expect(cycle.isRewinding()).andReturn(false);
         
         expect(cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE)).andReturn(null);
         
         cycle.setAttribute(IfBean.IF_VALUE_ATTRIBUTE, Boolean.FALSE);
+        
+        expect(cycle.renderStackPop()).andReturn(conditional);
+        
+        expect(cycle.renderStackPush(reverse)).andReturn(reverse);
         
         expect(cycle.getAttribute(IfBean.IF_VALUE_ATTRIBUTE)).andReturn(Boolean.FALSE);
         
@@ -102,15 +123,14 @@ public class TestIfElse extends BaseComponentTestCase
         
         IRender body = newRender();
         IRender body2 = newRender(writer, cycle);
-
+        
+        expect(cycle.renderStackPop()).andReturn(reverse);
+        
         replay();
-
-        IfBean conditional = newInstance(IfBean.class, new Object[]
-        { "condition", Boolean.FALSE });
+        
         conditional.addBody(body);
         conditional.render(writer, cycle);
-
-        ElseBean reverse = (ElseBean) newInstance(ElseBean.class);
+        
         reverse.addBody(body2);
         reverse.render(writer, cycle);
 
@@ -123,14 +143,18 @@ public class TestIfElse extends BaseComponentTestCase
         
         IfBean conditional = newInstance(TestIfBean.class, 
         		new Object[] { "condition", Boolean.TRUE });
-
+        
+        ElseBean reverse = (ElseBean) newInstance(ElseBean.class);
+        
         IForm form = newMock(IForm.class);
         IRequestCycle cycle = newCycle();
-
+        
+        expect(cycle.renderStackPush(conditional)).andReturn(conditional);
+        
         expect(cycle.isRewinding()).andReturn(false);
         
         expect(cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE)).andReturn(form);
-
+        
         expect(form.getElementId(conditional)).andReturn("If");
         
         form.addHiddenValue("If", "T");
@@ -141,17 +165,21 @@ public class TestIfElse extends BaseComponentTestCase
         
         cycle.setAttribute(IfBean.IF_VALUE_ATTRIBUTE, Boolean.TRUE);
         
+        expect(cycle.renderStackPop()).andReturn(conditional);
+        
+        expect(cycle.renderStackPush(reverse)).andReturn(reverse);
+        
         expect(cycle.getAttribute(IfBean.IF_VALUE_ATTRIBUTE)).andReturn(Boolean.TRUE);
         
         IRender body2 = newRender();
-
+        
+        expect(cycle.renderStackPop()).andReturn(reverse);
+        
         replay();
-
-
+        
         conditional.addBody(body);
         conditional.render(writer, cycle);
-
-        ElseBean reverse = (ElseBean) newInstance(ElseBean.class);
+        
         reverse.addBody(body2);
         reverse.render(writer, cycle);
 
@@ -165,8 +193,12 @@ public class TestIfElse extends BaseComponentTestCase
         IfBean conditional = newInstance(TestIfBean.class, 
         		new Object[] { "condition", Boolean.FALSE });
 
+        ElseBean reverse = (ElseBean) newInstance(ElseBean.class);
+        
         IRequestCycle cycle = newCycle();
         IForm form = newMock(IForm.class);
+        
+        expect(cycle.renderStackPush(conditional)).andReturn(conditional);
         
         expect(cycle.isRewinding()).andReturn(false);
         
@@ -178,6 +210,10 @@ public class TestIfElse extends BaseComponentTestCase
         
         cycle.setAttribute(IfBean.IF_VALUE_ATTRIBUTE, Boolean.FALSE);
         
+        expect(cycle.renderStackPop()).andReturn(conditional);
+        
+        expect(cycle.renderStackPush(reverse)).andReturn(reverse);
+        
         expect(cycle.getAttribute(IfBean.IF_VALUE_ATTRIBUTE)).andReturn(Boolean.FALSE);
         
         expect(cycle.isRewinding()).andReturn(false);
@@ -187,13 +223,13 @@ public class TestIfElse extends BaseComponentTestCase
         IRender body = newRender();
         IRender body2 = newRender(writer, cycle);
 
+        expect(cycle.renderStackPop()).andReturn(reverse);
+        
         replay();
-
 
         conditional.addBody(body);
         conditional.render(writer, cycle);
-
-        ElseBean reverse = (ElseBean) newInstance(ElseBean.class);
+        
         reverse.addBody(body2);
         reverse.render(writer, cycle);
 
@@ -207,9 +243,13 @@ public class TestIfElse extends BaseComponentTestCase
         IfBean conditional = newInstance(TestIfBean.class, 
         		new Object[] { "condition", Boolean.TRUE, "element", "div" });
         
+        ElseBean reverse = (ElseBean) newInstance(ElseBean.class);
+        
         IForm form = newMock(IForm.class);
         IRequestCycle cycle = newCycle();
-
+        
+        expect(cycle.renderStackPush(conditional)).andReturn(conditional);
+        
         expect(cycle.isRewinding()).andReturn(true);
         
         expect(cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE)).andReturn(form);
@@ -219,23 +259,28 @@ public class TestIfElse extends BaseComponentTestCase
         expect(form.getElementId(conditional)).andReturn("If");
         
         expect(cycle.getParameter("If")).andReturn("T");
-
+        
         trainResponseBuilder(cycle, writer);
         
         IRender body = newRender(writer, cycle);
         
         cycle.setAttribute(IfBean.IF_VALUE_ATTRIBUTE, Boolean.TRUE);
-
+        
+        expect(cycle.renderStackPop()).andReturn(conditional);
+        
+        expect(cycle.renderStackPush(reverse)).andReturn(reverse);
+        
         expect(cycle.getAttribute(IfBean.IF_VALUE_ATTRIBUTE)).andReturn(Boolean.TRUE);
         
         IRender body2 = newRender();
 
+        expect(cycle.renderStackPop()).andReturn(reverse);
+        
         replay();
 
         conditional.addBody(body);
         conditional.render(writer, cycle);
-
-        ElseBean reverse = (ElseBean) newInstance(ElseBean.class);
+        
         reverse.addBody(body2);
         reverse.render(writer, cycle);
         
@@ -249,9 +294,13 @@ public class TestIfElse extends BaseComponentTestCase
         IfBean conditional = newInstance(TestIfBean.class, 
         		new Object[] { "condition", Boolean.TRUE, "element", "div" });
         
+        ElseBean reverse = (ElseBean) newInstance(ElseBean.class);
+        
         IForm form = newMock(IForm.class);
         IRequestCycle cycle = newCycle();
-
+        
+        expect(cycle.renderStackPush(conditional)).andReturn(conditional);
+        
         expect(cycle.isRewinding()).andReturn(true);
         
         expect(cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE)).andReturn(form);
@@ -264,6 +313,10 @@ public class TestIfElse extends BaseComponentTestCase
         
         cycle.setAttribute(IfBean.IF_VALUE_ATTRIBUTE, Boolean.FALSE);
         
+        expect(cycle.renderStackPop()).andReturn(conditional);
+        
+        expect(cycle.renderStackPush(reverse)).andReturn(reverse);
+        
         expect(cycle.getAttribute(IfBean.IF_VALUE_ATTRIBUTE)).andReturn(Boolean.FALSE);
         
         expect(cycle.isRewinding()).andReturn(true);
@@ -272,13 +325,14 @@ public class TestIfElse extends BaseComponentTestCase
         
         IRender body = newRender();
         IRender body2 = newRender(writer, cycle);
-
+        
+        expect(cycle.renderStackPop()).andReturn(reverse);
+        
         replay();
 
         conditional.addBody(body);
         conditional.render(writer, cycle);
-
-        ElseBean reverse = (ElseBean) newInstance(ElseBean.class);
+        
         reverse.addBody(body2);
         reverse.render(writer, cycle);
         
@@ -294,6 +348,15 @@ public class TestIfElse extends BaseComponentTestCase
         
         IRequestCycle cycle = newCycle();
 
+        IfBean conditional = newInstance(TestIfBean.class, 
+                new Object[] { 
+            "condition", Boolean.TRUE, 
+            "element", "div", 
+            "specification", spec 
+        });
+        
+        expect(cycle.renderStackPush(conditional)).andReturn(conditional);
+        
         expect(cycle.isRewinding()).andReturn(false);
         
         expect(cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE)).andReturn(null);
@@ -308,12 +371,11 @@ public class TestIfElse extends BaseComponentTestCase
         trainResponseBuilder(cycle, writer);
         
         cycle.setAttribute(IfBean.IF_VALUE_ATTRIBUTE, Boolean.TRUE);
-
+        
+        expect(cycle.renderStackPop()).andReturn(conditional);
         
         replay();
-
-        IfBean conditional = newInstance(TestIfBean.class, new Object[]
-        { "condition", Boolean.TRUE, "element", "div", "specification", spec });
+        
         conditional.addBody(body);
         conditional.setBinding("informal", informal);
 
