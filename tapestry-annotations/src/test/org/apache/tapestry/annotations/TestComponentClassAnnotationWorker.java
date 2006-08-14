@@ -15,6 +15,8 @@
 package org.apache.tapestry.annotations;
 
 import static org.testng.AssertJUnit.*;
+
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.ComponentSpecification;
@@ -93,4 +95,24 @@ public class TestComponentClassAnnotationWorker extends BaseAnnotationTestCase
         assertEquals(true, spec.isReservedParameterName("foo"));
         assertEquals(true, spec.isReservedParameterName("bar"));
     }
+    
+    public void testComponentClassNotAllowed()
+    {
+        EnhancementOperation op = newOp();
+        IComponentSpecification spec = new ComponentSpecification();
+
+        replay();
+
+        try
+        {
+            new ComponentClassAnnotationWorker().performEnhancement(
+                    op, spec, PageAnnotatedAsComponent.class, null);
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {            
+        }
+        
+        verify();
+    }    
 }

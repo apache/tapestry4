@@ -107,4 +107,9 @@ final class AnnotationMessages
     {
         return _formatter.format("no-targets-found", method);
     }
+    
+    static String invalidAnnotationInClass(Class annotation, Class clazz)
+    {
+        return _formatter.format("invalid-annotation-in-class", annotation.getName(), clazz.getName());
+    }    
 }

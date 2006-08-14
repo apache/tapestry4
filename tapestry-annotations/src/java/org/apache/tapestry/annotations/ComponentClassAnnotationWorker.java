@@ -14,7 +14,9 @@
 
 package org.apache.tapestry.annotations;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
+import org.apache.tapestry.IPage;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -33,6 +35,11 @@ public class ComponentClassAnnotationWorker implements ClassAnnotationEnhancemen
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
             Class baseClass, Location location)
     {
+        if (IPage.class.isAssignableFrom(baseClass))
+        {
+            throw new ApplicationRuntimeException(
+                    AnnotationMessages.invalidAnnotationInClass(ComponentClass.class, baseClass));            
+        }
         ComponentClass component = (ComponentClass) baseClass.getAnnotation(ComponentClass.class);
 
         spec.setAllowBody(component.allowBody());

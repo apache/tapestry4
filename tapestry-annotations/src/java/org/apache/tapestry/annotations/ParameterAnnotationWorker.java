@@ -16,8 +16,10 @@ package org.apache.tapestry.annotations;
 
 import java.lang.reflect.Method;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Location;
+import org.apache.tapestry.IPage;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
@@ -37,6 +39,12 @@ public class ParameterAnnotationWorker implements MethodAnnotationEnhancementWor
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
             Method method, Location location)
     {
+        if (IPage.class.isAssignableFrom(method.getDeclaringClass()))
+        {
+            throw new ApplicationRuntimeException(
+                    AnnotationMessages.invalidAnnotationInClass(Parameter.class, method.getDeclaringClass()));
+        }       
+        
         Parameter parameter = method.getAnnotation(Parameter.class);
 
         String propertyName = AnnotationUtils.getPropertyName(method);

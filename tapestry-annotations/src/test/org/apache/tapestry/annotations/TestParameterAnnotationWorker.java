@@ -20,6 +20,7 @@ import static org.testng.AssertJUnit.assertSame;
 
 import java.lang.reflect.Method;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.ComponentSpecification;
@@ -44,7 +45,7 @@ public class TestParameterAnnotationWorker extends BaseAnnotationTestCase
     private IParameterSpecification attempt(String propertyName, String parameterName,
             Location location)
     {
-        Method m = findMethod(AnnotatedPage.class, "get"
+        Method m = findMethod(AnnotatedComponent.class, "get"
                 + propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1));
         
         EnhancementOperation op = newMock(EnhancementOperation.class);
@@ -118,6 +119,28 @@ public class TestParameterAnnotationWorker extends BaseAnnotationTestCase
         IParameterSpecification ps = attempt("defaultValue", null);
 
         assertEquals("myDefault", ps.getDefaultValue());
+    }
+    
+    public void testParameterNotAllowed()
+    {
+        Method m = findMethod(AnnotatedPage.class, "getSimpleParameter");
+        
+        EnhancementOperation op = newMock(EnhancementOperation.class);
+                
+        IComponentSpecification spec = new ComponentSpecification();
+
+        replay();
+
+        try
+        {
+            new ParameterAnnotationWorker().performEnhancement(op, spec, m, null);
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {            
+        }
+
+        verify();        
     }
 
 }

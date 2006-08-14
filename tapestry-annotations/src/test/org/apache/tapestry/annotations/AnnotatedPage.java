@@ -79,25 +79,6 @@ public abstract class AnnotatedPage extends BasePage
     @Parameter
     public abstract String getSimpleParameter();
 
-    @Parameter(required = true)
-    public abstract String getRequiredParameter();
-
-    @Parameter(cache = false)
-    public abstract Object getNonCachedParameter();
-
-    @Parameter(aliases = "fred")
-    public abstract String getAliasedParameter();
-
-    @Parameter
-    @Deprecated
-    public abstract int getDeprecatedParameter();
-
-    @Parameter(name = "fred")
-    public abstract double getNamedParameter();
-
-    @Parameter(defaultValue = "myDefault")
-    public abstract String getDefaultValue();
-
     @InjectPage("SomePageName")
     public abstract IPage getMyPage();
     
