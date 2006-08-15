@@ -49,7 +49,7 @@ public class ServletWebRequest implements WebRequest
     {
         Defense.notNull(request, "request");
         Defense.notNull(response, "response");
-
+        
         _servletRequest = request;
         _servletResponse = response;
     }
@@ -218,5 +218,10 @@ public class ServletWebRequest implements WebRequest
     public boolean isUserInRole(String role)
     {
         return _servletRequest.isUserInRole(role);
+    }
+    
+    public boolean isSecure()
+    {
+        return _servletRequest.isSecure();
     }
 }

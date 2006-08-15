@@ -176,4 +176,9 @@ public class PortletWebRequest implements WebRequest
     {
         return _portletRequest.isUserInRole(role);
     }
+    
+    public boolean isSecure()
+    {
+        return _portletRequest.isSecure();
+    }
 }

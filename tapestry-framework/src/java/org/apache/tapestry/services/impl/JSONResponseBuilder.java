@@ -127,8 +127,11 @@ public class JSONResponseBuilder implements ResponseBuilder
      */
     protected void parseParameters(IRequestCycle cycle)
     {
-        Object[] updateParts = cycle
-                .getParameters(ServiceConstants.UPDATE_PARTS);
+        Object[] updateParts = cycle.getParameters(ServiceConstants.UPDATE_PARTS);
+        
+        if (updateParts == null)
+            return;
+        
         for(int i = 0; i < updateParts.length; i++)
             _parts.add(updateParts[i].toString());
     }

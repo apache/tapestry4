@@ -222,23 +222,37 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>ajaxEnabled</td>
+                        <td>debugEnabled</td>
                         <td>boolean</td>
-                        <td>yes</td>
+                        <td>no</td>
                         <td>true</td>
                         <td>
-                            Controls whether or not the 
-                            <a href="../tapestry-framework/apidocs/org/apache/tapestry/dojo/AjaxShellDelegate.html">
-                            AjaxShellDelegate
-                            </a> is used to write out javascript include headers for dojo and tapestry core javascript
-                            libraries. 
+                            Turns browser level logging completely on/off.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>debugContainerId</td>
+                        <td>String</td>
+                        <td>no</td>
+                        <td>debug</td>
+                        <td>
+                            Sets the html element node id of the element you would like all browser debug content to
+                            go to, if you have logging turned on.
                             
                             <p>
-                            <strong>WARNING:</strong> Turning this off effectively disables javascript for many standard
-                            tapestry operations, such as form validation. Be careful about turning it off unless you know
-                            it is what you want. Most of the dynamic ajax features aren't used by default unless you 
-                            specifically use a component / parmater that causes them to happen.
+                            For example, if you had an element on your html page with id="myElement" you would
+                            set the debugContainerId to "myElement".
                             </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>parseWidgets</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            Tells dojo whether or not to parse widgets by traversing the entire dom node of your
+                            document. It is highly reccomended that you keep this at its default value of false.
                         </td>
                     </tr>
                     <tr>
