@@ -275,24 +275,41 @@ public class AssetService implements IEngineService, ResetEventListener
      */
     String translatePath(String path)
     {
-        if (path == null) return null;
+        if (path == null) 
+            return null;
+
+        String tpath = translateCssPath(path);
         
-        String ret = FilenameUtils.normalize(path);
+        String ret = FilenameUtils.normalize(tpath);
         ret = FilenameUtils.separatorsToUnix(ret);
         
-        // don't parse out actual css files
-        if (ret.endsWith(".css")) return ret;
-        
-        int index = ret.lastIndexOf(".css");
-        if (index <= -1) return ret;
-        
-        // now need to parse out whatever css file was referenced to get the real path
-        int pathEnd = ret.lastIndexOf("/", index);
-        if (pathEnd <= -1) return ret;
-        
-        return ret.substring(0, pathEnd + 1) + ret.substring(index + 4, ret.length());
+        return ret;
     }
     
+    /**
+     * Fixes any paths containing .css extension relative references.
+     * 
+     * @param path The path to fix.
+     * @return The absolute path to the resource referenced in the path. (if any)
+     */
+    private String translateCssPath(String path) {
+        
+        // don't parse out actual css files
+        if (path.endsWith(".css")) 
+            return path;
+        
+        int index = path.lastIndexOf(".css");
+        if (index <= -1) 
+            return path;
+        
+        // now need to parse out whatever css file was referenced to get the real path
+        int pathEnd = path.lastIndexOf("/", index);
+        if (pathEnd <= -1) 
+            return path;
+        
+        return path.substring(0, pathEnd + 1) + path.substring(index + 4, path.length());
+    }
+
     /**
      * Checks if the resource contained within the specified URL 
      * has a modified time greater than the request header value
@@ -307,7 +324,8 @@ public class AssetService implements IEngineService, ResetEventListener
     boolean cachedResource(URL resourceURL)
     {
         File resource = new File(resourceURL.getFile());
-        if (!resource.exists()) return false;
+        if (!resource.exists()) 
+            return false;
         
         //even if it doesn't exist in header the value will be -1, 
         //which means we need to write out the contents of the resource

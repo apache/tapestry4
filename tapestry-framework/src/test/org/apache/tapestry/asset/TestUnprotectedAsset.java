@@ -53,7 +53,7 @@ public class TestUnprotectedAsset extends BaseComponentTestCase
     /**
      * Tests for regexp patterns describing unprotected resources.
      */
-    public void testUnProtectedMatch()
+    public void test_Protected_Pattern_Match()
     {
         Pattern pr = newPattern("org/apache/tapestry/asset/.*.txt");
         
@@ -88,7 +88,7 @@ public class TestUnprotectedAsset extends BaseComponentTestCase
      * Tests and asserts that it doesn't take ~longer~ to work with undigested
      * resources using patterns than normal digested resources.
      */
-    public void testResourcePerformanceComparison()
+    public void test_Resource_Performance_Comparison()
     {
         Pattern pr = newPattern("/org/apache/tapestry/asset/tapestry-in-action.png");
 
@@ -116,7 +116,7 @@ public class TestUnprotectedAsset extends BaseComponentTestCase
     /**
      * Tests new path ordering encoding.
      */
-    public void testPathComparator()
+    public void test_Path_Comparator()
     {
         Map parameters = new TreeMap(new AssetComparator());
         
@@ -138,7 +138,7 @@ public class TestUnprotectedAsset extends BaseComponentTestCase
     /**
      * Tests the implementation of {@link ResourceMatcher}.
      */
-    public void testResourceMatcher()
+    public void test_Resource_Matcher()
     {
         ResourceMatcherImpl rm = new ResourceMatcherImpl();
         List patterns = new ArrayList();
@@ -163,9 +163,10 @@ public class TestUnprotectedAsset extends BaseComponentTestCase
         assertTrue(rm.containsResource("/org/apache/tapestry/html/dojo/src/test.png"));
     }
     
-    public void testCssPaths()
+    public void test_Css_Paths()
     {
         AssetService service = new AssetService();
+        
         String path = "/dojo/src/widget/template/HtmlComboBox.cssimages/foo.gif";
         
         assertEquals("/dojo/src/widget/template/images/foo.gif", service.translatePath(path));
@@ -177,7 +178,39 @@ public class TestUnprotectedAsset extends BaseComponentTestCase
                 service.translatePath("/things/mytemplate.css"));
         assertNull(service.translatePath(null));
     }
-    
+
+    public void test_Relative_Paths()
+    {
+        AssetService service = new AssetService();
+        
+        assertEquals("/src", service.translatePath("/dojo/../src"));
+        assertEquals("src", service.translatePath("dojo/../src"));
+        assertEquals("/src", service.translatePath("/dojo/blah/../../src"));
+        assertEquals("src", service.translatePath("dojo/blah/../../src"));
+        assertEquals("/src", service.translatePath("/dojo/../blah/../src"));
+        assertEquals("src", service.translatePath("dojo/../blah/../src"));
+        assertEquals("/src/", service.translatePath("/dojo/../src/"));
+        assertEquals("src/", service.translatePath("dojo/../src/"));
+        assertEquals("/", service.translatePath("/dojo/../"));
+        assertEquals("", service.translatePath("dojo/../"));
+    }     
+
+    public void test_Relative_Css_Paths()
+    {
+        AssetService service = new AssetService();
+        
+        String path = "/dojo/src/widget/template/HtmlComboBox.css../images/foo.gif";
+        
+        assertEquals("/dojo/src/widget/images/foo.gif", service.translatePath(path));
+
+        path = "/dojo/src/widget/template/HtmlComboBox.css../../images/foo.gif";
+        assertEquals("/dojo/src/images/foo.gif", service.translatePath(path));
+
+        assertEquals("/boo/things/",
+                service.translatePath("/boo/templates/somethingdumb.css../things/"));
+    }
+
+
     public void test_Resource_Link_Paths()
     {
         LinkFactory factory = newMock(LinkFactory.class);
