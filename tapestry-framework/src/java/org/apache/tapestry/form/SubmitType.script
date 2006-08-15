@@ -13,7 +13,7 @@
         </unique>
     </body>
     <initialization>
-        dojo.event.connect(dojo.byId("${submit.clientId}"), "onclick", function(e){
+        dojo.event.connectOnce(dojo.byId("${submit.clientId}"), "onclick", function(e){
             tapestry.form.${type}("${submit.form.clientId}", "${submit.name}");
         });
     </initialization>
