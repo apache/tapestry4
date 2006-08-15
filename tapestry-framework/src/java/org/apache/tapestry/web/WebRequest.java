@@ -192,4 +192,12 @@ public interface WebRequest extends AttributeHolder, Describable
      *         false if the user has not been authenticated.
      */
     boolean isUserInRole(String role);
+    
+    /**
+     * Taken from {@link HttpServletWebRequest}. Indicates if this request is coming in on
+     * a SSL/secure connection. 
+     * 
+     * @return True if secure, false otherwise.
+     */
+    boolean isSecure();
 }

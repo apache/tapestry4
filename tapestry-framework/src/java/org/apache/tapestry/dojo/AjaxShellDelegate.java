@@ -51,6 +51,10 @@ public class AjaxShellDelegate implements IRender
     
     private boolean _debug;
     
+    private boolean _parseWidgets;
+    
+    private String _debugContainerId;
+    
     /**
      * {@inheritDoc}
      */
@@ -61,11 +65,11 @@ public class AjaxShellDelegate implements IRender
         // first configure dojo, has to happen before package include
         StringBuffer str = new StringBuffer("<script type=\"text/javascript\">");
         str.append("djConfig = { isDebug: ").append(_debug).append(",")
-        .append(" debugContainerId:'debug',")
+        .append(" debugContainerId:'").append(_debugContainerId).append("',")
         .append(" baseRelativePath:\"")
         .append(_assetService.getLink(true,
                 _dojoPath.getResourceLocation().getPath()).getAbsoluteURL())
-        .append("\", preventBackButtonFix: false, parseWidgets: false };")
+        .append("\", preventBackButtonFix: false, parseWidgets:").append(_parseWidgets).append("}")
         .append(" </script>\n\n ");
         
         // include the core dojo.js package
@@ -121,6 +125,29 @@ public class AjaxShellDelegate implements IRender
         _debug = debug;
     }
     
+    /**
+     * Sets the html element node id of the element you would like all browser
+     * debug content to go to.
+     * 
+     * @param debugContainerId the debugContainerId to set
+     */
+    public void setDebugContainerId(String debugContainerId)
+    {
+        _debugContainerId = debugContainerId;
+    }
+    
+    /**
+     * Tells dojo whether or not to parse widgets by traversing the entire 
+     * dom node of your document. It is highly reccomended that you keep this
+     * at its default value of false.
+     * 
+     * @param parseWidgets the parseWidgets to set
+     */
+    public void setParseWidgets(boolean parseWidgets)
+    {
+        _parseWidgets = parseWidgets;
+    }
+
     /**
      * Sets a valid path to the base dojo javascript installation
      * directory.
