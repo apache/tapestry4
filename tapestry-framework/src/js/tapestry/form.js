@@ -129,9 +129,9 @@ tapestry.form={
 			this.forms[id].json=(typeof json != "undefined") ? json : false;
 			
 			if (!this.forms[id].async) {
-				dojo.event.connect(form, "onsubmit", this, "onFormSubmit");
+				dojo.event.connectOnce(form, "onsubmit", this, "onFormSubmit");
 			} else {
-				dojo.event.connect(form, "onsubmit", function(e) {
+				dojo.event.connectOnce(form, "onsubmit", function(e) {
 					dojo.event.browser.stopEvent(e);
 					tapestry.form.submitAsync(form);
 				});

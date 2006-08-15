@@ -12,7 +12,7 @@
         </unique>
     </body>
     <initialization>
-        dojo.event.connect(dojo.byId("${component.clientId}"), "onclick", function(e){
+        dojo.event.connectOnce(dojo.byId("${component.clientId}"), "onclick", function(e){
             dojo.event.browser.stopEvent(e);
             
             var content={beventname:"onClick"};
