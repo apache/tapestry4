@@ -711,7 +711,7 @@ public class FormSupportImpl implements FormSupport
      */
     protected IMarkupWriter getHiddenFieldWriter()
     {
-        if (!_cycle.getResponseBuilder().isDynamic() || !_fieldUpdating) {
+        if (!_fieldUpdating || !_cycle.getResponseBuilder().isDynamic()) {
             return _writer;
         }
         
