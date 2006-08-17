@@ -110,7 +110,11 @@ public abstract class Shell extends AbstractComponent
             
             List relations = getRelations();
             if (relations != null)
-                writeRelations(writer, relations);            
+                writeRelations(writer, relations); 
+            
+            StringBuffer inlineStyle = getStyleBuffer();
+            if (inlineStyle != null)
+                writeInlineStyle(writer, inlineStyle.toString());
             
             IAsset stylesheet = getStylesheet();
             
@@ -228,6 +232,19 @@ public abstract class Shell extends AbstractComponent
             writer.println();
     }
     
+    private void writeInlineStyle(IMarkupWriter writer, String style)
+    {
+        writer.begin("style");
+        writer.attribute("type", "text/css");
+        writer.println();
+        
+        writer.printRaw(style);
+        writer.println();
+        
+        writer.end();
+        writer.println();
+    }
+    
     private void writeAttributeIfNotNull(IMarkupWriter writer, String name, String value)
     {
         if (value != null)
@@ -270,7 +287,14 @@ public abstract class Shell extends AbstractComponent
      */
     public void addInlineStyle(String style)
     {
-        // TODO TAPESTRY-274: Implement this similar to Body.addBodyScript
+        if (HiveMind.isBlank(style))
+            return;
+        StringBuffer buffer = getStyleBuffer();
+        if (buffer == null)
+            buffer = new StringBuffer();
+        
+        buffer.append(style);        
+        setStyleBuffer(buffer);
     }
     
     public abstract boolean isDisableCaching();
@@ -321,5 +345,13 @@ public abstract class Shell extends AbstractComponent
     /** @since 4.1.1 */
     
     public abstract void setRelations(List relations);
+    
+    /** @since 4.1.1 */
+    
+    public abstract StringBuffer getStyleBuffer();
+    
+    /** @since 4.1.1 */
+    
+    public abstract void setStyleBuffer(StringBuffer buffer);    
 
 }
