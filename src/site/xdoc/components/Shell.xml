@@ -181,8 +181,8 @@
                         <td>no</td>
                         <td>true</td>
                         <td>
-                            Specifies whether or not to render the html basetag element in the
-                            document head.
+                            Specifies whether or not to render the html BASE tag element in the
+                            document HEAD.
                         </td>
                     </tr>
                     <tr>
