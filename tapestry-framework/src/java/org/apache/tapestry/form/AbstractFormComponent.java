@@ -85,6 +85,14 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
     }
 
     /**
+     * Invoked by {@link AbstractComponent#render(IMarkupWriter, IRequestCycle)} to actually 
+     * render the component (with any parameter values already set). 
+     * This implementation checks the rewinding state of the {@link IForm} that contains the
+     * component and forwards processing to either 
+     * {@link #renderFormComponent(IMarkupWriter, IRequestCycle)} or 
+     * {@link #rewindFormComponent(IMarkupWriter, IRequestCycle)}. 
+     * Those two are the methods that subclasses should implement. 
+     *  
      * @see org.apache.tapestry.AbstractComponent#renderComponent(org.apache.tapestry.IMarkupWriter,
      *      org.apache.tapestry.IRequestCycle)
      */
@@ -180,9 +188,19 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
         return false;
     }
 
+    /**
+     * Invoked from {@link #renderComponent(IMarkupWriter, IRequestCycle)} 
+     * to render the component. 
+     *  
+     * @param writer
+     * @param cycle
+     */
     protected abstract void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle);
 
     /**
+     * Invoked from {@link #renderComponent(IMarkupWriter, IRequestCycle)} to rewind the 
+     * component. If the component is {@link IFormComponent#isDisabled() disabled} 
+     * this will not be invoked. 
      * 
      * @param writer
      * @param cycle
