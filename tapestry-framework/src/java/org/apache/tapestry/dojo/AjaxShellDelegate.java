@@ -91,6 +91,7 @@ public class AjaxShellDelegate implements IRender
         .append("\"));</script>");
         
         writer.printRaw(str.toString());
+        writer.println();
     }
     
     /**
