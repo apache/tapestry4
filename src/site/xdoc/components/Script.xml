@@ -85,7 +85,7 @@
                             <a href="../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
                                 IAsset
                             </a>
-                            parameter. One of either scriptPath or scriptAsset must be specified.
+                            parameter. One of either script or scriptAsset must be specified.
                         </td>
                     </tr>
                     <tr>

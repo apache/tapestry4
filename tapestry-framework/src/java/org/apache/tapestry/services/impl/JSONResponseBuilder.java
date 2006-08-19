@@ -16,8 +16,10 @@ package org.apache.tapestry.services.impl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IJSONRender;
 import org.apache.tapestry.IMarkupWriter;
@@ -55,6 +57,8 @@ public class JSONResponseBuilder implements ResponseBuilder
 
     protected WebResponse _webResponse;
     
+    private IRequestCycle _cycle;
+    
     /**
      * Creates a new response builder with the required services it needs
      * to render the response when {@link #renderResponse(IRequestCycle)} is called.
@@ -66,10 +70,13 @@ public class JSONResponseBuilder implements ResponseBuilder
      * @param webResponse
      *          Web response for output stream.
      */
-    public JSONResponseBuilder(RequestLocaleManager localeManager, 
+    public JSONResponseBuilder(IRequestCycle cycle, RequestLocaleManager localeManager, 
             MarkupWriterSource markupWriterSource,
             WebResponse webResponse)
     {
+        Defense.notNull(cycle, "cycle");
+        
+        _cycle = cycle;
         _localeManager = localeManager;
         _markupWriterSource = markupWriterSource;
         _webResponse = webResponse;
@@ -166,6 +173,47 @@ public class JSONResponseBuilder implements ResponseBuilder
     {
         if (!_parts.contains(id))
             _parts.add(id);
+    }
+    
+    /**
+     * Determines if the specified component is contained in the 
+     * responses requested update parts.
+     * @param target
+     *          The component to check for.
+     * @return True if the request should capture the components output.
+     */
+    public boolean contains(IComponent target)
+    {
+        if (target == null) 
+            return false;
+        
+        String id = getComponentId(target);
+        
+        if (_parts.contains(id))
+            return true;
+        
+        Iterator it = _cycle.renderStackIterator();
+        while (it.hasNext()) {
+            
+            IComponent comp = (IComponent)it.next();
+            String compId = getComponentId(comp);
+            
+            if (comp != target && _parts.contains(compId))
+                return true;
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Gets the id of the specified component, choosing the "id" element
+     * binding over any other id.
+     * @param comp
+     * @return The id of the component.
+     */
+    String getComponentId(IComponent comp)
+    {
+        return comp.getClientId();
     }
     
     /**

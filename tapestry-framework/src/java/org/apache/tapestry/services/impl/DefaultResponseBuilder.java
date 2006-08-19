@@ -141,6 +141,14 @@ public class DefaultResponseBuilder implements ResponseBuilder
     /** 
      * {@inheritDoc}
      */
+    public boolean contains(IComponent target)
+    {
+        return false;
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
     public IMarkupWriter getWriter()
     {
         if (_writer == null)

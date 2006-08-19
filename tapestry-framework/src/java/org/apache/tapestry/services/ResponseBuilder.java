@@ -123,6 +123,17 @@ public interface ResponseBuilder {
     void updateComponent(String id);
     
     /**
+     * Checks if the rendered response contains a particular component. Contains
+     * can mean many things. In the instance of a dynamic response it could potentially
+     * mean a component explicitly set to be updated - or a component that has a containing
+     * component explicitly set to be updated.
+     * 
+     * @param target The component to check containment of.
+     * @return True if response contains the specified component, false otherwise.
+     */
+    boolean contains(IComponent target);
+    
+    /**
      * Invoked by {@link PageRenderSupport} to write external js package
      * includes. This method will be invoked for each external script requesting
      * inclusion in the response.

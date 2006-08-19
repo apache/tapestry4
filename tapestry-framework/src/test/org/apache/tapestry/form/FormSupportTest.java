@@ -150,6 +150,7 @@ public class FormSupportTest extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
         IRequestCycle cycle = newCycle();
+        ResponseBuilder builder = newMock(ResponseBuilder.class);
         IValidationDelegate delegate = newDelegate();
         ILink link = newLink();
         IRender render = newRender();
@@ -198,7 +199,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        trainHiddenBlock(writer, form, "fred", "barney,wilma,barney_0");
+        trainHiddenBlock(cycle, builder, writer, form, "fred", "barney,wilma,barney_0");
 
         nested.close();
 
@@ -267,6 +268,7 @@ public class FormSupportTest extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
         IRequestCycle cycle = newCycle();
+        ResponseBuilder builder = newMock(ResponseBuilder.class);
         IValidationDelegate delegate = newDelegate();
         PageRenderSupport support = newPageRenderSupport();
         ILink link = newLink();
@@ -318,7 +320,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        trainHiddenBlock(writer, form, "fred", "");
+        trainHiddenBlock(cycle, builder, writer, form, "fred", "");
 
         nested.close();
 
@@ -340,6 +342,7 @@ public class FormSupportTest extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
         IRequestCycle cycle = newCycle();
+        ResponseBuilder builder = newMock(ResponseBuilder.class);
         IValidationDelegate delegate = newDelegate();
         PageRenderSupport support = newPageRenderSupport();
         ILink link = newLink();
@@ -388,7 +391,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        trainHiddenBlock(writer, form, "fred", "");
+        trainHiddenBlock(cycle, builder, writer, form, "fred", "");
 
         nested.close();
 
@@ -465,6 +468,7 @@ public class FormSupportTest extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
         IRequestCycle cycle = newCycle();
+        ResponseBuilder builder = newMock(ResponseBuilder.class);
         IValidationDelegate delegate = newDelegate();
         PageRenderSupport support = newPageRenderSupport();
         ILink link = newLink();
@@ -512,7 +516,11 @@ public class FormSupportTest extends BaseComponentTestCase
         render.render(writer, cycle);
 
         writer.println();
-
+        
+        expect(cycle.getResponseBuilder()).andReturn(builder);
+        
+        expect(builder.contains(form)).andReturn(false);
+        
         trainDiv(writer, form);
 
         trainHidden(writer, "formids", "");
@@ -641,6 +649,7 @@ public class FormSupportTest extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
         IRequestCycle cycle = newCycle();
+        ResponseBuilder builder = newMock(ResponseBuilder.class);
         IValidationDelegate delegate = newDelegate();
         PageRenderSupport support = newPageRenderSupport();
         ILink link = newLink();
@@ -685,7 +694,11 @@ public class FormSupportTest extends BaseComponentTestCase
         render.render(writer, cycle);
 
         writer.println();
-
+        
+        expect(cycle.getResponseBuilder()).andReturn(builder);
+        
+        expect(builder.contains(form)).andReturn(false);
+        
         trainDiv(writer, form);
 
         trainHidden(writer, "formids", "action_0");
@@ -714,6 +727,8 @@ public class FormSupportTest extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
         IRequestCycle cycle = newCycle();
+        ResponseBuilder builder = newMock(ResponseBuilder.class);
+        
         IValidationDelegate delegate = newDelegate();
         PageRenderSupport support = newPageRenderSupport();
         ILink link = newLink();
@@ -765,7 +780,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        trainHiddenBlock(writer, form, "fred", "");
+        trainHiddenBlock(cycle, builder, writer, form, "fred", "");
 
         nested.close();
 
@@ -997,6 +1012,7 @@ public class FormSupportTest extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
         IRequestCycle cycle = newCycle();
+        ResponseBuilder builder = newMock(ResponseBuilder.class);
         IValidationDelegate delegate = newDelegate();
         ILink link = newLink();
         IRender render = newRender();
@@ -1042,7 +1058,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        trainHiddenBlock(writer, form, "fred", "barney");
+        trainHiddenBlock(cycle, builder, writer, form, "fred", "barney");
 
         nested.close();
 
@@ -1070,6 +1086,7 @@ public class FormSupportTest extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
         IRequestCycle cycle = newCycle();
+        ResponseBuilder builder = newMock(ResponseBuilder.class);
         IValidationDelegate delegate = newDelegate();
         ILink link = newLink();
         IRender render = newRender();
@@ -1130,7 +1147,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        trainHiddenBlock(writer, form, "fred", "");
+        trainHiddenBlock(cycle, builder, writer, form, "fred", "");
         
         nested.close();
 
@@ -1150,6 +1167,7 @@ public class FormSupportTest extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
         IRequestCycle cycle = newCycle();
+        ResponseBuilder builder = newMock(ResponseBuilder.class);
         IValidationDelegate delegate = newDelegate();
         ILink link = newLink();
         IRender render = newRender();
@@ -1195,7 +1213,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        trainHiddenBlock(writer, form, "fred", "barney");
+        trainHiddenBlock(cycle, builder, writer, form, "fred", "barney");
 
         nested.close();
 
@@ -1320,6 +1338,7 @@ public class FormSupportTest extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
         IRequestCycle cycle = newCycle();
+        ResponseBuilder builder = newMock(ResponseBuilder.class);
         IValidationDelegate delegate = newDelegate();
         ILink link = newLink();
         IRender render = newRender();
@@ -1370,7 +1389,7 @@ public class FormSupportTest extends BaseComponentTestCase
         
         writer.println();
 
-        trainHiddenBlock(writer, form, "fred", "");
+        trainHiddenBlock(cycle, builder, writer, form, "fred", "");
 
         nested.close();
 
@@ -1446,8 +1465,14 @@ public class FormSupportTest extends BaseComponentTestCase
         writer.println();
     }
 
-    protected void trainHiddenBlock(IMarkupWriter writer, IForm form, String serviceName, String formIds)
+    protected void trainHiddenBlock(IRequestCycle cycle, ResponseBuilder builder,
+            IMarkupWriter writer, IForm form, 
+            String serviceName, String formIds)
     {
+        expect(cycle.getResponseBuilder()).andReturn(builder);
+        
+        expect(builder.contains(form)).andReturn(false);
+        
         trainDiv(writer, form);
         
         trainHidden(writer, "formids", formIds);
