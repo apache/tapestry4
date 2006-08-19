@@ -5,6 +5,7 @@
 <script>
 <input-symbol key="submit" required="yes" />
 <input-symbol key="type" required="yes" />
+<input-symbol key="key" required="yes" />
     <body>
         <unique>
             dojo.require("dojo.event");
@@ -13,8 +14,11 @@
         </unique>
     </body>
     <initialization>
-        dojo.event.connectOnce(dojo.byId("${submit.clientId}"), "onclick", function(e){
+        tapestry.cleanConnect(dojo.byId("${submit.clientId}"), 
+                              "onclick", "event${key}");
+        tapestry.event${key}=function(e){
             tapestry.form.${type}("${submit.form.clientId}", "${submit.name}");
-        });
+        };
+        dojo.event.connect(dojo.byId("${submit.clientId}"), "onclick", tapestry, "event${key}");
     </initialization>
 </script>

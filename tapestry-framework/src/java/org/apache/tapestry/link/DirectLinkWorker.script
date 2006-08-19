@@ -5,6 +5,7 @@
 <script>
 <input-symbol key="component" required="yes" />
 <input-symbol key="json" required="yes" />
+<input-symbol key="key" required="yes" />
     <body>
         <unique>
             dojo.require("dojo.event");
@@ -12,7 +13,9 @@
         </unique>
     </body>
     <initialization>
-        dojo.event.connectOnce(dojo.byId("${component.clientId}"), "onclick", function(e){
+        tapestry.cleanConnect(dojo.byId("${component.clientId}"), 
+                              "onclick", "event${key}");
+        tapestry.event${key}=function(e){
             dojo.event.browser.stopEvent(e);
             
             var content={beventname:"onClick"};
@@ -26,6 +29,7 @@
             }
             
             tapestry.bind(e.target.getAttribute("href"), content, ${json});
-        });
+        };
+        dojo.event.connect(dojo.byId("${component.clientId}"), "onclick", tapestry, "event${key}");
     </initialization>
 </script>

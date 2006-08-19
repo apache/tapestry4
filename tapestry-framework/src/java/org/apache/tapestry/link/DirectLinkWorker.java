@@ -28,6 +28,7 @@ import org.apache.tapestry.components.ILinkComponent;
 import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.html.Body;
 import org.apache.tapestry.services.ComponentRenderWorker;
+import org.apache.tapestry.util.ScriptUtils;
 
 
 /**
@@ -87,6 +88,7 @@ public class DirectLinkWorker implements ComponentRenderWorker
         
         parms.put("component", component);
         parms.put("json", Boolean.valueOf(direct.isJson()));
+        parms.put("key", ScriptUtils.functionHash("onclick" + component.hashCode()));
         
         // execute script template
         

@@ -17,18 +17,21 @@
     <initialization>
         <if expression="events">
             <foreach expression="events" key="event">
-                dojo.event.connectOnce(dojo.byId("${clientId}"), "${event}", function(e) {
-                    var content={beventname:"${event}"};
+                tapestry.cleanConnect(dojo.byId("${clientId}"), "${event[0]}", "event${event[1]}");
+                tapestry.event${event[1]}=function(e){
+                    var content={beventname:"${event[0]}"};
                     tapestry.event.buildEventProperties(e, content);
                     if (!content["beventtarget.id"]) content["beventtarget.id"]="${clientId}";
-            
                     tapestry.bind("${url}", content);
-                });
+                };
+                dojo.event.connect(dojo.byId("${clientId}"), "${event[0]}", tapestry, "event${event[1]}");
             </foreach>
         </if>
         <if expression="formEvents">
             <foreach expression="formEvents" key="formEvent">
-                dojo.event.connectOnce(dojo.byId("${clientId}"), "${formEvent[0]}", function(e){
+                tapestry.cleanConnect(dojo.byId("${clientId}"), 
+                                     "${formEvent[0]}", "formEvent${formEvent[4]}");
+                tapestry.formEvent${formEvent[4]}=function(e){
                     var content={beventname:"${formEvent[0]}"};
                     tapestry.event.buildEventProperties(e, content);
                     if (!content["beventtarget.id"]) content["beventtarget.id"]="${clientId}";
@@ -47,7 +50,9 @@
                     
                     tapestry.form.setFormValidating("${formName}", validateState);
                     </foreach>
-                });
+                };
+                dojo.event.connect(dojo.byId("${clientId}"), "${formEvent[0]}",
+                                   tapestry, "formEvent${formEvent[4]}");
             </foreach>
         </if>
     </initialization>

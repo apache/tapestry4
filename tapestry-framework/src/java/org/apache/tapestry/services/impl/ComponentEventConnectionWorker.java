@@ -37,6 +37,7 @@ import org.apache.tapestry.html.Body;
 import org.apache.tapestry.internal.event.ComponentEventProperty;
 import org.apache.tapestry.internal.event.EventBoundListener;
 import org.apache.tapestry.services.ComponentRenderWorker;
+import org.apache.tapestry.util.ScriptUtils;
 
 
 /**
@@ -111,10 +112,11 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
         parms.put("clientId", clientId);
         parms.put("component", component);
         
-        Set events = prop.getEvents();
+        // Set events = prop.getEvents();
+        Object[][] events = getEvents(prop);
         Object[][] formEvents = filterFormEvents(prop, parms, cycle);
         
-        if (events.size() < 1 && formEvents.length < 1)
+        if (events.length < 1 && formEvents.length < 1)
             return;
         
         DirectEventServiceParameter dsp =
@@ -152,13 +154,14 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
         
         // build our list of targets / events
         while (keys.hasNext()) {
+            
             String target = (String)keys.next();
             
             ComponentEventProperty prop = (ComponentEventProperty)elements.get(target);
             
             parms.put("target", target);
             parms.put("url", url);
-            parms.put("events", prop.getEvents());
+            parms.put("events", getEvents(prop));
             parms.put("formEvents", filterFormEvents(prop, parms, cycle));
             
             _scriptSource.getScript(resource).execute(component, cycle, prs, parms);
@@ -176,6 +179,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
         
         if (names == null) {
             names = new ArrayList();
+            
             cycle.setAttribute(FORM_NAME_LIST + form.getId(), names);
         }
         
@@ -196,7 +200,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
             ComponentEventProperty props = _invoker.getComponentEvents(component.getId());
             
             Object[][] formEvents = buildFormEvents(cycle, form.getId(), 
-                    props.getFormEvents(), (Boolean)val[1], (Boolean)val[2]);
+                    props.getFormEvents(), (Boolean)val[1], (Boolean)val[2], val[3]);
             
             // don't want any events accidently connected again
             scriptParms.remove("events");
@@ -210,8 +214,31 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
         }
     }
     
+    /**
+     * Generates a two dimensional array containing the event name in the first
+     * index and a unique hashcode for the event binding in the second.
+     * 
+     * @param prop The component event properties object the events are managed in.
+     * @return A two dimensional array containing all events, or empty array if none exist.
+     */
+    Object[][] getEvents(ComponentEventProperty prop)
+    {
+        Set events = prop.getEvents();
+        List ret = new ArrayList();
+        
+        Iterator it = events.iterator();
+        while (it.hasNext()) {
+            
+            String event = (String)it.next();
+            
+            ret.add(new Object[]{ event, ScriptUtils.functionHash(prop.getEventListeners(event)) });
+        }
+        
+        return (Object[][])ret.toArray(new Object[ret.size()][2]);
+    }
+    
     Object[][] buildFormEvents(IRequestCycle cycle, String formId, 
-            Set events, Boolean async, Boolean validate)
+            Set events, Boolean async, Boolean validate, Object uniqueHash)
     {
         List formNames = (List)cycle.getAttribute(FORM_NAME_LIST + formId);
         List retval = new ArrayList();
@@ -221,11 +248,12 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
         while (it.hasNext()) {
             
             String event = (String)it.next();
-            retval.add(new Object[]{event, formNames, async, validate});
             
+            retval.add(new Object[]{event, formNames, async, 
+                    validate, ScriptUtils.functionHash(new String(uniqueHash + event)) });
         }
         
-        return (Object[][])retval.toArray(new Object[retval.size()][4]);
+        return (Object[][])retval.toArray(new Object[retval.size()][5]);
     }
     
     Resource getScript(IComponent component)
@@ -297,7 +325,9 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
                 if (formNames == null) {
                     
                     deferFormConnection(formId, scriptParms, 
-                            listener.isAsync(), listener.isValidateForm());
+                            listener.isAsync(), 
+                            listener.isValidateForm(), 
+                            ScriptUtils.functionHash(listener));
                     continue;
                 }
                 
@@ -305,12 +335,13 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
                 retval.add(new Object[] {
                         event, formNames, 
                         Boolean.valueOf(listener.isAsync()), 
-                        Boolean.valueOf(listener.isValidateForm())
+                        Boolean.valueOf(listener.isValidateForm()),
+                        ScriptUtils.functionHash(listener)
                 });
             }
         }
         
-        return (Object[][])retval.toArray(new Object[retval.size()][4]);
+        return (Object[][])retval.toArray(new Object[retval.size()][5]);
     }
     
     /**
@@ -329,18 +360,23 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
      * @param scriptParms The initial map of parameters for the connection @Script component.
      * @param async Whether or not the action taken should be asynchronous.
      * @param validate Whether or not the form should have client side validation run befor submitting.
+     * @param uniqueHash Represents a hashcode() value that will help make client side function name
+     *                  unique.
      */
-    void deferFormConnection(String formId, Map scriptParms, boolean async, boolean validate)
+    void deferFormConnection(String formId, Map scriptParms, 
+            boolean async, boolean validate, String uniqueHash)
     {
         List deferred = (List)_deferredFormConnections.get(formId);
         
         if (deferred == null) {
             
             deferred = new ArrayList();
+            
             _deferredFormConnections.put(formId, deferred);
         }
         
-        deferred.add(new Object[] {scriptParms, Boolean.valueOf(async), Boolean.valueOf(validate)});
+        deferred.add(new Object[] {scriptParms, Boolean.valueOf(async), 
+                Boolean.valueOf(validate), uniqueHash});
     }
     
     // for testing

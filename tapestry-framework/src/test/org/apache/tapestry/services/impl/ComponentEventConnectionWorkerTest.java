@@ -228,7 +228,7 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         assertEquals(1, deferred.size());
         
         Object[] parms = (Object[])deferred.get(0);
-        assertEquals(3, parms.length);
+        assertEquals(4, parms.length);
         
         // assert async is false
         assert (Boolean)parms[1] == false;
