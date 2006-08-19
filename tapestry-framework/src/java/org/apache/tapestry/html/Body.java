@@ -155,8 +155,11 @@ public abstract class Body extends AbstractComponent implements PageRenderSuppor
         // Start the body tag.
         writer.println();
         writer.begin(getElement());
+        
         renderInformalParameters(writer, cycle);
-
+        
+        renderIdAttribute(writer, cycle);
+        
         writer.println();
 
         // Write the page's scripting. This is included scripts

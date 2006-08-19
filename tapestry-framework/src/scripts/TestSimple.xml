@@ -104,7 +104,7 @@ The start of the JUnit test suite: JUnit Simple Application.
 
 	<assert-regexp name="Page Two: No message, yet">
 <![CDATA[
-	<body>\s*<p>This page
+	<body(\s*\w+=".*")*\s*>\s*<p>This page
 ]]>
 	</assert-regexp>
 	
@@ -126,7 +126,7 @@ The start of the JUnit test suite: JUnit Simple Application.
   	
 	<assert-regexp name="Third request, message displayed">
 <![CDATA[
-	<body>\s*Note: You clicked the link!\s*<p>This page
+	<body(\s*\w+=".*")*\s*>\s*Note: You clicked the link!\s*<p>This page
 ]]>
 	</assert-regexp>	
 
