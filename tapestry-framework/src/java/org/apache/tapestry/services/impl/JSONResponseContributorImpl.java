@@ -48,7 +48,7 @@ public class JSONResponseContributorImpl implements ResponseContributor
     public ResponseBuilder createBuilder(IRequestCycle cycle)
     throws IOException
     {
-        return new JSONResponseBuilder(_localeManager, _markupWriterSource,
+        return new JSONResponseBuilder(cycle, _localeManager, _markupWriterSource,
                 _webResponse);
     }
     

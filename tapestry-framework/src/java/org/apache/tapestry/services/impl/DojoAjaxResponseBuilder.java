@@ -485,7 +485,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      *          The component to check for.
      * @return True if the request should capture the components output.
      */
-    boolean contains(IComponent target)
+    public boolean contains(IComponent target)
     {
         if (target == null) 
             return false;
