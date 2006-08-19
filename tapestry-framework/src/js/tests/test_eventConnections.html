@@ -1,0 +1,48 @@
+<!--
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>TimePicker Test</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+
+<script type="text/javascript">
+var djConfig = {
+    isDebug: true,
+    parseWidgets: false
+};
+</script>
+<script type="text/javascript" src="../dojo/dojo.js"></script>
+<script type="text/javascript" src="../tapestry/core.js"></script>
+
+</head>
+
+<body>
+<script type="text/javascript">
+    dojo.require("dojo.event");
+    dojo.require("tapestry.core");
+    
+    dojo.event.connect(window, "onload", function(){
+    	
+    	tapestry.cleanConnect(dojo.byId("testDiv"), "onclick", "eventtestDivonclick");
+    	tapestry.eventtestDivonclick=function(e){
+    		dojo.debug("Test div clicked.");
+    	};
+    	dojo.event.connect(dojo.byId("testDiv"), "onclick", tapestry, "eventtestDivonclick");
+    	
+    	tapestry.cleanConnect(dojo.byId("testDiv"), "onclick", "eventtestDivonclick");
+    	tapestry.eventtestDivonclick=function(e){
+    		dojo.debug("Test div clicked.");
+    	};
+    	dojo.event.connect(dojo.byId("testDiv"), "onclick", tapestry, "eventtestDivonclick");
+    });
+</script>
+
+<p>
+<div id="testDiv" >This is textual <b>content</b>.</div>
+</p>
+
+</body>
+</html>

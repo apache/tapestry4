@@ -27,6 +27,7 @@ import org.apache.tapestry.IScript;
 import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.listener.ListenerInvoker;
+import org.apache.tapestry.util.ScriptUtils;
 
 /**
  * Superclass for components submitting their form.
@@ -121,6 +122,7 @@ abstract class AbstractSubmit extends AbstractFormComponent
             
             parms.put("submit", this);
             parms.put("type", type);
+            parms.put("key", ScriptUtils.functionHash(type + this.hashCode()));
             
             getSubmitTypeScript().execute(this, cycle, prs, parms);
         }

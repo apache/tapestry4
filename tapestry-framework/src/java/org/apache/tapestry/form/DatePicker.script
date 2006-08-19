@@ -59,7 +59,7 @@ ${calendarObject}.initialize([${monthNames}],
   [${shortMonthNames}],
   [${weekDayNames}],
   [${shortWeekDayNames}],
-  "${format}", ${firstDayInWeek}, ${includeWeek}, ${minimalDaysInFirstWeek}, "${clearButtonLabel}");	
+  "${format}", ${firstDayInWeek}, ${includeWeek}, ${minimalDaysInFirstWeek}, "${clearButtonLabel}");
 ${calendarObject}.onchange = function() {
   var field = dojo.byId("${formName}").${name};
   var value = ${calendarObject}.formatDate();

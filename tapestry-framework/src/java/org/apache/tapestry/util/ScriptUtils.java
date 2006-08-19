@@ -99,4 +99,22 @@ public final class ScriptUtils
 
         return buffer.toString();
     }
+    
+    /**
+     * Utility that will attempt to generate a unique hash string
+     * that is javascript client in a function name based on the inomcing
+     * object's {@link Object#hashCode()} return value.
+     * 
+     * @param target The object to hash a string for.
+     * @return A string hash value, not necessarily exactly the same thing that would
+     *         be returned by {@link Object#hashCode()}.
+     */
+    public static String functionHash(Object target)
+    {
+        int hash = target.hashCode();
+        if (hash < 0) // flip exponent if negative
+            hash = hash*-1;
+        
+        return String.valueOf(hash);
+    }
 }

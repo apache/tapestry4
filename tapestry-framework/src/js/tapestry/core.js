@@ -232,6 +232,18 @@ tapestry={
 		dojo.event.connect(dialog, "hide", dialog, "destroy");
 		
 		dialog.show();
+	},
+	
+	/**
+	 * Utility used to disconnect a previously connected event/function.
+	 * 
+	 * This assumes that the incoming function name is being attached to 
+	 * the global namespace "tapestry".
+	 */
+	cleanConnect:function(target, event, funcName){
+		if (!dj_undef(funcName, tapestry)){
+        	dojo.event.disconnect(target, event, tapestry, funcName);
+        }
 	}
 }
 
