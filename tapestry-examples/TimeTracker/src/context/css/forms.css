@@ -54,6 +54,10 @@ form h4 { font: 0.8em Tahoma, Myriad, sans-serif; font-weight:bold; margin:0; ma
 	cursor: pointer;
 }
 
+.alertDialog {
+    width: 25em;   
+}
+
 .fieldMissing {
     background: #bedef4;
 }
@@ -64,17 +68,20 @@ form h4 { font: 0.8em Tahoma, Myriad, sans-serif; font-weight:bold; margin:0; ma
 }
 
 .missingList, .invalidList {
-    padding: 0.6em;
+    padding-bottom: 0.6em;
     padding-top: 0.2em;
-    width:100%;
-    display:block;
+    padding-left:0.1em;
+    padding-right:0.2em;
+    margin: 0;
 }
 
 .missingList {
+    width: 24em;
     border-top: 4px solid #bedef4;
 }
 
 .invalidList {
+    width: 24em;
     border-top: 4px solid #ffaf7e;
 }
 

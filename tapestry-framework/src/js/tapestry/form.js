@@ -102,6 +102,10 @@ tapestry.form={
 		}
 	},
 	
+	getFormId:function(form){
+		return (form.getAttribute("id") ) ? form.getAttribute("id") : form.getAttribute("name");
+	},
+	
 	/**
 	 * Registers the form with the local <code>forms</code> property so 
 	 * that there is a central reference of all tapestry forms.
@@ -119,7 +123,7 @@ tapestry.form={
 		}
 		
 		// make sure id is correct just in case node passed in has only name
-		id=(form.getAttribute("id") ) ? form.getAttribute("id") : form.getAttribute("name");
+		id=this.getFormId(form);
 		
 		if (!this.forms[id]) {
 			this.forms[id]={};
@@ -129,10 +133,28 @@ tapestry.form={
 			this.forms[id].json=(typeof json != "undefined") ? json : false;
 			
 			if (!this.forms[id].async) {
-				dojo.event.connectOnce(form, "onsubmit", this, "onFormSubmit");
+				dojo.event.connect(form, "onsubmit", this, "onFormSubmit");
 			} else {
-				dojo.event.connectOnce(form, "onsubmit", function(e) {
-					dojo.event.browser.stopEvent(e);
+				for(var i = 0; i < form.elements.length; i++) {
+					var node = form.elements[i];
+					if(node && node.type && dojo.lang.inArray(node.type.toLowerCase(), ["submit", "button"])) {
+						dojo.event.connect(node, "onclick", tapestry.form, "inputClicked");
+					}
+				}
+				
+				var inputs = form.getElementsByTagName("input");
+				for(var i = 0; i < inputs.length; i++) {
+					var input = inputs[i];
+					if(input.type.toLowerCase() == "image" && input.form == form) {
+						dojo.event.connect(input, "onclick", tapestry.form, "inputClicked");
+					}
+				}
+				
+				dojo.event.connect(form, "onsubmit", function(e) {
+					if (dojo.event.browser.isEvent(e)){
+						dojo.event.browser.stopEvent(e);
+					}
+					
 					tapestry.form.submitAsync(form);
 				});
 			}
@@ -181,7 +203,13 @@ tapestry.form={
 		}
 		this.forms[id].profiles=[];
 	},
-
+	
+	inputClicked:function(e){
+		var node = e.currentTarget;
+		if(node.disabled || dj_undef("form", node)) { return; }
+		this.forms[this.getFormId(node.form)].clickedButton = node;
+	},
+	
 	/**
 	 * If a form registered with the specified formId
 	 * exists a local property will be set that causes
@@ -202,12 +230,12 @@ tapestry.form={
 	 * is submitted.
 	 */
 	onFormSubmit:function(evt){
-		if (!evt || !evt.target) {
-			dojo.raise("No target for form event." + evt);
+		if (!evt || dj_undef("target", evt)) {
+			dojo.raise("No valid form event found with argument: " + evt);
 			return;
 		}
 		
-		var id=evt.target.getAttribute("id");
+		var id=this.getFormId(evt.target);
 		if (!id) {
 			dojo.log.warn("Form had no id attribute.");
 			return;
@@ -243,7 +271,20 @@ tapestry.form={
 		if (submitName){
 			form.submitname.value=submitName;
 		}
-		form.submit();
+		
+		// listeners trigerred then for some reason.
+		// try to create a real event so any listeners get notified
+		if (!dj_undef("createEvent", document)){
+			var ev = document.createEvent("HTMLEvents");
+			ev.initEvent("submit", true, true);
+			form.dispatchEvent(ev);
+		} else if (!dj_undef("createEventObject", document)) {
+			form.fireEvent("onsubmit");
+		} else {
+			dojo.log.warn("tapestry.form.submit using default form.submit() call, no event objects found in browser.");
+			form.submit();
+			return;
+		}
 	},
 	
 	cancel:function(form, submitName){
@@ -286,7 +327,7 @@ tapestry.form={
 			dojo.raise("Form not found with id " + id);
 			return;
 		}
-		var formId=form.getAttribute("id");
+		var formId=this.getFormId(form);
 		
 		if (!tapestry.form.validation.validateForm(form, this.forms[formId])) {
 			dojo.log.debug("Form validation failed for form with id " + formId);
@@ -295,6 +336,12 @@ tapestry.form={
 		
 		if (submitName){
 			form.submitname.value=submitName;
+		}
+		
+		// handle submissions from input buttons
+		if (!dj_undef("clickedButton", this.forms[formId])) {
+			if (!content) { content={}; }
+			content[this.forms[formId].clickedButton.getAttribute("name")]=this.forms[formId].clickedButton.getAttribute("value");
 		}
 		
 		var parms={

@@ -73,11 +73,16 @@ Client-Side Validation
   The TimeTracker demo application also defines a default set of classes to handle the dialog classes:
   
 +-----------------------------------------------
+.alertDialog {
+    width: 25em;   
+}
+
 .missingList, .invalidList {
-    padding: 0.6em;
+    padding-bottom: 0.6em;
     padding-top: 0.2em;
-    width:100%;
-    display:block;
+    padding-left:0.1em;
+    padding-right:0.2em;
+    margin: 0;
 }
 
 .missingList {

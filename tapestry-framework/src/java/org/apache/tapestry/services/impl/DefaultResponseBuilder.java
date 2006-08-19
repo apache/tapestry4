@@ -225,7 +225,12 @@ public class DefaultResponseBuilder implements ResponseBuilder
     public void writeBodyScript(IMarkupWriter writer, String script, IRequestCycle cycle)
     {
         writer.printRaw("\n\n");
+        
+        writer.printRaw("dojo.event.connect(window, 'onload', function(e) {\n");
+        
         writer.printRaw(script);
+        
+        writer.printRaw("});");
     }
 
     /** 
@@ -261,7 +266,7 @@ public class DefaultResponseBuilder implements ResponseBuilder
         writer.attribute("type", "text/javascript");
         writer.printRaw("<!--\n");
         
-        writer.printRaw("dojo.event.connect(window, 'onload', function(e) {\n");
+        writer.printRaw("dojo.event.connect('after', window, 'onload', function(e) {\n");
         
         writer.printRaw(script);
         

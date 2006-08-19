@@ -21,7 +21,7 @@ function test_last_msg(){
 
 function test_form_deprecated(){
 	try {
-		Tapestry.register_form("null");
+		Tapestry.register_form();
 		throw new JUMAssertFailure("Previous test should have failed.");
 	} catch (e) { jum.assertTrue("testFormDepre", e instanceof Error); return; }
 	jum.assertTrue("deprecated", lastMsgContains("deprecated"));
@@ -69,8 +69,12 @@ function test_form_submit(){
 	node.submit=function(){
 		submitCalled=true;
 	}
+	node.dispatchEvent=function(){
+		submitCalled=true;
+	}
 	node.submitname={value:""};
 	
+	Tapestry.register_form("form1");
 	Tapestry.submit_form("form1", "testSubmit");
 	
 	jum.assertTrue("submitCalled", submitCalled);

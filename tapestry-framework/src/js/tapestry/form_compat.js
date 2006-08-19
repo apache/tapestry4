@@ -35,7 +35,7 @@ Tapestry.find=function(id){
 
 Tapestry.register_form=function(formId){
 	dojo.deprecated("Tapestry.register_form",
-					"use tapestry.form.registerForm instead",
+					"use tapestry.form.registerForm instead register_form(" + formId + ")",
 					"4.1.1");
 	tapestry.form.registerForm(formId);
 }
@@ -73,7 +73,7 @@ Tapestry.require_field = function(event, fieldId, message)
 Tapestry.submit_form = function(form_id, field_name)
 {
 	dojo.deprecated("Tapestry.submit_form",
-					"use tapestry.form.submit instead",
+					"use tapestry.form.submit instead (" + form_id + ", " + field_name + ")",
 					"4.1.1");
 	tapestry.form.submit(form_id, field_name);
 }

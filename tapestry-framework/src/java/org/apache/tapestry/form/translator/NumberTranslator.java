@@ -128,11 +128,13 @@ public class NumberTranslator extends FormatTranslator
         cons.accumulate(field.getClientId(),
                 new JSONLiteral("[dojo.validate.isRealNumber,{"
                         + ((format.getMaximumFractionDigits() > 0) 
-                        ? "" : "places:" + format.getMaximumFractionDigits() + ",")
-                        + "decimal:" 
-                        + JSONObject.quote(format.getDecimalFormatSymbols().getDecimalSeparator()) + ","
-                        + "separator:" + JSONObject.quote(format.getDecimalFormatSymbols().getGroupingSeparator())
-                        + "}]"));
+                                ? "" : "places:" + format.getMaximumFractionDigits() + ",")
+                                + "decimal:" 
+                                + JSONObject.quote(format.getDecimalFormatSymbols().getDecimalSeparator()) 
+                                + (format.isGroupingUsed()
+                                        ? ",separator:" + JSONObject.quote(format.getDecimalFormatSymbols().getGroupingSeparator())
+                                                : "")
+                                                + "}]"));
         
         accumulateProfileProperty(field, profile, ValidationConstants.CONSTRAINTS, message);
     }
