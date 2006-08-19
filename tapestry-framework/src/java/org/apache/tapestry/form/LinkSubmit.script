@@ -17,7 +17,7 @@
 
 <!DOCTYPE script PUBLIC
 	"-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
-	"http://jakarta.apache.org/tapestry/dtd/Script_3_0.dtd">
+	"http://tapestry.apache.org/dtd/Script_3_0.dtd">
 <script>
 
 <input-symbol key="name" class="java.lang.String" required="yes"/>

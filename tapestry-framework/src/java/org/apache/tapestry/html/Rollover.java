@@ -149,9 +149,9 @@ public abstract class Rollover extends AbstractComponent
         // there won't be any timing issues (such as cause
         // bug #113893).
 
-        link.addEventHandler(LinkEventType.MOUSE_OVER, (String) symbols
+        link.addEventHandler(LinkEventType.MOUSE_OVER, "tapestry." + (String) symbols
                 .get("onMouseOverName"));
-        link.addEventHandler(LinkEventType.MOUSE_OUT, (String) symbols
+        link.addEventHandler(LinkEventType.MOUSE_OUT, "tapestry." + (String) symbols
                 .get("onMouseOutName"));
 
         return imageId;

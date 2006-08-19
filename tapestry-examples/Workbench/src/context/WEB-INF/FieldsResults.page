@@ -20,7 +20,9 @@
   "http://tapestry.apache.org/dtd/Tapestry_4_0.dtd">
 
 <page-specification class="org.apache.tapestry.workbench.fields.FieldsResults">
-
+   
+  <inject type="state" property="visit" object="session-data" />
+   
   <component id="backRollover" type="Rollover">
     <binding name="image" value="asset:back"/>
     <binding name="mouseOver" value="asset:backFocus"/>

@@ -52,13 +52,13 @@ onMouseOutName - name of mouse out function
 </let>
 
 <body>
-function ${onMouseOverName}()
+tapestry.${onMouseOverName}=function()
 {
   if (document.images)
     ${attribute} = ${mouseOverImageURL};
 }
 
-function ${onMouseOutName}()
+tapestry.${onMouseOutName}=function()
 {
   if (document.images)
     ${attribute} = ${mouseOutImageURL};

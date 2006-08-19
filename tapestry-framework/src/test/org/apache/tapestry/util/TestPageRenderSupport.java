@@ -138,7 +138,9 @@ public class TestPageRenderSupport extends BaseComponentTestCase
                 "  tapestry_preload[0] = new Image();",
                 "  tapestry_preload[0].src = \"/foo/bar.gif\";",
                 "  tapestry_preload[1] = new Image();",
-                "  tapestry_preload[1].src = \"/zip/zap.png\";", "}", "", "", "myBodyScript();",
+                "  tapestry_preload[1].src = \"/zip/zap.png\";", "}", "", "", 
+                "dojo.event.connect(window, 'onload', function(e) {", 
+                "myBodyScript();});",
                 "", "// --></script>" });
 
         verify();
@@ -184,7 +186,9 @@ public class TestPageRenderSupport extends BaseComponentTestCase
         prs.writeBodyScript(writer, cycle);
 
         assertOutput(new String[]
-        { "<script type=\"text/javascript\"><!--", "", "myBodyScript();",
+        { "<script type=\"text/javascript\"><!--","", 
+                "dojo.event.connect(window, 'onload', function(e) {", 
+                "myBodyScript();});",
                 "", "// --></script>" });
 
         verify();
@@ -241,7 +245,7 @@ public class TestPageRenderSupport extends BaseComponentTestCase
         
         assertOutput(new String[]
         { "<script type=\"text/javascript\"><!--",
-                "dojo.event.connect(window, 'onload', function(e) {",
+                "dojo.event.connect('after', window, 'onload', function(e) {",
                 "myInitializationScript1();", "myInitializationScript2();", 
                 "});", "// --></script>" });
 

@@ -124,7 +124,7 @@ public class DefaultResponseBuilderTest extends BaseComponentTestCase
         assertTrue(builder.isInitializationScriptAllowed(component));
     }
     
-    public void testWriteBodyScript()
+    public void test_Write_Body_Script()
     {
         MarkupFilter filter = new UTFMarkupFilter();
         PrintWriter writer = newPrintWriter();
@@ -154,7 +154,10 @@ public class DefaultResponseBuilderTest extends BaseComponentTestCase
         
         builder.writeBodyScript(mw, bscript, cycle);
         
-        assertOutput("\n\n" + bscript);
+        assertOutput("\n\n"
+                + "dojo.event.connect(window, 'onload', function(e) {\n"
+                + bscript
+                + "});");
         
         builder.endBodyScript(mw, cycle);
         
@@ -163,7 +166,7 @@ public class DefaultResponseBuilderTest extends BaseComponentTestCase
         verify();
     }
     
-    public void testWriteExternalScripts()
+    public void test_Write_External_Scripts()
     {
         MarkupFilter filter = new UTFMarkupFilter();
         PrintWriter writer = newPrintWriter();
@@ -193,7 +196,7 @@ public class DefaultResponseBuilderTest extends BaseComponentTestCase
         verify();
     }
     
-    public void testWriteInitializationScript()
+    public void test_Write_Initialization_Script()
     {
         MarkupFilter filter = new UTFMarkupFilter();
         PrintWriter writer = newPrintWriter();
@@ -211,7 +214,7 @@ public class DefaultResponseBuilderTest extends BaseComponentTestCase
         builder.writeInitializationScript(mw, script);
         
         assertOutput("<script type=\"text/javascript\"><!--\n"
-                + "dojo.event.connect(window, 'onload', function(e) {\n"
+                + "dojo.event.connect('after', window, 'onload', function(e) {\n"
                 + script 
                 + "});"
                 + "\n// -->"
