@@ -16,21 +16,18 @@ package org.apache.tapestry.web;
 
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertNull;
-import static org.testng.AssertJUnit.assertSame;
 
 import java.io.IOException;
 import java.util.List;
+
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.testng.annotations.Test;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.apache.hivemind.ApplicationRuntimeException;
-import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.web.ServletWebRequest}.

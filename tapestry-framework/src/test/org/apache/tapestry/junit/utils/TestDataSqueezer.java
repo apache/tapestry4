@@ -15,7 +15,6 @@
 package org.apache.tapestry.junit.utils;
 
 import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertNull;
 
 import java.io.File;
 import java.io.Serializable;
@@ -25,8 +24,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.Map;
-
-import junit.framework.AssertionFailedError;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
@@ -40,6 +37,8 @@ import org.apache.tapestry.util.io.DataSqueezerUtil;
 import org.apache.tapestry.util.io.SerializableAdaptor;
 import org.apache.tapestry.util.io.SqueezeAdaptor;
 import org.testng.annotations.Test;
+
+import junit.framework.AssertionFailedError;
 
 /**
  * A series of tests for {@link DataSqueezerImpl}&nbsp;and friends.

@@ -15,7 +15,6 @@
 package org.apache.tapestry.junit;
 
 import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.fail;
 
 import java.io.InputStream;
 import java.util.Properties;

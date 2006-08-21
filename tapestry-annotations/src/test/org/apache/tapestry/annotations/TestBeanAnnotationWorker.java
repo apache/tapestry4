@@ -15,9 +15,6 @@
 package org.apache.tapestry.annotations;
 
 import static org.easymock.EasyMock.expect;
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertNull;
-import static org.testng.AssertJUnit.assertSame;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;

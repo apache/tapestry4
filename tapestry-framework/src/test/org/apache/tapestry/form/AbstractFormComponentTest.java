@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.form;
 
-import static org.testng.AssertJUnit.assertEquals;
-
 import org.apache.hivemind.util.PropertyUtils;
 import org.testng.annotations.Test;
 

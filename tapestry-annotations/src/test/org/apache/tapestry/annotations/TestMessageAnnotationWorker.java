@@ -14,8 +14,9 @@
 
 package org.apache.tapestry.annotations;
 
-import static org.easymock.EasyMock.*;
-import static org.testng.AssertJUnit.assertEquals;
+import static org.easymock.EasyMock.aryEq;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;

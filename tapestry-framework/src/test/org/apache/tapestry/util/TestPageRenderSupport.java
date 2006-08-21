@@ -14,9 +14,8 @@
 
 package org.apache.tapestry.util;
 
-import static org.easymock.EasyMock.*;
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertSame;
+import static org.easymock.EasyMock.checkOrder;
+import static org.easymock.EasyMock.expect;
 
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;

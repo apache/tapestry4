@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.junit.utils;
 
-import static org.testng.AssertJUnit.assertEquals;
-
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.util.IdAllocator;
 import org.testng.annotations.Test;

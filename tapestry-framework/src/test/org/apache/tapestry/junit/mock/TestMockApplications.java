@@ -29,10 +29,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
-
-import junit.framework.AssertionFailedError;
 import ognl.Ognl;
 import ognl.OgnlException;
 
@@ -61,6 +57,11 @@ import org.jdom.input.SAXBuilder;
 import org.testng.annotations.Configuration;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+
+import junit.framework.AssertionFailedError;
 
 /**
  * A complex class that reads an XML description of a test involving the Mock objects and executes

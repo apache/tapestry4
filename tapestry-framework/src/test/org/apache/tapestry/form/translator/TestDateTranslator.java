@@ -15,7 +15,6 @@
 package org.apache.tapestry.form.translator;
 
 import static org.easymock.EasyMock.expect;
-import static org.testng.AssertJUnit.assertEquals;
 
 import java.util.Calendar;
 import java.util.Date;

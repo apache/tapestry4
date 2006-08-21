@@ -16,8 +16,6 @@ package org.apache.tapestry.portlet;
 
 import static org.easymock.EasyMock.checkOrder;
 import static org.easymock.EasyMock.expect;
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertNotNull;
 
 import org.apache.hivemind.Registry;
 import org.apache.tapestry.BaseComponentTestCase;

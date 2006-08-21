@@ -15,8 +15,6 @@
 package org.apache.tapestry.portlet;
 
 import static org.easymock.EasyMock.expect;
-import static org.testng.AssertJUnit.assertNull;
-import static org.testng.AssertJUnit.assertSame;
 
 import java.net.MalformedURLException;
 import java.net.URL;

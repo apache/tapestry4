@@ -15,7 +15,6 @@
 package org.apache.tapestry.asset;
 
 import static org.easymock.EasyMock.expect;
-import static org.testng.AssertJUnit.assertSame;
 
 import java.util.Collections;
 import java.util.List;

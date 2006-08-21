@@ -15,8 +15,6 @@
 package org.apache.tapestry.components;
 
 import static org.easymock.EasyMock.expect;
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertSame;
 
 import java.text.DateFormat;
 import java.text.Format;

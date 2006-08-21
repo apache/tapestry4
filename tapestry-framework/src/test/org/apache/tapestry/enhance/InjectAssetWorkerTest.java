@@ -16,7 +16,6 @@ package org.apache.tapestry.enhance;
 
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
-import static org.testng.AssertJUnit.assertEquals;
 
 import java.lang.reflect.Modifier;
 import java.util.Collections;

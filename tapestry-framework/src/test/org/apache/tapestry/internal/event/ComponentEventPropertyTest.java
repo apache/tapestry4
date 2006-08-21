@@ -13,12 +13,6 @@
 // limitations under the License.
 package org.apache.tapestry.internal.event;
 
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertFalse;
-import static org.testng.AssertJUnit.assertNotNull;
-import static org.testng.AssertJUnit.assertNull;
-import static org.testng.AssertJUnit.assertTrue;
-
 import java.util.List;
 
 import org.apache.tapestry.event.BrowserEvent;

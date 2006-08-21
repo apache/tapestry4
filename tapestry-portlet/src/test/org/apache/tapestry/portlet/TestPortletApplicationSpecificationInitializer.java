@@ -15,7 +15,6 @@
 package org.apache.tapestry.portlet;
 
 import static org.easymock.EasyMock.expect;
-import static org.testng.AssertJUnit.assertEquals;
 
 import java.net.URL;
 

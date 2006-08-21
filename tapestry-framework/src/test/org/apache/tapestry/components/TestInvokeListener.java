@@ -16,7 +16,6 @@ package org.apache.tapestry.components;
 
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
-import static org.testng.AssertJUnit.assertSame;
 
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IActionListener;

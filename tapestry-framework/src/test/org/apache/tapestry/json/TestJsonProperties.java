@@ -13,8 +13,6 @@ package org.apache.tapestry.json;
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import static org.testng.AssertJUnit.assertEquals;
-
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 

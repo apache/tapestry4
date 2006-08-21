@@ -15,8 +15,6 @@
 package org.apache.tapestry.coerce;
 
 import static org.easymock.EasyMock.expect;
-import static org.testng.AssertJUnit.assertNull;
-import static org.testng.AssertJUnit.assertSame;
 
 import java.util.Collections;
 

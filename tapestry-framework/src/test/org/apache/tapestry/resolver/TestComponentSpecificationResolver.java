@@ -14,9 +14,9 @@
 
 package org.apache.tapestry.resolver;
 
-import static org.easymock.EasyMock.*;
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertSame;
+import static org.easymock.EasyMock.checkOrder;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.startsWith;
 
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;

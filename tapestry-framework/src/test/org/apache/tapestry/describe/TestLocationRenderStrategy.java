@@ -14,7 +14,8 @@
 
 package org.apache.tapestry.describe;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.checkOrder;
+import static org.easymock.EasyMock.expect;
 
 import java.net.URL;
 

@@ -15,7 +15,6 @@
 package org.apache.tapestry.l10n;
 
 import static org.easymock.EasyMock.expect;
-import static org.testng.AssertJUnit.assertSame;
 
 import java.util.Locale;
 

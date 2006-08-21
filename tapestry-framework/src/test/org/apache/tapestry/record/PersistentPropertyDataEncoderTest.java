@@ -15,8 +15,6 @@
 package org.apache.tapestry.record;
 
 
-import static org.testng.AssertJUnit.*;
-
 import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;

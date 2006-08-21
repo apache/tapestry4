@@ -13,8 +13,6 @@
 // limitations under the License.
 package org.apache.tapestry.form;
 
-import static org.testng.AssertJUnit.assertEquals;
-
 import java.util.ArrayList;
 import java.util.List;
 

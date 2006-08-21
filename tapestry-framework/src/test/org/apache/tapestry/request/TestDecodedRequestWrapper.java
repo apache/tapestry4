@@ -15,12 +15,11 @@
 package org.apache.tapestry.request;
 
 import static org.easymock.EasyMock.expect;
-import static org.testng.AssertJUnit.assertEquals;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.tapestry.BaseComponentTestCase;
 import org.testng.annotations.Test;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Tests for {@link org.apache.tapestry.request.DecodedRequestWrapper}and

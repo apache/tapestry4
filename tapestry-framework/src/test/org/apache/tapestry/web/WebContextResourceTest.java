@@ -15,9 +15,6 @@
 package org.apache.tapestry.web;
 
 import static org.easymock.EasyMock.expect;
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertNull;
-import static org.testng.AssertJUnit.assertSame;
 
 import java.net.URL;
 import java.util.Locale;

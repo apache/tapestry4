@@ -14,12 +14,11 @@
 
 package org.apache.tapestry.enhance;
 
-import static org.easymock.EasyMock.*;
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertFalse;
-import static org.testng.AssertJUnit.assertNull;
-import static org.testng.AssertJUnit.assertSame;
-import static org.testng.AssertJUnit.assertTrue;
+import static org.easymock.EasyMock.aryEq;
+import static org.easymock.EasyMock.endsWith;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isNull;
 
 import java.lang.reflect.Modifier;
 import java.util.HashMap;

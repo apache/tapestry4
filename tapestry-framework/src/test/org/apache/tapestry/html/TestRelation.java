@@ -15,7 +15,6 @@
 package org.apache.tapestry.html;
 
 import static org.easymock.EasyMock.expect;
-import static org.testng.Assert.assertEquals;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;

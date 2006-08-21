@@ -15,16 +15,14 @@
 package org.apache.tapestry.web;
 
 import static org.easymock.EasyMock.expect;
-import static org.testng.AssertJUnit.assertNull;
-import static org.testng.AssertJUnit.assertSame;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-import javax.servlet.ServletContext;
-
 import org.testng.annotations.Test;
+
+import javax.servlet.ServletContext;
 
 /**
  * Tests for {@link org.apache.tapestry.web.ServletWebContext}.

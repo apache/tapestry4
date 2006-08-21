@@ -14,10 +14,6 @@
 
 package org.apache.tapestry.test;
 
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertNotSame;
-import static org.testng.AssertJUnit.assertSame;
-
 import java.util.List;
 
 import org.apache.hivemind.Messages;

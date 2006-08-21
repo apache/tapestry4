@@ -14,8 +14,9 @@
 
 package org.apache.tapestry.portlet;
 
-import static org.easymock.EasyMock.*;
-import static org.testng.AssertJUnit.assertSame;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.isA;
 
 import java.io.IOException;
 

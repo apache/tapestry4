@@ -15,7 +15,6 @@
 package org.apache.tapestry.binding;
 
 import static org.easymock.EasyMock.expect;
-import static org.testng.AssertJUnit.assertSame;
 
 import org.apache.hivemind.Location;
 import org.apache.tapestry.IBinding;

@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.portlet;
 
-import static org.testng.AssertJUnit.assertEquals;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;

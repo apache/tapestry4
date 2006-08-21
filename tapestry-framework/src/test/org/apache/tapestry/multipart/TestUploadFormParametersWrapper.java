@@ -14,19 +14,14 @@
 
 package org.apache.tapestry.multipart;
 
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertNotSame;
-import static org.testng.AssertJUnit.assertNull;
-import static org.testng.AssertJUnit.assertSame;
-
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.tapestry.BaseComponentTestCase;
 import org.testng.annotations.Test;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Tests for {@link org.apache.tapestry.multipart.UploadFormParametersWrapper}.

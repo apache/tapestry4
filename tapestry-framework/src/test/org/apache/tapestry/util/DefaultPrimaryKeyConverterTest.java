@@ -14,12 +14,6 @@
 
 package org.apache.tapestry.util;
 
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertFalse;
-import static org.testng.AssertJUnit.assertNull;
-import static org.testng.AssertJUnit.assertSame;
-import static org.testng.AssertJUnit.assertTrue;
-
 import java.util.List;
 
 import org.apache.hivemind.ApplicationRuntimeException;

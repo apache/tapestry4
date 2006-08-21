@@ -15,11 +15,6 @@
 package org.apache.tapestry.services.impl;
 
 import static org.easymock.EasyMock.expect;
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertSame;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
@@ -34,6 +29,9 @@ import org.apache.tapestry.services.ClasspathResourceFactory;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.ResetEventHub;
 import org.testng.annotations.Test;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Tests for:

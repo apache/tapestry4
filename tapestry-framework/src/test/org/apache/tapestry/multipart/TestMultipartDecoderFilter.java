@@ -15,17 +15,16 @@
 package org.apache.tapestry.multipart;
 
 import static org.easymock.EasyMock.expect;
-import static org.testng.AssertJUnit.assertSame;
 
 import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.services.ServletRequestServicer;
 import org.testng.annotations.Test;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Tests for {@link org.apache.tapestry.multipart.MultipartDecoderFilter}.

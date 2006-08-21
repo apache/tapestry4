@@ -14,11 +14,6 @@
 
 package org.apache.tapestry.form;
 
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertNull;
-import static org.testng.AssertJUnit.assertSame;
-import static org.testng.AssertJUnit.assertTrue;
-
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.spec.BeanLifecycle;
 import org.testng.annotations.Test;

@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.html;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.expect;
 
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IMarkupWriter;

@@ -15,7 +15,6 @@
 package org.apache.tapestry.services.impl;
 
 import static org.easymock.EasyMock.expect;
-import static org.testng.AssertJUnit.assertEquals;
 
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.services.AbsoluteURLBuilder;
