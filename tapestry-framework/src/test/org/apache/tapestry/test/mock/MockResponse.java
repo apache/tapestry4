@@ -24,11 +24,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.tapestry.util.ContentType;
+
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.tapestry.util.ContentType;
 
 /**
  * Mock implementation of {@link javax.servlet.http.HttpServletResponse}.

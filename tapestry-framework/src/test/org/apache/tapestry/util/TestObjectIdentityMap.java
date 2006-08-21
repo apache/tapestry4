@@ -14,9 +14,6 @@
 
 package org.apache.tapestry.util;
 
-import static org.testng.AssertJUnit.assertNull;
-import static org.testng.AssertJUnit.assertSame;
-
 import org.apache.tapestry.BaseComponentTestCase;
 import org.testng.annotations.Test;
 

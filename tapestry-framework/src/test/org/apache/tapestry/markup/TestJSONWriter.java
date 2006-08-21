@@ -13,8 +13,6 @@
 // limitations under the License.
 package org.apache.tapestry.markup;
 
-import static org.testng.AssertJUnit.assertEquals;
-
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 

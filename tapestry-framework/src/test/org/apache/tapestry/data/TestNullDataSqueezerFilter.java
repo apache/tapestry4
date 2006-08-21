@@ -14,8 +14,6 @@
 package org.apache.tapestry.data;
 
 import static org.easymock.EasyMock.expect;
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertNull;
 
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.services.DataSqueezer;

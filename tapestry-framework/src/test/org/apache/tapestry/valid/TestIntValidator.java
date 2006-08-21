@@ -14,10 +14,6 @@
 
 package org.apache.tapestry.valid;
 
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertNull;
-import static org.testng.AssertJUnit.assertSame;
-
 import java.util.Map;
 
 import org.apache.tapestry.form.IFormComponent;

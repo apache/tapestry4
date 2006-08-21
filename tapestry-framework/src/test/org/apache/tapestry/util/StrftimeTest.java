@@ -13,8 +13,6 @@
 // limitations under the License.
 package org.apache.tapestry.util;
 
-import static org.testng.AssertJUnit.assertEquals;
-
 import org.apache.tapestry.BaseComponentTestCase;
 import org.testng.annotations.Test;
 

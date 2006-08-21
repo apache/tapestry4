@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.event;
 
-import static org.testng.AssertJUnit.assertSame;
-
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.describe.DescriptionReceiver;
 import org.testng.annotations.Test;

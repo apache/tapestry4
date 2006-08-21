@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.annotations;
 
-import static org.testng.AssertJUnit.*;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.enhance.EnhancementOperation;

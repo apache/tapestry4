@@ -14,12 +14,10 @@
 
 package org.apache.tapestry;
 
-import static org.testng.AssertJUnit.assertEquals;
+import org.testng.annotations.Test;
 
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionBindingEvent;
-
-import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.BaseSessionStoreOptimized}.

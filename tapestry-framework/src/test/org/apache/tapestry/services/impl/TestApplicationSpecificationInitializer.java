@@ -15,15 +15,8 @@
 package org.apache.tapestry.services.impl;
 
 import static org.easymock.EasyMock.expect;
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertNotNull;
-import static org.testng.AssertJUnit.assertSame;
 
 import java.net.URL;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServlet;
 
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.Registry;
@@ -39,6 +32,10 @@ import org.apache.tapestry.services.ApplicationInitializer;
 import org.apache.tapestry.spec.ApplicationSpecification;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.testng.annotations.Test;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServlet;
 
 /**
  * Tests for the {@link org.apache.tapestry.services.impl.ApplicationSpecificationInitializer}.

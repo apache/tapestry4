@@ -15,7 +15,6 @@
 package org.apache.tapestry;
 
 import static org.easymock.EasyMock.expect;
-import static org.testng.AssertJUnit.assertEquals;
 
 import org.apache.hivemind.Messages;
 import org.apache.tapestry.test.Creator;

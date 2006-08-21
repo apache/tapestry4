@@ -14,8 +14,7 @@
 
 package org.apache.tapestry.form.validator;
 
-import static org.easymock.EasyMock.*;
-import static org.testng.AssertJUnit.assertEquals;
+import static org.easymock.EasyMock.expect;
 
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;

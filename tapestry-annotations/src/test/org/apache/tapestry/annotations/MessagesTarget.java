@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.annotations;
 import org.apache.tapestry.AbstractComponent;
-import org.apache.tapestry.annotations.Message;
 
 /**
  * Target "component" used to test the

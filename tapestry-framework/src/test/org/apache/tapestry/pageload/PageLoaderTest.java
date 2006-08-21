@@ -17,7 +17,6 @@ package org.apache.tapestry.pageload;
 import static org.easymock.EasyMock.endsWith;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.startsWith;
-import static org.testng.AssertJUnit.assertSame;
 
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;

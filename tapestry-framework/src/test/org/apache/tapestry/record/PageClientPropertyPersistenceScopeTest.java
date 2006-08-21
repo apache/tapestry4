@@ -15,7 +15,6 @@
 package org.apache.tapestry.record;
 
 import static org.easymock.EasyMock.expect;
-import static org.testng.AssertJUnit.assertEquals;
 
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IPage;

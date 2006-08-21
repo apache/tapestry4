@@ -15,14 +15,12 @@
 package org.apache.tapestry.web;
 
 import static org.easymock.EasyMock.expect;
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertSame;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.testng.annotations.Test;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * Tests for {@link org.apache.tapestry.web.ServletWebSession}.

@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.valid;
 
-import static org.testng.AssertJUnit.*;
+import static org.testng.AssertJUnit.assertEquals;
 
 import java.text.DateFormat;
 import java.util.Calendar;

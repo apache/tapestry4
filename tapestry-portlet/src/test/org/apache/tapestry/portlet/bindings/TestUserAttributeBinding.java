@@ -17,15 +17,14 @@ package org.apache.tapestry.portlet.bindings;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.portlet.PortletRequest;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.coerce.ValueConverter;
-import org.apache.tapestry.portlet.bindings.UserAttributeBindingFactory;
 import org.easymock.MockControl;
+
+import javax.portlet.PortletRequest;
 
 /**
  * Tests for {@link org.apache.tapestry.portlet.bindings.UserAttributeBinding} and

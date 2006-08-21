@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.callback;
 
-import static org.testng.AssertJUnit.assertEquals;
-
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;

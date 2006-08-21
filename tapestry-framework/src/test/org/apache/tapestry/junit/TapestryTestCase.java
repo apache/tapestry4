@@ -19,8 +19,6 @@ import static org.testng.AssertJUnit.assertEquals;
 import java.util.Arrays;
 import java.util.List;
 
-import junit.framework.AssertionFailedError;
-
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Registry;
@@ -40,6 +38,8 @@ import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
 import org.apache.tapestry.util.IPropertyHolder;
+
+import junit.framework.AssertionFailedError;
 
 /**
  * Base class for Tapestry test cases.

@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.util.io;
 
-import static org.testng.AssertJUnit.assertEquals;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.CharArrayWriter;

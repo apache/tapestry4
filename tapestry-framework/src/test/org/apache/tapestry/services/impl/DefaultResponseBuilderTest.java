@@ -13,10 +13,6 @@
 // limitations under the License.
 package org.apache.tapestry.services.impl;
 
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertSame;
-import static org.testng.AssertJUnit.assertTrue;
-
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
 

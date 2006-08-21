@@ -14,9 +14,6 @@
 
 package org.apache.tapestry.util;
 
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertNull;
-
 import java.util.HashMap;
 import java.util.Map;
 

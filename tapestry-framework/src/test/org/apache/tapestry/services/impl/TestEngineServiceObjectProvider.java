@@ -15,7 +15,6 @@
 package org.apache.tapestry.services.impl;
 
 import static org.easymock.EasyMock.expect;
-import static org.testng.AssertJUnit.assertSame;
 
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.engine.IEngineService;

@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.markup;
 
-import static org.testng.AssertJUnit.assertEquals;
-
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
 

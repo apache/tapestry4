@@ -14,9 +14,6 @@
 
 package org.apache.tapestry.annotations;
 
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertSame;
-
 import java.lang.reflect.Method;
 
 import org.apache.hivemind.Location;

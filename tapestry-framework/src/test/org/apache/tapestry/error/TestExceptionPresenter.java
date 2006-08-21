@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.error;
 
-import static org.testng.AssertJUnit.assertSame;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IPage;

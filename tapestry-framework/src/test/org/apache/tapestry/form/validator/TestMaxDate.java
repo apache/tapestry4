@@ -16,7 +16,6 @@ package org.apache.tapestry.form.validator;
 
 import static org.easymock.EasyMock.checkOrder;
 import static org.easymock.EasyMock.expect;
-import static org.testng.AssertJUnit.assertEquals;
 
 import java.util.Date;
 import java.util.Locale;

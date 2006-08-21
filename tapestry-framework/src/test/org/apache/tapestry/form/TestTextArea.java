@@ -16,8 +16,6 @@ package org.apache.tapestry.form;
 
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertNull;
 
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;

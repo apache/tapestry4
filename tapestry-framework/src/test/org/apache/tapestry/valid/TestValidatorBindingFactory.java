@@ -15,7 +15,6 @@
 package org.apache.tapestry.valid;
 
 import static org.easymock.EasyMock.expect;
-import static org.testng.AssertJUnit.assertSame;
 
 import org.apache.hivemind.Location;
 import org.apache.hivemind.lib.BeanFactory;

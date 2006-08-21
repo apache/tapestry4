@@ -14,9 +14,7 @@
 
 package org.apache.tapestry.engine.state;
 
-import static org.easymock.EasyMock.*;
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertSame;
+import static org.easymock.EasyMock.expect;
 
 import org.apache.tapestry.BaseComponentTestCase;
 import org.testng.annotations.Test;

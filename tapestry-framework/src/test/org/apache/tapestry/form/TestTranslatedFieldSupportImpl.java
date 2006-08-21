@@ -14,8 +14,10 @@
 
 package org.apache.tapestry.form;
 
-import static org.easymock.EasyMock.*;
-import static org.testng.AssertJUnit.assertSame;
+import static org.easymock.EasyMock.checkOrder;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
 
 import java.util.Locale;
 

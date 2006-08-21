@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.junit;
 
-import static org.testng.AssertJUnit.assertEquals;
-
 import org.apache.tapestry.multipart.ValuePart;
 import org.testng.annotations.Test;
 

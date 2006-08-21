@@ -14,9 +14,9 @@
 
 package org.apache.tapestry.describe;
 
-import javax.servlet.http.Cookie;
-
 import org.testng.annotations.Test;
+
+import javax.servlet.http.Cookie;
 
 /**
  * Tests for {@link org.apache.tapestry.describe.CookieStrategy}.

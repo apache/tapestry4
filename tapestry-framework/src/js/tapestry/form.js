@@ -102,10 +102,6 @@ tapestry.form={
 		}
 	},
 	
-	getFormId:function(form){
-		return (form.getAttribute("id") ) ? form.getAttribute("id") : form.getAttribute("name");
-	},
-	
 	/**
 	 * Registers the form with the local <code>forms</code> property so 
 	 * that there is a central reference of all tapestry forms.
@@ -123,7 +119,7 @@ tapestry.form={
 		}
 		
 		// make sure id is correct just in case node passed in has only name
-		id=this.getFormId(form);
+		id=form.getAttribute("id");
 		
 		if (!this.forms[id]) {
 			this.forms[id]={};
@@ -151,10 +147,7 @@ tapestry.form={
 				}
 				
 				dojo.event.connect(form, "onsubmit", function(e) {
-					if (dojo.event.browser.isEvent(e)){
-						dojo.event.browser.stopEvent(e);
-					}
-					
+					dojo.event.browser.stopEvent(e);
 					tapestry.form.submitAsync(form);
 				});
 			}
@@ -207,7 +200,7 @@ tapestry.form={
 	inputClicked:function(e){
 		var node = e.currentTarget;
 		if(node.disabled || dj_undef("form", node)) { return; }
-		this.forms[this.getFormId(node.form)].clickedButton = node;
+		this.forms[node.form.getAttribute("id")].clickedButton = node;
 	},
 	
 	/**
@@ -235,7 +228,7 @@ tapestry.form={
 			return;
 		}
 		
-		var id=this.getFormId(evt.target);
+		var id=evt.target.getAttribute("id");
 		if (!id) {
 			dojo.log.warn("Form had no id attribute.");
 			return;
@@ -327,7 +320,7 @@ tapestry.form={
 			dojo.raise("Form not found with id " + id);
 			return;
 		}
-		var formId=this.getFormId(form);
+		var formId=form.getAttribute("id");
 		
 		if (!tapestry.form.validation.validateForm(form, this.forms[formId])) {
 			dojo.log.debug("Form validation failed for form with id " + formId);

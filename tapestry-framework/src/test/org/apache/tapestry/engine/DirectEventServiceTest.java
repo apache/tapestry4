@@ -17,8 +17,6 @@ package org.apache.tapestry.engine;
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isA;
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertSame;
 
 import java.util.HashMap;
 import java.util.Map;

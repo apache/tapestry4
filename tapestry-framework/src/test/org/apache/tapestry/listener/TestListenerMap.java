@@ -14,9 +14,6 @@
 
 package org.apache.tapestry.listener;
 
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertSame;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;

@@ -15,17 +15,16 @@
 package org.apache.tapestry.services.impl;
 
 import static org.easymock.EasyMock.expect;
-import static org.testng.AssertJUnit.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.tapestry.BaseComponentTestCase;
+import org.testng.annotations.Test;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.tapestry.BaseComponentTestCase;
-import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.CookieSourceImpl}.

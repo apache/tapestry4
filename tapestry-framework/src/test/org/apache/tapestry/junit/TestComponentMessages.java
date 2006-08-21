@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.junit;
 
-import static org.testng.AssertJUnit.assertEquals;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;

@@ -18,8 +18,9 @@ import java.math.BigDecimal;
 
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.annotations.InjectPage;
+import org.apache.tapestry.annotations.InjectState;
 import org.apache.tapestry.html.BasePage;
-import org.apache.tapestry.valid.IValidationDelegate;
+import org.apache.tapestry.workbench.Visit;
 
 /**
  * @author Howard Lewis Ship
@@ -60,11 +61,7 @@ public abstract class Fields extends BasePage
     {
         getResultsPage().setByLink(true);
     }
-
-    /**
-     * Injected.
-     * 
-     * @since 4.0
-     */
-    public abstract IValidationDelegate getDelegate();
+    
+    @InjectState("session-data")
+    public abstract Visit getVisit();
 }

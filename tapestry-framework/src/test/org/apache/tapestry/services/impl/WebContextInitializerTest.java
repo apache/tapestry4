@@ -15,16 +15,14 @@
 package org.apache.tapestry.services.impl;
 
 import static org.easymock.EasyMock.expect;
-import static org.testng.AssertJUnit.assertNotNull;
-import static org.testng.AssertJUnit.assertSame;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServlet;
 
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.services.ApplicationGlobals;
 import org.testng.annotations.Test;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServlet;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.WebContextInitializer}.

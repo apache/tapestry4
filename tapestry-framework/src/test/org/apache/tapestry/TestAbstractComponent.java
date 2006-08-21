@@ -14,9 +14,6 @@
 
 package org.apache.tapestry;
 
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertSame;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.spec.IContainedComponent;
 import org.apache.tapestry.test.Creator;

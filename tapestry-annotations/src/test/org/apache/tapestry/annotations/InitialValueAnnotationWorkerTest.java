@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.annotations;
 
-import static org.testng.AssertJUnit.*;
 import java.lang.reflect.Method;
 
 import org.apache.hivemind.Location;

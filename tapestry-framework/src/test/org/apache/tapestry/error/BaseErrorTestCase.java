@@ -14,7 +14,9 @@
 
 package org.apache.tapestry.error;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.checkOrder;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
 
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IPage;

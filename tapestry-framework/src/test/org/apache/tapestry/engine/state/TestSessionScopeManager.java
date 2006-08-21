@@ -16,8 +16,6 @@ package org.apache.tapestry.engine.state;
 
 import static org.easymock.EasyMock.checkOrder;
 import static org.easymock.EasyMock.expect;
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertSame;
 
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.SessionStoreOptimized;

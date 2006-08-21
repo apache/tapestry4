@@ -19,9 +19,6 @@ import static org.easymock.EasyMock.expect;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.apache.commons.logging.Log;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IComponent;
@@ -31,6 +28,9 @@ import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebSession;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * Common utilities for building tests for {@link org.apache.tapestry.engine.IEngineService}s.
