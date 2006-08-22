@@ -144,16 +144,17 @@ public class DefaultResponseBuilderTest extends BaseComponentTestCase
         
         builder.writeImageInitializations(mw, imageInit, preload, cycle);
         
-        assertOutput("\n\nvar " + preload + " = new Array();\n"
+        assertOutput("\n"
+                + "dojo.event.connect(window, 'onload', function(e) {\n\n\n"
+                + preload + " = [];\n"
                 + "if (document.images)\n"
-                + "{\n" + imageInit + "}\n");
+                + "{\n" + imageInit + "}\n"
+                + "});");
         
         builder.writeBodyScript(mw, bscript, cycle);
         
         assertOutput("\n\n"
-                + "dojo.event.connect(window, 'onload', function(e) {\n"
-                + bscript
-                + "});");
+                + bscript);
         
         builder.endBodyScript(mw, cycle);
         
@@ -210,7 +211,7 @@ public class DefaultResponseBuilderTest extends BaseComponentTestCase
         builder.writeInitializationScript(mw, script);
         
         assertOutput("<script type=\"text/javascript\"><!--\n"
-                + "dojo.event.connect('after', window, 'onload', function(e) {\n"
+                + "dojo.event.connect(window, 'onload', function(e) {\n"
                 + script 
                 + "});"
                 + "\n// -->"

@@ -225,12 +225,7 @@ public class DefaultResponseBuilder implements ResponseBuilder
     public void writeBodyScript(IMarkupWriter writer, String script, IRequestCycle cycle)
     {
         writer.printRaw("\n\n");
-        
-        writer.printRaw("dojo.event.connect(window, 'onload', function(e) {\n");
-        
         writer.printRaw(script);
-        
-        writer.printRaw("});");
     }
 
     /** 
@@ -250,11 +245,17 @@ public class DefaultResponseBuilder implements ResponseBuilder
      */
     public void writeImageInitializations(IMarkupWriter writer, String script, String preloadName, IRequestCycle cycle)
     {
-        writer.printRaw("\n\nvar " + preloadName + " = new Array();\n");
+        
+        writer.println();
+        writer.printRaw("dojo.event.connect(window, 'onload', function(e) {\n");
+        
+        writer.printRaw("\n\n" + preloadName + " = [];\n");
         writer.printRaw("if (document.images)\n");
         writer.printRaw("{\n");
         writer.printRaw(script);
         writer.printRaw("}\n");
+        
+        writer.printRaw("});");
     }
     
     /** 
@@ -266,7 +267,7 @@ public class DefaultResponseBuilder implements ResponseBuilder
         writer.attribute("type", "text/javascript");
         writer.printRaw("<!--\n");
         
-        writer.printRaw("dojo.event.connect('after', window, 'onload', function(e) {\n");
+        writer.printRaw("dojo.event.connect(window, 'onload', function(e) {\n");
         
         writer.printRaw(script);
         
