@@ -14,9 +14,6 @@
 
 package org.apache.tapestry.valid;
 
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertNull;
-
 import org.apache.tapestry.form.IFormComponent;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
@@ -51,7 +48,7 @@ public class TestStringValidator extends BaseValidatorTestCase
         String in = "Foo";
         String out = v.toString(field, in);
 
-        assertEquals("Result.", in, out);
+        assertEquals(in, out);
 
         verify();
     }
@@ -64,7 +61,7 @@ public class TestStringValidator extends BaseValidatorTestCase
 
         String out = v.toString(field, null);
 
-        assertNull("Null expected.", out);
+        assertNull(out);
 
         verify();
     }
@@ -123,7 +120,7 @@ public class TestStringValidator extends BaseValidatorTestCase
         
         Object result = v.toObject(field, "stuff");
 
-        assertEquals("Result.", "stuff", result);
+        assertEquals("stuff", result, "Result.");
 
         verify();
     }
@@ -186,7 +183,7 @@ public class TestStringValidator extends BaseValidatorTestCase
 
         Object out = v.toObject(field, in);
 
-        assertEquals("Result", in, out);
+        assertEquals(in, out, "Result");
 
         verify();
     }
@@ -207,7 +204,7 @@ public class TestStringValidator extends BaseValidatorTestCase
 
         Object out = v.toObject(field, in);
 
-        assertNull("Result", out);
+        assertNull(out);
 
         verify();
     }

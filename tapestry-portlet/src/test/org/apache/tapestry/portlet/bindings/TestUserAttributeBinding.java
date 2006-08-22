@@ -14,15 +14,17 @@
 
 package org.apache.tapestry.portlet.bindings;
 
+import static org.easymock.EasyMock.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.coerce.ValueConverter;
-import org.easymock.MockControl;
+import org.testng.annotations.Test;
 
 import javax.portlet.PortletRequest;
 
@@ -33,7 +35,8 @@ import javax.portlet.PortletRequest;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestUserAttributeBinding extends HiveMindTestCase
+@Test
+public class TestUserAttributeBinding extends BaseComponentTestCase
 {
     private IBinding newBinding(String bindingDescription, ValueConverter converter,
             Location location, PortletRequest request, String attributeName)
@@ -47,27 +50,24 @@ public class TestUserAttributeBinding extends HiveMindTestCase
 
     private Map newMap(String key, String value)
     {
-        MockControl control = newControl(Map.class);
-        Map map = (Map) control.getMock();
-
-        map.get(key);
-        control.setReturnValue(value);
-
+        Map map = newMock(Map.class);
+        checkOrder(map, false);
+        
+        expect(map.get(key)).andReturn(value);
+        
         return map;
     }
 
     private ValueConverter newConverter()
     {
-        return (ValueConverter) newMock(ValueConverter.class);
+        return newMock(ValueConverter.class);
     }
 
     private PortletRequest newRequest(Map userInfo)
     {
-        MockControl control = newControl(PortletRequest.class);
-        PortletRequest request = (PortletRequest) control.getMock();
+        PortletRequest request = newMock(PortletRequest.class);
 
-        request.getAttribute(PortletRequest.USER_INFO);
-        control.setReturnValue(userInfo);
+        expect(request.getAttribute(PortletRequest.USER_INFO)).andReturn(userInfo);
 
         return request;
     }
@@ -75,11 +75,11 @@ public class TestUserAttributeBinding extends HiveMindTestCase
     public void testGetObject()
     {
         Map map = newMap("foo.bar", "baz");
-        ValueConverter vc = newConverter();
         PortletRequest request = newRequest(map);
+        ValueConverter vc = newConverter();
         Location l = newLocation();
-
-        replayControls();
+        
+        replay();
 
         IBinding b = newBinding("description", vc, l, request, "foo.bar");
 
@@ -88,7 +88,7 @@ public class TestUserAttributeBinding extends HiveMindTestCase
         assertEquals(false, b.isInvariant());
         assertEquals("baz", b.getObject());
 
-        verifyControls();
+        verify();
     }
 
     public void testGetObjectNoUserInfo()
@@ -97,7 +97,7 @@ public class TestUserAttributeBinding extends HiveMindTestCase
         PortletRequest request = newRequest(null);
         Location l = newLocation();
 
-        replayControls();
+        replay();
 
         IBinding b = newBinding("description", vc, l, request, "foo.bar");
 
@@ -112,7 +112,7 @@ public class TestUserAttributeBinding extends HiveMindTestCase
             assertSame(l, ex.getLocation());
         }
 
-        verifyControls();
+        verify();
     }
 
     public void testSetObject()
@@ -121,16 +121,15 @@ public class TestUserAttributeBinding extends HiveMindTestCase
         String valueConverted = "CONVERTED";
 
         Map map = new HashMap();
-
-        MockControl converterc = newControl(ValueConverter.class);
-        ValueConverter converter = (ValueConverter) converterc.getMock();
-        PortletRequest request = newRequest(map);
+        
+        ValueConverter converter = newMock(ValueConverter.class);
         Location l = newLocation();
 
-        converter.coerceValue(newValue, String.class);
-        converterc.setReturnValue(valueConverted);
-
-        replayControls();
+        expect(converter.coerceValue(newValue, String.class)).andReturn(valueConverted);
+        
+        PortletRequest request = newRequest(map);
+        
+        replay();
 
         IBinding b = newBinding("description", converter, l, request, "foo.bar");
 
@@ -138,7 +137,7 @@ public class TestUserAttributeBinding extends HiveMindTestCase
 
         assertSame(valueConverted, map.get("foo.bar"));
 
-        verifyControls();
+        verify();
     }
 
 }

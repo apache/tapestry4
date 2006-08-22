@@ -55,7 +55,7 @@ public class TestStaticLink extends TapestryTestCase
 
     public void testGetParameterNames()
     {
-        assertEquals(null, l.getParameterNames());
+        assertNull(l.getParameterNames());
     }
 
     public void testGetParameterValues()

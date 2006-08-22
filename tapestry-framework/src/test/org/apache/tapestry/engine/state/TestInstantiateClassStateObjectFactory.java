@@ -18,7 +18,7 @@ import java.util.HashMap;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.testng.annotations.Test;
 
 /**
@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
  * @since 4.0
  */
 @Test
-public class TestInstantiateClassStateObjectFactory extends HiveMindTestCase
+public class TestInstantiateClassStateObjectFactory extends BaseComponentTestCase
 {
     public void testSuccess()
     {

@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.asset;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.testng.annotations.Test;
 
 /**
@@ -24,7 +24,7 @@ import org.testng.annotations.Test;
  * @since 4.0
  */
 @Test
-public class TestExternalResource extends HiveMindTestCase
+public class TestExternalResource extends BaseComponentTestCase
 {
     public void testGetResourceURL()
     {

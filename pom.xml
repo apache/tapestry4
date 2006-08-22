@@ -192,7 +192,7 @@
                 <groupId>com.javaforge.tapestry</groupId>
                 <artifactId>tapestry-testng</artifactId>
                 <version>1.0.0-SNAPSHOT</version>
-                <scope>test</scope>
+                <scope>provided</scope>
                 <exclusions>
                     <exclusion>
                         <groupId>tapestry</groupId>
@@ -201,6 +201,10 @@
                     <exclusion>
                         <groupId>org.testng</groupId>
                         <artifactId>testng</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>jwebunit</groupId>
+                        <artifactId>jwebunit</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -222,8 +226,6 @@
                                 <value>en_US</value>
                             </property>
                         </systemProperties>
-                        <threadCount>2</threadCount>
-                        <parallel>true</parallel>
                     </configuration>
                 </plugin>
                 <plugin>

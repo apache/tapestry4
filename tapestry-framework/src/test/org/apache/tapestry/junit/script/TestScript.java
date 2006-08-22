@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.junit.script;
 
-import static org.testng.AssertJUnit.assertEquals;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +34,7 @@ import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.services.impl.ExpressionCacheImpl;
 import org.apache.tapestry.services.impl.ExpressionEvaluatorImpl;
 import org.apache.tapestry.util.xml.DocumentParseException;
-import org.testng.annotations.Configuration;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
 /**
@@ -50,7 +48,7 @@ public class TestScript extends TapestryTestCase
 {
     private MockScriptProcessor _processor = new MockScriptProcessor();
 
-    @Configuration(afterTestMethod = true)
+    @AfterMethod
     public void reset()
     {
         _processor.reset();
@@ -97,7 +95,7 @@ public class TestScript extends TapestryTestCase
     {
         Object actual = symbols.get(key);
 
-        assertEquals(key, expected, actual);
+        assertEquals(expected, actual);
     }
 
     /**
@@ -108,8 +106,8 @@ public class TestScript extends TapestryTestCase
     {
         execute("simple.script", null);
         
-        assertEquals("body", "\nBODY\n", _processor.getBody());
-        assertEquals("initialization", "\nINITIALIZATION\n", _processor.getInitialization());
+        assertEquals("\nBODY\n", _processor.getBody());
+        assertEquals("\nINITIALIZATION\n", _processor.getInitialization());
         
         assert _processor.getExternalScripts() == null 
         || _processor.getExternalScripts().length == 0;
@@ -162,7 +160,7 @@ public class TestScript extends TapestryTestCase
 
         String outputSymbol = "output: " + inputSymbol;
 
-        assertEquals("Output symbol", outputSymbol, symbols.get("outputSymbol"));
+        assertEquals(outputSymbol, symbols.get("outputSymbol"));
     }
 
     /**
@@ -192,7 +190,7 @@ public class TestScript extends TapestryTestCase
                 scriptLocation.getRelativeResource("second"),
                 scriptLocation.getRelativeResource("third") };
 
-        assertEquals("included scripts", Arrays.asList(expected), Arrays.asList(_processor
+        assertEquals(Arrays.asList(expected), Arrays.asList(_processor
                 .getExternalScripts()));
     }
 

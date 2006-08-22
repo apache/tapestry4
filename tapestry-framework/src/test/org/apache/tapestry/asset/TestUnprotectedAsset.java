@@ -17,7 +17,6 @@ package org.apache.tapestry.asset;
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isA;
-import static org.testng.AssertJUnit.assertFalse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,7 +108,7 @@ public class TestUnprotectedAsset extends BaseComponentTestCase
         matcher.contains("/org/apache/tapestry/asset/tapestry-in-action.png", pr);
         long urtime = System.currentTimeMillis() - currTime;
 
-        assertFalse("Urtime > drtime: " + urtime + " > " + drtime, urtime < drtime);
+        assertFalse(urtime < drtime, "Urtime > drtime: " + urtime + " > " + drtime);
     }
     
     /**

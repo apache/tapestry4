@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.junit;
 
-import static org.testng.AssertJUnit.assertEquals;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,8 +36,6 @@ import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
 import org.apache.tapestry.util.IPropertyHolder;
-
-import junit.framework.AssertionFailedError;
 
 /**
  * Base class for Tapestry test cases.
@@ -140,17 +136,17 @@ public abstract class TapestryTestCase extends BaseComponentTestCase
     {
         int count = Tapestry.size(actual);
 
-        assertEquals(propertyName + " element count", expected.length, count);
+        assertEquals(expected.length, count);
 
         for (int i = 0; i < count; i++)
         {
-            assertEquals("propertyName[" + i + "]", expected[i], actual.get(i));
+            assertEquals(expected[i], actual.get(i));
         }
     }
 
     public static void checkProperty(IPropertyHolder h, String propertyName, String expectedValue)
     {
-        assertEquals("Property " + propertyName + ".", expectedValue, h.getProperty(propertyName));
+        assertEquals(expectedValue, h.getProperty(propertyName));
     }
 
     public static void checkException(Throwable ex, String string)
@@ -158,7 +154,7 @@ public abstract class TapestryTestCase extends BaseComponentTestCase
         if (ex.getMessage().indexOf(string) >= 0)
             return;
 
-        throw new AssertionFailedError("Exception " + ex + " does not contain sub-string '"
+        throw new AssertionError("Exception " + ex + " does not contain sub-string '"
                 + string + "'.");
     }
 

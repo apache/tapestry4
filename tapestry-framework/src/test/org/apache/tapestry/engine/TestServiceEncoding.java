@@ -17,7 +17,7 @@ package org.apache.tapestry.engine;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.testng.annotations.Test;
 
 /**
@@ -26,7 +26,7 @@ import org.testng.annotations.Test;
  * @author Howard M. Lewis Ship
  */
 @Test
-public class TestServiceEncoding extends HiveMindTestCase
+public class TestServiceEncoding extends BaseComponentTestCase
 {
     public void testSetServletPath()
     {
@@ -76,14 +76,14 @@ public class TestServiceEncoding extends HiveMindTestCase
         se.setParameterValues("flintstone", new String[]
         { "fred", "wilma", "dino" });
 
-        assertListsEqual(new String[]
+        assertListEquals(new String[]
         { "fred", "wilma", "dino" }, se.getParameterValues("flintstone"));
 
         assertEquals(true, se.isModified());
 
         se.setParameterValue("foo", "bar");
 
-        assertListsEqual(new String[]
+        assertListEquals(new String[]
         { "bar" }, se.getParameterValues("foo"));
 
         assertNull(se.getParameterValue("unknown"));
@@ -111,7 +111,7 @@ public class TestServiceEncoding extends HiveMindTestCase
         se.setParameterValue("foo", "bar");
         se.setParameterValue("alpha", "beta");
 
-        assertListsEqual(new String[]
+        assertListEquals(new String[]
         { "alpha", "foo" }, se.getParameterNames());
     }
 }

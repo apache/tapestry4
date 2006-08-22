@@ -289,7 +289,7 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
         d.setFormComponent(f2);
         d.reset();
 
-        assertEquals(null, d.getFieldTracking());
+        assertNull(d.getFieldTracking());
 
         assertEquals(false, d.getHasErrors());
         assertNull(d.getFirstError());

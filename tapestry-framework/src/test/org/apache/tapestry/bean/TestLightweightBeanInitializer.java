@@ -16,7 +16,7 @@ package org.apache.tapestry.bean;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.testng.annotations.Test;
 
 /**
@@ -26,7 +26,7 @@ import org.testng.annotations.Test;
  * @since 4.0
  */
 @Test
-public class TestLightweightBeanInitializer extends HiveMindTestCase
+public class TestLightweightBeanInitializer extends BaseComponentTestCase
 {
     public void testSuccess()
     {

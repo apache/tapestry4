@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.record;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.testng.annotations.Test;
 
 /**
@@ -24,7 +24,7 @@ import org.testng.annotations.Test;
  * @since 4.0
  */
 @Test
-public class TestPropertyChange extends HiveMindTestCase
+public class TestPropertyChange extends BaseComponentTestCase
 {
     public void testAccessors()
     {

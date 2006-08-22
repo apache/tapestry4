@@ -61,8 +61,6 @@ import org.testng.annotations.Test;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 
-import junit.framework.AssertionFailedError;
-
 /**
  * A complex class that reads an XML description of a test involving the Mock objects and executes
  * it, pretending to be a running servlet container.
@@ -478,7 +476,7 @@ public class TestMockApplications
         if (result)
             return;
 
-        throw new AssertionFailedError(buildTestName(name) + ": Expression '" + expression
+        throw new AssertionError(buildTestName(name) + ": Expression '" + expression
                 + "' was not true.");
 
     }
@@ -660,35 +658,35 @@ public class TestMockApplications
         
         System.err.println(text);
         
-        throw new AssertionFailedError(buildTestName(name)
+        throw new AssertionError(buildTestName(name)
                 + ": Response does not contain regular expression '" + pattern + "'.");
     }
 
     private void matchSubstring(String name, String text, String substring)
     {
         if (text == null)
-            throw new AssertionFailedError(buildTestName(name) + " : Response is null.");
+            throw new AssertionError(buildTestName(name) + " : Response is null.");
 
         if (text.indexOf(substring) >= 0)
             return;
         
         System.err.println(text);
         
-        throw new AssertionFailedError(buildTestName(name) + ":" + text + "\n Response does not contain string '"
+        throw new AssertionError(buildTestName(name) + ":" + text + "\n Response does not contain string '"
                 + substring + "'.");
     }
 
     private void matchNoSubstring(String name, String text, String substring)
     {
         if (text == null)
-            throw new AssertionFailedError(buildTestName(name) + " : Response is null.");
+            throw new AssertionError(buildTestName(name) + " : Response is null.");
 
         if (text.indexOf(substring) < 0)
             return;
 
         System.err.println(text);
 
-        throw new AssertionFailedError(buildTestName(name) + ": Response contains string '"
+        throw new AssertionError(buildTestName(name) + ": Response contains string '"
                 + substring + "'.");
     }
 
@@ -741,13 +739,13 @@ public class TestMockApplications
             if (i >= count)
             {
                 System.err.println(outputString);
-                throw new AssertionFailedError(buildTestName(name) + ": Too many matches for '"
+                throw new AssertionError(buildTestName(name) + ": Too many matches for '"
                         + pattern + "'.");
             }
             
             if (!matched) {
                 System.err.println(outputString);
-                throw new AssertionFailedError(buildTestName(name) + ": No expected match found for "
+                throw new AssertionError(buildTestName(name) + ": No expected match found for "
                         + "output of '" + actual + "'. ");
             }
             
@@ -757,7 +755,7 @@ public class TestMockApplications
         if (i < count)
         {
             System.err.println(outputString);
-            throw new AssertionFailedError(buildTestName(name) + ": Too few matches for '"
+            throw new AssertionError(buildTestName(name) + ": Too few matches for '"
                     + pattern + "' (expected " + count + " but got " + i + ").");
         }
     }
@@ -792,13 +790,13 @@ public class TestMockApplications
         String value = assertion.getTextTrim();
 
         if (_exception == null)
-            throw new AssertionFailedError(buildTestName(name) + " no exception thrown.");
+            throw new AssertionError(buildTestName(name) + " no exception thrown.");
         String message = _exception.getMessage();
 
         if (message.indexOf(value) >= 0)
             return;
 
-        throw new AssertionFailedError(buildTestName(name) + " exception message (" + message
+        throw new AssertionError(buildTestName(name) + " exception message (" + message
                 + ") does not contain '" + value + "'.");
     }
 
@@ -830,11 +828,11 @@ public class TestMockApplications
             if (cookies[i].getValue().equals(value))
                 return;
 
-            throw new AssertionFailedError(buildTestName(name) + ": Response cookie '" + name
+            throw new AssertionError(buildTestName(name) + ": Response cookie '" + name
                     + "': expected '" + value + "', but was '" + cookies[i].getValue() + "'.");
         }
 
-        throw new AssertionFailedError(buildTestName(name) + ": Could not find cookie named '"
+        throw new AssertionError(buildTestName(name) + ": Could not find cookie named '"
                 + name + "' in response.");
     }
 
@@ -866,21 +864,21 @@ public class TestMockApplications
         String actualContentType = _response.getContentType();
 
         if (!contentType.equals(actualContentType))
-            throw new AssertionFailedError(buildTestName(name) + " content-type was '"
+            throw new AssertionError(buildTestName(name) + " content-type was '"
                     + actualContentType + "', expected '" + contentType + "'.");
 
         byte[] actualContent = _response.getResponseBytes();
         byte[] expectedContent = getFileContent(getBaseDirectory() + "/" + path);
 
         if (actualContent.length != expectedContent.length)
-            throw new AssertionFailedError(buildTestName(name) + " actual length of "
+            throw new AssertionError(buildTestName(name) + " actual length of "
                     + actualContent.length + " bytes does not match expected length of "
                     + expectedContent.length + " bytes.");
 
         for (int i = 0; i < actualContent.length; i++)
         {
             if (actualContent[i] != expectedContent[i])
-                throw new AssertionFailedError(buildTestName(name)
+                throw new AssertionError(buildTestName(name)
                         + " content mismatch at index + " + i + ".");
 
         }

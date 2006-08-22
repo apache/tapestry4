@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.testng.annotations.Test;
 
 /**
@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
  * @since 4.0
  */
 @Test
-public class TestWebUtils extends HiveMindTestCase
+public class TestWebUtils extends BaseComponentTestCase
 {
     public void testToSortedList()
     {

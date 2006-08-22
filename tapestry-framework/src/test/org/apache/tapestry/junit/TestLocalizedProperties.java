@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.junit;
 
-import static org.testng.AssertJUnit.assertEquals;
-
 import java.io.InputStream;
 import java.util.Properties;
 
@@ -65,7 +63,7 @@ public class TestLocalizedProperties extends TapestryTestCase
         }
 
         if (standardException == null && localizedException == null)
-            assertEquals("The property content does not match", standard, localized);
+            assertEquals(standard, localized, "The property content does not match");
         else if (standardException == null && localizedException != null)
             fail("Properties did not throw an exception, but LocalizedProperties did: "
                     + localizedException);

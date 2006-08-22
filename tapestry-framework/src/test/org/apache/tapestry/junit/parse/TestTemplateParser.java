@@ -14,9 +14,6 @@
 
 package org.apache.tapestry.junit.parse;
 
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertNotNull;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -152,16 +149,16 @@ public class TestTemplateParser extends BaseComponentTestCase
         
         int expectedLength = endIndex - startIndex + 1;
         
-        assertEquals("Text token type.", TokenType.TEXT, t.getType());
-        assertEquals("Text token start index.", startIndex, t.getOffset());
-        assertEquals("Text token end index.", expectedLength, t.getLength());
+        assertEquals(TokenType.TEXT, t.getType());
+        assertEquals(startIndex, t.getOffset());
+        assertEquals(expectedLength, t.getLength());
     }
     
     /** @since 3.0 * */
     
     protected void checkLine(TemplateToken token, int line)
     {
-        assertEquals("Token line", line, token.getLocation().getLineNumber());
+        assertEquals(line, token.getLocation().getLineNumber());
     }
 
     /** @since 2.0.4 * */
@@ -170,10 +167,10 @@ public class TestTemplateParser extends BaseComponentTestCase
     {
         LocalizationToken t = (LocalizationToken) token;
 
-        assertEquals("Localization token type.", TokenType.LOCALIZATION, t.getType());
-        assertEquals("Localization key.", key, t.getKey());
+        assertEquals(TokenType.LOCALIZATION, t.getType());
+        assertEquals( key, t.getKey());
 
-        assertEquals("Localization attributes.", attributes, t.getAttributes());
+        assertEquals(attributes, t.getAttributes());
 
         checkLine(token, line);
     }
@@ -188,10 +185,10 @@ public class TestTemplateParser extends BaseComponentTestCase
     {
         OpenToken t = (OpenToken) token;
 
-        assertEquals("Open token type", TokenType.OPEN, t.getType());
-        assertEquals("Open token id", id, t.getId());
-        assertEquals("Open token component type", componentType, t.getComponentType());
-        assertEquals("Open token tag", tag, t.getTag());
+        assertEquals(TokenType.OPEN, t.getType());
+        assertEquals(id, t.getId());
+        assertEquals(componentType, t.getComponentType());
+        assertEquals(tag, t.getTag());
 
         checkLine(token, line);
     }
@@ -200,20 +197,20 @@ public class TestTemplateParser extends BaseComponentTestCase
     {
         OpenToken t = (OpenToken) token;
 
-        assertEquals("Attributes", expected, t.getAttributesMap());
+        assertEquals(expected, t.getAttributesMap());
     }
 
     protected void assertCloseToken(TemplateToken token, int line)
     {
-        assertEquals("Close token type.", TokenType.CLOSE, token.getType());
+        assertEquals(TokenType.CLOSE, token.getType());
         
         checkLine(token, line);
     }
 
     protected void assertTokenCount(TemplateToken[] tokens, int count)
     {
-        assertNotNull("Parsed tokens.", tokens);
-        assertEquals("Parsed token count.", count, tokens.length);
+        assertNotNull(tokens);
+        assertEquals(count, tokens.length);
     }
 
     private void runFailure(String file, String message)

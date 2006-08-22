@@ -14,7 +14,7 @@
 package org.apache.tapestry.services;
 
 import org.apache.hivemind.Registry;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.testng.annotations.Test;
 
 
@@ -23,7 +23,7 @@ import org.testng.annotations.Test;
  *
  */
 @Test
-public class TestDataSqueezer extends HiveMindTestCase {
+public class TestDataSqueezer extends BaseComponentTestCase {
 
     public void testPipeline() throws Exception {
         final Registry reg = buildFrameworkRegistry( "squeezer-pipeline.xml" );
