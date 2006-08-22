@@ -12,7 +12,7 @@
         <artifactId>tapestry-examples</artifactId>
         <version>4.1.1-SNAPSHOT</version>
     </parent>
-    <name>Tapestry Virtual Library</name>
+    <name>Tapestry Virtual Library (Beans)</name>
     <inceptionYear>2006</inceptionYear>
     
     <dependencies>
@@ -32,7 +32,7 @@
             <groupId>jboss</groupId>
             <artifactId>jboss-j2ee</artifactId>
             <version>4.0.2</version>
-        </dependency>
+        </dependency>          
     </dependencies>
     
     <build>
