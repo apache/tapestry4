@@ -123,23 +123,23 @@ public class TestPageRenderSupport extends BaseComponentTestCase
 
         PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "", l, newBuilder(writer));
 
-        assertEquals("tapestry_preload[0].src", prs.getPreloadedImageReference("/foo/bar.gif"));
-        assertEquals("tapestry_preload[1].src", prs.getPreloadedImageReference("/zip/zap.png"));
-        assertEquals("tapestry_preload[0].src", prs.getPreloadedImageReference("/foo/bar.gif"));
+        assertEquals("tapestry._preload[0].src", prs.getPreloadedImageReference("/foo/bar.gif"));
+        assertEquals("tapestry._preload[1].src", prs.getPreloadedImageReference("/zip/zap.png"));
+        assertEquals("tapestry._preload[0].src", prs.getPreloadedImageReference("/foo/bar.gif"));
 
         prs.addBodyScript("myBodyScript();");
 
         prs.writeBodyScript(writer, cycle);
 
         assertOutput(new String[]
-        { "<script type=\"text/javascript\"><!--", "",
-                "var tapestry_preload = new Array();", "if (document.images)", "{",
-                "  tapestry_preload[0] = new Image();",
-                "  tapestry_preload[0].src = \"/foo/bar.gif\";",
-                "  tapestry_preload[1] = new Image();",
-                "  tapestry_preload[1].src = \"/zip/zap.png\";", "}", "", "", 
-                "dojo.event.connect(window, 'onload', function(e) {", 
-                "myBodyScript();});",
+        { "<script type=\"text/javascript\"><!--",
+                "dojo.event.connect(window, 'onload', function(e) {", "","",
+                "tapestry._preload = [];", "if (document.images)", "{",
+                "  tapestry._preload[0] = new Image();",
+                "  tapestry._preload[0].src = \"/foo/bar.gif\";",
+                "  tapestry._preload[1] = new Image();",
+                "  tapestry._preload[1].src = \"/zip/zap.png\";", "}", "});", "", 
+                "myBodyScript();",
                 "", "// --></script>" });
 
         verify();
@@ -161,10 +161,13 @@ public class TestPageRenderSupport extends BaseComponentTestCase
         prs.writeBodyScript(writer, cycle);
 
         assertOutput(new String[]
-        { "<script type=\"text/javascript\"><!--", "",
-                "var NAMESPACE_preload = new Array();", "if (document.images)", "{",
+        {"<script type=\"text/javascript\"><!--", 
+                "dojo.event.connect(window, 'onload', function(e) {","","",
+                "NAMESPACE_preload = [];", "if (document.images)", "{",
                 "  NAMESPACE_preload[0] = new Image();",
-                "  NAMESPACE_preload[0].src = \"/foo/bar.gif\";", "}", "", "", "// --></script>" });
+                "  NAMESPACE_preload[0].src = \"/foo/bar.gif\";", "}",
+                "});","",
+                "// --></script>" });
 
         verify();
     }
@@ -186,8 +189,7 @@ public class TestPageRenderSupport extends BaseComponentTestCase
 
         assertOutput(new String[]
         { "<script type=\"text/javascript\"><!--","", 
-                "dojo.event.connect(window, 'onload', function(e) {", 
-                "myBodyScript();});",
+                "myBodyScript();",
                 "", "// --></script>" });
 
         verify();
@@ -244,7 +246,7 @@ public class TestPageRenderSupport extends BaseComponentTestCase
         
         assertOutput(new String[]
         { "<script type=\"text/javascript\"><!--",
-                "dojo.event.connect('after', window, 'onload', function(e) {",
+                "dojo.event.connect(window, 'onload', function(e) {",
                 "myInitializationScript1();", "myInitializationScript2();", 
                 "});", "// --></script>" });
 
