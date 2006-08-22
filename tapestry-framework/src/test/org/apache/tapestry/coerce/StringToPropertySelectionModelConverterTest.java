@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.coerce;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.testng.annotations.Test;
 
@@ -26,7 +26,7 @@ import org.testng.annotations.Test;
  * @since 4.0
  */
 @Test
-public class StringToPropertySelectionModelConverterTest extends HiveMindTestCase
+public class StringToPropertySelectionModelConverterTest extends BaseComponentTestCase
 {
     private IPropertySelectionModel newModel(String value)
     {

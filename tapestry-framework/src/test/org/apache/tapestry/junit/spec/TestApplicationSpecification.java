@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.junit.spec;
 
-import static org.testng.AssertJUnit.assertEquals;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.spec.IApplicationSpecification;
@@ -38,11 +36,11 @@ public class TestApplicationSpecification extends TapestryTestCase
 
         PropertyBean extension = (PropertyBean) spec.getExtension("testBean");
 
-        assertEquals("booleanProperty", true, extension.getBooleanProperty());
-        assertEquals("intProperty", 18, extension.getIntProperty());
-        assertEquals("longProperty", 383838L, extension.getLongProperty());
-        assertEquals("doubleProperty", -3.14, extension.getDoubleProperty(), 0.0);
-        assertEquals("stringProperty", "Tapestry: Java Web Components", extension
+        assertEquals(true, extension.getBooleanProperty());
+        assertEquals(18, extension.getIntProperty());
+        assertEquals(383838L, extension.getLongProperty());
+        assertEquals(-3.14, extension.getDoubleProperty(), 0.0);
+        assertEquals("Tapestry: Java Web Components", extension
                 .getStringProperty());
     }
 
@@ -77,15 +75,15 @@ public class TestApplicationSpecification extends TapestryTestCase
 
         IExtensionSpecification e = a.getExtensionSpecification("testBean");
 
-        assertEquals("Property fred.", "flintstone", e.getProperty("fred"));
+        assertEquals("flintstone", e.getProperty("fred"));
     }
 
     public void testImmediateExtension() throws Exception
     {
-        assertEquals("instanceCount", 0, ImmediateExtension.getInstanceCount());
+        assertEquals(0, ImmediateExtension.getInstanceCount());
 
         parseApp("ImmediateExtension.application");
 
-        assertEquals("instanceCount", 1, ImmediateExtension.getInstanceCount());
+        assertEquals( 1, ImmediateExtension.getInstanceCount());
     }
 }

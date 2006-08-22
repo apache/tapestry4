@@ -15,7 +15,6 @@
 package org.apache.tapestry.junit;
 
 import static org.easymock.EasyMock.expect;
-import static org.testng.AssertJUnit.assertTrue;
 
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.BaseComponentTestCase;
@@ -96,6 +95,6 @@ public class TestComponent extends BaseComponentTestCase
         verify();
         
         for (int i = 0; i < list.length; i++)
-            assertTrue("Outer object #" + i + " did render.", list[i].rendered);
+            assertTrue(list[i].rendered);
     }
 }

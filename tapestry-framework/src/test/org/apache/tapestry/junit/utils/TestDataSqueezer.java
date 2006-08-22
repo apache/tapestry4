@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.junit.utils;
 
-import static org.testng.AssertJUnit.assertEquals;
-
 import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
@@ -37,8 +35,6 @@ import org.apache.tapestry.util.io.DataSqueezerUtil;
 import org.apache.tapestry.util.io.SerializableAdaptor;
 import org.apache.tapestry.util.io.SqueezeAdaptor;
 import org.testng.annotations.Test;
-
-import junit.framework.AssertionFailedError;
 
 /**
  * A series of tests for {@link DataSqueezerImpl}&nbsp;and friends.
@@ -64,11 +60,11 @@ public class TestDataSqueezer extends BaseComponentTestCase
     {
         String encoding = squeezer.squeeze(input);
 
-        assertEquals("String encoding.", expectedEncoding, encoding);
+        assertEquals(expectedEncoding, encoding);
 
         Object output = squeezer.unsqueeze(encoding);
 
-        assertEquals("Decoded object.", input, output);
+        assertEquals(input, output);
     }
 
     public void testBoolean()
@@ -157,11 +153,11 @@ public class TestDataSqueezer extends BaseComponentTestCase
 
         String[] encoded = ds.squeeze(input);
 
-        assertEquals("Encoded array length.", input.length, encoded.length);
+        assertEquals(input.length, encoded.length);
 
         Object[] output = ds.unsqueeze(encoded);
 
-        assertEquals("Output array length.", input.length, output.length);
+        assertEquals(input.length, output.length);
 
         for (int i = 0; i < input.length; i++)
         {
@@ -322,7 +318,7 @@ public class TestDataSqueezer extends BaseComponentTestCase
         {
             ds.register(new BHSqueezer(""));
 
-            throw new AssertionFailedError("Null prefix should be invalid.");
+            throw new AssertionError("Null prefix should be invalid.");
         }
         catch (IllegalArgumentException ex)
         {
@@ -335,7 +331,7 @@ public class TestDataSqueezer extends BaseComponentTestCase
         {
             ds.register(new BHSqueezer("\n"));
 
-            throw new AssertionFailedError("Prefix should be invalid.");
+            throw new AssertionError("Prefix should be invalid.");
         }
         catch (IllegalArgumentException ex)
         {
@@ -348,7 +344,7 @@ public class TestDataSqueezer extends BaseComponentTestCase
         {
             ds.register(new BHSqueezer("b"));
 
-            throw new AssertionFailedError("Duplicate prefix should be invalid.");
+            throw new AssertionError("Duplicate prefix should be invalid.");
         }
         catch (IllegalArgumentException ex)
         {
@@ -361,7 +357,7 @@ public class TestDataSqueezer extends BaseComponentTestCase
         {
             ds.register(new BHSqueezer("B", null));
 
-            throw new AssertionFailedError("Null data class should be invalid.");
+            throw new AssertionError("Null data class should be invalid.");
         }
         catch (IllegalArgumentException ex)
         {
@@ -374,7 +370,7 @@ public class TestDataSqueezer extends BaseComponentTestCase
         {
             ds.register(null);
 
-            throw new AssertionFailedError("Null squeezer should be invalid.");
+            throw new AssertionError("Null squeezer should be invalid.");
         }
         catch (IllegalArgumentException ex)
         {

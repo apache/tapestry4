@@ -17,7 +17,7 @@ package org.apache.tapestry.services.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.services.ObjectPool;
 import org.testng.annotations.Test;
 
@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
  * @since 4.0
  */
 @Test
-public class TestObjectPool extends HiveMindTestCase
+public class TestObjectPool extends BaseComponentTestCase
 {
     public void testStoreAndGet()
     {

@@ -18,7 +18,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.testng.annotations.Test;
 
 /**
@@ -26,7 +26,7 @@ import org.testng.annotations.Test;
  * @since 4.0
  */
 @Test
-public class TestIteratorConverters extends HiveMindTestCase
+public class TestIteratorConverters extends BaseComponentTestCase
 {
     public void testObjectToIterator()
     {

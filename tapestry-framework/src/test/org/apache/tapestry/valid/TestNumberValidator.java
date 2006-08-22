@@ -15,7 +15,6 @@
 package org.apache.tapestry.valid;
 
 import static org.easymock.EasyMock.expect;
-import static org.testng.AssertJUnit.assertEquals;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -78,7 +77,7 @@ public class TestNumberValidator extends BaseValidatorTestCase
 
         Object o = v.toObject(field, s);
         
-        assertEquals("Input and output.", input, o);
+        assertEquals(input, o);
     }
 
     public void testShort() throws ValidatorException

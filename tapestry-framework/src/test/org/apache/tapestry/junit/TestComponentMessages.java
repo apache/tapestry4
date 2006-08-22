@@ -103,7 +103,7 @@ public class TestComponentMessages extends TapestryTestCase
     {
         String actual = messages.getMessage(key);
 
-        assertEquals("Key " + key, expected, actual);
+        assertEquals(expected, actual);
 
     }
 

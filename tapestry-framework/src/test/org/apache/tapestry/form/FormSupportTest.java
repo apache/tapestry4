@@ -18,7 +18,6 @@ import static org.easymock.EasyMock.checkOrder;
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isA;
-import static org.testng.AssertJUnit.assertEquals;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
@@ -64,7 +63,7 @@ public class FormSupportTest extends BaseComponentTestCase
         {
             public void render(IMarkupWriter writer, IRequestCycle cycle)
             {
-                assertEquals("Writer argument must be nested instance.", nested, writer);
+                assertEquals(nested, writer);
 
                 for (int i = 0; i < component.length; i++)
                     fs.getElementId(component[i]);

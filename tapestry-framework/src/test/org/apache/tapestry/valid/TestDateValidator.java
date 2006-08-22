@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.valid;
 
-import static org.testng.AssertJUnit.assertEquals;
-
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -75,7 +73,7 @@ public class TestDateValidator extends BaseValidatorTestCase
     {
         String out = v.toString(null, buildDate(Calendar.DECEMBER, 8, 2001));
 
-        assertEquals("Result.", "12/08/2001", out);
+        assertEquals("12/08/2001", out);
     }
 
     public void testToStringFormat()
@@ -89,7 +87,7 @@ public class TestDateValidator extends BaseValidatorTestCase
 
         String out = v.toString(null, buildDate(Calendar.DECEMBER, 8, 2001));
 
-        assertEquals("Result.", "08.12.01", out);
+        assertEquals("08.12.01", out);
     }
 
     public void testToObjectNull() throws ValidatorException
@@ -177,7 +175,7 @@ public class TestDateValidator extends BaseValidatorTestCase
 
         Object out = v.toObject(null, "08.12.01");
 
-        assertEquals("Result.", buildDate(Calendar.DECEMBER, 8, 2001), out);
+        assertEquals(buildDate(Calendar.DECEMBER, 8, 2001), out, "Result.");
     }
 
     public void testToObjectMinimum()

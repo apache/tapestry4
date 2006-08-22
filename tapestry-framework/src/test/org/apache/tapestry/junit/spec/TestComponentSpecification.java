@@ -80,7 +80,7 @@ public class TestComponentSpecification extends TapestryTestCase
     {
         IAssetSpecification a = s.getAsset(assetName);
 
-        assertEquals("Property " + propertyName + ".", expectedValue, a.getProperty(propertyName));
+        assertEquals(expectedValue, a.getProperty(propertyName));
     }
 
     /** @since 4.0 */

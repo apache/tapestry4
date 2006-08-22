@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.junit;
 
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertTrue;
 
 import org.apache.tapestry.util.ContentType;
 import org.testng.annotations.Test;
@@ -64,32 +62,29 @@ public class ContentTypeTest extends TapestryTestCase
     {
         ContentType contentType = new ContentType("text/html;charset=utf-8");
 
-        assertEquals("The base type of the ContentType is invalid", "text", contentType
+        assertEquals( "text", contentType
                 .getBaseType());
 
-        assertEquals("The html type of the ContentType is invalid", "html", contentType
+        assertEquals( "html", contentType
                 .getSubType());
 
-        assertEquals("The mime type of the ContentType is invalid", "text/html", contentType
+        assertEquals( "text/html", contentType
                 .getMimeType());
 
         String[] parameterNames = contentType.getParameterNames();
         assertEquals(
-                "The number of parameter names of the ContentType is invalid",
                 1,
                 parameterNames.length);
 
         assertEquals(
-                "The parameter names of the ContentType are invalid",
                 "charset",
                 parameterNames[0]);
 
         String charset = contentType.getParameter("charset");
-        assertEquals("The charset parameter of the ContentType is invalid", "utf-8", charset);
+        assertEquals( "utf-8", charset);
 
         String nonexistant = contentType.getParameter("nonexistant");
         assertTrue(
-                "ContentType does not return null for a non-existant parameter",
                 nonexistant == null);
     }
 
@@ -97,23 +92,22 @@ public class ContentTypeTest extends TapestryTestCase
     {
         ContentType contentType = new ContentType("text/html");
 
-        assertEquals("The base type of the ContentType is invalid", "text", contentType
+        assertEquals( "text", contentType
                 .getBaseType());
 
-        assertEquals("The html type of the ContentType is invalid", "html", contentType
+        assertEquals( "html", contentType
                 .getSubType());
 
-        assertEquals("The mime type of the ContentType is invalid", "text/html", contentType
+        assertEquals( "text/html", contentType
                 .getMimeType());
 
         String[] parameterNames = contentType.getParameterNames();
         assertEquals(
-                "The number of parameter names of the ContentType is invalid",
                 0,
                 parameterNames.length);
 
         String charset = contentType.getParameter("charset");
-        assertTrue("The charset parameter of the ContentType is invalid", charset == null);
+        assertTrue(charset == null);
     }
 
     public void testUnparsing1() throws Exception
@@ -125,7 +119,6 @@ public class ContentTypeTest extends TapestryTestCase
         contentType.setParameter("charset", "utf-8");
 
         assertEquals(
-                "ContentType does not generate a valid String representation",
                 "text/html;charset=utf-8",
                 contentType.unparse());
     }
@@ -138,7 +131,6 @@ public class ContentTypeTest extends TapestryTestCase
         contentType.setSubType("html");
 
         assertEquals(
-                "ContentType does not generate a valid String representation",
                 "text/html",
                 contentType.unparse());
     }

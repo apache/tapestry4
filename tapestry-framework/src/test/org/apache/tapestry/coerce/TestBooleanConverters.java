@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.testng.annotations.Test;
 
 /**
@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
  * @since 4.0
  */
 @Test
-public class TestBooleanConverters extends HiveMindTestCase
+public class TestBooleanConverters extends BaseComponentTestCase
 {
     public void testStringToBoolean()
     {
