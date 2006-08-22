@@ -12,7 +12,7 @@
         <artifactId>tapestry-examples</artifactId>
         <version>4.1.1-SNAPSHOT</version>
     </parent>
-    <name>Tapestry Core Library</name>
+    <name>Tapestry Time Tracker</name>
     <inceptionYear>2006</inceptionYear>
 
     <dependencies>
