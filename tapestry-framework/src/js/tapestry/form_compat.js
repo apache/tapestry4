@@ -21,9 +21,16 @@ tapestry.form.deprecateConnect=function(formName, fnc, event, advice){
 
 Tapestry.default_invalid_field_handler=function(event, field, message){
 	dojo.deprecated("Tapestry.default_invalid_field_handler", 
-					"use tapestry.form.invalidField instead", 
+					"use tapestry.form.validation.validateForm instead", 
 					"4.1.1");
-	tapestry.form.invalidField(field, message);
+	if (field.disabled) return;
+    
+    if (typeof window != "undefined"){
+    	window.alert(message);
+    } else {
+    	dojo.debug("Invalid field : " + message);
+    }
+    tapestry.form.focusField(field);
 }
 
 Tapestry.find=function(id){
@@ -57,17 +64,51 @@ Tapestry.set_focus=function (field){
 Tapestry.trim_field_value = function(fieldId)
 {
 	dojo.deprecated("Tapestry.trim_field_value",
-					"use tapestry.form.trimField instead",
+					"use dojo.html instead",
 					"4.1.1");
-	tapestry.form.trimField(fieldId);
+	
+	if (arguments.length < 1) return;
+	
+	var elm=dojo.byId(id);
+	if (!elm) {return;}
+	if ( elm.type != "text" && elm.type != "textarea"
+		&& elm.type != "password" ) { return; }
+		
+	elm.value = elm.value.replace(/(^\s*|\s*$)/g, "");
 }
 
-Tapestry.require_field = function(event, fieldId, message)
+Tapestry.require_field = function(event, field, message)
 {
 	dojo.deprecated("Tapestry.require_field",
-					"use tapestry.form.requireField instead",
+					"use tapestry.form.validation.validateForm instead",
 					"4.1.1");
-	tapestry.form.requireField(fieldId, message);
+	if (arguments.length < 1) return;
+	
+	var elem=dojo.byId(field);
+	if (!elem) { return; }
+	
+	// Are textbox, textarea, or password fields blank.
+	if ( (elem.type == "text" || elem.type == "textarea" || elem.type == "password") 
+		&& /^\s*$/.test(elem.value) ) {
+		Tapestry.default_invalid_field_handler(elem, message);
+		return;
+	}
+	// Does drop-down box have option selected.
+	else if ( (elem.type == "select-one" || elem.type == "select-multiple") 
+			&& elem.selectedIndex == -1 ) {
+		Tapestry.default_invalid_field_handler(elem, message);
+		return;
+	} else if ( elem instanceof Array )  {
+		// Does radio button group (or check box group) have option checked.
+		var checked = false;
+		for (var j = 0; j < elem.length; j++) {
+			if (elem[j].checked) { checked = true; }
+		}
+		if ( !checked ) {	
+			Tapestry.default_invalid_field_handler(elem, message);
+			return;
+		}
+	}
 }
 
 Tapestry.submit_form = function(form_id, field_name)

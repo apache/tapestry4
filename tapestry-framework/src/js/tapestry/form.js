@@ -2,6 +2,7 @@ dojo.provide("tapestry.form");
 
 dojo.require("dojo.event");
 dojo.require("dojo.event.browser");
+dojo.require("dojo.dom");
 
 dojo.require("tapestry.core");
 
@@ -13,24 +14,6 @@ dojo.require("tapestry.core");
 tapestry.form={
 	
 	forms:{}, // registered form references
-	
-	/**
-	 * Generically displays a window alert for the 
-	 * given field when in error.
-	 * 
-	 * @param field The field element
-	 * @param message The message to display
-	 */
-	invalidField:function(field, message){
-		if (field.disabled) return;
-		
-    	window.alert(message);
-    	this.focusField(field);
-	},
-	
-	invalid_field:function(field, message){
-		tapestry.form.invalidField(field, message); 
-	},
 	
 	/**
 	 * If possible, brings keyboard input focus
@@ -46,60 +29,6 @@ tapestry.form={
 		if (field.disabled || field.clientWidth < 1) return;
         
         dojo.html.selectInputText(field);
-	},
-	
-	/**
-	 * Trims whitespace from before/after field.
-	 * @param id The field(field id) of the field to trim
-	 * 			 whitespace input from.
-	 */
-	trimField:function(id){
-		if (arguments.length < 1) return;
-		
-		var elm=dojo.byId(id);
-		if (!elm) return;
-		if ( elm.type != "text" && elm.type != "textarea"
-			&& elm.type != "password" ) { return; }
-		
-		elm.value = elm.value.replace(/(^\s*|\s*$)/g, "");
-	},
-	
-	/**
-	 * Checks if the field specified has a non-null value
-	 * selected. This covers input fields/checkboxes/radio groups/etc..
-	 * 
-	 * @param field The field(field id) of the field to check for input.
-	 * @param message The message to be displayed if no value has been input/selected
-	 * 				  for the field.
-	 */
-	requireField:function(field, message){
-		if (arguments.length < 1) return;
-		
-		var elem=dojo.byId(field);
-		if (!elem) return;
-		
-		// Are textbox, textarea, or password fields blank.
-		if ( (elem.type == "text" || elem.type == "textarea" || elem.type == "password") 
-			&& /^\s*$/.test(elem.value) ) {
-			this.invalidField(elem, message);
-			return;
-		}
-		// Does drop-down box have option selected.
-		else if ( (elem.type == "select-one" || elem.type == "select-multiple") 
-				&& elem.selectedIndex == -1 ) {
-			this.invalidField(elem, message);
-		}
-		// Does radio button group (or check box group) have option checked.
-		else if ( elem instanceof Array )  {
-			var checked = false;
-			for (var j = 0; j < elem.length; j++) {
-				if (elem[j].checked) { checked = true; }
-			}
-			if ( !checked ) {	
-				this.invalidField(elem, message);
-				return;
-			}
-		}
 	},
 	
 	/**
@@ -223,24 +152,24 @@ tapestry.form={
 	 * is submitted.
 	 */
 	onFormSubmit:function(evt){
-		if (!evt || dj_undef("target", evt)) {
+		if(!evt || dj_undef("target", evt)) {
 			dojo.raise("No valid form event found with argument: " + evt);
 			return;
 		}
 		
 		var id=evt.target.getAttribute("id");
 		if (!id) {
-			dojo.log.warn("Form had no id attribute.");
+			dojo.raise("Form had no id attribute.");
 			return;
 		}
+		form = dojo.byId(id);
 		
-		var form = dojo.byId(id);
 		if (!dj_undef("value", form.submitmode)
 			&& (form.submitmode.value == "cancel" || form.submitmode.value == "refresh")) {
 			return;
 		}
 		
-		if (!tapestry.form.validation.validateForm(evt.target, this.forms[id])) {
+		if (!tapestry.form.validation.validateForm(form, this.forms[id])) {
 			dojo.event.browser.stopEvent(evt);
 		}
 	},
@@ -260,24 +189,28 @@ tapestry.form={
 			dojo.raise("Form not found with id " + form);
 			return;
 		}
+		var id=form.getAttribute("id");
 		
 		if (submitName){
 			form.submitname.value=submitName;
 		}
 		
-		// listeners trigerred then for some reason.
-		// try to create a real event so any listeners get notified
-		if (!dj_undef("createEvent", document)){
-			var ev = document.createEvent("HTMLEvents");
-			ev.initEvent("submit", true, true);
-			form.dispatchEvent(ev);
-		} else if (!dj_undef("createEventObject", document)) {
-			form.fireEvent("onsubmit");
-		} else {
-			dojo.log.warn("tapestry.form.submit using default form.submit() call, no event objects found in browser.");
+		if (!dj_undef("value", form.submitmode)
+			&& (form.submitmode.value == "cancel" || form.submitmode.value == "refresh")) {
 			form.submit();
 			return;
 		}
+		
+		if (!tapestry.form.validation.validateForm(form, this.forms[id])) {
+			return;
+		}
+		
+		if(!dj_undef(id, this.forms) && this.forms[id].async){
+			tapestry.form.submitAsync(form);
+			return;
+		}
+		
+		form.submit();
 	},
 	
 	cancel:function(form, submitName){

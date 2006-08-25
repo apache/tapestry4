@@ -42,8 +42,8 @@ tapestry.form.validation={
 	 * 			will ~not~ be submitted. 
 	 */
 	validateForm:function(form, props){
-		if (!form) return false;
-		if (!props) return true; // form exists but no profile? just submit I guess..
+		if (typeof form == "undefined") return false;
+		if (typeof props == "undefined") return true; // form exists but no profile? just submit I guess..
 		if (!props.validateForm) return true;
 		
 		try {
@@ -140,7 +140,7 @@ tapestry.form.validation={
 	 * in error.
 	 */
 	clearValidationDecorations:function(form, props){
-		for (var i=0; i<form.elements.length; i++) {
+		for (var i=0; i< form.elements.length; i++) {
 			if (typeof form.elements[i].type == "undefined"
 				|| form.elements[i].type == "submit" 
 				|| form.elements[i].type == "hidden") { continue; }

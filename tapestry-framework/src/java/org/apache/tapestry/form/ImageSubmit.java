@@ -63,10 +63,10 @@ public abstract class ImageSubmit extends Submit
         writer.beginEmpty("input");
         writer.attribute("type", "image");
         writer.attribute("name", getName());
-
+        
         if (disabled)
             writer.attribute("disabled", "disabled");
-
+        
         // NN4 places a border unless you tell it otherwise.
         // IE ignores the border attribute and never shows a border.
 

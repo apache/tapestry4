@@ -210,6 +210,7 @@ public abstract class Form extends AbstractComponent implements IForm
         String baseName = constructFormNameForDirectService(cycle);
         
         _name = baseName + getResponse().getNamespace();
+        setClientId(_name);
         
         if (_renderInformalParameters == null)
             _renderInformalParameters = new RenderInformalParameters();

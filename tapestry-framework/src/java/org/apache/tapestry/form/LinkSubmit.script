@@ -20,11 +20,11 @@
 	"http://tapestry.apache.org/dtd/Script_3_0.dtd">
 <script>
 
-<input-symbol key="name" class="java.lang.String" required="yes"/>
-<input-symbol key="form" class="org.apache.tapestry.IForm" required="yes"/>
+<input-symbol key="name" required="yes" />
+<input-symbol key="form" required="yes" />
 
 <let key="href">
-  javascript:tapestry.form.submit('${form.name}', '${name}');
+javascript:tapestry.form.submit("${form.clientId}", "${name}");
 </let>
 
 </script>

@@ -14,7 +14,9 @@
 
 package org.apache.tapestry.workbench.fields;
 
+import org.apache.tapestry.annotations.InjectState;
 import org.apache.tapestry.html.BasePage;
+import org.apache.tapestry.workbench.Visit;
 
 /**
  * @author Howard Lewis Ship
@@ -27,4 +29,7 @@ public abstract class FieldsResults extends BasePage
      */
 
     public abstract void setByLink(boolean byLink);
+    
+    @InjectState("session-data")
+    public abstract Visit getVisit();
 }

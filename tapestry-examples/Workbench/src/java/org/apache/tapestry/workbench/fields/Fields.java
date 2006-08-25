@@ -56,7 +56,7 @@ public abstract class Fields extends BasePage
     {
         return getResultsPage();
     }
-
+    
     public void doByLink()
     {
         getResultsPage().setByLink(true);

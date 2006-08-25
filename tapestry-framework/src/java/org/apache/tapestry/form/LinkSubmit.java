@@ -50,7 +50,6 @@ public abstract class LinkSubmit extends AbstractSubmit
     protected boolean isClicked(IRequestCycle cycle, String name)
     {
         String value = cycle.getParameter(FormConstants.SUBMIT_NAME_PARAMETER);
-
         return name.equals(value);
     }
 
@@ -74,11 +73,11 @@ public abstract class LinkSubmit extends AbstractSubmit
             Map symbols = new HashMap();
             symbols.put("form", form);
             symbols.put("name", name);
-
+            
             getScript().execute(this, cycle, pageRenderSupport, symbols);
-
+            
             writer.begin("a");
-            writer.attribute("href", (String) symbols.get("href"));
+            writer.attribute("href", (String)symbols.get("href"));
             
             renderIdAttribute(writer, cycle);
 
