@@ -28,6 +28,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.coerce.ValueConverter;
+import org.apache.tapestry.engine.NullWriter;
 import org.apache.tapestry.form.AbstractFormComponent;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.services.ExpressionEvaluator;
@@ -110,7 +111,10 @@ public abstract class ForBean extends AbstractFormComponent
         // The dataSource was either not convertable to Iterator, or was empty.
         if (dataSource == null)
             return;
-
+        
+        if (!cycleRewinding && form != null && !NullWriter.class.isInstance(writer))
+            form.setFormFieldUpdating(true);
+        
         String element = getElement();
 
         // Perform the iterations
