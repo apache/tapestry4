@@ -41,7 +41,6 @@ function test_form_deprecated(){
 
 function test_form_invalidHandler(){
 	Tapestry.default_invalid_field_handler(null, "yo", "yo");
-	tapestry.form.invalidField("this", "field");
 }
 
 function test_form_requireTextField(){
@@ -53,12 +52,12 @@ function test_form_requireTextField(){
 	node.value="";
 	
 	var mockInvalid=new mock(node, "must have value");
-	dojo.event.connect(tapestry.form, "invalidField", mockInvalid, "intercept");
+	dojo.event.connect(Tapestry, "default_invalid_field_handler", mockInvalid, "intercept");
 	
-	tapestry.form.requireField("testid", "must have value");
+	Tapestry.require_field(null, "testid", "must have value");
 	
 	jum.assertTrue("invalidCalled", mockInvalid.called);
-	dojo.event.disconnect(tapestry.form, "invalidField", mockInvalid, "intercept");
+	dojo.event.disconnect(Tapestry, "default_invalid_field_handler", mockInvalid, "intercept");
 }
 
 function test_form_submit(){
@@ -69,10 +68,8 @@ function test_form_submit(){
 	node.submit=function(){
 		submitCalled=true;
 	}
-	node.dispatchEvent=function(){
-		submitCalled=true;
-	}
 	node.submitname={value:""};
+	node.elements=[];
 	
 	Tapestry.register_form("form1");
 	Tapestry.submit_form("form1", "testSubmit");

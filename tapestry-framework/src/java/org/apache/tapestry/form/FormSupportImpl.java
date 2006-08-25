@@ -502,7 +502,7 @@ public class FormSupportImpl implements FormSupport
         
         // For XHTML compatibility
         _writer.attribute("id", formId);
-
+        
         if (_encodingType != null)
             _writer.attribute("enctype", _encodingType);
 

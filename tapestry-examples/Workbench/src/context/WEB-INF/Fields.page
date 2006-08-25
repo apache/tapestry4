@@ -32,7 +32,7 @@
   
   <component id="inputEnabled" type="Checkbox">
     <binding name="value" value="clientValidationEnabled"/> 
-    <binding name="onchange" value="literal:tapestry.form.submit(this.form)"/>
+    <binding name="onClick" value="literal:tapestry.form.submit(this.form)"/>
   </component>
   
   <component id="showError" type="ShowError">
