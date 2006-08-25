@@ -148,10 +148,13 @@ public abstract class Autocompleter extends AbstractFormWidget
     {
         String value = cycle.getParameter(getName());
         
-        Object object = getModel().getValue(getDataSqueezer().unsqueeze(value));
+        Object object = null;
         
         try
         {
+            if (value != null && value.length() > 0)
+                object = getModel().getValue(getDataSqueezer().unsqueeze(value));
+            
             getValidatableFieldSupport().validate(this, writer, cycle, object);
             
             setValue(object);
