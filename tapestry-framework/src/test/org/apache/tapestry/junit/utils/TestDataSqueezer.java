@@ -128,6 +128,13 @@ public class TestDataSqueezer extends BaseComponentTestCase
         attempt(new Character('Z'), "cZ");
     }
 
+    public void test_Empty_Value()
+    {
+        Object output = ds.unsqueeze("");
+        
+        assert output == null;
+    }
+    
     public void testString()
     {
         attempt("Now is the time for all good men ...", "SNow is the time for all good men ...");

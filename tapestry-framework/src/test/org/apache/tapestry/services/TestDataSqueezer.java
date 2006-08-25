@@ -25,11 +25,14 @@ import org.testng.annotations.Test;
 @Test
 public class TestDataSqueezer extends BaseComponentTestCase {
 
-    public void testPipeline() throws Exception {
+    public void testPipeline() 
+    throws Exception 
+    {
         final Registry reg = buildFrameworkRegistry( "squeezer-pipeline.xml" );
         final DataSqueezer squeezer = ( DataSqueezer )reg.getService( DataSqueezer.class );
-        final String squeezedValue = squeezer.squeeze( "Hello, World!" );
-        assertTrue( squeezedValue.startsWith( "dummy:" ) );
         
+        final String squeezedValue = squeezer.squeeze( "Hello, World!" );
+
+        assertTrue( squeezedValue.startsWith( "dummy:" ) );
     }
 }

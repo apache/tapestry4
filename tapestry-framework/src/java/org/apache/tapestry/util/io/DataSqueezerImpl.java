@@ -160,7 +160,9 @@ public class DataSqueezerImpl implements DataSqueezer
 
         if (string.equals(NULL_PREFIX))
             return null;
-
+        else if (string.length() <= 0)
+            return null;
+        
         int offset = string.charAt(0) - FIRST_ADAPTOR_OFFSET;
 
         if (offset >= 0 && offset < _adaptorByPrefix.length)

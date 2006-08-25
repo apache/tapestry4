@@ -107,6 +107,12 @@ public abstract class TaskEntryPage extends BasePage
         cycle.getResponseBuilder().updateComponent("feedbackBlock");
     }
     
+    @EventListener(events = "onblur", targets = "descriptionField", submitForm = "taskForm")
+    public void descriptionChanged(IRequestCycle cycle)
+    {
+        cycle.getResponseBuilder().updateComponent("taskForm");
+    }
+    
     public void linkUpdateClicked()
     {
     }
