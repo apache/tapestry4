@@ -56,7 +56,7 @@ function ${function}(event)
 <if expression="validator.required">
   if (strValue.length == 0)
   {
-    tapestry.form.invalid_field(field, "${requiredMessage}");
+    Tapestry.invalid_field(field, "${requiredMessage}");
     dojo.event.browser.stopEvent(event);
     return;
   }
@@ -70,7 +70,7 @@ function ${function}(event)
 <if expression="validator.minimumLength">
   if (strValue.length &lt; ${validator.minimumLength})
   {
-    tapestry.form.invalid_field(field, "${minimumLengthMessage}");
+    Tapestry.invalid_field(field, "${minimumLengthMessage}");
     dojo.event.browser.stopEvent(event);
     return;
    }
@@ -78,7 +78,7 @@ function ${function}(event)
 
   atIndex = strValue.indexOf("@");
   if ((atIndex == -1) || (atIndex == 0) || (atIndex == strValue.length -1)) {
-    tapestry.form.invalid_field(field, "${emailFormatMessage}");
+    Tapestry.invalid_field(field, "${emailFormatMessage}");
     dojo.event.browser.stopEvent(event);
   }
 }

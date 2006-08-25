@@ -53,13 +53,13 @@ function ${function}(event)
 <if expression="validator.required">
     if (field.value.length == 0)
     {
-        tapestry.form.invalid_field(field, "${requiredMessage}");
+        Tapestry.invalid_field(field, "${requiredMessage}");
         dojo.event.browser.stopEvent(event);
         return;
     }
 </if>
     if (field.value.length &gt; 0 &amp;&amp; !${pattern}.test(field.value)) {
-        tapestry.form.invalid_field(field, "${patternNotMatchedMessage}");
+        Tapestry.invalid_field(field, "${patternNotMatchedMessage}");
         dojo.event.browser.stopEvent(event);
     }
 }

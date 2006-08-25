@@ -33,6 +33,10 @@ Tapestry.default_invalid_field_handler=function(event, field, message){
     tapestry.form.focusField(field);
 }
 
+Tapestry.invalid_field=function(field, message){
+	Tapestry.default_invalid_field_handler(null, field, message);
+}
+
 Tapestry.find=function(id){
 	dojo.deprecated("Tapestry.find",
 					"use dojo.byId instead",

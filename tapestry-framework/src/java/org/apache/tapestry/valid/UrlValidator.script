@@ -62,7 +62,7 @@ function regexpTestUrl(sUrl) {
 
 		<if expression="validator.required">
 			if (strValue.length == 0) {
-				tapestry.form.invalid_field(field, "${requiredMessage}");
+				Tapestry.invalid_field(field, "${requiredMessage}");
                 dojo.event.browser.stopEvent(event);
                 return;
             }
@@ -75,21 +75,21 @@ function regexpTestUrl(sUrl) {
 
 		<if expression="validator.minimumLength">
 			if (strValue.length &lt; ${validator.minimumLength}) {
-				tapestry.form.invalid_field(field, "${minimumLengthMessage}");
+				Tapestry.invalid_field(field, "${minimumLengthMessage}");
                 dojo.event.browser.stopEvent(event);
                 return;
             }
 		</if>
 
 			if(!regexpTestUrl(strValue)) {
-				tapestry.form.invalid_field(field, "${urlFormatMessage}");
+				Tapestry.invalid_field(field, "${urlFormatMessage}");
                 dojo.event.browser.stopEvent(event);
                 return;
             }
 		<if expression="null != urlRegexpProtocols">
 			var protoRegExp = ${urlRegexpProtocols};
 			if(!protoRegExp.test(strValue)) {
-			     tapestry.form.invalid_field(field, "${urlDisallowedProtocolMessage}");
+			     Tapestry.invalid_field(field, "${urlDisallowedProtocolMessage}");
                  dojo.event.browser.stopEvent(event);
                  return;
             }
