@@ -47,7 +47,7 @@ function ${function}(event)
   var field = dojo.byId("${field.name}");
 
   if (field.value.length == 0) {
-     tapestry.form.invalid_field(field, "${requiredMessage}");
+     Tapestry.invalid_field(field, "${requiredMessage}");
      dojo.event.browser.stopEvent(event);
   }
 }

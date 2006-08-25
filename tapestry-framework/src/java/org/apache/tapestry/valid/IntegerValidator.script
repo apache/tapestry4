@@ -55,7 +55,7 @@ function ${function}(event)
 <if expression="validator.required">
   if (stringValue.length == 0)
   {
-     tapestry.form.invalid_field(field, "${requiredMessage}");
+     Tapestry.invalid_field(field, "${requiredMessage}");
      dojo.event.browser.stopEvent(event);
      return;
   }
@@ -67,20 +67,20 @@ function ${function}(event)
   var value = stringValue * 1;
   if (isNaN(value))
   {
-    tapestry.form.invalid_field(field, "${formatMessage}");
+    Tapestry.invalid_field(field, "${formatMessage}");
     dojo.event.browser.stopEvent(event);
   }
   var regex = /\./;
   if (stringValue.search(regex) != -1)
   {
-    tapestry.form.invalid_field(field, "${formatMessage}");
+    Tapestry.invalid_field(field, "${formatMessage}");
     dojo.event.browser.stopEvent(event);
     return;
   }
 <if expression="minimum != null">
   if (value &lt; ${minimum})
   {
-    tapestry.form.invalid_field(field, "${rangeMessage}");
+    Tapestry.invalid_field(field, "${rangeMessage}");
     dojo.event.browser.stopEvent(event);
     return;
   }
@@ -88,7 +88,7 @@ function ${function}(event)
 <if expression="maximum != null">
   if (value &gt; ${maximum})
   {
-    tapestry.form.invalid_field(field, "${rangeMessage}");
+    Tapestry.invalid_field(field, "${rangeMessage}");
     dojo.event.browser.stopEvent(event);
     return;
   }

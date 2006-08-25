@@ -162,7 +162,7 @@ tapestry.form={
 			dojo.raise("Form had no id attribute.");
 			return;
 		}
-		form = dojo.byId(id);
+		var form = dojo.byId(id);
 		
 		if (!dj_undef("value", form.submitmode)
 			&& (form.submitmode.value == "cancel" || form.submitmode.value == "refresh")) {
