@@ -54,7 +54,8 @@ public abstract class FieldLabel extends AbstractComponent
         if (field != null && isPrerender())
             form.prerenderField(writer, field, getLocation());
 
-        if (cycle.isRewinding()) return;
+        if (cycle.isRewinding()) 
+            return;
 
         String displayName = getDisplayName();
 
