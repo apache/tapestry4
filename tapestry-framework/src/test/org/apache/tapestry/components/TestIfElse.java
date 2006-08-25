@@ -159,6 +159,8 @@ public class TestIfElse extends BaseComponentTestCase
         
         form.addHiddenValue("If", "T");
         
+        form.setFormFieldUpdating(true);
+        
         trainResponseBuilder(cycle, writer);
         
         IRender body = newRender(writer, cycle);
@@ -207,6 +209,8 @@ public class TestIfElse extends BaseComponentTestCase
         expect(form.getElementId(conditional)).andReturn("If");
         
         form.addHiddenValue("If", "F");
+        
+        form.setFormFieldUpdating(true);
         
         cycle.setAttribute(IfBean.IF_VALUE_ATTRIBUTE, Boolean.FALSE);
         

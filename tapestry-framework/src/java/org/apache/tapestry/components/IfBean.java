@@ -23,6 +23,7 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.engine.NullWriter;
 import org.apache.tapestry.form.AbstractFormComponent;
 import org.apache.tapestry.services.DataSqueezer;
 
@@ -62,14 +63,17 @@ public abstract class IfBean extends AbstractFormComponent
         // get the condition. work with a hidden field if necessary
         _conditionValue = evaluateCondition(cycle, form, cycleRewinding);
         _rendering = true;
-
+        
+        if (!cycleRewinding && form != null && !NullWriter.class.isInstance(writer))
+            form.setFormFieldUpdating(true);
+        
         try
         {
             // call listener
             IActionListener listener = getListener();
             if (listener != null)
                 listener.actionTriggered(this, cycle);
-
+            
             // now render if condition is true
             if (_conditionValue)
             {
