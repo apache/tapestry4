@@ -38,8 +38,12 @@ tapestry.widget = {
 	synchronizeWidgetState : function(widgetId, type, props){
 		var widget = dojo.widget.byId(widgetId);
 		
-		if (!widget)
+		if (!widget) {
 			this.createWidget(widgetId, type, props);
+		} else {
+			widget.destroy();
+			this.createWidget(widgetId, type, props);
+		}
 	},
 	
 	/**
