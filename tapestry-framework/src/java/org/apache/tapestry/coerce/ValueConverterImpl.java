@@ -102,7 +102,7 @@ public class ValueConverterImpl implements ValueConverter
             return null;
 
         if (converter == null)
-            throw new ApplicationRuntimeException(CoerceMessages.noConverter(effectiveType));
+            throw new ApplicationRuntimeException(CoerceMessages.noConverter(value.getClass(), effectiveType));
 
         return converter.convertValue(value);
     }
