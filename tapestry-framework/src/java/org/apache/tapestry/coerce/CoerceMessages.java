@@ -32,7 +32,13 @@ final class CoerceMessages
     {
         return _formatter.format("no-converter", ClassFabUtils.getJavaClassName(desiredType));
     }
-
+    
+    static String noConverter(Class fromType, Class desiredType)
+    {
+        return _formatter.format("no-converter-from", ClassFabUtils.getJavaClassName(desiredType),
+                ClassFabUtils.getJavaClassName(fromType));
+    }
+    
     static String stringToNumberConversionError(String value, Class targetClass, Throwable cause)
     {
         return _formatter.format(

@@ -68,7 +68,7 @@ public class TestValueConverter extends BaseComponentTestCase
         }
         catch (ApplicationRuntimeException ex)
         {
-            assertEquals(CoerceMessages.noConverter(Date.class), ex.getMessage());
+            assertEquals(CoerceMessages.noConverter(String.class, Date.class), ex.getMessage());
         }
     }
 
@@ -87,7 +87,7 @@ public class TestValueConverter extends BaseComponentTestCase
         }
         catch (ApplicationRuntimeException ex)
         {
-            assertEquals(CoerceMessages.noConverter(Integer.class), ex.getMessage());
+            assertEquals(CoerceMessages.noConverter(Object.class, Integer.class), ex.getMessage());
         }
     }
 
