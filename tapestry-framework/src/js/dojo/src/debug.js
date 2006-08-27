@@ -40,11 +40,7 @@ dojo.debug = function(){
 		}
 		s.push(msg);
 	}
-	if(isJUM){ // this seems to be the only way to get JUM to "play nice"
-		jum.debug(s.join(" "));
-	}else{
-		dojo.hostenv.println(s.join(" "));
-	}
+	dojo.hostenv.println(s.join(" "));
 }
 
 /**

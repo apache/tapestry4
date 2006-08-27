@@ -181,9 +181,13 @@ tapestry.form={
 	 * the case of submit button listeners).
 	 * 
 	 * @param form The form(form id) to submit.
-	 * @param submitName Optional submit name string to use when submitting.
+	 * @param submitName Optional submit name string to use when submitting. This is used
+	 * 					to associate a form submission with a particular component, like a
+	 * 					Submit/LinkSubmit/etc..
+	 * @param parms Optional extra set of arguments that can control the form submission semantics
+	 * 				such as url/async/json/etc. 
 	 */
-	submit:function(form, submitName){
+	submit:function(form, submitName, parms){
 		var form=dojo.byId(form);
 		if (!form) {
 			dojo.raise("Form not found with id " + form);
@@ -205,7 +209,10 @@ tapestry.form={
 			return;
 		}
 		
-		if(!dj_undef(id, this.forms) && this.forms[id].async){
+		if (parms && !dj_undef("async", parms) && parms.async) {
+			tapestry.form.submitAsync(form, null, submitName, parms);
+			return;
+		} else if(!dj_undef(id, this.forms) && this.forms[id].async){
 			tapestry.form.submitAsync(form);
 			return;
 		}
@@ -246,8 +253,11 @@ tapestry.form={
 	 * 				  event parameters to form submission, but can be any
 	 * 				  typical form/value pair.
 	 * @param submitName Optional submit name string to use when submitting.
+	 * @param parms Optional set of extra parms that can override the defautls for 
+	 * 				this specific form submission, like the url/async/json behaviour of 
+	 * 				the submission.
 	 */
-	submitAsync:function(form, content, submitName){
+	submitAsync:function(form, content, submitName, parms){
 		var form=dojo.byId(form);
 		if (!form) {
 			dojo.raise("Form not found with id " + id);
@@ -270,7 +280,7 @@ tapestry.form={
 			content[this.forms[formId].clickedButton.getAttribute("name")]=this.forms[formId].clickedButton.getAttribute("value");
 		}
 		
-		var parms={
+		var kwArgs={
 			formNode:form,
 			content:content,
             useCache:true,
@@ -279,16 +289,21 @@ tapestry.form={
             encoding: "UTF-8"
 		};
 		
-		if (this.forms[formId].json) {
-			parms.headers={"json":true};
-			parms.mimetype="text/json";
-		} else {
-			parms.headers={"dojo-ajax-request":true};
-			parms.mimetype="text/xml";
-			parms.load=(function(){tapestry.load.apply(this, arguments);});
+		// check for override
+		if (parms){
+			if (!dj_undef("url", parms)) { kwArgs.url=parms.url; }
 		}
 		
-		dojo.io.bind(parms);
+		if (this.forms[formId].json || parms && parms.json) {
+			kwArgs.headers={"json":true};
+			kwArgs.mimetype="text/json";
+		} else {
+			kwArgs.headers={"dojo-ajax-request":true};
+			kwArgs.mimetype="text/xml";
+			kwArgs.load=(function(){tapestry.load.apply(this, arguments);});
+		}
+		
+		dojo.io.bind(kwArgs);
 	}
 }
 

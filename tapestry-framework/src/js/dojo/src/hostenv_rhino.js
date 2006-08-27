@@ -56,7 +56,7 @@ dojo.hostenv.loadUri = function(uri, cb){
 	}
 }
 
-dojo.hostenv.println = print;
+dojo.hostenv.println=function(msg){ print(msg) };
 dojo.hostenv.exit = function(exitcode){ 
 	quit(exitcode);
 }

@@ -4,8 +4,9 @@
   "http://jakarta.apache.org/tapestry/dtd/Script_3_0.dtd">
 <script>
 <input-symbol key="submit" required="yes" />
-<input-symbol key="type" required="yes" />
+<input-symbol key="type" />
 <input-symbol key="key" required="yes" />
+<input-symbol key="parms" />
     <body>
         <unique>
             dojo.require("dojo.event");
@@ -17,7 +18,13 @@
         tapestry.cleanConnect(dojo.byId("${submit.clientId}"), 
                               "onclick", "event${key}");
         tapestry.event${key}=function(e){
-            tapestry.form.${type}("${submit.form.clientId}", "${submit.name}");
+            dojo.event.browser.stopEvent(e);
+            <if expression="type != null">
+                tapestry.form.${type}("${submit.form.clientId}", "${submit.name}", ${parms});
+            </if>
+            <if-not expression="type != null">
+                tapestry.form.submit("${submit.form.clientId}", "${submit.name}", ${parms});
+            </if-not>
         };
         dojo.event.connect(dojo.byId("${submit.clientId}"), "onclick", tapestry, "event${key}");
     </initialization>

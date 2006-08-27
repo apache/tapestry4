@@ -18,6 +18,7 @@ import java.util.Collection;
 
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IDirect;
+import org.apache.tapestry.IDynamicInvoker;
 
 /**
  * Parameter object used by {@link org.apache.tapestry.engine.DirectService}.
@@ -44,19 +45,37 @@ public class DirectServiceParameter
     
     public DirectServiceParameter(IDirect direct, Object[] serviceParameters)
     {
+        this(direct, serviceParameters, null);
+    }
+    
+    public DirectServiceParameter(IDirect direct, Object[] serviceParameters, IDynamicInvoker invoker)
+    {
         Defense.notNull(direct, "direct");
         
         _direct = direct;
         _serviceParameters = serviceParameters;
         
-        Collection comps = direct.getUpdateComponents();
-        if (comps == null)
-            _updateParts = new String[0];
-        else
-            _updateParts = (String[])comps.toArray(new String[comps.size()]);
+        if (invoker == null) {
         
-        _json = direct.isJson();
-        _async = direct.isAsync();
+            Collection comps = direct.getUpdateComponents();
+            if (comps == null)
+                _updateParts = new String[0];
+            else
+                _updateParts = (String[])comps.toArray(new String[comps.size()]);
+
+            _json = direct.isJson();
+            _async = direct.isAsync();
+        } else {
+            
+            Collection comps = invoker.getUpdateComponents();
+            if (comps == null)
+                _updateParts = new String[0];
+            else
+                _updateParts = (String[])comps.toArray(new String[comps.size()]);
+            
+            _json = invoker.isJson();
+            _async = invoker.isAsync();
+        }
     }
     
     public IDirect getDirect()
@@ -68,7 +87,7 @@ public class DirectServiceParameter
     {
         return _serviceParameters;
     }
-    
+
     public String[] getUpdateParts()
     {
         return _updateParts;

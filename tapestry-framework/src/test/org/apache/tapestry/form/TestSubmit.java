@@ -19,8 +19,10 @@ import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isA;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.hivemind.util.PropertyUtils;
@@ -31,6 +33,9 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.PageRenderSupport;
+import org.apache.tapestry.engine.DirectServiceParameter;
+import org.apache.tapestry.engine.IEngineService;
+import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.listener.ListenerInvokerTerminator;
 import org.apache.tapestry.test.Creator;
 import org.apache.tapestry.valid.IValidationDelegate;
@@ -196,7 +201,7 @@ public class TestSubmit extends BaseFormComponentTestCase
     {
         IScript script = newMock(IScript.class);
         Submit submit = newInstance(Submit.class, 
-                new Object[] {"submitType", "cancel", "submitTypeScript", script});
+                new Object[] {"submitType", "cancel", "submitScript", script});
         
         IValidationDelegate delegate = newDelegate();
         IForm form = newForm();
@@ -225,7 +230,7 @@ public class TestSubmit extends BaseFormComponentTestCase
         
         expect(form.getClientId()).andReturn("formtest");
         
-        writer.attribute("onClick", "tapestry.form.cancel('formtest', 'fred')");
+        writer.attribute("onClick", "tapestry.form.cancel('formtest','fred')");
         
         writer.closeTag();
 
@@ -248,7 +253,7 @@ public class TestSubmit extends BaseFormComponentTestCase
         
         Submit submit = newInstance(Submit.class, 
                 new Object[] {"submitType", "cancel", 
-            "submitTypeScript", script, "form", form});
+            "submitScript", script, "form", form});
         
         submit.setBinding("onClick", binding);
         
@@ -262,7 +267,46 @@ public class TestSubmit extends BaseFormComponentTestCase
         
         replay();
         
-        submit.renderSubmitType(writer, cycle);
+        submit.renderSubmitBindings(writer, cycle);
+
+        verify();
+    }
+    
+    public void test_Submit_Async()
+    {
+        List updates = new ArrayList();
+        updates.add("bsComponent");
+        
+        IScript script = newMock(IScript.class);
+        IForm form = newForm();
+        IBinding binding = newMock(IBinding.class);
+        
+        IEngineService engine = newEngineService();
+        ILink link = newMock(ILink.class);
+        
+        Submit submit = newInstance(Submit.class, 
+                new Object[] {"submitType", "cancel", 
+            "submitScript", script, "form", form, 
+            "async", true, "updateComponents", updates,
+            "directService", engine});
+        
+        submit.setBinding("onClick", binding);
+        
+        IRequestCycle cycle = newCycle();
+        IMarkupWriter writer = newWriter();
+        
+        expect(engine.getLink(eq(true), isA(DirectServiceParameter.class))).andReturn(link);
+        
+        expect(link.getURL()).andReturn("/test/url");
+        
+        PageRenderSupport prs = newPageRenderSupport();
+        trainGetPageRenderSupport(cycle, prs);
+        
+        script.execute(eq(submit), eq(cycle), eq(prs), isA(Map.class));
+        
+        replay();
+        
+        submit.renderSubmitBindings(writer, cycle);
 
         verify();
     }

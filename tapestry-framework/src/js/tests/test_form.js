@@ -77,3 +77,57 @@ function test_form_submit(){
 	jum.assertTrue("submitCalled", submitCalled);
 	jum.assertEquals("submitName", node.submitname.value, "testSubmit");
 }
+
+var bindCalled=false;
+
+function test_submit_parms(){
+	bindCalled=false;
+	var node = document.createElement("form");
+	node.setAttribute("id", "formparmtest");
+	node.setAttribute("method", "post");
+	node.setAttribute("action", "/default/url");
+	node.submit=function(){}
+	node.submitname={value:""};
+	node.elements=[];
+	document.body.appendChild(node);
+	
+	dojo.event.connect(dojo.io, "bind", this, checkSubmitParms);
+	
+	tapestry.form.registerForm("formparmtest");
+	tapestry.form.submit("formparmtest", null, {async:true,url:"/new/url"});
+	
+	jum.assertTrue("bindCalled", bindCalled);
+	
+	dojo.event.disconnect(dojo.io, "bind", this, checkSubmitParms);
+}
+
+function checkSubmitParms(kwArgs){
+	bindCalled=true;
+	jum.assertEquals("submitParmUrl", kwArgs["url"], "/new/url");
+}
+
+function test_submit_defaultParms(){
+	bindCalled=false;
+	var node = document.createElement("form");
+	node.setAttribute("id", "formasynctest");
+	node.setAttribute("method", "post");
+	node.setAttribute("action", "/default/url");
+	node.submit=function(){}
+	node.submitname={value:""};
+	node.elements=[];
+	document.body.appendChild(node);
+	
+	dojo.event.connect(dojo.io, "bind", this, checkDefaultParms);
+	
+	tapestry.form.registerForm("formasynctest", true);
+	tapestry.form.submit("formasynctest");
+	
+	jum.assertTrue("bindCalled", bindCalled);
+	
+	dojo.event.disconnect(dojo.io, "bind", this, checkDefaultParms);
+}
+
+function checkDefaultParms(kwArgs){
+	bindCalled=true;
+	jum.assertTrue("submitParmUrl2", typeof kwArgs["url"] == "undefined");
+}

@@ -78,7 +78,7 @@ public abstract class ImageSubmit extends Submit
 
         renderInformalParameters(writer, cycle);
         
-        renderSubmitType(writer, cycle);
+        renderSubmitBindings(writer, cycle);
         
         writer.closeTag();
     }
