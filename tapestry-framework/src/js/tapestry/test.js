@@ -63,7 +63,7 @@ function mock(){
 	}
 }
 
-dojo.io.bind=function(kwArgs){
+dojo.io.queueBind=function(kwArgs){
 	dojo.log.info("dojo.io.RhinoIO.bind():");
 	dojo.debugShallow(kwArgs);
 }
