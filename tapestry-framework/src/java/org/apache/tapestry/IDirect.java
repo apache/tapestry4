@@ -14,7 +14,6 @@
 
 package org.apache.tapestry;
 
-import java.util.Collection;
 
 /**
  *  Interface that defines classes that may be messaged by the direct
@@ -23,7 +22,7 @@ import java.util.Collection;
  *  @author Howard Lewis Ship
  **/
 
-public interface IDirect extends IComponent
+public interface IDirect extends IComponent, IDynamicInvoker
 {
     /**
      *  Invoked by the direct service to have the component peform
@@ -46,48 +45,4 @@ public interface IDirect extends IComponent
      */
 
     boolean isStateful();
-    
-    /**
-     * If set, will be used to update/refresh portions of a response during XHR requests.
-     * 
-     * <p>
-     *  For instance, if you have a page listing projects and you wanted to update an 
-     *  {@link Any} components contents whenever one of the project links was clicked 
-     *  you would use a {@link DirectLink} with the parameters:
-     * </p>
-     * 
-     * <pre>
-     *      updateComponents="{'projectDetails'}"
-     *      async="true"
-     * </pre>
-     * 
-     * @return The list of components to update, if any.
-     */
-    Collection getUpdateComponents();
-    
-    /**
-     * Used to specify whether or not the result of this invocation should be returned asynchronously
-     * or use normal browser page reload semantics. 
-     * 
-     * <p>
-     *  Async being true means responses will be encoded as XML using XmlHttpRequests. If you would like
-     *  your request/response to be in another format - like JSON - you must also specify the additional 
-     *  parameter {@link #isJson()}.  Without setting the {@link #getUpdateComponents()} parameter
-     * this parameter is pretty useless.
-     * </p>
-     * 
-     * @see #isJson()
-     * @return True if invocation should be processed asynchronously.
-     */
-    boolean isAsync();
-    
-    /**
-     * Used to specify that the return invocation of the response created should be in the
-     * {@linkplain http://json.org} format. Without setting the {@link #getUpdateComponents()} parameter
-     * this parameter is pretty useless.
-     * 
-     * @see {@link org.apache.IJSONRender}
-     * @return True if response should be encoded using JSON semantics.
-     */
-    boolean isJson();
 }

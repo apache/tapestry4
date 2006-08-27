@@ -20,7 +20,7 @@
 	The dojo sources may be obtained via the subversion repository at
 	http://svn.dojotoolkit.org
 -->
-<project name="Tapestry Javascript" default="package">
+<project name="Tapestry Javascript" default="test">
 
 	<property name="root.dir" value="../../.." />
 	<property file="${root.dir}/config/build.properties" />

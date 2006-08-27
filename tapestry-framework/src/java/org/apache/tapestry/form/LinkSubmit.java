@@ -83,7 +83,7 @@ public abstract class LinkSubmit extends AbstractSubmit
 
             renderInformalParameters(writer, cycle);
             
-            renderSubmitType(writer, cycle);
+            renderSubmitBindings(writer, cycle);
         }
 
         renderBody(writer, cycle);

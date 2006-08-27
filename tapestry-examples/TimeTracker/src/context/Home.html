@@ -43,7 +43,8 @@ using them.
       	</div>
       </td>
       <td>
-      	<input jwcid="@Submit" value="message:button.add" class="submitButton" action="listener:addTask" />
+      	<input jwcid="@Submit" value="message:button.add" class="submitButton" 
+      			action="listener:addTask" async="ognl:true" updateComponents="ognl:{'taskForm'}" />
       </td>
     </tr>
     

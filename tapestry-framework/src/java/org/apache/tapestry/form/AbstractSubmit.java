@@ -20,12 +20,16 @@ import java.util.Map;
 
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IActionListener;
+import org.apache.tapestry.IDynamicInvoker;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.engine.DirectServiceParameter;
+import org.apache.tapestry.engine.IEngineService;
+import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.util.ScriptUtils;
 
@@ -36,7 +40,7 @@ import org.apache.tapestry.util.ScriptUtils;
  * @since 4.0
  */
 
-abstract class AbstractSubmit extends AbstractFormComponent
+abstract class AbstractSubmit extends AbstractFormComponent implements IDynamicInvoker
 {   
     /**
      * Determine if this submit component was clicked.
@@ -100,31 +104,77 @@ abstract class AbstractSubmit extends AbstractFormComponent
         }
     }
 
-    protected void renderSubmitType(IMarkupWriter writer, IRequestCycle cycle)
+    /**
+     * Manages rendering of important submit client side bindings, like invoking the right submit
+     * type or any of the optional {@link IDynamicInvoker} parameters.
+     * 
+     * @param writer The writer to use to write content.
+     * @param cycle The current request cycle.
+     */
+    protected void renderSubmitBindings(IMarkupWriter writer, IRequestCycle cycle)
     {
         String type = getSubmitType();
         
         Defense.notNull(type, "submitType");
         
-        if (type.equals(FormConstants.SUBMIT_NORMAL))
-            return;
+        Map parms = null;
+        JSONObject json = null;
         
-        if (!isParameterBound("onClick")) {
+        if (isAsync()) {
             
-            writer.attribute("onClick", 
-                    "tapestry.form." + type + "('" + getForm().getClientId() 
-                    + "', '" + getName() + "')");
-        } else {
+            IForm form = getForm();
             
-            PageRenderSupport prs = TapestryUtils.getPageRenderSupport(cycle, this);
-            
-            Map parms = new HashMap();
-            
+            parms = new HashMap();
             parms.put("submit", this);
-            parms.put("type", type);
             parms.put("key", ScriptUtils.functionHash(type + this.hashCode()));
             
-            getSubmitTypeScript().execute(this, cycle, prs, parms);
+            json = new JSONObject();
+            
+            json.put("async", isAsync());
+            json.put("json", isJson());
+            
+            DirectServiceParameter dsp = 
+                new DirectServiceParameter(form, null, this);
+            
+            json.put("url", getDirectService().getLink(true, dsp).getURL());
+        }
+        
+        if (!type.equals(FormConstants.SUBMIT_NORMAL)) {
+            if (!isParameterBound("onClick")) {
+                
+                StringBuffer str = new StringBuffer();
+                
+                str.append("tapestry.form.").append(type);
+                str.append("('").append(getForm().getClientId()).append("',");
+                str.append("'").append(getName()).append("'");
+                
+                if (json != null){
+                    str.append(",").append(json.toString());
+                }
+                
+                str.append(")");
+                
+                writer.attribute("onClick", str.toString());
+            } else {
+                if (parms == null) {
+                    parms = new HashMap();
+                    
+                    parms.put("submit", this);
+                    parms.put("key", ScriptUtils.functionHash(type + this.hashCode()));
+                }
+                
+                parms.put("type", type);
+            }
+        }
+        
+        if (parms != null) {
+            
+            if (json != null) {
+                parms.put("parms", json.toString());
+            }
+            
+            PageRenderSupport prs = TapestryUtils.getPageRenderSupport(cycle, this);
+            getSubmitScript().execute(this, cycle, prs, parms);
         }
     }
     
@@ -149,9 +199,27 @@ abstract class AbstractSubmit extends AbstractFormComponent
     /** The type of submission, normal/cancel/refresh. */
     public abstract String getSubmitType();
     
+    /**
+     * {@inheritDoc}
+     */
+    public abstract Collection getUpdateComponents();
+    
+    /**
+     * {@inheritDoc}
+     */
+    public abstract boolean isAsync();
+    
+    /**
+     * {@inheritDoc}
+     */
+    public abstract boolean isJson();
+    
+    /** Injected. */
+    public abstract IEngineService getDirectService();
+    
     /** Injected. */
     public abstract ListenerInvoker getListenerInvoker();
     
     /** Injected. */
-    public abstract IScript getSubmitTypeScript();
+    public abstract IScript getSubmitScript();
 }
