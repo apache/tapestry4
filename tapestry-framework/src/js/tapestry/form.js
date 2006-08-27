@@ -303,7 +303,7 @@ tapestry.form={
 			kwArgs.load=(function(){tapestry.load.apply(this, arguments);});
 		}
 		
-		dojo.io.bind(kwArgs);
+		dojo.io.queueBind(kwArgs);
 	}
 }
 

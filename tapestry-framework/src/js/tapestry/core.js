@@ -48,7 +48,7 @@ tapestry={
 			parms.encoding="UTF-8";
 		}
 		
-		dojo.io.bind(parms);
+		dojo.io.queueBind(parms);
 	},
 	
 	/**

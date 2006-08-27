@@ -219,6 +219,42 @@
                             <a href="Form.html">Form</a> they will be invoked accordingly.
                         </td>
                     </tr>
+                    <tr>
+                        <td>updateComponents</td>
+                        <td>String[],Collection</td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            In an asynchronous request, specifies which components should have their content
+                            rendered back to the client. These are expected to be unique component ids. 
+                            
+                            <p>
+                            See: <a href="../tapestry-framework/apidocs/org/apache/tapestry/services/ResponseBuilder.html">ResponseBuilder</a>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>json</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            Causes the request to be asynchronous and the response to be captured/rendered via
+                            the <a href="../tapestry-framework/apidocs/org/apache/tapestry/services/impl/JSONResponseBuilder.html">JSONResponseBuilder</a>
+                            renderer.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>async</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            Causes the request to be asynchronous and the response to be captured/rendered via
+                            the <a href="../tapestry-framework/apidocs/org/apache/tapestry/services/impl/DojoAjaxResponseBuilder.html">DojoAjaxResponseBuilder</a>
+                            renderer.
+                        </td>
+                    </tr>
                 </table>
 
                 <p>

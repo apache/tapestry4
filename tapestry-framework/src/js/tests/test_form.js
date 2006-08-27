@@ -91,14 +91,14 @@ function test_submit_parms(){
 	node.elements=[];
 	document.body.appendChild(node);
 	
-	dojo.event.connect(dojo.io, "bind", this, checkSubmitParms);
+	dojo.event.connect(dojo.io, "queueBind", this, checkSubmitParms);
 	
 	tapestry.form.registerForm("formparmtest");
 	tapestry.form.submit("formparmtest", null, {async:true,url:"/new/url"});
 	
 	jum.assertTrue("bindCalled", bindCalled);
 	
-	dojo.event.disconnect(dojo.io, "bind", this, checkSubmitParms);
+	dojo.event.disconnect(dojo.io, "queueBind", this, checkSubmitParms);
 }
 
 function checkSubmitParms(kwArgs){
@@ -117,14 +117,14 @@ function test_submit_defaultParms(){
 	node.elements=[];
 	document.body.appendChild(node);
 	
-	dojo.event.connect(dojo.io, "bind", this, checkDefaultParms);
+	dojo.event.connect(dojo.io, "queueBind", this, checkDefaultParms);
 	
 	tapestry.form.registerForm("formasynctest", true);
 	tapestry.form.submit("formasynctest");
 	
 	jum.assertTrue("bindCalled", bindCalled);
 	
-	dojo.event.disconnect(dojo.io, "bind", this, checkDefaultParms);
+	dojo.event.disconnect(dojo.io, "queueBind", this, checkDefaultParms);
 }
 
 function checkDefaultParms(kwArgs){
