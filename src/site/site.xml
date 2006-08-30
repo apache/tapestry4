@@ -127,6 +127,7 @@
                 <item name="PropertySelection" href="/components/PropertySelection.html" />
                 <item name="Radio" href="/components/Radio.html" />
                 <item name="RadioGroup" href="/components/RadioGroup.html" />
+                <item name="Relation" href="/components/Relation.html" />                
                 <item name="RenderBlock" href="/components/RenderBlock.html" />
                 <item name="RenderBody" href="/components/RenderBody.html" />
                 <item name="Rollover" href="/components/Rollover.html" />
@@ -134,6 +135,7 @@
                 <item name="Select" href="/components/Select.html" />
                 <item name="ServiceLink" href="/components/ServiceLink.html" />
                 <item name="Shell" href="/components/Shell.html" />
+                <item name="Style" href="/components/Style.html" />                
                 <item name="Submit" href="/components/Submit.html" />
                 <item name="TextArea" href="/components/TextArea.html" />
                 <item name="TextField" href="/components/TextField.html" />
