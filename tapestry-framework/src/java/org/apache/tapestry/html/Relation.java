@@ -13,11 +13,16 @@
 // limitations under the License.
 package org.apache.tapestry.html;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.markup.MarkupWriterSource;
+import org.apache.tapestry.util.ContentType;
 
 /**
  * Works with the {@link Shell} component to define and append a 
@@ -42,34 +47,66 @@ public abstract class Relation extends AbstractComponent
                 throw new ApplicationRuntimeException(
                     HTMLMessages.shellComponentRequired(),
                     this.getLocation(), null);
-                    
-            Object href = getHref();
-            boolean ok = (href instanceof String) || (href instanceof IAsset);
-            if (!ok)
-                throw new ApplicationRuntimeException(
-                    HTMLMessages.stringOrIAssetExpected(),
-                    this.getLocation(), null); 
-                    
-            String url;
-            if (href instanceof String)
+                   
+            if (getUseBody() && getHref() == null)
             {
-                url = (String) href;
+                renderStyleTag(shell, writer, cycle);
             }
             else
             {
-                url = ((IAsset)href).buildURL();
+                renderLinkTag(shell, writer, cycle);
             }
-                    
-            RelationBean bean = new RelationBean();           
-            bean.setHref(url);
-            bean.setMedia(getMedia());
-            bean.setRel(getRel());
-            bean.setRev(getRev());
-            bean.setTitle(getTitle());
-            bean.setType(getType());
-            shell.addRelation(bean);
         }          
-    }
+    }    
+    
+    protected void renderLinkTag(Shell shell, IMarkupWriter writer, IRequestCycle cycle)
+    {
+        Object href = getHref();
+        boolean ok = (href instanceof String) || (href instanceof IAsset);            
+        if (!ok)
+            throw new ApplicationRuntimeException(
+                HTMLMessages.stringOrIAssetExpected(),
+                this.getLocation(), null); 
+                
+        String url;
+        if (href instanceof String)
+        {
+            url = (String) href;
+        }
+        else
+        {
+            url = ((IAsset)href).buildURL();
+        }
+                
+        RelationBean bean = new RelationBean();           
+        bean.setHref(url);
+        bean.setMedia(getMedia());
+        bean.setRel(getRel());
+        bean.setRev(getRev());
+        bean.setTitle(getTitle());
+        bean.setType(getType());
+        shell.addRelation(bean);        
+    }   
+    
+    protected void renderStyleTag(Shell shell, IMarkupWriter writer, IRequestCycle cycle)
+    {
+        StringWriter sWriter = new StringWriter();
+        IMarkupWriter nested = getMarkupWriterSource().newMarkupWriter(new PrintWriter(sWriter),
+                new ContentType(writer.getContentType()));
+        nested.begin("style");
+        nested.attribute("type", "text/css");
+        if (getMedia()!=null)
+            nested.attribute("media", getMedia());
+        if (getTitle()!=null)
+            nested.attribute("title", getTitle());        
+        
+        renderBody(nested, cycle);
+        nested.close();
+
+        shell.includeAdditionalContent(sWriter.toString());
+    }    
+    
+    public abstract boolean getUseBody();
     
     public abstract Object getHref();
 
@@ -81,6 +118,9 @@ public abstract class Relation extends AbstractComponent
     
     public abstract String getTitle();
         
-    public abstract String getMedia();    
+    public abstract String getMedia();
+    
+    /* injected */
+    public abstract MarkupWriterSource getMarkupWriterSource();
 
 }

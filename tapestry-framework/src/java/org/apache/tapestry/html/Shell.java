@@ -112,9 +112,9 @@ public abstract class Shell extends AbstractComponent
             if (relations != null)
                 writeRelations(writer, relations); 
             
-            StringBuffer inlineStyle = getStyleBuffer();
-            if (inlineStyle != null)
-                writeInlineStyle(writer, inlineStyle.toString());
+            StringBuffer additionalContent = getContentBuffer();
+            if (additionalContent != null)
+                writer.printRaw(additionalContent.toString());
             
             IAsset stylesheet = getStylesheet();
             
@@ -230,20 +230,7 @@ public abstract class Shell extends AbstractComponent
             writeAttributeIfNotNull(writer, "title", relationBean.getTitle());
             writeAttributeIfNotNull(writer, "href", relationBean.getHref());
             writer.println();
-    }
-    
-    private void writeInlineStyle(IMarkupWriter writer, String style)
-    {
-        writer.begin("style");
-        writer.attribute("type", "text/css");
-        writer.println();
-        
-        writer.printRaw(style);
-        writer.println();
-        
-        writer.end();
-        writer.println();
-    }
+    }    
     
     private void writeAttributeIfNotNull(IMarkupWriter writer, String name, String value)
     {
@@ -280,21 +267,21 @@ public abstract class Shell extends AbstractComponent
     }
 
     /**
-     * Adds additional styles to the header of a page.
-     * @param style
+     * Include additional content in the header of a page.
+     * @param style 
      *
      * @since 4.1.1
      */
-    public void addInlineStyle(String style)
+    public void includeAdditionalContent(String content)
     {
-        if (HiveMind.isBlank(style))
+        if (HiveMind.isBlank(content))
             return;
-        StringBuffer buffer = getStyleBuffer();
+        StringBuffer buffer = getContentBuffer();
         if (buffer == null)
             buffer = new StringBuffer();
         
-        buffer.append(style);        
-        setStyleBuffer(buffer);
+        buffer.append(content);        
+        setContentBuffer(buffer);
     }
     
     public abstract boolean isDisableCaching();
@@ -348,10 +335,10 @@ public abstract class Shell extends AbstractComponent
     
     /** @since 4.1.1 */
     
-    public abstract StringBuffer getStyleBuffer();
+    public abstract StringBuffer getContentBuffer();
     
     /** @since 4.1.1 */
     
-    public abstract void setStyleBuffer(StringBuffer buffer);    
+    public abstract void setContentBuffer(StringBuffer buffer);    
 
 }
