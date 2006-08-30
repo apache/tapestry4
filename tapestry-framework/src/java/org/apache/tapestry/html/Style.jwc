@@ -20,52 +20,41 @@
   "http://tapestry.apache.org/dtd/Tapestry_4_0.dtd">
 	
 <component-specification class="org.apache.tapestry.html.Relation" 
-	allow-body="no" 
+	allow-body="yes" 
 	allow-informal-parameters="no">
 
   <description>
-    Creates a relationship between two documents (typically the current html
-    document and an external stylesheet). 
+    Declares a stylesheet to be included in the current page. 
   </description>
 
-  <parameter name="href" required="yes">
+  <parameter name="href">
     <description>
-    The target URL of the related resource. Can either be a String or an IAsset.
+    The target URL of the stylesheet. Can either be a String or an IAsset.
     </description>
   </parameter> 
   
   <parameter name="rel"
       		 default-value="literal:stylesheet">
     <description>
-	Defines the relationship between the current document and the targeted document.
+	By default this is 'stylesheet' but you can also use 'alternate stylesheet'.
     </description>
-  </parameter>
-  
-  <parameter name="rev">
-    <description>
-    Defines the relationship between the targeted document and the current document.
-    </description>
-  </parameter>     
-  
-  <parameter name="type"
-      		 default-value="literal:text/css">
-    <description>
-    Specifies the MIME type of the target URL.
-    </description>
-  </parameter> 
+  </parameter>    
   
   <parameter name="title">
     <description>
-    Title of the relation.
+    Title of the stylesheet.
     </description>
   </parameter>     
   
   <parameter name="media">
     <description>
-    Specifies on what device the document will be displayed.
+    Specifies on what device this stylesheet will apply.
     </description>
   </parameter>
   
-  <property name="useBody" initial-value="ognl:false"/>
+  <property name="type" initial-value="literal:text/css"/>
+  <property name="useBody" initial-value="ognl:true"/>
+  
+  <inject property="markupWriterSource" object="service:tapestry.markup.MarkupWriterSource"/>
   
 </component-specification>

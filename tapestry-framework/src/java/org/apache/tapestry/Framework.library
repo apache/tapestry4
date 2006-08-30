@@ -75,6 +75,7 @@
     <component-type type="ServiceLink" specification-path="link/ServiceLink.jwc"/>
     <component-type type="Script" specification-path="html/Script.jwc"/>
     <component-type type="Shell" specification-path="html/Shell.jwc"/>
+	<component-type type="Style" specification-path="html/Style.jwc"/>    
     <component-type type="Submit" specification-path="form/Submit.jwc"/>
     <component-type type="TextArea" specification-path="form/TextArea.jwc"/>
     <component-type type="TextField" specification-path="form/TextField.jwc"/>
