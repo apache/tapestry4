@@ -40,7 +40,7 @@ public class TestShell extends BaseComponentTestCase
      * holdback to the action service).
      */
 
-    public void testRewinding()
+    public void test_Rewinding()
     {
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
@@ -72,7 +72,7 @@ public class TestShell extends BaseComponentTestCase
         verify();
     }
     
-    public void testAddRelation()
+    public void test_Add_Relation()
     {        
         Shell shell = newInstance(Shell.class, null);
         RelationBean css1 = new RelationBean();
@@ -85,6 +85,22 @@ public class TestShell extends BaseComponentTestCase
         List all = shell.getRelations();
         assertEquals(all.size(), 1);   
     }
+    
+    public void test_Include_Additional_Content_Null()
+    {
+        StringBuffer sb = new StringBuffer();
+        Shell shell = (Shell) newInstance(Shell.class, "contentBuffer", sb);
+        shell.includeAdditionalContent(null);
+        assertEquals(sb.length(), 0);
+    }
+    
+    public void test_Include_Additional_Content()
+    {
+        StringBuffer sb = new StringBuffer();
+        Shell shell = (Shell) newInstance(Shell.class, "contentBuffer", sb);
+        shell.includeAdditionalContent("data");
+        assertEquals(sb.toString(), "data");
+    }    
 
     protected void trainStoreShellInCycle(IRequestCycle cycle, Shell shell)
     {
