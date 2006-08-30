@@ -35,6 +35,14 @@
 <link rel="stylesheet" type="text/css" href="dummy.css"/>
 ]]>
 		</assert-output>
+		
+		<assert-output name="Inline styles">
+<![CDATA[		
+<style type="text/css" media="all">
+a {background:yellow;}
+</style>
+]]>
+		</assert-output>		
 	
 	</request>	
 			 	 	 
