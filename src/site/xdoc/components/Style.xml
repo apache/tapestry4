@@ -44,6 +44,7 @@
                     <tr>
                         <th>Name</th>
                         <th>Type</th>
+                        <th>Direction</th>
                         <th>Required</th>
                         <th>Default</th>
                         <th>Description</th>
@@ -54,6 +55,7 @@
                         <td>String or 
                         <a href="../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">IAsset</a>
                         </td>
+                        <td>in</td>
                         <td>no</td>
                         <td></td>
                         <td>The target URL of the related resource. <br/>
@@ -67,6 +69,7 @@
                     <tr>
                         <td>rel</td>
                         <td>String</td>
+                        <td>in</td>
                         <td>no</td>
                         <td>literal:stylesheet</td>
                         <td>Defines the relationship between the current document and the targeted document.</td>
@@ -75,6 +78,7 @@
                     <tr>
                         <td>title</td>
                         <td>String</td>
+                        <td>in</td>
                         <td>no</td>
                         <td></td>
                         <td>The title of the stylesheet.</td>
@@ -83,6 +87,7 @@
                     <tr>
                         <td>media</td>
                         <td>String</td>
+                        <td>in</td>
                         <td>no</td>
                         <td></td>
                         <td>Specifies on which device this stylesheet will apply.</td>

@@ -45,6 +45,7 @@
                     <tr>
                         <th>Name</th>
                         <th>Type</th>
+                        <th>Direction</th>
                         <th>Required</th>
                         <th>Default</th>
                         <th>Description</th>
@@ -55,6 +56,7 @@
                         <td>String or 
                         <a href="../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">IAsset</a>
                         </td>
+                        <td>in</td>
                         <td>yes</td>
                         <td></td>
                         <td>The target URL of the related resource.</td>
@@ -63,6 +65,7 @@
                     <tr>
                         <td>rel</td>
                         <td>String</td>
+                        <td>in</td>
                         <td>no</td>
                         <td>literal:stylesheet</td>
                         <td>Defines the relationship between the current document and the targeted document.</td>
@@ -71,6 +74,7 @@
                     <tr>
                         <td>type</td>
                         <td>String</td>
+                        <td>in</td>
                         <td>no</td>
                         <td>literal:text/css</td>
                         <td>Specifies the MIME type of the target URL.</td>
@@ -79,6 +83,7 @@
                     <tr>
                         <td>rev</td>
                         <td>String</td>
+                        <td>in</td>
                         <td>no</td>
                         <td></td>
                         <td>Defines the relationship between the targeted document and the current document, 
@@ -88,6 +93,7 @@
                     <tr>
                         <td>title</td>
                         <td>String</td>
+                        <td>in</td>
                         <td>no</td>
                         <td></td>
                         <td>The title of the relation.</td>
@@ -96,6 +102,7 @@
                     <tr>
                         <td>media</td>
                         <td>String</td>
+                        <td>in</td>
                         <td>no</td>
                         <td></td>
                         <td>Specifies on which device the document will be displayed.</td>

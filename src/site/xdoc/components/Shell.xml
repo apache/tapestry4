@@ -62,6 +62,7 @@
                     <tr>
                         <th>Name</th>
                         <th>Type</th>
+                        <th>Direction</th>
                         <th>Required</th>
                         <th>Default</th>
                         <th>Description</th>
@@ -70,6 +71,7 @@
                     <tr>
                         <td>title</td>
                         <td>String</td>
+                        <td>in</td>
                         <td>yes</td>
                         <td></td>
                         <td>The title for the page, used to render the &lt;title&gt; tag.</td>
@@ -78,6 +80,7 @@
                     <tr>
                         <td>raw</td>
                         <td>boolean</td>
+                        <td>in</td>
                         <td>no</td>
                         <td>false</td>
                         <td>
@@ -93,6 +96,7 @@
                                 IAsset
                             </a>
                         </td>
+                        <td>in</td>
                         <td>no</td>
                         <td></td>
                         <td>If provided, then a &lt;link&gt; to the stylesheet is generated.</td>
@@ -106,6 +110,7 @@
                                 IAsset
                             </a>
                         </td>
+                        <td>in</td>
                         <td>no</td>
                         <td></td>
                         <td>
@@ -117,6 +122,7 @@
                     <tr>
                         <td>doctype</td>
                         <td>String</td>
+                        <td>in</td>
                         <td>no</td>
                         <td>
                             HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
@@ -131,6 +137,7 @@
                     <tr>
                         <td>renderContentType</td>
                         <td>boolean</td>
+                        <td>in</td>
                         <td>no</td>
                         <td>true</td>
                         <td>
@@ -142,6 +149,7 @@
                     <tr>
                         <td>refresh</td>
                         <td>int</td>
+                        <td>in</td>
                         <td>no</td>
                         <td></td>
                         <td>
@@ -153,6 +161,7 @@
                     <tr>
                         <td>disableCaching</td>
                         <td>boolean</td>
+                        <td>in</td>
                         <td>no</td>
                         <td>false</td>
                         <td>
@@ -167,6 +176,7 @@
                                 IRender
                             </a>
                         </td>
+                        <td>in</td>
                         <td>no</td>
                         <td></td>
                         <td>
@@ -178,6 +188,7 @@
                     <tr>
                         <td>renderBaseTag</td>
                         <td>boolean</td>
+                        <td>in</td>
                         <td>no</td>
                         <td>true</td>
                         <td>
@@ -192,6 +203,7 @@
                             IRender
                             </a>
                         </td>
+                        <td>in</td>
                         <td>no</td>
                         <td>
                             <a href="../tapestry-framework/apidocs/org/apache/tapestry/dojo/AjaxShellDelegate.html">
@@ -206,6 +218,7 @@
                     <tr>
                         <td>browserLogLevel</td>
                         <td>String - One of [DEBUG,INFO,WARNING,ERROR,CRITICAL]</td>
+                        <td>in</td>
                         <td>no</td>
                         <td>WARNING</td>
                         <td>
@@ -224,6 +237,7 @@
                     <tr>
                         <td>debugEnabled</td>
                         <td>boolean</td>
+                        <td>in</td>
                         <td>no</td>
                         <td>true</td>
                         <td>
@@ -233,6 +247,7 @@
                     <tr>
                         <td>debugContainerId</td>
                         <td>String</td>
+                        <td>in</td>
                         <td>no</td>
                         <td>debug</td>
                         <td>
@@ -248,6 +263,7 @@
                     <tr>
                         <td>parseWidgets</td>
                         <td>boolean</td>
+                        <td>in</td>
                         <td>no</td>
                         <td>false</td>
                         <td>
@@ -260,8 +276,9 @@
                         <td>
                         <a href="../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
                             IAsset
-                        </a>
+                        </a>                        
                         </td>
+                        <td>in</td>
                         <td>false</td>
                         <td>classpath:/tapestry/core.js</td>
                         <td>
@@ -276,6 +293,7 @@
                             IAsset
                         </a>
                         </td>
+                        <td>in</td>
                         <td>false</td>
                         <td>classpath:/dojo/dojo.js</td>
                         <td>
@@ -290,6 +308,7 @@
                             IAsset
                         </a>
                         </td>
+                        <td>in</td>
                         <td>false</td>
                         <td>classpath:/dojo/</td>
                         <td>

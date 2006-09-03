@@ -230,6 +230,7 @@
                     <tr>
                         <td>updateComponents</td>
                         <td>String[],Collection</td>
+                        <td>in</td>
                         <td>no</td>
                         <td></td>
                         <td>
@@ -244,6 +245,7 @@
                     <tr>
                         <td>json</td>
                         <td>boolean</td>
+                        <td>in</td>
                         <td>no</td>
                         <td>false</td>
                         <td>
@@ -255,6 +257,7 @@
                     <tr>
                         <td>async</td>
                         <td>boolean</td>
+                        <td>in</td>
                         <td>no</td>
                         <td>false</td>
                         <td>
