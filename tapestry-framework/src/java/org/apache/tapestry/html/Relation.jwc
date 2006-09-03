@@ -62,7 +62,7 @@
   
   <parameter name="media">
     <description>
-    Specifies on what device the document will be displayed.
+    Specifies on which device the document will be displayed.
     </description>
   </parameter>
   

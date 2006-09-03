@@ -48,7 +48,7 @@
   
   <parameter name="media">
     <description>
-    Specifies on what device this stylesheet will apply.
+    Specifies on which device this stylesheet will apply.
     </description>
   </parameter>
   
