@@ -42,6 +42,10 @@ import org.testng.annotations.Test;
 @Test
 public class TestPageRenderSupport extends BaseComponentTestCase
 {
+    private static final String SYSTEM_NEWLINE= (String)java.security.AccessController.doPrivileged(
+            new sun.security.action.GetPropertyAction("line.separator"));
+    private static final String TEST_NEWLINE= "\n";
+
     private AssetFactory newAssetFactory()
     {
         return newMock(AssetFactory.class);
@@ -92,6 +96,8 @@ public class TestPageRenderSupport extends BaseComponentTestCase
     private void assertOutput(String expected)
     {
         String actual = _writer.toString();
+        // Replace any system line feeds with \n
+        actual = actual.replaceAll(SYSTEM_NEWLINE, TEST_NEWLINE);
 
         assertEquals(expected, actual);
 
@@ -255,7 +261,7 @@ public class TestPageRenderSupport extends BaseComponentTestCase
 
     public void testAddExternalScript() throws Exception
     {
-        String newline = System.getProperty("line.separator");
+        String newline = TEST_NEWLINE;
 
         IRequestCycle cycle = newCycle();
         

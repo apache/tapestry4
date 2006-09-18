@@ -42,7 +42,7 @@ public class DefaultResponseBuilderTest extends BaseComponentTestCase
 
     private static CharArrayWriter _writer;
     
-    private static String LINE_SEPERATOR = (String)java.security.AccessController.doPrivileged(
+    private static String LINE_SEPARATOR = (String)java.security.AccessController.doPrivileged(
             new sun.security.action.GetPropertyAction("line.separator"));
     
     private PrintWriter newPrintWriter()
@@ -144,7 +144,7 @@ public class DefaultResponseBuilderTest extends BaseComponentTestCase
         
         builder.writeImageInitializations(mw, imageInit, preload, cycle);
         
-        assertOutput("\n"
+        assertOutput(LINE_SEPARATOR
                 + "dojo.event.connect(window, 'onload', function(e) {\n\n\n"
                 + preload + " = [];\n"
                 + "if (document.images)\n"
@@ -183,12 +183,12 @@ public class DefaultResponseBuilderTest extends BaseComponentTestCase
         builder.writeExternalScript(mw, script1, cycle);
         
         assertOutput("<script type=\"text/javascript\" src=\""
-                + script1 + "\"></script>" + LINE_SEPERATOR);
+                + script1 + "\"></script>" + LINE_SEPARATOR);
         
         builder.writeExternalScript(mw, script2, cycle);
         
         assertOutput("<script type=\"text/javascript\" src=\""
-                + script2 + "\"></script>" + LINE_SEPERATOR);
+                + script2 + "\"></script>" + LINE_SEPARATOR);
         
         verify();
     }
