@@ -1,6 +1,6 @@
-dojo.setModulePrefix("tapestry", "../tapestry");
+dojo.registerModulePath("tapestry", "../tapestry");
 
-dojo.require("tapestry.*");
+dojo.require("tapestry.core");
 dojo.require("tapestry.test");
 dojo.require("tapestry.form");
 

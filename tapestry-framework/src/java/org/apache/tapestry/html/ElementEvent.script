@@ -9,8 +9,7 @@
 <input-symbol key="formEvents" />
     <body>
         <unique>
-            dojo.require("dojo.event");
-            dojo.require("tapestry.*");
+        dojo.require("tapestry.event");
         </unique>
     </body>
     <initialization>

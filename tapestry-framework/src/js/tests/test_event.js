@@ -1,7 +1,8 @@
-dojo.setModulePrefix("tapestry", "../tapestry");
+dojo.registerModulePath("tapestry", "../tapestry");
 
-dojo.require("tapestry.*");
 dojo.require("tapestry.test");
+dojo.require("tapestry.lang");
+dojo.require("tapestry.event");
 
 function test_eventCapture_props(){
 	var fevent=document.createEvent('UIEvents');

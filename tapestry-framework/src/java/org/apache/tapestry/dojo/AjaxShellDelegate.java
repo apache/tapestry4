@@ -88,7 +88,9 @@ public class AjaxShellDelegate implements IRender
         str.append("\n<script type=\"text/javascript\">")
         .append("dojo.require(\"dojo.logging.Logger\");\n")
         .append("dojo.log.setLevel(dojo.log.getLevel(\"").append(_browserLogLevel)
-        .append("\"));</script>");
+        .append("\"));\n")
+        .append("dojo.require(\"tapestry.namespace\")")
+        .append("</script>");
         
         writer.printRaw(str.toString());
         writer.println();

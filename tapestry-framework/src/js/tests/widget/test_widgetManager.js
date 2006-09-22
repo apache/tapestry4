@@ -1,10 +1,11 @@
-dojo.require("dojo.widget.Checkbox");
+// dojo.registerModulePath("tapestry", "../tapestry");
+dojo.registerModulePath("tapestry", "../tapestry");
 
-dojo.setModulePrefix("tapestry", "../tapestry");
-
-dojo.require("tapestry.*");
+dojo.require("dojo.namespace");
+dojo.require("dojo.widget.*");
+dojo.require("tapestry.core");
 dojo.require("tapestry.test");
-dojo.require("tapestry.widget.*");
+dojo.require("tapestry.widget.Widget");
 
 function test_syncfailure_widget(){
 	try {

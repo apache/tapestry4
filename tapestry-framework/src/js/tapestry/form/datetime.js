@@ -1,7 +1,8 @@
 dojo.provide("tapestry.form.datetime");
 
+dojo.require("dojo.date.format");
 dojo.require("dojo.validate.datetime");
-dojo.require("dojo.date");
+dojo.require("dojo.logging.Logger");
 
 tapestry.form.datetime={
 	
@@ -18,39 +19,46 @@ tapestry.form.datetime={
 	 * @return Boolean. True if valid, false otherwise.
 	 */
 	isValidDate:function(value, flags){
-		// default generic validation if no flags specified
-		if (!flags || typeof flags.format != "string") 
-			return dojo.validate.isValidDate(value);
+		if (!value || !flags){
+			dojo.raise("isValidDate: value and flags must be specified");
+			return;
+		}
 		
 		// parse date value
 		var dateValue=null;
 		try {
-			dateValue = new Date(value);
+			dateValue = dojo.date.parse(value, flags);
 		} catch (e) {
 			dojo.log.exception("Error parsing input date.", e, true);
 			return false;
 		}
 		
+		if(dateValue == null) { return false; }
+		
 		// convert to format that is validatable
-		value = dojo.date.format(dateValue, flags.format);
+		value=dojo.date.format(dateValue, flags);
 		
 		// TODO: This is totally useless right now, doesn't even accept formats with string equivs
 		// See a better method http://www.mattkruse.com/javascript/date/source.html 
 		// basic format validation
 		// if (!dojo.validate.isValidDate(value, flags.format)) 
-			//return false;
+		//	return false;
 		
 		// max date
-		if (typeof flags.max == "string") {
-			var max = new Date(flags.max);
-			if (dojo.date.compare(dateValue, max, dojo.date.compareTypes.DATE) > 0)
+		if (!dj_undef("max", flags)){
+			if (typeof flags.max == "string"){
+				flags.max=dojo.date.parse(flags.max, flags);
+			}
+			if (dojo.date.compare(dateValue, flags.max, dojo.date.compareTypes.DATE) > 0)
 				return false;
 		}
 		
 		// min date
-		if (typeof flags.min == "string") {
-			var min = new Date(flags.min);
-			if (dojo.date.compare(dateValue, min, dojo.date.compareTypes.DATE) < 0)
+		if (!dj_undef("min", flags)){
+			if (typeof flags.min == "string"){
+				flags.min=dojo.date.parse(flags.min, flags);
+			}
+			if (dojo.date.compare(dateValue, flags.min, dojo.date.compareTypes.DATE) < 0)
 				return false;
 		}
 		

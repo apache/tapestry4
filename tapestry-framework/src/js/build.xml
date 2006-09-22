@@ -32,7 +32,6 @@
 			classpath="lib/ant-dojotest.jar" />
 	
 	<target name="check-dependencies" description="Ensures that dojo.dir is set.">
-
 		<fail message="dojo.dir not set" unless="dojo.dir" />
 	</target>
 	
@@ -65,7 +64,7 @@
 	<!-- ====================================================== -->
 	
 	<target name="test" description="Tests tapestry js package with dojo test utils." >
-		 <dojo-test dojosrc="./dojo/" testsrc="tests"/>
+		 <dojo-test dojosrc="dojo" testsrc="tests"/>
 	</target>
 	
 </project>

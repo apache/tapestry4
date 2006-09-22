@@ -15,9 +15,6 @@ dojo.provide("tapestry.widget");
 dojo.provide("tapestry.widget.Widget");
 
 dojo.require("dojo.widget.*");
-dojo.require("dojo.dom");
-dojo.require("dojo.event");
-dojo.require("dojo.lang.common");
 
 // Define core widget management methods
 tapestry.widget = {

@@ -8,7 +8,7 @@
     <body>
         <unique>
 			dojo.require("dojo.widget.DebugConsole");
-            dojo.require("tapestry.widget.*");
+            dojo.require("tapestry.widget.Widget");
         </unique>
     </body>
 
