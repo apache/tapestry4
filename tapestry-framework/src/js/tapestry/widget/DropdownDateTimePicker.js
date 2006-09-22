@@ -2,8 +2,8 @@ dojo.provide("tapestry.widget.DropdownDateTimePicker");
 
 dojo.require("dojo.widget.*");
 dojo.require("dojo.widget.DropdownContainer");
-dojo.require("dojo.event.*");
-dojo.require("dojo.html");
+dojo.require("dojo.event.common");
+dojo.require("dojo.html.style");
 
 dojo.require("tapestry.widget.TimePicker");
 
@@ -56,5 +56,3 @@ dojo.widget.defineWidget(
 	},
 	"html"
 );
-
-dojo.widget.tags.addParseTreeHandler("dojo:dropdowndatetimepicker");

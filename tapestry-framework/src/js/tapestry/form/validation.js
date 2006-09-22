@@ -1,9 +1,8 @@
 dojo.provide("tapestry.form.validation");
 
 dojo.require("dojo.validate.check");
-dojo.require("dojo.html");
+dojo.require("dojo.html.style");
 dojo.require("dojo.widget.*");
-
 dojo.require("tapestry.widget.AlertDialog");
 
 tapestry.form.validation={
@@ -114,6 +113,7 @@ tapestry.form.validation={
 	 * @param profile The form validation profile.
 	 */
 	handleMissingField:function(field, profile){
+		if (dj_undef("type", field)) {return;}
 		dojo.html.removeClass(field, this.invalidClass);
 		
 		if (!dojo.html.hasClass(field, this.missingClass)){
@@ -128,6 +128,7 @@ tapestry.form.validation={
 	 * @param profile The form validation profile.
 	 */
 	handleInvalidField:function(field, profile){
+		if (dj_undef("type", field)) {return;}
 		dojo.html.removeClass(field, this.missingClass);
 		
 		if (!dojo.html.hasClass(field, this.invalidClass)){
@@ -212,7 +213,7 @@ tapestry.form.validation={
 		
 		var node=document.createElement("span");
 		document.body.appendChild(node);
-		var dialog=dojo.widget.createWidget("AlertDialog", 
+		var dialog=dojo.widget.createWidget("tapestry:AlertDialog", 
 						{
 							widgetId:"validationDialog",
 							message:msg

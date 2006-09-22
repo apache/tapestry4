@@ -6,12 +6,6 @@
 <input-symbol key="component" required="yes" />
 <input-symbol key="json" required="yes" />
 <input-symbol key="key" required="yes" />
-    <body>
-        <unique>
-            dojo.require("dojo.event");
-            dojo.require("tapestry.*");
-        </unique>
-    </body>
     <initialization>
         tapestry.cleanConnect(dojo.byId("${component.clientId}"), 
                               "onclick", "event${key}");

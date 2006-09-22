@@ -8,11 +8,11 @@
     <body>
         <unique>
             dojo.require("dojo.widget.Manager");
-            dojo.require("tapestry.widget.*");
-            dojo.require("tapestry.widget.DropdownTimePicker");
+            dojo.require("tapestry.widget.Widget");
+            dojo.require("dojo.widget.DropdownTimePicker");
         </unique>
     </body>
     <initialization>
-        tapestry.widget.synchronizeWidgetState("${clientId}", "DropdownTimePicker", ${props});
+        tapestry.widget.synchronizeWidgetState("${clientId}", "dropdowntimepicker", ${props});
     </initialization>
 </script>

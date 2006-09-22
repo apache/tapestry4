@@ -1,13 +1,11 @@
-dojo.provide("tapestry");
 dojo.provide("tapestry.core");
-dojo.setModulePrefix("tapestry", "../tapestry");
 
 dojo.require("dojo.logging.Logger");
-dojo.require("dojo.io");
-dojo.require("dojo.event");
+dojo.require("dojo.io.*");
+dojo.require("dojo.event.browser");
 dojo.require("dojo.widget.*");
 dojo.require("dojo.widget.Dialog");
-dojo.require("dojo.html");
+dojo.require("dojo.html.style");
 
 tapestry={
 	

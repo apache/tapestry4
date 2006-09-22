@@ -1,10 +1,11 @@
-dojo.setModulePrefix("tapestry", "../tapestry");
+dojo.registerModulePath("tapestry", "../tapestry");
 
-dojo.require("tapestry.*");
+dojo.require("tapestry.core");
+dojo.require("tapestry.event");
 dojo.require("tapestry.test");
 dojo.require("tapestry.form");
 dojo.require("dojo.lang.*");
-dojo.require("dojo.validate.common");
+dojo.require("dojo.validate.check");
 
 function test_register_invalidform(){
 	try {
@@ -47,7 +48,7 @@ function test_validate_required(){
 	// Profile for form input
 	var profile = {
 		// required fields
-		required: "tx2"
+		required: ["tx2"]
 	};
 	
 	// results object

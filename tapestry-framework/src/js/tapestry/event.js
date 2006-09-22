@@ -1,9 +1,10 @@
 dojo.provide("tapestry.event");
 
+dojo.require("tapestry.lang");
 dojo.require("dojo.event.browser");
 dojo.require("dojo.dom");
 
-tapestry.event = {
+tapestry.event={
 	
 	/**
 	 * Takes an incoming browser generated event (like key/mouse events) and
@@ -22,7 +23,7 @@ tapestry.event = {
 		
 		if(event["type"]) props.beventtype=event.type;
 		if(event["keys"]) props.beventkeys=event.keys;
-		if (event["charCode"]) props.beventcharCode=event.charCode;
+		if(event["charCode"]) props.beventcharCode=event.charCode;
 		if(event["pageX"]) props.beventpageX=event.pageX;
 		if(event["pageY"]) props.beventpageY=event.pageY;
 		if(event["layerX"]) props.beventlayerX=event.layerX;
@@ -38,19 +39,21 @@ tapestry.event = {
 	 * relevent target data.
 	 */
 	buildTargetProperties:function(props, target){
-		if(!target) return;
+		if(!target) { return; }
 		
-		if (dojo.dom.isNode(target))
+		if (dojo.dom.isNode(target)) {
 			return this.buildNodeProperties(props, target);
-		else
+		} else {
 			dojo.raise("buildTargetProperties() Unknown target type:" + target);
+		}
 	},
 	
 	/**
 	 * Builds needed target node properties, like the nodes id.
 	 */
 	buildNodeProperties:function(props, node) {
-		if (node.getAttribute("id"))
+		if (node.getAttribute("id")) {
 			props["beventtarget.id"]=node.getAttribute("id");
+		}
 	}
 }

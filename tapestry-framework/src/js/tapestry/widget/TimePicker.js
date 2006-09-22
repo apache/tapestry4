@@ -1,7 +1,17 @@
 dojo.provide("tapestry.widget.TimePicker");
+
 dojo.require("dojo.widget.HtmlWidget");
-dojo.require("dojo.date");
+dojo.require("dojo.date.common");
+dojo.require("dojo.date.format");
 dojo.require("dojo.lang.common");
+
+dojo.widget.defineWidget(
+	"tapestry.widget.TimePicker",
+	dojo.widget.HtmlWidget,
+	{
+		
+	}
+);
 
 tapestry.widget.TimePicker=function(){
 	dojo.widget.HtmlWidget.call(this);
@@ -325,5 +335,3 @@ dojo.lang.extend(tapestry.widget.TimePicker, {
 		this.domNode.appendChild(container);
 	}
 });
-
-dojo.widget.tags.addParseTreeHandler("dojo:timepicker");

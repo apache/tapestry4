@@ -358,18 +358,8 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
      */
     public SpecificationParser(ClassResolver resolver)
     {
-        this(resolver, new SpecFactory());
-    }
-
-    /**
-     * Create a new instance with resolver and a provided SpecFactory (used by Spindle).
-     * 
-     * @deprecated to be removed in release 4.1
-     */
-    public SpecificationParser(ClassResolver resolver, SpecFactory factory)
-    {
-        this(new DefaultErrorHandler(), LogFactory.getLog(SpecificationParser.class), resolver,
-                factory);
+        this(new DefaultErrorHandler(), LogFactory.getLog(SpecificationParser.class), 
+                resolver, new SpecFactory());
     }
 
     /**

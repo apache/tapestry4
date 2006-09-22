@@ -8,7 +8,7 @@ Associated with the public identifier:
 	
 The canonical location for the DTD is:
 
-	http://jakarta.apache.org/tapestry/dtd/Tapestry_4_1.dtd
+	http://tapestry.apache.org/dtd/Tapestry_4_1.dtd
 
 For application specifications, the root element is application.
 
@@ -241,13 +241,16 @@ Attributes:
     explictily defined) are allowed.
   deprecated: If yes, then using the component will generate a warning, advising the user
     to find a different component. The default is no.
+  inherit-specification: If yes (the default), all elements contained in any superclass components will be
+  	directly inherited in this specification.(this includes parameters/properties/assets/etc..)
 -->
 <!ELEMENT component-specification (description?, (parameter | reserved-parameter | meta | bean | component | asset | property | inject )*)>
 <!ATTLIST component-specification
 	class CDATA #IMPLIED
 	allow-body %attribute-flag; "yes"
 	allow-informal-parameters %attribute-flag; "yes"
-  deprecated %attribute-flag; "no"
+  	deprecated %attribute-flag; "no"
+  	inherit-specification %attribute-flag; "yes"
 >
 <!-- =======================================================
 Element: description

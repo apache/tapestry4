@@ -1,0 +1,24 @@
+dojo.provide("tapestry.namespace");
+
+dojo.require("dojo.namespace");
+
+(function(){
+	
+	var map = {
+		html: {
+			"alertdialog": "tapestry.widget.AlertDialog",
+			"dropdowndatetimepicker" : "tapestry.widget.DropdownDateTimePicker",
+			"dropdowntimepicker" : "tapestry.widget.DropdownTimePicker",
+			"timepicker" : "tapestry.widget.TimePicker"
+		}
+	};
+	
+	function resolveNamespace(name, domain){
+		if(!domain){ domain="html"; }
+		if(!map[domain]){ return null; }
+		return map[domain][name];
+	}
+	
+	dojo.registerNamespaceManifest("tapestry","../tapestry", "tapestry", "tapestry.widget");
+	dojo.registerNamespaceResolver("tapestry", resolveNamespace);
+})();

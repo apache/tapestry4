@@ -1,6 +1,6 @@
 dojo.provide("tapestry.lang");
 
-dojo.require("dojo.lang");
+dojo.require("dojo.lang.common");
 
 tapestry.lang = {
 

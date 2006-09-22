@@ -9,7 +9,7 @@
         <unique>
             dojo.require("dojo.widget.Manager");
             dojo.require("dojo.widget.DropdownDatePicker");
-            dojo.require("tapestry.widget.*");
+            dojo.require("tapestry.widget.Widget");
         </unique>
     </body>
     <initialization>

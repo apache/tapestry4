@@ -247,7 +247,7 @@ public class DefaultResponseBuilder implements ResponseBuilder
     {
         
         writer.println();
-        writer.printRaw("dojo.event.connect(window, 'onload', function(e) {\n");
+        writer.printRaw("dojo.addOnLoad(function(e) {\n");
         
         writer.printRaw("\n\n" + preloadName + " = [];\n");
         writer.printRaw("if (document.images)\n");
@@ -267,7 +267,7 @@ public class DefaultResponseBuilder implements ResponseBuilder
         writer.attribute("type", "text/javascript");
         writer.printRaw("<!--\n");
         
-        writer.printRaw("dojo.event.connect(window, 'onload', function(e) {\n");
+        writer.printRaw("dojo.addOnLoad(function(e) {\n");
         
         writer.printRaw(script);
         

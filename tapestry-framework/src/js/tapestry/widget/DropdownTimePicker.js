@@ -3,8 +3,8 @@ dojo.provide("tapestry.widget.DropdownTimePicker");
 dojo.require("dojo.widget.*");
 dojo.require("dojo.widget.DropdownContainer");
 dojo.require("dojo.widget.TimePicker");
-dojo.require("dojo.event.*");
-dojo.require("dojo.html");
+dojo.require("dojo.event.common");
+dojo.require("dojo.html.style");
 
 dojo.widget.defineWidget(
 	"tapestry.widget.DropdownTimePicker",
@@ -19,7 +19,7 @@ dojo.widget.defineWidget(
 		date: null,
 		
 		fillInTemplate: function(args, frag){
-			tapestry.widget.DropdownTimePicker.superclass.fillInTemplate.call(this, args, frag);
+			tapestry.widget.DropdownTimePicker.prototype.fillInTemplate.call(this, args, frag);
 			var source = this.getFragNodeRef(frag);
 			
 			if(args.date){ this.date = new Date(args.date); }
@@ -56,4 +56,3 @@ dojo.widget.defineWidget(
 	"html"
 );
 
-dojo.widget.tags.addParseTreeHandler("dojo:dropdowntimepicker");
