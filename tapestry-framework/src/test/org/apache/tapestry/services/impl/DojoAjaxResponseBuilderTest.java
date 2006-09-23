@@ -59,7 +59,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
     }
 
     @AfterClass
-    protected void tearDown() throws Exception
+    protected void cleanup() throws Exception
     {
         _writer = null;
     }

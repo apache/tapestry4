@@ -44,6 +44,7 @@ public class TestPageRenderSupport extends BaseComponentTestCase
 {
     private static final String SYSTEM_NEWLINE= (String)java.security.AccessController.doPrivileged(
             new sun.security.action.GetPropertyAction("line.separator"));
+    
     private static final String TEST_NEWLINE= "\n";
 
     private AssetFactory newAssetFactory()
@@ -139,7 +140,7 @@ public class TestPageRenderSupport extends BaseComponentTestCase
 
         assertOutput(new String[]
         { "<script type=\"text/javascript\"><!--",
-                "dojo.event.connect(window, 'onload', function(e) {", "","",
+                "dojo.addOnLoad(function(e) {", "","",
                 "tapestry._preload = [];", "if (document.images)", "{",
                 "  tapestry._preload[0] = new Image();",
                 "  tapestry._preload[0].src = \"/foo/bar.gif\";",
@@ -168,7 +169,7 @@ public class TestPageRenderSupport extends BaseComponentTestCase
 
         assertOutput(new String[]
         {"<script type=\"text/javascript\"><!--", 
-                "dojo.event.connect(window, 'onload', function(e) {","","",
+                "dojo.addOnLoad(function(e) {","","",
                 "NAMESPACE_preload = [];", "if (document.images)", "{",
                 "  NAMESPACE_preload[0] = new Image();",
                 "  NAMESPACE_preload[0].src = \"/foo/bar.gif\";", "}",
@@ -252,7 +253,7 @@ public class TestPageRenderSupport extends BaseComponentTestCase
         
         assertOutput(new String[]
         { "<script type=\"text/javascript\"><!--",
-                "dojo.event.connect(window, 'onload', function(e) {",
+                "dojo.addOnLoad(function(e) {",
                 "myInitializationScript1();", "myInitializationScript2();", 
                 "});", "// --></script>" });
 
