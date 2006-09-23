@@ -97,6 +97,7 @@ tapestry={
 				} else if (id == "includescript") {
 					// includes get processed immediately (syncrhonously)
 					tapestry.loadScriptContent(elms[i], false);
+					continue;
 				}
 				
 			}

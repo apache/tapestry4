@@ -26,7 +26,7 @@ import org.apache.tapestry.markup.MarkupFilter;
 import org.apache.tapestry.markup.MarkupWriterImpl;
 import org.apache.tapestry.markup.UTFMarkupFilter;
 import org.apache.tapestry.services.ResponseBuilder;
-import org.testng.annotations.Configuration;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 
 
@@ -52,8 +52,8 @@ public class DefaultResponseBuilderTest extends BaseComponentTestCase
         return new PrintWriter(_writer);
     }
 
-    @Configuration(afterTestClass = true)
-    protected void tearDown() throws Exception
+    @AfterClass
+    protected void cleanup() throws Exception
     {
         _writer = null;
     }
@@ -65,7 +65,7 @@ public class DefaultResponseBuilderTest extends BaseComponentTestCase
         _writer.reset();
     }
     
-    public void testNullRender() 
+    public void test_Null_Render() 
     {
         IRender render = (IRender)newMock(IRender.class);
         IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
@@ -83,7 +83,7 @@ public class DefaultResponseBuilderTest extends BaseComponentTestCase
         assertSame(builder.getWriter(), NullWriter.getSharedInstance());
     }
     
-    public void testNormalRender()
+    public void test_Normal_Render()
     {
         IRender render = (IRender)newMock(IRender.class);
         IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
@@ -102,7 +102,7 @@ public class DefaultResponseBuilderTest extends BaseComponentTestCase
         assertSame(builder.getWriter(), writer);
     }
     
-    public void testGetWriterType()
+    public void test_Get_Writer_Type()
     {
         IMarkupWriter writer = (IMarkupWriter)newMock(IMarkupWriter.class);
         ResponseBuilder builder = new DefaultResponseBuilder(writer);
@@ -110,7 +110,7 @@ public class DefaultResponseBuilderTest extends BaseComponentTestCase
         assertSame(builder.getWriter("test", "type"), writer);
     }
     
-    public void testAllowedScripts()
+    public void test_Allowed_Scripts()
     {
         IComponent component = (IComponent)newMock(IComponent.class);
         ResponseBuilder builder = new DefaultResponseBuilder(null);
@@ -145,7 +145,7 @@ public class DefaultResponseBuilderTest extends BaseComponentTestCase
         builder.writeImageInitializations(mw, imageInit, preload, cycle);
         
         assertOutput(LINE_SEPARATOR
-                + "dojo.event.connect(window, 'onload', function(e) {\n\n\n"
+                + "dojo.addOnLoad(function(e) {\n\n\n"
                 + preload + " = [];\n"
                 + "if (document.images)\n"
                 + "{\n" + imageInit + "}\n"
@@ -211,7 +211,7 @@ public class DefaultResponseBuilderTest extends BaseComponentTestCase
         builder.writeInitializationScript(mw, script);
         
         assertOutput("<script type=\"text/javascript\"><!--\n"
-                + "dojo.event.connect(window, 'onload', function(e) {\n"
+                + "dojo.addOnLoad(function(e) {\n"
                 + script 
                 + "});"
                 + "\n// -->"
