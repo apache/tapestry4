@@ -95,7 +95,7 @@ public class TestMaxLength extends BaseValidatorTestCase
         }
     }
 
-    public void testRenderContribution()
+    public void test_Render_Contribution()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
@@ -116,8 +116,8 @@ public class TestMaxLength extends BaseValidatorTestCase
         
         verify();
         
-        assertEquals("{\"constraints\":{\"myfield\":[dojo.validate.isText,{maxlength:20}]},"
-                +"\"myfield\":{\"constraints\":\"default\\\\message\"}}",
+        assertEquals("{\"constraints\":{\"myfield\":[[dojo.validate.isText,{maxlength:20}]]},"
+                +"\"myfield\":{\"constraints\":[\"default\\\\message\"]}}",
                 json.toString());
     }
 }

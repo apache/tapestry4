@@ -133,7 +133,7 @@ public class TestMinDate extends BaseValidatorTestCase
         verify();
     }
     
-    public void testRenderContribution()
+    public void test_Render_Contribution()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
@@ -171,16 +171,16 @@ public class TestMinDate extends BaseValidatorTestCase
         
         verify();
         
-        assertEquals("{\"constraints\":{\"myfield\":["
+        assertEquals("{\"constraints\":{\"myfield\":[["
                 + "tapestry.form.datetime.isValidDate,{min:\""
                 + strMin + "\",format:"
                 + JSONObject.quote(Strftime.convertToPosixFormat(translator.getPattern())) 
-                + "}]},"
-                + "\"myfield\":{\"constraints\":\"default message\"}}",
+                + "}]]},"
+                + "\"myfield\":{\"constraints\":[\"default message\"]}}",
                 json.toString());
     }
     
-    public void testRenderContributionCustomMessage()
+    public void test_Render_Contribution_Custom_Message()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
@@ -219,12 +219,12 @@ public class TestMinDate extends BaseValidatorTestCase
         
         verify();
         
-        assertEquals("{\"constraints\":{\"myfield\":["
+        assertEquals("{\"constraints\":{\"myfield\":[["
                 + "tapestry.form.datetime.isValidDate,{min:\""
                 + strMin + "\",format:"
                 + JSONObject.quote(Strftime.convertToPosixFormat(translator.getPattern())) 
-                + "}]},"
-                +"\"myfield\":{\"constraints\":\"custom\\\\message\"}}",
+                + "}]]},"
+                +"\"myfield\":{\"constraints\":[\"custom\\\\message\"]}}",
                 json.toString());
     }
 }

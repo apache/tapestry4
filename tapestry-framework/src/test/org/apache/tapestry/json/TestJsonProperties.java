@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
 public class TestJsonProperties extends BaseComponentTestCase
 {
  
-    public void testLiteralArrays()
+    public void test_Literal_Arrays()
     {
         JSONObject json = new JSONObject();
         
@@ -46,7 +46,7 @@ public class TestJsonProperties extends BaseComponentTestCase
                 container.toString());
     }
     
-    public void testLiteralArrayContainer()
+    public void test_Literal_Array_Container()
     {
         JSONObject profile = new JSONObject();
         profile.put("constraints", new JSONObject());
@@ -69,4 +69,22 @@ public class TestJsonProperties extends BaseComponentTestCase
                 profile.toString());
     }
     
+    public void test_Multiple_Element_Accumulate()
+    {
+        JSONObject profile = new JSONObject();
+        
+        profile.accumulate("required", "val1");
+        profile.accumulate("required", "val2");
+        
+        assertEquals(profile.toString(), "{\"required\":[\"val1\",\"val2\"]}");
+    }
+    
+    public void test_Single_Element_Accumulate()
+    {
+        JSONObject profile = new JSONObject();
+        
+        profile.accumulate("required", "val1");
+        
+        assertEquals(profile.toString(), "{\"required\":[\"val1\"]}");
+    }
 }

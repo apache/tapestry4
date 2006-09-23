@@ -128,9 +128,9 @@ public class TestPattern extends BaseValidatorTestCase
         
         verify();
         
-        assertEquals("{\"constraints\":{\"myfield\":[tapestry.form.validation.isValidPattern,\""
-                + pattern + "\"]},"
-                + "\"myfield\":{\"constraints\":\"default message\"}}",
+        assertEquals("{\"constraints\":{\"myfield\":[[tapestry.form.validation.isValidPattern,\""
+                + pattern + "\"]]},"
+                + "\"myfield\":{\"constraints\":[\"default message\"]}}",
                 json.toString());
     }
     
@@ -162,9 +162,9 @@ public class TestPattern extends BaseValidatorTestCase
         
         verify();
         
-        assertEquals("{\"constraints\":{\"myfield\":[tapestry.form.validation.isValidPattern,\""
-                + pattern + "\"]},"
-                +"\"myfield\":{\"constraints\":\"custom\\\\message\"}}",
+        assertEquals("{\"constraints\":{\"myfield\":[[tapestry.form.validation.isValidPattern,\""
+                + pattern + "\"]]},"
+                +"\"myfield\":{\"constraints\":[\"custom\\\\message\"]}}",
                 json.toString());
     }
     

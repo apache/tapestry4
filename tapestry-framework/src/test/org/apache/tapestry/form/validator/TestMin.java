@@ -99,7 +99,7 @@ public class TestMin extends BaseValidatorTestCase
         }
     }
 
-    public void testRenderContribution()
+    public void test_Render_Contribution()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
@@ -125,13 +125,13 @@ public class TestMin extends BaseValidatorTestCase
         
         verify();
         
-        assertEquals("{\"constraints\":{\"myfield\":[dojo.validate.isInRange,{min:20.0,decimal:\""
-                + symbols.getDecimalSeparator() + "\"}]},"
-                + "\"myfield\":{\"constraints\":\"default message\"}}",
+        assertEquals("{\"constraints\":{\"myfield\":[[dojo.validate.isInRange,{min:20.0,decimal:\""
+                + symbols.getDecimalSeparator() + "\"}]]},"
+                + "\"myfield\":{\"constraints\":[\"default message\"]}}",
                 json.toString());
     }
     
-    public void testRenderContributionCustomMessage()
+    public void test_Render_Contribution_Custom_Message()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
@@ -163,9 +163,9 @@ public class TestMin extends BaseValidatorTestCase
 
         verify();
         
-        assertEquals("{\"constraints\":{\"myfield\":[dojo.validate.isInRange,{min:20.0,decimal:\""
-                + symbols.getDecimalSeparator() + "\"}]},"
-                + "\"myfield\":{\"constraints\":\"custom\\\\message\"}}",
+        assertEquals("{\"constraints\":{\"myfield\":[[dojo.validate.isInRange,{min:20.0,decimal:\""
+                + symbols.getDecimalSeparator() + "\"}]]},"
+                + "\"myfield\":{\"constraints\":[\"custom\\\\message\"]}}",
                 json.toString());
     }
     

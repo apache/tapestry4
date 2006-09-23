@@ -36,7 +36,7 @@ import org.testng.annotations.Test;
 @Test
 public class TestEmail extends BaseValidatorTestCase
 {
-    public void testOK() throws Exception
+    public void test_OK() throws Exception
     {
         IFormComponent field = newField();
         ValidationMessages messages = newMessages();
@@ -48,7 +48,7 @@ public class TestEmail extends BaseValidatorTestCase
         verify();
     }
 
-    public void testFail()
+    public void test_Fail()
     {
         IFormComponent field = newField("My Email");
         ValidationMessages messages = newMessages(
@@ -74,7 +74,7 @@ public class TestEmail extends BaseValidatorTestCase
         verify();
     }
 
-    public void testFailCustomMessage()
+    public void test_Fail_Custom_Message()
     {
         IFormComponent field = newField("My Email");
         ValidationMessages messages = newMessages(
@@ -100,7 +100,7 @@ public class TestEmail extends BaseValidatorTestCase
         verify();
     }
 
-    public void testRenderContribution()
+    public void test_Render_Contribution()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
@@ -123,12 +123,12 @@ public class TestEmail extends BaseValidatorTestCase
 
         verify();
         
-        assertEquals("{\"constraints\":{\"myfield\":[dojo.validate.isEmailAddress,false,true]},"
-                +"\"myfield\":{\"constraints\":\"default\\\\message\"}}",
+        assertEquals("{\"constraints\":{\"myfield\":[[dojo.validate.isEmailAddress,false,true]]},"
+                +"\"myfield\":{\"constraints\":[\"default\\\\message\"]}}",
                 json.toString());
     }
 
-    public void testRenderContributionCustomMessage()
+    public void test_Render_Contribution_Custom_Message()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
@@ -156,8 +156,8 @@ public class TestEmail extends BaseValidatorTestCase
         
         verify();
         
-        assertEquals("{\"constraints\":{\"barney\":[dojo.validate.isEmailAddress,false,true]},"
-                + "\"barney\":{\"constraints\":\"custom message\"}}",
+        assertEquals("{\"constraints\":{\"barney\":[[dojo.validate.isEmailAddress,false,true]]},"
+                + "\"barney\":{\"constraints\":[\"custom message\"]}}",
                 json.toString());
     }
 }
