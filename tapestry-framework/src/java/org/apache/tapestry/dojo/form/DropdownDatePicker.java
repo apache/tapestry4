@@ -80,9 +80,11 @@ public abstract class DropdownDatePicker extends AbstractFormWidget
         json.put("inputId", getClientId());
         json.put("inputName", getName());
         json.put("iconAlt", getIconAlt());
-        json.put("dateFormat", Strftime.convertToPosixFormat(translator.getPattern()));
-        if (getValue() != null)
+        json.put("displayFormat", Strftime.convertToPosixFormat(translator.getPattern()));
+        
+        if (getValue() != null) {
             json.put("date", getTranslatedFieldSupport().format(this, getValue()));
+        }
         
         Map parms = new HashMap();
         parms.put("clientId", getClientId());
