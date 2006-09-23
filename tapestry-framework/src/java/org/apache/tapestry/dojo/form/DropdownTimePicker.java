@@ -81,10 +81,12 @@ public abstract class DropdownTimePicker extends AbstractFormWidget
         json.put("inputId", getClientId());
         json.put("inputName", getName());
         json.put("iconAlt", getIconAlt());
-        json.put("dateFormat", Strftime.convertToPosixFormat(translator.getPattern()));
-        if (getValue() != null)
-            json.put("date", DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL, 
+        json.put("timeFormat", Strftime.convertToPosixFormat(translator.getPattern()));
+        
+        if (getValue() != null) {
+            json.put("time", DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL, 
                     getPage().getLocale()).format(getValue()));
+        }
         
         Map parms = new HashMap();
         parms.put("clientId", getClientId());
