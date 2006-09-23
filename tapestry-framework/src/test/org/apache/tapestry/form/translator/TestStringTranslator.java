@@ -23,7 +23,7 @@ import org.apache.tapestry.form.FormComponentContributorTestCase;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.valid.ValidatorException;
-import org.testng.annotations.Configuration;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
 /**
@@ -37,7 +37,7 @@ public class TestStringTranslator extends FormComponentContributorTestCase
 {
     private StringTranslator _translator = new StringTranslator();
 
-    @Configuration(afterTestMethod = true)
+    @AfterMethod
     public void reset()
     {
         _translator.setTrim(false);
@@ -45,7 +45,7 @@ public class TestStringTranslator extends FormComponentContributorTestCase
         _translator.setMessage(null);
     }
     
-    public void testFormat()
+    public void test_Format()
     {
         replay();
 
@@ -56,7 +56,7 @@ public class TestStringTranslator extends FormComponentContributorTestCase
         verify();
     }
 
-    public void testNullFormat()
+    public void test_Null_Format()
     {
         replay();
 
@@ -67,7 +67,7 @@ public class TestStringTranslator extends FormComponentContributorTestCase
         verify();
     }
 
-    public void testParse()
+    public void test_Parse()
     {
         replay();
 
@@ -87,7 +87,7 @@ public class TestStringTranslator extends FormComponentContributorTestCase
         }
     }
 
-    public void testTrimmedParse()
+    public void test_Trimmed_Parse()
     {
         _translator.setTrim(true);
 
@@ -109,7 +109,7 @@ public class TestStringTranslator extends FormComponentContributorTestCase
         }
     }
 
-    public void testEmptyParse()
+    public void test_Empty_Parse()
     {
         replay();
 
@@ -129,7 +129,7 @@ public class TestStringTranslator extends FormComponentContributorTestCase
         }
     }
 
-    public void testCustomEmptyParse()
+    public void test_Custom_Empty_Parse()
     {
         _translator.setEmpty("");
 
@@ -151,7 +151,7 @@ public class TestStringTranslator extends FormComponentContributorTestCase
         }
     }
 
-    public void testRenderContribution()
+    public void test_Render_Contribution()
     {
         replay();
 
@@ -160,7 +160,7 @@ public class TestStringTranslator extends FormComponentContributorTestCase
         verify();
     }
 
-    public void testTrimRenderContribution()
+    public void test_Trim_Render_Contribution()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
@@ -181,7 +181,7 @@ public class TestStringTranslator extends FormComponentContributorTestCase
 
         verify();
         
-        assertEquals("{\"trim\":\"myfield\"}",
+        assertEquals("{\"trim\":[\"myfield\"]}",
                 json.toString());
     }
 

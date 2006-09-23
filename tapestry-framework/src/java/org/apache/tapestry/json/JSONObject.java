@@ -263,20 +263,16 @@ public class JSONObject
         Object o = opt(key);
         if (o == null)
         {
-            put(key, value);
+            a = new JSONArray();
+            a.put(value);
+            put(key, a);
         }
         else if (o instanceof JSONArray)
         {
             a = (JSONArray) o;
             a.put(value);
         }
-        else
-        {
-            a = new JSONArray();
-            a.put(o);
-            a.put(value);
-            put(key, a);
-        }
+        
         return this;
     }
 

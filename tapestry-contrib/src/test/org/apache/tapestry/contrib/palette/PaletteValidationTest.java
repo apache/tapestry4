@@ -74,6 +74,6 @@ public class PaletteValidationTest extends BaseComponentTestCase
         
         assert literal != null;
         
-        assertEquals("[tapestry.form.validation.isPalleteSelected]", literal.toString());
+        assertEquals(literal.toString(),"[[tapestry.form.validation.isPalleteSelected]]");
     }
 }

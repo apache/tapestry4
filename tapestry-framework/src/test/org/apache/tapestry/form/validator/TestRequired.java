@@ -157,7 +157,7 @@ public class TestRequired extends BaseValidatorTestCase
         verify();
     }
     
-    public void testRenderContribution()
+    public void test_Render_Contribution()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
@@ -185,7 +185,7 @@ public class TestRequired extends BaseValidatorTestCase
         
         verify();
         
-        assertEquals("{\"required\":\"fred\",\"fred\":{\"required\":\"Default\\\\Message for Fred.\"}}",
+        assertEquals("{\"required\":[\"fred\"],\"fred\":{\"required\":[\"Default\\\\Message for Fred.\"]}}",
                 json.toString());
     }
     

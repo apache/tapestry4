@@ -30,7 +30,7 @@ import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
-import org.testng.annotations.Configuration;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
 /**
@@ -47,12 +47,12 @@ public class TestDateTranslator extends FormComponentContributorTestCase
     /**
      * @see junit.framework.TestCase#setUp()
      */
-    @Configuration(afterTestMethod = true)
-    protected void setUp() throws Exception
+    @AfterMethod
+    protected void cleanup()
     {
         _calendar.clear();
     }
-
+    
     private Date buildDate(int year, int month, int day)
     {
         _calendar.set(Calendar.YEAR, year);
@@ -254,7 +254,7 @@ public class TestDateTranslator extends FormComponentContributorTestCase
 
         verify();
         
-        assertEquals("{\"trim\":\"foo\"}",
+        assertEquals("{\"trim\":[\"foo\"]}",
                 json.toString());
     }
 }
