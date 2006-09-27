@@ -41,7 +41,7 @@
 	    var arguments = ${sendFunctionName}.arguments;
 	    var argumentCount = arguments.length;
 	    for (i = 0; i &lt; argumentCount; i++) {
-	    	url = url + "&amp;sp=" + encodeUri(arguments[i]);
+	    	url = url + "&amp;sp=" + encodeURI(arguments[i]);
 	    }
 	    
 	    <if expression="disableCaching != null">
