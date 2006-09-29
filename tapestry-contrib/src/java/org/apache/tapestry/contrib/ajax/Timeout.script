@@ -61,7 +61,7 @@
 		    </if>
         	return;
         }
-            
+       
         var current = new Date();
         if (current.getTime() &gt; exp.getTime()) {
             alert("${expirationMessage}");
@@ -78,10 +78,10 @@
     tapestry.TimeoutProlongSession=function()
     {
 	    tapestry.TimeoutUpdateProlongSessionTime();
-		tapestry.TimeoutRenewSession();
+		TimeoutRenewSession();
     }
     
-    tapestry.TimeoutSessionRenewed=function()
+    TimeoutSessionRenewed=function()
     {
     	tapestry.TimeoutClearConfirmTimer();
     	tapestry.TimeoutInitConfirmTimer();
