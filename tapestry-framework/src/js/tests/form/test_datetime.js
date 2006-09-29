@@ -12,7 +12,7 @@ function test_datetime_validDate(){
 	jum.assertTrue(value, tapestry.form.datetime.isValidDate(value, 
 				{datePattern:"MM/dd/yyyy",selector:"dateOnly"}));
 	
-	// value = "12112/12/23434";
+	// value = "12112/12/23434"; "08 Sep 2006"
 	// jum.assertFalse(value, tapestry.form.datetime.isValidDate(value));
 	// jum.assertFalse("null value", tapestry.form.datetime.isValidDate());
 }
