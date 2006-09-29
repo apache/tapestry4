@@ -15,6 +15,8 @@ function test_datetime_validDate(){
 	// value = "12112/12/23434"; "08 Sep 2006"
 	// jum.assertFalse(value, tapestry.form.datetime.isValidDate(value));
 	// jum.assertFalse("null value", tapestry.form.datetime.isValidDate());
+	jum.assertTrue("verbose date valid", tapestry.form.datetime.isValidDate("08 Sep 2006",
+					{strict:true, datePattern: "d MMM yyyy", selector:"dateOnly"} ));
 }
 
 function test_datetime_maxDate(){

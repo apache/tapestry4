@@ -24,7 +24,6 @@ import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.form.translator.DateTranslator;
 import org.apache.tapestry.json.JSONLiteral;
 import org.apache.tapestry.json.JSONObject;
-import org.apache.tapestry.util.Strftime;
 import org.apache.tapestry.valid.ValidationConstants;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
@@ -103,8 +102,8 @@ public class MinDate extends BaseValidator
                         + "min:" 
                         + JSONObject.quote(translator.format(field, context.getLocale(), _minDate))
                         + ","
-                        + "format:" 
-                        + JSONObject.quote(Strftime.convertToPosixFormat(translator.getPattern()))
+                        + "datePattern:" 
+                        + JSONObject.quote(translator.getPattern())
                         + "}]"));
         
         accumulateProfileProperty(field, profile, 
