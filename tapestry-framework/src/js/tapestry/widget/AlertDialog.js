@@ -33,6 +33,7 @@ dojo.widget.defineWidget(
 			
 			this.show(); // to fix bug in button
 			this.okButton=dojo.widget.createWidget("Button",{}, buttNode);
+			this.tabStart=this.okButton.domNode;
 			dojo.event.connect(this.okButton, "onClick", this, "hide");
 		},
 		
@@ -41,7 +42,7 @@ dojo.widget.defineWidget(
 		},
 		
 		hideDialog:function(e){
-			this.hide();
+			this.hideModalDialog();
 			this.okButton.destroy();
 			tapestry.widget.AlertDialog.prototype.destroy.call(this);
 			dojo.dom.removeNode(this.bg);

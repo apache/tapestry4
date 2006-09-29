@@ -26,7 +26,6 @@ import org.apache.tapestry.form.TranslatedFieldSupport;
 import org.apache.tapestry.form.ValidatableFieldSupport;
 import org.apache.tapestry.form.translator.DateTranslator;
 import org.apache.tapestry.json.JSONObject;
-import org.apache.tapestry.util.Strftime;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
@@ -80,7 +79,7 @@ public abstract class DropdownDatePicker extends AbstractFormWidget
         json.put("inputId", getClientId());
         json.put("inputName", getName());
         json.put("iconAlt", getIconAlt());
-        json.put("displayFormat", Strftime.convertToPosixFormat(translator.getPattern()));
+        json.put("displayFormat", translator.getPattern());
         
         if (getValue() != null) {
             json.put("date", getTranslatedFieldSupport().format(this, getValue()));

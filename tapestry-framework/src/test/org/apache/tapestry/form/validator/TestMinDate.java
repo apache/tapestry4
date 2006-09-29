@@ -28,7 +28,6 @@ import org.apache.tapestry.form.TranslatedField;
 import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.form.translator.DateTranslator;
 import org.apache.tapestry.json.JSONObject;
-import org.apache.tapestry.util.Strftime;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
@@ -171,13 +170,12 @@ public class TestMinDate extends BaseValidatorTestCase
         
         verify();
         
-        assertEquals("{\"constraints\":{\"myfield\":[["
+        assertEquals(json.toString(),"{\"constraints\":{\"myfield\":[["
                 + "tapestry.form.datetime.isValidDate,{min:\""
-                + strMin + "\",format:"
-                + JSONObject.quote(Strftime.convertToPosixFormat(translator.getPattern())) 
+                + strMin + "\",datePattern:"
+                + JSONObject.quote(translator.getPattern()) 
                 + "}]]},"
-                + "\"myfield\":{\"constraints\":[\"default message\"]}}",
-                json.toString());
+                + "\"myfield\":{\"constraints\":[\"default message\"]}}");
     }
     
     public void test_Render_Contribution_Custom_Message()
@@ -219,12 +217,11 @@ public class TestMinDate extends BaseValidatorTestCase
         
         verify();
         
-        assertEquals("{\"constraints\":{\"myfield\":[["
+        assertEquals(json.toString(), "{\"constraints\":{\"myfield\":[["
                 + "tapestry.form.datetime.isValidDate,{min:\""
-                + strMin + "\",format:"
-                + JSONObject.quote(Strftime.convertToPosixFormat(translator.getPattern())) 
+                + strMin + "\",datePattern:"
+                + JSONObject.quote(translator.getPattern()) 
                 + "}]]},"
-                +"\"myfield\":{\"constraints\":[\"custom\\\\message\"]}}",
-                json.toString());
+                +"\"myfield\":{\"constraints\":[\"custom\\\\message\"]}}");
     }
 }
