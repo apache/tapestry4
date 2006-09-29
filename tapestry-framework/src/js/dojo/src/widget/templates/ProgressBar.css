@@ -1,0 +1,22 @@
+.backBar{
+	border:1px solid #999;
+}
+.frontBar{
+	background:blue url("images/bar.gif") repeat bottom left;
+	background-attachment: fixed;
+}
+.h-frontBar{
+	background:blue url("images/h-bar.gif") repeat bottom left;
+}
+.simpleFrontBar{
+	background: red;
+}
+.frontPercent,.backPercent{
+	font:bold 13px helvetica;
+}
+.backPercent{
+	color:black;
+}
+.frontPercent{
+	color:yellow;
+}

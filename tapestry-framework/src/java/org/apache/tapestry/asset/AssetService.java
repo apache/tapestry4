@@ -32,7 +32,7 @@ import java.util.TreeMap;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.commons.logging.Log;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.util.Defense;
 import org.apache.hivemind.util.IOUtils;
@@ -103,6 +103,8 @@ public class AssetService implements IEngineService, ResetEventListener
     private static final int BUFFER_SIZE = 10240;
 
     private static final DateFormat CACHED_FORMAT = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
+    
+    private Log _log;
     
     /** @since 4.0 */
     private ClassResolver _classResolver;
@@ -244,8 +246,12 @@ public class AssetService implements IEngineService, ResetEventListener
             
             URL resourceURL = _classResolver.getResource(translatePath(path));
             
-            if (resourceURL == null)
-                throw new ApplicationRuntimeException(AssetMessages.noSuchResource(path));
+            if (resourceURL == null) {
+                _response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                _log.warn(AssetMessages.noSuchResource(path));
+                return;
+                // throw new ApplicationRuntimeException(AssetMessages.noSuchResource(path));
+            }
             
             //check caching for unprotected resources
             
@@ -446,5 +452,10 @@ public class AssetService implements IEngineService, ResetEventListener
     public void setUnprotectedMatcher(ResourceMatcher matcher)
     {
         _unprotectedMatcher = matcher;
+    }
+    
+    public void setLog(Log log)
+    {
+        _log = log;
     }
 }
