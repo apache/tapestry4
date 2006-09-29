@@ -4,15 +4,9 @@
 // but you can change the hostenv file that's included by setting the value of
 // the variable "hostenvType" (defaults to "browser").
 var dependencies = [ 
-	"dojo.io.IO",
-	"dojo.io.BrowserIO",
-	"dojo.event.*", // NOTE: this includes topic support
-	"dojo.lang.common",
-	"dojo.event",
+	"dojo.event.browser",
 	"dojo.dom",
-	"dojo.html",
-	"dojo.json",
-	"dojo.widget.Manager"
+	"dojo.lang.common"
 ];
 
 // NOTE: this MUST be included or a list of files must be output via print()
