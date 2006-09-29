@@ -368,10 +368,12 @@
             <id>apache.snapshots</id>
             <url>http://people.apache.org/repo/m2-snapshot-repository</url>
         </repository>
+	<!--
         <repository>
             <id>tapestry.javaforge</id>
             <url>http://howardlewisship.com/repository</url>
         </repository>
+	-->
     </repositories>
 
     <pluginRepositories>
@@ -379,10 +381,12 @@
             <id>apache.snapshots</id>
             <url>http://people.apache.org/repo/m2-snapshot-repository</url>
         </pluginRepository>
+	<!--
         <pluginRepository>
             <id>tapestry.javaforge</id>
             <url>http://howardlewisship.com/repository</url>
         </pluginRepository>
+	-->
         <pluginRepository>
             <id>codehaus.org</id>
             <url>http://snapshots.repository.codehaus.org</url>
