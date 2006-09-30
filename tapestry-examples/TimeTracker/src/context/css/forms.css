@@ -40,7 +40,7 @@ form h2 { font: 1.2em Tahoma, Myriad, sans-serif; background: #eef0f7 top left r
 form h3 { font: 0.8em Tahoma, Myriad, sans-serif; font-weight:bold; color: #296cb5; margin:1.5em -1em 0 -1em; border-bottom: 1px solid #d0d8e2; padding-bottom:0; }
 form h4 { font: 0.8em Tahoma, Myriad, sans-serif; font-weight:bold; margin:0; margin-top:1em; border-bottom: 1px solid #ddd; }
 
-.submitButton,.submitButton:focus {
+.submitButton,.submitButton:focus,.alertButton {
 	width: auto;
 	border: none;
 	background-color: #699ED9;
@@ -55,7 +55,17 @@ form h4 { font: 0.8em Tahoma, Myriad, sans-serif; font-weight:bold; margin:0; ma
 }
 
 .alertDialog {
-    width: 25em;   
+    width: 30em;
+    border: 2px solid #ff660a;
+    padding: 1em;
+    background: #ffffff;
+    -moz-border-radius: 10px;
+}
+
+.alertContent .alertButton {
+    float:right;
+    position:relative;
+    bottom:1em;
 }
 
 .fieldMissing {

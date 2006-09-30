@@ -10,6 +10,8 @@ tapestry.form.validation={
 	missingClass:"fieldMissing", // default css class that will be applied to fields missing a value
 	invalidClass:"fieldInvalid", // default css class applied to fields with invalid data
 	
+	dialogName:"tapestry:AlertDialog",
+	
 	/**
 	 * Main entry point for running form validation. The
 	 * props object passed in contains a number of fields that 
@@ -213,7 +215,7 @@ tapestry.form.validation={
 		
 		var node=document.createElement("span");
 		document.body.appendChild(node);
-		var dialog=dojo.widget.createWidget("tapestry:AlertDialog", 
+		var dialog=dojo.widget.createWidget(this.dialogName, 
 						{
 							widgetId:"validationDialog",
 							message:msg

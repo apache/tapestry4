@@ -31,14 +31,3 @@
     -moz-border-radius-topleft: 10px;
 }
 
-.alertDialog {
-    width: 50%;
-    border: 2px solid #ff660a;
-    padding: 1em;
-    padding-bottom: 1.7em;
-    background: #ffffff;
-}
-
-.alertDialog .dojoButton {
-    float: right;
-}
