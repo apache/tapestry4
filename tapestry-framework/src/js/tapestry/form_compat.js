@@ -1,7 +1,9 @@
 dojo.provide("tapestry.form_compat");
 dojo.provide("Tapestry");
 
-// Backwards compatibility functions, to be removed in 4.1.1 js version.
+// package: tapestry.form_compat
+// Backwards compatibility functions, to be removed in 4.1.1 js version. Contains all of 
+// the functions found in the old Form.js provided by previous Tapestry releases.
 // Should only be included by tapestry.form, don't dojo.require() this module.
 
 // global used to deprecate old event connection methods

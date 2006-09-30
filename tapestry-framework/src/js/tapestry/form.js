@@ -7,19 +7,26 @@ dojo.require("dojo.html.selection");
 dojo.require("tapestry.core");
 
 /**
+ * package: tapestry.form
  * Provides central handling of all client side form related logic.
- * 
- * Validation system to be replaced with {@link dojo.validate#check(form, profile)}.
  */
 tapestry.form={
 	
+	// property: forms
+	// Contains a reference to all registered Tapestry forms in the current document.
 	forms:{}, // registered form references
 	
 	/**
+	 * Function: focusField
 	 * If possible, brings keyboard input focus
 	 * to the specified field.
 	 * 
-	 * @param field The field(field id) of the field to focus.
+	 * Parameters:
+	 * 	field - The field(field id) of the field to focus.
+	 * 
+	 * Note:
+	 * 	Function deprecated in favor of dojo equivalent, like 
+	 *  dojo.html.selectInputText(node).
 	 */
 	focusField:function(field){
 		if (arguments.length < 1) return;
@@ -32,13 +39,17 @@ tapestry.form={
 	},
 	
 	/**
-	 * Registers the form with the local <code>forms</code> property so 
+	 * Function: registerForm
+	 * 
+	 * Registers the form with the local <forms> property so 
 	 * that there is a central reference of all tapestry forms.
 	 * 
-	 * @param id The form(form id) to register.
-	 * @param async Boolean, if true causes form submission to be asynchronous.
-	 * @param json Boolean, if true causes form submission to be asyncrhronous with an 
-	 * 			   expected JSON response.
+	 * Parameters:
+	 * 
+	 *	id		-	The form(form id) to register.
+	 *  async	-	Boolean, if true causes form submission to be asynchronous.
+	 *  json	-	Boolean, if true causes form submission to be asyncrhronous with an 
+	 * 				expected JSON response.
 	 */
 	registerForm:function(id, async, json){
 		var form=dojo.byId(id);
@@ -86,6 +97,8 @@ tapestry.form={
 	},
 	
 	/**
+	 * Function: registerProfile
+	 * 
 	 * Registers a form validation/translation profile. There
 	 * can potentially be more than one profile registered with
 	 * a form.
@@ -94,11 +107,13 @@ tapestry.form={
 	 * life, which currently only involves running the profile checks
 	 * before form submission. (more points to be determined in the future)
 	 * 
-	 * @see {@link dojo.validate.check(form, profile)}.
+	 * See Also:
+	 * 	<dojo.validate.check>
 	 * 
-	 * @param id The form(form id) to register profile with.
-	 * @param profile The object containing all of the validation/value
-	 * 				  constraints for the form. 
+	 * Parameters:
+	 * 
+	 *	id		-	The form(form id) to register profile with.
+	 *	profile	-	The object containing all of the validation/value constraints for the form. 
 	 */
 	registerProfile:function(id, profile){
 		if (!this.forms[id]) {
@@ -110,12 +125,16 @@ tapestry.form={
 	},
 
 	/**
+	 * Function: clearProfiles
+	 * 
 	 * Clears any previously registered validation profiles 
 	 * on the specified form. Normally called during XHR requests
 	 * by returned JS response to ensure new validation logic coming
 	 * in from potentially new form fields is accounted for.
 	 * 
-	 * @param id The form id to clear profiles for.
+	 * Parameters:
+	 * 
+	 *	id - The form id to clear profiles for.
 	 */
 	clearProfiles:function(id){
 		if (!this.forms[id]) return;
@@ -133,13 +152,16 @@ tapestry.form={
 	},
 	
 	/**
+	 * Function: setFormValidating
+	 * 
 	 * If a form registered with the specified formId
 	 * exists a local property will be set that causes
 	 * validation to be turned on/off depending on the argument.
 	 * 
-	 * @param formId The id of the form to turn validation on/off for.
-	 * @param validate Boolean for whether or not to validate form, if
-	 * 				   not specified assumes true.
+	 * Parameters:
+	 * 
+	 * formId - The id of the form to turn validation on/off for.
+	 * validate - Boolean for whether or not to validate form, if not specified assumes true.
 	 */
 	setFormValidating:function(formId, validate){
 		if (this.forms[formId]){
@@ -175,17 +197,21 @@ tapestry.form={
 	},
 	
 	/**
+	 * Function: submit
+	 * 
 	 * Submits the form specified, optionally setting the submitname
 	 * hidden input field to the value of submitName to let the Form 
 	 * component on server know which button caused the submission. (For
 	 * the case of submit button listeners).
 	 * 
-	 * @param form The form(form id) to submit.
-	 * @param submitName Optional submit name string to use when submitting. This is used
+	 * Parameters:
+	 * 
+	 * form			-	The form(form id) to submit.
+	 * submitName	- 	Optional submit name string to use when submitting. This is used
 	 * 					to associate a form submission with a particular component, like a
 	 * 					Submit/LinkSubmit/etc..
-	 * @param parms Optional extra set of arguments that can control the form submission semantics
-	 * 				such as url/async/json/etc. 
+	 * parms		-	Optional extra set of arguments that can control the form submission semantics
+	 * 					such as url/async/json/etc. 
 	 */
 	submit:function(form, submitName, parms){
 		var form=dojo.byId(form);
@@ -220,6 +246,19 @@ tapestry.form={
 		form.submit();
 	},
 	
+	/**
+	 * Function: cancel
+	 * 
+	 * Submits the form to the server in "cancel" mode, invoking any cancel listeners
+	 * registered to the server side equivalent to the form passed in.
+	 * 
+	 * Parameters:
+	 * 	
+	 * 	form 		-	The form(form id) to cancel.
+	 * 	submitName	- 	Optional submit name string to use when submitting. This is used
+	 * 					to associate a form submission with a particular component, like a
+	 * 					Submit/LinkSubmit/etc..
+	 */
 	cancel:function(form, submitName){
 		var form=dojo.byId(form);
 		if (!form){
@@ -232,6 +271,19 @@ tapestry.form={
 		this.submit(form, submitName);
 	},
 	
+	/**
+	 * Function: refresh
+	 * 
+	 * Submits the form to the server in "refresh" mode, invoking any refresh listeners
+	 * registered to the server side equivalent to the form passed in.
+	 * 
+	 * Parameters:
+	 * 	
+	 * 	form 		-	The form(form id) to refresh.
+	 * 	submitName	- 	Optional submit name string to use when submitting. This is used
+	 * 					to associate a form submission with a particular component, like a
+	 * 					Submit/LinkSubmit/etc..
+	 */
 	refresh:function(form, submitName){
 		var form=dojo.byId(form);
 		if (!form){
@@ -245,17 +297,21 @@ tapestry.form={
 	},
 	
 	/**
-	 * Does almost the same thing as {@link tapestry.form#submit(form, submitName)}, 
+	 * Function: submitAsync
+	 * 
+	 * Does almost the same thing as <tapestry.form.submit>, 
 	 * but submits the request via XHR to the server asynchronously.
 	 * 
-	 * @param form The form(form id) to submit.
-	 * @param content Optional content map, mainly used to pass in browser
-	 * 				  event parameters to form submission, but can be any
-	 * 				  typical form/value pair.
-	 * @param submitName Optional submit name string to use when submitting.
-	 * @param parms Optional set of extra parms that can override the defautls for 
-	 * 				this specific form submission, like the url/async/json behaviour of 
-	 * 				the submission.
+	 * Parameters:
+	 * 
+	 *	form		-	The form(form id) to submit.
+	 *	content		-	Optional content map, mainly used to pass in browser
+	 * 					event parameters to form submission, but can be any
+	 * 					typical form/value pair.
+	 *	submitName	-	Optional submit name string to use when submitting.
+	 *	parms		-	Optional set of extra parms that can override the defautls for 
+	 * 					this specific form submission, like the url/async/json behaviour of 
+	 * 					the submission.
 	 */
 	submitAsync:function(form, content, submitName, parms){
 		var form=dojo.byId(form);
