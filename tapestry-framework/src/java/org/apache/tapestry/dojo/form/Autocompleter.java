@@ -14,7 +14,6 @@
 package org.apache.tapestry.dojo.form;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -243,7 +242,7 @@ public abstract class Autocompleter extends AbstractFormWidget
     /** 
      * {@inheritDoc}
      */
-    public Collection getUpdateComponents()
+    public List getUpdateComponents()
     {
         List comps = new ArrayList();
         comps.add(getId());

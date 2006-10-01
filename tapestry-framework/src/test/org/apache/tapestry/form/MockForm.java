@@ -428,7 +428,7 @@ public class MockForm implements IForm
     /** 
      * {@inheritDoc}
      */
-    public Collection getUpdateComponents()
+    public List getUpdateComponents()
     {
         return Collections.EMPTY_LIST;
     }

@@ -16,6 +16,7 @@ package org.apache.tapestry.form;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.hivemind.util.Defense;
@@ -202,7 +203,7 @@ abstract class AbstractSubmit extends AbstractFormComponent implements IDynamicI
     /**
      * {@inheritDoc}
      */
-    public abstract Collection getUpdateComponents();
+    public abstract List getUpdateComponents();
     
     /**
      * {@inheritDoc}

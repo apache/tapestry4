@@ -97,6 +97,7 @@
 
   <inject property="directService" object="engine-service:direct" />
   <inject property="listenerInvoker" object="infrastructure:listenerInvoker"/>
+  
   <inject property="submitScript" type="script" object="SubmitBindings.script"/>
   
 </component-specification>

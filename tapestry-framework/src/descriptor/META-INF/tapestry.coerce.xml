@@ -92,7 +92,8 @@
     <converter class="java.lang.Object[]" object="instance:ObjectArrayToListConverter"/>
     <converter class="int[]" object="instance:IntArrayToListConverter"/>
     <converter class="char[]" object="instance:CharArrayToListConverter"/>
-    <converter class="boolean[]" object="instance:BooleanArrayToListConverter"/>    
+    <converter class="boolean[]" object="instance:BooleanArrayToListConverter"/> 
+    <converter class="java.lang.String" object="instance:StringToListConverter" />
   </contribution>
   
   <service-point id="ListConverter" interface="TypeConverter">
