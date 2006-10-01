@@ -16,10 +16,25 @@ tapestry.widget.TDebugConsole=function(){
 
 dojo.inherits(tapestry.widget.TDebugConsole, dojo.widget.HtmlWidget);
 
+/**
+ * Script: tapestry.widget.TDebugConsole
+ * 
+ * The modal dialog used to display client side validation errors / informational
+ * messages.
+ * 
+ * Inherits from:
+ * 		<dojo.widget.HtmlWidget>
+ */
 dojo.lang.extend(tapestry.widget.TDebugConsole, {
 	templatePath:dojo.uri.dojoUri("../tapestry/widget/templates/TDebugConsole.html"),
 	templateCssPath:null,
 	
+	/**
+	 * Function: fillInTemplate
+	 * 
+	 * Remarks:
+	 * Called during widget creation.
+	 */
 	fillInTemplate:function(){
 		document.getElementById("debug").appendChild(this.domNode);
 		
@@ -42,9 +57,5 @@ dojo.lang.extend(tapestry.widget.TDebugConsole, {
 		popup.addChild(mitem);
 		
 		dojo.event.connect(mitem, "onClick", function(e){alert('hello world');});
-	},
-	
-	postCreate:function(){
 	}
-	
 });

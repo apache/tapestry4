@@ -6,6 +6,16 @@ dojo.require("dojo.widget.Button");
 dojo.require("dojo.event.common");
 dojo.require("dojo.html.common");
 
+/**
+ * Script:  tapestry.widget.AlertDialog
+ * 
+ * The modal dialog used to display client side validation errors / informational
+ * messages.
+ * 
+ * Inherits from:
+ * 		<dojo.widget.Dialog>
+ * 
+ */
 dojo.widget.defineWidget(
 	"tapestry.widget.AlertDialog",
 	dojo.widget.Dialog,
@@ -20,6 +30,11 @@ dojo.widget.defineWidget(
 		contentClass:"alertContent",
 		buttonClass:"alertButton",
 		
+		/**
+		 * Function: postCreate
+		 * 
+		 * Called after widget constructed.
+		 */
 		postCreate: function(args, frag, parentComp) {
 			dojo.widget.Dialog.prototype.postCreate.call(this, args, frag, parentComp);
 			

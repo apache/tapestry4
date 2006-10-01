@@ -13,7 +13,7 @@
 // limitations under the License.
 package org.apache.tapestry;
 
-import java.util.Collection;
+import java.util.List;
 
 
 /**
@@ -47,7 +47,7 @@ public interface IDynamicInvoker
      * 
      * @return The list of components to update, if any.
      */
-    Collection getUpdateComponents();
+    List getUpdateComponents();
     
     /**
      * Used to specify whether or not the result of this invocation should be returned asynchronously

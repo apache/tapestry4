@@ -15,6 +15,7 @@
 package org.apache.tapestry.coerce;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.tapestry.BaseComponentTestCase;
 import org.testng.annotations.Test;
@@ -43,5 +44,41 @@ public class TestMisc extends BaseComponentTestCase
         }
         
         assertEquals(false, i.hasNext());
+    }
+    
+    public void test_Simple_String_To_List_Converter()
+    {
+        String input = "simple";
+        
+        StringToListConverter c = new StringToListConverter();
+        
+        List conv = (List)c.convertValue(input);
+        
+        assert conv != null;
+        assert conv.size() == 1;
+        assert conv.get(0).equals(input);
+    }
+    
+    public void test_Null_String_To_List_Converter()
+    {
+        StringToListConverter c = new StringToListConverter();
+        
+        List conv = (List)c.convertValue(null);
+        
+        assert conv != null;
+        assert conv.size() == 0;
+    }
+    
+    public void test_String_To_List_Converter()
+    {
+        String input = "val1,val2,val3";
+        
+        StringToListConverter c = new StringToListConverter();
+        
+        List conv = (List)c.convertValue(input);
+        
+        assert conv != null;
+        assert conv.size() == 3;
+        assert conv.get(1).equals("val2");
     }
 }
