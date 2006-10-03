@@ -67,6 +67,44 @@ public final class AnnotationUtils
 
         throw new ApplicationRuntimeException(AnnotationMessages.notAccessor(method));
     }
+    
+    /**
+     * Converts a method name to a property key. The steps performed are:
+     * <p>The prefix "get" is stripped off (if present)
+     * <p>The letter following "get" is converted to lower case
+     * <p>Other capitalized letters are converted to lower case and preceded with a dash ("-")
+     * 
+     * @param methodName the method to convert
+     * @return the converted key
+     */
+    public static String convertMethodNameToKeyName(String methodName)
+    {
+        StringBuffer buffer = new StringBuffer();
+    
+        int cursorx = methodName.startsWith("get") ? 3 : 0;
+        int length = methodName.length();
+        boolean atStart = true;
+    
+        while (cursorx < length)
+        {
+            char ch = methodName.charAt(cursorx);
+    
+            if (Character.isUpperCase(ch))
+            {
+                if (!atStart)
+                    buffer.append('-');
+                buffer.append(Character.toLowerCase(ch));
+            }
+            else
+                buffer.append(ch);
+    
+            atStart = false;
+    
+            cursorx++;
+        }
+    
+        return buffer.toString();
+    }    
 
     private static void checkGetter(Method method)
     {

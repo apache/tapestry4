@@ -37,16 +37,6 @@ import org.testng.annotations.Test;
 @Test
 public class TestMessageAnnotationWorker extends BaseAnnotationTestCase
 {
-    public void testConvertMethodNameToKeyName()
-    {
-        MessageAnnotationWorker w = new MessageAnnotationWorker();
-
-        assertEquals("foo-bar", w.convertMethodNameToKeyName("fooBar"));
-        assertEquals("foo-bar", w.convertMethodNameToKeyName("FooBar"));
-        assertEquals("foo-bar", w.convertMethodNameToKeyName("getFooBar"));
-        assertEquals("foo", w.convertMethodNameToKeyName("foo"));
-    }
-
     public void testNoArgsMessage()
     {
         attempt("noArgsMessage", "{\n  return getMessages().getMessage(\"no-args-message\");\n}\n");
