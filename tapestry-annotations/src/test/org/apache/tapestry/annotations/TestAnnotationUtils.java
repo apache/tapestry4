@@ -121,5 +121,13 @@ public class TestAnnotationUtils extends BaseAnnotationTestCase
                     ex.getMessage());
         }
     }
+    
+    public void testConvertMethodNameToKeyName()
+    {
+        assertEquals("foo-bar", AnnotationUtils.convertMethodNameToKeyName("fooBar"));
+        assertEquals("foo-bar", AnnotationUtils.convertMethodNameToKeyName("FooBar"));
+        assertEquals("foo-bar", AnnotationUtils.convertMethodNameToKeyName("getFooBar"));
+        assertEquals("foo", AnnotationUtils.convertMethodNameToKeyName("foo"));
+    }    
 
 }

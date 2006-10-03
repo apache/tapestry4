@@ -46,7 +46,7 @@ public class MessageAnnotationWorker implements MethodAnnotationEnhancementWorke
         String keyName = message.value();
 
         if (keyName.equals(""))
-            keyName = convertMethodNameToKeyName(method.getName());
+            keyName = AnnotationUtils.convertMethodNameToKeyName(method.getName());
 
         BodyBuilder builder = new BodyBuilder();
 
@@ -91,34 +91,5 @@ public class MessageAnnotationWorker implements MethodAnnotationEnhancementWorke
         // We already know the return type is String
 
         return method.getName().startsWith("get") && method.getParameterTypes().length == 0;
-    }
-
-    String convertMethodNameToKeyName(String methodName)
-    {
-        StringBuffer buffer = new StringBuffer();
-
-        int cursorx = methodName.startsWith("get") ? 3 : 0;
-        int length = methodName.length();
-        boolean atStart = true;
-
-        while (cursorx < length)
-        {
-            char ch = methodName.charAt(cursorx);
-
-            if (Character.isUpperCase(ch))
-            {
-                if (!atStart)
-                    buffer.append('-');
-                buffer.append(Character.toLowerCase(ch));
-            }
-            else
-                buffer.append(ch);
-
-            atStart = false;
-
-            cursorx++;
-        }
-
-        return buffer.toString();
     }
 }
