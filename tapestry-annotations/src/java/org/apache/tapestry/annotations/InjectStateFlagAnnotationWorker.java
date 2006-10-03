@@ -33,6 +33,18 @@ public class InjectStateFlagAnnotationWorker implements MethodAnnotationEnhancem
             Method method, Location location)
     {
         InjectStateFlag isv = method.getAnnotation(InjectStateFlag.class);
+        
+        String keyName = isv.value();
+
+        if (keyName.equals(""))
+        {
+            keyName = AnnotationUtils.convertMethodNameToKeyName(method.getName());
+            if (keyName.endsWith("-exists")) // strip it
+            {
+                int length = keyName.length();
+                keyName = keyName.substring(0, length - 7);
+            }
+        }
 
         String propertyName = AnnotationUtils.getPropertyName(method);
 
@@ -40,7 +52,7 @@ public class InjectStateFlagAnnotationWorker implements MethodAnnotationEnhancem
 
         inject.setType("state-flag");
         inject.setProperty(propertyName);
-        inject.setObject(isv.value());
+        inject.setObject(keyName);
         inject.setLocation(location);
 
         spec.addInjectSpecification(inject);

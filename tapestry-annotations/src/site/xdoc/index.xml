@@ -489,6 +489,17 @@ public void projectSelected(IRequestCycle cycle)
                     The new property does not have to be type String; an automatic type conversion
                     takes place.
                 </p>
+                
+                <p>
+                	The <a href="apidocs/org/apache/tapestry/annotations/InjectMeta.html">InjectMeta</a>
+                    annotation can also be used alone - the method name is converted into a property
+                    key using the rules described at the <a href="#Message">Message</a> annotation. 
+                    Here's an equivalent to the previous example.
+                </p>
+				<source xml:space="preserve">
+  @InjectMeta
+  public abstract String getPageTitle();
+</source>                
 
             </subsection>
 
@@ -578,6 +589,17 @@ public void projectSelected(IRequestCycle cycle)
                     <a href="#spec.inject">&lt;inject&gt;</a>
                     element, with a type of "state".
                 </p>
+                
+                <p>
+                	The <a href="apidocs/org/apache/tapestry/annotations/InjectState.html">InjectState</a>
+                    annotation can also be used alone - the method name is converted into a 
+                    key using the rules described at the <a href="#Message">Message</a> annotation. 
+                    Here's an equivalent to the previous example.
+                </p>
+				<source xml:space="preserve">
+  @InjectState
+  public abstract MyAppVisit getVisit();
+</source>                  
 
             </subsection>
 
@@ -605,6 +627,21 @@ public void projectSelected(IRequestCycle cycle)
                     <a href="#spec.inject">&lt;inject&gt;</a>
                     element, with a type of "state-flag".
                 </p>
+                
+                <p>
+                	The <a href="apidocs/org/apache/tapestry/annotations/InjectStateFlag.html">
+                        InjectStateFlag
+                    </a>
+                    annotation can also be used alone - the method name is converted into a 
+                    key using the rules described at the <a href="#Message">Message</a> annotation
+                    ( with the addition that any trailing "exists" is stripped ).
+                    Here's an equivalent to the previous example. 
+                    It also injects the flag for the visit ASO.
+                </p>
+				<source xml:space="preserve">
+  @InjectStateFlag
+  public abstract boolean getVisitExists();
+</source>                 
 
             </subsection>
 

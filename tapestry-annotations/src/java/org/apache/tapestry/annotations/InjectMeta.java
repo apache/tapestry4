@@ -34,8 +34,8 @@ import java.lang.annotation.Target;
 public @interface InjectMeta {
 
     /**
-     * The meta key to inject.
+     * The meta key to inject. If no such value is defined, it is derived from the method name.
      */
 
-    String value();
+    String value() default "";
 }

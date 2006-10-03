@@ -36,6 +36,11 @@ public class InjectStateAnnotationWorker implements MethodAnnotationEnhancementW
             Method method, Location location)
     {
         InjectState is = method.getAnnotation(InjectState.class);
+        
+        String keyName = is.value();
+
+        if (keyName.equals(""))
+            keyName = AnnotationUtils.convertMethodNameToKeyName(method.getName());
 
         String propertyName = AnnotationUtils.getPropertyName(method);
 
@@ -43,7 +48,7 @@ public class InjectStateAnnotationWorker implements MethodAnnotationEnhancementW
 
         inject.setType("state");
         inject.setProperty(propertyName);
-        inject.setObject(is.value());
+        inject.setObject(keyName);
         inject.setLocation(location);
 
         spec.addInjectSpecification(inject);
