@@ -33,7 +33,8 @@ public @interface InjectStateFlag {
     /**
      * The id of the Application State Object; the boolean accessor method to which the annotation
      * is attached will return true when the ASO exists, false when it does not.
+     * If no such value is defined, it is derived from the method name.
      */
 
-    String value();
+    String value() default "";
 }

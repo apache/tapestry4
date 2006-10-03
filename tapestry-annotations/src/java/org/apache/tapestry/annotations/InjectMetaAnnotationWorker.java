@@ -35,11 +35,16 @@ public class InjectMetaAnnotationWorker implements MethodAnnotationEnhancementWo
         String propertyName = AnnotationUtils.getPropertyName(method);
 
         InjectMeta annotation = method.getAnnotation(InjectMeta.class);
+        
+        String keyName = annotation.value();
+
+        if (keyName.equals(""))
+            keyName = AnnotationUtils.convertMethodNameToKeyName(method.getName());
 
         InjectSpecification is = new InjectSpecificationImpl();
         is.setProperty(propertyName);
         is.setType("meta");
-        is.setObject(annotation.value());
+        is.setObject(keyName);
         is.setLocation(location);
         
         spec.addInjectSpecification(is);

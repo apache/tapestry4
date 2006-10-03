@@ -33,7 +33,7 @@ import org.testng.annotations.Test;
 @Test
 public class TestSimpleAnnotationWorkers extends BaseAnnotationTestCase
 {
-    public void testInjectPage()
+    public void test_Inject_Page()
     {
         Location l = newLocation();
         IComponentSpecification spec = execute(new InjectPageAnnotationWorker(), "getMyPage", l);
@@ -46,7 +46,7 @@ public class TestSimpleAnnotationWorkers extends BaseAnnotationTestCase
         assertSame(l, is.getLocation());
     }
 
-    public void testInjectMeta()
+    public void test_Inject_Meta()
     {
         Location l = newLocation();
         IComponentSpecification spec = execute(new InjectMetaAnnotationWorker(), "getMetaFred", l);
@@ -59,8 +59,22 @@ public class TestSimpleAnnotationWorkers extends BaseAnnotationTestCase
         assertSame(l, is.getLocation());
 
     }
+    
+    public void test_Inject_Meta_NoValue()
+    {
+        Location l = newLocation();
+        IComponentSpecification spec = execute(new InjectMetaAnnotationWorker(), "getPageTitle", l);
 
-    public void testInjectScript()
+        InjectSpecification is = (InjectSpecification) spec.getInjectSpecifications().get(0);
+
+        assertEquals("pageTitle", is.getProperty());
+        assertEquals("meta", is.getType());
+        assertEquals("page-title", is.getObject());
+        assertSame(l, is.getLocation());
+
+    }    
+
+    public void test_Inject_Script()
     {
         Location l = newLocation();
         IComponentSpecification spec = execute(new InjectScriptAnnotationWorker(), "getScript", l);
@@ -73,7 +87,7 @@ public class TestSimpleAnnotationWorkers extends BaseAnnotationTestCase
         assertSame(l, is.getLocation());
     }
 
-    public void testInjectState()
+    public void test_Inject_State()
     {
         Location l = newLocation();
         IComponentSpecification spec = execute(new InjectStateAnnotationWorker(), "getBarney", l);
@@ -85,8 +99,21 @@ public class TestSimpleAnnotationWorkers extends BaseAnnotationTestCase
         assertEquals("barneyASO", is.getObject());
         assertSame(l, is.getLocation());
     }
+    
+    public void test_Inject_State_NoValue()
+    {
+        Location l = newLocation();
+        IComponentSpecification spec = execute(new InjectStateAnnotationWorker(), "getMyVisit", l);
 
-    public void testInjectStateFlag()
+        InjectSpecification is = (InjectSpecification) spec.getInjectSpecifications().get(0);
+
+        assertEquals("myVisit", is.getProperty());
+        assertEquals("state", is.getType());
+        assertEquals("my-visit", is.getObject());
+        assertSame(l, is.getLocation());
+    }    
+
+    public void test_Inject_State_Flag()
     {
         Location l = newLocation();
         IComponentSpecification spec = execute(
@@ -101,6 +128,22 @@ public class TestSimpleAnnotationWorkers extends BaseAnnotationTestCase
         assertEquals("barneyASO", is.getObject());
         assertSame(l, is.getLocation());
     }
+    
+    public void test_Inject_State_Flag_NoValue()
+    {
+        Location l = newLocation();
+        IComponentSpecification spec = execute(
+                new InjectStateFlagAnnotationWorker(),
+                "getMyVisitExists",
+                l);
+
+        InjectSpecification is = (InjectSpecification) spec.getInjectSpecifications().get(0);
+
+        assertEquals("myVisitExists", is.getProperty());
+        assertEquals("state-flag", is.getType());
+        assertEquals("my-visit", is.getObject());
+        assertSame(l, is.getLocation());
+    }    
 
     private IComponentSpecification execute(MethodAnnotationEnhancementWorker worker,
             String methodName, Location location)

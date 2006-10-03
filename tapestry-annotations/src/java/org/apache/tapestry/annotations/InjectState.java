@@ -34,8 +34,8 @@ import java.lang.annotation.Target;
 public @interface InjectState {
 
     /**
-     * The id of the Application State Object to inject.
+     * The id of the Application State Object to inject. If no such value is defined, it is derived from the method name.
      */
 
-    String value();
+    String value() default "";
 }

@@ -75,6 +75,12 @@ public abstract class AnnotatedPage extends BasePage
 
     @InjectStateFlag("barneyASO")
     public abstract boolean getBarneyExists();
+    
+    @InjectState
+    public abstract Map getMyVisit();
+
+    @InjectStateFlag
+    public abstract boolean getMyVisitExists();    
 
     @Parameter
     public abstract String getSimpleParameter();
@@ -122,6 +128,9 @@ public abstract class AnnotatedPage extends BasePage
 
     @InjectMeta("fred")
     public abstract String getMetaFred();
+    
+    @InjectMeta
+    public abstract String getPageTitle();    
 
     @InjectScript("foo.script")
     public abstract IScript getScript();

@@ -76,6 +76,8 @@ public final class AnnotationUtils
      * 
      * @param methodName the method to convert
      * @return the converted key
+     * 
+     * @since 4.1.1 
      */
     public static String convertMethodNameToKeyName(String methodName)
     {
