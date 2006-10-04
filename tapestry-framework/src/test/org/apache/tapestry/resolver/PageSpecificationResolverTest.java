@@ -207,7 +207,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
         return source;
     }
 
-    public void testExplicitlyInApplicationNamespace()
+    public void test_Explicitly_In_Application_Namespace()
     {
         Resource contextRoot = newResource("context/");
         IComponentSpecification spec = newSpecification();
@@ -240,7 +240,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
 
     }
 
-    public void testExplicitlyInFrameworkNamespace()
+    public void test_Explicitly_In_Framework_Namespace()
     {
         Resource contextRoot = newResource("context/");
         IComponentSpecification spec = newSpecification();
@@ -272,7 +272,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
         verify();
     }
 
-    public void testFoundAsTemplate()
+    public void test_Found_As_Template()
     {
         Log log = newLog();
 
@@ -352,7 +352,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
         verify();
     }
 
-    public void testFoundInApplicationNamespace()
+    public void test_Found_In_Application_Namespace()
     {
         Resource contextRoot = newResource("context/");
         IComponentSpecification spec = newSpecification();
@@ -377,7 +377,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
         verify();
     }
 
-    public void testFoundInChildNamespace()
+    public void test_Found_In_Child_Namespace()
     {
         Resource contextRoot = newResource("context/");
         IComponentSpecification spec = newSpecification();
@@ -407,7 +407,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
         verify();
     }
 
-    public void testFoundInContextRootFolder()
+    public void test_Found_In_ContextRoot_Folder()
     {
         Log log = newLog();
 
@@ -466,7 +466,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
         verify();
     }
 
-    public void testFoundInFramework()
+    public void test_Found_In_Framework()
     {
         Log log = newLog();
         INamespace application = newNamespace();
@@ -525,7 +525,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
         verify();
     }
 
-    public void testFoundInNamespaceFolder()
+    public void test_Found_In_Namespace_Folder()
     {
         Log log = newLog();
 
@@ -571,7 +571,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
         verify();
     }
 
-    public void testFoundInWebInfAppFolder()
+    public void test_Found_In_WebInf_App_Folder()
     {
         Log log = newLog();
 
@@ -624,7 +624,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
         verify();
     }
 
-    public void testFoundInWebInfFolder()
+    public void test_Found_In_WebInf_Folder()
     {
         Log log = newLog();
 
@@ -682,7 +682,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
         verify();
     }
 
-    public void testWebInf()
+    public void test_WebInf()
     {
         Log log = newLog();
         INamespace application = newNamespace();
@@ -742,7 +742,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
 
     }
 
-    public void testNotFoundAnywhere()
+    public void test_NotFound_Anywhere()
     {
         Log log = newLog();
         INamespace application = newNamespace();
@@ -792,12 +792,13 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
         {
             assertEquals("Page 'MissingPage' not found in <application namespace>.", ex
                     .getMessage());
+            assertEquals("MissingPage", ex.getPageName());
         }
 
         verify();
     }
 
-    public void testProvidedByDelegate()
+    public void test_Provided_By_Delegate()
     {
         Log log = newLog();
         INamespace application = newNamespace();
