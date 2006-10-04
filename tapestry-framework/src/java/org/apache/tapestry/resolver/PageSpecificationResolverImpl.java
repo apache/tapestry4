@@ -144,8 +144,8 @@ public class PageSpecificationResolverImpl extends
         searchForPage(cycle);
 
         if (getSpecification() == null)
-            throw new PageNotFoundException(ResolverMessages.noSuchPage(
-                    _simpleName, namespace));
+            throw new PageNotFoundException(_simpleName,
+                    ResolverMessages.noSuchPage(_simpleName, namespace));
     }
 
     public String getSimplePageName()
