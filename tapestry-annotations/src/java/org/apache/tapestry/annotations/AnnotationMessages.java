@@ -111,5 +111,15 @@ final class AnnotationMessages
     static String invalidAnnotationInClass(Class annotation, Class clazz)
     {
         return _formatter.format("invalid-annotation-in-class", annotation.getName(), clazz.getName());
-    }    
+    }  
+    
+    static String unableToCopy(String id)
+    {
+        return _formatter.format("unable-to-copy", id);
+    }
+    
+    static String bothTypeAndCopyOf(String id)
+    {
+        return _formatter.format("both-type-and-copy-of", id);
+    }  
 }
