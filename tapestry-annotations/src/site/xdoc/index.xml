@@ -52,7 +52,7 @@
                     The
                     <a href="apidocs/org/apache/tapestry/annotations/Asset.html">Asset</a>
                     annotation is the equivalent of the
-                    <a href="#spec.asset">&lt;asset&gt;</a>
+                    <a href="../UsersGuide/spec.html#&lt;asset&gt; element">&lt;asset&gt;</a>
                     element in a specification. The value attribute is the path to the asset
                     (possibly prefixed to indicate the domain for the path):
                 </p>
@@ -78,7 +78,7 @@
                     The
                     <a href="apidocs/org/apache/tapestry/annotations/Bean.html">Bean</a>
                     annotation is the equivalent of the
-                    <a href="#spec.bean">&lt;bean&gt;</a>
+                    <a href="../UsersGuide/spec.html#&lt;bean&gt; element">&lt;bean&gt;</a>
                     element in a specification.
                 </p>
 
@@ -139,7 +139,7 @@
                     <a href="apidocs/org/apache/tapestry/annotations/Component.html">Component</a>
                     annotation is attached to an accessor method and allows a component type to be
                     defined in place, as with the
-                    <a href="#spec.component">&lt;component&gt;</a>
+                    <a href="../UsersGuide/spec.html#&lt;component&gt; element">&lt;component&gt;</a>
                     element.
                 </p>
 
@@ -181,6 +181,18 @@
     public abstract IComponent getIfMessage();  
 </source>
 
+                <p>
+                    Component copies can be created by specifying the copyOf attribute. It should
+                    contain the name of another defined component. The type and bindings of 
+                    that component will be copied to this component. The following code creates
+                    a copy of the previous component:
+                </p>
+
+                <source xml:space="preserve">
+    @Component(copyOf = "ifMessage")
+    public abstract IComponent getIfMessageCopy();  
+</source>
+
             </subsection>
 
             <subsection name="ComponentClass">
@@ -194,8 +206,8 @@
                     </a>
                     annotation is used to mark a Java class as a component, and allows several
                     properties normally specified using the
-                    <a href="#spec.component-specification">&lt;component-specification&gt;</a>
-                    element.
+                    <a href="../UsersGuide/spec.html#&lt;component-specification&gt; element">
+                    &lt;component-specification&gt;</a> element.
                 </p>
 
                 <source xml:space="preserve">
@@ -438,7 +450,7 @@ public void projectSelected(IRequestCycle cycle)
 
                 <p>
                     This is equivalent to specifying the property attribute of the
-                    <a href="#spec.asset">&lt;asset&gt;</a>
+                    <a href="../UsersGuide/spec.html#&lt;asset&gt; element">&lt;asset&gt;</a>
                     element.
                 </p>
 
@@ -463,7 +475,7 @@ public void projectSelected(IRequestCycle cycle)
 
                 <p>
                     This is functionally the same as providing the property attribute of the
-                    <a href="#spec.component">&lt;component&gt;</a>
+                    <a href="../UsersGuide/spec.html#&lt;component&gt; element">&lt;component&gt;</a>
                     element.
                 </p>
 
@@ -476,7 +488,7 @@ public void projectSelected(IRequestCycle cycle)
                     The
                     <a href="apidocs/org/apache/tapestry/annotations/InjectMeta.html">InjectMeta</a>
                     annotation allows meta data from the specification (
-                    <a href="#spec.meta">&lt;meta&gt; elements)</a>
+                    <a href="../UsersGuide/spec.html#&lt;meta&gt; element">&lt;meta&gt; elements</a> )
                     to be exposed as properties.
                 </p>
 
@@ -522,7 +534,7 @@ public void projectSelected(IRequestCycle cycle)
 
                 <p>
                     The end result is the same as using the
-                    <a href="#spec.inject">&lt;inject&gt;</a>
+                    <a href="../UsersGuide/spec.html#&lt;inject&gt; element">&lt;inject&gt;</a>
                     element, with the default type of "object".
                 </p>
 
@@ -586,7 +598,7 @@ public void projectSelected(IRequestCycle cycle)
 
                 <p>
                     The end result is equivalent to using the
-                    <a href="#spec.inject">&lt;inject&gt;</a>
+                    <a href="../UsersGuide/spec.html#&lt;inject&gt; element">&lt;inject&gt;</a>
                     element, with a type of "state".
                 </p>
                 
@@ -624,7 +636,7 @@ public void projectSelected(IRequestCycle cycle)
 
                 <p>
                     The end result is equivalent to using the
-                    <a href="#spec.inject">&lt;inject&gt;</a>
+                    <a href="../UsersGuide/spec.html#&lt;inject&gt; element">&lt;inject&gt;</a>
                     element, with a type of "state-flag".
                 </p>
                 
@@ -728,7 +740,7 @@ public void projectSelected(IRequestCycle cycle)
                     <a href="apidocs/org/apache/tapestry/annotations/Meta.html">Meta</a>
                     annotation is used to define a meta data value on a page or component class, as
                     with the
-                    <a href="#spec.meta">&lt;meta&gt;</a>
+                    <a href="../UsersGuide/spec.html#&lt;meta&gt; element">&lt;meta&gt;</a>
                     element in an XML component or page specification.
                 </p>
 
@@ -770,7 +782,7 @@ public abstract class MyComponent extends BaseComponent
                     The
                     <a href="apidocs/org/apache/tapestry/annotations/Parameter.html">Parameter</a>
                     annotation defines a new property, as with
-                    <a href="#spec.parameter">&lt;parameter&gt;</a>
+                    <a href="../UsersGuide/spec.html#&lt;parameter&gt; element">&lt;parameter&gt;</a>
                     element in an XML component specification.
                 </p>
 
@@ -838,7 +850,7 @@ public abstract class MyComponent extends BaseComponent
 
                 <p>
                     This annotation works exactly like a
-                    <a href="#spec.property">&lt;property&gt;</a>
+                    <a href="../UsersGuide/spec.html#&lt;property&gt; element">&lt;property&gt;</a>
                     element, except that the initial-value attribute can't be specified. Use the
                     <a href="#InitialValue">@InitialValue</a>
                     annotation to set the property's initial value.
