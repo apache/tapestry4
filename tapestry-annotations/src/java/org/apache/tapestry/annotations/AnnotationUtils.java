@@ -17,10 +17,13 @@ package org.apache.tapestry.annotations;
 import java.beans.Introspector;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.Iterator;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
+import org.apache.tapestry.spec.IBindingSpecification;
+import org.apache.tapestry.spec.IContainedComponent;
 import org.apache.tapestry.util.DescribedLocation;
 
 /**
@@ -106,6 +109,26 @@ public final class AnnotationUtils
         }
     
         return buffer.toString();
+    }    
+    
+    /**
+     * Copies all bindings of a component to another one.
+     * @param source
+     * @param target
+     * 
+     * @since 4.1.1
+     */
+    public static void copyBindings(IContainedComponent source, IContainedComponent target)
+    {
+        Iterator i = source.getBindingNames().iterator();
+        while (i.hasNext())
+        {
+            String bindingName = (String) i.next();
+            IBindingSpecification binding = source.getBinding(bindingName);
+            target.setBinding(bindingName, binding);
+        }
+    
+        target.setType(source.getType());
     }    
 
     private static void checkGetter(Method method)

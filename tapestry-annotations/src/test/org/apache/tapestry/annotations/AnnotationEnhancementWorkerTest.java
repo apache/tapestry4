@@ -60,7 +60,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
     /**
      * No method annotations registered.
      */
-    public void testNoAnnotations()
+    public void test_No_Annotations()
     {
         EnhancementOperation op = newOp(AnnotatedPage.class);
         IComponentSpecification spec = newSpec();
@@ -76,7 +76,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
         verify();
     }
 
-    public void testAnnotationMatch()
+    public void test_Annotation_Match()
     {
         ClassResolver resolver = new DefaultClassResolver();
 
@@ -118,7 +118,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
                 baseClass));
     }
 
-    public void testAnnotationWithSubclass()
+    public void test_Annotation_With_Subclass()
     {
         ClassResolver resolver = new DefaultClassResolver();
 
@@ -145,7 +145,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
         verify();
     }
 
-    public void testAnnotationFailure()
+    public void test_Annotation_Failure()
     {
         ClassResolver resolver = new DefaultClassResolver();
 
@@ -183,7 +183,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
         verify();
     }
 
-    public void testClassAnnotation()
+    public void test_Class_Annotation()
     {
         ClassResolver resolver = new DefaultClassResolver();
 
@@ -208,7 +208,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
         verify();
     }
 
-    public void testClassAnnotationFailure()
+    public void test_Class_Annotation_Failure()
     {
         ClassResolver resolver = new DefaultClassResolver();
 
@@ -243,7 +243,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
         verify();
     }
 
-    public void testClassAnnotationNoMatch()
+    public void test_Class_Annotation_No_Match()
     {
         EnhancementOperation op = newOp(DeprecatedBean.class);
         IComponentSpecification spec = newSpec();
@@ -259,7 +259,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
         verify();
     }
 
-    public void testSecondaryEnhancementWorker()
+    public void test_Secondary_EnhancementWorker()
     {
         SecondaryAnnotationWorker secondary = newSecondaryAnnotationWorker();
         
@@ -287,7 +287,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
         verify();
     }
 
-    public void testSecondaryEnhancementWorkerFailure()
+    public void test_Secondary_EnhancementWorker_Failure()
     {
         SecondaryAnnotationWorker secondary = newSecondaryAnnotationWorker();
         

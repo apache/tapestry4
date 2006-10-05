@@ -107,6 +107,12 @@ public abstract class AnnotatedPage extends BasePage
     @Component(type = "TextField", bindings =
     { "value = email", "displayName = message:email-label" })
     public abstract IComponent getWhitespace();
+    
+    @Component(id = "anEmailCopy", copyOf = "email", type = "Checkbox")
+    public abstract IComponent getInvalidEmailCopy();
+    
+    @Component(id = "aComponentCopy", copyOf = "componentWithBindings")
+    public abstract IComponent getComponentWithBindingsCopy();
 
     @Message
     public abstract String noArgsMessage();

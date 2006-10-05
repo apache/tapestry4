@@ -45,6 +45,14 @@ public @interface Component {
      */
 
     String type() default "";
+    
+    /**
+     * The name of a previously defined component. 
+     * The type and bindings of that component will be copied to this component. 
+     * Either type or copy-of must be specified. 
+     */
+
+    String copyOf() default "";    
 
     /**
      * If true, then the component inherits informal parameters from its container.

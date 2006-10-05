@@ -17,6 +17,7 @@ package org.apache.tapestry.annotations;
 import java.lang.reflect.Method;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.BindingSpecification;
@@ -45,16 +46,30 @@ public class ComponentAnnotationWorker implements MethodAnnotationEnhancementWor
 
         String propertyName = AnnotationUtils.getPropertyName(method);
         String type = component.type();
-        if (type.equals(""))
+        String copyOf = component.copyOf();
+        boolean hasCopyOf = HiveMind.isNonBlank(copyOf);
+        
+        if (hasCopyOf)
         {
-            Class retTypeClazz = method.getReturnType();
-            type = retTypeClazz.getSimpleName();
+            if (HiveMind.isNonBlank(type))
+                throw new ApplicationRuntimeException(AnnotationMessages.bothTypeAndCopyOf(propertyName));
+            type = null;
         }
+        else
+        {
+            if (type.equals(""))
+            {
+                Class retTypeClazz = method.getReturnType();
+                type = retTypeClazz.getSimpleName();
+            }            
+            copyOf = null;
+        }        
 
         IContainedComponent cc = new ContainedComponent();
 
         cc.setInheritInformalParameters(component.inheritInformalParameters());
         cc.setType(type);
+        cc.setCopyOf(copyOf);
         cc.setPropertyName(propertyName);
         cc.setLocation(location);
 
@@ -67,8 +82,15 @@ public class ComponentAnnotationWorker implements MethodAnnotationEnhancementWor
 
         if (id.equals(""))
             id = propertyName;
-
+        
         spec.addComponent(id, cc);
+        
+        if (hasCopyOf)
+        {
+            IContainedComponent source = spec.getComponent(copyOf);
+            if (source != null)                
+                AnnotationUtils.copyBindings(source, cc);
+        }
     }
 
     void addBinding(IContainedComponent component, String binding, Location location)
@@ -90,7 +112,7 @@ public class ComponentAnnotationWorker implements MethodAnnotationEnhancementWor
         bs.setLocation(location);
 
         component.setBinding(name, bs);
-    }
+    }    
 
     private void invalidBinding(String binding)
     {
