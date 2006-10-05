@@ -34,12 +34,24 @@
     
   </service-point>
   
+  <service-point id="ComponentHousekeepingWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+  
+  	Perform additional housekeeping relating to injected components, i.e. ensure bindings are set
+  	for copyOf components.
+  
+  	<invoke-factory>
+      <construct class="ComponentHousekeepingWorker">
+      </construct>
+    </invoke-factory>
+  </service-point>
+  
   <!-- Only contribute when in JDK 1.5 and java.lang.Annotation exists -->
   
   <contribution configuration-id="tapestry.enhance.EnhancementWorkers" if="class java.lang.annotation.Annotation">    
     <!-- Needs to come very much first, because some enhancements modify
          the component specification, affecting what occurs in later commands. -->
     <command id="annotation-worker" object="service:AnnotationEnhancementWorker" before="*"/>
+    <command id="component-housekeeping-worker" object="service:ComponentHousekeepingWorker" after="annotation-worker"/>
   </contribution>
   
   <configuration-point id="ClassWorkers">
