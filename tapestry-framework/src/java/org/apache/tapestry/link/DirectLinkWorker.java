@@ -70,7 +70,8 @@ public class DirectLinkWorker implements ComponentRenderWorker
         
         // must implement both interfaces
         if (!ILinkComponent.class.isInstance(component)
-                || !IDirect.class.isInstance(component))
+                || !IDirect.class.isInstance(component)
+                || ( ((ILinkComponent)component).isDisabled()))
             return;
         
         IDirect direct = (IDirect)component;
