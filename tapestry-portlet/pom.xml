@@ -136,6 +136,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.1-SNAPSHOT</version>
                 <configuration>
                     <linksource>true</linksource>
                     <destDir>../target/site/tapestry-portlet/apidocs</destDir>
