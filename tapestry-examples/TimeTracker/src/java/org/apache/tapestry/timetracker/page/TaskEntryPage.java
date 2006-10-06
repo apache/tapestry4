@@ -18,7 +18,6 @@ import java.util.Date;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.Component;
 import org.apache.tapestry.annotations.EventListener;
-import org.apache.tapestry.annotations.InitialValue;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.Persist;
 import org.apache.tapestry.dojo.form.Autocompleter;
@@ -80,13 +79,6 @@ public abstract class TaskEntryPage extends BasePage
     @InjectObject("service:timetracker.dao.TaskDao")
     public abstract TaskDao getTaskDao();
     
-    public abstract String getFeedback();
-    
-    @InitialValue("ognl:false")
-    public abstract boolean isEventReceived();
-    
-    public abstract void setEventReceived(boolean value);
-    
     /**
      * Selection model for projects.
      * @return
@@ -100,28 +92,11 @@ public abstract class TaskEntryPage extends BasePage
      * Invoked when an item is selected from the project
      * selection list.
      */
-    @EventListener(events = "selectOption", targets = "projectChoose", submitForm = "taskForm")
+    @EventListener(events = "selectOption", targets = "projectChoose", 
+            submitForm = "taskForm")
     public void projectSelected(IRequestCycle cycle, BrowserEvent event)
     {
         cycle.getResponseBuilder().updateComponent("projectDescription");
-        cycle.getResponseBuilder().updateComponent("feedbackBlock");
-    }
-    
-    @EventListener(events = "onblur", targets = "descriptionField", submitForm = "taskForm")
-    public void descriptionChanged(IRequestCycle cycle)
-    {
-        cycle.getResponseBuilder().updateComponent("taskForm");
-    }
-    
-    public void linkUpdateClicked()
-    {
-    }
-    
-    @EventListener(events = "onclick", elements = "textListen")
-    public void textSelected(IRequestCycle cycle)
-    {
-        setEventReceived(true);
-        cycle.getResponseBuilder().updateComponent("refresh");
     }
     
     /**

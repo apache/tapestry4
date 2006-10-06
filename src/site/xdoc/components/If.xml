@@ -46,7 +46,6 @@
                     <tr>
                         <th>Name</th>
                         <th>Type</th>
-                        <th>Direction</th>
                         <th>Required</th>
                         <th>Default</th>
 
@@ -56,7 +55,6 @@
                     <tr>
                         <td>condition</td>
                         <td>boolean</td>
-                        <td>in</td>
                         <td>yes</td>
                         <td></td>
 
@@ -65,7 +63,6 @@
                     <tr>
                         <td>conditionValue</td>
                         <td>boolean</td>
-                        <td>in</td>
                         <td>no</td>
                         <td></td>
 
@@ -82,7 +79,6 @@
                                 IActionListener
                             </a>
                         </td>
-                        <td>in</td>
                         <td>no</td>
                         <td></td>
 
@@ -92,9 +88,21 @@
                         </td>
                     </tr>
                     <tr>
+                        <td>renderTag</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>true</td>
+
+                        <td>
+                            Specifies whether or not to render the html tag name used to reference this
+                            component. This logic also deprecates the <code>element</code> parameter in 
+                            that tag names are already captured from the html temlpate read in, so you
+                            only need to tell the component to render or not render whatever tag you used.
+                        </td>
+                    </tr>
+                    <tr>
                         <td>element</td>
                         <td>String</td>
-                        <td>in</td>
                         <td>no</td>
                         <td></td>
 
@@ -102,13 +110,16 @@
                             The element to emulate. If specified, then the component acts like an
                             <a href="Any.html">Any</a>
                             , emitting an open and close tag. Informal parameters are applied to the
-                            tag. If no element is specified, informal parameters are ignored.
+                            tag.
+                            <br/>
+                            This parameter is now <em>deprecated</em> in favor of the new renderTag 
+                            parameter, the element tag to render is implied by the html used to reference
+                            the component now.
                         </td>
                     </tr>
                     <tr>
                         <td>volatile</td>
                         <td>boolean</td>
-                        <td>in</td>
                         <td>no</td>
                         <td>false</td>
 

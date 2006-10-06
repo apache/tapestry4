@@ -26,15 +26,17 @@ public abstract class ElseBean extends AbstractComponent
 {
     public abstract String getElement();
     
+    public abstract boolean getRenderTag();
+    
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         Object conditionObject = cycle.getAttribute(IfBean.IF_VALUE_ATTRIBUTE);
 
         if (conditionObject instanceof Boolean && !((Boolean) conditionObject).booleanValue()) 
         {
-            String element = getElement();
+            String element = HiveMind.isNonBlank(getElement()) ? getElement() : getTemplateTagName();
             
-            boolean render = !cycle.isRewinding() && HiveMind.isNonBlank(element);
+            boolean render = !cycle.isRewinding() && getRenderTag();
             
             if (render)
             {

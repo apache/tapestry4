@@ -13,7 +13,6 @@
 // limitations under the License.
 package org.apache.tapestry.dojo.form;
 
-import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -84,8 +83,7 @@ public abstract class DropdownTimePicker extends AbstractFormWidget
         json.put("timeFormat", Strftime.convertToPosixFormat(translator.getPattern()));
         
         if (getValue() != null) {
-            json.put("time", DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL, 
-                    getPage().getLocale()).format(getValue()));
+            json.put("storedtime", getTranslatedFieldSupport().format(this, getValue()));
         }
         
         Map parms = new HashMap();
@@ -105,7 +103,7 @@ public abstract class DropdownTimePicker extends AbstractFormWidget
         try
         {
             Date date = (Date) getTranslatedFieldSupport().parse(this, value);
-
+            
             getValidatableFieldSupport().validate(this, writer, cycle, date);
 
             setValue(date);

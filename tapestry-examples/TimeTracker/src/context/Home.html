@@ -49,39 +49,13 @@ using them.
     </tr>
     
     </table>
-    
-    <div jwcid="feedbackBlock@Any">
-    	<span jwcid="@If" condition="ognl:selectedProject">
-    		<label jwcid="@FieldLabel" field="component:feedbackField" />
-    		<input jwcid="feedbackField@TextField" displayName="message:feedback" 
-    				value="ognl:feedback" validators="validators:required,minLength=6" />
-    	</span>
-    </div>
-    
     </fieldset>
 </form>
 
-<p>
-Click this link to manually update the project description. 
-	<a jwcid="@DirectLink" listener="listener:linkUpdateClicked" 
-		updateComponents="projectDescription" async="true" >Update</a>
-</p>
-
 <div jwcid="projectDescription@Any" >
-	<span jwcid="@If" condition="ognl:selectedProject">
-		<h2 style="clear:left" ><span jwcid="@Insert" value="ognl:selectedProject.name" /></h2>
-		<a jwcid="@DirectLink" listener="listener:linkUpdateClicked" 
-				async="true" updateComponents="projectDescription">Another link!</a>
-	</span>
-</div>
-
-<div jwcid="textListen@Any">This is some text at the bottom of the screen.</div>
-
-<div jwcid="refresh@Any">
-	<span jwcid="@If" condition="ognl:eventReceived">
-		<p>I must have been refreshed!</p>
-		<span jwcid="@Script" script="TestScript.script" />
-	</span>
+	<h2 jwcid="@If" condition="ognl:selectedProject" style="clear:left" >
+		<span jwcid="@Insert" value="ognl:selectedProject.name" />
+	</h2>
 </div>
 
 </span>

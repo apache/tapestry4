@@ -262,6 +262,10 @@ public class ComponentTemplateLoaderLogic
 
     void addTemplateBindings(IComponent component, OpenToken token)
     {
+        // sets the html tag name used to specify the component
+        
+        component.setTemplateTagName(token.getTag());
+        
         IComponentSpecification spec = component.getSpecification();
 
         Map attributes = token.getAttributesMap();

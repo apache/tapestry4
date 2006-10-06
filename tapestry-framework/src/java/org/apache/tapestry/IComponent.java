@@ -185,6 +185,42 @@ public interface IComponent extends IRender, LocationHolder
     String getClientId();
     
     /**
+     * Though most component implementations ignore the specific html tag used 
+     * to reference a component, this value may be used for those components that
+     * do wish to use the same tag that was provided when rendering a component. 
+     * 
+     * <p>Example:<br/>
+     * <pre>
+     *  &lt;fieldset jwcid=&quot;@If&quot; condition=&quot;true&quot; &gt;
+     *      &lt;input type=&quot;text&quot; /&gt;
+     *  &lt;/fieldset&gt;
+     * </pre>
+     * </p>
+     * 
+     * <p>
+     *  In the example above, the value of the template tag would be "fieldset" for 
+     *  the If component.
+     * </p>
+     * 
+     * @return The html element tag name originally specified when referencing 
+     *         the component.
+     * @since 4.1
+     */
+    String getTemplateTagName();
+    
+    /**
+     * Sets the template tag name used to reference this component.
+     * 
+     * <p>
+     *  Set by the component template loader automatically, people shouldn't 
+     *  normally have any reason to try setting this.
+     * </p>
+     * 
+     * @param tag The tag name to set.
+     */
+    void setTemplateTagName(String tag);
+    
+    /**
      * Returns the page which ultimately contains the receiver. A page will return itself.
      */
 

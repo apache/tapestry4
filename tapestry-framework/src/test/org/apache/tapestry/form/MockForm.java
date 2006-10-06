@@ -465,5 +465,16 @@ public class MockForm implements IForm
     public void trigger(IRequestCycle cycle)
     {
     }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public String getTemplateTagName()
+    {
+        return "form";
+    }
     
+    public void setTemplateTagName(String tag)
+    {
+    }
 }

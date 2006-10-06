@@ -26,9 +26,12 @@
   if the condition of the previous If component evaluates to false.
   </description>
     
-  <parameter name="element">
+  <parameter name="renderTag" default-value="true" />
+  
+  <parameter name="element" deprecated="yes" >
   	<description>
-  	The element to emulate.
+  	The element to emulate. Usage deprecated, please use the renderTag parameter to control
+    whether or not to render the tag.
   	</description>
   </parameter>
   
