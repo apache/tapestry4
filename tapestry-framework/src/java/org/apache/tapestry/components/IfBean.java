@@ -33,7 +33,7 @@ import org.apache.tapestry.services.DataSqueezer;
 public abstract class IfBean extends AbstractFormComponent
 {
     public static final String IF_VALUE_ATTRIBUTE = "org.mb.tapestry.base.IfValue";
-
+    
     private boolean _rendering = false;
 
     private boolean _conditionValue;
@@ -45,7 +45,9 @@ public abstract class IfBean extends AbstractFormComponent
     public abstract boolean getVolatile();
 
     public abstract String getElement();
-
+    
+    public abstract boolean getRenderTag();
+    
     public abstract IActionListener getListener();
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
@@ -59,7 +61,7 @@ public abstract class IfBean extends AbstractFormComponent
         // then do nothing (don't even render the body).
         if (cycleRewinding && form != null && !form.isRewinding())
             return;
-
+        
         // get the condition. work with a hidden field if necessary
         _conditionValue = evaluateCondition(cycle, form, cycleRewinding);
         _rendering = true;
@@ -77,10 +79,10 @@ public abstract class IfBean extends AbstractFormComponent
             // now render if condition is true
             if (_conditionValue)
             {
-                String element = getElement();
-
-                boolean render = !cycleRewinding && HiveMind.isNonBlank(element);
-
+                String element = HiveMind.isNonBlank(getElement()) ? getElement() : getTemplateTagName();
+                
+                boolean render = !cycleRewinding && getRenderTag();
+                
                 if (render)
                 {
                     writer.begin(element);

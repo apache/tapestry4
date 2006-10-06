@@ -51,7 +51,8 @@ public interface TemplateSource
      *  AbstractComponent, not BaseComponent), then this parameter is bound to null.
      * 
      *  @since 3.0
-     * 
+     *  @deprecated To be removed in 4.2. Use the new {@link IComponent#getTemplateTagName()} method
+     *              instead.
      */
     
     String TEMPLATE_TAG_PARAMETER_NAME = "templateTag";

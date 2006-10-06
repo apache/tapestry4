@@ -7,9 +7,7 @@ dojo.require("dojo.namespace");
 	var map = {
 		html: {
 			"alertdialog": "tapestry.widget.AlertDialog",
-			"dropdowndatetimepicker" : "tapestry.widget.DropdownDateTimePicker",
-			"dropdowntimepicker" : "tapestry.widget.DropdownTimePicker",
-			"timepicker" : "tapestry.widget.TimePicker"
+			"timepicker": "tapestry.widget.TimePicker"
 		}
 	};
 	

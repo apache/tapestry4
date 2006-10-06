@@ -6,6 +6,8 @@ dojo.require("tapestry.core");
 dojo.require("tapestry.form");
 dojo.require("tapestry.form.datetime");
 
+dojo.require("dojo.widget.TimePicker");
+
 function test_datetime_validDate(){
 	var value = "08/15/1999";
 	// jum.assertFalse(value, tapestry.form.datetime.isValidDate(value, {}));
@@ -54,7 +56,7 @@ function test_datetime_minDate(){
 									{strict:true,min:minValue, datePattern:"MM/dd/yyyy",selector:"dateOnly"}));
 }
 
-/*
+
 function test_datetime_LongFormat(){
 	var value = "18 Aug 2006";
 	
@@ -63,4 +65,3 @@ function test_datetime_LongFormat(){
 	jum.assertTrue(value, tapestry.form.datetime.isValidDate(value, 
 			{strict:true,max:"19 Aug 2006",datePattern:"dd MMM yyyy",selector:"dateOnly"}));
 }
-*/

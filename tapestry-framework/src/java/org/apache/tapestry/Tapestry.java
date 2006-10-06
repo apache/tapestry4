@@ -29,12 +29,9 @@ import java.util.ResourceBundle;
 import java.util.Set;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Location;
-import org.apache.hivemind.service.ClassFabUtils;
 import org.apache.tapestry.event.ChangeObserver;
 import org.apache.tapestry.event.ObservedChangeEvent;
-import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.util.StringSplitter;
 
@@ -134,31 +131,7 @@ public final class Tapestry
      */
 
     public static final String RESET_SERVICE = "reset";
-
-    /**
-     * Query parameter that identfies the service for the request.
-     * 
-     * @since 1.0.3
-     * @deprecated To be removed in 4.1. Use
-     *             {@link org.apache.tapestry.services.ServiceConstants#SERVICE} instead.
-     */
-
-    public static final String SERVICE_QUERY_PARAMETER_NAME = ServiceConstants.SERVICE;
-
-    /**
-     * The query parameter for application specific parameters to the service (this is used with the
-     * direct service). Each of these values is encoded with
-     * {@link java.net.URLEncoder#encode(String)} before being added to the URL. Multiple values are
-     * handle by repeatedly establishing key/value pairs (this is a change from behavior in 2.1 and
-     * earlier).
-     * 
-     * @since 1.0.3
-     * @deprecated To be removed in 4.1. Use
-     *             {@link org.apache.tapestry.services.ServiceConstants#PARAMETER} instead.
-     */
-
-    public static final String PARAMETERS_QUERY_PARAMETER_NAME = ServiceConstants.PARAMETER;
-
+    
     /**
      * Property name used to get the extension used for templates. This may be set in the page or
      * component specification, or in the page (or component's) immediate container (library or
@@ -611,20 +584,7 @@ public final class Tapestry
 
         return result;
     }
-
-    /**
-     * Given a Class, creates a presentable name for the class, even if the class is a scalar type
-     * or Array type.
-     * 
-     * @since 3.0
-     * @deprecated To be removed in 4.1.
-     */
-
-    public static String getClassName(Class subject)
-    {
-        return ClassFabUtils.getJavaClassName(subject);
-    }
-
+    
     /**
      * Creates an exception indicating the binding value is null.
      * 
@@ -746,34 +706,5 @@ public final class Tapestry
         ObservedChangeEvent event = new ObservedChangeEvent(component, propertyName, newValue);
 
         observer.observeChange(event);
-    }
-
-    /**
-     * Returns true if the input is null or contains only whitespace.
-     * <p>
-     * Note: Yes, you'd think we'd use <code>StringUtils</code>, but with the change in names and
-     * behavior between releases, it is smarter to just implement our own little method!
-     * 
-     * @since 3.0
-     * @deprecated To be removed in Tapestry 4.1. Use {@link HiveMind#isBlank(java.lang.String)}
-     *             instead.
-     */
-
-    public static boolean isBlank(String input)
-    {
-        return HiveMind.isBlank(input);
-    }
-
-    /**
-     * Returns true if the input is not null and not empty (or only whitespace).
-     * 
-     * @since 3.0
-     * @deprecated To be removed in Tapestry 4.1. Use {@link HiveMind#isNonBlank(java.lang.String)}
-     *             instead.
-     */
-
-    public static boolean isNonBlank(String input)
-    {
-        return HiveMind.isNonBlank(input);
     }
 }

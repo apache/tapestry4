@@ -75,14 +75,18 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
      */
 
     private String _id;
-
+    
     /**
      * The fully qualified id of this component. This is calculated the first time it is needed,
      * then cached for later.
      */
-
     private String _idPath;
 
+    /**
+     * The html tag name that was used to reference the component.
+     */
+    private String _templateTagName;
+    
     /**
      * A {@link Map}of all bindings (for which there isn't a corresponding JavaBeans property); the
      * keys are the names of formal and informal parameters.
@@ -467,6 +471,23 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
         return id.getObject().toString();
     }
     
+    public String getTemplateTagName()
+    {
+        return _templateTagName;
+    }
+    
+    /** 
+     * {@inheritDoc}
+     */
+    public void setTemplateTagName(String tag)
+    {
+        if (_templateTagName != null)
+            throw new ApplicationRuntimeException(Tapestry
+                    .getMessage("AbstractComponent.attempt-to-change-template-tag"));
+        
+        _templateTagName = tag;
+    }
+
     public IPage getPage()
     {
         return _page;

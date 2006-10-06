@@ -343,7 +343,7 @@ public class TestIfElse extends BaseComponentTestCase
         verify();
     }
 
-    public void testElement()
+    public void test_Render_Tag()
     {
         IMarkupWriter writer = newWriter();
         
@@ -356,7 +356,8 @@ public class TestIfElse extends BaseComponentTestCase
                 new Object[] { 
             "condition", Boolean.TRUE, 
             "element", "div", 
-            "specification", spec 
+            "specification", spec,
+            "renderTag", Boolean.TRUE
         });
         
         expect(cycle.renderStackPush(conditional)).andReturn(conditional);
@@ -371,7 +372,7 @@ public class TestIfElse extends BaseComponentTestCase
         writer.attribute("informal", "informal-value");
 
         writer.end("div");
-
+        
         trainResponseBuilder(cycle, writer);
         
         cycle.setAttribute(IfBean.IF_VALUE_ATTRIBUTE, Boolean.TRUE);
@@ -382,9 +383,46 @@ public class TestIfElse extends BaseComponentTestCase
         
         conditional.addBody(body);
         conditional.setBinding("informal", informal);
-
+        
         conditional.render(writer, cycle);
+        
+        verify();
+    }
+    
+    public void test_Render_Tag_False()
+    {
+        IMarkupWriter writer = newWriter();
+        IComponentSpecification spec = newSpec();
+        IRequestCycle cycle = newCycle();
 
+        IfBean conditional = newInstance(TestIfBean.class, 
+                new Object[] { 
+            "condition", Boolean.TRUE,
+            "specification", spec,
+            "renderTag", Boolean.FALSE,
+            "templateTagName", "fieldset"
+        });
+        
+        expect(cycle.renderStackPush(conditional)).andReturn(conditional);
+        
+        expect(cycle.isRewinding()).andReturn(false);
+        
+        expect(cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE)).andReturn(null);
+        
+        trainResponseBuilder(cycle, writer);
+        
+        IRender body = newRender(writer, cycle);
+        
+        cycle.setAttribute(IfBean.IF_VALUE_ATTRIBUTE, Boolean.TRUE);
+        
+        expect(cycle.renderStackPop()).andReturn(conditional);
+        
+        replay();
+        
+        conditional.addBody(body);
+        
+        conditional.render(writer, cycle);
+        
         verify();
     }
     
