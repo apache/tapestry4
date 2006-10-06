@@ -94,7 +94,7 @@ public class TestSubmit extends BaseFormComponentTestCase
         trainIsRewinding(form, false);
 
         trainIsRewinding(cycle, false);
-
+        
         form.setFormFieldUpdating(true);
         
         writer.beginEmpty("input");
@@ -240,6 +240,47 @@ public class TestSubmit extends BaseFormComponentTestCase
 
         replay();
 
+        submit.renderComponent(writer, cycle);
+
+        verify();
+    }
+    
+    public void test_SubmitType_OnClick_Disabled()
+    {
+        Submit submit = newInstance(Submit.class, new Object[] {
+            "disabled", Boolean.TRUE
+            });
+        
+        IValidationDelegate delegate = newDelegate();
+        IForm form = newForm();
+        IRequestCycle cycle = newCycle();
+        IMarkupWriter writer = newWriter();
+
+        trainGetForm(cycle, form);
+
+        trainWasPrerendered(form, writer, submit, false);
+
+        trainGetDelegate(form, delegate);
+        
+        delegate.setFormComponent(submit);
+
+        trainGetElementId(form, submit, "fred");
+
+        trainIsRewinding(form, false);
+
+        trainIsRewinding(cycle, false);
+
+        form.setFormFieldUpdating(true);
+        
+        writer.beginEmpty("input");
+        writer.attribute("type", "submit");
+        writer.attribute("name", "fred");
+        writer.attribute("disabled", "disabled");
+        
+        writer.closeTag();
+        
+        replay();
+        
         submit.renderComponent(writer, cycle);
 
         verify();

@@ -114,6 +114,9 @@ abstract class AbstractSubmit extends AbstractFormComponent implements IDynamicI
      */
     protected void renderSubmitBindings(IMarkupWriter writer, IRequestCycle cycle)
     {
+        if (isDisabled())
+            return;
+        
         String type = getSubmitType();
         
         Defense.notNull(type, "submitType");

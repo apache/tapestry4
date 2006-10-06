@@ -107,11 +107,11 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
 
         if (_eventHandlers == null)
             return;
-
+        
         PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, this);
-
+        
         Iterator i = _eventHandlers.entrySet().iterator();
-
+        
         while (i.hasNext())
         {
             Map.Entry entry = (Map.Entry) i.next();

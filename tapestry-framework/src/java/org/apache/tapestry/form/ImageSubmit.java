@@ -69,9 +69,9 @@ public abstract class ImageSubmit extends Submit
         
         // NN4 places a border unless you tell it otherwise.
         // IE ignores the border attribute and never shows a border.
-
+        
         writer.attribute("border", 0);
-
+        
         writer.attribute("src", imageURL);
 
         renderIdAttribute(writer, cycle);
