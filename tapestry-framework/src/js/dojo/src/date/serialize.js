@@ -15,74 +15,76 @@ dojo.require("dojo.string.common");
 /* ISO 8601 Functions
  *********************/
 
-dojo.date.setIso8601 = function (dateObject, formattedString){
+dojo.date.setIso8601 = function(/*Date*/dateObject, /*String*/formattedString){
+	// summary: sets a Date object based on an ISO 8601 formatted string (uses date and time)
 	var comps = (formattedString.indexOf("T") == -1) ? formattedString.split(" ") : formattedString.split("T");
 	dateObject = dojo.date.setIso8601Date(dateObject, comps[0]);
-	if (comps.length == 2) { dateObject = dojo.date.setIso8601Time(dateObject, comps[1]); }
+	if(comps.length == 2){ dateObject = dojo.date.setIso8601Time(dateObject, comps[1]); }
 	return dateObject; /* Date or null */
 };
 
-dojo.date.fromIso8601 = function (formattedString) {
+dojo.date.fromIso8601 = function(/*String*/formattedString){
+	// summary: returns a Date object based on an ISO 8601 formatted string (uses date and time)
 	return dojo.date.setIso8601(new Date(0, 0), formattedString);
 };
 
-
-dojo.date.setIso8601Date = function (dateObject, formattedString) {
+dojo.date.setIso8601Date = function(/*String*/dateObject, /*String*/formattedString){
+	// summary: sets a Date object based on an ISO 8601 formatted string (date only)
 	var regexp = "^([0-9]{4})((-?([0-9]{2})(-?([0-9]{2}))?)|" +
 			"(-?([0-9]{3}))|(-?W([0-9]{2})(-?([1-7]))?))?$";
 	var d = formattedString.match(new RegExp(regexp));
-	if(!d) {
+	if(!d){
 		dojo.debug("invalid date string: " + formattedString);
-		return null;
+		return null; // null
 	}
 	var year = d[1];
 	var month = d[4];
 	var date = d[6];
 	var dayofyear = d[8];
 	var week = d[10];
-	var dayofweek = (d[12]) ? d[12] : 1;
+	var dayofweek = d[12] ? d[12] : 1;
 
 	dateObject.setFullYear(year);
-	
-	if (dayofyear) { 
+
+	if(dayofyear){
 		dateObject.setMonth(0);
 		dateObject.setDate(Number(dayofyear));
 	}
-	else if (week) {
+	else if(week){
 		dateObject.setMonth(0);
 		dateObject.setDate(1);
 		var gd = dateObject.getDay();
-		var day =  (gd) ? gd : 7;
+		var day =  gd ? gd : 7;
 		var offset = Number(dayofweek) + (7 * Number(week));
 		
-		if (day <= 4) { dateObject.setDate(offset + 1 - day); }
-		else { dateObject.setDate(offset + 8 - day); }
-	} else {
-		if (month) { 
+		if(day <= 4){ dateObject.setDate(offset + 1 - day); }
+		else{ dateObject.setDate(offset + 8 - day); }
+	} else{
+		if(month){
 			dateObject.setDate(1);
 			dateObject.setMonth(month - 1); 
 		}
-		if (date) { dateObject.setDate(date); }
+		if(date){ dateObject.setDate(date); }
 	}
 	
-	return dateObject;
+	return dateObject; // Date
 };
 
-dojo.date.fromIso8601Date = function (formattedString) {
+dojo.date.fromIso8601Date = function(/*String*/formattedString){
+	// summary: returns a Date object based on an ISO 8601 formatted string (date only)
 	return dojo.date.setIso8601Date(new Date(0, 0), formattedString);
 };
 
+dojo.date.setIso8601Time = function(/*Date*/dateObject, /*String*/formattedString){
+	// summary: sets a Date object based on an ISO 8601 formatted string (time only)
 
-
-
-dojo.date.setIso8601Time = function (dateObject, formattedString) {
 	// first strip timezone info from the end
 	var timezone = "Z|(([-+])([0-9]{2})(:?([0-9]{2}))?)$";
 	var d = formattedString.match(new RegExp(timezone));
 
 	var offset = 0; // local time if no tz info
-	if (d) {
-		if (d[0] != 'Z') {
+	if(d){
+		if(d[0] != 'Z'){
 			offset = (Number(d[3]) * 60) + Number(d[5]);
 			offset *= ((d[2] == '-') ? 1 : -1);
 		}
@@ -93,9 +95,9 @@ dojo.date.setIso8601Time = function (dateObject, formattedString) {
 	// then work out the time
 	var regexp = "^([0-9]{2})(:?([0-9]{2})(:?([0-9]{2})(\.([0-9]+))?)?)?$";
 	d = formattedString.match(new RegExp(regexp));
-	if(!d) {
+	if(!d){
 		dojo.debug("invalid time string: " + formattedString);
-		return null;
+		return null; // null
 	}
 	var hours = d[1];
 	var mins = Number((d[3]) ? d[3] : 0);
@@ -107,13 +109,14 @@ dojo.date.setIso8601Time = function (dateObject, formattedString) {
 	dateObject.setSeconds(secs);
 	dateObject.setMilliseconds(ms);
 
-	if (offset !== 0) {
+	if(offset !== 0){
 		dateObject.setTime(dateObject.getTime() + offset * 60000);
 	}	
-	return dateObject;
+	return dateObject; // Date
 };
 
-dojo.date.fromIso8601Time = function (formattedString) {
+dojo.date.fromIso8601Time = function(/*String*/formattedString){
+	// summary: returns a Date object based on an ISO 8601 formatted string (date only)
 	return dojo.date.setIso8601Time(new Date(0, 0), formattedString);
 };
 
@@ -121,7 +124,7 @@ dojo.date.fromIso8601Time = function (formattedString) {
 /* RFC-3339 Date Functions
  *************************/
 
-dojo.date.toRfc3339 = function(/*Date?*/dateObject, /*String?*/selector) {
+dojo.date.toRfc3339 = function(/*Date?*/dateObject, /*String?*/selector){
 //	summary:
 //		Format a JavaScript Date object as a string according to RFC 3339
 //
@@ -133,17 +136,17 @@ dojo.date.toRfc3339 = function(/*Date?*/dateObject, /*String?*/selector) {
 //		Date and time will be formatted by default.
 
 //FIXME: tolerate Number, string input?
-	if(!dateObject) {
+	if(!dateObject){
 		dateObject = new Date();
 	}
 
 	var _ = dojo.string.pad;
 	var formattedDate = [];
-	if (selector != "timeOnly"){
+	if(selector != "timeOnly"){
 		var date = [_(dateObject.getFullYear(),4), _(dateObject.getMonth()+1,2), _(dateObject.getDate(),2)].join('-');
 		formattedDate.push(date);
 	}
-	if (selector != "dateOnly"){
+	if(selector != "dateOnly"){
 		var time = [_(dateObject.getHours(),2), _(dateObject.getMinutes(),2), _(dateObject.getSeconds(),2)].join(':');
 		var timezoneOffset = dateObject.getTimezoneOffset();
 		time += (timezoneOffset > 0 ? "-" : "+") + 
@@ -154,7 +157,7 @@ dojo.date.toRfc3339 = function(/*Date?*/dateObject, /*String?*/selector) {
 	return formattedDate.join('T'); // String
 };
 
-dojo.date.fromRfc3339 = function(/*String*/rfcDate) {
+dojo.date.fromRfc3339 = function(/*String*/rfcDate){
 //	summary:
 //		Create a JavaScript Date object from a string formatted according to RFC 3339
 //
@@ -164,7 +167,7 @@ dojo.date.fromRfc3339 = function(/*String*/rfcDate) {
 
 	// backwards compatible support for use of "any" instead of just not 
 	// including the time
-	if(rfcDate.indexOf("Tany")!=-1) {
+	if(rfcDate.indexOf("Tany")!=-1){
 		rfcDate = rfcDate.replace("Tany","");
 	}
 	var dateObject = new Date();

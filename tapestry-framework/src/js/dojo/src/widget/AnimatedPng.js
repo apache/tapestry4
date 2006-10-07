@@ -14,26 +14,46 @@ dojo.provide("dojo.widget.AnimatedPng");
 dojo.require("dojo.widget.*");
 dojo.require("dojo.widget.HtmlWidget");
 
-
+// summary
+//	PNGs have great tranparency, but lack animation.
+//	This widget lets you point an img tag at an animated gif for graceful degrading,
+//	while letting you specify a png containing a grid of cells to animate between.
+//
+// usage
+//	<img dojoType="AnimatedPng"
+//		src="images/animatedpng_static.gif"		(for degradation; in case javascript is disabled)
+//		aniSrc="images/animatedpng_frames.gif"
+//		width="20"
+//		height="20"
+//		interval="50"
+//	/>
+//
+//	var params = {src: "images/animatedpng_static.gif", aniSrc: "images/animatedpng_frames.gif", width: 20, height: 20, interval: 50};
+//	var widget = dojo.widget.createWidget("AnimatedPng", params, document.getElementById("pngContainer"));
+//
 dojo.widget.defineWidget(
 	"dojo.widget.AnimatedPng",
 	dojo.widget.HtmlWidget,
 	{
 		isContainer: false,
 
-		domNode: null,
+		// Integer
+		//	width (of each frame) in pixels
 		width: 0,
+		
+		// Integer
+		//	height (of each frame) in pixels
 		height: 0,
+		
+		// String
+		//	pathname to png file containing frames to be animated (ie, displayed sequentially)
 		aniSrc: '',
+		
+		// Integer
+		//	time to display each frame
 		interval: 100,
 
-		cellWidth: 0,
-		cellHeight: 0,
-		aniCols: 1,
-		aniRows: 1,
-		aniCells: 1,
-
-		blankSrc: dojo.uri.dojoUri("src/widget/templates/images/blank.gif"),
+		_blankSrc: dojo.uri.dojoUri("src/widget/templates/images/blank.gif"),
 
 		templateString: '<img class="dojoAnimatedPng" />',
 
@@ -44,13 +64,12 @@ dojo.widget.defineWidget(
 			var img = new Image();
 			var self = this;
 
-			img.onload = function(){ self.initAni(img.width, img.height); };
+			img.onload = function(){ self._initAni(img.width, img.height); };
 			img.src = this.aniSrc;
 		},
 
-		initAni: function(w, h){
-
-			this.domNode.src = this.blankSrc;
+		_initAni: function(w, h){
+			this.domNode.src = this._blankSrc;
 			this.domNode.width = this.cellWidth;
 			this.domNode.height = this.cellHeight;
 			this.domNode.style.backgroundImage = 'url('+this.aniSrc+')';
@@ -61,11 +80,10 @@ dojo.widget.defineWidget(
 			this.aniCells = this.aniCols * this.aniRows;
 			this.aniFrame = 0;
 
-			window.setInterval(dojo.lang.hitch(this, 'tick'), this.interval);
+			window.setInterval(dojo.lang.hitch(this, '_tick'), this.interval);
 		},
 
-		tick: function(){
-
+		_tick: function(){
 			this.aniFrame++;
 			if (this.aniFrame == this.aniCells) this.aniFrame = 0;
 

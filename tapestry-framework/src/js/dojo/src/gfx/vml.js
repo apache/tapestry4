@@ -18,6 +18,8 @@ dojo.require("dojo.string.*");
 
 dojo.require("dojo.gfx.color");
 dojo.require("dojo.gfx.common");
+dojo.require("dojo.gfx.shape");
+dojo.require("dojo.gfx.path");
 
 dojo.require("dojo.experimental");
 dojo.experimental("dojo.gfx.vml");
@@ -281,7 +283,7 @@ dojo.lang.extend(dojo.gfx.Shape, {
 	}
 });
 
-dojo.declare("dojo.gfx.Group", dojo.gfx.VirtualGroup, {
+dojo.declare("dojo.gfx.Group", dojo.gfx.shape.VirtualGroup, {
 	attach: function(rawNode){
 		if(rawNode){
 			this.rawNode = rawNode;
@@ -324,13 +326,10 @@ dojo.lang.extend(dojo.gfx.Shape, zIndex);
 dojo.lang.extend(dojo.gfx.Group, zIndex);
 delete zIndex;
 
-dojo.declare("dojo.gfx.Rect", dojo.gfx.Shape, {
-	initializer: function(rawNode) {
-		this.shape = dojo.lang.shallowCopy(dojo.gfx.defaultRect, true);
-		this.attach(rawNode);
-	},
+dojo.declare("dojo.gfx.Rect", dojo.gfx.shape.Rect, {
 	setShape: function(newShape){
 		var shape = this.shape = dojo.gfx.makeParameters(this.shape, newShape);
+		this.bbox = null;
 		var style = this.rawNode.style;
 		style.left   = shape.x.toFixed();
 		style.top    = shape.y.toFixed();
@@ -365,12 +364,13 @@ dojo.declare("dojo.gfx.Rect", dojo.gfx.Shape, {
 		// a workaround for the VML's arcsize bug: cannot read arcsize of an instantiated node
 		var arcsize = rawNode.outerHTML.match(/arcsize = \"(\d*\.?\d+[%f]?)\"/)[1];
 		arcsize = (arcsize.indexOf("%") >= 0) ? parseFloat(arcsize) / 100 : dojo.gfx.vml._parseFloat(arcsize);
-		var width  = parseFloat(rawNode.style.width);
-		var height = parseFloat(rawNode.style.height);
+		var style = rawNode.style;
+		var width  = parseFloat(style.width);
+		var height = parseFloat(style.height);
 		// make an object
 		return dojo.gfx.makeParameters(dojo.gfx.defaultRect, {
-			x: parseInt(rawNode.style.left),
-			y: parseInt(rawNode.style.top),
+			x: parseInt(style.left),
+			y: parseInt(style.top),
 			width:  width,
 			height: height,
 			r: Math.min(width, height) * arcsize
@@ -379,27 +379,24 @@ dojo.declare("dojo.gfx.Rect", dojo.gfx.Shape, {
 });
 dojo.gfx.Rect.nodeType = "roundrect"; // use a roundrect so the stroke join type is respected
 
-dojo.declare("dojo.gfx.Ellipse", dojo.gfx.Shape, {
-	initializer: function(rawNode) {
-		this.shape = dojo.lang.shallowCopy(dojo.gfx.defaultEllipse, true);
-		this.attach(rawNode);
-	},
+dojo.declare("dojo.gfx.Ellipse", dojo.gfx.shape.Ellipse, {
 	setShape: function(newShape){
-		var ts = this.shape = dojo.gfx.makeParameters(this.shape, newShape);
-		with(this.rawNode.style){
-			left   = (ts.cx - ts.rx).toFixed();
-			top    = (ts.cy - ts.ry).toFixed();
-			width  = (ts.rx * 2).toFixed();
-			height = (ts.ry * 2).toFixed();
-		}
+		var shape = this.shape = dojo.gfx.makeParameters(this.shape, newShape);
+		this.bbox = null;
+		var style = this.rawNode.style;
+		style.left   = (shape.cx - shape.rx).toFixed();
+		style.top    = (shape.cy - shape.ry).toFixed();
+		style.width  = (shape.rx * 2).toFixed();
+		style.height = (shape.ry * 2).toFixed();
 		return this.setTransform(this.matrix);
 	},
 	attachShape: function(rawNode){
-		var rx = parseInt(rawNode.style.width ) / 2;
-		var ry = parseInt(rawNode.style.height) / 2;
+		var style = this.rawNode.style;
+		var rx = parseInt(style.width ) / 2;
+		var ry = parseInt(style.height) / 2;
 		return dojo.gfx.makeParameters(dojo.gfx.defaultEllipse, {
-			cx: parseInt(rawNode.style.left) + rx,
-			cy: parseInt(rawNode.style.top ) + ry,
+			cx: parseInt(style.left) + rx,
+			cy: parseInt(style.top ) + ry,
 			rx: rx,
 			ry: ry
 		});
@@ -407,57 +404,51 @@ dojo.declare("dojo.gfx.Ellipse", dojo.gfx.Shape, {
 });
 dojo.gfx.Ellipse.nodeType = "oval";
 
-dojo.declare("dojo.gfx.Circle", dojo.gfx.Shape, {
-	initializer: function(rawNode) {
-		this.shape = dojo.lang.shallowCopy(dojo.gfx.defaultCircle, true);
-		this.attach(rawNode);
-	},
+dojo.declare("dojo.gfx.Circle", dojo.gfx.shape.Circle, {
 	setShape: function(newShape){
-		this.shape = dojo.gfx.makeParameters(this.shape, newShape);
-		this.rawNode.style.left   = (this.shape.cx - this.shape.r).toFixed();
-		this.rawNode.style.top    = (this.shape.cy - this.shape.r).toFixed();
-		this.rawNode.style.width  = (this.shape.r * 2).toFixed();
-		this.rawNode.style.height = (this.shape.r * 2).toFixed();
+		var shape = this.shape = dojo.gfx.makeParameters(this.shape, newShape);
+		this.bbox = null;
+		var style = this.rawNode.style;
+		style.left   = (shape.cx - shape.r).toFixed();
+		style.top    = (shape.cy - shape.r).toFixed();
+		style.width  = (shape.r * 2).toFixed();
+		style.height = (shape.r * 2).toFixed();
 		return this;
 	},
 	attachShape: function(rawNode){
-		var r = parseInt(rawNode.style.width) / 2;
+		var style = this.rawNode.style;
+		var r = parseInt(style.width) / 2;
 		return dojo.gfx.makeParameters(dojo.gfx.defaultCircle, {
-			cx: parseInt(rawNode.style.left) + r,
-			cy: parseInt(rawNode.style.top)  + r,
+			cx: parseInt(style.left) + r,
+			cy: parseInt(style.top)  + r,
 			r:  r
 		});
 	}
 });
 dojo.gfx.Circle.nodeType = "oval";
 
-dojo.declare("dojo.gfx.Line", dojo.gfx.Shape, {
-	initializer: function(rawNode) {
-		this.shape = dojo.lang.shallowCopy(dojo.gfx.defaultLine, true);
-		this.attach(rawNode);
-	},
+dojo.declare("dojo.gfx.Line", dojo.gfx.shape.Line, {
 	setShape: function(newShape){
-		this.shape = dojo.gfx.makeParameters(this.shape, newShape);
-		this.rawNode.from = this.shape.x1.toFixed() + "," + this.shape.y1.toFixed();
-		this.rawNode.to   = this.shape.x2.toFixed() + "," + this.shape.y2.toFixed();
+		var shape = this.shape = dojo.gfx.makeParameters(this.shape, newShape);
+		this.bbox = null;
+		var rawNode = this.rawNode;
+		rawNode.from = shape.x1.toFixed() + "," + shape.y1.toFixed();
+		rawNode.to   = shape.x2.toFixed() + "," + shape.y2.toFixed();
 		return this;
 	},
 	attachShape: function(rawNode){
+		var rawNode = this.rawNode;
 		return dojo.gfx.makeParameters(dojo.gfx.defaultLine, {
-			x1: this.rawNode.from.x,
-			y1: this.rawNode.from.y,
-			x2: this.rawNode.to.x,
-			y2: this.rawNode.to.y
+			x1: rawNode.from.x,
+			y1: rawNode.from.y,
+			x2: rawNode.to.x,
+			y2: rawNode.to.y
 		});
 	}
 });
 dojo.gfx.Line.nodeType = "line";
 
-dojo.declare("dojo.gfx.Polyline", dojo.gfx.Shape, {
-	initializer: function(rawNode) {
-		this.shape = dojo.lang.shallowCopy(dojo.gfx.defaultPolyline, true);
-		this.attach(rawNode);
-	},
+dojo.declare("dojo.gfx.Polyline", dojo.gfx.shape.Polyline, {
 	setShape: function(points, closed){
 		if(points && points instanceof Array){
 			this.shape = dojo.gfx.makeParameters(this.shape, { points: points });
@@ -465,11 +456,14 @@ dojo.declare("dojo.gfx.Polyline", dojo.gfx.Shape, {
 		}else{
 			this.shape = dojo.gfx.makeParameters(this.shape, points);
 		}
-		var attr = "";
-		for(var i = 0; i< this.shape.points.length; ++i){
-			attr += this.shape.points[i].x.toFixed(8) + " " + this.shape.points[i].y.toFixed(8) + " ";
+		this.bbox = null;
+		var attr = [];
+		var p = this.shape.points;
+		for(var i = 0; i< p.length; ++i){
+			attr.push(p[i].x.toFixed());
+			attr.push(p[i].y.toFixed());
 		}
-		this.rawNode.points.value = attr;
+		this.rawNode.points.value = attr.join(" ");
 		return this.setTransform(this.matrix);
 	},
 	attachShape: function(rawNode){
@@ -485,7 +479,60 @@ dojo.declare("dojo.gfx.Polyline", dojo.gfx.Shape, {
 });
 dojo.gfx.Polyline.nodeType = "polyline";
 
-dojo.gfx.Path._calcArc = function(alpha){
+dojo.declare("dojo.gfx.Image", dojo.gfx.shape.Image, {
+	getEventSource: function() {
+		return this.rawNode ? this.rawNode.firstChild : null;
+	},
+	setShape: function(newShape){
+		var shape = this.shape = dojo.gfx.makeParameters(this.shape, newShape);
+		this.bbox = null;
+		var firstChild = this.rawNode.firstChild;
+        firstChild.src = shape.src;
+        if(shape.width || shape.height){
+			firstChild.style.width  = shape.width;
+			firstChild.style.height = shape.height;
+        }
+		return this.setTransform(this.matrix);
+	},
+	setStroke: function() { return this; },
+	setFill:   function() { return this; },
+	attachShape: function(rawNode){
+		var shape = dojo.lang.shallowCopy(dojo.gfx.defaultImage, true);
+		shape.src = rawNode.firstChild.src;
+		return shape;
+	},
+	attachStroke: function(rawNode){ return null; },
+	attachFill:   function(rawNode){ return null; },
+	attachTransform: function(rawNode) {
+		var matrix = {};
+		if(rawNode){
+			var m = rawNode.filters["DXImageTransform.Microsoft.Matrix"];
+			matrix.xx = m.M11;
+			matrix.xy = m.M12;
+			matrix.yx = m.M21;
+			matrix.yy = m.M22;
+			matrix.dx = m.Dx;
+			matrix.dy = m.Dy;
+		}
+		return dojo.gfx.matrix.normalize(matrix);
+	},
+	_applyTransform: function() {
+		var matrix = this._getRealMatrix();
+		if(!matrix) return this;
+		with(this.rawNode.filters["DXImageTransform.Microsoft.Matrix"]){
+			M11 = matrix.xx;
+			M12 = matrix.xy;
+			M21 = matrix.yx;
+			M22 = matrix.yy;
+			Dx  = matrix.dx;
+			Dy  = matrix.dy;
+		}
+		return this;
+	}
+});
+dojo.gfx.Image.nodeType = "image";
+
+dojo.gfx.path._calcArc = function(alpha){
 	var cosa  = Math.cos(alpha);
 	var sina  = Math.sin(alpha);
 	// return a start point, 1st and 2nd control points, and an end point
@@ -498,6 +545,7 @@ dojo.gfx.Path._calcArc = function(alpha){
 	};
 };
 
+/*
 dojo.lang.extend(dojo.gfx.Path, {
 	_pathVmlToSvgMap: { r: "l", l: "L", t: "m", m: "M", v: "c", c: "C", x: "z" },
 	_pathSvgToVmlMap: { l: "r", L: "l", m: "t", M: "m", c: "v", C: "c", z: "x" },
@@ -617,63 +665,408 @@ dojo.lang.extend(dojo.gfx.Path, {
 	}
 });
 dojo.gfx.Path.nodeType = "shape";
+*/
 
-dojo.declare("dojo.gfx.Image", dojo.gfx.Shape, {
-	initializer: function(rawNode) {
-		this.shape = dojo.lang.shallowCopy(dojo.gfx.defaultImage, true);
-		this.attach(rawNode);
-	},
-	getEventSource: function() {
-		return this.rawNode ? this.rawNode.firstChild : null;
-	},
-	setShape: function(newShape){
-		var ts = this.shape = dojo.gfx.makeParameters(this.shape, newShape);
-        this.rawNode.firstChild.src = ts.src;
-        if(ts.width || ts.height){
-			with(this.rawNode.firstChild.style){
-				width  = ts.width;
-				height = ts.height;
+dojo.declare("dojo.gfx.Path", dojo.gfx.path.Path, {
+	initializer: function(rawNode){
+		this.inherited("initializer", [rawNode]);
+		this.vmlPath = "";
+		this.lastControl = {};
+		// override inherited methods
+		var _this = this;
+		var old_updateWithSegment = this._updateWithSegment;
+		this._updateWithSegment = function(segment){
+			var last = dojo.lang.shallowCopy(_this.last);
+			old_updateWithSegment.call(_this, segment);
+			// add a VML path segment
+			var path = _this[_this.renderers[segment.action]](segment, last);
+			if(typeof(_this.vmlPath) == "string"){
+				_this.vmlPath += path.join("");
+			}else{
+				_this.vmlPath = _this.vmlPath.concat(path);
 			}
-        }
-		return this.setTransform(this.matrix);
+			if(typeof(_this.vmlPath) == "string"){
+				_this.rawNode.path.v = _this.vmlPath + " e";
+			}
+		};
+		var oldSetShape = this.setShape;
+		this.setShape = function(newShape){
+			_this.vmlPath = [];
+			_this.lastControl = {};
+			oldSetShape.call(_this, newShape);
+			_this.vmlPath = _this.vmlPath.join("");
+			_this.rawNode.path.v = _this.vmlPath + " e";
+			return _this;
+		};
 	},
-	setStroke: function() { return this; },
-	setFill:   function() { return this; },
-	attachShape: function(rawNode){
-		var shape = dojo.lang.shallowCopy(dojo.gfx.defaultImage, true);
-		shape.src = rawNode.firstChild.src;
-		return shape;
+	// VML-specific segment renderers
+	renderers: {
+		M: "_moveToA", m: "_moveToR", 
+		L: "_lineToA", l: "_lineToR", 
+		H: "_hLineToA", h: "_hLineToR", 
+		V: "_vLineToA", v: "_vLineToR", 
+		C: "_curveToA", c: "_curveToR", 
+		S: "_smoothCurveToA", s: "_smoothCurveToR", 
+		Q: "_qCurveToA", q: "_qCurveToR", 
+		T: "_qSmoothCurveToA", t: "_qSmoothCurveToR", 
+		A: "_arcTo", a: "_arcTo", 
+		Z: "_closePath", z: "_closePath"
 	},
-	attachStroke: function(rawNode){ return null; },
-	attachFill:   function(rawNode){ return null; },
-	attachTransform: function(rawNode) {
-		var matrix = {};
-		if(rawNode){
-			var m = rawNode.filters["DXImageTransform.Microsoft.Matrix"];
-			matrix.xx = m.M11;
-			matrix.xy = m.M12;
-			matrix.yx = m.M21;
-			matrix.yy = m.M22;
-			matrix.dx = m.Dx;
-			matrix.dy = m.Dy;
+	_addArgs: function(path, args, from, upto){
+		if(typeof(upto) == "undefined"){
+			upto = args.length;
 		}
-		return dojo.gfx.matrix.normalize(matrix);
-	},
-	_applyTransform: function() {
-		var matrix = this._getRealMatrix();
-		if(!matrix) return this;
-		with(this.rawNode.filters["DXImageTransform.Microsoft.Matrix"]){
-			M11 = matrix.xx;
-			M12 = matrix.xy;
-			M21 = matrix.yx;
-			M22 = matrix.yy;
-			Dx  = matrix.dx;
-			Dy  = matrix.dy;
+		if(typeof(from) == "undefined"){
+			from = 0;
 		}
-		return this;
+		for(var i = from; i < upto; ++i){
+			path.push(" ");
+			path.push(args[i].toFixed());
+		}
+	},
+	_addArgsAdjusted: function(path, last, args, from, upto){
+		if(typeof(upto) == "undefined"){
+			upto = args.length;
+		}
+		if(typeof(from) == "undefined"){
+			from = 0;
+		}
+		for(var i = from; i < upto; i += 2){
+			path.push(" ");
+			path.push((last.x + args[i]).toFixed());
+			path.push(" ");
+			path.push((last.y + args[i + 1]).toFixed());
+		}
+	},
+	_moveToA: function(segment){
+		var p = [" m"];
+		var n = segment.args;
+		var l = n.length;
+		if(l == 2){
+			this._addArgs(p, n);
+		}else{
+			this._addArgs(p, n, 0, 2);
+			p.push(" l");
+			this._addArgs(p, n, 2);
+		}
+		this.lastControl = {};
+		return p;
+	},
+	_moveToR: function(segment, last){
+		var p = ["x" in last ? " t" : " m"];
+		var n = segment.args;
+		var l = n.length;
+		if(l == 2){
+			this._addArgs(p, n);
+		}else{
+			this._addArgs(p, n, 0, 2);
+			p.push(" r");
+			this._addArgs(p, n, 2);
+		}
+		this.lastControl = {};
+		return p;
+	},
+	_lineToA: function(segment){
+		var p = [" l"];
+		this._addArgs(p, segment.args);
+		this.lastControl = {};
+		return p;
+	},
+	_lineToR: function(segment){
+		var p = [" r"];
+		this._addArgs(p, segment.args);
+		this.lastControl = {};
+		return p;
+	},
+	_hLineToA: function(segment, last){
+		var p = [" l"];
+		var n = segment.args;
+		var l = n.length;
+		var y = " " + last.y.toFixed();
+		for(var i = 0; i < l; ++i){
+			p.push(" ");
+			p.push(n[i].toFixed());
+			p.push(y);
+		}
+		this.lastControl = {};
+		return p;
+	},
+	_hLineToR: function(segment){
+		var p = [" r"];
+		var n = segment.args;
+		var l = n.length;
+		for(var i = 0; i < l; ++i){
+			p.push(" ");
+			p.push(n[i].toFixed());
+			p.push(" 0");
+		}
+		this.lastControl = {};
+		return p;
+	},
+	_vLineToA: function(segment, last){
+		var p = [" l"];
+		var n = segment.args;
+		var l = n.length;
+		var x = " " + last.x.toFixed();
+		for(var i = 0; i < l; ++i){
+			p.push(x);
+			p.push(" ");
+			p.push(n[i].toFixed());
+		}
+		this.lastControl = {};
+		return p;
+	},
+	_vLineToR: function(segment){
+		var p = [" r"];
+		var n = segment.args;
+		var l = n.length;
+		for(var i = 0; i < l; ++i){
+			p.push(" 0 ");
+			p.push(n[i].toFixed());
+		}
+		this.lastControl = {};
+		return p;
+	},
+	_curveToA: function(segment){
+		var p = [];
+		var n = segment.args;
+		var l = n.length;
+		for(var i = 0; i < l; i += 6){
+			p.push(" c");
+			this._addArgs(p, n, i, i + 6);
+		}
+		this.lastControl = {x: n[l - 4], y: n[l - 3], type: "C"};
+		return p;
+	},
+	_curveToR: function(segment, last){
+		var p = [];
+		var n = segment.args;
+		var l = n.length;
+		for(var i = 0; i < l; i += 6){
+			p.push(" v");
+			this._addArgs(p, n, i, i + 6);
+			this.lastControl = {x: last.x + n[i + 2], y: last.y + n[i + 3]};
+			last.x += n[i + 4];
+			last.y += n[i + 5];
+		}
+		this.lastControl.type = "C";
+		return p;
+	},
+	_smoothCurveToA: function(segment, last){
+		var p = [];
+		var n = segment.args;
+		var l = n.length;
+		for(var i = 0; i < l; i += 4){
+			p.push(" c");
+			if(this.lastControl.type == "C"){
+				this._addArgs(p, [
+					2 * last.x - this.lastControl.x, 
+					2 * last.y - this.lastControl.y
+				]);
+			}else{
+				this._addArgs(p, [last.x, last.y]);
+			}
+			this._addArgs(p, n, i, i + 4);
+		}
+		this.lastControl = {x: n[l - 4], y: n[l - 3], type: "C"};
+		return p;
+	},
+	_smoothCurveToR: function(segment, last){
+		var p = [];
+		var n = segment.args;
+		var l = n.length;
+		for(var i = 0; i < l; i += 4){
+			p.push(" v");
+			if(this.lastControl.type == "C"){
+				this._addArgs(p, [
+					last.x - this.lastControl.x, 
+					last.y - this.lastControl.y
+				]);
+			}else{
+				this._addArgs(p, [0, 0]);
+			}
+			this._addArgs(p, n, i, i + 4);
+			this.lastControl = {x: last.x + n[i], y: last.y + n[i + 1]};
+			last.x += n[i + 2];
+			last.y += n[i + 3];
+		}
+		this.lastControl.type = "C";
+		return p;
+	},
+	_qCurveToA: function(segment){
+		var p = [];
+		var n = segment.args;
+		var l = n.length;
+		for(var i = 0; i < l; i += 4){
+			p.push(" qb");
+			this._addArgs(p, n, i, i + 4);
+		}
+		this.lastControl = {x: n[l - 4], y: n[l - 3], type: "Q"};
+		return p;
+	},
+	_qCurveToR: function(segment, last){
+		var p = [];
+		var n = segment.args;
+		var l = n.length;
+		for(var i = 0; i < l; i += 4){
+			p.push(" qb");
+			this._addArgsAdjusted(p, last, n, i, i + 4);
+			this.lastControl = {x: last.x + n[i], y: last.y + n[i + 1]};
+			last.x += n[i + 2];
+			last.y += n[i + 3];
+		}
+		this.lastControl.type = "Q";
+		return p;
+	},
+	_qSmoothCurveToA: function(segment, last){
+		var p = [];
+		var n = segment.args;
+		var l = n.length;
+		for(var i = 0; i < l; i += 2){
+			p.push(" qb");
+			if(this.lastControl.type == "Q"){
+				this._addArgs(p, [
+					this.lastControl.x = 2 * last.x - this.lastControl.x, 
+					this.lastControl.y = 2 * last.y - this.lastControl.y
+				]);
+			}else{
+				this._addArgs(p, [
+					this.lastControl.x = last.x, 
+					this.lastControl.y = last.y
+				]);
+			}
+			this._addArgs(p, n, i, i + 2);
+		}
+		this.lastControl.type = "Q";
+		return p;
+	},
+	_qSmoothCurveToR: function(segment, last){
+		var p = [];
+		var n = segment.args;
+		var l = n.length;
+		for(var i = 0; i < l; i += 2){
+			p.push(" qb");
+			if(this.lastControl.type == "Q"){
+				this._addArgs(p, [
+					this.lastControl.x = 2 * last.x - this.lastControl.x, 
+					this.lastControl.y = 2 * last.y - this.lastControl.y
+				]);
+			}else{
+				this._addArgs(p, [
+					this.lastControl.x = last.x, 
+					this.lastControl.y = last.y
+				]);
+			}
+			this._addArgsAdjusted(p, last, n, i, i + 2);
+		}
+		this.lastControl.type = "Q";
+		return p;
+	},
+	_PI4: Math.PI / 4,
+	_curvePI4: dojo.gfx.path._calcArc(Math.PI / 8),
+	_calcArcTo: function(path, last, rx, ry, xRotg, large, cw, x, y){
+		var m = dojo.gfx.matrix;
+		// calculate parameters
+		var xRot = -dojo.math.degToRad(xRotg);
+		var rx2 = rx * rx;
+		var ry2 = ry * ry;
+		var pa = m.multiplyPoint(
+			m.rotate(-xRot), 
+			{x: (last.x - x) / 2, y: (last.y - y) / 2}
+		);
+		var pax2 = pa.x * pa.x;
+		var pay2 = pa.y * pa.y;
+		var c1 = Math.sqrt((rx2 * ry2 - rx2 * pay2 - ry2 * pax2) / (rx2 * pay2 + ry2 * pax2));
+		var ca = {
+			x:  c1 * rx * pa.y / ry,
+			y: -c1 * ry * pa.x / rx
+		};
+		if(large == cw){
+			ca = {x: -ca.x, y: -ca.y};
+		}
+		// our center
+		var c = m.multiplyPoint(
+			[
+				m.translate(
+					(last.x + x) / 2,
+					(last.y + y) / 2
+				),
+				m.rotate(xRot)
+			], 
+			ca
+		);
+		// start of our arc
+		var startAngle = Math.atan2(c.y - last.y, last.x - c.x) - xRot;
+		var endAngle   = Math.atan2(c.y - y, x - c.x) - xRot;
+		// size of our arc in radians
+		var theta = cw ? startAngle - endAngle : endAngle - startAngle;
+		if(theta < 0){
+			theta += this._2PI;
+		}else if(theta > this._2PI){
+			theta = this._2PI;
+		}
+		// calculate our elliptic transformation
+		var elliptic_transform = m.normalize([
+			m.translate(c.x, c.y),
+			m.rotate(xRot),
+			m.scale(rx, ry)
+		]);
+		// draw curve chunks
+		var alpha = this._PI4 / 2;
+		var curve = this._curvePI4;
+		var step  = cw ? -alpha : alpha;
+		for(var angle = theta; angle > 0; angle -= this._PI4){
+			if(angle < this._PI4){
+				alpha = angle / 2;
+				curve = dojo.gfx.path._calcArc(alpha);
+				step  = cw ? -alpha : alpha;
+			}
+			var c1, c2, e;
+			var M = m.normalize([elliptic_transform, m.rotate(startAngle + step)]);
+			if(cw){
+				c1 = m.multiplyPoint(M, curve.c2);
+				c2 = m.multiplyPoint(M, curve.c1);
+				e  = m.multiplyPoint(M, curve.s );
+			}else{
+				c1 = m.multiplyPoint(M, curve.c1);
+				c2 = m.multiplyPoint(M, curve.c2);
+				e  = m.multiplyPoint(M, curve.e );
+			}
+			// draw the curve
+			path.push(" c");
+			this._addArgs(path, [c1.x, c1.y, c2.x, c2.y, e.x, e.y]);
+			startAngle += 2 * step;
+		}
+	},
+	_arcTo: function(segment, last){
+		var p = [];
+		var n = segment.args;
+		var l = n.length;
+		var relative = segment.action == "a";
+		for(var i = 0; i < l; i += 7){
+			var x1 = n[i + 5];
+			var y1 = n[i + 6];
+			if(relative){
+				x1 += last.x;
+				y1 += last.y;
+			}
+			this._calcArcTo(
+				p, last, n[i], n[i + 1], n[i + 2], 
+				n[i + 3] ? 1 : 0, n[i + 4] ? 1 : 0,
+				x1, y1
+			);
+			last = {x: x1, y: y1};
+		}
+		this.lastControl = {};
+		return p;
+	},
+	_closePath: function(){
+		this.lastControl = {};
+		return ["x"];
 	}
 });
-dojo.gfx.Image.nodeType = "image";
+dojo.gfx.Path.nodeType = "shape";
+
 
 dojo.gfx._creators = {
 	createRect: function(rect){

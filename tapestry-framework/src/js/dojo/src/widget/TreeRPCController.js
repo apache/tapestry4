@@ -16,20 +16,9 @@ dojo.require("dojo.json")
 dojo.require("dojo.io.*");
 dojo.require("dojo.widget.TreeLoadingController");
 
-
 dojo.deprecated("dojo.widget.TreeRPCController", "use TreeV3 and TreeRpcControllerV3 instead", "0.5");
 
-dojo.widget.tags.addParseTreeHandler("dojo:TreeRPCController");
-
-dojo.widget.TreeRPCController = function(){
-	dojo.widget.TreeLoadingController.call(this);
-}
-
-dojo.inherits(dojo.widget.TreeRPCController, dojo.widget.TreeLoadingController);
-
-dojo.lang.extend(dojo.widget.TreeRPCController, {
-	widgetType: "TreeRPCController",
-
+dojo.widget.defineWidget("dojo.widget.TreeRPCController", dojo.widget.TreeLoadingController, {
 	/**
 	 * Make request to server about moving children.
 	 *

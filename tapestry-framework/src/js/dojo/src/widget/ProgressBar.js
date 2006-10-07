@@ -202,6 +202,7 @@ dojo.widget.defineWidget(
 				this._animationStopped = false;
 				this._setupAnimation();
 				this.showText(false);
+				this.internalProgress.style.height="105%";
 				this._animation.play();
 			}
 		},
@@ -209,6 +210,7 @@ dojo.widget.defineWidget(
 			if (this._animation) {
 				this._animationStopped = true;
 				this._animation.stop();
+				this.internalProgress.style.height="100%";
 				this.internalProgress.style.left = "0px";
 				this._restoreValues();
 				this._setLabelPosition();

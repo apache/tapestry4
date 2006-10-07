@@ -76,8 +76,8 @@ dojo.widget.ComboBoxDataProvider = function(dataPairs, limit, timeout){
 	// structure for storage of items.
 
 	this.data = [];
-	this.searchTimeout = timeout | 500;
-	this.searchLimit = limit | 30;
+	this.searchTimeout = timeout || 500;
+	this.searchLimit = limit || 30;
 	this.searchType = "STARTSTRING"; // may also be "STARTWORD" or "SUBSTRING"
 	this.caseSensitive = false;
 	// for caching optimizations
@@ -95,7 +95,8 @@ dojo.widget.ComboBoxDataProvider = function(dataPairs, limit, timeout){
 				var ol = opts.length;
 				var data = [];
 				for(var x=0; x<ol; x++){
-					var keyValArr = [String(opts[x].innerHTML), String(opts[x].value)];
+					var text = opts[x].textContent || opts[x].innerText || opts[x].innerHTML;
+					var keyValArr = [String(text), String(opts[x].value)];
 					data.push(keyValArr);
 					if(opts[x].selected){ 
 						cbox.setAllValues(keyValArr[0], keyValArr[1]);
@@ -242,7 +243,6 @@ dojo.widget.defineWidget(
 		optionsListWrapper: null,
 		optionsListNode: null,
 		downArrowNode: null,
-		cbTableNode: null,
 		searchTimer: null,
 		searchDelay: 100,
 		dataUrl: "",
@@ -458,8 +458,8 @@ dojo.widget.defineWidget(
 		},
 
 		setAllValues: function(value1, value2){
-			this.setValue(value1);
 			this.setSelectedValue(value2);
+			this.setValue(value1);
 		},
 
 		// does the actual highlight
@@ -512,19 +512,14 @@ dojo.widget.defineWidget(
 
 		// reset button size; this function is called when the input area has changed size
 		onResize: function(){
-			var inputSize = dojo.html.getBorderBox(this.textInputNode);
+			var inputSize = dojo.html.getContentBox(this.textInputNode);
+			if( inputSize.height == 0 ){
+				// need more time to calculate size
+				dojo.lang.setTimeout(this, "onResize", 50);
+				return;
+			}
 			var buttonSize = { width: inputSize.height, height: inputSize.height};
-			dojo.html.setMarginBox(this.downArrowNode, buttonSize);
-		},
-
-		postMixInProperties: function(args, frag){
-			this.inherited("postMixInProperties", [args, frag]); 
-
-			// set image size before instantiating template;
-			// changing it afterwards doesn't work on FF
-			var inputNode = this.getFragNodeRef(frag);
-			var inputSize = dojo.html.getBorderBox(inputNode);
-			this.initialButtonSize = inputSize.height + "px";
+			dojo.html.setContentBox(this.downArrowNode, buttonSize);
 		},
 
 		fillInTemplate: function(args, frag){
@@ -536,7 +531,14 @@ dojo.widget.defineWidget(
 			this.comboBoxValue.name = this.name; 
 			this.comboBoxSelectionValue.name = this.name+"_selected";
 
+			/* different nodes get different parts of the style */
+			dojo.html.copyStyle(this.domNode, source);
 			dojo.html.copyStyle(this.textInputNode, source);
+			dojo.html.copyStyle(this.downArrowNode, source);
+			with (this.downArrowNode.style) { // calculate these later
+				width = "0px";
+				height = "0px";
+			}
 
 			var dpClass;
 			if(this.mode == "remote"){
@@ -729,7 +731,6 @@ dojo.widget.defineWidget(
 				}
 			}
 
-			this.textInputNode.value = tgt.getAttribute("resultName");
 			this.selectedResult = [tgt.getAttribute("resultName"), tgt.getAttribute("resultValue")];
 			this.setAllValues(tgt.getAttribute("resultName"), tgt.getAttribute("resultValue"));
 			if(!evt.noHide){
@@ -773,7 +774,7 @@ dojo.widget.defineWidget(
 					width = (dojo.html.getMarginBox(this.domNode).width-2)+"px";
 					
 				}
-				this.popupWidget.open(this.cbTableNode, this, this.downArrowNode);
+				this.popupWidget.open(this.domNode, this, this.downArrowNode);
 			}else{
 				this.hideResultList();
 			}
@@ -804,6 +805,7 @@ dojo.widget.defineWidget(
 		},
 
 		postCreate: function(){
+			this.onResize();
 			dojo.event.connect(this, "startSearch", this.dataProvider, "startSearch");
 			dojo.event.connect(this.dataProvider, "provideSearchResults", this, "openResultList");
 			dojo.event.connect(this.textInputNode, "onblur", this, "onBlurInput");
@@ -816,5 +818,3 @@ dojo.widget.defineWidget(
 		}
 	}
 );
-
-

@@ -19,10 +19,19 @@ dojo.require("dojo.widget.RichText");
 dojo.require("dojo.widget.PopupContainer");
 dojo.require("dojo.widget.ColorPalette");
 
+// Object: Manager available editor2 toolbar items
 dojo.widget.Editor2ToolbarItemManager = {
 	_registeredItemHandlers: [],
-	registerHandler: function(obj, func){
-		if(arguments.length == 1){
+	registerHandler: function(/*Object*/obj, /*String*/func){
+		// summary: register a toolbar item handler
+		// obj: object which has the function to call
+		// func: the function in the object
+		if(arguments.length == 2){
+			this._registeredItemHandlers.push(function(){return obj[func].apply(obj, arguments);});
+		}else{
+			/* obj: Function
+			    func: null
+			    pId: f */
 //			for(i in this._registeredItemHandlers){
 //				if(func === this._registeredItemHandlers[i]){
 //					dojo.debug("Editor2ToolbarItemManager handler "+func+" is already registered, ignored");
@@ -30,11 +39,10 @@ dojo.widget.Editor2ToolbarItemManager = {
 //				}
 //			}
 			this._registeredItemHandlers.push(obj);
-		}else{
-			this._registeredItemHandlers.push(function(){return obj[func].apply(obj, arguments);});
 		}
 	},
 	removeHandler: function(func){
+		// summary: remove a registered handler
 		for(var i in this._registeredItemHandlers){
 			if(func === this._registeredItemHandlers[i]){
 				delete this._registeredItemHandlers[i];
@@ -48,7 +56,8 @@ dojo.widget.Editor2ToolbarItemManager = {
 			delete this._registeredItemHandlers[i];
 		}
 	},
-	getToolbarItem: function(name){
+	getToolbarItem: function(/*String*/name){
+		// summary: return a toobar item with the given name
 		var item;
 		name = name.toLowerCase();
 		for(var i in this._registeredItemHandlers){
@@ -72,7 +81,7 @@ dojo.widget.Editor2ToolbarItemManager = {
 				case 'italic':
 				case 'justifycenter':
 				case 'justifyfull':
-				case 'justifyleft': 
+				case 'justifyleft':
 				case 'justifyright':
 				case 'outdent':
 				case 'paste':
@@ -83,7 +92,7 @@ dojo.widget.Editor2ToolbarItemManager = {
 				case 'subscript':
 				case 'superscript':
 				case 'underline':
-				case 'undo': 
+				case 'undo':
 				case 'unlink':
 				case 'createlink':
 				case 'insertimage':
@@ -91,7 +100,7 @@ dojo.widget.Editor2ToolbarItemManager = {
 				case 'htmltoggle':
 					item = new dojo.widget.Editor2ToolbarButton(name);
 					break;
-				case 'forecolor': 
+				case 'forecolor':
 				case 'hilitecolor':
 					item = new dojo.widget.Editor2ToolbarColorPaletteButton(name);
 					break;
@@ -137,13 +146,19 @@ dojo.widget.Editor2ToolbarItemManager = {
 };
 
 dojo.addOnUnload(dojo.widget.Editor2ToolbarItemManager, "destroy");
-
+// summary:
+//		dojo.widget.Editor2ToolbarButton is the base class for all toolbar item in Editor2Toolbar
 dojo.declare("dojo.widget.Editor2ToolbarButton", null,{
 	initializer: function(name){
+		// summary: constructor
 		this._name = name;
 		this._command = dojo.widget.Editor2Manager.getCommand(name);
 	},
-	create: function(node, toolbar, isMenu){
+	create: function(/*DomNode*/node, /*dojo.widget.Editor2Toolbar*/toolbar, /*Boolean*/nohover){
+		// summary: create the item
+		// node: the dom node which is the root of this toolbar item
+		// toolbar: the Editor2Toolbar widget this toolbar item belonging to
+		// nohover: whether this item in charge of highlight this item
 		this._domNode = node;
 		//make this unselectable: different browsers
 		//use different properties for this, so use
@@ -151,12 +166,13 @@ dojo.declare("dojo.widget.Editor2ToolbarButton", null,{
 		this.disableSelection(this._domNode);
 		this._parentToolbar = toolbar;
 		dojo.event.connect(this._domNode, 'onclick', this, 'onClick');
-		if(!isMenu){
+		if(!nohover){
 			dojo.event.connect(this._domNode, 'onmouseover', this, 'onMouseOver');
 			dojo.event.connect(this._domNode, 'onmouseout', this, 'onMouseOut');
 		}
 	},
-	disableSelection: function(rootnode){
+	disableSelection: function(/*DomNode*/rootnode){
+		// summary: disable selection on the passed node and all its children
 		dojo.html.disableSelection(rootnode);
 		var nodes = rootnode.all || rootnode.getElementsByTagName("*");
 		for(var x=0; x<nodes.length; x++){
@@ -172,6 +188,7 @@ dojo.declare("dojo.widget.Editor2ToolbarButton", null,{
 		this.unhighlightToolbarItem();
 	},
 	destroy: function(){
+		// summary: destructor
 		this._domNode = null;
 		delete this._command;
 		this._parentToolbar = null;
@@ -184,6 +201,7 @@ dojo.declare("dojo.widget.Editor2ToolbarButton", null,{
 		}
 	},
 	refreshState: function(){
+		// summary: update the state of the toolbar item
 		if(this._domNode && this._command){
 			var em = dojo.widget.Editor2Manager;
 			var state = this._command.getState();
@@ -239,6 +257,7 @@ dojo.declare("dojo.widget.Editor2ToolbarButton", null,{
 	}
 });
 
+// summary: dojo.widget.Editor2ToolbarDropDownButton extends the basic button with a dropdown list
 dojo.declare("dojo.widget.Editor2ToolbarDropDownButton", dojo.widget.Editor2ToolbarButton,{
 	onClick: function(){
 		if(this._domNode){
@@ -249,7 +268,7 @@ dojo.declare("dojo.widget.Editor2ToolbarDropDownButton", dojo.widget.Editor2Tool
 			if(this._dropdown.isShowingNow){
 				this._dropdown.close();
 			}else{
-				this.onDropDownShown();	
+				this.onDropDownShown();
 				this._dropdown.open(this._domNode, null, this._domNode);
 			}
 		}
@@ -265,6 +284,7 @@ dojo.declare("dojo.widget.Editor2ToolbarDropDownButton", dojo.widget.Editor2Tool
 	onDropDownDestroy: function(){}
 });
 
+// summary: dojo.widget.Editor2ToolbarColorPaletteButton provides a dropdown color palette picker
 dojo.declare("dojo.widget.Editor2ToolbarColorPaletteButton", dojo.widget.Editor2ToolbarDropDownButton,{
 	onDropDownShown: function(){
 		if(!this._colorpalette){
@@ -288,6 +308,7 @@ dojo.declare("dojo.widget.Editor2ToolbarColorPaletteButton", dojo.widget.Editor2
 	}
 });
 
+// summary: dojo.widget.Editor2ToolbarFormatBlockPlainSelect provides a simple select for setting block format
 dojo.declare("dojo.widget.Editor2ToolbarFormatBlockPlainSelect", dojo.widget.Editor2ToolbarButton,{
 	create: function(node, toolbar){
 		//TODO: check node is a select
@@ -324,6 +345,7 @@ dojo.declare("dojo.widget.Editor2ToolbarFormatBlockPlainSelect", dojo.widget.Edi
 	}
 });
 
+// summary: dojo.widget.Editor2ToolbarComboItem provides an external loaded dropdown list
 dojo.declare("dojo.widget.Editor2ToolbarComboItem", dojo.widget.Editor2ToolbarDropDownButton,{
 	href: null,
 	create: function(node, toolbar){
@@ -351,8 +373,9 @@ dojo.declare("dojo.widget.Editor2ToolbarComboItem", dojo.widget.Editor2ToolbarDr
 		}
 	},
 
-	//overload this to connect event
-	setup: function(){},
+	setup: function(){
+		// summary: overload this to connect event
+	},
 
 	onChange: function(e){
 		var name = e.currentTarget.getAttribute("dropDownItemName");
@@ -368,10 +391,12 @@ dojo.declare("dojo.widget.Editor2ToolbarComboItem", dojo.widget.Editor2ToolbarDr
 		dojo.html.removeClass(e.currentTarget, this._parentToolbar.ToolbarHighlightedSelectItemStyle);
 	},
 
-	//overload this to update GUI item
-	refreshState: function(){}
+	refreshState: function(){
+		// summary: overload this to update GUI item
+	}
 });
 
+// summary: dojo.widget.Editor2ToolbarFormatBlockSelect is an improved format block setting item
 dojo.declare("dojo.widget.Editor2ToolbarFormatBlockSelect", dojo.widget.Editor2ToolbarComboItem,{
 	href: dojo.uri.dojoUri("src/widget/templates/Editor2/EditorToolbar_FormatBlock.html"),
 
@@ -433,6 +458,7 @@ dojo.declare("dojo.widget.Editor2ToolbarFormatBlockSelect", dojo.widget.Editor2T
 	}
 });
 
+// summary: dojo.widget.Editor2ToolbarFontSizeSelect provides a dropdown list for setting fontsize
 dojo.declare("dojo.widget.Editor2ToolbarFontSizeSelect", dojo.widget.Editor2ToolbarComboItem,{
 	href: dojo.uri.dojoUri("src/widget/templates/Editor2/EditorToolbar_FontSize.html"),
 
@@ -493,10 +519,13 @@ dojo.declare("dojo.widget.Editor2ToolbarFontSizeSelect", dojo.widget.Editor2Tool
 	}
 });
 
+// summary: dojo.widget.Editor2ToolbarFontNameSelect provides a dropdown list for setting fontname
 dojo.declare("dojo.widget.Editor2ToolbarFontNameSelect", dojo.widget.Editor2ToolbarFontSizeSelect,{
 	href: dojo.uri.dojoUri("src/widget/templates/Editor2/EditorToolbar_FontName.html")
 });
 
+// summary:
+//		dojo.widget.Editor2Toolbar is the main widget for the toolbar associated with an Editor2
 dojo.widget.defineWidget(
 	"dojo.widget.Editor2Toolbar",
 	dojo.widget.HtmlWidget,
@@ -505,13 +534,19 @@ dojo.widget.defineWidget(
 		templateCssPath: dojo.uri.dojoUri("src/widget/templates/EditorToolbar.css"),
 
 		// DOM Nodes
-		saveButton: null,
+//		saveButton: null,
 
+		// String: class name for latched toolbar button items
 		ToolbarLatchedItemStyle: "ToolbarButtonLatched",
+		// String: class name for enabled toolbar button items
 		ToolbarEnabledItemStyle: "ToolbarButtonEnabled",
+		// String: class name for disabled toolbar button items
 		ToolbarDisabledItemStyle: "ToolbarButtonDisabled",
+		// String: class name for highlighted toolbar button items
 		ToolbarHighlightedItemStyle: "ToolbarButtonHighlighted",
+		// String: class name for highlighted toolbar select items
 		ToolbarHighlightedSelectStyle: "ToolbarSelectHighlighted",
+		// String: class name for highlighted toolbar select dropdown items
 		ToolbarHighlightedSelectItemStyle: "ToolbarSelectHighlightedItem",
 
 //		itemNodeType: 'span', //all the items (with attribute dojoETItemName set) defined in the toolbar should be a of this type
@@ -537,6 +572,7 @@ dojo.widget.defineWidget(
 		},
 
 		update: function(){
+			// summary: update all the toolbar items
 			for(var cmd in this.items){
 				this.items[cmd].refreshState();
 			}

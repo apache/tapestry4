@@ -477,7 +477,12 @@ dojo.declare("dojo.widget.Widget", null,
 							this[x] = dojo.evalObjPath(args[x], false);
 						}else{
 							var tn = dojo.lang.nameAnonFunc(new Function(args[x]), this);
-							dojo.event.connect(this, x, this, tn);
+							dojo.event.kwConnect({
+								srcObj: this, 
+								srcFunc: x, 
+								adviceObj: this, 
+								adviceFunc: tn
+							});
 						}
 					}else if(dojo.lang.isArray(this[x])){ // typeof [] == "object"
 						this[x] = args[x].split(";");

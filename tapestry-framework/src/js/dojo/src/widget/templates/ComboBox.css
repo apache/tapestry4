@@ -1,25 +1,39 @@
-/* the table holding the input and the button */
+.dojoComboBoxOuter {
+	border: 0px !important;
+	margin: 0px !important;
+	padding: 0px !important;
+	background: transparent !important;
+	white-space: nowrap !important;
+}
+
 .dojoComboBox {
-	border: 1px solid #afafaf;
+	border: 1px inset #afafaf;
+	margin: 0px;
 	padding: 0px;
-	line-height: 0px;
-	display: inline;	/* for IE and safari */
-}
-
-.dj_gecko .dojoComboBox {
-	display: -moz-inline-box;
-}
-
-.dj_opera .dojoComboBox {
-	display: inline-table;
+	vertical-align: middle !important;
+	float: none !important;
+	position: static !important;
+	display: inline !important;
 }
 
 /* the input box */
-input.dojoComboBoxInput {
-	/* font-size: 0.8em; */
-	border: 0px;
-	margin: 0px;
-	padding: 0px;
+input.dojoComboBox {
+	border-right-width: 0px !important; 
+	margin-right: 0px !important;
+	padding-right: 0px !important;
+}
+
+/* the down arrow */
+img.dojoComboBox {
+	border-left-width: 0px !important;
+	padding-left: 0px !important;
+	margin-left: 0px !important;
+}
+
+/* IE vertical-alignment calculations can be off by +-1 but these margins are collapsed away */
+.dj_ie img.dojoComboBox {
+	margin-top: 1px; 
+	margin-bottom: 1px; 
 }
 
 /* the drop down */

@@ -8,10 +8,6 @@
 		http://dojotoolkit.org/community/licensing.shtml
 */
 
-// This widget doesn't do anything; is basically the same as <div>.
-// It's useful as a child of LayoutContainer, SplitContainer, or TabContainer.
-// But note that those classes can contain any widget as a child.
-
 dojo.provide("dojo.widget.ContentPane");
 
 dojo.require("dojo.widget.*");
@@ -21,6 +17,15 @@ dojo.require("dojo.string");
 dojo.require("dojo.string.extras");
 dojo.require("dojo.html.style");
 
+
+// summary:
+//		dojo.widget.ContentPane, a widget that can be used as a standalone widget 
+//		or as a baseclass for other widgets
+//		Handles replacement of document fragment using either external uri or javascript/java 
+//		generated markup or DomNode content, instanciating widgets within content and runs scripts.
+//		Dont confuse it with an iframe, it only needs document fragments.
+//		It's useful as a child of LayoutContainer, SplitContainer, or TabContainer.
+//		But note that those classes can contain any widget as a child.
 dojo.widget.defineWidget(
 	"dojo.widget.ContentPane",
 	dojo.widget.HtmlWidget,
@@ -29,27 +34,75 @@ dojo.widget.defineWidget(
 		this._styleNodes =  [];
 		this._onLoadStack = [];
 		this._onUnloadStack = [];
-		this._callOnUnLoad = false;
-		this.scriptScope; // undefined for now
+		this._callOnUnload = false;
 		this._ioBindObj;
+		// Function:
+		//		reference holder to the inline scripts container, if scriptSeparation is true
+		//	Note:
+		//		dont change this value externally
+		this.scriptScope; // undefined for now
 
 		// loading option
-		this.bindArgs = {}; // example bindArgs="preventCache:false;" overrides cacheContent
+		// Object:
+		//		Send in extra args to the dojo.io.bind call
+		//	example:
+		//		bindArgs="preventCache:false;" overrides cacheContent
+		this.bindArgs = {};
+
+	
 	}, {
 		isContainer: true,
 
 		// loading options
-		adjustPaths: true, // fix relative paths in content to fit in this page
-		href: "", // only usable on construction, use setUrl or setContent after that
-		extractContent: true,	// extract visible content from inside of <body> .... </body>
-		parseContent:	true,	// construct all widgets that is in content
+		// Boolean:
+		//		adjust relative paths in markup to fit this page
+		adjustPaths: true,
+
+		// String:
+		//		The href of the content that displays now
+		//		Set this at construction if you want to load externally,
+		//		changing href after creation doesnt have any effect, see setUrl
+		href: "",
+
+		// Boolean: Extract visible content from inside of <body> .... </body>
+		extractContent: true,
+
+		// Boolean: Construct all widgets that is in content
+		parseContent:	true,
+
+		// Boolean: Cache content retreived externally
 		cacheContent:	true,
-		preload: false,	// force load of data even if pane is hidden
-		refreshOnShow: false,	// use with cacheContent: false
-		handler: "", // generate pane content from a java function
-		executeScripts: false,	// if true scripts in content will be evaled after content is innerHTML'ed
-		scriptSeparation: true,	// if false script eval in global scope
+
+		// Boolean:
+		//		Force load of data even if pane is hidden
+		//	Note:
+		//		In order to delay download you need to initially hide the node it constructs from
+		preload: false,
+
+		// Boolean:
+		//		Refresh (re-download) content when pane goes from hidden to shown
+		refreshOnShow: false,
+
+		// String||Function:
+		//		Generate pane content from a java function
+		//		The name of the java proxy function
+		handler: "",
+
+		// Boolean:
+		//		Run scripts within content, extractContent has NO effect on this
+		//	Note:
+		//		if true scripts in content will be evaled after content is innerHTML'ed
+		executeScripts: false,
+
+		// Boolean:
+		//		Run scripts in a separate scope, unique for each ContentPane
+		scriptSeparation: true,
+
+		// String: Message that shows while downloading
 		loadingMessage: "Loading...",
+
+		// Boolean: Tells loading status
+		isLoaded: false,
 
 		postCreate: function(args, frag, parentComp){
 			if (this.handler!==""){
@@ -71,11 +124,15 @@ dojo.widget.defineWidget(
 		},
 	
 		refresh: function(){
+			// summary:
+			//		Force a refresh (re-download) of content, be sure to turn of cache
 			this.isLoaded=false;
 			this.loadContents();
 		},
 	
 		loadContents: function() {
+			// summary:
+			//		Download if isLoaded is false, else ignore
 			if ( this.isLoaded ){
 				return;
 			}
@@ -86,9 +143,11 @@ dojo.widget.defineWidget(
 			}
 		},
 		
-		setUrl: function(/*String or dojo.uri.Uri*/ url) {
+		setUrl: function(/*String||dojo.uri.Uri*/ url) {
 			// summary:
-			// 	Reset the (external defined) content of this pane and replace with new url
+			//		Reset the (external defined) content of this pane and replace with new url
+			//	Note:
+			//		It delays the download until widget is shown if preload is false
 			this.href = url;
 			this.isLoaded = false;
 			if ( this.preload || this.isShowing() ){
@@ -98,7 +157,7 @@ dojo.widget.defineWidget(
 
 		abort: function(){
 			// summary
-			//	abort download of content
+			//		Aborts a inflight download of content
 			var bind = this._ioBindObj;
 			if(!bind || !bind.abort){ return; }
 			bind.abort();
@@ -147,16 +206,28 @@ dojo.widget.defineWidget(
 			return bindObj;
 		},
 
-		// called when setContent is finished
 		onLoad: function(e){
+			// summary:
+			//		Event hook, is called after everything is loaded and widgetified 
 			this._runStack("_onLoadStack");
 			this.isLoaded=true;
 		},
 	
-		// called before old content is cleared
 		onUnLoad: function(e){
+			// summary:
+			//		Deprecated, use onUnload (lowercased load)
+			dojo.deprecated(this.widgetType+".onUnLoad, use .onUnload (lowercased load)", 0.5);
+		},
+
+		onUnload: function(e){
+			// summary:
+			//		Event hook, is called before old content is cleared
 			this._runStack("_onUnloadStack");
 			delete this.scriptScope;
+			// FIXME: remove for 0.5 along with onUnLoad
+			if(this.onUnLoad !== dojo.widget.ContentPane.prototype.onUnLoad){
+				this.onUnLoad.apply(this, arguments);
+			}
 		},
 	
 		_runStack: function(stName){
@@ -177,19 +248,31 @@ dojo.widget.defineWidget(
 			}
 		},
 	
-		addOnLoad: function(/*Function or Object ?*/ obj, /*Function*/ func){
+		addOnLoad: function(/*Function||Object, optional*/ obj, /*Function*/ func){
 			// summary
-			// 	same as to dojo.addOnLoad but does not take "function_name" as a string
+			//		Stores function refs and calls them one by one in the order they came in
+			//		when load event occurs.
+			//	obj:
+			//		holder object
+			//	func:
+			//		function that will be called 
 			this._pushOnStack(this._onLoadStack, obj, func);
 		},
 	
-		addOnUnload: function(/*Function or Object ?*/ obj, /*Function*/ func){
+		addOnUnload: function(/*Function||Object, optional*/ obj, /*Function*/ func){
 			// summary
-			// 	same as to dojo.addUnOnUnload but does not take "function_name" as a string
+			//		Stores function refs and calls them one by one in the order they came in
+			//		when unload event occurs.
+			//	obj:
+			//		holder object
+			//	func:
+			//		function that will be called 
 			this._pushOnStack(this._onUnloadStack, obj, func);
 		},
 
 		addOnUnLoad: function(){
+			// summary:
+			//		Deprecated use addOnUnload (lower cased load)
 			dojo.deprecated(this.widgetType + ".addOnUnLoad, use addOnUnload instead. (lowercased Load)", 0.5);
 			this.addOnUnload.apply(this, arguments);
 		},
@@ -203,25 +286,43 @@ dojo.widget.defineWidget(
 		},
 	
 		destroy: function(){
-			// make sure we call onUnLoad
-			this.onUnLoad();
+			// make sure we call onUnload
+			this.onUnload();
 			dojo.widget.ContentPane.superclass.destroy.call(this);
 		},
+ 
+		onExecError: function(/*Object*/e){
+			// summary:
+			//		called when content script eval error or Java error occurs, preventDefault-able
+			//		default is to debug not alert as in 0.3.1
+		},
 	
-		// called when content script eval error or Java error occurs, preventDefault-able
-		onExecError: function(e){ /*stub*/ },
+		onContentError: function(/*Object*/e){
+			// summary: 
+			//		called on DOM faults, require fault etc in content, preventDefault-able
+			//		default is to display errormessage inside pane
+		},
 	
-		// called on DOM faults, require fault etc in content, preventDefault-able
-		onContentError: function(e){ /*stub*/ },
+		onDownloadError: function(/*Object*/e){
+			// summary: 
+			//		called when download error occurs, preventDefault-able
+			//		default is to display errormessage inside pane
+		},
 	
-		// called when download error occurs, preventDefault-able
-		onDownloadError: function(e){ /*stub*/ },
+		onDownloadStart: function(/*Object*/e){
+			// summary:
+			//		called before download starts, preventDefault-able
+			//		default is to display loadingMessage inside pane
+			//		by changing e.text in your event handler you can change loading message
+		},
 	
-		// called before download starts, preventDefault-able
-		onDownloadStart: function(e){ /*stub*/ },
-	
-		// called when download is finished
-		onDownloadEnd: function(/*String*/ url, /*content*/ data){
+		// 
+		onDownloadEnd: function(/*String*/ url, /*String*/ data){
+			// summary:
+			//		called when download is finished
+			//
+			//	url: url that downloaded data
+			//	data: the markup that was downloaded
 			data = this.splitAndFixPaths(data, url);
 			this.setContent(data);
 		},
@@ -253,10 +354,10 @@ dojo.widget.defineWidget(
 						dojo.debug(e.toString()); break;
 					default:
 					// makes sure scripts can clean up after themselves, before we setContent
-					if(this._callOnUnLoad){ this.onUnLoad(); } 
+					if(this._callOnUnload){ this.onUnload(); } 
 					// makes sure we dont try to call onUnLoad again on this event,
 					// ie onUnLoad before 'Loading...' but not before clearing 'Loading...'
-					this._callOnUnLoad = false;
+					this._callOnUnload = false;
 
 					// we might end up in a endless recursion here if domNode cant append content
 					if(arguments.callee._loopStop){
@@ -271,13 +372,15 @@ dojo.widget.defineWidget(
 		},
 	
 		// pathfixes, require calls, css stuff and neccesary content clean
-		splitAndFixPaths: function(/*String*/s, /*dojo.uri.Uri?*/url){
+		splitAndFixPaths: function(/*String*/s, /*String||dojo.uri.Uri, optional*/url){
 			// summary:
-			// 	fixes all relative paths in (hopefully) all cases for example images, remote scripts, links etc.
-			// 	splits up content in different pieces, scripts, title, style, link and whats left becomes .xml
+			// 		adjusts all relative paths in (hopefully) all cases, images, remote scripts, links etc.
+			// 		splits up content in different pieces, scripts, title, style, link and whats left becomes .xml
 
-			// init vars
-			var titles = [], scripts = [],tmp = [];
+			//	s:	The markup in string
+			//	url: url that pulled in markup
+
+			var titles = [], scripts = [],tmp = [];// init vars
 			var match = [], requires = [], attr = [], styles = [];
 			var str = '', path = '', fix = '', tagFix = '', tag = '', origPath = '';
 	
@@ -456,12 +559,14 @@ dojo.widget.defineWidget(
 			}
 		},
 	
-		setContent: function(/*String or DOMNode*/ data){
+		setContent: function(/*String||DomNode*/ data){
 			// summary:
-			// 	Destroys old content and sets new content, and possibly initialize any widgets within 'data'
+			//		Replaces old content with data content, include style classes from old content
+			//	data:	new content, be it Document fragment or a DomNode chain
+			//			If data contains style tags, link rel=stylesheet it inserts those styles into DOM
 			this.abort();
-			if(this._callOnUnLoad){ this.onUnLoad(); }// this tells a remote script clean up after itself
-			this._callOnUnLoad = true;
+			if(this._callOnUnload){ this.onUnload(); }// this tells a remote script clean up after itself
+			this._callOnUnload = true;
 	
 			if(!data || dojo.html.isNode(data)){
 				// if we do a clean using setContent(""); or setContent(#node) bypass all parsing, extractContent etc
@@ -490,7 +595,7 @@ dojo.widget.defineWidget(
 				if(this.parseContent){
 					for(var i = 0; i < data.requires.length; i++){
 						try{
-							eval(data.requires[i]);dojo.debug(data.requires[i]);
+							eval(data.requires[i]);
 						} catch(e){
 							e.text = "ContentPane: error in package loading calls, " + (e.description||e);
 							this._handleDefaults(e, "onContentError", "debug");
@@ -524,9 +629,10 @@ dojo.widget.defineWidget(
 				}
 			}
 		},
-	
-		// Generate pane content from given java function
-		setHandler: function(handler) {
+
+		setHandler: function(/*Function*/ handler) {
+			// summary:
+			//		Generate pane content from given java function
 			var fcn = dojo.lang.isFunction(handler) ? handler : window[handler];
 			if(!dojo.lang.isFunction(fcn)) {
 				// FIXME: needs testing! somebody with java knowledge needs to try this
@@ -576,7 +682,7 @@ dojo.widget.defineWidget(
 			try{
 				if(this.scriptSeparation){
 					// initialize a new anonymous container for our script, dont make it part of this widgets scope chain
-					// instead send in a variable that points to this widget, useful to connect events to onLoad, onUnLoad etc..
+					// instead send in a variable that points to this widget, useful to connect events to onLoad, onUnload etc..
 					delete this.scriptScope;
 					this.scriptScope = new (new Function('_container_', code+'; return this;'))(self);
 				}else{

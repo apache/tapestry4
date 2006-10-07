@@ -30,7 +30,7 @@ dojo.require("dojo.lang.func");
 // TODO: more resiliency for 4+ arguments to connect()
 
 dojo.event = new function(){
-	this.canTimeout = dojo.lang.isFunction(dj_global["setTimeout"])||dojo.lang.isAlien(dj_global["setTimeout"]);
+	this._canTimeout = dojo.lang.isFunction(dj_global["setTimeout"])||dojo.lang.isAlien(dj_global["setTimeout"]);
 
 	// FIXME: where should we put this method (not here!)?
 	function interpolateArgs(args, searchForNames){
@@ -181,10 +181,104 @@ dojo.event = new function(){
 		return ao;
 	}
 
-	this.connect = function(){
+	this.connect = function(/*...*/){
 		// summary:
-		// 	dojo.event.connect is the glue that holds most Dojo-based
-		// 	applications together.
+		//		dojo.event.connect is the glue that holds most Dojo-based
+		//		applications together. Most combinations of arguments are
+		//		supported, with the connect() method attempting to disambiguate
+		//		the implied types of positional parameters. The following will
+		//		all work:
+		//			dojo.event.connect("globalFunctionName1", "globalFunctionName2");
+		//			dojo.event.connect(functionReference1, functionReference2);
+		//			dojo.event.connect("globalFunctionName1", functionReference2);
+		//			dojo.event.connect(functionReference1, "globalFunctionName2");
+		//			dojo.event.connect(scope1, "functionName1", "globalFunctionName2");
+		//			dojo.event.connect("globalFunctionName1", scope2, "functionName2");
+		//			dojo.event.connect(scope1, "functionName1", scope2, "functionName2");
+		//			dojo.event.connect("after", scope1, "functionName1", scope2, "functionName2");
+		//			dojo.event.connect("before", scope1, "functionName1", scope2, "functionName2");
+		//			dojo.event.connect("around", 	scope1, "functionName1", 
+		//											scope2, "functionName2",
+		//											aroundFunctionReference);
+		//			dojo.event.connect("around", 	scope1, "functionName1", 
+		//											scope2, "functionName2",
+		//											scope3, "aroundFunctionName");
+		//			dojo.event.connect("before-around", 	scope1, "functionName1", 
+		//													scope2, "functionName2",
+		//													aroundFunctionReference);
+		//			dojo.event.connect("after-around", 		scope1, "functionName1", 
+		//													scope2, "functionName2",
+		//													aroundFunctionReference);
+		//			dojo.event.connect("after-around", 		scope1, "functionName1", 
+		//													scope2, "functionName2",
+		//													scope3, "aroundFunctionName");
+		//			dojo.event.connect("around", 	scope1, "functionName1", 
+		//											scope2, "functionName2",
+		//											scope3, "aroundFunctionName", true, 30);
+		//			dojo.event.connect("around", 	scope1, "functionName1", 
+		//											scope2, "functionName2",
+		//											scope3, "aroundFunctionName", null, null, 10);
+		// adviceType: 
+		//		Optional. String. One of "before", "after", "around",
+		//		"before-around", or "after-around". FIXME
+		// srcObj:
+		//		the scope in which to locate/execute the named srcFunc. Along
+		//		with srcFunc, this creates a way to dereference the function to
+		//		call. So if the function in question is "foo.bar", the
+		//		srcObj/srcFunc pair would be foo and "bar", where "bar" is a
+		//		string and foo is an object reference.
+		// srcFunc:
+		//		the name of the function to connect to. When it is executed,
+		//		the listener being registered with this call will be called.
+		//		The adviceType defines the call order between the source and
+		//		the target functions.
+		// adviceObj:
+		//		the scope in which to locate/execute the named adviceFunc.
+		// adviceFunc:
+		//		the name of the function being conected to srcObj.srcFunc
+		// aroundObj:
+		//		the scope in which to locate/execute the named aroundFunc.
+		// aroundFunc:
+		//		the name of, or a reference to, the function that will be used
+		//		to mediate the advice call. Around advice requires a special
+		//		unary function that will be passed a "MethodInvocation" object.
+		//		These objects have several important properties, namely:
+		//			- args
+		//				a mutable array of arguments to be passed into the
+		//				wrapped function
+		//			- proceed
+		//				a function that "continues" the invocation. The result
+		//				of this function is the return of the wrapped function.
+		//				You can then manipulate this return before passing it
+		//				back out (or take further action based on it).
+		// once:
+		//		boolean that determines whether or not this connect() will
+		//		create a new connection if an identical connect() has already
+		//		been made. Defaults to "false".
+		// delay:
+		//		an optional delay (in ms), as an integer, for dispatch of a
+		//		listener after the source has been fired.
+		// rate:
+		//		an optional rate throttling parameter (integer, in ms). When
+		//		specified, this particular connection will not fire more than
+		//		once in the interval specified by the rate
+		// adviceMsg:
+		//		boolean. Should the listener have all the parameters passed in
+		//		as a single argument?
+
+		/*
+				ao.adviceType = args[0];
+				ao.srcObj = args[1];
+				ao.srcFunc = args[2];
+				ao.adviceObj = args[3]
+				ao.adviceFunc = args[4];
+				ao.aroundObj = args[5];
+				ao.aroundFunc = args[6];
+				ao.once = args[7];
+				ao.delay = args[8];
+				ao.rate = args[9];
+				ao.adviceMsg = args[10];
+		*/
 		if(arguments.length == 1){
 			var ao = arguments[0];
 		}else{
@@ -197,6 +291,7 @@ dojo.event = new function(){
 			}
 			ao.srcFunc = "onkeypress";
 		}
+
 
 		if(dojo.lang.isArray(ao.srcObj) && ao.srcObj!=""){
 			var tmpAO = {};
@@ -225,11 +320,21 @@ dojo.event = new function(){
 
 		mjp.kwAddAdvice(ao);
 
-		return mjp;	// advanced users might want to fsck w/ the join point
-					// manually
+		// advanced users might want to fsck w/ the join point manually
+		return mjp; // a MethodJoinPoint object
 	}
 
-	this.log = function(a1, a2){
+	this.log = function(/*object or funcName*/ a1, /*funcName*/ a2){
+		// summary:
+		//		a function that will wrap and log all calls to the specified
+		//		a1.a2() function. If only a1 is passed, it'll be used as a
+		//		function or function name on the global context. Logging will
+		//		be sent to dojo.debug
+		// a1:
+		//		if a2 is passed, this should be an object. If not, it can be a
+		//		function or function name.
+		// a2:
+		//		a function name
 		var kwArgs;
 		if((arguments.length == 1)&&(typeof a1 == "object")){
 			kwArgs = a1;
@@ -250,21 +355,30 @@ dojo.event = new function(){
 	}
 
 	this.connectBefore = function(){
+		// summary:
+		//	 	takes the same parameters as dojo.event.connect(), except that
+		//	 	the advice type will always be "before"
 		var args = ["before"];
 		for(var i = 0; i < arguments.length; i++){ args.push(arguments[i]); }
-		return this.connect.apply(this, args);
+		return this.connect.apply(this, args); // a MethodJoinPoint object
 	}
 
 	this.connectAround = function(){
+		// summary:
+		//	 	takes the same parameters as dojo.event.connect(), except that
+		//	 	the advice type will always be "around"
 		var args = ["around"];
 		for(var i = 0; i < arguments.length; i++){ args.push(arguments[i]); }
-		return this.connect.apply(this, args);
+		return this.connect.apply(this, args); // a MethodJoinPoint object
 	}
 
 	this.connectOnce = function(){
+		// summary:
+		//	 	takes the same parameters as dojo.event.connect(), except that
+		//	 	the "once" flag will always be set to "true"
 		var ao = interpolateArgs(arguments, true);
 		ao.once = true;
-		return this.connect(ao);
+		return this.connect(ao); // a MethodJoinPoint object
 	}
 
 	this._kwConnectImpl = function(kwArgs, disconnect){
@@ -279,25 +393,46 @@ dojo.event = new function(){
 			var tmpName  = dojo.lang.nameAnonFunc(kwArgs.adviceFunc, kwArgs.adviceObj, true);
 			kwArgs.adviceFunc = tmpName;
 		}
-		return dojo.event[fn](	(kwArgs["type"]||kwArgs["adviceType"]||"after"),
-									kwArgs["srcObj"]||dj_global,
-									kwArgs["srcFunc"],
-									kwArgs["adviceObj"]||kwArgs["targetObj"]||dj_global,
-									kwArgs["adviceFunc"]||kwArgs["targetFunc"],
-									kwArgs["aroundObj"],
-									kwArgs["aroundFunc"],
-									kwArgs["once"],
-									kwArgs["delay"],
-									kwArgs["rate"],
-									kwArgs["adviceMsg"]||false );
+		kwArgs.srcObj = kwArgs["srcObj"]||dj_global;
+		kwArgs.adviceObj = kwArgs["adviceObj"]||kwArgs["targetObj"]||dj_global;
+		kwArgs.adviceFunc = kwArgs["adviceFunc"]||kwArgs["targetFunc"];
+		// pass kwargs to avoid unrolling/repacking
+		return dojo.event[fn](kwArgs);
 	}
 
-	this.kwConnect = function(kwArgs){
-		return this._kwConnectImpl(kwArgs, false);
+	this.kwConnect = function(/*Object*/ kwArgs){
+		// summary:
+		//		A version of dojo.event.connect() that takes a map of named
+		//		parameters instead of the positional parameters that
+		//		dojo.event.connect() uses. For many advanced connection types,
+		//		this can be a much more readable (and potentially faster)
+		//		alternative.
+		// kwArgs:
+		// 		An object that can have the following properties:
+		//			- adviceType
+		//			- srcObj
+		//			- srcFunc
+		//			- adviceObj
+		//			- adviceFunc 
+		//			- aroundObj
+		//			- aroundFunc
+		//			- once
+		//			- delay
+		//			- rate
+		//			- adviceMsg
+		//		As with connect, only srcFunc and adviceFunc are generally
+		//		required
+
+		return this._kwConnectImpl(kwArgs, false); // a MethodJoinPoint object
 
 	}
 
 	this.disconnect = function(){
+		// summary:
+		//		Takes the same parameters as dojo.event.connect() but destroys
+		//		an existing connection instead of building a new one. For
+		//		multiple identical connections, multiple disconnect() calls
+		//		will unroll one each time it's called.
 		if(arguments.length == 1){
 			var ao = arguments[0];
 		}else{
@@ -312,20 +447,36 @@ dojo.event = new function(){
 			ao.srcFunc = "onkeypress";
 		}
 		var mjp = dojo.event.MethodJoinPoint.getForMethod(ao.srcObj, ao.srcFunc);
-		return mjp.removeAdvice(ao.adviceObj, ao.adviceFunc, ao.adviceType, ao.once);
+		return mjp.removeAdvice(ao.adviceObj, ao.adviceFunc, ao.adviceType, ao.once); // a MethodJoinPoint object
 	}
 
 	this.kwDisconnect = function(kwArgs){
+		// summary:
+		//		Takes the same parameters as dojo.event.kwConnect() but
+		//		destroys an existing connection instead of building a new one.
 		return this._kwConnectImpl(kwArgs, true);
 	}
 }
 
 // exactly one of these is created whenever a method with a joint point is run,
 // if there is at least one 'around' advice.
-dojo.event.MethodInvocation = function(join_point, obj, args){
+dojo.event.MethodInvocation = function(/*dojo.event.MethodJoinPoint*/join_point, /*Object*/obj, /*Array*/args){
+	// summary:
+	//		a class the models the call into a function. This is used under the
+	//		covers for all method invocations on both ends of a
+	//		connect()-wrapped function dispatch. This allows us to "pickle"
+	//		calls, such as in the case of around advice.
+	// join_point:
+	//		a dojo.event.MethodJoinPoint object that represents a connection
+	// obj:
+	//		the scope the call will execute in
+	// args:
+	//		an array of parameters that will get passed to the callee
 	this.jp_ = join_point;
 	this.object = obj;
 	this.args = [];
+	// make sure we don't lock into a mutable object which can change under us.
+	// It's ok if the individual items change, though.
 	for(var x=0; x<args.length; x++){
 		this.args[x] = args[x];
 	}
@@ -334,6 +485,9 @@ dojo.event.MethodInvocation = function(join_point, obj, args){
 }
 
 dojo.event.MethodInvocation.prototype.proceed = function(){
+	// summary:
+	//		proceed with the method call that's represented by this invocation
+	//		object
 	this.around_index++;
 	if(this.around_index >= this.jp_.around.length){
 		return this.jp_.object[this.jp_.methodname].apply(this.jp_.object, this.args);
@@ -347,32 +501,39 @@ dojo.event.MethodInvocation.prototype.proceed = function(){
 } 
 
 
-dojo.event.MethodJoinPoint = function(obj, methname){
+dojo.event.MethodJoinPoint = function(/*Object*/obj, /*String*/funcName){
 	this.object = obj||dj_global;
-	this.methodname = methname;
-	this.methodfunc = this.object[methname];
+	this.methodname = funcName;
+	this.methodfunc = this.object[funcName];
 	this.squelch = false;
-	this.before = [];
-	this.after = [];
-	this.around = [];
+	// this.before = [];
+	// this.after = [];
+	// this.around = [];
 }
 
-dojo.event.MethodJoinPoint.getForMethod = function(obj, methname){
-	// if(!(methname in obj)){
+dojo.event.MethodJoinPoint.getForMethod = function(/*Object*/obj, /*String*/funcName){
+	// summary:
+	//		"static" class function for returning a MethodJoinPoint from a
+	//		scoped function. If one doesn't exist, one is created.
+	// obj:
+	//		the scope to search for the function in
+	// funcName:
+	//		the name of the function to return a MethodJoinPoint for
 	if(!obj){ obj = dj_global; }
-	if(!obj[methname]){
+	if(!obj[funcName]){
 		// supply a do-nothing method implementation
-		obj[methname] = function(){};
-		if(!obj[methname]){
+		obj[funcName] = function(){};
+		if(!obj[funcName]){
 			// e.g. cannot add to inbuilt objects in IE6
-			dojo.raise("Cannot set do-nothing method on that object "+methname);
+			dojo.raise("Cannot set do-nothing method on that object "+funcName);
 		}
-	}else if((!dojo.lang.isFunction(obj[methname]))&&(!dojo.lang.isAlien(obj[methname]))){
-		return null; // FIXME: should we throw an exception here instead?
+	}else if((!dojo.lang.isFunction(obj[funcName]))&&(!dojo.lang.isAlien(obj[funcName]))){
+		// FIXME: should we throw an exception here instead?
+		return null; 
 	}
-	// we hide our joinpoint instance in obj[methname + '$joinpoint']
-	var jpname = methname + "$joinpoint";
-	var jpfuncname = methname + "$joinpoint$method";
+	// we hide our joinpoint instance in obj[funcName + '$joinpoint']
+	var jpname = funcName + "$joinpoint";
+	var jpfuncname = funcName + "$joinpoint$method";
 	var joinpoint = obj[jpname];
 	if(!joinpoint){
 		var isNode = false;
@@ -381,14 +542,14 @@ dojo.event.MethodJoinPoint.getForMethod = function(obj, methname){
 				(obj["nodeType"])||
 				(obj["addEventListener"]) ){
 				isNode = true;
-				dojo.event.browser.addClobberNodeAttrs(obj, [jpname, jpfuncname, methname]);
+				dojo.event.browser.addClobberNodeAttrs(obj, [jpname, jpfuncname, funcName]);
 			}
 		}
-		var origArity = obj[methname].length;
-		obj[jpfuncname] = obj[methname];
-		// joinpoint = obj[jpname] = new dojo.event.MethodJoinPoint(obj, methname);
+		var origArity = obj[funcName].length;
+		obj[jpfuncname] = obj[funcName];
+		// joinpoint = obj[jpname] = new dojo.event.MethodJoinPoint(obj, funcName);
 		joinpoint = obj[jpname] = new dojo.event.MethodJoinPoint(obj, jpfuncname);
-		obj[methname] = function(){ 
+		obj[funcName] = function(){ 
 			var args = [];
 
 			if((isNode)&&(!arguments.length)){
@@ -422,13 +583,16 @@ dojo.event.MethodJoinPoint.getForMethod = function(obj, methname){
 			// return joinpoint.run.apply(joinpoint, arguments); 
 			return joinpoint.run.apply(joinpoint, args); 
 		}
-		obj[methname].__preJoinArity = origArity;
+		obj[funcName].__preJoinArity = origArity;
 	}
-	return joinpoint;
+	return joinpoint; // dojo.event.MethodJoinPoint
 }
 
 dojo.lang.extend(dojo.event.MethodJoinPoint, {
 	unintercept: function(){
+		// summary: 
+		//		destroy the connection to all listeners that may have been
+		//		registered on this joinpoint
 		this.object[this.methodname] = this.methodfunc;
 		this.before = [];
 		this.after = [];
@@ -438,6 +602,10 @@ dojo.lang.extend(dojo.event.MethodJoinPoint, {
 	disconnect: dojo.lang.forward("unintercept"),
 
 	run: function(){
+		// summary:
+		//		execute the connection represented by this join point. The
+		//		arguments passed to run() will be passed to the function and
+		//		its listeners.
 		var obj = this.object||dj_global;
 		var args = arguments;
 
@@ -483,7 +651,7 @@ dojo.lang.extend(dojo.event.MethodJoinPoint, {
 				var cur = new Date();
 				var timerSet = false;
 				if((marr["last"])&&((cur-marr.last)<=rate)){
-					if(dojo.event.canTimeout){
+					if(dojo.event._canTimeout){
 						if(marr["delayTimer"]){
 							clearTimeout(marr.delayTimer);
 						}
@@ -541,14 +709,14 @@ dojo.lang.extend(dojo.event.MethodJoinPoint, {
 			}
 		}
 
-		if(this.before.length>0){
+		if((this["before"])&&(this.before.length>0)){
 			// pass a cloned array, if this event disconnects this event forEach on this.before wont work
 			dojo.lang.forEach(this.before.concat(new Array()), unRollSquelch);
 		}
 
 		var result;
 		try{
-			if(this.around.length>0){
+			if((this["around"])&&(this.around.length>0)){
 				var mi = new dojo.event.MethodInvocation(this, obj, args);
 				result = mi.proceed();
 			}else if(this.methodfunc){
@@ -556,7 +724,7 @@ dojo.lang.extend(dojo.event.MethodJoinPoint, {
 			}
 		}catch(e){ if(!this.squelch){ dojo.raise(e); } }
 
-		if(this.after.length>0){
+		if((this["after"])&&(this.after.length>0)){
 			// see comment on this.before above
 			dojo.lang.forEach(this.after.concat(new Array()), unRollSquelch);
 		}
@@ -564,18 +732,23 @@ dojo.lang.extend(dojo.event.MethodJoinPoint, {
 		return (this.methodfunc) ? result : null;
 	},
 
-	getArr: function(kind){
-		var arr = this.after;
+	getArr: function(/*String*/kind){
+		// summary: return a list of listeners of the past "kind"
+		// kind:
+		//		can be one of: "before", "after", "around", "before-around", or
+		//		"after-around"
+		var type = "after";
 		// FIXME: we should be able to do this through props or Array.in()
 		if((typeof kind == "string")&&(kind.indexOf("before")!=-1)){
-			arr = this.before;
+			type = "before";
 		}else if(kind=="around"){
-			arr = this.around;
+			type = "around";
 		}
-		return arr;
+		if(!this[type]){ this[type] = []; }
+		return this[type]; // Array
 	},
 
-	kwAddAdvice: function(args){
+	kwAddAdvice: function(/*Object*/args){
 		this.addAdvice(	args["adviceObj"], args["adviceFunc"], 
 						args["aroundObj"], args["aroundFunc"], 
 						args["adviceType"], args["precedence"], 

@@ -18,22 +18,33 @@ dojo.require("dojo.html.display");
 dojo.require("dojo.html.iframe");
 dojo.require("dojo.html.util");
 
+// summary:
+//		dojo.widget.DropdownContainer provides an input box and a button for a dropdown.
+//		In subclass, the dropdown can be specified.
 dojo.widget.defineWidget(
 	"dojo.widget.DropdownContainer",
 	dojo.widget.HtmlWidget,
 	{
+		// String: width of the input box
 		inputWidth: "7em",
+		// String: id of this widget
 		id: "",
+		// String: id of the input box
 		inputId: "",
+		// String: name of the input box
 		inputName: "",
+		// dojo.uri.Uri: icon for the dropdown button
 		iconURL: dojo.uri.dojoUri("src/widget/templates/images/combo_box_arrow.png"),
+		// dojo.uri.Uri: alt text for the dropdown button icon
 		iconAlt: "",
 
 		inputNode: null,
 		buttonNode: null,
 		containerNode: null,
 
+		// String: toggle property of the dropdown
 		containerToggle: "plain",
+		// Int: toggle duration property of the dropdown
 		containerToggleDuration: 150,
 		containerAnimInProgress: false,
 
@@ -66,11 +77,14 @@ dojo.widget.defineWidget(
 		},
 
 		hideContainer: function(){
+			// summary: hide the dropdown
 			if(this.popup.isShowingNow){
 				this.popup.close();
 			}
 		},
 
-		onInputChange: function(){}
+		onInputChange: function(){
+			// summary: signal for changes in the input box
+		}
 	}
 );

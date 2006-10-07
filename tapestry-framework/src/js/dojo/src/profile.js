@@ -11,29 +11,27 @@
 dojo.provide("dojo.profile");
 
 
+dojo.profile = {
+	_profiles: {},
+	_pns: [],
 
-
-dojo.profile = new function(){
-	var profiles = {};
-	var pns = [];
-
-	this.start = function(name){
-		if(!profiles[name]){
-			profiles[name] = {iters: 0, total: 0};
-			pns[pns.length] = name;
+	start:function(/*String*/ name){
+		if(!this._profiles[name]){
+			this._profiles[name] = {iters: 0, total: 0};
+			this._pns[this._pns.length] = name;
 		}else{
-			if(profiles[name]["start"]){
+			if(this._profiles[name]["start"]){
 				this.end(name);
 			}
 		}
-		profiles[name].end = null;
-		profiles[name].start = new Date();
-	}
+		this._profiles[name].end = null;
+		this._profiles[name].start = new Date();
+	},
 
-	this.end = function(name){
+	end:function(/*String*/ name){
 		var ed = new Date();
-		if((profiles[name])&&(profiles[name]["start"])){
-			with(profiles[name]){
+		if((this._profiles[name])&&(this._profiles[name]["start"])){
+			with(this._profiles[name]){
 				end = ed;
 				total += (end - start);
 				start = null;
@@ -43,11 +41,9 @@ dojo.profile = new function(){
 			// oops! bad call to end(), what should we do here?
 			return true;
 		}
-	}
+	},
 
-	this.stop = this.end;
-
-	this.dump = function(appendToDoc){
+	dump:function(/*boolean*/ appendToDoc){
 		var tbl = document.createElement("table");
 		with(tbl.style){
 			border = "1px solid black";
@@ -71,12 +67,12 @@ dojo.profile = new function(){
 			ntd.appendChild(document.createTextNode(cols[x]));
 		}
 
-		for(var x=0; x < pns.length; x++){
-			var prf = profiles[pns[x]];
-			this.end(pns[x]);
+		for(var x=0; x < this._pns.length; x++){
+			var prf = this._profiles[this._pns[x]];
+			this.end(this._pns[x]);
 			if(prf.iters>0){
 				var bdytr = tbl.insertRow(true);
-				var vals = [pns[x], prf.iters, prf.total, parseInt(prf.total/prf.iters)];
+				var vals = [this._pns[x], prf.iters, prf.total, parseInt(prf.total/prf.iters)];
 				for(var y=0; y<vals.length; y++){
 					var cc = bdytr.insertCell(y);
 					cc.appendChild(document.createTextNode(vals[y]));
@@ -118,3 +114,5 @@ dojo.profile = new function(){
 		return tbl;
 	}
 }
+
+dojo.profile.stop = dojo.profile.end;

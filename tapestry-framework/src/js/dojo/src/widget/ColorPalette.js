@@ -10,51 +10,18 @@
 
 dojo.provide("dojo.widget.ColorPalette");
 dojo.require("dojo.widget.*");
-dojo.require("dojo.widget.Toolbar");
 dojo.require("dojo.html.layout");
 dojo.require("dojo.html.display");
 dojo.require("dojo.html.selection");
 
 dojo.widget.defineWidget(
-	"dojo.widget.ToolbarColorDialog",
-	dojo.widget.ToolbarDialog,
-{
- 	palette: "7x10",
-
-	fillInTemplate: function (args, frag) {
-		dojo.widget.ToolbarColorDialog.superclass.fillInTemplate.call(this, args, frag);
-		this.dialog = dojo.widget.createWidget("ColorPalette", {palette: this.palette});
-		this.dialog.domNode.style.position = "absolute";
-
-		dojo.event.connect(this.dialog, "onColorSelect", this, "_setValue");
-	},
-
-	_setValue: function(color) {
-		this._value = color;
-		this._fireEvent("onSetValue", color);
-	},
-	
-	showDialog: function (e) {
-		dojo.widget.ToolbarColorDialog.superclass.showDialog.call(this, e);
-		var abs = dojo.html.getAbsolutePosition(this.domNode, true);
-		var y = abs.y + dojo.html.getBorderBox(this.domNode).height;
-		this.dialog.showAt(abs.x, y);
-	},
-	
-	hideDialog: function (e) {
-		dojo.widget.ToolbarColorDialog.superclass.hideDialog.call(this, e);
-		this.dialog.hide();
-	}
-});
-
-dojo.widget.defineWidget(
 	"dojo.widget.ColorPalette",
 	dojo.widget.HtmlWidget,
-{	
+{
 	palette: "7x10",
 
 	bgIframe: null,
-	
+
 	palettes: {
 		"7x10": [["fff", "fcc", "fc9", "ff9", "ffc", "9f9", "9ff", "cff", "ccf", "fcf"],
 			["ccc", "f66", "f96", "ff6", "ff3", "6f9", "3ff", "6ff", "99f", "f9f"],
@@ -63,7 +30,7 @@ dojo.widget.defineWidget(
 			["666", "900", "c60", "c93", "990", "090", "399", "33f", "60c", "939"],
 			["333", "600", "930", "963", "660", "060", "366", "009", "339", "636"],
 			["000", "300", "630", "633", "330", "030", "033", "006", "309", "303"]],
-	
+
 		"3x4": [["ffffff"/*white*/, "00ff00"/*lime*/, "008000"/*green*/, "0000ff"/*blue*/],
 			["c0c0c0"/*silver*/, "ffff00"/*yellow*/, "ff00ff"/*fuchsia*/, "000080"/*navy*/],
 			["808080"/*gray*/, "ff0000"/*red*/, "800080"/*purple*/, "000000"/*black*/]]
@@ -88,7 +55,7 @@ dojo.widget.defineWidget(
 				if (colors[i][j].length == 3) {
 					colors[i][j] = colors[i][j].replace(/(.)(.)(.)/, "$1$1$2$2$3$3");
 				}
-	
+
 				var td = tr.insertCell(-1);
 				with (td.style) {
 					backgroundColor = "#" + colors[i][j];
@@ -96,13 +63,13 @@ dojo.widget.defineWidget(
 					width = height = "15px";
 					fontSize = "1px";
 				}
-	
+
 				td.color = "#" + colors[i][j];
-	
+
 				td.onmouseover = function (e) { this.style.borderColor = "white"; }
 				td.onmouseout = function (e) { this.style.borderColor = "gray"; }
 				dojo.event.connect(td, "onmousedown", this, "click");
-	
+
 				td.innerHTML = "&nbsp;";
 			}
 		}
@@ -132,7 +99,7 @@ dojo.widget.defineWidget(
 			this.bgIframe.style.display = "none";
 		}
 	},
-	
+
 	showAt: function (x, y) {
 		with(this.domNode.style){
 			top = y + "px";

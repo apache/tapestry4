@@ -21,14 +21,34 @@ dojo.experimental("dojo.data.Result");
 
 dojo.declare("dojo.data.Result", null, {
 	forEach:
-		function(/* function or object */ functionOrKeywordObject) {
+		function(/* function */ callbackFunction, /* object? */ callbackObject, /* object? */ optionalKeywordArgs) {
 		/* summary:
 		 *   Loops through the result list, calling a callback function
 		 *   for each item in the result list.
 		 * description:
-		 *   The forEach() method will pass two arguments to the callback
-		 *   function: an item, and the result list object itself.
-		 *   Returns true if the entire result list has been looped through.
+		 *   The forEach() method will call the callback function once for 
+		 *   each item in the result list.  If a callbackObject is provided
+		 *   the callbackFunction will be called in the context of the 
+		 *   callbackObject (the callbackObject will be used as the 'this'
+		 *   for each invocation of the callbackFunction).  If callbackObject 
+		 *   is not provided, or is null, the global object associated with 
+		 *   callback is used instead.  The forEach() method will pass 
+		 *   3 arguments to the callbackFunction: an item, the index of 
+		 *   item in the context of this forEach() loop, and the result object
+		 *   itself.  The signature of this forEach() method was modeled on
+		 *   the forEach() method of Mozilla's Array object in JavaScript 1.6:
+		 *   http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Objects:Array:forEach
+		 *   In addition to the callbackFunction and callbackObject parameters,
+		 *   the forEach() method may accept a third parameter, which should be
+		 *   an object with keyword parameters.  Different implementations may
+		 *   make use of different keyword paramters.  Conforming 
+		 *   implementations ignore keyword parameters that they don't 
+		 *   recognize.
+		 *   The forEach() method will returns true if the entire result list 
+		 *   has been looped through, or false if the result list has not yet
+		 *   been looped through.
+		 *   The forEach() method will ignore any return value returned by
+		 *   the callbackFunction.
 		 *   After the forEach() operation has finished (or been cancelled)
 		 *   result.forEach() can be called again on the same result object.
 		 * functionOrKeywordObject:
@@ -80,39 +100,60 @@ dojo.declare("dojo.data.Result", null, {
 	cancel:
 		function() {
 		/* summary:
-		 *   If a forEach() loop is in progress, calling cancel() stops
-		 *   the loop.
+		 *   Calling cancel() stops any and all processing associated with this
+		 *   result object.  
+		 * description: 
+		 *   If a forEach() loop is in progress, calling cancel() will stop 
+		 *   the loop.  If a store.find() is in progress, and that find() 
+		 *   involves an XMLHttpRequest, calling cancel() will abort the 
+		 *   XMLHttpRequest.  If callbacks have been set using setOnFindCompleted() 
+		 *   or setOnError(), calling cancel() will cause those callbacks to 
+		 *   not be called under any circumstances.
 		 */
 			dojo.unimplemented('dojo.data.Result.cancel');
 		},
-	addCallback:
-		function(/* function */ callbackFunction) {
+	setOnFindCompleted:
+		function(/* function */ callbackFunction, /* object? */ callbackObject) {
 		/* summary:
 		 *   Allows you to register a callbackFunction that will
 		 *   be called when all the results are available.
-		 *   Patterned after dojo.Deferred.addCallback()
+		 * description:
+		 *   If a callbackObject is provided the callbackFunction will be 
+		 *   called in the context of the callbackObject (the callbackObject
+		 *   will be used as the 'this' for each invocation of the
+		 *   callbackFunction).  If callbackObject is not provided, or is 
+		 *   null, the global object associated with callback is used instead.
+		 *   The setOnFindCompleted() method will ignore any return value 
+		 *   returned by the callbackFunction.
 		 * issues:
-		 *   I (Brian) am not clear on exactly how this shoul work:
-		 *   what parameters it takes, what the return value should
-		 *   be, whether the callback gets called before or after the
-		 *   forEach() loop, whether you can chain callbacks (as with
-		 *   a real Deferred.  I'm worried that doing everything that
-		 *   dojo.Deferred does is too much to ask of basic data-store
-		 *   implementations like a simple CSV store.  Maybe someone
-		 *   else can suggest simple answers to how addCallback should
-		 *   work.
+		 *   We have not yet decided what parameters the setOnFindCompleted() 
+		 *   will pass to the callbackFunction...
+		 *   (A) The setOnFindCompleted() method will pass one parameter to the 
+		 *   callbackFunction: the result object itself.
+		 *   (B) The setOnFindCompleted() method will pass two parameters to the 
+		 *   callbackFunction: an iterator object, and the result object itself.
 		 */
-			dojo.unimplemented('dojo.data.Result.addCallback');
+			dojo.unimplemented('dojo.data.Result.setOnFindCompleted');
 		},
-	addErrback:
-		function(/* function */ errorCallbackFunction) {
+	setOnError:
+		function(/* function */ errorCallbackFunction, /* object? */ callbackObject) {
 		/* summary:
 		 *   Allows you to register a errorCallbackFunction that
 		 *   will be called if there is any sort of error.
-		 * issues:
-		 *   See the notes under addCallback(), above.
+		 * description:
+		 *   If a callbackObject is provided the errorCallbackFunction will
+		 *   be called in the context of the callbackObject (the callbackObject
+		 *   will be used as the 'this' for each invocation of the
+		 *   errorCallbackFunction).  If callbackObject is not provided, or is 
+		 *   null, the global object associated with callback is used instead.
+		 *   The setOnError() method will pass two parameters to the 
+		 *   errorCallbackFunction: an Error object, and the result object 
+		 *   itself:
+		 *     errorCallbackFunction(errorObject, resultObject); 
+		 *   The setOnError() method will ignore any return value returned 
+		 *   by the errorCallbackFunction.
 		 */
-			dojo.unimplemented('dojo.data.Result.addErrback');
+			dojo.unimplemented('dojo.data.Result.setOnError');
 		},
 	getStore:
 		function() {

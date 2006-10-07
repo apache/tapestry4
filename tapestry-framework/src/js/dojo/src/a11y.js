@@ -14,15 +14,23 @@ dojo.require("dojo.uri.*");
 dojo.require("dojo.html.common");
 
 dojo.a11y = {
+	// String
+	// path to the test image for determining if images are displayed or not
 	imgPath:dojo.uri.dojoUri("src/widget/templates/images"),
-	doAccessibleCheck: true,	//perform a11y check or not
-	accessible: null,		// true = generate accessible widgets
+	
+	// Boolean
+	// if true will perform check for need to create accessible widgets
+	doAccessibleCheck: true,
+	
+	// Boolean
+	// uninitialized when null (accessible check has not been performed)
+	// if true generate accessible widgets
+	accessible: null,		
 
 	checkAccessible: function(){ 
-	/*
-	 * summary: perform check for accessibility if accessibility checking is turned
-	 * on and the accessibility test has not been performed yet
-	*/
+	// summary: 
+	//		perform check for accessibility if accessibility checking is turned
+	//		on and the accessibility test has not been performed yet
 		if(this.accessible === null){ 
 			this.accessible = false; //default
 			if(this.doAccessibleCheck == true){ 
@@ -33,12 +41,10 @@ dojo.a11y = {
 	},
 	
 	testAccessible: function(){
-	/*
-	 * summary: Always perform the accessibility check to determine if high 
-	 * contrast mode is on or display of images are turned off. Currently only checks 
-	 * in IE and Mozilla. 
-	*/
-		// always test
+	// summary: 
+	//		Always perform the accessibility check to determine if high 
+	//		contrast mode is on or display of images are turned off. Currently only checks 
+	//		in IE and Mozilla. 
 		this.accessible = false; //default
 		if (dojo.render.html.ie || dojo.render.html.mozilla){
 			var div = document.createElement("div");
@@ -77,21 +83,18 @@ dojo.a11y = {
 	},
 	
 	setCheckAccessible: function(/* Boolean */ bTest){ 
-	/*
-	 * summary: Set whether or not to check for accessibility mode.  Default value
-	 * of module is true - perform check for accessibility modes. 
-	 * bTest: Boolean - true to check; false to turn off checking
-	*/
+	// summary: 
+	//		Set whether or not to check for accessibility mode.  Default value
+	//		of module is true - perform check for accessibility modes. 
+	//		bTest: Boolean - true to check; false to turn off checking
 		this.doAccessibleCheck = bTest;
 	},
 
 	setAccessibleMode: function(){
-	/*
-	 * summary: perform the accessibility check and sets the correct mode to load 
-	 * a11y widgets. Only runs if test for accessiiblity has not been performed yet. 
-	 * Call testAccessible() to force the test.
-	 * returnValue:boolean - true if accessibility mode is set
-	*/
+	// summary:
+	//		perform the accessibility check and sets the correct mode to load 
+	//		a11y widgets. Only runs if test for accessiiblity has not been performed yet. 
+	//		Call testAccessible() to force the test.
 		if (this.accessible === null){
 			if (this.checkAccessible()){
 				dojo.render.html.prefixes.unshift("a11y");

@@ -103,7 +103,7 @@ dojo.widget.defineWidget(
 	// Hide the text and display the form instead.
 	beginEdit: function(e){
 		if(this.editing || !this.isEnabled){ return; }
-		this.mouseout();
+		this.onMouseOut();
 		this.editing = true;
 
 		// setup the form's <input> or <textarea> field, as specified by mode

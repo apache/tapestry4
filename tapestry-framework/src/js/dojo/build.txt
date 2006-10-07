@@ -12,6 +12,7 @@ dojoGuardEnd.js,
 ../src/lang/extras.js,
 ../src/lang/func.js,
 ../src/event/common.js,
-../src/event/browser.js
+../src/event/browser.js,
+../src/dom.js
 
 		

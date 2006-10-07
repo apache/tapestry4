@@ -312,28 +312,37 @@ dojo.io.XMLHTTPTransport = new function(){
 		// and this results in another sync call before the first sync call ends the browser hangs
 		if(!dojo.hostenv._blockAsync && !_this._blockAsync){
 			for(var x=this.inFlight.length-1; x>=0; x--){
-				var tif = this.inFlight[x];
-				if(!tif || tif.http._aborted || !tif.http.readyState){
-					this.inFlight.splice(x, 1); continue; 
-				}
-				if(4==tif.http.readyState){
-					// remove it so we can clean refs
-					this.inFlight.splice(x, 1);
-					doLoad(tif.req, tif.http, tif.url, tif.query, tif.useCache);
-				}else if (tif.startTime){
-					//See if this is a timeout case.
-					if(!now){
-						now = (new Date()).getTime();
+				try{
+					var tif = this.inFlight[x];
+					if(!tif || tif.http._aborted || !tif.http.readyState){
+						this.inFlight.splice(x, 1); continue; 
 					}
-					if(tif.startTime + (tif.req.timeoutSeconds * 1000) < now){
-						//Stop the request.
-						if(typeof tif.http.abort == "function"){
-							tif.http.abort();
-						}
-	
+					if(4==tif.http.readyState){
 						// remove it so we can clean refs
 						this.inFlight.splice(x, 1);
-						tif.req[(typeof tif.req.timeout == "function") ? "timeout" : "handle"]("timeout", null, tif.http, tif.req);
+						doLoad(tif.req, tif.http, tif.url, tif.query, tif.useCache);
+					}else if (tif.startTime){
+						//See if this is a timeout case.
+						if(!now){
+							now = (new Date()).getTime();
+						}
+						if(tif.startTime + (tif.req.timeoutSeconds * 1000) < now){
+							//Stop the request.
+							if(typeof tif.http.abort == "function"){
+								tif.http.abort();
+							}
+		
+							// remove it so we can clean refs
+							this.inFlight.splice(x, 1);
+							tif.req[(typeof tif.req.timeout == "function") ? "timeout" : "handle"]("timeout", null, tif.http, tif.req);
+						}
+					}
+				}catch(e){
+					try{
+						var errObj = new dojo.io.Error("XMLHttpTransport.watchInFlight Error: " + e);
+						tif.req[(typeof tif.req.error == "function") ? "error" : "handle"]("error", errObj, tif.http, tif.req);
+					}catch(e2){
+						dojo.debug("XMLHttpTransport error callback failed: " + e2);
 					}
 				}
 			}
@@ -524,10 +533,10 @@ dojo.io.XMLHTTPTransport = new function(){
 
 		if(kwArgs.method.toLowerCase() == "post"){
 			// FIXME: need to hack in more flexible Content-Type setting here!
-			if (!kwArgs.usr) {
+			if (!kwArgs.user) {
 				http.open("POST", url, async);
 			}else{
-        http.open("POST", url, async, kwArgs.usr, kwArgs.passwd);
+        http.open("POST", url, async, kwArgs.user, kwArgs.password);
 			}
 			setHeaders(http, kwArgs);
 			http.setRequestHeader("Content-Type", kwArgs.multipart ? ("multipart/form-data; boundary=" + this.multipartBoundary) : 

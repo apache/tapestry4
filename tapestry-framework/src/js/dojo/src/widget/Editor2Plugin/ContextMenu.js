@@ -10,6 +10,9 @@
 
 dojo.provide("dojo.widget.Editor2Plugin.ContextMenu");
 
+//ContextMenu plugin should be dojo.required-ed before all other plugins which
+//support contextmenu, otherwise the menu for that plugin won't be shown
+
 dojo.require("dojo.widget.Menu2");
 
 dojo.event.topic.subscribe("dojo.widget.Editor2::onLoad", function(editor){
@@ -190,7 +193,7 @@ dojo.declare("dojo.widget.Editor2Plugin.SimpleContextMenu", null,
 		return show;
 	}
 });
-dojo.declare("dojo.widget.Editor2Plugin.GenericContextMenu", 
+dojo.declare("dojo.widget.Editor2Plugin.GenericContextMenu",
 	dojo.widget.Editor2Plugin.SimpleContextMenu,
 {
 	createItems: function(){
@@ -199,7 +202,7 @@ dojo.declare("dojo.widget.Editor2Plugin.GenericContextMenu",
 		this.items.push(dojo.widget.createWidget("Editor2ContextMenuItem", {caption: "Paste", iconClass: "dojoE2TBIcon dojoE2TBIcon_Paste"}));
 	}
 });
-dojo.declare("dojo.widget.Editor2Plugin.LinkContextMenu", 
+dojo.declare("dojo.widget.Editor2Plugin.LinkContextMenu",
 	dojo.widget.Editor2Plugin.SimpleContextMenu,
 {
 	createItems: function(){
@@ -222,7 +225,7 @@ dojo.declare("dojo.widget.Editor2Plugin.LinkContextMenu",
 		return show;
 	}
 });
-dojo.declare("dojo.widget.Editor2Plugin.ImageContextMenu", 
+dojo.declare("dojo.widget.Editor2Plugin.ImageContextMenu",
 	dojo.widget.Editor2Plugin.SimpleContextMenu,
 {
 	createItems: function(){

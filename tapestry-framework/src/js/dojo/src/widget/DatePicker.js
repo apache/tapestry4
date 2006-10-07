@@ -18,10 +18,6 @@ dojo.require("dojo.event.*");
 dojo.require("dojo.dom");
 dojo.require("dojo.html.style");
 
-dojo.widget.defineWidget(
-	"dojo.widget.DatePicker",
-	dojo.widget.HtmlWidget,
-	{
 		/*
 		summary: 
 	 	              Base class for a stand-alone DatePicker widget 
@@ -45,25 +41,41 @@ dojo.widget.defineWidget(
 	 	 
 	 	              <div dojoType="DatePicker"></div> 
 		*/
-	
+
+dojo.widget.defineWidget(
+	"dojo.widget.DatePicker",
+	dojo.widget.HtmlWidget,
+	{	
 		//start attributes
 		
-		//total weeks to display default 
+		//String|Date
+		//	form value property if =='today' will default to todays date
+		value: "", 
+		//String
+		// 	name of the form element
+		name: "",
+		//Integer
+		//	total weeks to display default 
 		displayWeeks: 6, 
-		//if true, weekly size of calendar changes to acomodate the month if false, 42 day format is used
+		//Boolean
+		//	if true, weekly size of calendar changes to acomodate the month if false, 42 day format is used
 		adjustWeeks: false,
-		//first available date in the calendar set
+		//String|Date
+		//	first available date in the calendar set
 		startDate: "1492-10-12",
-		//last available date in the calendar set
+		//String|Date
+		//	last available date in the calendar set
 		endDate: "2941-10-12",
-		//adjusts the first day of the week 0==Sunday..6==Saturday
+		//Integer
+		//	adjusts the first day of the week 0==Sunday..6==Saturday
 		weekStartsOn: "",
-		//current date selected by DatePicker in rfc 3339 date format "yyyy-MM-dd" -- once initialized, this.date will be a date Object
-		date: "",
-		storedDate: "", //deprecated use date instead
-		//disable all incremental controls, must pick a date in the current display
+		//String
+		//	deprecated use value instead
+		storedDate: "",
+		//Boolean
+		//d	isable all incremental controls, must pick a date in the current display
 		staticDisplay: false,
-
+		
 		//how to render the names of the days in the header.  see dojo.date.getDayNames
 		dayWidth: 'narrow',
 		classNames: {
@@ -87,7 +99,7 @@ dojo.widget.defineWidget(
 			dojo.widget.DatePicker.superclass.postMixInProperties.apply(this, arguments);
 			if(this.storedDate){
 				dojo.deprecated("dojo.widget.DatePicker", "use 'date' instead of 'storedDate'", "0.5");
-				this.date=this.storedDate;
+				this.value=this.storedDate;
 			}
 			this.startDate = dojo.date.fromRfc3339(this.startDate);
 			this.endDate = dojo.date.fromRfc3339(this.endDate);
@@ -98,9 +110,9 @@ dojo.widget.defineWidget(
 			}
 			this.today = new Date();
 			this.today.setHours(0,0,0,0);
-			if(this.date && (typeof this.date=="string") && (this.date.split("-").length > 2)) {
-				this.date = dojo.date.fromRfc3339(this.date);
-				this.date.setHours(0,0,0,0);
+			if(this.value && (typeof this.value=="string") && (this.value.split("-").length > 2)) {
+				this.value = dojo.date.fromRfc3339(this.value);
+				this.value.setHours(0,0,0,0);
 			}
 		},
 
@@ -114,7 +126,7 @@ dojo.widget.defineWidget(
 			dojo.html.copyStyle(this.domNode, source);
 
 			this.weekTemplate = dojo.dom.removeNode(this.calendarWeekTemplate);
-			this._preInitUI((this.date)?this.date:this.today,false,true); //init UI with date selected ONLY if user supplies one
+			this._preInitUI((this.value)?this.value:this.today,false,true); //init UI with date selected ONLY if user supplies one
 
 			// Insert localized day names in the template
 			var dayLabels = dojo.lang.unnest(dojo.date.getNames('days', this.dayWidth, 'standAlone', this.lang)); //if we dont use unnest, we risk modifying the dayLabels array inside of dojo.date and screwing up other calendars on the page
@@ -132,12 +144,12 @@ dojo.widget.defineWidget(
 		
 		getValue: function() {
 			// summary: return current date in RFC 3339 format
-			return dojo.date.toRfc3339(new Date(this.date),'dateOnly'); /*String*/
+			return dojo.date.toRfc3339(new Date(this.value),'dateOnly'); /*String*/
 		},
 
 		getDate: function() {
 			// summary: return current date as a Date object
-			return this.date; /*Date*/
+			return this.value; /*Date*/
 		},
 
 		setValue: function(/*Date|String*/rfcDate) {
@@ -148,11 +160,11 @@ dojo.widget.defineWidget(
 		setDate: function(/*Date|String*/dateObj) {
 			//summary: set the current date and update the UI
 			if(typeof dateObj=="string"){
-				this.date = dojo.date.fromRfc3339(dateObj);
+				this.value = dojo.date.fromRfc3339(dateObj);
 			}else{
-				this.date = new Date(dateObj);
+				this.value = new Date(dateObj);
 			}
-			this.date.setHours(0,0,0,0);
+			this.value.setHours(0,0,0,0);
 			if(this.selectedNode!=null){
 				dojo.html.removeClass(this.selectedNode,this.classNames.selectedDate);
 			}
@@ -161,16 +173,16 @@ dojo.widget.defineWidget(
 				this.selectedNode = this.clickedNode;
 			}else{
 				//only call this if setDate was called by means other than clicking a date
-				this._preInitUI(this.date,false,true);
+				this._preInitUI(this.value,false,true);
 			}
 			this.clickedNode=null;
-			this.onSetDate();
+			this.onValueChanged(this.value);
 		},
 
 		_preInitUI: function(dateObj,initFirst,initUI) {
 			//initFirst is to tell _initFirstDay if you want first day of the displayed calendar, or first day of the week for dateObj
 			//initUI tells preInitUI to go ahead and run initUI if set to true
-			this.firstDay = this._initFirstDay(dateObj,initFirst,false);
+			this.firstDay = this._initFirstDay(dateObj,initFirst);
 			this.selectedIsUsed = false;
 			this.currentIsUsed = false;
 			var nextDate = new Date(this.firstDay);
@@ -214,7 +226,7 @@ dojo.widget.defineWidget(
 				//this is our new UI loop... one loop to rule them all, and in the datepicker bind them
 				currentCalendarNode = calendarNodes.item(i);
 				currentCalendarNode.innerHTML = nextDate.getDate();
-				var curClass = (nextDate.getMonth() == this.curMonth.getMonth())? 'current':'previous';
+				var curClass = (nextDate.getMonth()<this.curMonth.getMonth())?'previous':(nextDate.getMonth()==this.curMonth.getMonth())?'current':'next';
 				var mappedClass = curClass;
 				if(this._isDisabledDate(nextDate)){
 					var classMap={previous:"disabledPrevious",current:"disabledCurrent",next:"disabledNext"};
@@ -392,7 +404,7 @@ dojo.widget.defineWidget(
 		_getDateClassName: function(date, monthState) {
 			var currentClassName = this.classNames[monthState];
 			//we use Number comparisons because 2 dateObjects never seem to equal each other otherwise
-			if ((!this.selectedIsUsed && this.date) && (Number(date) == Number(this.date))) {
+			if ((!this.selectedIsUsed && this.value) && (Number(date) == Number(this.value))) {
 				currentClassName = this.classNames.selectedDate + " " + currentClassName;
 				this.selectedIsUsed = true;
 			}
@@ -428,7 +440,7 @@ dojo.widget.defineWidget(
 			this.setDate(new Date(year, month, eventTarget.innerHTML));
 		},
 		
-		onSetDate: function() {
+		onValueChanged: function(/*Date*/date) {
 			//summary: the set date event handler
 		},
 		

@@ -20,6 +20,8 @@ dojo.widget.defineWidget(
 	"dojo.widget.vml.Chart",
 	[dojo.widget.HtmlWidget, dojo.widget.Chart],
 	function(){
+		//	summary
+		//	initializes the VML version of Chart.
 		this.templatePath=null;
 		this.templateCssPath=null;
 		this._isInitialize=false;
@@ -124,7 +126,8 @@ dojo.widget.defineWidget(
 		return { rangeX:bRangeX, rangeY:bRangeY };
 	},
 	setAxesPlot:function(/* HTMLElement */table){
-		//	where to plot the axes
+		//	summary
+		//	figure out where to plot the axes
 		if (table.getAttribute("axisAt")){
 			var p=table.getAttribute("axisAt");
 			if (p.indexOf(",")>-1) p=p.split(",");
@@ -153,7 +156,8 @@ dojo.widget.defineWidget(
 		}
 	},
 	drawVectorNode:function(){
-		// render the body of the chart, not the chart data.
+		//	summary
+		//	Draws the main canvas for the chart
 		if(this.vectorNode){ this.destroy(); }
 		this.vectorNode=document.createElement("div");
 		this.vectorNode.style.width=this.properties.width+"px";
@@ -162,6 +166,8 @@ dojo.widget.defineWidget(
 		this.domNode.appendChild(this.vectorNode);
 	},
 	drawPlotArea:function(){
+		//	summary
+		//	Draws the plot area for the chart
 		var plotWidth=this.properties.width-this.properties.padding.left-this.properties.padding.right;
 		var plotHeight=this.properties.height-this.properties.padding.top-this.properties.padding.bottom;
 
@@ -180,6 +186,8 @@ dojo.widget.defineWidget(
 		this.vectorNode.appendChild(this.plotArea);
 	},
 	drawDataGroup:function(){
+		//	summary
+		//	Draws the data group for the chart
 		var plotWidth=this.properties.width-this.properties.padding.left-this.properties.padding.right;
 		var plotHeight=this.properties.height-this.properties.padding.top-this.properties.padding.bottom;
 
@@ -197,6 +205,8 @@ dojo.widget.defineWidget(
 		this.plotArea.appendChild(this.dataGroup);
 	},
 	drawAxes:function(){
+		//	summary
+		//	Draws the axes for the chart
 		var plotWidth=this.properties.width-this.properties.padding.left-this.properties.padding.right;
 		var plotHeight=this.properties.height-this.properties.padding.top-this.properties.padding.bottom;
 
@@ -289,7 +299,8 @@ dojo.widget.defineWidget(
 	},
 	
 	init:function(){
-		//	get the width and the height.
+		//	summary
+		//	Initialize the chart
 		if(!this.properties.width || !this.properties.height){
 			var box=dojo.html.getContentBox(this.domNode);
 			if(!this.properties.width){
@@ -311,12 +322,16 @@ dojo.widget.defineWidget(
 		this._isInitialized=true;
 	},
 	destroy:function(){
+		//	summary
+		//	Node cleanup
 		while(this.domNode.childNodes.length>0){
 			this.domNode.removeChild(this.domNode.childNodes[0]);
 		}
 		this.vectorNode=this.plotArea=this.dataGroup=this.axisGroup=null;
 	},
 	render:function(){
+		//	summary
+		//	Draws the data on the chart
 		if (this.dataGroup){
 			while(this.dataGroup.childNodes.length>0){
 				this.dataGroup.removeChild(this.dataGroup.childNodes[0]);
@@ -329,7 +344,8 @@ dojo.widget.defineWidget(
 		}
 	},
 	postCreate:function(){
-		//	begin by grabbing the table, and reading it in.
+		//	summary
+		//	Parse any data if included with the chart, and kick off the rendering.
 		var table=this.domNode.getElementsByTagName("table")[0];
 		if (table){
 			var ranges=this.parseProperties(table);
@@ -356,11 +372,15 @@ dojo.widget.defineWidget(
 });
 
 dojo.widget.vml.Chart.Plotter=new function(){
+	//	summary
+	//	Singleton for plotting series of data.
 	var self=this;
 	var plotters = {};
 	var types=dojo.widget.Chart.PlotTypes;
 	
-	this.getX=function(value, chart){
+	this.getX=function(/* string||number */value, /* dojo.widget.Chart */chart){
+		//	summary
+		//	Calculate the x coord on the passed chart for the passed value
 		var v=parseFloat(value);
 		var min=chart.properties.axes.x.range.min;
 		var max=chart.properties.axes.x.range.max;
@@ -372,7 +392,9 @@ dojo.widget.vml.Chart.Plotter=new function(){
 		var x=(v*((xmax-xmin)/max))+xmin;
 		return x;
 	};
-	this.getY=function(value, chart){
+	this.getY=function(/* string||number */value, /* dojo.widget.Chart */chart){
+		//	summary
+		//	Calculate the y coord on the passed chart for the passed value
 		var v=parseFloat(value);
 		var max=chart.properties.axes.y.range.max;
 		var min=chart.properties.axes.y.range.min;
@@ -386,21 +408,27 @@ dojo.widget.vml.Chart.Plotter=new function(){
 		return y;
 	};
 
-	this.addPlotter=function(name, func){
+	this.addPlotter=function(/* string */name, /* function */func){
+		//	summary
+		//	add a custom plotter function to this object.
 		plotters[name]=func;
 	};
-	this.plot=function(series, chart){
-		if (series.values.length==0) return;
+	this.plot=function(/* dojo.widget.Chart.DataSeries */series, /* dojo.widget.Chart */chart){
+		//	summary
+		//	plot the passed series.
+		if (series.values.length==0) return;	//	void
 		if (series.plotType && plotters[series.plotType]){
-			return plotters[series.plotType](series, chart);
+			return plotters[series.plotType](series, chart);	//	void
 		}
 		else if (chart.plotType && plotters[chart.plotType]){
-			return plotters[chart.plotType](series, chart);
+			return plotters[chart.plotType](series, chart);		//	void
 		}
 	};
 
 	//	plotting
-	plotters["bar"]=function(series, chart){
+	plotters["bar"]=function(/* dojo.widget.Chart.DataSeries */series, /* dojo.widget.Chart */chart){
+		//	summary
+		//	plot the passed series as a set of bars.
 		var space=1;
 		var lastW = 0;
 		var ys = [];
@@ -429,24 +457,19 @@ dojo.widget.vml.Chart.Plotter=new function(){
 			bar.style.left=x+"px";
 			bar.style.width=w+"px";
 			bar.style.height=h+"px";
-			bar.setAttribute("supposedToBe", "top/left/width/height: " 
-				+ Math.round(y) + "/"
-				+ Math.round(x) + "/"
-				+ Math.round(w) + "/"
-				+ Math.round(h)
-			);
 			bar.setAttribute("fillColor", series.color);
 			bar.setAttribute("stroked", "false");
 			bar.style.antialias="false";
 			bar.setAttribute("title", series.label + " (" + i + "): " + series.values[i].value);
-		// bar.setAttribute("coordsize", chart.properties.width + "," + chart.properties.height);
 			var fill=document.createElement("v:fill");
 			fill.setAttribute("opacity", "0.9");
 			bar.appendChild(fill);
 			chart.dataGroup.appendChild(bar);
 		}
 	};	
-	plotters["line"]=function(series, chart){
+	plotters["line"]=function(/* dojo.widget.Chart.DataSeries */series, /* dojo.widget.Chart */chart){
+		//	summary
+		//	plot the passed series as a line with tensioning
 		var tension=1.5;
 
 		var line=document.createElement("v:shape");
@@ -490,7 +513,9 @@ dojo.widget.vml.Chart.Plotter=new function(){
 		line.setAttribute("path", path.join(" ")+" e");
 		chart.dataGroup.appendChild(line);
 	};
-	plotters["area"]=function(series, chart){
+	plotters["area"]=function(/* dojo.widget.Chart.DataSeries */series, /* dojo.widget.Chart */chart){
+		//	summary
+		//	plot the passed series as an area with tensioning.
 		var tension=1.5;
 
 		var line=document.createElement("v:shape");
@@ -540,7 +565,9 @@ dojo.widget.vml.Chart.Plotter=new function(){
 		line.setAttribute("path", path.join(" ")+" x e");
 		chart.dataGroup.appendChild(line);
 	};
-	plotters["scatter"]=function(series, chart){
+	plotters["scatter"]=function(/* dojo.widget.Chart.DataSeries */series, /* dojo.widget.Chart */chart){
+		//	summary
+		//	plot the passed series as a scatter chart
 		var r=6;
 		for (var i=0; i<series.values.length; i++){
 			var x=self.getX(series.values[i].x, chart);
@@ -563,7 +590,9 @@ dojo.widget.vml.Chart.Plotter=new function(){
 			chart.dataGroup.appendChild(point);
 		}
 	};	
-	plotters["bubble"]=function(series, chart){
+	plotters["bubble"]=function(/* dojo.widget.Chart.DataSeries */series, /* dojo.widget.Chart */chart){
+		//	summary
+		//	plot the passed series as a series of bubbles (scatter with 3rd dimension)
 		//	added param for series[n].value: size
 		var minR=1;
 		

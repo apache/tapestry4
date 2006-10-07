@@ -11,7 +11,8 @@
 dojo.provide("dojo.date.supplemental");
 
 dojo.date.getFirstDayOfWeek = function(/*String?*/locale){
-// summary:
+// summary: Returns a zero-based index for first day of the week
+// description:
 //		Returns a zero-based index for first day of the week, as used by the local (Gregorian) calendar.
 //		e.g. Sunday (returns 0), or Monday (returns 1)
 
@@ -34,8 +35,10 @@ dojo.date.getFirstDayOfWeek = function(/*String?*/locale){
 };
 
 dojo.date.getWeekend = function(/*String?*/locale){
-// summary:
-//		Returns a hash containing the start and end of the weekend in the locale, or by default in the user's locale.
+// summary: Returns a hash containing the start and end days of the weekend
+// description:
+//		Returns a hash containing the start and end days of the weekend according to local custom using locale,
+//		or by default in the user's locale.
 //		e.g. {start:6, end:0}
 
 	// from http://www.unicode.org/cldr/data/common/supplemental/supplementalData.xml:supplementalData/weekData/weekend{Start,End}

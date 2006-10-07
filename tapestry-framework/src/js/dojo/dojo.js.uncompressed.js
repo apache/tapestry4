@@ -1365,7 +1365,7 @@ dojo.hostenv.makeWidgets = function(){
 		if(dojo.evalObjPath("dojo.widget.Parse")){
 			// we must do this on a delay to avoid:
 			//	http://www.shaftek.org/blog/archives/000212.html
-			// IE is such a tremendous peice of shit.
+			// (IE bug)
 				var parser = new dojo.xml.Parse();
 				if(sids.length > 0){
 					for(var x=0; x<sids.length; x++){
@@ -2223,7 +2223,7 @@ dojo.provide("dojo.event.common");
 // TODO: more resiliency for 4+ arguments to connect()
 
 dojo.event = new function(){
-	this.canTimeout = dojo.lang.isFunction(dj_global["setTimeout"])||dojo.lang.isAlien(dj_global["setTimeout"]);
+	this._canTimeout = dojo.lang.isFunction(dj_global["setTimeout"])||dojo.lang.isAlien(dj_global["setTimeout"]);
 
 	// FIXME: where should we put this method (not here!)?
 	function interpolateArgs(args, searchForNames){
@@ -2374,10 +2374,104 @@ dojo.event = new function(){
 		return ao;
 	}
 
-	this.connect = function(){
+	this.connect = function(/*...*/){
 		// summary:
-		// 	dojo.event.connect is the glue that holds most Dojo-based
-		// 	applications together.
+		//		dojo.event.connect is the glue that holds most Dojo-based
+		//		applications together. Most combinations of arguments are
+		//		supported, with the connect() method attempting to disambiguate
+		//		the implied types of positional parameters. The following will
+		//		all work:
+		//			dojo.event.connect("globalFunctionName1", "globalFunctionName2");
+		//			dojo.event.connect(functionReference1, functionReference2);
+		//			dojo.event.connect("globalFunctionName1", functionReference2);
+		//			dojo.event.connect(functionReference1, "globalFunctionName2");
+		//			dojo.event.connect(scope1, "functionName1", "globalFunctionName2");
+		//			dojo.event.connect("globalFunctionName1", scope2, "functionName2");
+		//			dojo.event.connect(scope1, "functionName1", scope2, "functionName2");
+		//			dojo.event.connect("after", scope1, "functionName1", scope2, "functionName2");
+		//			dojo.event.connect("before", scope1, "functionName1", scope2, "functionName2");
+		//			dojo.event.connect("around", 	scope1, "functionName1", 
+		//											scope2, "functionName2",
+		//											aroundFunctionReference);
+		//			dojo.event.connect("around", 	scope1, "functionName1", 
+		//											scope2, "functionName2",
+		//											scope3, "aroundFunctionName");
+		//			dojo.event.connect("before-around", 	scope1, "functionName1", 
+		//													scope2, "functionName2",
+		//													aroundFunctionReference);
+		//			dojo.event.connect("after-around", 		scope1, "functionName1", 
+		//													scope2, "functionName2",
+		//													aroundFunctionReference);
+		//			dojo.event.connect("after-around", 		scope1, "functionName1", 
+		//													scope2, "functionName2",
+		//													scope3, "aroundFunctionName");
+		//			dojo.event.connect("around", 	scope1, "functionName1", 
+		//											scope2, "functionName2",
+		//											scope3, "aroundFunctionName", true, 30);
+		//			dojo.event.connect("around", 	scope1, "functionName1", 
+		//											scope2, "functionName2",
+		//											scope3, "aroundFunctionName", null, null, 10);
+		// adviceType: 
+		//		Optional. String. One of "before", "after", "around",
+		//		"before-around", or "after-around". FIXME
+		// srcObj:
+		//		the scope in which to locate/execute the named srcFunc. Along
+		//		with srcFunc, this creates a way to dereference the function to
+		//		call. So if the function in question is "foo.bar", the
+		//		srcObj/srcFunc pair would be foo and "bar", where "bar" is a
+		//		string and foo is an object reference.
+		// srcFunc:
+		//		the name of the function to connect to. When it is executed,
+		//		the listener being registered with this call will be called.
+		//		The adviceType defines the call order between the source and
+		//		the target functions.
+		// adviceObj:
+		//		the scope in which to locate/execute the named adviceFunc.
+		// adviceFunc:
+		//		the name of the function being conected to srcObj.srcFunc
+		// aroundObj:
+		//		the scope in which to locate/execute the named aroundFunc.
+		// aroundFunc:
+		//		the name of, or a reference to, the function that will be used
+		//		to mediate the advice call. Around advice requires a special
+		//		unary function that will be passed a "MethodInvocation" object.
+		//		These objects have several important properties, namely:
+		//			- args
+		//				a mutable array of arguments to be passed into the
+		//				wrapped function
+		//			- proceed
+		//				a function that "continues" the invocation. The result
+		//				of this function is the return of the wrapped function.
+		//				You can then manipulate this return before passing it
+		//				back out (or take further action based on it).
+		// once:
+		//		boolean that determines whether or not this connect() will
+		//		create a new connection if an identical connect() has already
+		//		been made. Defaults to "false".
+		// delay:
+		//		an optional delay (in ms), as an integer, for dispatch of a
+		//		listener after the source has been fired.
+		// rate:
+		//		an optional rate throttling parameter (integer, in ms). When
+		//		specified, this particular connection will not fire more than
+		//		once in the interval specified by the rate
+		// adviceMsg:
+		//		boolean. Should the listener have all the parameters passed in
+		//		as a single argument?
+
+		/*
+				ao.adviceType = args[0];
+				ao.srcObj = args[1];
+				ao.srcFunc = args[2];
+				ao.adviceObj = args[3]
+				ao.adviceFunc = args[4];
+				ao.aroundObj = args[5];
+				ao.aroundFunc = args[6];
+				ao.once = args[7];
+				ao.delay = args[8];
+				ao.rate = args[9];
+				ao.adviceMsg = args[10];
+		*/
 		if(arguments.length == 1){
 			var ao = arguments[0];
 		}else{
@@ -2390,6 +2484,7 @@ dojo.event = new function(){
 			}
 			ao.srcFunc = "onkeypress";
 		}
+
 
 		if(dojo.lang.isArray(ao.srcObj) && ao.srcObj!=""){
 			var tmpAO = {};
@@ -2418,11 +2513,21 @@ dojo.event = new function(){
 
 		mjp.kwAddAdvice(ao);
 
-		return mjp;	// advanced users might want to fsck w/ the join point
-					// manually
+		// advanced users might want to fsck w/ the join point manually
+		return mjp; // a MethodJoinPoint object
 	}
 
-	this.log = function(a1, a2){
+	this.log = function(/*object or funcName*/ a1, /*funcName*/ a2){
+		// summary:
+		//		a function that will wrap and log all calls to the specified
+		//		a1.a2() function. If only a1 is passed, it'll be used as a
+		//		function or function name on the global context. Logging will
+		//		be sent to dojo.debug
+		// a1:
+		//		if a2 is passed, this should be an object. If not, it can be a
+		//		function or function name.
+		// a2:
+		//		a function name
 		var kwArgs;
 		if((arguments.length == 1)&&(typeof a1 == "object")){
 			kwArgs = a1;
@@ -2443,21 +2548,30 @@ dojo.event = new function(){
 	}
 
 	this.connectBefore = function(){
+		// summary:
+		//	 	takes the same parameters as dojo.event.connect(), except that
+		//	 	the advice type will always be "before"
 		var args = ["before"];
 		for(var i = 0; i < arguments.length; i++){ args.push(arguments[i]); }
-		return this.connect.apply(this, args);
+		return this.connect.apply(this, args); // a MethodJoinPoint object
 	}
 
 	this.connectAround = function(){
+		// summary:
+		//	 	takes the same parameters as dojo.event.connect(), except that
+		//	 	the advice type will always be "around"
 		var args = ["around"];
 		for(var i = 0; i < arguments.length; i++){ args.push(arguments[i]); }
-		return this.connect.apply(this, args);
+		return this.connect.apply(this, args); // a MethodJoinPoint object
 	}
 
 	this.connectOnce = function(){
+		// summary:
+		//	 	takes the same parameters as dojo.event.connect(), except that
+		//	 	the "once" flag will always be set to "true"
 		var ao = interpolateArgs(arguments, true);
 		ao.once = true;
-		return this.connect(ao);
+		return this.connect(ao); // a MethodJoinPoint object
 	}
 
 	this._kwConnectImpl = function(kwArgs, disconnect){
@@ -2472,25 +2586,46 @@ dojo.event = new function(){
 			var tmpName  = dojo.lang.nameAnonFunc(kwArgs.adviceFunc, kwArgs.adviceObj, true);
 			kwArgs.adviceFunc = tmpName;
 		}
-		return dojo.event[fn](	(kwArgs["type"]||kwArgs["adviceType"]||"after"),
-									kwArgs["srcObj"]||dj_global,
-									kwArgs["srcFunc"],
-									kwArgs["adviceObj"]||kwArgs["targetObj"]||dj_global,
-									kwArgs["adviceFunc"]||kwArgs["targetFunc"],
-									kwArgs["aroundObj"],
-									kwArgs["aroundFunc"],
-									kwArgs["once"],
-									kwArgs["delay"],
-									kwArgs["rate"],
-									kwArgs["adviceMsg"]||false );
+		kwArgs.srcObj = kwArgs["srcObj"]||dj_global;
+		kwArgs.adviceObj = kwArgs["adviceObj"]||kwArgs["targetObj"]||dj_global;
+		kwArgs.adviceFunc = kwArgs["adviceFunc"]||kwArgs["targetFunc"];
+		// pass kwargs to avoid unrolling/repacking
+		return dojo.event[fn](kwArgs);
 	}
 
-	this.kwConnect = function(kwArgs){
-		return this._kwConnectImpl(kwArgs, false);
+	this.kwConnect = function(/*Object*/ kwArgs){
+		// summary:
+		//		A version of dojo.event.connect() that takes a map of named
+		//		parameters instead of the positional parameters that
+		//		dojo.event.connect() uses. For many advanced connection types,
+		//		this can be a much more readable (and potentially faster)
+		//		alternative.
+		// kwArgs:
+		// 		An object that can have the following properties:
+		//			- adviceType
+		//			- srcObj
+		//			- srcFunc
+		//			- adviceObj
+		//			- adviceFunc 
+		//			- aroundObj
+		//			- aroundFunc
+		//			- once
+		//			- delay
+		//			- rate
+		//			- adviceMsg
+		//		As with connect, only srcFunc and adviceFunc are generally
+		//		required
+
+		return this._kwConnectImpl(kwArgs, false); // a MethodJoinPoint object
 
 	}
 
 	this.disconnect = function(){
+		// summary:
+		//		Takes the same parameters as dojo.event.connect() but destroys
+		//		an existing connection instead of building a new one. For
+		//		multiple identical connections, multiple disconnect() calls
+		//		will unroll one each time it's called.
 		if(arguments.length == 1){
 			var ao = arguments[0];
 		}else{
@@ -2505,20 +2640,36 @@ dojo.event = new function(){
 			ao.srcFunc = "onkeypress";
 		}
 		var mjp = dojo.event.MethodJoinPoint.getForMethod(ao.srcObj, ao.srcFunc);
-		return mjp.removeAdvice(ao.adviceObj, ao.adviceFunc, ao.adviceType, ao.once);
+		return mjp.removeAdvice(ao.adviceObj, ao.adviceFunc, ao.adviceType, ao.once); // a MethodJoinPoint object
 	}
 
 	this.kwDisconnect = function(kwArgs){
+		// summary:
+		//		Takes the same parameters as dojo.event.kwConnect() but
+		//		destroys an existing connection instead of building a new one.
 		return this._kwConnectImpl(kwArgs, true);
 	}
 }
 
 // exactly one of these is created whenever a method with a joint point is run,
 // if there is at least one 'around' advice.
-dojo.event.MethodInvocation = function(join_point, obj, args){
+dojo.event.MethodInvocation = function(/*dojo.event.MethodJoinPoint*/join_point, /*Object*/obj, /*Array*/args){
+	// summary:
+	//		a class the models the call into a function. This is used under the
+	//		covers for all method invocations on both ends of a
+	//		connect()-wrapped function dispatch. This allows us to "pickle"
+	//		calls, such as in the case of around advice.
+	// join_point:
+	//		a dojo.event.MethodJoinPoint object that represents a connection
+	// obj:
+	//		the scope the call will execute in
+	// args:
+	//		an array of parameters that will get passed to the callee
 	this.jp_ = join_point;
 	this.object = obj;
 	this.args = [];
+	// make sure we don't lock into a mutable object which can change under us.
+	// It's ok if the individual items change, though.
 	for(var x=0; x<args.length; x++){
 		this.args[x] = args[x];
 	}
@@ -2527,6 +2678,9 @@ dojo.event.MethodInvocation = function(join_point, obj, args){
 }
 
 dojo.event.MethodInvocation.prototype.proceed = function(){
+	// summary:
+	//		proceed with the method call that's represented by this invocation
+	//		object
 	this.around_index++;
 	if(this.around_index >= this.jp_.around.length){
 		return this.jp_.object[this.jp_.methodname].apply(this.jp_.object, this.args);
@@ -2540,32 +2694,39 @@ dojo.event.MethodInvocation.prototype.proceed = function(){
 } 
 
 
-dojo.event.MethodJoinPoint = function(obj, methname){
+dojo.event.MethodJoinPoint = function(/*Object*/obj, /*String*/funcName){
 	this.object = obj||dj_global;
-	this.methodname = methname;
-	this.methodfunc = this.object[methname];
+	this.methodname = funcName;
+	this.methodfunc = this.object[funcName];
 	this.squelch = false;
-	this.before = [];
-	this.after = [];
-	this.around = [];
+	// this.before = [];
+	// this.after = [];
+	// this.around = [];
 }
 
-dojo.event.MethodJoinPoint.getForMethod = function(obj, methname){
-	// if(!(methname in obj)){
+dojo.event.MethodJoinPoint.getForMethod = function(/*Object*/obj, /*String*/funcName){
+	// summary:
+	//		"static" class function for returning a MethodJoinPoint from a
+	//		scoped function. If one doesn't exist, one is created.
+	// obj:
+	//		the scope to search for the function in
+	// funcName:
+	//		the name of the function to return a MethodJoinPoint for
 	if(!obj){ obj = dj_global; }
-	if(!obj[methname]){
+	if(!obj[funcName]){
 		// supply a do-nothing method implementation
-		obj[methname] = function(){};
-		if(!obj[methname]){
+		obj[funcName] = function(){};
+		if(!obj[funcName]){
 			// e.g. cannot add to inbuilt objects in IE6
-			dojo.raise("Cannot set do-nothing method on that object "+methname);
+			dojo.raise("Cannot set do-nothing method on that object "+funcName);
 		}
-	}else if((!dojo.lang.isFunction(obj[methname]))&&(!dojo.lang.isAlien(obj[methname]))){
-		return null; // FIXME: should we throw an exception here instead?
+	}else if((!dojo.lang.isFunction(obj[funcName]))&&(!dojo.lang.isAlien(obj[funcName]))){
+		// FIXME: should we throw an exception here instead?
+		return null; 
 	}
-	// we hide our joinpoint instance in obj[methname + '$joinpoint']
-	var jpname = methname + "$joinpoint";
-	var jpfuncname = methname + "$joinpoint$method";
+	// we hide our joinpoint instance in obj[funcName + '$joinpoint']
+	var jpname = funcName + "$joinpoint";
+	var jpfuncname = funcName + "$joinpoint$method";
 	var joinpoint = obj[jpname];
 	if(!joinpoint){
 		var isNode = false;
@@ -2574,14 +2735,14 @@ dojo.event.MethodJoinPoint.getForMethod = function(obj, methname){
 				(obj["nodeType"])||
 				(obj["addEventListener"]) ){
 				isNode = true;
-				dojo.event.browser.addClobberNodeAttrs(obj, [jpname, jpfuncname, methname]);
+				dojo.event.browser.addClobberNodeAttrs(obj, [jpname, jpfuncname, funcName]);
 			}
 		}
-		var origArity = obj[methname].length;
-		obj[jpfuncname] = obj[methname];
-		// joinpoint = obj[jpname] = new dojo.event.MethodJoinPoint(obj, methname);
+		var origArity = obj[funcName].length;
+		obj[jpfuncname] = obj[funcName];
+		// joinpoint = obj[jpname] = new dojo.event.MethodJoinPoint(obj, funcName);
 		joinpoint = obj[jpname] = new dojo.event.MethodJoinPoint(obj, jpfuncname);
-		obj[methname] = function(){ 
+		obj[funcName] = function(){ 
 			var args = [];
 
 			if((isNode)&&(!arguments.length)){
@@ -2615,13 +2776,16 @@ dojo.event.MethodJoinPoint.getForMethod = function(obj, methname){
 			// return joinpoint.run.apply(joinpoint, arguments); 
 			return joinpoint.run.apply(joinpoint, args); 
 		}
-		obj[methname].__preJoinArity = origArity;
+		obj[funcName].__preJoinArity = origArity;
 	}
-	return joinpoint;
+	return joinpoint; // dojo.event.MethodJoinPoint
 }
 
 dojo.lang.extend(dojo.event.MethodJoinPoint, {
 	unintercept: function(){
+		// summary: 
+		//		destroy the connection to all listeners that may have been
+		//		registered on this joinpoint
 		this.object[this.methodname] = this.methodfunc;
 		this.before = [];
 		this.after = [];
@@ -2631,6 +2795,10 @@ dojo.lang.extend(dojo.event.MethodJoinPoint, {
 	disconnect: dojo.lang.forward("unintercept"),
 
 	run: function(){
+		// summary:
+		//		execute the connection represented by this join point. The
+		//		arguments passed to run() will be passed to the function and
+		//		its listeners.
 		var obj = this.object||dj_global;
 		var args = arguments;
 
@@ -2676,7 +2844,7 @@ dojo.lang.extend(dojo.event.MethodJoinPoint, {
 				var cur = new Date();
 				var timerSet = false;
 				if((marr["last"])&&((cur-marr.last)<=rate)){
-					if(dojo.event.canTimeout){
+					if(dojo.event._canTimeout){
 						if(marr["delayTimer"]){
 							clearTimeout(marr.delayTimer);
 						}
@@ -2734,14 +2902,14 @@ dojo.lang.extend(dojo.event.MethodJoinPoint, {
 			}
 		}
 
-		if(this.before.length>0){
+		if((this["before"])&&(this.before.length>0)){
 			// pass a cloned array, if this event disconnects this event forEach on this.before wont work
 			dojo.lang.forEach(this.before.concat(new Array()), unRollSquelch);
 		}
 
 		var result;
 		try{
-			if(this.around.length>0){
+			if((this["around"])&&(this.around.length>0)){
 				var mi = new dojo.event.MethodInvocation(this, obj, args);
 				result = mi.proceed();
 			}else if(this.methodfunc){
@@ -2749,7 +2917,7 @@ dojo.lang.extend(dojo.event.MethodJoinPoint, {
 			}
 		}catch(e){ if(!this.squelch){ dojo.raise(e); } }
 
-		if(this.after.length>0){
+		if((this["after"])&&(this.after.length>0)){
 			// see comment on this.before above
 			dojo.lang.forEach(this.after.concat(new Array()), unRollSquelch);
 		}
@@ -2757,18 +2925,23 @@ dojo.lang.extend(dojo.event.MethodJoinPoint, {
 		return (this.methodfunc) ? result : null;
 	},
 
-	getArr: function(kind){
-		var arr = this.after;
+	getArr: function(/*String*/kind){
+		// summary: return a list of listeners of the past "kind"
+		// kind:
+		//		can be one of: "before", "after", "around", "before-around", or
+		//		"after-around"
+		var type = "after";
 		// FIXME: we should be able to do this through props or Array.in()
 		if((typeof kind == "string")&&(kind.indexOf("before")!=-1)){
-			arr = this.before;
+			type = "before";
 		}else if(kind=="around"){
-			arr = this.around;
+			type = "around";
 		}
-		return arr;
+		if(!this[type]){ this[type] = []; }
+		return this[type]; // Array
 	},
 
-	kwAddAdvice: function(args){
+	kwAddAdvice: function(/*Object*/args){
 		this.addAdvice(	args["adviceObj"], args["adviceFunc"], 
 						args["aroundObj"], args["aroundFunc"], 
 						args["adviceType"], args["precedence"], 
@@ -3248,6 +3421,519 @@ dojo.event.browser = new function(){
 			ev.preventDefault();
 			ev.stopPropagation();
 		}
+	}
+}
+
+dojo.provide("dojo.dom");
+
+dojo.dom.ELEMENT_NODE                  = 1;
+dojo.dom.ATTRIBUTE_NODE                = 2;
+dojo.dom.TEXT_NODE                     = 3;
+dojo.dom.CDATA_SECTION_NODE            = 4;
+dojo.dom.ENTITY_REFERENCE_NODE         = 5;
+dojo.dom.ENTITY_NODE                   = 6;
+dojo.dom.PROCESSING_INSTRUCTION_NODE   = 7;
+dojo.dom.COMMENT_NODE                  = 8;
+dojo.dom.DOCUMENT_NODE                 = 9;
+dojo.dom.DOCUMENT_TYPE_NODE            = 10;
+dojo.dom.DOCUMENT_FRAGMENT_NODE        = 11;
+dojo.dom.NOTATION_NODE                 = 12;
+	
+dojo.dom.dojoml = "http://www.dojotoolkit.org/2004/dojoml";
+
+/**
+ *	comprehensive list of XML namespaces
+**/
+dojo.dom.xmlns = {
+	//	summary
+	//	aliases for various common XML namespaces
+	svg : "http://www.w3.org/2000/svg",
+	smil : "http://www.w3.org/2001/SMIL20/",
+	mml : "http://www.w3.org/1998/Math/MathML",
+	cml : "http://www.xml-cml.org",
+	xlink : "http://www.w3.org/1999/xlink",
+	xhtml : "http://www.w3.org/1999/xhtml",
+	xul : "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul",
+	xbl : "http://www.mozilla.org/xbl",
+	fo : "http://www.w3.org/1999/XSL/Format",
+	xsl : "http://www.w3.org/1999/XSL/Transform",
+	xslt : "http://www.w3.org/1999/XSL/Transform",
+	xi : "http://www.w3.org/2001/XInclude",
+	xforms : "http://www.w3.org/2002/01/xforms",
+	saxon : "http://icl.com/saxon",
+	xalan : "http://xml.apache.org/xslt",
+	xsd : "http://www.w3.org/2001/XMLSchema",
+	dt: "http://www.w3.org/2001/XMLSchema-datatypes",
+	xsi : "http://www.w3.org/2001/XMLSchema-instance",
+	rdf : "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+	rdfs : "http://www.w3.org/2000/01/rdf-schema#",
+	dc : "http://purl.org/dc/elements/1.1/",
+	dcq: "http://purl.org/dc/qualifiers/1.0",
+	"soap-env" : "http://schemas.xmlsoap.org/soap/envelope/",
+	wsdl : "http://schemas.xmlsoap.org/wsdl/",
+	AdobeExtensions : "http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+};
+
+dojo.dom.isNode = function(/* object */wh){
+	//	summary
+	//	checks to see if wh is actually a node.
+	if(typeof Element == "function") {
+		try {
+			return wh instanceof Element;	//	boolean
+		} catch(E) {}
+	} else {
+		// best-guess
+		return wh && !isNaN(wh.nodeType);	//	boolean
+	}
+}
+
+dojo.dom.getUniqueId = function(){
+	//	summary
+	//	returns a unique string for use with any DOM element
+	var _document = dojo.doc();
+	do {
+		var id = "dj_unique_" + (++arguments.callee._idIncrement);
+	}while(_document.getElementById(id));
+	return id;	//	string
+}
+dojo.dom.getUniqueId._idIncrement = 0;
+
+dojo.dom.firstElement = dojo.dom.getFirstChildElement = function(/* Element */parentNode, /* string? */tagName){
+	//	summary
+	//	returns the first child element matching tagName
+	var node = parentNode.firstChild;
+	while(node && node.nodeType != dojo.dom.ELEMENT_NODE){
+		node = node.nextSibling;
+	}
+	if(tagName && node && node.tagName && node.tagName.toLowerCase() != tagName.toLowerCase()) {
+		node = dojo.dom.nextElement(node, tagName);
+	}
+	return node;	//	Element
+}
+
+dojo.dom.lastElement = dojo.dom.getLastChildElement = function(/* Element */parentNode, /* string? */tagName){
+	//	summary
+	//	returns the last child element matching tagName
+	var node = parentNode.lastChild;
+	while(node && node.nodeType != dojo.dom.ELEMENT_NODE) {
+		node = node.previousSibling;
+	}
+	if(tagName && node && node.tagName && node.tagName.toLowerCase() != tagName.toLowerCase()) {
+		node = dojo.dom.prevElement(node, tagName);
+	}
+	return node;	//	Element
+}
+
+dojo.dom.nextElement = dojo.dom.getNextSiblingElement = function(/* Node */node, /* string? */tagName){
+	//	summary
+	//	returns the next sibling element matching tagName
+	if(!node) { return null; }
+	do {
+		node = node.nextSibling;
+	} while(node && node.nodeType != dojo.dom.ELEMENT_NODE);
+
+	if(node && tagName && tagName.toLowerCase() != node.tagName.toLowerCase()) {
+		return dojo.dom.nextElement(node, tagName);
+	}
+	return node;	//	Element
+}
+
+dojo.dom.prevElement = dojo.dom.getPreviousSiblingElement = function(/* Node */node, /* string? */tagName){
+	//	summary
+	//	returns the previous sibling element matching tagName
+	if(!node) { return null; }
+	if(tagName) { tagName = tagName.toLowerCase(); }
+	do {
+		node = node.previousSibling;
+	} while(node && node.nodeType != dojo.dom.ELEMENT_NODE);
+
+	if(node && tagName && tagName.toLowerCase() != node.tagName.toLowerCase()) {
+		return dojo.dom.prevElement(node, tagName);
+	}
+	return node;	//	Element
+}
+
+// TODO: hmph
+/*this.forEachChildTag = function(node, unaryFunc) {
+	var child = this.getFirstChildTag(node);
+	while(child) {
+		if(unaryFunc(child) == "break") { break; }
+		child = this.getNextSiblingTag(child);
+	}
+}*/
+
+dojo.dom.moveChildren = function(/* Element */srcNode, /* Element */destNode, /* boolean? */trim){
+	//	summary
+	//	Moves children from srcNode to destNode and returns the count of children moved; 
+	//		will trim off text nodes if trim == true
+	var count = 0;
+	if(trim) {
+		while(srcNode.hasChildNodes() &&
+			srcNode.firstChild.nodeType == dojo.dom.TEXT_NODE) {
+			srcNode.removeChild(srcNode.firstChild);
+		}
+		while(srcNode.hasChildNodes() &&
+			srcNode.lastChild.nodeType == dojo.dom.TEXT_NODE) {
+			srcNode.removeChild(srcNode.lastChild);
+		}
+	}
+	while(srcNode.hasChildNodes()){
+		destNode.appendChild(srcNode.firstChild);
+		count++;
+	}
+	return count;	//	number
+}
+
+dojo.dom.copyChildren = function(/* Element */srcNode, /* Element */destNode, /* boolean? */trim){
+	//	summary
+	//	Copies children from srcNde to destNode and returns the count of children copied;
+	//		will trim off text nodes if trim == true
+	var clonedNode = srcNode.cloneNode(true);
+	return this.moveChildren(clonedNode, destNode, trim);	//	number
+}
+
+dojo.dom.removeChildren = function(/* Element */node){
+	//	summary
+	//	removes all children from node and returns the count of children removed.
+	var count = node.childNodes.length;
+	while(node.hasChildNodes()){ node.removeChild(node.firstChild); }
+	return count;	//	number
+}
+
+dojo.dom.replaceChildren = function(/* Element */node, /* Node */newChild){
+	//	summary
+	//	Removes all children of node and appends newChild
+	// FIXME: what if newChild is an array-like object?
+	dojo.dom.removeChildren(node);
+	node.appendChild(newChild);
+}
+
+dojo.dom.removeNode = function(/* Node */node){
+	//	summary
+	//	if node has a parent, removes node from parent and returns a reference to the removed child.
+	if(node && node.parentNode){
+		// return a ref to the removed child
+		return node.parentNode.removeChild(node);	//	Node
+	}
+}
+
+dojo.dom.getAncestors = function(/* Node */node, /* function? */filterFunction, /* boolean? */returnFirstHit) {
+	//	summary
+	//	returns all ancestors matching optional filterFunction; will return only the first if returnFirstHit
+	var ancestors = [];
+	var isFunction = (filterFunction && (filterFunction instanceof Function || typeof filterFunction == "function"));
+	while(node) {
+		if (!isFunction || filterFunction(node)) {
+			ancestors.push(node);
+		}
+		if (returnFirstHit && ancestors.length > 0) { 
+			return ancestors[0]; 	//	Node
+		}
+		
+		node = node.parentNode;
+	}
+	if (returnFirstHit) { return null; }
+	return ancestors;	//	array
+}
+
+dojo.dom.getAncestorsByTag = function(/* Node */node, /* string */tag, /* boolean? */returnFirstHit) {
+	//	summary
+	//	returns all ancestors matching tag (as tagName), will only return first one if returnFirstHit
+	tag = tag.toLowerCase();
+	return dojo.dom.getAncestors(node, function(el){
+		return ((el.tagName)&&(el.tagName.toLowerCase() == tag));
+	}, returnFirstHit);	//	Node || array
+}
+
+dojo.dom.getFirstAncestorByTag = function(/* Node */node, /* string */tag) {
+	//	summary
+	//	Returns first ancestor of node with tag tagName
+	return dojo.dom.getAncestorsByTag(node, tag, true);	//	Node
+}
+
+dojo.dom.isDescendantOf = function(/* Node */node, /* Node */ancestor, /* boolean? */guaranteeDescendant){
+	//	summary
+	//	Returns boolean if node is a descendant of ancestor
+	// guaranteeDescendant allows us to be a "true" isDescendantOf function
+	if(guaranteeDescendant && node) { node = node.parentNode; }
+	while(node) {
+		if(node == ancestor){ 
+			return true; 	//	boolean
+		}
+		node = node.parentNode;
+	}
+	return false;	//	boolean
+}
+
+dojo.dom.innerXML = function(/* Node */node){
+	//	summary
+	//	Implementation of MS's innerXML function.
+	if(node.innerXML){
+		return node.innerXML;	//	string
+	}else if (node.xml){
+		return node.xml;		//	string
+	}else if(typeof XMLSerializer != "undefined"){
+		return (new XMLSerializer()).serializeToString(node);	//	string
+	}
+}
+
+dojo.dom.createDocument = function(){
+	//	summary
+	//	cross-browser implementation of creating an XML document object.
+	var doc = null;
+	var _document = dojo.doc();
+
+	if(!dj_undef("ActiveXObject")){
+		var prefixes = [ "MSXML2", "Microsoft", "MSXML", "MSXML3" ];
+		for(var i = 0; i<prefixes.length; i++){
+			try{
+				doc = new ActiveXObject(prefixes[i]+".XMLDOM");
+			}catch(e){ /* squelch */ };
+
+			if(doc){ break; }
+		}
+	}else if((_document.implementation)&&
+		(_document.implementation.createDocument)){
+		doc = _document.implementation.createDocument("", "", null);
+	}
+	
+	return doc;	//	DOMDocument
+}
+
+dojo.dom.createDocumentFromText = function(/* string */str, /* string? */mimetype){
+	//	summary
+	//	attempts to create a Document object based on optional mime-type, using str as the contents of the document
+	if(!mimetype){ mimetype = "text/xml"; }
+	if(!dj_undef("DOMParser")){
+		var parser = new DOMParser();
+		return parser.parseFromString(str, mimetype);	//	DOMDocument
+	}else if(!dj_undef("ActiveXObject")){
+		var domDoc = dojo.dom.createDocument();
+		if(domDoc){
+			domDoc.async = false;
+			domDoc.loadXML(str);
+			return domDoc;	//	DOMDocument
+		}else{
+			dojo.debug("toXml didn't work?");
+		}
+	/*
+	}else if((dojo.render.html.capable)&&(dojo.render.html.safari)){
+		// FIXME: this doesn't appear to work!
+		// from: http://web-graphics.com/mtarchive/001606.php
+		// var xml = '<?xml version="1.0"?>'+str;
+		var mtype = "text/xml";
+		var xml = '<?xml version="1.0"?>'+str;
+		var url = "data:"+mtype+";charset=utf-8,"+encodeURIComponent(xml);
+		var req = new XMLHttpRequest();
+		req.open("GET", url, false);
+		req.overrideMimeType(mtype);
+		req.send(null);
+		return req.responseXML;
+	*/
+	}else{
+		var _document = dojo.doc();
+		if(_document.createElement){
+			// FIXME: this may change all tags to uppercase!
+			var tmp = _document.createElement("xml");
+			tmp.innerHTML = str;
+			if(_document.implementation && _document.implementation.createDocument) {
+				var xmlDoc = _document.implementation.createDocument("foo", "", null);
+				for(var i = 0; i < tmp.childNodes.length; i++) {
+					xmlDoc.importNode(tmp.childNodes.item(i), true);
+				}
+				return xmlDoc;	//	DOMDocument
+			}
+			// FIXME: probably not a good idea to have to return an HTML fragment
+			// FIXME: the tmp.doc.firstChild is as tested from IE, so it may not
+			// work that way across the board
+			return ((tmp.document)&&
+				(tmp.document.firstChild ?  tmp.document.firstChild : tmp));	//	DOMDocument
+		}
+	}
+	return null;
+}
+
+dojo.dom.prependChild = function(/* Element */node, /* Element */parent) {
+	// summary
+	//	prepends node to parent's children nodes
+	if(parent.firstChild) {
+		parent.insertBefore(node, parent.firstChild);
+	} else {
+		parent.appendChild(node);
+	}
+	return true;	//	boolean
+}
+
+dojo.dom.insertBefore = function(/* Node */node, /* Node */ref, /* boolean? */force){
+	//	summary
+	//	Try to insert node before ref
+	if (force != true &&
+		(node === ref || node.nextSibling === ref)){ return false; }
+	var parent = ref.parentNode;
+	parent.insertBefore(node, ref);
+	return true;	//	boolean
+}
+
+dojo.dom.insertAfter = function(/* Node */node, /* Node */ref, /* boolean? */force){
+	//	summary
+	//	Try to insert node after ref
+	var pn = ref.parentNode;
+	if(ref == pn.lastChild){
+		if((force != true)&&(node === ref)){
+			return false;	//	boolean
+		}
+		pn.appendChild(node);
+	}else{
+		return this.insertBefore(node, ref.nextSibling, force);	//	boolean
+	}
+	return true;	//	boolean
+}
+
+dojo.dom.insertAtPosition = function(/* Node */node, /* Node */ref, /* string */position){
+	//	summary
+	//	attempt to insert node in relation to ref based on position
+	if((!node)||(!ref)||(!position)){ 
+		return false;	//	boolean 
+	}
+	switch(position.toLowerCase()){
+		case "before":
+			return dojo.dom.insertBefore(node, ref);	//	boolean
+		case "after":
+			return dojo.dom.insertAfter(node, ref);		//	boolean
+		case "first":
+			if(ref.firstChild){
+				return dojo.dom.insertBefore(node, ref.firstChild);	//	boolean
+			}else{
+				ref.appendChild(node);
+				return true;	//	boolean
+			}
+			break;
+		default: // aka: last
+			ref.appendChild(node);
+			return true;	//	boolean
+	}
+}
+
+dojo.dom.insertAtIndex = function(/* Node */node, /* Element */containingNode, /* number */insertionIndex){
+	//	summary
+	//	insert node into child nodes nodelist of containingNode at insertionIndex.
+	var siblingNodes = containingNode.childNodes;
+
+	// if there aren't any kids yet, just add it to the beginning
+
+	if (!siblingNodes.length){
+		containingNode.appendChild(node);
+		return true;	//	boolean
+	}
+
+	// otherwise we need to walk the childNodes
+	// and find our spot
+
+	var after = null;
+
+	for(var i=0; i<siblingNodes.length; i++){
+
+		var sibling_index = siblingNodes.item(i)["getAttribute"] ? parseInt(siblingNodes.item(i).getAttribute("dojoinsertionindex")) : -1;
+
+		if (sibling_index < insertionIndex){
+			after = siblingNodes.item(i);
+		}
+	}
+
+	if (after){
+		// add it after the node in {after}
+
+		return dojo.dom.insertAfter(node, after);	//	boolean
+	}else{
+		// add it to the start
+
+		return dojo.dom.insertBefore(node, siblingNodes.item(0));	//	boolean
+	}
+}
+	
+dojo.dom.textContent = function(/* Node */node, /* string */text){
+	//	summary
+	//	implementation of the DOM Level 3 attribute; scan node for text
+	if (arguments.length>1) {
+		var _document = dojo.doc();
+		dojo.dom.replaceChildren(node, _document.createTextNode(text));
+		return text;	//	string
+	} else {
+		if(node.textContent != undefined){ //FF 1.5
+			return node.textContent;	//	string
+		}
+		var _result = "";
+		if (node == null) { return _result; }
+		for (var i = 0; i < node.childNodes.length; i++) {
+			switch (node.childNodes[i].nodeType) {
+				case 1: // ELEMENT_NODE
+				case 5: // ENTITY_REFERENCE_NODE
+					_result += dojo.dom.textContent(node.childNodes[i]);
+					break;
+				case 3: // TEXT_NODE
+				case 2: // ATTRIBUTE_NODE
+				case 4: // CDATA_SECTION_NODE
+					_result += node.childNodes[i].nodeValue;
+					break;
+				default:
+					break;
+			}
+		}
+		return _result;	//	string
+	}
+}
+
+dojo.dom.hasParent = function (/* Node */node) {
+	//	summary
+	//	returns whether or not node is a child of another node.
+	return node && node.parentNode && dojo.dom.isNode(node.parentNode);	//	boolean
+}
+
+/**
+ * Examples:
+ *
+ * myFooNode = <foo />
+ * isTag(myFooNode, "foo"); // returns "foo"
+ * isTag(myFooNode, "bar"); // returns ""
+ * isTag(myFooNode, "FOO"); // returns ""
+ * isTag(myFooNode, "hey", "foo", "bar"); // returns "foo"
+**/
+dojo.dom.isTag = function(/* Node */node /* ... */) {
+	//	summary
+	//	determines if node has any of the provided tag names and returns the tag name that matches, empty string otherwise.
+	if(node && node.tagName) {
+		for(var i=1; i<arguments.length; i++){
+			if(node.tagName==String(arguments[i])){
+				return String(arguments[i]);	//	string
+			}
+		}
+	}
+	return "";	//	string
+}
+
+dojo.dom.setAttributeNS = function(/* Element */elem, /* string */namespaceURI, /* string */attrName, /* string */attrValue){
+	//	summary
+	//	implementation of DOM2 setAttributeNS that works cross browser.
+	if(elem == null || ((elem == undefined)&&(typeof elem == "undefined"))){
+		dojo.raise("No element given to dojo.dom.setAttributeNS");
+	}
+	
+	if(!((elem.setAttributeNS == undefined)&&(typeof elem.setAttributeNS == "undefined"))){ // w3c
+		elem.setAttributeNS(namespaceURI, attrName, attrValue);
+	}else{ // IE
+		// get a root XML document
+		var ownerDoc = elem.ownerDocument;
+		var attribute = ownerDoc.createNode(
+			2, // node type
+			attrName,
+			namespaceURI
+		);
+		
+		// set value
+		attribute.nodeValue = attrValue;
+		
+		// attach to element
+		elem.setAttributeNode(attribute);
 	}
 }
 

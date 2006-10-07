@@ -31,7 +31,7 @@ dojo.widget.defineWidget("dojo.widget.TabContainer", dojo.widget.PageContainer, 
 	
 	// String
 	//   If closebutton=="tab", then every tab gets a close button.
-	//   But this is deprecated.  Should just say tabCloseButton=true on each
+	//   DEPRECATED:  Should just say closable=true on each
 	//   pane you want to be closable.
 	closeButton: "none",
 
@@ -41,7 +41,19 @@ dojo.widget.defineWidget("dojo.widget.TabContainer", dojo.widget.PageContainer, 
 
 	// String
 	//	initially selected tab (widgetId)
+	//	DEPRECATED: use selectedChild instead.
 	selectedTab: "",
+
+	postMixInProperties: function() {
+		if(this.selectedTab){
+			dojo.deprecated("selectedTab deprecated, use selectedChild instead, will be removed in", "0.5");
+			this.selectedChild=this.selectedTab;
+		}
+		if(this.closeButton!="none"){
+			dojo.deprecated("closeButton deprecated, use closable='true' on each child instead, will be removed in", "0.5");
+		}
+		dojo.widget.TabContainer.superclass.postMixInProperties.apply(this, arguments);
+	},
 
 	fillInTemplate: function() {
 		// create the tab list that will have a tab (a.k.a. tab button) for each tab panel
@@ -55,12 +67,26 @@ dojo.widget.defineWidget("dojo.widget.TabContainer", dojo.widget.PageContainer, 
 		dojo.widget.TabContainer.superclass.fillInTemplate.apply(this, arguments);
 	},
 
-	_setupPage: function(tab){
+	postCreate: function(args, frag) {
+		// Setup each page panel
+		dojo.lang.forEach(this.children, this._setupChild, this);
+
+		// size the container pane to take up the space not used by the tabs themselves
+		this.onResized();
+
+		// Display the selected page
+		if(this.selectedChildWidget){
+			this.selectChild(this.selectedChildWidget, true);
+		}
+	},
+
+	_setupChild: function(tab){
 		if(this.closeButton=="tab" || this.closeButton=="pane"){
-			tab.tabCloseButton=true;
+			// TODO: remove in 0.5
+			tab.closable=true;
 		}
 		dojo.html.addClass(tab.domNode, "dojoTabPane");
-		dojo.widget.TabContainer.superclass._setupPage.apply(this, arguments);
+		dojo.widget.TabContainer.superclass._setupChild.apply(this, arguments);
 	},
 
 	onResized: function(){
@@ -74,12 +100,16 @@ dojo.widget.defineWidget("dojo.widget.TabContainer", dojo.widget.PageContainer, 
 			{domNode: this.containerNode, layoutAlign: "client"}
 		];
 		dojo.widget.html.layout(this.domNode, children);
-		
-		dojo.widget.TabContainer.superclass.onResized.apply(this, arguments);
+
+		if(this.selectedChildWidget){
+			var containerSize = dojo.html.getContentBox(this.containerNode);
+			this.selectedChildWidget.resizeTo(containerSize.width, containerSize.height);
+		}
 	},
 
 	selectTab: function(tab, _noRefresh, callingWidget){
-		this.selectPage(tab, _noRefresh, callingWidget);
+		dojo.deprecated("use selectChild() rather than selectTab(), selectTab() will be removed in", "0.5");
+		this.selectChild(tab, _noRefresh, callingWidget);
 	},
 
 	// Keystroke handling for keystrokes on the tab panel itself (that were bubbled up to me)
@@ -92,8 +122,8 @@ dojo.widget.defineWidget("dojo.widget.TabContainer", dojo.widget.PageContainer, 
 			button.focus();
 			dojo.event.browser.stopEvent(e);
 		}else if(e.keyCode == e.KEY_DELETE && e.altKey){
-			if (this.closeButton == "tab" || this.closeButton == "pane" || this.selectedTabWidget.tabCloseButton){
-				this.closePage(this.selectedTabWidget);
+			if (this.selectedChildWidget.closable){
+				this.closeChild(this.selectedChildWidget);
 				dojo.event.browser.stopEvent(e);
 			}
 		}
@@ -152,7 +182,7 @@ dojo.widget.defineWidget("dojo.widget.TabButton", dojo.widget.PageButton,
 					+"</div>",
 
 	postMixInProperties: function(){
-		this.closeButtonStyle = this.closable ? "" : "display: none";
+		this.closeButtonStyle = this.closeButton ? "" : "display: none";
 		dojo.widget.TabContainer.superclass.postMixInProperties.apply(this, arguments);
 	},
 
