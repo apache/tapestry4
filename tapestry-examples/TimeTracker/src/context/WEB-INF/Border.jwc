@@ -20,6 +20,7 @@
   "http://tapestry.apache.org/dtd/Tapestry_4_0.dtd">
 
 <component-specification allow-informal-parameters="no">
-    
+
     <inject property="conn" object="service:timetracker.db.HsqlConnection" />
+    
 </component-specification>

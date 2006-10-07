@@ -20,14 +20,14 @@ import org.apache.hivemind.impl.MessageFormatter;
  * @author andyhot
  * @since 4.1
  */
-final class DojoMessages
+public final class DojoMessages
 {
-    private static final MessageFormatter _formatter = new MessageFormatter(DojoMessages.class);
-
+    protected static final MessageFormatter _formatter = new MessageFormatter(DojoMessages.class);
+    
     /* defeat instantiation */
     private DojoMessages() { }
     
-    static String mustUseValidJsonInParameter(String parameterName)
+    public static String mustUseValidJsonInParameter(String parameterName)
     {
         return _formatter.format("must-use-valid-json-in-parameter", parameterName);
     }

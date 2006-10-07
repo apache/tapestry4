@@ -33,10 +33,6 @@
   	
   <parameter name="disabled"/>
   
-  <parameter name="filterOnChange" default-value="true" />
-  
-  <parameter name="autocomplete" default-value="true" />
-  
   <parameter name="searchDelay" default-value="100" />
   
   <parameter name="fadeTime" default-value="200" />
@@ -49,11 +45,10 @@
   <parameter name="id" property="idParameter" default-value="id"/>
   
   <reserved-parameter name="name"/>
+  <reserved-parameter name="autocomplete"/>
   
   <inject property="validatableFieldSupport" object="service:tapestry.form.ValidatableFieldSupport"/>
-  
   <inject property="dataSqueezer" object="service:tapestry.data.DataSqueezer"/>
-  
   <inject property="directService" object="service:tapestry.services.Direct"/>
   <inject property="script" type="script" object="Autocompleter.script"/>
   
