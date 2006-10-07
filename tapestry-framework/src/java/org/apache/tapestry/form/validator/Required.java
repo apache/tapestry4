@@ -53,6 +53,9 @@ public class Required extends BaseValidator
     public void validate(IFormComponent field, ValidationMessages messages, Object object)
             throws ValidatorException
     {
+        if (field.isDisabled())
+            return;
+        
         if ((object == null)
                 || (String.class.isInstance(object) && (((String) object).length() == 0))
                 || (Collection.class.isInstance(object) && ((Collection) object).isEmpty())
@@ -75,6 +78,9 @@ public class Required extends BaseValidator
     public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
             FormComponentContributorContext context, IFormComponent field)
     {
+        if(field.isDisabled())
+            return;
+        
         context.registerForFocus(ValidationConstants.REQUIRED_FIELD);
         
         JSONObject profile = context.getProfile();

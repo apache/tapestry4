@@ -39,9 +39,9 @@ import org.testng.annotations.Test;
 @Test
 public class TestRequired extends BaseValidatorTestCase
 {
-    public void testValidateNotNull() throws Exception
+    public void test_Validate_Not_Null() throws Exception
     {
-        IFormComponent field = newField();
+        IFormComponent field = newField(false);
         ValidationMessages messages = newMessages();
 
         replay();
@@ -51,9 +51,9 @@ public class TestRequired extends BaseValidatorTestCase
         verify();
     }
 
-    public void testValidateNull() throws Exception
+    public void test_Validate_Null() throws Exception
     {
-        IFormComponent field = newField("Fred");
+        IFormComponent field = newField("Fred", false);
         ValidationMessages messages = newMessages(
                 null,
                 ValidationStrings.REQUIRED_FIELD,
@@ -77,9 +77,9 @@ public class TestRequired extends BaseValidatorTestCase
         verify();
     }
 
-    public void testValidateEmptyString() throws Exception
+    public void test_Validate_Empty_String() throws Exception
     {
-        IFormComponent field = newField("Fred");
+        IFormComponent field = newField("Fred", false);
         ValidationMessages messages = newMessages(
                 null,
                 ValidationStrings.REQUIRED_FIELD,
@@ -103,9 +103,9 @@ public class TestRequired extends BaseValidatorTestCase
         verify();
     }
 
-    public void testValidateEmptyCollection() throws Exception
+    public void test_Validate_Empty_Collection() throws Exception
     {
-        IFormComponent field = newField("Fred");
+        IFormComponent field = newField("Fred", false);
         ValidationMessages messages = newMessages(
                 null,
                 ValidationStrings.REQUIRED_FIELD,
@@ -129,9 +129,9 @@ public class TestRequired extends BaseValidatorTestCase
         verify();
     }
 
-    public void testValidateNullCustomMessage() throws Exception
+    public void test_Validate_Null_Custom_Message() throws Exception
     {
-        IFormComponent field = newField("Fred");
+        IFormComponent field = newField("Fred", false);
         ValidationMessages messages = newMessages(
                 "custom",
                 ValidationStrings.REQUIRED_FIELD,
@@ -157,6 +157,17 @@ public class TestRequired extends BaseValidatorTestCase
         verify();
     }
     
+    public void test_Validate_Disabled_Field() throws Exception
+    {
+        IFormComponent field = newField(true);
+        
+        replay();
+        
+        new Required().validate(field, null, null);
+        
+        verify();
+    }
+    
     public void test_Render_Contribution()
     {
         IMarkupWriter writer = newWriter();
@@ -165,7 +176,7 @@ public class TestRequired extends BaseValidatorTestCase
         
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
         
-        IFormComponent field = newField("Fred", "fred");
+        IFormComponent field = newField("Fred", "fred", false);
         
         context.registerForFocus(ValidationConstants.REQUIRED_FIELD);
         
@@ -187,6 +198,25 @@ public class TestRequired extends BaseValidatorTestCase
         
         assertEquals("{\"required\":[\"fred\"],\"fred\":{\"required\":[\"Default\\\\Message for Fred.\"]}}",
                 json.toString());
+    }
+    
+    public void test_Render_Contribution_Disabled()
+    {
+        IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle();
+        JSONObject json = new JSONObject();
+        
+        FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
+        
+        IFormComponent field = newField(true);
+        
+        replay();
+        
+        new Required().renderContribution(writer, cycle, context, field);
+        
+        verify();
+        
+        assertEquals(json.toString(), "{}");
     }
     
     public void testIsRequired()

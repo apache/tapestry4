@@ -197,7 +197,7 @@ public class ParameterPropertyWorker implements EnhancementWorker
         builder.addln("return;");
         builder.end();
 
-        // In the normal state, we update the binding firstm, and it's an error
+        // In the normal state, we update the binding first - and it's an error
         // if the parameter is not bound.
 
         addBindingReference(builder, "binding", parameterName);
