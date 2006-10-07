@@ -36,7 +36,6 @@
         </description>
     </parameter>
 
-
     <parameter name="stylesheet">
         <description>If specified, provides an external stylesheet for the page.</description>
     </parameter>
@@ -80,7 +79,7 @@
         </description>
     </parameter>
 
-    <parameter name="renderBaseTag" default-value="true">
+    <parameter name="renderBaseTag" default-value="false">
         <description>
             Specifies whether or not to render the html basetag element in the document head.
         </description>
@@ -107,18 +106,24 @@
         </description>
     </parameter>
 
-    <parameter name="debugEnabled" default-value="ognl:true">
+    <parameter name="debugEnabled" default-value="true">
         <description>Allows turning browser debug logging statements on/off.</description>
     </parameter>
-
+    
+    <parameter name="debugAtAllCosts" default-value="false" />
+    
     <parameter name="debugContainerId" default-value="literal:debug">
         <description>
             Sets the html element node id of the element you would like all browser debug content to
             go to, if you have logging turned on.
         </description>
     </parameter>
-
-    <parameter name="parseWidgets" default-value="ognl:false">
+    
+    <parameter name="consoleEnabled" default-value="false" />
+    
+    <parameter name="preventBackButtonFix" default-value="false" />
+    
+    <parameter name="parseWidgets" default-value="false">
         <description>
             Tells dojo whether or not to parse widgets by traversing the entire dom node of your
             document. It is highly reccomended that you keep this at its default value of false.
@@ -157,11 +162,15 @@
         <set name="tapestrySource" value="tapestrySource" />
         <set name="logLevel" value="browserLogLevel" />
         <set name="debug" value="debugEnabled" />
+        <set name="debugAtAllCosts" value="debugAtAllCosts" />
         <set name="debugContainerId" value="debugContainerId" />
+        <set name="consoleEnabled" value="consoleEnabled" />
+        <set name="preventBackButtonFix" value="preventBackButtonFix" />
         <set name="parseWidgets" value="parseWidgets" />
     </bean>
 
     <asset name="defaultDojoSource" path="classpath:/dojo/dojo.js" />
     <asset name="defaultDojoPath" path="classpath:/dojo/" />
     <asset name="defaultTapestrySource" path="classpath:/tapestry/core.js" />
+    
 </component-specification>

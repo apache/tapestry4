@@ -19,6 +19,7 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IEngineService;
+import org.apache.tapestry.json.JSONObject;
 
 /**
  * The default rendering delegate responseible for include the 
@@ -47,29 +48,41 @@ public class AjaxShellDelegate implements IRender
     
     private IEngineService _assetService;
     
+    private boolean _parseWidgets;
+    
     private String _browserLogLevel = BROWSER_LOG_WARNING;
     
     private boolean _debug;
     
-    private boolean _parseWidgets;
-    
     private String _debugContainerId;
+    
+    private boolean _consoleEnabled;
+    
+    private boolean _preventBackButtonFix;
+    
+    private boolean _debugAtAllCosts;
     
     /**
      * {@inheritDoc}
      */
     public void render(IMarkupWriter writer, IRequestCycle cycle)
     {
-        // TODO: Add ability to make all of these parameters more configurable
-        
         // first configure dojo, has to happen before package include
+        
+        JSONObject dojoConfig = new JSONObject();
+        
+        dojoConfig.put("isDebug", _debug);
+        dojoConfig.put("debugAtAllCosts", _debugAtAllCosts);
+        dojoConfig.put("debugContainerId", _debugContainerId);
+        
+        dojoConfig.put("baseRelativePath", 
+                _assetService.getLink(true, _dojoPath.getResourceLocation().getPath()).getAbsoluteURL());
+        
+        dojoConfig.put("preventBackButtonFix", _preventBackButtonFix);
+        dojoConfig.put("parseWidgets", _parseWidgets);
+        
         StringBuffer str = new StringBuffer("<script type=\"text/javascript\">");
-        str.append("djConfig = { isDebug: ").append(_debug).append(",")
-        .append(" debugContainerId:'").append(_debugContainerId).append("',")
-        .append(" baseRelativePath:\"")
-        .append(_assetService.getLink(true,
-                _dojoPath.getResourceLocation().getPath()).getAbsoluteURL())
-        .append("\", preventBackButtonFix: false, parseWidgets:").append(_parseWidgets).append("}")
+        str.append("djConfig = ").append(dojoConfig.toString())
         .append(" </script>\n\n ");
         
         // include the core dojo.js package
@@ -84,12 +97,15 @@ public class AjaxShellDelegate implements IRender
                 _tapestrySource.getResourceLocation()
                 .getPath()).getAbsoluteURL()).append("\"></script>");
         
+        String logRequire = _consoleEnabled ? "dojo.require(\"dojo.debug.console\");\n"
+                : "dojo.require(\"dojo.logging.Logger\");\n";
+        
         // logging configuration
-        str.append("\n<script type=\"text/javascript\">")
-        .append("dojo.require(\"dojo.logging.Logger\");\n")
+        str.append("\n<script type=\"text/javascript\">\n")
+        .append(logRequire)
         .append("dojo.log.setLevel(dojo.log.getLevel(\"").append(_browserLogLevel)
         .append("\"));\n")
-        .append("dojo.require(\"tapestry.namespace\")")
+        .append("dojo.require(\"tapestry.namespace\")\n")
         .append("</script>");
         
         writer.printRaw(str.toString());
@@ -129,6 +145,27 @@ public class AjaxShellDelegate implements IRender
     }
     
     /**
+     * Turns off deep context level javascript debugging mode for dojo. This means
+     * that exceptions/debug statements will show you line numbers from the actual 
+     * javascript file that generated them instead of the normal default which is 
+     * usually bootstrap.js .
+     * 
+     * <p>The default value is false if not set.</p>
+     * 
+     * <p>
+     *  People should be wary of turning this on as it may cause problems
+     *  under certain conditions, and you definitely don't ever want this 
+     *  on in production. 
+     * </p>
+     * 
+     * @param value If true deep debugging will be turned on.
+     */
+    public void setDebugAtAllCosts(boolean value)
+    {
+        _debugAtAllCosts = value;
+    }
+    
+    /**
      * Sets the html element node id of the element you would like all browser
      * debug content to go to.
      * 
@@ -137,6 +174,34 @@ public class AjaxShellDelegate implements IRender
     public void setDebugContainerId(String debugContainerId)
     {
         _debugContainerId = debugContainerId;
+    }
+    
+    /**
+     * Enables/disables the dojo.debug.console functionality which should redirect
+     * most logging messages to your browsers javascript console. (if it supports 
+     * one).
+     * 
+     * <p>
+     *  The debug console is disabled by default. Currently known supported 
+     *  browsers are FireFox(having FireBug extension helps a great deal)/Opera/Safari.
+     * </p>
+     * 
+     * @param enabled Whether or not the enable debug console.
+     */
+    public void setConsoleEnabled(boolean enabled)
+    {
+        _consoleEnabled = enabled;
+    }
+    
+    /**
+     * Sets the dojo preventBackButtonFix djConfig configuration. This should
+     * typically be avoided but is provided for flexibility.
+     * 
+     * @param prevent
+     */
+    public void setPreventBackButtonFix(boolean prevent)
+    {
+        _preventBackButtonFix = prevent;
     }
     
     /**

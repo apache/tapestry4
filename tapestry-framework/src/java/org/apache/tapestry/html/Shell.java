@@ -177,7 +177,7 @@ public abstract class Shell extends AbstractComponent
         writer.attribute("href", stylesheet.buildURL());
         writer.println();
     }
-
+    
     private void writeRefresh(IMarkupWriter writer, IRequestCycle cycle)
     {
         int refresh = getRefresh();
@@ -260,9 +260,10 @@ public abstract class Shell extends AbstractComponent
         List relations = getRelations();
         if (relations == null)
             relations = new ArrayList();
-
+        
         if (!relations.contains(relation))
             relations.add(relation);
+        
         setRelations(relations);             
     }
 
@@ -289,7 +290,7 @@ public abstract class Shell extends AbstractComponent
     public abstract IRender getAjaxDelegate();
     
     public abstract IRender getDelegate();
-
+    
     public abstract int getRefresh();
 
     public abstract IAsset getStylesheet();

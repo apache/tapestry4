@@ -1,10 +1,12 @@
 <html jwcid="@Shell" 
-	  title="message:window.title" 
-	  ajaxEnabled="true" 
-	  browserLogLevel="DEBUG">
+	  title="message:window.title"
+	  browserLogLevel="DEBUG"
+	  consoleEnabled="true" >
+<link jwcid="@Relation" href="favicon.ico" type="image/gif" rel="shortcut icon" />    
+<link jwcid="@Relation" href="css/timetracker.css" media="all" />
+
 <body jwcid="@Body">
-  <link jwcid="@Relation" href="favicon.ico" type="image/gif" rel="shortcut icon"/>    
-  <link jwcid="@Relation" href="css/timetracker.css" media="all"/>
+
 <div id="header" >
     <span class="headertxt"><span jwcid="@Insert" value="message:header.display"/> </span>
 </div>
@@ -20,10 +22,6 @@
 <div id="content">
 <span jwcid="@RenderBody" />
 </div>
-
-<div id="debug">
-</div>
-
 </body>
 
 </html>

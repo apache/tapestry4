@@ -62,6 +62,7 @@ public abstract class Autocompleter extends AbstractFormWidget
         
         writer.begin("select");
         writer.attribute("name", getName());
+        writer.attribute("autocomplete", "off"); // turn off native html autocomplete
         
         if (isDisabled())
             writer.attribute("disabled", "disabled");
@@ -183,12 +184,6 @@ public abstract class Autocompleter extends AbstractFormWidget
     }
     
     public abstract IAutocompleteModel getModel();
-    
-    /** @since 4.1 */
-    public abstract boolean isFilterOnChange();
-    
-    /** whether or not to autocomplete the input text. */
-    public abstract boolean isAutocomplete();
     
     /** How long to wait(in ms) before searching after input is received. */
     public abstract int getSearchDelay();
