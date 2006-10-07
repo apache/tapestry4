@@ -167,10 +167,10 @@ public class PageLoader implements IPageLoader
         // Create the mechanisms for walking the component tree when it is
         // complete
         IComponentVisitor verifyRequiredParametersVisitor = new VerifyRequiredParametersVisitor();
-
+        
         _verifyRequiredParametersWalker = new ComponentTreeWalker(
                 new IComponentVisitor[] { verifyRequiredParametersVisitor });
-
+        
         _establishDefaultParameterValuesWalker = new ComponentTreeWalker(
                 new IComponentVisitor[] { _establishDefaultParameterValuesVisitor });
     }

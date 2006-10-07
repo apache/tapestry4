@@ -32,6 +32,15 @@ import org.apache.tapestry.form.ValidationMessages;
  */
 public abstract class BaseValidatorTestCase extends BaseComponentTestCase
 {
+    protected IFormComponent newField(String displayName, boolean disabled)
+    {
+        IFormComponent field = newField(disabled);
+        
+        expect(field.getDisplayName()).andReturn(displayName);
+        
+        return field;
+    }
+    
     protected IFormComponent newField(String displayName)
     {
         IFormComponent field = newMock(IFormComponent.class);
@@ -51,7 +60,27 @@ public abstract class BaseValidatorTestCase extends BaseComponentTestCase
         
         return field;
     }
-
+    
+    protected IFormComponent newField(String displayName, String clientId, boolean disabled)
+    {
+        IFormComponent field = newField(disabled);
+        
+        checkOrder(field, false);
+        
+        expect(field.getClientId()).andReturn(clientId).anyTimes();
+        expect(field.getDisplayName()).andReturn(displayName);
+        
+        return field;
+    }
+    
+    protected IFormComponent newField(boolean disabled)
+    {
+        IFormComponent field = newField();
+        expect(field.isDisabled()).andReturn(disabled);
+        
+        return field;
+    }
+    
     protected IFormComponent newField()
     {
         return newMock(IFormComponent.class);
