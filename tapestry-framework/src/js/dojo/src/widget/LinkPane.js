@@ -8,17 +8,18 @@
 		http://dojotoolkit.org/community/licensing.shtml
 */
 
-//
-// a div that loads from a URL.  (Similar to an iframe, but
-// it's in the same environment as the main window)
-//
-
 dojo.provide("dojo.widget.LinkPane");
 
 dojo.require("dojo.widget.*");
 dojo.require("dojo.widget.ContentPane");
 dojo.require("dojo.html.style");
 
+// summary
+//	LinkPane is just a ContentPane that loads data remotely (via the href attribute),
+//	and has markup similar to an anchor.  The anchor's body (the words between <a> and </a>)
+//	become the label of the widget (used for TabContainer, AccordionContainer, etc.)
+// usage
+//	<a href="foo.html">my label</a>
 dojo.widget.defineWidget(
 	"dojo.widget.LinkPane",
 	dojo.widget.ContentPane,

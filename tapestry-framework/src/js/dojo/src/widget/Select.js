@@ -69,8 +69,8 @@ dojo.widget.defineWidget(
 		},
 
 		setAllValues: function(value1, value2){
-			this.setValue(value2);
 			this.setLabel(value1);
+			this.setValue(value2);
 		}
 	}
 );

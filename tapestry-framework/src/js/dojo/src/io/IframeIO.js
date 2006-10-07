@@ -64,55 +64,59 @@ dojo.io.IframeTransport = new function(){
 	this.iframeName = "dojoIoIframe";
 
 	this.fireNextRequest = function(){
-		if((this.currentRequest)||(this.requestQueue.length == 0)){ return; }
-		// dojo.debug("fireNextRequest");
-		var cr = this.currentRequest = this.requestQueue.shift();
-		cr._contentToClean = [];
-		var fn = cr["formNode"];
-		var content = cr["content"] || {};
-		if(cr.sendTransport) {
-			content["dojo.transport"] = "iframe";
-		}
-		if(fn){
-			if(content){
-				// if we have things in content, we need to add them to the form
-				// before submission
-				for(var x in content){
-					if(!fn[x]){
-						var tn;
-						if(dojo.render.html.ie){
-							tn = document.createElement("<input type='hidden' name='"+x+"' value='"+content[x]+"'>");
-							fn.appendChild(tn);
+		try{
+			if((this.currentRequest)||(this.requestQueue.length == 0)){ return; }
+			// dojo.debug("fireNextRequest");
+			var cr = this.currentRequest = this.requestQueue.shift();
+			cr._contentToClean = [];
+			var fn = cr["formNode"];
+			var content = cr["content"] || {};
+			if(cr.sendTransport) {
+				content["dojo.transport"] = "iframe";
+			}
+			if(fn){
+				if(content){
+					// if we have things in content, we need to add them to the form
+					// before submission
+					for(var x in content){
+						if(!fn[x]){
+							var tn;
+							if(dojo.render.html.ie){
+								tn = document.createElement("<input type='hidden' name='"+x+"' value='"+content[x]+"'>");
+								fn.appendChild(tn);
+							}else{
+								tn = document.createElement("input");
+								fn.appendChild(tn);
+								tn.type = "hidden";
+								tn.name = x;
+								tn.value = content[x];
+							}
+							cr._contentToClean.push(x);
 						}else{
-							tn = document.createElement("input");
-							fn.appendChild(tn);
-							tn.type = "hidden";
-							tn.name = x;
-							tn.value = content[x];
+							fn[x].value = content[x];
 						}
-						cr._contentToClean.push(x);
-					}else{
-						fn[x].value = content[x];
 					}
 				}
+				if(cr["url"]){
+					cr._originalAction = fn.getAttribute("action");
+					fn.setAttribute("action", cr.url);
+				}
+				if(!fn.getAttribute("method")){
+					fn.setAttribute("method", (cr["method"]) ? cr["method"] : "post");
+				}
+				cr._originalTarget = fn.getAttribute("target");
+				fn.setAttribute("target", this.iframeName);
+				fn.target = this.iframeName;
+				fn.submit();
+			}else{
+				// otherwise we post a GET string by changing URL location for the
+				// iframe
+				var query = dojo.io.argsFromMap(this.currentRequest.content);
+				var tmpUrl = (cr.url.indexOf("?") > -1 ? "&" : "?") + query;
+				dojo.io.setIFrameSrc(this.iframe, tmpUrl, true);
 			}
-			if(cr["url"]){
-				cr._originalAction = fn.getAttribute("action");
-				fn.setAttribute("action", cr.url);
-			}
-			if(!fn.getAttribute("method")){
-				fn.setAttribute("method", (cr["method"]) ? cr["method"] : "post");
-			}
-			cr._originalTarget = fn.getAttribute("target");
-			fn.setAttribute("target", this.iframeName);
-			fn.target = this.iframeName;
-			fn.submit();
-		}else{
-			// otherwise we post a GET string by changing URL location for the
-			// iframe
-			var query = dojo.io.argsFromMap(this.currentRequest.content);
-			var tmpUrl = (cr.url.indexOf("?") > -1 ? "&" : "?") + query;
-			dojo.io.setIFrameSrc(this.iframe, tmpUrl, true);
+		}catch(e){
+			this.iframeOnload(e);
 		}
 	}
 
@@ -148,7 +152,7 @@ dojo.io.IframeTransport = new function(){
 		this.iframe = dojo.io.createIFrame(this.iframeName, "dojo.io.IframeTransport.iframeOnload();");
 	}
 
-	this.iframeOnload = function(){
+	this.iframeOnload = function(errorObject /* Object */){
 		if(!_this.currentRequest){
 			_this.fireNextRequest();
 			return;
@@ -198,33 +202,35 @@ dojo.io.IframeTransport = new function(){
 			return doc;
 		};
 
-		var ifd = contentDoc(_this.iframe);
-		// handle successful returns
-		// FIXME: how do we determine success for iframes? Is there an equiv of
-		// the "status" property?
 		var value;
 		var success = false;
 
-		try{
-			var cmt = req.mimetype;
-			if((cmt == "text/javascript")||(cmt == "text/json")){
-				// FIXME: not sure what to do here? try to pull some evalulable
-				// text from a textarea or cdata section? 
-				// how should we set up the contract for that?
-				var js = ifd.getElementsByTagName("textarea")[0].value;
-				if(cmt == "text/json") { js = "(" + js + ")"; }
-				value = dj_eval(js);
-			}else if(cmt == "text/html"){
-				value = ifd;
-			}else{ // text/plain
-				value = ifd.getElementsByTagName("textarea")[0].value;
-			}
-			success = true;
-		}catch(e){ 
-			// looks like we didn't get what we wanted!
-			var errObj = new dojo.io.Error("IframeTransport Error");
-			if(dojo.lang.isFunction(req["error"])){
-				req.error("error", errObj, req);
+		if (errorObject){
+				this._callError(req, "IframeTransport Request Error: " + errorObject);
+		}else{
+			var ifd = contentDoc(_this.iframe);
+			// handle successful returns
+			// FIXME: how do we determine success for iframes? Is there an equiv of
+			// the "status" property?
+	
+			try{
+				var cmt = req.mimetype;
+				if((cmt == "text/javascript")||(cmt == "text/json")){
+					// FIXME: not sure what to do here? try to pull some evalulable
+					// text from a textarea or cdata section? 
+					// how should we set up the contract for that?
+					var js = ifd.getElementsByTagName("textarea")[0].value;
+					if(cmt == "text/json") { js = "(" + js + ")"; }
+					value = dj_eval(js);
+				}else if(cmt == "text/html"){
+					value = ifd;
+				}else{ // text/plain
+					value = ifd.getElementsByTagName("textarea")[0].value;
+				}
+				success = true;
+			}catch(e){ 
+				// looks like we didn't get what we wanted!
+				this._callError(req, "IframeTransport Error: " + e);
 			}
 		}
 
@@ -239,6 +245,13 @@ dojo.io.IframeTransport = new function(){
 		} finally {
 			_this.currentRequest = null;
 			_this.fireNextRequest();
+		}
+	}
+	
+	this._callError = function(req /* Object */, message /* String */){
+		var errObj = new dojo.io.Error(message);
+		if(dojo.lang.isFunction(req["error"])){
+			req.error("error", errObj, req);
 		}
 	}
 

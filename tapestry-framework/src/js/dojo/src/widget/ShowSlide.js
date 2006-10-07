@@ -199,7 +199,12 @@ dojo.widget.defineWidget(
 				}else if(tmpAction == "remove"){
 					component.style.display = "none";
 				}
-				component.style.visibility = "visible";
+
+				if(tmpAction == "hide"){
+					component.style.visibility = "hidden";
+				}else{
+					component.style.visibility = "visible";
+				}
 			}
 		}
 		

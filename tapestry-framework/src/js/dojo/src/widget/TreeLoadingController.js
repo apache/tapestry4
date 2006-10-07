@@ -18,20 +18,7 @@ dojo.require("dojo.io.*");
 
 dojo.deprecated("dojo.widget.TreeLoadingController", "use TreeV3 and TreeLoadingControllerV3 instead", "0.5");
 
-
-dojo.widget.tags.addParseTreeHandler("dojo:TreeLoadingController");
-
-
-dojo.widget.TreeLoadingController = function() {
-	dojo.widget.TreeBasicController.call(this);
-}
-
-dojo.inherits(dojo.widget.TreeLoadingController, dojo.widget.TreeBasicController);
-
-
-dojo.lang.extend(dojo.widget.TreeLoadingController, {
-	widgetType: "TreeLoadingController",
-
+dojo.widget.defineWidget("dojo.widget.TreeLoadingController", dojo.widget.TreeBasicController, {
 	RPCUrl: "",
 
 	RPCActionParam: "action", // used for GET for RPCUrl

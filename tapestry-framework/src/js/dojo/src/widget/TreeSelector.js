@@ -15,24 +15,13 @@ dojo.require("dojo.widget.HtmlWidget");
 
 dojo.deprecated("dojo.widget.TreeSelector", "use TreeV3 and TreeSelectorV3 instead", "0.5");
 
-
-dojo.widget.tags.addParseTreeHandler("dojo:TreeSelector");
-
-
-dojo.widget.TreeSelector = function() {
-	dojo.widget.HtmlWidget.call(this);
-
-
+dojo.widget.defineWidget("dojo.widget.TreeSelector", dojo.widget.HtmlWidget, function() {
 	this.eventNames = {};
 
 	this.listenedTrees = [];
 
-}
-
-dojo.inherits(dojo.widget.TreeSelector, dojo.widget.HtmlWidget);
-
-
-dojo.lang.extend(dojo.widget.TreeSelector, {
+},
+{
 	widgetType: "TreeSelector",
 	selectedNode: null,
 

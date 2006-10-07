@@ -24,64 +24,109 @@ dojo.require("dojo.html.selection");
 dojo.require("dojo.html.util");
 dojo.require("dojo.event.*");
 
+/*
+ * summary
+ *	Menu similar to the fish eye menu on the Mac OS
+ * usage
+ *	<div dojoType="FisheyeList"
+ *	itemWidth="40" itemHeight="40"
+ *	itemMaxWidth="150" itemMaxHeight="150"
+ *	orientation="horizontal"
+ *	effectUnits="2"
+ *	itemPadding="10"
+ *	attachEdge="center"
+ *	labelEdge="bottom">
+ *
+ *		<div dojoType="FisheyeListItem"
+ *			id="item1"
+ *			onclick="alert('click on' + this.caption + '(from widget id ' + this.widgetId + ')!');"
+ *			caption="Item 1"
+ *			iconsrc="images/fisheye_1.png">
+ *		</div>
+ *		...
+ *	</div>
+ */
 dojo.widget.defineWidget(
 	"dojo.widget.FisheyeList",
 	dojo.widget.HtmlWidget,
-{
-	templateString: '<div class="dojoHtmlFisheyeListBar"></div>',
-	templateCssPath: dojo.uri.dojoUri("src/widget/templates/FisheyeList.css"),
+function(){
+	this.pos = {x: -1, y: -1};		// current cursor position, relative to the grid
 
-	EDGE: {
+	this.EDGE = {
 		CENTER: 0,
 		LEFT: 1,
 		RIGHT: 2,
 		TOP: 3,
 		BOTTOM: 4
-	},
+	};
+	
+	// for conservative trigger mode, when triggered, timerScale is gradually increased from 0 to 1
+	this.timerScale = 1.0;
+
+},
+{
+	templateString: '<div class="dojoHtmlFisheyeListBar"></div>',
+	templateCssPath: dojo.uri.dojoUri("src/widget/templates/FisheyeList.css"),
 
 	isContainer: true,
 	snarfChildDomOutput: true,
-	
-	pos: {x: -1, y: -1},		// current cursor position, relative to the grid
-	
-	// for conservative trigger mode, when triggered, timerScale is gradually increased from 0 to 1
-	timerScale: 1.0,
 
-	/////////////////////////////////////////////////////////////////
-	//
-	// i spy OPTIONS!!!!
-	//
-
+	// Integer
+	//	width of menu item (in pixels) in it's dormant state (when the mouse is far away)
 	itemWidth: 40,
+
+	// Integer
+	//	height of menu item (in pixels) in it's dormant state (when the mouse is far away)
 	itemHeight: 40,
 
+	// Integer
+	//	width of menu item (in pixels) in it's fully enlarged state (when the mouse is directly over it)
 	itemMaxWidth: 150,
+
+	// Integer
+	//	height of menu item (in pixels) in it's fully enlarged state (when the mouse is directly over it)
 	itemMaxHeight: 150,
 
-	orientation: 'horizontal',
-	
-	conservativeTrigger: false,		// don't active menu until mouse is over an image (macintosh style)
 
+	// String
+	//	orientation of the menu, either "horizontal" or "vertical"
+	orientation: 'horizontal',
+
+	// Boolean
+	//	if true, don't start enlarging menu items until mouse is over an image;
+	//	if false, start enlarging menu items as the mouse moves near them.
+	conservativeTrigger: false,
+
+	// Number
+	//	controls how much reaction the menu makes, relative to the distance of the mouse from the menu
 	effectUnits: 2,
+	
+	// Integer
+	//	padding (in pixels) betweeen each menu item
 	itemPadding: 10,
 
+	// String
+	//	controls the border that the menu items don't expand past;
+	//	for example, if set to "top", then the menu items will drop downwards as they expand.
+	// values
+	//	"center", "left", "right", "top", "bottom".
 	attachEdge: 'center',
+
+	// String
+	//	controls were the labels show up in relation to the menu item icons
+	// values
+	//	"center", "left", "right", "top", "bottom".
 	labelEdge: 'bottom',
 
+	// Boolean
+	//	for browsers that support svg, use the svg image (specified in FisheyeListIem.svgSrc)
+	//	rather than the iconSrc image attribute
 	enableCrappySvgSupport: false,
 
-
-	//
-	//
-	//
-	/////////////////////////////////////////////////////////////////
-
-	fillInTemplate: function(args, frag) {
-		//dojo.debug(this.orientation);
-
+	fillInTemplate: function() {
 		dojo.html.disableSelection(this.domNode);
 
-		this.isHorizontal = (this.orientation == 'horizontal') ? 1 : 0;
+		this.isHorizontal = (this.orientation == 'horizontal');
 		this.selectedNode = -1;
 
 		this.isOver = false;
@@ -93,9 +138,8 @@ dojo.widget.defineWidget(
 		//
 		// only some edges make sense...
 		//
-
-		this.anchorEdge = this.toEdge(this.attachEdge, this.EDGE.CENTER);
-		this.labelEdge  = this.toEdge(this.labelEdge,  this.EDGE.TOP);
+		this.anchorEdge = this._toEdge(this.attachEdge, this.EDGE.CENTER);
+		this.labelEdge  = this._toEdge(this.labelEdge,  this.EDGE.TOP);
 
 		if ( this.isHorizontal && (this.anchorEdge == this.EDGE.LEFT  )){ this.anchorEdge = this.EDGE.CENTER; }
 		if ( this.isHorizontal && (this.anchorEdge == this.EDGE.RIGHT )){ this.anchorEdge = this.EDGE.CENTER; }
@@ -108,11 +152,9 @@ dojo.widget.defineWidget(
 		if (!this.isHorizontal && (this.labelEdge == this.EDGE.TOP   )){ this.labelEdge = this.EDGE.LEFT; }
 		if (!this.isHorizontal && (this.labelEdge == this.EDGE.BOTTOM)){ this.labelEdge = this.EDGE.LEFT; }
 
-
 		//
 		// figure out the proximity size
 		//
-
 		this.proximityLeft   = this.itemWidth  * (this.effectUnits - 0.5);
 		this.proximityRight  = this.itemWidth  * (this.effectUnits - 0.5);
 		this.proximityTop    = this.itemHeight * (this.effectUnits - 0.5);
@@ -138,22 +180,22 @@ dojo.widget.defineWidget(
 		}
 	},
 	
-	postCreate: function(args, frag) {
-		this.initializePositioning();
+	postCreate: function() {
+		this._initializePositioning();
 
 		//
 		// in liberal trigger mode, activate menu whenever mouse is close
 		//
 		if( !this.conservativeTrigger ){
-			dojo.event.connect(document.documentElement, "onmousemove", this, "mouseHandler");
+			dojo.event.connect(document.documentElement, "onmousemove", this, "_onMouseMove");
 		}
 		
 		// Deactivate the menu if mouse is moved off screen (doesn't work for FF?)
-		dojo.event.connect(document.documentElement, "onmouseout", this, "onBodyOut");
-		dojo.event.connect(this, "addChild", this, "initializePositioning");
+		dojo.event.connect(document.documentElement, "onmouseout", this, "_onBodyOut");
+		dojo.event.connect(this, "addChild", this, "_initializePositioning");
 	},
 
-	initializePositioning: function(){
+	_initializePositioning: function(){
 		this.itemCount = this.children.length;
 
 		this.barWidth  = (this.isHorizontal ? this.itemCount : 1) * this.itemWidth;
@@ -165,7 +207,6 @@ dojo.widget.defineWidget(
 		//
 		// calculate effect ranges for each item
 		//
-
 		for (var i=0; i<this.children.length; i++){
 
 			this.children[i].posX = this.itemWidth  * (this.isHorizontal ? i : 0);
@@ -193,14 +234,11 @@ dojo.widget.defineWidget(
 			//dojo.debug('effect range for '+i+' is '+range_lhs+'/'+range_rhs);
 		}
 
-
 		//
 		// create the bar
 		//
-
 		this.domNode.style.width = this.barWidth + 'px';
 		this.domNode.style.height = this.barHeight + 'px';
-
 
 		//
 		// position the items
@@ -233,76 +271,78 @@ dojo.widget.defineWidget(
 		//
 		// calc the grid
 		//
-
-		this.calcHitGrid();
+		this._calcHitGrid();
 	},
 
-	onBodyOut: function(e){
+	_onBodyOut: function(/*Event*/ e){
 		// clicking over an object inside of body causes this event to fire; ignore that case
 		if( dojo.html.overElement(dojo.body(), e) ){
 			return;
 		}
-		this.setDormant(e);
+		this._setDormant(e);
 	},
 
-	// when mouse moves out of menu's range
-	setDormant: function(e){
+	_setDormant: function(/*Event*/ e){
+		// summary: called when mouse moves out of menu's range
+
 		if( !this.isOver ){ return; }	// already dormant?
 		this.isOver = false;
 
 		if ( this.conservativeTrigger ) {
 			// user can't re-trigger the menu expansion
 			// until he mouses over a icon again
-			dojo.event.disconnect(document.documentElement, "onmousemove", this, "mouseHandler");
+			dojo.event.disconnect(document.documentElement, "onmousemove", this, "_onMouseMove");
 		}
-		this.onGridMouseMove(-1, -1);
+		this._onGridMouseMove(-1, -1);
 	},
 
-	// when mouse is moved into menu's range
-	setActive: function(e){
+	_setActive: function(/*Event*/ e){
+		// summary: called when mouse is moved into menu's range
+
 		if( this.isOver ){ return; }	// already activated?
 		this.isOver = true;
 
 		if ( this.conservativeTrigger ) {
 			// switch event handlers so that we handle mouse events from anywhere near
 			// the menu
-			dojo.event.connect(document.documentElement, "onmousemove", this, "mouseHandler");
+			dojo.event.connect(document.documentElement, "onmousemove", this, "_onMouseMove");
 
 			this.timerScale=0.0;
 
 			// call mouse handler to do some initial necessary calculations/positioning
-			this.mouseHandler(e);
+			this._onMouseMove(e);
 
 			// slowly expand the icon size so it isn't jumpy
-			this.expandSlowly();
+			this._expandSlowly();
 		}
 	},
 
-	// when mouse is moved
-	mouseHandler: function(e) {
+	_onMouseMove: function(/*Event*/ e) {
+		// summary: called when mouse is moved
 		if ((e.pageX >= this.hitX1) && (e.pageX <= this.hitX2) &&
 			(e.pageY >= this.hitY1) && (e.pageY <= this.hitY2)){
 			if( !this.isOver ){
-				this.setActive(e);
+				this._setActive(e);
 			}
-			this.onGridMouseMove(e.pageX-this.hitX1, e.pageY-this.hitY1);
+			this._onGridMouseMove(e.pageX-this.hitX1, e.pageY-this.hitY1);
 		}else{
 			if (this.isOver){
-				this.setDormant(e);
+				this._setDormant(e);
 			}
 		}
 	},
 
 	onResized: function() {
-		this.calcHitGrid();
+		this._calcHitGrid();
 	},
 
-	onGridMouseMove: function(x, y){
+	_onGridMouseMove: function(x, y){
+		// summary: called when mouse is moved in the vicinity of the menu
 		this.pos = {x:x, y:y};
-		this.paint();
+		this._paint();
 	},
 	
-	paint: function(){
+	_paint: function(){
 		var x=this.pos.x;
 		var y=this.pos.y;
 
@@ -311,7 +351,6 @@ dojo.widget.defineWidget(
 		//
 		// figure out our main index
 		//
-
 		var pos = this.isHorizontal ? x : y;
 		var prx = this.isHorizontal ? this.proximityLeft : this.proximityTop;
 		var siz = this.isHorizontal ? this.itemWidth : this.itemHeight;
@@ -324,11 +363,9 @@ dojo.widget.defineWidget(
 
 		if (max_off_cen > this.effectUnits){ max_off_cen = this.effectUnits; }
 
-
 		//
 		// figure out our off-axis weighting
 		//
-
 		var off_weight = 0;
 
 		if (this.anchorEdge == this.EDGE.BOTTOM){
@@ -348,7 +385,6 @@ dojo.widget.defineWidget(
 			off_weight = (cen2 < 0.5) ? 1 : (this.totalWidth - x) / (this.proximityRight + (this.itemWidth / 2));
 		}
 		if (this.anchorEdge == this.EDGE.CENTER){
-
 			if (this.isHorizontal){
 				off_weight = y / (this.totalHeight);
 			}else{
@@ -362,18 +398,13 @@ dojo.widget.defineWidget(
 			off_weight *= 2;
 		}
 
-
 		//
 		// set the sizes
 		//
-
 		for(var i=0; i<this.itemCount; i++){
-
-			var weight = this.weightAt(cen, i);
-
+			var weight = this._weighAt(cen, i);
 			if (weight < 0){weight = 0;}
-
-			this.setitemsize(i, weight * off_weight);
+			this._setItemSize(i, weight * off_weight);
 		}
 
 		//
@@ -395,40 +426,16 @@ dojo.widget.defineWidget(
 			offset = (cen - main_p) * ((this.isHorizontal ? this.itemWidth : this.itemHeight) - this.children[main_p].sizeMain);
 		}
 
-		this.positionElementsFrom(main_p, offset);
+		this._positionElementsFrom(main_p, offset);
 	},
 
-	weightAt: function(cen, i){
-
+	_weighAt: function(/*Integer*/ cen, /*Integer*/ i){
 		var dist = Math.abs(cen - i);
-
 		var limit = ((cen - i) > 0) ? this.children[i].effectRangeRght : this.children[i].effectRangeLeft;
-
-		return (dist > limit) ? 0 : (1 - dist / limit);
+		return (dist > limit) ? 0 : (1 - dist / limit);			// Integer
 	},
 
-	positionFromNode: function(p, w){
-
-		//
-		// we need to grow all the nodes growing out from node 'i'
-		//
-
-		this.setitemsize(p, w);
-
-		var wx = w;
-		for(var i=p; i<this.itemCount; i++){
-			wx = 0.8 * wx;
-			this.setitemsize(i, wx);
-		}
-
-		var wx = w;
-		for(var i=p; i>=0; i--){
-			wx = 0.8 * wx;
-			this.setitemsize(i, wx);
-		}
-	},
-
-	setitemsize: function(p, scale){
+	_setItemSize: function(p, scale){
 		scale *= this.timerScale;
 		var w = Math.round(this.itemWidth  + ((this.itemMaxWidth  - this.itemWidth ) * scale));
 		var h = Math.round(this.itemHeight + ((this.itemMaxHeight - this.itemHeight) * scale));
@@ -442,24 +449,16 @@ dojo.widget.defineWidget(
 			this.children[p].sizeOff  = h;
 
 			var y = 0;
-
 			if (this.anchorEdge == this.EDGE.TOP){
-
 				y = (this.children[p].cenY - (this.itemHeight / 2));
-
 			}else if (this.anchorEdge == this.EDGE.BOTTOM){
-
 				y = (this.children[p].cenY - (h - (this.itemHeight / 2)));
-
 			}else{
-
 				y = (this.children[p].cenY - (h / 2));
 			}
 
 			this.children[p].usualX = Math.round(this.children[p].cenX - (w / 2));
-			
 			this.children[p].domNode.style.top  = y + 'px';
-
 			this.children[p].domNode.style.left  = this.children[p].usualX + 'px';
 
 		}else{
@@ -471,16 +470,11 @@ dojo.widget.defineWidget(
 			this.children[p].sizeMain = h;
 
 			var x = 0;
-
 			if (this.anchorEdge == this.EDGE.LEFT){
-
 				x = this.children[p].cenX - (this.itemWidth / 2);
-
 			}else if (this.anchorEdge == this.EDGE.RIGHT){
-
 				x = this.children[p].cenX - (w - (this.itemWidth / 2));
 			}else{
-
 				x = this.children[p].cenX - (w / 2);
 			}
 
@@ -498,7 +492,7 @@ dojo.widget.defineWidget(
 		}
 	},
 
-	positionElementsFrom: function(p, offset){
+	_positionElementsFrom: function(p, offset){
 
 		var pos = 0;
 
@@ -509,17 +503,14 @@ dojo.widget.defineWidget(
 			pos = Math.round(this.children[p].usualY + offset);
 			this.children[p].domNode.style.top = pos + 'px';
 		}
-		this.positionLabel(this.children[p]);
+		this._positionLabel(this.children[p]);
 
 
 		//
 		// position before
 		//
-
 		var bpos = pos;
-
 		for(var i=p-1; i>=0; i--){
-
 			bpos -= this.children[i].sizeMain;
 
 			if (this.isHorizontal){
@@ -527,17 +518,14 @@ dojo.widget.defineWidget(
 			}else{
 				this.children[i].domNode.style.top = bpos + 'px';
 			}
-			this.positionLabel(this.children[i]);
+			this._positionLabel(this.children[i]);
 		}
 
 		//
 		// position after
 		//
-
 		var apos = pos;
-
 		for(var i=p+1; i<this.itemCount; i++){
-
 			apos += this.children[i-1].sizeMain;
 
 			if (this.isHorizontal){
@@ -545,12 +533,12 @@ dojo.widget.defineWidget(
 			}else{
 				this.children[i].domNode.style.top = apos + 'px';
 			}
-			this.positionLabel(this.children[i]);
+			this._positionLabel(this.children[i]);
 		}
 
 	},
 
-	positionLabel: function(itm){
+	_positionLabel: function(itm){
 
 		var x = 0;
 		var y = 0;
@@ -581,7 +569,7 @@ dojo.widget.defineWidget(
 		itm.lblNode.style.top  = y + 'px';
 	},
 
-	calcHitGrid: function(){
+	_calcHitGrid: function(){
 
 		var pos = dojo.html.getAbsolutePosition(this.domNode, true);
 
@@ -593,40 +581,54 @@ dojo.widget.defineWidget(
 		//dojo.debug(this.hitX1+','+this.hitY1+' // '+this.hitX2+','+this.hitY2);
 	},
 
-	toEdge: function(inp, def){
+	_toEdge: function(inp, def){
 		return this.EDGE[inp.toUpperCase()] || def;
 	},
 	
-	// slowly expand the image to user specified max size
-	expandSlowly: function(){
+	_expandSlowly: function(){
+		// summary: slowly expand the image to user specified max size
 		if( !this.isOver ){ return; }
 		this.timerScale += 0.2;
-		this.paint();
+		this._paint();
 		if ( this.timerScale<1.0 ) {
-			dojo.lang.setTimeout(this, "expandSlowly", 10);
+			dojo.lang.setTimeout(this, "_expandSlowly", 10);
 		}
 	},
 
 	destroy: function(){
 		// need to disconnect when we destroy
-		dojo.event.disconnect(document.documentElement, "onmouseout", this, "onBodyOut");
-		dojo.event.disconnect(document.documentElement, "onmousemove", this, "mouseHandler");
+		dojo.event.disconnect(document.documentElement, "onmouseout", this, "_onBodyOut");
+		dojo.event.disconnect(document.documentElement, "onmousemove", this, "_onMouseMove");
 		dojo.widget.FisheyeList.superclass.destroy.call(this);
 	}
 });
 
+/*
+ * summary
+ *	Menu item inside of a FisheyeList.
+ *	See FisheyeList documentation for details on usage.
+ */
 dojo.widget.defineWidget(
 	"dojo.widget.FisheyeListItem",
 	dojo.widget.HtmlWidget,
 {
-	// Constructor arguments
+	// String
+	//	pathname to image file (jpg, gif, png, etc.) of icon for this menu item
 	iconSrc: "",
+
+	// String
+	//	pathname to svg file of icon for this menu item
 	svgSrc: "",
+	
+	// String
+	//	label to print next to the icon, when it is moused-over
 	caption: "",
-	// will be set to the id of the orginal div element
+
+	// String
+	//	will be set to the id of the orginal div element
 	id: "",
 
-	blankImgPath: dojo.uri.dojoUri("src/widget/templates/images/blank.gif"),
+	_blankImgPath: dojo.uri.dojoUri("src/widget/templates/images/blank.gif"),
 
 	templateString:
 		'<div class="dojoHtmlFisheyeListItem">' +
@@ -634,8 +636,6 @@ dojo.widget.defineWidget(
 		'  <div class="dojoHtmlFisheyeListItemLabel" dojoAttachPoint="lblNode"></div>' +
 		'</div>',
 	
-	imgNode: null,
-
 	fillInTemplate: function() {
 		//
 		// set image
@@ -643,7 +643,7 @@ dojo.widget.defineWidget(
 		// this.parent.enableCrappySvgSupport is not available to this function
 		//
 		if (this.svgSrc != ""){
-			this.svgNode = this.createSvgNode(this.svgSrc);
+			this.svgNode = this._createSvgNode(this.svgSrc);
 			this.domNode.appendChild(this.svgNode);
 			this.imgNode.style.display = 'none';
 		} else if((this.iconSrc.toLowerCase().substring(this.iconSrc.length-4)==".png")&&(dojo.render.html.ie)&&(!dojo.render.html.ie70)){
@@ -653,7 +653,7 @@ dojo.widget.defineWidget(
 				parent.setAttribute("id", this.id);
 			}
 			this.imgNode.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='"+this.iconSrc+"', sizingMethod='scale')";
-			this.imgNode.src = this.blankImgPath.toString();
+			this.imgNode.src = this._blankImgPath.toString();
 		} else {
 			if (dojo.dom.hasParent(this.imgNode) && this.id != ""){
 				var parent = this.imgNode.parentNode;
@@ -671,8 +671,7 @@ dojo.widget.defineWidget(
 		dojo.html.disableSelection(this.domNode);
 	},
 	
-	createSvgNode: function(src){
-
+	_createSvgNode: function(src){
 		var elm = document.createElement('embed');
 		elm.src = src;
 		elm.type = 'image/svg+xml';
@@ -720,22 +719,25 @@ dojo.widget.defineWidget(
 		return elm;
 	},
 
-	onMouseOver: function(e) {
+	onMouseOver: function(/*Event*/ e) {
+		// summary: callback when user moves mouse over this menu item
 		// in conservative mode, don't activate the menu until user mouses over an icon
 		if( !this.parent.isOver ){
-			this.parent.setActive(e);
+			this.parent._setActive(e);
 		}
 		if ( this.caption != "" ) {
 			dojo.html.addClass(this.lblNode, "selected");
-			this.parent.positionLabel(this);
+			this.parent._positionLabel(this);
 		}
 	},
 	
-	onMouseOut: function() {
+	onMouseOut: function(/*Event*/ e) {
+		// summary: callback when user moves mouse off of this menu item
 		dojo.html.removeClass(this.lblNode, "selected");
 	},
 
-	onClick: function() {
+	onClick: function(/*Event*/ e) {
+		// summary: user overridable callback when user clicks this menu item
 	}
 });
 

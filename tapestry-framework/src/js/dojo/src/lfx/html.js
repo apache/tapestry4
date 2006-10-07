@@ -340,7 +340,7 @@ dojo.lfx.html.wipeOut = function(/*Array*/ nodes, /*Decimal?*/ duration, /*Funct
 					with(node.style){
 						overflow = oprop.overflow;
 						visibility = "hidden";
-						height = "";
+						height = "1px";		// 0 cause IE to display the whole panel
 					}
 					if(callback){ callback(node, anim); }
 				}

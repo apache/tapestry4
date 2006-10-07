@@ -25,29 +25,16 @@ dojo.declare("dojo.data.csv.Result", dojo.data.Result, {
 			this._inProgress = false;
 		},
 	forEach:
-		function(/* function or object */ functionOrKeywordObject) {
+		function(/* function */ callbackFunction, /* object? */ callbackObject, /* object? */ optionalKeywordArgs) {
 			// Summary: See dojo.data.Result.forEach()
-			dojo.lang.assertType(functionOrKeywordObject, [Function, "pureobject"]); 
-			var callbackFunction = null;
-			var callbackObject = null;
-			var callbackFunctionName = null;
-			if (dojo.lang.isFunction(functionOrKeywordObject)) {
-				callbackFunction = functionOrKeywordObject;
-			} else {
-				var keywordObject = functionOrKeywordObject;
-				dojo.lang.assertType(keywordObject, "pureobject");
-				var callbackObject = keywordObject["object"];
-				var callbackFunctionName = keywordObject["callback"];
-			}
+			dojo.lang.assertType(callbackFunction, Function); 
+			dojo.lang.assertType(callbackObject, Object, {optional:true}); 
+			dojo.lang.assertType(optionalKeywordArgs, "pureobject", {optional:true}); 
 			this._inProgress = true;
 			for (var i in this._arrayOfItems) {
 				var item = this._arrayOfItems[i];
 				if (!this._cancel) {
-					if (callbackFunction) {
-						callbackFunction(item, this);
-					} else {
-						callbackObject[callbackFunctionName](item, this);
-					}
+					callbackFunction.call(callbackObject, item, i, this);
 				}
 			}
 			this._inProgress = false;
@@ -72,15 +59,15 @@ dojo.declare("dojo.data.csv.Result", dojo.data.Result, {
 				this._cancel = true;
 			}
 		},
-	addCallback:
-		function(/* function */ callbackFunction) {
-			// Summary: See dojo.data.Result.addCallback()
-			dojo.unimplemented('dojo.data.csv.Result.addCallback');
+	setOnFindCompleted:
+		function(/* function */ callbackFunction, /* object? */ callbackObject) {
+			// Summary: See dojo.data.Result.setOnFindCompleted()
+			dojo.unimplemented('dojo.data.csv.Result.setOnFindCompleted');
 		},
-	addErrback:
-		function(/* function */ errorCallbackFunction) {
-			// Summary: See dojo.data.Result.addErrback()
-			dojo.unimplemented('dojo.data.csv.Result.addErrback');
+	setOnError:
+		function(/* function */ errorCallbackFunction, /* object? */ callbackObject) {
+			// Summary: See dojo.data.Result.setOnError()
+			dojo.unimplemented('dojo.data.csv.Result.setOnError');
 		},
 	getStore:
 		function() {

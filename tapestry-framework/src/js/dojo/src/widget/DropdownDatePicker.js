@@ -21,25 +21,65 @@ dojo.require("dojo.string.common");
 dojo.require("dojo.i18n.common");
 dojo.requireLocalization("dojo.widget", "DropdownDatePicker");
 
+		/*
+		summary: 
+			DatePicker form input that allows for selecting a Date from the UI or typing of date in an inputbox
+	 	description: 
+			Basically this is DatePicker in a DropdownContainer, it supports all features of DatePicker as well
+			as wrapping its value inside of a form element to be submitted.
+	 	 usage: 
+	 	              var ddp = dojo.widget.createWidget("DropdownDatePicker", {},   
+	 	              dojo.byId("DropdownDatePickerNode")); 
+	 	 
+	 	              <input dojoType="DropdownDatePicker">
+		*/
+
 dojo.widget.defineWidget(
 	"dojo.widget.DropdownDatePicker",
 	dojo.widget.DropdownContainer,
 	{
 		iconURL: dojo.uri.dojoUri("src/widget/templates/images/dateIcon.gif"),
 		zIndex: "10",
-
-		// pattern used in display of formatted date.  See dojo.date.format.
+		
+		//String
+		// 	pattern used in display of formatted date.  See dojo.date.format.
 		displayFormat: "",
 		dateFormat: "", // deprecated in 0.5
-		// formatting used when submitting form.  A pattern string like display format or one of the following:
-		// rfc|iso|posix|unix  By default, uses rfc3339 style date formatting.
+		//String
+		// 	formatting used when submitting form.  A pattern string like display format or one of the following:
+		// 	rfc|iso|posix|unix  By default, uses rfc3339 style date formatting.
 		saveFormat: "",
-		// type of format appropriate to locale.  see dojo.date.format
+		//String
+		// 	type of format appropriate to locale.  see dojo.date.format
 		formatLength: "short", // only parsing of short is supported at this time
-		date: "", //if =='today' will default to todays date
-		// name of the form element
+		//String|Date
+		//	form value property if =='today' will default to todays date
+		value: "", 
+		//String
+		// 	name of the form element
 		name: "",
-
+		//Integer
+		//	total weeks to display default 
+		displayWeeks: 6, 
+		//Boolean
+		//	if true, weekly size of calendar changes to acomodate the month if false, 42 day format is used
+		adjustWeeks: false,
+		//String|Date
+		//	first available date in the calendar set
+		startDate: "1492-10-12",
+		//String|Date
+		//	last available date in the calendar set
+		endDate: "2941-10-12",
+		//Integer
+		//	adjusts the first day of the week 0==Sunday..6==Saturday
+		weekStartsOn: "",
+		//String
+		//	deprecated use value instead
+		storedDate: "",
+		//Boolean
+		//d	isable all incremental controls, must pick a date in the current display
+		staticDisplay: false,
+		
 		postMixInProperties: function(localProperties, frag){
 			// summary: see dojo.widget.DomWidget
 
@@ -47,29 +87,38 @@ dojo.widget.defineWidget(
 			var messages = dojo.i18n.getLocalization("dojo.widget", "DropdownDatePicker", this.lang);
 			this.iconAlt = messages.selectDate;
 			
-			if(typeof(this.date)=='string'&&this.date.toLowerCase()=='today'){
-				this.date = new Date();
+			if(typeof(this.value)=='string'&&this.value.toLowerCase()=='today'){
+				this.value = new Date();
 			}
-			if(this.date && isNaN(this.date)){
-				var orig = this.date;
-				this.date = dojo.date.fromRfc3339(this.date);
-				if(!this.date){this.date = new Date(orig); dojo.deprecated("dojo.widget.DropdownDatePicker", "date attributes must be passed in Rfc3339 format", "0.5");}
+			if(this.value && isNaN(this.value)){
+				var orig = this.value;
+				this.value = dojo.date.fromRfc3339(this.value);
+				if(!this.value){this.value = new Date(orig); dojo.deprecated("dojo.widget.DropdownDatePicker", "date attributes must be passed in Rfc3339 format", "0.5");}
 			}
-			if(this.date && !isNaN(this.date)){
-				this.date = new Date(this.date);
+			if(this.value && !isNaN(this.value)){
+				this.value = new Date(this.value);
 			}
 		},
 
 		fillInTemplate: function(args, frag){
 			// summary: see dojo.widget.DomWidget
-
 			dojo.widget.DropdownDatePicker.superclass.fillInTemplate.call(this, args, frag);
-
-			this.datePicker = dojo.widget.createWidget("DatePicker",
-				{ widgetContainerId: this.widgetId, lang: this.lang, date: this.date }, this.containerNode, "child");
-			dojo.event.connect(this.datePicker, "onSetDate", this, "onSetDate");
+			//attributes to be passed on to DatePicker
+			var dpArgs = {widgetContainerId: this.widgetId};
+			if(this.value){ dpArgs.value = this.value; }
+			if(this.startDate){ dpArgs.startDate = this.startDate; }
+			if(this.endDate){ dpArgs.endDate = this.endDate; }
+			if(this.displayWeeks){ dpArgs.displayWeeks = this.displayWeeks; }
+			if(this.weekStartsOn){ dpArgs.weekStartsOn = this.weekStartsOn; }
+			if(this.adjustWeeks){ dpArgs.adjustWeeks = this.adjustWeeks; }
+			if(this.staticDisplay){ dpArgs.staticDisplay = this.staticDisplay; }
+			if(this.value){ dpArgs.date = this.value; }
+			if(this.storedDate){ dpArgs.storedDate = this.storedDate; } //deprecated in 0.5
+			//build the args for DatePicker based on the public attributes of DropdownDatePicker
+			this.datePicker = dojo.widget.createWidget("DatePicker", dpArgs, this.containerNode, "child");
+			dojo.event.connect(this.datePicker, "onValueChanged", this, "onSetDate");
 			
-			if(this.date){
+			if(this.value){
 				this.onSetDate();
 			}
 			this.containerNode.style.zIndex = this.zIndex;
@@ -77,36 +126,43 @@ dojo.widget.defineWidget(
 			this.valueNode.name=this.name;
 		},
 
-		onSetDate: function(){
-			if(this.dateFormat){
-				dojo.deprecated("dojo.widget.DropdownDatePicker",
-				"Must use displayFormat attribute instead of dateFormat.  See dojo.date.format for specification.", "0.5");
-				this.inputNode.value = dojo.date.strftime(this.datePicker.date, this.dateFormat, this.lang);
-			}else{
-				this.inputNode.value = dojo.date.format(this.datePicker.date,
-					{formatLength:this.formatLength, datePattern:this.displayFormat, selector:'dateOnly', locale:this.lang});
-			}
-			this._synchValueNode();
-			this.hideContainer();
-		},
 		getValue: function(/*Boolean*/displayFormat){
 			// summary: return current date in RFC 3339 format if displayFormat is false otherwise, uses displayFormat that inputNode uses
-			return (displayFormat)?dojo.date.format(this.datePicker.date,{formatLength:this.formatLength, datePattern:this.displayFormat, selector:'dateOnly', locale:this.lang}):dojo.date.toRfc3339(new Date(this.datePicker.date),'dateOnly'); /*String*/
+			return (displayFormat)?dojo.date.format(this.datePicker.value,{formatLength:this.formatLength, datePattern:this.displayFormat, selector:'dateOnly', locale:this.lang}):dojo.date.toRfc3339(new Date(this.datePicker.value),'dateOnly'); /*String*/
 		},
 
 		getDate: function(){
 			// summary: return current date as a Date object
-			return this.datePicker.date; /*Date*/
+			return this.datePicker.value; /*Date*/
 		},
 
 		setValue: function(/*Date|String*/rfcDate){
 			//summary: set the current date from RFC 3339 formatted string or a date object, synonymous with setDate
-			this.datePicker.setDate(rfcDate);
+			this.setDate(rfcDate);
 		},			
 			
 		setDate: function(/*Date|String*/rfcDate){
 		//summary: set the current date and update the UI
 			this.datePicker.setDate(rfcDate);
+			this._synchValueNode();
+		},
+		
+		onSetDate: function(){
+			if(this.dateFormat){
+				dojo.deprecated("dojo.widget.DropdownDatePicker",
+				"Must use displayFormat attribute instead of dateFormat.  See dojo.date.format for specification.", "0.5");
+				this.inputNode.value = dojo.date.strftime(this.datePicker.value, this.dateFormat, this.lang);
+			}else{
+				this.inputNode.value = dojo.date.format(this.datePicker.value,
+					{formatLength:this.formatLength, datePattern:this.displayFormat, selector:'dateOnly', locale:this.lang});
+			}
+			this._synchValueNode();
+			this.onValueChanged(this.getDate());
+			this.hideContainer();
+		},
+
+		onValueChanged: function(/*Date*/date){
+		//summary: triggered when this.value is changed
 		},
 		
 		onInputChange: function(){
@@ -119,8 +175,7 @@ dojo.widget.defineWidget(
 					var inputDate = dojo.date.parse(input,
 							{formatLength:this.formatLength, datePattern:this.displayFormat, selector:'dateOnly', locale:this.lang});			
 					if(inputDate){
-						this.datePicker.setDate(inputDate);
-						this._synchValueNode();
+						this.setDate(inputDate);
 					}
 				} else {
 					this.valueNode.value = input;
@@ -134,7 +189,7 @@ dojo.widget.defineWidget(
 		},
 
 		_synchValueNode: function(){
-			var date = this.datePicker.date;
+			var date = this.datePicker.value;
 			var value;
 			switch(this.saveFormat.toLowerCase()){
 				case "rfc": case "iso": case "":

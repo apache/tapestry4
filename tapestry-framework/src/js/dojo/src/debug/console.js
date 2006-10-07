@@ -9,6 +9,8 @@
 */
 
 dojo.provide("dojo.debug.console");
+dojo.require("dojo.logging.ConsoleLogger");
+
 // summary:
 // 	Console logger, for use with FireFox Firebug, Safari and Opera's consoles.
 // description:
@@ -22,7 +24,7 @@ if (window.console) {
 	if (console.info != null) {
 		// using a later version of Firebug -- lots of fun stuff!
 		
-		dojo.debug = function() {
+		dojo.hostenv.println = function() {
 			// summary: Write all of the arguments to the Firebug console
 			// description: Uses console.info() so that the (i) icon prints next to the debug line
 			//	rather than munging the arguments by adding "DEBUG:" in front of them.
@@ -30,7 +32,8 @@ if (window.console) {
 			if (!djConfig.isDebug)	{	 return;	}
 			console.info.apply(console, arguments);
 		}
-		dojo.debugDeep = dojo.debug;	
+		dojo.debug=dojo.hostenv.println;
+		dojo.debugDeep = dojo.debug;
 
 		dojo.debugShallow = function(/*Object*/ obj, /*Boolean?*/showMethods, /*Boolean?*/sort) {
 			// summary:  Write first-level properties of obj to the console.
@@ -86,16 +89,16 @@ if (window.console) {
 			//	which is nice for a DOM element, etc
 			return dojo.debug(obj.constructor + ": ", obj);
 		}
-
+		
 	} else if (console.log != null) {
 		// using Safari or an old version of Firebug
-		
-		dojo.debug = function() {
+		dojo.hostenv.println=function() {
 			if (!djConfig.isDebug) { return ; }
 			// make sure we're only writing a single string to Safari's console
 			var args = dojo.lang.toArray(arguments);
 			console.log("DEBUG: " + args.join(" "));
 		}
+		dojo.debug=dojo.hostenv.println;
 	} else {
 		// not supported
 		dojo.debug("dojo.debug.console requires Firebug > 0.4");
@@ -105,10 +108,8 @@ if (window.console) {
 	if (opera && opera.postError) {
 		dojo.hostenv.println=opera.postError;
 		// summary:  hook debugging up to Opera's postError routine
-
 	} else {
 		dojo.debug("dojo.debug.Opera requires Opera > 8.0");
-
 	}
 }
 

@@ -479,7 +479,7 @@ dojo.widget.defineWidget (
 		_calc_valueSizeX: function () {
 			var constrainingCtrBox = dojo.html.getContentBox(this.constrainingContainerNode);
 			var sliderHandleBox = dojo.html.getContentBox(this.sliderHandleNode);
-			if (constrainingCtrBox.width <= 0 || sliderHandleBox.width <= 0) { 
+			if (isNaN(constrainingCtrBox.width) || isNaN(sliderHandleBox.width) || constrainingCtrBox.width <= 0 || sliderHandleBox.width <= 0) { 
 				return false; 
 			}
 
@@ -562,7 +562,7 @@ dojo.widget.defineWidget (
 		_calc_valueSizeY: function () {
 			var constrainingCtrBox = dojo.html.getContentBox(this.constrainingContainerNode);
 			var sliderHandleBox = dojo.html.getContentBox(this.sliderHandleNode);
-			if (constrainingCtrBox.height <= 0 || sliderHandleBox.height <= 0) { 
+			if (isNaN(constrainingCtrBox.height) || isNaN(sliderHandleBox.height) || constrainingCtrBox.height <= 0 || sliderHandleBox.height <= 0) { 
 				return false; 
 			}
 
@@ -630,15 +630,14 @@ dojo.widget.defineWidget (
 				return;
 			}
 
-			var offset = dojo.html.getScroll().offset;
-			var parent = dojo.html.getAbsolutePosition(this.constrainingContainerNode, true);
+			var parent = dojo.html.getAbsolutePosition(this.constrainingContainerNode, true, dojo.html.boxSizing.MARGIN_BOX);
 			var content = dojo.html.getContentBox(this._handleMove.domNode);			
 			if (this.isEnableX) {
-				var x = offset.x + evt.clientX - parent.x - (content.width >> 1);
+				var x = evt.pageX - parent.x - (content.width >> 1);
 				this._snapX(x, this._handleMove);
 			}
 			if (this.isEnableY) {
-				var y = offset.y + evt.clientY - parent.y - (content.height >> 1);
+				var y = evt.pageY - parent.y - (content.height >> 1);
 				this._snapY(y, this._handleMove);
 			}
 			this.notifyListeners();
@@ -801,11 +800,12 @@ dojo.declare (
 	 *  Extends dojo.dnd.HtmlDragMoveSource by creating a SliderDragMoveSource */
 	onDragStart: function (evt) {
 		this.slider.isDragInProgress = true;
+		var pos = dojo.html.getAbsolutePosition(this.slider.constrainingContainerNode, true, dojo.html.boxSizing.MARGIN_BOX);
 		if (this.slider.isEnableX) {
-			this.slider._minX = dojo.html.getAbsolutePosition(this.slider.constrainingContainerNode).x;
+			this.slider._minX = pos.x;
 		}
 		if (this.slider.isEnableY) {
-			this.slider._minY = dojo.html.getAbsolutePosition(this.slider.constrainingContainerNode).y;
+			this.slider._minY = pos.y;
 		}
 
 		var dragObj = this.createDragMoveObject ();
@@ -859,14 +859,13 @@ dojo.declare (
 	onDragMove: function (evt) {
 		this.updateDragOffset ();
 
-		var offset = dojo.html.getScroll().offset;
 		if (this.slider.isEnableX) {
-			var x = this.dragOffset.x + evt.pageX - this.slider._minX - offset.x;
+			var x = this.dragOffset.x + evt.pageX - this.slider._minX;
 			this.slider._snapX(x, this.slider._handleMove);
 		}
 
 		if (this.slider.isEnableY) {
-			var y = this.dragOffset.y + evt.pageY - this.slider._minY - offset.y;
+			var y = this.dragOffset.y + evt.pageY - this.slider._minY;
 			this.slider._snapY(y, this.slider._handleMove);
 		}
 		if(this.slider.activeDrag){

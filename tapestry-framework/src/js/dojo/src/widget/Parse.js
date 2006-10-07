@@ -148,7 +148,21 @@ dojo.widget.Parse = function(fragment){
 						}
 					}catch(e){ dojo.debug(e); }
 				}
-			}
+				switch(item.toLowerCase()){ 
+					case "checked":
+						if (!properties[item] || typeof properties[item] == "string"){
+							properties[item] = Boolean(!properties[item] ||
+								properties[item].toLowerCase() == "checked");
+							}
+					break;
+					case "disabled":
+						if (!properties[item] || typeof properties[item] == "string"){
+							properties[item] = Boolean(!properties[item] ||
+								properties[item].toLowerCase() == "disabled");
+						}
+					break;
+				}
+			} 
 		}
 		return properties;
 	}

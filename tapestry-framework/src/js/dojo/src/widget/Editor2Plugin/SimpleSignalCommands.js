@@ -9,11 +9,11 @@
 */
 
 ﻿/*
- * This plugin adds save() and insertImage() to Editor2 widget, and add two commands for each
- * of them. When the corresponding button is clicked in the toolbar, the added function in the 
+ * This plugin adds save() and insertImage() to Editor2 widget, and two commands for each
+ * of them. When the corresponding button is clicked in the toolbar, the added function in the
  * Editor2 widget is called. This mimics the original Editor2 behavior. If you want to have other
  * signals on the Editor2 widget, add them to dojo.widget.Editor2Plugin.SimpleSignalCommands.signals
- * NOTE: Please consider writing your own Editor2 plugin rather than using this backward compatible 
+ * NOTE: Please consider writing your own Editor2 plugin rather than using this backward compatible
  * plugin
  * ATTENTION: This plugin overwrites the new built-in insertImage dialog. (If this is not desired, set
  * dojo.widget.Editor2Plugin.SimpleSignalCommands.signals to not contain insertImage)
@@ -27,7 +27,7 @@ dojo.provide("dojo.widget.Editor2Plugin.SimpleSignalCommands");
 
 dojo.require("dojo.widget.Editor2");
 
-dojo.declare("dojo.widget.Editor2Plugin.SimpleSignalCommand", dojo.widget.Editor2Command, 
+dojo.declare("dojo.widget.Editor2Plugin.SimpleSignalCommand", dojo.widget.Editor2Command,
 	function(name){
 		if(dojo.widget.Editor2.prototype[name] == undefined){
 			dojo.widget.Editor2.prototype[name] = function(){ dojo.debug("Editor2::"+name); };
@@ -58,7 +58,7 @@ dojo.widget.Editor2Plugin.SimpleSignalCommands = {
 	},
 	registerAllSignalCommands: function(){
 		for(var i=0;i<this.signals.length;i++){
-			dojo.widget.Editor2Manager.registerCommand(this.signals[i], 
+			dojo.widget.Editor2Manager.registerCommand(this.signals[i],
 				new dojo.widget.Editor2Plugin.SimpleSignalCommand(this.signals[i]));
 		}
 	}

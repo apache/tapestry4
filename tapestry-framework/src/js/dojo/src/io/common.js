@@ -28,7 +28,7 @@ dojo.require("dojo.lang.extras");
  *		server classes. Wish it were always this easy.
  *
  *	xpcshell:
- *		XPCOM for I/O. A cluster-fuck to be sure.
+ *		XPCOM for I/O.
  *
  *	spidermonkey:
  *		S.O.L.
@@ -195,10 +195,16 @@ dojo.io.bind = function(request){
 	var tsName = "";
 	if(request["transport"]){
 		tsName = request["transport"];
-		// FIXME: it would be good to call the error handler, although we'd
-		// need to use setTimeout or similar to accomplish this and we can't
-		// garuntee that this facility is available.
-		if(!this[tsName]){ return request; }
+		if(!this[tsName]){
+			dojo.io.sendBindError(request, "No dojo.io.bind() transport with name '"
+				+ request["transport"] + "'.");
+			return request;
+		}
+		if(!this[tsName].canHandle(request)){
+			dojo.io.sendBindError(request, "dojo.io.bind() transport with name '"
+				+ request["transport"] + "' cannot handle this type of request.");
+			return request;		
+		}
 	}else{
 		// otherwise we do our best to auto-detect what available transports
 		// will handle 
@@ -208,11 +214,28 @@ dojo.io.bind = function(request){
 				tsName = tmp;
 			}
 		}
-		if(tsName == ""){ return request; }
+		if(tsName == ""){
+			dojo.io.sendBindError(request, "None of the loaded transports for dojo.io.bind()"
+				+ " can handle the request.");
+			return request;
+		}
 	}
 	this[tsName].bind(request);
 	request.bindSuccess = true;
 	return request;
+}
+
+dojo.io.sendBindError = function(request /* Object */, message /* String */){
+	//Need to be careful since not all hostenvs support setTimeout.
+	if((typeof request.error == "function" || typeof request.handle == "function")
+		&& (typeof setTimeout == "function" || typeof setTimeout == "object")){
+		var errorObject = new dojo.io.Error(message);
+		setTimeout(function(){
+			request[(typeof request.error == "function") ? "error" : "handle"]("error", errorObject, null, request);
+		}, 50);
+	}else{
+		dojo.raise(message);
+	}
 }
 
 dojo.io.queueBind = function(request){

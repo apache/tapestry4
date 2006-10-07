@@ -14,7 +14,7 @@ dojo.require("dojo.dom");
 
 dojo.mixin(dojo.svg, dojo.dom);
 
-dojo.svg.graphics=dojo.svg.g=new function(/* DomDocument */ d){
+dojo.svg.graphics=dojo.svg.g=new function(/* DOMDocument */ d){
 	//	summary
 	//	Singleton to encapsulate SVG rendering functions.
 	this.suspend=function(){
@@ -109,27 +109,35 @@ dojo.svg.clearOpacity=function(/* SVGElement */ node){
 
 // TODO ////////////////////////////////////////////////////////// TODO
 dojo.svg.getCoords=function(/* SVGElement */ node){
+	//	summary
+	//	Returns the x/y coordinates of the passed node, if available.
 	if (node.getBBox) {
 		var box=node.getBBox();
-		return { x: box.x, y: box.y };
+		return { x: box.x, y: box.y };	//	object
 	}
-	return null;
+	return null;	//	object
 };
-dojo.svg.setCoords=function(node, coords){
+dojo.svg.setCoords=function(/* SVGElement */node, /* object */coords){
+	//	summary
+	//	Set the x/y coordinates of the passed node
 	var p=dojo.svg.getCoords();
 	if (!p) return;
 	var dx=p.x - coords.x;
 	var dy=p.y - coords.y;
 	dojo.svg.translate(node, dx, dy);
 };
-dojo.svg.getDimensions=function(node){
+dojo.svg.getDimensions=function(/* SVGElement */node){
+	//	summary
+	//	Get the height and width of the passed node.
 	if (node.getBBox){
 		var box=node.getBBox();
-		return { width: box.width, height : box.height };
+		return { width: box.width, height : box.height };	//	object
 	}
-	return null;
+	return null;	//	object
 };
-dojo.svg.setDimensions=function(node, dim){
+dojo.svg.setDimensions=function(/* SVGElement */node, /* object */dim){
+	//	summary
+	//	Set the dimensions of the passed element if possible.
 	//	will only support shape-based and container elements; path-based elements are ignored.
 	if (node.width){
 		node.width.baseVal.value=dim.width;
@@ -147,14 +155,18 @@ dojo.svg.setDimensions=function(node, dim){
 /**
  *	Transformations.
  */
-dojo.svg.translate=function(node, dx, dy){
+dojo.svg.translate=function(/* SVGElement */node, /* int */dx, /* int */dy){
+	//	summary
+	//	Translates the passed node by dx and dy
 	if (node.transform && node.ownerSVGElement && node.ownerSVGElement.createSVGTransform){
 		var t=node.ownerSVGElement.createSVGTransform();
 		t.setTranslate(dx, dy);
 		node.transform.baseVal.appendItem(t);
 	}
 };
-dojo.svg.scale=function(node, scaleX, scaleY){
+dojo.svg.scale=function(/* SVGElement */node, /* float */scaleX, /* float? */scaleY){
+	//	summary
+	//	Scales the passed element by factor scaleX and scaleY.  If scaleY not passed, scaleX is used.
 	if (!scaleY) var scaleY=scaleX;
 	if (node.transform && node.ownerSVGElement && node.ownerSVGElement.createSVGTransform){
 		var t=node.ownerSVGElement.createSVGTransform();
@@ -162,15 +174,19 @@ dojo.svg.scale=function(node, scaleX, scaleY){
 		node.transform.baseVal.appendItem(t);
 	}
 };
-dojo.svg.rotate=function(node, ang, cx, cy){
+dojo.svg.rotate=function(/* SVGElement */node, /* float */ang, /* int? */cx, /* int? */cy){
+	//	summary
+	//	rotate the passed node by ang, with optional cx/cy as the rotation point.
 	if (node.transform && node.ownerSVGElement && node.ownerSVGElement.createSVGTransform){
 		var t=node.ownerSVGElement.createSVGTransform();
-		if (!cx) t.setMatrix(t.matrix.rotate(ang));
+		if (cx == null) t.setMatrix(t.matrix.rotate(ang));
 		else t.setRotate(ang, cx, cy);
 		node.transform.baseVal.appendItem(t);
 	}
 };
-dojo.svg.skew=function(node, ang, axis){
+dojo.svg.skew=function(/* SVGElement */node, /* float */ang, /* string? */axis){
+	//	summary
+	//	skew the passed node by ang over axis.
 	var dir=axis || "x";
 	if (node.transform && node.ownerSVGElement && node.ownerSVGElement.createSVGTransform){
 		var t=node.ownerSVGElement.createSVGTransform();
@@ -179,7 +195,9 @@ dojo.svg.skew=function(node, ang, axis){
 		node.transform.baseVal.appendItem(t);
 	}
 };
-dojo.svg.flip=function(node, axis){
+dojo.svg.flip=function(/* SVGElement */node, /* string? */axis){
+	//	summary
+	//	flip the passed element over axis
 	var dir=axis || "x";
 	if (node.transform && node.ownerSVGElement && node.ownerSVGElement.createSVGTransform){
 		var t=node.ownerSVGElement.createSVGTransform();
@@ -187,14 +205,26 @@ dojo.svg.flip=function(node, axis){
 		node.transform.baseVal.appendItem(t);
 	}
 };
-dojo.svg.invert=function(node){
+dojo.svg.invert=function(/* SVGElement */node){
+	//	summary
+	//	transform the passed node by the inverse of the current matrix
 	if (node.transform && node.ownerSVGElement && node.ownerSVGElement.createSVGTransform){
 		var t=node.ownerSVGElement.createSVGTransform();
 		t.setMatrix(t.matrix.inverse());
 		node.transform.baseVal.appendItem(t);
 	}
 };
-dojo.svg.applyMatrix=function(node, a, b, c, d, e, f){
+dojo.svg.applyMatrix=function(
+	/* SVGElement */node, 
+	/* int || SVGMatrix */a, 
+	/* int? */b, 
+	/* int? */c, 
+	/* int? */d, 
+	/* int? */e, 
+	/* int? */f
+){
+	//	summary
+	//	apply the passed matrix to node.  If params b - f are passed, a matrix will be created.
 	if (node.transform && node.ownerSVGElement && node.ownerSVGElement.createSVGTransform){
 		var m;
 		if (b){
@@ -215,7 +245,8 @@ dojo.svg.applyMatrix=function(node, a, b, c, d, e, f){
 /**
  *	Grouping and z-index operations.
  */
-dojo.svg.group=function(nodes){
+dojo.svg.group=function(/* Nodelist || array */nodes){
+	//	summary
 	//	expect an array of nodes, attaches the group to the parent of the first node.
 	var p=nodes.item(0).parentNode;
 	var g=document.createElementNS(this.xmlns.svg, "g");
@@ -223,14 +254,16 @@ dojo.svg.group=function(nodes){
 	p.appendChild(g);
 	return g;
 };
-dojo.svg.ungroup=function(g){
+dojo.svg.ungroup=function(/* SVGGElement */g){
+	//	summary
 	//	puts the children of the group on the same level as group was.
 	var p=g.parentNode;
 	while (g.childNodes.length > 0) p.appendChild(g.childNodes.item(0));
 	p.removeChild(g);
 };
 //	if the node is part of a group, return the group, else return null.
-dojo.svg.getGroup=function(node){
+dojo.svg.getGroup=function(/* SVGElement */node){
+	//	summary
 	//	if the node is part of a group, return the group, else return null.
 	var a=this.getAncestors(node);
 	for (var i=0; i < a.length; i++){
@@ -239,23 +272,31 @@ dojo.svg.getGroup=function(node){
 	}
 	return null;
 };
-dojo.svg.bringToFront=function(node){
+dojo.svg.bringToFront=function(/* SVGElement */node){
+	//	summary
+	//	move the passed node the to top of the group (i.e. last child)
 	var n=this.getGroup(node) || node;
 	n.ownerSVGElement.appendChild(n);
 };
-dojo.svg.sendToBack=function(node){
+dojo.svg.sendToBack=function(/* SVGElement */node){
+	//	summary
+	//	move the passed node to the bottom of the group (i.e. first child)
 	var n=this.getGroup(node) || node;
 	n.ownerSVGElement.insertBefore(n, n.ownerSVGElement.firstChild);
 };
 
 //	TODO: possibly push node up a level in the DOM if it's at the beginning or end of the childNodes list.
-dojo.svg.bringForward=function(node){
+dojo.svg.bringForward=function(/* SVGElement */node){
+	//	summary
+	//	move the passed node up one in the child node chain
 	var n=this.getGroup(node) || node;
 	if (this.getLastChildElement(n.parentNode) != n){
 		this.insertAfter(n, this.getNextSiblingElement(n), true);
 	}
 };
-dojo.svg.sendBackward=function(node){
+dojo.svg.sendBackward=function(/* SVGElement */node){
+	//	summary
+	//	move the passed node down one in the child node chain
 	var n=this.getGroup(node) || node;
 	if (this.getFirstChildElement(n.parentNode) != n){
 		this.insertBefore(n, this.getPreviousSiblingElement(n), true);

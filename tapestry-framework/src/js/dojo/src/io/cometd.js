@@ -46,7 +46,7 @@ cometd = new function(){
 	this.minimumVersion = 0.1;
 	this.clientId = null;
 
-	this.isXD = false;
+	this._isXD = false;
 	this.handshakeReturn = null;
 	this.currentTransport = null;
 	this.url = null;
@@ -114,7 +114,7 @@ cometd = new function(){
 					dojo.debug(thisHost, urlHost);
 					dojo.debug(thisPort, urlPort);
 
-					this.isXD = true;
+					this._isXD = true;
 					bindArgs.transport = "ScriptSrcTransport";
 					bindArgs.jsonParamName = "jsonp";
 				}
@@ -127,6 +127,7 @@ cometd = new function(){
 	}
 
 	this.finishInit = function(type, data, evt, request){
+		data = data[0];
 		this.handshakeReturn = data;
 		// pick a transport
 		if(data["authSuccessful"] == false){
@@ -140,7 +141,7 @@ cometd = new function(){
 		this.currentTransport = this.connectionTypes.match(
 			data.supportedConnectionTypes,
 			data.version,
-			this.isXD
+			this._isXD
 		);
 		this.currentTransport.version = data.version;
 		this.clientId = data.clientId;
@@ -155,7 +156,7 @@ cometd = new function(){
 		}
 	}
 
-	this.getRandStr = function(){
+	this._getRandStr = function(){
 		return Math.random().toString().substring(2, 10);
 	}
 
@@ -581,7 +582,7 @@ cometd.iframeTransport = new function(){
 
 		// NOTE: we require the server to cooperate by hosting
 		// cometdInit.html at the designated endpoint
-		this.rcvNodeName = "cometdRcv_"+cometd.getRandStr();
+		this.rcvNodeName = "cometdRcv_"+cometd._getRandStr();
 		// the "forever frame" approach
 
 		var initUrl = cometd.url+"/?tunnelInit=iframe"; // &domain="+document.domain;

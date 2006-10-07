@@ -19,26 +19,10 @@ dojo.require("dojo.widget.Menu2");
 
 dojo.deprecated("dojo.widget.TreeContextMenu", "use TreeV3 and TreeContextMenuV3 instead", "0.5");
 
-
-dojo.widget.tags.addParseTreeHandler("dojo:TreeContextMenu");
-dojo.widget.tags.addParseTreeHandler("dojo:TreeMenuItem");
-
-
-
-dojo.widget.TreeContextMenu = function() {
-	dojo.widget.PopupMenu2.call(this);
-
+dojo.widget.defineWidget("dojo.widget.TreeContextMenu", dojo.widget.PopupMenu2, function() {
 	this.listenedTrees = [];
-
-}
-
-
-dojo.inherits(dojo.widget.TreeContextMenu, dojo.widget.PopupMenu2);
-
-dojo.lang.extend(dojo.widget.TreeContextMenu, {
-
-	widgetType: "TreeContextMenu",
-
+},
+{
 	open: function(x, y, parentMenu, explodeSrc){
 
 		var result = dojo.widget.PopupMenu2.prototype.open.apply(this, arguments);
@@ -142,24 +126,7 @@ dojo.lang.extend(dojo.widget.TreeContextMenu, {
 
 });
 
-
-
-
-
-
-dojo.widget.TreeMenuItem = function() {
-	dojo.widget.MenuItem2.call(this);
-
-}
-
-
-dojo.inherits(dojo.widget.TreeMenuItem, dojo.widget.MenuItem2);
-
-
-dojo.lang.extend(dojo.widget.TreeMenuItem, {
-
-	widgetType: "TreeMenuItem",
-
+dojo.widget.defineWidget("dojo.widget.TreeMenuItem", dojo.widget.MenuItem2, {
 	// treeActions menu item performs following actions (to be checked for permissions)
 	treeActions: "",
 

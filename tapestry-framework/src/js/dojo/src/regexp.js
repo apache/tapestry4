@@ -472,6 +472,8 @@ dojo.regexp.time = function(/*Object?*/flags){
 	//    flags.amSymbol  The symbol used for AM.  Default is "AM".
 	//    flags.pmSymbol  The symbol used for PM.  Default is "PM".
 
+	dojo.deprecated("dojo.regexp.time", "Use dojo.date.parse instead", "0.5");
+
 	// assign default values to missing paramters
 	flags = (typeof flags == "object") ? flags : {};
 	if(typeof flags.format == "undefined"){ flags.format = "h:mm:ss t"; }

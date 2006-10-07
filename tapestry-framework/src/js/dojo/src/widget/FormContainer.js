@@ -16,10 +16,43 @@ dojo.require("dojo.widget.HtmlWidget");
 dojo.widget.defineWidget("dojo.widget.FormContainer", dojo.widget.HtmlWidget,
 	{
 		isContainer: true,
+   		templateString: "<form dojoAttachPoint='containerNode' dojoAttachEvent='onSubmit:onSubmit'></form>",
+		formElements: [],
+
+		postCreate: function(args,frag){
+			for (var key in args) {
+				if (key == "dojotype") continue;
+				var attr= document.createAttribute(key);
+      				attr.nodeValue=args[key];
+      				this.containerNode.setAttributeNode(attr);
+    			}
+  		},
+		_createFormElements: function() {
+   			if(dojo.render.html.safari) {
+				// bug in safari (not registering form-elements)
+				var elems = ["INPUT", "SELECT", "TEXTAREA"];
+				for (var k=0; k < elems.length; k++) {
+					var list = this.containerNode.getElementsByTagName(elems[k]);
+					for (var j=0,len2=list.length; j<len2; j++) {
+						this.formElements.push(list[j]);
+					}
+				}
+				// fixed in safari nightly
+			} else {
+				this.formElements=this.containerNode.elements;
+			}
+		},
+		onSubmit: function(e) {
+    			e.preventDefault();
+  		},
+
+		submit: function() {
+			this.containerNode.submit();
+		},
 
 		_getFormElement: function(name) {
-			for(var i=0, len=this.domNode.elements.length; i<len; i++) {
-				var element = this.domNode.elements[i];
+			for(var i=0, len=this.formElements.length; i<len; i++) {
+				var element = this.formElements[i];
 				if (element.name == name) {
 					return element;
 				} // if
@@ -45,11 +78,11 @@ dojo.widget.defineWidget("dojo.widget.FormContainer", dojo.widget.HtmlWidget,
 		_setToContainers: function (obj, widget) {
 			for(var i=0, len=widget.children.length; i<len; ++i) {
 				if (widget.children[i].widgetType == "RepeaterContainer") {
-					var rIndex=widget.children[i].index;
+					var rIndex=widget.children[i].pattern;
 					var rIndexPos=rIndex.indexOf("%{index}");
 					rIndex=rIndex.substr(0,rIndexPos-1);
 					var myObj = this._getObject(obj, rIndex);
-					if (typeof(myObj) == "object" && myObj.length == 0) {
+					if (typeof(myObj) == "object" && typeof(myObj.length) == "undefined") {
 						myObj=[];
 					}
 					var rowCount = widget.children[i].getRowCount();
@@ -103,8 +136,9 @@ dojo.widget.defineWidget("dojo.widget.FormContainer", dojo.widget.HtmlWidget,
 			}
 		},
 		setValues: function(obj) {
-			for(var i=0, len=this.domNode.elements.length; i<len; i++) {
-				var element = this.domNode.elements[i];
+			this._createFormElements();
+			for(var i=0, len=this.formElements.length; i<len; i++) {
+				var element = this.formElements[i];
 				if (element.name == '') {continue};
 				var namePath = new Array();
 				namePath=element.name.split(".");
@@ -130,7 +164,7 @@ dojo.widget.defineWidget("dojo.widget.FormContainer", dojo.widget.HtmlWidget,
 				}
 				switch(type) {
 					case "checkbox":
-						this.domNode.elements[i].checked=false;
+						this.formElements[i].checked=false;
 						if (typeof(myObj[name]) == 'undefined') continue;
 						for (var j=0,len2=myObj[name].length; j<len2; ++j) {
 							if(element.value == myObj[name][j]) {
@@ -139,14 +173,14 @@ dojo.widget.defineWidget("dojo.widget.FormContainer", dojo.widget.HtmlWidget,
 						}
 						break;
 					case "radio":
-						this.domNode.elements[i].checked=false;
+						this.formElements[i].checked=false;
 						if (typeof(myObj[name]) == 'undefined') {continue};
-						if (myObj[name] == this.domNode.elements[i].value) {
-							this.domNode.elements[i].checked=true;
+						if (myObj[name] == this.formElements[i].value) {
+							this.formElements[i].checked=true;
 						}
 						break;
 					case "select-one":
-						this.domNode.elements[i].selectedIndex="0";
+						this.formElements[i].selectedIndex="0";
 						for (var j=0,len2=element.options.length; j<len2; ++j) {
 							if (element.options[j].value == myObj[name]) {
 								element.options[j].selected=true;
@@ -160,21 +194,22 @@ dojo.widget.defineWidget("dojo.widget.FormContainer", dojo.widget.HtmlWidget,
 						if (typeof(myObj[name]) == 'string') {
 							value = myObj[name];
 						}
-						this.domNode.elements[i].value=value;
+						this.formElements[i].value=value;
 						break;
 					default:
 						//dojo.debug("Not supported type ("+type+")");
 						break;
 				}
-      }
+      			}
 			this._setToContainers(obj,this);
 		},
 		getValues: function() {
+			this._createFormElements();
 			var obj = { };
 
-			for(var i=0,len=this.domNode.elements.length; i<len; i++) {
+			for(var i=0,len=this.formElements.length; i<len; i++) {
 				// FIXME: would be better to give it an attachPoint:
-				var elm = this.domNode.elements[i];
+				var elm = this.formElements[i];
 				var namePath = [];
 				if (elm.name == '') { continue;}
 				namePath=elm.name.split(".");

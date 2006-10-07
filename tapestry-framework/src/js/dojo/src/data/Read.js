@@ -187,7 +187,7 @@ dojo.declare("dojo.data.Read", null, {
 	getByIdentity:
 		function(/* string */ id) {
 		/* summary:
-		 *   Given an the id of an item, this method returns the item that has that id.
+		 *   Given the id of an item, this method returns the item that has that id.
 		 *   Conforming implementations should return null if there is no item with
 		 *   the given id.
 		 * issue:
@@ -200,7 +200,7 @@ dojo.declare("dojo.data.Read", null, {
 		 *   Should we move this method out of dojo.data.Read, and put it somewhere
 		 *   else, like maybe dojo.data.Identity?
 		 * examples:
-		 *   var alaska = store.byIdentity("AK");
+		 *   var alaska = store.getByIdentity("AK");
 		 *   assert("AK" == store.getIdentity(store.getByIdentity("AK")));
 		 */
 			dojo.unimplemented('dojo.data.Read.getByIdentity');

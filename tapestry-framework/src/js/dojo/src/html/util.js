@@ -327,18 +327,28 @@ dojo.html.placeOnScreen = function(
 		corners = ['TL'];
 	}
 	
-	var bestx, besty, bestDistance = Infinity;
+	var bestx, besty, bestDistance = Infinity, bestCorner;
 
 	for(var cidex=0; cidex<corners.length; ++cidex){
 		var corner = corners[cidex];
 		var match = true;
-		var tryX = desiredX - (corner.charAt(1)=='L' ? 0 : w) + padding[0]//	(corner.charAt(1)=='L' ? 1 : -1);
-		var tryY = desiredY - (corner.charAt(0)=='T' ? 0 : h) + padding[1]//	(corner.charAt(0)=='T' ? 1 : -1);
+		var tryX = desiredX - (corner.charAt(1)=='L' ? 0 : w) + padding[0]*(corner.charAt(1)=='L' ? 1 : -1);
+		var tryY = desiredY - (corner.charAt(0)=='T' ? 0 : h) + padding[1]*(corner.charAt(0)=='T' ? 1 : -1);
 		if(hasScroll) {
 			tryX -= scroll.x;
 			tryY -= scroll.y;
 		}
-	
+
+		if(tryX < 0){
+			tryX = 0;
+			match = false;
+		}
+
+		if(tryY < 0){
+			tryY = 0;
+			match = false;
+		}
+
 		var x = tryX + w;
 		if(x > view.width) {
 			x = view.width - w;
@@ -361,6 +371,7 @@ dojo.html.placeOnScreen = function(
 			bestx = x;
 			besty = y;
 			bestDistance = 0;
+			bestCorner = corner;
 			break;
 		}else{
 			//not perfect, find out whether it is better than the saved one
@@ -369,6 +380,7 @@ dojo.html.placeOnScreen = function(
 				bestDistance = dist;
 				bestx = x;
 				besty = y;
+				bestCorner = corner;
 			}
 		}
 	}
@@ -378,7 +390,7 @@ dojo.html.placeOnScreen = function(
 		node.style.top = besty + "px";
 	}
 	
-	return { left: bestx, top: besty, x: bestx, y: besty, dist: bestDistance };	//	object
+	return { left: bestx, top: besty, x: bestx, y: besty, dist: bestDistance, corner:  bestCorner};	//	object
 }
 
 dojo.html.placeOnScreenPoint = function(node, desiredX, desiredY, padding, hasScroll) {

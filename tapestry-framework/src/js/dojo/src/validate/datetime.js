@@ -38,6 +38,7 @@ dojo.require("dojo.validate.common");
   @return  true or false
 */
 dojo.validate.isValidTime = function(value, flags) {
+	dojo.deprecated("dojo.validate.datetime", "use dojo.date.parse instead", "0.5");
 	var re = new RegExp("^" + dojo.regexp.time(flags) + "$", "i");
 	return re.test(value);
 }
@@ -51,6 +52,7 @@ dojo.validate.isValidTime = function(value, flags) {
   @return  true or false
 */
 dojo.validate.is12HourTime = function(value) {
+	dojo.deprecated("dojo.validate.datetime", "use dojo.date.parse instead", "0.5");
 	return dojo.validate.isValidTime(value, {format: ["h:mm:ss t", "h:mm t"]});
 }
 
@@ -63,6 +65,7 @@ dojo.validate.is12HourTime = function(value) {
   @return  true or false
 */
 dojo.validate.is24HourTime = function(value) {
+	dojo.deprecated("dojo.validate.datetime", "use dojo.date.parse instead", "0.5");
 	return dojo.validate.isValidTime(value, {format: ["HH:mm:ss", "HH:mm"]} );
 }
 
@@ -95,6 +98,7 @@ dojo.validate.is24HourTime = function(value) {
   19.10.2005    D.M.YYYY
 */
 dojo.validate.isValidDate = function(dateValue, format) {
+	dojo.deprecated("dojo.validate.datetime", "use dojo.date.parse instead", "0.5");
 	// Default is the American format
 	if (typeof format == "object" && typeof format.format == "string"){ format = format.format; }
 	if (typeof format != "string") { format = "MM/DD/YYYY"; }

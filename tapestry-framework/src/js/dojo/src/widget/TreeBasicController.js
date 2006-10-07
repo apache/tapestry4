@@ -17,18 +17,7 @@ dojo.require("dojo.io.*");
 
 dojo.deprecated("dojo.widget.TreeBasicController", "use TreeV3 and TreeBasicControllerV3 instead", "0.5");
 
-
-dojo.widget.tags.addParseTreeHandler("dojo:TreeBasicController");
-
-
-dojo.widget.TreeBasicController = function() {
-	dojo.widget.HtmlWidget.call(this);
-}
-
-dojo.inherits(dojo.widget.TreeBasicController, dojo.widget.HtmlWidget);
-
-
-dojo.lang.extend(dojo.widget.TreeBasicController, {
+dojo.widget.defineWidget("dojo.widget.TreeBasicController", dojo.widget.HtmlWidget, {
 	widgetType: "TreeBasicController",
 
 	DNDController: "",

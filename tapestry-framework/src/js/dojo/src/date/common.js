@@ -14,13 +14,13 @@ dojo.provide("dojo.date.common");
 /* Supplementary Date Functions
  *******************************/
 
-dojo.date.setDayOfYear = function(/*Date*/dateObject, /*Number*/dayOfYear) {
+dojo.date.setDayOfYear = function(/*Date*/dateObject, /*Number*/dayOfYear){
 	dateObject.setMonth(0);
 	dateObject.setDate(dayOfYear);
 	return dateObject; // Date
 }
 
-dojo.date.getDayOfYear = function(/*Date*/dateObject) {
+dojo.date.getDayOfYear = function(/*Date*/dateObject){
 	var fullYear = dateObject.getFullYear();
 	var lastDayOfPrevYear = new Date(fullYear-1, 11, 31);
 	return Math.floor((dateObject.getTime() -
@@ -28,13 +28,13 @@ dojo.date.getDayOfYear = function(/*Date*/dateObject) {
 }
 
 
-dojo.date.setWeekOfYear = function (dateObject, week, firstDay) {
-	if (arguments.length == 1) { firstDay = 0; } // Sunday
+dojo.date.setWeekOfYear = function(/*Date*/dateObject, /*Number*/week, /*Number*/firstDay){
+	if(arguments.length == 1){ firstDay = 0; } // Sunday
 	dojo.unimplemented("dojo.date.setWeekOfYear");
 }
 
-dojo.date.getWeekOfYear = function (dateObject, firstDay) {
-	if (arguments.length == 1) { firstDay = 0; } // Sunday
+dojo.date.getWeekOfYear = function(/*Date*/dateObject, /*Number*/firstDay){
+	if(arguments.length == 1){ firstDay = 0; } // Sunday
 
 	// work out the first day of the year corresponding to the week
 	var firstDayOfYear = new Date(dateObject.getFullYear(), 0, 1);
@@ -47,14 +47,14 @@ dojo.date.getWeekOfYear = function (dateObject, firstDay) {
 }
 
 
-
-
-dojo.date.setIsoWeekOfYear = function (dateObject, week, firstDay) {
+dojo.date.setIsoWeekOfYear = function(/*Date*/dateObject, /*Number*/week, /*Number*/firstDay){
+	// summary: unimplemented
 	if (arguments.length == 1) { firstDay = 1; } // Monday
 	dojo.unimplemented("dojo.date.setIsoWeekOfYear");
 }
 
-dojo.date.getIsoWeekOfYear = function (dateObject, firstDay) {
+dojo.date.getIsoWeekOfYear = function(/*Date*/dateObject, /*Number*/firstDay) {
+	// summary: unimplemented
 	if (arguments.length == 1) { firstDay = 1; } // Monday
 	dojo.unimplemented("dojo.date.getIsoWeekOfYear");
 }
@@ -92,10 +92,11 @@ dojo.date.timezones = ["International Date Line West", "Bering Standard Time",
 */
 
 dojo.date.getDaysInMonth = function(/*Date*/dateObject){
+	// summary: returns the number of days in the month used by dateObject
 	var month = dateObject.getMonth();
 	var days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-	if (month == 1 && dojo.date.isLeapYear(dateObject)) { return 29; }
-	else { return days[month]; }
+	if (month == 1 && dojo.date.isLeapYear(dateObject)) { return 29; } // Number
+	else { return days[month]; } // Number
 }
 
 dojo.date.isLeapYear = function(/*Date*/dateObject){
@@ -109,7 +110,7 @@ dojo.date.isLeapYear = function(/*Date*/dateObject){
 //	multiple of 400. For example, 1900 was not a leap year, but 2000 is one.
 
 	var year = dateObject.getFullYear();
-	return (year%400 == 0) ? true : (year%100 == 0) ? false : (year%4 == 0) ? true : false;
+	return (year%400 == 0) ? true : (year%100 == 0) ? false : (year%4 == 0) ? true : false; // Boolean
 }
 
 // FIXME: This is not localized
@@ -166,10 +167,10 @@ dojo.date.getTimezoneName = function(/*Date*/dateObject){
 dojo.date.getOrdinal = function (dateObject) {
 	var date = dateObject.getDate();
 
-	if (date%100 != 11 && date%10 == 1) { return "st"; }
-	else if (date%100 != 12 && date%10 == 2) { return "nd"; }
-	else if (date%100 != 13 && date%10 == 3) { return "rd"; }
-	else { return "th"; }
+	if (date%100 != 11 && date%10 == 1) { return "st"; } // String
+	else if (date%100 != 12 && date%10 == 2) { return "nd"; } // String
+	else if (date%100 != 13 && date%10 == 3) { return "rd"; } // String
+	else { return "th"; } // String
 }
 
 

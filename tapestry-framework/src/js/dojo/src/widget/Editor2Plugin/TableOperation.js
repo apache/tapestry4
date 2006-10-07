@@ -14,10 +14,10 @@ dojo.require("dojo.widget.Editor2");
 
 //subscribe to dojo.widget.RichText::init, not onLoad because after onLoad
 //the stylesheets for the editing areas are already applied and the prefilters
-//are executed, so we have to insert our own trick before that point 
+//are executed, so we have to insert our own trick before that point
 dojo.event.topic.subscribe("dojo.widget.RichText::init", function(editor){
 	editor.__TableOperationShowBorder = false;
-	
+
 	if(dojo.render.html.moz && false){
 		//include the css file to show table border when border=0
 		editor.__TableOperationShowBorder = true;
@@ -32,20 +32,22 @@ dojo.event.topic.subscribe("dojo.widget.RichText::init", function(editor){
 //		editor.addStyleSheet(dojo.uri.dojoUri("src/widget/templates/Editor2/showtableborder_ie.css"));
 //		editor.editingAreaStyleSheets.push(dojo.uri.dojoUri("src/widget/templates/Editor2/showtableborder_ie.css"));
 	}
-	dojo.widget.Editor2Plugin.TableOperation.toggleTableBorderCommand.execute(editor);
+	dojo.event.connect(editor, "editorOnLoad", function(){
+		dojo.widget.Editor2Plugin.TableOperation.toggleTableBorderCommand.execute(editor);
+	});
 });
 
 dojo.widget.Editor2Plugin.TableOperation = {
 	getToolbarItem: function(name){
 		var name = name.toLowerCase();
-	
+
 		var item;
 		switch(name){
 			case 'inserttable':
 			case 'toggletableborder':
 				item = new dojo.widget.Editor2ToolbarButton(name);
 		}
-	
+
 		return item;
 	},
 	getContextMenuGroup: function(name, contextmenuplugin){
@@ -111,8 +113,8 @@ dojo.widget.Editor2Plugin.TableOperation = {
 //register commands: toggletableborder, inserttable, deletetable
 dojo.widget.Editor2Manager.registerCommand("toggletableborder", dojo.widget.Editor2Plugin.TableOperation.toggleTableBorderCommand);
 
-dojo.widget.Editor2Manager.registerCommand("inserttable", new dojo.widget.Editor2DialogCommand('inserttable', 
-		{contentFile: "dojo.widget.Editor2Plugin.InsertTableDialog", 
+dojo.widget.Editor2Manager.registerCommand("inserttable", new dojo.widget.Editor2DialogCommand('inserttable',
+		{contentFile: "dojo.widget.Editor2Plugin.InsertTableDialog",
 			contentClass: "Editor2InsertTableDialog",
 			title: "Insert/Edit Table", width: "450px", height: "250px"}));
 
@@ -125,7 +127,7 @@ dojo.widget.Editor2ToolbarItemManager.registerHandler(dojo.widget.Editor2Plugin.
 if(dojo.widget.Editor2Plugin.ContextMenuManager){
 	dojo.widget.Editor2Plugin.ContextMenuManager.registerGroup('Table', dojo.widget.Editor2Plugin.TableOperation.getContextMenuGroup);
 
-	dojo.declare("dojo.widget.Editor2Plugin.TableContextMenu", 
+	dojo.declare("dojo.widget.Editor2Plugin.TableContextMenu",
 		dojo.widget.Editor2Plugin.SimpleContextMenu,
 	{
 		createItems: function(){
@@ -135,7 +137,7 @@ if(dojo.widget.Editor2Plugin.ContextMenuManager){
 		checkVisibility: function(){
 			var curInst = dojo.widget.Editor2Manager.getCurrentInstance();
 			var table = dojo.withGlobal(curInst.window, "hasAncestorElement", dojo.html.selection, ['table']);
-	
+
 			if(dojo.withGlobal(curInst.window, "hasAncestorElement", dojo.html.selection, ['table'])){
 				this.items[0].show();
 				this.items[1].show();

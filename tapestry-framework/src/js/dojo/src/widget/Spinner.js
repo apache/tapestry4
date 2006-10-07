@@ -16,11 +16,15 @@ dojo.require("dojo.html.*");
 dojo.require("dojo.html.layout");
 dojo.require("dojo.string");
 dojo.require("dojo.widget.*");
-dojo.require("dojo.widget.validate");
+dojo.require("dojo.widget.validate.IntegerTextbox");
+dojo.require("dojo.widget.validate.RealNumberTextbox");
+dojo.require("dojo.widget.validate.DateTextbox");
 
-// Mixin for validation widgets with a spinner
-// This class basically (conceptually) extends dojo.widget.validate.ValidationTextbox.
-// It modifies the template to have up/down arrows, and provides related handling code.
+dojo.require("dojo.experimental");
+
+// summary: Mixin for validation widgets with a spinner
+// description: This class basically (conceptually) extends dojo.widget.validate.ValidationTextbox.
+//	It modifies the template to have up/down arrows, and provides related handling code.
 dojo.declare(
 	"dojo.widget.Spinner",
 	null, 
@@ -48,7 +52,7 @@ dojo.declare(
 			var keyCode = evt.keyCode;
 
 			switch(keyCode){
- 			case k.KEY_DOWN_ARROW:
+				case k.KEY_DOWN_ARROW:
 					dojo.event.browser.stopEvent(evt);
 					this._downArrowPressed(evt);
 					return;
@@ -89,17 +93,13 @@ dojo.declare(
 		},
 
 		_pressButton: function(node){
-			with(node.style){
-				borderWidth = "1px 0px 0px 1px";
-				borderStyle = "inset";
-			}
+			node.style.borderWidth = "1px 0px 0px 1px";
+			node.style.borderStyle = "inset";
 		},
 
 		_releaseButton: function(node){
-			with(node.style){
-				borderWidth = "0px 1px 1px 0px";
-				borderStyle = "outset";
-			}
+			node.style.borderWidth = "0px 1px 1px 0px";
+			node.style.borderStyle = "outset";
 		},
 
 		_arrowPressed: function(evt, direction){
@@ -213,7 +213,7 @@ dojo.declare(
 		setCursorX: function(x){
 			try{
 				this.textbox.focus();
-				if(!x){ x = 0 }
+				if(!x){ x = 0; }
 				if(typeof this.textbox.selectionEnd == "number"){
 				this.textbox.selectionEnd = x;
 				}else if(this.textbox.createTextRange){
@@ -251,45 +251,43 @@ dojo.declare(
 	}
 );
 
-/*
-  ****** SpinnerIntegerTextbox ******
-
-  A subclass of IntegerTextbox.
-*/
 dojo.widget.defineWidget(
-	"dojo.widget.SpinnerIntegerTextbox",
+	"dojo.widget.IntegerSpinner",
 	[dojo.widget.validate.IntegerTextbox, dojo.widget.Spinner],
 {
-	// new subclass properties
+	// summary: an IntegerSpinner with +/- buttons
+
+	// int increment amount
 	delta: "1",
 
+	// 
 	adjustValue: function(direction, x){
-			var val = this.getValue().replace(/[^\-+\d]/g, "");
-			if(val.length == 0){ return; }
+		var val = this.getValue().replace(/[^\-+\d]/g, "");
+		if(val.length == 0){ return; }
 
-			var num = Math.min(Math.max((parseInt(val)+(parseInt(this.delta) * direction)), (this.flags.min?this.flags.min:-Infinity)), (this.flags.max?this.flags.max:+Infinity));
-			val = num.toString();
+		var num = Math.min(Math.max((parseInt(val)+(parseInt(this.delta) * direction)), (this.flags.min?this.flags.min:-Infinity)), (this.flags.max?this.flags.max:+Infinity));
+		val = num.toString();
 
-			if(num >= 0){
-				val = ((this.flags.signed == true)?'+':' ')+val; // make sure first char is a nondigit
+		if(num >= 0){
+			val = ((this.flags.signed == true)?'+':' ')+val; // make sure first char is a nondigit
+		}
+
+		if(this.flags.separator.length > 0){
+			for (var i=val.length-3; i > 1; i-=3){
+				val = val.substr(0,i)+this.flags.separator+val.substr(i);
 			}
+		}
 
-			if(this.flags.separator.length > 0){
-				for (var i=val.length-3; i > 1; i-=3){
-					val = val.substr(0,i)+this.flags.separator+val.substr(i);
-				}
-			}
+		if(val.substr(0,1) == ' '){ val = val.substr(1); } // remove space
 
-			if(val.substr(0,1) == ' '){ val = val.substr(1); } // remove space
+		this.setValue(val);
 
-			this.setValue(val);
-
-			return val.length;
+		return val.length;
 	}
 });
 
 /*
-  ****** SpinnerRealNumberTextbox ******
+  ****** RealNumberSpinner ******
 
   A subclass of RealNumberTextbox.
   @attr places    The exact number of decimal places.  If omitted, it's unlimited and optional.
@@ -297,8 +295,9 @@ dojo.widget.defineWidget(
   @attr eSigned   Is the exponent signed?  Can be true or false, if omitted the sign is optional.
 */
 dojo.widget.defineWidget(
-	"dojo.widget.SpinnerRealNumberTextbox",
+	"dojo.widget.RealNumberSpinner",
 	[dojo.widget.validate.RealNumberTextbox, dojo.widget.Spinner],
+	function(){ dojo.experimental("dojo.widget.RealNumberSpinner"); },
 {
 	// new subclass properties
 	delta: "1e1",
@@ -397,17 +396,13 @@ dojo.widget.defineWidget(
 	}
 });
 
-/*
-  ****** SpinnerTimeTextbox ******
-
-  A subclass of TimeTextbox.
-*/
-
 dojo.widget.defineWidget(
-	"dojo.widget.SpinnerTimeTextbox",
+	"dojo.widget.TimeSpinner",
 	[dojo.widget.validate.TimeTextbox, dojo.widget.Spinner],
+	function(){ dojo.experimental("dojo.widget.TimeSpinner"); },
 {
 	adjustValue: function(direction, x){
+	//FIXME: formatting should make use of dojo.date.format?
 		var val = this.getValue();
 		var format = (this.flags.format && this.flags.format.search(/[Hhmst]/) >= 0) ? this.flags.format : "hh:mm:ss t";
 		if(direction == 0 || !val.length || !this.isValid()){ return; }

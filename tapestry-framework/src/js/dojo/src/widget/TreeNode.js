@@ -14,21 +14,10 @@ dojo.require("dojo.html.*");
 dojo.require("dojo.event.*");
 dojo.require("dojo.io.*");
 
-// make it a tag
-dojo.widget.tags.addParseTreeHandler("dojo:TreeNode");
-
-
-// # //////////
-
-dojo.widget.TreeNode = function() {
-	dojo.widget.HtmlWidget.call(this);
-
+dojo.widget.defineWidget("dojo.widget.TreeNode", dojo.widget.HtmlWidget, function() {
 	this.actionsDisabled = [];
-}
-
-dojo.inherits(dojo.widget.TreeNode, dojo.widget.HtmlWidget);
-
-dojo.lang.extend(dojo.widget.TreeNode, {
+},
+{
 	widgetType: "TreeNode",
 
 	loadStates: {

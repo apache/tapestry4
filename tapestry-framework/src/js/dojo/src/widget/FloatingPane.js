@@ -10,10 +10,6 @@
 
 dojo.provide("dojo.widget.FloatingPane");
 
-//
-// this widget provides a window-like floating pane
-//
-
 dojo.require("dojo.widget.*");
 dojo.require("dojo.widget.Manager");
 dojo.require("dojo.html.*");
@@ -24,37 +20,75 @@ dojo.require("dojo.lfx.shadow");
 dojo.require("dojo.widget.html.layout");
 dojo.require("dojo.widget.ContentPane");
 dojo.require("dojo.dnd.HtmlDragMove");
-dojo.require("dojo.dnd.HtmlDragMoveSource");
-dojo.require("dojo.dnd.HtmlDragMoveObject");
+dojo.require("dojo.widget.Dialog");		// for ModalFloatingPane
 dojo.require("dojo.widget.ResizeHandle");
 
+// summary
+//	Base class for FloatingPane, ModalFloatingPane
 dojo.declare(
 	"dojo.widget.FloatingPaneBase",
 	null,
 	{
-		// Constructor arguments
+		// String
+		//	text to display in floating pane's title bar (ex: "My Window")
 		title: '',
+		
+		// String
+		//	path of icon to display in floating pane's title bar
 		iconSrc: '',
+		
+		// Boolean
+		//	if true, display a shadow behind the floating pane
 		hasShadow: false,
+		
+		// Boolean
+		//	if true, and the floating pane is inside another container (ContentPane, another FloatingPane, etc.),
+		//	then don't allow the floating pane to be dragged outside of it's container
 		constrainToContainer: false,
+		
+		// String
+		//	widget id of TaskBar widget;
+		//	if specified, then an icon for this FloatingPane will be added to the specified TaskBar
 		taskBarId: "",
+		
+		// Boolean
+		//	if true, allow user to resize floating pane
 		resizable: true,
-		titleBarDisplay: "fancy",
+		
+		// Boolean
+		//	if true, display title bar for this floating pane
+		titleBarDisplay: true,
 
+		// String
+		//	control whether window is initially not displayed ("minimized"), displayed full screen ("maximized"),
+		//	or just displayed normally ("normal")
+		// Values
+		//	"normal", "maximized", "minimized"
 		windowState: "normal",
+		
+		// Boolean
+		//	display button to close window
 		displayCloseAction: false,
+		
+		// Boolean
+		//	display button to minimize window (ie, window disappears so only the taskbar item remains)
 		displayMinimizeAction: false,
+
+		// Boolean
+		//	display button to maximize window (ie, to take up the full screen)
 		displayMaximizeAction: false,
 
-		maxTaskBarConnectAttempts: 5,
-		taskBarConnectAttempts: 0,
+		// Related to connecting to taskbar
+		// TODO: use topics rather than repeated connect attempts?
+		_max_taskBarConnectAttempts: 5,
+		_taskBarConnectAttempts: 0,
 
 		templatePath: dojo.uri.dojoUri("src/widget/templates/FloatingPane.html"),
 		templateCssPath: dojo.uri.dojoUri("src/widget/templates/FloatingPane.css"),
 
-		drag: null,
-
 		fillInFloatingPaneTemplate: function(args, frag){
+			// summary: this should be called by fillInTemplate() of the widget that I'm mixed into
+
 			// Copy style info from input node to output node
 			var source = this.getFragNodeRef(frag);
 			dojo.html.copyStyle(this.domNode, source);
@@ -74,7 +108,7 @@ dojo.declare(
 				this.titleBarIcon.src = this.iconSrc.toString();// dojo.uri.Uri obj req. toString()
 			}
 	
-			if(this.titleBarDisplay!="none"){	
+			if(this.titleBarDisplay){	
 				this.titleBar.style.display="";
 				dojo.html.disableSelection(this.titleBar);
 	
@@ -119,7 +153,7 @@ dojo.declare(
 			this.bgIframe = new dojo.html.BackgroundIframe(this.domNode);
 	
 			if( this.taskBarId ){
-				this.taskBarSetup();
+				this._taskBarSetup();
 			}
 	
 			// counteract body.appendChild above
@@ -128,13 +162,14 @@ dojo.declare(
 	
 		postCreate: function(){
 			if (dojo.hostenv.post_load_) {
-				this.setInitialWindowState();
+				this._setInitialWindowState();
 			} else {
-				dojo.addOnLoad(this, "setInitialWindowState");
+				dojo.addOnLoad(this, "_setInitialWindowState");
 			}
 		},
 	
-		maximizeWindow: function(evt) {
+		maximizeWindow: function(/*Event*/ evt) {
+			// summary: maximize the window
 			var mb = dojo.html.getMarginBox(this.domNode);
 			this.previous={
 				width: mb.width || this.width,
@@ -177,7 +212,8 @@ dojo.declare(
 			this.windowState="maximized";
 		},
 	
-		minimizeWindow: function(evt) {
+		minimizeWindow: function(/*Event*/ evt) {
+			// summary: hide the window so that only the icon in the taskbar is shown
 			this.hide();
 			for(var attr in this.parentPrevious){
 				this.domNode.parentNode.style[attr] = this.parentPrevious[attr];
@@ -186,7 +222,8 @@ dojo.declare(
 			this.windowState = "minimized";
 		},
 	
-		restoreWindow: function(evt) {
+		restoreWindow: function(/*Event*/ evt) {
+			// summary: set the winow to normal size (neither maximized nor minimized)
 			if (this.windowState=="minimized") {
 				this.show();
 				if(this.lastWindowState == "maximized"){
@@ -220,6 +257,7 @@ dojo.declare(
 		},
 
 		toggleDisplay: function(){
+			// summary: switch between hidden mode and displayed mode (either maximized or normal, depending on state before window was minimized)
 			if(this.windowState=="minimized"){
 				this.restoreWindow();
 			}else{
@@ -227,16 +265,21 @@ dojo.declare(
 			}
 		},
 
-		closeWindow: function(evt) {
+		closeWindow: function(/*Event*/ evt) {
+			// summary: destroy this window
 			dojo.html.removeNode(this.domNode);
 			this.destroy();
 		},
 	
-		onMouseDown: function(evt) {
+		onMouseDown: function(/*Event*/ evt) {
+			// summary: callback when user clicks anywhere on the floating pane
 			this.bringToTop();
 		},
 	
 		bringToTop: function() {
+			// summary
+			//	all the floating panes are stacked in z-index order; bring this floating pane to the top of that stack,
+			//	so that it's displayed in front of all the other floating panes
 			var floatingPanes= dojo.widget.manager.getWidgetsByType(this.widgetType);
 			var windows = [];
 			for (var x=0; x<floatingPanes.length; x++) {
@@ -257,7 +300,7 @@ dojo.declare(
 			}
 		},
 	
-		setInitialWindowState: function() {
+		_setInitialWindowState: function() {
 			if(this.isShowing()){
 				this.width=-1;	// force resize
 				var mb = dojo.html.getMarginBox(this.domNode);
@@ -282,13 +325,13 @@ dojo.declare(
 			this.windowState="minimized";
 		},
 	
-		// add icon to task bar, connected to me
-		taskBarSetup: function() {
+		_taskBarSetup: function() {
+			// summary: add icon to task bar, connected to me
 			var taskbar = dojo.widget.getWidgetById(this.taskBarId);
 			if (!taskbar){
-				if (this.taskBarConnectAttempts <  this.maxTaskBarConnectAttempts) {
-					dojo.lang.setTimeout(this, this.taskBarSetup, 50);
-					this.taskBarConnectAttempts++;
+				if (this._taskBarConnectAttempts <  this._max_taskBarConnectAttempts) {
+					dojo.lang.setTimeout(this, this._taskBarSetup, 50);
+					this._taskBarConnectAttempts++;
 				} else {
 					dojo.debug("Unable to connect to the taskBar");
 				}
@@ -298,17 +341,20 @@ dojo.declare(
 		},
 
 		showFloatingPane: function(){
+			// summary:
+			//	bring this floating pane to the top
 			this.bringToTop();
 		},
 
 		onFloatingPaneShow: function(){
+			// summary: callback for when someone calls FloatingPane.show
 			var mb = dojo.html.getMarginBox(this.domNode);
 			this.resizeTo(mb.width, mb.height);
 		},
 	
-		// This is called when the user adjusts the size of the floating pane
-		resizeTo: function(w, h){
-			dojo.html.setMarginBox(this.domNode, { width: w, height: h });
+		// summary: set the floating pane to the given size
+		resizeTo: function(/*Integer*/ width, /*Integer*/ height){
+			dojo.html.setMarginBox(this.domNode, { width: width, height: height });
 	
 			dojo.widget.html.layout(this.domNode,
 				[
@@ -321,19 +367,24 @@ dojo.declare(
 			dojo.widget.html.layout(this.containerNode, this.children, "top-bottom");
 			
 			this.bgIframe.onResized();
-			if(this.shadow){ this.shadow.size(w, h); }
+			if(this.shadow){ this.shadow.size(width, height); }
 			this.onResized();
 		},
 	
 		checkSize: function() {
-			// checkSize() is called when the user has resized the browser window,
-			// but that doesn't affect this widget (or this widget's children)
-			// so it can be safely ignored...
+			// summary
+			//	checkSize() is called when the user has resized the browser window,
+			// 	but that doesn't affect this widget (or this widget's children)
+			// 	so it can be safely ignored...
 			// TODO: unless we are maximized.  then we should resize ourself.
 		}
 	}
 );
 
+// summary
+//	A non-modal floating window.
+//	Attaches to a Taskbar which has an icon for each window.
+//	Must specify size (like style="width: 500px; height: 500px;"),
 dojo.widget.defineWidget(
 	"dojo.widget.FloatingPane",
 	[dojo.widget.ContentPane, dojo.widget.FloatingPaneBase], 
@@ -356,7 +407,11 @@ dojo.widget.defineWidget(
 	}
 });
 
-dojo.require("dojo.widget.Dialog");
+
+// summary
+//	A modal floating window.
+//	This widget is similar to the Dialog widget, but the window, unlike the Dialog, can be moved.
+//	Must specify size (like style="width: 500px; height: 500px;"),
 dojo.widget.defineWidget(
 	"dojo.widget.ModalFloatingPane",
 	[dojo.widget.FloatingPane, dojo.widget.ModalDialogBase],

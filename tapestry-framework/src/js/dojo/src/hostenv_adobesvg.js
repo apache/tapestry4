@@ -191,7 +191,7 @@ dojo.hostenv.loadUri = function(uri, cb){
 	var stack = this.loadUriStack;
 	stack.push([uri, cb, null]);
 	var tcb = function(contents){
-		// gratuitous hack for Adobe SVG 3, what a fucking POS
+		// gratuitous hack for Adobe SVG 3
 		if(contents.content){
 			contents = contents.content;
 		}
@@ -252,7 +252,7 @@ dojo.hostenv.loadUri = function(uri, cb){
 	var stack = this.loadUriStack;
 	stack.push([uri, cb, null]);
 	var tcb = function(contents){
-		// gratuitous hack for Adobe SVG 3, what a fucking POS
+		// gratuitous hack for Adobe SVG 3
 		if(contents.content){
 			contents = contents.content;
 		}
@@ -448,7 +448,7 @@ dojo.hostenv.unWindGetTextStack = function(){
 		setTimeout("dojo.hostenv.unWindGetTextStack()", 100);
 		return;
 	}
-	// we serialize because this goddamned environment is too fucked up
+	// we serialize because this environment is too messed up
 	// to know how to do anything else
 	dojo.hostenv.inFlightCount++;
 	var next = dojo.hostenv.getTextStack.pop();

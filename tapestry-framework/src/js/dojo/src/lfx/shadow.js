@@ -77,3 +77,4 @@ dojo.extend(dojo.lfx.shadow, {
 		}
 	}
 });
+

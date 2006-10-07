@@ -1,13 +1,5 @@
-.dojoAccordionPane {
-	border: thick ridge #232323;
-}
-
-.dojoAccordionPane-selected {
-	border: thick ridge #336699;
-}
-
 .dojoAccordionPane .label {
-	border-bottom: thick ridge #232323;
+	border: thick ridge gray;
 	background: gray;
 	color: #fff;
 	font-weight: bold;
@@ -15,7 +7,7 @@
 
 .dojoAccordionPane-selected .label {
 	background: #336699;
-	border-bottom: thick ridge #336699;
+	border: thick ridge #336699;
 }
 
 .dojoAccordionPane .label :hover {

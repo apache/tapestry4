@@ -97,7 +97,9 @@ dojo.validate.check = function(form, profile) {
 				missing[missing.length] = elem.name;
 			}
 			// Does drop-down box have option selected.
-			else if ( (elem.type == "select-one" || elem.type == "select-multiple") && elem.selectedIndex == -1 ) {
+			else if ( (elem.type == "select-one" || elem.type == "select-multiple") 
+						&& (elem.selectedIndex == -1 
+						|| /^\s*$/.test(elem.options[elem.selectedIndex].value)) ) {
 				missing[missing.length] = elem.name;
 			}
 			// Does radio button group (or check box group) have option checked.
@@ -136,7 +138,7 @@ dojo.validate.check = function(form, profile) {
 			else if ( elem.type == "select-multiple" ) {
 				var selected = 0;
 				for (var j = 0; j < elem.options.length; j++) {
-					if (elem.options[j].selected) { selected++; }
+					if (elem.options[j].selected && !/^\s*$/.test(elem.options[j].value)) { selected++; }
 				}
 				if ( selected < numRequired ) {	
 					missing[missing.length] = elem.name;

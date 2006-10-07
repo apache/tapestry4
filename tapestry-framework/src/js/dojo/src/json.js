@@ -14,33 +14,53 @@ dojo.require("dojo.string.extras");
 dojo.require("dojo.AdapterRegistry");
 
 dojo.json = {
+	// AdapterRegistry:
+	//		a registry of type-based serializers
 	jsonRegistry: new dojo.AdapterRegistry(),
 
-	register: function(name, check, wrap, /*optional*/ override){
-		/***
-
-			Register a JSON serialization function.	 JSON serialization 
-			functions should take one argument and return an object
-			suitable for JSON serialization:
-
-			- string
-			- number
-			- boolean
-			- undefined
-			- object
-				- null
-				- Array-like (length property that is a number)
-				- Objects with a "json" method will have this method called
-				- Any other object will be used as {key:value, ...} pairs
-			
-			If override is given, it is used as the highest priority
-			JSON serialization, otherwise it will be used as the lowest.
-		***/
+	register: function(	/*String*/		name, 
+						/*function*/	check, 
+						/*function*/	wrap, 
+						/*optional, boolean*/ override){
+		// summary:
+		//		Register a JSON serialization function. JSON serialization
+		//		functions should take one argument and return an object
+		//		suitable for JSON serialization:
+		//			- string
+		//			- number
+		//			- boolean
+		//			- undefined
+		//			- object
+		//				- null
+		//				- Array-like (length property that is a number)
+		//				- Objects with a "json" method will have this method called
+		//				- Any other object will be used as {key:value, ...} pairs
+		//			
+		//		If override is given, it is used as the highest priority JSON
+		//		serialization, otherwise it will be used as the lowest.
+		// name:
+		//		a descriptive type for this serializer
+		// check:
+		//		a unary function that will be passed an object to determine
+		//		whether or not wrap will be used to serialize the object
+		// wrap:
+		//		the serialization function
+		// override:
+		//		optional, determines if the this serialization function will be
+		//		given priority in the test order
 
 		dojo.json.jsonRegistry.register(name, check, wrap, override);
 	},
 
-	evalJson: function(/* jsonString */ json){
+	evalJson: function(/*String*/ json){
+		// summary:
+		// 		evaluates the passed string-form of a JSON object
+		// json: 
+		//		a string literal of a JSON item, for instance:
+		//			'{ "foo": [ "bar", 1, { "baz": "thud" } ] }'
+		// return:
+		//		the result of the evaluation
+
 		// FIXME: should this accept mozilla's optional second arg?
 		try {
 			return eval("(" + json + ")");
@@ -50,11 +70,18 @@ dojo.json = {
 		}
 	},
 
-	serialize: function(o){
-		/***
-			Create a JSON serialization of an object, note that this doesn't
-			check for infinite recursion, so don't do that!
-		***/
+	serialize: function(/*Object*/ o){
+		// summary:
+		//		Create a JSON serialization of an object, note that this
+		//		doesn't check for infinite recursion, so don't do that!
+		// o:
+		//		an object to be serialized. Objects may define their own
+		//		serialization via a special "__json__" or "json" function
+		//		property. If a specialized serializer has been defined, it will
+		//		be used as a fallback.
+		// return:
+		//		a String representing the serialized version of the passed
+		//		object
 
 		var objtype = typeof(o);
 		if(objtype == "undefined"){

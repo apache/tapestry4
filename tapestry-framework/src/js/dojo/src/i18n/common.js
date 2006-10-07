@@ -16,7 +16,8 @@ dojo.i18n.getLocalization = function(packageName, bundleName, locale /*optional*
 //		in a package, matching the specified locale.
 //
 //	description:
-//		Returns a hash containing name/value pairs.  Throws an exception if the bundle is not found.
+//		Returns a hash containing name/value pairs in its prototypesuch that values can be easily overridden.
+//		Throws an exception if the bundle is not found.
 //		Bundle must have already been loaded by dojo.requireLocalization() or by a build optimization step.
 //
 //	packageName: package which is associated with this resource
@@ -32,14 +33,23 @@ dojo.i18n.getLocalization = function(packageName, bundleName, locale /*optional*
 	var module = [packageName,"nls",bundleName].join('.');
 	var bundle = dojo.hostenv.findModule(module, true);
 
+	var localization;
 	for(var i = elements.length; i > 0; i--){
 		var loc = elements.slice(0, i).join('_');
 		if(bundle[loc]){
-			return bundle[loc]; // Object
+			localization = bundle[loc];
+			break;
 		}
 	}
-	if(bundle.ROOT){
-		return bundle.ROOT; // Object
+	if(!localization){
+		localization = bundle.ROOT;
+	}
+
+	// make a singleton prototype so that the caller won't accidentally change the values globally
+	if(localization){
+		var clazz = function(){};
+		clazz.prototype = localization;
+		return new clazz(); // Object
 	}
 
 	dojo.raise("Bundle not found: " + bundleName + " in " + packageName+" , locale=" + locale);

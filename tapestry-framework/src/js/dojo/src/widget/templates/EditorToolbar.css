@@ -58,12 +58,9 @@ div.bigIcon {
 	height: 18px;
 	display: block;
 	/* background-color: white; */
-	/* border: 1px solid white; */
-	/* border: 1px solid #a6a7a3; */
-	padding-right: 3px;
 	cursor: pointer;
-	border: 1px solid transparent;
-	_border: none;
+	padding: 1px 4px 1px 1px; /* almost the same as a transparent border */
+	border: 0px;
 }
 
 .dojoE2TBIcon {
@@ -82,12 +79,14 @@ div.bigIcon {
 }
 
 .ToolbarButtonLatched {
-    border: #316ac5 1px solid;
+    border: #316ac5 1px solid; !important;
+    padding: 0px 3px 0px 0px; !important; /* make room for border */
     background-color: #c1d2ee;
 }
 
 .ToolbarButtonHighlighted {
-    border: #316ac5 1px solid;
+    border: #316ac5 1px solid; !important;
+    padding: 0px 3px 0px 0px; !important; /* make room for border */
     background-color: #dff1ff;
 }
 

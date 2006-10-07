@@ -30,24 +30,15 @@ dojo.require("dojo.html.selection");
 
 dojo.deprecated("dojo.widget.Tree", "use TreeV3 instead", "0.5");
 
-
-// make it a tag
-dojo.widget.tags.addParseTreeHandler("dojo:Tree");
-
-
-dojo.widget.Tree = function() {
-	dojo.widget.HtmlWidget.call(this);
-
+dojo.widget.defineWidget("dojo.widget.Tree", dojo.widget.HtmlWidget, function() {
 	this.eventNames = {};
 
 	this.tree = this;
 	this.DNDAcceptTypes = [];
 	this.actionsDisabled = [];
 
-}
-dojo.inherits(dojo.widget.Tree, dojo.widget.HtmlWidget);
-
-dojo.lang.extend(dojo.widget.Tree, {
+},
+{
 	widgetType: "Tree",
 
 	eventNamesDefault: {
