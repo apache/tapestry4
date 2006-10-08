@@ -15,6 +15,7 @@ package org.apache.tapestry.timetracker.page;
 
 import java.util.Date;
 
+import org.apache.log4j.Logger;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.Component;
 import org.apache.tapestry.annotations.EventListener;
@@ -42,6 +43,8 @@ import org.apache.tapestry.timetracker.model.Task;
 public abstract class TaskEntryPage extends BasePage
 {
     
+    private static final Logger _log = Logger.getLogger(TaskEntryPage.class);
+    
     @Component(id = "projectChoose", bindings = { "model=projectModel", "value=selectedProject",
             "displayName=message:choose.project", "filterOnChange=true",
             "validators=validators:required"})
@@ -56,7 +59,7 @@ public abstract class TaskEntryPage extends BasePage
     public abstract Project getCurrentProject();
     
     @Component(bindings = {"value=date", 
-            "displayName=message:task.start.date"})
+            "displayName=message:task.start.date","disabled=true"})
     public abstract DropdownDatePicker getDatePicker();
     public abstract Date getDate();
     
@@ -107,6 +110,11 @@ public abstract class TaskEntryPage extends BasePage
         Task task = new Task();
         task.setProjectId(getSelectedProject().getId());
         task.setDescription(getDescription());
+        
+        _log.debug("addTask date: " + getDate()
+                + "\n startTime: " + getStartTime()
+                + "\n endTime: " + getEndTime());
+        
         task.setStartDate(getStartTime());
         task.setEndDate(getEndTime());
         

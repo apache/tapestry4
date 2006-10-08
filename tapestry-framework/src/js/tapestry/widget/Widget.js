@@ -53,9 +53,16 @@ tapestry.widget = {
 			return;
 		}
 		
-		if (!props["widgetId"]) props["widgetId"]=widgetId;
+		if (!props["widgetId"]) {
+			props["widgetId"]=widgetId;
+		}
 		
-		dojo.widget.createWidget(type, props, node);
+		// handle disabling widgets
+		var w = dojo.widget.createWidget(type, props, node);
+		if (!dj_undef("disabled",props) && props.disabled == true 
+			&& dojo.lang.isFunction(w["disable"])){
+			w.disable();
+		}
 	}
 	
 }

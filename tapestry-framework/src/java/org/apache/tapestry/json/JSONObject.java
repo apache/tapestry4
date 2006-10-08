@@ -417,20 +417,18 @@ public class JSONObject
     /**
      * Produce a string from a number.
      * 
-     * @param n
-     *            A Number
+     * @param n A Number
      * @return A String.
      * @exception ArithmeticException
      *                JSON can only serialize finite numbers.
      */
     public static String numberToString(Number n)
     {
-        if ((n instanceof Float && (((Float) n).isInfinite() || ((Float) n)
-                .isNaN()))
-                || (n instanceof Double && (((Double) n).isInfinite() || ((Double) n)
-                        .isNaN()))) { throw new ArithmeticException(
-                "JSON can only serialize finite numbers."); }
-
+        if ((n instanceof Float && (((Float) n).isInfinite() || ((Float) n).isNaN()))
+                || (n instanceof Double && (((Double) n).isInfinite() || ((Double) n).isNaN()))) { 
+            throw new ArithmeticException("JSON can only serialize finite numbers."); 
+        }
+        
         // Shave off trailing zeros and decimal point, if possible.
         
         String s = n.toString();
@@ -597,6 +595,12 @@ public class JSONObject
         return this;
     }
 
+    public JSONObject put(String key, long value)
+    {
+        put(key, new Long(value));
+        return this;
+    }
+    
     /** 
      * {@inheritDoc}
      */

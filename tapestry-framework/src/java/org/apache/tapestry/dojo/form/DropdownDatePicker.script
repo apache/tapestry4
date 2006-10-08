@@ -7,8 +7,7 @@
 <input-symbol key="props" required="yes" />
     <body>
         <unique>
-            dojo.require("dojo.widget.Manager");
-            dojo.require("dojo.widget.DropdownDatePicker");
+            dojo.require("dojo.widget.*");
             dojo.require("tapestry.widget.Widget");
         </unique>
     </body>

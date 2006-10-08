@@ -116,7 +116,29 @@ public class TestDateTranslator extends FormComponentContributorTestCase
 
         testParse(translator, "10/29/1976", buildDate(1976, Calendar.OCTOBER, 29));
     }
-
+    
+    public void test_Time_Parse() throws Exception
+    {
+        DateTranslator translator = new DateTranslator();
+        
+        String input = "6:50 pm";
+        
+        translator.setPattern("hh:mm a");
+        
+        IFormComponent field = newField();
+        
+        ValidationMessages messages = newValidationMessages(Locale.ENGLISH);
+        
+        replay();
+        
+        Date result = (Date) translator.parse(field, messages, input);
+        
+        assertEquals(18, result.getHours());
+        assertEquals(50, result.getMinutes());
+        
+        verify();
+    }
+    
     public void testCustomParse() throws Exception
     {
         DateTranslator translator = new DateTranslator();
