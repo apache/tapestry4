@@ -185,7 +185,7 @@ tapestry={
     	
     	if (djConfig["isDebug"]) {
     		var content=tapestry.html.getContentAsString(element);
-    		dojo.log.debug("Received element content for id <" + id + "> of:\n" + content);
+    		dojo.log.debug("Received element content for id <" + id + "> of:", content);
     		node.innerHTML=content;
     		return;
     	}
@@ -237,7 +237,7 @@ tapestry={
         for (var i=0; i<scripts.length; i++) {
             var scr = scripts[i].match(match)[1];
             try {
-                dojo.log.debug("evaluating script:" + scr);
+                dojo.log.debug("evaluating script:", scr);
                 eval(scr);
             } catch (e) {
             	tapestry.scriptInFlight = false;

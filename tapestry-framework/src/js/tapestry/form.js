@@ -328,6 +328,10 @@ tapestry.form={
 		
 		if (submitName){
 			form.submitname.value=submitName;
+			if(!content){ content={}; }
+			if(form[submitName]){
+				content[submitName]=form[submitName].value;
+			}
 		}
 		
 		// handle submissions from input buttons

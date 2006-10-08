@@ -191,7 +191,7 @@ public class TestUnprotectedAsset extends BaseComponentTestCase
         assertEquals("src/", service.translatePath("dojo/../src/"));
         assertEquals("/", service.translatePath("/dojo/../"));
         assertEquals("", service.translatePath("dojo/../"));
-    }     
+    }
 
     public void test_Relative_Css_Paths()
     {

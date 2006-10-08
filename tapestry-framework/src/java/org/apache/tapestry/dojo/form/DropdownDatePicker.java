@@ -80,10 +80,13 @@ public abstract class DropdownDatePicker extends AbstractFormWidget
         json.put("inputName", getName());
         json.put("iconAlt", getIconAlt());
         json.put("displayFormat", translator.getPattern());
+        json.put("lang", getPage().getLocale().getLanguage());
         
         if (getValue() != null) {
-            json.put("date", getTranslatedFieldSupport().format(this, getValue()));
+            json.put("value", getValue().getTime());
         }
+        
+        json.put("disabled", isDisabled());
         
         Map parms = new HashMap();
         parms.put("clientId", getClientId());
@@ -102,9 +105,9 @@ public abstract class DropdownDatePicker extends AbstractFormWidget
         try
         {
             Date date = (Date) getTranslatedFieldSupport().parse(this, value);
-
+            
             getValidatableFieldSupport().validate(this, writer, cycle, date);
-
+            
             setValue(date);
         }
         catch (ValidatorException e)
