@@ -66,17 +66,7 @@
                     ServletMultipartDecoder
                 </a>
             </p>
-
-            <span class="warn">
-                <strong>Warning:</strong>
-                <p>
-                There is a bug in the current fileupload 1.1 version which resolves all filenames to
-                lowercase, this may break certain conditions for people if they are doing file name
-                comparisons. This issue has already been fixed in commons-fileupload version 1.2,
-                which should hopefully be released soon.
-                </p>
-            </span>
-
+            
             <section name="Parameters">
 
 
