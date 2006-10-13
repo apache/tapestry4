@@ -96,50 +96,56 @@
         
         <menu name="Components" >
             
-            <item name="Core" href="/components/index.html" collapse="true">
-                <item name="Any" href="/components/Any.html" />
-                <item name="Block" href="/components/Block.html" />
-                <item name="Body" href="/components/Body.html" />
-                <item name="Button" href="/components/Button.html" />
-                <item name="Checkbox" href="/components/Checkbox.html" />
-                <item name="DatePicker" href="/components/DatePicker.html" />
-                <item name="Delegator" href="/components/Delegator.html" />
-                <item name="Describe" href="/components/Describe.html" />
-                <item name="DirectLink" href="/components/DirectLink.html" />
-                <item name="Else" href="/components/Else.html" />
-                <item name="ExceptionDisplay" href="/components/ExceptionDisplay.html" />
-                <item name="ExternalLink" href="/components/ExternalLink.html" />
-                <item name="FieldLabel" href="/components/FieldLabel.html" />
-                <item name="For" href="/components/For.html" />
-                <item name="Form" href="/components/Form.html" />
-                <item name="Frame" href="/components/Frame.html" />
-                <item name="GenericLink" href="/components/GenericLink.html" />
-                <item name="Hidden" href="/components/Hidden.html" />
-                <item name="If" href="/components/If.html" />
-                <item name="Image" href="/components/Image.html" />
-                <item name="ImageSubmit" href="/components/ImageSubmit.html" />
-                <item name="Insert" href="/components/Insert.html" />
-                <item name="InsertText" href="/components/InsertText.html" />
-                <item name="InvokeListener" href="/components/InvokeListener.html" />
-                <item name="LinkSubmit" href="/components/LinkSubmit.html" />
-                <item name="Option" href="/components/Option.html" />
-                <item name="PageLink" href="/components/PageLink.html" />
-                <item name="PropertySelection" href="/components/PropertySelection.html" />
-                <item name="Radio" href="/components/Radio.html" />
-                <item name="RadioGroup" href="/components/RadioGroup.html" />
-                <item name="Relation" href="/components/Relation.html" />                
-                <item name="RenderBlock" href="/components/RenderBlock.html" />
-                <item name="RenderBody" href="/components/RenderBody.html" />
-                <item name="Rollover" href="/components/Rollover.html" />
-                <item name="Script" href="/components/Script.html" />
-                <item name="Select" href="/components/Select.html" />
-                <item name="ServiceLink" href="/components/ServiceLink.html" />
-                <item name="Shell" href="/components/Shell.html" />
-                <item name="Style" href="/components/Style.html" />                
-                <item name="Submit" href="/components/Submit.html" />
-                <item name="TextArea" href="/components/TextArea.html" />
-                <item name="TextField" href="/components/TextField.html" />
-                <item name="Upload" href="/components/Upload.html" />
+            <item name="General" href="/components/index.html" collapse="true">
+                <item name="Any" href="/components/general/Any.html" />
+                <item name="Block" href="/components/general/Block.html" />
+                <item name="Body" href="/components/general/Body.html" />
+                <item name="Delegator" href="/components/general/Delegator.html" />
+                <item name="Describe" href="/components/general/Describe.html" />
+                <item name="Else" href="/components/general/Else.html" />
+                <item name="ExceptionDisplay" href="/components/general/ExceptionDisplay.html" />
+                <item name="For" href="/components/general/For.html" />
+                <item name="Frame" href="/components/general/Frame.html" />
+                <item name="If" href="/components/general/If.html" />
+                <item name="Image" href="/components/general/Image.html" />
+                <item name="Insert" href="/components/general/Insert.html" />
+                <item name="InsertText" href="/components/general/InsertText.html" />
+                <item name="InvokeListener" href="/components/general/InvokeListener.html" />
+                <item name="Relation" href="/components/general/Relation.html" />                
+                <item name="RenderBlock" href="/components/general/RenderBlock.html" />
+                <item name="RenderBody" href="/components/general/RenderBody.html" />
+                <item name="Script" href="/components/general/Script.html" />
+                <item name="Shell" href="/components/general/Shell.html" />
+                <item name="Style" href="/components/general/Style.html" />
+            </item>
+            
+            <item name="Form" href="/components/form/index.html" collapse="true">
+                <item name="Button" href="/components/form/Button.html" />
+                <item name="Checkbox" href="/components/form/Checkbox.html" />
+                <item name="DatePicker" href="/components/form/DatePicker.html" />
+                <item name="FieldLabel" href="/components/form/FieldLabel.html" />
+                <item name="Form" href="/components/form/Form.html" />
+                <item name="Hidden" href="/components/form/Hidden.html" />
+                <item name="ImageSubmit" href="/components/form/ImageSubmit.html" />
+                <item name="LinkSubmit" href="/components/form/LinkSubmit.html" />
+                <item name="Option" href="/components/form/Option.html" />
+                <item name="PropertySelection" href="/components/form/PropertySelection.html" />
+                <item name="Radio" href="/components/form/Radio.html" />
+                <item name="RadioGroup" href="/components/form/RadioGroup.html" />
+                <item name="Select" href="/components/form/Select.html" />
+                <item name="Submit" href="/components/form/Submit.html" />
+                <item name="TextArea" href="/components/form/TextArea.html" />
+                <item name="TextField" href="/components/form/TextField.html" />
+                <item name="Upload" href="/components/form/Upload.html" />
+            </item>
+            
+            <item name="Link" href="/components/link/index.html" collapse="true">
+                 <item name="DirectLink" href="/components/link/DirectLink.html" />
+                 <item name="ExternalLink" href="/components/link/ExternalLink.html" />
+                 <item name="GenericLink" href="/components/link/GenericLink.html" />
+                 <item name="PageLink" href="/components/link/PageLink.html" />
+                 <item name="Rollover" href="/components/link/Rollover.html" />
+                 <item name="ServiceLink" href="/components/link/ServiceLink.html" />
             </item>
             
         </menu>
