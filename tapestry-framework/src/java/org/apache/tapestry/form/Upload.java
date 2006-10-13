@@ -46,7 +46,7 @@ public abstract class Upload extends AbstractFormComponent implements Validatabl
     {
         // Force the form to use the correct encoding type for file uploads.
         IForm form = getForm();
-
+        
         form.setEncodingType("multipart/form-data");
 
         renderDelegatePrefix(writer, cycle);
@@ -81,7 +81,7 @@ public abstract class Upload extends AbstractFormComponent implements Validatabl
     {
         IUploadFile file = getDecoder().getFileUpload(getName());
         
-        if (HiveMind.isBlank(file.getFileName()))
+        if (file != null && HiveMind.isBlank(file.getFileName()))
         {
             file = null;
         }

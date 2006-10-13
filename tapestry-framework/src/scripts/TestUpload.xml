@@ -130,11 +130,11 @@
 		</assert-output>
 		
 		<assert-output name="Path">
-		Path: [context19/tapestry-banner.png]
+		Path: [context19/Tapestry-Banner.png]
 		</assert-output>
 		
 		<assert-output name="Name">
-		Name: [tapestry-banner.png]
+		Name: [Tapestry-Banner.png]
 		</assert-output>
 		
 		<assert-output name="Match Confirmation">
