@@ -293,8 +293,7 @@
                     In Tapestry 3.0, the behavior of the ImageSubmit was
                     <em>undeferred</em>
                     , the equivalent of setting the defer parameter to false. The default for the
-                    defer parameter in 4.0 is
-                    <strong>true</strong>
+                    defer parameter in 4.0 is <em>true</em>
                     , which may in rare cases, cause problems when upgrading an applicaton from 3.0
                     to 4.0.
                     </p>

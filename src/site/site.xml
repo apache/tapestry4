@@ -148,6 +148,12 @@
                  <item name="ServiceLink" href="/components/link/ServiceLink.html" />
             </item>
             
+            <item name="Dojo" href="/components/dojo/index.html" collapse="true">
+                <item name="Autocompleter" href="/components/dojo/Autocompleter.html" />
+                <item name="DropdownDatePicker" href="/components/dojo/DropdownDatePicker.html" />
+                <item name="DropdownTimePicker" href="/components/dojo/DropdownTimePicker.html" />
+            </item>
+            
         </menu>
         
         <menu ref="modules" />
