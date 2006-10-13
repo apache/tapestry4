@@ -59,7 +59,7 @@ public abstract class TaskEntryPage extends BasePage
     public abstract Project getCurrentProject();
     
     @Component(bindings = {"value=date", 
-            "displayName=message:task.start.date","disabled=true"})
+            "displayName=message:task.start.date"})
     public abstract DropdownDatePicker getDatePicker();
     public abstract Date getDate();
     
