@@ -15,11 +15,9 @@
     limitations under the License.
 -->
 <faqs title="Frequently Asked Questions">
-
-
     <part id="general">
-
-
+        <title>General</title>
+        
         <faq id="framework-comparison">
             <question>How does Tapestry compare to other frameworks?</question>
             <answer>
@@ -122,6 +120,9 @@
                     IDE. It adds wizards and editors for creating Tapestry applications, pages and
                     components.
                 </p>
+                <p>
+                    All of the various ide plugins can be found <a href="http://tapestry.apache.org/community.html">here</a>.
+                </p>
             </answer>
         </faq>
 
@@ -144,13 +145,16 @@
                     care what servlet container it is used with and does not even require an EJB
                     container.
                 </p>
+                <p>
+                    All of the various integration libraries can be found <a href="http://tapestry.apache.org/community.html">here</a>.
+                </p>
             </answer>
         </faq>
 
     </part>
 
     <part id="technical">
-
+        <title>Technical</title>
 
         <faq id="j2ee-security">
             <question>
@@ -170,7 +174,7 @@
         <faq id="script-component">
             <question>
                 What is the
-                <a href="tapestry/ComponentReference/Script.html">Script</a>
+                <a href="components/general/Script.html">Script</a>
                 component? Why is it needed and how does it work?
             </question>
             <answer>
@@ -208,14 +212,13 @@
                     names during runtime. Going further, you may also ask the framework to provide
                     other objects that would help in creating your script. For example...
                 </p>
-
-
-                <source xml:space="preserve"><pre>
-&lt;input-symbol key="select"
+<p>
+<source><![CDATA[
+<input-symbol key="select" 
     class="org.apache.tapestry.form.PropertySelection"
-    required="yes"/&gt;</pre>
-                </source>
-
+    required="yes"/>
+]]></source>
+</p>
                 <p>
                     This defines an input variable "select" of type
                     "org.apache.tapestry.form.PropertySelection". All such variables/symbols passed
@@ -225,20 +228,20 @@
                     map. You may also define your own symbols/variables using &lt;let...&gt; like...
                 </p>
 
-                <source xml:space="preserve"><pre>
-&lt;let key="formObj"&gt;
+<p>
+<source>
+<let key="formObj">
 
     document.${select.form.name}
 
-&lt;/let&gt;
-&lt;let key="selectObj"&gt;
+</let>
+<let key="selectObj">
 
     ${formObj}.${select.name}
 
-&lt;/let&gt;
-                </pre>
-                </source>
-
+</let>
+</source>
+</p>
                 <p>
                     These variables/symbols are stored in the symbol map also. So now if you want to
                     set the value of the form select list all you do is say
@@ -251,21 +254,22 @@
 
 
                 <p>
-                    &lt;input-symbol...&gt;s are like method parameters and &lt;let...&gt;s are like
+                    <code>input-symbol</code>s are like method parameters and 
+                    <code>let</code>s are like
                     instance variables. Typically you would pass values to the
-                    &lt;input-symbol...&gt;s via the Script component like...
+                    <code>input-symbol</code>s via the Script component like...
                 </p>
 
+<p>
+<source>
+<component id="myScript" type="Script">
 
-                <source xml:space="preserve"><pre>
-&lt;component id="myScript" type="Script"&gt;
+    <binding name="script" value="ScriptSpecificationName.script"/>
+    <binding name="select" value="components.somePropertySelection"/>
 
-    &lt;binding name="script" value="ScriptSpecificationName.script"/&gt;
-    &lt;binding name="select" value="components.somePropertySelection"/&gt;
-
-&lt;/component&gt;</pre>
-                </source>
-
+</component>
+</source>
+</p>
                 <p>
                     The actual scripts are defined in one of the two sections of the script
                     specification, &lt;body...&gt; or &lt;initialization...&gt;, depending on when
@@ -274,9 +278,10 @@
                     execute on any other event, define it in the &lt;body...&gt; section of the
                     specification. For example...
                 </p>
-
-                <source xml:space="preserve"><pre>
-&lt;body&gt;
+                
+<p>
+<source>
+<body>
 
     function onChangeList(listObj)
     {
@@ -285,9 +290,9 @@
 
     }
 
-&lt;/body&gt;
+</body>
 
-&lt;initialization&gt;
+<initialization>
 
     ${selectObj}.onchange = function(e)
     {
@@ -296,8 +301,9 @@
 
     }
 
-&lt;/initialization&gt;</pre>
-                </source>
+</initialization>
+</source>
+</p>
 
                 <p>
                     The JavaScript generated inside the &lt;body&gt; element (of the script
@@ -316,9 +322,10 @@
                 </p>
 
 
-                <source xml:space="preserve"><pre>
-&lt;body&gt;
-&lt;unique&gt;
+<p>
+<source>
+<body>
+<unique>
 
     function onChangeList(listObj)
     {
@@ -327,10 +334,10 @@
 
     }
 
-&lt;/unique&gt;
-&lt;/body&gt;
-</pre>
-                </source>
+</unique>
+</body>
+</source>
+</p>
 
                 <p>That's all there is to it!</p>
 
@@ -356,24 +363,25 @@
                 <p>Usage page meta-data:</p>
 
 
-                <source xml:space="preserve"><pre>
+<p>
+<source>
 Page1.page
-&lt;page-specification&gt;
+<page-specification>
 ...
-        &lt;meta key="success" value="Home" /&gt;
-        &lt;meta key="error" value="Error" /&gt;
+        <meta key="success" value="Home" />
+        <meta key="error" value="Error" />
 
 
-&lt;/page-specification&gt;
+</page-specification>
 
 
 Page2.page
-&lt;page-specification&gt;
+<page-specification>
 ...
-        &lt;meta key="success" value="ClientInfo" /&gt;
-        &lt;meta key="error" value="SecurityCheck" /&gt;
+        <meta key="success" value="ClientInfo" />
+        <meta key="error" value="SecurityCheck" />
 
-&lt;/page-specification&gt;
+</page-specification>
 
 
 public void submitListener(IRequestCycle cycle)
@@ -383,8 +391,8 @@ public void submitListener(IRequestCycle cycle)
   
   cycle.activate(pageName);
 }
-</pre>
 </source>
+</p>
 
                 <p>-- Tip from Harish</p>
 
@@ -411,7 +419,8 @@ public void submitListener(IRequestCycle cycle)
                     to the user.)
                 </p>
                 
-                <source xml:space="preserve"><pre>
+<p>
+<source>
 public void downloadAction(IRequestCycle cycle)
 {
     try
@@ -444,9 +453,8 @@ public void downloadAction(IRequestCycle cycle)
         e.printStackTrace();
     }
 }
-</pre>
-                </source>
-
+</source>
+</p>
                 <span class="warn">
                     <strong>Warning:</strong>
                     <p>
@@ -475,9 +483,9 @@ public void downloadAction(IRequestCycle cycle)
                 </p>
 
 
-                <source xml:space="preserve">
-
-// Add &lt;inject property="externalService" object="engine-service:external"&gt; to specification
+<p>
+<source>
+// Add <inject property="externalService" object="engine-service:external" /> to specification
 // or use @InjectObject("engine-service:external")
 public abstract IEngineService getExternalService();
 
@@ -489,9 +497,8 @@ public String getURL(IRequestCycle cycle, String pageName, Object[] parameters)
   
   return link.getURL();
 }
-
-                </source>
-
+</source>
+</p>
                 <p>
                     Different engine services take different types of objects as that final
                     parameter.
@@ -535,25 +542,27 @@ public String getURL(IRequestCycle cycle, String pageName, Object[] parameters)
             <answer>
                 <p>You can add event handler during component rendering:</p>
 
-                <source xml:space="preserve">
+<p>
+<source>
 protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle){
     ...
     yourFormComponent.addEventHandler(FormEventType.SUBMIT, "javaScriptValidatingFunctionName");
     ...
 }
-                </source>
-
+</source>
+</p>
                 <p>
                     <code>org.apache.tapestry.contrib.palette.Palette</code>
                     can be used for detailed example.
                 </p>
 
-                <p>
+                <span class="warn">
                     <strong>Warning:</strong>
-                    <br />
+                    <p>
                     This is about to change significantly for Tapestry 4.0, with the bulk of the
                     client-side event handling moving to the client side.
-                </p>
+                    </p>
+                </span>
             </answer>
         </faq>
 
@@ -577,8 +586,8 @@ protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle){
                 <p>
                     The form "rewind" cycle is nothing more than a render cycle where the output is
                     buffered and scrapped rather than written to the servlet output stream. The
-                    second pageBeginRender() is triggered during the actual page rendering. You can
-                    use requestCycle.isRewinding() to distinguish between these two render cycles.
+                    second <code>pageBeginRender()</code> is triggered during the actual page rendering. You can
+                    use <code>requestCycle.isRewinding()</code> to distinguish between these two render cycles.
                 </p>
 
             </answer>
@@ -589,16 +598,18 @@ protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle){
             <answer>
                 <p>No - but you can copy the definition of a component pretty easily.</p>
 
-                <source xml:space="preserve">
-&lt;component id="valueInsert" type="Insert" &gt;
-   &lt;binding name="value" value="getValueAt( rowIndex, columnIndex )" /&gt;
-&lt;/component&gt;
+<p>
+<source>
+<component id="valueInsert" type="Insert" >
+   <binding name="value" value="getValueAt( rowIndex, columnIndex )" />
+</component>
 
-&lt;component id="valueInsert1" copy-of="valueInsert"/&gt;
-&lt;component id="valueInsert2" copy-of="valueInsert"/&gt;
-&lt;component id="valueInsert3" copy-of="valueInsert"/&gt;
-&lt;component id="valueInsert4" copy-of="valueInsert"/&gt;
-                </source>
+<component id="valueInsert1" copy-of="valueInsert"/>
+<component id="valueInsert2" copy-of="valueInsert"/>
+<component id="valueInsert3" copy-of="valueInsert"/>
+<component id="valueInsert4" copy-of="valueInsert"/>
+</source>
+</p>
             </answer>
         </faq>
 
@@ -674,7 +685,7 @@ protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle){
     </part>
 
     <part id="other-frameworks">
-    
+        <title>Other Frameworks</title>
         <faq id="spring-integration">
             <question>How do I integrate Tapestry with Spring?</question>
 
@@ -692,6 +703,30 @@ protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle){
                 </p>
             </answer>
         </faq>
+        
+        <faq id="jsp-includes">
+            <question>How can I include files in tapestry like jsp.include does?</question>
 
+            <answer>
+                <p>
+                  The replies usually follow these patterns:
+                </p>
+                <ul>
+                <li>
+                  <em>"No, I really need to include arbitrary components."</em>
+                  -> Then use <a href="components/general/renderblock.html">RenderBlock</a>.
+                </li>
+                <li>
+                  <em>"No, I really need to be able to add new components at runtime."</em>
+                  -> Then try <a href="http://www.behindthesite.com/blog/C1931765677/E1630021481/">DynamicBlock</a>.
+                </li>
+                <li>
+                  <em>"No, I really need to include arbitrary text/files."</em>
+                  -> Then try <a href="http://www.tapestrycomponents.org/Tassel/app?service=external/ViewComponent&amp;sp=SInclude">Include</a>, which is for T3. Maybe you can update it to T4.
+                </li>
+                </ul>
+            </answer>
+        </faq>
+        
     </part>
 </faqs>

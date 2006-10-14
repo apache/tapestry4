@@ -42,8 +42,12 @@
                                    dojo widgets and use them as Tapestry components. The initial 4.1 release won't be
                                    as focused on providing new components as it will solid infrastructure support, but
                                    more and more will be included as the release matures. Currently included are 
-                                   <em>Autocomplete,DropdownDatePicker,DropdownTimePicker</em>.</li>
-                <li><b>Client Side Validation -</b> The <a href="UsersGuide/clientside-validation.html">client side validation</a> support 
+                                   <em><a href="components/dojo/autocompleter.html">Autocompleter</a>
+                                   ,
+                                   <a href="components/dojo/dropdowndatepicker.html">DropdownDatePicker</a>
+                                   ,
+                                   <a href="components/dojo/dropdowntimepicker.html">DropdownTimePicker</a></em>.</li>
+                <li><b>Client Side Validation -</b> The <a href="usersguide/clientside-validation.html">client side validation</a> support 
                                     in Tapestry has been completely replaced with a new <a href="http://dojotoolkit.org">dojo</a> based API, 
                                     providing richer and <a href="javascript/form-validation.html">more complete</a> validation than has been 
                                     seen in previous releases. All of the validation constraints that can be specified on the server now have 

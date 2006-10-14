@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Copyright 2004, 2005 The Apache Software Foundation
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<document>
+    <properties>
+        <title>DirectLink</title>
+    </properties>
+    <body>
+
+        <section name="DirectLink">
+
+            <p>
+                Creates an <code>&lt;a&gt;</code> hyperlink that notifies the component when the link is
+                triggered. The link includes some context-specific data that is made available to
+                the component's listener. 
+            </p>
+            <p>
+                See the Developers Guide DirectLink listeners for a more complete
+                description.
+            </p>
+
+            <p>
+                <strong>
+                    See also:
+                    <a href="externallink.html">ExternalLink</a>
+                    ,
+                    <a href="genericlink.html">GenericLink</a>
+                    ,
+                    <a href="pagelink.html">PageLink</a>
+                    ,
+                    <a href="servicelink.html">ServiceLink</a>
+                </strong>
+
+            </p>
+
+            <section name="Parameters">
+                <table>
+
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        
+                        <th>Required</th>
+                        <th>Default</th>
+
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>listener</td>
+                        <td>
+                            <a
+                                href="../../tapestry-framework/apidocs/org/apache/tapestry/IActionListener.html">
+                                IActionListener
+                            </a>
+                        </td>
+                        
+                        <td>yes</td>
+
+                        <td></td>
+                        <td>
+                            Specifies an object that is notified when the link is clicked, which is
+                            typically a listener method of its container (for example, listeners.
+                            <em>method</em>
+                            ).
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>parameters</td>
+                        <td>
+                            Object or
+                            <br />
+
+                            Object[] or
+                            <br />
+                            List
+                        </td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            <p>
+                                An array of objects to be encoded into the URL. These parameters
+                                will be decoded when the link is triggered.
+                            </p>
+
+                            <p>
+                                In a web application built onto of Enterprise JavaBeans, the context
+                                is often the primary key of some Entity bean; typically such keys
+                                are Strings or Integers.
+                            </p>
+                            <p>
+                                A listener method can retrieve the parameters three ways:
+                                <br />
+                                parameters are declared in the method itself, e.g. - listenerMethod(
+                                <em>parameters</em>
+                                )
+                                <br />
+                                parameters are declared along with the IRequestCycle, e.g. -
+                                listenerMethod(IRequestCycle cycle,
+                                <em>parameters</em>
+                                )
+
+                                <br />
+                                or through the request cycle, e.g. - listenerMethod(IReuqestCycle
+                                cycle), using IRequestCycle.getServiceParameters()
+                            </p>
+                            <p>
+                                Prior to release 2.2, the parameters were always type String. They
+                                may now be of any type; type will be maintained when the parameters
+                                are later retrieved by a listener. See
+                                <a
+                                    href="../../tapestry-framework/apidocs/org/apache/tapestry/util/io/SqueezAdaptor.html">
+                                    SqueezAdaptor
+                                </a>
+                                for more details.
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>disabled</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+
+                        <td>
+                            Controls whether the link is produced. If disabled, the portion of the
+                            template the link surrounds is still rendered, but not the link itself.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>stateful</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>true</td>
+                        <td>
+                            If true (the default), then the component requires an active (i.e.,
+                            non-new) HttpSession when triggered. Failing that, it throws a
+                            <a
+                                href="../../tapestry-framework/apidocs/org/apache/tapestry/StaleLinkException.html">
+                                StaleLinkException
+                            </a>
+                            . If false, then no check is necessary. The latter works well with links
+                            that encode all necessary state inside the URL itself.
+                        </td>
+                    </tr>
+                    <tr>
+
+                        <td>anchor</td>
+
+                        <td>String</td>
+                        <td>no</td>
+                        <td />
+                        <td>
+
+                            The name of an anchor or element to link to. The final URL will have '#'
+                            and the anchor appended to it.
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td>scheme</td>
+                        <td>String</td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            The required scheme ("http" or "https", typically) for the URL. This
+                            will force the creation of an absolute URL when the current request's
+                            scheme does not match the value for this parameter. This is most often
+                            used to switch to "https" for secure portions of an application (such as
+                            a login page), before switching back to standard "http" for the majority
+                            of an application.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>port</td>
+                        <td>Integer</td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            The required port (80, 443, 8080. 8443, typically) for the URL. This
+                            will force the creation of an absolute URL when the current request's
+                            scheme does not match the value for this parameter. This is most often
+                            used in conjunction with scheme to switch to "https:443"/"https:8443"
+                            for secure portions of an application (such as a login page), before
+                            switching back to standard "http:80"/"http:80" for the majority of an
+                            application.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>renderer</td>
+                        <td>
+                            <a
+                                href="../../tapestry-framework/apidocs/org/apache/tapestry/link/ILinkRenderer.html">
+                                ILinkRenderer
+                            </a>
+                        </td>
+                        <td>no</td>
+
+                        <td></td>
+
+                        <td>The object which will actually render the link.</td>
+                    </tr>
+                    <tr>
+                        <td>updateComponents</td>
+                        <td>String[],Collection</td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            In an asynchronous request, specifies which components should have their content
+                            rendered back to the client. These are expected to be unique component ids. 
+                            
+                            <p>
+                            See: <a href="../../tapestry-framework/apidocs/org/apache/tapestry/services/ResponseBuilder.html">ResponseBuilder</a>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>json</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            Causes the request to be asynchronous and the response to be captured/rendered via
+                            the <a href="../../tapestry-framework/apidocs/org/apache/tapestry/services/impl/JSONResponseBuilder.html">JSONResponseBuilder</a>
+                            renderer.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>async</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            Causes the request to be asynchronous and the response to be captured/rendered via
+                            the <a href="../../tapestry-framework/apidocs/org/apache/tapestry/services/impl/DojoAjaxResponseBuilder.html">DojoAjaxResponseBuilder</a>
+                            renderer.
+                        </td>
+                    </tr>
+                </table>
+
+                <p>
+                    Body:
+                    <strong>rendered</strong>
+
+                </p>
+
+                <p>
+
+                    Informal parameters:
+                    <strong>allowed</strong>
+                </p>
+
+                <p>
+                    Reserved parameters:
+                    <em>href</em>
+                </p>
+
+            </section>
+            <section name="Examples">
+
+                <p>
+                    In this example the DirectLink component enables users to select a Customer from
+                    the Customer List table.
+                </p>
+
+                <img src="../../images/ComponentReference/DirectLink.png"
+                    alt="DirectLink Screen Shot" />
+
+
+                <p>HTML template</p>
+                <source xml:space="preserve">
+  &lt;table cellspacing="6"&gt;
+  &lt;tr&gt;
+   &lt;td&gt;ID&lt;/td&gt;
+   &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+   &lt;td&gt;Name&lt;/td&gt;
+   &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+   &lt;td&gt;Level&lt;/td&gt;
+   &lt;th&gt;&amp;nbsp;&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td colspan="6"&gt;&lt;hr&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr jwcid="@Foreach" source="ognl:customerList" value="ognl:customer" element="tr"&gt;
+   &lt;td&gt;&lt;span jwcid="@Insert" value="ognl:customer.id"/&gt;&lt;/td&gt;
+   &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+   &lt;td&gt;&lt;span jwcid="@DirectLink" listener="listener:customerSelectAction" parameters="ognl:customer.id"&gt; &lt;span jwcid="@Insert" value="ognl:customer.fullName"/&gt; &lt;/span&gt;&lt;/td&gt;
+   &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+   &lt;td&gt;&lt;span jwcid="@Insert" value="ognl:customer.memberLevel"/&gt;&lt;/td&gt;
+   &lt;td&gt;
+    &lt;a jwcid="@DirectLink" listener="listener.customerDeleteAction" parameters="ognl:customer.id" onclick="return window.confirm('Are you sure you want remove this customer?');"&gt;
+     &lt;img jwcid="@Image" image="ognl:assets.deleteImage" alt="Delete"/&gt;
+    &lt;/a&gt;
+   &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+</source>
+
+                <p>Page specification</p>
+                <source xml:space="preserve">
+&lt;property name="customerList" type="java.util.List" persistent="yes"/&gt;
+&lt;property name="customer" type="Customer"/&gt;
+</source>
+
+
+                <p>Java sources</p>
+                <source xml:space="preserve">
+public abstract class SalesPage extends BasePage {
+    public abstract List getCustomerList();
+    public abstract List setCustomerList(List value);
+
+    public abstract Customer getCustomer();
+
+    public void customerSelectAction(Integer id) {
+        Visit visit = (Visit) getVisit();
+        Customer customer = visit.findCustomerByPrimaryKey(id);
+        // Perform some action with the selected customer.
+        ..
+    }
+
+    public void customerDeleteAction(Integer id) {
+        Visit visit = (Visit) getVisit();
+        Customer customer = visit.findCustomerByPrimaryKey(id);
+        visit.deleteCustomer(customer);
+    }
+}
+</source>
+                <source xml:space="preserve">
+public class Visit() implements Serializable {
+
+    public List getCustomerList() {
+        List customerList = new ArrayList();
+        // Perform a database query retrieving the list of customers.
+        ..
+        return customerList;
+    }
+
+    public Customer findCustomerByPrimaryKey(Integer id) {
+        Customer customer = null;
+        // Retrieve the customer from the database with given the customer ID.
+        ..
+        return customer;
+    }
+
+    public void deleteCustomer(Customer customer) {
+        // Delete customer from the database.
+        ..
+    }
+}
+</source>
+
+                <source xml:space="preserve">
+public class Customer implements Serializable {
+    private Integer id;
+    private String fullName;
+    private String memberLevel;
+
+    public Customer(Integer id, String fullName, String memberLevel) {
+        this.id = id;
+        this.fullName = fullName;
+        this.memberLevel = memberLevel;
+    }
+
+    public Integer getId() { return id; }
+
+    public String getFullName() { return fullName; }
+
+    public String getMemberLevel() { return memberLevel; }
+}
+</source>
+            </section>
+
+        </section>
+
+    </body>
+</document>

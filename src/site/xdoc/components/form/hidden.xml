@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Copyright 2004, 2005 The Apache Software Foundation
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<document>
+    <properties>
+        <title>Hidden</title>
+    </properties>
+    <body>
+
+        <section name="Hidden">
+
+            <p>
+                Adds a hidden HTML <code>&lt;input type="hidden"&gt;</code> field to a
+                <a href="form.html">Form</a>
+                . This is often used to synchronize data when the form is submitted with values
+                known when the page was rendered.
+            </p>
+
+            <p>
+                <strong>
+                    See also:
+                    <a href="form.html">Form</a>
+                </strong>
+            </p>
+
+            <section name="Parameters">
+
+
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Default</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>value</td>
+                        <td>Object</td>
+                        <td>yes</td>
+                        <td></td>
+                        <td>
+                            The value to be stored in the the hidden field. The parameter is read
+                            when the HTML response is generated, and then written when the form is
+                            submitted. A
+                            <a
+                                href="../../tapestry-framework/apidocs/org/apache/tapestry/util/io/DataSqueezer.html">
+                                DataSqueezer
+                            </a>
+                            is used to convert the value between an arbitrary type and a String.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>id</td>
+                        <td>Object</td>
+                        <td>no</td>
+                        <td>undefined in HTML presentation.</td>
+                        <td>
+                            ID parameter of HTML hidden object. The parameter is read when the HTML
+                            response is generated and if there is a specific value the component
+                            generate parameter id with passed value in its HTML presentation.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>listener</td>
+                        <td>
+                            <a
+                                href="../../tapestry-framework/apidocs/org/apache/tapestry/IActionListener.html">
+                                IActionListener
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            <p>
+                                A listener that is informed after the value parameter is updated.
+                                This allows the data set operated on by the rest of the
+                                <a href="form.html">Form</a>
+                                components to be synchronized to the value stored in the hidden
+                                field.
+                            </p>
+                            <p>
+                                A typical use is to encode the primary key of an entity as a Hidden;
+                                when the form is submitted, the Hidden's listener re-reads the
+                                corresponding entity from the database.
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>encode</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>true</td>
+                        <td>
+                            <p>
+                                If true (the default) a
+                                <a
+                                    href="../../tapestry-framework/apidocs/org/apache/tapestry/util/io/DataSqueezer.html">
+                                    DataSqueezer
+                                </a>
+                                is used to transform the value Object into the HTML value string,
+                                and (on submit) to convert the string back into an Object.
+                            </p>
+                            <p>
+                                If false, then the value must be a String. This is most likely used
+                                when the hidden field is used to communicate with client-side logic
+                                in JavaScript (which is not able to interpret even Strings encoded
+                                by
+                                <a
+                                    href="../../tapestry-framework/apidocs/org/apache/tapestry/util/io/DataSqueezer.html">
+                                    DataSqueezer
+                                </a>
+                                ). If you find yourself getting strange errors during the form
+                                rewind it could easily be Tapestry trying to interpret a value
+                                you've set via JavaScript.
+                            </p>
+                        </td>
+
+                    </tr>
+                </table>
+
+                <p>
+                    Body:
+                    <strong>removed</strong>
+                </p>
+
+                <p>
+                    Informal parameters:
+                    <strong>forbidden</strong>
+                </p>
+
+                <p>
+                    Reserved parameters:
+                    <em>name</em>
+                </p>
+
+            </section>
+
+        </section>
+
+    </body>
+</document>

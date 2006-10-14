@@ -27,10 +27,9 @@
             <p>
                 Such components may always be referenced without any library prefix; in cases where
                 an application or library provides a component with the same name, the special
-                prefix "framework:" may be used. That is, "DirectLink" and "framework:DirectLink"
-                are equivalent, unless your application (or library) includes a component
-                <em>also</em>
-                named "DirectLink".
+                prefix <code>framework:</code> may be used. That is, <code>DirectLink</code> and 
+                <code>framework:DirectLink</code> are equivalent, unless your application 
+                (or library) includes a component <em>also</em> named "DirectLink".
             </p>
         </section>
     </body>

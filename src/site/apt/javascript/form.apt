@@ -9,7 +9,7 @@ Jesse Kuhnert
 tapestry.form
 
   The form package defines the core functionality used in tapestry to interact with forms, as well as kicking
-  off the {{{../UsersGuide/clientside-validation.html}client side validation}} process when forms are submitted.
+  off the {{{../usersguide/clientside-validation.html}client side validation}} process when forms are submitted.
 
   All forms registered with the core tapestry client side form manager will by default have event listeners
   bound to them that will invoke any registered validation profiles when the form is submitted. <(by listening 
@@ -177,7 +177,7 @@ isInvalid(field):  Returns true if the field has an invalid value.
 * tapestry.form.submit(form, submitName)
 
   Submits the form specified, optionally setting the submitname hidden input field to the value 
-  of <<<submitName>>> to let the {{{../components/Form.html}Form}} component on the server know 
+  of <<<submitName>>> to let the {{{../components/form/form.html}Form}} component on the server know 
   which button caused the submission. (For the case of submit button listeners).
 
 *----------------------*---------------*------------*----------*----------------------------------------------+
@@ -202,7 +202,7 @@ isInvalid(field):  Returns true if the field has an invalid value.
 
   Submits the form specified, and also sets the hidden form input field controlled by tapestry that
   specifies the <<<submitmode>>> used so that if you have registered a <<<cancel listener>>> on your
-  {{{../components/Form.html}Form}} component it will be called by this invocation.
+  {{{../components/form/form.html}Form}} component it will be called by this invocation.
 
 *----------------------*---------------*------------*----------*----------------------------------------------+
   Parameter            |    Type	   |  Required  | Default  | 		Description
@@ -216,7 +216,7 @@ isInvalid(field):  Returns true if the field has an invalid value.
 
   Submits the form specified, and also sets the hidden form input field controlled by tapestry that
   specifies the <<<submitmode>>> used so that if you have registered a <<<refresh listener>>> on your
-  {{{../components/Form.html}Form}} component it will be called by this invocation.
+  {{{../components/form/form.html}Form}} component it will be called by this invocation.
 
 *----------------------*---------------*------------*----------*----------------------------------------------+
   Parameter            |    Type	   |  Required  | Default  | 		Description
@@ -239,7 +239,7 @@ isInvalid(field):  Returns true if the field has an invalid value.
 *----------------------*---------------*------------*----------*----------------------------------------------+
   content 			   | json          |  no        |          | A properties map of optional extra content to send. This will be sent <in addition> to the content encapsulated by your form. 
 *----------------------*---------------*------------*----------*----------------------------------------------+
-  submitName 		   | String        |  no        |          | Optional submit name string to use when submitting to bind the request to a specific {{{../components/Submit.html}Submit}} component.
+  submitName 		   | String        |  no        |          | Optional submit name string to use when submitting to bind the request to a specific {{{../components/form/submit.html}Submit}} component.
 *----------------------*---------------*------------*----------*----------------------------------------------+
   validate 		       | boolean       |  no        |   false  | Controls whether or not to invoke client side validation.
 *----------------------*---------------*------------*----------*----------------------------------------------+
