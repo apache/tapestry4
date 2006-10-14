@@ -61,7 +61,9 @@ tapestry.form={
 		// make sure id is correct just in case node passed in has only name
 		id=form.getAttribute("id");
 		
-		if (!this.forms[id]) {
+		// previously connected, cleanup and connect aga
+		if (!this.forms[id] || (this.forms[id] && dojo.render.html.ie)) {
+			
 			this.forms[id]={};
 			this.forms[id].validateForm=true;
 			this.forms[id].profiles=[];
@@ -92,7 +94,7 @@ tapestry.form={
 				});
 			}
 		} else {
-			dojo.log.warn("registerForm(" + id + ") Form already registered.");
+			dojo.log.debug("registerForm(" + id + ") Form already registered, ignoring.");
 		}
 	},
 	
