@@ -292,6 +292,12 @@
                         <descriptor>src/main/assembly/dep.xml</descriptor>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>2.2-SNAPSHOT</version>
+                    <inherited>true</inherited>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
