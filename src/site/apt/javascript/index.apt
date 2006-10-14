@@ -13,7 +13,7 @@ Introduction
   for javascript this section will attemp to define the most important Tapestry javascript functions/objects
   available.
   
-  By default, the {{{../components/Shell.html}Shell}} component will include the core 
+  By default, the {{{../components/general/shell.html}Shell}} component will include the core 
   {{{http://dojotoolkit.org}dojo}} javascript object <<<dojo.js>>>, as well as the new core
   Tapestry javascript object - <<<core.js>>>. This means that you don't have to worry about how to include
   dojo or Tapestry javascript on any of your pages, they will already be available.

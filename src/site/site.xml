@@ -15,7 +15,7 @@
     <skin>
         <groupId>org.apache.tapestry</groupId>
         <artifactId>maven-skin</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.1-SNAPSHOT</version>
     </skin>
     
     <publishDate format="dd MMM yyyy" />
@@ -35,7 +35,7 @@
         
         <menu ref="parent" />
         
-        <menu name="Quick Links" inherit="top" >
+        <menu name="Quick Links" inherit="top">
             <item name="Home" href="/index.html" />
             <item name="Blog" href="http://howardlewisship.com/blog/" />
             <item name="Download" href="http://tapestry.apache.org/tapestry4.1/download.html" />
@@ -46,39 +46,39 @@
         
         <menu name="Documentation" >
             
-            <item name="Quick Start" href="/QuickStart/helloworld.html" collapse="true">
-                <item name="Hello World" href="/QuickStart/helloworld.html" />
-                <item name="Direct Links" href="/QuickStart/directlink.html" />
-                <item name="Forms" href="/QuickStart/forms.html" />
-                <item name="Contributed" href="/QuickStart/contributed.html" />
+            <item name="Quick Start" href="/quickstart/helloworld.html" collapse="true">
+                <item name="Hello World" href="/quickstart/helloworld.html" />
+                <item name="Direct Links" href="/quickstart/directlink.html" />
+                <item name="Forms" href="/quickstart/forms.html" />
+                <item name="Contributed" href="/quickstart/contributed.html" />
             </item>
             
-            <item name="Users Guide" href="/UsersGuide/index.html" collapse="true">
-                <item name="Introduction" href="/UsersGuide/index.html" />
-                <item name="Templates" href="/UsersGuide/template.html" />
-                <item name="Bindings" href="/UsersGuide/bindings.html" />
-                <item name="Listeners" href="/UsersGuide/listenermethods.html" />
-                <item name="Page Classes" href="/UsersGuide/page-class.html" />
-                <item name="Input Validation" href="/UsersGuide/validation.html"  />
-                <item name="Client-Side Validation" href="/UsersGuide/clientside-validation.html" />
-                <item name="Creating Components" href="/UsersGuide/components.html" />
-                <item name="Property Injection" href="/UsersGuide/injection.html" />
-                <item name="Localization" href="/UsersGuide/localization.html" />
-                <item name="State Management" href="/UsersGuide/state.html" />
-                <item name="IOC (HiveMind)" href="/UsersGuide/hivemind.html" />
-                <item name="Friendly URLs" href="/UsersGuide/friendly-urls.html" />
-                <item name="Page Events" href="/UsersGuide/events.html" />
-                <item name="Configuration" href="/UsersGuide/configuration.html" />
-                <item name="Shared Properties" href="/UsersGuide/properties.html" />
-                <item name="Upgrading from 3.0" href="/UsersGuide/upgrade.html" />
-                <item name="Specification DTD" href="/UsersGuide/spec.html" />
-                <item name="Script Template DTD" href="/UsersGuide/script.html" />
+            <item name="Users Guide" href="/usersguide/index.html" collapse="true">
+                <item name="Introduction" href="/usersguide/index.html" />
+                <item name="Templates" href="usersguide/template.html" />
+                <item name="Bindings" href="/usersguide/bindings.html" />
+                <item name="Listeners" href="/usersguide/listenermethods.html" />
+                <item name="Page Classes" href="/usersguide/page-class.html" />
+                <item name="Input Validation" href="/usersguide/validation.html" />
+                <item name="Client-Side Validation" href="/usersguide/clientside-validation.html" />
+                <item name="Creating Components" href="/usersguide/components.html" />
+                <item name="Property Injection" href="/usersguide/injection.html" />
+                <item name="Localization" href="/usersguide/localization.html" />
+                <item name="State Management" href="/usersguide/state.html" />
+                <item name="IOC (HiveMind)" href="/usersguide/hivemind.html" />
+                <item name="Friendly URLs" href="/usersguide/friendly-urls.html" />
+                <item name="Page Events" href="/usersguide/events.html" />
+                <item name="Configuration" href="/usersguide/configuration.html" />
+                <item name="Shared Properties" href="/usersguide/properties.html" />
+                <item name="Upgrading from 3.0" href="/usersguide/upgrade.html" />
+                <item name="Specification DTD" href="/usersguide/spec.html" />
+                <item name="Script Template DTD" href="/usersguide/script.html" />
             </item>
             
             <item name="XHR/DHTML Guide" href="/ajax/index.html" collapse="true">
                 <item name="Introduction" href="/ajax/index.html" />
-                <item name="EventListener" href="/ajax/EventListener.html" />
-                <item name="ResponseBuilder" href="/ajax/ResponseBuilder.html" />
+                <item name="EventListener" href="/ajax/eventlistener.html" />
+                <item name="ResponseBuilder" href="/ajax/responsebuilder.html" />
             </item>
             
             <item name="JavaScript Reference" href="/javascript/index.html" collapse="true">
@@ -97,61 +97,61 @@
         <menu name="Components" >
             
             <item name="General" href="/components/index.html" collapse="true">
-                <item name="Any" href="/components/general/Any.html" />
-                <item name="Block" href="/components/general/Block.html" />
-                <item name="Body" href="/components/general/Body.html" />
-                <item name="Delegator" href="/components/general/Delegator.html" />
-                <item name="Describe" href="/components/general/Describe.html" />
-                <item name="Else" href="/components/general/Else.html" />
-                <item name="ExceptionDisplay" href="/components/general/ExceptionDisplay.html" />
-                <item name="For" href="/components/general/For.html" />
-                <item name="Frame" href="/components/general/Frame.html" />
-                <item name="If" href="/components/general/If.html" />
-                <item name="Image" href="/components/general/Image.html" />
-                <item name="Insert" href="/components/general/Insert.html" />
-                <item name="InsertText" href="/components/general/InsertText.html" />
-                <item name="InvokeListener" href="/components/general/InvokeListener.html" />
-                <item name="Relation" href="/components/general/Relation.html" />                
-                <item name="RenderBlock" href="/components/general/RenderBlock.html" />
-                <item name="RenderBody" href="/components/general/RenderBody.html" />
-                <item name="Script" href="/components/general/Script.html" />
-                <item name="Shell" href="/components/general/Shell.html" />
-                <item name="Style" href="/components/general/Style.html" />
+                <item name="Any" href="/components/general/any.html" />
+                <item name="Block" href="/components/general/block.html" />
+                <item name="Body" href="/components/general/body.html" />
+                <item name="Delegator" href="/components/general/delegator.html" />
+                <item name="Describe" href="/components/general/describe.html" />
+                <item name="Else" href="/components/general/else.html" />
+                <item name="ExceptionDisplay" href="/components/general/exceptiondisplay.html" />
+                <item name="For" href="/components/general/for.html" />
+                <item name="Frame" href="/components/general/frame.html" />
+                <item name="If" href="/components/general/if.html" />
+                <item name="Image" href="/components/general/image.html" />
+                <item name="Insert" href="/components/general/insert.html" />
+                <item name="InsertText" href="/components/general/inserttext.html" />
+                <item name="InvokeListener" href="/components/general/invokelistener.html" />
+                <item name="Relation" href="/components/general/relation.html" />                
+                <item name="RenderBlock" href="/components/general/renderblock.html" />
+                <item name="RenderBody" href="/components/general/renderbody.html" />
+                <item name="Script" href="/components/general/script.html" />
+                <item name="Shell" href="/components/general/shell.html" />
+                <item name="Style" href="/components/general/style.html" />
             </item>
             
             <item name="Form" href="/components/form/index.html" collapse="true">
-                <item name="Button" href="/components/form/Button.html" />
-                <item name="Checkbox" href="/components/form/Checkbox.html" />
-                <item name="DatePicker" href="/components/form/DatePicker.html" />
-                <item name="FieldLabel" href="/components/form/FieldLabel.html" />
-                <item name="Form" href="/components/form/Form.html" />
-                <item name="Hidden" href="/components/form/Hidden.html" />
-                <item name="ImageSubmit" href="/components/form/ImageSubmit.html" />
-                <item name="LinkSubmit" href="/components/form/LinkSubmit.html" />
-                <item name="Option" href="/components/form/Option.html" />
-                <item name="PropertySelection" href="/components/form/PropertySelection.html" />
-                <item name="Radio" href="/components/form/Radio.html" />
-                <item name="RadioGroup" href="/components/form/RadioGroup.html" />
-                <item name="Select" href="/components/form/Select.html" />
-                <item name="Submit" href="/components/form/Submit.html" />
-                <item name="TextArea" href="/components/form/TextArea.html" />
-                <item name="TextField" href="/components/form/TextField.html" />
-                <item name="Upload" href="/components/form/Upload.html" />
+                <item name="Button" href="/components/form/button.html" />
+                <item name="Checkbox" href="/components/form/checkbox.html" />
+                <item name="DatePicker" href="/components/form/datepicker.html" />
+                <item name="FieldLabel" href="/components/form/fieldlabel.html" />
+                <item name="Form" href="/components/form/form.html" />
+                <item name="Hidden" href="/components/form/hidden.html" />
+                <item name="ImageSubmit" href="/components/form/imagesubmit.html" />
+                <item name="LinkSubmit" href="/components/form/linksubmit.html" />
+                <item name="Option" href="/components/form/option.html" />
+                <item name="PropertySelection" href="/components/form/propertyselection.html" />
+                <item name="Radio" href="/components/form/radio.html" />
+                <item name="RadioGroup" href="/components/form/radiogroup.html" />
+                <item name="Select" href="/components/form/select.html" />
+                <item name="Submit" href="/components/form/submit.html" />
+                <item name="TextArea" href="/components/form/textarea.html" />
+                <item name="TextField" href="/components/form/textfield.html" />
+                <item name="Upload" href="/components/form/upload.html" />
             </item>
             
             <item name="Link" href="/components/link/index.html" collapse="true">
-                 <item name="DirectLink" href="/components/link/DirectLink.html" />
-                 <item name="ExternalLink" href="/components/link/ExternalLink.html" />
-                 <item name="GenericLink" href="/components/link/GenericLink.html" />
-                 <item name="PageLink" href="/components/link/PageLink.html" />
-                 <item name="Rollover" href="/components/link/Rollover.html" />
-                 <item name="ServiceLink" href="/components/link/ServiceLink.html" />
+                 <item name="DirectLink" href="/components/link/directlink.html" />
+                 <item name="ExternalLink" href="/components/link/externallink.html" />
+                 <item name="GenericLink" href="/components/link/genericlink.html" />
+                 <item name="PageLink" href="/components/link/pagelink.html" />
+                 <item name="Rollover" href="/components/link/rollover.html" />
+                 <item name="ServiceLink" href="/components/link/servicelink.html" />
             </item>
             
             <item name="Dojo" href="/components/dojo/index.html" collapse="true">
-                <item name="Autocompleter" href="/components/dojo/Autocompleter.html" />
-                <item name="DropdownDatePicker" href="/components/dojo/DropdownDatePicker.html" />
-                <item name="DropdownTimePicker" href="/components/dojo/DropdownTimePicker.html" />
+                <item name="Autocompleter" href="/components/dojo/autocompleter.html" />
+                <item name="DropdownDatePicker" href="/components/dojo/dropdowndatepicker.html" />
+                <item name="DropdownTimePicker" href="/components/dojo/dropdowntimepicker.html" />
             </item>
             
         </menu>

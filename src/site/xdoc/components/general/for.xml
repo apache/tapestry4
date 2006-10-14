@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Copyright 2005 The Apache Software Foundation
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<document>
+    <properties>
+        <title>For</title>
+    </properties>
+    <body>
+
+        <section name="For">
+
+            <p>
+                Loops over a collection of source values. May also emulate an element (like an Any
+                component). If this component is placed in a Form, it will automatically store the
+                collection in Hidden fields so that the structure of the page is preserved when the
+                form is submitted even if the values in the source parameter have changed.
+            </p>
+
+            <p>
+                <strong>
+                    See also:
+                    <a href="../../tapestry-framework/apidocs/org/apache/tapestry/components/ForBean.html">
+                        org.apache.tapestry.components.ForBean
+                    </a>
+                    ,
+                    <a
+                        href="../../tapestry-framework/apidocs/org/apache/tapestry/utils/DefaultPrimaryKeyConverter.html">
+                        org.apache.tapestry.utils.DefaultPrimaryKeyConverter
+                    </a>
+                </strong>
+            </p>
+
+            <section name="Parameters">
+
+
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Default</th>
+                        <th>Description</th>
+                    </tr>
+
+                    <tr>
+                        <td>source</td>
+                        <td>Iterator, Collection, Object[], or Object</td>
+                        <td>yes</td>
+                        <td></td>
+                        <td>
+                            The source of objects to be iterated, which may be a Collection, an
+                            Iterator, an array of Objects, or a even a single Object (which is
+                            treated as a singleton collection).
+                            <p />
+                            The source parameter may even be null, in which case the For's body is
+                            never renderred.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>value</td>
+                        <td>Object</td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            If provided, the parameter is updated with the current value on each
+                            iteration.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>index</td>
+                        <td>int</td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            If provided, the parameter is updated with the index of the loop on each
+                            iteration.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>element</td>
+                        <td>String</td>
+                        <td>no</td>
+                        <td></td>
+
+                        <td>
+                            If provided, the component wraps its content with the requested element.
+                            Informal parameters become attributes of that element.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>keyExpression</td>
+                        <td>String</td>
+                        <td>no</td>
+                        <td></td>
+                        
+                        <td>
+                            Only active in a form. An OGNL expression that returns the primary key
+                            of the iterated value. The primary keys are stored in hidden fields
+                            during rendering and are loaded from the form during a rewind to ensure
+                            that the iterations remain the same.
+                            <p />
+                            This is a simpler, but a less efficient alternative of the 'converter'
+                            parameter. If needed, please use in conjuction with 'fullSource' to
+                            reference objects not currently present in 'source'. Use the
+                            'defaultValue' parameter to define the object to be returned if a value
+                            corresponding to a particular primary key cannot be found.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>fullSource</td>
+                        <td>Iterator, Collection, Object[], or Object</td>
+                        <td>no</td>
+                        <td></td>
+
+                        <td>
+                            Only active in a form. If an object with a representation stored in the
+                            form cannot be found in the 'source' parameter, then the objects
+                            provided by this parameter are searched for a match next.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>defaultValue</td>
+                        <td>Object</td>
+                        <td>no</td>
+                        <td></td>
+
+                        <td>
+                            Only active in a form. The value to be used when no match for a given
+                            representation stored in the hidden fields cannot be found.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>converter</td>
+                        <td>
+                            <a
+                                href="../../tapestry-framework/apidocs/org/apache/tapestry/components/IPrimaryKeyConverter.html">
+                                IPrimaryKeyConverter
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td></td>
+
+                        <td>
+                            Only active in a form. Defines how the items iterated upon will be
+                            stored in the form as hidden values and how the stored information will
+                            be converted back to objects.
+                            <p />
+                            This interface allows only the primary key of the items to be stored,
+                            rather than the whole item.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>primaryKeys</td>
+                        <td>List</td>
+                        <td>no</td>
+                        <td></td>
+
+                        <td>
+                            Only active in a form. If provided, the parameter is automatically
+                            updated during a rewind with the list of primary keys stored in the
+                            form. The parameter is updated right before the iterations begin in a
+                            rewind and could be used to preload the relevant objects in the provided
+                            'converter'.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>match</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>true</td>
+
+                        <td>
+                            Only active in a form. This parameter allows the matching of the string
+                            representation of the values stored in the hidden fields with that of
+                            the values in 'source'. It guarantees that the values iterated upon are
+                            physically identical to the ones provided.
+                            <p />
+                            The method is sometimes slower than simple unsqueezing, but it
+                            eliminates a number of potential pitfalls. Please disable with caution.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>volatile</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+
+                        <td>
+                            Only active in a form. Determines whether to avoid creating hidden
+                            fields within a form. Using this parameter may make the form structure
+                            different during render and rewind, and cause exceptions as a result.
+                            Please use with caution.
+                        </td>
+                    </tr>
+
+                </table>
+
+                <p>
+                    Body:
+                    <strong>allowed</strong>
+                </p>
+
+                <p>
+                    Informal parameters:
+                    <strong>allowed</strong>
+                </p>
+
+                <p>
+                    Reserved parameters:
+                    <em>none</em>
+                </p>
+
+            </section>
+
+            <section name="Examples">
+                <p>
+                    <strong>View list of customers</strong>
+                </p>
+                <p>This example displays a list of customers:</p>
+
+                <source xml:space="preserve">
+&lt;table cellspacing="10"&gt;
+  &lt;tr&gt;
+    &lt;td&gt;ID&lt;/td&gt;
+    &lt;td&gt;Name&lt;/td&gt;
+    &lt;td&gt;Level&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td colspan="3"&gt;&lt;hr&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr jwcid="@For" source="ognl:customerList" value="ognl:customer" element="tr"&gt;
+    &lt;td&gt;&lt;span jwcid="@Insert" value="ognl:customer.id"/&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;span jwcid="@Insert" value="ognl:customer.fullName"/&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;span jwcid="@Insert" value="ognl:customer.memberLevel"/&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+</source>
+
+                <p>
+                    <br />
+                    <strong>Edit a list of customers</strong>
+                </p>
+                <p>
+                    This examples allows the user to edit a list of customers. The 'keyExpression'
+                    parameter is optional. It tells the component to use the 'id' expression to
+                    obtain the primary key of the customers. The parameter is particularly useful
+                    when the Customer object is not Serializable, as only the primary key is stored
+                    in the hidden fields, rather than the full Customer record.
+                </p>
+
+                <source xml:space="preserve">
+&lt;table cellspacing="10"&gt;
+  &lt;tr&gt;
+    &lt;td&gt;ID&lt;/td&gt;
+    &lt;td&gt;Name&lt;/td&gt;
+    &lt;td&gt;Level&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td colspan="3"&gt;&lt;hr&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr jwcid="@For" source="ognl:customerList" keyExpression="id"
+      value="ognl:customer" element="tr"&gt;
+    &lt;td&gt;&lt;span jwcid="@Insert" value="ognl:customer.id"/&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;span jwcid="@TextField" value="ognl:customer.fullName"/&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;span jwcid="@PropertySelection" value="ognl:customer.memberLevel"
+              model="ognl:@com.mycorp.Customer@MEMBER_LEVEL_MODEL"/&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+</source>
+
+            </section>
+
+            <section name="Hints">
+
+
+                <p>
+                    <strong>Representing data as a string</strong>
+                </p>
+                <p>
+                    If the
+                    <a href="for.html">For</a>
+                    component is used in a form, it will automatically convert the provided data to
+                    strings and store it in hidden fields in order to ensure that the form is
+                    processed correctly when submitted.
+                </p>
+                <p>
+                    If the data is in one of the basic types or if the data is serializable,
+                    Tapestry will automatically build string representation of the objects. If it is
+                    not serializable however, an
+                    <code>ApplicationRuntimeException</code>
+                    will be thrown with the message 'Could not find a strategy instance for class'.
+                </p>
+                <p>There are several options to resolve this problem:</p>
+                <ol>
+                    <li>
+                        <p>
+                            <strong>Store only the primary keys of your data objects</strong>
+                            <br />
+                            You can define the name of a property that contains the primary keys
+                            using the
+                            <code>keyExpression</code>
+                            parameter.
+                            <br />
+                            The second example shows that approach and uses the
+                            <code>id</code>
+                            property to represent the object.
+                            <br />
+                            Alternatively, you can implement the
+                            <code>IPrimaryKeyConverter</code>
+                            interface and use the
+                            <code>converter</code>
+                            parameter to define how the primary key is obtained from the object.
+                        </p>
+                    </li>
+                    <li>
+                        <strong>Make your data class Serializable.</strong>
+                        <br />
+                        Tapestry will automatically convert Serializable data into a string and
+                        store it in the form.
+                    </li>
+                    <li>
+                        Define your own way to convert the class into a string. To do this,
+                        implement the
+                        <code>SqueezeAdaptor</code>
+                        interface and register your squeeze adaptor in the WEB-INF/hivemodule.xml
+                        file. Please refer to the documentation for more information.
+                    </li>
+                    <li>
+                        Make the For component volatile by setting the
+                        <code>volatile</code>
+                        parameter to 'true'. This approach is discouraged, since the data will not
+                        be stored in the form as a result. That may cause a
+                        <code>StaleLinkException</code>
+                        to be thrown if the data changes between the form rendering and the form
+                        submission. To avoid this problem you must make sure that the data stays the
+                        same.
+                    </li>
+                </ol>
+                <p>Either of the above options will work, but the first two are preferred.</p>
+
+            </section>
+
+        </section>
+
+    </body>
+</document>

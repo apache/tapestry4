@@ -8,13 +8,13 @@ Jesse Kuhnert
  
 tapestry.form.validation
 
-  Defines the default client side validation logic which will be invoked by {{{../components/Form.html}Form}} components
+  Defines the default client side validation logic which will be invoked by {{{../components/form/form.html}Form}} components
   with the <<<clientValidationEnabled>>> parameter set to true. You can override as little or as much of the default
   logic as you would like.
 
   The source for <<<tapestry.form.validation>>> can be found {{{http://svn.apache.org/viewvc/tapestry/tapestry4/trunk/tapestry-framework/src/js/tapestry/form/validation.js?view=markup}here}}. 
 
-  <<See also:>> {{{../UsersGuide/clientside-validation.html}Client-Side Validation}},  {{{form.html}Form}} JavaScript Reference
+  <<See also:>> {{{../usersguide/clientside-validation.html}Client-Side Validation}},  {{{form.html}Form}} JavaScript Reference
 
 * tapestry.form.validation.missingClass
 

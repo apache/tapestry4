@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Copyright 2004, 2005 The Apache Software Foundation
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<document>
+    <properties>
+        <title>Shell</title>
+    </properties>
+    <body>
+
+        <section name="Shell">
+
+            <p>
+                Provides the outer 'shell' of a page, including the <code>&lt;html&gt;, &lt;head&gt;</code> and
+                <code>&lt;title&gt;</code> tags, but not the <code>&lt;body&gt;</code> tag (which is typically provided by a
+                <a href="Body.html">Body</a>
+                component).
+            </p>
+            <p>
+                Most Tapestry pages will include a Shell component enclosing a
+                <a href="body.html">Body</a>
+                component. The Shell is used to resolve the page's HTML stylesheet and the
+                <a href="body.html">Body</a>
+                component manages dynamically generated JavaScript.
+            </p>
+            <p>
+                When designing the look and feel of a Tapestry page, include the normal HTML
+                elements before the Shell component, including a <code>&lt;link rel="stylesheet"&gt;</code>
+                element, so that the page will render normally in a web browser, but use a 
+                <code>&lt;span jwcid="$content$"&gt;</code> around the actual content.
+            </p>
+
+            <p>
+                <strong>
+                    See also:
+                    <a href="../../tapestry-framework/apidocs/org/apache/tapestry/html/Shell.html">
+                        org.apache.tapestry.html.Shell
+                    </a>
+                    ,
+                    <a href="body.html">Body</a>
+                    ,
+                    <a href="../link/pagelink.html">PageLink</a>
+                </strong>
+            </p>
+
+            <section name="Parameters">
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Default</th>
+                        <th>Description</th>
+                    </tr>
+
+                    <tr>
+                        <td>title</td>
+                        <td>String</td>
+                        <td>yes</td>
+                        <td></td>
+                        <td>The title for the page, used to render the <code>&lt;title&gt;</code> tag.</td>
+                    </tr>
+
+                    <tr>
+                        <td>raw</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            If false (the default), then HTML characters in the title are escaped.
+                            If true, then value is emitted exactly as is.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>stylesheet</td>
+                        <td>
+                            <a href="../../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
+                                IAsset
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td></td>
+                        <td>If provided, then a <code>&lt;link&gt;</code> to the stylesheet is generated.</td>
+                    </tr>
+
+                    <tr>
+                        <td>stylesheets</td>
+                        <td>
+                            Array or collection of
+                            <a href="../../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
+                                IAsset
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            If provided, then <code>&lt;link&gt;</code> elements are created for each stylesheet
+                            asset.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>doctype</td>
+                        <td>String</td>
+                        <td>no</td>
+                        <td>
+                            HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                            "http://www.w3.org/TR/html4/loose.dtd"
+                        </td>
+                        <td>
+                            Used to specify the full definition of the DOCTYPE element in the
+                            response page.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>renderContentType</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>true</td>
+                        <td>
+                            If true (the default), then a <code>&lt;meta&gt;</code> tag will be written to set
+                            the content type of the page.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>refresh</td>
+                        <td>int</td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            If provided, then a <code>&lt;meta&gt;</code> tag will be written to cause a page
+                            refresh. The parameter value is the number of seconds before the
+                            refresh.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>disableCaching</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            If provided, then a <code>&lt;meta&gt;</code> tag will be written setting the
+                            content="nocache" value to try and prevent browser caching of page.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>delegate</td>
+                        <td>
+                            <a href="../../tapestry-framework/apidocs/org/apache/tapestry/IRender.html">
+                                IRender
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            If specified, the delegate is rendered before the close of the
+                            <code>&lt;head&gt;</code> tag. Typically, this is used to provide additional
+                            <code>&lt;meta&gt;</code> tags.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>renderBaseTag</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            Specifies whether or not to render the html BASE tag element in the
+                            document HEAD.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>ajaxDelegate</td>
+                        <td>
+                            <a href="../../tapestry-framework/apidocs/org/apache/tapestry/IRender.html">
+                            IRender
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td>
+                            <a href="../../tapestry-framework/apidocs/org/apache/tapestry/dojo/AjaxShellDelegate.html">
+                            AjaxShellDelegate
+                            </a>
+                        </td>
+                        <td>
+                            If specified, allows for the default ajaxDelegate that renders the dojo script
+                            includes to be overriden.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>browserLogLevel</td>
+                        <td>String - One of [DEBUG,INFO,WARNING,ERROR,CRITICAL]</td>
+                        <td>no</td>
+                        <td>WARNING</td>
+                        <td>
+                            Sets the default browser based javascript log level to use to debug client side
+                            interactions. If you specify an html element id to place the debug content it will be
+                            written there. Otherwise, the default is to write to an element with id "debug", or append to
+                            the document body if none exists.
+                            
+                            <p>
+                            See the dojo docs for more information about logging, but the basic idea is that you can write
+                            statements like <code>dojo.log.info("Doing some operation");</code> in javascript and have them
+                            appropriately filtered based on the log level used.
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>debugEnabled</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>true</td>
+                        <td>
+                            Turns browser level logging completely on/off.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>debugAtAllCosts</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            Turns off deep context level javascript debugging mode for dojo. This means 
+                            that exceptions/debug statements will show you line numbers from the actual 
+                            javascript file that generated them instead of the normal default which is 
+                            usually bootstrap.js .
+                            
+                            <p>
+                                People should be wary of turning this on as it may cause problems under certain 
+                                conditions, and you definitely don't ever want this on in production.
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>debugContainerId</td>
+                        <td>String</td>
+                        <td>no</td>
+                        <td>debug</td>
+                        <td>
+                            Sets the html element node id of the element you would like all browser debug content to
+                            go to, if you have logging turned on.
+                            
+                            <p>
+                            For example, if you had an element on your html page with <code>id="myElement"</code> you would
+                            set the debugContainerId to <code>"myElement"</code>.
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>consoleEnabled</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            Enables/disables the dojo.debug.console functionality which should redirect 
+                            most logging messages to your browsers javascript console. (if it supports one).
+                            
+                            <p>
+                                The debug console is disabled by default. Currently known supported browsers 
+                                are FireFox(having FireBug extension helps a great deal)/Opera/Safari.
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>preventBackButtonFix</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            Sets the dojo preventBackButtonFix djConfig configuration. This should typically 
+                            be avoided but is provided for flexibility.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>parseWidgets</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            Tells dojo whether or not to parse widgets by traversing the entire dom node of your
+                            document. It is highly reccomended that you keep this at its default value of false.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>tapestrySource</td>
+                        <td>
+                        <a href="../../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
+                            IAsset
+                        </a>                        
+                        </td>
+                        <td>false</td>
+                        <td>classpath:/tapestry/core.js</td>
+                        <td>
+                            Controls what the root source inclusion is for tapestry javascript packages. Override if you
+                            want to replace the built in defaults with a version of your own.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>dojoSource</td>
+                        <td>
+                        <a href="../../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
+                            IAsset
+                        </a>
+                        </td>
+                        <td>false</td>
+                        <td>classpath:/dojo/dojo.js</td>
+                        <td>
+                            Controls what the root source inclusion is for the dojo javascript packages. Override if you
+                            want to replace the built in defaults with a version of your own.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>dojoPath</td>
+                        <td>
+                        <a href="../../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
+                            IAsset
+                        </a>
+                        </td>
+                        <td>false</td>
+                        <td>classpath:/dojo/</td>
+                        <td>
+                            Specifies the default path to the root dojo folder, not the dojo.js file itself. This
+                            is used by the <code>djConfig.baseRelativePath</code> javascript configuration property in dojo
+                            to resolve relative resource includes - like widgets/images/js/css/etc..
+                        </td>
+                    </tr>
+                </table>
+
+                <p>
+                    Body:
+                    <strong>allowed</strong>
+                </p>
+
+                <p>
+                    Informal parameters:
+                    <strong>forbidden</strong>
+                </p>
+
+                <p>
+                    Reserved parameters:
+                    <em>none</em>
+                </p>
+
+            </section>
+
+            <section name="Examples">
+
+
+                <p>The Shell component is used here to provide the page's stylesheet and title.</p>
+
+                <p>
+                    In this example, the Login.html template is in the login subdirectory of the
+                    root application context. The stylesheet is within the styles directory, below
+                    the root application context.
+                </p>
+
+                <p>login/Login.html:</p>
+
+                <source xml:space="preserve">
+&lt;html&gt;
+&lt;head&gt;
+ &lt;link rel="stylesheet" type="text/css" href="../styles/style.css"/&gt;
+ &lt;title&gt;MyCorp Customer Login&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;span jwcid="$content$"&gt;
+&lt;span jwcid="@Shell" stylesheet="asset:stylesheet" title="MyCorp Customer Login"&gt;
+&lt;body jwcid="@Body"&gt;
+
+&lt;h1&gt;Customer Login&lt;/h1&gt;
+Welcome to MyCorp's Customer Portal secure login page.
+
+. . .
+
+&lt;/body&gt;
+&lt;/span&gt;
+&lt;/span&gt;
+&lt;/html&gt;
+</source>
+
+                <p>WEB-INF/login/Login.page:</p>
+
+                <source xml:space="preserve">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE page-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://tapestry.apache.org/dtd/Tapestry_4_0.dtd"&gt;
+  
+&lt;page-specification&gt;
+
+  . . .
+  
+  &lt;asset name="stylesheet" path="styles/style.css"/&gt;
+   
+&lt;/page-specification&gt;
+
+</source>
+
+                <p>
+                    Note that for page and component specifications stored in the web application
+                    context (even under WEB-INF), relative asset paths are computed from the
+                    <em>root application context directory</em>
+                    .
+                </p>
+
+            </section>
+
+        </section>
+
+    </body>
+</document>
