@@ -36,19 +36,16 @@
                     XTileService
                 </a>
                 that this component uses does NOT activate any page - it simply calls the specified
-                listener. This means that pageBeginRender() methods will not get called and that
-                cycle.getPage() will return null.
+                listener. This means that <code>pageBeginRender()</code> methods will not get called and that
+                <code>cycle.getPage()</code> will return null.
                 </p>
             </span>
 
             <subsection name="Parameters">
-
-
                 <table>
                     <tr>
                         <th>Name</th>
                         <th>Type</th>
-                        <th>Direction</th>
                         <th>Required</th>
                         <th>Default</th>
                         <th>Description</th>
@@ -58,18 +55,17 @@
                         <td>listener</td>
                         <td>
                             <a
-                                href="../../tapestry/apidocs/org/apache/tapestry/IActionListener.html">
+                                href="../../tapestry-framework/apidocs/org/apache/tapestry/IActionListener.html">
                                 IActionListener
                             </a>
                         </td>
-                        <td>in</td>
                         <td>yes</td>
-                        <td />
+                        <td></td>
                         <td>
                             The listener that will be invoked when the Javascript function with the
                             given name is invoked. Any parameters passed to the send function will
-                            be available from cycle.getListenerParameters(). In addition, the
-                            listener can perform cycle.setListenerParameters() to pass an array of
+                            be available from <code>cycle.getListenerParameters()</code>. In addition, the
+                            listener can perform <code>cycle.setListenerParameters()</code> to pass an array of
                             strings to the JavaScript receive function.
                         </td>
                     </tr>
@@ -77,9 +73,8 @@
                     <tr>
                         <td>sendName</td>
                         <td>String</td>
-                        <td>in</td>
                         <td>yes</td>
-                        <td />
+                        <td></td>
                         <td>
                             The name of the JavaScript function that the script will define to allow
                             the application to send information to the server.
@@ -89,9 +84,8 @@
                     <tr>
                         <td>receiveName</td>
                         <td>String</td>
-                        <td>in</td>
                         <td>yes</td>
-                        <td />
+                        <td></td>
                         <td>
                             The name of the JavaScript function that the script will call to allow
                             the application to receive information from the server some time after
@@ -102,9 +96,8 @@
                     <tr>
                         <td>errorName</td>
                         <td>String</td>
-                        <td>in</td>
                         <td>no</td>
-                        <td>null</td>
+                        <td></td>
                         <td>
                             The name of the JavaScript function that the script will call to
                             indicate that an error has occurred while sending the information to the
@@ -115,7 +108,6 @@
                     <tr>
                         <td>disableCaching</td>
                         <td>boolean</td>
-                        <td>in</td>
                         <td>no</td>
                         <td>false</td>
                         <td>

@@ -16,70 +16,79 @@
 -->
 <document>
     <properties>
-        <title>TablePages</title>
+        <title>TableRows</title>
     </properties>
     <body>
 
-        <section name="TablePages">
-
+        <section name="TableRows">
             <p>
                 A low level
-                <a href="/Table.html">Table</a>
-                component that renders the pages in the table. This component must be wrapped by
-                <a href="/TableView.html">TableView</a>
+                <a href="table.html">Table</a>
+                component that generates the rows of the current page in the table. This component
+                must be wrapped by
+                <a href="tableview.html">TableView</a>
                 .
-            </p>
-            <p>
-                The component generates a list of pages in the
-                <a href="/Table.html">Table</a>
-                centered around the current one and allows you to navigate to other pages.
+                <br />
+                The component iterates over the rows of the current page in the table. The rows are
+                wrapped in 'tr' tags by default. You can define columns manually within, or you can
+                use
+                <a href="tablevalues.html">TableValues</a>
+                to generate the columns automatically.
             </p>
 
             <p>
                 <strong>
                     See also:
-                    <a href="/Table.html">Table</a>
+                    <a href="table.html">Table</a>
                     ,
-                    <a href="/TableView.html">TableView</a>
+                    <a href="tableview.html">TableView</a>
                     ,
-                    <a href="/TablePages.html">TablePages</a>
+                    <a href="tablepages.html">TablePages</a>
                     ,
-                    <a href="/TableRows.html">TableRows</a>
+                    <a href="tablerows.html">TableRows</a>
                     ,
-                    <a href="/TableValues.html">TableValues</a>
+                    <a href="tablevalues.html">TableValues</a>
                     ,
-                    <a href="/TableColumns.html">TableColumns</a>
+                    <a href="tablecolumns.html">TableColumns</a>
                 </strong>
             </p>
 
             <subsection name="Parameters">
-
-
                 <table>
                     <tr>
                         <th>Name</th>
                         <th>Type</th>
-                        <th>Direction</th>
                         <th>Required</th>
                         <th>Default</th>
                         <th>Description</th>
                     </tr>
 
                     <tr>
-                        <td>pagesDisplayed</td>
-                        <td>int</td>
-                        <td>in</td>
-                        <td>no</td>
-                        <td>7</td>
-
+                        <td>row</td>
                         <td>
-                            Determines the maximum number of pages to be displayed in the page list
-                            when the table has more than one page.
-                            <br />
-                            For example, if the table has 20 pages, and 10 is the current page,
-                            pages from 7 to 13 in the page list will be shown if this parameter has
-                            a value of 7.
+                            <a
+                                href="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html">
+                                Object
+                            </a>
                         </td>
+                        <td>no</td>
+                        <td> </td>
+
+                        <td>The value object of the current row being rendered.</td>
+                    </tr>
+
+                    <tr>
+                        <td>element</td>
+                        <td>
+                            <a
+                                href="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/String.html">
+                                String
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td>tr</td>
+
+                        <td>The tag to use to wrap the rows in.</td>
                     </tr>
 
                 </table>

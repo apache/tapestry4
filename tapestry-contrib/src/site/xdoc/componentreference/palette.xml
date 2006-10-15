@@ -24,35 +24,32 @@
 
             <p>
                 A component used to make a number of selections from a list. The general look is a
-                pair of &lt;select&gt; elements. with a pair of buttons between them. The right
+                pair of <code>&lt;select&gt;</code> elements. with a pair of buttons between them. The right
                 element is a list of values that can be selected. The buttons move values from the
                 right column ("available") to the left column ("selected").
                 <br />
                 This all takes a bit of JavaScript to accomplish (quite a bit), which means a
-                <a href="../../Body.html">Body</a>
+                <a href="../../components/general/body.html">Body</a>
                 component must wrap the Palette. If JavaScript is not enabled in the client browser,
                 then the user will be unable to make (or change) any selections.
                 <br />
                 Cross-browser compatibility is not perfect. In some cases, the
-                <a href="/MultiplePropertySelection.html">MultiplePropertySelection</a>
+                <a href="multiplepropertyselection.html">MultiplePropertySelection</a>
                 component may be a better choice.
             </p>
-
+            <img src="../images/palette.png" alt="Sample palette selection."/>
             <p>
                 <strong>
                     See also:
-                    <a href="/MultiplePropertySelection.html">MultiplePropertySelection</a>
+                    <a href="multiplepropertyselection.html">MultiplePropertySelection</a>
                 </strong>
             </p>
 
             <subsection name="Parameters">
-
-
                 <table>
                     <tr>
                         <th>Name</th>
                         <th>Type</th>
-                        <th>Direction</th>
                         <th>Required</th>
                         <th>Default</th>
                         <th>Description</th>
@@ -60,7 +57,6 @@
                     <tr>
                         <td>selected</td>
                         <td>java.util.List</td>
-                        <td>in</td>
                         <td>yes</td>
                         <td> </td>
                         <td>
@@ -81,12 +77,11 @@
                                 IPropertySelectionModel
                             </a>
                         </td>
-                        <td>in</td>
                         <td>yes</td>
                         <td> </td>
                         <td>
                             Works, as with a
-                            <a href="site:PropertySelection">PropertySelection</a>
+                            <a href="../../components/form/propertyselection.html">PropertySelection</a>
                             component, to define the possible values.
                         </td>
                     </tr>
@@ -98,7 +93,6 @@
                                 SortMode
                             </a>
                         </td>
-                        <td>in</td>
                         <td>no</td>
                         <td>
                             <a
@@ -111,18 +105,16 @@
                     <tr>
                         <td>rows</td>
                         <td>int</td>
-                        <td>in</td>
                         <td>no</td>
                         <td>10</td>
                         <td>
                             The number of rows that should be visible in the Pallete's
-                            &lt;select&gt; elements.
+                            <code>&lt;select&gt;</code> elements.
                         </td>
                     </tr>
                     <tr>
                         <td>tableClass</td>
                         <td>String</td>
-                        <td>in</td>
                         <td>no</td>
                         <td>tapestry-palette</td>
                         <td>
@@ -133,14 +125,13 @@
                     <tr>
                         <td>selectedTitleBlock</td>
                         <td>
-                            <a href="site:Block">Block</a>
+                            <a href="../../components/general/block.html">Block</a>
                         </td>
-                        <td>in</td>
                         <td>no</td>
                         <td>"Selected"</td>
                         <td>
-                            If specified, allows a Block to be placed within the &lt;th&gt; reserved
-                            for the title above the selected items &lt;select&gt; (on the right).
+                            If specified, allows a Block to be placed within the <code>&lt;th&gt;</code> reserved
+                            for the title above the selected items <code>&lt;select&gt;</code> (on the right).
                             This allows for images or other components to be placed there. By
                             default, the simple word Selected is used.
                         </td>
@@ -148,9 +139,8 @@
                     <tr>
                         <td>availableTitleBlock</td>
                         <td>
-                            <a href="site:Block">Block</a>
+                            <a href="../../components/general/block.html">Block</a>
                         </td>
-                        <td>in</td>
                         <td>no</td>
                         <td>"Available"</td>
                         <td>
@@ -181,7 +171,6 @@
                                 IAsset
                             </a>
                         </td>
-                        <td>in</td>
                         <td>no</td>
                         <td> </td>
                         <td>

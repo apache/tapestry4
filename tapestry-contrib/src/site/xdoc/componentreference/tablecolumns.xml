@@ -24,10 +24,10 @@
 
             <p>
                 A low level
-                <a href="/Table.html">Table</a>
+                <a href="table.html">Table</a>
                 component that renders the column headers in the table. This component must be
                 wrapped by
-                <a href="/TableView.html">TableView</a>
+                <a href="tableview.html">TableView</a>
                 .
             </p>
             <p>
@@ -68,26 +68,23 @@
             <p>
                 <strong>
                     See also:
-                    <a href="/Table.html">Table</a>
+                    <a href="table.html">Table</a>
                     ,
-                    <a href="/TableView.html">TableView</a>
+                    <a href="tableview.html">TableView</a>
                     ,
-                    <a href="/TablePages.html">TablePages</a>
+                    <a href="tablepages.html">TablePages</a>
                     ,
-                    <a href="/TableRows.html">TableRows</a>
+                    <a href="tablerows.html">TableRows</a>
                     ,
-                    <a href="/TableValues.html">TableValues</a>
+                    <a href="tablevalues.html">TableValues</a>
                 </strong>
             </p>
 
             <subsection name="Parameters">
-
-
                 <table>
                     <tr>
                         <th>Name</th>
                         <th>Type</th>
-                        <th>Direction</th>
                         <th>Required</th>
                         <th>Default</th>
                         <th>Description</th>
@@ -96,7 +93,6 @@
                     <tr>
                         <td>element</td>
                         <td>String</td>
-                        <td>in</td>
                         <td>no</td>
                         <td>th</td>
 
@@ -111,7 +107,6 @@
                                 ITableColumn
                             </a>
                         </td>
-                        <td>out</td>
                         <td>no</td>
                         <td> </td>
 
@@ -121,11 +116,10 @@
                     <tr>
                         <td>arrowUpAsset</td>
                         <td>
-                            <a href="../../tapestry/apidocs/org/apache/tapestry/IAsset.html">
+                            <a href="../../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
                                 IAsset
                             </a>
                         </td>
-                        <td>in</td>
                         <td>no</td>
                         <td> </td>
 
@@ -135,11 +129,10 @@
                     <tr>
                         <td>arrowDownAsset</td>
                         <td>
-                            <a href="../../tapestry/apidocs/org/apache/tapestry/IAsset.html">
+                            <a href="../../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
                                 IAsset
                             </a>
                         </td>
-                        <td>in</td>
                         <td>no</td>
                         <td> </td>
 

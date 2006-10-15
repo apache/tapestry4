@@ -28,13 +28,10 @@
             </p>
 
             <subsection name="Parameters">
-
-
                 <table>
                     <tr>
                         <th>Name</th>
                         <th>Type</th>
-                        <th>Direction</th>
                         <th>Required</th>
                         <th>Default</th>
                         <th>Description</th>
@@ -43,7 +40,6 @@
                     <tr>
                         <td>warningTime</td>
                         <td>int</td>
-                        <td>in</td>
                         <td>no</td>
                         <td>300</td>
                         <td>
@@ -55,7 +51,6 @@
                     <tr>
                         <td>autoProlongTime</td>
                         <td>int</td>
-                        <td>in</td>
                         <td>no</td>
                         <td>900</td>
                         <td>
@@ -67,7 +62,6 @@
                     <tr>
                         <td>warningMessage</td>
                         <td>String</td>
-                        <td>in</td>
                         <td>no</td>
                         <td>
                             The connection was inactive for more than {0} minutes. Your session will
@@ -85,7 +79,6 @@
                     <tr>
                         <td>expirationMessage</td>
                         <td>String</td>
-                        <td>in</td>
                         <td>no</td>
                         <td>Your session has expired. Please log in again.</td>
                         <td>
@@ -97,7 +90,6 @@
                     <tr>
                         <td>disableWarning</td>
                         <td>boolean</td>
-                        <td>in</td>
                         <td>no</td>
                         <td>false</td>
                         <td>Do not display a warning message after 'warningTime' seconds.</td>
@@ -106,7 +98,6 @@
                     <tr>
                         <td>disableAutoProlong</td>
                         <td>boolean</td>
-                        <td>in</td>
                         <td>no</td>
                         <td>false</td>
                         <td>
@@ -118,9 +109,8 @@
                     <tr>
                         <td>expirationFunction</td>
                         <td>String</td>
-                        <td>in</td>
                         <td>no</td>
-                        <td>null</td>
+                        <td></td>
                         <td>
                             The JavaScript function that will be invoked when the session expires.
                         </td>

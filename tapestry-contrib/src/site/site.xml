@@ -15,7 +15,7 @@
     <skin>
         <groupId>org.apache.tapestry</groupId>
         <artifactId>maven-skin</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.1-SNAPSHOT</version>
     </skin>
     
     <publishDate format="dd MMM yyyy" />
@@ -39,26 +39,26 @@
                 
                 <item name="Overview" href="/index.html" />
                 
-                <item name="CheckboxGroup" href="/ComponentReference/CheckboxGroup.html" />
-                <item name="ControlCheckbox" href="/ComponentReference/ControlCheckbox.html" />
-                <item name="ControlledCheckbox" href="/ComponentReference/ControlledCheckbox.html" />
-                <item name="DumpObject" href="/ComponentReference/DumpObject.html" />
-                <item name="InspectorButton" href="/ComponentReference/InspectorButton.html" />
-                <item name="MaskEdit" href="/ComponentReference/MaskEdit.html" />
-                <item name="MultiplePropertySelection" href="/ComponentReference/MultiplePropertySelection.html" />
-                <item name="Palette" href="/ComponentReference/Palette.html" />
-                <item name="SimpleTableColumnComponent" href="/ComponentReference/SimpleTableColumnComponent.html" />
-                <item name="SimpleTableColumnFormComponent" href="/ComponentReference/SimpleTableColumnFormComponent.html" />
-                <item name="Table" href="/ComponentReference/Table.html" />
-                <item name="TableColumns" href="/ComponentReference/TableColumns.html" />
-                <item name="TableFormPages" href="/ComponentReference/TableFormPages.html" />
-                <item name="TableFormRows" href="/ComponentReference/TableFormRows.html" />
-                <item name="TablePages" href="/ComponentReference/TablePages.html" />
-                <item name="TableRows" href="/ComponentReference/TableRows.html" />
-                <item name="TableValues" href="/ComponentReference/TableValues.html" />
-                <item name="TableView" href="/ComponentReference/TableView.html" />
-                <item name="Timeout" href="/ComponentReference/Timeout.html" />
-                <item name="XTile" href="/ComponentReference/XTile.html" />
+                <item name="CheckboxGroup" href="/componentreference/checkboxgroup.html" />
+                <item name="ControlCheckbox" href="/componentreference/controlcheckbox.html" />
+                <item name="ControlledCheckbox" href="/componentreference/controlledcheckbox.html" />
+                <item name="DumpObject" href="/componentreference/dumpobject.html" />
+                <item name="InspectorButton" href="/componentreference/inspectorbutton.html" />
+                <item name="MaskEdit" href="/componentreference/maskedit.html" />
+                <item name="MultiplePropertySelection" href="/componentreference/multiplepropertyselection.html" />
+                <item name="Palette" href="/componentreference/palette.html" />
+                <item name="SimpleTableColumnComponent" href="/componentreference/simpletablecolumncomponent.html" />
+                <item name="SimpleTableColumnFormComponent" href="/componentreference/simpletablecolumnformcomponent.html" />
+                <item name="Table" href="/componentreference/table.html" />
+                <item name="TableColumns" href="/componentreference/tablecolumns.html" />
+                <item name="TableFormPages" href="/componentreference/tableformpages.html" />
+                <item name="TableFormRows" href="/componentreference/tableformrows.html" />
+                <item name="TablePages" href="/componentreference/tablepages.html" />
+                <item name="TableRows" href="/componentreference/tablerows.html" />
+                <item name="TableValues" href="/componentreference/tablevalues.html" />
+                <item name="TableView" href="/componentreference/tableview.html" />
+                <item name="Timeout" href="/componentreference/timeout.html" />
+                <item name="XTile" href="/componentreference/xtile.html" />
             
         </menu>
         

@@ -16,69 +16,71 @@
 -->
 <document>
     <properties>
-        <title>TableRows</title>
+        <title>TableValues</title>
     </properties>
     <body>
 
-        <section name="TableRows">
+        <section name="TableValues">
+
             <p>
                 A low level
-                <a href="/Table.html">Table</a>
-                component that generates the rows of the current page in the table. This component
+                <a href="table.html">Table</a>
+                component that generates the columns in the current row in the table. This component
                 must be wrapped by
-                <a href="/TableView.html">TableView</a>
+                <a href="tablerows.html">TableRows</a>
                 .
                 <br />
-                The component iterates over the rows of the current page in the table. The rows are
-                wrapped in 'tr' tags by default. You can define columns manually within, or you can
-                use
-                <a href="/TableValues.html">TableValues</a>
-                to generate the columns automatically.
+                The component iterates over the columns in the table and automatically renders the
+                column values for the current table row. The columns are wrapped in 'td' tags by
+                default.
+                <br />
+                The column values are rendered using the renderer returned by the
+                <code>getValueRenderer()</code>
+                method in
+                <a
+                    href="../../tapestry-contrib/apidocs/org/apache/tapestry/table/model/ITableColumn.html">
+                    ITableColumn
+                </a>
+                .
             </p>
 
             <p>
                 <strong>
                     See also:
-                    <a href="/Table.html">Table</a>
+                    <a href="table.html">Table</a>
                     ,
-                    <a href="/TableView.html">TableView</a>
+                    <a href="tableview.html">TableView</a>
                     ,
-                    <a href="/TablePages.html">TablePages</a>
+                    <a href="tablepages.html">TablePages</a>
                     ,
-                    <a href="/TableRows.html">TableRows</a>
+                    <a href="tablerows.html">TableRows</a>
                     ,
-                    <a href="/TableValues.html">TableValues</a>
-                    ,
-                    <a href="/TableColumns.html">TableColumns</a>
+                    <a href="tablecolumns.html">TableColumns</a>
                 </strong>
             </p>
 
             <subsection name="Parameters">
-
-
                 <table>
                     <tr>
                         <th>Name</th>
                         <th>Type</th>
-                        <th>Direction</th>
                         <th>Required</th>
                         <th>Default</th>
                         <th>Description</th>
                     </tr>
 
                     <tr>
-                        <td>row</td>
+                        <td>column</td>
                         <td>
                             <a
-                                href="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Object.html">
-                                Object
+                                href="../../tapestry-contrib/apidocs/org/apache/tapestry/table/model/ITableColumn.html">
+                                ITableColumn
                             </a>
                         </td>
-                        <td>out</td>
                         <td>no</td>
                         <td> </td>
 
-                        <td>The value object of the current row being rendered.</td>
+                        <td>The object representing the current column being rendered.</td>
                     </tr>
 
                     <tr>
@@ -89,11 +91,10 @@
                                 String
                             </a>
                         </td>
-                        <td>in</td>
                         <td>no</td>
                         <td>tr</td>
 
-                        <td>The tag to use to wrap the rows in.</td>
+                        <td>The tag to use to wrap the column values in.</td>
                     </tr>
 
                 </table>
@@ -116,8 +117,7 @@
             </subsection>
 
             <subsection name="Examples">
-
-
+            
             </subsection>
 
         </section>

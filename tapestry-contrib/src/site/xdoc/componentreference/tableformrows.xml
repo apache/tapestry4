@@ -32,18 +32,15 @@
             <p>
                 <strong>
                     See also:
-                    <a href="/TableRows.html">TableRows</a>
+                    <a href="tablerows.html">TableRows</a>
                 </strong>
             </p>
 
             <section name="Parameters">
-
-
                 <table>
                     <tr>
                         <th>Name</th>
                         <th>Type</th>
-                        <th>Direction</th>
                         <th>Required</th>
                         <th>Default</th>
                         <th>Description</th>
@@ -52,7 +49,6 @@
                     <tr>
                         <td>row</td>
                         <td>Object</td>
-                        <td>custom</td>
                         <td>no</td>
                         <td> </td>
                         <td>The value object of the row currently being rendered.</td>
@@ -66,9 +62,8 @@
                                 IPrimaryKeyConvertor
                             </a>
                         </td>
-                        <td>custom</td>
                         <td>no</td>
-                        <td>null</td>
+                        <td></td>
                         <td>
                             An interface defining how the items iterated upon by this component will
                             be stored in the form as Hidden values. This interface allows only the
@@ -79,7 +74,6 @@
                     <tr>
                         <td>element</td>
                         <td>String</td>
-                        <td>in</td>
                         <td>no</td>
                         <td>tr</td>
                         <td>The tag to use to wrap the rows in, 'tr' by default.</td>

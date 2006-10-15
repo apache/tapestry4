@@ -16,59 +16,68 @@
 -->
 <document>
     <properties>
-        <title>CheckboxGroup</title>
+        <title>ControlCheckbox</title>
     </properties>
     <body>
 
-        <section name="CheckboxGroup">
+        <section name="ControlCheckbox">
 
             <p>
-                A component defining a group of checkboxes that will be controlled together.
-                Typically the ControlCheckbox and ControlledCheckbox components are placed in the
-                body of this component.
+                Creates a checkbox that will automatically select or deselect all controlled
+                checkboxes in the checkbox group.
             </p>
 
             <p>
                 <strong>
                     See also:
-                    <a href="site:ControlCheckbox">ControlCheckbox</a>
+                    <a href="checkboxgroup.html">CheckboxGroup</a>
                     ,
-                    <a href="site:ControlledCheckbox">ControlledCheckbox</a>
+                    <a href="controlledcheckbox.html">ControlledCheckbox</a>
                 </strong>
             </p>
 
             <subsection name="Parameters">
-
-
                 <table>
                     <tr>
                         <th>Name</th>
                         <th>Type</th>
-                        <th>Direction</th>
                         <th>Required</th>
                         <th>Default</th>
                         <th>Description</th>
                     </tr>
-
                     <tr>
-                        <td colspan="6">No parameters defined.</td>
+                        <td>group</td>
+                        <td>
+                            <a
+                                href="../../tapestry-contrib/apidocs/org/apache/tapestry/contrib/form/checkboxes/CheckboxGroup.html">
+                                CheckboxGroup
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            If provided, it specifies the CheckboxGroup this component belongs to.
+                            If it is not specified, then the component is a a part of the
+                            CheckboxGroup that wraps it. Please note that if this parameter is used,
+                            then the CheckboxGroup it refers to must either enclose the current
+                            component, or must be defined after it.
+                        </td>
                     </tr>
-
                 </table>
 
                 <p>
                     Body:
-                    <strong>allowed</strong>
+                    <strong>removed</strong>
                 </p>
 
                 <p>
                     Informal parameters:
-                    <strong>forbidden</strong>
+                    <strong>allowed</strong>
                 </p>
 
                 <p>
                     Reserved parameters:
-                    <em>none</em>
+                    <em>type, onclick</em>
                 </p>
 
             </subsection>

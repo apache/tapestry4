@@ -31,9 +31,9 @@
             <p>
                 <strong>
                     See also:
-                    <a href="/CheckboxGroup.html">CheckboxGroup</a>
+                    <a href="checkboxgroup.html">CheckboxGroup</a>
                     ,
-                    <a href="/ControlCheckbox.html">ControlCheckbox</a>
+                    <a href="controlcheckbox.html">ControlCheckbox</a>
                 </strong>
             </p>
 
@@ -44,7 +44,6 @@
                     <tr>
                         <th>Name</th>
                         <th>Type</th>
-                        <th>Direction</th>
                         <th>Required</th>
                         <th>Default</th>
                         <th>Description</th>
@@ -52,9 +51,8 @@
                     <tr>
                         <td>value</td>
                         <td>boolean</td>
-                        <td>in/out</td>
                         <td>yes</td>
-                        <td />
+                        <td></td>
                         <td>
                             Value editted by the component; read on render, updated on form submit.
                             This sets the check attribute of the rendered element.
@@ -63,7 +61,6 @@
                     <tr>
                         <td>disabled</td>
                         <td>boolean</td>
-                        <td>in</td>
                         <td>no</td>
                         <td>false</td>
                         <td>
@@ -79,9 +76,8 @@
                                 CheckboxGroup
                             </a>
                         </td>
-                        <td>in</td>
                         <td>no</td>
-                        <td>null</td>
+                        <td></td>
                         <td>
                             If provided, it specifies the CheckboxGroup this component belongs to.
                             If it is not specified, then the component is a a part of the

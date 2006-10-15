@@ -23,7 +23,7 @@
         <section name="Table">
 
             <p>
-                Provides a HTML &lt;table&gt; element. The Table component is a facade component in
+                Provides a HTML <code>&lt;table&gt;</code> element. The Table component is a facade component in
                 the Table family. Table allows you to present a sortable and pagable table simply
                 and easily by using only this one component.
             </p>
@@ -32,21 +32,21 @@
                 define the 'class' attributes of its internal elements. If you want to change the
                 structure of the table, however, you can instead build your own using the lower
                 level components
-                <a href="/TableView.html">TableView</a>
+                <a href="tablebiew.html">TableView</a>
                     ,
-                    <a href="/TablePages.html">TablePages</a>
+                    <a href="tablepages.html">TablePages</a>
                     ,
-                    <a href="/TableRows.html">TableRows</a>
+                    <a href="tablerows.html">TableRows</a>
                     ,
-                    <a href="/TableValues.html">TableValues</a>
+                    <a href="tablevalues.html">TableValues</a>
                     ,
-                    <a href="/TableColumns.html">TableColumns</a>
+                    <a href="tablecolumns.html">TableColumns</a>
                 .
             </p>
             <p>
                 The Table component delegates the handling of the table model and related activities
                 to the
-                <a href="site:TableView">TableView</a>
+                <a href="tableview.html">TableView</a>
                 , and more detailed information about the process can be found in the documentation
                 of that class.
             </p>
@@ -207,31 +207,27 @@
             <p>
                 <strong>
                     See also:
-                    <a href="/TableView.html">TableView</a>
+                    <a href="tableview.html">TableView</a>
                     ,
-                    <a href="/TablePages.html">TablePages</a>
+                    <a href="tablepages.html">TablePages</a>
                     ,
-                    <a href="/TableRows.html">TableRows</a>
+                    <a href="tablerows.html">TableRows</a>
                     ,
-                    <a href="/TableValues.html">TableValues</a>
+                    <a href="tablevalues.html">TableValues</a>
                     ,
-                    <a href="/TableColumns.html">TableColumns</a>
+                    <a href="tablecolumns.html">TableColumns</a>
                 </strong>
             </p>
 
             <subsection name="Parameters">
-
-
                 <table>
                     <tr>
                         <th>Name</th>
                         <th>Type</th>
-                        <th>Direction</th>
                         <th>Required</th>
                         <th>Default</th>
                         <th>Description</th>
                     </tr>
-
                     <tr>
                         <td>source</td>
                         <td>
@@ -256,7 +252,6 @@
                                 <code>IBasicTableModel</code>
                             </a>
                         </td>
-                        <td>in</td>
                         <td rowspan="3">
                             You must provide either both
                             <code>source</code>
@@ -304,7 +299,7 @@
                                 Iterator
                             </a>
                         </td>
-                        <td>in</td>
+                        <td></td>
                         <td> </td>
                         <td>
                             The table columns to be displayed. The parameter must be an array, a
@@ -321,7 +316,7 @@
                                 <code>ITableModel</code>
                             </a>
                         </td>
-                        <td>in</td>
+                        <td></td>
                         <td> </td>
                         <td>
                             The
@@ -347,7 +342,6 @@
                                 <code>ITableSessionStateManager</code>
                             </a>
                         </td>
-                        <td>in</td>
                         <td>no</td>
                         <td>
                             A custom session state manager that reloads the data at each request if
@@ -383,9 +377,8 @@
                                 <code>ITableSessionStoreManager</code>
                             </a>
                         </td>
-                        <td>in</td>
                         <td>no</td>
-                        <td>null</td>
+                        <td></td>
                         <td>
                             Determines how the session state (returned by the session state manager)
                             will be saved in the session. If this parameter is null, then the state
@@ -402,7 +395,6 @@
                                 <code>IComponent</code>
                             </a>
                         </td>
-                        <td>in</td>
                         <td>no</td>
                         <td>container</td>
                         <td>
@@ -414,7 +406,6 @@
                     <tr>
                         <td>row</td>
                         <td>Object</td>
-                        <td>out</td>
                         <td>no</td>
                         <td> </td>
                         <td>The value object of the current row being rendered.</td>
@@ -428,7 +419,6 @@
                                 <code>ITableColumn</code>
                             </a>
                         </td>
-                        <td>out</td>
                         <td>no</td>
                         <td> </td>
                         <td>The object representing the current column being rendered.</td>
@@ -439,7 +429,6 @@
                         <td>
                             <code>int</code>
                         </td>
-                        <td>in</td>
                         <td>no</td>
                         <td>10</td>
                         <td>
@@ -462,7 +451,6 @@
                                 String
                             </a>
                         </td>
-                        <td>in</td>
                         <td>no</td>
                         <td>null</td>
                         <td>
@@ -484,7 +472,6 @@
                         <td>
                             <code>boolean</code>
                         </td>
-                        <td>in</td>
                         <td>no</td>
                         <td>false</td>
                         <td>
@@ -506,7 +493,6 @@
                     <tr>
                         <td>pagesDisplayed</td>
                         <td>int</td>
-                        <td>in</td>
                         <td>no</td>
                         <td>7</td>
                         <td>
@@ -524,11 +510,10 @@
                         <td>arrowUpAsset</td>
                         <td>
                             <a
-                                href="../../tapestry-contrib/apidocs/org/apache/tapestry/IAsset.html">
+                                href="../../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
                                 <code>IAsset</code>
                             </a>
                         </td>
-                        <td>in</td>
                         <td>no</td>
                         <td> </td>
                         <td>The image to use to describe a column sorted in an ascending order.</td>
@@ -538,11 +523,10 @@
                         <td>arrowDownAsset</td>
                         <td>
                             <a
-                                href="../../tapestry-contrib/apidocs/org/apache/tapestry/IAsset.html">
+                                href="../../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
                                 <code>IAsset</code>
                             </a>
                         </td>
-                        <td>in</td>
                         <td>no</td>
                         <td> </td>
                         <td>The image to use to describe a column sorted in a descending order.</td>
@@ -556,7 +540,6 @@
                                 String
                             </a>
                         </td>
-                        <td>in</td>
                         <td>no</td>
                         <td> </td>
                         <td>The CSS class of the table pages.</td>
@@ -570,7 +553,6 @@
                                 String
                             </a>
                         </td>
-                        <td>in</td>
                         <td>no</td>
                         <td> </td>
                         <td>The CSS class of the table columns.</td>
@@ -584,7 +566,6 @@
                                 String
                             </a>
                         </td>
-                        <td>in</td>
                         <td>no</td>
                         <td> </td>
                         <td>The CSS class of the table rows.</td>
@@ -598,7 +579,6 @@
                                 String
                             </a>
                         </td>
-                        <td>in</td>
                         <td>no</td>
                         <td> </td>
                         <td>The CSS class of the table values.</td>

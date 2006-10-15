@@ -23,7 +23,7 @@
         <section name="MultiplePropertySelection">
 
             <p>
-                A component which uses &lt;input type=checkbox&gt; to set a property of some object.
+                A component which uses <code>&lt;input type=checkbox&gt;</code> to set a property of some object.
                 Typically, the values for the object are defined using an
                 org.apache.commons.lang.enum.Enum. A MultiplePropertySelection is dependent on an
                 <a
@@ -33,7 +33,7 @@
                 to provide the list of possible values.
                 <br />
                 The
-                <a href="/Palette.html">Palette</a>
+                <a href="palette.html">Palette</a>
                 component is more powerful, but requires client-side JavaScript and is not fully
                 cross-browser compatible.
             </p>
@@ -41,18 +41,15 @@
             <p>
                 <strong>
                     See also:
-                    <a href="/Palette.html">Palette</a>
+                    <a href="palette.html">Palette</a>
                 </strong>
             </p>
 
             <subsection name="Parameters">
-
-
                 <table>
                     <tr>
                         <th>Name</th>
                         <th>Type</th>
-                        <th>Direction</th>
                         <th>Required</th>
                         <th>Default</th>
                         <th>Description</th>
@@ -60,7 +57,6 @@
                     <tr>
                         <td>selectedList</td>
                         <td>java.util.Collection</td>
-                        <td>in-out</td>
                         <td>yes</td>
                         <td> </td>
                         <td>
@@ -77,7 +73,6 @@
                                 IMultiplePropertySelectionRenderer
                             </a>
                         </td>
-                        <td>in</td>
                         <td>no</td>
                         <td>
                             shared instance of
@@ -99,7 +94,6 @@
                                 IPropertySelectionModel
                             </a>
                         </td>
-                        <td>in</td>
                         <td>yes</td>
                         <td> </td>
                         <td>
@@ -110,11 +104,10 @@
                     <tr>
                         <td>disabled</td>
                         <td>boolean</td>
-                        <td>in</td>
                         <td>no</td>
                         <td>false</td>
                         <td>
-                            Controls whether the &lt;select&gt; is active or not. A disabled
+                            Controls whether the <code>&lt;select&gt;</code> is active or not. A disabled
                             PropertySelection does not update its value parameter.
                         </td>
                     </tr>
