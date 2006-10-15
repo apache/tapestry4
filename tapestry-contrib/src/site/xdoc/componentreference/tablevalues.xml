@@ -96,7 +96,15 @@
 
                         <td>The tag to use to wrap the column values in.</td>
                     </tr>
-
+                    <tr>
+                        <td>class</td>
+                        <td>
+                          String
+                        </td>
+                        <td>no</td>
+                        <td></td>
+                        <td>The CSS class that will be applied to each table value <code>&lt;td&gt;</code></td>
+                    </tr>
                 </table>
 
                 <p>

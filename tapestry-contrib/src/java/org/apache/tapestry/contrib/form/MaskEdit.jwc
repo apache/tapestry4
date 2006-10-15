@@ -40,7 +40,7 @@
   <component id="maskEditScript" type="Script">
     <binding name="maskEdit" value="ognl:components.maskEdit"/>
     <binding name="maskValue" value="ognl:components.maskValue"/>
-    <binding name="script" value="MaskEdit.script"/>
+    <binding name="script" value="literal:MaskEdit.script"/>
   </component>
         
 </component-specification>

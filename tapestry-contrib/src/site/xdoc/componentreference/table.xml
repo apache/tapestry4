@@ -32,7 +32,7 @@
                 define the 'class' attributes of its internal elements. If you want to change the
                 structure of the table, however, you can instead build your own using the lower
                 level components
-                <a href="tablebiew.html">TableView</a>
+                <a href="tableview.html">TableView</a>
                     ,
                     <a href="tablepages.html">TablePages</a>
                     ,
@@ -333,7 +333,95 @@
                             parameters.
                         </td>
                     </tr>
-
+                    <tr>
+                        <td>keyExpression</td>
+                        <td>String</td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                        Only active in a form. An OGNL expression that returns the primary key of the iterated value. 
+            The primary keys are stored in hidden fields during rendering and are loaded from the form
+            during a rewind to ensure that the iterations remain the same.
+            This is a simpler, but a less efficient alternative of the 'converter' parameter.
+            If needed, please use in conjuction with 'fullSource' to reference objects 
+            not currently present in 'source'.
+            <br/><br/>
+            Also, use the 'defaultValue' parameter to define the object to be returned if
+            a value corresponding to a particular primary key cannot be found.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>fullSource</td>
+                        <td>Object/Collection</td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                         Only active in a form and in combination with the 'keyExpression' parameter. 
+            If an object corresponding to a primary key stored in the form cannot be
+            found in the 'source' parameter, then the objects provided by this parameter 
+            are searched for a match next. 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>defaultValue</td>
+                        <td></td>
+                        <td>no</td>
+                        <td>null</td>
+                        <td>
+                         Only active in a form. The value to be used when no match for a 
+                         given primary key is found. 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>converter</td>
+                        <td></td>
+                        <td>no</td>
+                        <td>null</td>
+                        <td>
+                         Only active in a form. Defines how the items iterated upon 
+            will be stored in the form as hidden values and how the stored information will be 
+            converted back to objects. 
+            This interface allows only the primary key of the items to be stored, 
+            rather than the whole item.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>primaryKeys</td>
+                        <td></td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                         Only active in a form. If provided, the parameter is automatically updated 
+		    before a rewind with the list of primary keys stored in the form. 
+		    The parameter is updated right before the iterations begin in a rewind and 
+		    could be used to preload the relevant objects in a provided 'converter'.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>volatile</td>
+                        <td></td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                         Only active in a form. Determines whether to avoid creating hidden fields within a form.
+            Using this parameter may make the form structure different during render and rewind, 
+            and cause exceptions as a result. Please use with caution.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>persist</td>
+                        <td>String</td>
+                        <td></td>
+                        <td><code>literal:session</code></td>
+                        <td>
+                            Defines how the table state (paging and sorting) will be persisted
+                            if no tableSessionStoreManager is defined.
+                            <br/><br/>
+                            The possible values are <code>session</code> (the default), 
+                            <code>client</code>, <code>client:page</code>, 
+                            and <code>client:app</code>.
+                        </td>
+                    </tr>
                     <tr>
                         <td>tableSessionStateManager</td>
                         <td>
@@ -391,7 +479,7 @@
                         <td>columnSettingsContainer</td>
                         <td>
                             <a
-                                href="../../tapestry-contrib/apidocs/org/apache/tapestry/IComponent.html">
+                                href="../../tapestry-framework/apidocs/org/apache/tapestry/IComponent.html">
                                 <code>IComponent</code>
                             </a>
                         </td>
@@ -402,7 +490,14 @@
                             source/columns mode is being used.
                         </td>
                     </tr>
-
+                    <tr>
+                        <td>index</td>
+                        <td>Object</td>
+                        <td>no</td>
+                        <td></td>
+                        <td>If provided, the parameter is updated with the 
+                            index of the loop on each iteration.</td>
+                    </tr>
                     <tr>
                         <td>row</td>
                         <td>Object</td>
@@ -410,7 +505,6 @@
                         <td> </td>
                         <td>The value object of the current row being rendered.</td>
                     </tr>
-
                     <tr>
                         <td>column</td>
                         <td>
@@ -442,7 +536,34 @@
                             </p>
                         </td>
                     </tr>
-
+                    <tr>
+                        <td>pagesDisplayed</td>
+                        <td>int</td>
+                        <td>no</td>
+                        <td>7</td>
+                        <td>
+                            Determines the maximum number of pages to be displayed in the page list
+                            when the table has more than one page.
+                            <p>
+                                For example, if the table has 20 pages, and 10 is the current page,
+                                pages from 7 to 13 in the page list will be shown if this parameter
+                                has a value of 7.
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>initialPage</td>
+                        <td>
+                            <code>int</code>
+                        </td>
+                        <td>no</td>
+                        <td>0</td>
+                        <td>
+                            The initial page to be displayed.
+                            <br/><br/>
+                            This is the first page by default.
+                        </td>
+                    </tr>
                     <tr>
                         <td>initialSortColumn</td>
                         <td>
@@ -466,7 +587,6 @@
                             </p>
                         </td>
                     </tr>
-
                     <tr>
                         <td>initialSortOrder</td>
                         <td>
@@ -489,23 +609,6 @@
                             </p>
                         </td>
                     </tr>
-
-                    <tr>
-                        <td>pagesDisplayed</td>
-                        <td>int</td>
-                        <td>no</td>
-                        <td>7</td>
-                        <td>
-                            Determines the maximum number of pages to be displayed in the page list
-                            when the table has more than one page.
-                            <p>
-                                For example, if the table has 20 pages, and 10 is the current page,
-                                pages from 7 to 13 in the page list will be shown if this parameter
-                                has a value of 7.
-                            </p>
-                        </td>
-                    </tr>
-
                     <tr>
                         <td>arrowUpAsset</td>
                         <td>

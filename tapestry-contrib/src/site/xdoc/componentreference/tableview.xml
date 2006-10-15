@@ -214,7 +214,6 @@
                         <th>Default</th>
                         <th>Description</th>
                     </tr>
-
                     <tr>
                         <td>source</td>
                         <td>
@@ -323,7 +322,20 @@
                             columns parameters.
                         </td>
                     </tr>
-
+                    <tr>
+                        <td>persist</td>
+                        <td>String</td>
+                        <td></td>
+                        <td><code>literal:session</code></td>
+                        <td>
+                            Defines how the table state (paging and sorting) will be persisted
+                            if no tableSessionStoreManager is defined.
+                            <br/><br/>
+                            The possible values are <code>session</code> (the default), 
+                            <code>client</code>, <code>client:page</code>, 
+                            and <code>client:app</code>.
+                        </td>
+                    </tr>
                     <tr>
                         <td>tableSessionStateManager</td>
                         <td>
@@ -431,7 +443,21 @@
                             or another neutral tag and manually define the table.
                         </td>
                     </tr>
-
+                    <tr>
+                        <td>columnSettingsContainer</td>
+                        <td>
+                            <a
+                                href="../../tapestry-framework/apidocs/org/apache/tapestry/IComponent.html">
+                                <code>IComponent</code>
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td>container</td>
+                        <td>
+                            The container used to look up Blocks and messages when the
+                            source/columns mode is being used.
+                        </td>
+                    </tr>
                 </table>
 
                 <p>

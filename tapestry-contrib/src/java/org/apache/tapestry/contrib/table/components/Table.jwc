@@ -222,7 +222,6 @@
         <description>The CSS class of the table values</description>
     </parameter>
   
-
 	<component id="tableElement" type="Any" inherit-informal-parameters="yes">
 		<binding name="element">literal:table</binding>
 	</component>

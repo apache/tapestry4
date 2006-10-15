@@ -65,6 +65,25 @@ public class Visit implements Serializable
     private String _textValue;
 
     private String _zipCode;
+    
+    private String _phone;
+    
+    /**
+     * @return the phone
+     */
+    public String getPhone()
+    {
+        return _phone;
+    }
+
+    
+    /**
+     * @param phone the phone to set
+     */
+    public void setPhone(String phone)
+    {
+        _phone = phone;
+    }
 
     public String getActiveTabName()
     {
