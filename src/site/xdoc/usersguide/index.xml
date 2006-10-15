@@ -51,7 +51,7 @@
                 This can take some getting used to. You don't write servlets in Tapestry, you write
                 <a href="listenermethods.html">listener method</a>
                 s. You don't build URLs to servlets either -- you use an existing component (such as
-                <a href="site:DirectLink">DirectLink</a>
+                <a href="../components/link/directlink.html">DirectLink</a>
                 ) and configure its
                 <code>listener</code>
                 parameter to invoke your listener method. What does a listener method do? It
@@ -139,7 +139,7 @@
                     operation. In fact, you don't even write an
                     <code>add-item-to-shopping-cart</code>
                     component. What you do is take an existing component, such as
-                    <a href="site:DirectLink">DirectLink</a>
+                    <a href="../components/link/directlink.html">DirectLink</a>
                     , and configure it. When the component renders, it will create a callback URL.
                     When you click that link, the callback URL (which includes the name of the page
                     and the id of the component within the page) will invoke a method on the
@@ -211,24 +211,22 @@
                     Most components are concerned only with generating HTML. A certain subset of
                     components deal with the flip-side of requests; handling of incoming requests.
                     Link classes, such as
-                    <a href="site:PageLink">PageLink</a>
-                    ,
-                    <a href="site:DirectLink">DirectLink</a>
-                    and
-                    <a href="site:ActionLink">ActionLink</a>
-                    , create clickable links in the rendered page and are involved in dispatching to
+                    <a href="../components/link/pagelink.html">PageLink</a>
+                   and  
+                    <a href="../components/link/directlink.html">DirectLink</a>
+                    create clickable links in the rendered page and are involved in dispatching to
                     user-supplied code when such a link is triggered by clicking it.
                 </p>
 
                 <p>
                     Other components,
-                    <a href="site:Form">Form</a>
+                    <a href="../components/form/form.html">Form</a>
                     , and the form control components (
-                    <a href="site:TextField">TextField</a>
+                    <a href="../components/form/textfield.html">TextField</a>
                     ,
-                    <a href="site:PropertySelection">PropertySelection</a>
+                    <a href="../components/form/propertyselection.html">PropertySelection</a>
                     ,
-                    <a href="site:Checkbox">Checkbox</a>
+                    <a href="../components/form/checkbox.html">Checkbox</a>
                     , etc.), facilitate HTML forms. When such components render, they read
                     properties from application objects so as to provide default values. When the
                     forms are submitted, the components within the form read HTTP query parameters,
