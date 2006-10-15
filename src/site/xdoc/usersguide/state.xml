@@ -495,7 +495,7 @@ public abstract class MyPage extends <a
 
                     <p>
                         To create a new ASO, you must update your
-                        <a href="site:hivemind">HiveMind module deployment descriptor</a>
+                        <a href="hivemind.html">HiveMind module deployment descriptor</a>
                         and add a contribution to the
                         <a
                             href="../tapestry/hivedocs/config/tapestry.state.ApplicationObjects.html">
@@ -692,7 +692,7 @@ public abstract class MyPage extends <a
                     <code>state:</code>
                     <a href="bindings.html">binding reference</a>
                     combined with the
-                    <a href="site:If">If</a>
+                    <a href="../components/general/if.html">If</a>
                     component makes it easy for you to skip portions of a page if a particular ASO
                     does not already exist; this allows you to avoid accidentally forcing its
                     creation on first reference.

@@ -29,7 +29,7 @@
                 color schemes.
             </p>
             <p>Localization support in Tapestry is likewise pervasive.</p>
-            <section name="Component Message Catalogs">
+            <subsection name="Component Message Catalogs">
 
                 <p>
                     The most fundamental aspect of localization in Tapestry are component message
@@ -163,8 +163,8 @@
                     </p>
 
                 </subsection>
-            </section>
-            <section name="Missing keys">
+            </subsection>
+            <subsection name="Missing keys">
 
 
                 <p>
@@ -177,8 +177,8 @@
                     completely subverting your application.
                 </p>
 
-            </section><!-- localization.missing-keys -->
-            <section name="Namespace message catalogs">
+            </subsection><!-- localization.missing-keys -->
+            <subsection name="Namespace message catalogs">
 
 
                 <p>
@@ -209,9 +209,9 @@
                     still have properties, just as if the application specification existed.
                 </p>
 
-            </section><!-- localization.namespace -->
+            </subsection><!-- localization.namespace -->
             <!-- localization.component-catalog -->
-            <section name="Template text localization">
+            <subsection name="Template text localization">
 
                 <p>
                     As described in
@@ -222,9 +222,9 @@
                     tag.
                 </p>
 
-            </section>
+            </subsection>
 
-            <section name="Localized templates">
+            <subsection name="Localized templates">
 
 
                 <p>
@@ -253,9 +253,9 @@
                     components, when using localized templates ... it reduces duplication in the
                     templates.
                 </p>
-            </section>
+            </subsection>
 
-            <section name="Template encoding">
+            <subsection name="Template encoding">
 
 
                 <p>
@@ -282,9 +282,9 @@
                         </a>
                     </li>
                 </ul>
-            </section>
+            </subsection>
 
-            <section name="Using the message: binding prefix">
+            <subsection name="Using the message: binding prefix">
 
 
                 <p>
@@ -294,14 +294,14 @@
                 </p>
 
                 <source xml:space="preserve">
-&lt;html jwcid="@<a href="site:Shell">Shell</a>" title="message:page-title"&gt;
+&lt;html jwcid="@<a href="../components/general/shell.html">Shell</a>" title="message:page-title"&gt;
  . . .
 &lt;/html&gt;
 </source>
 
-            </section>
+            </subsection>
 
-            <section name="Localization of Assets">
+            <subsection name="Localization of Assets">
 
 
                 <p>
@@ -309,9 +309,9 @@
                     search for a locale-specific match (this is very similar to how localized
                     templates work).
                 </p>
-            </section><!-- localization.assets -->
+            </subsection><!-- localization.assets -->
 
-            <section name="Formatting messages">
+            <subsection name="Formatting messages">
 
 
                 <p>
@@ -346,7 +346,7 @@
                 <p>It is common to format messages using OGNL expessions, i.e.:</p>
 
                 <source xml:space="preserve">
-&lt;span jwcid="@<a href="site:Insert">Insert</a>" value="ognl:messages.format('billing-info', amountDue)"/&gt;
+&lt;span jwcid="@<a href="../components/general/insert.html">Insert</a>" value="ognl:messages.format('billing-info', amountDue)"/&gt;
 </source>
 
                 <p>
@@ -354,9 +354,9 @@
                     to the message format retrieved from the message catalog as key 'billing-info'.
                 </p>
 
-            </section>
+            </subsection>
 
-            <section name="Changing the locale">
+            <subsection name="Changing the locale">
 
 
                 <p>
@@ -389,9 +389,9 @@
                 </p>
 
 
-            </section>
+            </subsection>
 
-            <section name="Engine locale vs. page locale">
+            <subsection name="Engine locale vs. page locale">
 
 
                 <p>
@@ -432,9 +432,9 @@
                     </p>
                 </span>
 
-            </section>
+            </subsection>
 
-            <section name="Limiting accepted locales">
+            <subsection name="Limiting accepted locales">
 
 
                 <p>
@@ -474,7 +474,7 @@
                     users would be matched to the "en" locale.
                 </p>
 
-            </section>
+            </subsection>
         </section>
     </body>
 </document>

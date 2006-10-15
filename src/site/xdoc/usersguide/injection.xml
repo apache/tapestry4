@@ -70,7 +70,7 @@
             </p>
 
 
-            <section name="meta injection">
+            <subsection name="meta injection">
 
 
                 <p>
@@ -118,9 +118,9 @@
   
 </source>
 
-            </section><!-- injection.meta -->
+            </subsection><!-- injection.meta -->
 
-            <section name="object injection">
+            <subsection name="object injection">
 
 
                 <p>
@@ -134,9 +134,9 @@
 
                 </p>
 
-            </section><!-- injection.object -->
+            </subsection><!-- injection.object -->
 
-            <section name="page injection">
+            <subsection name="page injection">
 
 
                 <p>
@@ -186,9 +186,9 @@
                     activated to render the response.
                 </p>
 
-            </section><!-- injection.page -->
+            </subsection><!-- injection.page -->
 
-            <section name="script injection">
+            <subsection name="script injection">
 
 
                 <p>
@@ -227,9 +227,9 @@
   getScript().execute(cycle, pageRenderSupport, _symbols);
 </source>
 
-            </section><!-- injection.script -->
+            </subsection><!-- injection.script -->
 
-            <section name="state injection">
+            <subsection name="state injection">
 
 
                 <p>
@@ -239,9 +239,9 @@
                     many pages).
                 </p>
 
-            </section>
+            </subsection>
 
-            <section name="state-flag injection">
+            <subsection name="state-flag injection">
 
 
                 <p>
@@ -288,7 +288,7 @@ public void doOperation()
   }
 }
 </source>
-            </section><!-- injection.state-flag -->
+            </subsection><!-- injection.state-flag -->
         </section>
     </body>
 </document>

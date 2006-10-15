@@ -141,23 +141,6 @@
                 <td>translator:number,pattern=#</td>
                 <td />
             </tr>
-
-            <tr>
-                <td>validator</td>
-                <td>
-                    Initializer used to obtain and configure an
-                    <a
-                        href="../tapestry-framework/apidocs/org/apache/tapestry/valid/IValidator.html">
-                        IValidator
-                    </a>
-                    instance (used with
-                    <a href="site:ValidField">ValidField</a>
-                    ).
-                </td>
-                <td>validator:string,required,minimumLength=5</td>
-                <td />
-            </tr>
-
             <tr>
                 <td>validators</td>
                 <td>
@@ -167,7 +150,7 @@
                         Validator
                     </a>
                     instances (used with
-                    <a href="site:TextField">TextField</a>
+                    <a href="../components/form/textfield.html">TextField</a>
                     and others).
                 </td>
                 <td>validators:email,required,minLength=10</td>

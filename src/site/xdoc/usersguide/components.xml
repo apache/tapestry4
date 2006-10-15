@@ -288,12 +288,12 @@ public void renderComponent(<a
                     is used to render
                     <em>this</em>
                     component's body. A component doesn't have to render its body; the standard
-                    <a href="site:Image">Image</a>
+                    <a href="../components/general/image.html">Image</a>
                     component doesn't render its body (and its component specification indicates
                     that it discards its body). The
-                    <a href="site:Conditional">Conditional</a>
+                    <a href="../components/general/if.html">If</a>
                     component decides whether or not to render its body, and the
-                    <a href="site:Foreach">Foreach</a>
+                    <a href="../components/general/for.html">For</a>
                     component may render its body multiple times.
                 </p>
 
@@ -366,9 +366,9 @@ public void renderComponent(<a
                     The vast majority of components simply read their parameters. Updating
                     parameters is more rare; the most common components that update their parameters
                     are form element components such as
-                    <a href="site:TextField">TextField</a>
+                    <a href="../components/form/textfield.html">TextField</a>
                     or
-                    <a href="site:Checkbox">Checkbox</a>
+                    <a href="../components/form/checkbox.html">Checkbox</a>
                     .
                 </p>
 
@@ -385,10 +385,10 @@ public void renderComponent(<a
                     Using
                     <a href="http://www.ognl.org">OGNL</a>
                     , the
-                    <a href="site:TextField">TextField</a>
+                    <a href="../components/form/textfield.html">TextField</a>
                     component's value parameter is bound to the LineItem's quantity property, using
                     the OGNL expression lineItem.quantity, and the
-                    <a href="site:Insert">Insert</a>
+                    <a href="../components/general/insert.html">Insert</a>
                     component's value parameter is bound to the Product's name property using the
                     OGNL expression lineItem.product.name.
                 </p>
@@ -755,7 +755,7 @@ public void renderComponent(<a
                             IAsset
                         </a>
                         and treated identically by components (such as
-                        <a href="site:Image">Image</a>
+                        <a href="../components/general/image.html">Image</a>
                         ). As in this example, relative paths are allowed: they are interpreted
                         relative to the specification (page or component) they appear in.
                     </p>
@@ -862,9 +862,9 @@ public void renderComponent(<a
                         the framework. This is frequently used to change the look and feel of the
                         default StateSession or Exception page. In theory, it is even possible to
                         override fundamental components such as
-                        <a href="site:Insert">Insert</a>
+                        <a href="../components/general/insert.html">Insert</a>
                         or
-                        <a href="site:Foreach">Foreach</a>
+                        <a href="../components/general/for.html">For</a>
                         !
                     </p>
 
@@ -881,9 +881,9 @@ public void renderComponent(<a
                     <p>
                         You rarely need to be concerned with namespaces, however. The rare exception
                         is when a page from a library wishes to make use of the
-                        <a href="site:PageLink">PageLink</a>
+                        <a href="../components/link/pagelink.html">PageLink</a>
                         or
-                        <a href="site:ExternalLink">ExternalLink</a>
+                        <a href="../components/link/externallink.html">ExternalLink</a>
                         components to create a link to
                         <em>another page</em>
                         within the same namespace. This is accomplished (in the source page's HTML

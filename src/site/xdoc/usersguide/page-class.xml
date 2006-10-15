@@ -111,7 +111,7 @@
                 searched for the list of packages, and later, for the default page class name.
             </p>
 
-            <section name="Component Classes">
+            <subsection name="Component Classes">
 
 
                 <p>
@@ -151,7 +151,7 @@
                         configuration point.
                     </p>
                 </span>
-            </section>
+            </subsection>
             
         </section>
         

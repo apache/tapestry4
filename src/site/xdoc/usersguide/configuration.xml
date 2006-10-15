@@ -877,7 +877,7 @@ MyExtension myExtension = (MyExtension) specification.getExtension("myExtension"
                         Specifies an implementation of ognl.TypeConverter to be used for expression
                         bindings. See OGNL's
                         <a
-                            href="http://www.ognl.org/2.6.3/Documentation/html/typeConversion.html">
+                            href="http://www.ognl.org/2.6.9/Documentation/html/DeveloperGuide/typeConversion.html">
                             Type Converter documentation
                         </a>
                         for further information on implementing a custom type converter.
