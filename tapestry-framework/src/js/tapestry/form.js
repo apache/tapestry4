@@ -61,41 +61,59 @@ tapestry.form={
 		// make sure id is correct just in case node passed in has only name
 		id=form.getAttribute("id");
 		
-		// previously connected, cleanup and connect aga
-		if (!this.forms[id] || (this.forms[id] && dojo.render.html.ie)) {
-			
-			this.forms[id]={};
-			this.forms[id].validateForm=true;
-			this.forms[id].profiles=[];
-			this.forms[id].async=(typeof async != "undefined") ? async : false;
-			this.forms[id].json=(typeof json != "undefined") ? json : false;
-			
-			if (!this.forms[id].async) {
-				dojo.event.connect(form, "onsubmit", this, "onFormSubmit");
-			} else {
-				for(var i = 0; i < form.elements.length; i++) {
-					var node = form.elements[i];
-					if(node && node.type && dojo.lang.inArray(node.type.toLowerCase(), ["submit", "button"])) {
-						dojo.event.connect(node, "onclick", tapestry.form, "inputClicked");
-					}
+		// if previously connected, cleanup and reconnect
+		if (this.forms[id]) {
+			dojo.event.disconnect(form, "onsubmit", this, "onFormSubmit");
+			for(var i = 0; i < form.elements.length; i++) {
+				var node = form.elements[i];
+				if(node && node.type && dojo.lang.inArray(["submit", "button"],node.type.toLowerCase())) {
+					dojo.event.disconnect(node, "onclick", tapestry.form, "inputClicked");
 				}
-				
-				var inputs = form.getElementsByTagName("input");
-				for(var i = 0; i < inputs.length; i++) {
-					var input = inputs[i];
-					if(input.type.toLowerCase() == "image" && input.form == form) {
-						dojo.event.connect(input, "onclick", tapestry.form, "inputClicked");
-					}
-				}
-				
-				dojo.event.connect(form, "onsubmit", function(e) {
-					dojo.event.browser.stopEvent(e);
-					tapestry.form.submitAsync(form);
-				});
 			}
-		} else {
-			dojo.log.debug("registerForm(" + id + ") Form already registered, ignoring.");
+			
+			var inputs = form.getElementsByTagName("input");
+			for(var i = 0; i < inputs.length; i++) {
+				var input = inputs[i];
+				if(input.type.toLowerCase() == "image" && input.form == form) {
+					dojo.event.disconnect(input, "onclick", tapestry.form, "inputClicked");
+				}
+			}
+			
+			dojo.event.disconnect(form, "onsubmit", this, "overrideSubmit");
+			delete this.forms[id];
 		}
+		
+		this.forms[id]={};
+		this.forms[id].validateForm=true;
+		this.forms[id].profiles=[];
+		this.forms[id].async=(typeof async != "undefined") ? async : false;
+		this.forms[id].json=(typeof json != "undefined") ? json : false;
+		
+		if (!this.forms[id].async) {
+			dojo.event.connect(form, "onsubmit", this, "onFormSubmit");
+		} else {
+			for(var i = 0; i < form.elements.length; i++) {
+				var node = form.elements[i];
+				if(node && node.type && dojo.lang.inArray(["submit", "button"],node.type.toLowerCase())) {
+					dojo.event.connect(node, "onclick", tapestry.form, "inputClicked");
+				}
+			}
+			
+			var inputs = form.getElementsByTagName("input");
+			for(var i = 0; i < inputs.length; i++) {
+				var input = inputs[i];
+				if(input.type.toLowerCase() == "image" && input.form == form) {
+					dojo.event.connect(input, "onclick", tapestry.form, "inputClicked");
+				}
+			}
+			
+			dojo.event.connect(form, "onsubmit", this, "overrideSubmit");
+		}
+	},
+	
+	overrideSubmit:function(e){
+		dojo.event.browser.stopEvent(e);
+		tapestry.form.submitAsync(e.target);
 	},
 	
 	/**
