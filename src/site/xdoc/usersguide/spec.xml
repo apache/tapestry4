@@ -870,7 +870,7 @@
                             <p>
                                 If true, then any body for this component, from its containing page
                                 or component's template, is retained and may be rendered using a
-                                <a href="site:RenderBody">RenderBody</a>
+                                <a href="../components/general/renderbody.html">RenderBody</a>
                                 component.
                             </p>
                             <p>

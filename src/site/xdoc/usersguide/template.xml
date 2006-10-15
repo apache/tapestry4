@@ -171,7 +171,7 @@
                     The second span is an
                     <em>implicit component</em>
                     ; the type of the component is
-                    <a href="site:Insert">Insert</a>
+                    <a href="../components/general/insert.html">Insert</a>
                     . The value parameter is bound to the
                     <a href="http://www.ognl.org">OGNL</a>
                     expression
@@ -255,7 +255,7 @@
                         In most cases, a component will make use of its body; it simply controls if,
                         when and how often its body is rendered (when rendering the HTML response
                         sent to the client). Other components, such as
-                        <a href="site:Insert">Insert</a>
+                        <a href="../components/general/insert.html">Insert</a>
                         , have no use for their bodies, which they discard. Each component declares
                         in its own specification (the allow-body attribute of the
                         <a href="spec.html#spec.component-specification">
@@ -266,10 +266,10 @@
 
                     <p>
                         In the previous example, the
-                        <a href="site:Insert">Insert</a>
+                        <a href="../components/general/insert.html">Insert</a>
                         component had a body, the text "Joe User". This supports WYSIWYG preview;
                         the text will be displayed when previewing. Since the
-                        <a href="site:Insert">Insert</a>
+                        <a href="../components/general/insert.html">Insert</a>
                         component discards its body, this text will not be used at runtime, instead
                         the OGNL expression
                         <code>user.name</code>
@@ -280,7 +280,7 @@
                         <strong>Warning:</strong>
                         <p>
                             If you put a component inside the body of an
-                            <a href="site:Insert">Insert</a>
+                            <a href="../components/general/insert.html">Insert</a>
                             (or any other component that discards its body), then Tapestry will
                             throw an exception. You aren't allowed to create a component simply to
                             discard it.
@@ -300,7 +300,7 @@
                         component's type; this component would have an id of
                         <code>$Insert</code>
                         ; other
-                        <a href="site:Insert">Insert</a>
+                        <a href="../components/general/insert.html">Insert</a>
                         components would have ids
                         <code>$Insert$0</code>
                         ,
@@ -534,7 +534,7 @@
                     <p>
                         Another conflict can occur when the HTML template specified an attribute
                         that the component needs to render itself. For example, the
-                        <a href="site:DirectLink">DirectLink</a>
+                        <a href="../components/link/directlink.html">DirectLink</a>
                         component generates a
                         <code>&lt;a&gt;</code>
                         tag, and needs to control the href attribute. However, for preview purposes,
@@ -548,7 +548,7 @@
                     <p>
                         This creates a conflict: will the template href (the literal string "#") be
                         used, or the dynamically generated URL produced by the
-                        <a href="site:DirectLink">DirectLink</a>
+                        <a href="../components/link/directlink.html">DirectLink</a>
                         component, or both? The answer is: the component wins. The href attribute in
                         the template is ignored.
                     </p>
@@ -628,7 +628,7 @@
 
                     <p>
                         This is not an
-                        <a href="site:Insert">Insert</a>
+                        <a href="../components/general/insert.html">Insert</a>
                         component, but behaves in a similar way. The tag used
                         <em>must be</em>
                         &lt;span&gt;. You do not use the
@@ -722,7 +722,7 @@
                         people, perhaps from some kind of database. When this page renders, the
                         <code>loop</code>
                         component (presumably a
-                        <a href="site:Foreach">Foreach</a>
+                        <a href="../components/general/for.html">Foreach</a>
                         , such details being in the page's specification) will render its body zero
                         or more times. So we might see rows for "Frank Miller", "Alan Moore" and so
                         forth (depending on the content of the database). However, every listing

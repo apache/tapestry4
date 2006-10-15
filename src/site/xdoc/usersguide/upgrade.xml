@@ -475,16 +475,12 @@ public abstract class MyComponent . . .
             </section>
 
             <section name="Changes to Components">
-
-
                 <subsection name="Image and Rollover">
-
-
                     <p>
                         The border parameter of the
-                        <a href="site:Image">Image</a>
+                        <a href="../components/general/image.html">Image</a>
                         and
-                        <a href="site:Rollover">Rollover</a>
+                        <a href="../components/link/rollover.html">Rollover</a>
                         components has been removed, for XHTML compliance. You may still specify a
                         value for border as an informal parameter ... or better yet, handle this
                         using CSS.

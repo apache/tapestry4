@@ -30,9 +30,9 @@
             Listener methods are a kind of call back; they are triggered when a form is submitted or
             a link is clicked. The listener methods exist within your page and component classes.
             Components such as
-            <a href="site:DirectLink">DirectLink</a>
+            <a href="../components/link/directlink.html">DirectLink</a>
             and
-            <a href="site:Form">Form</a>
+            <a href="../components/form/form.html">Form</a>
             take a listener parameter, and you can use a listener:
             <a href="bindings.html">binding reference</a>
             to use a listener method in your class as the listener.
@@ -120,7 +120,7 @@
 
             <p>
                 When using the
-                <a href="site:DirectLink">DirectLink</a>
+                <a href="../components/link/directlink.html">DirectLink</a>
                 component, you may specify additional
                 <em>listener parameters</em>
                 . The listener parameters are encoded into the URL and will be available in a later

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "//xdoc/" "http://maven.apache.org/dtd/xdoc_1_0.dtd">
 <!-- 
     Copyright 2005 The Apache Software Foundation
     
@@ -62,15 +63,16 @@
                 was required).
             </p>
 
-            <p>
+            <span class="warn">
                 <strong>Warning:</strong>
-                <br />
+                <p>
                 For security purposes, enabling friendly URLs implies that pages are no longer
                 accessible via their ugly URL counterpart. This is not the case. If a malevolent
                 user can either guess - or via cookies identify - your servlet path, they can
                 construct an ugly URL to a resource that is protected via security and gain access
                 to the protected resource.
-            </p>
+                </p>
+            </span>
             <p>Friendly URLs are divided into two concerns:</p>
 
             <ul>
@@ -97,7 +99,7 @@
                 extension to the URL.
             </p>
 
-            <section name="Understanding Tapestry URLs">
+            <subsection name="Understanding Tapestry URLs">
 
 
                 <p>
@@ -113,16 +115,17 @@
                     query parameter is used to select an engine service by name. A number of
                     services are provided with the framework, the most common of which are:
                 </p>
-
+                
+                
                 <dl>
                     <dt>page</dt>
                     <dd>Activates and renders a specific page.</dd>
                     <dt>direct</dt>
                     <dd>
                         Used with the
-                        <a href="site:DirectLink">DirectLink</a>
+                        <a href="../components/link/directlink.html">DirectLink</a>
                         and
-                        <a href="site:Form">Form</a>
+                        <a href="../components/form/form.html">Form</a>
                         components.
                     </dd>
                     <dt>home</dt>
@@ -153,7 +156,7 @@
                     </dt>
                     <dd>
                         Stores listener parameters passed in the URL (used by
-                        <a href="site:DirectLink">DirectLink</a>
+                        <a href="../components/link/directlink.html">DirectLink</a>
                         and passed into
                         <a href="listenermethods.html">listener method</a>
                         s, the "sp" is a holdover from 3.0).
@@ -168,9 +171,9 @@
                     . Yep, that's UGLY.
                 </p>
 
-            </section>
+            </subsection>
 
-            <section name="Enabling Friendly URLs">
+            <subsection name="Enabling Friendly URLs">
 
 
                 <p>
@@ -180,7 +183,7 @@
                     </a>
                     . Enabling friendly URLs requires adding more configuration to web.xml, and to
                     your
-                    <a href="site:hivemind">HiveMind module deployment descriptor</a>
+                    <a href="hivemind.html">HiveMind module deployment descriptor</a>
                     .
                 </p>
 
@@ -431,7 +434,7 @@
                         From the Virtual Library example, a custom encoder implementation is used as
                         a special way to reference the ViewBook and ViewPerson pages using the
                         external service (see the
-                        <a href="site:ExternalLink">ExternalLink</a>
+                        <a href="../components/link/externallink.html">ExternalLink</a>
                         component for more information about using this engine service). The end
                         result is that the URLs for these two pages look like
                         <code>/vlib/book/2096</code>
@@ -560,7 +563,7 @@
                     start with a slash.
                 </p>
 
-            </section>
+            </subsection>
 
         </section>
     </body>

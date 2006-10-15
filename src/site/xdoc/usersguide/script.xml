@@ -59,7 +59,7 @@
                     IScriptProcessor
                 </a>
                 instance; this is usually provided by the
-                <a href="site:Body">Body</a>
+                <a href="../components/general/body.html">Body</a>
                 component. The script processor is responsible for managing the buffers of
                 JavaScript, and assists with generating unique ids for client-side variables and
                 functions.
@@ -85,7 +85,7 @@
                 .
             </p>
 
-            <section name="DOCTYPE">
+            <subsection name="DOCTYPE">
 
 
                 <p>The DOCTYPE for a script template specification is:</p>
@@ -94,9 +94,9 @@
 &lt;!DOCTYPE script PUBLIC
   "-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
   "http://jakarta.apache.org/tapestry/dtd/Script_3_0.dtd"&gt;</source>
-            </section><!-- DOCTYPE -->
+            </subsection><!-- DOCTYPE -->
 
-            <section name="&lt;body&gt; element">
+            <subsection name="&lt;body&gt; element">
 
 
                 <p>
@@ -114,9 +114,9 @@
                 <source xml:space="preserve">(<em>text</em> | <a href="#script.foreach">&lt;foreach&gt;</a> | <a
                         href="#script.if">&lt;if&gt;</a> | <a href="#script.if-not">&lt;if-not&gt;</a> | <a
                         href="#script.unique">&lt;unique&gt;</a>)*</source>
-            </section>
+            </subsection>
 
-            <section name="&lt;foreach&gt; element">
+            <subsection name="&lt;foreach&gt; element">
 
 
                 <p>
@@ -174,10 +174,10 @@
                 <source xml:space="preserve">(<em>text</em> | <a href="#script.foreach">&lt;foreach&gt;</a> | <a
                         href="#script.if">&lt;if&gt;</a> | <a href="#script.if-not">&lt;if-not&gt;</a> | <a
                         href="#script.unique">&lt;unique&gt;</a>)*</source>
-            </section>
+            </subsection>
 
 
-            <section name="&lt;if&gt; element">
+            <subsection name="&lt;if&gt; element">
 
 
                 <p>
@@ -221,9 +221,9 @@
                         href="#script.if">&lt;if&gt;</a> | <a href="#script.if-not">&lt;if-not&gt;</a> | <a
                         href="#script.unique">&lt;unique&gt;</a>)*</source>
 
-            </section>
+            </subsection>
 
-            <section name="&lt;if-not&gt; element">
+            <subsection name="&lt;if-not&gt; element">
 
 
                 <p>
@@ -234,11 +234,11 @@
                     <strong>false</strong>
                     .
                 </p>
-            </section>
+            </subsection>
 
 
 
-            <section name="&lt;include-script&gt; element">
+            <subsection name="&lt;include-script&gt; element">
 
 
                 <p>
@@ -279,8 +279,8 @@
                     </tr>
                 </table>
 
-            </section>
-            <section name="&lt;initialization&gt; element">
+            </subsection>
+            <subsection name="&lt;initialization&gt; element">
 
 
                 <p>
@@ -299,9 +299,9 @@
                 <source xml:space="preserve">(<em>text</em> | <a href="#script.foreach">&lt;foreach&gt;</a> | <a
                         href="#script.if">&lt;if&gt;</a> | <a href="#script.if-not">&lt;if-not&gt;</a> | <a
                         href="#script.unique">&lt;unique&gt;</a>)*</source>
-            </section>
+            </subsection>
 
-            <section name="&lt;input-symbol&gt; element">
+            <subsection name="&lt;input-symbol&gt; element">
 
 
                 <p>
@@ -356,9 +356,9 @@
                     </tr>
                 </table>
 
-            </section>
+            </subsection>
 
-            <section name="&lt;let&gt; element">
+            <subsection name="&lt;let&gt; element">
 
 
                 <p>
@@ -414,9 +414,9 @@
                         href="#script.unique">&lt;unique&gt;</a>)*</source>
 
 
-            </section>
+            </subsection>
 
-            <section name="&lt;script&gt; element">
+            <subsection name="&lt;script&gt; element">
 
 
                 <p>
@@ -435,10 +435,10 @@
                         href="#script.body">&lt;body&gt;</a>?, <a href="#script.initialization">&lt;initialization&gt;</a>?)                  
             </source>
 
-            </section><!-- script -->
+            </subsection><!-- script -->
 
 
-            <section name="&lt;set&gt; element">
+            <subsection name="&lt;set&gt; element">
 
 
                 <p>
@@ -483,9 +483,9 @@
                     </tr>
                 </table>
 
-            </section><!-- script.set -->
+            </subsection><!-- script.set -->
 
-            <section name="&lt;unique&gt; element">
+            <subsection name="&lt;unique&gt; element">
 
 
                 <p>
@@ -505,7 +505,7 @@
                         href="#script.if">&lt;if&gt;</a> | <a href="#script.if-not">&lt;if-not&gt;</a> | <a
                         href="#script.unique">&lt;unique&gt;</a>)*</source>
 
-            </section>
+            </subsection>
 
         </section>
 
