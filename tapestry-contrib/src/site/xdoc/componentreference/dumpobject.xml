@@ -25,7 +25,7 @@
             <p>
                 Dumps out an object's serialized representation in a mix of hex and ascii. The
                 output is formatted for a fixed width font and should typically be enclosed in
-                &lt;pre&gt; tags.
+                <code>&lt;pre&gt;</code> tags.
             </p>
 
             <subsection name="Parameters">
@@ -35,7 +35,6 @@
                     <tr>
                         <th>Name</th>
                         <th>Type</th>
-                        <th>Direction</th>
                         <th>Required</th>
                         <th>Default</th>
                         <th>Description</th>
@@ -44,9 +43,8 @@
                     <tr>
                         <td>object</td>
                         <td>Object</td>
-                        <td>in</td>
                         <td>yes</td>
-                        <td />
+                        <td></td>
                         <td>The object to be displayed as HTML.</td>
                     </tr>
 

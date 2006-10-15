@@ -28,15 +28,15 @@
 
             <p>
                 A low level
-                <a href="/Table.html">Table</a>
+                <a href="table.html">Table</a>
                 component that wraps all other low level
-                <a href="/Table.html">Table</a>
+                <a href="table.html">Table</a>
                 components. This component carries the
-                <a href="../../tapestry-framework/apidocs/org/apache/tapestry/table/model/ITableModel.html">
+                <a href="../../tapestry-contrib/apidocs/org/apache/tapestry/table/model/ITableModel.html">
                     ITableModel
                 </a>
                 that is used by the other
-                <a href="/Table.html">Table</a>
+                <a href="table.html">Table</a>
                 components. The information that will be displayed can be provided either via the
                 source and columns parameters, or via the
                 <code>tableModel</code>
@@ -79,7 +79,7 @@
                 <li>
                     All of the information (data, columns, state) is packaged in an
                     <a
-                        href="../../tapestry/apidocs/org/apache/tapestry/table/model/ITableModel.html">
+                        href="../../tapestry-contrib/apidocs/org/apache/tapestry/table/model/ITableModel.html">
                         ITableModel
                     </a>
                     and is passed to the
@@ -101,7 +101,7 @@
                 <code>columns</code>
                 parameter, you can either provide a list of
                 <a
-                    href="../../tapestry/apidocs/org/apache/tapestry/table/model/ITableColumn.html">
+                    href="../../tapestry-contrib/apidocs/org/apache/tapestry/table/model/ITableColumn.html">
                     <code>ITableColumn</code>
                 </a>
                 objects, each defining a column in the table, or you can define the columns using a
@@ -164,7 +164,7 @@
                     <br />
                     in which case it identifies an OGNL expression that returns an
                     <a
-                        href="../../tapestry/apidocs/org/apache/tapestry/table/model/ITableColumn.html">
+                        href="../../tapestry-contrib/apidocs/org/apache/tapestry/table/model/ITableColumn.html">
                         <code>ITableColumn</code>
                     </a>
                     object defining the column.
@@ -191,28 +191,25 @@
             <p>
                 <strong>
                     See also:
-                    <a href="/Table.html">Table</a>
+                    <a href="table.html">Table</a>
                     ,
-                    <a href="/TableView.html">TableView</a>
+                    <a href="tableview.html">TableView</a>
                     ,
-                    <a href="/TablePages.html">TablePages</a>
+                    <a href="tablepages.html">TablePages</a>
                     ,
-                    <a href="/TableRows.html">TableRows</a>
+                    <a href="tablerows.html">TableRows</a>
                     ,
-                    <a href="/TableValues.html">TableValues</a>
+                    <a href="tablevalues.html">TableValues</a>
                     ,
-                    <a href="/TableColumns.html">TableColumns</a>
+                    <a href="tablecolumns.html">TableColumns</a>
                 </strong>
             </p>
 
             <subsection name="Parameters">
-
-
                 <table>
                     <tr>
                         <th>Name</th>
                         <th>Type</th>
-                        <th>Direction</th>
                         <th>Required</th>
                         <th>Default</th>
                         <th>Description</th>
@@ -238,11 +235,10 @@
                             </a>
                             <br />
                             <a
-                                href="../../tapestry/apidocs/org/apache/tapestry/table/model/IBasicTableModel.html">
+                                href="../../tapestry-contrib/apidocs/org/apache/tapestry/table/model/IBasicTableModel.html">
                                 IBasicTableModel
                             </a>
                         </td>
-                        <td>in</td>
                         <td rowspan="3">
                             You must provide either both
                             <code>source</code>
@@ -260,7 +256,7 @@
                             array of values, a collection, an iterator, or an object implementing
                             the
                             <a
-                                href="../../tapestry/apidocs/org/apache/tapestry/table/model/IBasicTableModel.html">
+                                href="../../tapestry-contrib/apidocs/org/apache/tapestry/table/model/IBasicTableModel.html">
                                 IBasicTableModel
                             </a>
                             interface.
@@ -276,12 +272,12 @@
                             </a>
                             <br />
                             <a
-                                href="../../tapestry/apidocs/org/apache/tapestry/table/model/ITableColumnModel.html">
+                                href="../../tapestry-contrib/apidocs/org/apache/tapestry/table/model/ITableColumnModel.html">
                                 ITableColumnModel
                             </a>
                             <br />
                             <a
-                                href="../../tapestry/apidocs/org/apache/tapestry/table/model/ITableColumnModel.html">
+                                href="../../tapestry-contrib/apidocs/org/apache/tapestry/table/model/ITableColumnModel.html">
                                 ITableColumnModel
                             </a>
                             <br />
@@ -294,8 +290,7 @@
                                 Iterator
                             </a>
                         </td>
-                        <td>in</td>
-                        <!--td>no</td-->
+                        <td></td>
                         <td> </td>
 
                         <td>
@@ -309,18 +304,17 @@
                         <td>tableModel</td>
                         <td>
                             <a
-                                href="../../tapestry/apidocs/org/apache/tapestry/table/model/ITableModel.html">
+                                href="../../tapestry-contrib/apidocs/org/apache/tapestry/table/model/ITableModel.html">
                                 ITableModel
                             </a>
                         </td>
-                        <td>in</td>
-                        <!--td>no</td-->
+                        <td></td>
                         <td> </td>
 
                         <td>
                             The
                             <a
-                                href="../../tapestry/apidocs/org/apache/tapestry/table/model/ITableModel.html">
+                                href="../../tapestry-contrib/apidocs/org/apache/tapestry/table/model/ITableModel.html">
                                 ITableModel
                             </a>
                             to be used to render the table. The model contains all of the
@@ -334,11 +328,10 @@
                         <td>tableSessionStateManager</td>
                         <td>
                             <a
-                                href="../../tapestry/apidocs/org/apache/tapestry/table/model/ITableSessionStateManager.html">
+                                href="../../tapestry-contrib/apidocs/org/apache/tapestry/table/model/ITableSessionStateManager.html">
                                 ITableSessionStateManager
                             </a>
                         </td>
-                        <td>in</td>
                         <td>no</td>
                         <td>
                             A custom session state manager that reloads the data at each request if
@@ -353,7 +346,7 @@
                             <br />
                             You can use one of the stock implementations of
                             <a
-                                href="../../tapestry/apidocs/org/apache/tapestry/table/model/ITableSessionStateManager.html">
+                                href="../../tapestry-contrib/apidocs/org/apache/tapestry/table/model/ITableSessionStateManager.html">
                                 ITableSessionStateManager
                             </a>
                             to determine the session state behaviour, or you can define your own.
@@ -364,14 +357,12 @@
                         <td>tableSessionStoreManager</td>
                         <td>
                             <a
-                                href="../../tapestry/apidocs/org/apache/tapestry/table/model/ITableSessionStoreManager.html">
+                                href="../../tapestry-contrib/apidocs/org/apache/tapestry/table/model/ITableSessionStoreManager.html">
                                 ITableSessionStoreManager
                             </a>
                         </td>
-                        <td>in</td>
                         <td>no</td>
-                        <td>null</td>
-
+                        <td></td>
                         <td>
                             Determines how the session state (returned by the session state manager)
                             will be saved in the session. If this parameter is null, then the state
@@ -383,10 +374,8 @@
                     <tr>
                         <td>pageSize</td>
                         <td>int</td>
-                        <td>in</td>
                         <td>no</td>
                         <td>10</td>
-
                         <td>
                             The number of records displayed per page.
                             <br />
@@ -402,10 +391,8 @@
                                 String
                             </a>
                         </td>
-                        <td>in</td>
                         <td>no</td>
-                        <td>null</td>
-
+                        <td></td>
                         <td>
                             The id of the column to initially sort the table by. A value of null
                             indicates no sorting.
@@ -417,10 +404,8 @@
                     <tr>
                         <td>initialSortOrder</td>
                         <td>boolean</td>
-                        <td>in</td>
                         <td>no</td>
                         <td>false</td>
-
                         <td>
                             The order of the initial sorting. Set this parameter to false to sort in
                             an ascending order and to true to sort in a descending one.
@@ -437,10 +422,8 @@
                                 String
                             </a>
                         </td>
-                        <td>in</td>
                         <td>no</td>
                         <td>table</td>
-
                         <td>
                             The tag that will be used to wrap the inner components. If no binding is
                             given, the tag that will be generated is 'table'. If you would like to

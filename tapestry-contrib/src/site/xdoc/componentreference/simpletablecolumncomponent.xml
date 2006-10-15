@@ -16,14 +16,13 @@
 -->
 <document>
     <properties>
-        <title>SimpleTableColumnFormComponent</title>
+        <title>SimpleTableColumnComponent</title>
     </properties>
     <body>
 
-        <section name="SimpleTableColumnFormComponent">
+        <section name="SimpleTableColumnComponent">
 
-            <p>A component that renders the default column header in a form.</p>
-
+            <p>A component that renders the default column header.</p>
             <p>
                 If the current column is sortable, it renders the header as a link. Clicking on the
                 link causes the table to be sorted on that column. Clicking on the link again causes
@@ -31,49 +30,23 @@
             </p>
 
             <p>
-                This component renders links that cause the form to be submitted. This ensures that
-                the updated data in the other form fields is preserved.
-            </p>
-
-            <span class="info">
-                <strong>Note:</strong>
-                <p>
-                The column header rendered by this component has two main css class definitions. The
-                embedded table html markup within each
-                <code>td</code>
-                element for a sorted column has the class
-                <code>tableHeaderImage</code>
-                . The image used to sort table columns has an embedded style class definition for
-                <code>tableHeaderImage</code>
-                that defines
-                <code>align:center</code>
-                .
-
-                <br />
-                You may override these definitions with your own css rules.
-                </p>
-            </span>
-
-            <p>
                 <strong>
                     See also:
-                    <a href="/Table.html">Table</a>
+                    <a href="table.html">Table</a>
                     ,
-                    <a href="/TableView.html">TableView</a>
+                    <a href="tablebiew.html">TableView</a>
                     ,
-                    <a href="/TablePages.html">TablePages</a>
+                    <a href="tablepages.html">TablePages</a>
                     ,
-                    <a href="/TableRows.html">TableRows</a>
+                    <a href="tablerows.html">TableRows</a>
                     ,
-                    <a href="/TableValues.html">TableValues</a>
+                    <a href="tablevalues.html">TableValues</a>
                     ,
-                    <a href="/TableColumns.html">TableColumns</a>
+                    <a href="tablecolumns.html">TableColumns</a>
                 </strong>
             </p>
 
             <subsection name="Parameters">
-
-
                 <p>
                     <em>No parameters</em>
                 </p>
