@@ -37,8 +37,8 @@
 
 <body>
 function ${functionName}() {
-  initMask(document.${formName}.${maskEdit.name},
-           document.${formName}.${maskValue.name});
+  initMask(dojo.byId("${formName}").elements["${maskEdit.name}"],
+           dojo.byId("${formName}").elements["${maskValue.name}"]);
 }
 </body>
 

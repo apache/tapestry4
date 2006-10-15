@@ -98,6 +98,11 @@
     <binding name="displayName" value="message:zip-code-label"/>
   </component>
   
+  <component id="phone" type="contrib:MaskEdit">
+    <binding name="value" value="visit.phone"/>
+    <binding name="mask" value="literal:(###) ###-####"/>
+  </component>
+  
   <component id="textArea" type="TextArea">
     <binding name="value" value="visit.textValue"></binding>
     <binding name="validators" value="validators:required,minLength=20"/>

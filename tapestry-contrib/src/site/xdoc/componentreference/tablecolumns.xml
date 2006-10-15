@@ -60,7 +60,6 @@
                 <code>align:center</code>
                 .
                 <br />
-
                 You may override these definitions with your own css rules.
                 </p>
             </span>
@@ -95,7 +94,6 @@
                         <td>String</td>
                         <td>no</td>
                         <td>th</td>
-
                         <td>The tag to use to wrap the column headers.</td>
                     </tr>
 
@@ -109,8 +107,7 @@
                         </td>
                         <td>no</td>
                         <td> </td>
-
-                        <td>The object representing the current column.</td>
+                        <td>The column currently being rendered [out]</td>
                     </tr>
 
                     <tr>
@@ -135,10 +132,19 @@
                         </td>
                         <td>no</td>
                         <td> </td>
-
                         <td>The image to use to describe a column sorted in a descending order.</td>
                     </tr>
+                    
+                    <tr>
+                        <td>class</td>
+                        <td>
+                        String
+                        </td>
+                        <td>no</td>
+                        <td> </td>
 
+                        <td>The css class name to apply to each th element.</td>
+                    </tr>
                 </table>
 
                 <p>
@@ -148,7 +154,7 @@
 
                 <p>
                     Informal parameters:
-                    <strong>allowed</strong>
+                    <strong>allowed,inherited</strong>
                 </p>
 
                 <p>
