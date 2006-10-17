@@ -31,10 +31,20 @@ tapestry.form={
 	focusField:function(field){
 		if (arguments.length < 1) return;
 		
-		field = dojo.byId(field);
-		if (!field) return;
-		if (field.disabled || field.clientWidth < 1) return;
-        
+		field = dojo.widget.byId(field);
+		if(field && !dj_undef("focus", field)){
+			field.focus();
+			return;
+		} else {
+			field = dojo.byId(field);
+		}
+		
+		if (!field) { return; }
+		
+		if (field.disabled || field.clientWidth < 1) {
+			return;
+		}
+		
         dojo.html.selectInputText(field);
 	},
 	

@@ -208,7 +208,10 @@ public class FormSupportTest extends BaseComponentTestCase
         // effectively means someone else has already claimed focus
         
         trainGetFieldFocus(cycle, null);
-
+        
+        support.addInitializationScript(form, "tapestry.form.focusField('wilma');");
+        cycle.setAttribute(FormSupportImpl.FIELD_FOCUS_ATTRIBUTE, Boolean.TRUE);
+        
         replay();
 
         fs.render("post", render, link, null, null);
@@ -1066,7 +1069,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         // Side test: check for another form already grabbing focus
 
-        trainGetFieldFocus(cycle, Boolean.TRUE);
+        trainGetFieldFocus(cycle, null);
         
         support.addInitializationScript(form, "tapestry.form.focusField('barney');");
         
@@ -1216,16 +1219,16 @@ public class FormSupportTest extends BaseComponentTestCase
         nested.close();
 
         writer.end();
-
+        
         trainGetFocusField(delegate, "barney");
-
+        
         // Side test: check for another form already grabbing focus
-
+        
         trainGetFieldFocus(cycle, Boolean.TRUE);
         
-        support.addInitializationScript(form, "tapestry.form.focusField('barney');");
+        // support.addInitializationScript(form, "tapestry.form.focusField('barney');");
         
-        cycle.setAttribute(FormSupportImpl.FIELD_FOCUS_ATTRIBUTE, true);
+        // cycle.setAttribute(FormSupportImpl.FIELD_FOCUS_ATTRIBUTE, true);
         
         replay();
 
