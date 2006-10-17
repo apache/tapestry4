@@ -14,7 +14,19 @@ A:Active  {}
 
 A:Hover  {}
 
-BODY  {}
+BODY  {
+    margin:0;
+    padding:0;
+}
+
+body, td, th {
+    font-family: Lucida Grande, Tahoma, Verdana, Arial, sans-serif;
+    font-size: 11pt;
+    color: #292929;
+}
+
+h2 { font: 1.4em Tahoma, Myriad, sans-serif; font-weight:bold; color: #296cb5; padding-bottom:0; }
+h3 { font: 0.8em Tahoma, Myriad, sans-serif; font-weight:bold; color: #296cb5; padding-bottom:0; }
 
 TABLE.exception-display TR.even  {
 	top : auto;
@@ -47,6 +59,13 @@ SPAN.exception-header  {
 	color : Red;
 }
 
+SPAN.exception-top {
+    display:block;
+    background: #efefef;
+    border-bottom: 2px solid #215E8A;
+    padding:0.4em;
+}
+
 SPAN.exception-message {
 	font-weight: bold;
 }
@@ -67,6 +86,8 @@ TABLE.exception-display TR.exception-name TD  {
 
 TABLE.exception-display  {
 	width : 100%;
+	maring:0;
+	padding:0;
 }
 
 TABLE.exception-display TR.exception-message TD  {
@@ -156,10 +177,18 @@ TABLE.described-object TR.odd
 
 a.toggle {
     text-decoration:none;
-    color: #4066A0;
+    color: #292929;
     font-weight:bold;
+    display:block;
+    clear:left;
+    border-bottom: 2px solid #ffffff;
+    margin-top: 0.3em;
 }
 
 a.toggle:hover {
-    border-bottom: 2px solid #EDCC5F;
+    background:#EDCC5F;
+}
+
+a.toggleSelected {
+    background:#EDCC5F;
 }

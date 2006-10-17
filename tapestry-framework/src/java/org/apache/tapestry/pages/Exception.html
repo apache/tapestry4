@@ -14,31 +14,56 @@
    limitations under the License.
 -->
 <span jwcid="$content$">
-<html jwcid="@Shell" title="Exception" stylesheet="ognl:assets.stylesheet" disableCaching="true" doctype="ognl:''">
+<html jwcid="@Shell" title="Exception" stylesheet="ognl:assets.stylesheet" 
+	  disableCaching="true" doctype="ognl:''">
 <body>
 
+<span class="exception-top">
 <span class="exception-header">
 An exception has occurred.
 </span>
 
 <p>You may continue by <b><a jwcid="restart">restarting</a></b> the session.</p>
+</span>
 
 <span jwcid="@ExceptionDisplay" exceptions="ognl:exceptions"/>
-<br/>
+
 <span jwcid="@RequestDisplay"/>
 
 <script type="text/javascript">
 dojo.require("dojo.html.style");
 
-function toggleDisplay(id){
+var blockCount=0;
+
+function toggleLink(link){
+	if(!link){return;}
+	if(dojo.html.hasClass(link, "toggleSelected")){
+		dojo.html.removeClass(link, "toggleSelected");
+		return;
+	} else {
+		dojo.html.addClass(link, "toggleSelected");
+		return;
+	}
+}
+
+function toggleDisplay(id, link){
 	dojo.html.toggleShowing(dojo.byId(id));
+	toggleLink(link);
 	return false;
-}    
-    
-dojo.lang.forEach(
-	dojo.html.getElementsByClass('toggleContent'),
-	function(item) {toggleDisplay(item);}
-	);
+}
+
+(function(){
+	var elms=dojo.html.getElementsByClass('toggleContent');
+	if(elms && elms.length > 0){
+		for(var i=0;i<elms.length;i++){
+			toggleDisplay(elms[i]);
+		}
+	}
+	elms=dojo.html.getElementsByClass('exception-display');
+	if(elms && elms.length > 0){
+		toggleDisplay(elms[elms.length-1]);
+	}
+})();
 </script>
 
 </body>
