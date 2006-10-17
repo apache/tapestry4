@@ -525,7 +525,7 @@ public class FormSupportImpl implements FormSupport
         // Close the <form> tag.
 
         _writer.end();
-
+        
         String fieldId = _delegate.getFocusField();
         
         if (_pageRenderSupport == null)
@@ -535,7 +535,7 @@ public class FormSupportImpl implements FormSupport
         // then do nothing.
         
         if (fieldId != null && _form.getFocus() 
-                && _cycle.getAttribute(FIELD_FOCUS_ATTRIBUTE) != null) {
+                && _cycle.getAttribute(FIELD_FOCUS_ATTRIBUTE) == null) {
             
             _pageRenderSupport.addInitializationScript(_form, "tapestry.form.focusField('" + fieldId + "');");
             _cycle.setAttribute(FIELD_FOCUS_ATTRIBUTE, Boolean.TRUE);
