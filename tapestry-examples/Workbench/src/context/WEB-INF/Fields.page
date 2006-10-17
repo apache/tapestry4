@@ -23,6 +23,8 @@
   
   <property name="clientValidationEnabled" persist="client" initial-value="true"/>
   
+  <property name="mask" initial-value="literal:(###) ###-####" />
+  
   <bean name="required" class="org.apache.tapestry.form.validator.Required"/>
   <bean name="delegate" class="org.apache.tapestry.workbench.WorkbenchValidationDelegate" />
 
@@ -100,7 +102,7 @@
   
   <component id="phone" type="contrib:MaskEdit">
     <binding name="value" value="visit.phone"/>
-    <binding name="mask" value="literal:(###) ###-####"/>
+    <binding name="mask" value="ognl:mask"/>
   </component>
   
   <component id="textArea" type="TextArea">
