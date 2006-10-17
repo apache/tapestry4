@@ -33,6 +33,8 @@ import org.testng.annotations.Test;
 @Test
 public class AjaxShellDelegateTest extends BaseComponentTestCase
 {
+    private static final String SYSTEM_NEWLINE= (String)java.security.AccessController.doPrivileged(
+            new sun.security.action.GetPropertyAction("line.separator"));
 
     void trainStaticPath(IEngineService engine, IAsset asset, String path)
     {
@@ -83,7 +85,7 @@ public class AjaxShellDelegateTest extends BaseComponentTestCase
                 "dojo.require(\"dojo.logging.Logger\");\n" + 
                 "dojo.log.setLevel(dojo.log.getLevel(\"WARNING\"));\n" + 
                 "dojo.require(\"tapestry.namespace\")\n" + 
-        "</script>\n");
+        "</script>" + SYSTEM_NEWLINE);
     }
     
     public void test_Debug_Render()
@@ -126,6 +128,6 @@ public class AjaxShellDelegateTest extends BaseComponentTestCase
                 "dojo.require(\"dojo.debug.console\");\n" + 
                 "dojo.log.setLevel(dojo.log.getLevel(\"DEBUG\"));\n" + 
                 "dojo.require(\"tapestry.namespace\")\n" + 
-        "</script>\n");
+        "</script>" + SYSTEM_NEWLINE);
     }
 }
