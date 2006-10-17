@@ -4,15 +4,12 @@
 <body>
 
 <span jwcid="$content$">
-<p>
-
 <span jwcid="eException">
-	<a jwcid="@Any" href="" class="toggle" 
-	   onClick="ognl:'return toggleDisplay(\'excdisplay'+index+'\')'">[&nbsp;+/-&nbsp;] Exception:</a>
+	<a jwcid="@Any" href="" class="ognl:(index == (exceptions.length - 1)) ? 'toggle toggleSelected' : 'toggle'" 
+	   onClick="ognl:'return toggleDisplay(\'excdisplay'+index+'\', this)'">[&nbsp;+/-&nbsp;] Exception:</a>
 	   <span jwcid="@Insert" value="ognl:exception.message">A message describing the exception.</span>
 	
-	<div jwcid="@Any" id="ognl:'excdisplay' + index" class="toggleContent">
-	<table class="exception-display">
+	<table jwcid="@Any" id="ognl:'excdisplay' + index" class="exception-display toggleContent">
 		<tr class="exception-name">
 			<td colspan="2"><span jwcid="insertClass">some.exception.Class</span></td>
 		</tr>
@@ -41,11 +38,9 @@
 			<td>Property Value 4</td>
 		</tr>		
 		
-<span jwcid="ifNotLast">
-		<tr> <td colspan="2"> &nbsp; </td> </tr>
-</span>
+		<tr jwcid="ifNotLast"> <td colspan="2"> &nbsp; </td> </tr>
 
-<span jwcid="ifLast">
+<span jwcid="ifLast" renderTag="false">
 		<tr class="stack-trace-label">
 			<td colspan="2">Stack Trace:</td>
 		</tr>
@@ -64,10 +59,9 @@
 		</tr>
 </span> <!-- ifLast -->
 	</table>
-	</div>
+	
 </span> <!-- e-exception -->
 
-</p>
 </span> <!-- $content$ -->
 
 </body>

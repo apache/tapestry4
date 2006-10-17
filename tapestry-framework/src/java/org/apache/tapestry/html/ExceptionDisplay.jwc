@@ -45,7 +45,7 @@
   
   <inject property="adapterFactory" object="service:tapestry.describe.RenderableAdapterFactory"/>
   
-  <component id="eException" type="Foreach">
+  <component id="eException" type="For">
     <binding name="source" value="exceptions"/>
     <binding name="value" value="exception"/>
     <binding name="index" value="index"/>
@@ -59,7 +59,7 @@
     <binding name="value" value="exception.message"/>
   </component>
   
-  <component id="eProperty" type="Foreach">
+  <component id="eProperty" type="For">
   	<binding name="element" value="literal:tr"/>
   	<binding name="class" value="beans.evenOdd.next"/>
     <binding name="source" value="exception.properties"/>
@@ -82,7 +82,7 @@
     <binding name="condition" value="! last"/>
   </component>
   
-  <component id="eStack" type="Foreach">
+  <component id="eStack" type="For">
     <binding name="element" value="literal:li"/>
     <binding name="source" value="exception.stackTrace"/>
     <binding name="value" value="trace"/>
