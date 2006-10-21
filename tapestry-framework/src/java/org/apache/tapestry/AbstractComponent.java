@@ -306,9 +306,11 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
         if (_clientId == null) {
             String id = getBoundId();
             
-            if (id == null) id = getId();
+            if (id == null) 
+                id = getId();
             
-            _clientId =  cycle.getUniqueId(TapestryUtils.convertTapestryIdToNMToken(id));
+            if (id != null)
+                _clientId = cycle.getUniqueId(TapestryUtils.convertTapestryIdToNMToken(id));
         }
         
         String id = getClientId();
@@ -438,7 +440,6 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
     }
     
     /**
-     * 
      * {@inheritDoc}
      * @since 4.1
      */
@@ -448,6 +449,7 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
             return _clientId;
         
         String boundId = getBoundId();
+        
         if (boundId == null)
             return getId();
         
@@ -459,13 +461,14 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
         _clientId = id;
     }
     
-    String getBoundId()
+    protected String getBoundId()
     {
         if (_bindings == null)
             return null;
         
         IBinding id = (IBinding)_bindings.get("id");
-        if (id == null)
+        
+        if (id == null || id.getObject() == null)
             return null;
         
         return id.getObject().toString();

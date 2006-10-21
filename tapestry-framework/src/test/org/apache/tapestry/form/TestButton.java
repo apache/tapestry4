@@ -82,18 +82,18 @@ public class TestButton extends BaseComponentTestCase
     public void testRenderWithId()
     {
         Button b = newInstance(Button.class, new Object[]
-        { "idParameter", "foo", "name", "assignedName" });
-
+        { "id", "assignedId", "name", "assignedName"});
+        
         IMarkupWriter writer = newBufferWriter();
-        IRequestCycle cycle = newCycleGetUniqueId("foo", "foo$unique");
-
+        IRequestCycle cycle = newCycleGetUniqueId("assignedId", "assignedId$unique");
+        
         replay();
 
         b.renderFormComponent(writer, cycle);
 
         verify();
 
-        assertBuffer("<button type=\"button\" name=\"assignedName\" id=\"foo$unique\"></button>");
+        assertBuffer("<button type=\"button\" name=\"assignedName\" id=\"assignedId$unique\"></button>");
     }
 
     public void testSubmit()

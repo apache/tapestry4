@@ -375,7 +375,7 @@ public class FormSupportImpl implements FormSupport
 
     public String getElementId(IFormComponent component)
     {
-        return getElementId(component, component.getId());
+        return getElementId(component, component.getClientId());
     }
 
     /**
@@ -394,7 +394,7 @@ public class FormSupportImpl implements FormSupport
         String filteredId = TapestryUtils.convertTapestryIdToNMToken(baseId);
 
         String result = _elementIdAllocator.allocateId(filteredId);
-
+        
         if (_rewinding)
         {
             if (_allocatedIdIndex >= _allocatedIds.size())
@@ -421,7 +421,7 @@ public class FormSupportImpl implements FormSupport
         _allocatedIdIndex++;
 
         component.setName(result);
-
+        
         return result;
     }
 

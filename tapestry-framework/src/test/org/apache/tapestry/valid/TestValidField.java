@@ -253,7 +253,7 @@ public class TestValidField extends BaseFormComponentTestCase
         verify();
 
         assertSame(component, delegate.getFormComponent());
-        assertBuffer("<span class=\"prefix\"><input type=\"text\" name=\"fred\" value=\"fred value\" class=\"validation-delegate\"/></span>");
+        assertBuffer("<span class=\"prefix\"><input type=\"text\" name=\"fred\" value=\"fred value\" id=\"fred\" class=\"validation-delegate\"/></span>");
     }
 
     private void trainToString(IValidator validator,
@@ -313,7 +313,7 @@ public class TestValidField extends BaseFormComponentTestCase
         verify();
 
         assertSame(component, delegate.getFormComponent());
-        assertBuffer("<span class=\"prefix\"><input type=\"text\" name=\"fred\" class=\"validation-delegate\"/></span>");
+        assertBuffer("<span class=\"prefix\"><input type=\"text\" name=\"fred\" id=\"fred\" class=\"validation-delegate\"/></span>");
     }
 
     public void testRenderWithError()
@@ -361,6 +361,6 @@ public class TestValidField extends BaseFormComponentTestCase
         verify();
 
         assertSame(component, delegate.getFormComponent());
-        assertBuffer("<span class=\"prefix\"><input type=\"text\" name=\"fred\" value=\"recorded field value\" class=\"validation-delegate\"/></span>");
+        assertBuffer("<span class=\"prefix\"><input type=\"text\" name=\"fred\" value=\"recorded field value\" id=\"fred\" class=\"validation-delegate\"/></span>");
     }
 }

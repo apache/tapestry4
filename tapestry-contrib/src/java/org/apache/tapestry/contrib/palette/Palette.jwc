@@ -75,7 +75,7 @@
     default-value="asset:DownDisabled"/>    
   
   <parameter name="displayName"/>
-  <parameter name="id" property="idParameter" default-value="id"/>  
+  <parameter name="id" />  
   <parameter name="validators"/>
 
   <asset name="Select" path="select_right.gif"/>

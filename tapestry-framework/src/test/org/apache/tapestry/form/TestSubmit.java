@@ -100,6 +100,7 @@ public class TestSubmit extends BaseFormComponentTestCase
         writer.beginEmpty("input");
         writer.attribute("type", "submit");
         writer.attribute("name", "fred");
+        writer.attribute("id", "fred");
         writer.closeTag();
 
         trainIsInError(delegate, false);
@@ -144,6 +145,7 @@ public class TestSubmit extends BaseFormComponentTestCase
         writer.attribute("type", "submit");
         writer.attribute("name", "fred");
         writer.attribute("disabled", "disabled");
+        writer.attribute("id", "fred");
         writer.closeTag();
 
         replay();
@@ -184,6 +186,7 @@ public class TestSubmit extends BaseFormComponentTestCase
         writer.attribute("type", "submit");
         writer.attribute("name", "fred");
         writer.attribute("value", "flintstone");
+        writer.attribute("id", "fred");
         writer.closeTag();
 
         trainIsInError(delegate, false);
@@ -227,6 +230,7 @@ public class TestSubmit extends BaseFormComponentTestCase
         writer.beginEmpty("input");
         writer.attribute("type", "submit");
         writer.attribute("name", "fred");
+        writer.attribute("id", "fred");
         
         expect(form.getClientId()).andReturn("formtest");
         
@@ -276,7 +280,7 @@ public class TestSubmit extends BaseFormComponentTestCase
         writer.attribute("type", "submit");
         writer.attribute("name", "fred");
         writer.attribute("disabled", "disabled");
-        
+        writer.attribute("id", "fred");
         writer.closeTag();
         
         replay();

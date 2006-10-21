@@ -679,11 +679,6 @@ public abstract class ForBean extends AbstractFormComponent
         return false;
     }
 
-    public String getClientId()
-    {
-        return null;
-    }
-
     public String getDisplayName()
     {
         return null;

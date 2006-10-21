@@ -61,7 +61,8 @@ public abstract class Rollover extends AbstractComponent
         // on
         // accessors).
 
-        if (cycle.isRewinding()) return;
+        if (cycle.isRewinding()) 
+            return;
 
         String imageURL = null;
         String mouseOverURL = null;

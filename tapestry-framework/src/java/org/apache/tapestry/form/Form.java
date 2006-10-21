@@ -127,7 +127,7 @@ public abstract class Form extends AbstractComponent implements IForm
 
     public String getElementId(IFormComponent component)
     {
-        return _formSupport.getElementId(component, component.getId());
+        return _formSupport.getElementId(component, component.getClientId());
     }
 
     /**
