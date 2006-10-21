@@ -1,7 +1,7 @@
 // dojo.registerModulePath("tapestry", "../tapestry");
 dojo.registerModulePath("tapestry", "../tapestry");
 
-dojo.require("dojo.namespace");
+dojo.require("dojo.ns");
 dojo.require("dojo.widget.*");
 dojo.require("tapestry.core");
 dojo.require("tapestry.test");

@@ -1,0 +1,5 @@
+
+
+({
+displayName: "Japanese Yen"
+})

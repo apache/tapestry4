@@ -1,0 +1,4 @@
+
+
+
+dojo.provide("dojo.graphics.*");
