@@ -229,14 +229,6 @@ public abstract class Palette extends BaseComponent implements ValidatableFieldE
     /** @since 4.0 */
     public abstract void setRequiredMessage(String message);
 
-    /** @since 4.0 */
-
-    public abstract String getIdParameter();
-
-    /** @since 4.0 */
-
-    public abstract void setClientId(String clientId);
-
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         // Next few lines of code is similar to AbstractFormComponent (which, alas, extends from
@@ -277,11 +269,6 @@ public abstract class Palette extends BaseComponent implements ValidatableFieldE
 
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        String clientId = cycle.getUniqueId(TapestryUtils
-                .convertTapestryIdToNMToken(getIdParameter()));
-
-        setClientId(clientId);
-
         _symbols = new HashMap(MAP_SIZE);
 
         runScript(cycle);

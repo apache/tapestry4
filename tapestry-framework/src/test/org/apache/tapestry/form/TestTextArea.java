@@ -332,7 +332,7 @@ public class TestTextArea extends BaseFormComponentTestCase
 
         verify();
 
-        assertBuffer("<span class=\"prefix\"><textarea name=\"fred\" class=\"validation-delegate\">text area value</textarea></span>");
+        assertBuffer("<span class=\"prefix\"><textarea name=\"fred\" id=\"fred\" class=\"validation-delegate\">text area value</textarea></span>");
     }
 
     public void testRenderDisabled()
@@ -386,7 +386,7 @@ public class TestTextArea extends BaseFormComponentTestCase
 
         verify();
 
-        assertBuffer("<span class=\"prefix\"><textarea name=\"fred\" disabled=\"disabled\" class=\"validation-delegate\">text area value</textarea></span>");
+        assertBuffer("<span class=\"prefix\"><textarea name=\"fred\" disabled=\"disabled\" id=\"fred\" class=\"validation-delegate\">text area value</textarea></span>");
     }
 
     public void testRenderWithInformalParameters()
@@ -437,7 +437,7 @@ public class TestTextArea extends BaseFormComponentTestCase
 
         verify();
 
-        assertBuffer("<span class=\"prefix\"><textarea name=\"fred\" class=\"validation-delegate\" informal=\"informal-value\">text area value</textarea></span>");
+        assertBuffer("<span class=\"prefix\"><textarea name=\"fred\" id=\"fred\" class=\"validation-delegate\" informal=\"informal-value\">text area value</textarea></span>");
     }
 
     public void testRenderNullValue()
@@ -491,6 +491,6 @@ public class TestTextArea extends BaseFormComponentTestCase
 
         verify();
 
-        assertBuffer("<span class=\"prefix\"><textarea name=\"fred\" class=\"validation-delegate\"></textarea></span>");
+        assertBuffer("<span class=\"prefix\"><textarea name=\"fred\" id=\"fred\" class=\"validation-delegate\"></textarea></span>");
     }
 }

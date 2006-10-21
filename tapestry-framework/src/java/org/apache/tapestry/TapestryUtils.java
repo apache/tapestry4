@@ -279,7 +279,7 @@ public final class TapestryUtils
     public static String convertTapestryIdToNMToken(String baseId)
     {
         String result = baseId.replace('$', '_');
-
+        
         while (result.startsWith("_"))
             result = result.substring(1);
 

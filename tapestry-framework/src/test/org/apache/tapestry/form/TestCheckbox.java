@@ -88,7 +88,7 @@ public class TestCheckbox extends BaseFormComponentTestCase
 
         verify();
 
-        assertBuffer("<input type=\"checkbox\" name=\"barney\" checked=\"checked\"/>");
+        assertBuffer("<input type=\"checkbox\" name=\"barney\" checked=\"checked\" id=\"barney\"/>");
     }
 
     public void testRenderDisabled()
@@ -164,7 +164,7 @@ public class TestCheckbox extends BaseFormComponentTestCase
         ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
         
         Checkbox cb = newInstance(Checkbox.class, new Object[]
-        { "idParameter", "foo", "name", "assignedName", "value", Boolean.TRUE,
+        { "id", "foo", "name", "assignedName", "value", Boolean.TRUE,
             "form",  form, "validatableFieldSupport", vfs});
         
         IMarkupWriter writer = newBufferWriter();
@@ -190,7 +190,7 @@ public class TestCheckbox extends BaseFormComponentTestCase
         cb.renderFormComponent(writer, cycle);
 
         verify();
-
+        
         assertBuffer("<input type=\"checkbox\" name=\"assignedName\" checked=\"checked\" id=\"foo$unique\"/>");
     }
 

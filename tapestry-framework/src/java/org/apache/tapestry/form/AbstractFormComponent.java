@@ -33,6 +33,7 @@ import org.apache.tapestry.valid.ValidationConstants;
  */
 public abstract class AbstractFormComponent extends AbstractComponent implements IFormComponent
 {
+    
     public abstract IForm getForm();
 
     public abstract void setForm(IForm form);
@@ -58,32 +59,7 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
      */
 
     public abstract String getIdParameter();
-
-    /**
-     * Invoked from {@link #renderFormComponent(IMarkupWriter, IRequestCycle)} (that is, an
-     * implementation in a subclass), to obtain an id and render an id attribute. Reads
-     * {@link #getIdParameter()}.
-     */
-
-    protected void renderIdAttribute(IMarkupWriter writer, IRequestCycle cycle)
-    {
-        // If the user explicitly sets the id parameter to null, then
-        // we honor that!
-        
-        String rawId = getIdParameter();
-        
-        if (rawId == null)
-            return;
-        
-        String id = cycle.getUniqueId(TapestryUtils.convertTapestryIdToNMToken(rawId));
-        
-        // Store for later access by the FieldLabel (or JavaScript).
-
-        setClientId(id);
-
-        writer.attribute("id", id);
-    }
-
+    
     /**
      * Invoked by {@link AbstractComponent#render(IMarkupWriter, IRequestCycle)} to actually 
      * render the component (with any parameter values already set). 
@@ -175,8 +151,10 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
     protected void setName(IForm form)
     {
         form.getElementId(this);
+        
+        setClientId(getName());
     }
-
+    
     /**
      * Returns false. Subclasses that might be required must override this method. Typically, this
      * involves checking against the component's validators.

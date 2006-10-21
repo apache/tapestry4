@@ -66,15 +66,7 @@ public abstract class Button extends AbstractFormComponent
     {
         // Do nothing
     }
-
-    /**
-     * @see org.apache.tapestry.form.IFormComponent#getClientId()
-     */
-    public String getClientId()
-    {
-        return null;
-    }
-
+    
     /**
      * @see org.apache.tapestry.form.IFormComponent#getDisplayName()
      */

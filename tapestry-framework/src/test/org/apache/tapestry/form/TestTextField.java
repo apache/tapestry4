@@ -307,7 +307,7 @@ public class TestTextField extends BaseFormComponentTestCase
         MockDelegate delegate = new MockDelegate();
 
         TextField component = newInstance(TextField.class, new Object[]
-        { "name", "fred", "translatedFieldSupport", tfs, "validatableFieldSupport", vfs, "value", new Integer(10) });
+        { "id", "fred", "translatedFieldSupport", tfs, "validatableFieldSupport", vfs, "value", new Integer(10) });
         
         expect(cycle.renderStackPush(component)).andReturn(component);
         
@@ -345,7 +345,7 @@ public class TestTextField extends BaseFormComponentTestCase
 
         verify();
 
-        assertBuffer("<span class=\"prefix\"><input type=\"text\" name=\"fred\" value=\"10\" class=\"validation-delegate\"/></span>");
+        assertBuffer("<span class=\"prefix\"><input type=\"text\" name=\"fred\" value=\"10\" id=\"fred\" class=\"validation-delegate\"/></span>");
     }
 
     public void testRenderHidden()
@@ -402,7 +402,7 @@ public class TestTextField extends BaseFormComponentTestCase
 
         verify();
 
-        assertBuffer("<span class=\"prefix\"><input type=\"password\" name=\"fred\" value=\"10\" class=\"validation-delegate\"/></span>");
+        assertBuffer("<span class=\"prefix\"><input type=\"password\" name=\"fred\" value=\"10\" id=\"fred\" class=\"validation-delegate\"/></span>");
     }
 
     public void testRenderDisabled()
@@ -459,7 +459,7 @@ public class TestTextField extends BaseFormComponentTestCase
 
         verify();
 
-        assertBuffer("<span class=\"prefix\"><input type=\"text\" name=\"fred\" disabled=\"disabled\" value=\"10\" class=\"validation-delegate\"/></span>");
+        assertBuffer("<span class=\"prefix\"><input type=\"text\" name=\"fred\" disabled=\"disabled\" value=\"10\" id=\"fred\" class=\"validation-delegate\"/></span>");
     }
 
     public void testRenderWithInformalParameters()
@@ -509,7 +509,7 @@ public class TestTextField extends BaseFormComponentTestCase
 
         verify();
 
-        assertBuffer("<span class=\"prefix\"><input type=\"text\" name=\"fred\" value=\"10\" class=\"validation-delegate\" informal=\"informal-value\"/></span>");
+        assertBuffer("<span class=\"prefix\"><input type=\"text\" name=\"fred\" value=\"10\" id=\"fred\" class=\"validation-delegate\" informal=\"informal-value\"/></span>");
     }
 
     public void testRenderNullValue()
@@ -564,7 +564,7 @@ public class TestTextField extends BaseFormComponentTestCase
 
         verify();
 
-        assertBuffer("<span class=\"prefix\"><input type=\"text\" name=\"fred\" value=\"\" class=\"validation-delegate\"/></span>");
+        assertBuffer("<span class=\"prefix\"><input type=\"text\" name=\"fred\" value=\"\" id=\"fred\" class=\"validation-delegate\"/></span>");
     }
 
     public void testIsRequired()

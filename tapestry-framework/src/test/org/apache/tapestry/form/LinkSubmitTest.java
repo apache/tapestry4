@@ -83,7 +83,7 @@ public class LinkSubmitTest extends BaseComponentTestCase
 
         LinkSubmit linkSubmit = newInstance(LinkSubmit.class, new Object[]
         { "form", form, "name", "fred_1", "script", script, 
-            "idParameter", "fred_id", "submitType", "submit" });
+            "id", "fred_id", "submitType", "submit" });
         
         linkSubmit.addBody(newBody());
 

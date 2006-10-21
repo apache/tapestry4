@@ -91,7 +91,7 @@ public class FormSupportTest extends BaseComponentTestCase
         IFormComponent component = newMock(IFormComponent.class);
         checkOrder(component, false);
         
-        trainGetId(component, id);
+        expect(component.getClientId()).andReturn(id);
 
         component.setName(name);
 
@@ -102,7 +102,8 @@ public class FormSupportTest extends BaseComponentTestCase
     {
         IFormComponent component = newMock(IFormComponent.class);
 
-        trainGetId(component, id);
+        expect(component.getClientId()).andReturn(id);
+        
         trainGetExtendedId(component, extendedId);
         trainGetLocation(component, location);
 
@@ -864,11 +865,11 @@ public class FormSupportTest extends BaseComponentTestCase
         // but is now false on the rewind.
 
         trainCycleForRewind(cycle, "barney,wilma,pebbles,barney_0", null);
-
+        
         final IFormComponent barney1 = newFormComponent("barney", "barney");
         final IFormComponent wilma = newFormComponent("wilma", "wilma");
         final IFormComponent barney2 = newFormComponent("barney", "SomePage/barney", l);
-
+        
         IRender body = newComponentsRenderBody(fs, new IFormComponent[]
         { barney1, wilma, barney2 }, writer);
 

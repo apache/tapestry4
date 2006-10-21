@@ -46,7 +46,7 @@ public abstract class TaskEntryPage extends BasePage
     private static final Logger _log = Logger.getLogger(TaskEntryPage.class);
     
     @Component(id = "projectChoose", bindings = { "model=projectModel", "value=selectedProject",
-            "displayName=message:choose.project", "filterOnChange=true",
+            "displayName=message:choose.project",
             "validators=validators:required"})
     public abstract Autocompleter getProjectChoose();
     
