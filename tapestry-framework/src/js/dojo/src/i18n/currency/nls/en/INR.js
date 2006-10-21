@@ -1,0 +1,5 @@
+
+
+({
+displayName: "Indian Rupee"
+})

@@ -1,6 +1,6 @@
 dojo.provide("tapestry.namespace");
 
-dojo.require("dojo.namespace");
+dojo.require("dojo.ns");
 
 (function(){
 	
