@@ -53,7 +53,7 @@ public class PaletteValidationTest extends BaseComponentTestCase
         Palette component = newInstance(Palette.class, 
                 new Object[] { 
             "validatableFieldSupport", vfs, 
-            "clientId", "pal", "displayName", "Pally"});
+            "id", "pal", "displayName", "Pally"});
         
         expect(context.getProfile()).andReturn(profile);
         
