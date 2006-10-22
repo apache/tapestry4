@@ -3,7 +3,7 @@
     <local-check-config name="tapestry" location="tapestry-checkstyle.xml" type="project" description="The core tapestry checkstyle configuration">
         <additional-data name="protect-config-file" value="false"/>
     </local-check-config>
-    <fileset name="all" enabled="true" check-config-name="tapestry" local="false">
+    <fileset name="all" enabled="true" check-config-name="tapestry" local="true">
         <file-match-pattern match-pattern="." include-pattern="true"/>
     </fileset>
     <filter name="FilesFromPackage" enabled="true">
