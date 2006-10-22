@@ -32,14 +32,19 @@ tapestry.widget = {
 	 * @param props 
 	 * 			The js properties object to create the widget with.
 	 */
-	synchronizeWidgetState : function(widgetId, type, props){
+	synchronizeWidgetState : function(widgetId, type, props, destroy){
+		if(typeof destroy == "undefined"){
+			destroy=true;
+		}
 		var widget = dojo.widget.byId(widgetId);
 		
 		if (!widget) {
 			this.createWidget(widgetId, type, props);
-		} else {
+		} else if (destroy){
 			widget.destroy();
 			this.createWidget(widgetId, type, props);
+		} else {
+			this.setWidgetProperties(widget, props);
 		}
 	},
 	
@@ -59,10 +64,13 @@ tapestry.widget = {
 		
 		// handle disabling widgets
 		var w = dojo.widget.createWidget(type, props, node);
+		this.setWidgetProperties(w, props);
+	},
+	
+	setWidgetProperties: function(w, props){
 		if (!dj_undef("disabled",props) && props.disabled == true 
 			&& dojo.lang.isFunction(w["disable"])){
 			w.disable();
 		}
 	}
-	
 }

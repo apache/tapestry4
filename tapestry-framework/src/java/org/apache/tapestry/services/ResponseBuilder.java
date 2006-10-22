@@ -134,6 +134,21 @@ public interface ResponseBuilder {
     boolean contains(IComponent target);
     
     /**
+     * Similar to {@link #contains(IComponent)}, but only returns true if the component
+     * has been marked for update directly via an <code>updateComponents</code> property 
+     * or by calling {@link ResponseBuilder#updateComponent(String)} directly. 
+     * 
+     * <p>
+     * <b>IMPORTANT!:</b> This will not return true for components contained by a component
+     *  marked for update. If you want that kind of behaviour use {@link #contains(IComponent)}. 
+     * </p>
+     * 
+     * @param target The component to check.
+     * @return True if the component as listed as one to be updated, false otherwise.
+     */
+    boolean explicitlyContains(IComponent target);
+    
+    /**
      * Invoked by {@link PageRenderSupport} to write external js package
      * includes. This method will be invoked for each external script requesting
      * inclusion in the response.

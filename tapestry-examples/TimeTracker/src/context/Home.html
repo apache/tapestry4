@@ -53,6 +53,17 @@ using them.
     </fieldset>
 </form>
 
+<a jwcid="@DirectLink" listener="listener:showDialog" 
+	async="true" updateComponents="testDialog">Show Dialog</a><br/>
+
+<div jwcid="testDialog@Dialog" style="display:none" hidden="ognl:dlHidden" >
+	<p style="display:block;background:#ffffff;width:20em;">
+	This is content hidden in a Dialog.
+	
+	<a href="#" onClick="dojo.widget.byId('testDialog').hide();return false">Close</a>
+	</p>
+</div>
+
 <div jwcid="projectDescription@Any" >
 	<h2 jwcid="@If" condition="ognl:selectedProject" style="clear:left" >
 		<span jwcid="@Insert" value="ognl:selectedProject.name" />
