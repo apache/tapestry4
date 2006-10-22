@@ -145,6 +145,14 @@ public class DefaultResponseBuilder implements ResponseBuilder
     {
         return false;
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public boolean explicitlyContains(IComponent target)
+    {
+        return false;
+    }
 
     /** 
      * {@inheritDoc}

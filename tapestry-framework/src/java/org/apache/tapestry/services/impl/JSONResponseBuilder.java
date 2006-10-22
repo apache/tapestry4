@@ -206,6 +206,17 @@ public class JSONResponseBuilder implements ResponseBuilder
     }
     
     /**
+     * {@inheritDoc}
+     */
+    public boolean explicitlyContains(IComponent target)
+    {
+        if (target == null)
+            return false;
+        
+        return _parts.contains(target.getClientId());
+    }
+    
+    /**
      * Gets the id of the specified component, choosing the "id" element
      * binding over any other id.
      * @param comp

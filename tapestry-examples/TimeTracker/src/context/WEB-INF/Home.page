@@ -21,5 +21,7 @@
 
 <page-specification class="org.apache.tapestry.timetracker.page.TaskEntryPage">
     
+    <property name="dlHidden" initial-value="true" />
+    
 </page-specification>
 
