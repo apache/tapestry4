@@ -25,7 +25,7 @@ package org.apache.tapestry;
 public interface IDirect extends IComponent, IDynamicInvoker
 {
     /**
-     *  Invoked by the direct service to have the component peform
+     *  Invoked by the direct service to have the component perform
      *  the appropriate action.  The {@link org.apache.tapestry.link.DirectLink} component will
      *  notify its listener.
      *

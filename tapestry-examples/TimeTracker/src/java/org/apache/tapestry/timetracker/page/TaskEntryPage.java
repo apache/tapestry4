@@ -42,8 +42,7 @@ import org.apache.tapestry.timetracker.model.Task;
  * @author jkuhnert
  */
 public abstract class TaskEntryPage extends BasePage
-{
-    
+{   
     private static final Logger _log = Logger.getLogger(TaskEntryPage.class);
     
     @Component(id = "projectChoose", bindings = { "model=projectModel", "value=selectedProject",
@@ -128,4 +127,9 @@ public abstract class TaskEntryPage extends BasePage
         getTaskDao().addTask(task);
     }
     
+    @EventListener(events = "onSave", targets="projName")
+    public void onNameUpdate()
+    {
+        getProjectDao().update(getSelectedProject());
+    }
 }

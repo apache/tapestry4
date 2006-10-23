@@ -57,6 +57,7 @@
     <component-type type="If" specification-path="components/If.jwc"/>
     <component-type type="Image" specification-path="html/Image.jwc"/>
     <component-type type="ImageSubmit" specification-path="form/ImageSubmit.jwc"/>
+    <component-type type="InlineEditBox" specification-path="dojo/html/InlineEditBox.jwc" />
 	<component-type type="Insert" specification-path="components/Insert.jwc"/>
     <component-type type="InsertText" specification-path="html/InsertText.jwc"/>
     <component-type type="InvokeListener" specification-path="components/InvokeListener.jwc"/>

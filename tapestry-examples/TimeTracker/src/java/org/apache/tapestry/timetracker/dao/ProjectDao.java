@@ -70,4 +70,29 @@ public class ProjectDao extends BaseDao
             try { if (ps != null) ps.close(); } catch (Exception e) { }
         }
     }
+    
+    /**
+     * Updates the specified project.
+     * @param p The project to update.
+     */
+    public void update(Project p)
+    {
+        PreparedStatement ps = null;
+        
+        try {
+            
+            ps = _conn.prepareStatement("update projects set name = ? where project_id = ?");
+            
+            int x=0;
+            ps.setString(++x, p.getName());
+            ps.setLong(++x, p.getId());
+            
+            ps.executeUpdate();
+            
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            try { if (ps != null) ps.close(); } catch (Exception e) { }
+        }
+    }
 }
