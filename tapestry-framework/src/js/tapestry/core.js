@@ -92,7 +92,7 @@ tapestry={
 	load:function(type, data, http, kwArgs){
 		dojo.log.debug("Response recieved.");
 		if (!data) {
-			dojo.log.err("No data received in response.");
+			dojo.log.warn("No data received in response.");
 			return;
 		}
 		
@@ -236,6 +236,7 @@ tapestry={
        	
         for (var i=0; i<scripts.length; i++) {
             var scr = scripts[i].match(match)[1];
+            if(!scr || scr.length <= 0){continue;}
             try {
                 dojo.log.debug("evaluating script:", scr);
                 eval(scr);
