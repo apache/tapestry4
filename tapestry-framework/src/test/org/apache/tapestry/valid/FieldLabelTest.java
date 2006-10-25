@@ -49,7 +49,7 @@ public class FieldLabelTest extends BaseFormComponentTestCase
     {
         expect(form.getDelegate()).andReturn(delegate);
     }
-
+    
     private IFormComponent newField(String displayName, String clientId)
     {
         IFormComponent field = newMock(IFormComponent.class);
@@ -64,12 +64,12 @@ public class FieldLabelTest extends BaseFormComponentTestCase
 
     private void trainGetClientId(String clientId, IFormComponent field)
     {
-        expect(field.getClientId()).andReturn(clientId);
+        expect(field.getClientId()).andReturn(clientId).anyTimes();
     }
 
     private void trainGetDisplayName(IFormComponent field, String displayName)
     {
-        expect(field.getDisplayName()).andReturn(displayName);
+        expect(field.getDisplayName()).andReturn(displayName).anyTimes();
     }
 
     public void testRewinding()
@@ -296,7 +296,7 @@ public class FieldLabelTest extends BaseFormComponentTestCase
 
         verify();
     }
-
+    
     public void testNoDisplayNameInField()
     {
         IForm form = newForm();
