@@ -15,6 +15,9 @@ tapestry.form={
 	// property: forms
 	// Contains a reference to all registered Tapestry forms in the current document.
 	forms:{}, // registered form references
+	// property: currentFocus 
+	// Reference to form element/element id of field that should currently recieve focus, if any
+	currentFocus:null,
 	
 	/**
 	 * Function: focusField
@@ -29,23 +32,39 @@ tapestry.form={
 	 *  dojo.html.selectInputText(node).
 	 */
 	focusField:function(field){
-		if (arguments.length < 1) return;
+		if (arguments.length < 1) {return;}
 		
-		field = dojo.widget.byId(field);
-		if(field && !dj_undef("focus", field)){
-			field.focus();
+		var f=dojo.widget.byId(field);
+		if(f && !dj_undef("focus", f)){
+			f.focus();
 			return;
 		} else {
-			field = dojo.byId(field);
+			f = dojo.byId(field);
 		}
 		
-		if (!field) { return; }
+		if (!f) { return; }
+		
+		if(!dj_undef("focus", f)){
+			f.focus();
+			return;
+		}
 		
 		if (field.disabled || field.clientWidth < 1) {
 			return;
 		}
 		
         dojo.html.selectInputText(field);
+	},
+	
+	/**
+	 * Used by AlertDialog to focus the highest priority form field 
+	 * that failed validation. This happens because the field needs to 
+	 * be focused ~after~ the dialog is hidden.
+	 */
+	_focusCurrentField:function(){
+		if(!this.currentFocus){return;}
+		
+		this.focusField(this.currentFocus);
 	},
 	
 	/**

@@ -165,9 +165,14 @@ tapestry.form.validation={
 	summarizeErrors:function(form, results, profile){
 		var merrs=[];
 		var ierrs=[];
+		tapestry.form.currentFocus=null;
+		
 		if (results.hasMissing()){
 			var fields=results.getMissing();
 			for (var i=0; i<fields.length; i++){
+				if(i==0 && !tapestry.form.currentFocus){
+					tapestry.form.currentFocus=fields[i];
+				}
 				if (profile[fields[i]] && profile[fields[i]]["required"]){
 					if (dojo.lang.isArray(profile[fields[i]]["required"])) {
 						for (var z=0; z < profile[fields[i]]["required"].length; z++)
@@ -180,6 +185,9 @@ tapestry.form.validation={
 		if (results.hasInvalid()){
 			var fields=results.getInvalid();
 			for (var i=0; i<fields.length; i++){
+				if(i==0 && !tapestry.form.currentFocus){
+					tapestry.form.currentFocus=fields[i];
+				}
 				if (profile[fields[i]] && profile[fields[i]]["constraints"]){
 					if (dojo.lang.isArray(profile[fields[i]]["constraints"])) {
 						for (var z=0; z < profile[fields[i]]["constraints"].length; z++)
