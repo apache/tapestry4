@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.form;
 
+import static org.easymock.EasyMock.checkOrder;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
 
@@ -48,7 +49,11 @@ public abstract class BaseFormComponentTestCase extends BaseComponentTestCase
 
     protected IForm newForm()
     {
-        return newMock(IForm.class);
+        IForm mock = newMock(IForm.class);
+        
+        checkOrder(mock, false);
+        
+        return mock;
     }
 
     protected void trainGetForm(IRequestCycle cycle, IForm form)
