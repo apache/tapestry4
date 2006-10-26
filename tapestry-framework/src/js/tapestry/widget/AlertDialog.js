@@ -94,7 +94,7 @@ dojo.widget.defineWidget(
 			dojo.dom.removeNode(this.okButton);
 			tapestry.widget.AlertDialog.prototype.destroy.call(this);
 			dojo.dom.removeNode(this.bg); 
-			tapestry.form.focusCurrentField();
+			tapestry.form._focusCurrentField();
 		}
 	},
 	"html"

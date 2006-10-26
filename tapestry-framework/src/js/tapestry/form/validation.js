@@ -43,9 +43,9 @@ tapestry.form.validation={
 	 * 			will ~not~ be submitted. 
 	 */
 	validateForm:function(form, props){
-		if (typeof form == "undefined") return false;
-		if (typeof props == "undefined") return true; // form exists but no profile? just submit I guess..
-		if (!props.validateForm) return true;
+		if (typeof form == "undefined") {return false;}
+		if (typeof props == "undefined") {return true;} // form exists but no profile? just submit I guess..
+		if (!props.validateForm) {return true;}
 		
 		try {
 			this.clearValidationDecorations(form, props);
@@ -84,7 +84,7 @@ tapestry.form.validation={
 	 * 		   form will be submitted.
 	 */
 	processResults:function(form, results, profile){
-		if (results.isSuccessful()) return true; 
+		if (results.isSuccessful()) { return true; } 
 		
 		var formValid=true;
 		if (results.hasMissing()) {
@@ -115,6 +115,7 @@ tapestry.form.validation={
 	 * @param profile The form validation profile.
 	 */
 	handleMissingField:function(field, profile){
+		field=dojo.byId(field);
 		if (dj_undef("type", field)) {return;}
 		dojo.html.removeClass(field, this.invalidClass);
 		
@@ -130,6 +131,7 @@ tapestry.form.validation={
 	 * @param profile The form validation profile.
 	 */
 	handleInvalidField:function(field, profile){
+		field=dojo.byId(field);
 		if (dj_undef("type", field)) {return;}
 		dojo.html.removeClass(field, this.missingClass);
 		
@@ -144,7 +146,7 @@ tapestry.form.validation={
 	 */
 	clearValidationDecorations:function(form, props){
 		for (var i=0; i< form.elements.length; i++) {
-			if (typeof form.elements[i].type == "undefined"
+			if (dj_undef("type", form.elements[i]) || typeof form.elements[i].type == "undefined"
 				|| form.elements[i].type == "submit" 
 				|| form.elements[i].type == "hidden") { continue; }
 			
