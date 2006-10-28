@@ -34,6 +34,8 @@ public abstract class IfBean extends AbstractFormComponent
 {
     public static final String IF_VALUE_ATTRIBUTE = "org.mb.tapestry.base.IfValue";
     
+    public static final String SPAN_TAG = "span";
+    
     private boolean _rendering = false;
 
     private boolean _conditionValue;
@@ -81,7 +83,7 @@ public abstract class IfBean extends AbstractFormComponent
             {
                 String element = HiveMind.isNonBlank(getElement()) ? getElement() : getTemplateTagName();
                 
-                boolean render = !cycleRewinding && getRenderTag();
+                boolean render = !cycleRewinding && getRenderTag() && !SPAN_TAG.equalsIgnoreCase(element);
                 
                 if (render)
                 {

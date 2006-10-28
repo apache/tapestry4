@@ -48,7 +48,7 @@ public class TestIfElse extends BaseComponentTestCase
         return render;
     }
 
-    public void testRenderPlainTrue()
+    public void test_Render_Plain_True()
     {
         IRequestCycle cycle = newMock(IRequestCycle.class);
 
@@ -93,7 +93,7 @@ public class TestIfElse extends BaseComponentTestCase
         verify();
     }
 
-    public void testRenderPlainFalse()
+    public void test_Render_Plain_False()
     {
         IRequestCycle cycle = newCycle();
         IMarkupWriter writer = newWriter();
@@ -137,7 +137,7 @@ public class TestIfElse extends BaseComponentTestCase
         verify();
     }
 
-    public void testRenderInFormTrue()
+    public void test_Render_In_Form_True()
     {
         IMarkupWriter writer = newWriter();
         
@@ -188,7 +188,7 @@ public class TestIfElse extends BaseComponentTestCase
         verify();
     }
 
-    public void testRenderInFormFalse()
+    public void test_Render_In_Form_False()
     {
         IMarkupWriter writer = newWriter();
         
@@ -240,7 +240,7 @@ public class TestIfElse extends BaseComponentTestCase
         verify();
     }
 
-    public void testIgnoreElementWhenRewindingTrue()
+    public void test_Ignore_Element_When_Rewinding_True()
     {
         IMarkupWriter writer = newWriter();
         
@@ -291,7 +291,7 @@ public class TestIfElse extends BaseComponentTestCase
         verify();
     }
 
-    public void testIgnoreElementWhenRewindingFalse()
+    public void test_Ignore_Element_When_Rewinding_False()
     {
         IMarkupWriter writer = newWriter();
         
@@ -424,6 +424,106 @@ public class TestIfElse extends BaseComponentTestCase
         conditional.render(writer, cycle);
         
         verify();
+    }
+    
+    public void test_Render_Span_False()
+    {
+        IRequestCycle cycle = newMock(IRequestCycle.class);
+
+        IMarkupWriter writer = newBufferWriter();
+        
+        IfBean conditional = newInstance(IfBean.class, 
+                new Object[] { "condition", Boolean.TRUE,
+            "templateTagName", "span",
+            "renderTag", Boolean.TRUE
+            });
+        
+        ElseBean reverse = (ElseBean) newInstance(ElseBean.class);
+        
+        expect(cycle.renderStackPush(conditional)).andReturn(conditional);
+        
+        expect(cycle.isRewinding()).andReturn(false);
+        
+        expect(cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE)).andReturn(null);
+        
+        trainResponseBuilder(cycle, writer);
+        
+        IRender body = newRender(writer, cycle);
+        
+        cycle.setAttribute(IfBean.IF_VALUE_ATTRIBUTE, Boolean.TRUE);
+        
+        expect(cycle.renderStackPop()).andReturn(conditional);
+        
+        expect(cycle.renderStackPush(reverse)).andReturn(reverse);
+        
+        expect(cycle.getAttribute(IfBean.IF_VALUE_ATTRIBUTE)).andReturn(Boolean.TRUE);
+        
+        expect(cycle.renderStackPop()).andReturn(reverse);
+        
+        IRender body2 = newRender();
+        
+        replay();
+        
+        conditional.addBody(body);
+        
+        conditional.render(writer, cycle);
+        
+        reverse.addBody(body2);
+        reverse.render(writer, cycle);
+
+        verify();
+        
+        assertBuffer("");
+    }
+    
+    public void test_Render_Div_Tag()
+    {
+        IRequestCycle cycle = newMock(IRequestCycle.class);
+
+        IMarkupWriter writer = newBufferWriter();
+        
+        IfBean conditional = newInstance(IfBean.class, 
+                new Object[] { "condition", Boolean.TRUE,
+            "templateTagName", "div",
+            "renderTag", Boolean.TRUE
+            });
+        
+        ElseBean reverse = (ElseBean) newInstance(ElseBean.class);
+        
+        expect(cycle.renderStackPush(conditional)).andReturn(conditional);
+        
+        expect(cycle.isRewinding()).andReturn(false);
+        
+        expect(cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE)).andReturn(null);
+        
+        trainResponseBuilder(cycle, writer);
+        
+        IRender body = newRender(writer, cycle);
+        
+        cycle.setAttribute(IfBean.IF_VALUE_ATTRIBUTE, Boolean.TRUE);
+        
+        expect(cycle.renderStackPop()).andReturn(conditional);
+        
+        expect(cycle.renderStackPush(reverse)).andReturn(reverse);
+        
+        expect(cycle.getAttribute(IfBean.IF_VALUE_ATTRIBUTE)).andReturn(Boolean.TRUE);
+        
+        expect(cycle.renderStackPop()).andReturn(reverse);
+        
+        IRender body2 = newRender();
+        
+        replay();
+        
+        conditional.addBody(body);
+        
+        conditional.render(writer, cycle);
+        
+        reverse.addBody(body2);
+        reverse.render(writer, cycle);
+
+        verify();
+        
+        assertBuffer("<div></div>");
     }
     
     public static abstract class TestIfBean extends IfBean
