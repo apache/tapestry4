@@ -76,7 +76,7 @@
 
 
 
-        <section name="Web deployment descriptor">
+        <subsection name="Web deployment descriptor">
 
 
             <p>
@@ -233,9 +233,9 @@
             </p>
 
 
-        </section><!-- configuration.deployment-descriptor -->
+        </subsection><!-- configuration.deployment-descriptor -->
 
-        <section name="Application Property Source">
+        <subsection name="Application Property Source">
 
 
             <p>
@@ -282,12 +282,13 @@
 
             <p>Applications are free to leverage this lookup mechanism as well.</p>
 
-            <p>
+            <span class="info">
                 <strong>Fixme:</strong>
-                <br />
+                <p>
                 Need to reference the ApplicationPropertySource, GlobalPropertySource and
                 ComponentPropertySource services here.
-            </p>
+                </p>
+            </span>
 
             <p>
                 Applications may also want to change or augment the default search path; this is
@@ -301,17 +302,18 @@
                 . For example, some configuration data could be drawn from a database.
             </p>
 
-            <p>
+            <span class="info">
                 <strong>Fixme:</strong>
-                <br />
+                <p>
                 The previous paragraph is out of date; extension of the search path will involve a
                 HiveMind contribution, details to be provided.
-            </p>
+                </p>
+            </span>
 
 
-        </section><!-- configuration.app-property-source -->
+        </subsection><!-- configuration.app-property-source -->
 
-        <section name="Global Property Source">
+        <subsection name="Global Property Source">
 
 
             <p>
@@ -335,21 +337,26 @@
                     symbols.
                 </li>
             </ul>
-        </section><!-- configuration.global-property-source -->
+        </subsection><!-- configuration.global-property-source -->
 
-        <section name="Configuration Properties">
+        <subsection name="Configuration Properties">
 
 
             <p>The following are all the configuration values currently used in Tapestry:</p>
 
             <table>
-                <tr>
+                <thead>
+                    <tr>
                     <th>Property</th>
+                    <th>Default Value</th>
                     <th>Description</th>
-                </tr>
-
+                    </tr>
+                </thead>
+                
+                <tbody>
                 <tr>
                     <td>org.apache.tapestry.accepted-locales</td>
+                    <td>any/all</td>
                     <td>
                         Controls which locales are supported by the application; see the
                         documentation on
@@ -362,6 +369,7 @@
 
                 <tr>
                     <td>org.apache.tapestry.bean-class-packages</td>
+                    <td></td>
                     <td>
                         A comma-seperated list, used when converting class names for managed beans
                         (specified using the
@@ -373,6 +381,7 @@
 
                 <tr>
                     <td>org.apache.tapestry.component-class-packages</td>
+                    <td></td>
                     <td>
                         A comma-seperated list of package names, used when
                         <a href="page-class.html#page-class.component">
@@ -386,6 +395,7 @@
 
                 <tr>
                     <td>org.apache.tapestry.default-binding-prefix</td>
+                    <td>ognl</td>
                     <td>
                         The default binding to use when no explicit binding prefix is provided. This
                         is typically set inside a page or component specification, or within an
@@ -397,6 +407,7 @@
 
                 <tr>
                     <td>org.apache.tapestry.default-cookie-max-age</td>
+                    <td>6123600</td>
                     <td>
                         The default max age (in seconds) for cookies written by Tapestry, including
                         the cookie used to track the user's locale. A value of -1 means the cookie
@@ -408,7 +419,8 @@
                 <tr>
 
                     <td>org.apache.tapestry.default-page-class</td>
-
+                    <td>org.apache.tapestry.
+                    html.BasePage</td>
                     <td>
                         By default, any page that omits the class attribute (in its
                         <a href="spec.html#spec.page-specification">&lt;page-specification&gt;</a>
@@ -425,7 +437,7 @@
 
                 <tr>
                     <td>org.apache.tapestry.disable-caching</td>
-
+                    <td>false</td>
                     <td>
                         If specified (as "true"), then the framework will discard all cached data
                         (specifications, templates, pooled objects, etc.) at the end of each request
@@ -445,13 +457,9 @@
                         </p>
                     </td>
                 </tr>
-
-
-
-
                 <tr>
                     <td>org.apache.tapestry.enable-reset-service</td>
-
+                    <td>false</td>
                     <td>
                         If not specified as "true", then the reset service will be non-functional.
                         The reset service is used to force the running Tapestry application to
@@ -469,7 +477,8 @@
 
                 <tr>
                     <td>org.apache.tapestry.engine-class</td>
-
+                    <td>org.apache.tapestry.
+                    engine.BaseEngine</td>
                     <td>
                         The fully qualified class name to instantiate as the application engine.
                         This configuration value is only used when the application specification
@@ -481,11 +490,10 @@
                         is used if this configuration value is also left unspecified.
                     </td>
                 </tr>
-
-
                 <tr>
-                    <td>org.apache.tapestry.enhance.disable-abstract-method-validation</td>
-
+                    <td>org.apache.tapestry.enhance.
+                    disable-abstract-method-validation</td>
+                    <td>false</td>
                     <td>
                         Used to trigger a work around for a bug in IBM's JDK 1.4.0. This particular
                         JDK reports
@@ -495,18 +503,19 @@
                         Specifying true for this property disables checks for unimplemented abstract
                         methods.
 
-                        <p>
+                        <span class="warn">
                             <strong>Warning:</strong>
-                            <br />
+                            <p>
                             Support for this property has been temporarily removed from release 4.0.
-                        </p>
+                            </p>
+                        </span>
                     </td>
                 </tr>
 
 
                 <tr>
                     <td>org.apache.tapestry.global-class</td>
-
+                    <td>java.util.HashMap</td>
                     <td>
                         The fully qualified class name to instantiate as the engine global property.
                         The Global object is much like Visit object, except that it is shared by all
@@ -518,6 +527,7 @@
 
                 <tr>
                     <td>org.apache.tapestry.home-page</td>
+                    <td>Home</td>
                     <td>
                         The name of the page to be displayed by the home engine service (that is,
                         the page initially displayed when there's no other information in the
@@ -527,6 +537,7 @@
 
                 <tr>
                     <td>org.apache.tapestry.jwcid-attribute-name</td>
+                    <td>jwcid</td>
                     <td>
                         Controls the attribute used to recognize the locations of contained
                         components within a
@@ -537,7 +548,7 @@
 
                 <tr>
                     <td>org.apache.tapestry.messages-encoding</td>
-
+                    <td>ISO-8859-1</td>
                     <td>
                         Defines the character set used when reading the properties files comprising
                         a page or component
@@ -560,7 +571,7 @@
 
                 <tr>
                     <td>org.apache.tapestry.output-encoding</td>
-
+                    <td>UTF-8</td>
                     <td>
                         Defines the character set used by the application to encode its HTTP
                         responses. This is also the character set that the application assumes that
@@ -575,12 +586,9 @@
                     </td>
 
                 </tr>
-
-
-
-
                 <tr>
                     <td>org.apache.tapestry.page-class-packages</td>
+                    <td></td>
                     <td>
                         A comma-seperated list of package names, used when
                         <a href="page-class.html">searching for the page class</a>
@@ -592,6 +600,7 @@
 
                 <tr>
                     <td>org.apache.tapestry.servlet-path</td>
+                    <td>/app</td>
                     <td>
                         Defines the servlet path used when constructing URLs. The default value is
                         <code>/app</code>
@@ -608,7 +617,7 @@
 
                 <tr>
                     <td>org.apache.tapestry.template-encoding</td>
-
+                    <td>ISO-8859-1</td>
                     <td>
                         Defines the character set used by the application templates. The default
                         value is ISO-8859-1.
@@ -626,7 +635,7 @@
 
                 <tr>
                     <td>org.apache.tapestry.template-extension</td>
-
+                    <td>html</td>
                     <td>
                         Overrides the default extension used to locate templates for pages or
                         components. The default extension is "html", this configuration property
@@ -660,7 +669,7 @@
 
                 <tr>
                     <td>org.apache.tapestry.607-patch</td>
-
+                    <td>false</td>
                     <td>
                         A workaround for
                         <a href="http://issues.apache.org/jira/browse/TAPESTRY-607">TAPESTRY-607</a>
@@ -676,7 +685,7 @@
 
                 <tr>
                     <td>org.apache.tapestry.visit-class</td>
-
+                    <td>java.util.HashMap</td>
                     <td>
                         The fully qualified class name to instantiate as the
                         <a href="index.html#intro.engine-service-visit">Visit object</a>
@@ -694,10 +703,37 @@
                     </td>
                 </tr>
 
-            </table>
-        </section><!-- configuration.properties -->
+                <tr>
+                    <td>org.apache.tapestry.renderTags</td>
+                    <td>true</td>
+                    <td>
+                        Whether or not some block level components will render their template 
+                        tag names by default. 
+                        
+                        <p>
+                            This currently affects only the <a href="../components/general/if.html">If</a> and
+                            <a href="../components/general/else.html">Else</a> components but is expected
+                            to be applied to <a href="../components/general/for.html">For</a> as well.
+                        </p>
+                        
+                        <p>
+                        For example, with the default value of true - the following h2 element tag would 
+                        be printed out literally as specified:
+                        </p>
 
-        <section name="Application extensions">
+<source><![CDATA[
+<h2 jwcid="@If" condition="true">
+This is a header
+</h2>
+]]></source>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </subsection><!-- configuration.properties -->
+
+        <subsection name="Application extensions">
 
 
             <span class="warn">
@@ -834,7 +870,8 @@ MyExtension myExtension = (MyExtension) specification.getExtension("myExtension"
 
 
                 <tr>
-                    <td>org.apache.tapestry.specification-resolver-delegate</td>
+                    <td>org.apache.tapestry.
+                    specification-resolver-delegate</td>
                     <td>
                         <a
                             href="../tapestry-framework/apidocs/org/apache/tapestry/resolver/ISpecificationResolverDelegate.html">
@@ -853,7 +890,8 @@ MyExtension myExtension = (MyExtension) specification.getExtension("myExtension"
 
 
                 <tr>
-                    <td>org.apache.tapestry.template-source-delegate</td>
+                    <td>org.apache.tapestry.
+                    template-source-delegate</td>
                     <td>
                         <a
                             href="../tapestry-framework/apidocs/org/apache/tapestry/engine/ITemplateSourceDelegate.html">
@@ -886,7 +924,7 @@ MyExtension myExtension = (MyExtension) specification.getExtension("myExtension"
 
             </table>
 
-        </section><!-- configuration.extensions -->
+        </subsection><!-- configuration.extensions -->
 
 
     </section>

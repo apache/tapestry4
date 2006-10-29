@@ -19,9 +19,6 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.PageRenderSupport;
-import org.apache.tapestry.services.impl.DojoAjaxResponseBuilder;
-
 
 /**
  * Represents the service responsible for managing all content output that is sent

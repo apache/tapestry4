@@ -41,7 +41,7 @@
 
   <parameter name="listener"/>
   
-  <parameter name="renderTag" default-value="true" />
+  <parameter name="renderTag" default-value="ognl:defaultRenderTags" />
   
   <parameter name="element" deprecated="yes" >
   	<description>
@@ -61,6 +61,7 @@
   <property name="name"/>
   <property name="form"/>
 
+  <inject property="defaultRenderTags" object="app-property:org.apache.tapestry.renderTags" />
   <inject property="dataSqueezer" object="service:tapestry.data.DataSqueezer"/>
   <inject property="listenerInvoker" object="infrastructure:listenerInvoker"/>
   

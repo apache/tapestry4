@@ -209,16 +209,6 @@ public final class Tapestry
     public static final String SIMPLE_PROPERTY_NAME_PATTERN = "^_?[a-zA-Z]\\w*$";
 
     /**
-     * Name of an application extension used as a factory for
-     * {@link org.apache.tapestry.engine.IMonitor}instances. The extension must implement
-     * {@link org.apache.tapestry.engine.IMonitorFactory}.
-     * 
-     * @since 3.0
-     */
-
-    public static final String MONITOR_FACTORY_EXTENSION_NAME = "org.apache.tapestry.monitor-factory";
-
-    /**
      * Class name of an {@link ognl.TypeConverter}implementing class to use as a type converter for
      * {@link org.apache.tapestry.binding.ExpressionBinding}.
      */

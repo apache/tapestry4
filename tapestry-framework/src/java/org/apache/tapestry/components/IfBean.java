@@ -34,8 +34,6 @@ public abstract class IfBean extends AbstractFormComponent
 {
     public static final String IF_VALUE_ATTRIBUTE = "org.mb.tapestry.base.IfValue";
     
-    public static final String SPAN_TAG = "span";
-    
     private boolean _rendering = false;
 
     private boolean _conditionValue;
@@ -51,11 +49,11 @@ public abstract class IfBean extends AbstractFormComponent
     public abstract boolean getRenderTag();
     
     public abstract IActionListener getListener();
-
+    
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         boolean cycleRewinding = cycle.isRewinding();
-
+        
         // form may be null if component is not located in a form
         IForm form = (IForm) cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE);
 
@@ -83,14 +81,14 @@ public abstract class IfBean extends AbstractFormComponent
             {
                 String element = HiveMind.isNonBlank(getElement()) ? getElement() : getTemplateTagName();
                 
-                boolean render = !cycleRewinding && getRenderTag() && !SPAN_TAG.equalsIgnoreCase(element);
+                boolean render = !cycleRewinding && getRenderTag();
                 
                 if (render)
                 {
                     writer.begin(element);
                     renderInformalParameters(writer, cycle);
                 }
-
+                
                 renderBody(writer, cycle);
 
                 if (render)
@@ -104,7 +102,7 @@ public abstract class IfBean extends AbstractFormComponent
 
         cycle.setAttribute(IF_VALUE_ATTRIBUTE, new Boolean(_conditionValue));
     }
-
+    
     protected boolean evaluateCondition(IRequestCycle cycle, IForm form, boolean cycleRewinding)
     {
         boolean condition;
