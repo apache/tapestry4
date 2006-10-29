@@ -1,6 +1,0 @@
-
-
-
-({
-'dateFormat-yearOnly': "yyyy"
-})

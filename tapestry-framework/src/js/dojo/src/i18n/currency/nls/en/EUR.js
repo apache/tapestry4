@@ -1,5 +1,0 @@
-
-
-({
-displayName: "Euro"
-})

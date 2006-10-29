@@ -1,6 +1,0 @@
-
-
-({
-displayName: "USD",
-symbol: "$"
-})
