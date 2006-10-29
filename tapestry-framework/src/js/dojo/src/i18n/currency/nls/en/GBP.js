@@ -1,5 +1,0 @@
-
-
-({
-displayName: "British Pound Sterling"
-})
