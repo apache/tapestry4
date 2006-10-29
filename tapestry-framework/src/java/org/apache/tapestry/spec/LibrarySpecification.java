@@ -433,34 +433,6 @@ public class LibrarySpecification extends LocatablePropertyHolder implements
     }
 
     /**
-     * Returns the services.
-     * 
-     * @return Map of service class names.
-     * @deprecated To be removed in release 4.1.
-     */
-
-    protected Map getServices()
-    {
-        return Collections.EMPTY_MAP;
-    }
-
-    /**
-     * Updates the services map.
-     * 
-     * @param services
-     *            A Map of the fully qualified names of classes which implement
-     *            {@link org.apache.tapestry.engine.IEngineService}keyed on
-     *            service id.
-     *            <p>
-     *            The map is retained, not copied.
-     * @deprecated To be removed in release 4.1.
-     */
-
-    protected void setServices(Map services)
-    {
-    }
-
-    /**
      * Returns the components map.
      * 
      * @return Map of {@link IContainedComponent}.

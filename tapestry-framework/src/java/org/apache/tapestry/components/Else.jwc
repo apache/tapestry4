@@ -25,8 +25,8 @@
   Conditionally emulates an element and its attributes and/or includes a block of content 
   if the condition of the previous If component evaluates to false.
   </description>
-    
-  <parameter name="renderTag" default-value="true" />
+  
+  <parameter name="renderTag" default-value="ognl:defaultRenderTags" />
   
   <parameter name="element" deprecated="yes" >
   	<description>
@@ -34,5 +34,7 @@
     whether or not to render the tag.
   	</description>
   </parameter>
+  
+  <inject property="defaultRenderTags" object="app-property:org.apache.tapestry.renderTags" />
   
 </component-specification>

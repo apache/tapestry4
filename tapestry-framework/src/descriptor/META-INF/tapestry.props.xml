@@ -180,7 +180,7 @@
     <provider prefix="global-property" service-id="GlobalPropertyObjectProvider"/>
     <provider prefix="app-property" service-id="ApplicationPropertyObjectProvider"/>
   </contribution>    
-    
+  
   <contribution configuration-id="hivemind.FactoryDefaults">
     <default symbol="org.apache.tapestry.engine-class" value="org.apache.tapestry.engine.BaseEngine"/>
     <default symbol="org.apache.tapestry.visit-class" value="java.util.HashMap"/>
@@ -190,7 +190,8 @@
     <default symbol="org.apache.tapestry.template-extension" value="html"/>   
     <default symbol="org.apache.tapestry.jwcid-attribute-name" value="jwcid"/>
     <default symbol="org.apache.tapestry.default-binding-prefix" value="ognl"/> 
-  </contribution>    
+    <default symbol="org.apache.tapestry.renderTags" value="true" />
+  </contribution>
   
   <!-- This may need to be converted into an IPropertySource and injected into the ApplicationPropertySources
        chain. -->
