@@ -14,8 +14,8 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-
 <module id="autowire.multiple" version="1.0.0">
+
   <service-point id="Hello1" interface="org.apache.tapestry.enhance.HelloService">
     <invoke-factory>
       <construct class="org.apache.tapestry.enhance.HelloServiceImpl" />

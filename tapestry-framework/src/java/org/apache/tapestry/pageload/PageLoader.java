@@ -604,10 +604,11 @@ public class PageLoader implements IPageLoader
 
             // Walk through the complete component tree to set up the default
             // parameter values.
+            
             _establishDefaultParameterValuesWalker.walkComponentTree(page);
-
+            
             establishInheritedBindings();
-
+            
             // Walk through the complete component tree to ensure that required
             // parameters are bound
             _verifyRequiredParametersWalker.walkComponentTree(page);

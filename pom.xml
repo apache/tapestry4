@@ -208,6 +208,11 @@
                     </exclusion>
                 </exclusions>
             </dependency>
+            <dependency>
+                <groupId>backport-util-concurrent</groupId>
+                <artifactId>backport-util-concurrent</artifactId>
+                <version>2.2</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -226,6 +231,7 @@
                                 <value>en_US</value>
                             </property>
                         </systemProperties>
+                        <parallel>false</parallel>
                     </configuration>
                 </plugin>
                 <plugin>

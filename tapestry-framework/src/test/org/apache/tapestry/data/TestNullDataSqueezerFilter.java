@@ -30,6 +30,7 @@ public class TestNullDataSqueezerFilter extends BaseComponentTestCase
     public void testSqueezeNull()
     {
         final NullDataSqueezerFilter filter = new NullDataSqueezerFilter();
+        
         assertNull( filter.unsqueeze( filter.squeeze(( Object )null,null), null ) );
     }
     
