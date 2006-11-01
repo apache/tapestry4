@@ -14,6 +14,10 @@
 
 package org.apache.tapestry.pageload;
 
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.locks.ReentrantLock;
+
 import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IPage;
@@ -42,6 +46,8 @@ import org.apache.tapestry.util.MultiKey;
 
 public class PageSource implements IPageSource
 {
+    private static final int ESTIMATED_PAGES = 45;
+    
     /** set by container. */
     private ClassResolver _classResolver;
 
@@ -58,7 +64,14 @@ public class PageSource implements IPageSource
      */
 
     private ObjectPool _pool;
-
+    
+    /**
+     * Provides concurrent access to page keys to prevent 
+     * possibly creating more than one page spec of the same page.
+     */
+    
+    private ConcurrentMap _keyMap = new ConcurrentHashMap(ESTIMATED_PAGES);
+    
     public ClassResolver getClassResolver()
     {
         return _classResolver;
@@ -70,13 +83,10 @@ public class PageSource implements IPageSource
 
     protected MultiKey buildKey(IEngine engine, String pageName)
     {
-        Object[] keys;
-
-        keys = new Object[]
-        { pageName, engine.getLocale() };
-
+        Object[] keys = new Object[] { pageName, engine.getLocale() };
+        
         // Don't make a copy, this array is just for the MultiKey.
-
+        
         return new MultiKey(keys, false);
     }
 
@@ -87,16 +97,36 @@ public class PageSource implements IPageSource
 
     protected MultiKey buildKey(IPage page)
     {
-        Object[] keys;
-
-        keys = new Object[]
-        { page.getPageName(), page.getLocale() };
-
+        Object[] keys = new Object[] { page.getPageName(), page.getLocale() };
+        
         // Don't make a copy, this array is just for the MultiKey.
 
         return new MultiKey(keys, false);
     }
 
+    /**
+     * Gets a simple lock for the given page that should be used before
+     * doing any page specification resolution operations.
+     * 
+     * @param key The page key to use.
+     * @return The existing/created lock for this specific page.
+     */
+    protected ReentrantLock getPageLock(Object key)
+    {
+        ReentrantLock lock = (ReentrantLock)_keyMap.get(key);
+        
+        if (lock != null) 
+            return lock;
+        
+        lock = new ReentrantLock();
+        
+        // writes are synchronized, this is where the "magic" happens
+        
+        _keyMap.put(key, lock);
+        
+        return lock;
+    }
+    
     /**
      * Gets the page from a pool, or otherwise loads the page. This operation is threadsafe.
      */
@@ -105,29 +135,48 @@ public class PageSource implements IPageSource
     {
         IEngine engine = cycle.getEngine();
         Object key = buildKey(engine, pageName);
-        IPage result = (IPage) _pool.get(key);
+        ReentrantLock lock = getPageLock(key);
+        
+        IPage result = null;
+        
+        try {
+            // lock our page specific key lock first
+            // This is only a temporary measure until a more robust
+            // page pool implementation can be created.
+            
+            lock.lockInterruptibly();
+            
+            result = (IPage) _pool.get(key);
+            
+            if (result == null)
+            {
+                _pageSpecificationResolver.resolve(cycle, pageName);
+                
+                // The loader is responsible for invoking attach(),
+                // and for firing events to PageAttachListeners
 
-        if (result == null)
-        {
-            _pageSpecificationResolver.resolve(cycle, pageName);
+                result = _loader.loadPage(
+                        _pageSpecificationResolver.getSimplePageName(),
+                        _pageSpecificationResolver.getNamespace(),
+                        cycle,
+                        _pageSpecificationResolver.getSpecification());
+            }
+            else
+            {
+                // But for pooled pages, we are responsible.
+                // This call will also fire events to any PageAttachListeners
 
-            // The loader is responsible for invoking attach(),
-            // and for firing events to PageAttachListeners
-
-            result = _loader.loadPage(
-                    _pageSpecificationResolver.getSimplePageName(),
-                    _pageSpecificationResolver.getNamespace(),
-                    cycle,
-                    _pageSpecificationResolver.getSpecification());
+                result.attach(engine, cycle);
+            }
+        
+        } catch (InterruptedException e) {
+            
+            throw new RuntimeException(e);
+        } finally {
+            
+            lock.unlock();
         }
-        else
-        {
-            // But for pooled pages, we are responsible.
-            // This call will also fire events to any PageAttachListeners
-
-            result.attach(engine, cycle);
-        }
-
+        
         return result;
     }
 

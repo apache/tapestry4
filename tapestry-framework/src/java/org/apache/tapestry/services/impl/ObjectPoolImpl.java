@@ -44,7 +44,9 @@ public class ObjectPoolImpl implements ObjectPool, ResetEventListener, ReportSta
      * Pool of Lists (of pooled objects), keyed on arbitrary key.
      */
     private Map _pool = new HashMap();
-
+    
+    // TODO: This synchronized block isn't incredibly efficient
+    
     public synchronized Object get(Object key)
     {
         List pooled = (List) _pool.get(key);

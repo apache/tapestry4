@@ -78,37 +78,36 @@ public class ComponentConstructorFactoryImpl implements ComponentConstructorFact
             String className)
     {
         Defense.notNull(specification, "specification");
-
-        synchronized (specification)
-        {
-            ComponentConstructor result = (ComponentConstructor) _cachedConstructors
-                    .get(specification);
-
-            if (result == null)
-            {
+        
+        synchronized (specification) {
+            
+            ComponentConstructor result = (ComponentConstructor) _cachedConstructors.get(specification);
+            
+            if (result == null) {
+                
                 Class baseClass = _classResolver.findClass(className);
-
+                
                 EnhancementOperationImpl eo = new EnhancementOperationImpl(_classResolver,
                         specification, baseClass, _classFactory, _log);
-
+                
                 // Invoking on the chain is the same as invoking on every
                 // object in the chain (because method performEnhancement() is type void).
-
+                
                 _chain.performEnhancement(eo, specification);
-
+                
                 result = eo.getConstructor();
-
+                
                 // TODO: This should be optional to work around that IBM JVM bug.
-
+                
                 _validator.validate(baseClass, result.getComponentClass(), specification);
-
+                
                 _cachedConstructors.put(specification, result);
             }
-
+            
             return result;
         }
     }
-
+    
     public void setClassFactory(ClassFactory classFactory)
     {
         _classFactory = classFactory;

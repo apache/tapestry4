@@ -37,17 +37,19 @@ public class TestAutowireWorker extends BaseEnhancementTestCase
     private static final String HELLO_SERVICE_PROPERTY = "helloService";
 
     @Test(alwaysRun = true)
-    public void testWithNoService() throws Exception
+    public void test_No_Service() throws Exception
     {
         assertNotAutowired( RegistryBuilder.constructDefaultRegistry() );
     }
+    
     @Test
-    public void testWithManyServices() throws Exception
+    public void test_Many_Services() throws Exception
     {        
         assertNotAutowired( buildFrameworkRegistry("autowire-multiple.xml" ) );   
     }
+    
     @Test
-    public void testWithOneService() throws Exception
+    public void test_One_Service() throws Exception
     {
         final Registry registry = buildFrameworkRegistry("autowire-single.xml" );
         Location l = newLocation();
@@ -99,6 +101,7 @@ public class TestAutowireWorker extends BaseEnhancementTestCase
         replay();
         
         final EnhancementWorker worker = ( EnhancementWorker )registry.getService( "tapestry.enhance.AutowireWorker", EnhancementWorker.class );
+        
         worker.performEnhancement( op, null);
         
         verify();

@@ -255,17 +255,16 @@ public class PageSpecificationResolverImpl extends
         // namespace (typically, the application specification). This will be
         // used when
         // searching for the page's message catalog or other related assets.
-
-        Resource pageResource = namespaceLocation
-                .getRelativeResource(_simpleName + ".page");
-
+        
+        Resource pageResource = namespaceLocation.getRelativeResource(_simpleName + ".page");
+        
         IComponentSpecification specification = new ComponentSpecification();
         specification.setPageSpecification(true);
         specification.setSpecificationLocation(pageResource);
         specification.setLocation(new LocationImpl(resource));
-
+        
         setSpecification(specification);
-
+        
         install();
     }
 
@@ -285,16 +284,16 @@ public class PageSpecificationResolverImpl extends
 
         return true;
     }
-
+    
     private void install()
     {
         INamespace namespace = getNamespace();
         IComponentSpecification specification = getSpecification();
-
+        
         if (_log.isDebugEnabled())
             _log.debug(ResolverMessages.installingPage(_simpleName, namespace,
                     specification));
-
+        
         namespace.installPageSpecification(_simpleName, specification);
     }
 

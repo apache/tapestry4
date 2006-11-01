@@ -43,7 +43,7 @@ import org.testng.annotations.Test;
 @Test
 public class PageSpecificationResolverTest extends AbstractSpecificationResolverTestCase
 {
-    private static class MockApplicationNamespace implements INamespace
+    public static class MockApplicationNamespace implements INamespace
     {
         String _pageName;
 
@@ -153,12 +153,12 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
 
     }
 
-    private ISpecificationResolverDelegate newDelegate()
+    protected ISpecificationResolverDelegate newDelegate()
     {
         return newMock(ISpecificationResolverDelegate.class);
     }
 
-    private INamespace newNamespace(String pageName, IComponentSpecification spec)
+    protected INamespace newNamespace(String pageName, IComponentSpecification spec)
     {
         INamespace namespace = newNamespace();
         checkOrder(namespace, false);
@@ -171,7 +171,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
         return namespace;
     }
 
-    private ComponentPropertySource newPropertySource(INamespace namespace)
+    protected ComponentPropertySource newPropertySource(INamespace namespace)
     {
         ComponentPropertySource source = newMock(ComponentPropertySource.class);
 
@@ -181,7 +181,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
         return source;
     }
 
-    private ISpecificationSource newSource(INamespace application, INamespace framework)
+    protected ISpecificationSource newSource(INamespace application, INamespace framework)
     {
         ISpecificationSource source = newSource();
 
@@ -192,7 +192,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
         return source;
     }
 
-    private ISpecificationSource newSource(INamespace application, INamespace framework,
+    protected ISpecificationSource newSource(INamespace application, INamespace framework,
             Resource resource, IComponentSpecification pageSpec)
     {
         ISpecificationSource source = newSource();
@@ -850,7 +850,7 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
 
         verify();
     }
-
+    
     private void trainGetPageSpecification(INamespace namespace, String pageName,
             IComponentSpecification spec)
     {

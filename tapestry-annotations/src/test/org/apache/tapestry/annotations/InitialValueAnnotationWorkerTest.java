@@ -35,7 +35,7 @@ public class InitialValueAnnotationWorkerTest extends BaseAnnotationTestCase
     public void testCanEnhance()
     {
         InitialValueAnnotationWorker worker = new InitialValueAnnotationWorker();
-
+        
         assertEquals(false, worker.canEnhance(findMethod(AnnotatedPage.class, "getMapBean")));
         assertEquals(true, worker.canEnhance(findMethod(
                 AnnotatedPage.class,
