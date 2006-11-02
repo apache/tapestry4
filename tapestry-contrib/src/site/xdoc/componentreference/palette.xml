@@ -73,7 +73,7 @@
                         <td>model</td>
                         <td>
                             <a
-                                href="../../tapestry/apidocs/org/apache/tapestry/form/IPropertySelectionModel.html">
+                                href="../../tapestry-framework/apidocs/org/apache/tapestry/form/IPropertySelectionModel.html">
                                 IPropertySelectionModel
                             </a>
                         </td>
@@ -102,6 +102,45 @@
                         </td>
                         <td>Controls automatic sorting of the options.</td>
                     </tr>
+                    <tr>
+                        <td>id</td>
+                        <td>string</td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            Sets the id for the rendered <code>&lt;select&gt;</code> element that displays the 
+                            selected items.
+                        </td>
+                    </tr>                    
+                    <tr>
+                        <td>displayName</td>
+                        <td>string</td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            The user-presentable name for the component, which will be used by a
+                            <a href="../../components/form/fieldlabel.html">FieldLabel</a>
+                            connected to the component.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>validators</td>
+                        <td>
+                            Array or collection of
+                            <a
+                                href="../../tapestry-framework/apidocs/org/apache/tapestry/form/validator/Validator.html">
+                                Validator
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            The validators to apply to the component. Something along the lines of:
+                            <code>validators:required</code> .<br/><br/>
+                            
+                            <strong>See also:</strong> <a href="../../usersguide/validation.html">Validation</a>
+                        </td>
+                    </tr>                    
                     <tr>
                         <td>rows</td>
                         <td>int</td>
@@ -167,7 +206,7 @@
                             downDisabledImage
                         </td>
                         <td>
-                            <a href="../../tapestry/apidocs/org/apache/tapestry/IAsset.html">
+                            <a href="../../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
                                 IAsset
                             </a>
                         </td>
