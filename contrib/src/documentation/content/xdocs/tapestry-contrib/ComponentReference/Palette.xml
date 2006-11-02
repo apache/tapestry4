@@ -71,6 +71,42 @@
          Controls automatic sorting of the options.
       </td>
     </tr>
+<tr>
+                        <td>id</td>
+                        <td>string</td>
+			<td>in</td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            Sets the id for the rendered <code>&lt;select&gt;</code> element that displays the 
+                            selected items.
+                        </td>
+                    </tr>                    
+                    <tr>
+                        <td>displayName</td>
+                        <td>string</td>
+			<td>in</td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            The user-presentable name for the component, which will be used by a
+                            FieldLabel connected to the component.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>validators</td>
+                        <td>
+                            Array or collection of                            
+                                Validator
+                        </td>
+			<td>in</td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            The validators to apply to the component. Something along the lines of:
+                            <code>validators:required</code> .<br/><br/>
+                        </td>
+                    </tr> 
     <tr>
       <td>rows</td>
       <td>int</td> <td>in</td> <td>no</td> <td>10</td>
