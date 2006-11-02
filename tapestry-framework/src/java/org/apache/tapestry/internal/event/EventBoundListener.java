@@ -112,12 +112,13 @@ public class EventBoundListener
     public int hashCode()
     {
         final int prime = 31;
-        int result = super.hashCode();
+        int result = 1;
         result = prime * result + ((_componentId == null) ? 0 : _componentId.hashCode());
         result = prime * result + ((_methodName == null) ? 0 : _methodName.hashCode());
+        result = prime * result + ((_formId == null) ? 0 : _formId.hashCode());
         return result;
     }
-
+    
     /** 
      * {@inheritDoc}
      */

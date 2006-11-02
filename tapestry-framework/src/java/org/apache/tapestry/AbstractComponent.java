@@ -890,4 +890,36 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
     {
         return false;
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((_clientId == null) ? 0 : _clientId.hashCode());
+        result = prime * result + ((_id == null) ? 0 : _id.hashCode());
+        return result;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+        final AbstractComponent other = (AbstractComponent) obj;
+        if (_clientId == null) {
+            if (other._clientId != null) return false;
+        } else if (!_clientId.equals(other._clientId)) return false;
+        if (_id == null) {
+            if (other._id != null) return false;
+        } else if (!_id.equals(other._id)) return false;
+        return true;
+    }
 }
