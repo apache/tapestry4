@@ -38,6 +38,7 @@ import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.listener.ListenerInvokerTerminator;
 import org.apache.tapestry.test.Creator;
+import org.apache.tapestry.util.ScriptUtils;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidationConstants;
 import org.testng.annotations.Test;
@@ -114,6 +115,53 @@ public class TestSubmit extends BaseFormComponentTestCase
         verify();
     }
 
+    public void test_Render_Function_Hash()
+    {
+        Creator creator = new Creator();
+        Submit submit = (Submit) creator.newInstance(Submit.class, new Object[] {"submitType", "submit"});
+        
+        IValidationDelegate delegate = newDelegate();
+        IForm form = newForm();
+        IRequestCycle cycle = newCycle();
+        IMarkupWriter writer = newWriter();
+
+        trainGetForm(cycle, form);
+
+        trainWasPrerendered(form, writer, submit, false);
+
+        trainGetDelegate(form, delegate);
+        
+        delegate.setFormComponent(submit);
+
+        trainGetElementId(form, submit, "fred");
+
+        trainIsRewinding(form, false);
+
+        trainIsRewinding(cycle, false);
+        
+        form.setFormFieldUpdating(true);
+        
+        writer.beginEmpty("input");
+        writer.attribute("type", "submit");
+        writer.attribute("name", "fred");
+        writer.attribute("id", "fred");
+        writer.closeTag();
+
+        trainIsInError(delegate, false);
+
+        delegate.registerForFocus(submit, ValidationConstants.NORMAL_FIELD);
+
+        replay();
+
+        submit.renderComponent(writer, cycle);
+        
+        String hash = ScriptUtils.functionHash("onchange" + submit.hashCode());
+        
+        assertEquals(ScriptUtils.functionHash("onchange" + submit.hashCode()), hash);
+        
+        verify();
+    }
+    
     public void test_Render_Disabled()
     {
         Creator creator = new Creator();

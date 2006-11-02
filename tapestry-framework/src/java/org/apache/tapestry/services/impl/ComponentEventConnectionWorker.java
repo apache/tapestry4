@@ -112,7 +112,6 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
         parms.put("clientId", clientId);
         parms.put("component", component);
         
-        // Set events = prop.getEvents();
         Object[][] events = getEvents(prop);
         Object[][] formEvents = filterFormEvents(prop, parms, cycle);
         
@@ -231,7 +230,13 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
             
             String event = (String)it.next();
             
-            ret.add(new Object[]{ event, ScriptUtils.functionHash(prop.getEventListeners(event)) });
+            int hash = 0;
+            List listeners = prop.getEventListeners(event);
+            for (int i=0; i < listeners.size(); i++){
+                hash += listeners.get(i).hashCode();
+            }
+            
+            ret.add(new Object[]{ event, ScriptUtils.functionHash(event + hash) });
         }
         
         return (Object[][])ret.toArray(new Object[ret.size()][2]);
