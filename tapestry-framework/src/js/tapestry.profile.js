@@ -5,8 +5,14 @@
 // the variable "hostenvType" (defaults to "browser").
 var dependencies = [ 
 	"dojo.event.browser",
-	"dojo.dom",
-	"dojo.lang.common"
+        "dojo.dom",
+        "dojo.lang.common",
+        "dojo.io.common",
+        "dojo.io.BrowserIO",
+        "dojo.io.cookie",
+        "dojo.date.common",
+        "dojo.date.format",
+	"dojo.widget.*"
 ];
 
 // NOTE: this MUST be included or a list of files must be output via print()
