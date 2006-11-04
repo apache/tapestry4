@@ -13,6 +13,8 @@
 // limitations under the License.
 package org.apache.tapestry.dojo;
 
+import java.util.Locale;
+import org.apache.tapestry.IPage;
 import static org.easymock.EasyMock.*;
 
 import org.apache.hivemind.Resource;
@@ -47,6 +49,13 @@ public class AjaxShellDelegateTest extends BaseComponentTestCase
         expect(link.getAbsoluteURL()).andReturn("http://" + path);
     }
     
+    void trainPageLocale(IRequestCycle cycle, Locale locale)
+    {
+        IPage page = newMock(IPage.class);        
+        expect(cycle.getPage()).andReturn(page);
+        expect(page.getLocale()).andReturn(locale);
+    }
+    
     public void test_Default_Render()
     {
         IAsset dojoSource = newAsset();
@@ -58,6 +67,8 @@ public class AjaxShellDelegateTest extends BaseComponentTestCase
         IMarkupWriter writer = newBufferWriter();
         
         trainStaticPath(assetService, dojoPath, "/dojo/path");
+        
+        trainPageLocale(cycle, Locale.US);
         
         trainStaticPath(assetService, dojoSource, "/dojo/path/dojo.js");
         
@@ -77,7 +88,7 @@ public class AjaxShellDelegateTest extends BaseComponentTestCase
         
         assertBuffer("<script type=\"text/javascript\">djConfig = {\"isDebug\":false,"
                 + "\"debugAtAllCosts\":false,\"baseRelativePath\":\"http:///dojo/path\","
-                +"\"preventBackButtonFix\":false,\"parseWidgets\":false} </script>\n" + 
+                +"\"preventBackButtonFix\":false,\"parseWidgets\":false,\"locale\":\"en_US\"} </script>\n" + 
                 "\n" + 
                 " <script type=\"text/javascript\" src=\"http:///dojo/path/dojo.js\"></script>"
                 +"<script type=\"text/javascript\" src=\"http:///tapestry/tapestry.js\"></script>\n" + 
@@ -100,6 +111,8 @@ public class AjaxShellDelegateTest extends BaseComponentTestCase
         
         trainStaticPath(assetService, dojoPath, "/dojo/path");
         
+        trainPageLocale(cycle, Locale.UK);
+        
         trainStaticPath(assetService, dojoSource, "/dojo/path/dojo.js");
         
         trainStaticPath(assetService, tSource, "/tapestry/tapestry.js");
@@ -120,7 +133,7 @@ public class AjaxShellDelegateTest extends BaseComponentTestCase
         
         assertBuffer("<script type=\"text/javascript\">djConfig = {\"isDebug\":false,"
                 + "\"debugAtAllCosts\":false,\"baseRelativePath\":\"http:///dojo/path\","
-                +"\"preventBackButtonFix\":false,\"parseWidgets\":false} </script>\n" + 
+                +"\"preventBackButtonFix\":false,\"parseWidgets\":false,\"locale\":\"en_GB\"} </script>\n" + 
                 "\n" + 
                 " <script type=\"text/javascript\" src=\"http:///dojo/path/dojo.js\"></script>"
                 +"<script type=\"text/javascript\" src=\"http:///tapestry/tapestry.js\"></script>\n" + 
