@@ -80,6 +80,7 @@ public class AjaxShellDelegate implements IRender
         
         dojoConfig.put("preventBackButtonFix", _preventBackButtonFix);
         dojoConfig.put("parseWidgets", _parseWidgets);
+        dojoConfig.put("locale", cycle.getPage().getLocale().toString());
         
         StringBuffer str = new StringBuffer("<script type=\"text/javascript\">");
         str.append("djConfig = ").append(dojoConfig.toString())
