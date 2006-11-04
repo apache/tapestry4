@@ -91,8 +91,6 @@ public class MinDate extends BaseValidator
         JSONObject profile = context.getProfile();
         
         context.addInitializationScript(field, "dojo.require(\"tapestry.form.datetime\");");
-        context.addInitializationScript(field, 
-                "dojo.requireLocalization(\"dojo.i18n.calendar\",\"gregorian\",\"" + context.getLocale() + "\");");
         
         if (!profile.has(ValidationConstants.CONSTRAINTS)) {
             profile.put(ValidationConstants.CONSTRAINTS, new JSONObject());

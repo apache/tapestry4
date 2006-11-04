@@ -19,7 +19,6 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isA;
 
 import java.util.Date;
-import java.util.Locale;
 import java.util.Map;
 
 import org.apache.tapestry.IForm;
@@ -94,8 +93,6 @@ public class TestDropdownTimePicker extends BaseFormComponentTestCase
         delegate.setFormComponent(component);
         
         vfs.renderContributions(component, writer, cycle);
-        
-        expect(page.getLocale()).andReturn(Locale.ENGLISH);
         
         PageRenderSupport prs = newPageRenderSupport();
         trainGetPageRenderSupport(cycle, prs);

@@ -88,7 +88,7 @@ public class AjaxShellDelegateTest extends BaseComponentTestCase
         
         assertBuffer("<script type=\"text/javascript\">djConfig = {\"isDebug\":false,"
                 + "\"debugAtAllCosts\":false,\"baseRelativePath\":\"http:///dojo/path\","
-                +"\"preventBackButtonFix\":false,\"parseWidgets\":false,\"locale\":\"en_US\"} </script>\n" + 
+                +"\"preventBackButtonFix\":false,\"parseWidgets\":false,\"locale\":\"en-us\"} </script>\n" + 
                 "\n" + 
                 " <script type=\"text/javascript\" src=\"http:///dojo/path/dojo.js\"></script>"
                 +"<script type=\"text/javascript\" src=\"http:///tapestry/tapestry.js\"></script>\n" + 
@@ -133,7 +133,7 @@ public class AjaxShellDelegateTest extends BaseComponentTestCase
         
         assertBuffer("<script type=\"text/javascript\">djConfig = {\"isDebug\":false,"
                 + "\"debugAtAllCosts\":false,\"baseRelativePath\":\"http:///dojo/path\","
-                +"\"preventBackButtonFix\":false,\"parseWidgets\":false,\"locale\":\"en_GB\"} </script>\n" + 
+                +"\"preventBackButtonFix\":false,\"parseWidgets\":false,\"locale\":\"en-gb\"} </script>\n" + 
                 "\n" + 
                 " <script type=\"text/javascript\" src=\"http:///dojo/path/dojo.js\"></script>"
                 +"<script type=\"text/javascript\" src=\"http:///tapestry/tapestry.js\"></script>\n" + 
