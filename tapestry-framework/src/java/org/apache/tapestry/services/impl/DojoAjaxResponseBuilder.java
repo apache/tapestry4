@@ -314,12 +314,14 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     public void render(IMarkupWriter writer, IRender render, IRequestCycle cycle)
     {
         // must be a valid writer already
+        
         if (NestedMarkupWriterImpl.class.isInstance(writer)) {
             render.render(writer, cycle);
             return;
         }
         
         // check for page exception renders and write content to writer so client can display them
+        
         if (IPage.class.isInstance(render)) {
             String errorPage = getErrorPage(((IPage)render).getPageName());
             if (errorPage != null) {
@@ -336,6 +338,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         }
         
         // Nothing else found, throw out response
+        
         render.render(NullWriter.getSharedInstance(), cycle);
     }
     
@@ -419,6 +422,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     void endResponse()
     {
         // write out captured content
+        
         Iterator keys = _writers.keySet().iterator();
         while (keys.hasNext()) {
             
@@ -433,7 +437,8 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
                 _writer.printRaw(nw.getBuffer());
         }
         
-        //end response
+        // end response
+        
         _writer.printRaw("</ajax-response>");
         _writer.flush();
     }
