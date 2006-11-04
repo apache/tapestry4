@@ -1,5 +1,6 @@
 
-dojo.hostenv.println=function(line){print(line);}
+dojo.hostenv.println=function(line){if(arguments.length > 0){print(arguments[0]);for(var i=1; i<arguments.length; i++){var valid=false;for (var p in arguments[i]){valid=true;break;}
+if(valid){dojo.debugShallow(arguments[i]);}}} else {print(line);}}
 dojo.locale = dojo.locale || java.util.Locale.getDefault().toString().replace('_','-').toLowerCase();dojo.render.name = dojo.hostenv.name_ = 'rhino';dojo.hostenv.getVersion = function() {return version();};if (dj_undef("byId")) {dojo.byId = function(id, doc){if(id && (typeof id == "string" || id instanceof String)){if(!doc){ doc = document; }
 return doc.getElementById(id);}
 return id;}}

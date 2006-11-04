@@ -11,12 +11,12 @@ function test_form_find(){
 	var node = document.createElement("div");
 	node.setAttribute("id", "testid");
 	
-	jum.assertTrue("findwithNode", Tapestry.find(node));
-	jum.assertTrue("findwithId", Tapestry.find("testid"));
+	jum.assertTrue(Tapestry.find(node));
+	jum.assertTrue(Tapestry.find("testid"));
 }
 
 function test_last_msg(){
-	jum.assertFalse("lastMessage", lastMsgContains());
+	jum.assertFalse(lastMsgContains());
 }
 
 function test_form_deprecated(){
@@ -94,7 +94,7 @@ function test_submit_parms(){
 	dojo.event.connect(dojo.io, "queueBind", this, checkSubmitParms);
 	
 	tapestry.form.registerForm("formparmtest");
-	tapestry.form.submit("formparmtest", null, {async:true,url:"/new/url"});
+	tapestry.form.submit("formparmtest", null, {async:true,url:"/a/url"});
 	
 	jum.assertTrue("bindCalled", bindCalled);
 	
@@ -103,7 +103,7 @@ function test_submit_parms(){
 
 function checkSubmitParms(kwArgs){
 	bindCalled=true;
-	jum.assertEquals("submitParmUrl", kwArgs["url"], "/new/url");
+	jum.assertEquals("submitParmUrl", kwArgs["url"], "/a/url");
 }
 
 function test_submit_defaultParms(){
@@ -111,7 +111,7 @@ function test_submit_defaultParms(){
 	var node = document.createElement("form");
 	node.setAttribute("id", "formasynctest");
 	node.setAttribute("method", "post");
-	node.setAttribute("action", "/default/url");
+	node.setAttribute("action", "/a/url");
 	node.submit=function(){}
 	node.submitname={value:""};
 	node.elements=[];

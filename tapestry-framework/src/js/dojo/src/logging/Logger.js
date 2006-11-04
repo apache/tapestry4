@@ -1,6 +1,6 @@
 
 dojo.provide("dojo.logging.Logger");dojo.provide("dojo.logging.LogFilter");dojo.provide("dojo.logging.Record");dojo.require("dojo.lang.common");dojo.logging.Record = function(logLevel, message){this.level = logLevel;this.message = "";this.msgArgs = [];this.time = new Date();if(dojo.lang.isArray(message)){if(message.length > 0 && dojo.lang.isString(message[0])){this.message=message.shift();}
-this.message = message;}else{this.message = message;}}
+this.msgArgs = message;}else{this.message = message;}}
 dojo.logging.LogFilter = function(loggerChain){this.passChain = loggerChain || "";this.filter = function(record){return true;}}
 dojo.logging.Logger = function(){this.cutOffLevel = 0;this.propagate = true;this.parent = null;this.data = [];this.filters = [];this.handlers = [];}
 dojo.extend(dojo.logging.Logger,{argsToArr: function(args){var ret = [];for(var x=0; x<args.length; x++){ret.push(args[x]);}
@@ -30,5 +30,5 @@ return null;}
 dojo.logging.MemoryLogHandler = function(level, recordsToKeep, postType, postInterval){dojo.logging.LogHandler.call(this, level);this.numRecords = (typeof djConfig['loggingNumRecords'] != 'undefined') ? djConfig['loggingNumRecords'] : ((recordsToKeep) ? recordsToKeep : -1);this.postType = (typeof djConfig['loggingPostType'] != 'undefined') ? djConfig['loggingPostType'] : ( postType || -1);this.postInterval = (typeof djConfig['loggingPostInterval'] != 'undefined') ? djConfig['loggingPostInterval'] : ( postType || -1);}
 dojo.lang.inherits(dojo.logging.MemoryLogHandler, dojo.logging.LogHandler);dojo.lang.extend(dojo.logging.MemoryLogHandler,{emit:function(record){if (!djConfig.isDebug) { return; }
 var logStr = String(dojo.log.getLevelName(record.level)+": "
-+record.time.toLocaleTimeString())+": "+record.message;if(!dj_undef("println", dojo.hostenv)){dojo.hostenv.println(logStr);}
++record.time.toLocaleTimeString())+": "+record.message;if(!dj_undef("println", dojo.hostenv)){dojo.hostenv.println(logStr, record.msgArgs);}
 this.data.push(record);if(this.numRecords != -1){while(this.data.length>this.numRecords){this.data.shift();}}}});dojo.logging.logQueueHandler = new dojo.logging.MemoryLogHandler(0,50,0,10000);dojo.logging.log.addHandler(dojo.logging.logQueueHandler);dojo.log = dojo.logging.log;
