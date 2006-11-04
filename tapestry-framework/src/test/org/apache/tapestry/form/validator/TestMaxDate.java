@@ -158,6 +158,9 @@ public class TestMaxDate extends BaseValidatorTestCase
         expect(context.getProfile()).andReturn(json);
         
         context.addInitializationScript(field, "dojo.require(\"tapestry.form.datetime\");");
+        context.addInitializationScript(field, 
+                "dojo.requireLocalization(\"dojo.i18n.calendar\",\"gregorian\",\"" 
+                + locale + "\");");
         
         String strMax = translator.format(field, locale, maxDate);
         
@@ -204,6 +207,9 @@ public class TestMaxDate extends BaseValidatorTestCase
         expect(context.getProfile()).andReturn(json);
         
         context.addInitializationScript(field, "dojo.require(\"tapestry.form.datetime\");");
+        context.addInitializationScript(field, 
+                "dojo.requireLocalization(\"dojo.i18n.calendar\",\"gregorian\",\"" 
+                + locale + "\");");
         
         String strMax = translator.format(field, locale, maxDate);
         

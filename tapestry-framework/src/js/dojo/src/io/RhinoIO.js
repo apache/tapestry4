@@ -1,5 +1,5 @@
 
-dojo.provide("dojo.io.RhinoIO");dojo.require("dojo.io.common");dojo.require("dojo.lang.func");dojo.require("dojo.lang.array");dojo.require("dojo.string.extras");dojo.io.RhinoHTTPTransport = new function(){this.canHandle = function(req){if(!dojo.lang.inArray((req.mimetype.toLowerCase() || ""),["text/plain", "text/html", "text/javascript", "text/json", "application/json"])){return false;}
+dojo.provide("dojo.io.RhinoIO");dojo.require("dojo.io.common");dojo.require("dojo.lang.func");dojo.require("dojo.lang.array");dojo.require("dojo.string.extras");dojo.io.RhinoHTTPTransport = new function(){this.canHandle = function(req){if(!dojo.lang.find(["text/plain", "text/html", "text/xml", "text/javascript", "text/json", "application/json"],(req.mimetype.toLowerCase() || ""))){return false;}
 if(req.url.substr(0, 7) != "http://"){return false;}
 return true;}
 function doLoad(req, conn){var ret;if (req.method.toLowerCase() == "head"){}else{var stream = conn.getContent();var reader = new java.io.BufferedReader(new java.io.InputStreamReader(stream));var text = "";var line = null;while((line = reader.readLine()) != null){text += line;}

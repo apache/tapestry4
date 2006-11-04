@@ -1,4 +1,5 @@
 dojo.require("dojo.logging.Logger");
+dojo.require("dojo.io.RhinoIO");
 
 function test_debug_log(){
 	dojo.log.debug("Debug message.");
@@ -14,7 +15,7 @@ function test_debug_logLevel(){
 	dojo.log.setLevel(dojo.log.getLevel("WARNING"));
 	dojo.log.info("SHOULD NOT SEE THIS");
 	var last = dojo.logging.logQueueHandler.data.pop();
-	jum.assertEquals("filterwarn", "info msg", last.message);
+	jum.assertEquals("info msg", last.message);
 	
 	var currLength = dojo.logging.logQueueHandler.data.length;
 	dojo.log.debug("DEFINITELY SHOULDNT see this");

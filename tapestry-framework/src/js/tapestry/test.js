@@ -3,6 +3,8 @@ dojo.provide("tapestry.test");
 dojo.require("dojo.logging.Logger");
 dojo.require("dojo.event.browser");
 
+djConfig.locale="en_US";
+
 // override to make sure our fake events pass
 dojo.event.browser.isEvent=function() { return true; }
 
