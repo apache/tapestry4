@@ -42,7 +42,6 @@ window.
 
   <component id="ifNotDisabled" type="If">
     <binding name="condition" value="! disabled"/>
-    <binding name="element" value="literal:div"/>
   </component>
   
     <bean name="renderer" class="org.apache.tapestry.contrib.link.PopupLinkRenderer">

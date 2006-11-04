@@ -81,7 +81,6 @@ public abstract class DropdownTimePicker extends AbstractFormWidget
         json.put("inputName", getName());
         json.put("iconAlt", getIconAlt());
         json.put("displayFormat", translator.getPattern());
-        json.put("lang", getPage().getLocale());
         
         if (getValue() != null) {
             json.put("value", DateFormatUtils.ISO_TIME_NO_T_TIME_ZONE_FORMAT.format(getValue()));

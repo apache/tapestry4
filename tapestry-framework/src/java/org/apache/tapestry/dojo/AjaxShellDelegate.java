@@ -13,6 +13,8 @@
 // limitations under the License.
 package org.apache.tapestry.dojo;
 
+import java.util.Locale;
+
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IMarkupWriter;
@@ -80,7 +82,13 @@ public class AjaxShellDelegate implements IRender
         
         dojoConfig.put("preventBackButtonFix", _preventBackButtonFix);
         dojoConfig.put("parseWidgets", _parseWidgets);
-        dojoConfig.put("locale", cycle.getPage().getLocale().toString());
+        
+        Locale locale = cycle.getPage().getLocale();
+        
+        dojoConfig.put("locale", 
+                locale.getLanguage().toLowerCase()
+                + "-" 
+                + locale.getCountry().toLowerCase());
         
         StringBuffer str = new StringBuffer("<script type=\"text/javascript\">");
         str.append("djConfig = ").append(dojoConfig.toString())
