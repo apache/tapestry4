@@ -530,20 +530,6 @@ public class RequestCycle implements IRequestCycle
         forgetPage(name);
     }
 
-    /** @since 2.0.3 * */
-
-    public Object[] getServiceParameters()
-    {
-        return getListenerParameters();
-    }
-
-    /** @since 2.0.3 * */
-
-    public void setServiceParameters(Object[] serviceParameters)
-    {
-        setListenerParameters(serviceParameters);
-    }
-
     /** @since 4.0 */
     public Object[] getListenerParameters()
     {
