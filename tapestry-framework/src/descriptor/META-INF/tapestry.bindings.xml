@@ -131,6 +131,17 @@
     
   </service-point>
   
+  <service-point id="ClientIdBindingFactory" interface="BindingFactory">  
+      
+      Creates bindings where the path is a HiveMind object reference.
+      
+    <invoke-factory>
+      <construct class="ClientIdBindingFactory">
+        <set-object property="valueConverter" value="infrastructure:valueConverter"/>
+      </construct>
+    </invoke-factory>
+  </service-point> 
+  
   <configuration-point id="BindingFactories">
     
     Used to map binding prefixes to binding factories.
@@ -165,6 +176,7 @@
     <binding prefix="component" service-id="ComponentBindingFactory"/>
     <binding prefix="state" service-id="StateBindingFactory"/>
     <binding prefix="hivemind" service-id="HiveMindBindingFactory"/>
+    <binding prefix="clientId" service-id="ClientIdBindingFactory"/>
   </contribution>
   
   <service-point id="BindingSource">
