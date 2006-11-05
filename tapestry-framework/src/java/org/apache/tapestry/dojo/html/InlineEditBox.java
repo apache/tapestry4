@@ -108,6 +108,10 @@ public abstract class InlineEditBox extends AbstractWidget implements IDirect
             throw new ApplicationRuntimeException(WidgetMessages.invalidTextMode(getMode()));
         }
         
+        if (cycle.isRewinding()) {
+            return;
+        }
+        
         JSONObject prop = new JSONObject();
         prop.put("widgetId", getClientId());
         prop.put("textValue", getValue());
@@ -131,7 +135,7 @@ public abstract class InlineEditBox extends AbstractWidget implements IDirect
     public String getUpdateUrl()
     {
         DirectServiceParameter dsp =
-            new DirectServiceParameter(this, new Object[]{});
+            new DirectServiceParameter(this);
         
         return getEngine().getLink(true, dsp).getURL();
     }

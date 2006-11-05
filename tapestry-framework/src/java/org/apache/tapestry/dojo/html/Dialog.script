@@ -21,6 +21,11 @@
 
 <input-symbol key="component" required="yes" />
 <input-symbol key="props" required="yes" />
+    <body>
+    <unique>
+    dojo.require("tapestry.widget.Widget");
+    </unique>
+    </body>
     <initialization>
     tapestry.widget.synchronizeWidgetState("${component.clientId}", "Dialog", ${props}, ${component.destroy});
     
