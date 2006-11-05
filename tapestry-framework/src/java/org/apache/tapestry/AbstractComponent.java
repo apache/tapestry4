@@ -315,8 +315,10 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
         
         String id = getClientId();
         
-        if (id != null)
+        if (id != null) {
             writer.attribute("id", id);
+            cycle.setAttribute("org.apache.tapestry.lastId." + getId(), id); 
+        }
     }
     
     /** @since 4.0 */
