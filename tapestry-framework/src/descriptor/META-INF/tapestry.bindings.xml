@@ -120,7 +120,7 @@
 
   <service-point id="HiveMindBindingFactory" interface="BindingFactory">
     
-    Creates bindings where the path is a HiveMind object reference.
+    Creates bindings where the path is a HiveMind object reference
     
     <invoke-factory>
       <construct class="HiveMindBindingFactory">
@@ -133,7 +133,7 @@
   
   <service-point id="ClientIdBindingFactory" interface="BindingFactory">  
       
-      Creates bindings where the path is a HiveMind object reference.
+      Creates bindings that returns the client-side id of a component.
       
     <invoke-factory>
       <construct class="ClientIdBindingFactory">
