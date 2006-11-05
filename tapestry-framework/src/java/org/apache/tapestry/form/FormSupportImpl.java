@@ -393,7 +393,7 @@ public class FormSupportImpl implements FormSupport
         
         String filteredId = TapestryUtils.convertTapestryIdToNMToken(baseId);
 
-        String result = _elementIdAllocator.allocateId(filteredId);
+        String result = _elementIdAllocator.allocateId(filteredId + "_" + _form.getClientId());
         
         if (_rewinding)
         {

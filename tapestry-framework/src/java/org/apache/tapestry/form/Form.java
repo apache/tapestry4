@@ -193,6 +193,9 @@ public abstract class Form extends AbstractComponent implements IForm
         
         if (isRewinding())
         {
+            // even if we're rewinding, make sure we 'train' the idallocator.
+            renderIdAttribute(writer, cycle);
+            
             String submitType = _formSupport.rewind();
 
             IActionListener listener = findListener(submitType);
