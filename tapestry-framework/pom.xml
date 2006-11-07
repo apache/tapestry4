@@ -12,7 +12,7 @@
         <artifactId>tapestry-project</artifactId>
         <version>4.1.1-SNAPSHOT</version>
     </parent>
-    <name>Core Library</name>
+    <name>Tapestry Core Library</name>
     <inceptionYear>2006</inceptionYear>
 
     <dependencies>
