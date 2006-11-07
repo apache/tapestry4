@@ -142,7 +142,12 @@ tapestry.form={
 	
 	overrideSubmit:function(e){
 		dojo.event.browser.stopEvent(e);
-		tapestry.form.submitAsync(e.target);
+                var elm = e.target;
+                if (!dj_undef("form", elm)){
+                    dojo.log.debug("Submit event was generated from element: ", elm);
+                    elm = elm.form;                    
+                }
+		tapestry.form.submitAsync(elm);
 	},
 	
 	/**
