@@ -12,7 +12,7 @@
         <artifactId>tapestry-project</artifactId>
         <version>4.1.1-SNAPSHOT</version>
     </parent>
-    <name>Tapestry Core Library</name>
+    <name>Tapestry Core Library - ${version}</name>
     <inceptionYear>2006</inceptionYear>
 
     <dependencies>
@@ -119,7 +119,17 @@
         <dependency>
             <groupId>org.apache.tapestry</groupId>
             <artifactId>tapestry-test</artifactId>
-        </dependency>
+        </dependency>        
+        
+        <dependency>
+            <groupId>org.openqa.selenium.client-drivers</groupId>
+            <artifactId>selenium-java-client-driver</artifactId>                
+        </dependency>   
+        <dependency>
+            <groupId>org.openqa.selenium.server</groupId>
+            <artifactId>selenium-server</artifactId>                
+        </dependency>        
+        
     </dependencies>
 
     <build>
