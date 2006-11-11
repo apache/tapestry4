@@ -150,8 +150,10 @@
             
             <item name="Dojo" href="/components/dojo/index.html" collapse="true">
                 <item name="Autocompleter" href="/components/dojo/autocompleter.html" />
+                <item name="Dialog" href="/components/dojo/dialog.html" />
                 <item name="DropdownDatePicker" href="/components/dojo/dropdowndatepicker.html" />
                 <item name="DropdownTimePicker" href="/components/dojo/dropdowntimepicker.html" />
+                <item name="InlineEditBox" href="/components/dojo/inlineeditbox.html" />
             </item>
             
         </menu>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Copyright 2006 The Apache Software Foundation
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<document>
+    <properties>
+        <title>Dialog</title>
+    </properties>
+    <body>
+
+        <section name="Dialog">
+
+            <p>
+                Creates a modal Dialog on the client side (of sorts). This component may prove useful for cutting down
+                on typical CRUD operations where you normally have to navigate to a lot of seperate pages to do things
+                like "edit" / "view" / or "add" something. Why make your users navigate all over the place when they
+                can do it right there? :)
+            </p>
+            
+            <p>
+                Also note that this particular component comes with two very useful methods that you can 
+                invoke in java code to hide and show the Dialog. They are aptly named <code>hide()</code> and
+                <code>show()</code>.
+            </p>
+            
+            <img src="../../images/ComponentReference/Dialog.png" />
+            
+            <p>
+                <strong>
+                    See also:
+                    <a href="../../tapestry-framework/apidocs/org/apache/tapestry/dojo/html/Dialog.html">
+                        org.apache.tapestry.dojo.html.Dialog
+                    </a>
+                </strong>
+
+            </p>
+            
+            <section name="Parameters">
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Default</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>hidden</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>true</td>
+                        <td>
+                            Whether or not the Dialog should be hidden by default. (Which is what you want in most
+                            cases.)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>backgroundColor</td>
+                        <td>String</td>
+                        <td>no</td>
+                        <td>literal:black</td>
+                        <td>
+                            The html style color to give the background of the dialog. The color given can be a literal
+                            color name or hex string such as <code>#efefef</code>. 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>opacity</td>
+                        <td>float</td>
+                        <td>no</td>
+                        <td>0.4</td>
+                        <td>
+                            Controls how opaque the background is. This parameter is given in the form of a percent, so
+                            valid values would range from <code>0.1 - 1</code>.
+                        </td>
+                    </tr>
+                </table>
+
+                <p>
+                    Body:
+                    <strong>allowed</strong>
+                </p>
+
+                <p>
+                    Informal parameters:
+                    <strong>allowed</strong>
+                </p>
+
+                <p>
+                    Reserved parameters:
+                    <em>none</em>
+                </p>
+
+            </section>
+
+            <section name="Examples">
+                TODO...
+            </section>
+            
+        </section>
+
+    </body>
+</document>
