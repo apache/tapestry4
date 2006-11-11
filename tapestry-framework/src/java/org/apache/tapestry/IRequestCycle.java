@@ -352,7 +352,19 @@ public interface IRequestCycle
      */
 
     String getUniqueId(String baseId);
+    
+    /**
+     * Returns what <i>will</i> be the next unique id generated based on the given input, but doesn't
+     * store the result.
+     * 
+     * @param baseId
+     *            the base id from which to generate the unique string.
+     * @return baseId, or baseId with a suffix appended (if the method has been previously invoked
+     *         with the same baseId).
+     */
 
+    String peekUniqueId(String baseId);
+    
     /**
      * Sends a redirect to the client web browser. This is currently a convinience for constructing
      * and throwing a {@link RedirectException}, but may change in a later release.

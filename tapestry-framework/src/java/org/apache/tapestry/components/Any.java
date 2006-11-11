@@ -46,9 +46,9 @@ public abstract class Any extends AbstractComponent
             if (getId() != null && !isParameterBound("id"))
                 renderIdAttribute(writer, cycle);
         }
-
+        
         renderBody(writer, cycle);
-
+        
         if (!rewinding)
         {
             writer.end(element);

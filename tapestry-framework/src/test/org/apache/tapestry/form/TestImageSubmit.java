@@ -102,6 +102,9 @@ public class TestImageSubmit extends BaseFormComponentTestCase
         writer.attribute("name", "fred");
         writer.attribute("border", 0);
         writer.attribute("src", "image-url");
+        
+        writer.attribute("id", "fred");
+        
         writer.closeTag();
         
         trainIsInError(delegate, false);
@@ -150,6 +153,9 @@ public class TestImageSubmit extends BaseFormComponentTestCase
         writer.attribute("disabled", "disabled");
         writer.attribute("border", 0);
         writer.attribute("src", "disabled-image-url");
+        
+        writer.attribute("id", "fred");
+        
         writer.closeTag();
 
         replay();
@@ -194,6 +200,9 @@ public class TestImageSubmit extends BaseFormComponentTestCase
         writer.attribute("disabled", "disabled");
         writer.attribute("border", 0);
         writer.attribute("src", "image-url");
+        
+        writer.attribute("id", "fred");
+        
         writer.closeTag();
 
         replay();

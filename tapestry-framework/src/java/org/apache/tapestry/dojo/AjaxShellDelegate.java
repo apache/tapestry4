@@ -74,8 +74,11 @@ public class AjaxShellDelegate implements IRender
         JSONObject dojoConfig = new JSONObject();
         
         dojoConfig.put("isDebug", _debug);
-        dojoConfig.put("debugAtAllCosts", _debugAtAllCosts);
-        dojoConfig.put("debugContainerId", _debugContainerId);
+        
+        if (_debugAtAllCosts)
+            dojoConfig.put("debugAtAllCosts", _debugAtAllCosts);
+        if (_debugContainerId != null)
+            dojoConfig.put("debugContainerId", _debugContainerId);
         
         dojoConfig.put("baseRelativePath", 
                 _assetService.getLink(true, _dojoPath.getResourceLocation().getPath()).getAbsoluteURL());
@@ -83,10 +86,12 @@ public class AjaxShellDelegate implements IRender
         dojoConfig.put("preventBackButtonFix", _preventBackButtonFix);
         dojoConfig.put("parseWidgets", _parseWidgets);
         
-        String locale = cycle.getPage().getLocale().toString().toLowerCase();
-        locale = locale.replace('_', '-');
+        Locale locale = cycle.getPage().getLocale();
         
-        dojoConfig.put("locale", locale);
+        dojoConfig.put("locale", locale.getLanguage().toLowerCase()
+                + ((locale.getCountry() != null && !locale.getCountry().isEmpty())
+                ? "-" + locale.getCountry().toLowerCase()
+                        : ""));
         
         StringBuffer str = new StringBuffer("<script type=\"text/javascript\">");
         str.append("djConfig = ").append(dojoConfig.toString())
@@ -108,12 +113,15 @@ public class AjaxShellDelegate implements IRender
                 : "dojo.require(\"dojo.logging.Logger\");\n";
         
         // logging configuration
-        str.append("\n<script type=\"text/javascript\">\n")
-        .append(logRequire)
-        .append("dojo.log.setLevel(dojo.log.getLevel(\"").append(_browserLogLevel)
-        .append("\"));\n")
-        .append("dojo.require(\"tapestry.namespace\")\n")
-        .append("</script>");
+        str.append("\n<script type=\"text/javascript\">\n");
+        
+        if (_debug) {
+            str.append(logRequire)
+            .append("dojo.log.setLevel(dojo.log.getLevel(\"").append(_browserLogLevel)
+            .append("\"));\n");
+        }
+        
+        str.append("dojo.require(\"tapestry.namespace\");\n").append("</script>");
         
         writer.printRaw(str.toString());
         writer.println();

@@ -87,6 +87,7 @@ public abstract class BaseFormComponentTestCase extends BaseComponentTestCase
     {
         form.getElementId(component);
         component.setName(name);
+        component.setClientId(name);
         expectLastCall().andReturn(name);
     }
 

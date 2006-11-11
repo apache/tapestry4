@@ -83,13 +83,11 @@ public class LinkSubmitTest extends BaseComponentTestCase
 
         LinkSubmit linkSubmit = newInstance(LinkSubmit.class, new Object[]
         { "form", form, "name", "fred_1", "script", script, 
-            "id", "fred_id", "submitType", "submit" });
+            "id", "fred_id", "clientId", "fred_1", "submitType", "submit" });
         
         linkSubmit.addBody(newBody());
 
         trainGetSupport(cycle, support);
-
-        trainGetUniqueId(cycle, "fred_id", "fred_id_unique");
         
         trainResponseBuilder(cycle, writer);
         
@@ -99,7 +97,7 @@ public class LinkSubmitTest extends BaseComponentTestCase
 
         verify();
 
-        assertBuffer("<a href=\"HREF\" id=\"fred_id_unique\">BODY</a>");
+        assertBuffer("<a href=\"HREF\" id=\"fred_1\">BODY</a>");
     }
 
     public void testRenderDisabled()

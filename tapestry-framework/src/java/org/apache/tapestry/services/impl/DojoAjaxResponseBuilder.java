@@ -527,6 +527,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     /**
      * Gets the id of the specified component, choosing the "id" element
      * binding over any other id.
+     * 
      * @param comp
      * @return The id of the component.
      */

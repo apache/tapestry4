@@ -127,7 +127,7 @@ public abstract class Form extends AbstractComponent implements IForm
 
     public String getElementId(IFormComponent component)
     {
-        return _formSupport.getElementId(component, component.getClientId());
+        return _formSupport.getElementId(component, component.getSpecifiedId());
     }
 
     /**
@@ -203,14 +203,12 @@ public abstract class Form extends AbstractComponent implements IForm
 
             throw new RenderRewoundException(this);
         }
-
+        
         // Note: not safe to invoke getNamespace() in Portlet world
         // except during a RenderRequest.
         
-        String baseName = constructFormNameForDirectService(cycle);
-        
-        _name = baseName + getResponse().getNamespace();
-        setClientId(_name);
+        // _name = getClientId() + getResponse().getNamespace();
+        _name = getClientId() + getResponse().getNamespace();
         
         if (_renderInformalParameters == null)
             _renderInformalParameters = new RenderInformalParameters();
@@ -219,7 +217,7 @@ public abstract class Form extends AbstractComponent implements IForm
         
         _formSupport.render(getMethod(), _renderInformalParameters, link, getScheme(), getPort());
     }
-
+    
     IActionListener findListener(String mode)
     {
         IActionListener result = null;
@@ -240,20 +238,7 @@ public abstract class Form extends AbstractComponent implements IForm
 
         return result;
     }
-
-    /**
-     * Constructs a form name for use with the direct service. This implementation bases the form
-     * name on the form component's id (but ensures it is unique). Remember that Tapestry assigns an
-     * "ugly" id if an explicit component id is not provided.
-     * 
-     * @since 4.0
-     */
-
-    private String constructFormNameForDirectService(IRequestCycle cycle)
-    {
-        return cycle.getUniqueId(TapestryUtils.convertTapestryIdToNMToken(getId()));
-    }
-
+    
     /**
      * Returns a new instance of {@link FormSupportImpl}.
      */

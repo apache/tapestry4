@@ -95,6 +95,8 @@
       before="tapestry.enhance.abstract-property"
       after="tapestry.enhance.inject-messages,tapestry.enhance.inject-specification,tapestry.enhance.specified-property,tapestry.enhance.parameter,tapestry.enhance.dispatch-inject,tapestry.enhance.inject-component,tapestry.enhance.inject-bean,tapestry.enhance.inject-asset"/>
     
+    <command id="clientid-property" object="service:ClientIdPropertyWorker" />
+    
     <!-- After all the previous workers have had their chance, we "fill in" any unclaimed properties
          as transient page properties. -->
          
@@ -316,6 +318,16 @@
     
   </service-point>
 
+  <service-point id="ClientIdPropertyWorker" interface="EnhancementWorker">
+    
+    Enhances the IComponent.getClientId() abstract getter to properly provide 
+    client id's depending on the context called in. Does the same thing as 
+    AbstractPropertyWorker + the logic described.
+    
+    <invoke-factory>
+      <construct class="ClientIdPropertyWorker"/>
+    </invoke-factory>
+  </service-point>
   
   <service-point id="AbstractPropertyWorker" interface="EnhancementWorker">
     

@@ -43,7 +43,7 @@ import org.apache.tapestry.spec.IContainedComponent;
  */
 
 public abstract class AbstractComponent extends BaseLocatable implements IDirectEvent
-{
+{   
     private static final int MAP_SIZE = 5;
     
     private static final int BODY_INIT_SIZE = 5;
@@ -53,9 +53,6 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
      */
 
     private static final Map EMPTY_MAP = Collections.unmodifiableMap(new HashMap(1));
-
-    /** @since 4.1 */
-    protected String _clientId;
     
     /**
      * The page that contains the component, possibly itself (if the component is in fact, a page).
@@ -302,17 +299,6 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
      */
     protected void renderIdAttribute(IMarkupWriter writer, IRequestCycle cycle)
     {
-        // try to generate a client id if needed/possible
-        if (_clientId == null) {
-            String id = getBoundId();
-            
-            if (id == null) 
-                id = getId();
-            
-            if (id != null)
-                _clientId = cycle.getUniqueId(TapestryUtils.convertTapestryIdToNMToken(id));
-        }
-        
         String id = getClientId();
         
         if (id != null)
@@ -323,10 +309,10 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
     private boolean isFormalParameter(String name)
     {
         Defense.notNull(name, "name");
-
+        
         return getSpecification().getParameter(name) != null;
     }
-
+    
     /**
      * Returns the named binding, or null if it doesn't exist.
      * <p>
@@ -407,6 +393,18 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
         return _page.getPageName() + "/" + getIdPath();
     }
 
+    /** @since 4.1 */
+    
+    public String getSpecifiedId()
+    {
+        String id = getBoundId();
+        
+        if (id != null)
+            return id;
+        
+        return getId();
+    }
+    
     public String getId()
     {
         return _id;
@@ -443,22 +441,16 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
      * {@inheritDoc}
      * @since 4.1
      */
-    public String getClientId()
-    {
-        if (_clientId != null)
-            return _clientId;
-        
-        String boundId = getBoundId();
-        
-        if (boundId == null)
-            return getId();
-        
-        return boundId;
-    }
+    public abstract String getClientId();
     
-    protected void setClientId(String id)
+    public abstract void setClientId(String id);
+    
+    protected void generateClientId()
     {
-        _clientId = id;
+        String id = getSpecifiedId();
+        
+        if (id != null && getPage() != null && getPage().getRequestCycle() != null)
+             setClientId(getPage().getRequestCycle().getUniqueId(TapestryUtils.convertTapestryIdToNMToken(id)));
     }
     
     protected String getBoundId()
@@ -695,21 +687,19 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
             
             cycle.renderStackPush(this);
             
+            generateClientId();
+            
             prepareForRender(cycle);
             
             renderComponent(writer, cycle);
             
             getRenderWorker().renderComponent(cycle, this);
-            
         }
         finally
         {
             _rendering = false;
             
             cleanupAfterRender(cycle);
-            
-            // @since 4.1
-            _clientId = null;
             
             cycle.renderStackPop();
         }
@@ -899,7 +889,7 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((_clientId == null) ? 0 : _clientId.hashCode());
+        result = prime * result + ((getClientId() == null) ? 0 : getClientId().hashCode());
         result = prime * result + ((_id == null) ? 0 : _id.hashCode());
         return result;
     }
@@ -914,9 +904,9 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
         final AbstractComponent other = (AbstractComponent) obj;
-        if (_clientId == null) {
-            if (other._clientId != null) return false;
-        } else if (!_clientId.equals(other._clientId)) return false;
+        if (getClientId() == null) {
+            if (other.getClientId() != null) return false;
+        } else if (!getClientId().equals(other.getClientId())) return false;
         if (_id == null) {
             if (other._id != null) return false;
         } else if (!_id.equals(other._id)) return false;

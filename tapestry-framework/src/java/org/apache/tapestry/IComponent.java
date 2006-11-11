@@ -159,7 +159,16 @@ public interface IComponent extends IRender, LocationHolder
      */
 
     void setId(String value);
-
+    
+    /**
+     * Returns either the normal {@link #getId()} value OR the value of any binding 
+     * named <code>id</code> - if one exists. Higher precedence is given to bound id values.
+     * 
+     * @return The bound or normal component id, or null if neither exists.
+     */
+    
+    String getSpecifiedId();
+    
     /**
      * Returns the qualified id of the component. This represents a path from the {@link IPage page}
      * to this component, showing how components contain each other.
@@ -183,6 +192,15 @@ public interface IComponent extends IRender, LocationHolder
      * @since 4.1
      */
     String getClientId();
+    
+    /**
+     * Sets the client ID. It is <strong>strongly</strong> discouraged for you to try
+     * setting this unless you understand the ramifications of how the rest of the system
+     * relies on this functioning.
+     * 
+     * @param id The client id to set.
+     */
+    void setClientId(String id);
     
     /**
      * Though most component implementations ignore the specific html tag used 

@@ -25,7 +25,7 @@ import org.apache.tapestry.util.ContentType;
  * @author Howard Lewis Ship
  */
 
-public class BasePage extends AbstractPage
+public abstract class BasePage extends AbstractPage
 {
     /**
      * @return "text/html"

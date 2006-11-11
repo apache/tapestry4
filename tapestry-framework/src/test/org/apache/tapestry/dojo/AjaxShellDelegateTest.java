@@ -41,10 +41,12 @@ public class AjaxShellDelegateTest extends BaseComponentTestCase
     void trainStaticPath(IEngineService engine, IAsset asset, String path)
     {
         Resource res = newMock(Resource.class);
+        
         expect(asset.getResourceLocation()).andReturn(res);
         expect(res.getPath()).andReturn(path);
         
         ILink link = newLink();
+        
         expect(engine.getLink(Boolean.TRUE, path)).andReturn(link);
         expect(link.getAbsoluteURL()).andReturn("http://" + path);
     }
@@ -52,6 +54,7 @@ public class AjaxShellDelegateTest extends BaseComponentTestCase
     void trainPageLocale(IRequestCycle cycle, Locale locale)
     {
         IPage page = newMock(IPage.class);        
+        
         expect(cycle.getPage()).andReturn(page);
         expect(page.getLocale()).andReturn(locale);
     }
@@ -87,15 +90,13 @@ public class AjaxShellDelegateTest extends BaseComponentTestCase
         verify();
         
         assertBuffer("<script type=\"text/javascript\">djConfig = {\"isDebug\":false,"
-                + "\"debugAtAllCosts\":false,\"baseRelativePath\":\"http:///dojo/path\","
+                + "\"baseRelativePath\":\"http:///dojo/path\","
                 +"\"preventBackButtonFix\":false,\"parseWidgets\":false,\"locale\":\"en-us\"} </script>\n" + 
                 "\n" + 
                 " <script type=\"text/javascript\" src=\"http:///dojo/path/dojo.js\"></script>"
                 +"<script type=\"text/javascript\" src=\"http:///tapestry/tapestry.js\"></script>\n" + 
                 "<script type=\"text/javascript\">\n" + 
-                "dojo.require(\"dojo.logging.Logger\");\n" + 
-                "dojo.log.setLevel(dojo.log.getLevel(\"WARNING\"));\n" + 
-                "dojo.require(\"tapestry.namespace\")\n" + 
+                "dojo.require(\"tapestry.namespace\");\n" + 
         "</script>" + SYSTEM_NEWLINE);
     }
     
@@ -122,6 +123,7 @@ public class AjaxShellDelegateTest extends BaseComponentTestCase
         d.setDojoPath(dojoPath);
         d.setDojoSource(dojoSource);
         d.setTapestrySource(tSource);
+        d.setDebug(true);
         d.setLogLevel(AjaxShellDelegate.BROWSER_LOG_DEBUG);
         d.setConsoleEnabled(true);
         
@@ -131,8 +133,8 @@ public class AjaxShellDelegateTest extends BaseComponentTestCase
         
         verify();
         
-        assertBuffer("<script type=\"text/javascript\">djConfig = {\"isDebug\":false,"
-                + "\"debugAtAllCosts\":false,\"baseRelativePath\":\"http:///dojo/path\","
+        assertBuffer("<script type=\"text/javascript\">djConfig = {\"isDebug\":true,"
+                + "\"baseRelativePath\":\"http:///dojo/path\","
                 +"\"preventBackButtonFix\":false,\"parseWidgets\":false,\"locale\":\"en-gb\"} </script>\n" + 
                 "\n" + 
                 " <script type=\"text/javascript\" src=\"http:///dojo/path/dojo.js\"></script>"
@@ -140,7 +142,7 @@ public class AjaxShellDelegateTest extends BaseComponentTestCase
                 "<script type=\"text/javascript\">\n" + 
                 "dojo.require(\"dojo.debug.console\");\n" + 
                 "dojo.log.setLevel(dojo.log.getLevel(\"DEBUG\"));\n" + 
-                "dojo.require(\"tapestry.namespace\")\n" + 
+                "dojo.require(\"tapestry.namespace\");\n" + 
         "</script>" + SYSTEM_NEWLINE);
     }
 }

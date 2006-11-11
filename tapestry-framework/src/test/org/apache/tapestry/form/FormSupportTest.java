@@ -91,10 +91,11 @@ public class FormSupportTest extends BaseComponentTestCase
         IFormComponent component = newMock(IFormComponent.class);
         checkOrder(component, false);
         
-        expect(component.getClientId()).andReturn(id);
+        expect(component.getSpecifiedId()).andReturn(id);
 
         component.setName(name);
-
+        component.setClientId(name);
+        
         return component;
     }
 
@@ -102,7 +103,7 @@ public class FormSupportTest extends BaseComponentTestCase
     {
         IFormComponent component = newMock(IFormComponent.class);
 
-        expect(component.getClientId()).andReturn(id);
+        expect(component.getSpecifiedId()).andReturn(id);
         
         trainGetExtendedId(component, extendedId);
         trainGetLocation(component, location);

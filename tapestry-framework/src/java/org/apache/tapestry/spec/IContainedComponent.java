@@ -47,7 +47,7 @@ public interface IContainedComponent extends IPropertyHolder, LocationHolder,
     void setBinding(String name, IBindingSpecification spec);
 
     void setType(String value);
-
+    
     /**
      * Sets the String Id of the component being copied from. For use by IDE
      * tools like Spindle.

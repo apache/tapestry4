@@ -95,7 +95,7 @@ public class FormSupportImpl implements FormSupport
         set.add(RESERVED_FORM_IDS);
         set.add(SUBMIT_MODE);
         set.add(FormConstants.SUBMIT_NAME_PARAMETER);
-
+        
         _standardReservedIds = Collections.unmodifiableSet(set);
     }
 
@@ -375,9 +375,9 @@ public class FormSupportImpl implements FormSupport
 
     public String getElementId(IFormComponent component)
     {
-        return getElementId(component, component.getClientId());
+        return getElementId(component, component.getSpecifiedId());
     }
-
+    
     /**
      * Constructs a unique identifier (within the Form). The identifier consists of the component's
      * id, with an index number added to ensure uniqueness.
@@ -392,7 +392,7 @@ public class FormSupportImpl implements FormSupport
         // $ is not a valid character in an XML/XHTML id, so convert it to an underscore.
         
         String filteredId = TapestryUtils.convertTapestryIdToNMToken(baseId);
-
+        
         String result = _elementIdAllocator.allocateId(filteredId);
         
         if (_rewinding)
@@ -402,7 +402,7 @@ public class FormSupportImpl implements FormSupport
                 throw new StaleLinkException(FormMessages.formTooManyIds(_form, _allocatedIds
                         .size(), component), component);
             }
-
+            
             String expected = (String) _allocatedIds.get(_allocatedIdIndex);
             
             if (!result.equals(expected))
@@ -419,8 +419,10 @@ public class FormSupportImpl implements FormSupport
         }
 
         _allocatedIdIndex++;
-
+        
         component.setName(result);
+        
+        component.setClientId(result);
         
         return result;
     }
@@ -449,9 +451,9 @@ public class FormSupportImpl implements FormSupport
     private void reinitializeIdAllocatorForRewind()
     {
         String allocatedFormIds = _cycle.getParameter(FORM_IDS);
-
+        
         String[] ids = TapestryUtils.split(allocatedFormIds);
-
+        
         for (int i = 0; i < ids.length; i++)
             _allocatedIds.add(ids[i]);
 
@@ -466,6 +468,16 @@ public class FormSupportImpl implements FormSupport
 
         for (int i = 0; i < ids.length; i++)
             _elementIdAllocator.allocateId(ids[i]);
+    }
+    
+    int convertSeedToId(String input)
+    {
+        int index = input.lastIndexOf("_");
+        
+        if (index < 0)
+            throw new ApplicationRuntimeException("Unable to convert seedId of " + input + " to integer.");
+        
+        return Integer.parseInt(input.substring(index, input.length()));
     }
     
     public void render(String method, IRender informalParametersRenderer, ILink link, 
@@ -484,12 +496,12 @@ public class FormSupportImpl implements FormSupport
         // client-side JavaScript forces an update.
 
         addHiddenValue(SUBMIT_MODE, null);
-
+        
         // And another for the name of the component that
         // triggered the submit.
 
         addHiddenValue(FormConstants.SUBMIT_NAME_PARAMETER, null);
-
+        
         IMarkupWriter nested = _writer.getNestedWriter();
 
         _form.renderBody(nested, _cycle);
@@ -517,13 +529,13 @@ public class FormSupportImpl implements FormSupport
         _writer.println();
 
         writeHiddenFields();
-
+        
         // Close the nested writer, inserting its contents.
         
         nested.close();
-
+        
         // Close the <form> tag.
-
+        
         _writer.end();
         
         String fieldId = _delegate.getFocusField();
@@ -573,7 +585,6 @@ public class FormSupportImpl implements FormSupport
         
         str.append(");");
         
-        
         _pageRenderSupport.addInitializationScript(_form, str.toString());
     }
     
@@ -584,17 +595,19 @@ public class FormSupportImpl implements FormSupport
         String mode = _cycle.getParameter(SUBMIT_MODE);
         
         // On a cancel, don't bother rendering the body or anything else at all.
-
+        
         if (FormConstants.SUBMIT_CANCEL.equals(mode))
             return mode;
-
+        
         reinitializeIdAllocatorForRewind();
-
+        
         _form.renderBody(_writer, _cycle);
         
         // New, handles cases where an eventlistener
         // causes a form submission.
+        
         BrowserEvent event = new BrowserEvent(_cycle);
+        
         _form.getEventInvoker().invokeFormListeners(this, _cycle, event);
         
         int expected = _allocatedIds.size();

@@ -81,6 +81,15 @@ public class MockForm implements IForm
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void setClientId(String id)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
     public MockForm(IValidationDelegate delegate)
     {
         this(delegate, null);
@@ -90,6 +99,15 @@ public class MockForm implements IForm
     {
         _delegate = delegate;
         _location = location;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getSpecifiedId()
+    {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     public void rewind(IMarkupWriter writer, IRequestCycle cycle)

@@ -35,7 +35,15 @@ public class TestAbstractComponent extends BaseComponentTestCase
         protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
         {
         }
-
+        
+        public void setClientId(String id)
+        {
+        }
+        
+        public String getClientId()
+        {
+            return null;
+        }
     }
     
     public void testUnimplementedMethods()

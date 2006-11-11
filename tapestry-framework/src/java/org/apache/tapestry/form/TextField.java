@@ -29,8 +29,7 @@ import org.apache.tapestry.valid.ValidatorException;
  * @author Howard Lewis Ship
  * @author Paul Ferraro
  */
-public abstract class TextField extends AbstractFormComponent implements
-        TranslatedField
+public abstract class TextField extends AbstractFormComponent implements TranslatedField
 {
 
     public abstract boolean isHidden();
@@ -46,7 +45,7 @@ public abstract class TextField extends AbstractFormComponent implements
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         String value = getTranslatedFieldSupport().format(this, getValue());
-
+        
         renderDelegatePrefix(writer, cycle);
 
         writer.beginEmpty("input");
@@ -55,9 +54,11 @@ public abstract class TextField extends AbstractFormComponent implements
 
         writer.attribute("name", getName());
 
-        if (isDisabled()) writer.attribute("disabled", "disabled");
+        if (isDisabled()) 
+            writer.attribute("disabled", "disabled");
 
-        if (value != null) writer.attribute("value", value);
+        if (value != null) 
+            writer.attribute("value", value);
 
         renderIdAttribute(writer, cycle);
 
@@ -67,7 +68,7 @@ public abstract class TextField extends AbstractFormComponent implements
         getValidatableFieldSupport().renderContributions(this, writer, cycle);
 
         renderInformalParameters(writer, cycle);
-
+        
         writer.closeTag();
 
         renderDelegateSuffix(writer, cycle);

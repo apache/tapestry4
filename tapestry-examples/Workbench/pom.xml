@@ -92,7 +92,7 @@
             </plugin>
         </plugins>
     </reporting>
-    
+<!--    
     <pluginRepositories>
         <pluginRepository>
             <id>mortbay-repo</id>
@@ -100,5 +100,5 @@
             <url>http://www.mortbay.org/maven2/snapshot</url>
         </pluginRepository>
     </pluginRepositories>
-    
+   --> 
 </project>

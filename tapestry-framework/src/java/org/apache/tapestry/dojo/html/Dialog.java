@@ -53,23 +53,29 @@ public abstract class Dialog extends AbstractWidget
      */
     public void renderWidget(IMarkupWriter writer, IRequestCycle cycle)
     {
-        writer.begin(getTemplateTagName()); // use element specified
-        renderIdAttribute(writer, cycle); // render id="" client id
-        renderInformalParameters(writer, cycle);
+        if (!cycle.isRewinding()) {
+            writer.begin(getTemplateTagName()); // use element specified
+            renderIdAttribute(writer, cycle); // render id="" client id
+            renderInformalParameters(writer, cycle);
+        }
         
         renderBody(writer, cycle);
         
-        writer.end();
+        if (!cycle.isRewinding()) {
+            writer.end();
+        }
         
-        JSONObject json = new JSONObject();
-        json.put("bgColor", getBackgroundColor());
-        json.put("bgOpacity", getOpacity());
+        if (!cycle.isRewinding()) {
+            JSONObject json = new JSONObject();
+            json.put("bgColor", getBackgroundColor());
+            json.put("bgOpacity", getOpacity());
 
-        Map parms = new HashMap();
-        parms.put("component", this);
-        parms.put("props", json.toString());
-        
-        getScript().execute(this, cycle, TapestryUtils.getPageRenderSupport(cycle, this), parms);
+            Map parms = new HashMap();
+            parms.put("component", this);
+            parms.put("props", json.toString());
+
+            getScript().execute(this, cycle, TapestryUtils.getPageRenderSupport(cycle, this), parms);
+        }
     }
     
     /** injected. */

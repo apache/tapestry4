@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.components;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.IActionListener;
@@ -32,6 +34,8 @@ import org.apache.tapestry.services.DataSqueezer;
  */
 public abstract class IfBean extends AbstractFormComponent
 {
+    public static final Log _log = LogFactory.getLog(IfBean.class);
+    
     public static final String IF_VALUE_ATTRIBUTE = "org.mb.tapestry.base.IfValue";
     
     private boolean _rendering = false;
@@ -55,8 +59,8 @@ public abstract class IfBean extends AbstractFormComponent
         boolean cycleRewinding = cycle.isRewinding();
         
         // form may be null if component is not located in a form
-        IForm form = (IForm) cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE);
-
+        IForm form = (IForm)cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE);
+        
         // If the cycle is rewinding, but not this particular form,
         // then do nothing (don't even render the body).
         if (cycleRewinding && form != null && !form.isRewinding())
@@ -88,7 +92,7 @@ public abstract class IfBean extends AbstractFormComponent
                     writer.begin(element);
                     renderInformalParameters(writer, cycle);
                 }
-                
+                _log.debug("Condition was true so rendering body" + this);
                 renderBody(writer, cycle);
 
                 if (render)
@@ -114,8 +118,9 @@ public abstract class IfBean extends AbstractFormComponent
         else
         {
             // we are in a form and we care -- load/store the condition in a hidden field
+            
             String name = form.getElementId(this);
-
+            
             if (!cycleRewinding)
             {
                 condition = getCondition();
@@ -126,15 +131,17 @@ public abstract class IfBean extends AbstractFormComponent
                 condition = readValue(cycle, name);
             }
         }
-
+        
         // write condition value if parameter is bound
+        
         IBinding conditionValueBinding = getConditionValueBinding();
+        
         if (conditionValueBinding != null)
             conditionValueBinding.setObject(new Boolean(condition));
 
         return condition;
     }
-
+    
     private void writeValue(IForm form, String name, boolean value)
     {
         String externalValue;
@@ -157,7 +164,9 @@ public abstract class IfBean extends AbstractFormComponent
     private boolean readValue(IRequestCycle cycle, String name)
     {
         String submittedValue = cycle.getParameter(name);
-
+        
+        _log.debug("readValue() with : " + name + " [" + submittedValue + "]");
+        
         try
         {
             Object valueObject = getDataSqueezer().unsqueeze(submittedValue);

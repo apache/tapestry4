@@ -90,7 +90,9 @@ tapestry={
 	 * 
 	 */
 	load:function(type, data, http, kwArgs){
-		dojo.log.debug("Response recieved.");
+		if (djConfig["isDebug"]) {
+			dojo.log.debug("Response recieved.", data);
+		}
 		if (!data) {
 			dojo.log.warn("No data received in response.");
 			return;
@@ -139,8 +141,8 @@ tapestry={
 			
 			var node=dojo.byId(id);
 			if (!node) {
-				dojo.log.err("No node could be found to update content in with id " + id);
-				return;
+				dojo.log.warn("No node could be found to update content in with id " + id);
+				continue;
 			}
 			
 			tapestry.loadContent(id, node, elms[i]);
