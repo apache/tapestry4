@@ -73,6 +73,11 @@ public class AjaxShellDelegate implements IRender
         
         JSONObject dojoConfig = new JSONObject();
         
+        //
+        // Debugging configuration , debugAtAlCosts causes the individual 
+        // .js files to included in the document head so that javascript errors
+        // are able to resolve to the context of the file instead of just "dojo.js"
+        
         dojoConfig.put("isDebug", _debug);
         
         if (_debugAtAllCosts)
@@ -80,30 +85,41 @@ public class AjaxShellDelegate implements IRender
         if (_debugContainerId != null)
             dojoConfig.put("debugContainerId", _debugContainerId);
         
+        // The key to resolving everything out of the asset service
+        
         dojoConfig.put("baseRelativePath", 
                 _assetService.getLink(true, _dojoPath.getResourceLocation().getPath()).getAbsoluteURL());
         
         dojoConfig.put("preventBackButtonFix", _preventBackButtonFix);
         dojoConfig.put("parseWidgets", _parseWidgets);
         
+        //
+        // Supports setting up locale in dojo environment to match the requested page locale.
+        // (for things that use these settings, like DropdownDatePicker / date parsing / etc..
+        
         Locale locale = cycle.getPage().getLocale();
         
         dojoConfig.put("locale", locale.getLanguage().toLowerCase()
-                + ((locale.getCountry() != null && !locale.getCountry().isEmpty())
+                + ((locale.getCountry() != null && locale.getCountry().trim().length() > 0)
                 ? "-" + locale.getCountry().toLowerCase()
                         : ""));
+        
+        //
+        // Write the required script includes and dojo.requires
         
         StringBuffer str = new StringBuffer("<script type=\"text/javascript\">");
         str.append("djConfig = ").append(dojoConfig.toString())
         .append(" </script>\n\n ");
         
         // include the core dojo.js package
+        
         str.append("<script type=\"text/javascript\" src=\"")
         .append(_assetService.getLink(true,
                 _dojoSource.getResourceLocation()
                 .getPath()).getAbsoluteURL()).append("\"></script>");
         
         // include core tapestry.js package
+        
         str.append("<script type=\"text/javascript\" src=\"")
         .append(_assetService.getLink(true,
                 _tapestrySource.getResourceLocation()
@@ -113,6 +129,7 @@ public class AjaxShellDelegate implements IRender
                 : "dojo.require(\"dojo.logging.Logger\");\n";
         
         // logging configuration
+        
         str.append("\n<script type=\"text/javascript\">\n");
         
         if (_debug) {
