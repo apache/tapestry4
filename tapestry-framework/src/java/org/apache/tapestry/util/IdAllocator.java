@@ -17,6 +17,7 @@ package org.apache.tapestry.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.util.Defense;
 
 /**
@@ -36,12 +37,9 @@ public class IdAllocator
     private final Map _generatorMap = new HashMap();
 
     private final String _namespace;
-
-    /**
-     * 
-     * @author unkonwn
-     */
-    private static class NameGenerator
+    
+    /** Class used only by IdAllocator. */
+    private class NameGenerator implements Cloneable
     {
 
         private final String _baseId;
@@ -57,6 +55,20 @@ public class IdAllocator
         {
             return _baseId + _index++;
         }
+        
+        public String peekId()
+        {
+            return _baseId + _index;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        protected Object clone()
+            throws CloneNotSupportedException
+        {
+            return super.clone();
+        }
     }
 
     public IdAllocator()
@@ -70,7 +82,7 @@ public class IdAllocator
 
         _namespace = namespace;
     }
-
+    
     /**
      * Allocates the id. Repeated calls for the same name will return "name",
      * "name_0", "name_1", etc.
@@ -88,7 +100,8 @@ public class IdAllocator
             g = new NameGenerator(key);
             result = key;
         }
-        else result = g.nextId();
+        else 
+            result = g.nextId();
 
         // Handle the degenerate case, where a base name of the form "foo$0" has
         // been
@@ -96,12 +109,57 @@ public class IdAllocator
 
         while(_generatorMap.containsKey(result))
             result = g.nextId();
-
+        
         _generatorMap.put(result, g);
-
+        
         return result;
     }
+    
+    /**
+     * Should return the exact same thing as {@link #allocateId(String)}, with the difference
+     * that the calculated id is not allocated and stored so multiple calls will always return the 
+     * same thing. 
+     * 
+     * @param name The name to peek at.
+     * @return The next id that will be allocated for the given name.
+     */
+    public String peekNextId(String name)
+    {
+        String key = name + _namespace;
 
+        NameGenerator g = (NameGenerator) _generatorMap.get(key);
+        String result = null;
+        
+        if (g == null)
+        {
+            g = new NameGenerator(key);
+            result = key;
+        } else 
+            result = g.peekId();
+        
+        // Handle the degenerate case, where a base name of the form "foo_0" has
+        // been
+        // requested. Skip over any duplicates thus formed.
+        
+        // in a peek we don't want to actually increment any id state so we must
+        // clone
+        
+        if (_generatorMap.containsKey(result)) {
+            
+            try {
+                NameGenerator cg = (NameGenerator)g.clone();
+                
+                while (_generatorMap.containsKey(result))
+                    result = cg.nextId();
+                
+            } catch (CloneNotSupportedException e) {
+                throw new ApplicationRuntimeException(e);
+            }
+        }
+        
+        return result;
+    }
+    
     /**
      * Clears the allocator, resetting it to freshly allocated state.
      */

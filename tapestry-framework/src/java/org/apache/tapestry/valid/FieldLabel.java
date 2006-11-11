@@ -48,17 +48,17 @@ public abstract class FieldLabel extends AbstractComponent
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         IForm form = TapestryUtils.getForm(cycle, this);
-
+        
         IFormComponent field = getField();
-
+        
         if (field != null && isPrerender())
             form.prerenderField(writer, field, getLocation());
-
+        
         if (cycle.isRewinding()) 
             return;
-
+        
         String displayName = getDisplayName();
-
+        
         if (displayName == null)
         {
             if (field == null)
@@ -70,16 +70,17 @@ public abstract class FieldLabel extends AbstractComponent
                 throw new BindingException(ValidMessages.noDisplayName(this,
                         field), this, null, getBinding("field"), null);
         }
-
+        
         IValidationDelegate delegate = form.getDelegate();
-
+        
         String id = field == null ? null : field.getClientId();
         
         delegate.writeLabelPrefix(field, writer, cycle);
         
         writer.begin("label");
-
-        if (id != null) writer.attribute("for", id);
+        
+        if (id != null) 
+            writer.attribute("for", id);
         
         delegate.writeLabelAttributes(writer, cycle, field);
         renderInformalParameters(writer, cycle);

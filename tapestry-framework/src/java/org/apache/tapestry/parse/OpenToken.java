@@ -58,7 +58,7 @@ public class OpenToken extends TemplateToken
     public OpenToken(String tag, String id, String componentType, Location location)
     {
         super(TokenType.OPEN, location);
-
+        
         _tag = tag;
         _id = id;
         _componentType = componentType;

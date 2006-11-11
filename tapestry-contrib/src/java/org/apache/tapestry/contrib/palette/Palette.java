@@ -190,13 +190,6 @@ import org.apache.tapestry.valid.ValidatorException;
  *                               vertical-align: middle;
  *                               width: 60px;
  *                             }
- *             
- *            
- *           
- *          
- *         
- *        
- *       
  * </pre>
  * 
  * <p>
@@ -241,7 +234,7 @@ public abstract class Palette extends BaseComponent implements ValidatableFieldE
             return;
 
         IValidationDelegate delegate = form.getDelegate();
-
+        
         delegate.setFormComponent(this);
 
         form.getElementId(this);

@@ -395,7 +395,7 @@ public class PageLoader implements IPageLoader
                         .getNamespace();
 
                 // Instantiate the contained component.
-
+                
                 IComponent component = instantiateComponent(page, container,
                         id, componentSpecification, _componentResolver
                                 .getType(), componentNamespace, contained);
@@ -520,7 +520,7 @@ public class PageLoader implements IPageLoader
                 .getComponentConstructor(spec, className);
 
         IComponent result = (IComponent) cc.newInstance();
-
+        
         result.setNamespace(namespace);
         result.setPage(page);
         result.setContainer(container);

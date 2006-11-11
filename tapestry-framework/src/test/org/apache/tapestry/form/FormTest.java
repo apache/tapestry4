@@ -146,8 +146,6 @@ public class FormTest extends BaseComponentTestCase
         trainStoreForm(cycle, form);
         
         trainIsRewinding(support, false);
-        
-        trainGetUniqueId(cycle, "myform", "myform_1");
 
         trainGetNamespace(response, "$ns");
         
@@ -195,8 +193,6 @@ public class FormTest extends BaseComponentTestCase
         trainStoreForm(cycle, form);
         
         trainIsRewinding(support, false);
-        
-        trainGetUniqueId(cycle, "myform", "myform_1");
         
         trainGetNamespace(response, "$ns");
 
@@ -357,8 +353,6 @@ public class FormTest extends BaseComponentTestCase
         trainStoreForm(cycle, form);
         
         trainIsRewinding(support, false);
-        
-        trainGetUniqueId(cycle, "myform", "myform_1");
         
         trainGetNamespace(response, "$ns");
         

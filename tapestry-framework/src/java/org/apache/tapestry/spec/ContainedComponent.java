@@ -30,13 +30,13 @@ public class ContainedComponent extends LocatablePropertyHolder implements ICont
 {
     private static final int MAP_SIZE = 3;
     
-    protected Map bindings;
+    protected Map _bindings;
+    
+    private String _type;
 
-    private String type;
+    private String _copyOf;
 
-    private String copyOf;
-
-    private boolean inheritInformalParameters;
+    private boolean _inheritInformalParameters;
 
     /** @since 4.0 */
     private String _propertyName;
@@ -47,10 +47,10 @@ public class ContainedComponent extends LocatablePropertyHolder implements ICont
 
     public IBindingSpecification getBinding(String name)
     {
-        if (bindings == null)
+        if (_bindings == null)
             return null;
 
-        return (IBindingSpecification) bindings.get(name);
+        return (IBindingSpecification) _bindings.get(name);
     }
 
     /**
@@ -60,30 +60,30 @@ public class ContainedComponent extends LocatablePropertyHolder implements ICont
 
     public Collection getBindingNames()
     {
-        if (bindings == null)
+        if (_bindings == null)
             return Collections.EMPTY_LIST;
 
-        return Collections.unmodifiableCollection(bindings.keySet());
+        return Collections.unmodifiableCollection(_bindings.keySet());
     }
 
     public String getType()
     {
-        return type;
+        return _type;
     }
 
     public void setBinding(String name, IBindingSpecification spec)
     {
-        if (bindings == null)
-            bindings = new HashMap(MAP_SIZE);
+        if (_bindings == null)
+            _bindings = new HashMap(MAP_SIZE);
 
-        bindings.put(name, spec);
+        _bindings.put(name, spec);
     }
 
     public void setType(String value)
     {
-        type = value;
+        _type = value;
     }
-
+    
     /**
      * Sets the String Id of the component being copied from. For use by IDE tools like Spindle.
      * 
@@ -92,7 +92,7 @@ public class ContainedComponent extends LocatablePropertyHolder implements ICont
 
     public void setCopyOf(String id)
     {
-        copyOf = id;
+        _copyOf = id;
     }
 
     /**
@@ -103,7 +103,7 @@ public class ContainedComponent extends LocatablePropertyHolder implements ICont
 
     public String getCopyOf()
     {
-        return copyOf;
+        return _copyOf;
     }
 
     /**
@@ -113,7 +113,7 @@ public class ContainedComponent extends LocatablePropertyHolder implements ICont
      */
     public boolean getInheritInformalParameters()
     {
-        return inheritInformalParameters;
+        return _inheritInformalParameters;
     }
 
     /**
@@ -123,7 +123,7 @@ public class ContainedComponent extends LocatablePropertyHolder implements ICont
      */
     public void setInheritInformalParameters(boolean value)
     {
-        inheritInformalParameters = value;
+        _inheritInformalParameters = value;
     }
 
     /** @since 4.0 */

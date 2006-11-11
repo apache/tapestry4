@@ -635,7 +635,14 @@ public class RequestCycle implements IRequestCycle
     {
         return _idAllocator.allocateId(baseId);
     }
-
+    
+    /** @since 4.1 */
+    
+    public String peekUniqueId(String baseId)
+    {
+        return _idAllocator.peekNextId(baseId);
+    }
+    
     /** @since 4.0 */
     public void sendRedirect(String URL)
     {

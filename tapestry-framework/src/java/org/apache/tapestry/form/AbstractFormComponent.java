@@ -147,12 +147,17 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
     {
         getForm().getDelegate().writeSuffix(writer, cycle, this, null);
     }
-
+    
     protected void setName(IForm form)
     {
-        form.getElementId(this);
-        
-        setClientId(getName());
+        setName(form.getElementId(this));
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    protected void generateClientId()
+    {
     }
     
     /**

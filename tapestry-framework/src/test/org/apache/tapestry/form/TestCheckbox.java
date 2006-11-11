@@ -164,7 +164,7 @@ public class TestCheckbox extends BaseFormComponentTestCase
         ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
         
         Checkbox cb = newInstance(Checkbox.class, new Object[]
-        { "id", "foo", "name", "assignedName", "value", Boolean.TRUE,
+        { "id", "foo", "clientId", "assignedName", "name", "assignedName", "value", Boolean.TRUE,
             "form",  form, "validatableFieldSupport", vfs});
         
         IMarkupWriter writer = newBufferWriter();
@@ -173,11 +173,9 @@ public class TestCheckbox extends BaseFormComponentTestCase
         IValidationDelegate delegate = newDelegate();
         trainGetDelegate(form, delegate);
         
-        // IRequestCycle cycle = newCycleGetUniqueId("foo", "foo$unique");
-        
         delegate.writePrefix(writer, cycle, cb, null);
         
-        expect(cycle.getUniqueId("foo")).andReturn("foo$unique");
+        // expect(cycle.getUniqueId("foo")).andReturn("foo$unique");
         
         vfs.renderContributions(cb, writer, cycle);
         
@@ -191,7 +189,7 @@ public class TestCheckbox extends BaseFormComponentTestCase
 
         verify();
         
-        assertBuffer("<input type=\"checkbox\" name=\"assignedName\" checked=\"checked\" id=\"foo$unique\"/>");
+        assertBuffer("<input type=\"checkbox\" name=\"assignedName\" checked=\"checked\" id=\"assignedName\"/>");
     }
 
     public void testSubmitNull()

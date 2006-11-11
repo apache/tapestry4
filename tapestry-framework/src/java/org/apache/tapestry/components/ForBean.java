@@ -97,13 +97,15 @@ public abstract class ForBean extends AbstractFormComponent
     {
         // form may be null if component is not located in a form
         IForm form = (IForm) cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE);
-
+        
         // If the cycle is rewinding, but not this particular form,
         // then do nothing (don't even render the body).
         boolean cycleRewinding = cycle.isRewinding();
         if (cycleRewinding && form != null && !form.isRewinding())
             return;
-
+        
+        setForm(form);
+        
         // Get the data to be iterated upon. Store in form if needed.
         Iterator dataSource = getData(cycle, form);
 
@@ -142,7 +144,7 @@ public abstract class ForBean extends AbstractFormComponent
 
                 if (element != null)
                     writer.end();
-
+                
                 _index++;
             }
         }
@@ -254,10 +256,12 @@ public abstract class ForBean extends AbstractFormComponent
     {
         if (form == null || getVolatile())
             return evaluateSourceIterator();
-
+        
         String name = form.getElementId(this);
+        
         if (cycle.isRewinding())
             return getStoredData(cycle, name);
+        
         return storeSourceData(form, name);
     }
 

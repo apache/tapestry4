@@ -161,8 +161,7 @@ public class FieldLabelTest extends BaseFormComponentTestCase
         IRequestCycle cycle = newCycle();
         
         FieldLabel fl = newInstance(FieldLabel.class, 
-                new Object[] { "id", "label"
-        });
+                new Object[] { "id", "label"});
         
         expect(cycle.renderStackPush(fl)).andReturn(fl);
         
