@@ -25,7 +25,7 @@
   	<static-binding name="title">ProtectedLink: Result</static-binding>
   </component>
   
-  <component id="foreach" type="Foreach">
+  <component id="foreach" type="For">
   	<binding name="source" expression="parameters"/>
   	<static-binding name="element">li</static-binding>	
   </component>

@@ -34,7 +34,7 @@
     <binding name="delegate" value="bean:delegate"/>
   </component>
 
-  <component id="plotValues" type="Foreach">
+  <component id="plotValues" type="For">
     <binding name="source" value="plotValues"/>
     <binding name="value" value="plotValue"/>
     <binding name="element" value="literal:tr"/>

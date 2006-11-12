@@ -102,7 +102,7 @@
     <component id="connectImage" type="Image">
         <binding name="image" value="connectImage"/>
     </component>
-    <component id="foreachConnectImage" type="Foreach">
+    <component id="foreachConnectImage" type="For">
         <binding name="source" value="foreachConnectImageList"/>
         <binding name="value" value="currentForeachConnectImageValue"/>
     </component>

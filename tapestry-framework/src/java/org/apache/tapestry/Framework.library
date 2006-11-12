@@ -48,7 +48,6 @@
     <component-type type="ExceptionDisplay" specification-path="html/ExceptionDisplay.jwc"/>
     <component-type type="ExternalLink" specification-path="link/ExternalLink.jwc"/>
     <component-type type="FieldLabel" specification-path="valid/FieldLabel.jwc"/>
-    <component-type type="Foreach" specification-path="components/Foreach.jwc"/>
     <component-type type="Frame" specification-path="html/Frame.jwc"/>
     <component-type type="For" specification-path="components/For.jwc"/>
     <component-type type="Form" specification-path="form/Form.jwc"/>

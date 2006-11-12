@@ -44,7 +44,7 @@ import org.apache.tapestry.services.ResponseBuilder;
  * components. In the rewind phase, a previous page render is redone (discarding output) until a
  * specific component of the page is reached. This rewinding ensures that the page is restored to
  * the exact state it had when the URL for the request cycle was generated, taking into account the
- * dynamic nature of the page ({@link org.apache.tapestry.components.Foreach},
+ * dynamic nature of the page ({@link org.apache.tapestry.components.For},
  * {@link org.apache.tapestry.components.Conditional}, etc.). Once this component is reached, it
  * can notify its {@link IActionListener}. The listener has the ability to update the state of any
  * pages and select a new result page.
