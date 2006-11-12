@@ -393,17 +393,23 @@ public abstract class ForBean extends AbstractFormComponent
     protected String getStringRepFromValue(Object value)
     {
         String rep;
+        
         DataSqueezer squeezer = getDataSqueezer();
-
+        
         // try to extract the primary key from the value
+        
         Object pk = getPrimaryKeyFromValue(value);
-        if (pk != null)
+        
+        if (pk != null) {
+            
             // Primary key was extracted successfully.
             rep = DESC_PRIMARY_KEY + squeezer.squeeze(pk);
-        else
+        } else {
+            
             // primary key could not be extracted. squeeze value.
             rep = DESC_VALUE + squeezer.squeeze(value);
-
+        }
+        
         return rep;
     }
 
@@ -419,8 +425,9 @@ public abstract class ForBean extends AbstractFormComponent
     {
         if (value == null)
             return null;
-
+        
         Object primaryKey = getKeyExpressionFromValue(value);
+        
         if (primaryKey == null)
             primaryKey = getConverterFromValue(value);
 
@@ -460,6 +467,7 @@ public abstract class ForBean extends AbstractFormComponent
             return null;
 
         Object primaryKey = converter.getPrimaryKey(value);
+        
         return primaryKey;
     }
 
@@ -492,12 +500,14 @@ public abstract class ForBean extends AbstractFormComponent
                     repToValueMap,
                     rep,
                     _completeRepSource);
+            
             if (value != null)
                 return value;
         }
 
         // Matching of the string representation was not successful or was disabled.
         // Use the standard approaches to obtain the value from the rep.
+        
         char desc = rep.charAt(0);
         String squeezed = rep.substring(1);
         switch (desc)
