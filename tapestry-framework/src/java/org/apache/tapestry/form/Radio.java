@@ -49,6 +49,7 @@ public abstract class Radio extends AbstractComponent
     {
 
         RadioGroup group = RadioGroup.get(cycle);
+        
         if (group == null)
             throw new ApplicationRuntimeException(
                 Tapestry.getMessage("Radio.must-be-contained-by-group"),
@@ -70,20 +71,23 @@ public abstract class Radio extends AbstractComponent
 
             if (!isDisabled() && !group.isDisabled() && group.isSelected(option))
                 group.updateSelection(getValue());
+            
             return;
         }
 
+        setClientId(group.getName()+option);
+        
         writer.beginEmpty("input");
 
         writer.attribute("type", "radio");
 
         writer.attribute("name", group.getName());
         
-        writer.attribute("id", group.getName()+option);
+        renderIdAttribute(writer, cycle);
         
         // As the group if the value for this Radio matches the selection
         // for the group as a whole; if so this is the default radio and is checked.
-
+        
         if (group.isSelection(getValue()))
             writer.attribute("checked", "checked");
 
