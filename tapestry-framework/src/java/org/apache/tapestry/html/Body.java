@@ -22,7 +22,6 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.asset.AssetFactory;
-import org.apache.tapestry.services.ComponentRenderWorker;
 import org.apache.tapestry.util.PageRenderSupportImpl;
 import org.apache.tapestry.web.WebResponse;
 
@@ -150,7 +149,7 @@ public abstract class Body extends AbstractComponent implements PageRenderSuppor
 
         renderBody(nested, cycle);
         
-        getEventWorker().renderBody(cycle, this);
+        getRenderWorker().renderBody(cycle, this);
         
         // Start the body tag.
         writer.println();
@@ -210,13 +209,6 @@ public abstract class Body extends AbstractComponent implements PageRenderSuppor
      */
 
     public abstract WebResponse getResponse();
-
-    /**
-     * Injected.
-     * @return
-     * @since 4.1
-     */
-    public abstract ComponentRenderWorker getEventWorker();
     
     /** @since 3.0 */
 
