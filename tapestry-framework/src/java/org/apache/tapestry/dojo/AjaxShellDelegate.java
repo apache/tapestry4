@@ -88,7 +88,7 @@ public class AjaxShellDelegate implements IRender
         // The key to resolving everything out of the asset service
         
         dojoConfig.put("baseRelativePath", 
-                _assetService.getLink(true, _dojoPath.getResourceLocation().getPath()).getAbsoluteURL());
+                _assetService.getLink(true, _dojoPath.getResourceLocation().getPath()).getURL());
         
         dojoConfig.put("preventBackButtonFix", _preventBackButtonFix);
         dojoConfig.put("parseWidgets", _parseWidgets);
@@ -116,14 +116,14 @@ public class AjaxShellDelegate implements IRender
         str.append("<script type=\"text/javascript\" src=\"")
         .append(_assetService.getLink(true,
                 _dojoSource.getResourceLocation()
-                .getPath()).getAbsoluteURL()).append("\"></script>");
+                .getPath()).getURL()).append("\"></script>");
         
         // include core tapestry.js package
         
         str.append("<script type=\"text/javascript\" src=\"")
         .append(_assetService.getLink(true,
                 _tapestrySource.getResourceLocation()
-                .getPath()).getAbsoluteURL()).append("\"></script>");
+                .getPath()).getURL()).append("\"></script>");
         
         String logRequire = _consoleEnabled ? "dojo.require(\"dojo.debug.console\");\n"
                 : "dojo.require(\"dojo.logging.Logger\");\n";
