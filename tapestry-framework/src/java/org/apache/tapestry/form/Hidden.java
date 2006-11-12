@@ -65,9 +65,7 @@ public abstract class Hidden extends AbstractFormComponent
         else
             externalValue = (String) getBinding("value").getObject(String.class);
         
-        String id = getClientId();
-        
-        form.addHiddenValue(getName(), id, externalValue);
+        form.addHiddenValue(getName(), getClientId(), externalValue);
     }
 
     /**
