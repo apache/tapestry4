@@ -34,5 +34,5 @@
  
   <inject property="assetFactory" object="infrastructure:assetFactory"/>
   <inject property="response" object="infrastructure:response"/>
-  <inject property="eventWorker" object="service:tapestry.render.ComponentEventConnectionWorker" />
+  
 </component-specification>
