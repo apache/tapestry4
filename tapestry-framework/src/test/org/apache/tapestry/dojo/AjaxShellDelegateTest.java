@@ -48,7 +48,7 @@ public class AjaxShellDelegateTest extends BaseComponentTestCase
         ILink link = newLink();
         
         expect(engine.getLink(Boolean.TRUE, path)).andReturn(link);
-        expect(link.getAbsoluteURL()).andReturn("http://" + path);
+        expect(link.getURL()).andReturn("http://" + path);
     }
     
     void trainPageLocale(IRequestCycle cycle, Locale locale)
