@@ -28,7 +28,7 @@
         <binding name="title" value="literal:Dumper"/>
 	</component>
 	
-	<component id="foreach" type="Foreach">
+	<component id="foreach" type="For">
 		<binding name="source" value="objects"/>
 		<binding name="value" value="currentObject"/>
     <binding name="element" value="literal:tr"/>

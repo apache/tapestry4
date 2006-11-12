@@ -29,7 +29,7 @@
     <binding name="service" expression="@org.apache.tapestry.Tapestry@RESTART_SERVICE"/>
   </component>
 
-  <component id="foreachProperty" type="Foreach">
+  <component id="foreachProperty" type="For">
   	<static-binding name="element" value="tr"/>
     <binding name="source" expression="current.properties"/>
   </component>

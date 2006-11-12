@@ -554,7 +554,7 @@ public class TestTemplateParser extends BaseComponentTestCase
         assertTokenCount(tokens, 18);
 
         assertOpenToken(tokens[1], "$Body", "Body", "body", 4);
-        assertOpenToken(tokens[3], "loop", "Foreach", "tr", 7);
+        assertOpenToken(tokens[3], "loop", "For", "tr", 7);
 
         assertTemplateAttributes(tokens[3], buildMap(new String[]
         { "element", "tr", "source", "ognl:items" }));

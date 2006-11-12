@@ -21,7 +21,7 @@
 	
 <page-specification class="org.apache.tapestry.workbench.palette.PaletteResults">
   
-  <component id="loop" type="Foreach">
+  <component id="loop" type="For">
   	<binding name="element" value="literal:li"/>
   	<binding name="source" value="selectedColors"/>
   </component>
