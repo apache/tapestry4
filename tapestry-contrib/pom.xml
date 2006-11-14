@@ -127,14 +127,6 @@
                     </reportSet>
                 </reportSets>
             </plugin>
-            
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <configuration>
-                    <configLocation>${basedir}/../tapestry-checkstyle.xml</configLocation>
-                </configuration>
-            </plugin>
         </plugins>
     </reporting>
 
