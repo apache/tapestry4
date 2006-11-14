@@ -53,7 +53,7 @@
             <p>
                 <strong>
                     See also:
-                    <a href="../../tapestry-framework/apidocs/org/apache/tapestry/form/Submit.html">
+                    <a href="../../apidocs/org/apache/tapestry/form/Submit.html">
                         org.apache.tapestry.form.Submit
                     </a>
                     ,
@@ -127,7 +127,7 @@
                         <td>listener</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/IActionListener.html">
+                                href="../../apidocs/org/apache/tapestry/IActionListener.html">
                                 IActionListener
                             </a>
                         </td>
@@ -155,7 +155,7 @@
                         <td>action</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/IActionListener.html">
+                                href="../../apidocs/org/apache/tapestry/IActionListener.html">
                                 IActionListener
                             </a>
                         </td>
@@ -217,7 +217,7 @@
                             rendered back to the client. These are expected to be unique component ids. 
                             
                             <p>
-                            See: <a href="../../tapestry-framework/apidocs/org/apache/tapestry/services/ResponseBuilder.html">ResponseBuilder</a>
+                            See: <a href="../../apidocs/org/apache/tapestry/services/ResponseBuilder.html">ResponseBuilder</a>
                             </p>
                             
                             <br/>
@@ -231,7 +231,7 @@
                         <td>false</td>
                         <td>
                             Causes the request to be asynchronous and the response to be captured/rendered via
-                            the <a href="../../tapestry-framework/apidocs/org/apache/tapestry/services/impl/JSONResponseBuilder.html">JSONResponseBuilder</a>
+                            the <a href="../../apidocs/org/apache/tapestry/services/impl/JSONResponseBuilder.html">JSONResponseBuilder</a>
                             renderer.
                             
                             <br/><br/>
@@ -245,7 +245,7 @@
                         <td>false</td>
                         <td>
                             Causes the request to be asynchronous and the response to be captured/rendered via
-                            the <a href="../../tapestry-framework/apidocs/org/apache/tapestry/services/impl/DojoAjaxResponseBuilder.html">DojoAjaxResponseBuilder</a>
+                            the <a href="../../apidocs/org/apache/tapestry/services/impl/DojoAjaxResponseBuilder.html">DojoAjaxResponseBuilder</a>
                             renderer.
                             
                             <br/><br/>

@@ -44,7 +44,7 @@
                     <tr>
                         <td>delegate</td>
                         <td>
-                            <a href="../../tapestry-framework/apidocs/org/apache/tapestry/IRender.html">
+                            <a href="../../apidocs/org/apache/tapestry/IRender.html">
                                 IRender
                             </a>
                         </td>

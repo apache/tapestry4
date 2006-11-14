@@ -82,7 +82,7 @@
             <p>
                 All Tapestry applications make use of the
                 <a
-                    href="../tapestry-framework/apidocs/org/apache/tapestry/ApplicationServlet.html">
+                    href="../apidocs/org/apache/tapestry/ApplicationServlet.html">
                     ApplicationServlet
                 </a>
                 class as their servlet; it is rarely necessary to create a subclass. A typical
@@ -133,7 +133,7 @@
             <p>
                 The servlet class should always be
                 <a
-                    href="../tapestry-framework/apidocs/org/apache/tapestry/ApplicationServlet.html">
+                    href="../apidocs/org/apache/tapestry/ApplicationServlet.html">
                     ApplicationServlet
                 </a>
                 . There's rarely a need to create a subclass; Tapestry has many other hooks for
@@ -167,7 +167,7 @@
 
             <p>
                 The
-                <a href="../tapestry-framework/apidocs/org/apache/tapestry/RedirectFilter.html">
+                <a href="../apidocs/org/apache/tapestry/RedirectFilter.html">
                     RedirectFilter
                 </a>
                 filter sends a client redirect to the user when they access the web application
@@ -294,7 +294,7 @@
                 Applications may also want to change or augment the default search path; this is
                 accomplished by overriding
                 <a
-                    href="../tapestry-framework/apidocs/org/apache/tapestry/engine/AbstractEngine.html">
+                    href="../apidocs/org/apache/tapestry/engine/AbstractEngine.html">
                     AbstractEngine
                 </a>
                 method
@@ -426,7 +426,7 @@
                         <a href="spec.html#spec.page-specification">&lt;page-specification&gt;</a>
                         ) will be instantiated as
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/html/BasePage.html">
+                            href="../apidocs/org/apache/tapestry/html/BasePage.html">
                             BasePage
                         </a>
                         . If this is not desired, the default may be overridden by specifying a
@@ -484,7 +484,7 @@
                         This configuration value is only used when the application specification
                         does not exist, or fails to specify a class. By default,
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/engine/BaseEngine.html">
+                            href="../apidocs/org/apache/tapestry/engine/BaseEngine.html">
                             BaseEngine
                         </a>
                         is used if this configuration value is also left unspecified.
@@ -776,8 +776,8 @@ This is a header
             </p>
 
             <source xml:space="preserve">
-<a href="../tapestry-framework/apidocs/org/apache/tapestry/IEngine.html">IEngine</a> engine = getEngine();
-<a href="../tapestry-framework/apidocs/org/apache/tapestry/spec/IApplicationSpecification.html">IApplicationSpecification</a> specification = engine.getSpecification();
+<a href="../apidocs/org/apache/tapestry/IEngine.html">IEngine</a> engine = getEngine();
+<a href="../apidocs/org/apache/tapestry/spec/IApplicationSpecification.html">IApplicationSpecification</a> specification = engine.getSpecification();
 	
 MyExtension myExtension = (MyExtension) specification.getExtension("myExtension");	
 </source>
@@ -798,7 +798,7 @@ MyExtension myExtension = (MyExtension) specification.getExtension("myExtension"
                     <td>org.apache.tapestry.property-source</td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/engine/IPropertySource.html">
+                            href="../apidocs/org/apache/tapestry/engine/IPropertySource.html">
                             IPropertySource
                         </a>
                     </td>
@@ -816,7 +816,7 @@ MyExtension myExtension = (MyExtension) specification.getExtension("myExtension"
                     <td>org.apache.tapestry.request-decoder</td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/request/IRequestDecoder.html">
+                            href="../apidocs/org/apache/tapestry/request/IRequestDecoder.html">
                             IRequestDecoder
                         </a>
                     </td>
@@ -836,7 +836,7 @@ MyExtension myExtension = (MyExtension) specification.getExtension("myExtension"
                     <td>org.apache.tapestry.monitor-factory</td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/engine/IMonitorFactory.html">
+                            href="../apidocs/org/apache/tapestry/engine/IMonitorFactory.html">
                             IMonitorFactory
                         </a>
                     </td>
@@ -844,7 +844,7 @@ MyExtension myExtension = (MyExtension) specification.getExtension("myExtension"
                     <td>
                         An object that is used to create
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/engine/IMonitor.html">
+                            href="../apidocs/org/apache/tapestry/engine/IMonitor.html">
                             IMonitor
                         </a>
                         instances. Monitors are informed about key application events (such as
@@ -859,7 +859,7 @@ MyExtension myExtension = (MyExtension) specification.getExtension("myExtension"
                         <p>
                             If not specified, a default implementation is used (
                             <a
-                                href="../tapestry-framework/apidocs/org/apache/tapestry/engine/DefaultMonitorFactory.html">
+                                href="../apidocs/org/apache/tapestry/engine/DefaultMonitorFactory.html">
                                 DefaultMonitorFactory
                             </a>
                             ).
@@ -874,7 +874,7 @@ MyExtension myExtension = (MyExtension) specification.getExtension("myExtension"
                     specification-resolver-delegate</td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/resolver/ISpecificationResolverDelegate.html">
+                            href="../apidocs/org/apache/tapestry/resolver/ISpecificationResolverDelegate.html">
                             ISpecificationResolverDelegate
                         </a>
                     </td>
@@ -894,7 +894,7 @@ MyExtension myExtension = (MyExtension) specification.getExtension("myExtension"
                     template-source-delegate</td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/engine/ITemplateSourceDelegate.html">
+                            href="../apidocs/org/apache/tapestry/engine/ITemplateSourceDelegate.html">
                             ITemplateSourceDelegate
                         </a>
                     </td>

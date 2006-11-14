@@ -18,7 +18,7 @@ EventListener, the swiss army knife of ajax functionality
   At its core this new annotation allows you to bind client side events to page/component 
   {{{../UsersGuide/listenermethods.html}listener}} methods. "Client Side" events can have a lot
   of different meanings. It could mean listening to function calls on a Tapestry 
-  {{{../tapestry-framework/apidocs/org/apache/tapestry/dojo/IWidget.html}supported}} dojo widget, 
+  {{{../apidocs/org/apache/tapestry/dojo/IWidget.html}supported}} dojo widget, 
   or it could mean listening to changing field values in a Tapestry {{{../components/Form.html}Form}} component.
   
 * Basic example, listening to DOM events
@@ -52,7 +52,7 @@ public void watchText()
   
   That's it! If you'd like more contextual information, like what was happening
   with the event that initiated the original client-side event just add a 
-  {{{../tapestry-framework/apidocs/org/apache/tapestry/event/BrowserEvent.html}BrowserEvent}} 
+  {{{../apidocs/org/apache/tapestry/event/BrowserEvent.html}BrowserEvent}} 
   parameter to your listener and it will be automatically populated.
   
 +-------------------------------------------------------------
@@ -77,7 +77,7 @@ public void watchText(BrowserEvent event)
 ** Listening to widget functions
   
   In this example we want our {{{../UsersGuide/listenermethods.html}listener}} method to 
-  be called when the {{{../tapestry-framework/apidocs/org/apache/tapestry/dojo/form/Autocompleter.html}Autocomplete}} 
+  be called when the {{{../apidocs/org/apache/tapestry/dojo/form/Autocompleter.html}Autocomplete}} 
   component on our page has selected an entry.
   
   The relevant html:
@@ -116,7 +116,7 @@ public void projectSelected()
   
   The last example was good for showing how to listen to widget function events, but what are you
   supposed to do with an event that comes from a 
-  {{{../tapestry-framework/apidocs/org/apache/tapestry/form/IFormComponent.html}IFormComponent}} that 
+  {{{../apidocs/org/apache/tapestry/form/IFormComponent.html}IFormComponent}} that 
   doesn't also submit and update the form value that was changed? 
   
   To add automatic submission to our form we only need to modify the definition of our annotation 
@@ -137,7 +137,7 @@ public void projectSelected()
 +-----------------------------------------------------------------------
 
   That's it! When your {{{../UsersGuide/listenermethods.html}listener}} is invoked you can be confident
-  that your <<<projectSelect>>> {{{../tapestry-framework/apidocs/org/apache/tapestry/dojo/form/Autocompleter.html}Autocomplete}} 
+  that your <<<projectSelect>>> {{{../apidocs/org/apache/tapestry/dojo/form/Autocompleter.html}Autocomplete}} 
   component has also been updated to reflect the currently selected value.
   
   As an added bonus, form validation is turned off by default with the {{{../tapestry-annotations/index.html#EventListener}EventListener}} 

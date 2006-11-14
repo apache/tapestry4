@@ -60,7 +60,7 @@
                         <td>
                             The name of the
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/engine/IEngineService.html">
+                                href="../../apidocs/org/apache/tapestry/engine/IEngineService.html">
                                 IEngineService
                             </a>
                             to invoke. Can be any service, esp random ones contributed by you.
@@ -147,7 +147,7 @@
                         <td>renderer</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/link/ILinkRenderer.html">
+                                href="../../apidocs/org/apache/tapestry/link/ILinkRenderer.html">
                                 ILinkRenderer
                             </a>
                         </td>

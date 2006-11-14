@@ -62,7 +62,7 @@
                         <td>listener</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/IActionListener.html">
+                                href="../../apidocs/org/apache/tapestry/IActionListener.html">
                                 IActionListener
                             </a>
                         </td>
@@ -121,7 +121,7 @@
                                 may now be of any type; type will be maintained when the parameters
                                 are later retrieved by a listener. See
                                 <a
-                                    href="../../tapestry-framework/apidocs/org/apache/tapestry/util/io/SqueezAdaptor.html">
+                                    href="../../apidocs/org/apache/tapestry/util/io/SqueezAdaptor.html">
                                     SqueezAdaptor
                                 </a>
                                 for more details.
@@ -149,7 +149,7 @@
                             If true (the default), then the component requires an active (i.e.,
                             non-new) HttpSession when triggered. Failing that, it throws a
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/StaleLinkException.html">
+                                href="../../apidocs/org/apache/tapestry/StaleLinkException.html">
                                 StaleLinkException
                             </a>
                             . If false, then no check is necessary. The latter works well with links
@@ -206,7 +206,7 @@
                         <td>renderer</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/link/ILinkRenderer.html">
+                                href="../../apidocs/org/apache/tapestry/link/ILinkRenderer.html">
                                 ILinkRenderer
                             </a>
                         </td>
@@ -226,7 +226,7 @@
                             rendered back to the client. These are expected to be unique component ids. 
                             
                             <p>
-                            See: <a href="../../tapestry-framework/apidocs/org/apache/tapestry/services/ResponseBuilder.html">ResponseBuilder</a>
+                            See: <a href="../../apidocs/org/apache/tapestry/services/ResponseBuilder.html">ResponseBuilder</a>
                             </p>
                         </td>
                     </tr>
@@ -237,7 +237,7 @@
                         <td>false</td>
                         <td>
                             Causes the request to be asynchronous and the response to be captured/rendered via
-                            the <a href="../../tapestry-framework/apidocs/org/apache/tapestry/services/impl/JSONResponseBuilder.html">JSONResponseBuilder</a>
+                            the <a href="../../apidocs/org/apache/tapestry/services/impl/JSONResponseBuilder.html">JSONResponseBuilder</a>
                             renderer.
                         </td>
                     </tr>
@@ -248,7 +248,7 @@
                         <td>false</td>
                         <td>
                             Causes the request to be asynchronous and the response to be captured/rendered via
-                            the <a href="../../tapestry-framework/apidocs/org/apache/tapestry/services/impl/DojoAjaxResponseBuilder.html">DojoAjaxResponseBuilder</a>
+                            the <a href="../../apidocs/org/apache/tapestry/services/impl/DojoAjaxResponseBuilder.html">DojoAjaxResponseBuilder</a>
                             renderer.
                         </td>
                     </tr>

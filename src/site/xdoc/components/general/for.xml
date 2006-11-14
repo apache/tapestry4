@@ -32,12 +32,12 @@
             <p>
                 <strong>
                     See also:
-                    <a href="../../tapestry-framework/apidocs/org/apache/tapestry/components/ForBean.html">
+                    <a href="../../apidocs/org/apache/tapestry/components/ForBean.html">
                         org.apache.tapestry.components.ForBean
                     </a>
                     ,
                     <a
-                        href="../../tapestry-framework/apidocs/org/apache/tapestry/utils/DefaultPrimaryKeyConverter.html">
+                        href="../../apidocs/org/apache/tapestry/utils/DefaultPrimaryKeyConverter.html">
                         org.apache.tapestry.utils.DefaultPrimaryKeyConverter
                     </a>
                 </strong>
@@ -153,7 +153,7 @@
                         <td>converter</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/components/IPrimaryKeyConverter.html">
+                                href="../../apidocs/org/apache/tapestry/components/IPrimaryKeyConverter.html">
                                 IPrimaryKeyConverter
                             </a>
                         </td>

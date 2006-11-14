@@ -458,7 +458,7 @@ public abstract class AddProject extends BasePage
                     correct listener interface and implement it; Tapestry will automatically
                     register your page to receive the notifications. Here, the interface is
                     <a
-                        href="../tapestry-framework/apidocs/org/apache/tapestry/event/PageBeginRenderListener.html">
+                        href="../apidocs/org/apache/tapestry/event/PageBeginRenderListener.html">
                         PageBeginRenderListener
                     </a>
                     :
@@ -589,7 +589,7 @@ public abstract class AddProject extends BasePage implements PageBeginRenderList
                 <p>
                     A lot is going on here in a very small amount of code. First off, this method is
                     no longer void, it returns a page (
-                    <a href="../tapestry-framework/apidocs/org/apache/tapestry/IPage.html">IPage</a>
+                    <a href="../apidocs/org/apache/tapestry/IPage.html">IPage</a>
                     is the interface all page classes must implement). When a listener method
                     returns a page, that page becomes the
                     <em>active page</em>

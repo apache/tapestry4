@@ -55,7 +55,8 @@ form h4 { font: 0.8em Tahoma, Myriad, sans-serif; font-weight:bold; margin:0; ma
 }
 
 .alertDialog {
-    width: 30em;
+    margin-left:26%;
+    margin-right:26%;
     border: 2px solid #ff660a;
     padding: 1em;
     background: #ffffff;
@@ -83,15 +84,14 @@ form h4 { font: 0.8em Tahoma, Myriad, sans-serif; font-weight:bold; margin:0; ma
     padding-left:0.1em;
     padding-right:0.2em;
     margin: 0;
+    width: 26em;
 }
 
 .missingList {
-    width: 24em;
     border-top: 4px solid #bedef4;
 }
 
 .invalidList {
-    width: 24em;
     border-top: 4px solid #ffaf7e;
 }
 

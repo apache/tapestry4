@@ -50,7 +50,7 @@
                         <td>exceptions</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/util/exception/ExceptionDescription.html">
+                                href="../../apidocs/org/apache/tapestry/util/exception/ExceptionDescription.html">
                                 ExceptionDescription
                             </a>
                             []

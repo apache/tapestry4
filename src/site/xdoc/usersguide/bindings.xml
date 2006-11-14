@@ -133,7 +133,7 @@
                 <td>
                     Initializer used to obtain and configure a
                     <a
-                        href="../tapestry-framework/apidocs/org/apache/tapestry/form/translator/Translator.html">
+                        href="../apidocs/org/apache/tapestry/form/translator/Translator.html">
                         Translator
                     </a>
                     instance.
@@ -146,7 +146,7 @@
                 <td>
                     List of configured
                     <a
-                        href="../tapestry-framework/apidocs/org/apache/tapestry/form/validator/Validator.html">
+                        href="../apidocs/org/apache/tapestry/form/validator/Validator.html">
                         Validator
                     </a>
                     instances (used with

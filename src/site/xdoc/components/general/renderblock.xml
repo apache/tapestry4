@@ -35,12 +35,12 @@
                 <p>
                 The
                 <a
-                    href="../../tapestry-framework/apidocs/org/apache/tapestry/event/PageBeginRenderListener.html">
+                    href="../../apidocs/org/apache/tapestry/event/PageBeginRenderListener.html">
                     PageBeginRenderListener
                 </a>
                 (and
                 <a
-                    href="../../tapestry-framework/apidocs/org/apache/tapestry/event/PageEndRenderListener.html">
+                    href="../../apidocs/org/apache/tapestry/event/PageEndRenderListener.html">
                     PageEndRenderListener
                 </a>
                 ) event notications only go to the
@@ -58,7 +58,7 @@
                 <strong>
                     See also:
                     <a
-                        href="../../tapestry-framework/apidocs/org/apache/tapestry/components/RenderBlock.html">
+                        href="../../apidocs/org/apache/tapestry/components/RenderBlock.html">
                         org.apache.tapestry.components.RenderBlock
                     </a>
                     ,

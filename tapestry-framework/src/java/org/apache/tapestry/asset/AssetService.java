@@ -96,6 +96,7 @@ public class AssetService implements IEngineService, ResetEventListener
         _mimeTypes.put("gif", "image/gif");
         _mimeTypes.put("jpg", "image/jpeg");
         _mimeTypes.put("jpeg", "image/jpeg");
+        _mimeTypes.put("png", "image/png");
         _mimeTypes.put("htm", "text/html");
         _mimeTypes.put("html", "text/html");
     }
@@ -103,6 +104,9 @@ public class AssetService implements IEngineService, ResetEventListener
     private static final int BUFFER_SIZE = 10240;
 
     private static final DateFormat CACHED_FORMAT = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
+    
+    /** Represents a month of time in seconds. */
+    private static final long MONTH_SECONDS = 60 * 60 * 24 * 30;
     
     private Log _log;
     
@@ -213,7 +217,7 @@ public class AssetService implements IEngineService, ResetEventListener
 
         return result;
     }
-
+    
     /**
      * Retrieves a resource from the classpath and returns it to the client in a binary output
      * stream.
@@ -330,11 +334,12 @@ public class AssetService implements IEngineService, ResetEventListener
     boolean cachedResource(URL resourceURL)
     {
         File resource = new File(resourceURL.getFile());
+        
         if (!resource.exists()) 
             return false;
         
-        //even if it doesn't exist in header the value will be -1, 
-        //which means we need to write out the contents of the resource
+        // even if it doesn't exist in header the value will be -1, 
+        // which means we need to write out the contents of the resource
         
         String header = _request.getHeader("If-Modified-Since");
         long modify = -1;
@@ -349,6 +354,7 @@ public class AssetService implements IEngineService, ResetEventListener
             return false;
         
         _response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+        
         return true;
     }
     
@@ -373,13 +379,23 @@ public class AssetService implements IEngineService, ResetEventListener
 
             _response.setDateHeader("Last-Modified", _startupTime);
             _response.setDateHeader("Expires", _expireTime);
-
+            
             // Set the content type. If the servlet container doesn't
             // provide it, try and guess it by the extension.
 
             if (contentType == null || contentType.length() == 0)
                 contentType = getMimeType(resourcePath);
-
+            
+            // force image caching when detected, esp helps with ie related things
+            // see http://mir.aculo.us/2005/08/28/internet-explorer-and-ajax-image-caching-woes
+            
+            if (contentType != null && "image".indexOf(contentType) > -1) {
+                
+                _response.setHeader("Cache-Control", "max-age=" + MONTH_SECONDS);
+                
+                _response.setHeader("ETag", String.valueOf(resourcePath.hashCode()));
+            }
+            
             OutputStream output = _response.getOutputStream(new ContentType(contentType));
 
             input = new BufferedInputStream(resourceConnection.getInputStream());

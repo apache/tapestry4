@@ -53,7 +53,7 @@
                     <tr>
                         <td>href</td>
                         <td>String or 
-                        <a href="../../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">IAsset</a>
+                        <a href="../../apidocs/org/apache/tapestry/IAsset.html">IAsset</a>
                         </td>
                         <td>yes</td>
                         <td></td>

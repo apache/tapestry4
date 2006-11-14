@@ -190,7 +190,7 @@
                 <p>
                     Friendly URLs are controlled by
                     <a
-                        href="../tapestry-framework/apidocs/org/apache/tapestry/engine/ServiceEncoder.html">
+                        href="../apidocs/org/apache/tapestry/engine/ServiceEncoder.html">
                         ServiceEncoder
                     </a>
                     s. Getting Tapestry to output friendly URLs is a matter of plugging encoders
@@ -222,7 +222,7 @@
                         </a>
                         configuration point creates a
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/engine/ServiceEncoder.html">
+                            href="../apidocs/org/apache/tapestry/engine/ServiceEncoder.html">
                             ServiceEncoder
                         </a>
                         that maps the
@@ -422,7 +422,7 @@
                         define your own. The &lt;encoder&gt; element allows an arbitrary object that
                         implements the
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/engine/ServiceEncoder.html">
+                            href="../apidocs/org/apache/tapestry/engine/ServiceEncoder.html">
                             ServiceEncoder
                         </a>
                         interface to be plugged into the pipeline. The &lt;encoder&gt; element
@@ -482,7 +482,7 @@
                         right page name and the right service, returning (without doing anything) if
                         not. The link being constructed is represented as an instance of
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/engine/ServiceEncoding.html">
+                            href="../apidocs/org/apache/tapestry/engine/ServiceEncoding.html">
                             ServiceEncoding
                         </a>
                         :

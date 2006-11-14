@@ -24,12 +24,12 @@
             <p>
                 Tapestry is a component based web application framework; components, objects which
                 implement the
-                <a href="../tapestry-framework/apidocs/org/apache/tapestry/IComponent.html">
+                <a href="../apidocs/org/apache/tapestry/IComponent.html">
                     IComponent
                 </a>
                 interface, are the fundamental building blocks of Tapestry. Additional objects, such
                 as the the engine,
-                <a href="../tapestry-framework/apidocs/org/apache/tapestry/IMarkupWriter.html">
+                <a href="../apidocs/org/apache/tapestry/IMarkupWriter.html">
                     IMarkupWriter
                 </a>
                 and the request cycle are infrastructure. The following figure identifies the core
@@ -58,14 +58,14 @@
 
             <p>
                 Components fit into the overall page rendering process because they implement the
-                <a href="../tapestry-framework/apidocs/org/apache/tapestry/IRender.html">IRender</a>
+                <a href="../apidocs/org/apache/tapestry/IRender.html">IRender</a>
                 interface. Components that inherit from
-                <a href="../tapestry-framework/apidocs/org/apache/tapestry/BaseComponent.html">
+                <a href="../apidocs/org/apache/tapestry/BaseComponent.html">
                     BaseComponent
                 </a>
                 will use an HTML template. Components that inherit from
                 <a
-                    href="../tapestry-framework/apidocs/org/apache/tapestry/AbstractComponent.html">
+                    href="../apidocs/org/apache/tapestry/AbstractComponent.html">
                     AbstractComponent
                 </a>
                 will render output in Java code, by implementing method
@@ -101,7 +101,7 @@
                     <li>
                         The Java class for the component (which defaults to
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/BaseComponent.html">
+                            href="../apidocs/org/apache/tapestry/BaseComponent.html">
                             BaseComponent
                         </a>
                         )
@@ -169,7 +169,7 @@
                         <em>servlet-name</em>
                         is the name of the Tapestry
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/ApplicationServlet.html">
+                            href="../apidocs/org/apache/tapestry/ApplicationServlet.html">
                             ApplicationServlet
                         </a>
                         for the application).
@@ -205,7 +205,7 @@
                 <p>
                     When creating a new component by subclassing
                     <a
-                        href="../tapestry-framework/apidocs/org/apache/tapestry/AbstractComponent.html">
+                        href="../apidocs/org/apache/tapestry/AbstractComponent.html">
                         AbstractComponent
                     </a>
                     , you must implement the
@@ -218,8 +218,8 @@
 
                 <source xml:space="preserve">
 protected void renderComponent(<a
-                        href="../tapestry-framework/apidocs/org/apache/tapestry/IMarkupWriter.html">IMarkupWriter</a> writer, <a
-                        href="../tapestry-framework/apidocs/org/apache/tapestry/IRequestCycle.html">IRequestCycle</a> cycle)
+                        href="../apidocs/org/apache/tapestry/IMarkupWriter.html">IMarkupWriter</a> writer, <a
+                        href="../apidocs/org/apache/tapestry/IRequestCycle.html">IRequestCycle</a> cycle)
 {
   . . .
 }	
@@ -228,7 +228,7 @@ protected void renderComponent(<a
                 <p>
                     The
                     <a
-                        href="../tapestry-framework/apidocs/org/apache/tapestry/IMarkupWriter.html">
+                        href="../apidocs/org/apache/tapestry/IMarkupWriter.html">
                         IMarkupWriter
                     </a>
                     object is used to produce output. It contains a number of
@@ -244,7 +244,7 @@ protected void renderComponent(<a
 
                 <p>
                     <a
-                        href="../tapestry-framework/apidocs/org/apache/tapestry/IMarkupWriter.html">
+                        href="../apidocs/org/apache/tapestry/IMarkupWriter.html">
                         IMarkupWriter
                     </a>
                     also includes methods to simplify creating markup style output: that is,
@@ -256,8 +256,8 @@ protected void renderComponent(<a
 
                 <source xml:space="preserve">
 public void renderComponent(<a
-                        href="../tapestry-framework/apidocs/org/apache/tapestry/IMarkupWriter.html">IMarkupWriter</a> writer, <a
-                        href="../tapestry-framework/apidocs/org/apache/tapestry/IRequestCycle.html">IRequestCycle</a> cycle)
+                        href="../apidocs/org/apache/tapestry/IMarkupWriter.html">IMarkupWriter</a> writer, <a
+                        href="../apidocs/org/apache/tapestry/IRequestCycle.html">IRequestCycle</a> cycle)
 {
   . . .
   
@@ -356,7 +356,7 @@ public void renderComponent(<a
                     scenes, each component parameter has a
                     <em>binding</em>
                     object, an instance of type
-                    <a href="../tapestry-framework/apidocs/org/apache/tapestry/IBinding.html">
+                    <a href="../apidocs/org/apache/tapestry/IBinding.html">
                         IBinding
                     </a>
                     , that is used to read or update the property.
@@ -413,8 +413,8 @@ public void renderComponent(<a
 public abstract String getTitle();
   
 public void renderComponent(<a
-                        href="../tapestry-framework/apidocs/org/apache/tapestry/IMarkupWriter.html">IMarkupWriter</a> writer, <a
-                        href="../tapestry-framework/apidocs/org/apache/tapestry/IRequestCycle.html">IRequestCycle</a> cycle)
+                        href="../apidocs/org/apache/tapestry/IMarkupWriter.html">IMarkupWriter</a> writer, <a
+                        href="../apidocs/org/apache/tapestry/IRequestCycle.html">IRequestCycle</a> cycle)
 {
   writer.begin("a");
   writer.attribute("href", . . .);
@@ -507,8 +507,8 @@ protected void finishLoad()
 public abstract String getTitle();
   
 public void renderComponent(<a
-                        href="../tapestry-framework/apidocs/org/apache/tapestry/IMarkupWriter.html">IMarkupWriter</a> writer, <a
-                        href="../tapestry-framework/apidocs/org/apache/tapestry/IRequestCycle.html">IRequestCycle</a> cycle)
+                        href="../apidocs/org/apache/tapestry/IMarkupWriter.html">IMarkupWriter</a> writer, <a
+                        href="../apidocs/org/apache/tapestry/IRequestCycle.html">IRequestCycle</a> cycle)
 {
   writer.begin("a");
   writer.attribute("href", . . .);
@@ -547,8 +547,8 @@ public void renderComponent(<a
 public abstract String getTitleParameter();
   
 public void renderComponent(<a
-                        href="../tapestry-framework/apidocs/org/apache/tapestry/IMarkupWriter.html">IMarkupWriter</a> writer, <a
-                        href="../tapestry-framework/apidocs/org/apache/tapestry/IRequestCycle.html">IRequestCycle</a> cycle)
+                        href="../apidocs/org/apache/tapestry/IMarkupWriter.html">IMarkupWriter</a> writer, <a
+                        href="../apidocs/org/apache/tapestry/IRequestCycle.html">IRequestCycle</a> cycle)
 {
   writer.begin("a");
   writer.attribute("href", . . .);
@@ -751,7 +751,7 @@ public void renderComponent(<a
 
                     <p>
                         All assets (classpath, context or external) are converted into instances of
-                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
+                        <a href="../apidocs/org/apache/tapestry/IAsset.html">
                             IAsset
                         </a>
                         and treated identically by components (such as
@@ -872,7 +872,7 @@ public void renderComponent(<a
                         Every component provides a namespace property that defines the namespace (an
                         instance of
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/INamespace.html">
+                            href="../apidocs/org/apache/tapestry/INamespace.html">
                             INamespace
                         </a>
                         ) that the component belongs to.
