@@ -97,8 +97,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     private String _outputEncoding;
 
     /**
-     * Standard constructor; invokes {@link #initialize()}to configure initial values for
-     * properties of the page.
+     * Standard constructor. Does nothing.
      * 
      * @since 2.2
      */
@@ -112,7 +111,6 @@ public abstract class AbstractPage extends BaseComponent implements IPage
      * <ul>
      * <li>Clears the changeObserved property
      * <li>Invokes {@link PageDetachListener#pageDetached(PageEvent)}on all listeners
-     * <li>Invokes {@link #initialize()}to clear/reset any properties
      * <li>Clears the engine and requestCycle properties
      * </ul>
      * <p>
@@ -228,7 +226,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
      * Renders the page.
      * <ul>
      * <li>Invokes {@link PageBeginRenderListener#pageBeginRender(PageEvent)}
-     * <li>Invokes {@link #beginResponse(IMarkupWriter, IRequestCycle)}
+     * <li>Invokes {@link #beginPageRender()}
      * <li>Invokes {@link IRequestCycle#commitPageChanges()}(if not rewinding)
      * <li>Invokes {@link #render(IMarkupWriter, IRequestCycle)}
      * <li>Invokes {@link PageEndRenderListener#pageEndRender(PageEvent)}(this occurs even if a

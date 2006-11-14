@@ -59,9 +59,6 @@ public abstract class AbstractBinding implements IBinding
 
     /**
      * Overridden in subclasses that are not invariant.
-     * 
-     * @throws ReadOnlyBindingException
-     *             always.
      */
 
     public void setObject(Object value)

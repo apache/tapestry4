@@ -37,7 +37,7 @@ public interface IFormComponent extends IComponent
      * Returns the name of the component, which is automatically generated during renderring.
      * <p>
      * This value is set inside the component's render method and is <em>not</em> cleared. If the
-     * component is inside a {@link org.apache.tapestry.components.Foreach}, the value returned is
+     * component is inside a {@link org.apache.tapestry.components.ForBean}, the value returned is
      * the most recent name generated for the component.
      * <p>
      * This property is made available to facilitate writing JavaScript that allows components (in

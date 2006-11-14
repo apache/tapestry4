@@ -128,7 +128,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
             + IDENTIFIER_PATTERN + "/)*" + IDENTIFIER_PATTERN + "$";
 
     /**
-     * Extended version of {@link Tapestry.SIMPLE_PROPERTY_NAME_PATTERN}, but allows a series of
+     * Extended version of {@link Tapestry#SIMPLE_PROPERTY_NAME_PATTERN}, but allows a series of
      * individual property names, seperated by periods. In addition, each name within the dotted
      * sequence is allowed to contain dashes.
      * 

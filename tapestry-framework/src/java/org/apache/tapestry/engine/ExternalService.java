@@ -32,9 +32,7 @@ import org.apache.tapestry.services.ServiceConstants;
  * The external service enables external applications to reference Tapestry pages via a URL. Pages
  * which can be referenced by the external service must implement the {@link IExternalPage}
  * interface. The external service enables the bookmarking of pages.
- * <p>
- * The external service may also be used by the Tapestry JSP taglibrary (
- * {@link org.apache.tapestry.jsp.ExternalURLTag}and {@link org.apache.tapestry.jsp.ExternalTag}).
+ *
  * <p>
  * You can try and second guess the URL format used by Tapestry. The default URL format for the
  * external service is: <blockquote>
@@ -103,8 +101,6 @@ import org.apache.tapestry.services.ServiceConstants;
  * created with the correct prefixes and encodings (as with any other service).
  * 
  * @see org.apache.tapestry.IExternalPage
- * @see org.apache.tapestry.jsp.ExternalTag
- * @see org.apache.tapestry.jsp.ExternalURLTag
  * @author Howard Lewis Ship
  * @author Malcolm Edgar
  * @since 2.2

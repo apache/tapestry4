@@ -16,10 +16,11 @@ package org.apache.tapestry.services;
 import java.io.IOException;
 
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.engine.DirectService;
 
 
 /**
- * Service used by {@link AjaxDirectService} to determine type of ajax request
+ * Service used by {@link DirectService} to determine type of ajax request
  * receive and determine the appropriate {@link ResponseBuilder} to handle
  * the response.
  *

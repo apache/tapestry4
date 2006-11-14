@@ -172,8 +172,8 @@ public class ApplicationServlet extends HttpServlet
      * Reads the application specification when the servlet is first initialized. All
      * {@link IEngine engine instances}will have access to the specification via the servlet.
      * 
-     * @see #constructApplicationSpecification()
-     * @see #createResourceResolver()
+     * @see #constructRegistry(ServletConfig)
+     * @see #createClassResolver()
      */
 
     public void init(ServletConfig config) throws ServletException

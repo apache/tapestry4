@@ -57,7 +57,6 @@ public interface IEngineService
      * 
      * @param cycle
      *            the incoming request
-     * @see org.apache.tapestry.IEngine#service(org.apache.tapestry.request.RequestContext)
      */
 
     void service(IRequestCycle cycle) throws IOException;

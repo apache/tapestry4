@@ -865,9 +865,6 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
         getEventInvoker().invokeListeners(this, cycle, event);
     }
     
-    /**
-     * {@inheritDoc}
-     */
     public ComponentRenderWorker getRenderWorker()
     {
         throw new IllegalStateException(TapestryMessages.providedByEnhancement("getRenderWorker"));

@@ -55,7 +55,7 @@ public class AsciiCharacterTranslator implements ICharacterTranslator
     }
 
     /**
-     * @see org.apache.tapestry.util.text.ICharacterTranslator#translate(char).
+     * @see org.apache.tapestry.util.text.ICharacterTranslator#translate(char) .
      */
     public String translate(char ch)
     {

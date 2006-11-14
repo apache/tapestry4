@@ -40,7 +40,7 @@ import org.apache.tapestry.util.xml.DocumentParseException;
  * Default implementation of {@link ISpecificationSource} that expects to use the normal class
  * loader to locate component specifications from within the classpath.
  * <p>
- * Caches specifications in memory forever, or until {@link #resetDidOccur()} is invoked.
+ * Caches specifications in memory forever, or until {@link #resetEventDidOccur()} is invoked.
  * 
  * @author Howard Lewis Ship
  */
@@ -159,7 +159,7 @@ public class SpecificationSourceImpl implements ISpecificationSource, ResetEvent
     /**
      * Gets a component specification.
      * 
-     * @param resourcePath
+     * @param resourceLocation
      *            the complete resource path to the specification.
      * @throws ApplicationRuntimeException
      *             if the specification cannot be obtained.

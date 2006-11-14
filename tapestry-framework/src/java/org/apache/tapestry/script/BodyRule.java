@@ -18,7 +18,7 @@ import org.apache.tapestry.util.xml.RuleDirectedParser;
 import org.xml.sax.Attributes;
 
 /**
- * Constructs a {@link org.apache.tapestry.script.BodyToken} from
+ * Constructs a {@link BodyToken} from
  * a &lt;body&gt; element, which contains full content.
  *
  * @author Howard Lewis Ship

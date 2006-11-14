@@ -29,7 +29,7 @@ public final class EngineUtils
     private EngineUtils() { }
     
     /**
-     * Invoked by {@link #getURL(String, String, int, String, boolean)} to see
+     * Invoked by to see
      * if an absolute URL is needed (because a specific scheme, server or port
      * was indicated that does not match the incoming request).
      * 

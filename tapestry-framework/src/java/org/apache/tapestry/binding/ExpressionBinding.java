@@ -156,8 +156,6 @@ public class ExpressionBinding extends AbstractBinding
      * @throws BindingException
      *             if the property can't be updated (typically due to an security problem, or a
      *             missing mutator method).
-     * @throws ReadOnlyBindingException
-     *             if the binding is invariant.
      */
 
     public void setObject(Object value)

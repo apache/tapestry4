@@ -36,7 +36,7 @@ import org.apache.tapestry.parse.ComponentTemplate;
 public interface ITemplateSourceDelegate
 {
     /**
-     *  Invoked by the {@link ITemplateSource} when a template can't be found
+     *  Invoked by the {@link ITemplateSourceDelegate} when a template can't be found
      *  by normal means (i.e., in the normal locations).  This method
      *  should find the template.  The result may be null.  The delegate
      *  is responsible for caching the result.

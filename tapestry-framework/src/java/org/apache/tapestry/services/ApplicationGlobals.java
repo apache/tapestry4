@@ -24,7 +24,7 @@ import org.apache.tapestry.web.WebContext;
 
 /**
  * A "global" holder for various services and configurations. In many cases, these values end up as
- * properties of the {@link org.apache.tapestry.services.Infrastructure}. The servlet and portlet
+ * properties of the {@link org.apache.tapestry.services.Infrastructure} . The servlet and portlet
  * implementations differentiate themselves by storing different values into these properties.
  * 
  * @author Howard Lewis Ship
@@ -54,7 +54,7 @@ public interface ApplicationGlobals
     /**
      * Returns the previously stored context.
      * 
-     * @see #store(WebContext)}.
+     * @see #storeWebContext(WebContext) .
      */
 
     WebContext getWebContext();
@@ -74,7 +74,7 @@ public interface ApplicationGlobals
 
     /**
      * Stores the default set of engine service definitions. Application services override factory
-     * services with the same {@link org.apache.tapestry.engine.IEngineService#getName()name}.
+     * services with the same {@link org.apache.tapestry.engine.IEngineService#getName()} .
      * 
      * @param factoryServices
      *            List of {@link org.apache.tapestry.engine.IEngineService}.

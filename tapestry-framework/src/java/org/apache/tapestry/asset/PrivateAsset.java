@@ -59,7 +59,7 @@ public class PrivateAsset extends AbstractAsset
 
     /**
      * Gets the localized version of the resource. Build the URL for the resource. If possible, the
-     * application's {@link AssetExternalizerImpl}is located, to copy the resource to a directory
+     * application's {@link ExternalAsset}is located, to copy the resource to a directory
      * visible to the web server.
      */
 

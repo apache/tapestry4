@@ -30,8 +30,7 @@ public interface RequestLocaleManager
 
     /**
      * Determines the locale to use for processing the current request. The
-     * value is returned, but also stored as
-     * {@link org.apache.tapestry.services.RequestGlobals#setIncomingLocale(Locale)}.
+     * value is returned, but also stored as locale.
      */
 
     Locale extractLocaleForCurrentRequest();

@@ -15,6 +15,7 @@
 package org.apache.tapestry.services.impl;
 
 import org.apache.commons.logging.Log;
+import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.ITemplateComponent;
 import org.apache.tapestry.binding.BindingSource;

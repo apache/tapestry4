@@ -15,7 +15,7 @@
 package org.apache.tapestry;
 
 /**
- *  Defines a listener to an {@link IAction} component, which is way to
+ *  Defines a listener to an {@link IDirect} component, which is way to
  *  get behavior when the component's URL is triggered (or the form
  *  containing the component is submitted).  Certain form elements 
  *  ({@link org.apache.tapestry.form.Hidden})
@@ -29,7 +29,7 @@ public interface IActionListener
 {
 
     /**
-     *  Method invoked by the component (an {@link org.apache.tapestry.link.ActionLink} or 
+     *  Method invoked by the component (an {@link org.apache.tapestry.link.DirectLink} or 
      *  {@link org.apache.tapestry.form.Form}, when its URL is triggered.
      *
      *  @param component The component which was "triggered".

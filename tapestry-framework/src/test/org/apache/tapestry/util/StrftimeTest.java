@@ -20,7 +20,7 @@ import org.testng.annotations.Test;
 /**
  * Tests functionality of {@link Strftime}.
  * 
- * @see {@linkplain http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html} for list of assertions
+ * @see "http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html"
  * @author jkuhnert
  */
 @Test

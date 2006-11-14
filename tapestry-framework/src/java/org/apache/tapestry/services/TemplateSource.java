@@ -63,9 +63,6 @@ public interface TemplateSource
      *  @param cycle The request cycle loading the template; this is required
      *  in some cases when the template is loaded from an {@link org.apache.tapestry.IAsset}.
      *  @param component The component for which a template should be loaded.
-     *
-     *  @throws org.apache.tapestry.ApplicationRuntimeException if the resource cannot be located or loaded.
-     * 
      */
 
     ComponentTemplate getTemplate(IRequestCycle cycle, IComponent component);

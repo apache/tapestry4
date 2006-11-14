@@ -110,7 +110,8 @@ public class ComponentEventProperty
      * creates a new instance if one doesn't exist already.
      * 
      * @param event
-     * @return
+     * 
+     * @return The current set of listeners bound to the specified event.
      */
     public List getEventListeners(String event)
     {
@@ -128,7 +129,9 @@ public class ComponentEventProperty
      * creates a new instance if one doesn't exist already.
      * 
      * @param event
-     * @return
+     * 
+     * @return The current set of listeners that will submit a form bound to the
+     *          specified event.
      */
     public List getFormEventListeners(String event)
     {
@@ -152,7 +155,8 @@ public class ComponentEventProperty
     
     /**
      * The set of all form based listener events.
-     * @return
+     * 
+     * @return All mapped form event keys.
      */
     public Set getFormEvents()
     {

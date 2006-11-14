@@ -64,7 +64,6 @@ public class TestUnprotectedAsset extends BaseComponentTestCase
      * Creates {@link Pattern} objects for regexp matching.
      * 
      * @param pattern
-     * @return
      */
     protected Pattern newPattern(String pattern)
     {

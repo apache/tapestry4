@@ -217,13 +217,11 @@ public abstract class Autocompleter extends AbstractFormWidget
 
     /**
      * Injected.
-     * @return
      */
     public abstract IEngineService getDirectService();
     
     /**
      * Injected.
-     * @return
      */
     public abstract IScript getScript();
     

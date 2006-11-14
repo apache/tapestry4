@@ -17,7 +17,7 @@ package org.apache.tapestry.web;
 import org.apache.tapestry.describe.Describable;
 
 /**
- * A wrapper around a {@link javax.servlet.http.HttpServlet}&nbsp;or {@link *
+ * A wrapper around a {@link javax.servlet.http.HttpServlet}&nbsp;or 
  * {@link javax.portlet.Portlet}.
  * 
  * @author Howard M. Lewis Ship

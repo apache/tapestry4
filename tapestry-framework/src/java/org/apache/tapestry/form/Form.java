@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.form;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IActionListener;
@@ -150,7 +151,7 @@ public abstract class Form extends AbstractComponent implements IForm
      * JavaScript and need to access the form or its contents.
      * <p>
      * This value is generated when the form renders, and is not cleared. If the Form is inside a
-     * {@link org.apache.tapestry.components.Foreach}, this will be the most recently generated
+     * {@link org.apache.tapestry.components.ForBean}, this will be the most recently generated
      * name for the Form.
      * <p>
      * This property is exposed so that sophisticated applications can write JavaScript handlers for

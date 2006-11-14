@@ -16,12 +16,13 @@ package org.apache.tapestry.services.impl;
 
 import org.apache.hivemind.ServiceImplementationFactory;
 import org.apache.hivemind.ServiceImplementationFactoryParameters;
+import org.apache.hivemind.internal.Module;
 import org.apache.hivemind.schema.Translator;
 
 /**
  * A special-purpose factory for constructing the
- * {@link org.apache.tapestry.services.InjectedValueProvider}service (which needs access to a
- * {@link org.apache.hivemind.Module}which is normally not visible.
+ * {@link org.apache.tapestry.services.InjectedValueProvider} service (which needs access to a
+ * {@link Module} which is normally not visible.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0

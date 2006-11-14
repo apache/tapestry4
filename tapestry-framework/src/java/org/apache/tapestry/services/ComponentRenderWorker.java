@@ -15,6 +15,7 @@ package org.apache.tapestry.services;
 
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.html.Body;
 
 

@@ -13,8 +13,11 @@
 // limitations under the License.
 package org.apache.tapestry.asset;
 
+import org.apache.hivemind.Resource;
+import org.apache.tapestry.IAsset;
+
 /**
- * Responsible for determining if the path string of a {@link Reasource} -
+ * Responsible for determining if the path string of a {@link Resource} -
  * typically involving {@link IAsset} resources being examined by the 
  * {@link AssetService} - match the configured resource match strings
  * of this service.

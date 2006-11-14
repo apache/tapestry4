@@ -41,14 +41,12 @@ public class FolderObject extends SFObject
     /**
      * @associates <{File}>
      * @supplierCardinality 0..*
-     * @link aggregation
      */
     private Vector m_vFiles = null;
 
     /**
      * @associates <{FolderObject}>
      * @supplierCardinality 0..*
-     * @link aggregation
      */
     private Vector m_vFolders = null;
 

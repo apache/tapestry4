@@ -24,7 +24,6 @@ import org.apache.tapestry.engine.IEngineService;
 
 /**
  * 
- * @author unknown
  */
 public class FileSystem implements IFileSystemTreeNode
 {
@@ -39,7 +38,6 @@ public class FileSystem implements IFileSystemTreeNode
     /**
      * @associates <{Drive}>
      * @supplierCardinality 0..*
-     * @link aggregation
      */
     private Vector m_vDrives;
 
@@ -193,7 +191,7 @@ public class FileSystem implements IFileSystemTreeNode
     }
 
     /**
-     * @see org.apache.tapestry.workbench.tree.examples.fsmodel.IFileSystemTreeNode#getObjectDate()
+     * @see org.apache.tapestry.workbench.tree.examples.fsmodel.IFileSystemTreeNode#getDate()
      */
     public Date getDate()
     {

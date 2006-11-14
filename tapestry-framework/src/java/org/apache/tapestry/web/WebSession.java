@@ -28,7 +28,7 @@ public interface WebSession extends AttributeHolder, Describable
      * Returns a unique string identifier used to identify the session. This value is provided by
      * the container, and is typically incorporated into URLs, or stored as a HTTP cookie.
      * 
-     * @see org.apache.tapestry.web.WebResponse#encodeURL(String).
+     * @see org.apache.tapestry.web.WebResponse#encodeURL(String) .
      */
     String getId();
 

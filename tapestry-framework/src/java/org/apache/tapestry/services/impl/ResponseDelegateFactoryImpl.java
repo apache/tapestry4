@@ -54,7 +54,7 @@ public class ResponseDelegateFactoryImpl implements ResponseDelegateFactory {
      * Sets a configured list of {@link ResponseContributor} objects to be used
      * in processing ajax requests.
      * 
-     * @param invokers
+     * @param responseContributors
      */
     public void setResponseContributors(List responseContributors)
     {

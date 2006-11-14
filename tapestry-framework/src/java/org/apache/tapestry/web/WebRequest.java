@@ -18,6 +18,8 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.tapestry.describe.Describable;
 
 /**
@@ -194,7 +196,7 @@ public interface WebRequest extends AttributeHolder, Describable
     boolean isUserInRole(String role);
     
     /**
-     * Taken from {@link HttpServletWebRequest}. Indicates if this request is coming in on
+     * Taken from {@link HttpServletRequest}. Indicates if this request is coming in on
      * a SSL/secure connection. 
      * 
      * @return True if secure, false otherwise.

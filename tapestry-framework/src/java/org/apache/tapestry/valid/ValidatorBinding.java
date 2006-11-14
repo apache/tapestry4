@@ -16,6 +16,7 @@ package org.apache.tapestry.valid;
 
 import org.apache.hivemind.Location;
 import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.IBinding;
 import org.apache.tapestry.binding.AbstractBinding;
 import org.apache.tapestry.coerce.ValueConverter;
 

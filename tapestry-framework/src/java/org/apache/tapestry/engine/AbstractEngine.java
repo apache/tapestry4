@@ -19,12 +19,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.util.Defense;
 import org.apache.hivemind.util.ToStringBuilder;
+import org.apache.tapestry.ApplicationServlet;
 import org.apache.tapestry.Constants;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IPage;
@@ -34,8 +39,10 @@ import org.apache.tapestry.RedirectException;
 import org.apache.tapestry.StaleLinkException;
 import org.apache.tapestry.StaleSessionException;
 import org.apache.tapestry.listener.ListenerMap;
+import org.apache.tapestry.services.ComponentMessagesSource;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.services.Infrastructure;
+import org.apache.tapestry.services.TemplateSource;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
@@ -47,21 +54,20 @@ import org.apache.tapestry.web.WebResponse;
  * Note: much of this description is <em>in transition</em> as part of Tapestry 4.0. All ad-hoc
  * singletons and such are being replaced with HiveMind services.
  * <p>
- * Uses a shared instance of {@link ITemplateSource},{@link ISpecificationSource},
- * {@link IScriptSource}and {@link IComponentMessagesSource}stored as attributes of the
+ * Uses a shared instance of {@link TemplateSource},{@link ISpecificationSource},
+ * {@link IScriptSource}and {@link ComponentMessagesSource}stored as attributes of the
  * {@link ServletContext}(they will be shared by all sessions).
  * <p>
  * An engine is designed to be very lightweight. Particularily, it should <b>never </b> hold
  * references to any {@link IPage}or {@link org.apache.tapestry.IComponent}objects. The entire
  * system is based upon being able to quickly rebuild the state of any page(s).
  * <p>
- * Where possible, instance variables should be transient. They can be restored inside
- * {@link #setupForRequest(RequestContext)}.
+ * Where possible, instance variables should be transient.
  * <p>
  * In practice, a subclass (usually {@link BaseEngine}) is used without subclassing. Instead, a
  * visit object is specified. To facilitate this, the application specification may include a
  * property, <code>org.apache.tapestry.visit-class</code> which is the class name to instantiate
- * when a visit object is first needed. See {@link #createVisit(IRequestCycle)}for more details.
+ * when a visit object is first needed. 
  * <p>
  * Some of the classes' behavior is controlled by JVM system properties (typically only used during
  * development): <table border=1>
@@ -72,7 +78,7 @@ import org.apache.tapestry.web.WebResponse;
  * <tr>
  * <td>org.apache.tapestry.enable-reset-service</td>
  * <td>If true, enabled an additional service, reset, that allow page, specification and template
- * caches to be cleared on demand. See {@link #isResetServiceEnabled()}.</td>
+ * caches to be cleared on demand.</td>
  * </tr>
  * <tr>
  * <td>org.apache.tapestry.disable-caching</td>
@@ -406,12 +412,9 @@ public abstract class AbstractEngine implements IEngine
     }
 
     /**
-     * Generates a description of the instance. Invokes {@link #extendDescription(ToStringBuilder)}
-     * to fill in details about the instance.
-     * 
-     * @see #extendDescription(ToStringBuilder)
+     * {@inheritDoc}
      */
-
+    
     public String toString()
     {
         ToStringBuilder builder = new ToStringBuilder(this);
@@ -454,22 +457,6 @@ public abstract class AbstractEngine implements IEngine
     public boolean getHasVisit()
     {
         return _infrastructure.getApplicationStateManager().exists("visit");
-    }
-
-    /**
-     * Returns the global object for the application. The global object is created at the start of
-     * the request ({@link #setupForRequest(RequestContext)}invokes
-     * {@link #createGlobal(RequestContext)}if needed), and is stored into the
-     * {@link ServletContext}. All instances of the engine for the application share the global
-     * object; however, the global object is explicitly <em>not</em> replicated to other servers
-     * within a cluster.
-     * 
-     * @since 2.3
-     */
-
-    public Object getGlobal()
-    {
-        return _infrastructure.getApplicationStateManager().get("global");
     }
 
     public IScriptSource getScriptSource()

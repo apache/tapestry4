@@ -67,7 +67,7 @@ public interface ClientPropertyPersistenceScope
      * Extracts a page name from a query parameter name.
      * 
      * @param parameterName
-     *            the paramter name, for which {@link #isParameterForScope(String) must return true
+     *            the paramter name, for which {@link #isParameterForScope(String)} must return true
      * @return the name of the page
      */
     String extractPageName(String parameterName);

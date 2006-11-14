@@ -24,7 +24,7 @@ import org.apache.tapestry.engine.IPropertySource;
  * Wraps around a {@link org.apache.tapestry.engine.IPropertySource}to query a series of localized
  * keys.
  * <p>
- * This is much simpler than the old {@link org.apache.tapestry.util.LocalizedPropertySource}, and
+ * This is much simpler than the old {@link LocalizedPropertySource}, and
  * allows the locale to be specified on a thread-safe, per-invocation basis.
  * 
  * @author Howard M. Lewis Ship
@@ -47,7 +47,7 @@ public class LocalizedPropertySource
      * 
      * @param propertyName
      *            the base property name to search with.
-     * @param local
+     * @param locale
      *            the Locale used to generate suffixes (may be null).
      */
 

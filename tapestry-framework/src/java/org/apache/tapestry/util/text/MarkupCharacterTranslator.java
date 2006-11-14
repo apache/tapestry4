@@ -68,7 +68,7 @@ public class MarkupCharacterTranslator implements ICharacterTranslator
     }
 
     /**
-     * @see org.apache.tapestry.util.text.IMarkupCharacterTranslator#translateAttribute(char)
+     * @see ICharacterTranslator#translate(char)
      */
     public String translate(char ch)
     {

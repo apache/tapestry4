@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.script;
 
+import java.io.Writer;
+import java.util.Map;
+
 import org.apache.hivemind.Location;
 
 /**

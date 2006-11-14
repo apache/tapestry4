@@ -17,9 +17,11 @@ package org.apache.tapestry;
 import java.util.Collection;
 import java.util.Map;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.LocationHolder;
 import org.apache.hivemind.Messages;
 import org.apache.tapestry.engine.IPageLoader;
+import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.listener.ListenerMap;
 import org.apache.tapestry.services.impl.ComponentEventInvoker;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -280,7 +282,7 @@ public interface IComponent extends IRender, LocationHolder
      * Returns the contained components as an unmodifiable {@link Map}. This allows peer components
      * to work together without directly involving their container ... the classic example is to
      * have an {@link org.apache.tapestry.components.Insert}work with an enclosing
-     * {@link org.apache.tapestry.components.For}.
+     * {@link org.apache.tapestry.components.ForBean}.
      * <p>
      * This is late addition to Tapestry, because it also opens the door to abuse, since it is quite
      * possible to break the "black box" aspect of a component by interacting directly with

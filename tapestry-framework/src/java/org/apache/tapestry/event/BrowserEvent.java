@@ -106,7 +106,8 @@ public class BrowserEvent
     
     /**
      * Returns the target of the client side event.
-     * @return
+     * 
+     * @return The target representation of the client side object event originally bound for.
      */
     public EventTarget getTarget()
     {

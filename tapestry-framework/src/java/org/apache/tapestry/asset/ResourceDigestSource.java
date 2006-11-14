@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.asset;
 
+import org.apache.hivemind.ApplicationRuntimeException;
+
 /**
  * Calculates the digest value, as a string, for a particular classpath resource. This is primarily
  * used by the {@link org.apache.tapestry.asset.AssetService}to authenticate requests (you are not

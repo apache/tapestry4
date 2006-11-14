@@ -34,7 +34,7 @@ public final class DojoUtils
      * 
      * @param component
      * @param parameterName
-     * @return
+     * @return The parameter parsed into a json structure.
      */
     public static JSONObject parseJSONParameter(IComponent component, String parameterName)
     {

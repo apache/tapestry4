@@ -16,6 +16,7 @@ package org.apache.tapestry;
 
 import java.util.Collection;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 
 /**

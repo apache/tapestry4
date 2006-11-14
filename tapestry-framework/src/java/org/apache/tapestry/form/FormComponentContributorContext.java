@@ -14,8 +14,11 @@
 
 package org.apache.tapestry.form;
 
+import org.apache.tapestry.FormBehavior;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.json.JSONObject;
+import org.apache.tapestry.util.RegexpMatcher;
+import org.apache.tapestry.valid.ValidationConstants;
 
 /**
  * Object that provides support to objects that implement
@@ -23,7 +26,7 @@ import org.apache.tapestry.json.JSONObject;
  * about client-side JavaScript generation.
  * <p>
  * TODO: Having support for regular expressions might be useful (and would allow a single
- * {@link RegexpMatcher to be shared).
+ * {@link RegexpMatcher to be shared}).
  * 
  * @author Howard Lewis Ship
  * @since 4.0

@@ -108,8 +108,7 @@ public abstract class AbstractTranslator extends AbstractFormComponentContributo
     }
 
     /**
-     * @see org.apache.tapestry.form.FormComponentContributor#renderContribution(org.apache.tapestry.IRequestCycle,
-     *      org.apache.tapestry.form.IFormComponent)
+     * @see org.apache.tapestry.form.FormComponentContributor#renderContribution(IMarkupWriter, IRequestCycle, FormComponentContributorContext, IFormComponent)
      */
     public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
             FormComponentContributorContext context, IFormComponent field)

@@ -17,6 +17,7 @@ package org.apache.tapestry.contrib.inspector;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.fileupload.RequestContext;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
@@ -26,7 +27,7 @@ import org.apache.tapestry.web.WebSession;
 /**
  * Component of the {@link Inspector} page used to display the properties of the
  * {@link org.apache.tapestry.IEngine} as well as a serialized view of it. Also, the
- * {@link org.apache.tapestry.request.RequestContext} is dumped out.
+ * {@link RequestContext} is dumped out.
  * 
  * @author Howard Lewis Ship
  */

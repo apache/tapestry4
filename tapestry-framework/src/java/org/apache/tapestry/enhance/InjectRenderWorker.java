@@ -21,7 +21,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
  * Injects the component's render worker chain as the
- * {@link org.apache.tapestry.IComponent#getRenderWorker() renderWorker}property.
+ * {@link org.apache.tapestry.IComponent renderWorker}property.
  * 
  * @author jkuhnert
  * @since 4.1

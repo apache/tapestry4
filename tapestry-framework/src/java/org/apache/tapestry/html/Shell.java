@@ -269,7 +269,8 @@ public abstract class Shell extends AbstractComponent
 
     /**
      * Include additional content in the header of a page.
-     * @param style 
+     * 
+     * @param content 
      *
      * @since 4.1.1
      */
@@ -277,11 +278,14 @@ public abstract class Shell extends AbstractComponent
     {
         if (HiveMind.isBlank(content))
             return;
+        
         StringBuffer buffer = getContentBuffer();
+        
         if (buffer == null)
             buffer = new StringBuffer();
         
-        buffer.append(content);        
+        buffer.append(content);
+        
         setContentBuffer(buffer);
     }
     

@@ -32,6 +32,7 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.event.ChangeObserver;
 import org.apache.tapestry.event.ObservedChangeEvent;
+import org.apache.tapestry.multipart.IMultipartDecoder;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.util.StringSplitter;
 
@@ -45,17 +46,6 @@ import org.apache.tapestry.util.StringSplitter;
 
 public final class Tapestry
 {
-    /**
-     * The name ("action") of a service that allows behavior to be associated with an
-     * {@link IAction} component, such as {@link org.apache.tapestry.link.ActionLink }or
-     * {@link org.apache.tapestry.form.Form}.
-     * <p>
-     * This service is used with actions that are tied to the dynamic state of the page, and which
-     * require a rewind of the page.
-     */
-
-    public static final String ACTION_SERVICE = "action";
-
     /**
      * The name ("direct") of a service that allows stateless behavior for an {@link
      * org.apache.tapestry.link.DirectLink} component.
@@ -173,7 +163,7 @@ public final class Tapestry
      * Name of optional application extension for the multipart decoder used by the application. The
      * extension must implement {@link org.apache.tapestry.multipart.IMultipartDecoder} (and is
      * generally a configured instance of
-     * {@link org.apache.tapestry.multipart.DefaultMultipartDecoder}).
+     * {@link IMultipartDecoder}).
      * 
      * @since 3.0
      */

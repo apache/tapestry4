@@ -29,7 +29,7 @@ import org.apache.tapestry.web.WebUtils;
 
 /**
  * Implementation of {@link org.apache.tapestry.web.WebRequest} that adapts a
- * {@link PortletRequest).
+ * {@link PortletRequest} .
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0

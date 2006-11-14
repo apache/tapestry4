@@ -43,7 +43,7 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * A simplified version of {@link org.apache.commons.digester.Digester}. This version is without as
+ * A simplified version of org.apache.commons.digester.Digester. This version is without as
  * many bells and whistles but has some key features needed when parsing a document (rather than a
  * configuration file): <br>
  * <ul>
@@ -189,7 +189,7 @@ public class RuleDirectedParser extends DefaultHandler
     }
 
     /**
-     * Returns an {@link ILocation}representing the current position within the document (depending
+     * Returns an {@link Location}representing the current position within the document (depending
      * on the parser, this may be accurate to column number level).
      */
 
@@ -340,7 +340,7 @@ public class RuleDirectedParser extends DefaultHandler
     }
 
     /**
-     * Uses the {@link Locator}to track the position in the document as a {@link ILocation}. This
+     * Uses the {@link Locator}to track the position in the document as a {@link Location}. This
      * is invoked once (before the initial element is parsed) and the Locator is retained and
      * queried as to the current file location.
      * 
@@ -361,7 +361,7 @@ public class RuleDirectedParser extends DefaultHandler
     }
 
     /**
-     * Pops the top rule off the stack and invokes {@link IRule#endElementt(RuleDirectedParser)}.
+     * Pops the top rule off the stack and invokes {@link IRule#endElement(RuleDirectedParser)}.
      */
     public void endElement(String uri, String localName, String qName) throws SAXException
     {

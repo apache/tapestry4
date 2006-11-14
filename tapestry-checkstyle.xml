@@ -5,7 +5,7 @@
 <!--
 Checkstyle-Configuration: tapestry
 Description:
-
+The core tapestry checkstyle configuration
 -->
 <!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.2//EN" "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
 <module name="Checker">
@@ -37,7 +37,9 @@ Description:
         <module name="AvoidStarImport"/>
         <module name="ImportOrder"/>
         <module name="RedundantImport"/>
-        <module name="UnusedImports"/>
+        <module name="UnusedImports">
+            <property name="severity" value="ignore"/>
+        </module>
         <module name="TabCharacter"/>
         <module name="ModifierOrder"/>
         <module name="RedundantModifier"/>
@@ -79,7 +81,12 @@ Description:
         <module name="MutableException"/>
         <module name="ArrayTypeStyle"/>
         <module name="UpperEll"/>
-        <module name="JavadocType"/>
+        <module name="JavadocType">
+            <property name="excludeScope" value="private"/>
+            <property name="scope" value="public"/>
+        </module>
+        <module name="JavadocStyle"/>
+        <module name="WriteTag"/>
     </module>
     <module name="PackageHtml"/>
     <module name="NewlineAtEndOfFile"/>

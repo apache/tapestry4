@@ -35,7 +35,7 @@ public interface ComponentConstructorFactory
      *            the page or component specification which directs the enhancement operation
      * @param className
      *            the name of the base component class (in some cases,
-     *            {@link IComponentSpecification#getComponentClassName() is null andother code
+     *            {@link IComponentSpecification#getComponentClassName()} is null andother code
      *            provides the default)
      * @returns a constructor used to create instances of the enhanced component class
      */

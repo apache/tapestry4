@@ -19,8 +19,7 @@ import java.util.Collections;
 
 /**
  * Concrete implementation of {@link org.apache.tapestry.IEngine} used for ordinary applications.
- * All page state information is maintained in the {@link javax.servlet.http.HttpSession} using
- * instances of {@link org.apache.tapestry.record.SessionPageRecorder}.
+ * All page state information is maintained in the {@link javax.servlet.http.HttpSession}.
  * 
  * @author Howard Lewis Ship
  */

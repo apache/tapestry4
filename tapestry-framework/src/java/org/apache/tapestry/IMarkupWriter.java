@@ -115,7 +115,7 @@ public interface IMarkupWriter
     void comment(String value);
 
     /**
-     * Ends the element most recently started by {@link#begin(String)}. The name of the tag is
+     * Ends the element most recently started by {@link #begin(String)}. The name of the tag is
      * popped off of the active element stack and used to form an HTML close tag.
      */
 

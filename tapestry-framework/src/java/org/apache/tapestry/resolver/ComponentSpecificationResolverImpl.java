@@ -114,7 +114,7 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
 
     /**
      * Like
-     * {@link #resolve(org.apache.tapestry.IRequestCycle, org.apache.tapestry.INamespace, java.lang.String, org.apache.tapestry.ILocation)},
+     * {@link #resolve(org.apache.tapestry.IRequestCycle, org.apache.tapestry.INamespace, java.lang.String, Location)},
      * but used when the type has already been parsed into a library id and a simple type.
      * 
      * @param cycle

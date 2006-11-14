@@ -17,7 +17,7 @@ package org.apache.tapestry.junit.utils;
 import java.util.Random;
 
 /**
- * Bean used by {@link org.apache.tapestry.junit.utils.TestPublicBean}.
+ * Bean used by bean tester.
  * 
  * @author Howard Lewis Ship
  * @since 2.2

@@ -94,7 +94,7 @@ public abstract class ChartPage extends BasePage implements IChartProvider, Page
     /**
      * Invoked by the deleted checkbox (for each plotValue). If true, the the current plotValue is
      * added to the list of plotValues to remove (though the actual removing is done inside
-     * {@link #delete(IRequestCycle)}, after the loop.
+     * {@link #delete()}, after the loop.
      */
 
     public void setMarkedForDeletion(boolean value)

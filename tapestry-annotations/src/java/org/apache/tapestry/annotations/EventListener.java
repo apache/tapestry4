@@ -19,6 +19,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.apache.tapestry.IComponent;
+
 /**
  * Annotation used to connect an event on a component / page with a particular listener method. This
  * is currently intended to be used to connect client side events to listener methods but may have
@@ -53,15 +55,15 @@ public @interface EventListener
      * The form id of the form that should have its data submitted when one of the specified events
      * is triggered.
      * 
-     * @return
+     * @return The form name (or id of component) to submit when event is triggered.
      */
     String submitForm() default "";
 
     /**
-     * Whether or not to perform form validation if the {@link #form()} parameter has been set.
+     * Whether or not to perform form validation if the {@link #submitForm()} parameter has been set.
      * Default is false.
      * 
-     * @return
+     * @return Whether or not to validate the form.
      */
     boolean validateForm() default false;
 

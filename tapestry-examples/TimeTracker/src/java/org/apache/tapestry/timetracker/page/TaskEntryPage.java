@@ -84,7 +84,8 @@ public abstract class TaskEntryPage extends BasePage
     
     /**
      * Selection model for projects.
-     * @return
+     * 
+     * @return The project model.
      */
     public IAutocompleteModel getProjectModel()
     {

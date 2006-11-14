@@ -399,7 +399,7 @@ public class MockRequest extends AttributeHolder implements HttpServletRequest
     }
 
     /**
-     *  Delegates this to the {@link org.apache.tapestry.junit.mock.MockSession}, if
+     *  Delegates this to the {@link MockSession}, if
      *  it exists.
      * 
      */
