@@ -134,13 +134,6 @@
                     </reportSet>
                 </reportSets>
             </plugin>
-            
-            <plugin>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <configuration>
-                    <configLocation>${basedir}/../tapestry-checkstyle.xml</configLocation>
-                </configuration>
-            </plugin>
         </plugins>
     </reporting>
 
