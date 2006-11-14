@@ -164,6 +164,20 @@ public abstract class MyPage
 
             </subsection>
 
+            <subsection name="Javascript Includes">
+                
+                <p>
+                    Beginning with Tapestry 4.1 > portlets must also now manage including the global Tapestry and Dojo 
+                    javascript packages that the framework depends on - something which is normally done for you by 
+                    using the <a href="../components/general/shell.html">Shell</a> component. 
+                </p>
+                
+                <p>Luckily this should be a fairly trivial task if you use the 
+                    <a href="../components/general/scriptincludes.html">ScriptIncludes</a> component which was created
+                    specifically for these scenerios. Simply dump it into your portlet pages somewhere and it will 
+                    properly include/configure the necessary javascript packages for you.</p>
+            </subsection>
+
             <subsection name="Partial Pages">
 
 

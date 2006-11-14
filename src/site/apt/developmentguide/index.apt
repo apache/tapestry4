@@ -1,0 +1,14 @@
+ ------
+Development Guide - Introduction
+ ------
+Jesse Kuhnert
+ ------
+13 Nov 2006
+ ------
+ 
+Introduction
+
+  This guide is intended for more advanced audiences where slight customizations are needed to extend 
+  existing functionality,  as well as give an overview for how some of the important core Tapestry services involved
+  behind the scenes works.
+  
