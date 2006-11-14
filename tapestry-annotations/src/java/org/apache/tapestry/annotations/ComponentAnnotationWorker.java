@@ -33,8 +33,7 @@ import org.apache.tapestry.spec.IContainedComponent;
  * 
  * @author Howard Lewis Ship
  * @since 4.0
- * @see org.apache.tapestry.annotations.Component
- * @see org.apache.tapestry.annotations.Binding
+ * @see Component
  */
 public class ComponentAnnotationWorker implements MethodAnnotationEnhancementWorker
 {

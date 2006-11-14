@@ -55,7 +55,6 @@ public class TestJSONWriter extends BaseComponentTestCase
     /**
      * Creates a writer instance that content can be asserted
      * against.
-     * @return
      */
     protected JSONWriterImpl newJSONWriter()
     {

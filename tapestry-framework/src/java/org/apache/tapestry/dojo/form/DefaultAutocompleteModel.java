@@ -38,7 +38,7 @@ import org.apache.hivemind.util.Defense;
  *  IAutocompleteModel model = new DefaultAutocompleteModel(List users, "id", "name");
  * </pre>
  * 
- * @see {@linkplain http://jakarta.apache.org/commons/beanutils/commons-beanutils-1.6.1/docs/api/org/apache/commons/beanutils/PropertyUtils.html}
+ * @see "http://jakarta.apache.org/commons/beanutils/commons-beanutils-1.6.1/docs/api/org/apache/commons/beanutils/PropertyUtils.html"
  * @author jkuhnert
  */
 public class DefaultAutocompleteModel implements IAutocompleteModel

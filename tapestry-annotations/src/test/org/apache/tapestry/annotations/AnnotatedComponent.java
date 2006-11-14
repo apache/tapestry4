@@ -17,7 +17,7 @@ package org.apache.tapestry.annotations;
 import org.apache.tapestry.BaseComponent;
 
 /**
- * Used by {@link org.apache.tapestry.annotations.TestParameterAnnotatioWorker}.
+ * Used by {@link TestParameterAnnotationWorker}.
  * 
  * @author Andreas Andreou
  * @since 4.1.1

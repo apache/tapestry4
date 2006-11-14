@@ -24,7 +24,7 @@ import org.apache.tapestry.coerce.ValueConverter;
  * <p>
  * Note: Renamed from StringBinding to MessageBinding in release 4.0.
  * 
- * @see IComponent#getString(String)
+ * @see IComponent#getMessages()
  * @author Howard Lewis Ship
  * @since 2.0.4
  */

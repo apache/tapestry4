@@ -35,7 +35,7 @@ import org.apache.tapestry.util.MultiKey;
  * unique key (usually built from the application name).
  * <p>
  * The <code>PageSource</code> acts as a pool for {@link IPage}instances. Pages are retrieved
- * from the pool using {@link #getPage(IRequestCycle, String, IMonitor)}and are later returned to
+ * from the pool using {@link #getPage(IRequestCycle, String)}and are later returned to
  * the pool using {@link #releasePage(IPage)}.
  * <p>
  * TBD: Pooled pages stay forever. Need a strategy for cleaning up the pool, tracking which pages

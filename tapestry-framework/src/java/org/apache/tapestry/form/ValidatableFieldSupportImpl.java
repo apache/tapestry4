@@ -24,7 +24,7 @@ import org.apache.tapestry.form.validator.Validator;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
- * Default {@link VadidatableFieldSupport} implementation. This implementation generates calls to a
+ * Default {@link ValidatableFieldSupport} implementation. This implementation generates calls to a
  * static javascript function during render if client-side validation is enabled.
  * 
  * @author Paul Ferraro
@@ -52,7 +52,7 @@ public class ValidatableFieldSupportImpl implements ValidatableFieldSupport
     }
 
     /**
-     * @see org.apache.tapestry.form.ValidatableFieldSupport#renderValidatorContributions(org.apache.tapestry.form.ValidatableField, org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     * @see org.apache.tapestry.form.ValidatableFieldSupport#renderContributions(ValidatableField, IMarkupWriter, IRequestCycle)
      */
     public void renderContributions(ValidatableField component, IMarkupWriter writer,
             IRequestCycle cycle)

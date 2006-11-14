@@ -138,7 +138,7 @@ public interface IComponentSpecification extends IPropertyHolder,
      * Returns the specification of a parameter with the given name, or null if
      * no such parameter exists.
      * 
-     * @see #addParameter(String, IParameterSpecification)
+     * @see #addParameter(IParameterSpecification)
      */
     IParameterSpecification getParameter(String name);
 
@@ -156,7 +156,7 @@ public interface IComponentSpecification extends IPropertyHolder,
      * Returns a List of of String names of all parameters. This list is in
      * alphabetical order.
      * 
-     * @see #addParameter(String, IParameterSpecification)
+     * @see #addParameter(IParameterSpecification)
      */
     List getParameterNames();
 

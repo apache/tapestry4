@@ -15,6 +15,9 @@ package org.apache.tapestry;
 
 import java.util.List;
 
+import org.apache.tapestry.components.Any;
+import org.apache.tapestry.link.DirectLink;
+
 
 /**
  * Represents "something" that can cause dynamic XHR/JSON requests to be executed
@@ -67,10 +70,10 @@ public interface IDynamicInvoker
     
     /**
      * Used to specify that the return invocation of the response created should be in the
-     * {@linkplain http://json.org} format. Without setting the {@link #getUpdateComponents()} parameter
+     * {@linkplain "http://json.org"} format. Without setting the {@link #getUpdateComponents} parameter
      * this parameter is pretty useless.
      * 
-     * @see {@link org.apache.IJSONRender}
+     * @see {@link org.apache.tapestry.IJSONRender}
      * @return True if response should be encoded using JSON semantics.
      */
     boolean isJson();

@@ -29,8 +29,7 @@ import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.web.HttpServletWebActivator;
 
 /**
- * Locates the application specification and informs the
- * {@link org.apache.tapestry.services.ServletInfo}service about it.
+ * Locates the application specification and informs the servlet service about it.
  * 
  * @author Howard Lewis Ship
  * @since 4.0

@@ -98,7 +98,8 @@ public class EventBoundListener
     /**
      * Whether or not listener should submit form
      * asynchronously.
-     * @return
+     * 
+     * @return True if listener is asynchronous.
      */
     public boolean isAsync()
     {

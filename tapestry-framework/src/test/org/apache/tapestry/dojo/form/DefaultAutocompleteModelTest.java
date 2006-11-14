@@ -22,7 +22,7 @@ import org.testng.annotations.Test;
 
 
 /**
- * Tests functionality of {@link DefaultAutocompelteModel}.
+ * Tests functionality of {@link DefaultAutocompleteModel}.
  * 
  * @author jkuhnert
  */

@@ -14,6 +14,7 @@
 package org.apache.tapestry.coerce;
 
 import java.util.Arrays;
+import java.util.Collection;
 
 import org.apache.tapestry.TapestryUtils;
 

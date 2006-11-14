@@ -155,7 +155,7 @@ public abstract class FileSystemTree extends BasePage implements
     }
 
     /**
-     * @see org.apache.tapestry.workbench.tree.examples.ISelectedFolderSource#getSelectedFolder()
+     * @see org.apache.tapestry.workbench.tree.examples.ISelectedFolderSource#getSelectedFolderChildren()
      */
     public Collection getSelectedFolderChildren()
     {

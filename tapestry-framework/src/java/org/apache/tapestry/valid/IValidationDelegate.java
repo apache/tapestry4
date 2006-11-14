@@ -21,11 +21,12 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.IFormComponent;
+import org.apache.tapestry.form.TextField;
 
 /**
  * Interface used to track validation errors in forms and
  * {@link IFormComponent form element component}s (including
- * {@link org.apache.tapestry.form.AbstractTextField}&nbsp;and its subclasses).
+ * {@link TextField}&nbsp;and its subclasses).
  * <p>
  * In addition, controls how fields that are in error are presented (they can be
  * <em>decorated</em> in various ways by the delegate; the default
@@ -55,7 +56,7 @@ import org.apache.tapestry.form.IFormComponent;
  * errors, some of which are associated with a particular field, some of which
  * are unassociated with any particular field.
  * <p>
- * But what happens if you use a {@link org.apache.tapestry.components.Foreach}&nbsp;or
+ * But what happens if you use a {@link org.apache.tapestry.components.ForBean}&nbsp;or
  * {@link org.apache.tapestry.form.ListEdit}&nbsp;inside your form? Some of
  * your components will render multiple times. In this case you will have
  * multiple <em>fields</em>. Each field will have a unique field name (the

@@ -254,9 +254,6 @@ public class JSONObject
         this(new JSONTokener(string));
     }
 
-    /** 
-     * {@inheritDoc}
-     */
     public JSONObject accumulate(String key, Object value)
     {
         JSONArray a;
@@ -276,9 +273,6 @@ public class JSONObject
         return this;
     }
 
-    /** 
-     * {@inheritDoc}
-     */
     public Object get(String key)
     {
         Object o = opt(key);
@@ -287,9 +281,6 @@ public class JSONObject
         return o;
     }
 
-    /** 
-     * {@inheritDoc}
-     */
     public boolean getBoolean(String key)
     {
         Object o = get(key);
@@ -306,9 +297,6 @@ public class JSONObject
                 + "] is not a Boolean.");
     }
 
-    /** 
-     * {@inheritDoc}
-     */
     public double getDouble(String key)
     {
         Object o = get(key);
@@ -328,9 +316,6 @@ public class JSONObject
         return this.myHashMap;
     }
 
-    /** 
-     * {@inheritDoc}
-     */
     public int getInt(String key)
     {
         Object o = get(key);
@@ -338,9 +323,6 @@ public class JSONObject
                 : (int) getDouble(key);
     }
 
-    /** 
-     * {@inheritDoc}
-     */
     public JSONArray getJSONArray(String key)
     {
         Object o = get(key);
@@ -349,9 +331,6 @@ public class JSONObject
                 + "] is not a JSONArray.");
     }
 
-    /** 
-     * {@inheritDoc}
-     */
     public JSONObject getJSONObject(String key)
     {
         Object o = get(key);
@@ -360,49 +339,31 @@ public class JSONObject
                 + "] is not a JSONObject.");
     }
 
-    /** 
-     * {@inheritDoc}
-     */
     public String getString(String key)
     {
         return get(key).toString();
     }
 
-    /** 
-     * {@inheritDoc}
-     */
     public boolean has(String key)
     {
         return this.myHashMap.containsKey(key);
     }
 
-    /** 
-     * {@inheritDoc}
-     */
     public boolean isNull(String key)
     {
         return JSONObject.NULL.equals(opt(key));
     }
 
-    /** 
-     * {@inheritDoc}
-     */
     public Iterator keys()
     {
         return this.myHashMap.keySet().iterator();
     }
 
-    /** 
-     * {@inheritDoc}
-     */
     public int length()
     {
         return this.myHashMap.size();
     }
 
-    /** 
-     * {@inheritDoc}
-     */
     public JSONArray names()
     {
         JSONArray ja = new JSONArray();
@@ -446,26 +407,17 @@ public class JSONObject
         return s;
     }
 
-    /** 
-     * {@inheritDoc}
-     */
     public Object opt(String key)
     {
         if (key == null) { throw new NullPointerException("Null key"); }
         return this.myHashMap.get(key);
     }
 
-    /** 
-     * {@inheritDoc}
-     */
     public boolean optBoolean(String key)
     {
         return optBoolean(key, false);
     }
 
-    /** 
-     * {@inheritDoc}
-     */
     public boolean optBoolean(String key, boolean defaultValue)
     {
         Object o = opt(key);
@@ -484,17 +436,11 @@ public class JSONObject
         return defaultValue;
     }
 
-    /** 
-     * {@inheritDoc}
-     */
     public double optDouble(String key)
     {
         return optDouble(key, Double.NaN);
     }
 
-    /** 
-     * {@inheritDoc}
-     */
     public double optDouble(String key, double defaultValue)
     {
         Object o = opt(key);
@@ -513,17 +459,11 @@ public class JSONObject
         return defaultValue;
     }
 
-    /** 
-     * {@inheritDoc}
-     */
     public int optInt(String key)
     {
         return optInt(key, 0);
     }
 
-    /** 
-     * {@inheritDoc}
-     */
     public int optInt(String key, int defaultValue)
     {
         Object o = opt(key);
@@ -542,53 +482,35 @@ public class JSONObject
         return defaultValue;
     }
 
-    /** 
-     * {@inheritDoc}
-     */
     public JSONArray optJSONArray(String key)
     {
         Object o = opt(key);
         return o instanceof JSONArray ? (JSONArray) o : null;
     }
 
-    /** 
-     * {@inheritDoc}
-     */
     public JSONObject optJSONObject(String key)
     {
         Object o = opt(key);
         return o instanceof JSONObject ? (JSONObject) o : null;
     }
 
-    /** 
-     * {@inheritDoc}
-     */
     public String optString(String key)
     {
         return optString(key, "");
     }
 
-    /** 
-     * {@inheritDoc}
-     */
     public String optString(String key, String defaultValue)
     {
         Object o = opt(key);
         return o != null ? o.toString() : defaultValue;
     }
 
-    /** 
-     * {@inheritDoc}
-     */
     public JSONObject put(String key, boolean value)
     {
         put(key, Boolean.valueOf(value));
         return this;
     }
 
-    /** 
-     * {@inheritDoc}
-     */
     public JSONObject put(String key, double value)
     {
         put(key, new Double(value));
@@ -601,18 +523,12 @@ public class JSONObject
         return this;
     }
     
-    /** 
-     * {@inheritDoc}
-     */
     public JSONObject put(String key, int value)
     {
         put(key, new Integer(value));
         return this;
     }
-
-    /** 
-     * {@inheritDoc}
-     */
+    
     public JSONObject put(String key, Object value)
     {
         if (key == null) { throw new NullPointerException("Null key."); }
@@ -626,10 +542,7 @@ public class JSONObject
         }
         return this;
     }
-
-    /** 
-     * {@inheritDoc}
-     */
+    
     public JSONObject putOpt(String key, Object value)
     {
         if (value != null)
@@ -640,9 +553,10 @@ public class JSONObject
     }
 
     /**
-     * @see {{@link #quote(String)}.
+     * @see #quote(String) .
      * @param value
-     * @return
+     * 
+     * @return The character quoted.
      */
     public static String quote(char value)
     {
@@ -718,17 +632,11 @@ public class JSONObject
         return sb.toString();
     }
 
-    /** 
-     * {@inheritDoc}
-     */
     public Object remove(String key)
     {
         return this.myHashMap.remove(key);
     }
 
-    /** 
-     * {@inheritDoc}
-     */
     public JSONArray toJSONArray(JSONArray names)
     {
         if (names == null || names.length() == 0) { return null; }
@@ -762,10 +670,7 @@ public class JSONObject
         sb.append('}');
         return sb.toString();
     }
-
-    /** 
-     * {@inheritDoc}
-     */
+    
     public String toString(int indentFactor)
     {
         return toString(indentFactor, 0);

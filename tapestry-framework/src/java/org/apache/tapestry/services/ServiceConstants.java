@@ -35,7 +35,7 @@ public class ServiceConstants
 
     /**
      * The id path to the component within the page. By convention, this component is within the
-     * {@link #PAGE}, unless {@link #CONTAINER_PAGE}&nbsp;is specified.
+     * {@link #PAGE}.
      */
 
     public static final String COMPONENT = "component";

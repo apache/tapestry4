@@ -21,7 +21,7 @@ package org.apache.tapestry.json;
  * participating in a particular response to decide how to cooperate and build
  * a JSON structure that their client side will accept.
  * 
- * @see <a href="http://www.json.org/">http://www.json.org/</a>
+ * @see "http://www.json.org/"
  * @author JSON.org, jkuhnert
  */
 public interface IJSONWriter

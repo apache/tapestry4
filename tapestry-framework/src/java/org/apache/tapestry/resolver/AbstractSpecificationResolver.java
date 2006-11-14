@@ -59,8 +59,7 @@ public class AbstractSpecificationResolver
     }
 
     /**
-     * Returns the {@link ISpecificationResolverDelegate}instance registered in the application
-     * specification as extension {@link Tapestry#SPECIFICATION_RESOLVER_DELEGATE_EXTENSION_NAME},
+     * Returns the {@link ISpecificationResolverDelegate}instance registered in the application 
      * or null if no such extension exists.
      */
 

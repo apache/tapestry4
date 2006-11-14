@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.resolver;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
@@ -47,7 +48,7 @@ public interface ComponentSpecificationResolver
 
     /**
      * Like
-     * {@link #resolve(org.apache.tapestry.IRequestCycle, org.apache.tapestry.INamespace, java.lang.String, org.apache.tapestry.ILocation)},
+     * {@link #resolve(org.apache.tapestry.IRequestCycle, org.apache.tapestry.INamespace, java.lang.String, Location)},
      * but used when the type has already been parsed into a library id and a simple type.
      * 
      * @param cycle

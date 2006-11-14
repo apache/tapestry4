@@ -29,10 +29,10 @@ import org.apache.tapestry.valid.ValidatorException;
  * 2.3.
  * <p>
  * Typically, the values available to be selected are defined using an
- * {@link org.apache.commons.lang.enum.Enum}. A PropertySelection is dependent on an
+ * {@link java.lang.Enum}. A PropertySelection is dependent on an
  * {@link IPropertySelectionModel} to provide the list of possible values.
  * <p>
- * Often, this is used to select a particular {@link org.apache.commons.lang.enum.Enum} to assign to
+ * Often, this is used to select a particular {@link java.lang.Enum} to assign to
  * a property; the {@link EnumPropertySelectionModel} class simplifies this.
  * <p>
  * Often, a drop-down list will contain an initial option that serves both as a label and to represent 

@@ -54,7 +54,7 @@ public class SimpleBean
     /**
      * Returns the value stored.
      * 
-     * @return
+     * @return The value stored.
      */
     public int getValue()
     {

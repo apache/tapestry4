@@ -30,12 +30,12 @@ import org.apache.tapestry.valid.ValidatorException;
 /**
  * A component which uses &lt;input type=checkbox&gt; to set a property of some
  * object. Typically, the values for the object are defined using an
- * {@link org.apache.commons.lang.enum.Enum}. A MultiplePropertySelection is
+ * {@link java.lang.Enum}. A MultiplePropertySelection is
  * dependent on an {link IPropertySelectionModel} to provide the list of
  * possible values.
  * <p>
  * Often, this is used to select one or more
- * {@link org.apache.commons.lang.enum.Enum}to assign to a property; the
+ * {@link java.lang.Enum} to assign to a property; the
  * {@link org.apache.tapestry.form.EnumPropertySelectionModel}class simplifies
  * this.
  * <p>

@@ -14,10 +14,13 @@
 
 package org.apache.tapestry;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.form.FormEventType;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.json.JSONObject;
+import org.apache.tapestry.services.ResponseBuilder;
+import org.apache.tapestry.valid.ValidationConstants;
 
 /**
  * Common interface extended by {@link org.apache.tapestry.IForm}&nbsp;and
@@ -190,7 +193,7 @@ public interface FormBehavior
      * Checks to see if a form field has been updated. 
      * 
      * @see #setFormFieldUpdating(boolean)
-     * @return
+     * @return True if any form field was updated.
      */
     boolean isFormFieldUpdating();
 }

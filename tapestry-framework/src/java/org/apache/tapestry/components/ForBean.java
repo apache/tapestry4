@@ -157,9 +157,7 @@ public abstract class ForBean extends AbstractFormComponent
 
     /**
      * Returns the most recent value extracted from the source parameter.
-     * 
-     * @throws org.apache.tapestry.ApplicationRuntimeException
-     *             if the For is not currently rendering.
+     *
      */
 
     public final Object getValue()
@@ -171,10 +169,8 @@ public abstract class ForBean extends AbstractFormComponent
     }
 
     /**
-     * The index number, within the {@link #getSource() source}, of the the current value.
+     * The index number, within the {@link #getStoredData(IRequestCycle, String) }, of the the current value.
      * 
-     * @throws org.apache.tapestry.ApplicationRuntimeException
-     *             if the For is not currently rendering.
      */
 
     public int getIndex()
@@ -388,7 +384,7 @@ public abstract class ForBean extends AbstractFormComponent
      * shows whether a value or a primary key is being described.
      * 
      * @param value
-     * @return
+     * @return The string representation of the given value.
      */
     protected String getStringRepFromValue(Object value)
     {

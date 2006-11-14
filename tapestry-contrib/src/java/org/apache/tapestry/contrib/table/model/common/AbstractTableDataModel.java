@@ -71,7 +71,7 @@ public abstract class AbstractTableDataModel implements ITableDataModel
     }
 
     /**
-     * @see org.apache.tapestry.contrib.table.model.ITableDataModel#addTableDataModelListener(ITableDataModelListener).
+     * @see org.apache.tapestry.contrib.table.model.ITableDataModel#addTableDataModelListener(ITableDataModelListener) .
      */
     public void addTableDataModelListener(ITableDataModelListener objListener)
     {
@@ -82,7 +82,7 @@ public abstract class AbstractTableDataModel implements ITableDataModel
     }
 
     /**
-     * @see org.apache.tapestry.contrib.table.model.ITableDataModel#removeTableDataModelListener(ITableDataModelListener).
+     * @see org.apache.tapestry.contrib.table.model.ITableDataModel#removeTableDataModelListener(ITableDataModelListener) .
      */
     public void removeTableDataModelListener(ITableDataModelListener objListener)
     {

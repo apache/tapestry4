@@ -141,7 +141,7 @@ public class ExternalCallback implements ICallback
     }
 
     /**
-     * Invokes {@link IRequestCycle#setPage(String)} to select the previously identified
+     * Invokes {@link IRequestCycle#activate(org.apache.tapestry.IPage)} to select the previously identified
      * <tt>IExternalPage</tt> as the response page and activates the page by invoking
      * <tt>activateExternalPage()</tt> with the callback parameters and request cycle.
      */

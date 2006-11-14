@@ -16,6 +16,7 @@ package org.apache.tapestry.dojo.form;
 import java.util.Map;
 
 import org.apache.tapestry.components.IPrimaryKeyConverter;
+import org.apache.tapestry.form.IPropertySelectionModel;
 
 
 /**

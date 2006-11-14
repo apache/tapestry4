@@ -37,6 +37,7 @@ import org.apache.tapestry.form.ValidatableFieldExtension;
 import org.apache.tapestry.form.ValidatableFieldSupport;
 import org.apache.tapestry.form.validator.Required;
 import org.apache.tapestry.form.validator.Validator;
+import org.apache.tapestry.html.Body;
 import org.apache.tapestry.json.JSONLiteral;
 import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.valid.IValidationDelegate;

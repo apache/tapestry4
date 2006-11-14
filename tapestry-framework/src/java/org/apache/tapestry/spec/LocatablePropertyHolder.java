@@ -21,7 +21,7 @@ import org.apache.tapestry.util.BasePropertyHolder;
 /**
  * Base class for implementing both interfaces
  * {@link org.apache.tapestry.util.IPropertyHolder} and
- * {@link org.apache.tapestry.ILocationHolder}. This is used by all the
+ * {@link LocationHolder}. This is used by all the
  * specification classes.
  * 
  * @author Howard Lewis Ship

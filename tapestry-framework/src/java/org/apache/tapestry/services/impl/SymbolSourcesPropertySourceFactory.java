@@ -16,11 +16,12 @@ package org.apache.tapestry.services.impl;
 
 import org.apache.hivemind.ServiceImplementationFactory;
 import org.apache.hivemind.ServiceImplementationFactoryParameters;
+import org.apache.hivemind.internal.Module;
 
 /**
  * Used to create an service instance of
  * {@link  org.apache.tapestry.services.impl.SymbolSourcesPropertySource}. This is because SSPS
- * needs an instance of {@link org.apache.hivemind.Module}, and there's no way to do that
+ * needs an instance of {@link Module}, and there's no way to do that
  * with hivemind.BuilderFactory.
  * 
  * @author Howard Lewis Ship

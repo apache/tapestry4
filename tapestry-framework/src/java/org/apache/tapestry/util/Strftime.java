@@ -29,7 +29,7 @@ import java.util.TimeZone;
  * Added to tapestry in order to help with dojo/javascript date/time conversions.
  * </p>
  * 
- * @see {@linkplain http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html}
+ * @see "http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html"
  * @author Bip Thelin
  * @author Dan Sandberg
  */
@@ -191,7 +191,7 @@ public class Strftime
     /**
      * Parses the input. 
      * 
-     * @see {@link java.text.SimpleDateFormat#parse(String)}
+     * @see java.text.SimpleDateFormat#parse(String)
      * @param input The string to parse.
      * @return A parsed {@link Date}.
      * @throws ParseException On input error.
@@ -215,7 +215,7 @@ public class Strftime
     /**
      * Change the timezone used to format dates.
      * 
-     * @see SimpleDateFormat#setTimeZone
+     * @see SimpleDateFormat#setTimeZone(TimeZone)
      */
     public void setTimeZone(TimeZone timeZone)
     {

@@ -36,8 +36,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Tests for:
  * <ul>
- * <li>{@link org.apache.tapestry.services.impl.ServletInfoImpl}
- * <li>{@link org.apache.tapestry.services.impl.StoreServletInfoFilter}
  * <li>{@link org.apache.tapestry.services.impl.ApplicationGlobalsImpl}
  * <li>{@link org.apache.tapestry.services.impl.InfrastructureObjectProvider}
  * </ul>

@@ -98,7 +98,8 @@ public class JSONWriterImpl implements IJSONWriter
     /**
      * The outputstream being used to write this 
      * instance's content.
-     * @return 
+     * 
+     * @return  The writer being written to.
      */
     protected PrintWriter getWriter()
     {

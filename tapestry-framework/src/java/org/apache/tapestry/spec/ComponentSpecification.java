@@ -333,7 +333,7 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
      * Returns the specification of a parameter with the given name, or null if no such parameter
      * exists.
      * 
-     * @see #addParameter(String, IParameterSpecification)
+     * @see #addParameterByName(String, IParameterSpecification)
      */
 
     public IParameterSpecification getParameter(String name)
@@ -370,7 +370,7 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
     /**
      * Returns a List of of String names of all parameters. This list is in alphabetical order.
      * 
-     * @see #addParameter(String, IParameterSpecification)
+     * @see #addParameterByName(String, IParameterSpecification)
      */
 
     public List getParameterNames()

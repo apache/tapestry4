@@ -16,6 +16,7 @@ package org.apache.tapestry.contrib.inspector;
 
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.html.Body;
 
 /**
  * Component that can be placed into application pages that will launch the inspector in a new

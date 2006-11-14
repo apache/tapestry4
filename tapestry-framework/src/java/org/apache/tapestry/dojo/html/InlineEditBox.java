@@ -130,7 +130,6 @@ public abstract class InlineEditBox extends AbstractWidget implements IDirect
     
     /**
      * Callback url used by client side widget to update server component.
-     * @return
      */
     public String getUpdateUrl()
     {

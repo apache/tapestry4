@@ -44,7 +44,8 @@ public interface ResponseContributor {
      * 
      * @param cycle
      *          The incoming request cycle for this request.
-     * @return
+     *          
+     * @return A newly created response builder.
      */
     ResponseBuilder createBuilder(IRequestCycle cycle)
     throws IOException;

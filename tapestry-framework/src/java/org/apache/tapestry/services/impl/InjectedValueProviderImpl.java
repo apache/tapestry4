@@ -42,7 +42,7 @@ public class InjectedValueProviderImpl implements InjectedValueProvider
     
     /**
      * Deletegates out to
-     * {@link Translator#translate(org.apache.hivemind.internal.Module, java.lang.Class, java.lang.String, org.apache.hivemind.Location).
+     * {@link Translator#translate(org.apache.hivemind.internal.Module, java.lang.Class, java.lang.String, org.apache.hivemind.Location)} .
      */
     public Object obtainValue(String locator, Location location)
     {

@@ -303,7 +303,8 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
      * @param prop
      * @param scriptParms
      * @param cycle
-     * @return
+     * 
+     * @return A set of events that can be connected "now".
      */
     Object[][] filterFormEvents(ComponentEventProperty prop, Map scriptParms, IRequestCycle cycle)
     {

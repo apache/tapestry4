@@ -38,7 +38,8 @@ public class ProjectDao extends BaseDao
     
     /**
      * Creates a list of all projects.
-     * @return
+     * 
+     * @return All projects.
      */
     public List<Project> listProjects()
     {

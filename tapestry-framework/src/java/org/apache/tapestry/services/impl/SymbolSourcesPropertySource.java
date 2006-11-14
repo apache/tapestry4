@@ -33,7 +33,7 @@ public class SymbolSourcesPropertySource implements IPropertySource
     }
 
     /**
-     * Invokes {@link Module#getSymbolValue(java.lang.String)}.
+     * Invokes {@link Module#getConfigurationAsMap(String)}.
      */
     public String getPropertyValue(String propertyName)
     {

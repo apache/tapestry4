@@ -21,7 +21,8 @@ import org.apache.tapestry.services.Infrastructure;
 
 /**
  * An object that contains all the invariant parameters to the
- * {@link org.apache.tapestry.engine.RequestCycle#RequestCycle(IEngine, QueryParameterMap, IEngineService, IMonitor, RequestCycleEnvironment)}
+ * 
+ * {@link RequestCycle#RequestCycle(org.apache.tapestry.IEngine, org.apache.tapestry.util.QueryParameterMap, String, RequestCycleEnvironment)}
  * constructor.
  * 
  * @author Howard M. Lewis Ship

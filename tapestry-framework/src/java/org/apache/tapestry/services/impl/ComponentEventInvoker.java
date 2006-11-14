@@ -114,7 +114,7 @@ public class ComponentEventInvoker implements ResetEventListener
     }
     
     /**
-     * Causes the configured listeners for the passed {@link FormSupport}'s {@link IForm) to
+     * Causes the configured listeners for the passed {@link FormSupport}'s {@link IForm} to
      * be invoked, if mapped to this request/event.
      * 
      * @param formSupport
@@ -296,7 +296,8 @@ public class ComponentEventInvoker implements ResetEventListener
     
     /**
      * Returns the {@link Map} being managed for element events.
-     * @return
+     * 
+     * @return The map of events to elements.
      */
     public Map getElementEvents()
     {

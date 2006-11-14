@@ -13,6 +13,7 @@
 // limitations under the License.
 package org.apache.tapestry.test;
 
+import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.html.Body;

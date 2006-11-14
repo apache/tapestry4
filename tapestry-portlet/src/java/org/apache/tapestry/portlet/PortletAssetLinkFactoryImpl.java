@@ -16,6 +16,7 @@ package org.apache.tapestry.portlet;
 import java.util.Map;
 
 import org.apache.tapestry.IEngine;
+import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.EngineServiceLink;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
@@ -25,7 +26,7 @@ import org.apache.tapestry.services.impl.LinkFactoryImpl;
 
 /**
  * Creates {@link EngineServiceLink}s that will re-encode asset URL's
- * using {@link IRequestCycle#encodeUrl()}.
+ * using {@link IRequestCycle#encodeURL(String)}.
  * 
  * @author jkuhnert
  */

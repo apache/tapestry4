@@ -18,6 +18,7 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.form.AbstractFormComponent;
+import org.apache.tapestry.form.Form;
 
 /**
  * A {@link Form}component that creates a text field that allows for validation

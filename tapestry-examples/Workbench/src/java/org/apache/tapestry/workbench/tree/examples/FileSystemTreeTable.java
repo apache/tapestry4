@@ -155,7 +155,7 @@ public abstract class FileSystemTreeTable extends BasePage implements
     }
 
     /**
-     * @return
+     * @return Columns for tree.
      */
     public ArrayList getTableColumns()
     {
@@ -182,7 +182,7 @@ public abstract class FileSystemTreeTable extends BasePage implements
     }
 
     /**
-     * @see org.apache.tapestry.workbench.tree.examples.ISelectedFolderSource#getSelectedFolder()
+     * @see org.apache.tapestry.workbench.tree.examples.ISelectedFolderSource#getSelectedFolderChildren() .
      */
     public Collection getSelectedFolderChildren()
     {

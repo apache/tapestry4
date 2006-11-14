@@ -46,7 +46,7 @@ public interface ReportStatusHub
 
     /**
      * Generates an HTML status report by invoking
-     * {@link ReportStatusListener#reportStatus(ReportStatusEvent)} on each
+     * {@link ReportStatusListener#reportStatus(org.apache.tapestry.event.ReportStatusEvent)} on each
      * registered listener.
      * 
      * @param writer

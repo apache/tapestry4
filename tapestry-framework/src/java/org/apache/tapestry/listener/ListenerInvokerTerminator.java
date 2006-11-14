@@ -39,8 +39,6 @@ public class ListenerInvokerTerminator implements ListenerInvoker
      *            the listener. Not generally used, but may not be null.
      * @param cycle
      *            the current request cycle, to be passed to the listener.
-     * @param delegate
-     *            the next invoker in the pipeline
      */
     public void invokeListener(IActionListener listener, IComponent source,
             IRequestCycle cycle)

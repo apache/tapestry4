@@ -33,9 +33,6 @@ public interface ITemplateParserDelegate
     /**
      * Returns true if the specified component allows a body, false otherwise. The parser uses this
      * information to determine if it should ignore the body of a tag.
-     * 
-     * @throws org.apache.tapestry.ApplicationRuntimeException
-     *             if no such component exists
      */
 
     boolean getAllowBody(String componentId, Location location);
@@ -47,8 +44,6 @@ public interface ITemplateParserDelegate
      *            the specified library id, possibly null
      * @param type
      *            the component type
-     * @throws org.apache.tapestry.ApplicationRuntimeException
-     *             if the specification cannot be found
      * @since 3.0
      */
 

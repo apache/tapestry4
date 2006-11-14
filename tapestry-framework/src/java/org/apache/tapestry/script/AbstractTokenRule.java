@@ -46,11 +46,8 @@ abstract class AbstractTokenRule extends BaseRule
     }
 
     /**
-     * Peeks at the top object on the stack (which must be a {@link IScriptToken}),
-     * and converts the text into a series of {@link org.apache.tapestry.script.StaticToken} and
-     * {@link org.apache.tapestry.script.InsertToken}s.
+     * {@inheritDoc}
      */
-
     public void content(RuleDirectedParser parser, String content)
     {
         IScriptToken token = (IScriptToken) parser.peek();

@@ -16,6 +16,7 @@ package org.apache.tapestry;
 
 import java.util.Locale;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.event.ChangeObserver;
 import org.apache.tapestry.event.PageAttachListener;
 import org.apache.tapestry.event.PageBeginRenderListener;
@@ -138,7 +139,7 @@ public interface IPage extends IComponent
      * <ul>
      * <li>Invokes
      * {@link PageBeginRenderListener#pageBeginRender(org.apache.tapestry.event.PageEvent)}
-     * <li>Invokes {@link #beginResponse(IMarkupWriter, IRequestCycle)}
+     * <li>Invokes {@link #beginPageRender()}
      * <li>Invokes {@link IRequestCycle#commitPageChanges()}(if not rewinding)
      * <li>Invokes {@link #render(IMarkupWriter, IRequestCycle)}
      * <li>Invokes {@link PageEndRenderListener#pageEndRender(org.apache.tapestry.event.PageEvent)}

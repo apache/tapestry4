@@ -29,8 +29,8 @@ import org.apache.tapestry.util.io.DataSqueezerUtil;
 import org.testng.annotations.Test;
 
 /**
- * Tests for {@link org.apache.tapestry.components.If}&nbsp;
- * and {@link org.apache.tapestry.components.Else}&nbsp;
+ * Tests for {@link org.apache.tapestry.components.IfBean}&nbsp;
+ * and {@link ElseBean}&nbsp;
  * components.
  * 
  * @author Mindbridge

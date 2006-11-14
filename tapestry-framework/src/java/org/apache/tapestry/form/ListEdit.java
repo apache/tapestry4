@@ -28,7 +28,7 @@ import org.apache.tapestry.services.DataSqueezer;
 
 /**
  * A specialized component used to edit a list of items within a form; it is similar to a
- * {@link org.apache.tapestry.components.Foreach}but leverages hidden inputs within the
+ * {@link org.apache.tapestry.components.ForBean} but leverages hidden inputs within the
  * &lt;form&gt; to store the items in the list. [ <a
  * href="../../../../../ComponentReference/ListEdit.html">Component Reference </a>]
  * 

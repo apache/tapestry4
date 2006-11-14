@@ -27,7 +27,7 @@ public interface DataSqueezerFilter {
     String squeeze(Object data, DataSqueezer dataSqueezer);
 
     /**
-     * A convenience; invokes {@link #squeeze(Object)}for each element in the
+     * A convenience; invokes {@link #squeeze(Object, DataSqueezer)}for each element in the
      * data array. If data is null, returns null.
      * @param data the data to squeeze
      * @param dataSqueezer the next squeezer in the pipeline

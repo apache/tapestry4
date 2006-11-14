@@ -20,7 +20,6 @@ import org.apache.tapestry.valid.ValidatorException;
 
 /**
  * 
- * @author unknown
  */
 public interface TranslatedFieldSupport
 {
@@ -29,7 +28,6 @@ public interface TranslatedFieldSupport
      * Formats the field translation.
      * @param field
      * @param object
-     * @return
      */
     String format(TranslatedField field, Object object);
 
@@ -37,7 +35,7 @@ public interface TranslatedFieldSupport
      * Parses the field value.
      * @param field
      * @param text
-     * @return
+     * 
      * @throws ValidatorException
      */
     Object parse(TranslatedField field, String text)

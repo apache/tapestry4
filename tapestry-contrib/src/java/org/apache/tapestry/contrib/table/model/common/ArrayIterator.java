@@ -47,7 +47,7 @@ public class ArrayIterator implements Iterator
     }
 
     /**
-     * @see java.util.Iterator#hasNext().
+     * @see java.util.Iterator#hasNext() .
      */
     public boolean hasNext()
     {
@@ -55,7 +55,7 @@ public class ArrayIterator implements Iterator
     }
 
     /**
-     * @see java.util.Iterator#next().
+     * @see java.util.Iterator#next() .
      */
     public Object next()
     {
@@ -66,7 +66,7 @@ public class ArrayIterator implements Iterator
     }
 
     /**
-     * @see java.util.Iterator#remove().
+     * @see java.util.Iterator#remove() .
      */
     public void remove()
     {

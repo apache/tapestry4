@@ -18,6 +18,7 @@ import java.util.Locale;
 
 import org.apache.tapestry.form.FormComponentContributor;
 import org.apache.tapestry.form.IFormComponent;
+import org.apache.tapestry.form.ValidatableField;
 import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.valid.ValidatorException;
 

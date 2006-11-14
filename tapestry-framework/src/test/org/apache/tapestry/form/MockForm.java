@@ -73,9 +73,6 @@ public class MockForm implements IForm
         this(null, location);
     }
 
-    /** 
-     * {@inheritDoc}
-     */
     public boolean isPrerendered(IComponent field)
     {
         return false;
@@ -86,8 +83,6 @@ public class MockForm implements IForm
      */
     public void setClientId(String id)
     {
-        // TODO Auto-generated method stub
-        
     }
 
     public MockForm(IValidationDelegate delegate)
@@ -106,7 +101,6 @@ public class MockForm implements IForm
      */
     public String getSpecifiedId()
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -395,9 +389,6 @@ public class MockForm implements IForm
         return _invoker;
     }
 
-    /** 
-     * {@inheritDoc}
-     */
     public void setEventInvoker(ComponentEventInvoker invoker)
     {
         _invoker = invoker;
@@ -430,22 +421,6 @@ public class MockForm implements IForm
     /** 
      * {@inheritDoc}
      */
-    public IComponent getParent()
-    {
-        return null;
-    }
-
-    /** 
-     * {@inheritDoc}
-     */
-    public void setParent(IComponent parent)
-    {
-        
-    }
-
-    /** 
-     * {@inheritDoc}
-     */
     public List getUpdateComponents()
     {
         return Collections.EMPTY_LIST;
@@ -456,7 +431,6 @@ public class MockForm implements IForm
      */
     public boolean isAsync()
     {
-        // TODO Auto-generated method stub
         return false;
     }
 
@@ -465,7 +439,6 @@ public class MockForm implements IForm
      */
     public boolean isJson()
     {
-        // TODO Auto-generated method stub
         return false;
     }
 

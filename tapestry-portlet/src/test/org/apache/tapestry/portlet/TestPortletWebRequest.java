@@ -26,7 +26,7 @@ import javax.portlet.PortletRequest;
 import javax.portlet.PortletSession;
 
 /**
- * Tests for {@link org.apache.tapestry.web.PortletWebRequest}.
+ * Tests for {@link PortletWebRequest}.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0

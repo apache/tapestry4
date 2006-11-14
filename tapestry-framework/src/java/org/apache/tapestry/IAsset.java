@@ -16,6 +16,7 @@ package org.apache.tapestry;
 
 import java.io.InputStream;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Locatable;
 import org.apache.hivemind.Resource;
 

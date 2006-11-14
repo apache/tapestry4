@@ -43,17 +43,12 @@ public interface SqueezeAdaptor
     /**
      * Converts the data object into a String.
      * 
-     * @throws IOException
-     *             if the object can't be converted.
      */
 
     String squeeze(DataSqueezer squeezer, Object data);
 
     /**
      * Converts a String back into an appropriate object.
-     * 
-     * @throws IOException
-     *             if the String can't be converted.
      */
 
     Object unsqueeze(DataSqueezer squeezer, String string);

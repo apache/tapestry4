@@ -21,6 +21,7 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IEngineService;
+import org.apache.tapestry.html.Shell;
 import org.apache.tapestry.json.JSONObject;
 
 /**
@@ -31,6 +32,7 @@ import org.apache.tapestry.json.JSONObject;
  */
 public class AjaxShellDelegate implements IRender
 {
+    
     /** Client side debug log level. */
     public static final String BROWSER_LOG_DEBUG="DEBUG";
     /** Client side info log level. */
