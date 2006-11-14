@@ -134,34 +134,7 @@
                     </reportSet>
                 </reportSets>
             </plugin>
-            <plugin>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.1-SNAPSHOT</version>
-                <configuration>
-                    <linksource>true</linksource>
-                    <destDir>../target/site/tapestry-portlet/apidocs</destDir>
-                    <tags>
-                        <tag>
-                            <name>todo</name>
-                            <placement>a</placement>
-                            <head>To do something:</head>
-                        </tag>
-                    </tags>
-                    <linksource>true</linksource>
-                    <links>
-                        <link>http://jakarta.apache.org/hivemind/hivemind/apidocs/</link>
-                        <link>http://java.sun.com/j2se/1.4.2/docs/api/</link>
-                        <link>http://java.sun.com/products/servlet/2.3/javadoc/</link>
-                        <link>http://jakarta.apache.org/commons/codec/api-release/</link>
-                        <link>http://jakarta.apache.org/commons/fileupload/apidocs/</link>
-                        <link>http://jakarta.apache.org/commons/logging/apidocs/</link>
-                        <link>http://www.ognl.org/2.6.9/Documentation/javadoc/</link>
-                    </links>
-                    <stylesheetfile>
-                        ${basedir}/../src/site/resources/css/jdstyle.css
-                    </stylesheetfile>
-                </configuration>
-            </plugin>
+            
             <plugin>
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <configuration>

@@ -19,7 +19,9 @@ tapestry.form.datetime={
 	 * @return Boolean. True if valid, false otherwise.
 	 */
 	isValidDate:function(value, flags){
-		if (!value || !flags){
+		if(!value){return false;}
+		
+		if (!flags){
 			dojo.raise("isValidDate: value and flags must be specified");
 			return;
 		}

@@ -75,6 +75,7 @@
     <component-type type="Select" specification-path="form/Select.jwc"/>
     <component-type type="ServiceLink" specification-path="link/ServiceLink.jwc"/>
     <component-type type="Script" specification-path="html/Script.jwc"/>
+    <component-type type="ScriptIncludes" specification-path="dojo/html/ScriptIncludes.jwc"/>
     <component-type type="Shell" specification-path="html/Shell.jwc"/>
 	<component-type type="Style" specification-path="html/Style.jwc"/>    
     <component-type type="Submit" specification-path="form/Submit.jwc"/>

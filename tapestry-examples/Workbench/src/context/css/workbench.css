@@ -186,7 +186,8 @@ IMG {
 }
 
 .alertDialog {
-    width: 30em;
+    margin-left:26%;
+    margin-right:26%;
     border: 2px solid #ff660a;
     padding: 1em;
     background: #ffffff;
@@ -217,12 +218,12 @@ IMG {
 }
 
 .missingList {
-    width: 24em;
+    width: 26em;
     border-top: 4px solid #bedef4;
 }
 
 .invalidList {
-    width: 24em;
+    width: 26em;
     border-top: 4px solid #ffaf7e;
 }
 
