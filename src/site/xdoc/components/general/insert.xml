@@ -31,7 +31,7 @@
 
             <p>
                 <strong>See also:</strong>
-                <a href="../../tapestry-framework/apidocs/org/apache/tapestry/components/Insert.html">
+                <a href="../../apidocs/org/apache/tapestry/components/Insert.html">
                     org.apache.tapestry.components.Insert
                 </a>
                 <a href="renderblock.html">RenderBlock</a>
@@ -97,12 +97,12 @@
                         <td>
                             If true, then the method
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/IMarkupWriter.html#printRaw(java.lang.String)">
+                                href="../../apidocs/org/apache/tapestry/IMarkupWriter.html#printRaw(java.lang.String)">
                                 <code>IMarkupWriter.printRaw(String)</code>
                             </a>
                             is used, rather than
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/IMarkupWriter.html#print(java.lang.String)">
+                                href="../../apidocs/org/apache/tapestry/IMarkupWriter.html#print(java.lang.String)">
                                 <code>IMarkupWriter.print(String)</code>
                             </a>
                             .

@@ -37,7 +37,7 @@
 
             <p>
                 Script template files are parsed into memory as instances of
-                <a href="../tapestry-framework/apidocs/org/apache/tapestry/IScript.html">IScript</a>
+                <a href="../apidocs/org/apache/tapestry/IScript.html">IScript</a>
                 . These script template
                 <em>objects</em>
                 may be executed to generate the JavaScript.
@@ -55,7 +55,7 @@
 
             <p>
                 Executing a script template requires access to an
-                <a href="../tapestry-framework/apidocs/org/apache/tapestry/IScriptProcessor.html">
+                <a href="../apidocs/org/apache/tapestry/IScriptProcessor.html">
                     IScriptProcessor
                 </a>
                 instance; this is usually provided by the

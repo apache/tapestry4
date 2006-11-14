@@ -30,7 +30,7 @@
                 the common kinds of customizations in Tapestry 3.0 that required code changes (such
                 as subclassing
                 <a
-                    href="../tapestry-framework/apidocs/org/apache/tapestry/engine/BaseEngine.html">
+                    href="../apidocs/org/apache/tapestry/engine/BaseEngine.html">
                     BaseEngine
                 </a>
                 ) are now accomplished by providing objects via a HiveMind module descriptor for
@@ -121,7 +121,7 @@
                         <td>
                             The locator is the name of an engine service (an instance of
                             <a
-                                href="../tapestry-framework/apidocs/org/apache/tapestry/engine/IEngineService.html">
+                                href="../apidocs/org/apache/tapestry/engine/IEngineService.html">
                                 IEngineService
                             </a>
                             ).
@@ -192,7 +192,7 @@ public abstract class MyPage extends BasePage
                 <p>
                     The
                     <a
-                        href="../tapestry-framework/apidocs/org/apache/tapestry/ApplicationServlet.html">
+                        href="../apidocs/org/apache/tapestry/ApplicationServlet.html">
                         ApplicationServlet
                     </a>
                     is responsible for initializing HiveMind's Registry on startup.

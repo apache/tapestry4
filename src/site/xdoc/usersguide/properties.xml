@@ -27,11 +27,11 @@
                 exposed by the various objects within Tapestry. A page has properties (inherited
                 from base classes such as
                 <a
-                    href="../tapestry-framework/apidocs/org/apache/tapestry/AbstractComponent.html">
+                    href="../apidocs/org/apache/tapestry/AbstractComponent.html">
                     AbstractComponent
                 </a>
                 and
-                <a href="../tapestry-framework/apidocs/org/apache/tapestry/html/BasePage.html">
+                <a href="../apidocs/org/apache/tapestry/html/BasePage.html">
                     BasePage
                 </a>
                 ) and contains components and other objects with more properties. Pages are
@@ -52,13 +52,13 @@
                     <td>assets</td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/IComponent.html">
+                            href="../apidocs/org/apache/tapestry/IComponent.html">
                             IComponent
                         </a>
                     </td>
                     <td>
                         Map of
-                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
+                        <a href="../apidocs/org/apache/tapestry/IAsset.html">
                             IAsset
                         </a>
                     </td>
@@ -71,13 +71,13 @@
                     <td>beans</td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/IComponent.html">
+                            href="../apidocs/org/apache/tapestry/IComponent.html">
                             IComponent
                         </a>
                     </td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/IBeanProvider.html">
+                            href="../apidocs/org/apache/tapestry/IBeanProvider.html">
                             IBeanProvider
                         </a>
                     </td>
@@ -93,7 +93,7 @@
                     <td>bindingNames</td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/IComponent.html">
+                            href="../apidocs/org/apache/tapestry/IComponent.html">
                             IComponent
                         </a>
                     </td>
@@ -107,13 +107,13 @@
                     <td>bindings</td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/IComponent.html">
+                            href="../apidocs/org/apache/tapestry/IComponent.html">
                             IComponent
                         </a>
                     </td>
                     <td>
                         Map of
-                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IBinding.html">
+                        <a href="../apidocs/org/apache/tapestry/IBinding.html">
                             IBinding
                         </a>
                     </td>
@@ -127,23 +127,23 @@
                     <td>body</td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/AbstractComponent.html">
+                            href="../apidocs/org/apache/tapestry/AbstractComponent.html">
                             AbstractComponent
                         </a>
                     </td>
                     <td>
-                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IRender.html">
+                        <a href="../apidocs/org/apache/tapestry/IRender.html">
                             IRender
                         </a>
                         []
                     </td>
                     <td>
                         The body of the component: the text (as
-                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IRender.html">
+                        <a href="../apidocs/org/apache/tapestry/IRender.html">
                             IRender
                         </a>
                         ) and components (which inherit from
-                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IRender.html">
+                        <a href="../apidocs/org/apache/tapestry/IRender.html">
                             IRender
                         </a>
                         ) that the component directly encloses within its container's template.
@@ -154,7 +154,7 @@
                     <td>bodyCount</td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/AbstractComponent.html">
+                            href="../apidocs/org/apache/tapestry/AbstractComponent.html">
                             AbstractComponent
                         </a>
                     </td>
@@ -167,14 +167,14 @@
                     <td>components</td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/IComponent.html">
+                            href="../apidocs/org/apache/tapestry/IComponent.html">
                             IComponent
                         </a>
                     </td>
                     <td>
                         Map of
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/IComponent.html">
+                            href="../apidocs/org/apache/tapestry/IComponent.html">
                             IComponent
                         </a>
                     </td>
@@ -185,13 +185,13 @@
                 <tr>
                     <td>changeObserver</td>
                     <td>
-                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IPage.html">
+                        <a href="../apidocs/org/apache/tapestry/IPage.html">
                             IPage
                         </a>
                     </td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/event/ChangeObserver.html">
+                            href="../apidocs/org/apache/tapestry/event/ChangeObserver.html">
                             ChangeObserver
                         </a>
                     </td>
@@ -204,7 +204,7 @@
                 <tr>
                     <td>classResolver</td>
                     <td>
-                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IEngine.html">
+                        <a href="../apidocs/org/apache/tapestry/IEngine.html">
                             IEngine
                         </a>
                     </td>
@@ -215,13 +215,13 @@
                 <tr>
                     <td>componentMessagesSource</td>
                     <td>
-                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IEngine.html">
+                        <a href="../apidocs/org/apache/tapestry/IEngine.html">
                             IEngine
                         </a>
                     </td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/engine/IComponentMessagesSource.html">
+                            href="../apidocs/org/apache/tapestry/engine/IComponentMessagesSource.html">
                             IComponentMessagesSource
                         </a>
                     </td>
@@ -234,13 +234,13 @@
                     <td>container</td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/IComponent.html">
+                            href="../apidocs/org/apache/tapestry/IComponent.html">
                             IComponent
                         </a>
                     </td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/IComponent.html">
+                            href="../apidocs/org/apache/tapestry/IComponent.html">
                             IComponent
                         </a>
                     </td>
@@ -255,7 +255,7 @@
                     <td>disabled</td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/form/IFormComponent.html">
+                            href="../apidocs/org/apache/tapestry/form/IFormComponent.html">
                             IFormComponent
                         </a>
                     </td>
@@ -270,7 +270,7 @@
                     <td>displayName</td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/form/IFormComponent.html">
+                            href="../apidocs/org/apache/tapestry/form/IFormComponent.html">
                             IFormComponent
                         </a>
                     </td>
@@ -284,12 +284,12 @@
                 <tr>
                     <td>engine</td>
                     <td>
-                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IPage.html">
+                        <a href="../apidocs/org/apache/tapestry/IPage.html">
                             IPage
                         </a>
                     </td>
                     <td>
-                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IEngine.html">
+                        <a href="../apidocs/org/apache/tapestry/IEngine.html">
                             IEngine
                         </a>
                     </td>
@@ -300,7 +300,7 @@
                     <td>extendedId</td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/IComponent.html">
+                            href="../apidocs/org/apache/tapestry/IComponent.html">
                             IComponent
                         </a>
                     </td>
@@ -315,12 +315,12 @@
                     <td>form</td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/form/IFormComponent.html">
+                            href="../apidocs/org/apache/tapestry/form/IFormComponent.html">
                             IFormComponent
                         </a>
                     </td>
                     <td>
-                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IForm.html">
+                        <a href="../apidocs/org/apache/tapestry/IForm.html">
                             IForm
                         </a>
                     </td>
@@ -330,11 +330,11 @@
                 <tr>
                     <td>global</td>
                     <td>
-                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IEngine.html">
+                        <a href="../apidocs/org/apache/tapestry/IEngine.html">
                             IEngine
                         </a>
                         ,
-                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IPage.html">
+                        <a href="../apidocs/org/apache/tapestry/IPage.html">
                             IPage
                         </a>
                     </td>
@@ -346,7 +346,7 @@
                     <td>hasVisit</td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/engine/AbstractEngine.html">
+                            href="../apidocs/org/apache/tapestry/engine/AbstractEngine.html">
                             AbstractEngine
                         </a>
                     </td>
@@ -358,7 +358,7 @@
                     <td>id</td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/IComponent.html">
+                            href="../apidocs/org/apache/tapestry/IComponent.html">
                             IComponent
                         </a>
                     </td>
@@ -374,7 +374,7 @@
                     <td>idPath</td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/IComponent.html">
+                            href="../apidocs/org/apache/tapestry/IComponent.html">
                             IComponent
                         </a>
                     </td>
@@ -394,25 +394,25 @@
                     <td>listeners</td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/AbstractComponent.html">
+                            href="../apidocs/org/apache/tapestry/AbstractComponent.html">
                             AbstractComponent
                         </a>
                         ,
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/engine/AbstractEngine.html">
+                            href="../apidocs/org/apache/tapestry/engine/AbstractEngine.html">
                             AbstractEngine
                         </a>
                     </td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/listener/ListenerMap.html">
+                            href="../apidocs/org/apache/tapestry/listener/ListenerMap.html">
                             ListenerMap
                         </a>
                     </td>
                     <td>
                         Used to map listener methods as objects that implement the
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/IActionListener.html">
+                            href="../apidocs/org/apache/tapestry/IActionListener.html">
                             IActionListener
                         </a>
                         interface.
@@ -422,7 +422,7 @@
                 <tr>
                     <td>locale</td>
                     <td>
-                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IEngine.html">
+                        <a href="../apidocs/org/apache/tapestry/IEngine.html">
                             IEngine
                         </a>
                     </td>
@@ -436,7 +436,7 @@
                 <tr>
                     <td>locale</td>
                     <td>
-                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IPage.html">
+                        <a href="../apidocs/org/apache/tapestry/IPage.html">
                             IPage
                         </a>
                     </td>
@@ -469,7 +469,7 @@
                     <td>messages</td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/IComponent.html">
+                            href="../apidocs/org/apache/tapestry/IComponent.html">
                             IComponent
                         </a>
                     </td>
@@ -481,14 +481,14 @@
                     <td>name</td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/form/IFormComponent.html">
+                            href="../apidocs/org/apache/tapestry/form/IFormComponent.html">
                             IFormComponent
                         </a>
                     </td>
                     <td>String</td>
                     <td>
                         The name, or element id, assigned to the form control by the
-                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IForm.html">
+                        <a href="../apidocs/org/apache/tapestry/IForm.html">
                             IForm
                         </a>
                         . This is set as the component renders (but the property can then be read
@@ -500,13 +500,13 @@
                     <td>namespace</td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/IComponent.html">
+                            href="../apidocs/org/apache/tapestry/IComponent.html">
                             IComponent
                         </a>
                     </td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/INamespace.html">
+                            href="../apidocs/org/apache/tapestry/INamespace.html">
                             INamespace
                         </a>
                     </td>
@@ -522,7 +522,7 @@
                     <td>outputEncoding</td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/AbstractPage.html">
+                            href="../apidocs/org/apache/tapestry/AbstractPage.html">
                             AbstractPage
                         </a>
                     </td>
@@ -534,12 +534,12 @@
                     <td>page</td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/IComponent.html">
+                            href="../apidocs/org/apache/tapestry/IComponent.html">
                             IComponent
                         </a>
                     </td>
                     <td>
-                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IPage.html">
+                        <a href="../apidocs/org/apache/tapestry/IPage.html">
                             IPage
                         </a>
                     </td>
@@ -549,13 +549,13 @@
                 <tr>
                     <td>propertySource</td>
                     <td>
-                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IEngine.html">
+                        <a href="../apidocs/org/apache/tapestry/IEngine.html">
                             IEngine
                         </a>
                     </td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/engine/IPropertySource.html">
+                            href="../apidocs/org/apache/tapestry/engine/IPropertySource.html">
                             IPropertySource
                         </a>
                     </td>
@@ -565,7 +565,7 @@
                 <tr>
                     <td>pageName</td>
                     <td>
-                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IPage.html">
+                        <a href="../apidocs/org/apache/tapestry/IPage.html">
                             IPage
                         </a>
                     </td>
@@ -576,13 +576,13 @@
                 <tr>
                     <td>pageSource</td>
                     <td>
-                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IEngine.html">
+                        <a href="../apidocs/org/apache/tapestry/IEngine.html">
                             IEngine
                         </a>
                     </td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/engine/IPageSource.html">
+                            href="../apidocs/org/apache/tapestry/engine/IPageSource.html">
                             IPageSource
                         </a>
                     </td>
@@ -594,7 +594,7 @@
                     <td>rendering</td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/IComponent.html">
+                            href="../apidocs/org/apache/tapestry/IComponent.html">
                             IComponent
                         </a>
                     </td>
@@ -609,13 +609,13 @@
                 <tr>
                     <td>requestCycle</td>
                     <td>
-                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IPage.html">
+                        <a href="../apidocs/org/apache/tapestry/IPage.html">
                             IPage
                         </a>
                     </td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/IRequestCycle.html">
+                            href="../apidocs/org/apache/tapestry/IRequestCycle.html">
                             IRequestCycle
                         </a>
                     </td>
@@ -625,13 +625,13 @@
                 <tr>
                     <td>scriptSource</td>
                     <td>
-                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IEngine.html">
+                        <a href="../apidocs/org/apache/tapestry/IEngine.html">
                             IEngine
                         </a>
                     </td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/engine/IScriptSource.html">
+                            href="../apidocs/org/apache/tapestry/engine/IScriptSource.html">
                             IScriptSource
                         </a>
                     </td>
@@ -643,13 +643,13 @@
                     <td>specification</td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/IComponent.html">
+                            href="../apidocs/org/apache/tapestry/IComponent.html">
                             IComponent
                         </a>
                     </td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/spec/IComponentSpecification.html">
+                            href="../apidocs/org/apache/tapestry/spec/IComponentSpecification.html">
                             IComponentSpecification
                         </a>
                     </td>
@@ -664,13 +664,13 @@
                 <tr>
                     <td>specification</td>
                     <td>
-                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IEngine.html">
+                        <a href="../apidocs/org/apache/tapestry/IEngine.html">
                             IEngine
                         </a>
                     </td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/spec/IApplicationSpecification.html">
+                            href="../apidocs/org/apache/tapestry/spec/IApplicationSpecification.html">
                             IApplicationSpecification
                         </a>
                     </td>
@@ -680,13 +680,13 @@
                 <tr>
                     <td>specificationSource</td>
                     <td>
-                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IEngine.html">
+                        <a href="../apidocs/org/apache/tapestry/IEngine.html">
                             IEngine
                         </a>
                     </td>
                     <td>
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/engine/ISpecificationSource.html">
+                            href="../apidocs/org/apache/tapestry/engine/ISpecificationSource.html">
                             ISpecificationSource
                         </a>
                     </td>
@@ -699,7 +699,7 @@
                 <tr>
                     <td>visit</td>
                     <td>
-                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IEngine.html">
+                        <a href="../apidocs/org/apache/tapestry/IEngine.html">
                             IEngine
                         </a>
                     </td>
@@ -713,7 +713,7 @@
                 <tr>
                     <td>visit</td>
                     <td>
-                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IPage.html">
+                        <a href="../apidocs/org/apache/tapestry/IPage.html">
                             IPage
                         </a>
                     </td>

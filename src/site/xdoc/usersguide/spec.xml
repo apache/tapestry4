@@ -341,12 +341,12 @@
                         <td>
                             Name of an implementation of
                             <a
-                                href="../tapestry-framework/apidocs/org/apache/tapestry/IEngine.html">
+                                href="../apidocs/org/apache/tapestry/IEngine.html">
                                 IEngine
                             </a>
                             to instantiate. Defaults to
                             <a
-                                href="../tapestry-framework/apidocs/org/apache/tapestry/engine/BaseEngine.html">
+                                href="../apidocs/org/apache/tapestry/engine/BaseEngine.html">
                                 BaseEngine
                             </a>
                             if not specified.
@@ -846,12 +846,12 @@
                         <td>
                             The Java class to instantiate, which must implement the interface
                             <a
-                                href="../tapestry-framework/apidocs/org/apache/tapestry/IComponent.html">
+                                href="../apidocs/org/apache/tapestry/IComponent.html">
                                 IComponent
                             </a>
                             . If not specified,
                             <a
-                                href="../tapestry-framework/apidocs/org/apache/tapestry/BaseComponent.html">
+                                href="../apidocs/org/apache/tapestry/BaseComponent.html">
                                 BaseComponent
                             </a>
                             is used (though Tapestry 4.0 will do a
@@ -1428,17 +1428,17 @@
                         <td>
                             The Java class to instantiate, which must implement the interface
                             <a
-                                href="../tapestry-framework/apidocs/org/apache/tapestry/IPage.html">
+                                href="../apidocs/org/apache/tapestry/IPage.html">
                                 IPage
                             </a>
                             . Typically, this is
                             <a
-                                href="../tapestry-framework/apidocs/org/apache/tapestry/html/BasePage.html">
+                                href="../apidocs/org/apache/tapestry/html/BasePage.html">
                                 BasePage
                             </a>
                             or a subclass of it.
                             <a
-                                href="../tapestry-framework/apidocs/org/apache/tapestry/html/BasePage.html">
+                                href="../apidocs/org/apache/tapestry/html/BasePage.html">
                                 BasePage
                             </a>
                             is the default if not otherwise specified (though Tapestry 4.0 will do a

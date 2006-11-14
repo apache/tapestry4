@@ -143,7 +143,7 @@
                     Page injection allows a page to be injected into another page (or component).
                     Beneather the covers, the logic simply accesses the
                     <a
-                        href="../tapestry-framework/apidocs/org/apache/tapestry/IRequestCycle.html">
+                        href="../apidocs/org/apache/tapestry/IRequestCycle.html">
                         IRequestCycle
                     </a>
                     object and obtains the page from it, and adds a cast if necessary.
@@ -151,9 +151,9 @@
 
                 <p>
                     The property type can be Object,
-                    <a href="../tapestry-framework/apidocs/org/apache/tapestry/IPage.html">IPage</a>
+                    <a href="../apidocs/org/apache/tapestry/IPage.html">IPage</a>
                     , or any type assignable to
-                    <a href="../tapestry-framework/apidocs/org/apache/tapestry/IPage.html">IPage</a>
+                    <a href="../apidocs/org/apache/tapestry/IPage.html">IPage</a>
                     .
                 </p>
 
@@ -195,7 +195,7 @@
                     Tapestry includes extensive support for creating client-side JavaScript. At the
                     core of this are specialized script templates. These templates must be parsed
                     into
-                    <a href="../tapestry-framework/apidocs/org/apache/tapestry/IScript.html">
+                    <a href="../apidocs/org/apache/tapestry/IScript.html">
                         IScript
                     </a>
                     objects in order to be used. The script injection type hides the details of this

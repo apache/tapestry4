@@ -298,7 +298,7 @@ package mypackage;
 import org.apache.tapestry.html.BasePage;
 	
 public abstract class MyPage extends <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/html/BasePage.html">BasePage</a>
+                            href="../apidocs/org/apache/tapestry/html/BasePage.html">BasePage</a>
 {
     abstract public int getItemsPerPage();
 	
@@ -524,7 +524,7 @@ public abstract class MyPage extends <a
                         &lt;create-instance&gt;. &lt;invoke-factory&gt; allows you to reference an
                         object or service that implements the
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/engine/state/StateObjectFactory.html">
+                            href="../apidocs/org/apache/tapestry/engine/state/StateObjectFactory.html">
                             StateObjectFactory
                         </a>
                         interface.
@@ -573,7 +573,7 @@ public abstract class MyPage extends <a
                         <strong>Warning:</strong>
                         <p>
                         The
-                        <a href="../tapestry-framework/apidocs/org/apache/tapestry/IPage.html">
+                        <a href="../apidocs/org/apache/tapestry/IPage.html">
                             IPage
                         </a>
                         interface defines two read-only properties:
@@ -617,7 +617,7 @@ public abstract class MyPage extends <a
                         <em>optionally</em>
                         implement the
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/SessionStoreOptimized.html">
+                            href="../apidocs/org/apache/tapestry/SessionStoreOptimized.html">
                             SessionStoreOptimized
                         </a>
                         interface. The method isStoreToSessionNeeded() will be checked; if it
@@ -636,7 +636,7 @@ public abstract class MyPage extends <a
                     <p>
                         A base class,
                         <a
-                            href="../tapestry-framework/apidocs/org/apache/tapestry/BaseSessionStoreOptimized.html">
+                            href="../apidocs/org/apache/tapestry/BaseSessionStoreOptimized.html">
                             BaseSessionStoreOptimized
                         </a>
                         , implements this behavior.

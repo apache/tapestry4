@@ -361,7 +361,7 @@
 
                 <p>
                     In order to change the locale, you must obtain the
-                    <a href="../tapestry-framework/apidocs/org/apache/tapestry/IEngine.html">
+                    <a href="../apidocs/org/apache/tapestry/IEngine.html">
                         IEngine
                     </a>
                     and invoke
@@ -399,7 +399,7 @@
                     taken into account. Pages are obtained when they are used by a service, or when
                     accessed via
                     <a
-                        href="../tapestry-framework/apidocs/org/apache/tapestry/IRequestCycle.html">
+                        href="../apidocs/org/apache/tapestry/IRequestCycle.html">
                         IRequestCycle
                     </a>
                     .getPage().

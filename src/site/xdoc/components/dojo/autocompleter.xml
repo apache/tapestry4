@@ -33,7 +33,7 @@
             </p>
             <p>
                 Uses a
-                <a href="../../tapestry-framework/apidocs/org/apache/tapestry/dojo/form/IAutocompleteModel.html">
+                <a href="../../apidocs/org/apache/tapestry/dojo/form/IAutocompleteModel.html">
                     IAutocompleteModel
                 </a>
                 to map between Java values that will be assigned, and textual labels that will
@@ -42,7 +42,7 @@
             <p>
                 A useful property selection model is available (
                 <a
-                    href="../../tapestry-framework/apidocs/org/apache/tapestry/dojo/form/DefaultAutocompleteModel.html">
+                    href="../../apidocs/org/apache/tapestry/dojo/form/DefaultAutocompleteModel.html">
                     DefaultAutocompleteModel
                 </a>). You can also create your own model, as illustrated in the examples below.
             </p>
@@ -51,7 +51,7 @@
                 <strong>
                     See also:
                     <a
-                        href="../../tapestry-framework/apidocs/org/apache/tapestry/dojo/form/Autocompleter.html">
+                        href="../../apidocs/org/apache/tapestry/dojo/form/Autocompleter.html">
                         org.apache.tapestry.dojo.form.Autocompleter
                     </a>
                     ,
@@ -89,7 +89,7 @@
                         <td>model</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/dojo/form/IAutocompleteModel.html">
+                                href="../../apidocs/org/apache/tapestry/dojo/form/IAutocompleteModel.html">
                                 IAutocompleteModel
                             </a>
                         </td>
@@ -127,7 +127,7 @@
                         <td>
                             Array or collection of
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/form/validator/Validator.html">
+                                href="../../apidocs/org/apache/tapestry/form/validator/Validator.html">
                                 Validator
                             </a>
                         </td>

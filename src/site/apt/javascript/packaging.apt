@@ -39,7 +39,7 @@ Packaging
     hits for additional functionality <(like widgets)> when you need it. This should keep your app nice and slim
     in most areas.
     
-  * Overhauled Tapestry {{{../tapestry-framework/apidocs/org/apache/tapestry/asset/AssetService.html}AssetService}} 
+  * Overhauled Tapestry {{{../apidocs/org/apache/tapestry/asset/AssetService.html}AssetService}} 
   	implementation that does a much better job at properly interpreting and setting the correct browser cache 
   	settings on included asset resources, like dojo and Tapestry javascript API files/resources. It even goes as far
   	as serving up the files via a new hivemind configuration point that eliminates the need to have an MD5 hash 

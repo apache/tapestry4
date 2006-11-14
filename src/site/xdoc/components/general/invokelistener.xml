@@ -31,7 +31,7 @@
                 <strong>
                     See also:
                     <a
-                        href="../../tapestry-framework/apidocs/org/apache/tapestry/components/InvokeListener.html">
+                        href="../../apidocs/org/apache/tapestry/components/InvokeListener.html">
                         org.apache.tapestry.components.InvokeListener
                     </a>
                     ,
@@ -53,7 +53,7 @@
                         <td>listener</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/IActionListener.html">
+                                href="../../apidocs/org/apache/tapestry/IActionListener.html">
                                 IActionListener
                             </a>
                         </td>

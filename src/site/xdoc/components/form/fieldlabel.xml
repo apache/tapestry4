@@ -45,7 +45,7 @@
             <p>
                 <strong>
                     See also:
-                    <a href="../../tapestry-framework/apidocs/org/apache/tapestry/valid/FieldLabel.html">
+                    <a href="../../apidocs/org/apache/tapestry/valid/FieldLabel.html">
                         org.apache.tapestry.valid.FieldLabel
                     </a>
                     ,
@@ -69,7 +69,7 @@
                         <td>field</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/form/IFormComponent.html">
+                                href="../../apidocs/org/apache/tapestry/form/IFormComponent.html">
                                 IFormComponent
                             </a>
                         </td>

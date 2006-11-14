@@ -431,7 +431,7 @@
                             additional attributes in the output markup. A special case is when the
                             value for an informal parameter is an
                             <a
-                                href="../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
+                                href="../apidocs/org/apache/tapestry/IAsset.html">
                                 IAsset
                             </a>
                             (possibly specified with the "asset:" prefix), in which case the
