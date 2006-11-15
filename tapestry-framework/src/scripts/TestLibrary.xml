@@ -54,6 +54,10 @@
         <match>/script</match>
         <match>script</match>
         <match>/script</match>
+        <match>script</match>
+        <match>/script</match>
+        <match>script</match>
+        <match>/script</match>
 		<match>link</match>
 		<match>/head</match>
 		<match>body</match>	

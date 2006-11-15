@@ -20,7 +20,6 @@ import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.html.Shell;
 import org.apache.tapestry.json.JSONObject;
 
@@ -50,7 +49,7 @@ public class AjaxShellDelegate implements IRender
     
     private IAsset _tapestrySource;
     
-    private IEngineService _assetService;
+    private IAsset _tapestryPath;
     
     private boolean _parseWidgets;
     
@@ -89,9 +88,7 @@ public class AjaxShellDelegate implements IRender
         
         // The key to resolving everything out of the asset service
         
-        dojoConfig.put("baseRelativePath", 
-                _assetService.getLink(true, _dojoPath.getResourceLocation().getPath()).getURL());
-        
+        dojoConfig.put("baseRelativePath", _dojoPath.buildURL());
         dojoConfig.put("preventBackButtonFix", _preventBackButtonFix);
         dojoConfig.put("parseWidgets", _parseWidgets);
         
@@ -116,16 +113,19 @@ public class AjaxShellDelegate implements IRender
         // include the core dojo.js package
         
         str.append("<script type=\"text/javascript\" src=\"")
-        .append(_assetService.getLink(true,
-                _dojoSource.getResourceLocation()
-                .getPath()).getURL()).append("\"></script>");
+        .append(_dojoSource.buildURL()).append("\"></script>");
+        
+        // module path registration to tapestry javascript sources
+        
+        str.append("\n<script type=\"text/javascript\">\n")
+        .append("dojo.registerModulePath(\"tapestry\", \"")
+        .append(_tapestryPath.buildURL()).append("\");\n");
+        str.append("</script>\n");
         
         // include core tapestry.js package
         
         str.append("<script type=\"text/javascript\" src=\"")
-        .append(_assetService.getLink(true,
-                _tapestrySource.getResourceLocation()
-                .getPath()).getURL()).append("\"></script>");
+        .append(_tapestrySource.buildURL()).append("\"></script>");
         
         String logRequire = _consoleEnabled ? "dojo.require(\"dojo.debug.console\");\n"
                 : "dojo.require(\"dojo.logging.Logger\");\n";
@@ -279,11 +279,13 @@ public class AjaxShellDelegate implements IRender
     }
     
     /**
-     * Injected asset service.
-     * @param service
+     * Sets the path to the tapestry javascript modules. (Needed for dojo to resolve the 
+     * path to tapestry javascript, esp when overriding the default bundled dojo.)
+     * 
+     * @param tapestryPath The path to tapestry.
      */
-    public void setAssetService(IEngineService service)
+    public void setTapestryPath(IAsset tapestryPath)
     {
-        _assetService = service;
+        _tapestryPath = tapestryPath;
     }
 }
