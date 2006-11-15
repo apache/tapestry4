@@ -77,7 +77,14 @@
             If specified, allows for the default tapestry source included to be overriden.
         </description>
     </parameter>
-
+    
+    <parameter name="tapestryPath" default-value="asset:defaultTapestryPath">
+        <description>
+            Sets the tapestry path, needed for dojo to properly detect and find tapestry js modules
+            when overriding the default dojo bundled with tapestry.
+        </description>
+    </parameter>
+    
     <parameter name="dojoSource" default-value="asset:defaultDojoSource">
         <description>
             If specified, allows for the default dojo source included to be overriden.
@@ -90,14 +97,12 @@
             used by the djConfig.baseRelativePath javascript configuration variable in dojo.
         </description>
     </parameter>
-    
-    <inject property="assetService" object="service:tapestry.services.Asset" />
 
     <bean name="coreAjaxDelegate" class="org.apache.tapestry.dojo.AjaxShellDelegate">
         <set name="dojoSource" value="dojoSource" />
-        <set name="assetService" value="assetService" />
         <set name="dojoPath" value="dojoPath" />
         <set name="tapestrySource" value="tapestrySource" />
+        <set name="tapestryPath" value="tapestryPath" />
         <set name="logLevel" value="browserLogLevel" />
         <set name="debug" value="debugEnabled" />
         <set name="debugAtAllCosts" value="debugAtAllCosts" />
@@ -110,5 +115,6 @@
     <asset name="defaultDojoSource" path="classpath:/dojo/dojo.js" />
     <asset name="defaultDojoPath" path="classpath:/dojo/" />
     <asset name="defaultTapestrySource" path="classpath:/tapestry/core.js" />
+    <asset name="defaultTapestryPath" path="classpath:/tapestry/" />
     
 </component-specification>

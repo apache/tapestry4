@@ -17,6 +17,12 @@ dojo.require("dojo.ns");
 		return map[domain][name];
 	}
 	
-	dojo.registerNamespaceManifest("tapestry","../tapestry", "tapestry", "tapestry.widget");
+	var tpath;
+	if (dojo.hostenv.moduleHasPrefix("tapestry")){
+		tpath=dojo.hostenv.getModulePrefix("tapestry");
+	} else {
+		tpath="../tapestry";
+	}
+	dojo.registerNamespaceManifest("tapestry", tpath, "tapestry", "tapestry.widget");
 	dojo.registerNamespaceResolver("tapestry", resolveNamespace);
 })();
