@@ -246,7 +246,7 @@ public abstract class Form extends AbstractComponent implements IForm
 
     protected FormSupport newFormSupport(IMarkupWriter writer, IRequestCycle cycle)
     {
-        return new FormSupportImpl(writer, cycle, this);
+        return getFormSupportFactory().createFormSupport(writer, cycle, this);
     }
 
     /**
@@ -400,4 +400,12 @@ public abstract class Form extends AbstractComponent implements IForm
     {
         _formSupport.setFormFieldUpdating(value);
     }
+    
+    /**
+     * Injected.
+     * 
+     * @since 4.1.1
+     */
+
+    public abstract FormSupportFactory getFormSupportFactory();
 }
