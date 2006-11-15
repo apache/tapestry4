@@ -162,8 +162,14 @@
             </item>
             
         </menu>
-        
-        <menu ref="modules" />
+                
+        <menu name="Modules">
+            <item name="Tapestry Core" href="/tapestry-framework/index.html" />
+            <item name="Contrib Library" href="/tapestry-contrib/index.html" />
+            <item name="Annotations" href="/tapestry-annotations/index.html" />
+            <item name="Portlet Support" href="/tapestry-portlet/index.html" />
+            <item name="Examples" href="/tapestry-examples/index.html" />
+        </menu>
         
         ${reports} 
     </body>
