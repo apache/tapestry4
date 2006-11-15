@@ -41,10 +41,4 @@ public abstract class Go extends Form
     {
         return "Go" + actionId;
     }
-
-    protected FormSupport newFormSupport(IMarkupWriter writer,
-            IRequestCycle cycle)
-    {
-        return new GoFormSupportImpl(writer, cycle, this);
-    }
 }
