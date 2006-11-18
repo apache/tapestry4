@@ -1,6 +1,6 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-   Copyright 2004, 2005 The Apache Software Foundation
+   Copyright 2006 The Apache Software Foundation
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -19,14 +19,14 @@
   "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
   "http://tapestry.apache.org/dtd/Tapestry_4_0.dtd">
 	
-<application name="Tapestry Component Workbench">
-  
-  <meta key="org.apache.tapestry.template-encoding" value="ISO-8859-1"/>
-  <meta key="org.apache.tapestry.page-class-packages" value="org.apache.tapestry.workbench"/>
-  <meta key="org.apache.tapestry.component-class-packages" value="org.apache.tapestry.workbench.components"/>
-  
-  <extension name="org.apache.tapestry.request-decoder" class="org.apache.tapestry.workbench.RequestDecoder"/>
-  
-  <library id="contrib" specification-path="classpath:/org/apache/tapestry/contrib/Contrib.library"/>
-  
-</application>
+<application name="Various i18n tests">
+    
+    <meta key="org.apache.tapestry.page-class-packages" 
+    	value="org.apache.tapestry.integration.i18n.pages"/>
+    <meta key="org.apache.tapestry.component-class-packages" 
+    	value="org.apache.tapestry.integration.i18n.components"/>
+   
+    <meta key="org.apache.tapestry.namespace-properties-name"
+        value="random" />
+    
+</application>	

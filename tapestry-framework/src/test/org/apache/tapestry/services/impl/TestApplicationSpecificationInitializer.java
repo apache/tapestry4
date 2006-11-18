@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.services.impl;
 
-import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.*;
 
 import java.net.URL;
 
@@ -97,6 +97,77 @@ public class TestApplicationSpecificationInitializer extends BaseComponentTestCa
         verify();
     }
 
+    public void test_Default_On_Classpath() throws Exception
+    {
+        DefaultClassResolver cr = new DefaultClassResolver();
+        Resource appSpecResource = new ClasspathResource(cr, "Fred.application");
+        
+        ApplicationSpecificationInitializer i = new ApplicationSpecificationInitializer();
+        Log log = newMock(Log.class);
+        i.setLog(log);
+        
+        ServletContext context = newMock(ServletContext.class);
+        
+        ClasspathResourceFactoryImpl cf = new ClasspathResourceFactoryImpl();
+        cf.setClassResolver(cr);
+
+        i.setClasspathResourceFactory(cf);
+        
+        HttpServlet servlet = new ServletFixture();
+        
+        ServletConfig config = newMock(ServletConfig.class);
+        checkOrder(config, false);
+        
+        IApplicationSpecification as = new ApplicationSpecification();
+        
+        ISpecificationParser parser = newMock(ISpecificationParser.class);
+        
+        i.setParser(parser);
+        
+        expect(config.getInitParameter(ApplicationSpecificationInitializer.APP_SPEC_PATH_PARAM)).andReturn(null);
+        
+        expect(config.getServletContext()).andReturn(context);
+        
+        expect(config.getServletName()).andReturn("Fred").anyTimes();
+        
+        // begin testing finding spec
+        
+        expect(log.isDebugEnabled()).andReturn(true);
+        
+        Resource r = new ContextResource(context, "/WEB-INF/Fred/Fred.application");
+        
+        log.debug("Checking for existence of " + r);
+        
+        expect(context.getResource(r.getPath())).andReturn(null);
+        
+        expect(log.isDebugEnabled()).andReturn(true);
+        
+        r = new ContextResource(context, "/WEB-INF/Fred.application");
+        
+        log.debug("Checking for existence of " + r);
+        
+        expect(context.getResource(r.getPath())).andReturn(null);
+        
+        expect(parser.parseApplicationSpecification(appSpecResource)).andReturn(as);
+        
+        ApplicationGlobals ag = new ApplicationGlobalsImpl();
+
+        i.setGlobals(ag);
+
+        replay();
+        
+        servlet.init(config);
+        
+        // The real ApplicationServlet will build a Registry and, indirectly, invoke this.
+        
+        i.initialize(servlet);
+        
+        assertNotNull(ag.getActivator());
+        assertSame(as, ag.getSpecification());
+
+        verify();
+    }
+    
     public void test_In_App_Context_Folder() throws Exception
     {
         DefaultClassResolver cr = new DefaultClassResolver();
