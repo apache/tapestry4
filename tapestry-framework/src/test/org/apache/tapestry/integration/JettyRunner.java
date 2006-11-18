@@ -16,6 +16,8 @@ package org.apache.tapestry.integration;
 
 import static java.lang.String.format;
 
+import java.io.File;
+
 import org.mortbay.http.NCSARequestLog;
 import org.mortbay.http.SocketListener;
 import org.mortbay.jetty.Server;
@@ -30,14 +32,16 @@ public class JettyRunner
 
     public static final int DEFAULT_PORT = 80;
 
+    private static final String DEFAULTS_DESCRIPTOR = "src/test-data/conf/webdefault.xml";
+    
     private final String _contextPath;
 
     private final int _port;
 
-    private final String _warPath;
+    private String _warPath;
 
     private final Server _jetty;
-
+    
     public static void main(String[] args)
     {
         new JettyRunner("src/test-data/app1");
@@ -65,7 +69,7 @@ public class JettyRunner
         _contextPath = contextPath;
         _port = port;
         _warPath = warPath;
-
+        
         _jetty = createAndStart();
     }
 
@@ -97,13 +101,25 @@ public class JettyRunner
             SocketListener socketListener = new SocketListener();
             socketListener.setPort(_port);
             server.addListener(socketListener);
-
+            
             NCSARequestLog log = new NCSARequestLog();
             server.setRequestLog(log);
-
+            
+            File warPath = new File(_warPath);
+            if (!warPath.exists()) {
+                _warPath = new File("tapestry-framework", _warPath).getPath();
+            }
+            
             WebApplicationContext context = server.addWebApplication(_contextPath, _warPath);
-
-            context.setDefaultsDescriptor("src/test-data/conf/webdefault.xml");
+            
+            File descPath = new File(DEFAULTS_DESCRIPTOR);
+            String descriptorPath = descPath.getPath();
+            
+            if (!descPath.exists()) {
+                descriptorPath = new File("tapestry-framework", DEFAULTS_DESCRIPTOR).getPath();
+            }
+            
+            context.setDefaultsDescriptor(descriptorPath);
 
             server.start();
 

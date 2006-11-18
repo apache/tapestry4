@@ -55,12 +55,11 @@ public class ApplicationSpecificationInitializer implements ApplicationInitializ
         if (specResource == null)
         {
             _log.warn(ImplMessages.noApplicationSpecification(servlet));
-
+            
             spec = constructStandinSpecification(servlet);
-        }
-        else
+        } else
             spec = _parser.parseApplicationSpecification(specResource);
-
+        
         _globals.storeActivator(new HttpServletWebActivator(servlet));
         _globals.storeSpecification(spec);
     }
@@ -82,8 +81,18 @@ public class ApplicationSpecificationInitializer implements ApplicationInitializ
         Resource result = check(webInfAppLocation, expectedName);
         if (result != null)
             return result;
-
-        return check(webInfLocation, expectedName);
+        
+        result = check(webInfLocation, expectedName);
+        if (result != null)
+            return result;
+        
+        // Now look for it in classpath, just in case
+        
+        result = _classpathResourceFactory.newResource(expectedName);
+        if (result != null && result.getResourceURL() != null)
+            return result;
+        
+        return null;
     }
 
     private Resource check(Resource resource, String name)
