@@ -14,6 +14,8 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN"
+    "http://maven.apache.org/dtd/xdoc_1_0.dtd">
 <document>
     <properties>
         <title>Configuring Tapestry</title>
@@ -185,13 +187,14 @@
                 operate without an application specification.
             </p>
 
-            <p>
+            <span class="warn">
                 <strong>Fixme:</strong>
-                <br />
+                <p>
                 This documentation is out of date with respect to
                 <a href="http://jakarta.apache.org/hivemind/">HiveMind</a>
                 . In 4.0, the servlet will create and initialize a HiveMind Registry.
-            </p>
+                </p>
+            </span>
 
             <p>
                 The specification is normally stored under WEB-INF. In fact, Tapestry performs a
@@ -202,7 +205,7 @@
                 <li>
                     On the classpath, as defined by the
                     org.apache.tapestry.application-specification
-                    <a href="configuration.html#configuration.properties">configuration property</a>
+                    <a href="configuration.html#Configuration Properties">configuration property</a>
                     .
                 </li>
                 <li>
@@ -415,7 +418,34 @@
                         value is equivalent to one week.
                     </td>
                 </tr>
+                <tr>
+                    <td>org.apache.tapestry.application-specification</td>
+                    <td></td>
+                    <td>
+                        The alternate application specification path. This must be given as a servlet
+                        context parameter in your web.xml and must point to a resource in your applications
+                        classpath.
+                    </td>
+                </tr>
+                <tr>
+                    <td>org.apache.tapestry.namespace-properties-name</td>
+                    <td></td>
+                    <td>
+                        When specified in an application/library/page/component specification provides an alternate
+                        name to resolve <code>.properties</code> files. The default name is the name of the 
+                        application/library/page/component specification file with <code>.properties</code> added
+                        onto it.
+                        <br/><br/>
+                        <p>Example, change default global properties file to be Global.properties instead of the 
+                        typical default of <code>MyApplication.properties</code>:</p>
+<source><![CDATA[<application name="MyApplication">
 
+<meta key="org.apache.tapestry.namespace-properties-name"
+  value="Global" />
+
+</application>]]></source>
+                    </td>
+                </tr>
                 <tr>
 
                     <td>org.apache.tapestry.default-page-class</td>
