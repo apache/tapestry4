@@ -284,39 +284,39 @@
 
 
                 <p>HTML template</p>
-                <source xml:space="preserve">
-  &lt;table cellspacing="6"&gt;
-  &lt;tr&gt;
-   &lt;td&gt;ID&lt;/td&gt;
-   &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-   &lt;td&gt;Name&lt;/td&gt;
-   &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-   &lt;td&gt;Level&lt;/td&gt;
-   &lt;th&gt;&amp;nbsp;&lt;/th&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td colspan="6"&gt;&lt;hr&gt;&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr jwcid="@Foreach" source="ognl:customerList" value="ognl:customer" element="tr"&gt;
-   &lt;td&gt;&lt;span jwcid="@Insert" value="ognl:customer.id"/&gt;&lt;/td&gt;
-   &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-   &lt;td&gt;&lt;span jwcid="@DirectLink" listener="listener:customerSelectAction" parameters="ognl:customer.id"&gt; &lt;span jwcid="@Insert" value="ognl:customer.fullName"/&gt; &lt;/span&gt;&lt;/td&gt;
-   &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-   &lt;td&gt;&lt;span jwcid="@Insert" value="ognl:customer.memberLevel"/&gt;&lt;/td&gt;
-   &lt;td&gt;
-    &lt;a jwcid="@DirectLink" listener="listener.customerDeleteAction" parameters="ognl:customer.id" onclick="return window.confirm('Are you sure you want remove this customer?');"&gt;
-     &lt;img jwcid="@Image" image="ognl:assets.deleteImage" alt="Delete"/&gt;
-    &lt;/a&gt;
-   &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/table&gt;
-</source>
+                <source xml:space="preserve"><![CDATA[
+<table cellspacing="6">
+  <tr>
+    <td>ID</td>
+    <td>&nbsp;</td>
+    <td>Name</td>
+    <td>&nbsp;</td>
+    <td>Level</td>
+    <th>&nbsp;</th>
+  </tr>
+  <tr>
+    <td colspan="6"><hr></td>
+  </tr>
+  <tr jwcid="@Foreach" source="ognl:customerList" value="ognl:customer" element="tr">
+    <td><span jwcid="@Insert" value="ognl:customer.id"/></td>
+    <td>&nbsp;</td>
+    <td><a jwcid="@DirectLink" listener="listener:customerSelectAction" parameters="ognl:customer.id"> <span jwcid="@Insert" value="ognl:customer.fullName"/> </a></td>
+    <td>&nbsp;</td>
+    <td><span jwcid="@Insert" value="ognl:customer.memberLevel"/></td>
+    <td>
+      <a jwcid="@DirectLink" listener="listener.customerDeleteAction" parameters="ognl:customer.id" onclick="return window.confirm('Are you sure you want remove this customer?');">
+        <img jwcid="@Image" image="ognl:assets.deleteImage" alt="Delete"/>
+      </a>
+    </td>
+  </tr>
+</table>
+]]></source>
 
                 <p>Page specification</p>
-                <source xml:space="preserve">
-&lt;property name="customerList" type="java.util.List" persistent="yes"/&gt;
-&lt;property name="customer" type="Customer"/&gt;
-</source>
+                <source xml:space="preserve"><![CDATA[
+<property name="customerList" type="java.util.List" persistent="yes"/>
+<property name="customer" type="Customer"/>
+]]></source>
 
 
                 <p>Java sources</p>

@@ -157,21 +157,21 @@
             <section name="Examples">
                 <p>UploadPage.html</p>
 
-                <source xml:space="preserve">
-&lt;form jwcid="@Form" listener="listener:formSubmit"&gt;
-&lt;span jwcid="@FieldLabel" field="component:upload"/&gt;
-&lt;input jwcid="upload@Upload" file="ognl:uploadFile" type="file" displayName="File" validators="validators:required"/&gt;
-&lt;input type= "submit" value="Upload"/&gt;
-&lt;span jwcid="@If" condition="ognl: uploadFile &amp;&amp; serverFile"&gt;
-&lt;ul&gt;
-  &lt;li&gt;Filename: &lt;span jwcid="@Insert" value="ognl:uploadFile.fileName"/&gt;&lt;/li&gt;
-  &lt;li&gt;Client path: &lt;span jwcid="@Insert" value="ognl:uploadFile.filePath"/&gt;&lt;/li&gt;
-  &lt;li&gt;Server Path: &lt;span jwcid="@Insert" value="ognl:serverFile.absolutePath"/&gt;&lt;/li&gt;
-  &lt;li&gt;File Size: &lt;span jwcid="@Insert" value="ognl:serverFile.length()" format="ognl:numberFormat"/&gt; bytes&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/span&gt;
-&lt;/form&gt;
-</source>
+                <source xml:space="preserve"><![CDATA[
+<form jwcid="@Form" listener="listener:formSubmit">
+<label jwcid="@FieldLabel" field="component:upload">File</label>
+<input jwcid="upload@Upload" file="ognl:uploadFile" type="file" displayName="File" validators="validators:required"/>
+<input type="submit" value="Upload"/>
+<span jwcid="@If" condition="ognl: uploadFile &amp;&amp; serverFile">
+<ul>
+  <li>Filename: <span jwcid="@Insert" value="ognl:uploadFile.fileName"/></li>
+  <li>Client path: <span jwcid="@Insert" value="ognl:uploadFile.filePath"/></li>
+  <li>Server Path: <span jwcid="@Insert" value="ognl:serverFile.absolutePath"/></li>
+  <li>File Size: <span jwcid="@Insert" value="ognl:serverFile.length()" format="ognl:numberFormat"/> bytes</li>
+</ul>
+</span>
+</form>
+]]></source>
 
                 <p>UploadPage.java</p>
 
