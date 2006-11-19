@@ -38,7 +38,15 @@
     
     <invoke-factory service-id="hivemind.lib.ServicePropertyFactory">
       <construct service-id="RequestGlobals" property="requestCycle"/>
-    </invoke-factory>   
+    </invoke-factory> 
+  </service-point>
+  
+  <service-point id="ResponseBuilder" interface="org.apache.tapestry.services.ResponseBuilder" >
+        The response builder for the current request.
+    
+    <invoke-factory service-id="hivemind.lib.ServicePropertyFactory">
+        <construct service-id="RequestGlobals" property="responseBuilder"/>
+    </invoke-factory> 
   </service-point>
   
   <service-point id="HttpServletRequest" interface="javax.servlet.http.HttpServletRequest">
@@ -131,5 +139,6 @@
     <property name="applicationId" object="service-property:ApplicationGlobals:activatorName"/>
     <property name="context" object="service:WebContext"/>
     <property name="requestCycle" object="service:IRequestCycle"/>
+    <property name="responseBuilder" object="service:ResponseBuilder" />
   </contribution> 
 </module>

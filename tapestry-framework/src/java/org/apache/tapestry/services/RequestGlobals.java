@@ -35,7 +35,9 @@ public interface RequestGlobals
     void store(WebRequest request, WebResponse response);
 
     void store(IRequestCycle cycle);
-
+    
+    void store(ResponseBuilder builder);
+    
     HttpServletRequest getRequest();
 
     WebRequest getWebRequest();
@@ -45,4 +47,6 @@ public interface RequestGlobals
     WebResponse getWebResponse();
 
     IRequestCycle getRequestCycle();
+    
+    ResponseBuilder getResponseBuilder();
 }

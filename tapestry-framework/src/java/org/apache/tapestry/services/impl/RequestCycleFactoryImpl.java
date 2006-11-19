@@ -82,7 +82,11 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
         _requestGlobals.store(cycle);
         
         try {
-            cycle.setResponseBuilder(_responseDelegateFactory.getResponseBuilder(cycle));
+            
+            _requestGlobals.store(_responseDelegateFactory.getResponseBuilder(cycle));
+            
+            cycle.setResponseBuilder(_requestGlobals.getResponseBuilder());
+            
         } catch (IOException e) {
             throw new ApplicationRuntimeException("Error creating response builder.", e);
         }

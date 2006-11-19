@@ -16,7 +16,6 @@ package org.apache.tapestry.timetracker.page;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.Component;
 import org.apache.tapestry.annotations.EventListener;
 import org.apache.tapestry.annotations.InjectObject;
@@ -27,9 +26,9 @@ import org.apache.tapestry.dojo.form.DropdownDatePicker;
 import org.apache.tapestry.dojo.form.DropdownTimePicker;
 import org.apache.tapestry.dojo.form.IAutocompleteModel;
 import org.apache.tapestry.dojo.html.Dialog;
-import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.form.TextField;
 import org.apache.tapestry.html.BasePage;
+import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.timetracker.dao.ProjectDao;
 import org.apache.tapestry.timetracker.dao.TaskDao;
 import org.apache.tapestry.timetracker.model.Project;
@@ -82,6 +81,8 @@ public abstract class TaskEntryPage extends BasePage
     @InjectObject("service:timetracker.dao.TaskDao")
     public abstract TaskDao getTaskDao();
     
+    public abstract ResponseBuilder getBuilder();
+    
     /**
      * Selection model for projects.
      * 
@@ -98,9 +99,9 @@ public abstract class TaskEntryPage extends BasePage
      */
     @EventListener(events = "selectOption", targets = "projectChoose", 
             submitForm = "taskForm")
-    public void projectSelected(IRequestCycle cycle, BrowserEvent event)
+    public void projectSelected()
     {
-        cycle.getResponseBuilder().updateComponent("projectDescription");
+        getBuilder().updateComponent("projectDescription");
     }
     
     public void showDialog()
