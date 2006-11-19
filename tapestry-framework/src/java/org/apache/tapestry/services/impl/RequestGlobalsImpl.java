@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.services.RequestGlobals;
+import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
 
@@ -41,6 +42,8 @@ public class RequestGlobalsImpl implements RequestGlobals
 
     private IRequestCycle _requestCycle;
 
+    private ResponseBuilder _responseBuilder;
+    
     public WebRequest getWebRequest()
     {
         return _webRequest;
@@ -81,5 +84,15 @@ public class RequestGlobalsImpl implements RequestGlobals
     public void store(IRequestCycle cycle)
     {
         _requestCycle = cycle;
+    }
+    
+    public ResponseBuilder getResponseBuilder()
+    {
+        return _responseBuilder;
+    }
+    
+    public void store(ResponseBuilder builder)
+    {
+        _responseBuilder = builder;
     }
 }
