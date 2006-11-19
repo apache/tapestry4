@@ -184,31 +184,31 @@
                     an end date.
                 </p>
                 <p>HTML template</p>
-                <source xml:space="preserve">
-&lt;form jwcid="Form" listener="listener:formSubmit"&gt;
-&lt;table valign="middle"&gt;
- &lt;tr&gt;
-  &lt;td&gt;Start Date:&lt;/td&gt; &lt;td&gt;&lt;span jwcid="@DatePicker" value="ognl:startDate"/&gt;&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
-  &lt;td&gt;End Date:&lt;/td&gt; &lt;td&gt;&lt;span jwcid="@DatePicker" value="ognl:endDate"/&gt;&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
-  &lt;td colspan="2"&gt;&amp;nbsp;&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
-  &lt;td colspan="2" align="right"&gt;&lt;input type="submit" value="Submit"/&gt;&lt;/td&gt;
- &lt;/tr&gt;
-&lt;/table&gt;
-&lt;/form&gt;
-</source>
+                <source xml:space="preserve"><![CDATA[
+<form jwcid="Form" listener="listener:formSubmit">
+<table valign="middle">
+ <tr>
+  <td>Start Date:</td> <td><input jwcid="@DatePicker" value="ognl:startDate"/></td>
+ </tr>
+ <tr>
+  <td>End Date:</td> <td><input jwcid="@DatePicker" value="ognl:endDate"/></td>
+ </tr>
+ <tr>
+  <td colspan="2">&nbsp;</td>
+ </tr>
+ <tr>
+  <td colspan="2" align="right"><input type="submit" value="Submit"/></td>
+ </tr>
+</table>
+</form>
+]]></source>
                 <p>Page specification</p>
-                <source xml:space="preserve">
+                <source xml:space="preserve"><![CDATA[
 ...
-&lt;property name="startDate" type="java.util.Date"/&gt;
-&lt;property name="endDate" type="java.util.Date"/&gt;
+<property name="startDate" type="java.util.Date"/>
+<property name="endDate" type="java.util.Date"/>
 ...
-</source>
+]]></source>
                 <p>Java source</p>
                 <source xml:space="preserve">
 public abstract class Dates extends BasePage {

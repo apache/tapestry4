@@ -179,28 +179,28 @@
                 <p>There are two PageLink components in our Home page: Page1 and Page2.</p>
 
                 <p>The Home.html:</p>
-                <source xml:space="preserve">
+                <source xml:space="preserve"><![CDATA[
 ...
-&lt;a jwcid="@PageLink" page="Page1"&gt;go to Page1&lt;/a&gt;
-&lt;p&gt; &lt;/p&gt;
-&lt;a jwcid="page2"&gt;go to Page2&lt;/a&gt;
+<a jwcid="@PageLink" page="Page1">go to Page1</a>
+<p> </p>
+<a jwcid="page2">go to Page2</a>
 ...
 
-</source>
+]]></source>
 
                 <p>The Home.page:</p>
 
-                <source xml:space="preserve">
+                <source xml:space="preserve"><![CDATA[
 ...
-&lt;page-specification&gt;
+<page-specification>
   ...
-  &lt;component id="page2" type="PageLink"&gt;
-    &lt;binding name="page" value="literal:Page2"/&gt;
-  &lt;/component&gt;
+  <component id="page2" type="PageLink">
+    <binding name="page" value="literal:Page2"/>
+  </component>
   ...
-&lt;/page-specification&gt;
+</page-specification>
 
-</source>
+]]></source>
 
                 <p>
                     Note: in the Home.page file, we use "literal" prefix when binding value of the
@@ -209,7 +209,7 @@
                 </p>
 
 
-                <p> </p>
+                <p/>
                 <p>
                     <strong>Another example:</strong>
                 </p>
@@ -226,36 +226,37 @@
                 </p>
 
                 <p>the html file:</p>
-                <source xml:space="preserve">
-&lt;!-- Navigation Bar --&gt;
-&lt;table bgcolor="navy" cellpadding="8" cellspacing="6" width="100%"&gt;
- &lt;tr jwcid="@Foreach" source="ognl:engine@NAVIGATION_PAGES" value="ognl:navigationPage" element="tr"&gt;
-   &lt;td&gt;&lt;font color="white"&gt;&lt;b&gt;&lt;span jwcid="@PageLink" page="ognl:navigationPage" disabled="ognl:! visit.authenticated"/&gt;&lt;/b&gt;&lt;/font&gt;&lt;/td&gt;
- &lt;/tr&gt;
-&lt;/table&gt;
+                <source xml:space="preserve"><![CDATA[
+<!-- Navigation Bar -->
+<table bgcolor="navy" cellpadding="8" cellspacing="6" width="100%">
+ <tr jwcid="@Foreach" source="ognl:engine@NAVIGATION_PAGES" value="ognl:navigationPage" element="tr">
+   <td><font color="white"><b><a jwcid="@PageLink" page="ognl:navigationPage" 
+             disabled="ognl:! visit.authenticated">Link</a></b></font></td>
+ </tr>
+</table>
 
-</source>
+]]></source>
 
                 <p>the application specification file:</p>
 
-                <source xml:space="preserve">
+                <source xml:space="preserve"><![CDATA[
 ...
-&lt;application name="PageLink Examples"&gt;
-  &lt;meta key="org.apache.tapestry.engine-class" value="MailEngine"/&gt;
+<application name="PageLink Examples">
+  <meta key="org.apache.tapestry.engine-class" value="MailEngine"/>
   ...
-&lt;/application&gt;
+</application>
 
-</source>
+]]></source>
 
                 <p>the page specification file:</p>
-                <source xml:space="preserve">
+                <source xml:space="preserve"><![CDATA[
 ...
-&lt;page-specification class="MailPage"&gt;
-  &lt;property name="navigationPage"/&gt;
+<page-specification class="MailPage">
+  <property name="navigationPage"/>
   ...
-&lt;/page-specification&gt;
+</page-specification>
 
-</source>
+]]></source>
 
                 <p>the java class files:</p>
 

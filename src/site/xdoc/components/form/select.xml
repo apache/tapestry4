@@ -162,17 +162,17 @@
                     validator, he must select at least one).
                 </p>
 
-                <source xml:space="preserve">
-&lt;form jwcid="@Form" listener="listener:formSubmit"&gt;
- &lt;span jwcid="@FieldLabel" field="component:colorChooser" displayName="Choose a color"&gt;Color&lt;/span&gt;
- &lt;select jwcid="colorChooser@Select" multiple="ognl:true" validators="validators:required"&gt;
-  &lt;span jwcid="@Foreach" source="ognl:colors" value="ognl:currentColor" index="ognl:currentColorIndex"&gt;
-   &lt;option jwcid="@Option" selected="ognl:selection[currentColorIndex]" label="ognl:currentColor"/&gt;
-  &lt;/span&gt;
- &lt;/select&gt;
- &lt;input type="submit"/&gt;
-&lt;/form&gt;
-</source>
+                <source xml:space="preserve"><![CDATA[
+<form jwcid="@Form" listener="listener:formSubmit">
+ <label jwcid="@FieldLabel" field="component:colorChooser" displayName="Choose a color">Color</label>
+ <select jwcid="colorChooser@Select" multiple="ognl:true" validators="validators:required">
+  <span jwcid="@Foreach" source="ognl:colors" value="ognl:currentColor" index="ognl:currentColorIndex">
+   <option jwcid="@Option" selected="ognl:selection[currentColorIndex]" label="ognl:currentColor"/>
+  </span>
+ </select>
+ <input type="submit"/>
+</form>
+]]></source>
 
                 <source xml:space="preserve">
 public abstract class ColorChooser extends BasePage implements PageBeginRenderListener{

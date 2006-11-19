@@ -160,17 +160,17 @@
                     order size.
                 </p>
 
-                <source xml:space="preserve">
-&lt;form jwcid="@Form" success="listener:doSubmit"&gt;
- &lt;span jwcid="@FieldLabel" field="component:size"&gt;Radio&lt;/span&gt;
- &lt;span jwcid="size@RadioGroup" selected="ognl:orderSize" displayName="Size" validators="validators:required"&gt;
-  &lt;input type="radio" jwcid="@Radio" value="ognl:@com.myexample.OrderPage@SMALL"/&gt; Small
-  &lt;input type="radio" jwcid="@Radio" value="ognl:@com.myexample.OrderPage@MEDIUM"/&gt; Medium
-  &lt;input type="radio" jwcid="@Radio" value="ognl:@com.myexample.OrderPage@LARGE"/&gt; Large
-  &lt;input type="submit" value="Order"/&gt;
- &lt;/span&gt;
-&lt;/form&gt;
-</source>
+                <source xml:space="preserve"><![CDATA[
+<form jwcid="@Form" success="listener:doSubmit">
+ <label jwcid="@FieldLabel" field="component:size">Radio</label>
+ <span jwcid="size@RadioGroup" selected="ognl:orderSize" displayName="Size" validators="validators:required">
+  <input type="radio" jwcid="@Radio" value="ognl:@com.myexample.OrderPage@SMALL"/> Small
+  <input type="radio" jwcid="@Radio" value="ognl:@com.myexample.OrderPage@MEDIUM"/> Medium
+  <input type="radio" jwcid="@Radio" value="ognl:@com.myexample.OrderPage@LARGE"/> Large
+  <input type="submit" value="Order"/>
+ </span>
+</form>
+]]></source>
 
                 <source xml:space="preserve">
 package com.myexample;

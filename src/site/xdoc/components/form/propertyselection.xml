@@ -236,12 +236,12 @@
                         </a>
                     </p>
 
-                    <source xml:space="preserve">
-&lt;form jwcid="@Form" listener="listener:formSubmit"&gt;
- Gender: &lt;span jwcid="@PropertySelection" model="ognl:@com.myexample.DetailsPage@GENDER_MODEL" value="ognl:gender"/&gt;
- &lt;input type="submit"/&gt;
-&lt;/form&gt;
-</source>
+                    <source xml:space="preserve"><![CDATA[
+<form jwcid="@Form" listener="listener:formSubmit">
+ Gender: <select jwcid="@PropertySelection" model="ognl:@com.myexample.DetailsPage@GENDER_MODEL" value="ognl:gender"></select>
+ <input type="submit"/>
+</form>
+]]></source>
 
                     <source xml:space="preserve">
 public abstract class DetailsPage extends BasePage {
@@ -271,24 +271,24 @@ public abstract class DetailsPage extends BasePage {
 
                     <p>PurchasePage.html</p>
 
-                    <source xml:space="preserve">
-&lt;body jwcid="@Body"&gt;
-&lt;form jwcid="@Form" listener="listener:formSubmit"&gt;
- &lt;span jwcid="@FieldLabel" field="component:itemSelection"&gt;Selection&lt;/span&gt;
- &lt;span jwcid="itemSelection@PropertySelection"
+                    <source xml:space="preserve"><![CDATA[
+<body jwcid="@Body">
+<form jwcid="@Form" listener="listener:formSubmit">
+ <label jwcid="@FieldLabel" field="component:itemSelection">Selection</label>
+ <select jwcid="itemSelection@PropertySelection"
        model="ognl:itemSelectionModel"
        value="ognl:clothingItem"
        onchange="javascript:this.form.events.refresh();"
-       displayName="Choose an item"/&gt;
- &lt;input type="submit" value="Show me this item"/&gt;
- &lt;span jwcid="@Conditional" condition="ognl:clothingItem!=null"&gt;
- &lt;p&gt;Description: &lt;span jwcid="@Insert" value="ognl:clothingItem.description"/&gt;&lt;/p&gt;
- &lt;p&gt;Label: &lt;span jwcid="@Insert" value="ognl:clothingItem.label"/&gt;&lt;/p&gt;
- &lt;p&gt;Price: $&lt;span jwcid="@Insert" value="ognl:clothingItem.price"/&gt;&lt;/p&gt;
- &lt;/span&gt;
-&lt;/form&gt;
-&lt;/body&gt;
-</source>
+       displayName="Choose an item"></select>
+ <input type="submit" value="Show me this item"/>
+ <span jwcid="@Conditional" condition="ognl:clothingItem!=null">
+ <p>Description: <span jwcid="@Insert" value="ognl:clothingItem.description"/></p>
+ <p>Label: <span jwcid="@Insert" value="ognl:clothingItem.label"/></p>
+ <p>Price: $<span jwcid="@Insert" value="ognl:clothingItem.price"/></p>
+ </span>
+</form>
+</body>
+]]></source>
 
                     <p>PurchasePage.java</p>
                     <source xml:space="preserve">

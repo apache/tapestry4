@@ -152,24 +152,24 @@
                     being labeled (and the displayName being provided as a FieldLabel parameter).
                 </p>
 
-                <source xml:space="preserve">
-&lt;tr&gt;
-  &lt;th&gt;
-    &lt;span jwcid="@FieldLabel" field="component:textField" displayName="message:textfield-label"&gt;Text Field&lt;/span&gt;:
-  &lt;/th&gt;
-  &lt;td&gt;
-    &lt;input jwcid="textField@TextField" . . . /&gt;
-  &lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-  &lt;th&gt;
-    &lt;span jwcid="@FieldLabel" field="component:validField"&gt;Valid Field&lt;/span&gt;:
-  &lt;/th&gt;
-  &lt;td&gt;
-    &lt;input jwcid="validField@ValidField" displayName="message:validfield-label" . . . /&gt;
-  &lt;/td&gt;
-&lt;/tr&gt;
-</source>
+                <source xml:space="preserve"><![CDATA[
+<tr>
+  <th>
+    <label jwcid="@FieldLabel" field="component:textField" displayName="message:textfield-label">Text Field</label>:
+  </th>
+  <td>
+    <input jwcid="textField@TextField" . . . />
+  </td>
+</tr>
+<tr>
+  <th>
+    <label jwcid="@FieldLabel" field="component:validField">Valid Field</label>:
+  </th>
+  <td>
+    <input jwcid="validField@ValidField" displayName="message:validfield-label" . . . />
+  </td>
+</tr>
+]]></source>
 
             </section>
 
