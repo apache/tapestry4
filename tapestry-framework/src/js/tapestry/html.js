@@ -5,6 +5,9 @@ dojo.provide("tapestry.html");
  * Provides functionality related to parsing and rendering dom nodes.
  */
 tapestry.html={
+    
+        TextareaMatcher:'<textarea(.*?)/>', // regexp for compact textarea elements
+        TextareaReplacer:'<textarea$1></textarea>', // replace pattern for compact textareas
 	
         /**
 	 * Function: getContentAsString
@@ -12,12 +15,12 @@ tapestry.html={
 	 * Takes a dom node and returns its contents rendered in a string.
          *
          * The resulting string does NOT contain any markup (or attributes) of
-         * the given node - only child nodes are rendered and returned.
+         * the given node - only child nodes are rendered and returned.Content
          *
          * Implementation Note: This function tries to make use of browser 
          * specific features (the xml attribute of nodes in IE and the XMLSerializer
          * object in Mozilla derivatives) - if those fails, a generic implementation
-         * is guaranteed to work in all platforms.
+         * is used that is guaranteed to work in all platforms.
 	 * 
 	 * Parameters: 
 	 * 
@@ -84,6 +87,7 @@ tapestry.html={
 	        if (s == "undefined")
 		        return this._getContentAsStringGeneric(node);
 	    }
+            s = this._processTextareas(s);
 	    return s;
 	},
 	
@@ -106,5 +110,14 @@ tapestry.html={
 			}
 		}
 		return s;	
-	}
+	},
+        
+        _processTextareas:function(htmlData)
+ 	{
+ 	        var match = new RegExp(tapestry.html.TextareaMatcher);
+                while (htmlData.match(match)){
+                    htmlData = htmlData.replace(match, tapestry.html.TextareaReplacer);
+                }
+ 	        return htmlData;
+ 	}
 }
