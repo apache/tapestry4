@@ -39,6 +39,8 @@
   
   <parameter name="maxListLength" default-value="8" />
   
+  <parameter name="forceValidOption" default-value="true" />
+  
   <parameter name="displayName"/>
   <parameter name="validators"/>
   

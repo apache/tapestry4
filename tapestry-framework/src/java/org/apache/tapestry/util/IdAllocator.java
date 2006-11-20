@@ -92,7 +92,7 @@ public class IdAllocator
     {
         String key = name + _namespace;
 
-        NameGenerator g = (NameGenerator) _generatorMap.get(key);
+        NameGenerator g = (NameGenerator) _generatorMap.get(key.toLowerCase());
         String result = null;
 
         if (g == null)
@@ -107,10 +107,10 @@ public class IdAllocator
         // been
         // requested. Skip over any duplicates thus formed.
 
-        while(_generatorMap.containsKey(result))
+        while(_generatorMap.containsKey(result.toLowerCase()))
             result = g.nextId();
         
-        _generatorMap.put(result, g);
+        _generatorMap.put(result.toLowerCase(), g);
         
         return result;
     }
@@ -127,7 +127,7 @@ public class IdAllocator
     {
         String key = name + _namespace;
 
-        NameGenerator g = (NameGenerator) _generatorMap.get(key);
+        NameGenerator g = (NameGenerator) _generatorMap.get(key.toLowerCase());
         String result = null;
         
         if (g == null)
@@ -144,12 +144,12 @@ public class IdAllocator
         // in a peek we don't want to actually increment any id state so we must
         // clone
         
-        if (_generatorMap.containsKey(result)) {
+        if (_generatorMap.containsKey(result.toLowerCase())) {
             
             try {
                 NameGenerator cg = (NameGenerator)g.clone();
                 
-                while (_generatorMap.containsKey(result))
+                while (_generatorMap.containsKey(result.toLowerCase()))
                     result = cg.nextId();
                 
             } catch (CloneNotSupportedException e) {

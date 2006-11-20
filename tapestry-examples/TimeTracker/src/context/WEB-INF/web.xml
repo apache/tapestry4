@@ -39,7 +39,7 @@
   <servlet-mapping>
   	<servlet-name>timetracker</servlet-name>
   	<url-pattern>/app</url-pattern>
-  </servlet-mapping>  
+  </servlet-mapping>
   
   <servlet-mapping>
     <servlet-name>timetracker</servlet-name>
@@ -50,7 +50,7 @@
     <servlet-name>timetracker</servlet-name>
     <url-pattern>*.external</url-pattern>
   </servlet-mapping>
-    
+  
   <servlet-mapping>
     <servlet-name>timetracker</servlet-name>
     <url-pattern>*.direct</url-pattern>
@@ -71,11 +71,13 @@
     <url-pattern>/assets/*</url-pattern>
   </servlet-mapping>
   
+  <!--
   <servlet-mapping>
     <servlet-name>timetracker</servlet-name>
     <url-pattern>*.html</url-pattern>
   </servlet-mapping>
-
+   -->
+   
   <servlet-mapping>
     <servlet-name>timetracker</servlet-name>
     <url-pattern>*.htm</url-pattern>

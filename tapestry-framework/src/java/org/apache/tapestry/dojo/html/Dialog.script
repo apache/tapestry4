@@ -29,11 +29,10 @@
     <initialization>
     tapestry.widget.synchronizeWidgetState("${component.clientId}", "Dialog", ${props}, ${component.destroy});
     
-    var dlg=dojo.widget.byId("${component.clientId}");
     <if expression="component.hidden">
-        dlg.hide();
+        dojo.widget.byId("${component.clientId}").hide();
     </if><if-not expression="component.hidden">
-        dlg.show();
+        dojo.widget.byId("${component.clientId}").show();
     </if-not>
     </initialization>
     
