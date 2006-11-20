@@ -72,7 +72,6 @@
 			 wouldn't interfere with each other.  -->
 			 
 		<match>foo</match>
-		<match>/foo</match>
 		
 		<match>/body</match>
 		<match>/html</match>		

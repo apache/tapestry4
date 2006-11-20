@@ -35,12 +35,15 @@ public abstract class Any extends AbstractComponent
         if (element == null)
             throw new ApplicationRuntimeException(ComponentMessages.anyElementNotDefined(), this,
                     null, null);
-
+        
         boolean rewinding = cycle.isRewinding();
-
+        
         if (!rewinding)
         {
-            writer.begin(element);
+            if (getBodyCount() > 0)
+                writer.begin(element);
+            else
+                writer.beginEmpty(element);
             
             renderInformalParameters(writer, cycle);
             if (getId() != null && !isParameterBound("id"))
@@ -49,9 +52,9 @@ public abstract class Any extends AbstractComponent
         
         renderBody(writer, cycle);
         
-        if (!rewinding)
+        if (!rewinding && getBodyCount() > 0)
         {
-            writer.end(element);
+            writer.end();
         }
 
     }
