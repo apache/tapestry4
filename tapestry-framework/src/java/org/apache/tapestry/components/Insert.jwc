@@ -49,7 +49,7 @@
     parameters bound.</description>
   </parameter>
   
-  <parameter name="mode" default-value="@org.apache.tapestry.components.InsertMode@BREAK">
+  <parameter name="mode">
     <description>
     Determines which mode to use: breaks after each line, or wrap each line
     as a paragraph.
