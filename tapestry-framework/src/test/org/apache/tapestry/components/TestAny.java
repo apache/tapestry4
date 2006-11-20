@@ -80,7 +80,7 @@ public class TestAny extends BaseComponentTestCase
         IRender body = newRender();
         body.render(writer, cycle);
 
-        writer.end("span");
+        writer.end();
         
         expect(cycle.renderStackPop()).andReturn(any);
         
@@ -110,7 +110,7 @@ public class TestAny extends BaseComponentTestCase
 
         body.render(writer, cycle);
 
-        writer.end("span");
+        writer.end();
         
         expect(cycle.renderStackPop()).andReturn(any);
         
