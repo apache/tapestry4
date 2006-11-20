@@ -100,7 +100,7 @@
 		
 		<assert-output name="i tag">
 <![CDATA[
-<i id="any">i tag</i>
+<i id="Any_2">i tag</i>
 ]]>
 		</assert-output>
 		
