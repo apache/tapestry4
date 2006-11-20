@@ -69,10 +69,11 @@ public abstract class InsertText extends AbstractComponent
 
                 // Exit loop at end of file.
 
-                if (line == null) break;
+                if (line == null) 
+                    break;
 
                 mode.writeLine(lineNumber, line, writer, raw);
-
+                
                 lineNumber++;
             }
 

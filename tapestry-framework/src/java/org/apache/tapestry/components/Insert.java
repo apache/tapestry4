@@ -14,6 +14,10 @@
 
 package org.apache.tapestry.components;
 
+import java.io.IOException;
+import java.io.LineNumberReader;
+import java.io.Reader;
+import java.io.StringReader;
 import java.text.Format;
 
 import org.apache.hivemind.ApplicationRuntimeException;
@@ -38,16 +42,18 @@ public abstract class Insert extends AbstractComponent
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        if (cycle.isRewinding()) return;
-
+        if (cycle.isRewinding()) 
+            return;
+        
         Object value = getValue();
-
-        if (value == null) return;
-
+        
+        if (value == null) 
+            return;
+        
         String insert = null;
-
+        
         Format format = getFormat();
-
+        
         if (format == null)
         {
             insert = value.toString();
@@ -65,28 +71,82 @@ public abstract class Insert extends AbstractComponent
                         "format").getLocation(), ex);
             }
         }
-
-        String styleClass = getStyleClass();
-
-        if (styleClass != null)
-        {
-            writer.begin("span");
-            writer.attribute("class", styleClass);
-
+        
+        boolean render = getRenderTag() || isParameterBound("class");
+        
+        if (render) {
+            writer.begin(getTemplateTagName());
+            
             renderInformalParameters(writer, cycle);
         }
-
-        writer.print(insert, getRaw());
-
-        if (styleClass != null) writer.end(); // <span>
+        
+        printText(writer, cycle, insert);
+        
+        if (render) {
+            writer.end();
+        }
     }
+    
+    protected void printText(IMarkupWriter writer, IRequestCycle cycle, String value)
+    {
+        if (getMode() == null) {
+            
+            writer.print(value, getRaw());
+            return;
+        }
+        
+        StringReader reader = null;
+        LineNumberReader lineReader = null;
+        InsertMode mode = getMode();
+        boolean raw = getRaw();
+        
+        try {
+            reader = new StringReader(value);
+            lineReader = new LineNumberReader(reader);
+            
+            int lineNumber = 0;
+            
+            while(true) {
+                String line = lineReader.readLine();
+                
+                // Exit loop at end of file.
+                
+                if (line == null) 
+                    break;
+                
+                mode.writeLine(lineNumber, line, writer, raw);
+                
+                lineNumber++;
+            }
+            
+        } catch (IOException ex) {
+            
+            throw new ApplicationRuntimeException(ComponentMessages.textConversionError(ex), this, null, ex);
+        } finally {
+            
+            close(lineReader);
+            close(reader);
+        }
+    }
+    
+    private void close(Reader reader)
+    {
+        if (reader == null) 
+            return;
 
+        try
+        {
+            reader.close();
+        } catch (IOException e){}
+    }
+    
     public abstract Object getValue();
 
     public abstract Format getFormat();
-
-    public abstract String getStyleClass();
-
+    
     public abstract boolean getRaw();
-
+    
+    public abstract boolean getRenderTag();
+    
+    public abstract InsertMode getMode();
 }
