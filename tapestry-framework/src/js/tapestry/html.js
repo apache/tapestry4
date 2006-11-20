@@ -3,8 +3,6 @@ dojo.provide("tapestry.html");
 /**
  * package: tapestry.html
  * Provides functionality related to parsing and rendering dom nodes.
- *
- * TODO: Mark all functions (apart from getContentAsString) as 'private'.
  */
 tapestry.html={
 	
@@ -15,63 +13,44 @@ tapestry.html={
          *
          * The resulting string does NOT contain any markup (or attributes) of
          * the given node - only child nodes are rendered and returned.
+         *
+         * Implementation Note: This function tries to make use of browser 
+         * specific features (the xml attribute of nodes in IE and the XMLSerializer
+         * object in Mozilla derivatives) - if those fails, a generic implementation
+         * is guaranteed to work in all platforms.
 	 * 
 	 * Parameters: 
 	 * 
 	 *	node - The dom node.
 	 * Returns:
 	 * 
-	 * A string with the html content of the given node.
+	 * The string representation of the given node's contents.
 	 */    
 	getContentAsString:function(node){
 		if (typeof node.xml != "undefined")
-			return this.getContentAsStringIE(node);
+			return this._getContentAsStringIE(node);
 		else if (typeof XMLSerializer != "undefined" )
-			return this.getContentAsStringMozilla(node);
+			return this._getContentAsStringMozilla(node);
 		else
-			return this.getContentAsStringGeneric(node);
-	},
-
-	getContentAsStringIE:function(node){
-		var s="";
-    	for (var i = 0; i < node.childNodes.length; i++)
-        	s += node.childNodes[i].xml;
-    	return s;
-	},
+			return this._getContentAsStringGeneric(node);
+	},        
 	
-	getContentAsStringMozilla:function(node){
-		var xmlSerializer = new XMLSerializer();
-	    var s = "";
-	    for (var i = 0; i < node.childNodes.length; i++) {
-	        s += xmlSerializer.serializeToString(node.childNodes[i]);
-	        if (s == "undefined")
-		        return this.getContentAsStringGeneric(node);
-	    }
-	    return s;
-	},
-	
-	getContentAsStringGeneric:function(node){
-		var s="";
-		if (node == null) { return s; }
-		for (var i = 0; i < node.childNodes.length; i++) {
-			switch (node.childNodes[i].nodeType) {
-				case 1: // ELEMENT_NODE
-				case 5: // ENTITY_REFERENCE_NODE
-					s += this.getElementAsStringGeneric(node.childNodes[i]);
-					break;
-				case 3: // TEXT_NODE
-				case 2: // ATTRIBUTE_NODE
-				case 4: // CDATA_SECTION_NODE
-					s += node.childNodes[i].nodeValue;
-					break;
-				default:
-					break;
-			}
-		}
-		return s;	
-	},
-	
-	getElementAsStringGeneric:function(node){
+        /**
+	 * Function: getElementAsString
+	 * 
+	 * Takes a dom node and returns itself and its contents rendered in a string.
+         *
+         * Implementation Note: This function uses a generic implementation in order
+         * to generate the returned string.
+	 * 
+	 * Parameters: 
+	 * 
+	 *	node - The dom node.
+	 * Returns:
+	 * 
+	 * The string representation of the given node.
+	 */         
+	getElementAsString:function(node){
 		if (!node) { return ""; }
 		
 		var s='<' + node.nodeName;
@@ -84,9 +63,48 @@ tapestry.html={
 		// close start tag
 		s += '>';
 		// content of tag
-		s += this.getContentAsStringGeneric(node);
+		s += this._getContentAsStringGeneric(node);
 		// end tag
 		s += '</' + node.nodeName + '>';
 		return s;
+	},        
+
+	_getContentAsStringIE:function(node){
+		var s="";
+    	for (var i = 0; i < node.childNodes.length; i++)
+        	s += node.childNodes[i].xml;
+    	return s;
+	},
+	
+	_getContentAsStringMozilla:function(node){
+		var xmlSerializer = new XMLSerializer();
+	    var s = "";
+	    for (var i = 0; i < node.childNodes.length; i++) {
+	        s += xmlSerializer.serializeToString(node.childNodes[i]);
+	        if (s == "undefined")
+		        return this._getContentAsStringGeneric(node);
+	    }
+	    return s;
+	},
+	
+	_getContentAsStringGeneric:function(node){
+		var s="";
+		if (node == null) { return s; }
+		for (var i = 0; i < node.childNodes.length; i++) {
+			switch (node.childNodes[i].nodeType) {
+				case 1: // ELEMENT_NODE
+				case 5: // ENTITY_REFERENCE_NODE
+					s += this.getElementAsString(node.childNodes[i]);
+					break;
+				case 3: // TEXT_NODE
+				case 2: // ATTRIBUTE_NODE
+				case 4: // CDATA_SECTION_NODE
+					s += node.childNodes[i].nodeValue;
+					break;
+				default:
+					break;
+			}
+		}
+		return s;	
 	}
 }
