@@ -149,10 +149,7 @@ Text
                             </a>
                         </td>
                         <td>no</td>
-                        <td>@org.apache
-                        .tapestry.
-                        components.
-                        InsertMode@BREAK</td>
+                        <td></td>
                         <td>
                             Controls how each line is rendered.
                             
