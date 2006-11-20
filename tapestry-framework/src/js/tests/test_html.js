@@ -23,6 +23,23 @@ function test_html_textarea(){
         // only browser based tests will show if this is working
 }
 
+function test_html_getElementAsString(){
+    
+        var node = _createTestNode();
+        
+        var data = tapestry.html.getElementAsString(node).toLowerCase();
+        jum.assertEquals("<div id=\"testid\"><div id=\"testid2\">content</div></div>", data);
+}
+
+function test_html_processTextareas(){
+    var initial = "start<textarea id='2' rows=4/>";
+    var expected = "start<textarea id='2' rows=4></textarea>";
+    
+    jum.assertEquals(expected, tapestry.html._processTextareas(initial));
+    jum.assertEquals(expected + expected, 
+        tapestry.html._processTextareas(initial+initial));
+}
+
 function _createTestNode(element, empty){
 	var node = document.createElement("div");
 	node.setAttribute("id", "testid");
