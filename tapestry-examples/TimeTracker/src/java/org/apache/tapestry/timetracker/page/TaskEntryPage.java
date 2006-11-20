@@ -97,7 +97,7 @@ public abstract class TaskEntryPage extends BasePage
      * Invoked when an item is selected from the project
      * selection list.
      */
-    @EventListener(events = "selectOption", targets = "projectChoose", 
+    @EventListener(events = "onValueChanged", targets = "projectChoose", 
             submitForm = "taskForm")
     public void projectSelected()
     {

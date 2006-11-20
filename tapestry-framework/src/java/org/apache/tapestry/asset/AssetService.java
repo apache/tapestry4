@@ -257,7 +257,7 @@ public class AssetService implements IEngineService, ResetEventListener
                 // throw new ApplicationRuntimeException(AssetMessages.noSuchResource(path));
             }
             
-            //check caching for unprotected resources
+            // check caching for unprotected resources
             
             if (!checkDigest && cachedResource(resourceURL))
                 return;

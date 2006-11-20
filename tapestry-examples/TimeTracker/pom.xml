@@ -95,9 +95,10 @@
                 <artifactId>maven-jetty-plugin</artifactId>
                 <version>6.1-SNAPSHOT</version>
                 <configuration>
-                    <webAppSourceDirectory>${basedir}/src/context</webAppSourceDirectory>
-                    <scanIntervalSeconds>10</scanIntervalSeconds>
+                    <webAppSourceDirectory>src/context</webAppSourceDirectory>
+                    <webXml>src/context/WEB-INF/web.xml</webXml>
                     <contextPath>/</contextPath>
+                    <webDefaultXml>src/config/webdefault.xml</webDefaultXml>
                     <systemProperties>
                         <systemProperty>
                             <name>org.apache.tapestry.disable-caching</name>

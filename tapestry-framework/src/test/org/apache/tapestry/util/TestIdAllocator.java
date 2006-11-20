@@ -69,4 +69,12 @@ public class TestIdAllocator
         
         assertEquals("name_1", ida.peekNextId("name_0"));
     }
+    
+    public void test_Ignore_Case()
+    {
+        IdAllocator ida = new IdAllocator();
+        
+        assertEquals("name", ida.allocateId("name"));
+        assertEquals("name_0", ida.allocateId("Name"));
+    }
 }

@@ -92,6 +92,7 @@ public abstract class Autocompleter extends AbstractFormWidget
         json.put("searchDelay", getSearchDelay());
         json.put("fadeTime", getFadeTime());
         json.put("maxListLength", getMaxListLength());
+        json.put("forceValidOption", isForceValidOption());
         
         IAutocompleteModel model = getModel();
         if (model == null)
@@ -194,6 +195,9 @@ public abstract class Autocompleter extends AbstractFormWidget
     
     /** The maximum number of items displayed in select list before the scrollbar is activated. */
     public abstract int getMaxListLength();
+    
+    /** Forces select to only allow valid option strings. */
+    public abstract boolean isForceValidOption();
     
     /** @since 2.2 * */
     public abstract Object getValue();

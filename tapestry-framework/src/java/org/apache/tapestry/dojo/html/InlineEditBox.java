@@ -114,7 +114,7 @@ public abstract class InlineEditBox extends AbstractWidget implements IDirect
         
         JSONObject prop = new JSONObject();
         prop.put("widgetId", getClientId());
-        prop.put("textValue", getValue());
+        prop.put("value", getValue());
         prop.put("mode", getMode());
         prop.put("minWidth", getMinWidth());
         prop.put("minHeight", getMinHeight());
