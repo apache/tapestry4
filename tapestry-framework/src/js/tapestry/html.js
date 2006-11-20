@@ -1,7 +1,28 @@
 dojo.provide("tapestry.html");
 
+/**
+ * package: tapestry.html
+ * Provides functionality related to parsing and rendering dom nodes.
+ *
+ * TODO: Mark all functions (apart from getContentAsString) as 'private'.
+ */
 tapestry.html={
 	
+        /**
+	 * Function: getContentAsString
+	 * 
+	 * Takes a dom node and returns its contents rendered in a string.
+         *
+         * The resulting string does NOT contain any markup (or attributes) of
+         * the given node - only child nodes are rendered and returned.
+	 * 
+	 * Parameters: 
+	 * 
+	 *	node - The dom node.
+	 * Returns:
+	 * 
+	 * A string with the html content of the given node.
+	 */    
 	getContentAsString:function(node){
 		if (typeof node.xml != "undefined")
 			return this.getContentAsStringIE(node);
@@ -10,7 +31,7 @@ tapestry.html={
 		else
 			return this.getContentAsStringGeneric(node);
 	},
-	
+
 	getContentAsStringIE:function(node){
 		var s="";
     	for (var i = 0; i < node.childNodes.length; i++)
