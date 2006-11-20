@@ -23,10 +23,19 @@
         <section name="Insert">
 
             <p>
-                Allows for the insertion of text (with a specified format) into the HTML response.
-                The text itself can be filtered or not. When filtering is enabled (the default),
-                certain characters (such as <code>&lt; and &gt;</code>) are escaped into HTML safe
-                representations (such as <code>&amp;lt; and &amp;gt;</code>).
+                Allows for the insertion of text (with a specified format) into the HTML response. The text itself can
+                be filtered or not. When filtering is enabled (the default), certain characters (such as
+                <code>&lt; and &gt;</code>
+                ) are escaped into HTML safe representations (such as
+                <code>&amp;lt; and &amp;gt;</code>
+                ).
+            </p>
+
+            <p>
+                Also allows insertion of multi-line text, breaking it into individual lines according to a mode.
+                Commonly used to properly display the data provided by a user via the
+                <a href="../form/textarea.html">TextArea</a>
+                component.
             </p>
 
             <p>
@@ -35,8 +44,6 @@
                     org.apache.tapestry.components.Insert
                 </a>
                 <a href="renderblock.html">RenderBlock</a>
-                ,
-                <a href="inserttext.html">InsertText</a>
                 ,
                 <a href="renderbody.html">RenderBody</a>
             </p>
@@ -56,8 +63,8 @@
                         <td>no</td>
                         <td></td>
                         <td>
-                            The value to be inserted. If the binding is null, then nothing is
-                            inserted. Any object may be inserted, the
+                            The value to be inserted. If the binding is null, then nothing is inserted. Any object may
+                            be inserted, the
                             <code>toString()</code>
                             method is used to convert it to a printable value.
                         </td>
@@ -65,16 +72,13 @@
                     <tr>
                         <td>format</td>
                         <td>
-                            <a
-                                href="http://java.sun.com/j2se/1.5.0/docs/api/java/text/Format.html">
-                                Format
-                            </a>
+                            <a href="http://java.sun.com/j2se/1.5.0/docs/api/java/text/Format.html">Format</a>
                         </td>
                         <td>no</td>
                         <td></td>
                         <td>
-                            An optional format object used to convert the value parameter for
-                            insertion into the HTML response.
+                            An optional format object used to convert the value parameter for insertion into the HTML
+                            response.
                         </td>
                     </tr>
                     <tr>
@@ -83,10 +87,33 @@
                         <td>no</td>
                         <td></td>
                         <td>
-                            If specified, then the output is wrapped in an HTML <code>&lt;span&gt;</code> tag,
-                            using the value specified as the CSS class.
+                            If specified, then the output is wrapped in an HTML tag, using the value specified as the
+                            CSS class. (the html tag being whatever you used to reference the component to begin with )
+                            <br />
+                            <br />
+                            <span class="warn">
+                                <strong>Warning:</strong>
+                                <p>
+                                    Using class to force tag rendering is now deprecated, please use the renderTag
+                                    parameter to control tag rendering.
+                                </p>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>renderTag</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            If specified, then the output is wrapped in an HTML tag.
 
-                            <p>Informal parameters are only rendered if a class is specified.</p>
+                            <p>Example:</p>
+                            <source><![CDATA[
+<div jwcid="@Insert" value="literal:TestValue" class="myStyle" id="An Id" renderTag="true">
+Text
+</div>
+]]></source>
                         </td>
                     </tr>
                     <tr>
@@ -113,6 +140,30 @@
 
                         </td>
                     </tr>
+                     <tr>
+                        <td>mode</td>
+                        <td>
+                            <a
+                                href="../../apidocs/org/apache/tapestry/components/InsertMode.html">
+                                InsertMode
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td>@org.apache
+                        .tapestry.
+                        components.
+                        InsertMode@BREAK</td>
+                        <td>
+                            Controls how each line is rendered.
+                            
+                            <p>
+                                The OGNL expression
+                                <code>@org.apache.tapestry.components.InsertMode@PARAGRAPH</code> OR
+                                <code>@org.apache.tapestry.components.InsertMode@BREAK</code>
+                                 can be used to specify paragraph or line break rendering mode.
+                            </p>
+                        </td>
+                    </tr>
                 </table>
 
                 <p>
@@ -129,7 +180,19 @@
                     Reserved parameters:
                     <em>none</em>
                 </p>
-
+                
+                <p>
+                    The value parameter is split into multiple lines when specifying a "mode" paramater, and 
+                    each line is printed. The BREAK
+                    <em>mode</em>
+                    renders a
+                    <code>&lt;br/&gt;</code>
+                    tag between lines (that is, before each line after the first line output). The alternate mode
+                    renders
+                    <code>&lt;p&gt; and &lt;/p&gt;</code>
+                    tags around each line.
+                </p>
+                
             </section>
 
             <section name="Examples">

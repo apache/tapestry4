@@ -21,7 +21,7 @@
 	
 <component-specification class="org.apache.tapestry.html.InsertText" 
     allow-body="no" 
-    allow-informal-parameters="no">
+    allow-informal-parameters="no" deprecated="yes">
 
   <description>
   Inserts line-oriented text into the response HTML, inserting additional

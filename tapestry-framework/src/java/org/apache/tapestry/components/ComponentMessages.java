@@ -37,4 +37,9 @@ final class ComponentMessages
     {
         return _formatter.getMessage("any-element-not-defined");
     }
+    
+    static String textConversionError(Throwable cause)
+    {
+        return _formatter.format("text-conversion-error", cause);
+    }
 }

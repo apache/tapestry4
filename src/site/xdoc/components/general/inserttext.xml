@@ -23,11 +23,19 @@
         <section name="InsertText">
 
             <p>
-                Inserts multi-line text, breaking it into individual lines according to a mode.
-                Commonly used to properly display the data provided by a user via the
+                Inserts multi-line text, breaking it into individual lines according to a mode. Commonly used to
+                properly display the data provided by a user via the
                 <a href="../form/textarea.html">TextArea</a>
                 component.
             </p>
+
+            <span class="warn">
+                <strong>Warning:</strong>
+                <p>
+                    This component has now been deprecated in favor of the additional functionality
+                    added to the <a href="insert.html">Insert</a> component.
+                </p>
+            </span>
 
             <p>
                 <strong>
@@ -65,10 +73,7 @@
                     <tr>
                         <td>mode</td>
                         <td>
-                            <a
-                                href="../../apidocs/org/apache/tapestry/html/InsertTextMode.html">
-                                InsertTextMode
-                            </a>
+                            <a href="../../apidocs/org/apache/tapestry/html/InsertTextMode.html">InsertTextMode</a>
                         </td>
                         <td>no</td>
                         <td>BREAK</td>
@@ -81,8 +86,8 @@
                         <td>no</td>
                         <td>false</td>
                         <td>
-                            If true, then output is not filtered for HTML entities. Used when the
-                            value parameter contains markup that should be rendered as-is.
+                            If true, then output is not filtered for HTML entities. Used when the value parameter
+                            contains markup that should be rendered as-is.
                         </td>
                     </tr>
 
@@ -104,12 +109,14 @@
                 </p>
 
                 <p>
-                    The value parameter is split into multiple lines, and each line is printed. The
-                    default
+                    The value parameter is split into multiple lines, and each line is printed. The default
                     <em>mode</em>
-                    renders a <code>&lt;br/&gt;</code> tag between lines (that is, before each line after the
-                    first line output). The alternate mode renders <code>&lt;p&gt; and &lt;/p&gt;</code> tags
-                    around each line.
+                    renders a
+                    <code>&lt;br/&gt;</code>
+                    tag between lines (that is, before each line after the first line output). The alternate mode
+                    renders
+                    <code>&lt;p&gt; and &lt;/p&gt;</code>
+                    tags around each line.
                 </p>
             </section>
 

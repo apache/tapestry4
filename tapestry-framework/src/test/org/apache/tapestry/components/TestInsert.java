@@ -53,7 +53,7 @@ public class TestInsert extends BaseComponentTestCase
         return page;
     }
 
-    public void testRewinding()
+    public void test_Rewinding()
     {
         IRequestCycle cycle = newCycle(true);
         
@@ -70,7 +70,7 @@ public class TestInsert extends BaseComponentTestCase
         verify();
     }
 
-    public void testNullValue()
+    public void test_Null_Value()
     {
         IRequestCycle cycle = newCycle(false);
         
@@ -88,7 +88,7 @@ public class TestInsert extends BaseComponentTestCase
         verify();
     }
 
-    public void testNoFormat()
+    public void test_No_Format()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle(false);
@@ -109,7 +109,7 @@ public class TestInsert extends BaseComponentTestCase
         verify();
     }
 
-    public void testFormat()
+    public void test_Format()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle(false);
@@ -134,7 +134,7 @@ public class TestInsert extends BaseComponentTestCase
         verify();
     }
 
-    public void testUnableToFormat()
+    public void test_Unable_To_Format()
     {
         Object value = "xyzzyx";
         Location l = fabricateLocation(87);
@@ -178,7 +178,7 @@ public class TestInsert extends BaseComponentTestCase
         verify();
     }
 
-    public void testRaw()
+    public void test_Raw()
     {
         IRequestCycle cycle = newCycle(false);
         IMarkupWriter writer = newWriter();
@@ -199,26 +199,32 @@ public class TestInsert extends BaseComponentTestCase
         verify();
     }
 
-    public void testStyleClass()
+    public void test_Style_Class()
     {
         IBinding informal = newBinding("informal-value");
-
+        IBinding classBinding = newBinding("paisley");
+        
         IRequestCycle cycle = newCycle(false, false);
         IMarkupWriter writer = newWriter();
+        
         IComponentSpecification spec = newSpec("informal", null);
         
         Insert insert = newInstance(Insert.class, 
                 new Object[] { 
             "value", "42", 
-            "specification", spec, 
-            "styleClass", "paisley" 
+            "specification", spec,
+            "templateTagName", "span"
         });
         
         expect(cycle.renderStackPush(insert)).andReturn(insert);
         
         writer.begin("span");
+        
+        expect(spec.getParameter("class")).andReturn(null);
+        
         writer.attribute("class", "paisley");
         writer.attribute("informal", "informal-value");
+        
         writer.print("42", false);
         writer.end();
         
@@ -226,10 +232,125 @@ public class TestInsert extends BaseComponentTestCase
         
         replay();
         
+        insert.setBinding("class", classBinding);
         insert.setBinding("informal", informal);
 
         insert.render(writer, cycle);
 
         verify();
+    }
+    
+    public void test_Render_Breaks()
+    {
+        IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle(false);
+        
+        Insert component = newInstance(Insert.class,
+                new Object[] {
+            "value",
+        "Now is the time\nfor all good men\nto come to the aid of their Tapestry.",
+            "mode", InsertMode.BREAK
+            }
+        );
+        
+        expect(cycle.renderStackPush(component)).andReturn(component);
+        
+        writer.print("Now is the time", false);
+        writer.beginEmpty("br");
+        writer.print("for all good men", false);
+        writer.beginEmpty("br");
+        writer.print("to come to the aid of their Tapestry.", false);
+        
+        expect(cycle.renderStackPop()).andReturn(component);
+        
+        replay();
+        
+        component.render(writer, cycle);
+
+        verify();
+    }
+
+    public void test_Render_Paras()
+    {
+        IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle(false);
+
+        Insert component = newInstance(Insert.class, 
+                new Object[] { "mode", InsertMode.PARAGRAPH, "value",
+        "Now is the time\nfor all good men\nto come to the aid of their Tapestry." });
+        
+        expect(cycle.renderStackPush(component)).andReturn(component);
+        
+        writer.begin("p");
+        writer.print("Now is the time", false);
+        writer.end();
+
+        writer.begin("p");
+        writer.print("for all good men", false);
+        writer.end();
+
+        writer.begin("p");
+        writer.print("to come to the aid of their Tapestry.", false);
+        writer.end();
+        
+        expect(cycle.renderStackPop()).andReturn(component);
+        
+        replay();
+        
+        component.render(writer, cycle);
+
+        verify();
+    }
+    
+    public void test_Render_Raw()
+    {
+        IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle(false);
+
+        Insert component = newInstance(Insert.class, 
+                new Object[] { "value", "output\n<b>raw</b>", 
+            "raw", Boolean.TRUE, "mode", InsertMode.BREAK });
+        
+        expect(cycle.renderStackPush(component)).andReturn(component);
+        
+        writer.print("output", true);
+        writer.beginEmpty("br");
+        writer.print("<b>raw</b>", true);
+        
+        expect(cycle.renderStackPop()).andReturn(component);
+        
+        replay();
+
+        component.finishLoad(cycle, null, null);
+        component.render(writer, cycle);
+
+        verify();
+    }
+    
+    public void test_Render_Nested_Raw()
+    {
+        IMarkupWriter writer = newBufferWriter();
+        IRequestCycle cycle = newCycle(false);
+        
+        Insert component = newInstance(Insert.class, 
+                new Object[] { "value", "output\n<b>raw</b>", 
+            "raw", Boolean.TRUE, "mode", InsertMode.BREAK });
+        
+        expect(cycle.renderStackPush(component)).andReturn(component);
+        
+        IMarkupWriter nested = writer.getNestedWriter();
+        
+        expect(cycle.renderStackPop()).andReturn(component);
+        
+        replay();
+
+        component.finishLoad(cycle, null, null);
+        component.render(nested, cycle);
+        
+        verify();
+        
+        nested.close();
+        
+        assertBuffer("output<br/><b>raw</b>");
     }
 }
