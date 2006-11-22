@@ -160,6 +160,18 @@ public class TestUnprotectedAsset extends BaseComponentTestCase
         assertTrue(rm.containsResource("/org/apache/tapestry/html/dojo/src/test.png"));
     }
     
+    public void test_Configured_Paths()
+    {
+        ResourceMatcherImpl rm = new ResourceMatcherImpl();
+        List patterns = new ArrayList();
+        patterns.add("/tapestry/");
+        patterns.add("/dojo/");
+        rm.setContributions(patterns);
+        rm.initializeService();
+        
+        assertTrue(rm.containsResource("/assets/static/dojo/src/widget/templates/DatePicker.css"));
+    }
+    
     public void test_Css_Paths()
     {
         AssetService service = new AssetService();

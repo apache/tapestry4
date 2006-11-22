@@ -169,8 +169,8 @@
   <contribution configuration-id="UnprotectedAssets">
    List of unprotected asset regexps for ResourceMatcher service.
    
-   <unprotected-resource contains="tapestry/*" />
-   <unprotected-resource contains="dojo/*" />
+   <unprotected-resource contains="/tapestry/" />
+   <unprotected-resource contains="/dojo/" />
   </contribution>
   
   <service-point id="UnprotectedResourceMatcher" interface="ResourceMatcher" >
