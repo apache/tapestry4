@@ -56,11 +56,12 @@ public class ResourceMatcherImpl implements ResetEventListener, ResourceMatcher 
      */
     public boolean containsResource(String path)
     {
-        if (_contributions == null || _contributions.size() < 1)
+        if (_contributions == null || _contributions.size() < 1 || path == null)
             return false;
         
         for (int i = 0; i < _contributions.size(); i++) {
             String pattern = (String)_contributions.get(i);
+            
             if (_matcher.contains(pattern, path))
                 return true;
         }
