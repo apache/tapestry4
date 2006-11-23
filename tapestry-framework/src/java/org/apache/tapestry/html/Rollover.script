@@ -56,12 +56,12 @@ tapestry.${onMouseOverName}=function()
 {
   if (document.images)
     ${attribute} = ${mouseOverImageURL};
-}
+};
 
 tapestry.${onMouseOutName}=function()
 {
   if (document.images)
     ${attribute} = ${mouseOutImageURL};
-}
+};
 </body>
 </script>

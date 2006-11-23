@@ -350,13 +350,12 @@ function ${availableChangeFunctionName}()
 </body>
 
 <initialization>
-
 ${selectedPath}.onchange = ${selectedChangeFunctionName};
 ${selectedPath}.ondblclick = ${deselectFunctionName};
 ${availablePath}.onchange = ${availableChangeFunctionName};
 ${availablePath}.ondblclick = ${selectFunctionName};
 ${updateFunctionName}();
-Tapestry.onrefresh('${formName}', ${formSubmitFunctionName});
-Tapestry.onsubmit('${formName}', ${formSubmitFunctionName});
+dojo.event.connect(dojo.byId("${formName}"), "onrefresh" , "${formSubmitFunctionName}");
+dojo.event.connect(dojo.byId("${formName}"), "onsubmit" , "${formSubmitFunctionName}");
 </initialization>
 </script>
