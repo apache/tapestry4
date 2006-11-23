@@ -49,6 +49,7 @@ dojo.widget.defineWidget(
 			
 			var buttNode=document.createElement("button");
 			dojo.html.setClass(buttNode, this.buttonClass);
+			buttNode.setAttribute("id", "alertButton");
 			buttNode.innerHTML = "Ok";
 			content.appendChild(buttNode);
 			
