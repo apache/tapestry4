@@ -741,9 +741,9 @@
                         tag names by default. 
                         
                         <p>
-                            This currently affects only the <a href="../components/general/if.html">If</a> and
-                            <a href="../components/general/else.html">Else</a> components but is expected
-                            to be applied to <a href="../components/general/for.html">For</a> as well.
+                            This currently affects the <a href="../components/general/if.html">If</a>,
+                            <a href="../components/general/else.html">Else</a> and 
+                            <a href="../components/general/for.html">For</a> components.
                         </p>
                         
                         <p>
