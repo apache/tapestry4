@@ -46,6 +46,8 @@
     </description>
   </parameter>
   
+  <parameter name="renderTag" default-value="ognl:defaultRenderTags" />
+  
   <parameter name="element">
     <description>
     If provided, the component wraps its content with the requested element.
@@ -53,7 +55,6 @@
     </description>
   </parameter>
   
-    
   <parameter name="keyExpression">
     <description>
     Only active in a form. An OGNL expression that returns the primary key of the iterated value. 
@@ -120,6 +121,7 @@
     </description>
   </parameter>
   
+  <inject property="defaultRenderTags" object="app-property:org.apache.tapestry.renderTags" />
   <inject property="dataSqueezer" object="service:tapestry.data.DataSqueezer"/>
   <inject property="valueConverter" object="service:tapestry.coerce.ValueConverter"/>
   <inject property="expressionEvaluator" object="service:tapestry.ognl.ExpressionEvaluator"/>

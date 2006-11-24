@@ -692,8 +692,6 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
             prepareForRender(cycle);
             
             renderComponent(writer, cycle);
-            
-            getRenderWorker().renderComponent(cycle, this);
         }
         finally
         {
@@ -727,14 +725,14 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
     protected abstract void renderComponent(IMarkupWriter writer, IRequestCycle cycle);
     
     /**
-     * Invoked by {@link #render(IMarkupWriter, IRequestCycle)}after the component renders. This
-     * implementation does nothing.
+     * Invoked by {@link #render(IMarkupWriter, IRequestCycle)}after the component renders.
      * 
      * @since 2.0.3
      */
 
     protected void cleanupAfterRender(IRequestCycle cycle)
     {
+        getRenderWorker().renderComponent(cycle, this);
     }
 
     public INamespace getNamespace()

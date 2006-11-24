@@ -44,7 +44,7 @@ Application Name: JUnit Mock Application
 					
  	    <assert-output-matches name="Foreach output" subgroup="1">
 <![CDATA[
-<li>\s*(.*?)\s*</li>
+>\s*(.*?)\s*</li>
 ]]>
 			<match>Alpha</match>
 			<match>Beta</match>

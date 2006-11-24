@@ -93,6 +93,31 @@
                     </tr>
 
                     <tr>
+                        <td>renderTag</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>true</td>
+
+                        <td>
+                            Specifies whether or not to render the html tag name used to reference this
+                            component. This logic also deprecates the <code>element</code> parameter in 
+                            that tag names are already captured from the html template read in, so you
+                            only need to tell the component to render or not render whatever tag you used.
+                            
+                            <span class="info">
+                                <strong>Info:</strong>
+                                <p>
+                                    You can also control the default value of this property via the global
+                                    configuration property <code>org.apache.tapestry.renderTags</code> which 
+                                    is covered in more depth in the 
+                                    <a href="../../usersguide/configuration.html#Configuration%20Properties">configuration section</a>
+                                     of the <a href="../../usersguide/index.html">Users Guide</a>.
+                                </p>
+                            </span>
+                        </td>
+                    </tr>
+                    
+                    <tr>
                         <td>element</td>
                         <td>String</td>
                         <td>no</td>

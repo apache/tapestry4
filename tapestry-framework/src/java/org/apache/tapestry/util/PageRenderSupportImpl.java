@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.hivemind.Locatable;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
@@ -145,12 +146,17 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
     
     public void addBodyScript(IComponent target, String script)
     {
-        if (!_builder.isBodyScriptAllowed(target)) return;
+        if (!_builder.isBodyScriptAllowed(target)) 
+            return;
+        
+        String val = StringUtils.stripToEmpty(script);
+        if (val.length() <= 0)
+            return;
         
         if (_bodyScript == null)
-            _bodyScript = new StringBuffer(script.length());
+            _bodyScript = new StringBuffer(val.length());
 
-        _bodyScript.append(script);
+        _bodyScript.append(val);
     }
     
     public void addInitializationScript(String script)
@@ -160,13 +166,17 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
 
     public void addInitializationScript(IComponent target, String script)
     {
-        if (!_builder.isInitializationScriptAllowed(target)) return;
+        if (!_builder.isInitializationScriptAllowed(target)) 
+            return;
+        
+        String val = StringUtils.stripToEmpty(script);
+        if (val.length() <= 0)
+            return;
         
         if (_initializationScript == null)
-            _initializationScript = new StringBuffer(script.length() + 1);
+            _initializationScript = new StringBuffer(val.length() + 1);
         
-        _initializationScript.append(script);
-        _initializationScript.append('\n');
+        _initializationScript.append("\n").append(val);
     }
     
     public void addExternalScript(Resource scriptLocation)
@@ -176,7 +186,8 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
     
     public void addExternalScript(IComponent target, Resource scriptLocation)
     {
-        if (!_builder.isExternalScriptAllowed(target)) return;
+        if (!_builder.isExternalScriptAllowed(target)) 
+            return;
         
         if (_externalScripts == null)
             _externalScripts = new ArrayList();
@@ -227,7 +238,7 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
     {
         if (!Tapestry.isEmpty(_externalScripts))
             writeExternalScripts(writer, cycle);
-
+        
         if (!(any(_bodyScript) || any(_imageInitializations)))
             return;
         
@@ -237,7 +248,7 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
         {
             _builder.writeImageInitializations(writer, _imageInitializations.toString(), _preloadName, cycle);
         }
-
+        
         if (any(_bodyScript))
         {
             _builder.writeBodyScript(writer, _bodyScript.toString(), cycle);

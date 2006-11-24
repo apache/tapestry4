@@ -72,6 +72,7 @@ public class ComponentEventInvoker implements ResetEventListener
         }
         
         // Javascript event target element id
+        
         String targetId = (String)event.getTarget().get("id");
         
         if (hasElementEvents(targetId)) {
@@ -86,11 +87,16 @@ public class ComponentEventInvoker implements ResetEventListener
     {
         List listeners = prop.getEventListeners(event.getName());
         
+        String targetId = (String)event.getTarget().get("id");
+        if (targetId == null)
+            return;
+        
         for (int i=0; i < listeners.size(); i++) {
             EventBoundListener eventListener = (EventBoundListener)listeners.get(i);
             
             // ensure ~only~ the method that targeted this event gets called!
-            if (!eventListener.getComponentId().equals(event.getTarget().get("id")))
+            
+            if (!targetId.startsWith(eventListener.getComponentId()))
                 continue;
             
             IComponent container = component.getContainer();

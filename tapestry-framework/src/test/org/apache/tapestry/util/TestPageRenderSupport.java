@@ -97,10 +97,11 @@ public class TestPageRenderSupport extends BaseComponentTestCase
     private void assertOutput(String expected)
     {
         String actual = _writer.toString();
+        
         // Replace any system line feeds with \n
         actual = actual.replaceAll(SYSTEM_NEWLINE, TEST_NEWLINE);
-
-        assertEquals(expected, actual);
+        
+        assertEquals(actual, expected);
 
         _writer.reset();
     }
@@ -139,15 +140,14 @@ public class TestPageRenderSupport extends BaseComponentTestCase
         prs.writeBodyScript(writer, cycle);
 
         assertOutput(new String[]
-        { "<script type=\"text/javascript\"><!--",
-                "dojo.addOnLoad(function(e) {", "","",
+        { "<script type=\"text/javascript\"><!--","",
+                "dojo.addOnLoad(function(e) {",
                 "tapestry._preload = [];", "if (document.images)", "{",
                 "  tapestry._preload[0] = new Image();",
                 "  tapestry._preload[0].src = \"/foo/bar.gif\";",
                 "  tapestry._preload[1] = new Image();",
-                "  tapestry._preload[1].src = \"/zip/zap.png\";", "}", "});", "", 
-                "myBodyScript();",
-                "", "// --></script>" });
+                "  tapestry._preload[1].src = \"/zip/zap.png\";", "}", "});myBodyScript();",
+                "// --></script>" });
 
         verify();
     }
@@ -160,20 +160,20 @@ public class TestPageRenderSupport extends BaseComponentTestCase
         IMarkupWriter writer = createWriter();
 
         replay();
-
+        
         PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "NAMESPACE", l, newBuilder(writer));
-
+        
         assertEquals("NAMESPACE_preload[0].src", prs.getPreloadedImageReference("/foo/bar.gif"));
-
+        
         prs.writeBodyScript(writer, cycle);
-
+        
         assertOutput(new String[]
-        {"<script type=\"text/javascript\"><!--", 
-                "dojo.addOnLoad(function(e) {","","",
+        {"<script type=\"text/javascript\"><!--", "",
+                "dojo.addOnLoad(function(e) {",
                 "NAMESPACE_preload = [];", "if (document.images)", "{",
                 "  NAMESPACE_preload[0] = new Image();",
                 "  NAMESPACE_preload[0].src = \"/foo/bar.gif\";", "}",
-                "});","",
+                "});",
                 "// --></script>" });
 
         verify();
@@ -195,9 +195,9 @@ public class TestPageRenderSupport extends BaseComponentTestCase
         prs.writeBodyScript(writer, cycle);
 
         assertOutput(new String[]
-        { "<script type=\"text/javascript\"><!--","", 
+        { "<script type=\"text/javascript\"><!--",
                 "myBodyScript();",
-                "", "// --></script>" });
+                "// --></script>" });
 
         verify();
     }
@@ -253,9 +253,9 @@ public class TestPageRenderSupport extends BaseComponentTestCase
         
         assertOutput(new String[]
         { "<script type=\"text/javascript\"><!--",
-                "dojo.addOnLoad(function(e) {",
-                "myInitializationScript1();", "myInitializationScript2();", 
-                "});", "// --></script>" });
+                "dojo.addOnLoad(function(e) {","",
+                "myInitializationScript1();", "myInitializationScript2();});",
+                "// --></script>" });
 
         verify();
     }

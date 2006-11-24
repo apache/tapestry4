@@ -53,7 +53,15 @@ Do not show this form text either
 		<assert-output name="Test If 4">
 But show this form text too!
 		</assert-output>
+    
+    <assert-output name="Test tags For">
+&lt;li informal="informal-value" id="tags"&gt;Render tag&lt;/li&gt;
+    </assert-output>
         
+    <assert-no-output name="Test no Tags For">
+&lt;li informal="informal-value"&gt;Do not render tag&lt;/li&gt;
+    </assert-no-output>
+
 	</request>		
 
 	<request>

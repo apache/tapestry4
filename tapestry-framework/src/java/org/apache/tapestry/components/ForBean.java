@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
@@ -30,6 +31,7 @@ import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.engine.NullWriter;
 import org.apache.tapestry.form.AbstractFormComponent;
+import org.apache.tapestry.services.ComponentRenderWorker;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.services.ExpressionEvaluator;
 
@@ -70,6 +72,8 @@ public abstract class ForBean extends AbstractFormComponent
     private boolean _rendering;
     
     // parameters
+    public abstract boolean getRenderTag();
+    
     public abstract String getElement();
 
     public abstract String getKeyExpression();
@@ -88,7 +92,9 @@ public abstract class ForBean extends AbstractFormComponent
     public abstract ValueConverter getValueConverter();
 
     public abstract ExpressionEvaluator getExpressionEvaluator();
-
+    
+    public abstract ComponentRenderWorker getRenderWorker();
+    
     /**
      * Gets the source binding and iterates through its values. For each, it updates the value
      * binding and render's its wrapped elements.
@@ -100,6 +106,7 @@ public abstract class ForBean extends AbstractFormComponent
         
         // If the cycle is rewinding, but not this particular form,
         // then do nothing (don't even render the body).
+        
         boolean cycleRewinding = cycle.isRewinding();
         if (cycleRewinding && form != null && !form.isRewinding())
             return;
@@ -107,18 +114,22 @@ public abstract class ForBean extends AbstractFormComponent
         setForm(form);
         
         // Get the data to be iterated upon. Store in form if needed.
+        
         Iterator dataSource = getData(cycle, form);
 
         // Do not iterate if dataSource is null.
         // The dataSource was either not convertable to Iterator, or was empty.
+        
         if (dataSource == null)
             return;
         
         if (!cycleRewinding && form != null && !NullWriter.class.isInstance(writer))
             form.setFormFieldUpdating(true);
         
-        String element = getElement();
-
+        String element = HiveMind.isNonBlank(getElement()) ? getElement() : getTemplateTagName();
+        
+        boolean render = !cycleRewinding && (getRenderTag() || HiveMind.isNonBlank(getElement()));
+        
         // Perform the iterations
         try
         {
@@ -129,23 +140,38 @@ public abstract class ForBean extends AbstractFormComponent
             {
                 // Get current value
                 _value = dataSource.next();
-
+                
                 // Update output component parameters
                 updateOutputParameters();
-
+                
                 // Render component
-                if (element != null)
-                {
+                
+                if (render) {
+                    
                     writer.begin(element);
+                    
                     renderInformalParameters(writer, cycle);
+                    renderIdAttribute(writer, cycle);
                 }
-
+                
                 renderBody(writer, cycle);
-
-                if (element != null)
-                    writer.end();
+                
+                if (render) {
+                    
+                    writer.end(element);
+                }
                 
                 _index++;
+                
+                // TODO: Fragile / messy
+                // Cause unique client id to be generated as well as event connection
+                // works or other after render workers. (basically reproduce what happens
+                // inside of AbstractComponent.render() . Perhaps this means it's time for
+                // refactoring of this logic, like deferring rendering to an actual component
+                // that can have its proper render() method invoked multiple times.
+                
+                getRenderWorker().renderComponent(cycle, this);
+                generateClientId();
             }
         }
         finally
@@ -154,7 +180,23 @@ public abstract class ForBean extends AbstractFormComponent
             _value = null;
         }
     }
-
+    
+    /**
+     * Overriden so that RenderWorker doesn't get run as we've been invoking
+     * it manually already.
+     */
+    protected void cleanupAfterRender(IRequestCycle cycle)
+    {
+    }
+    
+    protected void generateClientId()
+    {
+        String id = getSpecifiedId();
+        
+        if (id != null && getPage() != null && getPage().getRequestCycle() != null)
+             setClientId(getPage().getRequestCycle().getUniqueId(TapestryUtils.convertTapestryIdToNMToken(id)));
+    }
+    
     /**
      * Returns the most recent value extracted from the source parameter.
      *

@@ -112,7 +112,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
         parms.put("clientId", clientId);
         parms.put("component", component);
         
-        Object[][] events = getEvents(prop);
+        Object[][] events = getEvents(prop, clientId);
         Object[][] formEvents = filterFormEvents(prop, parms, cycle);
         
         if (events.length < 1 && formEvents.length < 1)
@@ -160,7 +160,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
             
             parms.put("target", target);
             parms.put("url", url);
-            parms.put("events", getEvents(prop));
+            parms.put("events", getEvents(prop, null));
             parms.put("formEvents", filterFormEvents(prop, parms, cycle));
             
             _scriptSource.getScript(resource).execute(component, cycle, prs, parms);
@@ -220,7 +220,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
      * @param prop The component event properties object the events are managed in.
      * @return A two dimensional array containing all events, or empty array if none exist.
      */
-    Object[][] getEvents(ComponentEventProperty prop)
+    Object[][] getEvents(ComponentEventProperty prop, String clientId)
     {
         Set events = prop.getEvents();
         List ret = new ArrayList();
@@ -236,7 +236,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
                 hash += listeners.get(i).hashCode();
             }
             
-            ret.add(new Object[]{ event, ScriptUtils.functionHash(event + hash) });
+            ret.add(new Object[]{ event, ScriptUtils.functionHash(event + hash + clientId) });
         }
         
         return (Object[][])ret.toArray(new Object[ret.size()][2]);

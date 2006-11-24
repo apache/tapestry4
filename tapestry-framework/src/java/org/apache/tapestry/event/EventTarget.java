@@ -15,6 +15,9 @@ package org.apache.tapestry.event;
 
 import java.util.Map;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
 
 /**
  * Represents a browser generated event "target". Most browser events will
@@ -46,5 +49,12 @@ public class EventTarget
     public Object get(String key)
     {
         return _properties.get(key);
+    }
+    
+    public String toString()
+    {
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+        .append("properties", _properties)
+        .toString();
     }
 }

@@ -90,7 +90,7 @@ Callback: DirectCallback[ProtectedLink/link 6, 13, 1999]
 		
 		<assert-output-matches name="Parameters" subgroup="1">
 <![CDATA[
-<li>(.*?)</li>
+>(.*?)</li>
 ]]>
 			<match>6</match>
 			<match>13</match>
@@ -121,7 +121,7 @@ Callback: DirectCallback[ProtectedLink/link 6, 13, 1999]
 		
 		<assert-output-matches name="Parameters" subgroup="1">
 <![CDATA[
-<li>(.*?)</li>
+>(.*?)</li>
 ]]>
 			<match>6</match>
 			<match>13</match>
