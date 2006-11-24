@@ -176,16 +176,16 @@ public abstract class Form extends AbstractComponent implements IForm
 
     protected void cleanupAfterRender(IRequestCycle cycle)
     {
+        super.cleanupAfterRender(cycle);
+        
         _formSupport = null;
-
+        
         TapestryUtils.removeForm(cycle);
 
         IValidationDelegate delegate = getDelegate();
 
         if (delegate != null)
             delegate.setFormComponent(null);
-
-        super.cleanupAfterRender(cycle);
     }
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
