@@ -60,8 +60,8 @@ public class DefaultResponseBuilderTest extends BaseComponentTestCase
 
     private void assertOutput(String expected)
     {
-        assertEquals(expected, _writer.toString());
-
+        assertEquals(_writer.toString(), expected);
+        
         _writer.reset();
     }
     
@@ -140,12 +140,12 @@ public class DefaultResponseBuilderTest extends BaseComponentTestCase
         
         builder.beginBodyScript(mw, cycle);
         
-        assertOutput("<script type=\"text/javascript\"><!--");
+        assertOutput("<script type=\"text/javascript\"><!--"+LINE_SEPARATOR);
         
         builder.writeImageInitializations(mw, imageInit, preload, cycle);
         
         assertOutput(LINE_SEPARATOR
-                + "dojo.addOnLoad(function(e) {\n\n\n"
+                + "dojo.addOnLoad(function(e) {\n"
                 + preload + " = [];\n"
                 + "if (document.images)\n"
                 + "{\n" + imageInit + "}\n"
@@ -153,12 +153,11 @@ public class DefaultResponseBuilderTest extends BaseComponentTestCase
         
         builder.writeBodyScript(mw, bscript, cycle);
         
-        assertOutput("\n\n"
-                + bscript);
+        assertOutput(bscript);
         
         builder.endBodyScript(mw, cycle);
         
-        assertOutput("\n\n// --></script>");
+        assertOutput("\n// --></script>");
         
         verify();
     }

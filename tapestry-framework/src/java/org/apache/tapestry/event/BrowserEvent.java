@@ -16,6 +16,8 @@ package org.apache.tapestry.event;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IRequestCycle;
 
@@ -182,5 +184,20 @@ public class BrowserEvent
         Defense.notNull(cycle, "cycle");
         
         return cycle.getParameter(NAME) != null;
+    }
+    
+    public String toString()
+    {
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+        .append("name", _name)
+        .append("type", _type)
+        .append("keys", _keys)
+        .append("charCode", _charCode)
+        .append("pageX", _pageX)
+        .append("pageY", _pageY)
+        .append("layerX", _layerX)
+        .append("layerY", _layerY)
+        .append("target", _target)
+        .toString();
     }
 }

@@ -20,7 +20,14 @@
   "http://tapestry.apache.org/dtd/Tapestry_4_0.dtd">
 	
 <application name="Tapestry TimeTracker">
-
+   
+   <meta key="org.apache.tapestry.page-class-packages" 
+        value="org.apache.tapestry.timetracker.page"/>
+        <!-- 
+    <meta key="org.apache.tapestry.component-class-packages" 
+        value="org.apache.tapestry.integration.app1.components"/>
+        -->
+        
   <library id="contrib" specification-path="classpath:/org/apache/tapestry/contrib/Contrib.library"/>
   
 </application>

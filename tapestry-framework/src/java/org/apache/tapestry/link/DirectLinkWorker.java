@@ -77,7 +77,9 @@ public class DirectLinkWorker implements ComponentRenderWorker
         IDirect direct = (IDirect)component;
         
         // check for dynamic parameters
-        if (!direct.isAsync() && !direct.isJson())
+        if (!direct.isAsync() && !direct.isJson() 
+                && (direct.getUpdateComponents() == null 
+                || direct.getUpdateComponents().size() <= 0))
             return;
         
         PageRenderSupport prs = TapestryUtils.getPageRenderSupport(cycle, component);

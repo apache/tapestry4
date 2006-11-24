@@ -16,22 +16,21 @@
 -->
 
 <!DOCTYPE page-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://tapestry.apache.org/dtd/Tapestry_4_0.dtd">
 	
 <page-specification class="org.apache.tapestry.junit.mock.app.ProtectedLinkResult">
 
   <component id="border" type="lib:Border">
-  	<static-binding name="title">ProtectedLink: Result</static-binding>
+  	<binding name="title" value="literal:ProtectedLink: Result" />
   </component>
   
   <component id="foreach" type="For">
-  	<binding name="source" expression="parameters"/>
-  	<static-binding name="element">li</static-binding>	
+  	<binding name="source" value="parameters"/>
   </component>
   
   <component id="insertParameter" type="Insert">
-  	<binding name="value" expression="components.foreach.value"/>
+  	<binding name="value" value="components.foreach.value"/>
   </component>
    
 </page-specification>

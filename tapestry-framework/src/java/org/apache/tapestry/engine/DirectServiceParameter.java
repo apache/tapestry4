@@ -56,13 +56,13 @@ public class DirectServiceParameter
         _serviceParameters = serviceParameters;
         
         if (invoker == null) {
-        
+            
             Collection comps = direct.getUpdateComponents();
             if (comps == null)
                 _updateParts = new String[0];
             else
                 _updateParts = (String[])comps.toArray(new String[comps.size()]);
-
+            
             _json = direct.isJson();
             _async = direct.isAsync();
         } else {
@@ -76,6 +76,12 @@ public class DirectServiceParameter
             _json = invoker.isJson();
             _async = invoker.isAsync();
         }
+        
+        // if they gave only an updateComponents param make it async by default
+        
+        if (!_json && !_async && _updateParts.length > 0)
+            _async = true;
+        
     }
     
     public IDirect getDirect()
