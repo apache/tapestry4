@@ -1,0 +1,2 @@
+
+({buttonOk: "OK",buttonCancel: "Cancel"})
