@@ -31,6 +31,7 @@ import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.engine.NullWriter;
 import org.apache.tapestry.form.AbstractFormComponent;
+import org.apache.tapestry.markup.NestedMarkupWriterImpl;
 import org.apache.tapestry.services.ComponentRenderWorker;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.services.ExpressionEvaluator;
@@ -153,7 +154,7 @@ public abstract class ForBean extends AbstractFormComponent
                 // swap out writers if necessary
                 
                 if (getResponseBuilder().isDynamic()
-                        && getResponseBuilder().contains(this)) {
+                        && getResponseBuilder().contains(this) && !NestedMarkupWriterImpl.class.isInstance(writer)) {
                     
                     loopWriter = getResponseBuilder().getWriter(getClientId(), ResponseBuilder.ELEMENT_TYPE);
                 }

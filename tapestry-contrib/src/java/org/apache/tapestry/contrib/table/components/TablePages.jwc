@@ -50,6 +50,7 @@
 	<component id="iterPage" type="For">
 		<binding name="source" expression="pageList"/>
 		<binding name="value" expression="displayPage"/>
+        <binding name="renderTag" expression="false" />
 	</component>
 
 	<component id="insertCurrentPage" type="Insert">
