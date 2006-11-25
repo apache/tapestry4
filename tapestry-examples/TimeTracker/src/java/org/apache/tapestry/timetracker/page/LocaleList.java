@@ -42,12 +42,12 @@ public abstract class LocaleList extends BasePage
         return Locale.getAvailableLocales();
     }
     
-    public void selectLocale(Locale locale)
+    public void selectLocale(String language, String country, String variant)
     {
-        setSelected(locale);
+        setSelected(new Locale(language, country, variant));
     }
     
-    @EventListener(targets = "localeLink", events = "onmouseover")
+    @EventListener(targets = {"localeLink"}, events = "onmousedown")
     public void localeHovered(BrowserEvent event)
     {
         setStatus(event.toString());

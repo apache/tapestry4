@@ -96,9 +96,9 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
 
     protected void cleanupAfterRender(IRequestCycle cycle)
     {
-        _eventHandlers = null;
-
         super.cleanupAfterRender(cycle);
+        
+        _eventHandlers = null;
     }
 
     protected void writeEventHandlers(IMarkupWriter writer, IRequestCycle cycle)

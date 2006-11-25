@@ -445,6 +445,21 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
     
     public abstract void setClientId(String id);
     
+    /**
+     * {@inheritDoc}
+     */
+    public String peekClientId()
+    {
+        if (getPage() == null)
+            return null;
+        
+        String id = getSpecifiedId();
+        if (id == null)
+            return null;
+        
+        return getPage().getRequestCycle().peekUniqueId(TapestryUtils.convertTapestryIdToNMToken(id));
+    }
+    
     protected void generateClientId()
     {
         String id = getSpecifiedId();

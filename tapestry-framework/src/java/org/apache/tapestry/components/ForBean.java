@@ -34,6 +34,7 @@ import org.apache.tapestry.form.AbstractFormComponent;
 import org.apache.tapestry.services.ComponentRenderWorker;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.services.ExpressionEvaluator;
+import org.apache.tapestry.services.ResponseBuilder;
 
 /**
  * @author mb
@@ -95,6 +96,8 @@ public abstract class ForBean extends AbstractFormComponent
     
     public abstract ComponentRenderWorker getRenderWorker();
     
+    public abstract ResponseBuilder getResponseBuilder();
+    
     /**
      * Gets the source binding and iterates through its values. For each, it updates the value
      * binding and render's its wrapped elements.
@@ -130,6 +133,8 @@ public abstract class ForBean extends AbstractFormComponent
         
         boolean render = !cycleRewinding && (getRenderTag() || HiveMind.isNonBlank(getElement()));
         
+        IMarkupWriter loopWriter = writer;
+        
         // Perform the iterations
         try
         {
@@ -145,20 +150,27 @@ public abstract class ForBean extends AbstractFormComponent
                 updateOutputParameters();
                 
                 // Render component
+                // swap out writers if necessary
                 
-                if (render) {
+                if (getResponseBuilder().isDynamic()
+                        && getResponseBuilder().contains(this)) {
                     
-                    writer.begin(element);
-                    
-                    renderInformalParameters(writer, cycle);
-                    renderIdAttribute(writer, cycle);
+                    loopWriter = getResponseBuilder().getWriter(getClientId(), ResponseBuilder.ELEMENT_TYPE);
                 }
                 
-                renderBody(writer, cycle);
+                if (render) {
+                    
+                    loopWriter.begin(element);
+                    
+                    renderInformalParameters(loopWriter, cycle);
+                    renderIdAttribute(loopWriter, cycle);
+                }
+                
+                renderBody(loopWriter, cycle);
                 
                 if (render) {
                     
-                    writer.end(element);
+                    loopWriter.end(element);
                 }
                 
                 _index++;
@@ -172,6 +184,10 @@ public abstract class ForBean extends AbstractFormComponent
                 
                 getRenderWorker().renderComponent(cycle, this);
                 generateClientId();
+                
+                // set loopWriter back to original as the client ids/ etc change on each loop
+                
+                loopWriter = writer;
             }
         }
         finally

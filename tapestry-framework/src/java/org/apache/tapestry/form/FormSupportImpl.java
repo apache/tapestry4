@@ -427,6 +427,15 @@ public class FormSupportImpl implements FormSupport
         return result;
     }
 
+    public String peekClientId(IFormComponent comp)
+    {
+        String id = comp.getSpecifiedId();
+        if (id == null)
+            return null;
+        
+        return _elementIdAllocator.peekNextId(id);
+    }
+    
     public boolean isRewinding()
     {
         return _rewinding;

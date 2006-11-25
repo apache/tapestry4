@@ -141,6 +141,8 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         
         expect(comp1.getClientId()).andReturn("id1").anyTimes();
         
+        expect(comp1.peekClientId()).andReturn("id1").anyTimes();
+        
         expect(writer.getNestedWriter()).andReturn(nested);
         
         nested.begin("response");
@@ -228,7 +230,6 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
                 "]>\n" + 
                 "<ajax-response><response id=\"bodyscript\" type=\"script\"><script>\n" + 
                 "//<![CDATA[\n" + 
-                "\n" + 
                 "\n" + 
                 "var preloadedvarname = new Array();\n" + 
                 "if (document.images)\n" + 

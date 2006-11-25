@@ -145,7 +145,15 @@ public abstract class Form extends AbstractComponent implements IForm
     {
         return _formSupport.getElementId(component, baseId);
     }
-
+    
+    /**
+     * {@inheritDoc}
+     */
+    public String peekClientId(IFormComponent component)
+    {
+        return _formSupport.peekClientId(component);
+    }
+    
     /**
      * Returns the name generated for the form. This is used to faciliate components that write
      * JavaScript and need to access the form or its contents.

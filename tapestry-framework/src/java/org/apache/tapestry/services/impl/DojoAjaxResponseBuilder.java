@@ -280,7 +280,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     {
         IMarkupWriter writer = getWriter(ResponseBuilder.BODY_SCRIPT, ResponseBuilder.SCRIPT_TYPE);
         
-        writer.printRaw("\n\nvar " + preloadName + " = new Array();\n");
+        writer.printRaw("\nvar " + preloadName + " = new Array();\n");
         writer.printRaw("if (document.images)\n");
         writer.printRaw("{\n");
         
@@ -331,9 +331,9 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         }
         
         if (IComponent.class.isInstance(render)
-                && contains((IComponent)render))
+                && contains((IComponent)render, ((IComponent)render).peekClientId()))
         {
-            render.render(getComponentWriter((IComponent)render), cycle);
+            render.render(getComponentWriter( ((IComponent)render).peekClientId() ), cycle);
             return;
         }
         
@@ -354,19 +354,8 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         return null;
     }
     
-    /**
-     * Gets a {@link NestedMarkupWriter} for the specified
-     * component to write to and caches the buffer for later
-     * writing.
-     * 
-     * @param target
-     *          The component to get a writer for.
-     * @return An IMarkuPWriter instance.
-     */
-    IMarkupWriter getComponentWriter(IComponent target)
+    IMarkupWriter getComponentWriter(String id)
     {
-        String id = getComponentId(target);
-        
         return getWriter(id, ELEMENT_TYPE);
     }
     
@@ -495,8 +484,13 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         if (target == null) 
             return false;
         
-        String id = getComponentId(target);
+        String id = target.getClientId();
         
+        return contains(target, id);
+    }
+    
+    boolean contains(IComponent target, String id)
+    {
         if (_parts.contains(id))
             return true;
         
@@ -504,7 +498,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         while (it.hasNext()) {
             
             IComponent comp = (IComponent)it.next();
-            String compId = getComponentId(comp);
+            String compId = comp.getClientId();
             
             if (comp != target && _parts.contains(compId))
                 return true;
@@ -522,17 +516,5 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
             return false;
         
         return _parts.contains(target.getId());
-    }
-
-    /**
-     * Gets the id of the specified component, choosing the "id" element
-     * binding over any other id.
-     * 
-     * @param comp
-     * @return The id of the component.
-     */
-    String getComponentId(IComponent comp)
-    {
-        return comp.getClientId();
     }
 }

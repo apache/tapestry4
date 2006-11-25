@@ -18,6 +18,14 @@ Simple For loop listing locales.
 	
 	.localeList a { color: #fff;}
 	
+	.selected {
+		background: #efefef;
+	}
+	
+	.selected a {
+		color: #000;
+	}
+	
 	.detail {
 		clear:left;
 		display:block;
@@ -62,9 +70,15 @@ Simple For loop listing locales.
 	<span jwcid="@Insert" value="ognl:status" />
 </div>
 
-<div class="localeList" jwcid="localeLink@For" source="ognl:locales" value="ognl:currLocale">
-	<a jwcid="@DirectLink" listener="listener:selectLocale" parameters="ognl:currLocale""
-		updateComponents="localeDetail"><span jwcid="@Insert" value="ognl:currLocale.toString()" /></a>
+<div class="ognl:(selected != null and currLocale.toString() == selected.toString()) ? 'selected localeList' : 'localeList'" 
+		jwcid="localeList@For" 
+		source="ognl:locales" value="ognl:currLocale">
+	
+	<a jwcid="localeLink@DirectLink" listener="listener:selectLocale" parameters="ognl:{currLocale.language, currLocale.country, currLocale.variant}""
+		updateComponents="ognl:{'localeDetail',page.components.localeList.clientId}">
+		<span jwcid="@Insert" value="ognl:currLocale.toString()" />
+	</a>
+	
 </div>
 
 <br/>
