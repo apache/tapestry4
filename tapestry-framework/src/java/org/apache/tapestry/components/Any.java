@@ -40,7 +40,7 @@ public abstract class Any extends AbstractComponent
         
         if (!rewinding)
         {
-            if (getBodyCount() > 0)
+            if (getBodyCount() > 0 || "script".equals(element))
                 writer.begin(element);
             else
                 writer.beginEmpty(element);
@@ -52,7 +52,7 @@ public abstract class Any extends AbstractComponent
         
         renderBody(writer, cycle);
         
-        if (!rewinding && getBodyCount() > 0)
+        if (!rewinding && (getBodyCount() > 0 || "script".equals(element)))
         {
             writer.end();
         }
