@@ -64,6 +64,8 @@ public class DefaultLinkRenderer implements ILinkRenderer
             else 
                 writer.beginEmpty(getElement());
             
+            linkComponent.renderAdditionalAttributes(writer, cycle);
+            
             writer.attribute(getUrlAttribute(), constructURL(linkComponent,
                     cycle));
             
@@ -89,7 +91,7 @@ public class DefaultLinkRenderer implements ILinkRenderer
             
             afterBodyRender(writer, cycle, linkComponent);
             
-            linkComponent.renderAdditionalAttributes(writer, cycle);
+            // linkComponent.renderAdditionalAttributes(writer, cycle);
             
             if (hasBody) {
                 wrappedWriter.close();

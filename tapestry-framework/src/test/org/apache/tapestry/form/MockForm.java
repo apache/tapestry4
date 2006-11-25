@@ -122,6 +122,11 @@ public class MockForm implements IForm
         return null;
     }
 
+    public String peekClientId(IFormComponent component)
+    {
+        return null;
+    }
+    
     public String getName()
     {
         return "myform";
@@ -468,4 +473,13 @@ public class MockForm implements IForm
     public void setTemplateTagName(String tag)
     {
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String peekClientId()
+    {
+        return null;
+    }
+    
 }

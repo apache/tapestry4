@@ -205,6 +205,14 @@ public interface IComponent extends IRender, LocationHolder
     void setClientId(String id);
     
     /**
+     * Used internally to "peek" at what the next generated client id will be for this 
+     * component when it renders. Similar to the logic found in {@link IRequestCycle#peekUniqueId(String)}.
+     * 
+     * @return The next possible client ID for this component.
+     */
+    String peekClientId();
+    
+    /**
      * Though most component implementations ignore the specific html tag used 
      * to reference a component, this value may be used for those components that
      * do wish to use the same tag that was provided when rendering a component. 

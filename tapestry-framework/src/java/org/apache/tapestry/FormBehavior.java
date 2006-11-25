@@ -94,7 +94,15 @@ public interface FormBehavior
      */
 
     String getElementId(IFormComponent component, String baseId);
-
+    
+    /**
+     * Used internally to "peek" at what the next generated client id will be for the 
+     * given component when it renders. Similar to the logic found in {@link IRequestCycle#peekUniqueId(String)}.
+     * 
+     * @return The next possible client ID for the component.
+     */
+    String peekClientId(IFormComponent component);
+    
     /**
      * Returns true if the form is rewinding (meaning, the form was the subject of the request
      * cycle).

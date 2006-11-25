@@ -162,7 +162,9 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
         trainIsRewinding(cycle, false);
 
         writer.begin("a");
-
+        
+        component.renderAdditionalAttributes(writer, cycle);
+        
         trainGetLink(component, cycle, link);
 
         trainGetScheme(component, null);
@@ -178,8 +180,6 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
         trainGetNestedWriter(writer, nested);
 
         component.renderBody(nested, cycle);
-
-        component.renderAdditionalAttributes(writer, cycle);
 
         nested.close();
 
@@ -219,7 +219,9 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
         trainIsRewinding(cycle, false);
 
         writer.begin("a");
-
+        
+        component.renderAdditionalAttributes(writer, cycle);
+        
         trainGetLink(component, cycle, link);
 
         trainGetScheme(component, "https");
@@ -239,8 +241,6 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
         trainGetNestedWriter(writer, nested);
 
         component.renderBody(nested, cycle);
-
-        component.renderAdditionalAttributes(writer, cycle);
         
         nested.close();
         
@@ -315,7 +315,9 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
         trainIsRewinding(cycle, false);
 
         writer.begin("xlink");
-
+        
+        component.renderAdditionalAttributes(writer, cycle);
+        
         trainGetLink(component, cycle, link);
 
         trainGetScheme(component, null);
@@ -339,8 +341,6 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
         component.renderBody(nested, cycle);
 
         writer.print("AFTER-BODY-RENDER");
-
-        component.renderAdditionalAttributes(writer, cycle);
 
         nested.close();
 
@@ -374,7 +374,9 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
         trainIsRewinding(cycle, false);
 
         writer.beginEmpty("xlink");
-
+        
+        component.renderAdditionalAttributes(writer, cycle);
+        
         trainGetLink(component, cycle, link);
 
         trainGetScheme(component, null);
@@ -396,8 +398,6 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
         trainGetNestedWriter(writer, nested);
 
         writer.print("AFTER-BODY-RENDER");
-        
-        component.renderAdditionalAttributes(writer, cycle);
         
         writer.closeTag();
         

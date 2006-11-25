@@ -161,6 +161,21 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
     }
     
     /**
+     * {@inheritDoc}
+     */
+    public String peekClientId()
+    {
+        if (getPage() == null)
+            return null;
+        
+        IForm form = (IForm) getPage().getRequestCycle().getAttribute(TapestryUtils.FORM_ATTRIBUTE);
+        if (form == null)
+            return null;
+        
+        return form.peekClientId(this);
+    }
+    
+    /**
      * Returns false. Subclasses that might be required must override this method. Typically, this
      * involves checking against the component's validators.
      * 

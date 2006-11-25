@@ -176,7 +176,7 @@ tapestry={
             	if (element.childNodes[i].nodeType != 1) { continue; }
 				
             	var nodeId = element.childNodes[i].getAttribute("id");
-            	if (nodeId && nodeId == id) {
+            	if (nodeId && nodeId) {
                 	element=element.childNodes[i];
                 	break;
             	}
@@ -189,10 +189,19 @@ tapestry={
     		var content=tapestry.html.getContentAsString(element);
     		dojo.log.debug("Received element content for id <" + id + "> of:", content);
     		node.innerHTML=content;
-    		return;
+    	} else {
+    		node.innerHTML=tapestry.html.getContentAsString(element);
     	}
     	
-    	node.innerHTML=tapestry.html.getContentAsString(element);
+    	// copy style/class css attributes
+    	var style=element.getAttribute("style");
+    	if(style) {
+    		dojo.html.setStyleText(node, style);
+    	}
+    	var classStr=element.getAttribute("class");
+    	if (classStr) {
+    		dojo.html.setClass(node, classStr);
+    	}
 	},
 	
 	/**
