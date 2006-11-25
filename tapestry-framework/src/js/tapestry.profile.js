@@ -5,13 +5,13 @@
 // the variable "hostenvType" (defaults to "browser").
 var dependencies = [ 
 	"dojo.event.browser",
-        "dojo.dom",
-        "dojo.lang.common",
-        "dojo.io.common",
-        "dojo.io.BrowserIO",
-        "dojo.io.cookie",
-        "dojo.date.common",
-        "dojo.date.format",
+    "dojo.dom",
+    "dojo.lang.common",
+    "dojo.io.common",
+    "dojo.io.BrowserIO",
+    "dojo.io.cookie",
+    "dojo.date.common",
+    "dojo.date.format",
 	"dojo.widget.*"
 ];
 
