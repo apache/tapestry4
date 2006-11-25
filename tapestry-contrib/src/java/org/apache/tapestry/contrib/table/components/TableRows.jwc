@@ -101,6 +101,7 @@
 		<binding name="value" value="tableRow"/>
 		<binding name="index" value="tableIndex"/>
 		<binding name="fullSource" value="fullSource"/>
+        <binding name="renderTag" value="false" />
 		<inherited-binding name="keyExpression" parameter-name="keyExpression"/>
 		<inherited-binding name="defaultValue" parameter-name="defaultValue"/>
 		<inherited-binding name="converter" parameter-name="converter"/>

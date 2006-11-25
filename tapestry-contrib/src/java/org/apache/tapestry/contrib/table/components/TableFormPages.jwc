@@ -71,6 +71,7 @@
 		<binding name="source" expression="pageList"/>
 		<binding name="value" expression="displayPage"/>
 		<binding name="volatile" expression="true"/>
+        <binding name="renderTag" value="false" />
 	</component>
 
 	<component id="insertCurrentPage" type="Insert">
