@@ -154,7 +154,7 @@ public class JSONResponseBuilder implements ResponseBuilder
             IJSONRender json = (IJSONRender) render;
             IComponent component = (IComponent) render;
             
-            if (!_parts.contains(component.getId()))
+            if (!contains(component, component.peekClientId()))
             {
                 render.render(_nullWriter, cycle);
                 return;
@@ -187,8 +187,13 @@ public class JSONResponseBuilder implements ResponseBuilder
         if (target == null) 
             return false;
         
-        String id = getComponentId(target);
+        String id = target.getClientId();
         
+        return contains(target, id);
+    }
+    
+    boolean contains(IComponent target, String id)
+    {
         if (_parts.contains(id))
             return true;
         
@@ -196,7 +201,7 @@ public class JSONResponseBuilder implements ResponseBuilder
         while (it.hasNext()) {
             
             IComponent comp = (IComponent)it.next();
-            String compId = getComponentId(comp);
+            String compId = comp.getClientId();
             
             if (comp != target && _parts.contains(compId))
                 return true;
@@ -213,18 +218,7 @@ public class JSONResponseBuilder implements ResponseBuilder
         if (target == null)
             return false;
         
-        return _parts.contains(target.getClientId());
-    }
-    
-    /**
-     * Gets the id of the specified component, choosing the "id" element
-     * binding over any other id.
-     * @param comp
-     * @return The id of the component.
-     */
-    String getComponentId(IComponent comp)
-    {
-        return comp.getClientId();
+        return _parts.contains(target.getId());
     }
     
     /**
