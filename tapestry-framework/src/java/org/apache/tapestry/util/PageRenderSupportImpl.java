@@ -77,6 +77,10 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
 
     private final String _preloadName;
     
+    private final RegexpMatcher _matcher = new RegexpMatcher();
+    
+    private final Map _requires = new HashMap();
+    
     public PageRenderSupportImpl(AssetFactory assetFactory, String namespace, 
             Location location, ResponseBuilder builder)
     {
@@ -149,14 +153,12 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
         if (!_builder.isBodyScriptAllowed(target)) 
             return;
         
-        String val = StringUtils.stripToEmpty(script);
-        if (val.length() <= 0)
-            return;
+        String val = stripDuplicateIncludes(script);
         
         if (_bodyScript == null)
             _bodyScript = new StringBuffer(val.length());
-
-        _bodyScript.append(val);
+        
+        _bodyScript.append("\n").append(val);
     }
     
     public void addInitializationScript(String script)
@@ -169,14 +171,44 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
         if (!_builder.isInitializationScriptAllowed(target)) 
             return;
         
-        String val = StringUtils.stripToEmpty(script);
-        if (val.length() <= 0)
-            return;
+        String val = stripDuplicateIncludes(script);
         
         if (_initializationScript == null)
             _initializationScript = new StringBuffer(val.length() + 1);
         
         _initializationScript.append("\n").append(val);
+    }
+    
+    /**
+     * Provides a mechanism to strip out duplicate dojo.require calls made in script
+     * templates in order to reduce amount of redundant javascript written to client.
+     * 
+     * @param input The incoming script string to check for requires.
+     * @return The input string stripped of all known dojo.require calls, if any.
+     */
+    String stripDuplicateIncludes(String input)
+    {
+        String[] lines = StringUtils.splitPreserveAllTokens(input, ';');
+        
+        if (lines == null || lines.length < 1)
+            return input;
+        
+        String ret = input;
+        
+        for (int i=0; i < lines.length; i++) {
+            if (lines[i].indexOf("dojo.require") < 0)
+                continue;
+            
+            String line = StringUtils.stripToEmpty(lines[i]);
+            
+            if (_requires.containsKey(line)) {
+                ret = StringUtils.replaceOnce(ret, line+";", "");
+            } else {
+                _requires.put(line, "t");
+            }
+        }
+        
+        return StringUtils.stripToEmpty(ret.trim());
     }
     
     public void addExternalScript(Resource scriptLocation)
@@ -246,12 +278,15 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
         
         if (any(_imageInitializations))
         {
-            _builder.writeImageInitializations(writer, _imageInitializations.toString(), _preloadName, cycle);
+            _builder.writeImageInitializations(writer, StringUtils.stripToEmpty(_imageInitializations.toString())
+                    , _preloadName, cycle);
         }
         
         if (any(_bodyScript))
         {
-            _builder.writeBodyScript(writer, _bodyScript.toString(), cycle);
+            _builder.writeBodyScript(writer, StringUtils.stripToEmpty(_bodyScript.toString())
+                    , 
+                    cycle);
         }
         
         _builder.endBodyScript(writer, cycle);
@@ -268,7 +303,8 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
         if (!any(_initializationScript))
             return;
         
-        _builder.writeInitializationScript(writer, _initializationScript.toString());
+        _builder.writeInitializationScript(writer, StringUtils.stripToEmpty(_initializationScript.toString())
+                );
     }
 
     private boolean any(StringBuffer buffer)

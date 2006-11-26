@@ -17,7 +17,7 @@
 
 <!DOCTYPE script PUBLIC
 	"-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
-	"http://jakarta.apache.org/tapestry/dtd/Script_3_0.dtd">
+	"http://tapestry.apache.org/dtd/Script_3_0.dtd">
 <script>
 <!-- 
 
@@ -38,7 +38,7 @@ onMouseOutName - name of mouse out function
 <input-symbol key="imageId" class="java.lang.String" required="yes"/>
 <input-symbol key="mouseOverImageURL" class="java.lang.String" required="yes"/>
 <input-symbol key="mouseOutImageURL" class="java.lang.String" required="yes"/>
-
+<input-symbol key="link" />
 
 <let key="onMouseOverName">
   mouseOver_${imageId}
@@ -50,18 +50,21 @@ onMouseOutName - name of mouse out function
 <let key="attribute">
   document.getElementById('${imageId}').src
 </let>
-
 <body>
-tapestry.${onMouseOverName}=function()
-{
+tapestry.${onMouseOverName}=function(){
   if (document.images)
     ${attribute} = ${mouseOverImageURL};
-};
+}
 
-tapestry.${onMouseOutName}=function()
-{
+tapestry.${onMouseOutName}=function(){
   if (document.images)
     ${attribute} = ${mouseOutImageURL};
-};
+}
 </body>
+<initialization>
+<unique>
+dojo.event.connect(dojo.byId("${link.clientId}"), "onmouseover", tapestry, "${onMouseOverName}");
+dojo.event.connect(dojo.byId("${link.clientId}"), "onmouseout", tapestry, "${onMouseOutName}");
+</unique>
+</initialization>
 </script>

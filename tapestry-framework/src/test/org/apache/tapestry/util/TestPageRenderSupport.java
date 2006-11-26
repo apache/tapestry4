@@ -143,10 +143,10 @@ public class TestPageRenderSupport extends BaseComponentTestCase
         { "<script type=\"text/javascript\"><!--","",
                 "dojo.addOnLoad(function(e) {",
                 "tapestry._preload = [];", "if (document.images)", "{",
-                "  tapestry._preload[0] = new Image();",
+                "tapestry._preload[0] = new Image();",
                 "  tapestry._preload[0].src = \"/foo/bar.gif\";",
                 "  tapestry._preload[1] = new Image();",
-                "  tapestry._preload[1].src = \"/zip/zap.png\";", "}", "});myBodyScript();",
+                "  tapestry._preload[1].src = \"/zip/zap.png\";}", "});myBodyScript();",
                 "// --></script>" });
 
         verify();
@@ -171,8 +171,8 @@ public class TestPageRenderSupport extends BaseComponentTestCase
         {"<script type=\"text/javascript\"><!--", "",
                 "dojo.addOnLoad(function(e) {",
                 "NAMESPACE_preload = [];", "if (document.images)", "{",
-                "  NAMESPACE_preload[0] = new Image();",
-                "  NAMESPACE_preload[0].src = \"/foo/bar.gif\";", "}",
+                "NAMESPACE_preload[0] = new Image();",
+                "  NAMESPACE_preload[0].src = \"/foo/bar.gif\";}",
                 "});",
                 "// --></script>" });
 
@@ -235,7 +235,7 @@ public class TestPageRenderSupport extends BaseComponentTestCase
 
         verify();
     }
-
+    
     public void testAddInitializationScript()
     {
         AssetFactory factory = newAssetFactory();
@@ -248,13 +248,24 @@ public class TestPageRenderSupport extends BaseComponentTestCase
 
         prs.addInitializationScript("myInitializationScript1();");
         prs.addInitializationScript("myInitializationScript2();");
+        prs.addInitializationScript("dojo.require(\"dojo.event.*\");");
+        prs.addInitializationScript("dojo.require(\"dojo.widget.*\");dojo.require(\"dojo.event.*\");");
+        prs.addInitializationScript("dojo.require(\"dojo.event.*\");");
+        prs.addInitializationScript("dojo.require(\"tapestry.form\");tapestry.form.registerForm(\"valid\");\n" + 
+                "tapestry.form.focusField(\'inputEnabled\');\n" + 
+                "dojo.require(\"tapestry.form\");tapestry.form.registerForm(\"form\");");
         
         prs.writeInitializationScript(writer);
         
         assertOutput(new String[]
         { "<script type=\"text/javascript\"><!--",
-                "dojo.addOnLoad(function(e) {","",
-                "myInitializationScript1();", "myInitializationScript2();});",
+                "dojo.addOnLoad(function(e) {",
+                "myInitializationScript1();", "myInitializationScript2();",
+                "dojo.require(\"dojo.event.*\");","dojo.require(\"dojo.widget.*\");",
+                "",
+                "tapestry.form.registerForm(\"valid\");",
+                "tapestry.form.focusField(\'inputEnabled\');",
+                "dojo.require(\"tapestry.form\");tapestry.form.registerForm(\"form\");});",
                 "// --></script>" });
 
         verify();

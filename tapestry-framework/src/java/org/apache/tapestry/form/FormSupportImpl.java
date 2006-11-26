@@ -558,14 +558,14 @@ public class FormSupportImpl implements FormSupport
         if (fieldId != null && _form.getFocus() 
                 && _cycle.getAttribute(FIELD_FOCUS_ATTRIBUTE) == null) {
             
-            _pageRenderSupport.addInitializationScript(_form, "tapestry.form.focusField('" + fieldId + "');");
+            _pageRenderSupport.addInitializationScript(_form, "dojo.require(\"tapestry.form\");tapestry.form.focusField('" + fieldId + "');");
             _cycle.setAttribute(FIELD_FOCUS_ATTRIBUTE, Boolean.TRUE);
         }
         
         // register the validation profile with client side form manager
         
         if (_form.isClientValidationEnabled()) {
-            _pageRenderSupport.addInitializationScript(_form, "tapestry.form.clearProfiles('"
+            _pageRenderSupport.addInitializationScript(_form, "dojo.require(\"tapestry.form\");tapestry.form.clearProfiles('"
                     + formId + "'); tapestry.form.registerProfile('" + formId + "'," 
                     + _profile.toString() + ");");
         }

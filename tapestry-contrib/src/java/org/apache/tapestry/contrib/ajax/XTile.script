@@ -64,7 +64,6 @@
 	    requestObject.open("GET", url, true);
 	    requestObject.send(null);
 	}
-	
 	<unique>
 	<![CDATA[
 	function getRequest()
@@ -106,7 +105,5 @@
 	}
 	]]>
 	</unique>
-	
 	</body>
-
 </script>
