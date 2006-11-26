@@ -27,15 +27,14 @@ import com.thoughtworks.selenium.Selenium;
  * Note: If these tests fail with BindException when starting Jetty, it could be Skype. At least on
  * my system, Skype is listening on localhost:80.
  */
-@Test(timeOut = 50000, sequential = true, groups =
-{ "integration" })
-public class IntegrationTests extends Assert
+@Test(timeOut = 50000, groups = "integration" )
+public class TestBrowserIssues extends Assert
 {
     private static final int JETTY_PORT = 9999;
     private static final String BASE_URL = "http://localhost:9999/";
 
     /** 60 seconds */
-    public static final String PAGE_LOAD_TIMEOUT = "600000";
+    public static final String PAGE_LOAD_TIMEOUT = "60000";
 
     private Selenium _selenium;
 
@@ -71,8 +70,7 @@ public class IntegrationTests extends Assert
         _jettyRunner = null;
     }
 
-    @Test
-    public void issue_1141() throws Exception
+    public void test_issue_1141() throws Exception
     {
         _selenium.open(BASE_URL);
 
@@ -107,8 +105,7 @@ public class IntegrationTests extends Assert
         waitForInnerHTML("testme", "[6]");
     }
     
-    @Test
-    public void issue_1129() throws Exception
+    public void test_issue_1129() throws Exception
     {
         _selenium.open(BASE_URL);
 
