@@ -15,49 +15,12 @@
    limitations under the License.
 -->
 
-<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure 1.2//EN"
-	"http://jetty.mortbay.org/configure.dtd">
-<Configure class="org.mortbay.jetty.Server">
-    
-    <Set name="ThreadPool">
-      <New class="org.mortbay.thread.BoundedThreadPool">
-        <Set name="minThreads">10</Set>
-        <Set name="maxThreads">100</Set>
-      </New>
-    </Set>
-    
-    <Set name="connectors">
-      <Array type="org.mortbay.jetty.Connector">
-      
-        <Item>
-          <New class="org.mortbay.jetty.bio.SocketConnector">
-            <Set name="port">8080</Set>
-            <Set name="maxIdleTime">50000</Set>
-          </New>
-        </Item>
-      
-      </Array>
-    </Set>
-    
-   <Set name="handlers">
-      <Array type="org.mortbay.jetty.Handler">
+<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://jetty.mortbay.org/configure.dtd">
 
-        <!-- ======================================================= -->
-        <!-- Configure a test web application with web.xml           -->
-        <!-- ======================================================= -->
-        <Item>
-          <New id="demoContext"  class="org.mortbay.jetty.webapp.WebAppContext">
-            <Set name="contextPath">/</Set>
-            <Set name="resourceBase">src/context</Set>
-            <Set name="VirtualHosts"><Array type="java.lang.String"></Array></Set>
-            <Get name="SessionHandler">
-              <Set name="SessionManager"><New class="org.mortbay.jetty.servlet.HashSessionManager"/></Set>
-            </Get>
-          </New>
-        </Item>
-       </Array>
-    </Set>
-   
-   <Set name="stopAtShutdown">true</Set>
-   <Call name="start"/>
+<Configure class="org.mortbay.jetty.webapp.WebAppContext" >
+    <Get name="sessionHandler">
+        <Get name="sessionManager">
+            <Set name="usingCookies" type="boolean">false</Set>
+        </Get>
+    </Get>
 </Configure>

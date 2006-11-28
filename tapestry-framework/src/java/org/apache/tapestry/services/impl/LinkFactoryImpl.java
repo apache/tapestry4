@@ -116,7 +116,7 @@ public class LinkFactoryImpl implements LinkFactory
 
         String fullServletPath = _contextPath + serviceEncoding.getServletPath();
         
-        return new EngineServiceLink(fullServletPath, engine.getOutputEncoding(),
+        return new EngineServiceLink(_requestCycle, fullServletPath, engine.getOutputEncoding(),
                 _codec, _request, parameters, stateful);
     }
 

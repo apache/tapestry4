@@ -46,6 +46,8 @@ public class EngineServiceLink implements ILink
 
     private IRequestCycle _cycle;
     
+    private boolean _stateful;
+    
     private String _encoding;
 
     /** @since 4.0 */
@@ -85,6 +87,7 @@ public class EngineServiceLink implements ILink
         _encoding = encoding;
         _codec = codec;
         _request = request;
+        _stateful = stateful;
         _parameters = new QueryParameterMap(parameters);
     }
     
@@ -123,6 +126,7 @@ public class EngineServiceLink implements ILink
         _encoding = encoding;
         _codec = codec;
         _request = request;
+        _stateful = stateful;
         _parameters = new QueryParameterMap(parameters);
     }
 
@@ -187,12 +191,13 @@ public class EngineServiceLink implements ILink
             buffer.append('#');
             buffer.append(anchor);
         }
-
+        
         String result = buffer.toString();
         
         // TODO: This is somewhat questionable right now, was added in to support TAPESTRY-802
-        if (_cycle != null)
+        if (_cycle != null && _stateful) {
             result = _cycle.encodeURL(result);
+        }
         
         return result;
     }

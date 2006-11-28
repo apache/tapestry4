@@ -164,6 +164,7 @@ public class LinkFactoryTest extends BaseComponentTestCase
 
         trainGetEngine(cycle, engine);
         trainGetOutputEncoding(engine, "utf-8");
+        trainEncodeURL(cycle, "/context/app?foo=bar&service=myservice", "/context/app?foo=bar&service=myservice&jsessionid=124");
         
         replay();
 
@@ -183,7 +184,7 @@ public class LinkFactoryTest extends BaseComponentTestCase
         
         ILink link = lf.constructLink(service, false, parameters, true);
         
-        assertEquals("/context/app?foo=bar&service=myservice", link.getURL());
+        assertEquals("/context/app?foo=bar&service=myservice&jsessionid=124", link.getURL());
 
         verify();
     }
