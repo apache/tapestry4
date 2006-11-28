@@ -54,7 +54,7 @@ public interface IAutocompleteModel extends IPrimaryKeyConverter
      * @return
      *        A {@link Map} containing key/value pairs matching the given input label string. 
      *        The map should contain a key compatible with {@link IPrimaryKeyConverter#getPrimaryKey(Object)} 
-     *        and value compatible with {@link #getLabelFor(Object)}.
+     *        and value matching {@link #getLabelFor(Object)}.
      */
     Map filterValues(String match);
     

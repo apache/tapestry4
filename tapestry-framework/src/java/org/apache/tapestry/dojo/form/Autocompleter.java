@@ -131,14 +131,16 @@ public abstract class Autocompleter extends AbstractFormWidget
         
         Iterator it = filteredValues.keySet().iterator();
         Object key = null;
+        String label = null;
         
         JSONObject json = writer.object();
         
         while (it.hasNext()) {
             
             key = it.next();
+            label = filteredValues.get( key ).toString();
             
-            json.put(getDataSqueezer().squeeze(key), filteredValues.get(key));
+            json.put(getDataSqueezer().squeeze(key), label );
         }
         
     }

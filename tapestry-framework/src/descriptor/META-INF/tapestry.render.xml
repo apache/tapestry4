@@ -42,7 +42,7 @@
     Wires javascript events to components, adds javascript contributions to 
     render.
     
-    <invoke-factory>
+    <invoke-factory model="threaded">
       <construct class="org.apache.tapestry.services.impl.ComponentEventConnectionWorker">
         <set-service property="eventInvoker" service-id="tapestry.event.EventInvoker"/>
         <set-service property="eventEngine" service-id="tapestry.event.DirectEvent"/>
@@ -61,7 +61,7 @@
     Wires the optional parameters updateComponents/async/json shared by all IDirect components
     to client side javascript IO events if specified.
     
-    <invoke-factory>
+    <invoke-factory model="threaded">
       <construct class="org.apache.tapestry.link.DirectLinkWorker"
                  initialize-method="initialize" >
         <set property="script" value="/org/apache/tapestry/link/DirectLinkWorker.script" />
