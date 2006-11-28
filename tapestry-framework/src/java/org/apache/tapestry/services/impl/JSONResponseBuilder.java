@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IJSONRender;
@@ -26,6 +27,8 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.engine.NullWriter;
 import org.apache.tapestry.json.IJSONWriter;
 import org.apache.tapestry.markup.MarkupWriterSource;
@@ -33,6 +36,7 @@ import org.apache.tapestry.services.RequestLocaleManager;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.ContentType;
+import org.apache.tapestry.util.PageRenderSupportImpl;
 import org.apache.tapestry.web.WebResponse;
 
 /**
@@ -42,7 +46,7 @@ import org.apache.tapestry.web.WebResponse;
  * @author jkuhnert
  */
 public class JSONResponseBuilder implements ResponseBuilder
-{
+{   
     /** Writer that creates JSON output response. */
     protected IJSONWriter _writer;
     /** Passed in to bypass normal rendering. */
@@ -56,6 +60,12 @@ public class JSONResponseBuilder implements ResponseBuilder
     protected MarkupWriterSource _markupWriterSource;
 
     protected WebResponse _webResponse;
+    
+    private final AssetFactory _assetFactory;
+    
+    private final String _namespace;
+    
+    private PageRenderSupportImpl _prs;
     
     private IRequestCycle _cycle;
     
@@ -72,7 +82,7 @@ public class JSONResponseBuilder implements ResponseBuilder
      */
     public JSONResponseBuilder(IRequestCycle cycle, RequestLocaleManager localeManager, 
             MarkupWriterSource markupWriterSource,
-            WebResponse webResponse)
+            WebResponse webResponse, AssetFactory assetFactory, String namespace)
     {
         Defense.notNull(cycle, "cycle");
         
@@ -80,6 +90,10 @@ public class JSONResponseBuilder implements ResponseBuilder
         _localeManager = localeManager;
         _markupWriterSource = markupWriterSource;
         _webResponse = webResponse;
+        
+        // Used by PageRenderSupport
+        _assetFactory = assetFactory;
+        _namespace = namespace;
     }
     
     /**
@@ -119,9 +133,15 @@ public class JSONResponseBuilder implements ResponseBuilder
         // render response
         
         parseParameters(cycle);
-
+        
+        _prs = new PageRenderSupportImpl(_assetFactory, _namespace, cycle.getPage().getLocation(), this);
+        
+        TapestryUtils.storePageRenderSupport(cycle, _prs);
+        
         cycle.renderPage(this);
-
+        
+        TapestryUtils.removePageRenderSupport(cycle);
+        
         _writer.close();
     }
     
@@ -267,6 +287,94 @@ public class JSONResponseBuilder implements ResponseBuilder
     public boolean isImageInitializationAllowed(IComponent target)
     {
         return false;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public String getPreloadedImageReference(IComponent target, String url)
+    {
+        return _prs.getPreloadedImageReference(target, url);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getPreloadedImageReference(String url)
+    {
+        return _prs.getPreloadedImageReference(url);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void addBodyScript(IComponent target, String script)
+    {
+        _prs.addBodyScript(target, script);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void addBodyScript(String script)
+    {
+        _prs.addBodyScript(script);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void addExternalScript(IComponent target, Resource resource)
+    {
+        _prs.addExternalScript(target, resource);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void addExternalScript(Resource resource)
+    {
+        _prs.addExternalScript(resource);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void addInitializationScript(IComponent target, String script)
+    {
+        _prs.addInitializationScript(target, script);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void addInitializationScript(String script)
+    {
+        _prs.addInitializationScript(script);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getUniqueString(String baseValue)
+    {
+        return _prs.getUniqueString(baseValue);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void writeBodyScript(IMarkupWriter writer, IRequestCycle cycle)
+    {
+        _prs.writeBodyScript(writer, cycle);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void writeInitializationScript(IMarkupWriter writer)
+    {
+        _prs.writeInitializationScript(writer);
     }
     
     /** 

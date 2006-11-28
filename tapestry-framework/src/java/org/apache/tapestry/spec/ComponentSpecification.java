@@ -28,6 +28,9 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.ToStringBuilder;
+import org.apache.tapestry.event.BrowserEvent;
+import org.apache.tapestry.internal.event.ComponentEventProperty;
+import org.apache.tapestry.internal.event.EventBoundListener;
 
 /**
  * A specification for a component, as read from an XML specification file.
@@ -166,7 +169,11 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
      */
 
     private boolean _deprecated = false;
-
+    
+    private Map _componentEvents = new HashMap();
+    
+    private Map _elementEvents = new HashMap();
+    
     /**
      * @throws ApplicationRuntimeException
      *             if the name already exists.
@@ -697,4 +704,165 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
 
         return Collections.unmodifiableSet(_reservedParameterNames);
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void addEventListener(String componentId, String[] events, 
+            String methodName, String formId, boolean validateForm, boolean async)
+    {
+        ComponentEventProperty property = getComponentEvents(componentId);
+        
+        property.addListener(events, methodName, formId, validateForm, async);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void addElementEventListener(String elementId, String[] events, 
+            String methodName, String formId, boolean validateForm, boolean async)
+    {
+        ComponentEventProperty property = getElementEvents(elementId);
+        
+        property.addListener(events, methodName, formId, validateForm, async);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ComponentEventProperty getComponentEvents(String id)
+    {
+        ComponentEventProperty prop = (ComponentEventProperty)_componentEvents.get(id);
+        if (prop == null) {
+            prop = new ComponentEventProperty(id);
+            _componentEvents.put(id, prop);
+        }
+        
+        return prop;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ComponentEventProperty getElementEvents(String id)
+    {
+        ComponentEventProperty prop = (ComponentEventProperty)_elementEvents.get(id);
+        if (prop == null) {
+            prop = new ComponentEventProperty(id);
+            _elementEvents.put(id, prop);
+        }
+        
+        return prop;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public Map getElementEvents()
+    {
+        return _elementEvents;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public EventBoundListener[] getFormEvents(String formId, BrowserEvent event)
+    {
+        List ret = new ArrayList();
+        
+        Iterator it = _componentEvents.keySet().iterator();
+        while (it.hasNext()) {
+            
+            String compId = (String)it.next();
+            ComponentEventProperty prop = (ComponentEventProperty)_componentEvents.get(compId);
+            
+            ret.addAll(prop.getFormEventListeners(formId, event, null));
+        }
+        
+        it = _elementEvents.keySet().iterator();
+        while (it.hasNext()) {
+            
+            String compId = (String)it.next();
+            ComponentEventProperty prop = (ComponentEventProperty)_elementEvents.get(compId);
+            
+            ret.addAll(prop.getFormEventListeners(formId, event, null));
+        }
+        
+        return (EventBoundListener[])ret.toArray(new EventBoundListener[ret.size()]);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public boolean hasEvents()
+    {
+        return _componentEvents.size() > 0;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public boolean hasEvents(String id)
+    {
+        return _componentEvents.get(id) != null;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public boolean hasElementEvents(String id)
+    {
+        return _elementEvents.get(id) != null;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public boolean hasElementEvents()
+    {
+        return _elementEvents.size() > 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((_componentClassName == null) ? 0 : _componentClassName.hashCode());
+        result = prime * result + ((_description == null) ? 0 : _description.hashCode());
+        result = prime * result + (_pageSpecification ? 1231 : 1237);
+        result = prime * result + ((_publicId == null) ? 0 : _publicId.hashCode());
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+        final ComponentSpecification other = (ComponentSpecification) obj;
+        if (_componentClassName == null) {
+            if (other._componentClassName != null) return false;
+        } else if (!_componentClassName.equals(other._componentClassName)) return false;
+        if (_description == null) {
+            if (other._description != null) return false;
+        } else if (!_description.equals(other._description)) return false;
+        if (_pageSpecification != other._pageSpecification) return false;
+        if (_publicId == null) {
+            if (other._publicId != null) return false;
+        } else if (!_publicId.equals(other._publicId)) return false;
+        if (_specificationLocation == null) {
+            if (other._specificationLocation != null) return false;
+        } else if (!_specificationLocation.getPath().equals(other._specificationLocation.getPath())) return false;
+        return true;
+    }
+    
+    
 }

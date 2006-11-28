@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.markup.MarkupWriterSource;
 import org.apache.tapestry.services.RequestLocaleManager;
 import org.apache.tapestry.services.ResponseBuilder;
@@ -49,6 +50,8 @@ public class DojoAjaxResponseContributorImpl implements ResponseContributor
     
     private String _staleLinkPageName;
     
+    private AssetFactory _assetFactory;
+    
     /** 
      * {@inheritDoc}
      */
@@ -62,7 +65,7 @@ public class DojoAjaxResponseContributorImpl implements ResponseContributor
         
         return new DojoAjaxResponseBuilder(cycle, _localeManager, 
                 _markupWriterSource,
-                _webResponse, errorPages);
+                _webResponse, errorPages, _assetFactory, _webResponse.getNamespace());
     }
     
     /** 
@@ -106,5 +109,10 @@ public class DojoAjaxResponseContributorImpl implements ResponseContributor
     public void setStaleLinkPageName(String name)
     {
         _staleLinkPageName = name;
+    }
+    
+    public void setAssetFactory(AssetFactory factory)
+    {
+        _assetFactory = factory;
     }
 }

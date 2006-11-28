@@ -19,6 +19,7 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isA;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +39,10 @@ import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.html.Body;
+import org.apache.tapestry.internal.event.ComponentEventProperty;
+import org.apache.tapestry.internal.event.IComponentEventInvoker;
+import org.apache.tapestry.spec.ComponentSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
 import org.easymock.MockControl;
 import org.easymock.classextension.MockClassControl;
 import org.testng.annotations.Test;
@@ -51,15 +56,18 @@ import org.testng.annotations.Test;
 @Test
 public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
 {
-
     public void test_Event_Render_Chain()
     {   
         ClassResolver resolver = new DefaultClassResolver();
         
-        ComponentEventInvoker invoker = new ComponentEventInvoker();
+        IComponentEventInvoker invoker = new org.apache.tapestry.internal.event.impl.ComponentEventInvoker();
         IEngineService engine = newMock(IEngineService.class);
         IRequestCycle cycle = newCycle();
         checkOrder(cycle, false);
+        
+        IComponentSpecification spec = new ComponentSpecification();
+        IComponentSpecification widgetSpec = new ComponentSpecification();
+        
         IScriptSource scriptSource = newMock(IScriptSource.class);
         IScript script = newMock(IScript.class);
         
@@ -67,17 +75,20 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         ILink link = newMock(ILink.class);
         
+        String elemScript = "/org/apache/tapestry/html/ElementEvent.script";
         String compScript = "/org/apache/tapestry/ComponentEvent.script";
         String widScript = "/org/apache/tapestry/dojo/html/WidgetEvent.script";
         
         Resource compScriptResource = new ClasspathResource(resolver, compScript);
         Resource widScriptResource = new ClasspathResource(resolver, widScript);
+        Resource elemScriptResource = new ClasspathResource(resolver, elemScript);
         
         ComponentEventConnectionWorker worker = new ComponentEventConnectionWorker();
         worker.setClassResolver(resolver);
-        worker.setComponentEventInvoker(invoker);
+        worker.setEventInvoker(invoker);
         worker.setComponentScript(compScript);
         worker.setWidgetScript(widScript);
+        worker.setElementScript(elemScript);
         worker.setEventEngine(engine);
         worker.setScriptSource(scriptSource);
         
@@ -90,9 +101,34 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         assertNotNull(worker.getScript(widget));
         assertEquals(widScript, worker.getScript(widget).getPath());
         
+        assertNotNull(worker.getElementScript());
+        assertEquals(elemScript, worker.getElementScript().getPath());
+        
         // now test render
-        invoker.addEventListener("comp1", new String[] {"onclick"}, 
-                "testMethod", null, false, false);
+        invoker.addEventListener("comp1", spec);
+        spec.addEventListener("comp1", new String[] {"onclick"}, "testMethod", null, false, true);
+        spec.addElementEventListener("elementId", new String[] {"onclick"}, "testMethod", null, false, true);
+        
+        /////////////////////////////////
+        
+        Map elmEvents = spec.getElementEvents();
+        Iterator keyIt = elmEvents.keySet().iterator();
+        
+        while (keyIt.hasNext()) {
+            String elem = (String)keyIt.next();
+            assertEquals(elem, "elementId");
+            
+            ComponentEventProperty prop = (ComponentEventProperty)elmEvents.get(elem);
+            assertNotNull(prop);
+            
+            Object[][] events = worker.getEvents(prop, elem);
+            
+            assertNotNull(events);
+            assertEquals(events.length, 1);
+            assertEquals(events[0].length, 2);
+        }
+        
+        ////////////////////////////////////////////
         
         expect(cycle.isRewinding()).andReturn(false);
         
@@ -104,10 +140,22 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE))
         .andReturn(prs).anyTimes();
         
+        expect(component.getSpecification()).andReturn(spec);
+        
         trainGetLinkCheckIgnoreParameter(engine, cycle, false, new Object(), link);
         trainGetURL(link, "/some/url");
         
         expect(scriptSource.getScript(compScriptResource)).andReturn(script);
+        
+        script.execute(eq(component), eq(cycle), eq(prs), isA(Map.class));
+        
+        expect(component.getSpecification()).andReturn(spec);
+        
+        trainGetLinkCheckIgnoreParameter(engine, cycle, false, new Object(), link);
+        
+        trainGetURL(link, "/some/url");
+        
+        expect(scriptSource.getScript(elemScriptResource)).andReturn(script);
         
         script.execute(eq(component), eq(cycle), eq(prs), isA(Map.class));
         
@@ -121,8 +169,8 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         // test widget render
         
-        invoker.addEventListener("wid1", new String[] {"onSelect"}, "testMethod",
-                null, false, false);
+        invoker.addEventListener("wid1", widgetSpec);
+        widgetSpec.addEventListener("wid1", new String[] {"onclick"}, "testMethod", null, false, true);
         
         checkOrder(cycle, false);
         expect(cycle.isRewinding()).andReturn(false);
@@ -130,12 +178,14 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE))
         .andReturn(prs).anyTimes();
         
+        expect(widget.getSpecification()).andReturn(widgetSpec);
+        
         expect(cycle.getAttribute(TapestryUtils.FIELD_PRERENDER)).andReturn(null);
         
         expect(widget.getId()).andReturn("wid1").anyTimes();
         expect(widget.getClientId()).andReturn("wid1").anyTimes();
         
-        assertTrue(invoker.hasEvents("wid1"));
+        assertTrue(widgetSpec.hasEvents("wid1"));
         
         trainGetLinkCheckIgnoreParameter(engine, cycle, false, new Object(), link);
         trainGetURL(link, "/some/url2");
@@ -183,22 +233,24 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         verify();
     }
     
+    
     public void test_Deferred_Connection()
     {
-        ComponentEventInvoker invoker = new ComponentEventInvoker();
+        IComponentEventInvoker invoker = new org.apache.tapestry.internal.event.impl.ComponentEventInvoker();
         IEngineService engine = newMock(IEngineService.class);
         IRequestCycle cycle = newCycle();
         PageRenderSupport prs = newPageRenderSupport();
         
         ComponentEventConnectionWorker worker = new ComponentEventConnectionWorker();
-        worker.setComponentEventInvoker(invoker);
+        worker.setEventInvoker(invoker);
         worker.setEventEngine(engine);
         
         IDirectEvent component = newMock(IDirectEvent.class);
+        IComponentSpecification spec = new ComponentSpecification();
         
         // now test render
-        invoker.addEventListener("comp1", new String[] {"onclick"}, 
-                "testMethod", "form1", true, false);
+        invoker.addEventListener("comp1", spec);
+        spec.addEventListener("comp1", new String[] {"onclick"}, "testMethod", "form1", true, false);
         
         expect(cycle.isRewinding()).andReturn(false);
         
@@ -210,6 +262,8 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         expect(component.getClientId()).andReturn("comp1").anyTimes();
         
         expect(cycle.getAttribute(ComponentEventConnectionWorker.FORM_NAME_LIST + "form1")).andReturn(null);
+        
+        expect(component.getSpecification()).andReturn(spec);
         
         replay();
         
@@ -245,11 +299,12 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         assertEquals(component, parm.get("component"));
     }
     
+    
     public void test_Form_Render_Deffered()
     {
         ClassResolver resolver = new DefaultClassResolver();
         
-        ComponentEventInvoker invoker = new ComponentEventInvoker();
+        IComponentEventInvoker invoker = new org.apache.tapestry.internal.event.impl.ComponentEventInvoker();
         IEngineService engine = newMock(IEngineService.class);
         IRequestCycle cycle = newCycle();
         IScriptSource scriptSource = newMock(IScriptSource.class);
@@ -262,17 +317,20 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         ComponentEventConnectionWorker worker = new ComponentEventConnectionWorker();
         worker.setClassResolver(resolver);
-        worker.setComponentEventInvoker(invoker);
+        worker.setEventInvoker(invoker);
         worker.setComponentScript(compScript);
         worker.setEventEngine(engine);
         worker.setScriptSource(scriptSource);
         
         IDirectEvent component = newMock(IDirectEvent.class);
+        IComponentSpecification spec = new ComponentSpecification();
+        
         IForm form = newMock(IForm.class);
+        IComponentSpecification formSpec = new ComponentSpecification();
         
         // now test render
-        invoker.addEventListener("comp1", new String[] {"onclick"}, 
-                "testMethod", "form1", false, false);
+        invoker.addEventListener("comp1", spec);
+        spec.addEventListener("comp1", new String[] {"onclick"}, "testMethod", "form1", false, false);
         
         expect(cycle.isRewinding()).andReturn(false);
         
@@ -284,6 +342,8 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         expect(component.getClientId()).andReturn("comp1").anyTimes();
         
         expect(cycle.getAttribute(ComponentEventConnectionWorker.FORM_NAME_LIST + "form1")).andReturn(null);
+        
+        expect(component.getSpecification()).andReturn(spec);
         
         replay();
         
@@ -300,6 +360,8 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE)).andReturn(prs);
         
+        expect(form.getSpecification()).andReturn(formSpec);
+        
         expect(cycle.getAttribute(TapestryUtils.FIELD_PRERENDER)).andReturn(null);
         
         expect(form.getId()).andReturn("form1").anyTimes();
@@ -310,6 +372,8 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
                 isA(List.class));
         
         expect(form.getName()).andReturn("form1_0").anyTimes();
+        
+        expect(component.getSpecification()).andReturn(spec);
         
         expect(component.getId()).andReturn("comp1").anyTimes();
         
@@ -333,10 +397,11 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         verify();
     }
     
+    
     public void test_Script_Resource()
     {   
         ClassResolver resolver = new DefaultClassResolver();
-        ComponentEventInvoker invoker = new ComponentEventInvoker();
+        IComponentEventInvoker invoker = new org.apache.tapestry.internal.event.impl.ComponentEventInvoker();
         
         String compScript = "/org/apache/tapestry/ComponentEvent.script";
         String widScript = "/org/apache/tapestry/dojo/html/WidgetEvent.script";
@@ -344,7 +409,7 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         ComponentEventConnectionWorker worker = new ComponentEventConnectionWorker();
         worker.setClassResolver(resolver);
-        worker.setComponentEventInvoker(invoker);
+        worker.setEventInvoker(invoker);
         worker.setComponentScript(compScript);
         worker.setWidgetScript(widScript);
         worker.setElementScript(elementScript);
@@ -361,7 +426,7 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         assertEquals(widScript, worker.getScript(widget).getPath());
         
         assertNotNull(worker.getScript(body));
-        assertEquals(elementScript, worker.getScript(body).getPath());
+        assertEquals(compScript, worker.getScript(body).getPath());
         
         replay();
         
@@ -372,7 +437,7 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
     {   
         ClassResolver resolver = new DefaultClassResolver();
         
-        ComponentEventInvoker invoker = new ComponentEventInvoker();
+        IComponentEventInvoker invoker = new org.apache.tapestry.internal.event.impl.ComponentEventInvoker();
         IEngineService engine = newMock(IEngineService.class);
         IRequestCycle cycle = newCycle();
         checkOrder(cycle, false);
@@ -383,15 +448,16 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         ComponentEventConnectionWorker worker = new ComponentEventConnectionWorker();
         worker.setClassResolver(resolver);
-        worker.setComponentEventInvoker(invoker);
+        worker.setEventInvoker(invoker);
         worker.setEventEngine(engine);
         worker.setScriptSource(scriptSource);
         
         IDirectEvent component = newMock(IDirectEvent.class);
+        IComponentSpecification spec = new ComponentSpecification();
         
         // now test render
-        invoker.addEventListener("comp1", new String[] {"onclick"}, 
-                "testMethod", "form1", false, false);
+        invoker.addEventListener("comp1", spec);
+        spec.addEventListener("comp1", new String[] {"onclick"}, "testMethod", "form1", false, false);
         
         expect(cycle.isRewinding()).andReturn(false);
         

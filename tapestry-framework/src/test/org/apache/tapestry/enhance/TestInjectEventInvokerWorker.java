@@ -23,7 +23,8 @@ import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.tapestry.BaseComponent;
-import org.apache.tapestry.services.impl.ComponentEventInvoker;
+import org.apache.tapestry.internal.event.IComponentEventInvoker;
+import org.apache.tapestry.internal.event.impl.ComponentEventInvoker;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.testng.annotations.Test;
 
@@ -40,19 +41,19 @@ public class TestInjectEventInvokerWorker extends BaseEnhancementTestCase
     public void testSuccess() throws Exception
     {
         EnhancementOperation op = newOp();
-        ComponentEventInvoker invoker = new ComponentEventInvoker();
+        IComponentEventInvoker invoker = new ComponentEventInvoker();
         
         Location l = newLocation();
         IComponentSpecification spec = newSpec(l);
         
         op.claimReadonlyProperty("eventInvoker");
         
-        expect(op.addInjectedField("_$eventInvoker", ComponentEventInvoker.class, invoker))
+        expect(op.addInjectedField("_$eventInvoker", IComponentEventInvoker.class, invoker))
         .andReturn("_$eventInvoker");
         
         expect(op.getAccessorMethodName("eventInvoker")).andReturn("getEventInvoker");
         
-        op.addMethod(Modifier.PUBLIC, new MethodSignature(ComponentEventInvoker.class,
+        op.addMethod(Modifier.PUBLIC, new MethodSignature(IComponentEventInvoker.class,
                 "getEventInvoker", null, null), "return _$eventInvoker;", l);
         
         replay();
@@ -69,7 +70,7 @@ public class TestInjectEventInvokerWorker extends BaseEnhancementTestCase
         Location l = newLocation();
         
         EnhancementOperation op = newOp();
-        ComponentEventInvoker invoker = new ComponentEventInvoker();
+        IComponentEventInvoker invoker = new ComponentEventInvoker();
         
         ErrorLog log = newMock(ErrorLog.class);
         

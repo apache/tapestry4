@@ -30,9 +30,10 @@ import org.apache.tapestry.bean.BeanProvider;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.event.PageEvent;
+import org.apache.tapestry.form.AbstractFormComponent;
+import org.apache.tapestry.internal.event.IComponentEventInvoker;
 import org.apache.tapestry.listener.ListenerMap;
 import org.apache.tapestry.services.ComponentRenderWorker;
-import org.apache.tapestry.services.impl.ComponentEventInvoker;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
 
@@ -865,7 +866,7 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
     /**
      * {@inheritDoc}
      */
-    public ComponentEventInvoker getEventInvoker()
+    public IComponentEventInvoker getEventInvoker()
     {
         throw new IllegalStateException(TapestryMessages.providedByEnhancement("getEventInvoker"));
     }

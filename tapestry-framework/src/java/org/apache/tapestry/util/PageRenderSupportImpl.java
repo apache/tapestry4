@@ -77,8 +77,6 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
 
     private final String _preloadName;
     
-    private final RegexpMatcher _matcher = new RegexpMatcher();
-    
     private final Map _requires = new HashMap();
     
     public PageRenderSupportImpl(AssetFactory assetFactory, String namespace, 

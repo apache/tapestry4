@@ -16,16 +16,21 @@ package org.apache.tapestry.services.impl;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import org.apache.hivemind.Resource;
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.engine.NullWriter;
 import org.apache.tapestry.markup.MarkupWriterSource;
 import org.apache.tapestry.services.RequestLocaleManager;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.util.ContentType;
+import org.apache.tapestry.util.PageRenderSupportImpl;
 import org.apache.tapestry.web.WebResponse;
 
 
@@ -36,6 +41,12 @@ import org.apache.tapestry.web.WebResponse;
  */
 public class DefaultResponseBuilder implements ResponseBuilder
 {   
+    private final AssetFactory _assetFactory;
+    
+    private final String _namespace;
+    
+    private PageRenderSupportImpl _prs;
+    
     private RequestLocaleManager _localeManager;
     
     private MarkupWriterSource _markupWriterSource;
@@ -45,6 +56,22 @@ public class DefaultResponseBuilder implements ResponseBuilder
     /** Default writer for rendering html output. */
     private IMarkupWriter _writer;
     
+    private boolean _closeWriter = true;
+    
+    /**
+     * Portlet constructor.
+     * 
+     * @param writer
+     */
+    public DefaultResponseBuilder(IMarkupWriter writer, 
+            AssetFactory assetFactory, String namespace, boolean closeWriter)
+    {
+        _writer = writer;
+        _assetFactory = assetFactory;
+        _namespace = namespace;
+        _closeWriter = closeWriter;
+    }
+    
     /**
      * Used in testing only.
      * @param writer
@@ -52,6 +79,8 @@ public class DefaultResponseBuilder implements ResponseBuilder
     public DefaultResponseBuilder(IMarkupWriter writer)
     {
         _writer = writer;
+        _assetFactory = null;
+        _namespace = null;
     }
     
     /**
@@ -66,11 +95,18 @@ public class DefaultResponseBuilder implements ResponseBuilder
      *          Web response for output stream.
      */
     public DefaultResponseBuilder(RequestLocaleManager localeManager, 
-            MarkupWriterSource markupWriterSource, WebResponse webResponse)
+            MarkupWriterSource markupWriterSource, WebResponse webResponse,
+            AssetFactory assetFactory, String namespace)
     {
+        Defense.notNull(assetFactory, "assetService");
+        
         _localeManager = localeManager;
         _markupWriterSource = markupWriterSource;
         _webResponse = webResponse;
+        
+        // Used by PageRenderSupport
+        _assetFactory = assetFactory;
+        _namespace = namespace;
     }
     
     /**
@@ -109,14 +145,20 @@ public class DefaultResponseBuilder implements ResponseBuilder
             PrintWriter printWriter = _webResponse.getPrintWriter(contentType);
             
             _writer = _markupWriterSource.newMarkupWriter(printWriter, contentType);
-        
         }
         
         // render response
         
+        _prs = new PageRenderSupportImpl(_assetFactory, _namespace, cycle.getPage().getLocation(), this);
+        
+        TapestryUtils.storePageRenderSupport(cycle, _prs);
+        
         cycle.renderPage(this);
         
-        _writer.close();
+        TapestryUtils.removePageRenderSupport(cycle);
+        
+        if (_closeWriter)
+            _writer.close();
     }
     
     /**
@@ -206,6 +248,94 @@ public class DefaultResponseBuilder implements ResponseBuilder
     public boolean isImageInitializationAllowed(IComponent target)
     {
         return true;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public String getPreloadedImageReference(IComponent target, String url)
+    {
+        return _prs.getPreloadedImageReference(target, url);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getPreloadedImageReference(String url)
+    {
+        return _prs.getPreloadedImageReference(url);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void addBodyScript(IComponent target, String script)
+    {
+        _prs.addBodyScript(target, script);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void addBodyScript(String script)
+    {
+        _prs.addBodyScript(script);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void addExternalScript(IComponent target, Resource resource)
+    {
+        _prs.addExternalScript(target, resource);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void addExternalScript(Resource resource)
+    {
+        _prs.addExternalScript(resource);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void addInitializationScript(IComponent target, String script)
+    {
+        _prs.addInitializationScript(target, script);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void addInitializationScript(String script)
+    {
+        _prs.addInitializationScript(script);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getUniqueString(String baseValue)
+    {
+        return _prs.getUniqueString(baseValue);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void writeBodyScript(IMarkupWriter writer, IRequestCycle cycle)
+    {
+        _prs.writeBodyScript(writer, cycle);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void writeInitializationScript(IMarkupWriter writer)
+    {
+        _prs.writeInitializationScript(writer);
     }
     
     /** 

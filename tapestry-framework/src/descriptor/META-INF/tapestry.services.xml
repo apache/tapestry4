@@ -221,6 +221,7 @@
                 <set-object property="markupWriterSource"  value="infrastructure:markupWriterSource"/>
                 <set-object property="webResponse" value="infrastructure:response"/>
                 <set-object property="webRequest" value="infrastructure:request"/>
+                <set-object property="assetFactory" value="infrastructure:assetFactory" />
             </construct>
         </invoke-factory>
     </service-point>
@@ -237,6 +238,7 @@
                 <set-object property="exceptionPageName" value="infrastructure:exceptionPageName"/>
                 <set-object property="staleSessionPageName" value="infrastructure:staleSessionPageName" />
                 <set-object property="staleLinkPageName" value="infrastructure:staleLinkPageName" />
+                <set-object property="assetFactory" value="infrastructure:assetFactory" />
             </construct>
         </invoke-factory>
     </service-point>
@@ -250,6 +252,7 @@
                 <set-service property="localeManager" service-id="tapestry.request.RequestLocaleManager"/>
                 <set-object property="markupWriterSource"  value="infrastructure:markupWriterSource"/>
                 <set-object property="webResponse" value="infrastructure:response"/>
+                <set-object property="assetFactory" value="infrastructure:assetFactory" />
             </construct>
         </invoke-factory>
     </service-point>

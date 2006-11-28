@@ -456,7 +456,11 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     {
         firePageEndRender();
     }
-
+    
+    protected void cleanupAfterRender(IRequestCycle cycle)
+    {
+    }
+    
     /** @since 3.0 * */
 
     public String getPageName()

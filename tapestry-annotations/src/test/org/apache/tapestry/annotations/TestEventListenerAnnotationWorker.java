@@ -21,7 +21,9 @@ import org.apache.hivemind.Resource;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.internal.event.ComponentEventProperty;
 import org.apache.tapestry.internal.event.EventBoundListener;
-import org.apache.tapestry.services.impl.ComponentEventInvoker;
+import org.apache.tapestry.internal.event.IComponentEventInvoker;
+import org.apache.tapestry.internal.event.impl.ComponentEventInvoker;
+import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.testng.annotations.Test;
 
@@ -37,12 +39,13 @@ public class TestEventListenerAnnotationWorker extends BaseAnnotationTestCase
     public void testEventConnection()
     {
         EnhancementOperation op = newOp();
-        IComponentSpecification spec = newSpec();
+        IComponentSpecification spec = new ComponentSpecification();
         Resource resource = newResource(AnnotatedPage.class);
         
+        IComponentEventInvoker invoker = new ComponentEventInvoker();
+        
         EventListenerAnnotationWorker worker = new EventListenerAnnotationWorker();
-        ComponentEventInvoker invoker = new ComponentEventInvoker();
-        worker.setComponentEventInvoker(invoker);
+        worker.setInvoker(invoker);
         
         replay();
         
@@ -54,14 +57,16 @@ public class TestEventListenerAnnotationWorker extends BaseAnnotationTestCase
         
         verify();
         
-        ComponentEventProperty property = invoker.getComponentEvents("email");
+        assertEquals(1, invoker.getEventListeners("email").size());
+        
+        ComponentEventProperty property = spec.getComponentEvents("email");
         assertNotNull(property);
         
         List listeners = property.getEventListeners("onClick");
         assertNotNull(listeners);
         assertEquals(1, listeners.size());
         
-        property = invoker.getElementEvents("foo");
+        property = spec.getElementEvents("foo");
         assertNotNull(property);
         
         listeners = property.getEventListeners("onClick");
@@ -72,12 +77,12 @@ public class TestEventListenerAnnotationWorker extends BaseAnnotationTestCase
     public void testFormEventConnection()
     {
         EnhancementOperation op = newOp();
-        IComponentSpecification spec = newSpec();
+        IComponentSpecification spec = new ComponentSpecification();
         Resource resource = newResource(AnnotatedPage.class);
+        IComponentEventInvoker invoker = new ComponentEventInvoker();
         
         EventListenerAnnotationWorker worker = new EventListenerAnnotationWorker();
-        ComponentEventInvoker invoker = new ComponentEventInvoker();
-        worker.setComponentEventInvoker(invoker);
+        worker.setInvoker(invoker);
         
         replay();
         
@@ -88,12 +93,16 @@ public class TestEventListenerAnnotationWorker extends BaseAnnotationTestCase
         
         verify();
         
-        ComponentEventProperty property = invoker.getComponentEvents("email");
+        assertEquals(1, invoker.getEventListeners("email").size());
+        assertEquals(1, invoker.getFormEventListeners("testForm").size());
+        
+        ComponentEventProperty property = spec.getComponentEvents("email");
         assertNotNull(property);
         
         List listeners = property.getFormEventListeners("onClick");
         assertNotNull(listeners);
         assertEquals(1, listeners.size());
+        
         EventBoundListener formListener = (EventBoundListener)listeners.get(0);
         assertEquals("testForm", formListener.getFormId());
         assertFalse(formListener.isValidateForm());

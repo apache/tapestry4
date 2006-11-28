@@ -185,7 +185,7 @@
     
     <invoke-factory>
       <construct class="InjectEventInvokerWorker">
-        <set-service property="componentEventInvoker" service-id="tapestry.event.ComponentEventInvoker" />
+        <set-service property="componentEventInvoker" service-id="tapestry.event.EventInvoker" />
       </construct>
     </invoke-factory>
     

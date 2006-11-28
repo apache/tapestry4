@@ -36,7 +36,9 @@ import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.html.Body;
 import org.apache.tapestry.internal.event.ComponentEventProperty;
 import org.apache.tapestry.internal.event.EventBoundListener;
+import org.apache.tapestry.internal.event.IComponentEventInvoker;
 import org.apache.tapestry.services.ComponentRenderWorker;
+import org.apache.tapestry.spec.IEventListener;
 import org.apache.tapestry.util.ScriptUtils;
 
 
@@ -49,11 +51,10 @@ import org.apache.tapestry.util.ScriptUtils;
 public class ComponentEventConnectionWorker implements ComponentRenderWorker
 {
     /** Stored in {@link IRequestCycle} with associated forms. */
-    public static final String FORM_NAME_LIST = 
-        "org.apache.tapestry.services.impl.ComponentEventConnectionFormNames-";
+    public static final String FORM_NAME_LIST =  "org.apache.tapestry.services.impl.ComponentEventConnectionFormNames-";
     
     // holds mapped event listener info
-    private ComponentEventInvoker _invoker;
+    private IComponentEventInvoker _invoker;
     
     // generates links for scripts
     private IEngineService _eventEngine;
@@ -93,8 +94,9 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
         if (field != null && field == component)
             return;
         
-        if (_invoker.hasEvents(component.getId()))
-            linkComponent(cycle, component);
+        linkComponentEvents(cycle, component);
+        
+        linkElementEvents(cycle, component);
         
         if (IForm.class.isInstance(component))
             mapFormNames(cycle, (IForm)component);
@@ -103,32 +105,91 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
             linkDeferredForm(cycle, (IForm)component);
     }
     
-    void linkComponent(IRequestCycle cycle, IComponent component)
+    void linkComponentEvents(IRequestCycle cycle, IComponent component)
     {
-        ComponentEventProperty prop = _invoker.getComponentEvents(component.getId());
-        String clientId = component.getClientId();
-        
-        Map parms = new HashMap();
-        parms.put("clientId", clientId);
-        parms.put("component", component);
-        
-        Object[][] events = getEvents(prop, clientId);
-        Object[][] formEvents = filterFormEvents(prop, parms, cycle);
-        
-        if (events.length < 1 && formEvents.length < 1)
+        ComponentEventProperty[] props = getComponentEvents(component);
+        if (props == null)
             return;
         
-        DirectEventServiceParameter dsp =
+        for (int i=0; i < props.length; i++) {
+            
+            String clientId = component.getClientId();
+            
+            Map parms = new HashMap();
+            parms.put("clientId", clientId);
+            parms.put("component", component);
+            
+            Object[][] events = getEvents(props[i], clientId);
+            Object[][] formEvents = filterFormEvents(props[i], parms, cycle);
+            
+            if (events.length < 1 && formEvents.length < 1)
+                return;
+            
+            DirectEventServiceParameter dsp =
+                new DirectEventServiceParameter((IDirectEvent)component, new Object[] {}, new String[] {}, false);
+            
+            parms.put("url", _eventEngine.getLink(false, dsp).getURL());
+            parms.put("events", events);
+            parms.put("formEvents", formEvents);
+
+            PageRenderSupport prs = TapestryUtils.getPageRenderSupport(cycle, component);
+            Resource resource = getScript(component);
+
+            _scriptSource.getScript(resource).execute(component, cycle, prs, parms);
+        }
+    }
+    
+    ComponentEventProperty[] getComponentEvents(IComponent comp)
+    {
+        List listeners = _invoker.getEventListeners(comp.getId());
+        if (listeners == null)
+            return null;
+        
+        List ret = new ArrayList();
+        
+        for (int i=0; i < listeners.size(); i++) {
+            
+            IEventListener listener = (IEventListener)listeners.get(i);
+            
+            ret.add(listener.getComponentEvents(comp.getId()));
+        }
+        
+        return (ComponentEventProperty[])ret.toArray(new ComponentEventProperty[ret.size()]);
+    }
+    
+    void linkElementEvents(IRequestCycle cycle, IComponent component)
+    {
+        if (!component.getSpecification().hasElementEvents())
+            return;
+        
+        DirectEventServiceParameter dsp = 
             new DirectEventServiceParameter((IDirectEvent)component, new Object[] {}, new String[] {}, false);
         
-        parms.put("url", _eventEngine.getLink(false, dsp).getURL());
-        parms.put("events", events);
-        parms.put("formEvents", formEvents);
+        String url = _eventEngine.getLink(false, dsp).getURL();
         
         PageRenderSupport prs = TapestryUtils.getPageRenderSupport(cycle, component);
-        Resource resource = getScript(component);
+        Resource resource = getElementScript();
         
-        _scriptSource.getScript(resource).execute(component, cycle, prs, parms);
+        Map elements = component.getSpecification().getElementEvents();
+        Iterator keys = elements.keySet().iterator();
+        
+        // build our list of targets / events
+        while (keys.hasNext()) {
+            
+            Map parms = new HashMap();
+            
+            String target = (String)keys.next();
+            
+            ComponentEventProperty prop = (ComponentEventProperty)elements.get(target);
+            
+            parms.put("component", component);
+            parms.put("target", target);
+            parms.put("url", url);
+            parms.put("events", getEvents(prop, target));
+            parms.put("formEvents", filterFormEvents(prop, parms, cycle));
+            
+            _scriptSource.getScript(resource).execute(component, cycle, prs, parms);
+        }
     }
     
     /**
@@ -136,37 +197,10 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
      */
     public void renderBody(IRequestCycle cycle, Body component)
     {
-        if (cycle.isRewinding() || !_invoker.hasElementEvents())
+        if (cycle.isRewinding())
             return;
         
-        Map parms = new HashMap();
-        DirectEventServiceParameter dsp =
-            new DirectEventServiceParameter(component, new Object[] {}, new String[] {}, false);
-        
-        String url = _eventEngine.getLink(false, dsp).getURL();
-        
-        PageRenderSupport prs = TapestryUtils.getPageRenderSupport(cycle, component);
-        Resource resource = getScript(component);
-        
-        Map elements = _invoker.getElementEvents();
-        Iterator keys = elements.keySet().iterator();
-        
-        // build our list of targets / events
-        while (keys.hasNext()) {
-            
-            String target = (String)keys.next();
-            
-            ComponentEventProperty prop = (ComponentEventProperty)elements.get(target);
-            
-            parms.put("target", target);
-            parms.put("url", url);
-            parms.put("events", getEvents(prop, null));
-            parms.put("formEvents", filterFormEvents(prop, parms, cycle));
-            
-            _scriptSource.getScript(resource).execute(component, cycle, prs, parms);
-            
-            parms.clear();
-        }
+        renderComponent(cycle, component);
         
         // just in case
         _deferredFormConnections.clear();
@@ -194,22 +228,34 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
             Object[] val = (Object[])deferred.get(i);
             
             Map scriptParms = (Map)val[0];
-            IComponent component = (IComponent)scriptParms.get("component");
-            
-            ComponentEventProperty props = _invoker.getComponentEvents(component.getId());
-            
-            Object[][] formEvents = buildFormEvents(cycle, form.getId(), 
-                    props.getFormEvents(), (Boolean)val[1], (Boolean)val[2], val[3]);
             
             // don't want any events accidently connected again
             scriptParms.remove("events");
-            scriptParms.put("formEvents", formEvents);
             
-            // execute script
-            PageRenderSupport prs = TapestryUtils.getPageRenderSupport(cycle, component);
-            Resource resource = getScript(component);
+            IComponent component = (IComponent)scriptParms.get("component");
             
-            _scriptSource.getScript(resource).execute(form, cycle, prs, scriptParms);
+            // fire off element based events first
+            
+            linkElementEvents(cycle, component);
+            
+            ComponentEventProperty[] props = getComponentEvents(component);
+            if (props == null)
+                continue;
+            
+            for (int e=0; e < props.length; e++) {
+                
+                Object[][] formEvents = buildFormEvents(cycle, form.getId(), 
+                        props[e].getFormEvents(), (Boolean)val[1], (Boolean)val[2], val[3]);
+                
+                scriptParms.put("formEvents", formEvents);
+                
+                // execute script
+                
+                PageRenderSupport prs = TapestryUtils.getPageRenderSupport(cycle, component);
+                Resource resource = getScript(component);
+                
+                _scriptSource.getScript(resource).execute(form, cycle, prs, scriptParms);
+            }
         }
     }
     
@@ -271,18 +317,18 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
             return _widgetResource;
         }
         
-        if (Body.class.isInstance(component)) {
-            
-            if (_elementResource == null) 
-                _elementResource = new ClasspathResource(_resolver, _elementScript);
-            
-            return _elementResource;
-        }
-        
         if (_componentResource == null) 
             _componentResource = new ClasspathResource(_resolver, _componentScript);
         
         return _componentResource;
+    }
+    
+    Resource getElementScript()
+    {
+        if (_elementResource == null) 
+            _elementResource = new ClasspathResource(_resolver, _elementScript);
+        
+        return _elementResource;
     }
     
     boolean isDeferredForm(IComponent component)
@@ -395,7 +441,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
      * Sets the invoker to use/manage event connections.
      * @param invoker
      */
-    public void setComponentEventInvoker(ComponentEventInvoker invoker)
+    public void setEventInvoker(IComponentEventInvoker invoker)
     {
         _invoker = invoker;
     }

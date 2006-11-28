@@ -19,17 +19,18 @@
   
   Mappings from client side events to IActionListener instances.
   
-  <service-point id="ComponentEventInvoker" interface="org.apache.tapestry.services.impl.ComponentEventInvoker">
+  <service-point id="EventInvoker" interface="org.apache.tapestry.internal.event.IComponentEventInvoker">
     
-    Manages invoking/connecting events between components and browser.
+    Manages invoking / connecting events between components and browser.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.ComponentEventInvoker">
+      <construct class="org.apache.tapestry.internal.event.impl.ComponentEventInvoker">
         <event-listener service-id="tapestry.ResetEventHub"/>
+        <set-object property="invoker" value="infrastructure:listenerInvoker" />
       </construct>
     </invoke-factory>
     
-  </service-point>  
+  </service-point>
   
   <contribution configuration-id="tapestry.services.FactoryServices">
         <service name="directevent" object="service:tapestry.event.DirectEvent" />

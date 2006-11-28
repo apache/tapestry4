@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IForm;
@@ -29,6 +30,8 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.NestedMarkupWriter;
+import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.engine.NullWriter;
 import org.apache.tapestry.markup.MarkupWriterSource;
 import org.apache.tapestry.markup.NestedMarkupWriterImpl;
@@ -36,6 +39,7 @@ import org.apache.tapestry.services.RequestLocaleManager;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.ContentType;
+import org.apache.tapestry.util.PageRenderSupportImpl;
 import org.apache.tapestry.util.ScriptUtils;
 import org.apache.tapestry.web.WebResponse;
 
@@ -50,6 +54,12 @@ import org.apache.tapestry.web.WebResponse;
  */
 public class DojoAjaxResponseBuilder implements ResponseBuilder
 {
+    private final AssetFactory _assetFactory;
+    
+    private final String _namespace;
+    
+    private PageRenderSupportImpl _prs;
+    
     // used to create IMarkupWriter
     private RequestLocaleManager _localeManager;
     private MarkupWriterSource _markupWriterSource;
@@ -85,6 +95,9 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         
         if (parts != null) 
             _parts.addAll(parts);
+        
+        _namespace = null;
+        _assetFactory = null;
     }
     
     /**
@@ -101,15 +114,21 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     public DojoAjaxResponseBuilder(IRequestCycle cycle, 
             RequestLocaleManager localeManager, 
             MarkupWriterSource markupWriterSource,
-            WebResponse webResponse, List errorPages)
+            WebResponse webResponse, List errorPages, 
+            AssetFactory assetFactory, String namespace)
     {
         Defense.notNull(cycle, "cycle");
+        Defense.notNull(assetFactory, "assetService");
         
         _cycle = cycle;
         _localeManager = localeManager;
         _markupWriterSource = markupWriterSource;
         _webResponse = webResponse;
         _errorPages = errorPages;
+        
+        // Used by PageRenderSupport
+        _assetFactory = assetFactory;
+        _namespace = namespace;
     }
     
     /**
@@ -150,7 +169,14 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         beginResponse();
         
         // render response
+        
+        _prs = new PageRenderSupportImpl(_assetFactory, _namespace, cycle.getPage().getLocation(), this);
+        
+        TapestryUtils.storePageRenderSupport(cycle, _prs);
+        
         cycle.renderPage(this);
+        
+        TapestryUtils.removePageRenderSupport(cycle);
         
         endResponse();
         
@@ -180,8 +206,9 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     public boolean isBodyScriptAllowed(IComponent target)
     {
         if (target != null 
-                && IForm.class.isInstance(target)
-                && ((IForm)target).isFormFieldUpdating())
+                && IPage.class.isInstance(target)
+                || (IForm.class.isInstance(target)
+                && ((IForm)target).isFormFieldUpdating()))
             return true;
         
         return contains(target);
@@ -193,8 +220,9 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     public boolean isExternalScriptAllowed(IComponent target)
     {
         if (target != null 
-                && IForm.class.isInstance(target)
-                && ((IForm)target).isFormFieldUpdating())
+                && IPage.class.isInstance(target)
+                || (IForm.class.isInstance(target)
+                && ((IForm)target).isFormFieldUpdating()))
             return true;
         
         return contains(target);
@@ -206,8 +234,9 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     public boolean isInitializationScriptAllowed(IComponent target)
     {
         if (target != null 
-                && IForm.class.isInstance(target)
-                && ((IForm)target).isFormFieldUpdating())
+                && IPage.class.isInstance(target)
+                || (IForm.class.isInstance(target)
+                && ((IForm)target).isFormFieldUpdating()))
             return true;
         
         return contains(target);
@@ -219,11 +248,100 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     public boolean isImageInitializationAllowed(IComponent target)
     {
         if (target != null 
-                && IForm.class.isInstance(target)
-                && ((IForm)target).isFormFieldUpdating())
+                && IPage.class.isInstance(target)
+                || (IForm.class.isInstance(target)
+                && ((IForm)target).isFormFieldUpdating()))
             return true;
         
         return contains(target);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public String getPreloadedImageReference(IComponent target, String url)
+    {
+        return _prs.getPreloadedImageReference(target, url);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getPreloadedImageReference(String url)
+    {
+        return _prs.getPreloadedImageReference(url);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void addBodyScript(IComponent target, String script)
+    {
+        _prs.addBodyScript(target, script);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void addBodyScript(String script)
+    {
+        _prs.addBodyScript(script);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void addExternalScript(IComponent target, Resource resource)
+    {
+        _prs.addExternalScript(target, resource);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void addExternalScript(Resource resource)
+    {
+        _prs.addExternalScript(resource);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void addInitializationScript(IComponent target, String script)
+    {
+        _prs.addInitializationScript(target, script);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void addInitializationScript(String script)
+    {
+        _prs.addInitializationScript(script);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getUniqueString(String baseValue)
+    {
+        return _prs.getUniqueString(baseValue);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void writeBodyScript(IMarkupWriter writer, IRequestCycle cycle)
+    {
+        _prs.writeBodyScript(writer, cycle);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void writeInitializationScript(IMarkupWriter writer)
+    {
+        _prs.writeInitializationScript(writer);
     }
     
     /** 

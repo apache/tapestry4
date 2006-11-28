@@ -60,7 +60,7 @@ public class ComponentAnnotationWorker implements MethodAnnotationEnhancementWor
             {
                 Class retTypeClazz = method.getReturnType();
                 type = retTypeClazz.getSimpleName();
-            }            
+            }
             copyOf = null;
         }        
 

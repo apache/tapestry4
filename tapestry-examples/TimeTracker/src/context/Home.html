@@ -16,7 +16,7 @@ using them.
       <td><label>Duration</label></td>
       <td>&nbsp;</td>
     </tr>
-    <tr>
+    <tr id="secondRow">
       <td><div class="field required"><span jwcid="projectChoose" /></div></td>
       <td><div class="field required"><input jwcid="descriptionField" /></div></td>
       <td><div jwcid="duration@Any">18 minutes</div></td>
@@ -53,8 +53,7 @@ using them.
     </fieldset>
 </form>
 
-<a jwcid="@DirectLink" listener="listener:showDialog" 
-	async="true" updateComponents="testDialog">Show Dialog</a><br/>
+<a jwcid="@DirectLink" listener="listener:showDialog" updateComponents="testDialog">Show Dialog</a><br/>
 
 <div jwcid="testDialog@Dialog" hidden="ognl:dlHidden" >
 	<p style="display:block;background:#ffffff;width:20em;">

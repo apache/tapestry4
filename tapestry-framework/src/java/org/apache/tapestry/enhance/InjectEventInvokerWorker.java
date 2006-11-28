@@ -16,7 +16,7 @@ package org.apache.tapestry.enhance;
 
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.services.impl.ComponentEventInvoker;
+import org.apache.tapestry.internal.event.IComponentEventInvoker;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
@@ -33,7 +33,7 @@ public class InjectEventInvokerWorker implements EnhancementWorker
 
     private ErrorLog _errorLog;
 
-    private ComponentEventInvoker _invoker;
+    private IComponentEventInvoker _invoker;
     
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec)
     {
@@ -57,11 +57,11 @@ public class InjectEventInvokerWorker implements EnhancementWorker
         op.claimReadonlyProperty(PROPERTY_NAME);
         
         String fieldName = op.addInjectedField("_$"
-                + PROPERTY_NAME, ComponentEventInvoker.class,
+                + PROPERTY_NAME, IComponentEventInvoker.class,
                 _invoker);
         
         EnhanceUtils.createSimpleAccessor(op, fieldName,
-                PROPERTY_NAME, ComponentEventInvoker.class,
+                PROPERTY_NAME, IComponentEventInvoker.class,
                 spec.getLocation());
     }
 
@@ -70,7 +70,7 @@ public class InjectEventInvokerWorker implements EnhancementWorker
         _errorLog = errorLog;
     }
     
-    public void setComponentEventInvoker(ComponentEventInvoker invoker)
+    public void setComponentEventInvoker(IComponentEventInvoker invoker)
     {
         _invoker = invoker;
     }

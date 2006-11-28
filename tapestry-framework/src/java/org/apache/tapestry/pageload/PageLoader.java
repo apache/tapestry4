@@ -381,25 +381,22 @@ public class PageLoader implements IPageLoader
 
                 // Get the sub-component specification from the
                 // container's specification.
-
+                
                 IContainedComponent contained = containerSpec.getComponent(id);
-
+                
                 String type = contained.getType();
                 Location location = contained.getLocation();
-
+                
                 _componentResolver.resolve(cycle, namespace, type, location);
-
-                IComponentSpecification componentSpecification = _componentResolver
-                        .getSpecification();
-                INamespace componentNamespace = _componentResolver
-                        .getNamespace();
-
+                
+                IComponentSpecification componentSpecification = _componentResolver.getSpecification();
+                INamespace componentNamespace = _componentResolver.getNamespace();
+                
                 // Instantiate the contained component.
                 
                 IComponent component = instantiateComponent(page, container,
-                        id, componentSpecification, _componentResolver
-                                .getType(), componentNamespace, contained);
-
+                        id, componentSpecification, _componentResolver.getType(), componentNamespace, contained);
+                
                 // Add it, by name, to the container.
 
                 container.addComponent(component);
@@ -414,7 +411,7 @@ public class PageLoader implements IPageLoader
                 constructComponent(cycle, page, component,
                         componentSpecification, componentNamespace);
             }
-
+            
             addAssets(container, containerSpec);
 
             // Finish the load of the component; most components (which
