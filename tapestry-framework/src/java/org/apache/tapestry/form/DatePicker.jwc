@@ -36,7 +36,8 @@
   <parameter name="validators"/>
   <parameter name="id" property="idParameter" default-value="id"/>
   <parameter name="title"/>
-  		
+  <parameter name="imageClass" default-value="literal:datePickerImg" />
+  
   <asset name="defaultIcon" path="DatePickerIcon.png"/>
   
   <reserved-parameter name="name"/>
