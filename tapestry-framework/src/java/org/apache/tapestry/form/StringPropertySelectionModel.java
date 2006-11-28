@@ -69,10 +69,16 @@ public class StringPropertySelectionModel implements IPropertySelectionModel
 
     public Object translateValue(String value)
     {
+        if (value == null)
+            return null;
+        
         int index;
 
         index = Integer.parseInt(value);
-
+        
+        if (index < 0 || index >= _options.length)
+            return null;
+        
         return _options[index];
     }
 

@@ -16,6 +16,7 @@ package org.apache.tapestry.services.impl;
 import java.io.IOException;
 
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.markup.MarkupWriterSource;
 import org.apache.tapestry.services.RequestLocaleManager;
 import org.apache.tapestry.services.ResponseBuilder;
@@ -42,6 +43,8 @@ public class JSONResponseContributorImpl implements ResponseContributor
     
     private WebRequest _webRequest;
     
+    private AssetFactory _assetFactory;
+    
     /**
      * {@inheritDoc}
      */
@@ -49,7 +52,7 @@ public class JSONResponseContributorImpl implements ResponseContributor
     throws IOException
     {
         return new JSONResponseBuilder(cycle, _localeManager, _markupWriterSource,
-                _webResponse);
+                _webResponse, _assetFactory, _webResponse.getNamespace());
     }
     
     /**
@@ -85,5 +88,10 @@ public class JSONResponseContributorImpl implements ResponseContributor
     public void setWebRequest(WebRequest webRequest)
     {
         _webRequest  = webRequest;
+    }
+    
+    public void setAssetFactory(AssetFactory factory)
+    {
+        _assetFactory = factory;
     }
 }

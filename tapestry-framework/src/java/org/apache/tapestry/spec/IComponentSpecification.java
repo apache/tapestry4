@@ -50,7 +50,7 @@ import org.apache.tapestry.util.IPropertyHolder;
  * @author glongman@intelligentworks.com
  */
 public interface IComponentSpecification extends IPropertyHolder,
-        LocationHolder, Locatable
+        LocationHolder, Locatable, IEventListener
 {
 
     /**
@@ -325,5 +325,4 @@ public interface IComponentSpecification extends IPropertyHolder,
      */
 
     Set getReservedParameterNames();
-
 }

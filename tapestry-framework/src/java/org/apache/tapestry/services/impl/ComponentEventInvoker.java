@@ -14,6 +14,7 @@
 package org.apache.tapestry.services.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -99,9 +100,9 @@ public class ComponentEventInvoker implements ResetEventListener
             if (!targetId.startsWith(eventListener.getComponentId()))
                 continue;
             
-            IComponent container = component.getContainer();
-            if (container == null) // only IPage has no container
-                container = component; 
+            final IComponent container = 
+                eventListener.getRecieverIdPath() != null ? getComponentFromPath(component, eventListener)
+                        : findComponent(component, component.getPage().getComponents().values(), eventListener);
             
             IActionListener listener = null;
             
@@ -134,20 +135,24 @@ public class ComponentEventInvoker implements ResetEventListener
             BrowserEvent event)
     {
         IForm component = formSupport.getForm();
-        String id = component.getId();
+        String targetId = (String)event.getTarget().get("id");
+        if (targetId == null)
+            return;
         
-        List listeners = getFormEvents(id, event);
+        List listeners = getFormEvents(component.getId(), event);
         
         for (int i=0; i < listeners.size(); i++) {
             EventBoundListener eventListener = (EventBoundListener)listeners.get(i);
             
             // ensure ~only~ the method that targeted this event gets called!
-            if (!eventListener.getComponentId().equals(event.getTarget().get("id")))
+            
+            if (!targetId.startsWith(eventListener.getComponentId()))
                 continue;
             
             final IComponent container = 
-                (component.getContainer() == null) ? component : component.getContainer();
-            
+                eventListener.getRecieverIdPath() != null ? getComponentFromPath(component, eventListener)
+                        : findComponent(component, component.getPage().getComponents().values(), eventListener);
+                
             final IActionListener listener = 
                 container.getListeners().getListener(eventListener.getMethodName());
             
@@ -160,6 +165,48 @@ public class ComponentEventInvoker implements ResetEventListener
                 }
             });
         }
+    }
+    
+    IComponent getComponentFromPath(IComponent comp, EventBoundListener eventListener)
+    {
+        if (eventListener.isPage())
+            return comp.getPage();
+        
+        return comp.getPage().getNestedComponent(eventListener.getRecieverIdPath());
+    }
+    
+    IComponent findComponent(IComponent component, Collection comps, EventBoundListener eventListener)
+    {
+        IComponent ret = null;
+        
+        Iterator it = comps.iterator();
+        
+        while (it.hasNext()) {
+            IComponent comp = (IComponent)it.next();
+            
+            if (eventListener.getComponentId().equals(comp.getId())) {
+                ret = comp.getContainer();
+                break;
+            }
+            
+            ret = findComponent(component, comp.getComponents().values(), eventListener);
+            if (ret != null)
+                break;
+        }
+        
+        if (ret != null) {
+            String idPath = ret.getIdPath();
+            
+            if (idPath == null) {
+                eventListener.setPage(true);
+                eventListener.setRecieverIdPath(ret.getPage().getPageName());
+            } else {
+                
+                eventListener.setRecieverIdPath(idPath);
+            }
+        }
+        
+        return ret;
     }
     
     /**

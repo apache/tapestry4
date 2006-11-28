@@ -22,8 +22,8 @@ import org.apache.hivemind.LocationHolder;
 import org.apache.hivemind.Messages;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.form.IFormComponent;
+import org.apache.tapestry.internal.event.IComponentEventInvoker;
 import org.apache.tapestry.listener.ListenerMap;
-import org.apache.tapestry.services.impl.ComponentEventInvoker;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
 
@@ -410,5 +410,5 @@ public interface IComponent extends IRender, LocationHolder
      * @return eventInvoker, may not be null
      * @since 4.1
      */
-    ComponentEventInvoker getEventInvoker();
+    IComponentEventInvoker getEventInvoker();
 }

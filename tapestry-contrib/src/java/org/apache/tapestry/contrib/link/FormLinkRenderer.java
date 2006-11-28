@@ -17,11 +17,11 @@ package org.apache.tapestry.contrib.link;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.components.ILinkComponent;
 import org.apache.tapestry.engine.ILink;
-import org.apache.tapestry.html.Body;
 import org.apache.tapestry.link.DefaultLinkRenderer;
 import org.apache.tapestry.link.ILinkRenderer;
 
@@ -82,21 +82,22 @@ public class FormLinkRenderer extends DefaultLinkRenderer
         {
             ILink l = linkComponent.getLink(cycle);
             String anchor = linkComponent.getAnchor();
-
-            Body body = (Body) TapestryUtils.getPageRenderSupport(cycle, linkComponent);
-
+            
+            PageRenderSupport prs = TapestryUtils.getPageRenderSupport(cycle, linkComponent);
+            
             String function = generateFormFunction(formName, l, anchor);
-            body.addBodyScript(linkComponent, function);
-
+            prs.addBodyScript(linkComponent, function);
+            
             if (hasBody)
                 writer.begin(getElement());
-            else writer.beginEmpty(getElement());
-
+            else 
+                writer.beginEmpty(getElement());
+            
             writer.attribute(getUrlAttribute(), "javascript: document."
                     + formName + ".submit();");
-
+            
             beforeBodyRender(writer, cycle, linkComponent);
-
+            
             // Allow the wrapped components a chance to render.
             // Along the way, they may interact with this component
             // and cause the name variable to get set.

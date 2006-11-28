@@ -18,7 +18,7 @@ import java.lang.reflect.Method;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.enhance.EnhancementOperation;
-import org.apache.tapestry.services.impl.ComponentEventInvoker;
+import org.apache.tapestry.internal.event.IComponentEventInvoker;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 
@@ -29,7 +29,8 @@ import org.apache.tapestry.spec.IComponentSpecification;
  */
 public class EventListenerAnnotationWorker implements SecondaryAnnotationWorker
 {
-    private ComponentEventInvoker _invoker;
+ 
+    private IComponentEventInvoker _invoker;
     
     /** 
      * {@inheritDoc}
@@ -58,21 +59,27 @@ public class EventListenerAnnotationWorker implements SecondaryAnnotationWorker
         
         for (int i=0; i < targets.length; i++) {
             
-            _invoker.addEventListener(targets[i], listener.events(), 
+            spec.addEventListener(targets[i], listener.events(), 
                     method.getName(), formId, validateForm, async);
             
+            _invoker.addEventListener(targets[i], spec);
+            
+            if (formId != null)
+                _invoker.addFormEventListener(formId, spec);
         }
         
-        for (int i=0; i < elements.length; i++)
-            _invoker.addElementEventListener(elements[i], listener.events(), 
+        for (int i=0; i < elements.length; i++) {
+            
+            spec.addElementEventListener(elements[i], listener.events(), 
                     method.getName(), formId, validateForm, async);
+            
+            if (formId != null)
+                _invoker.addFormEventListener(formId, spec);
+        }
     }
     
-    /**
-     * Injected.
-     * @param invoker
-     */
-    public void setComponentEventInvoker(ComponentEventInvoker invoker)
+    /** Injected. */
+    public void setInvoker(IComponentEventInvoker invoker)
     {
         _invoker = invoker;
     }

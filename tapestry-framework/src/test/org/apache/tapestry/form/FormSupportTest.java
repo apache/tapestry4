@@ -19,6 +19,9 @@ import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isA;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.BaseComponentTestCase;
@@ -33,9 +36,10 @@ import org.apache.tapestry.StaleLinkException;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.event.BrowserEvent;
+import org.apache.tapestry.event.EventTarget;
+import org.apache.tapestry.internal.event.impl.ComponentEventInvoker;
 import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.services.ResponseBuilder;
-import org.apache.tapestry.services.impl.ComponentEventInvoker;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.testng.annotations.Test;
 
@@ -230,7 +234,7 @@ public class FormSupportTest extends BaseComponentTestCase
         ListenerInvoker listenerInvoker = newMock(ListenerInvoker.class);
         
         ComponentEventInvoker invoker = new ComponentEventInvoker();
-        invoker.setListenerInvoker(listenerInvoker);
+        invoker.setInvoker(listenerInvoker);
         
         trainIsRewound(cycle, form, true);
         trainGetPageRenderSupport(cycle, null);
@@ -259,7 +263,11 @@ public class FormSupportTest extends BaseComponentTestCase
         
         replay();
         
-        invoker.invokeFormListeners(fs, cycle, new BrowserEvent(null, null));
+        Map props = new HashMap();
+        props.put("id", "bsId");
+        BrowserEvent event = new BrowserEvent("onclick", new EventTarget(props));
+        
+        invoker.invokeFormListeners(fs, cycle, event);
         
         assertEquals(FormConstants.SUBMIT_NORMAL, fs.rewind());
 

@@ -44,7 +44,7 @@
     
     <invoke-factory>
       <construct class="org.apache.tapestry.services.impl.ComponentEventConnectionWorker">
-        <set-service property="componentEventInvoker" service-id="tapestry.event.ComponentEventInvoker"/>
+        <set-service property="eventInvoker" service-id="tapestry.event.EventInvoker"/>
         <set-service property="eventEngine" service-id="tapestry.event.DirectEvent"/>
         <set property="componentScript" value="/org/apache/tapestry/ComponentEvent.script" />
         <set property="widgetScript" value="/org/apache/tapestry/dojo/html/WidgetEvent.script" />

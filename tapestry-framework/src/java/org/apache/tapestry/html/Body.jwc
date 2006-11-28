@@ -31,8 +31,7 @@
   	Name of element to use, defaults to "body".
   	</description>
   </parameter>
- 
-  <inject property="assetFactory" object="infrastructure:assetFactory"/>
-  <inject property="response" object="infrastructure:response"/>
+  
+  <inject property="responseBuilder" object="infrastructure:responseBuilder" />
   
 </component-specification>

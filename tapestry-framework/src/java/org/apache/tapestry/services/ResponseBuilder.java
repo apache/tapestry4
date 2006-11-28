@@ -50,7 +50,7 @@ import org.apache.tapestry.services.impl.DojoAjaxResponseBuilder;
  * @author jkuhnert
  * @since 4.1
  */
-public interface ResponseBuilder {
+public interface ResponseBuilder extends PageRenderSupport {
     
     /**
      * Inside a {@link org.apache.tapestry.util.ContentType}, the output encoding is called
@@ -149,6 +149,26 @@ public interface ResponseBuilder {
      * @return True if the component as listed as one to be updated, false otherwise.
      */
     boolean explicitlyContains(IComponent target);
+    
+    /**
+     * Invoked by components that know "when" the method should be called. Causes all queued up
+     * body related javascript data to be written out to the response.
+     * 
+     * @param writer
+     *          The writer to use . (may / may not be ignored depending on the response type)
+     * @param cycle
+     *          Associated request.
+     */
+    void writeBodyScript(IMarkupWriter writer, IRequestCycle cycle);
+    
+    /**
+     * Invoked by components that know "when" the method should be called. Causes all queued up
+     * initialization related javascript data to be written out to the response.
+     * 
+     * @param writer
+     *          The writer to use . (may / may not be ignored depending on the response type)
+     */
+    void writeInitializationScript(IMarkupWriter writer);
     
     /**
      * Invoked by {@link PageRenderSupport} to write external js package

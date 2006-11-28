@@ -67,14 +67,14 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
     private String _type;
 
     private ClassFinder _classFinder;
-
+    
     protected void reset()
     {
         _type = null;
-
+        
         super.reset();
     }
-
+    
     /**
      * Passed the namespace of a container (to resolve the type in) and the type to resolve,
      * performs the processing. A "bare type" (without a library prefix) may be in the
@@ -105,9 +105,9 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
         }
         else
             resolve(cycle, containerNamespace, null, type, location);
-
+        
         IComponentSpecification spec = getSpecification();
-
+        
         if (spec.isDeprecated())
             _log.warn(ResolverMessages.componentIsDeprecated(type, location));
     }
@@ -184,23 +184,22 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
 
         if (_log.isDebugEnabled())
             _log.debug(ResolverMessages.resolvingComponent(_type, namespace));
-
+        
         String expectedName = _type + ".jwc";
         Resource namespaceLocation = namespace.getSpecificationLocation();
-
+        
         // Look for appropriate file in same folder as the library (or application)
         // specificaiton.
-
+        
         result = check(namespaceLocation.getRelativeResource(expectedName));
-
+        
         if (result != null)
             return result;
 
-        if (namespace.isApplicationNamespace())
-        {
-
+        if (namespace.isApplicationNamespace()) {
+            
             // The application namespace gets some extra searching.
-
+            
             result = check(getWebInfAppLocation().getRelativeResource(expectedName));
 
             if (result == null)
@@ -208,11 +207,11 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
 
             if (result == null)
                 result = check((getContextRoot().getRelativeResource(expectedName)));
-
+            
             if (result != null)
                 return result;
         }
-
+        
         result = searchForComponentClass(namespace, _type);
 
         if (result != null)
@@ -225,7 +224,7 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
 
         if (framework.containsComponentType(_type))
             return framework.getComponentSpecification(_type);
-
+        
         return getDelegate().findComponentSpecification(cycle, namespace, _type);
     }
 
@@ -266,15 +265,15 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
 
         return getSpecificationSource().getComponentSpecification(resource);
     }
-
+    
     private void install()
     {
         INamespace namespace = getNamespace();
         IComponentSpecification specification = getSpecification();
-
+        
         if (_log.isDebugEnabled())
             _log.debug(ResolverMessages.installingComponent(_type, namespace, specification));
-
+        
         namespace.installComponentSpecification(_type, specification);
     }
 

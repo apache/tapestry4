@@ -136,18 +136,6 @@
     <worker annotation="InjectScript" object="instance:InjectScriptAnnotationWorker"/>
   </contribution>
   
-  <service-point id="EventListenerAnnotationWorker" interface="SecondaryAnnotationWorker">
-    
-    Connects IActionListener method invocations with client side javascript events.
-    
-    <invoke-factory>
-      <construct class="EventListenerAnnotationWorker">
-        <set-service property="componentEventInvoker" service-id="tapestry.event.ComponentEventInvoker"/>
-      </construct>
-    </invoke-factory>
-    
-  </service-point>
-  
   <service-point id="InjectObjectAnnotationWorker" interface="MethodAnnotationEnhancementWorker">
     
     Injects HiveMind objects, based on the InjectObject annotation.
@@ -155,6 +143,18 @@
     <invoke-factory>
       <construct class="InjectObjectAnnotationWorker">
         <set-service property="provider" service-id="tapestry.InjectedValueProvider"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <service-point id="EventListenerAnnotationWorker" interface="EventListenerAnnotationWorker">
+    
+    Handles EventListener annotations.
+    
+    <invoke-factory>
+      <construct class="EventListenerAnnotationWorker">
+        <set-service property="invoker" service-id="tapestry.event.EventInvoker"/>
       </construct>
     </invoke-factory>
     

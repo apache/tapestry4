@@ -22,13 +22,11 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.markup.MarkupWriterSource;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.services.impl.DefaultResponseBuilder;
 import org.apache.tapestry.util.ContentType;
-import org.apache.tapestry.util.PageRenderSupportImpl;
 import org.apache.tapestry.web.WebResponse;
 
 /**
@@ -56,24 +54,19 @@ public class PortletRendererImpl implements PortletRenderer
         cycle.activate(pageName);
 
         IPage page = cycle.getPage();
-
+        
         ContentType contentType = page.getResponseContentType();
-
+        
         PrintWriter printWriter = _response.getPrintWriter(contentType);
-
+        
         IMarkupWriter writer = _markupWriterSource.newMarkupWriter(printWriter,
                 contentType);
-
+        
         String namespace = _response.getNamespace();
 
         IMarkupWriter nested = writer.getNestedWriter();
         
-        ResponseBuilder builder = new DefaultResponseBuilder(nested);
-        
-        PageRenderSupportImpl support = new PageRenderSupportImpl(
-                _assetFactory, namespace, null, builder);
-
-        TapestryUtils.storePageRenderSupport(cycle, support);
+        ResponseBuilder builder = new DefaultResponseBuilder(nested, _assetFactory, namespace, false);
         
         builder.renderResponse(cycle);
         
@@ -83,15 +76,15 @@ public class PortletRendererImpl implements PortletRenderer
         writer.comment("Page: " + page.getPageName());
         writer.comment("Generated: " + new Date());
         writer.comment("Framework version: " + Tapestry.VERSION);
-
-        support.writeBodyScript(writer, cycle);
-
-        // nested.close();
-
-        support.writeInitializationScript(writer);
+        
+        builder.writeBodyScript(writer, cycle);
+        
+        nested.close();
+        
+        builder.writeInitializationScript(writer);
 
         writer.comment("END " + id);
-
+        
         writer.close();
 
         // TODO: Trap errors and do some error reporting here?

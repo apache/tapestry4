@@ -23,6 +23,7 @@ import static org.easymock.EasyMock.matches;
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
 
+import org.apache.hivemind.Location;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
@@ -101,7 +102,11 @@ public class TestPortletRenderer extends BaseComponentTestCase
         
         cycle.activate(pageName);
 
-        expect(cycle.getPage()).andReturn(page);
+        expect(cycle.getPage()).andReturn(page).anyTimes();
+        
+        Location l = newLocation();
+        
+        expect(page.getLocation()).andReturn(l);
         
         expect(cycle.getAttribute("org.apache.tapestry.PageRenderSupport")).andReturn(null);
         
@@ -110,10 +115,10 @@ public class TestPortletRenderer extends BaseComponentTestCase
         
         cycle.setAttribute(eq("org.apache.tapestry.PageRenderSupport"), 
                 isA(PageRenderSupport.class));
-                //new PageRenderSupportImpl(newAssetFactory(), "", 
-                  //      null, new DefaultResponseBuilder(writer))
         
         cycle.renderPage(isA(ResponseBuilder.class));
+        
+        cycle.removeAttribute("org.apache.tapestry.PageRenderSupport");
         
         return cycle;
     }

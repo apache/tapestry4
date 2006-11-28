@@ -194,8 +194,7 @@ public class Namespace implements INamespace
 
     public IComponentSpecification getComponentSpecification(String alias)
     {
-        IComponentSpecification result = (IComponentSpecification) _components
-                .get(alias);
+        IComponentSpecification result = (IComponentSpecification) _components.get(alias);
 
         if (result == null)
         {
