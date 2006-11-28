@@ -36,7 +36,7 @@ public abstract class ElseBean extends AbstractComponent
         {
             String element = HiveMind.isNonBlank(getElement()) ? getElement() : getTemplateTagName();
             
-            boolean render = !cycle.isRewinding() && getRenderTag();
+            boolean render = !cycle.isRewinding() && (getRenderTag() || HiveMind.isNonBlank(getElement()));
             
             if (render)
             {
