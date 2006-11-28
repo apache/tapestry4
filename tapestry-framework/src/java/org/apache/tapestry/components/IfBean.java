@@ -85,7 +85,7 @@ public abstract class IfBean extends AbstractFormComponent
             {
                 String element = HiveMind.isNonBlank(getElement()) ? getElement() : getTemplateTagName();
                 
-                boolean render = !cycleRewinding && getRenderTag();
+                boolean render = !cycleRewinding && (getRenderTag() || HiveMind.isNonBlank(getElement()));
                 
                 if (render)
                 {
