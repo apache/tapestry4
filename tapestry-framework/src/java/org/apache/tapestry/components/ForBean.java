@@ -46,7 +46,7 @@ import org.apache.tapestry.services.ResponseBuilder;
 public abstract class ForBean extends AbstractFormComponent
 {
     // constants
-
+    
     /**
      * Prefix on the hidden value stored into the field to indicate the the actual value is stored
      * (this is used when there is no primary key converter). The remainder of the string is a
@@ -73,6 +73,8 @@ public abstract class ForBean extends AbstractFormComponent
 
     private boolean _rendering;
     
+    private boolean _hasNext = false;
+    
     // parameters
     public abstract boolean getRenderTag();
     
@@ -98,6 +100,11 @@ public abstract class ForBean extends AbstractFormComponent
     public abstract ComponentRenderWorker getRenderWorker();
     
     public abstract ResponseBuilder getResponseBuilder();
+    
+    public boolean hasNext()
+    {
+        return _hasNext;
+    }
     
     /**
      * Gets the source binding and iterates through its values. For each, it updates the value
@@ -141,9 +148,11 @@ public abstract class ForBean extends AbstractFormComponent
         {
             _index = 0;
             _rendering = true;
-
+            
             while (dataSource.hasNext())
             {
+                _hasNext = true;
+                
                 // Get current value
                 _value = dataSource.next();
                 
@@ -175,6 +184,8 @@ public abstract class ForBean extends AbstractFormComponent
                 }
                 
                 _index++;
+                
+                _hasNext = dataSource.hasNext();
                 
                 // TODO: Fragile / messy
                 // Cause unique client id to be generated as well as event connection
