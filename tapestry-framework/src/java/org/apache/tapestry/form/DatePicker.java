@@ -83,6 +83,8 @@ public abstract class DatePicker extends AbstractFormComponent implements Transl
 
     public abstract IAsset getIcon();
     
+    public abstract String getImageClass();
+    
     /** 
      * @since 4.1.1
      */    
@@ -171,6 +173,7 @@ public abstract class DatePicker extends AbstractFormComponent implements Transl
         writer.attribute("src", icon.buildURL());
         writer.attribute("alt", getMessages().getMessage("alt"));
         writer.attribute("border", 0);
+        writer.attribute("class", getImageClass());
         
         if (!disabled)
             writer.end();

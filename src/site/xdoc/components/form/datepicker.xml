@@ -156,7 +156,26 @@
                         <td></td>
                         <td>If true, displays in the calendar the week number for each week.</td>
                     </tr>
-
+                    
+                    <tr>
+                        <td>title</td>
+                        <td>String</td>
+                        <td>no</td>
+                        <td>Localized String representing the expected format. (ie MM/DD/YYYY)</td>
+                        <td>If not overriden the default title will be a localized pattern string representing 
+                        the currently accepted patterns.</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>imageClass</td>
+                        <td>String</td>
+                        <td>no</td>
+                        <td>datePickerImg</td>
+                        <td>
+                            Specifies the css class name that will be applied to the DatePicker img icon reference.
+                        </td>
+                    </tr>
+                    
                 </table>
 
                 <p>
