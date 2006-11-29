@@ -66,6 +66,13 @@
                 <td>bean:validationDelegate</td>
                 <td>ognl:beans.validationDelegate</td>
             </tr>
+            
+            <tr>
+                <td>clientId</td>
+                <td>The clientId of the given component.</td>
+                <td>clientId:myForm</td>
+                <td>ognl:components.myForm.clientId</td>
+            </tr>            
 
             <tr>
                 <td>component</td>
