@@ -93,6 +93,7 @@ public abstract class Autocompleter extends AbstractFormWidget
         json.put("fadeTime", getFadeTime());
         json.put("maxListLength", getMaxListLength());
         json.put("forceValidOption", isForceValidOption());
+        json.put("disabled", isDisabled());
         
         IAutocompleteModel model = getModel();
         if (model == null)
