@@ -479,7 +479,7 @@
                         <td>columnSettingsContainer</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/IComponent.html">
+                                href="../../apidocs/org/apache/tapestry/IComponent.html">
                                 <code>IComponent</code>
                             </a>
                         </td>
@@ -613,7 +613,7 @@
                         <td>arrowUpAsset</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
+                                href="../../apidocs/org/apache/tapestry/IAsset.html">
                                 <code>IAsset</code>
                             </a>
                         </td>
@@ -626,7 +626,7 @@
                         <td>arrowDownAsset</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
+                                href="../../apidocs/org/apache/tapestry/IAsset.html">
                                 <code>IAsset</code>
                             </a>
                         </td>
@@ -707,8 +707,6 @@
             </subsection>
 
             <subsection name="Examples">
-
-
                 <p>
                     You can find examples in the Tutorial as part of the Workbench application under
                     the "Table" tab.
@@ -741,7 +739,57 @@
                 </p>
 
             </subsection>
+            
+            <subsection name="Complicated Render">
+               <p>
+                This example shows how you can use the individual components that the Table component wraps to
+                provide more control over how the table is rendered.
+               </p>
+               
+               <subsection name="HTML Template">
+<source><![CDATA[
 
+<table jwcid="tableView@contrib:TableView" 
+	source="ognl:scores"
+columns="name:sampleName,score1:Score 1:getScoreDisplay(0),score2:Score 2:getScoreDisplay(1),score3:Score 3:getScoreDisplay(2)"
+	>
+    <tr>
+     <span jwcid="@contrib:TableColumns" />
+    </tr>
+   
+   <tr jwcid="tableRows@contrib:TableRows" class="ognl:beans.evenOdd.next">
+     <td align="left">
+      <span jwcid="@Insert" value="ognl:components.tableRows.tableRow.sampleName" />
+     </td>
+     <td align="right">
+       <span jwcid="@Insert" value="ognl:components.tableRows.tableRow.getScoreDisplay(0)" />
+     </td>
+     <td align="right">
+       <span jwcid="@Insert" value="ognl:components.tableRows.tableRow.getScoreDisplay(1)" />
+     </td>
+     <td align="right">
+       <span jwcid="@Insert" value="ognl:components.tableRows.tableRow.getScoreDisplay(2)" />
+     </td>
+   </tr>
+        
+  <tr>
+    <td colspan="4" class="tablePages">
+      <span jwcid="tablePages@contrib:TablePages"/>
+    </td>
+  </tr>
+</table>
+
+]]></source>
+               </subsection>
+               
+               <p>
+                As you can see from the example there really isn't very much you can't control on an individual basis.
+                Of particular note is the area doing table row rendering, the <code>components.tableRows.tableRow.getFoo</code>
+                reference shows how you can get access to each individual data item being iterated over.
+               </p>
+               
+            </subsection>
+            
         </section>
 
     </body>

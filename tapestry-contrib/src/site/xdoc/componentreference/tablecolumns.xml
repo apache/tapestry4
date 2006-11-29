@@ -113,7 +113,7 @@
                     <tr>
                         <td>arrowUpAsset</td>
                         <td>
-                            <a href="../../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
+                            <a href="../../apidocs/org/apache/tapestry/IAsset.html">
                                 IAsset
                             </a>
                         </td>
@@ -126,7 +126,7 @@
                     <tr>
                         <td>arrowDownAsset</td>
                         <td>
-                            <a href="../../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
+                            <a href="../../apidocs/org/apache/tapestry/IAsset.html">
                                 IAsset
                             </a>
                         </td>

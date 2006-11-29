@@ -73,7 +73,7 @@
                         <td>model</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/form/IPropertySelectionModel.html">
+                                href="../../apidocs/org/apache/tapestry/form/IPropertySelectionModel.html">
                                 IPropertySelectionModel
                             </a>
                         </td>
@@ -128,7 +128,7 @@
                         <td>
                             Array or collection of
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/form/validator/Validator.html">
+                                href="../../apidocs/org/apache/tapestry/form/validator/Validator.html">
                                 Validator
                             </a>
                         </td>
@@ -206,7 +206,7 @@
                             downDisabledImage
                         </td>
                         <td>
-                            <a href="../../tapestry-framework/apidocs/org/apache/tapestry/IAsset.html">
+                            <a href="../../apidocs/org/apache/tapestry/IAsset.html">
                                 IAsset
                             </a>
                         </td>

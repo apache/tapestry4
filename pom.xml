@@ -345,13 +345,11 @@
                 <version>2.1-SNAPSHOT</version>
                 <inherited>true</inherited>
             </plugin>
-            <!--
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cobertura-maven-plugin</artifactId>
-                <version>2.1-SNAPSHOT</version>
+                <version>2.0</version>
             </plugin>
-             -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
@@ -391,7 +389,7 @@
                 <configuration>
                     <linksource>true</linksource>
                     <aggregate>true</aggregate>
-                    <excludePackageNames>org.apache.tapestry.timetracker.*:org.apache.tapestry.workbench.*:org.apache.tapestry.vlib.*:org.apache.tapestry.wap.*</excludePackageNames>
+                    <excludePackageNames>org.apache.tapestry.timetracker:org.apache.tapestry.workbench:org.apache.tapestry.vlib:org.apache.tapestry.wap</excludePackageNames>
                     <tags>
                         <tag>
                             <name>todo</name>
@@ -422,15 +420,15 @@
     <distributionManagement>
         <site>
             <id>tapestry</id>
-            <url>scp://apache.org/www/tapestry.apache.org/tapestry4.1/</url>
+            <url>scpexe://apache.org/www/tapestry.apache.org/tapestry4.1/</url>
         </site>
         <repository>
-            <id>tapestry-repo</id>
-            <url>scp://apache.org/www/people.apache.org/repo/m2-ibiblio-rsync-repository</url>
+            <id>tapestry</id>
+            <url>scpexe://apache.org/www/people.apache.org/repo/m2-ibiblio-rsync-repository</url>
         </repository>
         <snapshotRepository>
-            <id>tapestry-snapshot-repo</id>
-            <url>scp://apache.org/www/people.apache.org/repo/m2-snapshot-repository</url>
+            <id>tapestry</id>
+            <url>scpexe://apache.org/www/people.apache.org/repo/m2-snapshot-repository</url>
         </snapshotRepository>
     </distributionManagement>
 
