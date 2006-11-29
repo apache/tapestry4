@@ -85,10 +85,14 @@ public abstract class FieldLabel extends AbstractComponent
         delegate.writeLabelAttributes(writer, cycle, field);
         renderInformalParameters(writer, cycle);
         
+        delegate.beforeLabelText(writer, cycle, field);
+        
         writer.print(displayName, getRaw());
-
+        
+        delegate.afterLabelText(writer, cycle, field);
+        
         writer.end();
-
+        
         delegate.writeLabelSuffix(field, writer, cycle);
     }
 

@@ -102,7 +102,21 @@ public class ValidationDelegate implements IValidationDelegate
             IFormComponent component)
     {
     }
-
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void beforeLabelText(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component)
+    {
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void afterLabelText(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component)
+    {
+    }
+    
     /**
      * Closes the &lt;font&gt; element,started by
      * {@link #writeLabelPrefix(IFormComponent,IMarkupWriter,IRequestCycle)},

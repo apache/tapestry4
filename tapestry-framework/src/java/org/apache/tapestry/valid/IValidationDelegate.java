@@ -291,7 +291,7 @@ public interface IValidationDelegate extends Serializable
 
     void writeLabelPrefix(IFormComponent component,
             IMarkupWriter writer, IRequestCycle cycle);
-
+    
     /**
      * Invoked just before the &lt;label&gt; element is closed. The delegate can
      * write additional attributes. This is often used to set the CSS class of
@@ -310,7 +310,46 @@ public interface IValidationDelegate extends Serializable
 
     void writeLabelAttributes(IMarkupWriter writer, IRequestCycle cycle,
             IFormComponent component);
-
+    
+    /**
+     * Invoked just before the actual field label text is written, right after all attributes and 
+     * informal parameters are done being printed on the <code>&lt;label&gt;</code> tag. 
+     * 
+     * <p>
+     *  Example, writing content would go here:
+     * </p>
+     * <p>
+     *  &lt;label class="error"&gt &gt;&gt;here&lt;&lt; LABEL TEXT &lt;/label&gt;
+     * </p>
+     * 
+     * @param writer
+     *          The writer to use.
+     * @param cycle
+     *          Current request cycle.
+     * @param component
+     *          Field label is bound to.
+     */
+    void beforeLabelText(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component);
+    
+    /**
+     * Invoked just before the closing <code>&lt;/label&gt;</code> tag is written.
+     * 
+     * <p>
+     *  Example, writing content would go here:
+     * </p>
+     * <p>
+     *  &lt;label class="error"&gt LABEL TEXT  &gt;&gt;here&lt;&lt;  &lt;/label&gt;
+     * </p>
+     * 
+     * @param writer
+     *          The writer to use.
+     * @param cycle
+     *          Current request cycle.
+     * @param component
+     *          Field label is bound to.
+     */
+    void afterLabelText(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component);
+    
     /**
      * Invoked by a {@link FieldLabel} just after writing the name of the form
      * component.
