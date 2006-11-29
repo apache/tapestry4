@@ -16,15 +16,15 @@
 -->
 
 <!DOCTYPE script PUBLIC
-	"-//Howard Lewis Ship//Tapestry Script 1.2//EN"
-	"http://tapestry.sf.net/dtd/Script_1_2.dtd">
+	"-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
+	"http://tapestry.apache.org/dtd/Script_3_0.dtd">
   
 <script>
 
 <include-script resource-path="/org/apache/tapestry/contrib/form/MaskEdit.js"/>
 
-<input-symbol key="maskEdit" class="org.apache.tapestry.form.TextField" required="yes"/>
-<input-symbol key="maskValue" class="org.apache.tapestry.form.Hidden" required="yes"/>
+<input-symbol key="maskEdit" required="yes"/>
+<input-symbol key="maskValue" required="yes"/>
 
 <let key="formName">
   ${maskEdit.form.name}
@@ -38,7 +38,7 @@
 <body>
 function ${functionName}() {
   initMask(dojo.byId("${formName}").elements["${maskEdit.name}"],
-           dojo.byId("${formName}").elements["${maskValue.name}"]);
+           "${maskValue}");
 }
 </body>
 <initialization>
