@@ -52,6 +52,15 @@ import org.testng.annotations.Test;
 @Test
 public class FormSupportTest extends BaseComponentTestCase
 {
+    protected FormSupport newFormSupport(IMarkupWriter writer, IRequestCycle cycle, IForm form)
+    {
+        return new FormSupportImpl(writer, cycle, form);
+    }     
+    
+    protected FormSupport newFormSupport(IRequestCycle cycle)
+    {
+        return new FormSupportImpl(cycle);
+    }    
 
     private IRender newComponentRenderBody(final FormSupport fs, final IFormComponent component,
             final IMarkupWriter nested)
@@ -128,7 +137,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         replay();
 
-        final FormSupport fs = new FormSupportImpl(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
@@ -169,7 +178,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         replay();
 
-        final FormSupport fs = new FormSupportImpl(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
@@ -241,7 +250,7 @@ public class FormSupportTest extends BaseComponentTestCase
         
         replay();
 
-        final FormSupport fs = new FormSupportImpl(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
         
         verify();
 
@@ -292,7 +301,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         replay();
 
-        final FormSupport fs = new FormSupportImpl(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
         
@@ -367,7 +376,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         replay();
 
-        final FormSupport fs = new FormSupportImpl(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
@@ -444,7 +453,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         replay();
 
-        FormSupport fs = new FormSupportImpl(cycle);
+        FormSupport fs = newFormSupport(cycle);
         
         fs.prerenderField(writer, field, l);
         
@@ -493,7 +502,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         replay();
 
-        final FormSupport fs = new FormSupportImpl(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
@@ -574,7 +583,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         replay();
 
-        final FormSupport fs = new FormSupportImpl(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
@@ -629,7 +638,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         replay();
 
-        final FormSupport fs = new FormSupportImpl(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
@@ -674,7 +683,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         replay();
 
-        final FormSupport fs = new FormSupportImpl(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
@@ -753,7 +762,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         replay();
 
-        final FormSupport fs = new FormSupportImpl(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
@@ -822,7 +831,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         replay();
 
-        final FormSupport fs = new FormSupportImpl(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
@@ -861,7 +870,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         replay();
 
-        final FormSupport fs = new FormSupportImpl(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
@@ -916,7 +925,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         replay();
 
-        final FormSupport fs = new FormSupportImpl(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
@@ -974,7 +983,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         replay();
 
-        final FormSupport fs = new FormSupportImpl(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
@@ -1038,7 +1047,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         replay();
 
-        final FormSupport fs = new FormSupportImpl(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
@@ -1112,7 +1121,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         replay();
 
-        final FormSupport fs = new FormSupportImpl(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
@@ -1193,7 +1202,7 @@ public class FormSupportTest extends BaseComponentTestCase
         
         replay();
         
-        final FormSupport fs = new FormSupportImpl(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
         
         verify();
 
@@ -1262,7 +1271,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         replay();
 
-        final FormSupport fs = new FormSupportImpl(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
@@ -1303,7 +1312,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         replay();
 
-        final FormSupport fs = new FormSupportImpl(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
@@ -1364,7 +1373,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         replay();
 
-        final FormSupport fs = new FormSupportImpl(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
         
