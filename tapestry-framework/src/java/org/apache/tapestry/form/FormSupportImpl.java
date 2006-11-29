@@ -125,7 +125,7 @@ public class FormSupportImpl implements FormSupport
 
     private final List _allocatedIds = new ArrayList();
 
-    private final IRequestCycle _cycle;
+    protected final IRequestCycle _cycle;
 
     private final IdAllocator _elementIdAllocator = new IdAllocator();
 
