@@ -27,7 +27,7 @@
                 Typically, the values for the object are defined using an
                 org.apache.commons.lang.enum.Enum. A MultiplePropertySelection is dependent on an
                 <a
-                    href="../../tapestry-framework/apidocs/org/apache/tapestry/form/IPropertySelectionModel.html">
+                    href="../../apidocs/org/apache/tapestry/form/IPropertySelectionModel.html">
                     IPropertySelectionModel
                 </a>
                 to provide the list of possible values.
@@ -90,7 +90,7 @@
                         <td>model</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/form/IPropertySelectionModel.html">
+                                href="../../apidocs/org/apache/tapestry/form/IPropertySelectionModel.html">
                                 IPropertySelectionModel
                             </a>
                         </td>

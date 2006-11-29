@@ -447,7 +447,7 @@
                         <td>columnSettingsContainer</td>
                         <td>
                             <a
-                                href="../../tapestry-framework/apidocs/org/apache/tapestry/IComponent.html">
+                                href="../../apidocs/org/apache/tapestry/IComponent.html">
                                 <code>IComponent</code>
                             </a>
                         </td>
