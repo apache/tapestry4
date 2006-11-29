@@ -21,7 +21,7 @@
 
 <component-specification class="org.apache.tapestry.contrib.form.MaskEdit" allow-informal-parameters="no">
 
-  <parameter name="mask"/>
+  <parameter name="mask" required="yes" />
   <parameter name="value" required="yes"/>
   <parameter name="disabled"/>
   
@@ -32,15 +32,10 @@
     <binding name="disabled" value="ognl:disabled"/>
   </component>
 
-  <component id="maskValue" type="Hidden">
-    <binding name="value" value="ognl:mask"/>
-    <binding name="encode" value="false"/>
-  </component>
-
   <component id="maskEditScript" type="Script">
     <binding name="maskEdit" value="ognl:components.maskEdit"/>
-    <binding name="maskValue" value="ognl:components.maskValue"/>
+    <binding name="maskValue" value="mask"/>
     <binding name="script" value="literal:MaskEdit.script"/>
   </component>
-        
+  
 </component-specification>

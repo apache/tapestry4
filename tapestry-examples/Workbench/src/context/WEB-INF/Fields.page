@@ -102,7 +102,7 @@
   
   <component id="phone" type="contrib:MaskEdit">
     <binding name="value" value="visit.phone"/>
-    <binding name="mask" value="ognl:mask"/>
+    <binding name="mask" value="literal:(###) ###-####"/>
   </component>
   
   <component id="textArea" type="TextArea">

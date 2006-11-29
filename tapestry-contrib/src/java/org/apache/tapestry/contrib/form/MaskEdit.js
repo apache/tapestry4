@@ -14,13 +14,12 @@ var isTab;     // another Moz hack
 
 // Init the mask edit field by creating a lookalike DIV
 // and hiding the real one
-function initMask(field, maskField) {
+function initMask(field, mask) {
 
 	if (field.disabled == true) {
 	   return;
 	}
-
-    var mask = maskField.value;
+	
     var val = field.value;
     
     if (!val) {  // if there's no val, init it with empty mask
