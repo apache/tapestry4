@@ -18,7 +18,7 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- * Implements a component that manages an HTML &lt;input type=button&gt; form element. [ <a
+ * Implements a component that manages an HTML &lt;button&gt; form element. [ <a
  * href="../../../../../ComponentReference/Button.html">Component Reference </a>]
  * <p>
  * This component is useful for attaching JavaScript onclick event handlers.

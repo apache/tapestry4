@@ -22,7 +22,7 @@
 
         <section name="Button">
             <p>
-                Provides a HTML form button element <code>&lt;input type="button"&gt;</code> for attaching
+                Provides a HTML form button element <code>&lt;button&gt;</code> for attaching
                 JavaScript onclick event handlers.
             </p>
 
