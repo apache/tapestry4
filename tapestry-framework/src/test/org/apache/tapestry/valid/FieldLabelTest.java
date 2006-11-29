@@ -122,7 +122,7 @@ public class FieldLabelTest extends BaseFormComponentTestCase
         
         fl.render(writer, cycle);
 
-        assertBuffer("{LABEL-PREFIX}<label>FredFlintstone</label>{LABEL-SUFFIX}");
+        assertBuffer("{LABEL-PREFIX}<label>{BEFORE-TEXT}FredFlintstone{AFTER-TEXT}</label>{LABEL-SUFFIX}");
 
         verify();
     }
@@ -149,7 +149,7 @@ public class FieldLabelTest extends BaseFormComponentTestCase
 
         fl.render(writer, cycle);
 
-        assertBuffer("{LABEL-PREFIX}<label><b>FredFlintstone</b></label>{LABEL-SUFFIX}");
+        assertBuffer("{LABEL-PREFIX}<label>{BEFORE-TEXT}<b>FredFlintstone</b>{AFTER-TEXT}</label>{LABEL-SUFFIX}");
 
         verify();
     }
@@ -219,7 +219,7 @@ public class FieldLabelTest extends BaseFormComponentTestCase
 
         fl.render(writer, cycle);
 
-        assertBuffer("{LABEL-PREFIX}<label>MyLabel</label>{LABEL-SUFFIX}");
+        assertBuffer("{LABEL-PREFIX}<label>{BEFORE-TEXT}MyLabel{AFTER-TEXT}</label>{LABEL-SUFFIX}");
 
         verify();
     }
@@ -253,7 +253,7 @@ public class FieldLabelTest extends BaseFormComponentTestCase
 
         fl.render(writer, cycle);
 
-        assertBuffer("{LABEL-PREFIX}<label>MyLabel</label>{LABEL-SUFFIX}");
+        assertBuffer("{LABEL-PREFIX}<label>{BEFORE-TEXT}MyLabel{AFTER-TEXT}</label>{LABEL-SUFFIX}");
 
         verify();
     }
@@ -291,7 +291,7 @@ public class FieldLabelTest extends BaseFormComponentTestCase
 
         fl.render(writer, cycle);
 
-        assertBuffer("{LABEL-PREFIX}<label for=\"clientId\">MyLabel</label>{LABEL-SUFFIX}");
+        assertBuffer("{LABEL-PREFIX}<label for=\"clientId\">{BEFORE-TEXT}MyLabel{AFTER-TEXT}</label>{LABEL-SUFFIX}");
 
         verify();
     }

@@ -56,4 +56,20 @@ public class MockDelegate extends ValidationDelegate
     {
         writer.print("{SUFFIX}");
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void beforeLabelText(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component)
+    {
+        writer.print("{BEFORE-TEXT}");
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void afterLabelText(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component)
+    {
+        writer.print("{AFTER-TEXT}");
+    }
 }

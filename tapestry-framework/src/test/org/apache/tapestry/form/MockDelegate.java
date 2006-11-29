@@ -124,7 +124,15 @@ public class MockDelegate implements IValidationDelegate
     {
         writer.end();
     }
-
+    
+    public void beforeLabelText(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component)
+    {
+    }
+    
+    public void afterLabelText(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component)
+    {
+    }
+    
     public void writeLabelPrefix(IFormComponent component, IMarkupWriter writer, IRequestCycle cycle)
     {
     }
