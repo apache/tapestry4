@@ -181,19 +181,6 @@
 
     <reporting>
         <outputDirectory>../target/site/tapestry-portlet</outputDirectory>
-        <plugins>
-            <plugin>
-                <artifactId>maven-project-info-reports-plugin</artifactId>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>dependencies</report>
-                            <report>index</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-        </plugins>
     </reporting>
 
 </project>

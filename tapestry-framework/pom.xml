@@ -269,22 +269,6 @@
 
     <reporting>
         <outputDirectory>../target/site/tapestry-framework</outputDirectory>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-project-info-reports-plugin</artifactId>
-            </plugin>
-            <!-- 
-                <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>2.2-SNAPSHOT</version>
-                <configuration>
-                <configLocation>${basedir}/../tapestry-checkstyle.xml</configLocation>
-                </configuration>
-                </plugin>
-            -->
-        </plugins>
     </reporting>
 
 </project>
