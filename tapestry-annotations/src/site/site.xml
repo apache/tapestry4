@@ -37,6 +37,7 @@
         
         <menu name="Documentation">
             <item name="Overview" href="/index.html" />
+            <item name="Hivedoc" href="/hivedoc/index.html" />
         </menu>
         
         ${reports} 

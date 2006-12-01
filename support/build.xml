@@ -18,69 +18,33 @@
 	 the release version).
 	 
 	 -->
-<project name="Tapestry Export" default="build">
-	<property file="build.properties"/>
+<project name="Hivedoc" default="build" >
 
-	<!-- This can be changed to build a historical release, or
-		 to build a branch release. An override can appear in build.properties
-		 or on the command line. -->
-	<property name="tag" value="HEAD"/>
-	<property name="export.dir" value="export"/>
-	<property name="module" value="jakarta-tapestry"/>
-	<property name="work.dir" value="${export.dir}/${module}"/>
-	
-	<target name="convert-docs" >
-		<xslt basedir="../tapestry-contrib/src/documentation/content/xdocs/tapestry-contrib" destdir="tmp"
-		       extension=".xml" includes="**/*.xml" 
-				excludes="**/site.xml,**/*.ent,**/*.aart,**/tabs.xml"
-				style="forrest2maven-xdoc.xsl" >
-			
-			<xmlcatalog>
-				<entity publicId="links" 
-					location="../../links.ent" />
-				<entity publicId="common" 
-					location="common.ent" />
-			</xmlcatalog>
+	<echo>Creating hivemind registry documentation index..</echo>
+	<path id="doc.path" >
+		<fileset dir="src/descriptor/META-INF">
+			<include name="**/hivemodule.xml" />
+		</fileset>
+	</path>
+
+	<taskdef name="constructregistry" classname="org.apache.hivemind.ant.ConstructRegistry" />
+
+	<target name="build">
+		<mkdir dir="${target.dir}/hivedoc" />
+		<constructregistry output="${target.dir}/hivedoc/registry.xml">
+			<descriptors refid="doc.path" />
+		</constructregistry>
+
+		<xslt out="${target.dir}/hivedoc/index.html" in="${target.dir}/hivedoc/registry.xml" style="../support/hivemind.xsl">
+			<param name="base.dir" expression="${basedir}/${target.dir}/hivedoc" />
 		</xslt>
-	</target>
-	
-	<target name="setup"
-		description="Sets up the directory, gets the files via CVS.">
-		
-		<delete dir="${export.dir}" quiet="true"/>
-		<mkdir dir="${export.dir}"/>
-		
-		<cvs command="-z3 export" tag="${tag}" package="${module}"
-			dest="${export.dir}"
-			cvsroot=":pserver:anoncvs@cvs.apache.org:/home/cvspublic"/>
-	</target>
-	
-	<target name="build" description="Builds the distribution.">
 
-		<copy file="build.properties" todir="${work.dir}/config"/>
-		
-		<ant inheritAll="false" dir="${work.dir}" target="dist">
-			<property name="ext.dist.dir" location="ext-dist"/>
-		</ant>
-		
-		<property file="${work.dir}/config/Version.properties"/>
-
-		<mkdir dir="${framework.version}"/>
-
-		<copy todir="${framework.version}">
-			<fileset dir="${work.dir}/dist">
-				<include name="*.tar.gz"/>
-				<include name="*.zip"/>
+		<copy todir="${target.dir}/hivedoc">
+			<fileset dir="../support">
+				<include name="*.css" />
+				<include name="*.png" />
 			</fileset>
 		</copy>
-
-		<echo>Generating checksums ...</echo>
-
-		<checksum fileext=".md5">
-			<fileset dir="${framework.version}">
-				<include name="*.tar.gz"/>
-				<include name="*.zip"/>
-			</fileset>
-		</checksum>
 	</target>
+
 </project>

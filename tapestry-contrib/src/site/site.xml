@@ -36,9 +36,10 @@
         <menu ref="parent" />
         
         <menu name="Documentation">
+            
+            <item name="Overview" href="/index.html" />
                 
-                <item name="Overview" href="/index.html" />
-                
+            <item name="Components" href="/componentreference/index.html" collapse="true">
                 <item name="CheckboxGroup" href="/componentreference/checkboxgroup.html" />
                 <item name="ControlCheckbox" href="/componentreference/controlcheckbox.html" />
                 <item name="ControlledCheckbox" href="/componentreference/controlledcheckbox.html" />
@@ -57,6 +58,9 @@
                 <item name="TableView" href="/componentreference/tableview.html" />
                 <item name="Timeout" href="/componentreference/timeout.html" />
                 <item name="XTile" href="/componentreference/xtile.html" />
+            </item>
+            
+            <item name="Hivedoc" href="/hivedoc/index.html" />
             
         </menu>
         
