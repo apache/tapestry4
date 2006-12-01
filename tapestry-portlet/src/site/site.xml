@@ -41,6 +41,8 @@
             <item name="Configuration" href="/configuration.html" />
             <item name="Coding Issues" href="/coding-issues.html" />
             
+            <item name="Hivedoc" href="/hivedoc/index.html" />
+            
         </menu>
         
         ${reports} 

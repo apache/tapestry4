@@ -35,6 +35,10 @@
         
         <menu ref="parent" />
         
+        <menu name="Hivedoc" >
+            <item name="Index" href="/hivedoc/index.html" />
+        </menu>
+        
         ${reports} 
     </body>
     
