@@ -13,7 +13,7 @@
 // limitations under the License.
 package org.apache.tapestry.services.impl;
 
-import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.*;
 
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
@@ -24,14 +24,22 @@ import java.util.List;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.NestedMarkupWriter;
+import org.apache.tapestry.asset.AssetFactory;
+import org.apache.tapestry.engine.IEngineService;
+import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.engine.NullWriter;
 import org.apache.tapestry.markup.MarkupFilter;
 import org.apache.tapestry.markup.MarkupWriterImpl;
+import org.apache.tapestry.markup.MarkupWriterSource;
 import org.apache.tapestry.markup.UTFMarkupFilter;
+import org.apache.tapestry.services.RequestLocaleManager;
 import org.apache.tapestry.services.ResponseBuilder;
+import org.apache.tapestry.services.ServiceConstants;
+import org.apache.tapestry.web.WebResponse;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 
@@ -163,6 +171,93 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         verify();
         
         assertSame(builder.getWriter(), writer);
+    }
+    
+    public void test_Page_Render()
+    {
+        IPage page = newMock(IPage.class);
+        checkOrder(page, false);
+        
+        IRequestCycle cycle = newMock(IRequestCycle.class);
+        // IMarkupWriter writer = newMock(IMarkupWriter.class);
+        RequestLocaleManager rlm = newMock(RequestLocaleManager.class);
+        MarkupWriterSource mrs = newMock(MarkupWriterSource.class);
+        WebResponse resp = newMock(WebResponse.class);
+        AssetFactory assetFactory = newMock(AssetFactory.class);
+        IEngineService pageService = newEngineService();
+        
+        List errorPages = new ArrayList();
+        
+        List parts = new ArrayList();
+        parts.add("id1");
+        
+        DojoAjaxResponseBuilder builder = 
+            new DojoAjaxResponseBuilder(cycle, rlm, mrs, resp, 
+                    errorPages, assetFactory, "", pageService);
+        
+        expect(page.getPageName()).andReturn("RequestPage").anyTimes();
+        
+        expect(cycle.getParameter(ServiceConstants.PAGE)).andReturn("RequestPage").anyTimes();
+        
+        expect(page.peekClientId()).andReturn("pageId");
+        
+        expect(cycle.renderStackIterator()).andReturn(Collections.EMPTY_LIST.iterator());
+        
+        page.render(NullWriter.getSharedInstance(), cycle);
+        
+        replay();
+        
+        builder.render(null, page, cycle);
+        
+        verify();
+    }
+    
+    public void test_New_Page_Render()
+    {
+        IPage page = newMock(IPage.class);
+        checkOrder(page, false);
+        
+        IRequestCycle cycle = newMock(IRequestCycle.class);
+        IMarkupWriter writer = newMock(IMarkupWriter.class);
+        NestedMarkupWriter nwriter = newNestedWriter();
+        
+        ILink link = newMock(ILink.class);
+        
+        RequestLocaleManager rlm = newMock(RequestLocaleManager.class);
+        MarkupWriterSource mrs = newMock(MarkupWriterSource.class);
+        WebResponse resp = newMock(WebResponse.class);
+        AssetFactory assetFactory = newMock(AssetFactory.class);
+        IEngineService pageService = newEngineService();
+        
+        List errorPages = new ArrayList();
+        
+        List parts = new ArrayList();
+        parts.add("id1");
+        
+        DojoAjaxResponseBuilder builder = 
+            new DojoAjaxResponseBuilder(cycle, rlm, mrs, resp, 
+                    errorPages, assetFactory, "", pageService);
+        
+        builder.setWriter(writer);
+        
+        expect(page.getPageName()).andReturn("RequestPage").anyTimes();
+        
+        expect(cycle.getParameter(ServiceConstants.PAGE)).andReturn("anotherPage").anyTimes();
+        
+        expect(writer.getNestedWriter()).andReturn(nwriter);
+        nwriter.begin("response");
+        nwriter.attribute("type", ResponseBuilder.PAGE_TYPE);
+        
+        expect(pageService.getLink(true, "RequestPage")).andReturn(link);
+        expect(link.getAbsoluteURL()).andReturn("/new/url");
+        
+        nwriter.attribute("url", "/new/url");
+        
+        replay();
+        
+        builder.render(null, page, cycle);
+        
+        verify();
     }
     
     public void test_Allowed_Scripts()

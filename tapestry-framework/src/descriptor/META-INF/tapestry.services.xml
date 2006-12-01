@@ -239,6 +239,7 @@
                 <set-object property="staleSessionPageName" value="infrastructure:staleSessionPageName" />
                 <set-object property="staleLinkPageName" value="infrastructure:staleLinkPageName" />
                 <set-object property="assetFactory" value="infrastructure:assetFactory" />
+                <set-service property="pageService" service-id="tapestry.services.Page" />
             </construct>
         </invoke-factory>
     </service-point>
