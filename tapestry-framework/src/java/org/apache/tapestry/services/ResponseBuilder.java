@@ -72,7 +72,12 @@ public interface ResponseBuilder extends PageRenderSupport {
      * The response exception type.
      */
     String EXCEPTION_TYPE = "exception";
-
+    
+    /**
+     * The response element type denoting a brand new page render.
+     */
+    String PAGE_TYPE = "page";
+    
     String SCRIPT_TYPE = "script";
     
     String BODY_SCRIPT = "bodyscript";

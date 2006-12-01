@@ -32,6 +32,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.NestedMarkupWriter;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.asset.AssetFactory;
+import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.NullWriter;
 import org.apache.tapestry.markup.MarkupWriterSource;
 import org.apache.tapestry.markup.NestedMarkupWriterImpl;
@@ -75,6 +76,14 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     
     private IRequestCycle _cycle;
     
+    private IEngineService _pageService;
+    
+    /**
+     * Keeps track of renders involving a whole page response, such 
+     * as exception pages or pages activated via {@link IRequestCycle#activate(IPage)}.
+     */
+    private boolean _pageRender = false;
+    
     /**
      * Creates a builder with a pre-configured {@link IMarkupWriter}. 
      * Currently only used for testing.
@@ -115,7 +124,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
             RequestLocaleManager localeManager, 
             MarkupWriterSource markupWriterSource,
             WebResponse webResponse, List errorPages, 
-            AssetFactory assetFactory, String namespace)
+            AssetFactory assetFactory, String namespace, IEngineService service)
     {
         Defense.notNull(cycle, "cycle");
         Defense.notNull(assetFactory, "assetService");
@@ -125,6 +134,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         _markupWriterSource = markupWriterSource;
         _webResponse = webResponse;
         _errorPages = errorPages;
+        _pageService = service;
         
         // Used by PageRenderSupport
         _assetFactory = assetFactory;
@@ -200,11 +210,19 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         return _writer;
     }
     
+    void setWriter(IMarkupWriter writer)
+    {
+        _writer = writer;
+    }
+    
     /** 
      * {@inheritDoc}
      */
     public boolean isBodyScriptAllowed(IComponent target)
     {
+        if (_pageRender)
+            return true;
+        
         if (target != null 
                 && IPage.class.isInstance(target)
                 || (IForm.class.isInstance(target)
@@ -219,6 +237,9 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      */
     public boolean isExternalScriptAllowed(IComponent target)
     {
+        if (_pageRender)
+            return true;
+        
         if (target != null 
                 && IPage.class.isInstance(target)
                 || (IForm.class.isInstance(target)
@@ -233,6 +254,9 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      */
     public boolean isInitializationScriptAllowed(IComponent target)
     {
+        if (_pageRender)
+            return true;
+        
         if (target != null 
                 && IPage.class.isInstance(target)
                 || (IForm.class.isInstance(target)
@@ -247,6 +271,9 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      */
     public boolean isImageInitializationAllowed(IComponent target)
     {
+        if (_pageRender)
+            return true;
+        
         if (target != null 
                 && IPage.class.isInstance(target)
                 || (IForm.class.isInstance(target)
@@ -441,9 +468,30 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         // check for page exception renders and write content to writer so client can display them
         
         if (IPage.class.isInstance(render)) {
-            String errorPage = getErrorPage(((IPage)render).getPageName());
+            
+            IPage page = (IPage)render;
+            String errorPage = getErrorPage(page.getPageName());
+            
             if (errorPage != null) {
+                _pageRender = true;
                 render.render(getWriter(errorPage, EXCEPTION_TYPE), cycle);
+                return;
+            }
+            
+            // If a page other than the active page originally requested is rendered
+            // it means someone activated a new page, so we need to tell the client to handle
+            // this appropriately. (usually by replacing the current dom with whatever this renders)
+            
+            if (_cycle.getParameter(ServiceConstants.PAGE) != null
+                    && !page.getPageName().equals(_cycle.getParameter(ServiceConstants.PAGE))) {
+                
+                IMarkupWriter urlwriter = _writer.getNestedWriter();
+                
+                urlwriter.begin("response");
+                urlwriter.attribute("type", PAGE_TYPE);
+                urlwriter.attribute("url", _pageService.getLink(true, page.getPageName()).getAbsoluteURL());
+                
+                _writers.put(PAGE_TYPE, urlwriter);
                 return;
             }
         }
@@ -451,6 +499,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         if (IComponent.class.isInstance(render)
                 && contains((IComponent)render, ((IComponent)render).peekClientId()))
         {
+            _pageRender = true;
             render.render(getComponentWriter( ((IComponent)render).peekClientId() ), cycle);
             return;
         }

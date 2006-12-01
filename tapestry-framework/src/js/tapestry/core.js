@@ -117,6 +117,11 @@ tapestry={
 				return;
 			}
 			
+			if (type == "page") {
+				window.location=elms[i].getAttribute("url");
+				return;
+			}
+			
 			// handle javascript evaluations
 			if (type == "script") {
 				

@@ -57,11 +57,6 @@ public abstract class Fields extends BasePage
         return getResultsPage();
     }
     
-    public void testSubmit()
-    {
-        System.out.println("\n\n=======================\ntestSubmit() called\n");
-    }
-    
     public void doByLink()
     {
         getResultsPage().setByLink(true);
