@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
  * @author Jimmy Dyson
  * @since 3.0
  */
-@Test
+@Test(sequential=true)
 public class TestUrlValidator extends BaseValidatorTestCase
 {
     private UrlValidator v = new UrlValidator();

@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.asset;
 
-import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -32,10 +30,10 @@ import java.util.TreeMap;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.util.Defense;
-import org.apache.hivemind.util.IOUtils;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IEngineService;
@@ -100,8 +98,6 @@ public class AssetService implements IEngineService, ResetEventListener
         _mimeTypes.put("htm", "text/html");
         _mimeTypes.put("html", "text/html");
     }
-
-    private static final int BUFFER_SIZE = 10240;
 
     private static final DateFormat CACHED_FORMAT = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
     
@@ -229,6 +225,8 @@ public class AssetService implements IEngineService, ResetEventListener
         String md5Digest = cycle.getParameter(DIGEST);
         boolean checkDigest = !_unprotectedMatcher.containsResource(path);
         
+        URLConnection resourceConnection = null;
+        
         try
         {
             if (checkDigest
@@ -254,21 +252,22 @@ public class AssetService implements IEngineService, ResetEventListener
                 _response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 _log.warn(AssetMessages.noSuchResource(path));
                 return;
-                // throw new ApplicationRuntimeException(AssetMessages.noSuchResource(path));
             }
+            
+            resourceConnection = resourceURL.openConnection();
             
             // check caching for unprotected resources
             
-            if (!checkDigest && cachedResource(resourceURL))
+            if (!checkDigest && cachedResource(resourceConnection))
                 return;
-            
-            URLConnection resourceConnection = resourceURL.openConnection();
             
             writeAssetContent(cycle, path, resourceConnection);
         }
         catch (Throwable ex)
         {
             _exceptionReporter.reportRequestException(AssetMessages.exceptionReportTitle(path), ex);
+        } finally {
+            resourceConnection = null;
         }
 
     }
@@ -331,13 +330,8 @@ public class AssetService implements IEngineService, ResetEventListener
      * @since 4.1
      */
     
-    boolean cachedResource(URL resourceURL)
+    boolean cachedResource(URLConnection resourceURL)
     {
-        File resource = new File(resourceURL.getFile());
-        
-        if (!resource.exists()) 
-            return false;
-        
         // even if it doesn't exist in header the value will be -1, 
         // which means we need to write out the contents of the resource
         
@@ -349,7 +343,7 @@ public class AssetService implements IEngineService, ResetEventListener
                 modify = CACHED_FORMAT.parse(header).getTime();
         } catch (ParseException e) { e.printStackTrace(); }
         
-        if (resource.lastModified() > modify
+        if (resourceURL.getLastModified() > modify
                 || (_lastResetTime > modify))
             return false;
         
@@ -376,48 +370,47 @@ public class AssetService implements IEngineService, ResetEventListener
 
             if (contentLength > 0)
                 _response.setContentLength(contentLength);
-
-            _response.setDateHeader("Last-Modified", _startupTime);
-            _response.setDateHeader("Expires", _expireTime);
             
-            // Set the content type. If the servlet container doesn't
-            // provide it, try and guess it by the extension.
-
-            if (contentType == null || contentType.length() == 0)
-                contentType = getMimeType(resourcePath);
+            long lastModified = _startupTime;
+            if (_lastResetTime > 0)
+                lastModified = _lastResetTime;
+            else
+                lastModified = resourceConnection.getLastModified();
             
-            // force image caching when detected, esp helps with ie related things
-            // see http://mir.aculo.us/2005/08/28/internet-explorer-and-ajax-image-caching-woes
+            _response.setDateHeader("Last-Modified", lastModified);
             
-            if (contentType != null && "image".indexOf(contentType) > -1) {
+            // write out expiration/cache info
+            
+            if (_lastResetTime <= 0) {
                 
-                _response.setHeader("Cache-Control", "max-age=" + MONTH_SECONDS);
-                
+                _response.setDateHeader("Expires", _expireTime);
+                _response.setHeader("Cache-Control", "max-age=" + (MONTH_SECONDS * 3));
                 _response.setHeader("ETag", String.valueOf(resourcePath.hashCode()));
             }
             
+            // Set the content type. If the servlet container doesn't
+            // provide it, try and guess it by the extension.
+            
+            if (contentType == null || contentType.length() == 0)
+                contentType = getMimeType(resourcePath);
+            
+            input = resourceConnection.getInputStream();
+            
+            byte[] data = IOUtils.toByteArray(input);
+            
+            // force image(or other) caching when detected, esp helps with ie related things
+            // see http://mir.aculo.us/2005/08/28/internet-explorer-and-ajax-image-caching-woes
+            
+            _response.setContentLength(data.length);
+            
             OutputStream output = _response.getOutputStream(new ContentType(contentType));
-
-            input = new BufferedInputStream(resourceConnection.getInputStream());
-
-            byte[] buffer = new byte[BUFFER_SIZE];
-
-            while (true)
-            {
-                int bytesRead = input.read(buffer);
-
-                if (bytesRead < 0)
-                    break;
-
-                output.write(buffer, 0, bytesRead);
-            }
-
-            input.close();
-            input = null;
+            
+            output.write(data);
         }
         finally
         {
-            IOUtils.close(input);
+            IOUtils.closeQuietly(input);
+            input = null;
         }
     }
 
