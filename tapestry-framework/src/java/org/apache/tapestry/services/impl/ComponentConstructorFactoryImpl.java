@@ -14,11 +14,14 @@
 
 package org.apache.tapestry.services.impl;
 
+import edu.emory.mathcs.backport.java.util.concurrent.locks.ReentrantLock;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.service.ClassFactory;
 import org.apache.hivemind.util.Defense;
@@ -42,6 +45,8 @@ import org.apache.tapestry.spec.IComponentSpecification;
 public class ComponentConstructorFactoryImpl implements ComponentConstructorFactory,
         ResetEventListener, ReportStatusListener
 {
+    private final ReentrantLock _lock = new ReentrantLock();
+    
     private String _serviceId;
 
     private Log _log;
@@ -79,7 +84,9 @@ public class ComponentConstructorFactoryImpl implements ComponentConstructorFact
     {
         Defense.notNull(specification, "specification");
         
-        synchronized (specification) {
+        try {
+            
+            _lock.lockInterruptibly();
             
             ComponentConstructor result = (ComponentConstructor) _cachedConstructors.get(specification);
             
@@ -105,6 +112,13 @@ public class ComponentConstructorFactoryImpl implements ComponentConstructorFact
             }
             
             return result;
+            
+        } catch (InterruptedException e) {
+            
+           throw new ApplicationRuntimeException(e);
+        } finally {
+            
+            _lock.unlock();
         }
     }
     

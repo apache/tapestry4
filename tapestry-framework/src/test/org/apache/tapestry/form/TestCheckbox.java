@@ -33,7 +33,7 @@ import org.testng.annotations.Test;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-@Test
+@Test(sequential=true)
 public class TestCheckbox extends BaseFormComponentTestCase
 {
     public void testRenderChecked()

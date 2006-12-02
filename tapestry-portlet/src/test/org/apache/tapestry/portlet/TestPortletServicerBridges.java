@@ -39,7 +39,7 @@ import javax.portlet.RenderResponse;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-@Test
+@Test(sequential=true)
 public class TestPortletServicerBridges extends BaseComponentTestCase
 {
     private class WebRequestServicerFixture implements WebRequestServicer

@@ -215,10 +215,10 @@
                         <phase>compile</phase>
                         <configuration>
                             <tasks>
-                                <ant antfile="../support/build.xml" inheritRefs="true" >
+                                <ant antfile="../support/build.xml" inheritRefs="true">
                                     <property name="target.dir" value="../target/site/tapestry-framework" />
                                     <target name="build" />
-                                 </ant>
+                                </ant>
                             </tasks>
                         </configuration>
                         <goals>

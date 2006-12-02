@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
  * @author Howard Lewis Ship
  * @since 1.0.8
  */
-@Test
+@Test(sequential=true)
 public class TestNumberValidator extends BaseValidatorTestCase
 {
     private NumberValidator v = new NumberValidator();

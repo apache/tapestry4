@@ -19,7 +19,7 @@ import static org.easymock.EasyMock.expect;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.form.IFormComponent;
-import org.testng.annotations.Configuration;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
 /**
@@ -28,12 +28,12 @@ import org.testng.annotations.Test;
  * @author Harish Krishnaswamy
  * @since 3.0
  */
-@Test
+@Test(sequential=true)
 public class TestPatternValidator extends BaseValidatorTestCase
 {
     PatternValidator pv = new PatternValidator();
 
-    @Configuration(afterTestMethod = true)
+    @AfterMethod
     public void reset()
     {
         pv.setClientScriptingEnabled(false);

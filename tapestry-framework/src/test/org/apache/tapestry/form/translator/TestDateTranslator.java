@@ -39,7 +39,7 @@ import org.testng.annotations.Test;
  * @author Paul Ferraro
  * @since 4.0
  */
-@Test
+@Test(sequential=true)
 public class TestDateTranslator extends FormComponentContributorTestCase
 {
     private Calendar _calendar = Calendar.getInstance();

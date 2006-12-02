@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.services.impl;
 
+import edu.emory.mathcs.backport.java.util.concurrent.locks.ReentrantLock;
+
 import java.io.IOException;
 
 import org.apache.hivemind.ErrorLog;
@@ -26,7 +28,7 @@ import org.apache.tapestry.web.WebResponse;
 
 /**
  * Filter whose job is to invoke
- * {@link org.apache.tapestry.services.ResetEventHub#fireResetEvent()}after the request has
+ * {@link org.apache.tapestry.services.ResetEventHub#fireResetEvent()} after the request has
  * been processed. This filter is only contributed into the
  * tapestry.request.WebRequestServicerPipeline configuration if the
  * org.apache.tapestry.disable-caching system property is true.
@@ -36,20 +38,26 @@ import org.apache.tapestry.web.WebResponse;
  */
 public class DisableCachingFilter implements WebRequestServicerFilter
 {
+    private final ReentrantLock _lock = new ReentrantLock();
+    
     private ErrorLog _errorLog;
-
+    
     private ResetEventHub _resetEventHub;
-
+    
     public void service(WebRequest request, WebResponse response, WebRequestServicer servicer)
             throws IOException
     {
         try
         {
+            _lock.lock();
+            
             servicer.service(request, response);
         }
         finally
         {
             fireResetEvent();
+            
+            _lock.unlock();
         }
 
     }
@@ -65,7 +73,7 @@ public class DisableCachingFilter implements WebRequestServicerFilter
             _errorLog.error(ImplMessages.errorResetting(ex), HiveMind.getLocation(ex), ex);
         }
     }
-
+    
     public void setResetEventHub(ResetEventHub resetEventCoordinator)
     {
         _resetEventHub = resetEventCoordinator;

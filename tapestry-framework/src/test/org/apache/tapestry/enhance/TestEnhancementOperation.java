@@ -46,7 +46,7 @@ import org.apache.tapestry.event.PageValidateListener;
 import org.apache.tapestry.link.ServiceLink;
 import org.apache.tapestry.services.ComponentConstructor;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.testng.annotations.Configuration;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /**
@@ -55,10 +55,10 @@ import org.testng.annotations.Test;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-@Test
+@Test(sequential=true)
 public class TestEnhancementOperation extends BaseComponentTestCase
 {
-    @Configuration(beforeTestMethod = true)
+    @BeforeMethod(alwaysRun=true)
     protected void setUp() throws Exception
     {
         EnhancementOperationImpl._uid = 97;

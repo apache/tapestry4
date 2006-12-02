@@ -15,7 +15,7 @@
 package org.apache.tapestry.valid;
 
 import org.apache.tapestry.form.IFormComponent;
-import org.testng.annotations.Configuration;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
 /**
@@ -24,12 +24,12 @@ import org.testng.annotations.Test;
  * @author Howard Lewis Ship
  * @since 3.0
  */
-@Test
+@Test(sequential=true)
 public class TestEmailValidator extends BaseValidatorTestCase
 {
     private EmailValidator v = new EmailValidator();
 
-    @Configuration(afterTestMethod = true)
+    @AfterMethod
     public void reset()
     {
         v.setClientScriptingEnabled(false);

@@ -32,7 +32,7 @@ import org.testng.annotations.Test;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-@Test
+@Test()
 public class TestDisableCachingFilter extends BaseComponentTestCase
 {
     private WebResponse newResponse()
@@ -50,7 +50,7 @@ public class TestDisableCachingFilter extends BaseComponentTestCase
         return newMock(ResetEventHub.class);
     }
 
-    public void testNormal() throws Exception
+    public void test_Normal() throws Exception
     {
         WebRequest request = newRequest();
         WebResponse response = newResponse();
@@ -70,7 +70,7 @@ public class TestDisableCachingFilter extends BaseComponentTestCase
         verify();
     }
 
-    public void testResetFailure() throws Exception
+    public void test_Reset_Failure() throws Exception
     {
         WebRequest request = newRequest();
         WebResponse response = newResponse();
@@ -100,5 +100,4 @@ public class TestDisableCachingFilter extends BaseComponentTestCase
 
         verify();
     }
-
 }

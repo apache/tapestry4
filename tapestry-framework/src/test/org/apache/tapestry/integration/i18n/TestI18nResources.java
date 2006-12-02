@@ -30,7 +30,7 @@ import com.thoughtworks.selenium.Selenium;
  *
  * @author jkuhnert
  */
-@Test(timeOut = 50000, groups = "integration")
+@Test(timeOut = 50000, groups = "integration", sequential=true)
 public class TestI18nResources
 {
     private static final int JETTY_PORT = 9999;

@@ -26,7 +26,7 @@ import org.testng.annotations.Test;
  * 
  * @author jkuhnert
  */
-@Test
+@Test(sequential=true)
 public class ListenerMethodInvokerTest extends BaseComponentTestCase
 {
 

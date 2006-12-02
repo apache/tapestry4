@@ -21,7 +21,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import org.apache.tapestry.form.IFormComponent;
-import org.testng.annotations.Configuration;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
 /**
@@ -30,14 +30,14 @@ import org.testng.annotations.Test;
  * @author Howard Lewis Ship
  * @since 1.0.8
  */
-@Test
+@Test(sequential=true)
 public class TestDateValidator extends BaseValidatorTestCase
 {
     private Calendar calendar = new GregorianCalendar();
 
     private DateValidator v = new DateValidator();
 
-    @Configuration(afterTestMethod = true)
+    @AfterMethod
     public void reset()
     {
         v.setRequired(false);

@@ -41,7 +41,7 @@ import org.testng.annotations.Test;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-@Test
+@Test(sequential=true)
 public class LinkSubmitTest extends BaseComponentTestCase
 {
     private class ScriptFixture implements IScript
