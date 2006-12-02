@@ -15,9 +15,10 @@
 package org.apache.tapestry.workbench.chart;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IComponent;
@@ -28,8 +29,6 @@ import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.error.RequestExceptionReporter;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ServiceConstants;
-import org.apache.tapestry.util.ContentType;
-import org.apache.tapestry.web.WebResponse;
 import org.jCharts.Chart;
 import org.jCharts.encoders.JPEGEncoder13;
 
@@ -53,7 +52,7 @@ public class ChartService implements IEngineService
     private LinkFactory _linkFactory;
 
     /** @since 4.0 */
-    private WebResponse _response;
+    private HttpServletResponse _response;
 
     public ILink getLink(boolean post, Object parameter)
     {
@@ -81,19 +80,10 @@ public class ChartService implements IEngineService
         try
         {
             IChartProvider provider = (IChartProvider) component;
-
+            
             Chart chart = provider.getChart();
-
-            OutputStream output = _response.getOutputStream(new ContentType("image/jpeg"));
-
-            // I've seen a few bits of wierdness (including a JVM crash) inside this code.
-            // Hopefully, its a multi-threading problem that can be resolved
-            // by synchronizing.
-
-            synchronized (this)
-            {
-                JPEGEncoder13.encode(chart, 1.0f, output);
-            }
+            
+            JPEGEncoder13.encode(chart, 1.0f, _response);
         }
         catch (ClassCastException ex)
         {
@@ -130,7 +120,7 @@ public class ChartService implements IEngineService
     }
 
     /** @since 4.0 */
-    public void setResponse(WebResponse response)
+    public void setResponse(HttpServletResponse response)
     {
         _response = response;
     }

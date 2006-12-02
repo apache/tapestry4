@@ -19,6 +19,7 @@ import java.util.List;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IDirect;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.IScript;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.DirectServiceParameter;
 import org.apache.tapestry.engine.IEngineService;
@@ -123,4 +124,10 @@ public abstract class DirectLink extends AbstractLinkComponent implements IDirec
      * @since 4.1
      */
     public abstract IEngineService getEngine();
+    
+    /**
+     * Injected.
+     * @return The script to process asynchronous connection hookups.
+     */
+    public abstract IScript getScript();
 }

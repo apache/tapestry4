@@ -14,13 +14,19 @@
 
 package org.apache.tapestry.link;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.components.ILinkComponent;
 import org.apache.tapestry.engine.ILink;
+import org.apache.tapestry.util.ScriptUtils;
 
 /**
  * Default implementation of {@link org.apache.tapestry.link.ILinkRenderer},
@@ -73,6 +79,12 @@ public class DefaultLinkRenderer implements ILinkRenderer
             
             if (HiveMind.isNonBlank(target))
                 writer.attribute(getTargetAttribute(), target);
+            
+            if (DirectLink.class.isInstance(linkComponent)) {
+                DirectLink direct = (DirectLink)linkComponent;
+                
+                renderAsyncParams(writer, cycle, direct);
+            }
             
             beforeBodyRender(writer, cycle, linkComponent);
             
@@ -150,6 +162,52 @@ public class DefaultLinkRenderer implements ILinkRenderer
     {
     }
 
+    /**
+     * For {@link DirectLink} components only, manages writing out event handlers for link
+     * if any of the dynamic (async/json/etc) parameters are set on the component.
+     * 
+     * <p>
+     *  Will try to write the logic into the <code>onClick</code> attribute of the link 
+     *  if not bound, otherwise it will render it using the {@link DirectLink#getScript()} script.
+     * </p>
+     * 
+     * @param writer
+     *          The writer to render attributes into.
+     * @param cycle
+     *          The current request cycle.
+     * @param link
+     *          The component link being rendered for.
+     */
+    protected void renderAsyncParams(IMarkupWriter writer, IRequestCycle cycle, DirectLink link)
+    {
+        if (!link.isAsync() && !link.isJson() 
+                && (link.getUpdateComponents() == null 
+                || link.getUpdateComponents().size() <= 0))
+            return;
+        
+        if (!link.isParameterBound("onclick") && !link.isParameterBound("onClick")) {
+            writer.attribute("onclick", 
+                    "return tapestry.linkOnClick(this.href,'" + link.getClientId() + "', " 
+                    + link.isJson() + ")");
+            return;
+        }
+        
+        PageRenderSupport prs = TapestryUtils.getPageRenderSupport(cycle, link);
+        
+        if (prs == null)
+            return;
+        
+        Map parms = new HashMap();
+        
+        parms.put("component", link);
+        parms.put("json", Boolean.valueOf(link.isJson()));
+        parms.put("key", ScriptUtils.functionHash("onclick" + link.hashCode()));
+        
+        // execute script template
+        
+        link.getScript().execute(link, cycle, prs, parms);
+    }
+    
     /** @since 3.0 * */
 
     protected String getElement()

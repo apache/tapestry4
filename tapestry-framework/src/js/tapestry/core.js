@@ -344,6 +344,14 @@ tapestry={
 		if (!dj_undef(funcName, tapestry)){
         	dojo.event.disconnect(target, event, tapestry, funcName);
         }
+	},
+	
+	linkOnClick:function(url, id, isJson){
+		var content={beventname:"onClick"};
+		content["beventtarget.id"]=id;
+		
+		tapestry.bind(url, content, isJson);
+		return false;
 	}
 }
 
