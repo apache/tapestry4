@@ -416,7 +416,7 @@ public abstract class Palette extends BaseComponent implements ValidatableFieldE
         }
 
         PaletteColumn availableColumn = new PaletteColumn((String) _symbols.get("availableName"),
-                null, getRows());
+                (String)_symbols.get("availableName"), getRows());
         PaletteColumn selectedColumn = new PaletteColumn(getName(), getClientId(), getRows());
 
         // Each value specified in the model will go into either the selected or available

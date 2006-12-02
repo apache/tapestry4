@@ -15,7 +15,6 @@
 package org.apache.tapestry.enhance;
 
 import static org.easymock.EasyMock.aryEq;
-import static org.easymock.EasyMock.endsWith;
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isNull;
@@ -847,7 +846,7 @@ public class TestEnhancementOperation extends BaseComponentTestCase
         
         ClassFab fab = newMock(ClassFab.class);
 
-        expect(cf.newClass(endsWith("$ExistingAbstractMethodFixture_97"), eq(TestEnhancementOperation.ExistingAbstractMethodFixture.class)))
+        expect(cf.newClass(startsWith("$TestEnhancementOperation$ExistingAbstractMethodFixture"), eq(TestEnhancementOperation.ExistingAbstractMethodFixture.class)))
         .andReturn(fab);
         
         replay();

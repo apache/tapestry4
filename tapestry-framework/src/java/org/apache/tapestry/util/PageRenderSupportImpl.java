@@ -89,7 +89,7 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
         _idAllocator = new IdAllocator(namespace);
         _builder = builder;
         
-        _preloadName = (namespace.equals("") ? "tapestry." : namespace) + "_preload";
+        _preloadName = (namespace.equals("") ? "tapestry." : namespace) + "preload";
     }
     
     /**

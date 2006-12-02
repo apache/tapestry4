@@ -411,11 +411,8 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         IMarkupWriter writer = getWriter(ResponseBuilder.INCLUDE_SCRIPT, ResponseBuilder.SCRIPT_TYPE);
         
         // causes asset includes to be loaded dynamically into document head
-        writer.printRaw("tapestry.loadScriptFromUrl(\"");
-        writer.print(url);
-        writer.printRaw("\");");
-        
-        writer.println();
+        writer.beginEmpty("include");
+        writer.attribute("url", url);
     }
     
     /** 
@@ -425,9 +422,8 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     {
         IMarkupWriter writer = getWriter(ResponseBuilder.BODY_SCRIPT, ResponseBuilder.SCRIPT_TYPE);
         
-        writer.printRaw("\nvar " + preloadName + " = new Array();\n");
-        writer.printRaw("if (document.images)\n");
-        writer.printRaw("{\n");
+        writer.printRaw("\n" + preloadName + " = [];\n");
+        writer.printRaw("if (document.images) {\n");
         
         writer.printRaw(script);
         

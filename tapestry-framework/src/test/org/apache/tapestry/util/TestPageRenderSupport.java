@@ -131,9 +131,9 @@ public class TestPageRenderSupport extends BaseComponentTestCase
 
         PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "", l, newBuilder(writer));
 
-        assertEquals("tapestry._preload[0].src", prs.getPreloadedImageReference("/foo/bar.gif"));
-        assertEquals("tapestry._preload[1].src", prs.getPreloadedImageReference("/zip/zap.png"));
-        assertEquals("tapestry._preload[0].src", prs.getPreloadedImageReference("/foo/bar.gif"));
+        assertEquals(prs.getPreloadedImageReference("/foo/bar.gif"), "tapestry.preload[0].src");
+        assertEquals(prs.getPreloadedImageReference("/zip/zap.png"), "tapestry.preload[1].src");
+        assertEquals(prs.getPreloadedImageReference("/foo/bar.gif"), "tapestry.preload[0].src");
 
         prs.addBodyScript("myBodyScript();");
 
@@ -142,11 +142,11 @@ public class TestPageRenderSupport extends BaseComponentTestCase
         assertOutput(new String[]
         { "<script type=\"text/javascript\"><!--","",
                 "dojo.addOnLoad(function(e) {",
-                "tapestry._preload = [];", "if (document.images)", "{",
-                "tapestry._preload[0] = new Image();",
-                "  tapestry._preload[0].src = \"/foo/bar.gif\";",
-                "  tapestry._preload[1] = new Image();",
-                "  tapestry._preload[1].src = \"/zip/zap.png\";}", "});myBodyScript();",
+                "tapestry.preload = [];", "if (document.images)", "{",
+                "tapestry.preload[0] = new Image();",
+                "  tapestry.preload[0].src = \"/foo/bar.gif\";",
+                "  tapestry.preload[1] = new Image();",
+                "  tapestry.preload[1].src = \"/zip/zap.png\";}", "});myBodyScript();",
                 "// --></script>" });
 
         verify();
@@ -161,18 +161,18 @@ public class TestPageRenderSupport extends BaseComponentTestCase
 
         replay();
         
-        PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "NAMESPACE", l, newBuilder(writer));
+        PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "NAMESPACE.", l, newBuilder(writer));
         
-        assertEquals("NAMESPACE_preload[0].src", prs.getPreloadedImageReference("/foo/bar.gif"));
+        assertEquals(prs.getPreloadedImageReference("/foo/bar.gif"), "NAMESPACE.preload[0].src");
         
         prs.writeBodyScript(writer, cycle);
         
         assertOutput(new String[]
         {"<script type=\"text/javascript\"><!--", "",
                 "dojo.addOnLoad(function(e) {",
-                "NAMESPACE_preload = [];", "if (document.images)", "{",
-                "NAMESPACE_preload[0] = new Image();",
-                "  NAMESPACE_preload[0].src = \"/foo/bar.gif\";}",
+                "NAMESPACE.preload = [];", "if (document.images)", "{",
+                "NAMESPACE.preload[0] = new Image();",
+                "  NAMESPACE.preload[0].src = \"/foo/bar.gif\";}",
                 "});",
                 "// --></script>" });
 
