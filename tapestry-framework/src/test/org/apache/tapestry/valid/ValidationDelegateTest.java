@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
  * @author Howard Lewis Ship
  * @since 1.0.8
  */
-@Test
+@Test(sequential=true)
 public class ValidationDelegateTest extends BaseValidatorTestCase
 {
     protected IFormComponent newField(String name, int count)

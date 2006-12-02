@@ -255,7 +255,8 @@
                                 <value>en_US</value>
                             </property>
                         </systemProperties>
-                        <parallel>false</parallel>
+                        <parallel>true</parallel>
+                        <threadCount>4</threadCount>
                     </configuration>
                 </plugin>
                 <plugin>

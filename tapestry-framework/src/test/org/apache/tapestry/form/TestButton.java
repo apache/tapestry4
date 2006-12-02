@@ -21,7 +21,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.testng.annotations.Test;
 
-@Test
+@Test(sequential=true)
 public class TestButton extends BaseComponentTestCase
 {
     public void testRender()

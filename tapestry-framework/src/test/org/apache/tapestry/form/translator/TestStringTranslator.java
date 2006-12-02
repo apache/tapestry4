@@ -32,7 +32,7 @@ import org.testng.annotations.Test;
  * @author Paul Ferraro
  * @since 4.0
  */
-@Test
+@Test(sequential=true)
 public class TestStringTranslator extends FormComponentContributorTestCase
 {
     private StringTranslator _translator = new StringTranslator();

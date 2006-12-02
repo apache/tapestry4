@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-@Test
+@Test(sequential=true)
 public class TestMarkupWriter extends BaseComponentTestCase
 {
     private static CharArrayWriter _writer;

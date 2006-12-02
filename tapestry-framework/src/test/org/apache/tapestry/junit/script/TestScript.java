@@ -43,7 +43,7 @@ import org.testng.annotations.Test;
  * @author Howard Lewis Ship
  * @since 2.2
  */
-@Test
+@Test(sequential=true)
 public class TestScript extends TapestryTestCase
 {
     private MockScriptProcessor _processor = new MockScriptProcessor();

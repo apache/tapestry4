@@ -33,7 +33,7 @@ import org.testng.annotations.Test;
  * 
  * @author jkuhnert
  */
-@Test
+@Test(sequential=true)
 public class AjaxShellDelegateTest extends BaseComponentTestCase
 {
     private static final String SYSTEM_NEWLINE= (String)java.security.AccessController.doPrivileged(

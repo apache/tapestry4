@@ -20,7 +20,7 @@ import java.util.Locale;
 
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.form.IFormComponent;
-import org.testng.annotations.Configuration;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
 /**
@@ -35,7 +35,7 @@ public class TestUrlValidator extends BaseValidatorTestCase
 {
     private UrlValidator v = new UrlValidator();
 
-    @Configuration(afterTestMethod = true)
+    @AfterMethod(alwaysRun=true)
     public void reset()
     {
         v.setClientScriptingEnabled(false);
