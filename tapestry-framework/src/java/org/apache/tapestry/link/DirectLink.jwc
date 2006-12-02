@@ -69,6 +69,8 @@
   
   <parameter name="async" default-value="false" />
   
+  <inject property="script" type="script" object="DirectLink.script"/>
+  
   <inject property="listenerInvoker" object="infrastructure:listenerInvoker"/>
   <inject object="service:tapestry.services.Direct" property="engine"/>
   
