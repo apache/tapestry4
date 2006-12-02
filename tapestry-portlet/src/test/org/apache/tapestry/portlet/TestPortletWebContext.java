@@ -28,7 +28,7 @@ import javax.portlet.PortletContext;
 /**
  * @author Howard M. Lewis Ship
  */
-@Test
+@Test(sequential=true)
 public class TestPortletWebContext extends BasePortletWebTestCase
 {
 
