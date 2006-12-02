@@ -36,7 +36,7 @@ import org.testng.annotations.Test;
  * @author jkuhnert
  */
 @SuppressWarnings("cast")
-@Test
+@Test(sequential=true)
 public class DefaultResponseBuilderTest extends BaseComponentTestCase
 {
 
@@ -52,7 +52,7 @@ public class DefaultResponseBuilderTest extends BaseComponentTestCase
         return new PrintWriter(_writer);
     }
 
-    @AfterClass
+    @AfterClass(alwaysRun=true)
     protected void cleanup() throws Exception
     {
         _writer = null;

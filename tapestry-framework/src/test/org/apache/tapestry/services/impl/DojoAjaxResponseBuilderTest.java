@@ -50,7 +50,7 @@ import org.testng.annotations.Test;
  * @author jkuhnert
  */
 @SuppressWarnings("cast")
-@Test
+@Test(sequential=true)
 public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
 {
 

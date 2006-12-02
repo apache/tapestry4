@@ -19,6 +19,7 @@ import static org.easymock.EasyMock.endsWith;
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isNull;
+import static org.easymock.EasyMock.startsWith;
 
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
@@ -215,7 +216,7 @@ public class TestEnhancementOperation extends BaseComponentTestCase
         int dotx = className.lastIndexOf('.');
         String baseName = className.substring(dotx + 1);
 
-        expect(factory.newClass("$" + baseName + "_97", baseClass)).andReturn(classFab);
+        expect(factory.newClass(startsWith("$" + baseName), eq(baseClass))).andReturn(classFab);
 
         return factory;
     }
@@ -276,7 +277,7 @@ public class TestEnhancementOperation extends BaseComponentTestCase
         ClassFactory factory = newMock(ClassFactory.class);
         ClassFab classfab = newMock(ClassFab.class);
 
-        expect(factory.newClass("$BaseComponent_97", BaseComponent.class)).andReturn(classfab);
+        expect(factory.newClass(startsWith("$BaseComponent"), eq(BaseComponent.class))).andReturn(classfab);
 
         classfab.addInterface(PageDetachListener.class);
 
@@ -302,7 +303,7 @@ public class TestEnhancementOperation extends BaseComponentTestCase
         ClassFactory factory = newMock(ClassFactory.class);
         ClassFab classfab = newMock(ClassFab.class);
 
-        expect(factory.newClass("$BaseComponent_97", BaseComponent.class)).andReturn(classfab);
+        expect(factory.newClass(startsWith("$BaseComponent"), eq(BaseComponent.class))).andReturn(classfab);
 
         classfab.addInterface(PageDetachListener.class);
 
@@ -423,7 +424,7 @@ public class TestEnhancementOperation extends BaseComponentTestCase
         ClassFactory cf = newMock(ClassFactory.class);
         ClassFab fab = newMock(ClassFab.class);
 
-        expect(cf.newClass("$BaseComponent_97", BaseComponent.class)).andReturn(fab);
+        expect(cf.newClass(startsWith("$BaseComponent"), eq(BaseComponent.class))).andReturn(fab);
 
         fab.addField("fred", String.class);
 
@@ -444,7 +445,7 @@ public class TestEnhancementOperation extends BaseComponentTestCase
         ClassFactory cf = newMock(ClassFactory.class);
         ClassFab fab = newMock(ClassFab.class);
         
-        expect(cf.newClass("$BaseComponent_97", BaseComponent.class)).andReturn(fab);
+        expect(cf.newClass(startsWith("$BaseComponent"), eq(BaseComponent.class))).andReturn(fab);
         
         // String because "FRED_VALUE" is a String
 
@@ -499,7 +500,7 @@ public class TestEnhancementOperation extends BaseComponentTestCase
 
         // We force the uid to 97 in setUp()
 
-        expect(cf.newClass("$Insert_97", baseClass)).andReturn(fab);
+        expect(cf.newClass(startsWith("$Insert"), eq(baseClass))).andReturn(fab);
         
         expect(fab.addMethod(Modifier.PUBLIC, sig, "method body")).andReturn(null);
 
@@ -528,7 +529,7 @@ public class TestEnhancementOperation extends BaseComponentTestCase
 
         // We force the uid to 97 in setUp()
 
-        expect(cf.newClass("$Insert_97", baseClass)).andReturn(fab);
+        expect(cf.newClass(startsWith("$Insert"), eq(baseClass))).andReturn(fab);
 
         expect(fab.addMethod(Modifier.PUBLIC, sig, "method body")).andReturn(null);
 
@@ -717,7 +718,7 @@ public class TestEnhancementOperation extends BaseComponentTestCase
         
         ClassFab fab = newMock(ClassFab.class);
 
-        expect(cf.newClass("$BaseComponent_97", BaseComponent.class)).andReturn(fab);
+        expect(cf.newClass(startsWith("$BaseComponent"), eq(BaseComponent.class))).andReturn(fab);
 
         fab.addInterface(PageDetachListener.class);
         
@@ -764,7 +765,7 @@ public class TestEnhancementOperation extends BaseComponentTestCase
         
         ClassFab fab = newMock(ClassFab.class);
 
-        expect(cf.newClass("$BaseComponent_97", BaseComponent.class)).andReturn(fab);
+        expect(cf.newClass(startsWith("$BaseComponent"), eq(BaseComponent.class))).andReturn(fab);
 
         replay();
 
@@ -800,7 +801,7 @@ public class TestEnhancementOperation extends BaseComponentTestCase
         
         ClassFab fab = newMock(ClassFab.class);
 
-        expect(cf.newClass("$BaseComponent_97", BaseComponent.class)).andReturn(fab);
+        expect(cf.newClass(startsWith("$BaseComponent"), eq(BaseComponent.class))).andReturn(fab);
 
         replay();
 
