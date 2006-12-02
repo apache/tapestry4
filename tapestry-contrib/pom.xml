@@ -74,6 +74,9 @@
                 <directory>src/java</directory>
                 <includes>
                     <include>**/*</include>
+                    <include>**/*.library</include>
+                    <include>**/*.page</include>
+                    <include>**/*.jwc</include>
                 </includes>
                 <excludes>
                     <exclude>**/*.java</exclude>

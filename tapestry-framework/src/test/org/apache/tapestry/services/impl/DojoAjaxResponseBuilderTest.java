@@ -13,7 +13,8 @@
 // limitations under the License.
 package org.apache.tapestry.services.impl;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.checkOrder;
+import static org.easymock.EasyMock.expect;
 
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
@@ -56,9 +57,6 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
 
     private static CharArrayWriter _writer;
     
-    private static String LINE_SEPERATOR = (String)java.security.AccessController.doPrivileged(
-            new sun.security.action.GetPropertyAction("line.separator"));
-    
     private PrintWriter newPrintWriter()
     {
         _writer = new CharArrayWriter();
@@ -74,7 +72,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
 
     private void assertOutput(String expected)
     {
-        assertEquals(expected, _writer.toString());
+        assertEquals(_writer.toString(), expected);
 
         _writer.reset();
     }
@@ -326,9 +324,8 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
                 "<ajax-response><response id=\"bodyscript\" type=\"script\"><script>\n" + 
                 "//<![CDATA[\n" + 
                 "\n" + 
-                "var preloadedvarname = new Array();\n" + 
-                "if (document.images)\n" + 
-                "{\n" + 
+                "preloadedvarname = [];\n" + 
+                "if (document.images) {\n" + 
                 "image initializations}\n" + 
                 "var e=4;\n" + 
                 "//]]>\n" + 
@@ -365,11 +362,9 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         assertOutput("<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\" [\n" + 
                 "<!ENTITY nbsp \'&#160;\'>\n" + 
                 "]>\n" + 
-                "<ajax-response><response id=\"includescript\" type=\"script\">tapestry.loadScriptFromUrl(\"http://noname/js/package.js\");" + 
-                LINE_SEPERATOR +
-                "tapestry.loadScriptFromUrl(\"http://noname/js/package2.js\");" +
-                LINE_SEPERATOR +
-                "</response></ajax-response>");
+                "<ajax-response><response id=\"includescript\" type=\"script\">" 
+                + "<include url=\"http://noname/js/package.js\"/>"
+                + "<include url=\"http://noname/js/package2.js\"/></response></ajax-response>");
         
         verify();
     }

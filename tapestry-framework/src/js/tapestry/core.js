@@ -133,10 +133,13 @@ tapestry={
 					continue;
 				} else if (id == "includescript") {
 					// includes get processed immediately (syncrhonously)
-					tapestry.loadScriptContent(elms[i], false);
+					var includes=elms[i].getElementsByTagName("include");
+					if (!includes){continue;}
+					for (var e=0; e<includes.length;e++) {
+						tapestry.loadScriptFromUrl(includes[e].getAttribute("url"));
+					}
 					continue;
 				}
-				
 			}
 			
 			if (!id){
@@ -278,14 +281,20 @@ tapestry={
 	 */
 	loadScriptFromUrl:function(url){
 	    var scripts = window.document.getElementsByTagName("script");
-	    for (var i = 0; i < scripts.length; i++) {
-	        var src = scripts[i].src;
-	        if (src && src.length > 0 && src.indexOf(url)>=0 ) {
-	            return;
-	        }
+	    if (scripts){
+		    for (var i = 0; i < scripts.length; i++) {
+		        var src = scripts[i].src;
+		        if (src && src.length > 0 && src.indexOf(url)>=0 ) {
+		            return;
+		        }
+		    }
 	    }
-		
-	    dojo.hostenv.loadUri(url);
+	    
+	    if (djConfig.isDebug) {
+	    	dojo.log.debug("loadScriptFromUrl: " + url + " success?: " + dojo.hostenv.loadUri(url));
+	    } else {
+	    	dojo.hostenv.loadUri(url);
+	    }
 	},
 	
 	/**

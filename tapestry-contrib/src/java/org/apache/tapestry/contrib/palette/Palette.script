@@ -97,11 +97,11 @@ output symbols:
 </let>
 
 <let key="updateFunctionName">
-  update_${baseName}
+  tapestry.update_${baseName}
 </let>
 
 <let key="selectFunctionName">
-  select_${baseName}
+  tapestry.select_${baseName}
 </let>
 
 <let key="selectOnClickScript">
@@ -109,7 +109,7 @@ output symbols:
 </let>
 
 <let key="deselectFunctionName">
-  deselect_${baseName}
+  tapestry.deselect_${baseName}
 </let>
 
 <let key="deselectOnClickScript">
@@ -117,7 +117,7 @@ output symbols:
 </let>
 
 <let key="formSubmitFunctionName">
-  onsubmit_${baseName}
+  tapestry.onsubmit_${baseName}
 </let>
 
 <let key="selectImageName">
@@ -137,23 +137,23 @@ output symbols:
 </let>
 
 <let key="formPath">
-  document.getElementById('${formName}')
+  dojo.byId('${formName}')
 </let>
 
 <let key="selectedPath">
-  document.getElementById('${palette.clientId}')
+  dojo.byId('${palette.clientId}')
 </let>
 
 <let key="selectedChangeFunctionName">
-  onChange_${baseName}_selected
+  tapestry.onChange_${baseName}_selected
 </let>
 
 <let key="availablePath">
-  ${formPath}.${availableName}
+  dojo.byId("${availableName}")
 </let>
 
 <let key="availableChangeFunctionName">
-  onChange_${baseName}_available
+  tapestry.onChange_${baseName}_available
 </let>
 
 
@@ -174,7 +174,7 @@ output symbols:
 </let>
 
 <let key="moveUpFunctionName">
-  moveup_${baseName}
+  tapestry.moveup_${baseName}
 </let>
 
 <let key="upOnClickScript">
@@ -182,7 +182,7 @@ output symbols:
 </let>
 
 <let key="moveDownFunctionName">
-  movedown_${baseName}
+  tapestry.movedown_${baseName}
 </let>
 
 <let key="downOnClickScript">
@@ -205,27 +205,28 @@ ${upDisabled} = true;
 ${downDisabled} = true;
 </if>
 
-function ${updateFunctionName}()
-{
+${updateFunctionName}=function() {
   var disabled = ${availablePath}.selectedIndex &lt; 0;
   
   ${selectDisabled} = disabled;
  
-  if (document.images)
+  if (document.images) {
     ${selectImagePath}.src =
       disabled ? ${selectDisabledImage}
                : ${selectImage};
-
+  }
+  
   var selected = ${selectedPath};
   var index = selected.selectedIndex;
 
   disabled = index &lt; 0;
   ${deselectDisabled} = disabled;
  
-  if (document.images)
+  if (document.images) {
     ${deselectImagePath}.src =
       disabled ? ${deselectDisabledImage}
                : ${deselectImage};   
+  }
 <if expression="sortUser">
   var upImage = ${upImagePath};
   var downImage = ${downImagePath};
@@ -233,8 +234,7 @@ function ${updateFunctionName}()
   ${upDisabled} = true;
   ${downDisabled} = true;
   
-  if (document.images)
-  {
+  if (document.images) {
     upImage.src = ${upDisabledImage};
     downImage.src = ${downDisabledImage};
   }
@@ -242,109 +242,95 @@ function ${updateFunctionName}()
   <!-- If there's no selection in the "selected" column, then leave
        both buttons disabled. -->
        
-  if (disabled)
-    return;
- 
+  if (disabled) { return; }
+  
   <!-- Search for a second selected item -->
   
-  for (var i = index + 1; i &lt; selected.options.length; i++)
-  {
+  for (var i = index + 1; i &lt; selected.options.length; i++) {
     <!-- Found a second selected option, so leave buttons disabled. -->
-    if (selected.options[i].selected)
-    return;
+    if (selected.options[i].selected) { return; }
   }
   
   ${upDisabled} = (index == 0);
   ${downDisabled} = (index == selected.options.length - 1);  
   
-  if (document.images)
-  {
-    if (!${upDisabled})
+  if (document.images) {
+    if (!${upDisabled}) {
       upImage.src = ${upImage};
-
-    if (!${downDisabled})
+    }
+    if (!${downDisabled}) {
       downImage.src = ${downImage};
+    }
   }
 </if>  
 }
 
-function ${selectFunctionName}()
-{
- if (${selectDisabled})
-    return;
+${selectFunctionName}=function() {
+ if (${selectDisabled}) { return; }
     
   var source = ${availablePath};
   var target = ${selectedPath};
      
-  palette_transfer_selections(source, target);
+  tapestry.palette.transferSelections(source,target);
 <if expression="sortLabel">
-  palette_sort_by_label(target);
+  tapestry.palette.sortByLabel(target);
 </if>
 <if expression="sortValue">
-  palette_sort_by_value(target);
+  tapestry.palette.sortByValue(target);
 </if>
   ${updateFunctionName}();
 }
 
-function ${deselectFunctionName}()
-{
-  if (${deselectDisabled})
-    return;
+${deselectFunctionName}=function(){
+  if (${deselectDisabled}) { return; }
   
   var source = ${selectedPath};
   var target = ${availablePath};
   
-  palette_transfer_selections(source, target);
+  tapestry.palette.transferSelections(source,target);
 <if expression="sortLabel">
-  palette_sort_by_label(target);
+  tapestry.palette.sortByLabel(target);
 </if>
 <if expression="sortValue">
-  palette_sort_by_value(target);
+  tapestry.palette.sortByValue(target);
 </if>
   ${updateFunctionName}();  
 }
 
-function ${formSubmitFunctionName}(event)
-{
-  palette_clear_selections(${availablePath});
-  palette_select_all(${selectedPath});
+${formSubmitFunctionName}=function(event){
+  tapestry.palette.clearSelections(${availablePath});
+  tapestry.palette.selectAll(${selectedPath});
 }
 <if expression="sortUser">
-function ${moveUpFunctionName}()
-{
-  if (${upDisabled})
-    return;
+${moveUpFunctionName}=function(){
+  if (${upDisabled}) { return; }
     
   var element = ${selectedPath};
   var options = element.options;
     
-  palette_swap_options(options, element.selectedIndex, element.selectedIndex - 1);
+  tapestry.palette.swapOptions(options, element.selectedIndex, element.selectedIndex - 1);
   
   ${updateFunctionName}();
 }
 
-function ${moveDownFunctionName}()
-{
-  if (${downDisabled})
-    return;
+${moveDownFunctionName}=function(){
+  if (${downDisabled}) { return; }
     
   var element = ${selectedPath};
   var options = element.options;
   
-  palette_swap_options(options, element.selectedIndex, element.selectedIndex + 1);
+  tapestry.palette.swapOptions(options, element.selectedIndex, element.selectedIndex + 1);
   
   ${updateFunctionName}();
 }
 </if>
-function ${selectedChangeFunctionName}()
-{
-  palette_clear_selections(${availablePath});
+${selectedChangeFunctionName}=function(){
+  tapestry.palette.clearSelections(${availablePath});
   ${updateFunctionName}();
 }
 
-function ${availableChangeFunctionName}()
-{
-  palette_clear_selections(${selectedPath});
+${availableChangeFunctionName}=function(){
+  tapestry.palette.clearSelections(${selectedPath});
   ${updateFunctionName}();
 }
 </body>
