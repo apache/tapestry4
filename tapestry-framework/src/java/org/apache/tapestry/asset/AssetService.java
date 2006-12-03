@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.asset;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -26,6 +27,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.zip.GZIPOutputStream;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -367,7 +369,7 @@ public class AssetService implements IEngineService, ResetEventListener
 
             String contentType = getMimeType(resourcePath);
             int contentLength = resourceConnection.getContentLength();
-
+            
             if (contentLength > 0)
                 _response.setContentLength(contentLength);
             
@@ -397,6 +399,29 @@ public class AssetService implements IEngineService, ResetEventListener
             input = resourceConnection.getInputStream();
             
             byte[] data = IOUtils.toByteArray(input);
+            
+            // compress javascript responses when possible
+            
+            if (contentType.indexOf("javascript") > -1
+                    || contentType.indexOf("css") > -1 
+                    || contentType.indexOf("html") > -1
+                    || contentType.indexOf("text") > -1) {
+                String encoding = _request.getHeader("Accept-Encoding");
+                if (encoding != null && encoding.indexOf("gzip") > -1) {
+                    
+                    ByteArrayOutputStream bo = 
+                        new ByteArrayOutputStream();
+                    GZIPOutputStream gzip = 
+                        new GZIPOutputStream(bo);
+                    
+                    gzip.write(data);
+                    gzip.close();
+                    
+                    data = bo.toByteArray();
+                    
+                    _response.setHeader("Content-Encoding", "gzip");
+                }
+            }
             
             // force image(or other) caching when detected, esp helps with ie related things
             // see http://mir.aculo.us/2005/08/28/internet-explorer-and-ajax-image-caching-woes
