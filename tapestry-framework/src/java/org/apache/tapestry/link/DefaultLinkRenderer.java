@@ -47,17 +47,15 @@ public class DefaultLinkRenderer implements ILinkRenderer
 
     public static final ILinkRenderer SHARED_INSTANCE = new DefaultLinkRenderer();
 
-    public void renderLink(IMarkupWriter writer, IRequestCycle cycle,
-            ILinkComponent linkComponent)
+    public void renderLink(IMarkupWriter writer, IRequestCycle cycle, ILinkComponent linkComponent)
     {
         IMarkupWriter wrappedWriter = null;
-
+        
         if (cycle.getAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME) != null)
             throw new ApplicationRuntimeException(LinkMessages.noNesting(),
                     linkComponent, null, null);
-
-        cycle.setAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME,
-                linkComponent);
+        
+        cycle.setAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME, linkComponent);
         
         boolean hasBody = getHasBody();
 

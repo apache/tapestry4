@@ -48,7 +48,7 @@ onMouseOutName - name of mouse out function
 </let>
 
 <let key="attribute">
-  document.getElementById('${imageId}').src
+  dojo.byId('${imageId}').src
 </let>
 <body>
 tapestry.${onMouseOverName}=function(){
@@ -64,9 +64,7 @@ tapestry.${onMouseOutName}=function(){
 }
 </body>
 <initialization>
-<unique>
 dojo.event.connect(dojo.byId("${link.clientId}"), "onmouseover", tapestry, "${onMouseOverName}");
 dojo.event.connect(dojo.byId("${link.clientId}"), "onmouseout", tapestry, "${onMouseOutName}");
-</unique>
 </initialization>
 </script>
