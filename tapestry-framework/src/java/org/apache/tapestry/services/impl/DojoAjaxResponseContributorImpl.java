@@ -68,7 +68,7 @@ public class DojoAjaxResponseContributorImpl implements ResponseContributor
         
         return new DojoAjaxResponseBuilder(cycle, _localeManager, 
                 _markupWriterSource,
-                _webResponse, errorPages, _assetFactory, 
+                _webResponse, _webRequest, errorPages, _assetFactory, 
                 _webResponse.getNamespace(), _pageService);
     }
     

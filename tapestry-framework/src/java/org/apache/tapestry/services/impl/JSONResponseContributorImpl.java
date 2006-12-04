@@ -52,7 +52,7 @@ public class JSONResponseContributorImpl implements ResponseContributor
     throws IOException
     {
         return new JSONResponseBuilder(cycle, _localeManager, _markupWriterSource,
-                _webResponse, _assetFactory, _webResponse.getNamespace());
+                _webResponse, _webRequest, _assetFactory, _webResponse.getNamespace());
     }
     
     /**
