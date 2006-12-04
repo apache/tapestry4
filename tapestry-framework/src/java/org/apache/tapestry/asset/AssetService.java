@@ -41,10 +41,10 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.error.RequestExceptionReporter;
-import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.ContentType;
+import org.apache.tapestry.util.io.GzipUtil;
 import org.apache.tapestry.web.WebContext;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
@@ -63,7 +63,7 @@ import org.apache.tapestry.web.WebResponse;
  * @author Howard Lewis Ship
  */
 
-public class AssetService implements IEngineService, ResetEventListener
+public class AssetService implements IEngineService
 {
     /**
      * Query parameter that stores the path to the resource (with a leading slash).
@@ -81,6 +81,8 @@ public class AssetService implements IEngineService, ResetEventListener
      */
 
     public static final String DIGEST = "digest";
+    
+    static final DateFormat CACHED_FORMAT = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
     
     /**
      * Defaults MIME types, by extension, used when the servlet container doesn't provide MIME
@@ -100,8 +102,6 @@ public class AssetService implements IEngineService, ResetEventListener
         _mimeTypes.put("htm", "text/html");
         _mimeTypes.put("html", "text/html");
     }
-
-    private static final DateFormat CACHED_FORMAT = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
     
     /** Represents a month of time in seconds. */
     private static final long MONTH_SECONDS = 60 * 60 * 24 * 30;
@@ -148,19 +148,9 @@ public class AssetService implements IEngineService, ResetEventListener
     /** @since 4.0 */
 
     private RequestExceptionReporter _exceptionReporter;
-
-    /** Used to prevent caching of resources when in disabled caching mode. */
     
-    private long _lastResetTime = -1;
+    private Map _cache = new HashMap();
     
-    /** 
-     * {@inheritDoc}
-     */
-    public void resetEventDidOccur()
-    {
-        _lastResetTime = System.currentTimeMillis();
-    }
-
     /**
      * Builds a {@link ILink}for a {@link PrivateAsset}.
      * <p>
@@ -345,8 +335,7 @@ public class AssetService implements IEngineService, ResetEventListener
                 modify = CACHED_FORMAT.parse(header).getTime();
         } catch (ParseException e) { e.printStackTrace(); }
         
-        if (resourceURL.getLastModified() > modify
-                || (_lastResetTime > modify))
+        if (resourceURL.getLastModified() > modify)
             return false;
         
         _response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
@@ -356,89 +345,119 @@ public class AssetService implements IEngineService, ResetEventListener
     
     /** @since 2.2 */
 
-    private void writeAssetContent(IRequestCycle cycle, String resourcePath,
-            URLConnection resourceConnection) throws IOException
+    private void writeAssetContent(IRequestCycle cycle, String resourcePath, URLConnection resourceConnection) 
+    throws IOException
+    {
+        // Getting the content type and length is very dependant
+        // on support from the application server (represented
+        // here by the servletContext).
+        
+        String contentType = getMimeType(resourcePath);
+
+        long lastModified = resourceConnection.getLastModified();
+        if (lastModified <= 0)
+            lastModified = _startupTime;
+        
+        _response.setDateHeader("Last-Modified", lastModified);
+        
+        // write out expiration/cache info
+
+        _response.setDateHeader("Expires", _expireTime);
+        _response.setHeader("Cache-Control", "public, max-age=" + (MONTH_SECONDS * 3));
+        
+        // ie won't cache javascript with etag attached
+        if (_request.getHeader("User-Agent").indexOf("MSIE") < 0 
+                || contentType.indexOf("javascript") < 0)
+            _response.setHeader("ETag", String.valueOf(resourcePath.hashCode()));
+            
+        
+        // Set the content type. If the servlet container doesn't
+        // provide it, try and guess it by the extension.
+        
+        if (contentType == null || contentType.length() == 0)
+            contentType = getMimeType(resourcePath);
+        
+        byte[] data = getAssetData(cycle, resourcePath, resourceConnection, contentType);
+        
+        // force image(or other) caching when detected, esp helps with ie related things
+        // see http://mir.aculo.us/2005/08/28/internet-explorer-and-ajax-image-caching-woes
+        
+        _response.setContentLength(data.length);
+        
+        OutputStream output = _response.getOutputStream(new ContentType(contentType));
+        
+        output.write(data);
+    }
+    
+    byte[] getAssetData(IRequestCycle cycle, String resourcePath,
+            URLConnection resourceConnection, String contentType) 
+    throws IOException
     {
         InputStream input = null;
 
-        try
-        {
-            // Getting the content type and length is very dependant
-            // on support from the application server (represented
-            // here by the servletContext).
-
-            String contentType = getMimeType(resourcePath);
-            int contentLength = resourceConnection.getContentLength();
+        try {
             
-            if (contentLength > 0)
-                _response.setContentLength(contentLength);
+            CachedAsset cache = null;
+            byte[] data = null;
             
-            long lastModified = _startupTime;
-            if (_lastResetTime > 0)
-                lastModified = _lastResetTime;
-            else
-                lastModified = resourceConnection.getLastModified();
+            // check cache first
             
-            _response.setDateHeader("Last-Modified", lastModified);
-            
-            // write out expiration/cache info
-            
-            if (_lastResetTime <= 0) {
+            if (_cache.get(resourcePath) != null) {
                 
-                _response.setDateHeader("Expires", _expireTime);
-                _response.setHeader("Cache-Control", "max-age=" + (MONTH_SECONDS * 3));
-                _response.setHeader("ETag", String.valueOf(resourcePath.hashCode()));
+                cache = (CachedAsset)_cache.get(resourcePath);
+                
+                if (cache.getLastModified() < resourceConnection.getLastModified())
+                    cache.clear(resourceConnection.getLastModified());
+                
+                data = cache.getData();
+            } else {
+                
+                cache = new CachedAsset(resourcePath, resourceConnection.getLastModified(), null, null);
+                
+                _cache.put(resourcePath, cache);
             }
             
-            // Set the content type. If the servlet container doesn't
-            // provide it, try and guess it by the extension.
-            
-            if (contentType == null || contentType.length() == 0)
-                contentType = getMimeType(resourcePath);
-            
-            input = resourceConnection.getInputStream();
-            
-            byte[] data = IOUtils.toByteArray(input);
+            if (data == null) {
+                
+                input = resourceConnection.getInputStream();
+                data = IOUtils.toByteArray(input);
+                
+                cache.setData(data);
+            }
             
             // compress javascript responses when possible
             
-            if (contentType.indexOf("javascript") > -1
-                    || contentType.indexOf("css") > -1 
-                    || contentType.indexOf("html") > -1
-                    || contentType.indexOf("text") > -1) {
-                String encoding = _request.getHeader("Accept-Encoding");
-                if (encoding != null && encoding.indexOf("gzip") > -1) {
+            if (GzipUtil.shouldCompressContentType(contentType) && GzipUtil.isGzipCapable(_request)) {
+                
+                if (cache.getGzipData() == null) {
                     
-                    ByteArrayOutputStream bo = 
-                        new ByteArrayOutputStream();
-                    GZIPOutputStream gzip = 
-                        new GZIPOutputStream(bo);
+                    ByteArrayOutputStream bo = new ByteArrayOutputStream();
+                    GZIPOutputStream gzip = new GZIPOutputStream(bo);
                     
                     gzip.write(data);
                     gzip.close();
                     
                     data = bo.toByteArray();
+                    cache.setGzipData(data);
+                } else {
                     
-                    _response.setHeader("Content-Encoding", "gzip");
+                    data = cache.getGzipData();
                 }
+                
+                _response.setHeader("Content-Encoding", "gzip");
             }
             
-            // force image(or other) caching when detected, esp helps with ie related things
-            // see http://mir.aculo.us/2005/08/28/internet-explorer-and-ajax-image-caching-woes
+            return data;
             
-            _response.setContentLength(data.length);
+        } finally {
             
-            OutputStream output = _response.getOutputStream(new ContentType(contentType));
-            
-            output.write(data);
-        }
-        finally
-        {
-            IOUtils.closeQuietly(input);
-            input = null;
+            if (input != null) {
+                IOUtils.closeQuietly(input);
+                input = null;
+            }
         }
     }
-
+    
     /** @since 4.0 */
 
     public void setExceptionReporter(RequestExceptionReporter exceptionReporter)

@@ -13,13 +13,16 @@
 // limitations under the License.
 package org.apache.tapestry.services.impl;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.GZIPOutputStream;
 
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.Defense;
@@ -42,6 +45,8 @@ import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.ContentType;
 import org.apache.tapestry.util.PageRenderSupportImpl;
 import org.apache.tapestry.util.ScriptUtils;
+import org.apache.tapestry.util.io.GzipUtil;
+import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
 
 
@@ -64,8 +69,12 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     // used to create IMarkupWriter
     private RequestLocaleManager _localeManager;
     private MarkupWriterSource _markupWriterSource;
-    private WebResponse _webResponse;
+    private WebRequest _request;
+    private WebResponse _response;
     private List _errorPages;
+    
+    private ByteArrayOutputStream _output;
+    private ContentType _contentType;
     
     // our response writer
     private IMarkupWriter _writer;
@@ -123,7 +132,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     public DojoAjaxResponseBuilder(IRequestCycle cycle, 
             RequestLocaleManager localeManager, 
             MarkupWriterSource markupWriterSource,
-            WebResponse webResponse, List errorPages, 
+            WebResponse webResponse, WebRequest request, List errorPages, 
             AssetFactory assetFactory, String namespace, IEngineService service)
     {
         Defense.notNull(cycle, "cycle");
@@ -132,7 +141,8 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         _cycle = cycle;
         _localeManager = localeManager;
         _markupWriterSource = markupWriterSource;
-        _webResponse = webResponse;
+        _response = webResponse;
+        _request = request;
         _errorPages = errorPages;
         _pageService = service;
         
@@ -158,21 +168,24 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     {
         _localeManager.persistLocale();
         
-        ContentType contentType = new ContentType(CONTENT_TYPE
+        _contentType = new ContentType(CONTENT_TYPE
                 + ";charset=" + cycle.getInfrastructure().getOutputEncoding());
         
-        String encoding = contentType.getParameter(ENCODING_KEY);
+        String encoding = _contentType.getParameter(ENCODING_KEY);
         
         if (encoding == null)
         {
             encoding = cycle.getEngine().getOutputEncoding();
             
-            contentType.setParameter(ENCODING_KEY, encoding);
+            _contentType.setParameter(ENCODING_KEY, encoding);
         }
         
-        PrintWriter printWriter = _webResponse.getPrintWriter(contentType);
+        _output = new ByteArrayOutputStream();
         
-        _writer = _markupWriterSource.newMarkupWriter(printWriter, contentType);
+        // PrintWriter printWriter = _response.getPrintWriter(_contentType);
+        PrintWriter printWriter = new PrintWriter(_output, true);
+        
+        _writer = _markupWriterSource.newMarkupWriter(printWriter, _contentType);
         
         parseParameters(cycle);
         
@@ -191,6 +204,41 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         endResponse();
         
         _writer.close();
+        
+        writeResponse();
+    }
+    
+    /**
+     * Causes the actual / real response to be written to the output stream.
+     */
+    void writeResponse()
+    throws IOException
+    {
+        byte[] data = _output.toByteArray();
+        
+        if (GzipUtil.isGzipCapable(_request)) {
+            
+            // reset data buffer
+            _output.reset();
+            
+            GZIPOutputStream gzip = new GZIPOutputStream(_output);
+            
+            gzip.write(data);
+            gzip.close();
+            
+            data = _output.toByteArray();
+            
+            _response.setHeader("Content-Encoding", "gzip");
+        }
+        
+        _response.setContentLength(data.length);
+        
+        OutputStream output = _response.getOutputStream(_contentType);
+        
+        output.write(data);
+        
+        output.flush();
+        output.close();
     }
     
     /** 
