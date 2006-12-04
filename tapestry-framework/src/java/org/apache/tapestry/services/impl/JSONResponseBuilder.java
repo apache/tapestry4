@@ -134,10 +134,10 @@ public class JSONResponseBuilder implements ResponseBuilder
             _contentType.setParameter(ENCODING_KEY, encoding);
         }
         
-        _output = new ByteArrayOutputStream();
+        // _output = new ByteArrayOutputStream();
         
-        // PrintWriter printWriter = _webResponse.getPrintWriter(_contentType);
-        PrintWriter printWriter = new PrintWriter(_output, true);
+        PrintWriter printWriter = _response.getPrintWriter(_contentType);
+        // PrintWriter printWriter = new PrintWriter(_output, true);
         
         _writer = _markupWriterSource.newJSONWriter(printWriter, _contentType);
         
@@ -155,7 +155,7 @@ public class JSONResponseBuilder implements ResponseBuilder
         
         _writer.close();
         
-        writeResponse();
+        // writeResponse();
     }
     
     /**
