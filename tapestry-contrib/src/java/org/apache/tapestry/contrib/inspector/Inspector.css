@@ -21,8 +21,9 @@ SPAN.error
 		font-weight: bold;	
 }
 
-BODY  {
-	font-family: "Trebuchet MS", sans-serif;
+body,td,th {
+    font-family: "Trebuchet MS", Lucida Grande, Tahoma, Verdana, Arial, sans-serif;
+    font-size: 11pt;
 }
 
 A IMG
@@ -65,11 +66,13 @@ TABLE.inspector-data TR.even TD  {
 	text-align : left;
 }
 
+/**
 TABLE.inspector-data,
 TABLE.selector
 {
 	font-size: 9pt;
 }
+*/
 
 TABLE.selector TD.page-link
 {
@@ -92,13 +95,13 @@ TABLE.template TH
 TABLE.template TD
 {
 	background-color: Silver;
-	font-size: small;
+	font-size: smaller;
 }
 
 SPAN.message
 {
-	color : Silver
-	font-size: large;
+	color : Silver;
+	font-size: larger;
 }
 
 SPAN.jwc-tag

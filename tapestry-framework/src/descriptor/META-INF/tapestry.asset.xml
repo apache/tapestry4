@@ -169,8 +169,16 @@
   <contribution configuration-id="UnprotectedAssets">
    List of unprotected asset regexps for ResourceMatcher service.
    
-   <unprotected-resource contains="/tapestry/" />
-   <unprotected-resource contains="/dojo/" />
+   <unprotected-resource contains="^/tapestry/" />
+   <unprotected-resource contains="^/org/apache/tapestry/.*.css" />
+   <unprotected-resource contains="^/org/apache/tapestry/.*.gif" />
+   <unprotected-resource contains="^/org/apache/tapestry/.*.png" />
+   <unprotected-resource contains="^/org/apache/tapestry/.*.jpg" />
+   <unprotected-resource contains="^/org/apache/tapestry/.*.js" />
+   <unprotected-resource contains="^/org/apache/tapestry/.*.htm" />
+   <unprotected-resource contains="^/org/apache/tapestry/.*.html" />
+   
+   <unprotected-resource contains="^/dojo/" />
   </contribution>
   
   <service-point id="UnprotectedResourceMatcher" interface="ResourceMatcher" >

@@ -164,12 +164,28 @@ public class TestUnprotectedAsset extends BaseComponentTestCase
     {
         ResourceMatcherImpl rm = new ResourceMatcherImpl();
         List patterns = new ArrayList();
-        patterns.add("/tapestry/");
-        patterns.add("/dojo/");
+        patterns.add("^/tapestry/");
+        patterns.add("^/dojo/");
+        patterns.add("^/org/apache/tapestry/.*.css");
+        patterns.add("^/org/apache/tapestry/.*.gif");
+        patterns.add("^/org/apache/tapestry/.*.png");
+        patterns.add("^/org/apache/tapestry/.*.jpg");
+        patterns.add("^/org/apache/tapestry/.*.js");
+        patterns.add("^/org/apache/tapestry/.*.htm");
+        patterns.add("^/org/apache/tapestry/.*.html");
+        
         rm.setContributions(patterns);
         rm.initializeService();
         
-        assertTrue(rm.containsResource("/assets/static/dojo/src/widget/templates/DatePicker.css"));
+        assertTrue(rm.containsResource("/dojo/src/widget/templates/DatePicker.css"));
+        assertTrue(rm.containsResource("/tapestry/core.js"));
+        
+        assertFalse(rm.containsResource("/com/foo/tapestry/foo.properties"));
+        assertFalse(rm.containsResource("/com/foo/tapestry/Bar.class"));
+        
+        assertTrue(rm.containsResource("/org/apache/tapestry/asset/subdirectory/foo.css"));
+        assertTrue(rm.containsResource("/org/apache/tapestry/html/dojo/dojo.js"));
+        assertTrue(rm.containsResource("/org/apache/tapestry/html/dojo/src/json.js"));
     }
     
     public void test_Css_Paths()
