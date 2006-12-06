@@ -345,7 +345,8 @@ public class DefaultResponseBuilder implements ResponseBuilder
     {
         writer.begin("script");
         writer.attribute("type", "text/javascript");
-        writer.printRaw("<!--\n");
+        writer.printRaw("<!--");
+        writer.println();
     }
     
     /** 
@@ -353,7 +354,8 @@ public class DefaultResponseBuilder implements ResponseBuilder
      */
     public void endBodyScript(IMarkupWriter writer, IRequestCycle cycle)
     {
-        writer.printRaw("\n// -->");
+        writer.println();
+        writer.printRaw("// -->");
         writer.end();
     }
 
