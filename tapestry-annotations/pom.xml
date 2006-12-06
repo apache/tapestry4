@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.tapestry</groupId>
@@ -14,7 +13,7 @@
     </parent>
     <name>Annotations</name>
     <inceptionYear>2006</inceptionYear>
-    
+
     <dependencies>
         <dependency>
             <groupId>org.apache.tapestry</groupId>
@@ -77,7 +76,7 @@
                 </excludes>
             </resource>
         </resources>
-        
+
         <testSourceDirectory>src/test</testSourceDirectory>
         <testResources>
             <testResource>
@@ -102,6 +101,12 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.1-SNAPSHOT</version>
+                <configuration>
+                    <archive>
+                        <compress>true</compress>
+                        <index>true</index>
+                    </archive>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -126,8 +131,8 @@
                             <tasks>
                                 <ant antfile="../support/build.xml" inheritRefs="true">
                                     <property name="target.dir" value="../target/site/tapestry-annotations" />
-                                    <target name="build"/>
-                                 </ant>
+                                    <target name="build" />
+                                </ant>
                             </tasks>
                         </configuration>
                         <goals>
@@ -179,5 +184,5 @@
     <reporting>
         <outputDirectory>../target/site/tapestry-annotations</outputDirectory>
     </reporting>
-    
+
 </project>
