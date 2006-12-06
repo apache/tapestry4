@@ -40,12 +40,19 @@
             <subscribe>users-subscribe@tapestry.apache.org</subscribe>
             <unsubscribe>users-unsubscribe@tapestry.apache.org</unsubscribe>
             <archive>http://mail-archives.apache.org/mod_mbox/tapestry-users/</archive>
+            <otherArchives>
+                <otherArchive>http://www.nabble.com/Tapestry---User-f340.html</otherArchive>
+                <otherArchive>http://www.nabble.com/Jakarta-Tapestry-f302.html</otherArchive>
+            </otherArchives>
         </mailingList>
         <mailingList>
             <name>Tapestry Developer List</name>
             <subscribe>dev-subscribe@tapestry.apache.org</subscribe>
             <unsubscribe>dev-unsubscribe@tapestry.apache.org</unsubscribe>
             <archive>http://mail-archives.apache.org/mod_mbox/tapestry-dev/</archive>
+            <otherArchives>
+                <otherArchive>http://www.nabble.com/Tapestry---Dev-f339.html</otherArchive>
+            </otherArchives>
         </mailingList>
         <mailingList>
             <name>Tapestry Commits List</name>
@@ -64,7 +71,7 @@
             <roles>
                 <role>Menace</role>
             </roles>
-            <timezone>5</timezone>
+            <timezone>-8</timezone>
         </developer>
         <developer>
             <id>jk</id>
@@ -74,7 +81,7 @@
             <roles>
                 <role>Developer</role>
             </roles>
-            <timezone>8</timezone>
+            <timezone>-5</timezone>
         </developer>
         <developer>
             <id>aa</id>
