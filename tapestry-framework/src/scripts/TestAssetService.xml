@@ -39,7 +39,6 @@
 	
 	<request>
 		<parameter name="service" value="asset"/>
-    <parameter name="digest" value="f6324ac8f24f0a7f4850221b0f14c865"/>
 		<parameter name="path" value="/org/apache/tapestry/junit/mock/c16/logo.png"/>
 		
 		<assert-output-stream name="Image Content"

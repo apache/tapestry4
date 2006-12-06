@@ -366,7 +366,8 @@ public class AssetService implements IEngineService
         _response.setHeader("Cache-Control", "public, max-age=" + (MONTH_SECONDS * 3));
         
         // ie won't cache javascript with etag attached
-        if (_request.getHeader("User-Agent").indexOf("MSIE") < 0 
+        if (_request.getHeader("User-Agent") != null 
+                && _request.getHeader("User-Agent").indexOf("MSIE") < 0 
                 || contentType.indexOf("javascript") < 0)
             _response.setHeader("ETag", String.valueOf(resourcePath.hashCode()));
             

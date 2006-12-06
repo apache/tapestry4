@@ -157,7 +157,7 @@ public class DefaultResponseBuilderTest extends BaseComponentTestCase
         
         builder.endBodyScript(mw, cycle);
         
-        assertOutput("\n// --></script>");
+        assertOutput(LINE_SEPARATOR + "// --></script>");
         
         verify();
     }
