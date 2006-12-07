@@ -20,7 +20,7 @@
         "http://tapestry.apache.org/dtd/Tapestry_4_0.dtd">
 
 <component-specification class="org.apache.tapestry.dojo.html.FloatingPane"
-                         allow-body="yes" allow-informal-parameters="yes">
+                         allow-body="yes" allow-informal-parameters="yes" deprecated="true">
 
     <description>
         Creates a FloatingPane - an independant window within an html document.
