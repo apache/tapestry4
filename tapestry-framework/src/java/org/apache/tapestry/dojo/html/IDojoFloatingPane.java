@@ -18,6 +18,7 @@ import org.apache.tapestry.IAsset;
 /**
  * @author andyhot
  * @since 4.1
+ * @deprecated to be removed in 4.1.2
  */
 public interface IDojoFloatingPane extends IDojoContentPane
 {

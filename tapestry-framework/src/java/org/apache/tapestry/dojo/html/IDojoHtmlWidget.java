@@ -17,6 +17,7 @@ package org.apache.tapestry.dojo.html;
 /**
  * @author andyhot
  * @since 4.1
+ * @deprecated to be removed in 4.1.2
  */
 public interface IDojoHtmlWidget
 {

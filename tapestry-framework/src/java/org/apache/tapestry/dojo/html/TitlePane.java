@@ -31,6 +31,7 @@ import org.apache.tapestry.json.JSONObject;
  *
  * @author andyhot
  * @since 4.1
+ * @deprecated to be removed in 4.1.2
  */
 public abstract class TitlePane extends AbstractComponent implements IWidget, IDojoTitlePane 
 {

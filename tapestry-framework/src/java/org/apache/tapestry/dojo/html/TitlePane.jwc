@@ -20,7 +20,7 @@
         "http://tapestry.apache.org/dtd/Tapestry_4_0.dtd">
 
 <component-specification class="org.apache.tapestry.dojo.html.TitlePane"
-                         allow-body="yes" allow-informal-parameters="yes">
+                         allow-body="yes" allow-informal-parameters="yes" deprecated="true">
 
     <description>
         Creates a TitlePane - a widget that contains a title section and a 
