@@ -139,7 +139,7 @@ public abstract class ForBean extends AbstractFormComponent
         
         String element = HiveMind.isNonBlank(getElement()) ? getElement() : getTemplateTagName();
         
-        boolean render = !cycleRewinding && (getRenderTag() || HiveMind.isNonBlank(getElement()));
+        boolean render = !cycleRewinding && HiveMind.isNonBlank(element);
         
         IMarkupWriter loopWriter = writer;
         
@@ -163,7 +163,8 @@ public abstract class ForBean extends AbstractFormComponent
                 // swap out writers if necessary
                 
                 if (getResponseBuilder().isDynamic()
-                        && getResponseBuilder().contains(this) && !NestedMarkupWriterImpl.class.isInstance(writer)) {
+                        && getResponseBuilder().contains(this) 
+                        && !NestedMarkupWriterImpl.class.isInstance(writer)) {
                     
                     loopWriter = getResponseBuilder().getWriter(getClientId(), ResponseBuilder.ELEMENT_TYPE);
                 }

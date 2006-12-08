@@ -58,7 +58,6 @@
                 <version>6.1-SNAPSHOT</version>
                 <configuration>
                     <webAppSourceDirectory>${basedir}/src/context</webAppSourceDirectory>
-                    <scanIntervalSeconds>10</scanIntervalSeconds>
                     <contextPath>/</contextPath>
                     <systemProperties>
                         <systemProperty>
