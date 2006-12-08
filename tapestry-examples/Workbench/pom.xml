@@ -1,22 +1,21 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.tapestry</groupId>
     <artifactId>tapestry-Workbench</artifactId>
     <packaging>war</packaging>
     <version>4.1.1-SNAPSHOT</version>
-    
+
     <!-- This should change to tapestry-project -->
     <parent>
         <groupId>org.apache.tapestry</groupId>
         <artifactId>tapestry-examples</artifactId>
         <version>4.1.1-SNAPSHOT</version>
     </parent>
-    
+
     <name>Tapestry Workbench</name>
     <inceptionYear>2006</inceptionYear>
-    
+
     <dependencies>
         <dependency>
             <groupId>jcharts</groupId>
@@ -33,15 +32,25 @@
         </dependency>
         <dependency>
             <groupId>org.apache.tapestry</groupId>
+            <artifactId>tapestry-framework</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.4</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tapestry</groupId>
             <artifactId>tapestry-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
-    
+
     <build>
         <sourceDirectory>src/java</sourceDirectory>
         <testSourceDirectory>src/test</testSourceDirectory>
-        
+
         <plugins>
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
@@ -81,7 +90,7 @@
             </plugin>
         </plugins>
     </build>
-    
+
     <reporting>
         <plugins>
             <plugin>

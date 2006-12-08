@@ -48,6 +48,12 @@ Style: <span class="custom"><b>Important Message</b></span>
 ]]>	
 		</assert-output>
 	
+        <assert-output name="Whitespace">
+<![CDATA[
+Whitespace: Hello World
+]]> 
+        </assert-output>
+    
 	</request>
 		  	
 </mock-test>

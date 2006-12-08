@@ -33,7 +33,6 @@ import org.apache.tapestry.valid.ValidatorException;
  */
 public abstract class RadioGroup extends AbstractFormComponent implements ValidatableField
 {
-    
     /**
      * A <code>RadioGroup</code> places itself into the {@link IRequestCycle}as an attribute, so
      * that its wrapped {@link Radio}components can identify thier state.
@@ -123,9 +122,9 @@ public abstract class RadioGroup extends AbstractFormComponent implements Valida
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
             throw new ApplicationRuntimeException(Tapestry.getMessage("RadioGroup.may-not-nest"),
                     this, null, null);
-
+        
         cycle.setAttribute(ATTRIBUTE_NAME, this);
-
+        
         _rendering = true;
         _nextOptionId = 0;
     }
@@ -148,16 +147,28 @@ public abstract class RadioGroup extends AbstractFormComponent implements Valida
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         _rewinding = false;
-
+        
         // For rendering, the Radio components need to know what the current
         // selection is, so that the correct one can mark itself 'checked'.
         _selection = getBinding("selected").getObject();
-
+        
+        renderDelegatePrefix(writer, cycle);
+        
+        writer.begin(getTemplateTagName());
+        
+        renderInformalParameters(writer, cycle);
+        
+        renderDelegateAttributes(writer, cycle);
+        
         renderBody(writer, cycle);
-
+        
+        writer.closeTag();
+        
+        renderDelegateSuffix(writer, cycle);
+        
         getValidatableFieldSupport().renderContributions(this, writer, cycle);
     }
-
+    
     /**
      * @see org.apache.tapestry.form.AbstractFormComponent#rewindFormComponent(org.apache.tapestry.IMarkupWriter,
      *      org.apache.tapestry.IRequestCycle)
@@ -172,9 +183,9 @@ public abstract class RadioGroup extends AbstractFormComponent implements Valida
             _selectedOption = Integer.parseInt(value);
 
         _rewinding = true;
-
+        
         renderBody(writer, cycle);
-
+        
         try
         {
             getValidatableFieldSupport().validate(this, writer, cycle, _selection);

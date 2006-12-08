@@ -154,6 +154,12 @@ public class TestTemplateParser extends BaseComponentTestCase
         assertEquals(expectedLength, t.getLength());
     }
     
+    protected void assertText(TextToken token, int offset, int length)
+    {
+        assertEquals(token.getOffset(), offset);
+        assertEquals(token.getLength(), length);
+    }
+    
     /** @since 3.0 * */
     
     protected void checkLine(TemplateToken token, int line)
@@ -185,10 +191,10 @@ public class TestTemplateParser extends BaseComponentTestCase
     {
         OpenToken t = (OpenToken) token;
 
-        assertEquals(TokenType.OPEN, t.getType());
-        assertEquals(id, t.getId());
-        assertEquals(componentType, t.getComponentType());
-        assertEquals(tag, t.getTag());
+        assertEquals(t.getType(), TokenType.OPEN);
+        assertEquals(t.getId(), id);
+        assertEquals(t.getComponentType(), componentType);
+        assertEquals(t.getTag(), tag);
 
         checkLine(token, line);
     }
@@ -197,12 +203,12 @@ public class TestTemplateParser extends BaseComponentTestCase
     {
         OpenToken t = (OpenToken) token;
 
-        assertEquals(expected, t.getAttributesMap());
+        assertEquals(t.getAttributesMap(), expected);
     }
 
     protected void assertCloseToken(TemplateToken token, int line)
     {
-        assertEquals(TokenType.CLOSE, token.getType());
+        assertEquals(token.getType(), TokenType.CLOSE);
         
         checkLine(token, line);
     }
@@ -210,7 +216,7 @@ public class TestTemplateParser extends BaseComponentTestCase
     protected void assertTokenCount(TemplateToken[] tokens, int count)
     {
         assertNotNull(tokens);
-        assertEquals(count, tokens.length);
+        assertEquals(tokens.length, count);
     }
 
     private void runFailure(String file, String message)
@@ -236,7 +242,7 @@ public class TestTemplateParser extends BaseComponentTestCase
     public void testAllStatic() throws TemplateParseException
     {
         TemplateToken[] tokens = run("AllStatic.html");
-
+        
         assertTokenCount(tokens, 1);
         assertTextToken(tokens[0], 0, 172);
     }
@@ -471,14 +477,18 @@ public class TestTemplateParser extends BaseComponentTestCase
      * @since 2.0.4
      */
 
-    public void testBasicLocalization() throws TemplateParseException
+    public void test_Basic_Localization() throws TemplateParseException
     {
         TemplateToken[] tokens = run("BasicLocalization.html");
-
-        assertTokenCount(tokens, 3);
+        
+        assertTokenCount(tokens, 7);
         assertTextToken(tokens[0], 0, 35);
         assertLocalizationToken(tokens[1], "the.localization.key", null, 3);
-        assertTextToken(tokens[2], 89, 117);
+        assertText((TextToken)tokens[2], 87, 44);
+        assertLocalizationToken(tokens[3], "hello-key", null, 7);
+        assertText((TextToken)tokens[4], 165, 1);
+        assertLocalizationToken(tokens[5], "world-key", null, 7);
+        assertText((TextToken)tokens[6], 200, 1);
     }
 
     /**
@@ -514,7 +524,7 @@ public class TestTemplateParser extends BaseComponentTestCase
      * @since 2.0.4
      */
 
-    public void testEmptyLocalization() throws TemplateParseException
+    public void test_Empty_Localization() throws TemplateParseException
     {
         TemplateToken[] tokens = run("EmptyLocalization.html");
 
@@ -535,9 +545,8 @@ public class TestTemplateParser extends BaseComponentTestCase
     {
         TemplateToken[] tokens = run("LocalizationAttributes.html");
 
-        Map attributes = buildMap(new String[]
-        { "alpha", "beta", "Fred", "Wilma" });
-
+        Map attributes = buildMap(new String[] { "alpha", "beta", "Fred", "Wilma" });
+        
         assertLocalizationToken(tokens[1], "localization.with.attributes", attributes, 3);
     }
 

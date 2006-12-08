@@ -17,6 +17,7 @@ package org.apache.tapestry.parse;
 import java.util.Map;
 
 import org.apache.hivemind.Location;
+import org.apache.hivemind.util.ToStringBuilder;
 
 /**
  *  Represents localized text from the template.
@@ -82,5 +83,12 @@ public class LocalizationToken extends TemplateToken
     public String getKey()
     {
         return _key;
+    }
+    
+    protected void extendDescription(ToStringBuilder builder)
+    {
+        builder.append("tag", _tag);
+        builder.append("key", _key);
+        builder.append("raw", _raw);
     }
 }

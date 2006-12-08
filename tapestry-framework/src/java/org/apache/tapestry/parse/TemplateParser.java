@@ -348,7 +348,7 @@ public class TemplateParser implements ITemplateParser
      *            a description of where the template originated from, used with error messages.
      */
 
-    public TemplateToken[] parse(char[] templateData, ITemplateParserDelegate delegate,
+    public TemplateToken[] parse(char[] templateData, ITemplateParserDelegate delegate, 
             Resource resourceLocation) throws TemplateParseException
     {
         try
@@ -369,8 +369,7 @@ public class TemplateParser implements ITemplateParser
      * perform default initialization of the parser.
      */
 
-    protected void beforeParse(char[] templateData, ITemplateParserDelegate delegate,
-            Resource resourceLocation)
+    protected void beforeParse(char[] templateData, ITemplateParserDelegate delegate, Resource resourceLocation)
     {
         _templateData = templateData;
         _resourceLocation = resourceLocation;
@@ -804,11 +803,11 @@ public class TemplateParser implements ITemplateParser
         tagEndEvent(_cursor);
 
         // Check for invisible localizations
-
+        
         String localizationKey = findValueCaselessly(LOCALIZATION_KEY_ATTRIBUTE_NAME, _attributes);
         String jwcId = findValueCaselessly(_componentAttributeName, _attributes);
-
-        if (localizationKey != null && tagName.equalsIgnoreCase("span") && jwcId == null)
+        
+        if (localizationKey != null && jwcId == null)
         {
             if (_ignoring)
                 templateParseProblem(
@@ -816,53 +815,52 @@ public class TemplateParser implements ITemplateParser
                         startLocation,
                         startLine,
                         cursorStart);
-
+            
             // If the tag isn't empty, then create a Tag instance to ignore the
             // body of the tag.
-
+            
             if (!emptyTag)
             {
                 Tag tag = new Tag(tagName, startLine);
-
+                
                 tag._component = false;
-                tag._removeTag = true;
+                tag._removeTag = false;
                 tag._ignoringBody = true;
                 tag._mustBalance = true;
-
+                
                 _stack.add(tag);
-
+                
                 // Start ignoring content until the close tag.
-
+                
                 _ignoring = true;
             }
             else
             {
                 // Cursor is at the closing carat, advance over it.
                 advance();
-                // TAPESTRY-359: *don't* skip whitespace
+                // TAPESTRY-359: *don't* skip whitespace advanceOverWhitespace()
             }
-
+            
             // End any open block.
-
+            
             addTextToken(cursorStart - 1);
-
+            
             boolean raw = checkBoolean(RAW_ATTRIBUTE_NAME, _attributes);
-
-            Map attributes = filter(_attributes, new String[]
-            { LOCALIZATION_KEY_ATTRIBUTE_NAME, RAW_ATTRIBUTE_NAME });
-
+            
+            Map attributes = filter(_attributes, new String[] { LOCALIZATION_KEY_ATTRIBUTE_NAME, RAW_ATTRIBUTE_NAME });
+            
             TemplateToken token = _factory.createLocalizationToken(
                     tagName,
                     localizationKey,
                     raw,
                     attributes,
                     startLocation);
-
+            
             _tokens.add(token);
-
+            
             return;
         }
-
+        
         if (jwcId != null)
         {
             processComponentStart(tagName, jwcId, emptyTag, startLine, cursorStart, startLocation);

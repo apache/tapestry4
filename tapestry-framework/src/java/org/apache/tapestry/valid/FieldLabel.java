@@ -75,7 +75,8 @@ public abstract class FieldLabel extends AbstractComponent
         
         String id = field == null ? null : field.getClientId();
         
-        delegate.writeLabelPrefix(field, writer, cycle);
+        if (field != null)
+            delegate.writeLabelPrefix(field, writer, cycle);
         
         writer.begin("label");
         
@@ -93,7 +94,8 @@ public abstract class FieldLabel extends AbstractComponent
         
         writer.end();
         
-        delegate.writeLabelSuffix(field, writer, cycle);
+        if (field != null)
+            delegate.writeLabelSuffix(field, writer, cycle);
     }
 
     /** displayName parameter. */

@@ -43,12 +43,15 @@ public class LocalizedStringRender implements IRender
     private String _value;
 
     private boolean _raw;
+    
+    private String _tag;
 
     public LocalizedStringRender(IComponent component, LocalizationToken token)
     {
         _component = component;
         _key = token.getKey();
         _raw = token.isRaw();
+        _tag = token.getTag();
         _attributes = token.getAttributes();
     }
 
@@ -59,8 +62,8 @@ public class LocalizedStringRender implements IRender
 
         if (_attributes != null)
         {
-            writer.begin("span");
-
+            writer.begin(_tag == null ? "span" : _tag);
+            
             Iterator i = _attributes.entrySet().iterator();
 
             while (i.hasNext())

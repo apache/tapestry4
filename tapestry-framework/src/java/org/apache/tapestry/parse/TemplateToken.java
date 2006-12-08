@@ -54,7 +54,7 @@ public abstract class TemplateToken implements Locatable
 
         builder.append("type", _type.getName());
         builder.append("location", _location);
-
+        
         extendDescription(builder);
 
         return builder.toString();
