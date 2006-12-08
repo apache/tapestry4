@@ -2,29 +2,26 @@
 	title="message:window.title" browserLogLevel="DEBUG" consoleEnabled="true" debugEnabled="false">
 <body jwcid="@Body">
 
-<table class="tabs" cellspacing="0" border="0">
-<tr>
-<span jwcid="@For" source="ognl:pageTabNames" value="ognl:pageName">
-<td><img jwcid="@Image" image="ognl:leftTabAsset" width="2" height="20" alt=""/></td>
-<td jwcid="tabCell" align="center"><a class="nav" jwcid="pageLink"><span jwcid="@Insert" value="ognl:pageTitle">Page Title</span></a></td>
-<td><img jwcid="@Image" image="ognl:rightTabAsset" width="13" height="20" alt=""/></td>
-</span>
-</tr>
-</table>
 
-<table class="content">
+<table class="content" border="0" cellpadding="0" cellspacing="0" style="width:92%;">
 <tr>
-<td>
-
+<td width="82%">
+<div class="page">
 <span jwcid="@RenderBody">Page content goes here.</span>
-
+</div>
+</td>
+<td align="left" valign="top" style="padding-top:2em">
+ <ul class="navbar">
+	<li jwcid="@For" source="ognl:pageTabNames" value="ognl:pageName" class="ognl:isActivePage() ? 'here' : ''">
+		<a jwcid="pageLink"><span jwcid="@Insert" value="ognl:pageTitle">Page Title</span></a>
+	</li>
+</ul>
 </td>
 </tr>
 </table>
 
-<br/>
 
-<form jwcid="@Form" focus="false">
+<form jwcid="@Form" focus="false" style="float:left">
       
 <table class="requestDebug" cellspacing="0">
   <tr class="control">

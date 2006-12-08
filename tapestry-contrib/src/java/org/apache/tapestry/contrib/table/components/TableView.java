@@ -513,16 +513,14 @@ public abstract class TableView extends BaseComponent implements
      */
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        Object objOldValue = cycle
-                .getAttribute(ITableModelSource.TABLE_MODEL_SOURCE_ATTRIBUTE);
-        cycle
-                .setAttribute(ITableModelSource.TABLE_MODEL_SOURCE_ATTRIBUTE,
-                        this);
-
+        Object objOldValue = cycle.getAttribute(ITableModelSource.TABLE_MODEL_SOURCE_ATTRIBUTE);
+        cycle.setAttribute(ITableModelSource.TABLE_MODEL_SOURCE_ATTRIBUTE, this);
+        
         initialize();
         validateValues();
+        
         super.renderComponent(writer, cycle);
-
+        
         cycle.setAttribute(ITableModelSource.TABLE_MODEL_SOURCE_ATTRIBUTE,
                 objOldValue);
     }

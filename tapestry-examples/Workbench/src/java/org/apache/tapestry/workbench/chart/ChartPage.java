@@ -176,7 +176,7 @@ public abstract class ChartPage extends BasePage implements IChartProvider, Page
         legendProperties.setNumColumns(2);
         legendProperties.setPlacement(LegendAreaProperties.RIGHT);
         ChartProperties chartProperties = new ChartProperties();
-        chartProperties.setBackgroundPaint(Color.decode("#ffffcc"));
+        // chartProperties.setBackgroundPaint(Color.decode("#ffffcc"));
 
         Chart result = new PieChart2D(getData(), legendProperties, chartProperties, 400, 350);
 

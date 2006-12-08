@@ -110,7 +110,7 @@ public abstract class Border extends BaseComponent implements PageBeginRenderLis
 
     @InjectAsset("inactiveRight")
     public abstract IAsset getInactiveRight();
-
+    
     public IAsset getLeftTabAsset()
     {
         return isActivePage() ? getActiveLeft() : getInactiveLeft();
