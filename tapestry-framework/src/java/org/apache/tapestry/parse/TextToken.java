@@ -72,6 +72,7 @@ public class TextToken extends TemplateToken implements IRender
     {
         builder.append("offset", _offset);
         builder.append("length", _length);
+        builder.append("templateData", getTemplateDataAsString());
     }
 
     public String getTemplateDataAsString()

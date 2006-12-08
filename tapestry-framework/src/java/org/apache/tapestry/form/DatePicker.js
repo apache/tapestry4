@@ -568,7 +568,7 @@ Calendar.prototype.show = function(element) {
 		     underDiv.style.width = dw;
 		     underDiv.style.height = dh;
 		     underDiv.style.border = "1px solid WindowText";
-		     underDiv.innerHTML = "<iframe width=\"100%\" height=\"100%\" frameborder=\"0\"></iframe>";
+		     underDiv.innerHTML = "<iframe width=\"100%\" height=\"100%\" src='javascript:false' frameborder=\"0\"></iframe>";
 		     body.appendChild(underDiv);
 		     this._underDiv = underDiv;
 	   }

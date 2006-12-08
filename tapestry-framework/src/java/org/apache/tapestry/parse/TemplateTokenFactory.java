@@ -21,9 +21,10 @@ import org.apache.hivemind.Location;
 /**
  * A Factory used by {@link org.apache.tapestry.parse.TemplateParser} to create
  * {@link org.apache.tapestry.parse.TemplateToken} objects.
+ * 
  * <p>
  * This class is extended by Spindle - the Eclipse Plugin for Tapestry.
- * <p>
+ * </p>
  * 
  * @author glongman@intelligentworks.com
  * @since 3.0
@@ -42,17 +43,14 @@ public class TemplateTokenFactory
         return new CloseToken(tagName, location);
     }
 
-    public TextToken createTextToken(char[] templateData, int blockStart,
-            int end, Location templateLocation)
+    public TextToken createTextToken(char[] templateData, int blockStart, int end, Location templateLocation)
     {
         return new TextToken(templateData, blockStart, end, templateLocation);
     }
 
-    public LocalizationToken createLocalizationToken(String tagName,
-            String localizationKey, boolean raw, Map attributes,
-            Location startLocation)
+    public LocalizationToken createLocalizationToken(String tagName, String localizationKey, 
+            boolean raw, Map attributes, Location startLocation)
     {
-        return new LocalizationToken(tagName, localizationKey, raw, attributes,
-                startLocation);
+        return new LocalizationToken(tagName, localizationKey, raw, attributes, startLocation);
     }
 }

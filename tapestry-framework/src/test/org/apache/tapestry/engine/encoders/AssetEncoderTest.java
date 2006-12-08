@@ -33,7 +33,7 @@ import com.javaforge.tapestry.testng.TestBase;
 @Test
 public class AssetEncoderTest extends TestBase
 {
-    public void testWrongService()
+    public void test_Wrong_Service()
     {
         ServiceEncoding encoding = newEncoding();
 
@@ -56,7 +56,7 @@ public class AssetEncoderTest extends TestBase
         return newMock(ServiceEncoding.class);
     }
 
-    public void testWrongPath()
+    public void test_Wrong_Path()
     {
         ServiceEncoding encoding = newEncoding();
 
@@ -77,14 +77,14 @@ public class AssetEncoderTest extends TestBase
         expect(encoding.getServletPath()).andReturn(servletPath);
     }
 
-    public void testEncode()
+    public void test_Encode()
     {
         ServiceEncoding encoding = newEncoding();
-
+        
         trainGetParameterValue(encoding, ServiceConstants.SERVICE, Tapestry.ASSET_SERVICE);
         trainGetParameterValue(encoding, AssetService.PATH, "/foo/bar/Baz.gif");
         trainGetParameterValue(encoding, AssetService.DIGEST, "12345");
-
+        
         encoding.setServletPath("/assets/12345/foo/bar/Baz.gif");
         encoding.setParameterValue(AssetService.PATH, null);
         encoding.setParameterValue(AssetService.DIGEST, null);
@@ -100,7 +100,30 @@ public class AssetEncoderTest extends TestBase
         verify();
     }
 
-    public void testDecode()
+    public void test_Encode_Missing_Path()
+    {
+        ServiceEncoding encoding = newEncoding();
+        
+        trainGetParameterValue(encoding, ServiceConstants.SERVICE, Tapestry.ASSET_SERVICE);
+        trainGetParameterValue(encoding, AssetService.PATH, "foo/bar/Baz.gif");
+        trainGetParameterValue(encoding, AssetService.DIGEST, "12345");
+        
+        encoding.setServletPath("/assets/12345/foo/bar/Baz.gif");
+        encoding.setParameterValue(AssetService.PATH, null);
+        encoding.setParameterValue(AssetService.DIGEST, null);
+        encoding.setParameterValue(ServiceConstants.SERVICE, null);
+        
+        replay();
+
+        AssetEncoder encoder = new AssetEncoder();
+        encoder.setPath("/assets");
+
+        encoder.encode(encoding);
+
+        verify();
+    }
+    
+    public void test_Decode()
     {
         ServiceEncoding encoding = newEncoding();
 

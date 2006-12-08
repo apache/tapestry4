@@ -48,6 +48,20 @@ public class TestEmail extends BaseValidatorTestCase
         verify();
     }
 
+    public void test_Ok_Single_Character() throws Exception
+    {
+        IFormComponent field = newField();
+        ValidationMessages messages = newMessages();
+
+        replay();
+        
+        Email email = new Email();
+        email.validate(field, messages, "j@apache.org");
+        email.validate(field, messages, "jkuhnert@a.org");
+
+        verify();
+    }
+    
     public void test_Fail()
     {
         IFormComponent field = newField("My Email");

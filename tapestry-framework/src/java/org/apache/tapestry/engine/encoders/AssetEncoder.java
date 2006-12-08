@@ -31,21 +31,29 @@ public class AssetEncoder implements ServiceEncoder
 {
     public static final String DIGEST_STATIC = "static";
     
+    private static final String PATH_SEPARATOR = "/";
+    
     private String _path;
-
+    
     public void setPath(String path)
     {
         _path = path;
     }
-
+    
     public void encode(ServiceEncoding encoding)
     {
         if (!encoding.getParameterValue(ServiceConstants.SERVICE).equals(Tapestry.ASSET_SERVICE))
             return;
-
+        
         String path = encoding.getParameterValue(AssetService.PATH);
         String digest = encoding.getParameterValue(AssetService.DIGEST);
-
+        
+        // fix broken path if doesn't start with / 
+         
+        if (!path.startsWith(PATH_SEPARATOR))
+            path = PATH_SEPARATOR + path;
+        
+        
         // _path ends with a slash, path starts with one.
         
         String fullPath = _path + ((digest != null) ? "/" + digest : "/" + DIGEST_STATIC) + path;

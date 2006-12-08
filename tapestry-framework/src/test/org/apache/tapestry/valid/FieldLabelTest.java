@@ -100,7 +100,7 @@ public class FieldLabelTest extends BaseFormComponentTestCase
         verify();
     }
 
-    public void testNoField()
+    public void test_Null_Field()
     {
         IValidationDelegate delegate = new MockDelegate();
         IForm form = newForm(delegate);
@@ -113,21 +113,21 @@ public class FieldLabelTest extends BaseFormComponentTestCase
         expect(cycle.renderStackPush(fl)).andReturn(fl);
         
         trainGetForm(cycle, form);
-
+        
         trainIsRewinding(cycle, false);
-
+        
         expect(cycle.renderStackPop()).andReturn(fl);
         
         replay();
         
         fl.render(writer, cycle);
 
-        assertBuffer("{LABEL-PREFIX}<label>{BEFORE-TEXT}FredFlintstone{AFTER-TEXT}</label>{LABEL-SUFFIX}");
+        assertBuffer("<label>{BEFORE-TEXT}FredFlintstone{AFTER-TEXT}</label>");
 
         verify();
     }
 
-    public void testNoFieldRaw()
+    public void test_Null_Field_Raw()
     {
         IValidationDelegate delegate = new MockDelegate();
         IForm form = newForm(delegate);
@@ -149,7 +149,7 @@ public class FieldLabelTest extends BaseFormComponentTestCase
 
         fl.render(writer, cycle);
 
-        assertBuffer("{LABEL-PREFIX}<label>{BEFORE-TEXT}<b>FredFlintstone</b>{AFTER-TEXT}</label>{LABEL-SUFFIX}");
+        assertBuffer("<label>{BEFORE-TEXT}<b>FredFlintstone</b>{AFTER-TEXT}</label>");
 
         verify();
     }

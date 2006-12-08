@@ -76,8 +76,8 @@ public abstract class ShowTemplate extends BaseComponent implements IDirect
     /**
      * Writes the HTML template for the component. When &lt;jwc&gt; tags are written, the id is made
      * a link (that selects the named component). We use some magic to accomplish this, creating
-     * links as if we were a {@link DirectLink}component, and attributing those links to the
-     * captive {@link DirectLink}component embedded here.
+     * links as if we were a {@link DirectLink} component, and attributing those links to the
+     * captive {@link DirectLink} component embedded here.
      */
 
     private void writeTemplate(IMarkupWriter writer, IRequestCycle cycle)

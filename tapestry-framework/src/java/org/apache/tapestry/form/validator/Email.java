@@ -36,11 +36,12 @@ import org.apache.tapestry.valid.ValidatorException;
  */
 public class Email extends BaseValidator
 {
-    static final String PATTERN = "^\\w[-._\\w]*\\w@\\w[-._\\w]*\\w\\.\\w{2,6}$";
+    static final String PATTERN = "^[A-Za-z0-9]+([-_\\.]*[A-Za-z0-9]+)*@[A-Za-z0-9]+([-_\\.]*[A-Za-z0-9]+)*(\\.[_A-Za-z]{2,6})$";
     
     // TODO: Possible thread safety issue if the validator
     // is shared across threads, because the matcher
     // will be too.
+    
     private RegexpMatcher _matcher = new RegexpMatcher();
     
     public Email()
