@@ -1,3 +1,4 @@
+@import url("undohtml.css");  /* CSS to undo some default browser css that gets in the way more than it helps */
 @import url("exception.css");
 
 SPAN.label-error {
@@ -19,32 +20,103 @@ TABLE.inputerror TD.message {
     font-size: smaller;
 }
 
-TABLE.content {
-    background-color: #ffffcc;
-    border-color: Black;
-    border-style: solid;
-    border-width: thin;
-    border-top-width: 0px;
-    border-bottom-width: 2px;
-    border-right-width: 2px;
-    border-left-width: 0px;
-    font-size: smaller;
-    clear: all;
-    width: 700px;
+.content {
+    display:block;
+    margin-left:4%;
+    margin-right:4%;
+    margin-bottom: 2.5em;
+    padding:0;
+    clear:right;
 }
 
-TABLE.tabs TD {
+.page {
+    background-color: #fff;
+    min-height:500px;
+    padding:1.2em 1em 0.2em 1em;
+    -moz-border-radius: 0.65em;
+    border-top:1px solid #587ECC;
+    border-bottom:1px solid #587ECC;
+    border-left:1px solid #587ECC;
+}
+
+table.list tr td {
+    padding:0.2em 0.2em 0.2em 0.2em;
+    margin: 0px;
+}
+
+table.tabs td {
     padding: 0px;
 }
 
-BODY {
-    background-color: #808080;
-    margin: 2px;
+body {
+    font-family: Arial, Lucida Grande, Verdana, Tahoma, sans-serif;
+    font-size: 10pt;
+    line-height: 1.09em;
+    background-color: #CCCCCC;
+    width:100%;
+    height:100%;
+    padding-top:3%;
+    color: #292929;
 }
 
-body,td,th {
-    font-family: Lucida Grande, Tahoma, Verdana, Arial, sans-serif;
-    font-size: 10pt;
+p { margin-bottom: 1.2em; width:94%;}
+
+.even {
+    background-color: #f0f0f0;
+}
+
+.odd {
+    background-color: #f9f9f9;
+}
+
+.navbar {
+    border:none;
+    padding:0;
+    margin:0;
+    list-style:none;
+}
+
+.navbar li {
+    width:80%;
+    padding:.3em 3em 0.3em 1.4em;
+    background: #F2F2F2;
+}
+
+.navbar li.here {
+    background-color: #fff;
+}
+
+/**
+.navbar li a {
+    text-decoration: none;
+    padding-right: 5px;
+    padding-left: 5px;
+    padding-top:6px;
+    padding-bottom: 3px;
+    display: block;
+    color: #000;
+    font-weight: bold;
+}*/
+
+.navbar li.here { 
+    border-top: 1px solid #587ECC;
+    border-bottom: 1px solid #587ECC;
+    border-right: 1px solid #587ECC;
+}
+
+.navbar li a:hover {
+    text-decoration: underline;
+}
+
+.navbar li.here a {
+    color: #000;
+}
+
+.navbar li a {
+    text-decoration: none;
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #3e4d6b;
 }
 
 TABLE.requestDebug {
@@ -145,26 +217,15 @@ TABLE.form {
     font-size: 9pt;
 }
 
-A.nav {
-    font-family: Trebuchet MS, sans-serif;
-    text-decoration: none;
-    font-size: 12px;
-    font-weight: bold;
-    color: black;
+
+pre {
+    font-size: 0.82em;
+    background: #efefef;
+    padding-top:0.4em;
+    padding-bottom:0.4em;
 }
 
-A.nav:hover {
-    text-decoration: underline;
-}
-
-PRE {
-    font-size: 12pt;
-}
-
-UL {
-    margin-top: 0px;
-    margin-bottom: 0px;
-    margin-left: 20px;
+ul {
 }
 
 IMG {

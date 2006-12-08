@@ -123,6 +123,7 @@
     
     <component id="table" type="Any" inherit-informal-parameters="yes">
         <binding name="element" value="ognl:element"/>
+        <binding name="id" value="ognl:clientId" />
     </component>
     
     <component id="renderBody" type="RenderBody"/>
