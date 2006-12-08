@@ -15,7 +15,7 @@
 package org.apache.tapestry;
 
 /**
- * Extra interface implemented by {@link org.apache.tapestry.BaseComponent}and inherited by
+ * Extra interface implemented by {@link org.apache.tapestry.BaseComponent} and inherited by
  * {@link org.apache.tapestry.html.BasePage}, used to allow them to add contents from their
  * templates.
  * 

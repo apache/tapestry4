@@ -17,7 +17,7 @@
 
 <!DOCTYPE script PUBLIC
 	"-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
-	"http://jakarta.apache.org/tapestry/dtd/Script_3_0.dtd">
+	"http://tapestry.apache.org/dtd/Script_3_0.dtd">
 <script>
 <!-- 
 
@@ -49,15 +49,15 @@ output symbols:
 -->
 <include-script resource-path="/org/apache/tapestry/contrib/palette/PaletteFunctions.js"/>
 
-<input-symbol key="palette" class="org.apache.tapestry.contrib.palette.Palette" required="yes"/>
-<input-symbol key="selectImage" class="java.lang.String" required="yes"/>
-<input-symbol key="selectDisabledImage" class="java.lang.String" required="yes"/>
-<input-symbol key="deselectImage" class="java.lang.String" required="yes"/>
-<input-symbol key="deselectDisabledImage" class="java.lang.String" required="yes"/>
-<input-symbol key="upImage" class="java.lang.String"/>
-<input-symbol key="upDisabledImage" class="java.lang.String"/>
-<input-symbol key="downImage" class="java.lang.String"/>
-<input-symbol key="downDisabledImage" class="java.lang.String"/>
+<input-symbol key="palette" required="yes"/>
+<input-symbol key="selectImage" required="yes"/>
+<input-symbol key="selectDisabledImage" required="yes"/>
+<input-symbol key="deselectImage" required="yes"/>
+<input-symbol key="deselectDisabledImage" required="yes"/>
+<input-symbol key="upImage" />
+<input-symbol key="upDisabledImage" />
+<input-symbol key="downImage" />
+<input-symbol key="downDisabledImage" />
 
 <set key="formName" expression="palette.form.name"/>
 <set key="name" expression="palette.clientId"/>
@@ -117,7 +117,7 @@ output symbols:
 </let>
 
 <let key="formSubmitFunctionName">
-  tapestry.onsubmit_${baseName}
+  onsubmit_${baseName}
 </let>
 
 <let key="selectImageName">
@@ -297,7 +297,7 @@ ${deselectFunctionName}=function(){
   ${updateFunctionName}();  
 }
 
-${formSubmitFunctionName}=function(event){
+tapestry.${formSubmitFunctionName}=function(event){
   tapestry.palette.clearSelections(${availablePath});
   tapestry.palette.selectAll(${selectedPath});
 }
@@ -341,7 +341,7 @@ ${selectedPath}.ondblclick = ${deselectFunctionName};
 ${availablePath}.onchange = ${availableChangeFunctionName};
 ${availablePath}.ondblclick = ${selectFunctionName};
 ${updateFunctionName}();
-dojo.event.connect(dojo.byId("${formName}"), "onrefresh" , "${formSubmitFunctionName}");
-dojo.event.connect(dojo.byId("${formName}"), "onsubmit" , "${formSubmitFunctionName}");
+dojo.event.connect(dojo.byId("${formName}"), "onrefresh" , tapestry, "${formSubmitFunctionName}");
+dojo.event.connect(dojo.byId("${formName}"), "onsubmit" , tapestry, "${formSubmitFunctionName}");
 </initialization>
 </script>
