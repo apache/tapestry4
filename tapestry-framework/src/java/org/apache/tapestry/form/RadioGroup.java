@@ -162,7 +162,7 @@ public abstract class RadioGroup extends AbstractFormComponent implements Valida
         
         renderBody(writer, cycle);
         
-        writer.closeTag();
+        writer.end();
         
         renderDelegateSuffix(writer, cycle);
         

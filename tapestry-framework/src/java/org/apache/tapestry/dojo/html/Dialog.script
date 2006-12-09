@@ -18,7 +18,6 @@
    limitations under the License.
 -->
 <script>
-
 <input-symbol key="component" required="yes" />
 <input-symbol key="props" required="yes" />
     <body>
@@ -28,12 +27,10 @@
     </body>
     <initialization>
     tapestry.widget.synchronizeWidgetState("${component.clientId}", "Dialog", ${props}, ${component.destroy});
-    
     <if expression="component.hidden">
         dojo.widget.byId("${component.clientId}").hide();
     </if><if-not expression="component.hidden">
         dojo.widget.byId("${component.clientId}").show();
     </if-not>
     </initialization>
-    
 </script>
