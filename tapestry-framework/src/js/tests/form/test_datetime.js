@@ -1,5 +1,7 @@
 dojo.registerModulePath("tapestry", "../tapestry");
 
+djConfig.locale="fr";
+
 dojo.require("dojo.widget.*");
 dojo.require("tapestry.test");
 dojo.require("tapestry.core");
