@@ -80,7 +80,7 @@ public class FormComponentContributorContextImpl extends ValidationMessagesImpl 
         
         _pageRenderSupport.addExternalScript(_form, resource);
     }
-
+    
     public void addSubmitHandler(String submitListener)
     {
         _pageRenderSupport.addInitializationScript(_form, "Tapestry.onsubmit('" + _formId + "', "

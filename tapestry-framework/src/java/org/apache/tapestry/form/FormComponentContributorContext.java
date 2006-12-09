@@ -46,6 +46,8 @@ public interface FormComponentContributorContext extends ValidationMessages
      * @param submitListener
      *            either the name of a submit listener ("myListener"), or an inline implementation
      *            of a listener function ("function(event) { ... } ").
+     * @deprecated To be removed in 4.2 with no replacement. The new preferred way to do this is by using simple
+     * <code>dojo.event.connect("formName", "event", object, "functionName)</code> style connections.
      */
 
     void addSubmitHandler(String handler);

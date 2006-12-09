@@ -27,7 +27,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.hivemind.ApplicationRuntimeException;
 
 /**
- * Implementation of {@link org.apache.tapestry.multipart.MultipartDecoder}that
+ * Implementation of {@link org.apache.tapestry.multipart.MultipartDecoder} that
  * is based on <a href="http://jakarta.apache.org/commons/fileupload/">Jakarta
  * FileUpload </a>.
  * 
