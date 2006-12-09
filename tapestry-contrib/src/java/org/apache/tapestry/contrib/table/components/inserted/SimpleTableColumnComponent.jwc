@@ -27,11 +27,13 @@
 	
 	<component id="condSorted" type="If">
 		<binding name="condition" expression="columnSorted"/>
+        <binding name="renderTag" expression="false" />
 	</component>
 	
 	<component id="condNotSorted" type="Else">
 		<binding name="condition" expression="columnSorted"/>
 		<static-binding name="invert">true</static-binding>
+        <binding name="renderTag" expression="false" />
 	</component>
 	
 	<component id="insertSortedColumn" type="Insert">
@@ -53,6 +55,7 @@
 	
 	<component id="condSort" type="If">
 		<binding name="condition" expression="isSorted"/>
+        <binding name="renderTag" expression="false" />
 	</component>
 	
     <private-asset name="sortDown" resource-path="arrow-down.gif"/>

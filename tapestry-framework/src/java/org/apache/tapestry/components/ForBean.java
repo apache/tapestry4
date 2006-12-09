@@ -139,7 +139,7 @@ public abstract class ForBean extends AbstractFormComponent
         
         String element = HiveMind.isNonBlank(getElement()) ? getElement() : getTemplateTagName();
         
-        boolean render = !cycleRewinding && HiveMind.isNonBlank(element);
+        boolean render = !cycleRewinding && HiveMind.isNonBlank(element) && getRenderTag();
         
         IMarkupWriter loopWriter = writer;
         
