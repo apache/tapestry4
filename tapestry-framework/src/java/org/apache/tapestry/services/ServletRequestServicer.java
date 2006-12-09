@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * An object that can service an HTTP servlet request. This is the bridge from the servlet world
  * into the Tapestry world. Generally, few objects actually implement this; instead objects
- * implement {@link org.apache.tapestry.services.ServletRequestServicerFilter}&nbsp;and plug into
+ * implement {@link org.apache.tapestry.services.ServletRequestServicerFilter} and plug into
  * the tapestry.request.ServletRequestServicerPipeline configuration point.
  * 
  * @author Howard Lewis Ship
