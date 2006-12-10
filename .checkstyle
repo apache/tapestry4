@@ -8,16 +8,15 @@
     </fileset>
     <filter name="FilesFromPackage" enabled="true">
         <filter-data value="tapestry-framework/src/test"/>
-        <filter-data value="tapestry-examples/VlibBeans/src/test"/>
-        <filter-data value="tapestry-examples/Vlib/src/test"/>
-        <filter-data value="tapestry-framework/src/descriptor"/>
-        <filter-data value="tapestry-contrib/src/descriptor"/>
         <filter-data value="tapestry-portlet/src/test"/>
-        <filter-data value="tapestry-annotations/src/descriptor"/>
-        <filter-data value="tapestry-portlet/src/descriptor"/>
         <filter-data value="tapestry-examples/Workbench/src/test"/>
+        <filter-data value="tapestry-framework/src/js"/>
         <filter-data value="tapestry-contrib/src/test"/>
         <filter-data value="tapestry-annotations/src/test"/>
+        <filter-data value="tapestry-annotations/src/descriptor"/>
+        <filter-data value="tapestry-contrib/src/descriptor"/>
+        <filter-data value="tapestry-framework/src/descriptor"/>
+        <filter-data value="tapestry-portlet/src/descriptor"/>
     </filter>
     <filter name="NonSrcDirs" enabled="true"/>
 </fileset-config>

@@ -44,7 +44,7 @@ public class TestIfElse extends BaseComponentTestCase
         IRender render = newMock(IRender.class);
         
         render.render(writer, cycle);
-
+        
         return render;
     }
 

@@ -107,9 +107,15 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
         return getPreloadedImageReference(null, URL);
     }
     
+    public String getPreloadedImageReference(IComponent target, IAsset source)
+    {
+        return getPreloadedImageReference(target, source.buildURL());
+    }
+    
     public String getPreloadedImageReference(IComponent target, String URL)
     {
-        if (target != null && !_builder.isImageInitializationAllowed(target))
+        if (target != null 
+                && !_builder.isImageInitializationAllowed(target))
             return URL;
         
         if (_imageMap == null)

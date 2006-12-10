@@ -26,6 +26,7 @@ import java.util.zip.GZIPOutputStream;
 
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
@@ -329,6 +330,14 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
             return true;
         
         return contains(target);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public String getPreloadedImageReference(IComponent target, IAsset source)
+    {
+        return _prs.getPreloadedImageReference(target, source);
     }
     
     /**

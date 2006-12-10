@@ -18,6 +18,7 @@ import java.io.PrintWriter;
 
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
@@ -248,6 +249,14 @@ public class DefaultResponseBuilder implements ResponseBuilder
     public boolean isImageInitializationAllowed(IComponent target)
     {
         return true;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public String getPreloadedImageReference(IComponent target, IAsset source)
+    {
+        return _prs.getPreloadedImageReference(target, source);
     }
     
     /**

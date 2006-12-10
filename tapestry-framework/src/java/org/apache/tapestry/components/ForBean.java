@@ -79,7 +79,7 @@ public abstract class ForBean extends AbstractFormComponent
     public abstract boolean getRenderTag();
     
     public abstract String getElement();
-
+    
     public abstract String getKeyExpression();
 
     public abstract IPrimaryKeyConverter getConverter();
@@ -556,7 +556,7 @@ public abstract class ForBean extends AbstractFormComponent
         // Check if the string rep is empty. If so, just return the default value.
         if (rep == null || rep.length() == 0)
             return getDefaultValue();
-
+        
         // If required, find a value with an equivalent string representation and return it
         boolean match = getMatch();
         if (match)
@@ -583,7 +583,7 @@ public abstract class ForBean extends AbstractFormComponent
                 // If the string rep is just the value itself, unsqueeze it
                 value = squeezer.unsqueeze(squeezed);
                 break;
-
+                
             case DESC_PRIMARY_KEY:
                 // Perform keyExpression match if not already attempted
                 if (!match && getKeyExpression() != null)
@@ -635,7 +635,7 @@ public abstract class ForBean extends AbstractFormComponent
         value = findValueWithStringRepInIterator(sourceIterator, repToValueMap, rep, repSource);
         if (value != null)
             return value;
-
+        
         value = findValueWithStringRepInIterator(fullSourceIterator, repToValueMap, rep, repSource);
         return value;
     }
@@ -662,10 +662,10 @@ public abstract class ForBean extends AbstractFormComponent
             Object sourceValue = it.next();
             if (sourceValue == null)
                 continue;
-
+            
             String sourceRep = repSource.getStringRep(sourceValue);
             repToValueMap.put(sourceRep, sourceValue);
-
+            
             if (rep.equals(sourceRep))
                 return sourceValue;
         }
@@ -686,10 +686,10 @@ public abstract class ForBean extends AbstractFormComponent
         IBinding sourceBinding = getBinding("source");
         if (sourceBinding != null)
             source = sourceBinding.getObject();
-
+        
         if (source != null)
             it = (Iterator) getValueConverter().coerceValue(source, Iterator.class);
-
+        
         if (it == null)
             it = Collections.EMPTY_LIST.iterator();
 
