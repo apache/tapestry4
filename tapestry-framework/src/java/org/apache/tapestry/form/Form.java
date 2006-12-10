@@ -216,7 +216,6 @@ public abstract class Form extends AbstractComponent implements IForm
         // Note: not safe to invoke getNamespace() in Portlet world
         // except during a RenderRequest.
         
-        // _name = getClientId() + getResponse().getNamespace();
         _name = getClientId() + getResponse().getNamespace();
         
         if (_renderInformalParameters == null)

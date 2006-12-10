@@ -68,7 +68,8 @@ public class ValidationDelegate implements IValidationDelegate
 
     public void clearErrors()
     {
-        if (_trackings == null) return;
+        if (_trackings == null) 
+            return;
 
         Iterator i = _trackings.iterator();
         while(i.hasNext())
@@ -212,7 +213,8 @@ public class ValidationDelegate implements IValidationDelegate
 
         if (errorRenderer == null)
             record(ex.getMessage(), ex.getConstraint());
-        else record(errorRenderer, ex.getConstraint());
+        else 
+            record(errorRenderer, ex.getConstraint());
     }
 
     /**
@@ -342,7 +344,7 @@ public class ValidationDelegate implements IValidationDelegate
             writer.end();
         }
     }
-
+    
     public boolean getHasErrors()
     {
         return getFirstError() != null;
@@ -460,7 +462,8 @@ public class ValidationDelegate implements IValidationDelegate
 
             IRender errorRenderer = tracking.getErrorRenderer();
 
-            if (errorRenderer != null) result.add(errorRenderer);
+            if (errorRenderer != null) 
+                result.add(errorRenderer);
         }
 
         return result;
