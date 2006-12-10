@@ -16,9 +16,11 @@ package org.apache.tapestry.describe;
 
 import static org.easymock.EasyMock.expect;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import org.apache.tapestry.IMarkupWriter;
 import org.testng.annotations.Test;
@@ -91,7 +93,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         writer.println();
     }
 
-    public void testSetTitleTwiceFails()
+    public void test_Set_Title_Twice_Fails()
     {
         IMarkupWriter writer = newWriter();
         DescribableStrategy adapter = newStrategy();
@@ -116,7 +118,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         verify();
     }
 
-    public void testSetSectionBeforeTitleFails()
+    public void test_Set_Section_Before_Title_Fails()
     {
         IMarkupWriter writer = newWriter();
         DescribableStrategy adapter = newStrategy();
@@ -138,7 +140,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         verify();
     }
 
-    public void testIntProperty()
+    public void test_Int_Property()
     {
         IMarkupWriter writer = newWriter();
         DescribableStrategy adapter = newStrategy();
@@ -158,7 +160,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         verify();
     }
 
-    public void testPropertiesWithoutSection()
+    public void test_Properties_Without_Section()
     {
         IMarkupWriter writer = newWriter();
         DescribableStrategy adapter = newStrategy();
@@ -190,7 +192,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         verify();
     }
 
-    public void testFinishWithProperties()
+    public void test_Finish_With_Properties()
     {
         IMarkupWriter writer = newWriter();
         DescribableStrategy adapter = newStrategy();
@@ -217,7 +219,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         verify();
     }
 
-    public void testFinishNoPropertiesNoTitle()
+    public void test_Finish_No_Properties_No_Title()
     {
         IMarkupWriter writer = newWriter();
         DescribableStrategy adapter = newStrategy();
@@ -236,7 +238,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         verify();
     }
 
-    public void testFinishNoPropertiesWithTitle()
+    public void test_Finish_No_Properties_With_Title()
     {
         IMarkupWriter writer = newWriter();
         DescribableStrategy adapter = newStrategy();
@@ -257,7 +259,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         verify();
     }
 
-    public void testArray()
+    public void test_Array()
     {
         IMarkupWriter writer = newWriter();
         DescribableStrategy adapter = new NoOpStrategy();
@@ -279,7 +281,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         verify();
     }
 
-    public void testCollection()
+    public void test_Collection()
     {
         IMarkupWriter writer = newWriter();
         DescribableStrategy adapter = new NoOpStrategy();
@@ -302,7 +304,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         verify();
     }
 
-    public void testArrayNullAndEmpty()
+    public void test_Array_Null_And_Empty()
     {
         IMarkupWriter writer = newWriter();
         DescribableStrategy strategy = newStrategy();
@@ -318,7 +320,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         verify();
     }
 
-    public void testCollectionNullAndEmpty()
+    public void test_Collection_Null_And_Empty()
     {
         IMarkupWriter writer = newWriter();
         DescribableStrategy strategy = newStrategy();
@@ -334,7 +336,30 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         verify();
     }
 
-    public void testScalarProperties()
+    public void test_Collection_Concurrent_Modification()
+    {
+        IMarkupWriter writer = newWriter();
+        DescribableStrategy adapter = new NoOpStrategy();
+        
+        final List list = new ArrayList();
+        list.add("Fred");
+        list.add("Barney");
+        
+        trainForTitle(writer, "Collection");
+        trainForNestedKeyValue(writer, "list", "Fred", true);
+        trainForNestedKeyValue(writer, null, "Barney", false);
+        
+        replay();
+        
+        HTMLDescriptionReceiver dr = new HTMLDescriptionReceiver(writer, adapter);
+        
+        dr.title("Collection");
+        dr.collection("list", list);
+        
+        verify();
+    }
+    
+    public void test_Scalar_Properties()
     {
         IMarkupWriter writer = newWriter();
         DescribableStrategy strategy = newStrategy();
@@ -366,7 +391,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         verify();
     }
 
-    public void testNullRoot()
+    public void test_Null_Root()
     {
         IMarkupWriter writer = newWriter();
         DescribableStrategy strategy = newStrategy();
@@ -382,7 +407,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         verify();
     }
 
-    public void testNullProperty()
+    public void test_Null_Property()
     {
         IMarkupWriter writer = newWriter();
         DescribableStrategy strategy = newStrategy();
@@ -401,7 +426,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
 
     }
 
-    public void testHTMLDescriber()
+    public void test_HTML_Describer()
     {
         IMarkupWriter writer = newWriter();
         DescribableStrategy strategy = new NoOpStrategy();
@@ -435,8 +460,8 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
     {
         return newMock(RootDescriptionReceiverFactory.class);
     }
-
-    public void testDescribeAlternate()
+    
+    public void test_Describe_Alternate()
     {
         IMarkupWriter writer = newWriter();
         DescribableStrategy strategy = newStrategy();

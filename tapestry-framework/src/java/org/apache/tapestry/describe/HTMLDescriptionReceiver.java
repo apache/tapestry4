@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.describe;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -26,6 +27,7 @@ import org.apache.tapestry.IMarkupWriter;
  * <p>
  * TODO: Make {@link #describeAlternate(Object)} exclusive with the other
  * methods {@link #title(String)}, {@link #property(String, Object)}, etc.
+ * </p>
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
@@ -240,8 +242,7 @@ public class HTMLDescriptionReceiver implements RootDescriptionReciever
             return;
         }
 
-        new HTMLDescriptionReceiver(_writer, _strategy, _styles)
-                .describe(value);
+        new HTMLDescriptionReceiver(_writer, _strategy, _styles).describe(value);
     }
 
     public void property(String key, boolean value)
@@ -311,7 +312,7 @@ public class HTMLDescriptionReceiver implements RootDescriptionReciever
         if (values == null || values.length == 0) return;
 
         emitSection();
-
+        
         for(int i = 0; i < values.length; i++)
         {
             _writer.begin("tr");
@@ -336,33 +337,34 @@ public class HTMLDescriptionReceiver implements RootDescriptionReciever
     public void collection(String key, Collection values)
     {
         Defense.notNull(key, "key");
-
+        
         assertTitleSet();
-
+        
         if (values == null || values.isEmpty()) return;
-
+        
         emitSection();
-
-        Iterator i = values.iterator();
+        
+        Iterator i = new ArrayList(values).iterator();
         boolean first = true;
-
+        
         while(i.hasNext())
         {
             _writer.begin("tr");
             writeRowClass();
-
+            
             _writer.begin("th");
 
-            if (first) _writer.print(key);
-
+            if (first) 
+                _writer.print(key);
+            
             _writer.end();
             _writer.begin("td");
-
+            
             describeNested(i.next());
-
+            
             _writer.end("tr");
             _writer.println();
-
+            
             first = false;
         }
     }
