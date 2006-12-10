@@ -21,6 +21,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
+import org.apache.tapestry.form.translator.NumberTranslator;
 import org.apache.tapestry.json.JSONLiteral;
 import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.valid.ValidationConstants;
@@ -83,10 +84,19 @@ public class Min extends BaseValidator
         // TODO: Should find some way to provide this globally and cache.
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(context.getLocale());
         
+        String minString = null;
+        NumberTranslator translator = (NumberTranslator)super.getFieldTranslator(field, NumberTranslator.class);
+        
+        if (translator != null)
+            minString = translator.format(field, context.getLocale(), _min);
+        else
+            minString = String.valueOf(_min);
+        
         accumulateProperty(cons, field.getClientId(), 
                 new JSONLiteral("[dojo.validate.isInRange,{"
-                        + "min:" + _min + ","
+                        + "min:" + minString + ","
                         + "decimal:" + JSONObject.quote(symbols.getDecimalSeparator())
+                        + ",separator:" + JSONObject.quote(symbols.getGroupingSeparator())
                         + "}]"));
         
         accumulateProfileProperty(field, profile, 

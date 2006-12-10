@@ -16,7 +16,6 @@ package org.apache.tapestry.form.validator;
 
 import static org.easymock.EasyMock.expect;
 
-import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
 import org.apache.tapestry.IMarkupWriter;
@@ -110,8 +109,7 @@ public class TestMax extends BaseValidatorTestCase
         
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
         
-        Locale locale = Locale.FRANCE;
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
+        Locale locale = Locale.GERMAN;
         
         expect(context.getLocale()).andReturn(locale);
         
@@ -126,10 +124,10 @@ public class TestMax extends BaseValidatorTestCase
 
         verify();
         
-        assertEquals("{\"constraints\":{\"myfield\":[[dojo.validate.isInRange,{max:20.0,decimal:\""
-                + symbols.getDecimalSeparator() + "\"}]]},"
-                + "\"myfield\":{\"constraints\":[\"default message\"]}}",
-                json.toString());
+        assertEquals(json.toString(), 
+                "{\"constraints\":{\"myfield\":" +
+                "[[dojo.validate.isInRange,{max:20.0,decimal:\",\",separator:\".\"}]]}," +
+                "\"myfield\":{\"constraints\":[\"default message\"]}}");
     }
     
     public void test_Render_Contribution_Custom_Message()
@@ -143,8 +141,7 @@ public class TestMax extends BaseValidatorTestCase
         
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
         
-        Locale locale = Locale.FRANCE;
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
+        Locale locale = Locale.JAPAN;
         
         expect(context.getLocale()).andReturn(locale);
         
@@ -164,10 +161,10 @@ public class TestMax extends BaseValidatorTestCase
 
         verify();
         
-        assertEquals("{\"constraints\":{\"myfield\":[[dojo.validate.isInRange,{max:20.0,decimal:\""
-                + symbols.getDecimalSeparator() + "\"}]]},"
-                +"\"myfield\":{\"constraints\":[\"custom\\\\message\"]}}",
-                json.toString());
+        assertEquals(json.toString(),
+                "{\"constraints\":{\"myfield\":[[dojo.validate.isInRange," +
+                "{max:20.0,decimal:\".\",separator:\",\"}]]}," +
+                "\"myfield\":{\"constraints\":[\"custom\\\\message\"]}}");
     }
 
 }

@@ -217,10 +217,10 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         
         verify();
         
-        assertEquals( "{\"constraints\":{\"numberField\":[[dojo.validate.isRealNumber,"
-                + "{places:0,decimal:\".\"}]]},"
-                + "\"numberField\":{\"constraints\":[\"invalid number message\"]}}",
-                json.toString());
+        assertEquals(json.toString(),
+                "{\"constraints\":{\"numberField\":[[dojo.validate.isRealNumber," +
+                "{places:0,decimal:\".\",separator:\",\"}]]},\"numberField\":" +
+                "{\"constraints\":[\"invalid number message\"]}}");
     }
 
     public void testMessageRenderContribution()
@@ -240,7 +240,7 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         expect(context.getProfile()).andReturn(json);
         
         trainGetLocale(context, Locale.ENGLISH);
-
+        
         trainBuildMessage(
                 context,
                 messageOverride,
@@ -249,17 +249,17 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
                 "Blah Blah 'Field Name' Blah.");
         
         replay();
-
+        
         translator.setMessage(messageOverride);
 
         translator.renderContribution(writer, cycle, context, field);
         
         verify();
         
-        assertEquals("{\"constraints\":{\"myfield\":[[dojo.validate.isRealNumber,"
-                + "{places:0,decimal:\".\"}]]},"
-                + "\"myfield\":{\"constraints\":[\"Blah Blah \'Field Name\' Blah.\"]}}",
-                json.toString());
+        assertEquals(json.toString(),
+                "{\"constraints\":{\"myfield\":[[dojo.validate.isRealNumber," +
+                "{places:0,decimal:\".\",separator:\",\"}]]},\"myfield\":" +
+                "{\"constraints\":[\"Blah Blah \'Field Name\' Blah.\"]}}");
     }
     
     public void testTrimRenderContribution()
@@ -291,11 +291,10 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         
         verify();
         
-        assertEquals("{\"trim\":[\"myfield\"],"
-                + "\"constraints\":{\"myfield\":[[dojo.validate.isRealNumber,"
-                + "{places:0,decimal:\".\"}]]},"
-                + "\"myfield\":{\"constraints\":[\"invalid number message\"]}}",
-                json.toString());
+        assertEquals(json.toString(),
+                "{\"trim\":[\"myfield\"],\"constraints\":{\"myfield\":" +
+                "[[dojo.validate.isRealNumber,{places:0,decimal:\".\",separator:\",\"}]]}," +
+                "\"myfield\":{\"constraints\":[\"invalid number message\"]}}");
                 
     }
 }

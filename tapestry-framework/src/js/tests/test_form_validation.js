@@ -35,6 +35,13 @@ function test_validate_realNumber(){
 	jum.assertFalse(value, dojo.validate.isRealNumber(value, {places:0,decimal:".",separator:","}));
 }
 
+function test_validate_decimals(){
+	var input = "1,124.12";
+	jum.assertTrue(dojo.validate.isRealNumber(input, {decimal:".",separator:","}));
+	jum.assertTrue(dojo.validate.isInRange(input, {min:2.0,decimal:".",separator:",",symbol:"¤"}));
+	jum.assertTrue(dojo.validate.isInRange(input, {max:1000000001,decimal:".",separator:",",symbol:"¤"}));
+}
+
 function test_validate_required(){
 	// A generic form
 	var f = {
