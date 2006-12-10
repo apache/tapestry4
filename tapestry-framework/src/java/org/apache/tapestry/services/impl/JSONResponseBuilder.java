@@ -24,6 +24,7 @@ import java.util.zip.GZIPOutputStream;
 
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IJSONRender;
 import org.apache.tapestry.IMarkupWriter;
@@ -333,6 +334,14 @@ public class JSONResponseBuilder implements ResponseBuilder
     public boolean isImageInitializationAllowed(IComponent target)
     {
         return false;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public String getPreloadedImageReference(IComponent target, IAsset source)
+    {
+        return _prs.getPreloadedImageReference(target, source);
     }
     
     /**

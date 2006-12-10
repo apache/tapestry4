@@ -24,6 +24,7 @@ import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IAsset;
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.asset.AssetFactory;
@@ -40,19 +41,20 @@ import org.testng.annotations.Test;
  * @since 4.0
  */
 @Test(sequential=true)
+@SuppressWarnings("all")
 public class TestPageRenderSupport extends BaseComponentTestCase
 {
     private static final String SYSTEM_NEWLINE= (String)java.security.AccessController.doPrivileged(
             new sun.security.action.GetPropertyAction("line.separator"));
     
     private static final String TEST_NEWLINE= "\n";
-
+    
     private AssetFactory newAssetFactory()
     {
         return newMock(AssetFactory.class);
     }
 
-    private IAsset newAsset(IRequestCycle cycle, String url)
+    private IAsset newAsset(String url)
     {
         IAsset asset = newMock(IAsset.class);
         checkOrder(asset, false);
@@ -126,15 +128,18 @@ public class TestPageRenderSupport extends BaseComponentTestCase
         Location l = newLocation();
         IRequestCycle cycle = newCycle();
         IMarkupWriter writer = createWriter();
-
+        
+        IComponent comp = newMock(IComponent.class);
+        IAsset img = newAsset("/zip/zap.png");
+        
         replay();
-
+        
         PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "", l, newBuilder(writer));
-
+        
         assertEquals(prs.getPreloadedImageReference("/foo/bar.gif"), "tapestry.preload[0].src");
-        assertEquals(prs.getPreloadedImageReference("/zip/zap.png"), "tapestry.preload[1].src");
+        assertEquals(prs.getPreloadedImageReference(comp, img), "tapestry.preload[1].src");
         assertEquals(prs.getPreloadedImageReference("/foo/bar.gif"), "tapestry.preload[0].src");
-
+        
         prs.addBodyScript("myBodyScript();");
 
         prs.writeBodyScript(writer, cycle);
@@ -282,11 +287,11 @@ public class TestPageRenderSupport extends BaseComponentTestCase
         AssetFactory assetFactory = newMock(AssetFactory.class);
         
         Resource script1 = newResource();
-        IAsset asset1 = newAsset(cycle, "/script1.js");
+        IAsset asset1 = newAsset("/script1.js");
         
         Resource script2 = newResource();
-        IAsset asset2 = newAsset(cycle, "/script2.js");
-
+        IAsset asset2 = newAsset("/script2.js");
+        
         expect(assetFactory.createAsset(script1, null)).andReturn(asset1);
 
         expect(assetFactory.createAsset(script2, null)).andReturn(asset2);

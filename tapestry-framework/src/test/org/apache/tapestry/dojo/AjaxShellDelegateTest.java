@@ -34,6 +34,7 @@ import org.testng.annotations.Test;
  * @author jkuhnert
  */
 @Test(sequential=true)
+@SuppressWarnings("all")
 public class AjaxShellDelegateTest extends BaseComponentTestCase
 {
     private static final String SYSTEM_NEWLINE= (String)java.security.AccessController.doPrivileged(
