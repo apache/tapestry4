@@ -69,7 +69,7 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         ISpecificationResolverDelegate delegate = newMock(ISpecificationResolverDelegate.class);
         checkOrder(delegate, false);
         
-        expect(delegate.findComponentSpecification(cycle, namespace, type)).andReturn(spec);
+        expect(delegate.findComponentSpecification(cycle, namespace, type)).andReturn(spec).anyTimes();
 
         return delegate;
     }
@@ -135,25 +135,25 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         
         IComponentSpecification spec = newSpec();
         INamespace namespace = newMock(INamespace.class);
-
+        
         expect(namespace.containsComponentType("MyComponent")).andReturn(true);
-
+        
         expect(namespace.getComponentSpecification("MyComponent")).andReturn(spec);
-
+        
         trainIsDeprecated(spec, true);
 
         Log log = newMock(Log.class);
-
+        
         log.warn(startsWith("Component 'MyComponent' ("));
         // at classpath:/org/apache/tapestry/resolver/TestComponentSpecificationResolver, line 1) is deprecated, and will likely be removed in a later release. Consult its documentation to find a replacement component.");
-
+        
         replay();
-
+        
         ComponentSpecificationResolverImpl resolver = new ComponentSpecificationResolverImpl();
         resolver.setLog(log);
-
+        
         resolver.resolve(cycle, namespace, "MyComponent", l);
-
+        
         assertSame(spec, resolver.getSpecification());
         assertSame(namespace, resolver.getNamespace());
 
@@ -232,13 +232,14 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         verify();
     }
 
-    public void testFoundInFrameworkNamespace()
+    public void test_Found_In_Framework_Namespace()
     {
         IRequestCycle cycle = newCycle();
         Location l = newLocation();
 
         IComponentSpecification spec = newSpec();
         INamespace namespace = newMock(INamespace.class);
+        ISpecificationResolverDelegate delegate = newMock(ISpecificationResolverDelegate.class);
         
         Log log = newMock(Log.class);
         INamespace framework = newMock(INamespace.class);
@@ -253,19 +254,21 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
 
         train(log, ResolverMessages.checkingResource(namespaceLocation
                 .getRelativeResource("FrameworkComponent.jwc")));
-
+        
         expect(namespace.isApplicationNamespace()).andReturn(false);
-
+        
+        expect(delegate.findComponentSpecification(cycle, namespace, "FrameworkComponent")).andReturn(null);
+        
         trainGetPackages(namespace, "org.foo");
         
         ClassFinder finder = newClassFinder("org.foo", "FrameworkComponent", null);
-
+        
         ISpecificationSource source = newSource(framework);
 
         expect(framework.containsComponentType("FrameworkComponent")).andReturn(true);
 
         expect(framework.getComponentSpecification("FrameworkComponent")).andReturn(spec);
-
+        
         train(log, ResolverMessages
                 .installingComponent("FrameworkComponent", namespace, spec));
         namespace.installComponentSpecification("FrameworkComponent", spec);
@@ -278,7 +281,8 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         resolver.setLog(log);
         resolver.setSpecificationSource(source);
         resolver.setClassFinder(finder);
-
+        resolver.setDelegate(delegate);
+        
         resolver.resolve(cycle, namespace, "FrameworkComponent", l);
 
         assertSame(spec, resolver.getSpecification());
@@ -287,7 +291,7 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         verify();
     }
 
-    public void testProvidedByDelegate()
+    public void test_Provided_By_Delegate()
     {
         IRequestCycle cycle = newCycle();
         Location l = newLocation();
@@ -296,8 +300,8 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         INamespace namespace = newMock(INamespace.class);
         
         Log log = newMock(Log.class);
-        INamespace framework = newMock(INamespace.class);
-
+        //INamespace framework = newMock(INamespace.class);
+        
         ISpecificationResolverDelegate delegate = newDelegate(
                 cycle,
                 namespace,
@@ -316,33 +320,24 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
                 .getRelativeResource("DelegateComponent.jwc")));
 
         expect(namespace.isApplicationNamespace()).andReturn(false);
-
-        expect(framework.containsComponentType("DelegateComponent")).andReturn(false);
-
-        expect(log.isDebugEnabled()).andReturn(false);
-
-        ClassFinder finder = newClassFinder("org.foo", "DelegateComponent", null);
-        trainGetPackages(namespace, "org.foo");
         
-        ISpecificationSource source = newSource(framework);
+        expect(log.isDebugEnabled()).andReturn(false);
         
         namespace.installComponentSpecification("DelegateComponent", spec);
-
+        
         trainIsDeprecated(spec, false);
-
+        
         replay();
 
         ComponentSpecificationResolverImpl resolver = new ComponentSpecificationResolverImpl();
         resolver.setLog(log);
-        resolver.setSpecificationSource(source);
         resolver.setDelegate(delegate);
-        resolver.setClassFinder(finder);
-
+        
         resolver.resolve(cycle, namespace, "DelegateComponent", l);
-
+        
         assertSame(spec, resolver.getSpecification());
         assertSame(namespace, resolver.getNamespace());
-
+        
         verify();
     }
 
@@ -361,7 +356,7 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         return finder;
     }
 
-    public void testNotFound()
+    public void test_Not_Found()
     {
         IRequestCycle cycle = newCycle();
         Location l = newLocation();
@@ -370,15 +365,15 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         
         INamespace namespace = newMock(INamespace.class);
         INamespace framework = newMock(INamespace.class);
-
+        
         ISpecificationResolverDelegate delegate = newDelegate(
                 cycle,
                 namespace,
                 "NotFoundComponent",
                 null);
-
+        
         Resource namespaceLocation = newResource("LibraryStandin.library");
-
+        
         expect(namespace.containsComponentType("NotFoundComponent")).andReturn(false);
 
         train(log, ResolverMessages.resolvingComponent("NotFoundComponent", namespace));
@@ -426,7 +421,7 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
      * name).
      */
 
-    public void testFoundInAppFolder()
+    public void test_Found_In_App_Folder()
     {
         IRequestCycle cycle = newCycle();
         Location l = newLocation();
@@ -437,10 +432,10 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         Resource contextRoot = newResource("context/");
         
         INamespace namespace = newMock(INamespace.class);
-
+        
         Resource namespaceLocation = newResource("LibraryStandin.library");
         Resource specLocation = contextRoot.getRelativeResource("WEB-INF/myapp/MyAppComponent.jwc");
-
+        
         expect(namespace.containsComponentType("MyAppComponent")).andReturn(false);
 
         train(log, ResolverMessages.resolvingComponent("MyAppComponent", namespace));

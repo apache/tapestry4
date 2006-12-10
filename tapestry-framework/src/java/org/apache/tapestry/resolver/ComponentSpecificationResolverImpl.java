@@ -212,6 +212,10 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
                 return result;
         }
         
+        result = getDelegate().findComponentSpecification(cycle, namespace, _type);
+        if (result != null)
+            return result;
+        
         result = searchForComponentClass(namespace, _type);
 
         if (result != null)
@@ -219,13 +223,13 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
 
         // Not in the library or app spec; does it match a component
         // provided by the Framework?
-
+        
         INamespace framework = getSpecificationSource().getFrameworkNamespace();
-
+        
         if (framework.containsComponentType(_type))
             return framework.getComponentSpecification(_type);
         
-        return getDelegate().findComponentSpecification(cycle, namespace, _type);
+        return null;
     }
 
     IComponentSpecification searchForComponentClass(INamespace namespace, String type)

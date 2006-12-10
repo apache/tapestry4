@@ -206,9 +206,8 @@ public class FormSupportImpl implements FormSupport
     }
     
     /**
-     * Adds an event handler for the form, of the given type.
+     * {@inheritDoc}
      */
-
     public void addEventHandler(FormEventType type, String functionName)
     {
         if (_events == null)
@@ -238,7 +237,7 @@ public class FormSupportImpl implements FormSupport
      * component whose id is 'page'. A certain number of ids are always reserved, and we find any
      * additional ids beyond that set.
      */
-
+    
     private void addHiddenFieldsForLinkParameters(ILink link)
     {
         String[] names = link.getParameterNames();
@@ -635,13 +634,13 @@ public class FormSupportImpl implements FormSupport
 
         
         runDeferredRunnables();
-
+        
         if (_submitModes.contains(mode))
             return mode;
-
+        
         // Either something wacky on the client side, or a client without
         // javascript enabled.
-
+        
         return FormConstants.SUBMIT_NORMAL;
 
     }
