@@ -183,7 +183,7 @@ public interface IPage extends IComponent
      * redirect the user to an appropriate part of the system (such as, a login page).
      * <p>
      * Since 3.0, it is easiest to not override this method, but to implement the
-     * {@link PageValidateListener}interface instead.
+     * {@link PageValidateListener} interface instead.
      */
 
     void validate(IRequestCycle cycle);

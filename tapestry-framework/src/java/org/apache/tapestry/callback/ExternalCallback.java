@@ -32,17 +32,6 @@ import org.apache.tapestry.IRequestCycle;
  * the user and then invokes {@link ICallback#performCallback(IRequestCycle)} to the External page.
  * 
  * <pre>
- * 
- *  
- *   
- *    
- *     
- *      
- *       
- *        
- *         
- *          
- *           
  *             public class External extends BasePage implements IExternalPage {
  *            
  *                 private Integer _itemId;
@@ -87,17 +76,6 @@ import org.apache.tapestry.IRequestCycle;
  *                     }
  *                 }
  *             }    
- *             
- *           
- *          
- *         
- *        
- *       
- *      
- *     
- *    
- *   
- *  
  * </pre>
  * 
  * @see org.apache.tapestry.IExternalPage
@@ -153,9 +131,9 @@ public class ExternalCallback implements ICallback
         try
         {
             IExternalPage page = (IExternalPage) cycle.getPage(_pageName);
-
+            
             cycle.activate(page);
-
+            
             page.activateExternalPage(_parameters, cycle);
         }
         catch (ClassCastException ex)

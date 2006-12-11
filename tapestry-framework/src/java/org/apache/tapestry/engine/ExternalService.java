@@ -151,15 +151,14 @@ public class ExternalService implements IEngineService
                     rawPage,
                     IExternalPage.class), rawPage, null, ex);
         }
-
-        Object[] parameters = _linkFactory.extractListenerParameters(cycle);
-
-        cycle.setListenerParameters(parameters);
-
-        cycle.activate(page);
-
-        page.activateExternalPage(parameters, cycle);
         
+        Object[] parameters = _linkFactory.extractListenerParameters(cycle);
+        
+        cycle.setListenerParameters(parameters);
+        
+        cycle.activate(page);
+        
+        page.activateExternalPage(parameters, cycle);
         
         _responseRenderer.renderResponse(cycle);
     }

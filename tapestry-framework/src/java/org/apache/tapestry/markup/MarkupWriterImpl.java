@@ -16,7 +16,10 @@ package org.apache.tapestry.markup;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.util.Defense;
@@ -61,9 +64,9 @@ public class MarkupWriterImpl implements IMarkupWriter
      */
 
     private boolean _emptyTag = false;
-
+    
     private String _contentType;
-
+    
     /**
      * A Stack of Strings used to track the active tag elements. Elements are active until the
      * corresponding close tag is written. The {@link #push(String)}method adds elements to the
@@ -71,7 +74,14 @@ public class MarkupWriterImpl implements IMarkupWriter
      */
 
     private List _activeElementStack;
-
+    
+    /**
+     *  Attributes are stored in a map until an open tag is closed. The linked hashmap ensures that
+     *  ordering remains constant.
+     */
+    
+    private final Map _attrMap = new LinkedHashMap();
+    
     public MarkupWriterImpl(String contentType, PrintWriter writer, MarkupFilter filter)
     {
         Defense.notNull(contentType, "contentType");
@@ -86,23 +96,15 @@ public class MarkupWriterImpl implements IMarkupWriter
     public void attribute(String name, int value)
     {
         checkTagOpen();
-
-        _writer.print(' ');
-        _writer.print(name);
-        _writer.print("=\"");
-        _writer.print(value);
-        _writer.print('"');
+        
+        _attrMap.put(name, new DefaultAttribute(String.valueOf(value), false));
     }
 
     public void attribute(String name, boolean value)
     {
         checkTagOpen();
-
-        _writer.print(' ');
-        _writer.print(name);
-        _writer.print("=\"");
-        _writer.print(value);
-        _writer.print('"');
+        
+        _attrMap.put(name, new DefaultAttribute(String.valueOf(value), false));
     }
 
     public void attribute(String name, String value)
@@ -113,29 +115,88 @@ public class MarkupWriterImpl implements IMarkupWriter
     public void attribute(String name, String value, boolean raw)
     {
         checkTagOpen();
-
-        _writer.print(' ');
-
-        // Could use a check here that name contains only valid characters
-
-        _writer.print(name);
-        _writer.print("=\"");
-
-        if (value != null)
-        {
-            char[] data = value.toCharArray();
-            maybePrintFiltered(data, 0, data.length, raw, true);
+        
+        _attrMap.put(name, new DefaultAttribute(value, raw));
+    }
+    
+    public void appendAttribute(String name, boolean value)
+    {
+        checkTagOpen();
+        
+        appendAttribute(name, String.valueOf(value));
+    }
+    
+    public void appendAttribute(String name, int value)
+    {
+        checkTagOpen();
+        
+        appendAttribute(name, String.valueOf(value));
+    }
+    
+    public void appendAttribute(String name, String value)
+    {
+        checkTagOpen();
+        
+        DefaultAttribute attr = (DefaultAttribute)_attrMap.get(name);
+        
+        if (attr == null) {
+            attr = new DefaultAttribute(value, false);
+            _attrMap.put(name, attr);
+            return;
         }
-
-        _writer.print('"');
+        
+        attr.append(value);
     }
 
+    public void appendAttributeRaw(String name, String value)
+    {
+        checkTagOpen();
+        
+        DefaultAttribute attr = (DefaultAttribute)_attrMap.get(name);
+        
+        if (attr == null) {
+            attr = new DefaultAttribute(value, true);
+            _attrMap.put(name, attr);
+            return;
+        }
+        
+        attr.setRaw(true);
+        attr.append(value);
+    }
+
+    public Attribute getAttribute(String name)
+    {
+        checkTagOpen();
+        
+        return (Attribute)_attrMap.get(name);
+    }
+    
+    public boolean hasAttribute(String name)
+    {
+        checkTagOpen();
+        
+        return _attrMap.containsKey(name);
+    }
+    
+    public void clearAttributes()
+    {
+        checkTagOpen();
+        
+        _attrMap.clear();
+    }
+    
+    public Attribute removeAttribute(String name)
+    {
+        checkTagOpen();
+        
+        return (Attribute)_attrMap.remove(name);
+    }
+    
     /**
      * Prints the value, if non-null. May pass it through the filter, unless raw is true.
      */
 
-    private void maybePrintFiltered(char[] data, int offset, int length, boolean raw,
-            boolean isAttribute)
+    private void maybePrintFiltered(char[] data, int offset, int length, boolean raw, boolean isAttribute)
     {
         if (data == null || length <= 0)
             return;
@@ -208,6 +269,8 @@ public class MarkupWriterImpl implements IMarkupWriter
 
     public void closeTag()
     {
+        flushAttributes();
+        
         if (_emptyTag)
             _writer.print('/');
 
@@ -216,7 +279,29 @@ public class MarkupWriterImpl implements IMarkupWriter
         _openTag = false;
         _emptyTag = false;
     }
-
+    
+    /**
+     * Causes any pending attributes on the current open tag
+     * to be written out to the writer.
+     */
+    void flushAttributes()
+    {
+        if (_attrMap.size() > 0) {
+            
+            Iterator it = _attrMap.keySet().iterator();
+            while (it.hasNext()) {
+                
+                String key = (String)it.next();
+                DefaultAttribute attr = (DefaultAttribute)_attrMap.get(key);
+                
+                attr.print(key, _writer, _filter);
+            }
+            
+            _attrMap.clear();
+        }
+        
+    }
+    
     public void comment(String value)
     {
         if (_openTag)

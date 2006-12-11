@@ -16,6 +16,7 @@ package org.apache.tapestry.engine;
 
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.NestedMarkupWriter;
+import org.apache.tapestry.markup.Attribute;
 
 /**
  * A {@link IMarkupWriter}that does absolutely <em>nothing</em>; this is used during the rewind
@@ -133,25 +134,50 @@ public class NullWriter implements NestedMarkupWriter
     public void attribute(String name, String value)
     {
     }
-
-    /**
-     * @see org.apache.tapestry.IMarkupWriter#attribute(java.lang.String, boolean)
-     * @since 3.0
-     */
-
+    
     public void attribute(String name, boolean value)
     {
     }
-
-    /**
-     * @see org.apache.tapestry.IMarkupWriter#attributeRaw(java.lang.String, java.lang.String)
-     * @since 3.0
-     */
-
+    
     public void attributeRaw(String name, String value)
     {
     }
-
+    
+    public void appendAttribute(String name, boolean value)
+    {
+    }
+    
+    public void appendAttribute(String name, int value)
+    {
+    }
+    
+    public void appendAttribute(String name, String value)
+    {
+    }
+    
+    public void appendAttributeRaw(String name, String value)
+    {
+    }
+    
+    public Attribute getAttribute(String name)
+    {
+        return null;
+    }
+    
+    public boolean hasAttribute(String name)
+    {
+        return false;
+    }
+    
+    public Attribute removeAttribute(String name)
+    {
+        return null;
+    }
+    
+    public void clearAttributes()
+    {
+    }
+    
     public void print(char[] data, int offset, int length, boolean raw)
     {
     }
