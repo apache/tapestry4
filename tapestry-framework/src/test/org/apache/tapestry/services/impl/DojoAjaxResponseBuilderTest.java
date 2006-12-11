@@ -37,6 +37,7 @@ import org.apache.tapestry.markup.MarkupFilter;
 import org.apache.tapestry.markup.MarkupWriterImpl;
 import org.apache.tapestry.markup.MarkupWriterSource;
 import org.apache.tapestry.markup.UTFMarkupFilter;
+import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.RequestLocaleManager;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.services.ServiceConstants;
@@ -296,6 +297,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         MarkupFilter filter = new UTFMarkupFilter();
         PrintWriter writer = newPrintWriter();
         IRequestCycle cycle = newMock(IRequestCycle.class);
+        Infrastructure inf = newMock(Infrastructure.class);
         
         replay();
         
@@ -307,6 +309,10 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         String preload = "preloadedvarname";
         
         verify();
+        
+        expect(cycle.getInfrastructure()).andReturn(inf);
+        expect(inf.getOutputEncoding()).andReturn("UTF-8");
+        
         replay();
         
         builder.beginResponse();
@@ -342,6 +348,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         MarkupFilter filter = new UTFMarkupFilter();
         PrintWriter writer = newPrintWriter();
         IRequestCycle cycle = newMock(IRequestCycle.class);
+        Infrastructure inf = newMock(Infrastructure.class);
         
         replay();
         
@@ -352,6 +359,10 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         String script2 = "http://noname/js/package2.js";
         
         verify();
+        
+        expect(cycle.getInfrastructure()).andReturn(inf);
+        expect(inf.getOutputEncoding()).andReturn("UTF-8");
+        
         replay();
         
         builder.beginResponse();
@@ -377,6 +388,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         IRequestCycle cycle = newMock(IRequestCycle.class);
         MarkupFilter filter = new UTFMarkupFilter();
         PrintWriter writer = newPrintWriter();
+        Infrastructure inf = newMock(Infrastructure.class);
         
         replay();
         
@@ -386,6 +398,10 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         String script = "doThisInInit();";
         
         verify();
+        
+        expect(cycle.getInfrastructure()).andReturn(inf);
+        expect(inf.getOutputEncoding()).andReturn("UTF-8");
+        
         replay();
         
         builder.beginResponse();
