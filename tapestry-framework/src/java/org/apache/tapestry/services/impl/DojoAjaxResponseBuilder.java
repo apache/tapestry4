@@ -614,7 +614,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      */
     void beginResponse()
     {
-        _writer.printRaw("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+        _writer.printRaw("<?xml version=\"1.0\" encoding=\"" + _cycle.getInfrastructure().getOutputEncoding() + "\"?>");
         _writer.printRaw("<!DOCTYPE html "
                 + "PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" "
                 + "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\" [\n"
