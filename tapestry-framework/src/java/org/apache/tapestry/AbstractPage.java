@@ -494,10 +494,10 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     {
         if (_listenerList == null)
             return;
-
+        
         PageEvent event = null;
         Object[] listeners = _listenerList.getListenerList();
-
+        
         for (int i = 0; i < listeners.length; i += 2)
         {
             if (listeners[i] == PageValidateListener.class)

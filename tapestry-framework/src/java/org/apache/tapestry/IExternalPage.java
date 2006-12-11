@@ -17,7 +17,7 @@ package org.apache.tapestry;
 /**
  * Defines a page which may be referenced externally via a URL using the
  * {@link org.apache.tapestry.engine.ExternalService}. External pages may be bookmarked via their
- * URL for latter display. See the {@link org.apache.tapestry.link.ExternalLink}for details on how
+ * URL for latter display. See the {@link org.apache.tapestry.link.ExternalLink} for details on how
  * to invoke <tt>IExternalPage</tt>s.
  * 
  * @see org.apache.tapestry.callback.ExternalCallback

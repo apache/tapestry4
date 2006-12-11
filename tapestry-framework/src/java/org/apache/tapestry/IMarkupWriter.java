@@ -14,6 +14,8 @@
 
 package org.apache.tapestry;
 
+import org.apache.tapestry.markup.Attribute;
+
 /**
  * Defines an object that can write markup (XML, HTML, XHTML) style output. A
  * <code>IMarkupWriter</code> handles translation from unicode to the markup language (escaping
@@ -66,7 +68,96 @@ public interface IMarkupWriter
      */
 
     void attributeRaw(String name, String value);
+    
+    /**
+     * Appends an integer attribute to the current attribute with a matching 
+     * <code>name</code> key, if one exists. 
+     * 
+     * @throws IllegalStateException
+     *             if there is no open tag.
+     */
 
+    void appendAttribute(String name, int value);
+
+    /**
+     * Appends a boolean attribute into the currently open tag.
+     * 
+     * @throws IllegalStateException
+     *             if there is no open tag.
+     * @since 3.0
+     */
+
+    void appendAttribute(String name, boolean value);
+
+    /**
+     * Appends an attribute into the most recently opened tag. This must be called after
+     * {@link #begin(String)} and before any other kind of writing (which closes the tag).
+     * <p>
+     * The value may be null.
+     * 
+     * @throws IllegalStateException
+     *             if there is no open tag.
+     */
+
+    void appendAttribute(String name, String value);
+
+    /**
+     * Similar to {@link #attribute(String, String)} but no escaping of invalid elements is done for
+     * the value.
+     * 
+     * @throws IllegalStateException
+     *             if there is no open tag.
+     * @since 3.0
+     */
+
+    void appendAttributeRaw(String name, String value);
+    
+    /**
+     * Checks if the current tag has an attribute keyed off of <code>name</code>.
+     * 
+     * @param name
+     *          The name of the attribute to check for existance of.
+     * @return 
+     *          True if the attribute exists, false otherwise.
+     * @throws IllegalStateException
+     *             If there is no open tag.
+     */
+    boolean hasAttribute(String name);
+    
+    /**
+     * Gets the attribute matching <code>name</code> from the current open
+     * tag, if it exists.
+     * 
+     * @param name
+     *          The attribute to get the value of by name.
+     * @return 
+     *          The attribute value, or null if it doesn't exist.
+     * @throws IllegalStateException
+     *             If there is no open tag.
+     */
+    Attribute getAttribute(String name);
+    
+    /**
+     * Removes the attribute specified with a matching <code>name</code> if 
+     * one exists.
+     * 
+     * @param name
+     *          The attribute to remove.
+     * @return
+     *          The removed attribute, null if one didn't exist.
+     * @throws IllegalStateException
+     *             If there is no open tag.
+     */
+    Attribute removeAttribute(String name);
+    
+    /**
+     * Removes all current attributes on the open tag, if any.
+     * 
+     * @throws IllegalStateException
+     *             If there is no open tag.
+     */
+    void clearAttributes();
+    
     /**
      * Closes any existing tag then starts a new element. The new element is pushed onto the active
      * element stack.

@@ -20,7 +20,7 @@ import java.io.PrintWriter;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IMarkupWriter;
-import org.testng.annotations.Configuration;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 
 /**
@@ -68,7 +68,7 @@ public class TestMarkupWriter extends BaseComponentTestCase
         return new PrintWriter(_writer);
     }
 
-    @Configuration(afterTestClass = true)
+    @AfterClass
     protected void tearDown() throws Exception
     {
         _writer = null;
@@ -76,14 +76,14 @@ public class TestMarkupWriter extends BaseComponentTestCase
 
     private void assertOutput(String expected)
     {
-        assertEquals(expected, _writer.toString());
+        assertEquals(_writer.toString(), expected);
 
         _writer.reset();
     }
 
     public void testIntAttribute()
     {
-        MarkupFilter filter = newFilter();
+        MarkupFilter filter = new EchoMarkupFilter();
         PrintWriter writer = newPrintWriter();
 
         replay();
@@ -91,14 +91,12 @@ public class TestMarkupWriter extends BaseComponentTestCase
         IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
 
         mw.begin("span");
-
-        assertOutput("<span");
-
         mw.attribute("width", 5);
-
-        assertOutput(" width=\"5\"");
+        mw.end();
 
         verify();
+        
+        assertOutput("<span width=\"{5}\"></span>");
     }
 
     public void testIntAttributeRequiresTag()
@@ -125,26 +123,22 @@ public class TestMarkupWriter extends BaseComponentTestCase
 
     public void testBooleanAttribute()
     {
-        MarkupFilter filter = newFilter();
+        MarkupFilter filter = new EchoMarkupFilter();
         PrintWriter writer = newPrintWriter();
 
         replay();
 
         IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
-
+        
         mw.begin("div");
-
-        assertOutput("<div");
-
         mw.attribute("true", true);
-
-        assertOutput(" true=\"true\"");
-
         mw.attribute("false", false);
-
-        assertOutput(" false=\"false\"");
-
+        
+        mw.end();
+        
         verify();
+        
+        assertOutput("<div true=\"{true}\" false=\"{false}\"></div>");
     }
 
     public void testBooleanAttributeRequiresTag()
@@ -173,36 +167,53 @@ public class TestMarkupWriter extends BaseComponentTestCase
     {
         MarkupFilter filter = new EchoMarkupFilter();
         PrintWriter writer = newPrintWriter();
-
+        
         IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
-
+        
         mw.begin("span");
         mw.attribute("width", "100%");
-
+        mw.end();
+        
         // Braces added by EchoMarkupFilter, to prove its there.
 
-        assertOutput("<span width=\"{100%}\"");
+        assertOutput("<span width=\"{100%}\"></span>");
     }
 
     public void testAttributeNull()
     {
-        MarkupFilter filter = newFilter();
+        MarkupFilter filter = new EchoMarkupFilter();
         PrintWriter writer = newPrintWriter();
-
+        
         replay();
 
         IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
 
         mw.begin("span");
         mw.attribute("width", null);
-
+        mw.end();
+        
         // Braces added by EchoMarkupFilter, to prove its there.
-
-        assertOutput("<span width=\"\"");
-
+        
+        assertOutput("<span width=\"\"></span>");
+        
         verify();
     }
-
+    
+    public void test_Duplicate_Attributes()
+    {
+        MarkupFilter filter = new EchoMarkupFilter();
+        PrintWriter writer = newPrintWriter();
+        
+        IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
+        
+        mw.begin("span");
+        mw.attribute("width", "100%");
+        mw.attribute("width", "80%");
+        mw.end();
+        
+        assertOutput("<span width=\"{80%}\"></span>");
+    }
+    
     public void testAttributeRequiresTag()
     {
         MarkupFilter filter = newFilter();
@@ -225,6 +236,131 @@ public class TestMarkupWriter extends BaseComponentTestCase
         verify();
     }
 
+    public void test_Append_Attribute()
+    {
+        MarkupFilter filter = new EchoMarkupFilter();
+        PrintWriter writer = newPrintWriter();
+        
+        IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
+        
+        mw.begin("span");
+        mw.appendAttribute("class", "fred");
+        mw.appendAttribute("class", "barney");
+        mw.appendAttribute("type", false);
+        mw.end();
+        
+        assertOutput("<span class=\"{fred barney}\" type=\"{false}\"></span>");
+    }
+    
+    public void test_Append_Attribute_Null()
+    {
+        MarkupFilter filter = new EchoMarkupFilter();
+        PrintWriter writer = newPrintWriter();
+        
+        IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
+        
+        mw.begin("span");
+        mw.appendAttribute("class", "fred");
+        mw.appendAttribute("class", null);
+        mw.end();
+        
+        assertOutput("<span class=\"{fred}\"></span>");
+    }
+    
+    public void test_Append_Attribute_Raw()
+    {
+        MarkupFilter filter = new EchoMarkupFilter();
+        PrintWriter writer = newPrintWriter();
+        
+        IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
+        
+        mw.begin("span");
+        mw.appendAttributeRaw("class", null);
+        mw.appendAttributeRaw("type", "&lt;&gt;");
+        mw.end();
+        
+        assertOutput("<span class=\"\" type=\"&lt;&gt;\"></span>");
+    }
+    
+    public void test_Get_Attribute()
+    {
+        MarkupFilter filter = new EchoMarkupFilter();
+        PrintWriter writer = newPrintWriter();
+        
+        IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
+        
+        mw.begin("span");
+        mw.appendAttribute("class", "fred");
+        
+        assertNotNull(mw.getAttribute("class"));
+        assertEquals(mw.getAttribute("class").toString(), "fred");
+        
+        mw.end();
+        
+        assertOutput("<span class=\"{fred}\"></span>");
+    }
+    
+    public void test_Has_Attribute()
+    {
+        MarkupFilter filter = new EchoMarkupFilter();
+        PrintWriter writer = newPrintWriter();
+        
+        IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
+        
+        mw.begin("span");
+        mw.appendAttribute("class", "fred");
+        
+        assertTrue(mw.hasAttribute("class"));
+        assertEquals(mw.getAttribute("class").toString(), "fred");
+        
+        mw.end();
+        
+        assertOutput("<span class=\"{fred}\"></span>");
+    }
+    
+    public void test_Remove_Attribute()
+    {
+        MarkupFilter filter = new EchoMarkupFilter();
+        PrintWriter writer = newPrintWriter();
+        
+        IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
+        
+        mw.begin("span");
+        mw.appendAttribute("class", "fred");
+        
+        assertTrue(mw.hasAttribute("class"));
+        
+        assertEquals(mw.removeAttribute("class").toString(), "fred");
+        
+        assertFalse(mw.hasAttribute("class"));
+        
+        mw.end();
+        
+        assertOutput("<span></span>");
+    }
+    
+    public void test_Clear_Attributes()
+    {
+        MarkupFilter filter = new EchoMarkupFilter();
+        PrintWriter writer = newPrintWriter();
+        
+        IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
+        
+        mw.begin("span");
+        mw.attribute("class", "fred");
+        mw.attribute("barney", "bam bam");
+        
+        assertTrue(mw.hasAttribute("barney"));
+        mw.clearAttributes();
+        
+        assertFalse(mw.hasAttribute("barney"));
+        assertFalse(mw.hasAttribute("class"));
+        
+        mw.end();
+        
+        assertOutput("<span></span>");
+    }
+    
     public void testEnd()
     {
         MarkupFilter filter = new EchoMarkupFilter();
@@ -441,31 +577,26 @@ public class TestMarkupWriter extends BaseComponentTestCase
 
         verify();
     }
-
-    /*
-     * Seems to cause problems with JDK 1.5
-     * 
-     *
-     *
+    
     public void testFlush()
     {
         _writer = new CharArrayWriter();
 
         MarkupFilter filter = newFilter();
-        PrintWriter writer = (PrintWriter) newMock(PrintWriterFixture.class);
+        PrintWriter writer = org.easymock.classextension.EasyMock.createMock(PrintWriterFixture.class);
 
         writer.flush();
-
+        
         replay();
-
+        org.easymock.classextension.EasyMock.replay(writer);
+        
         IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
 
         mw.flush();
 
         verify();
+        org.easymock.classextension.EasyMock.verify(writer);
     }
-    
-    */
 
     public void testPrintCharArray()
     {
@@ -601,36 +732,29 @@ public class TestMarkupWriter extends BaseComponentTestCase
     {
         MarkupFilter filter = new EchoMarkupFilter();
         PrintWriter writer = newPrintWriter();
-
+        
         IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
-
+        
         mw.begin("div");
-
+        
         IMarkupWriter nested = mw.getNestedWriter();
-
+        
         assertEquals("text/html", nested.getContentType());
-
+        
         nested.begin("span");
         nested.attribute("class", "inner");
         nested.print("nested content");
-
+        
         mw.attribute("class", "outer");
-
-        assertOutput("<div class=\"{outer}\"");
-
+        
         nested.close();
 
         // Close the <div>, then comes the inner/nested content.
-
-        assertOutput("><span class=\"{inner}\">{nested content}</span>");
-
+        
         mw.print("after content");
-
-        assertOutput("{after content}");
-
         mw.end();
-
-        assertOutput("</div>");
+        
+        assertOutput("<div class=\"{outer}\"><span class=\"{inner}\">{nested content}</span>{after content}</div>");
     }
 
     public void testRepeatCloseOnNestedWriter()
