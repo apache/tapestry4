@@ -225,7 +225,7 @@ public class TestNumberValidator extends BaseValidatorTestCase
         }
         catch (ValidatorException ex)
         {
-            assertEquals("invalidFormat must be a numeric value. Format is {1}.", ex.getMessage());
+            assertEquals(ex.getMessage(), "invalidFormat must be a numeric value. ");
             assertEquals(ValidationConstraint.NUMBER_FORMAT, ex.getConstraint());
         }
 

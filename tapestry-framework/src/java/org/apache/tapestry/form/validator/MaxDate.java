@@ -98,6 +98,7 @@ public class MaxDate extends BaseValidator
                         + ","
                         + "datePattern:" 
                         + JSONObject.quote(translator.getPattern())
+                        + (translator.isLenient() ? "" : ",strict:true")
                         + "}]"));
         
         accumulateProfileProperty(field, profile, 

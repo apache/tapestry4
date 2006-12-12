@@ -43,10 +43,7 @@ import org.testng.annotations.Test;
 public class TestDateTranslator extends FormComponentContributorTestCase
 {
     private Calendar _calendar = Calendar.getInstance();
-
-    /**
-     * @see junit.framework.TestCase#setUp()
-     */
+    
     @AfterMethod
     protected void cleanup()
     {
@@ -243,40 +240,76 @@ public class TestDateTranslator extends FormComponentContributorTestCase
         verify();
     }
 
-    public void testRenderContribution()
+    public void test_Render_Contribution()
     {
         DateTranslator translator = new DateTranslator();
-
-        replay();
-
-        translator.renderContribution(null, _cycle, null, _component);
-
-        verify();
-    }
-
-    public void testTrimRenderContribution()
-    {
+        IFormComponent field = newField("Date Field", "dateField", 1);
+        
+        JSONObject json = new JSONObject();
+        
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
+        
+        FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
+        
+        expect(context.getProfile()).andReturn(json);
+        
+        trainGetLocale(context, Locale.ENGLISH);
+        
+        trainBuildMessage(context, null, ValidationStrings.INVALID_DATE, 
+                new Object[] { "Date Field", 
+                translator.getDateFormat(Locale.ENGLISH)
+                .toLocalizedPattern().toUpperCase(Locale.ENGLISH)}, "invalid date");
+        
+        context.addInitializationScript(field, "dojo.require(\"tapestry.form.datetime\");");
+        
+        replay();
+        
+        translator.renderContribution(writer, cycle, context, field);
+        
+        verify();
+        
+        assertEquals(json.toString(),
+                "{\"constraints\":{\"dateField\":" +
+                "[[tapestry.form.datetime.isValidDate," +
+                "{datePattern:\"MM/dd/yyyy\"}]]},\"dateField\":" +
+                "{\"constraints\":[\"invalid date\"]}}");
+    }
+
+    public void test_Trim_Render_Contribution()
+    {
+        DateTranslator dt = new DateTranslator("!lenient,trim");
+        assertFalse(dt.isLenient());
+        assertTrue(dt.isTrim());
+        
+        IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle();
+        IFormComponent field = newField("Date Field", "dateField", 1);
         
         JSONObject json = new JSONObject();
         
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
-
-        expect(context.getProfile()).andReturn(json);
         
-        IFormComponent field = newFieldWithClientId("foo");
-
+        expect(context.getProfile()).andReturn(json).anyTimes();
+        
+        trainGetLocale(context, Locale.ENGLISH);
+        
+        trainBuildMessage(context, null, ValidationStrings.INVALID_DATE, 
+                new Object[] { "Date Field", 
+                dt.getDateFormat(Locale.ENGLISH)
+                .toLocalizedPattern().toUpperCase(Locale.ENGLISH)}, "invalid date");
+        
+        context.addInitializationScript(field, "dojo.require(\"tapestry.form.datetime\");");
+        
         replay();
-
-        DateTranslator dt = new DateTranslator();
-        dt.setTrim(true);
 
         dt.renderContribution(writer, cycle, context, field);
 
         verify();
         
-        assertEquals("{\"trim\":[\"foo\"]}",
-                json.toString());
+        assertEquals(json.toString(),
+                "{\"trim\":[\"dateField\"],\"constraints\":{\"dateField\":" +
+                "[[tapestry.form.datetime.isValidDate,{datePattern:\"MM/dd/yyyy\",strict:true}]]}," +
+                "\"dateField\":{\"constraints\":[\"invalid date\"]}}");
     }
 }

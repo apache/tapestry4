@@ -19,6 +19,14 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
+import org.apache.hivemind.util.PropertyUtils;
+import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.form.FormComponentContributorContext;
+import org.apache.tapestry.form.IFormComponent;
+import org.apache.tapestry.json.JSONLiteral;
+import org.apache.tapestry.json.JSONObject;
+import org.apache.tapestry.valid.ValidationConstants;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 
@@ -30,6 +38,7 @@ import org.apache.tapestry.valid.ValidationStrings;
  */
 public class DateTranslator extends FormatTranslator
 {
+    private boolean _lenient=true;
     
     public DateTranslator()
     {
@@ -38,7 +47,7 @@ public class DateTranslator extends FormatTranslator
     // Needed until HIVEMIND-134 fix is available
     public DateTranslator(String initializer)
     {
-        super(initializer);
+        PropertyUtils.configureProperties(this, initializer);
     }
     
     /**
@@ -59,7 +68,10 @@ public class DateTranslator extends FormatTranslator
     
     public SimpleDateFormat getDateFormat(Locale locale)
     {
-        return new SimpleDateFormat(getPattern(), new DateFormatSymbols(locale));
+        SimpleDateFormat ret = new SimpleDateFormat(getPattern(), new DateFormatSymbols(locale));
+        ret.setLenient(_lenient);
+        
+        return ret;
     }
     
     /**
@@ -80,12 +92,52 @@ public class DateTranslator extends FormatTranslator
         
         return new Object[] { label, pattern };
     }
-
+    
+    /**
+     * 
+     * {@inheritDoc}
+     */
+    public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
+            FormComponentContributorContext context, IFormComponent field)
+    {
+        super.renderContribution(writer, cycle, context, field);
+        
+        String message = buildMessage(context, field, getMessageKey());
+        
+        JSONObject profile = context.getProfile();
+        if (!profile.has(ValidationConstants.CONSTRAINTS)) {
+            profile.put(ValidationConstants.CONSTRAINTS, new JSONObject());
+        }
+        
+        JSONObject cons = profile.getJSONObject(ValidationConstants.CONSTRAINTS);
+        
+        context.addInitializationScript(field, "dojo.require(\"tapestry.form.datetime\");");
+        
+        accumulateProperty(cons, field.getClientId(), 
+                new JSONLiteral("[tapestry.form.datetime.isValidDate,{"
+                        + "datePattern:" 
+                        + JSONObject.quote(getPattern())
+                        + (isLenient() ? "" : ",strict:true")
+                        + "}]"));
+        
+        accumulateProfileProperty(field, profile, ValidationConstants.CONSTRAINTS, message);
+    }
+    
     /**
      * @see org.apache.tapestry.form.translator.FormatTranslator#getConstraint()
      */
     protected ValidationConstraint getConstraint()
     {
         return ValidationConstraint.DATE_FORMAT;
+    }
+    
+    public void setLenient(boolean value)
+    {
+        _lenient = value;
+    }
+    
+    public boolean isLenient()
+    {
+        return _lenient;
     }
 }

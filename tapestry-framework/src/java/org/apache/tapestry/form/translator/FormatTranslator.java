@@ -44,7 +44,7 @@ public abstract class FormatTranslator extends AbstractTranslator
     public FormatTranslator(String initializer)
     {
         PropertyUtils.configureProperties(this, initializer);
-
+        
         if (HiveMind.isBlank(_pattern))
         {
             _pattern = defaultPattern();
