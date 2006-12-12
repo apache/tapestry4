@@ -31,18 +31,23 @@ tapestry.widget = {
 	 * 			The dojo widget type string. Ie "dialog" / "combobox" / etc..
 	 * @param props 
 	 * 			The js properties object to create the widget with.
+	 * @param destroy
+	 * 			If true causes the current widget(if any) to be destroyed and re-created.
+	 * @param position
+	 * 			The position to insert this widget's node relative to the
+	 *			dom node specified by widgetId (optional)
 	 */
-	synchronizeWidgetState : function(widgetId, type, props, destroy){
+	synchronizeWidgetState : function(widgetId, type, props, destroy, position){
 		if(typeof destroy == "undefined"){
 			destroy=true;
 		}
 		var widget = dojo.widget.byId(widgetId);
 		
 		if (!widget) {
-			this.createWidget(widgetId, type, props);
+			this.createWidget(widgetId, type, props, position);
 		} else if (destroy){
 			widget.destroy();
-			this.createWidget(widgetId, type, props);
+			this.createWidget(widgetId, type, props, position);
 		} else {
 			this.setWidgetProperties(widget, props);
 		}
@@ -51,7 +56,7 @@ tapestry.widget = {
 	/**
 	 * Creates a new widget (if possible) via dojo.widget.createWidget()
 	 */
-	createWidget : function(widgetId, type, props) {
+	createWidget : function(widgetId, type, props, position) {
 		var node = dojo.byId(widgetId);
 		if (!node) {
 			dojo.raise("createWidget() Node not found with specified id of '" + widgetId + "'.");
@@ -63,7 +68,7 @@ tapestry.widget = {
 		}
 		
 		// handle disabling widgets
-		var w = dojo.widget.createWidget(type, props, node);
+		var w = dojo.widget.createWidget(type, props, node, position);
 		this.setWidgetProperties(w, props);
 	},
 	

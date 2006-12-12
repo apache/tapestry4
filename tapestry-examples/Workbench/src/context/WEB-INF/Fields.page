@@ -43,7 +43,7 @@
 
   <component id="inputDate" type="TextField">
     <binding name="value" value="visit.dateValue"/>
-    <binding name="translator" value="translator:date,pattern=MM-dd-yyyy"/>
+    <binding name="translator" value="translator:date,pattern=MM-dd-yyyy,lenient=false"/>
     <binding name="validators" value="{ beans.required, beans.dateValidator }"/>
     <binding name="displayName" value="literal:Date Field"/>
   </component>

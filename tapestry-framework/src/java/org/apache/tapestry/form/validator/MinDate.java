@@ -61,8 +61,7 @@ public class MinDate extends BaseValidator
         DateTranslator translator = (DateTranslator) getFieldTranslator(field, DateTranslator.class);
         
         if (date.before(_minDate))
-            throw new ValidatorException(buildMessage(messages, field, translator),
-                    ValidationConstraint.TOO_SMALL);
+            throw new ValidatorException(buildMessage(messages, field, translator), ValidationConstraint.TOO_SMALL);
 
     }
     
@@ -72,11 +71,9 @@ public class MinDate extends BaseValidator
         return messages.formatValidationMessage(
                 getMessage(),
                 ValidationStrings.DATE_TOO_EARLY,
-                new Object[]
-                           { field.getDisplayName(), 
+                new Object[] { field.getDisplayName(), 
                     (translator != null) ? 
-                            translator.format(field, messages.getLocale(), _minDate)
-                            : _minDate});
+                            translator.format(field, messages.getLocale(), _minDate) : _minDate});
     }
     
     public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
@@ -104,6 +101,7 @@ public class MinDate extends BaseValidator
                         + ","
                         + "datePattern:" 
                         + JSONObject.quote(translator.getPattern())
+                        + (translator.isLenient() ? "" : ",strict:true")
                         + "}]"));
         
         accumulateProfileProperty(field, profile, 
