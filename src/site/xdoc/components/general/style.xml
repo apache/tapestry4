@@ -126,7 +126,7 @@
                 <p>Book.html</p>
                 <source xml:space="preserve">
 &lt;link jwcid="@Style" href="main.css" media="all"/&gt;  
-&lt;style jwcid="@Relation" media="print"&gt;      
+&lt;style jwcid="@Style" media="print"&gt;      
 body {background:none;}
 &lt;/style&gt;
 
