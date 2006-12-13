@@ -124,9 +124,9 @@ public class TestMin extends BaseValidatorTestCase
         verify();
         
         assertEquals(json.toString(), 
-                "{\"constraints\":{\"myfield\":[[dojo.validate.isInRange," 
-                + "{min:20.0,decimal:\",\",separator:\" \"}]]}," 
-                + "\"myfield\":{\"constraints\":[\"default message\"]}}");
+                "{\"constraints\":{\"myfield\":[[dojo.validate.isInRange," +
+                "{min:20.0,decimal:\",\",separator:\"Â \"}]]}," +
+                "\"myfield\":{\"constraints\":[\"default message\"]}}");
     }
     
     public void test_Render_Contribution_Custom_Message()
@@ -161,9 +161,9 @@ public class TestMin extends BaseValidatorTestCase
         verify();
         
         assertEquals(json.toString(),
-                "{\"constraints\":{\"myfield\":[[dojo.validate.isInRange," 
-                + "{min:20.0,decimal:\",\",separator:\" \"}]]}," 
-                + "\"myfield\":{\"constraints\":[\"custom\\\\message\"]}}");
+                "{\"constraints\":{\"myfield\":[[dojo.validate.isInRange," +
+                "{min:20.0,decimal:\",\",separator:\"Â \"}]]},\"myfield\":" +
+                "{\"constraints\":[\"custom\\\\message\"]}}");
     }
     
 }

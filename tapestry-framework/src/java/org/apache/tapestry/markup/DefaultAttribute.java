@@ -32,7 +32,7 @@ public class DefaultAttribute implements Attribute
         _raw = raw;
     }
     
-    public String getValue()
+    public Object getValue()
     {
         return _value;
     }

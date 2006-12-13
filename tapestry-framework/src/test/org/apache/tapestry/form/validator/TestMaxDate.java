@@ -76,7 +76,7 @@ public class TestMaxDate extends BaseValidatorTestCase
                 null,
                 ValidationStrings.DATE_TOO_LATE,
                 new Object[]
-                { "Fred", today },
+                { "Fred", today.toString() },
                 "default message");
 
         replay();
@@ -110,7 +110,7 @@ public class TestMaxDate extends BaseValidatorTestCase
                 "custom",
                 ValidationStrings.DATE_TOO_LATE,
                 new Object[]
-                { "Fred", today },
+                { "Fred", today.toString() },
                 "custom message");
 
         replay();

@@ -158,7 +158,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      */
     public boolean isDynamic()
     {
-        return Boolean.TRUE;
+        return true;
     }
     
     /** 

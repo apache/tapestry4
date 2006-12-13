@@ -73,7 +73,7 @@ public abstract class FieldLabel extends AbstractComponent
         
         IValidationDelegate delegate = form.getDelegate();
         
-        String id = field == null ? null : field.getClientId();
+        String id = (field == null) ? null : field.getClientId();
         
         if (field != null)
             delegate.writeLabelPrefix(field, writer, cycle);

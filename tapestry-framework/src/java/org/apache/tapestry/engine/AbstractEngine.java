@@ -492,7 +492,7 @@ public abstract class AbstractEngine implements IEngine
 
         if (LOG.isDebugEnabled())
             LOG.debug("Redirecting to: " + location);
-
+        
         _infrastructure.getRequest().forward(location);
     }
 
