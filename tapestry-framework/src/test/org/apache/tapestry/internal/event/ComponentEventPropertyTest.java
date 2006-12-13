@@ -35,7 +35,7 @@ public class ComponentEventPropertyTest extends TestBase
         String[] events = {"onClick", "onFoo"};
         ComponentEventProperty prop = new ComponentEventProperty("compid");
         
-        prop.addListener(events, "doFoo", null, false, false);
+        prop.addListener(events, "doFoo", null, false, false, false);
         
         assertEquals("compid", prop.getComponentId());
         assertEquals(2, prop.getEvents().size());
@@ -57,7 +57,7 @@ public class ComponentEventPropertyTest extends TestBase
         String[] events = {"onFoo"};
         ComponentEventProperty prop = new ComponentEventProperty("compid");
         
-        prop.addListener(events, "doFoo", "formid", false, true);
+        prop.addListener(events, "doFoo", "formid", false, true, false);
         
         assertEquals("compid", prop.getComponentId());
         assertEquals(0, prop.getEvents().size());
@@ -85,7 +85,7 @@ public class ComponentEventPropertyTest extends TestBase
         ComponentEventProperty prop = new ComponentEventProperty("compid");
         BrowserEvent event = new BrowserEvent("onFoo", null);
         
-        prop.addListener(events, "doFoo", "formid", false, false);
+        prop.addListener(events, "doFoo", "formid", false, false, true);
         
         List listeners = prop.getFormEventListeners("formid", event, null);
         assertEquals(1, listeners.size());
@@ -96,5 +96,6 @@ public class ComponentEventPropertyTest extends TestBase
         assertFalse(listener.isValidateForm());
         
         assertEquals("doFoo", listener.getMethodName());
+        assertTrue(listener.shouldFocusForm());
     }
 }

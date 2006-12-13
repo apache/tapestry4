@@ -11,9 +11,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package org.apache.tapestry.services.impl;
+package org.apache.tapestry.internal.event.impl;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.checkOrder;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,9 +30,12 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.event.EventTarget;
 import org.apache.tapestry.form.FormSupport;
+import org.apache.tapestry.form.FormSupportImpl;
 import org.apache.tapestry.internal.event.ComponentEventProperty;
 import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.listener.ListenerMap;
+import org.apache.tapestry.spec.ComponentSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
 import org.testng.annotations.Test;
 
 
@@ -45,18 +50,18 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
     
     public void test_Event_Properties()
     {
-        ComponentEventInvoker invoker = new ComponentEventInvoker();
+        IComponentSpecification spec = new ComponentSpecification();
+        spec.addEventListener("comp1", new String[] {"onClick"}, "testFoo", 
+                null, false, false, false);
         
-        invoker.addEventListener("comp1", new String[] {"onClick"}, "testFoo", 
-                null, false, false);
-        assertTrue(invoker.hasEvents("comp1"));
+        assertTrue(spec.hasEvents("comp1"));
         
-        ComponentEventProperty prop = invoker.getComponentEvents("comp1");
+        ComponentEventProperty prop = spec.getComponentEvents("comp1");
         assertNotNull(prop);
         assertEquals(prop.getEventListeners("onClick").size(), 1);
         
         // ensure valid props always returned
-        prop = invoker.getComponentEvents("comp2");
+        prop = spec.getComponentEvents("comp2");
         assertNotNull(prop);
         assertEquals(prop.getEvents().size(), 0);
         
@@ -72,6 +77,8 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         checkOrder(comp, false);
         IPage page = newMock(IPage.class);
         
+        IComponentSpecification spec = new ComponentSpecification();
+        
         ListenerInvoker listenerInvoker = newMock(ListenerInvoker.class);
         ListenerMap listenerMap = newMock(ListenerMap.class);
         
@@ -85,34 +92,25 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         BrowserEvent event = new BrowserEvent("onSelect", new EventTarget(tprops));
         
         ComponentEventInvoker invoker = new ComponentEventInvoker();
-        invoker.setListenerInvoker(listenerInvoker);
+        invoker.setInvoker(listenerInvoker);
         
-        invoker.addEventListener("testId", new String[] { "onSelect" }, 
-                "fooListener", null, false, false);
+        spec.addEventListener("testId", new String[] { "onSelect" }, 
+                "fooListener", null, false, false, false);
+        invoker.addEventListener("testId", spec);
         
         expect(comp.getId()).andReturn("testId").anyTimes();
+        
+        expect(comp.getSpecification()).andReturn(spec).anyTimes();
         
         expect(comp.getPage()).andReturn(page);
         
         expect(page.getComponents()).andReturn(comps);
         
-        expect(comp.getContainer()).andReturn(page);
-        
-        expect(page.getIdPath()).andReturn(null);
-        
-        expect(page.getPage()).andReturn(page);
-        
-        expect(page.getPageName()).andReturn("Page");
-        
-        expect(page.getListeners()).andReturn(listenerMap);
-        
-        expect(listenerMap.canProvideListener("fooListener")).andReturn(Boolean.TRUE);
-        
-        expect(page.getListeners()).andReturn(listenerMap);
+        expect(comp.getListeners()).andReturn(listenerMap);
         
         expect(listenerMap.getListener("fooListener")).andReturn(listener1);
         
-        listenerInvoker.invokeListener(listener1, page, cycle);
+        listenerInvoker.invokeListener(listener1, comp, cycle);
         
         replay();
         
@@ -128,6 +126,7 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         checkOrder(comp, false);
         
         IPage page = newMock(IPage.class);
+        IComponentSpecification spec = new ComponentSpecification();
         
         ListenerInvoker listenerInvoker = newMock(ListenerInvoker.class);
         ListenerMap listenerMap = newMock(ListenerMap.class);
@@ -141,32 +140,25 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         BrowserEvent event = new BrowserEvent("onSelect", new EventTarget(tprops));
         
         ComponentEventInvoker invoker = new ComponentEventInvoker();
-        invoker.setListenerInvoker(listenerInvoker);
+        invoker.setInvoker(listenerInvoker);
         
-        invoker.addElementEventListener("testId", new String[] { "onSelect" }, 
-                "fooListener", null, false, false);
+        spec.addElementEventListener("testId", new String[] { "onSelect" }, 
+                "fooListener", null, false, true, true);
+        invoker.addEventListener("testId", spec);
         
         expect(comp.getId()).andReturn("testId").anyTimes();
+        
+        expect(comp.getSpecification()).andReturn(spec).anyTimes();
         
         expect(comp.getPage()).andReturn(page);
         
         expect(page.getComponents()).andReturn(comps);
         
-        expect(comp.getContainer()).andReturn(page);
-        
-        expect(page.getIdPath()).andReturn(null);
-        
-        expect(page.getPage()).andReturn(page);
-        
-        expect(page.getPageName()).andReturn("Page");
-        
-        expect(page.getListeners()).andReturn(listenerMap).anyTimes();
-        
-        expect(listenerMap.canProvideListener("fooListener")).andReturn(Boolean.TRUE);
+        expect(comp.getListeners()).andReturn(listenerMap);
         
         expect(listenerMap.getListener("fooListener")).andReturn(listener);
         
-        listenerInvoker.invokeListener(listener, page, cycle);
+        listenerInvoker.invokeListener(listener, comp, cycle);
         
         replay();
         
@@ -181,6 +173,7 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         IForm form = newForm();
         checkOrder(form, false);
         FormSupport formSupport = newMock(FormSupport.class);
+        IComponentSpecification spec = new ComponentSpecification();
         
         ListenerInvoker listenerInvoker = newMock(ListenerInvoker.class);
         ListenerMap listenerMap = newMock(ListenerMap.class);
@@ -196,10 +189,11 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         BrowserEvent event = new BrowserEvent("onSelect", new EventTarget(tprops));
         
         ComponentEventInvoker invoker = new ComponentEventInvoker();
-        invoker.setListenerInvoker(listenerInvoker);
+        invoker.setInvoker(listenerInvoker);
         
-        invoker.addEventListener("form1", new String[] { "onSelect" }, "fooListener",
-                "form1", false, false);
+        spec.addEventListener("form1", new String[] { "onSelect" }, "fooListener",
+                "form1", false, false, false);
+        invoker.addFormEventListener("form1", spec);
         
         expect(formSupport.getForm()).andReturn(form);
         
@@ -209,15 +203,62 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         
         expect(page.getComponents()).andReturn(comps);
         
-        expect(form.getContainer()).andReturn(page);
+        expect(form.getSpecification()).andReturn(spec);
         
-        expect(page.getIdPath()).andReturn(null);
+        expect(form.getListeners()).andReturn(listenerMap);
         
-        expect(page.getPage()).andReturn(page);
+        expect(listenerMap.getListener("fooListener")).andReturn(listener);
         
-        expect(page.getPageName()).andReturn("TestPage");
+        form.addDeferredRunnable(isA(Runnable.class));
         
-        expect(page.getListeners()).andReturn(listenerMap);
+        cycle.setAttribute(FormSupportImpl.FIELD_FOCUS_ATTRIBUTE, Boolean.TRUE);
+        
+        replay();
+        
+        invoker.invokeFormListeners(formSupport, cycle, event);
+        
+        verify();
+    }
+    
+    public void test_Invoke_Form_Listener_Enabled_Focus()
+    {
+        IRequestCycle cycle = newCycle();
+        IForm form = newForm();
+        checkOrder(form, false);
+        FormSupport formSupport = newMock(FormSupport.class);
+        IComponentSpecification spec = new ComponentSpecification();
+        
+        ListenerInvoker listenerInvoker = newMock(ListenerInvoker.class);
+        ListenerMap listenerMap = newMock(ListenerMap.class);
+        IActionListener listener = newMock(IActionListener.class);
+        IPage page = newMock(IPage.class);
+        checkOrder(page, false);
+        
+        Map comps = new HashMap();
+        comps.put("form1", form);
+        
+        Map tprops = new HashMap();
+        tprops.put("id", "form1");
+        BrowserEvent event = new BrowserEvent("onSelect", new EventTarget(tprops));
+        
+        ComponentEventInvoker invoker = new ComponentEventInvoker();
+        invoker.setInvoker(listenerInvoker);
+        
+        spec.addEventListener("form1", new String[] { "onSelect" }, "fooListener",
+                "form1", false, false, true);
+        invoker.addFormEventListener("form1", spec);
+        
+        expect(formSupport.getForm()).andReturn(form);
+        
+        expect(form.getId()).andReturn("form1").anyTimes();
+        
+        expect(form.getPage()).andReturn(page);
+        
+        expect(page.getComponents()).andReturn(comps);
+        
+        expect(form.getSpecification()).andReturn(spec);
+        
+        expect(form.getListeners()).andReturn(listenerMap);
         
         expect(listenerMap.getListener("fooListener")).andReturn(listener);
         

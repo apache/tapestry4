@@ -27,6 +27,7 @@ import org.apache.tapestry.IForm;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.form.FormSupport;
+import org.apache.tapestry.form.FormSupportImpl;
 import org.apache.tapestry.internal.event.ComponentEventProperty;
 import org.apache.tapestry.internal.event.EventBoundListener;
 import org.apache.tapestry.internal.event.IComponentEventInvoker;
@@ -80,6 +81,8 @@ public class ComponentEventInvoker implements IComponentEventInvoker
         if (comps == null)
             return;
         
+        boolean disableFocus = true;
+        
         for (int i=0; i < comps.size(); i++) {
             
             IComponentSpecification spec = (IComponentSpecification)comps.get(i);
@@ -101,6 +104,10 @@ public class ComponentEventInvoker implements IComponentEventInvoker
                 if (!targetId.startsWith(listeners[e].getComponentId()))
                     continue;
                 
+                // handle disabling focus 
+                if (listeners[e].shouldFocusForm())
+                    disableFocus = false;
+                
                 // defer execution until after form is done rewinding
                 
                 form.addDeferredRunnable(
@@ -108,6 +115,13 @@ public class ComponentEventInvoker implements IComponentEventInvoker
                                 target,
                                 cycle));
             }
+        }
+        
+        // Form uses cycle attributes to test whether or not to focus .
+        // The attribute existing at all is enough to bypass focusing.
+        if (disableFocus){
+            
+            cycle.setAttribute(FormSupportImpl.FIELD_FOCUS_ATTRIBUTE, Boolean.TRUE);
         }
     }
     

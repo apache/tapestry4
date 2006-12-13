@@ -38,6 +38,8 @@ public class EventBoundListener
     
     // If targeting a form, whether or not to submit it asynchronously
     private boolean _async;
+    // Whether or not to focus the form
+    private boolean _focus;
     
     /**
      * Creates a new listener binding. 
@@ -60,13 +62,14 @@ public class EventBoundListener
      *          If formId is set, whether or not to validate form when submitting.
      */
     public EventBoundListener(String methodName, String formId, 
-            boolean validateForm, String componentId, boolean async)
+            boolean validateForm, String componentId, boolean async, boolean focus)
     {
         _methodName = methodName;
         _formId = formId;
         _validateForm = validateForm;
         _componentId = componentId;
         _async = async;
+        _focus = focus;
     }
     
     /**
@@ -143,7 +146,12 @@ public class EventBoundListener
     {
         _isPage = isPage;
     }
-
+    
+    public boolean shouldFocusForm()
+    {
+        return _focus;
+    }
+    
     /** 
      * {@inheritDoc}
      */

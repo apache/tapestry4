@@ -54,11 +54,11 @@ public class ComponentEventProperty
      * @param async 
      */
     public void addListener(String[] events, String methodName, 
-            String formId, boolean validateForm, boolean async)
+            String formId, boolean validateForm, boolean async, boolean focus)
     {
         for (int i=0; i < events.length; i++) {
             if (formId != null && formId.length() > 0)
-                addFormEventListener(events[i], methodName, formId, validateForm, async);
+                addFormEventListener(events[i], methodName, formId, validateForm, async, focus);
             else
                 addEventListener(events[i], methodName);
         }
@@ -72,10 +72,10 @@ public class ComponentEventProperty
      * @param validateForm
      */
     public void addFormEventListener(String event, String methodName,
-            String formId, boolean validateForm, boolean async)
+            String formId, boolean validateForm, boolean async, boolean focus)
     {
         EventBoundListener listener = 
-            new EventBoundListener(methodName, formId, validateForm, _componentId, async);
+            new EventBoundListener(methodName, formId, validateForm, _componentId, async, focus);
         
         List listeners = getFormEventListeners(event);
         if (!listeners.contains(listener))

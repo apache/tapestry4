@@ -40,9 +40,11 @@ public interface IEventListener
      *          one of the supplied events occurs.
      * @param async 
      *          If submitting a form, whether or not to do it asynchronously.
+     * @param focus
+     *          If submitting a form, controls whether or not to focus it after an update.
      */
     void addEventListener(String componentId, String[] events, 
-            String methodName, String formId, boolean validateForm, boolean async);
+            String methodName, String formId, boolean validateForm, boolean async, boolean focus);
     
     /**
      * Adds a deferred event listener binding for the specified html element.
@@ -52,9 +54,11 @@ public interface IEventListener
      * @param methodName
      * @param async 
      *          If submitting a form, whether or not to do it asynchronously.
+     * @param focus
+     *          If submitting a form, controls whether or not to focus it after an update.
      */
     void addElementEventListener(String elementId, String[] events, 
-            String methodName, String formId, boolean validateForm, boolean async);
+            String methodName, String formId, boolean validateForm, boolean async, boolean focus);
     
     /**
      * Checks if any element events are bound to this component.

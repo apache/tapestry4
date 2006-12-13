@@ -53,6 +53,7 @@ public class EventListenerAnnotationWorker implements SecondaryAnnotationWorker
         String formId = listener.submitForm();
         boolean validateForm = listener.validateForm();
         boolean async = listener.async();
+        boolean focus = listener.focus();
         
         if (targets.length < 1 && elements.length < 1)
             throw new ApplicationRuntimeException(AnnotationMessages.targetsNotFound(method));
@@ -60,7 +61,7 @@ public class EventListenerAnnotationWorker implements SecondaryAnnotationWorker
         for (int i=0; i < targets.length; i++) {
             
             spec.addEventListener(targets[i], listener.events(), 
-                    method.getName(), formId, validateForm, async);
+                    method.getName(), formId, validateForm, async, focus);
             
             _invoker.addEventListener(targets[i], spec);
             
@@ -71,7 +72,7 @@ public class EventListenerAnnotationWorker implements SecondaryAnnotationWorker
         for (int i=0; i < elements.length; i++) {
             
             spec.addElementEventListener(elements[i], listener.events(), 
-                    method.getName(), formId, validateForm, async);
+                    method.getName(), formId, validateForm, async, focus);
             
             if (formId != null)
                 _invoker.addFormEventListener(formId, spec);
