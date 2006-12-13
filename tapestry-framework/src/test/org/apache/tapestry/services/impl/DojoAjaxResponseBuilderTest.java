@@ -377,8 +377,8 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
                 "<!ENTITY nbsp \'&#160;\'>\n" + 
                 "]>\n" + 
                 "<ajax-response><response id=\"includescript\" type=\"script\">" 
-                + "<include url=\"http://noname/js/package.js\"/>"
-                + "<include url=\"http://noname/js/package2.js\"/></response></ajax-response>");
+                + "<include url=\"http://noname/js/package.js\" />"
+                + "<include url=\"http://noname/js/package2.js\" /></response></ajax-response>");
         
         verify();
     }

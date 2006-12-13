@@ -16,17 +16,17 @@
 -->
 
 <mock-test>
-    <context name="mock"/>
+    <context name="mock" />
 
   	<servlet name="app" class="org.apache.tapestry.ApplicationServlet">
   		<init-parameter
   			name="org.apache.tapestry.application-specification"
-  			value="/org/apache/tapestry/junit/mock/app/Mock.application"/>
+  			value="/org/apache/tapestry/junit/mock/app/Mock.application" />
   	</servlet>      
     
 	<request>
-	  	<parameter name="service" value="page"/>
-      <parameter name="page" value="PrivateAssetTemplate"/>
+	  	<parameter name="service" value="page" />
+      <parameter name="page" value="PrivateAssetTemplate" />
 		
 		<assert-output name="Page Title">
 <![CDATA[		
@@ -43,8 +43,8 @@ This page's content comes from a private asset
 	</request>
 	
 	<request>
-	  	<parameter name="service" value="page"/>
-      <parameter name="page" value="ContextAssetTemplate"/>
+	  	<parameter name="service" value="page" />
+      <parameter name="page" value="ContextAssetTemplate" />
 		
 		<assert-output name="Page Title">
 <![CDATA[		

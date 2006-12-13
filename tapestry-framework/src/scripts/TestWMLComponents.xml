@@ -16,18 +16,18 @@
 -->
 
 <mock-test>
-    <context name="mock" root="context51"/>
+    <context name="mock" root="context51" />
 
   	<servlet name="app" class="org.apache.tapestry.ApplicationServlet">
   		<init-parameter
   			name="org.apache.tapestry.application-specification"
-  			value="/org/apache/tapestry/junit/mock/wml/Mock.application"/>
+  			value="/org/apache/tapestry/junit/mock/wml/Mock.application" />
       <init-parameter
-        name="org.apache.tapestry.application-mode" value="wml"/>
+        name="org.apache.tapestry.application-mode" value="wml" />
   	</servlet>
 
     <request>
-        <parameter name="service" value="home"/>
+        <parameter name="service" value="home" />
 
         <assert-output name="Do component">
             <![CDATA[
@@ -46,13 +46,13 @@
 
         <assert-output name="Timer">
             <![CDATA[
-            <timer name="timer" value="20"/>
+            <timer name="timer" value="20" />
             ]]>
         </assert-output>
 
         <assert-output name="Image URL">
             <![CDATA[
-            <img src="/mock/images/image.wbmp" alt="Image" align="middle"/>
+            <img src="/mock/images/image.wbmp" alt="Image" align="middle" />
             ]]>
         </assert-output>
 
@@ -64,19 +64,19 @@
 
         <assert-output name="Setvat component">
             <![CDATA[
-            <setvar name="u" value="newbie"/>
+            <setvar name="u" value="newbie" />
             ]]>
         </assert-output>
 
         <assert-output name="Setvat component">
             <![CDATA[
-            <setvar name="l" value=""/>
+            <setvar name="l" value="" />
             ]]>
         </assert-output>
 
         <assert-output name="ServiceLink component">
             <![CDATA[
-            <go id="ServiceLink" href="/mock/app?service=home"/>
+            <go id="ServiceLink" href="/mock/app?service=home" />
             ]]>
         </assert-output>
 
@@ -121,7 +121,7 @@
 
         <assert-output-matches name="Go Parameter Values" subgroup="1">
             <![CDATA[
-            <postfield .*?value="(.*?)"/>
+            <postfield .*?value="(.*?)" />
             ]]>
             <match>u,l</match>
             <match>0</match>
@@ -136,14 +136,14 @@
     </request>
 
     <request>
-        <parameter name="service" value="direct"/>
-        <parameter name="page" value="Home"/>
-        <parameter name="direct" value="0"/>
-        <parameter name="component" value="go"/>
-        <parameter name="formids" value="u,l"/>
-        <parameter name="reservedids" value="direct"/>
-        <parameter name="u" value="newbie"/>
-        <parameter name="l" value="0"/>
+        <parameter name="service" value="direct" />
+        <parameter name="page" value="Home" />
+        <parameter name="direct" value="0" />
+        <parameter name="component" value="go" />
+        <parameter name="formids" value="u,l" />
+        <parameter name="reservedids" value="direct" />
+        <parameter name="u" value="newbie" />
+        <parameter name="l" value="0" />
 
         <assert-output name="Card">
             <![CDATA[

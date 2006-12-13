@@ -16,12 +16,12 @@
 -->
 
 <mock-test>
-    <context name="mock"/>
+    <context name="mock" />
 
   	<servlet name="app" class="org.apache.tapestry.ApplicationServlet">
   		<init-parameter
   			name="org.apache.tapestry.application-specification"
-  			value="/org/apache/tapestry/junit/mock/app/Mock.application"/>
+  			value="/org/apache/tapestry/junit/mock/app/Mock.application" />
   	</servlet>      
     
     <request>
@@ -36,7 +36,7 @@ If it's not Scottish, it's crap!
 		
 		<assert-output name="English Foo-Bar">
 <![CDATA[
-<foo bar="Totally Screwed!" id="Any"/>
+<foo bar="Totally Screwed!" id="Any" />
 ]]>	
 		</assert-output>
 	</request>		
@@ -53,15 +53,15 @@ Zees ees nawt cheeze!
 		
 		<assert-output name="French Foo-Bar">
 <![CDATA[
-<foo bar="Merde!" id="Any"/>
+<foo bar="Merde!" id="Any" />
 ]]>	
 		</assert-output>
 		
 	</request>
 
 	<request>
-	  	<parameter name="service" value="page"/>
-      <parameter name="page" value="Assets"/>
+	  	<parameter name="service" value="page" />
+      <parameter name="page" value="Assets" />
 		
 		<assert-output name="English Home image">
 <![CDATA[		
@@ -81,8 +81,8 @@ href="/mock/app?component=switch&amp;page=Assets&amp;service=direct"
 	</request>
 	
 	<request locale="fr">
-	  	<parameter name="service" value="page"/>
-      <parameter name="page" value="Assets"/>
+	  	<parameter name="service" value="page" />
+      <parameter name="page" value="Assets" />
 		
 		<assert-output name="French Home image">
 <![CDATA[		
@@ -106,9 +106,9 @@ href="/mock/app?component=switch&amp;page=Assets&amp;service=direct"
 	 	 the locale. -->
 	 	 
 	<request>
-		<parameter name="service" value="direct"/>
-    <parameter name="page" value="Assets"/>
-    <parameter name="component" value="switch"/>
+		<parameter name="service" value="direct" />
+    <parameter name="page" value="Assets" />
+    <parameter name="component" value="switch" />
 		
 		<!-- Switch sends us back to the Home page, but in French. -->
 		

@@ -16,9 +16,9 @@
 -->
 
 <mock-test>
-    <context name="c32" root="context32"/>
+    <context name="c32" root="context32" />
 
-  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet"/>
+  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet" />
 
 	<request>
 		
@@ -32,8 +32,8 @@ Static over Static: Pablo Picasso
 	   is an error to be checked for. -->
 	   
 	<request>
-	    	<parameter name="service" value="page"/>
-        <parameter name="page" value="Two"/>
+	    	<parameter name="service" value="page" />
+        <parameter name="page" value="Two" />
         
 	    	<assert-output name="Page Title">
 <![CDATA[<title>Exception</title>]]>	    		

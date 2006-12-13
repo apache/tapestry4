@@ -16,9 +16,9 @@
 -->
 
 <mock-test>
-    <context name="c31" root="context31"/>
+    <context name="c31" root="context31" />
 
-  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet"/>
+  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet" />
 
 	<request>
 		
@@ -30,33 +30,33 @@
 
 		<assert-output name="Hidden">
 <![CDATA[
-<input type="hidden" name="hidden" id="hidden" value="1234567890"/>
+<input type="hidden" name="hidden" id="hidden" value="1234567890" />
 ]]>	
 		</assert-output>
 		
 		<assert-output name="HiddenWithID">
 <![CDATA[
-<input type="hidden" name="0987654321" id="0987654321" value="1234567890-with id"/>
+<input type="hidden" name="0987654321" id="0987654321" value="1234567890-with id" />
 ]]>	
 		</assert-output>
 
 		<assert-output name="HiddenWithEncoding">
 <![CDATA[
-<input type="hidden" name="hiddenWithEncoding" id="hiddenWithEncoding" value="S1234567890-with encoding"/>
+<input type="hidden" name="hiddenWithEncoding" id="hiddenWithEncoding" value="S1234567890-with encoding" />
 ]]>	
 		</assert-output>
 
 	</request>
 	
 	<request>
-		<parameter name="service" value="direct"/>
-    <parameter name="page" value="Home"/>
-    <parameter name="component" value="$Form"/>
-		<parameter name="hidden" value="updated-1234567890"/>
-		<parameter name="0987654321" value="updated-1234567890-with id"/>
-		<parameter name="hiddenWithEncoding" value="Supdated-1234567890-with encoding"/>
-		<parameter name="hiddenBoolean" value="T"/>
-		<parameter name="formids" value="hidden,0987654321,hiddenWithEncoding,hiddenBoolean"/>
+		<parameter name="service" value="direct" />
+    <parameter name="page" value="Home" />
+    <parameter name="component" value="$Form" />
+		<parameter name="hidden" value="updated-1234567890" />
+		<parameter name="0987654321" value="updated-1234567890-with id" />
+		<parameter name="hiddenWithEncoding" value="Supdated-1234567890-with encoding" />
+		<parameter name="hiddenBoolean" value="T" />
+		<parameter name="formids" value="hidden,0987654321,hiddenWithEncoding,hiddenBoolean" />
 		
 		<assert-output name="Page Title">
 <![CDATA[

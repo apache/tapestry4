@@ -16,9 +16,9 @@
 -->
 
 <mock-test>
-    <context name="c34" root="context34"/>
+    <context name="c34" root="context34" />
 
-  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet"/>
+  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet" />
     
     <request>
 
@@ -65,13 +65,13 @@ But show this form text too!
 	</request>		
 
 	<request>
-	  	<parameter name="formids" value="If_1,If_2,for2,for3,for4,for5,for6"/>
-	  	<parameter name="component" value="$Form"/>
-	  	<parameter name="page" value="Home"/>
-	  	<parameter name="service" value="direct"/>
-	  	<parameter name="submitmode" value=""/>
-	  	<parameter name="If_1" value="T"/>
-	  	<parameter name="If_2" value="F"/>
+	  	<parameter name="formids" value="If_1,If_2,for2,for3,for4,for5,for6" />
+	  	<parameter name="component" value="$Form" />
+	  	<parameter name="page" value="Home" />
+	  	<parameter name="service" value="direct" />
+	  	<parameter name="submitmode" value="" />
+	  	<parameter name="If_1" value="T" />
+	  	<parameter name="If_2" value="F" />
 	  	<parameter name="for2">
               <value>VSuno</value>
               <value>VSdue</value>

@@ -16,29 +16,29 @@
 -->
 
 <mock-test>
-    <context name="mock" root="context51"/>
+    <context name="mock" root="context51" />
 
   	<servlet name="app" class="org.apache.tapestry.ApplicationServlet">
   		<init-parameter
   			name="org.apache.tapestry.application-specification"
-  			value="/org/apache/tapestry/junit/mock/wml/Mock.application"/>
+  			value="/org/apache/tapestry/junit/mock/wml/Mock.application" />
       <init-parameter
-          name="org.apache.tapestry.application-mode" value="wml"/>             
+          name="org.apache.tapestry.application-mode" value="wml" />             
   	</servlet>
 
     <request>
-        <parameter name="service" value="page"/>
-        <parameter name="page" value="Timer"/>
+        <parameter name="service" value="page" />
+        <parameter name="page" value="Timer" />
 
         <assert-output name="Timer component">
             <![CDATA[
-            <timer name="timer_one" value="20"/>
+            <timer name="timer_one" value="20" />
             ]]>
         </assert-output>
 
         <assert-output name="Timer component">
             <![CDATA[
-            <timer name="timer_two" value="0"/>
+            <timer name="timer_two" value="0" />
             ]]>
         </assert-output>
 

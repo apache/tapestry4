@@ -16,14 +16,14 @@
 -->
 
 <mock-test>
-    <context name="c28" root="context28"/>
+    <context name="c28" root="context28" />
 
-  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet"/>
+  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet" />
 
 	<request>
-		<parameter name="service" value="direct"/>
-    <parameter name="page" value="Home"/>
-    <parameter name="component" value="$DirectLink"/>
+		<parameter name="service" value="direct" />
+    <parameter name="page" value="Home" />
+    <parameter name="component" value="$DirectLink" />
 	  	<parameter name="sp">
 	  		<value>STwo</value>
 	  		<value>Sfr</value>
@@ -47,9 +47,9 @@ Fran&#231;ais
 	
 	
 	<request>
-		<parameter name="service" value="direct"/>
-    <parameter name="page" value="Home"/>
-    <parameter name="component" value="$DirectLink"/>
+		<parameter name="service" value="direct" />
+    <parameter name="page" value="Home" />
+    <parameter name="component" value="$DirectLink" />
 	  	<parameter name="sp">
 	  		<value>STwo</value>
 	  		<value>Sfr_FR</value>
@@ -68,9 +68,9 @@ Fran&#231;ais
 	
 	
 	<request>
-		<parameter name="service" value="direct"/>
-    <parameter name="page" value="Home"/>
-    <parameter name="component" value="$DirectLink"/>
+		<parameter name="service" value="direct" />
+    <parameter name="page" value="Home" />
+    <parameter name="component" value="$DirectLink" />
 	  	<parameter name="sp">
 	  		<value>STwo</value>
 	  		<value>Sbg</value>
@@ -93,9 +93,9 @@ Fran&#231;ais
 	
 
 	<request>
-		<parameter name="service" value="direct"/>
-    <parameter name="page" value="Home"/>
-    <parameter name="component" value="$DirectLink"/>
+		<parameter name="service" value="direct" />
+    <parameter name="page" value="Home" />
+    <parameter name="component" value="$DirectLink" />
 	  	<parameter name="sp">
 	  		<value>STwo</value>
 	  		<value>Sbg_BG</value>
@@ -117,9 +117,9 @@ Fran&#231;ais
 	</request>
 	
 	<request>
-		<parameter name="service" value="direct"/>
-    <parameter name="page" value="Home"/>
-    <parameter name="component" value="$DirectLink"/>
+		<parameter name="service" value="direct" />
+    <parameter name="page" value="Home" />
+    <parameter name="component" value="$DirectLink" />
 	  	<parameter name="sp">
 	  		<value>STwo</value>
 	  		<value>Sde</value>
@@ -146,9 +146,9 @@ sprache
 	
 	
 	<request>
-		<parameter name="service" value="direct"/>
-    <parameter name="page" value="Home"/>
-    <parameter name="component" value="$DirectLink"/>
+		<parameter name="service" value="direct" />
+    <parameter name="page" value="Home" />
+    <parameter name="component" value="$DirectLink" />
 	  	<parameter name="sp">
 	  		<value>STwo</value>
 	  		<value>Sde_DE</value>
@@ -175,9 +175,9 @@ sprache
 
 	
 	<request>
-		<parameter name="service" value="direct"/>
-    <parameter name="page" value="Home"/>
-    <parameter name="component" value="$DirectLink"/>
+		<parameter name="service" value="direct" />
+    <parameter name="page" value="Home" />
+    <parameter name="component" value="$DirectLink" />
 	  	<parameter name="sp">
 	  		<value>STwo</value>
 	  		<value>Szh_TW</value>
@@ -201,9 +201,9 @@ Default
 	</request>
     
 	<request>
-		<parameter name="service" value="direct"/>
-    <parameter name="page" value="Home"/>
-    <parameter name="component" value="$DirectLink"/>
+		<parameter name="service" value="direct" />
+    <parameter name="page" value="Home" />
+    <parameter name="component" value="$DirectLink" />
 	  	<parameter name="sp">
 	  		<value>STwo</value>
 	  		<value>Szh</value>

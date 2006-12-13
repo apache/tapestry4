@@ -88,10 +88,10 @@ public class TestCheckbox extends BaseFormComponentTestCase
 
         verify();
 
-        assertBuffer("<input type=\"checkbox\" name=\"barney\" checked=\"checked\" id=\"barney\"/>");
+        assertBuffer("<input type=\"checkbox\" name=\"barney\" checked=\"checked\" id=\"barney\" />");
     }
 
-    public void testRenderDisabled()
+    public void test_Render_Disabled()
     {
         IForm form = newMock(IForm.class);
         ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
@@ -120,10 +120,10 @@ public class TestCheckbox extends BaseFormComponentTestCase
 
         verify();
 
-        assertBuffer("<input type=\"checkbox\" name=\"assignedName\" disabled=\"disabled\"/>");
+        assertBuffer("<input type=\"checkbox\" name=\"assignedName\" disabled=\"disabled\" />");
     }
 
-    public void testRenderInformalParameters()
+    public void test_Render_Informal_Parameters()
     {
         IForm form = newMock(IForm.class);
         ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
@@ -155,10 +155,10 @@ public class TestCheckbox extends BaseFormComponentTestCase
 
         verify();
 
-        assertBuffer("<input type=\"checkbox\" name=\"assignedName\" checked=\"checked\" informal=\"informal-value\"/>");
+        assertBuffer("<input type=\"checkbox\" name=\"assignedName\" checked=\"checked\" informal=\"informal-value\" />");
     }
 
-    public void testRenderWithId()
+    public void test_Render_With_Id()
     {
         IForm form = newMock(IForm.class);
         ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
@@ -189,7 +189,7 @@ public class TestCheckbox extends BaseFormComponentTestCase
 
         verify();
         
-        assertBuffer("<input type=\"checkbox\" name=\"assignedName\" checked=\"checked\" id=\"assignedName\"/>");
+        assertBuffer("<input type=\"checkbox\" name=\"assignedName\" checked=\"checked\" id=\"assignedName\" />");
     }
 
     public void testSubmitNull()

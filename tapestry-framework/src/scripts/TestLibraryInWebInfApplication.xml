@@ -16,9 +16,9 @@
 -->
 
 <mock-test>
-    <context name="c4" root="context4"/>
+    <context name="c4" root="context4" />
 
-  	<servlet name="foo" class="org.apache.tapestry.ApplicationServlet"/>
+  	<servlet name="foo" class="org.apache.tapestry.ApplicationServlet" />
        
     <request>
  		

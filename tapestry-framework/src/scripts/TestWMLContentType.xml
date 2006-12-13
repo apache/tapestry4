@@ -16,23 +16,23 @@
 -->
 
 <mock-test>
-    <context name="mock" root="context51"/>
+    <context name="mock" root="context51" />
 
     <servlet name="app" class="org.apache.tapestry.ApplicationServlet">
         <init-parameter
             name="org.apache.tapestry.application-specification"
-            value="/org/apache/tapestry/junit/mock/wml/Mock.application"/>
+            value="/org/apache/tapestry/junit/mock/wml/Mock.application" />
         <init-parameter
-            name="org.apache.tapestry.application-mode" value="wml"/>            
+            name="org.apache.tapestry.application-mode" value="wml" />            
     </servlet>
 
     <request>
-        <parameter name="service" value="page"/>
-        <parameter name="page" value="ContentType"/>
+        <parameter name="service" value="page" />
+        <parameter name="page" value="ContentType" />
 
         <assert-output-stream name="Image Content"
                 content-type="text/vnd.wap.wml;charset=UTF-8"
-                path="src/test/org/apache/tapestry/junit/mock/wml/ContentType.wml"/>
+                path="src/test/org/apache/tapestry/junit/mock/wml/ContentType.wml" />
 
     </request>
 

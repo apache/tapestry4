@@ -16,17 +16,17 @@
 -->
 
 <mock-test>
-    <context name="mock"/>
+    <context name="mock" />
 
   	<servlet name="app" class="org.apache.tapestry.ApplicationServlet">
   		<init-parameter
   			name="org.apache.tapestry.application-specification"
-  			value="/org/apache/tapestry/junit/mock/app/Mock.application"/>
+  			value="/org/apache/tapestry/junit/mock/app/Mock.application" />
   	</servlet>
        
     <request>
-    	<parameter name="service" value="page"/>
-      <parameter name="page" value="TemplateExpr"/>
+    	<parameter name="service" value="page" />
+      <parameter name="page" value="TemplateExpr" />
  	
 	  	<assert-output name="Valid use of template expression">
 <![CDATA[
@@ -42,8 +42,8 @@ Second example: <span class="styleClass">JUnit Mock Application</span>
 	</request>
 			
 	<request>
-		<parameter name="service" value="page"/>
-    <parameter name="page" value="TemplateExprConflict"/>
+		<parameter name="service" value="page" />
+    <parameter name="page" value="TemplateExprConflict" />
 		
 	  	<assert-output name="Page Title">
 <![CDATA[
@@ -58,8 +58,8 @@ A binding for parameter 'value' of component TemplateExprConflict/insertApplicat
 	</request>
 	
 	<request>
-		<parameter name="service" value="page"/>
-    <parameter name="page" value="TemplateExprInformal"/>
+		<parameter name="service" value="page" />
+    <parameter name="page" value="TemplateExprInformal" />
 		
 	  	<assert-output name="Page Title">
 <![CDATA[
@@ -74,8 +74,8 @@ The template for TemplateExprInformal contains a binding for parameter 'informal
 	</request>	
 	
 	<request>
-		<parameter name="service" value="page"/>
-    <parameter name="page" value="TemplateExprReserved"/>
+		<parameter name="service" value="page" />
+    <parameter name="page" value="TemplateExprReserved" />
 		
 	  	<assert-output name="Page Title">
 <![CDATA[

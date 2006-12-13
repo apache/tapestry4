@@ -16,9 +16,9 @@
 -->
 
 <mock-test>
-    <context name="c24" root="context24"/>
+    <context name="c24" root="context24" />
 
-  	<servlet name="inheritInformal" class="org.apache.tapestry.ApplicationServlet"/>
+  	<servlet name="inheritInformal" class="org.apache.tapestry.ApplicationServlet" />
 
 	<request>
 		<assert-output name="Page Title">
@@ -58,8 +58,8 @@
 	
 	
 	<request>
-		<parameter name="service" value="page"/>
-    <parameter name="page" value="Two"/>	
+		<parameter name="service" value="page" />
+    <parameter name="page" value="Two" />	
 		
 		<assert-output name="Title">
 <![CDATA[
@@ -74,8 +74,8 @@
 	
 	
 	<request>
-		<parameter name="service" value="page"/>
-    <parameter name="page" value="Three"/>	
+		<parameter name="service" value="page" />
+    <parameter name="page" value="Three" />	
 		
 		<assert-output name="Title">
 <![CDATA[

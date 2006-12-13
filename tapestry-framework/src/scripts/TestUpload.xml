@@ -16,9 +16,9 @@
 -->
 
 <mock-test>
-    <context name="c19" root="context19"/>
+    <context name="c19" root="context19" />
     
-    <servlet name="app" class="org.apache.tapestry.ApplicationServlet"/>
+    <servlet name="app" class="org.apache.tapestry.ApplicationServlet" />
 
 	<request>
 		
@@ -31,7 +31,7 @@
 		
 		<assert-output name="Upload Field">
 <![CDATA[
-<input type="file" name="Upload" id="Upload"/>
+<input type="file" name="Upload" id="Upload" />
 ]]>	
 		</assert-output>
 	</request>
@@ -146,9 +146,9 @@
 	<!-- Test a disabled Upload component. -->
 	
 	<request>
-		<parameter name="service" value="direct"/>
-    <parameter name="page" value="Home"/>
-    <parameter name="component" value="$DirectLink"/>
+		<parameter name="service" value="direct" />
+    <parameter name="page" value="Home" />
+    <parameter name="component" value="$DirectLink" />
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -159,7 +159,7 @@
 		
 		<assert-output name="Upload Field">
 <![CDATA[
-<input type="file" name="Upload" disabled="disabled" id="Upload"/>
+<input type="file" name="Upload" disabled="disabled" id="Upload" />
 ]]>	
 		</assert-output>			
 	</request>
@@ -182,8 +182,8 @@
 		 same element name. -->
 		 
 	<request>
-		<parameter name="service" value="page"/>
-    <parameter name="page" value="Four"/>
+		<parameter name="service" value="page" />
+    <parameter name="page" value="Four" />
 		
 		<assert-output name="Page Title">
 <![CDATA[

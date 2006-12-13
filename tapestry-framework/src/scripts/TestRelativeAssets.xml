@@ -16,18 +16,18 @@
 -->
 
 <mock-test>
-    <context name="mock"/>
+    <context name="mock" />
 
   	<servlet name="app" class="org.apache.tapestry.ApplicationServlet">
   		<init-parameter
   			name="org.apache.tapestry.application-specification"
-  			value="/org/apache/tapestry/junit/mock/app/Mock.application"/>
+  			value="/org/apache/tapestry/junit/mock/app/Mock.application" />
   	</servlet>      
     
  
 	<request>
-	  	<parameter name="service" value="page"/>
-      <parameter name="page" value="RelativeAssets"/>
+	  	<parameter name="service" value="page" />
+      <parameter name="page" value="RelativeAssets" />
 		
 		<assert-output name="Page Title">
 <![CDATA[

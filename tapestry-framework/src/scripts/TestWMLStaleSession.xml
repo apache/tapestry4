@@ -16,19 +16,19 @@
 -->
 
 <mock-test>
-    <context name="mock" root="context51"/>
+    <context name="mock" root="context51" />
 
     <servlet name="app" class="org.apache.tapestry.ApplicationServlet">
         <init-parameter
             name="org.apache.tapestry.application-specification"
-            value="/org/apache/tapestry/junit/mock/wml/Mock.application"/>
+            value="/org/apache/tapestry/junit/mock/wml/Mock.application" />
         <init-parameter
-            name="org.apache.tapestry.application-mode" value="wml"/>                 
+            name="org.apache.tapestry.application-mode" value="wml" />                 
     </servlet>
 
     <request>
-        <parameter name="service" value="page"/>
-        <parameter name="page" value="Stale"/>
+        <parameter name="service" value="page" />
+        <parameter name="page" value="Stale" />
  
         <assert-output name="Do component">
             <![CDATA[
@@ -62,7 +62,7 @@
 
         <assert-output-matches name="Go Parameter Values" subgroup="1">
             <![CDATA[
-            <postfield .*?value="(.*?)"/>
+            <postfield .*?value="(.*?)" />
             ]]>
             <match></match>
             <match>go</match>
@@ -75,10 +75,10 @@
     </request>
 
     <request>
-        <parameter name="service" value="direct"/>
-        <parameter name="session" value="T"/>
-        <parameter name="page" value="Stale"/>
-        <parameter name="component" value="directLink"/>
+        <parameter name="service" value="direct" />
+        <parameter name="session" value="T" />
+        <parameter name="page" value="Stale" />
+        <parameter name="component" value="directLink" />
 
 
         <assert-output name="StaleSession (DirectLink)">
@@ -89,12 +89,12 @@
     </request>
 
     <request>
-        <parameter name="service" value="direct"/>
-        <parameter name="session" value="T"/>
-        <parameter name="page" value="Stale"/>
-        <parameter name="component" value="go"/>
+        <parameter name="service" value="direct" />
+        <parameter name="session" value="T" />
+        <parameter name="page" value="Stale" />
+        <parameter name="component" value="go" />
 
-        <parameter name="formids" value=""/>
+        <parameter name="formids" value="" />
 
         <assert-output name="StaleSession (Go)">
             <![CDATA[

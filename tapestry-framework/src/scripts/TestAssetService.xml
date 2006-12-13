@@ -16,11 +16,11 @@
 -->
 
 <mock-test>
-    <context name="c16" root="context16"/>
+    <context name="c16" root="context16" />
 
   	<servlet name="app" class="org.apache.tapestry.ApplicationServlet">
   		<init-parameter name="org.apache.tapestry.application-specification"
-  				value="/org/apache/tapestry/junit/mock/c16/app.application"/>
+  				value="/org/apache/tapestry/junit/mock/c16/app.application" />
   	</servlet>
 
 	<request>
@@ -32,18 +32,18 @@
 		
 		<assert-output name="Image Tag">
 <![CDATA[
-<img src="/c16/app?service=asset&amp;path=%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fc16%2Flogo.png"/>
+<img src="/c16/app?service=asset&amp;path=%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fc16%2Flogo.png" />
 ]]>
 		</assert-output>
 	</request>
 	
 	<request>
-		<parameter name="service" value="asset"/>
-		<parameter name="path" value="/org/apache/tapestry/junit/mock/c16/logo.png"/>
+		<parameter name="service" value="asset" />
+		<parameter name="path" value="/org/apache/tapestry/junit/mock/c16/logo.png" />
 		
 		<assert-output-stream name="Image Content"
 				content-type="image/png"
-				path="src/test/org/apache/tapestry/junit/mock/c16/logo.png"/>	
+				path="src/test/org/apache/tapestry/junit/mock/c16/logo.png" />	
 	</request>
 
 	
