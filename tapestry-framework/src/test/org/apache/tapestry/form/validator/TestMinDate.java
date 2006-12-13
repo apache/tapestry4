@@ -76,7 +76,7 @@ public class TestMinDate extends BaseValidatorTestCase
                 null,
                 ValidationStrings.DATE_TOO_EARLY,
                 new Object[]
-                { "Fred", tomorrow },
+                { "Fred", tomorrow.toString() },
                 "default message");
 
         replay();
@@ -110,7 +110,7 @@ public class TestMinDate extends BaseValidatorTestCase
                 "custom",
                 ValidationStrings.DATE_TOO_EARLY,
                 new Object[]
-                { "Fred", tomorrow },
+                { "Fred", tomorrow.toString() },
                 "custom message");
 
         replay();

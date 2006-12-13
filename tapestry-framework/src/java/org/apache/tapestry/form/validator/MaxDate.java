@@ -70,7 +70,7 @@ public class MaxDate extends BaseValidator
                 { field.getDisplayName(), 
                     (translator != null) ? 
                             translator.format(field, messages.getLocale(), _maxDate)
-                            : _maxDate});
+                            : _maxDate.toString()});
     }
     
     public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,

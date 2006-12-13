@@ -116,7 +116,7 @@ public class DefaultResponseBuilder implements ResponseBuilder
      */
     public boolean isDynamic()
     {
-        return Boolean.FALSE;
+        return false;
     }
     
     /**

@@ -73,7 +73,7 @@ public class MinDate extends BaseValidator
                 ValidationStrings.DATE_TOO_EARLY,
                 new Object[] { field.getDisplayName(), 
                     (translator != null) ? 
-                            translator.format(field, messages.getLocale(), _minDate) : _minDate});
+                            translator.format(field, messages.getLocale(), _minDate) : _minDate.toString()});
     }
     
     public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,

@@ -147,7 +147,6 @@ public class EventBoundListener
     /** 
      * {@inheritDoc}
      */
-    @Override
     public int hashCode()
     {
         final int prime = 31;
@@ -161,7 +160,6 @@ public class EventBoundListener
     /** 
      * {@inheritDoc}
      */
-    @Override
     public boolean equals(Object obj)
     {
         if (this == obj) return true;

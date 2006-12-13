@@ -111,7 +111,7 @@ public class JSONResponseBuilder implements ResponseBuilder
      */
     public boolean isDynamic()
     {
-        return Boolean.TRUE;
+        return true;
     }
     
     /**

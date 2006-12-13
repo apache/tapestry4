@@ -88,7 +88,7 @@ public class Max extends BaseValidator
         NumberTranslator translator = (NumberTranslator)super.getFieldTranslator(field, NumberTranslator.class);
         
         if (translator != null)
-            maxString = translator.format(field, context.getLocale(), _max);
+            maxString = translator.format(field, context.getLocale(), new Double(_max));
         else
             maxString = String.valueOf(_max);
         

@@ -88,7 +88,7 @@ public class Min extends BaseValidator
         NumberTranslator translator = (NumberTranslator)super.getFieldTranslator(field, NumberTranslator.class);
         
         if (translator != null)
-            minString = translator.format(field, context.getLocale(), _min);
+            minString = translator.format(field, context.getLocale(), new Double(_min));
         else
             minString = String.valueOf(_min);
         
