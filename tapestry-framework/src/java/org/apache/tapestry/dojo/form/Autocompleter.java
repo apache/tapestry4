@@ -15,7 +15,6 @@ package org.apache.tapestry.dojo.form;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -125,21 +124,21 @@ public abstract class Autocompleter extends AbstractFormWidget
         if (model == null)
             throw Tapestry.createRequiredParameterException(this, "model");
         
-        Map filteredValues = model.filterValues(getFilter());
+        List filteredValues = model.getValues(getFilter());
         
         if (filteredValues == null)
             return;
         
-        Iterator it = filteredValues.keySet().iterator();
         Object key = null;
         String label = null;
         
         JSONObject json = writer.object();
         
-        while (it.hasNext()) {
+        for (int i=0; i < filteredValues.size(); i++) {
+            Object value = filteredValues.get(i);
             
-            key = it.next();
-            label = filteredValues.get( key ).toString();
+            key = model.getPrimaryKey(value);
+            label = model.getLabelFor(value);
             
             json.put(getDataSqueezer().squeeze(key), label );
         }

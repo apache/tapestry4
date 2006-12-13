@@ -13,7 +13,7 @@
 // limitations under the License.
 package org.apache.tapestry.dojo.form;
 
-import java.util.Map;
+import java.util.List;
 
 import org.apache.tapestry.components.IPrimaryKeyConverter;
 import org.apache.tapestry.form.IPropertySelectionModel;
@@ -46,16 +46,14 @@ public interface IAutocompleteModel extends IPrimaryKeyConverter
     String getLabelFor(Object value);
     
     /**
-     * Used to filter a potentially large list of objects.
+     * Expected to return a list of all possible values, filtering out values that
+     * match the specified String in the <strong>label</strong> representation of the value.
      * 
-     * @param match
-     *          The given partial string that should be matched against object
-     *          <i>labels</i> in the model being managed.
-     * @return
-     *        A {@link Map} containing key/value pairs matching the given input label string. 
-     *        The map should contain a key compatible with {@link IPrimaryKeyConverter#getPrimaryKey(Object)} 
-     *        and value matching {@link #getLabelFor(Object)}.
+     * @param filter 
+     *          The string to use to filter the values based on the label representation of objects.
+     * 
+     * @return A filtered list of values. Expected to be in the full object form such that
+     *      {@link IPrimaryKeyConverter#getPrimaryKey(Object)} can be called on each returned value.
      */
-    Map filterValues(String match);
-    
+    List getValues(String filter);
 }
