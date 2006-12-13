@@ -66,7 +66,15 @@ public @interface EventListener
      * @return Whether or not to validate the form.
      */
     boolean validateForm() default false;
-
+    
+    /**
+     * Controls whether or not any forms being submitted as part of this event will request focus 
+     * as per normal form semantics. The default is false.
+     * 
+     * @return True if the form should get focus, false otherwise. The default is false.
+     */
+    boolean focus() default false;
+    
     /**
      * If used in conjunction with {@link #submitForm()}, will either submit the form normally or
      * asynchronously. Default is asyncrhonous.

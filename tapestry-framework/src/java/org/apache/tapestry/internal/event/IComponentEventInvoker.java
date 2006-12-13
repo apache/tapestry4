@@ -62,7 +62,6 @@ public interface IComponentEventInvoker extends ResetEventListener
      *          The form the event listener is bound to. This is the submitForm parameter
      *          of the EventListener annotation/spec driving an event occurrence to submit a particular form. It doesn't
      *          mean that the actual event target was the form . 
-     * 
      * @param listener 
      *          The listener that has form bound event listeners.
      */

@@ -154,7 +154,7 @@ public abstract class AnnotatedPage extends BasePage
     @Component(type = "Form", id = "testForm")
     public abstract IForm getForm();
     
-    @EventListener(events = { "onClick" }, targets = { "email" }, submitForm = "testForm")
+    @EventListener(events = { "onClick" }, targets = { "email" }, submitForm = "testForm", focus=true)
     public void formListener() { }
     
     @EventListener(events = { "onClick" }, targets = { "email" }, submitForm = "notExisting")

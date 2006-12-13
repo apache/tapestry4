@@ -106,8 +106,8 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         // now test render
         invoker.addEventListener("comp1", spec);
-        spec.addEventListener("comp1", new String[] {"onclick"}, "testMethod", null, false, true);
-        spec.addElementEventListener("elementId", new String[] {"onclick"}, "testMethod", null, false, true);
+        spec.addEventListener("comp1", new String[] {"onclick"}, "testMethod", null, false, true, false);
+        spec.addElementEventListener("elementId", new String[] {"onclick"}, "testMethod", null, false, true, false);
         
         /////////////////////////////////
         
@@ -170,7 +170,7 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         // test widget render
         
         invoker.addEventListener("wid1", widgetSpec);
-        widgetSpec.addEventListener("wid1", new String[] {"onclick"}, "testMethod", null, false, true);
+        widgetSpec.addEventListener("wid1", new String[] {"onclick"}, "testMethod", null, false, true, false);
         
         checkOrder(cycle, false);
         expect(cycle.isRewinding()).andReturn(false);
@@ -250,7 +250,7 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         // now test render
         invoker.addEventListener("comp1", spec);
-        spec.addEventListener("comp1", new String[] {"onclick"}, "testMethod", "form1", true, false);
+        spec.addEventListener("comp1", new String[] {"onclick"}, "testMethod", "form1", true, false, false);
         
         expect(cycle.isRewinding()).andReturn(false);
         
@@ -330,7 +330,7 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         // now test render
         invoker.addEventListener("comp1", spec);
-        spec.addEventListener("comp1", new String[] {"onclick"}, "testMethod", "form1", false, false);
+        spec.addEventListener("comp1", new String[] {"onclick"}, "testMethod", "form1", false, false, false);
         
         expect(cycle.isRewinding()).andReturn(false);
         
@@ -457,7 +457,7 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         // now test render
         invoker.addEventListener("comp1", spec);
-        spec.addEventListener("comp1", new String[] {"onclick"}, "testMethod", "form1", false, false);
+        spec.addEventListener("comp1", new String[] {"onclick"}, "testMethod", "form1", false, false, false);
         
         expect(cycle.isRewinding()).andReturn(false);
         

@@ -709,22 +709,22 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
      * {@inheritDoc}
      */
     public void addEventListener(String componentId, String[] events, 
-            String methodName, String formId, boolean validateForm, boolean async)
+            String methodName, String formId, boolean validateForm, boolean async, boolean focus)
     {
         ComponentEventProperty property = getComponentEvents(componentId);
         
-        property.addListener(events, methodName, formId, validateForm, async);
+        property.addListener(events, methodName, formId, validateForm, async, focus);
     }
     
     /**
      * {@inheritDoc}
      */
     public void addElementEventListener(String elementId, String[] events, 
-            String methodName, String formId, boolean validateForm, boolean async)
+            String methodName, String formId, boolean validateForm, boolean async, boolean focus)
     {
         ComponentEventProperty property = getElementEvents(elementId);
         
-        property.addListener(events, methodName, formId, validateForm, async);
+        property.addListener(events, methodName, formId, validateForm, async, focus);
     }
     
     /**

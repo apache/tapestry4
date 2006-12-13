@@ -36,7 +36,7 @@ import org.testng.annotations.Test;
 public class TestEventListenerAnnotationWorker extends BaseAnnotationTestCase
 {
 
-    public void testEventConnection()
+    public void test_Event_Connection()
     {
         EnhancementOperation op = newOp();
         IComponentSpecification spec = new ComponentSpecification();
@@ -72,9 +72,11 @@ public class TestEventListenerAnnotationWorker extends BaseAnnotationTestCase
         listeners = property.getEventListeners("onClick");
         assertNotNull(listeners);
         assertEquals(1, listeners.size());
+        
+        assert ((EventBoundListener)listeners.get(0)).shouldFocusForm() == false;
     }
     
-    public void testFormEventConnection()
+    public void test_Form_Event_Connection()
     {
         EnhancementOperation op = newOp();
         IComponentSpecification spec = new ComponentSpecification();
@@ -106,9 +108,10 @@ public class TestEventListenerAnnotationWorker extends BaseAnnotationTestCase
         EventBoundListener formListener = (EventBoundListener)listeners.get(0);
         assertEquals("testForm", formListener.getFormId());
         assertFalse(formListener.isValidateForm());
+        assert formListener.shouldFocusForm();
     }
     
-    public void testTargetsNotFound()
+    public void test_Targets_Not_Found()
     {
         EnhancementOperation op = newOp();
         IComponentSpecification spec = newSpec();
@@ -132,7 +135,7 @@ public class TestEventListenerAnnotationWorker extends BaseAnnotationTestCase
         verify();
     }
     
-    public void testCanEnhance()
+    public void test_Can_Enhance()
     {
         EventListenerAnnotationWorker worker = new EventListenerAnnotationWorker();
         
