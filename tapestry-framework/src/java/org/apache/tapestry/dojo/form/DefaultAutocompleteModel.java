@@ -13,9 +13,8 @@
 // limitations under the License.
 package org.apache.tapestry.dojo.form;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.hivemind.ApplicationRuntimeException;
@@ -74,12 +73,12 @@ public class DefaultAutocompleteModel implements IAutocompleteModel
         _labelExpression = labelField;
     }
     
-    /** 
+    /**
      * {@inheritDoc}
      */
-    public Map filterValues(String match)
+    public List getValues(String match)
     {
-        Map ret = new HashMap();
+        List ret = new ArrayList();
         
         if (match == null)
             return ret;
@@ -92,7 +91,7 @@ public class DefaultAutocompleteModel implements IAutocompleteModel
             String label = getLabelFor(value);
             
             if (label.toLowerCase().indexOf(filter) > -1)
-                ret.put(getPrimaryKey(value), label);
+                ret.add(value);
         }
         
         return ret;

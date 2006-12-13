@@ -15,7 +15,6 @@ package org.apache.tapestry.dojo.form;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.tapestry.BaseComponentTestCase;
 import org.testng.annotations.Test;
@@ -64,18 +63,17 @@ public class DefaultAutocompleteModelTest extends BaseComponentTestCase
         
         IAutocompleteModel model = new DefaultAutocompleteModel(values, "id", "label");
         
-        Map results = model.filterValues("sim");
+        List results = model.getValues("sim");
         
         assert results != null;
         assert results.size() == 3;
         
-        assert results.containsKey(2);
-        assert results.get(2).equals(s2.getLabel());
+        assert results.contains(s2);
         
-        results = model.filterValues("simple 1");
+        results = model.getValues("simple 1");
         
         assert results.size() == 1;
-        assert results.get(1) == s1.getLabel();
+        assert results.get(0) == s1;
     }
     
     public void test_Filtering_Null()
@@ -92,7 +90,7 @@ public class DefaultAutocompleteModelTest extends BaseComponentTestCase
         
         IAutocompleteModel model = new DefaultAutocompleteModel(values, "id", "label");
         
-        Map results = model.filterValues(null);
+        List results = model.getValues(null);
         
         assert results != null;
         assert results.size() == 0;
