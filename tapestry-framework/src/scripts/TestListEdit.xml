@@ -16,13 +16,13 @@
 -->
 
 <mock-test>
-    <context name="c14" root="context14"/>
+    <context name="c14" root="context14" />
 
-  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet"/>
+  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet" />
 
 	<request>
-		<parameter name="service" value="page"/>
-    <parameter name="page" value="ListEdit"/>
+		<parameter name="service" value="page" />
+    <parameter name="page" value="ListEdit" />
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -32,7 +32,7 @@
 		
 		<assert-output-matches name="Hidden Fields" subgroup="1">
 <![CDATA[
-<input type="hidden" (name="(.*?)" value="(.*?)")/>
+<input type="hidden" (name="(.*?)" value="(.*?)") />
 ]]>
 	   	<match>name="formids" value="e,inputColor,inputColor_0,inputColor_1"</match>			
 	    <match>name="component" value="form"</match>
@@ -58,18 +58,18 @@
 	</request>
 	
 	<request>
-		<parameter name="service" value="direct"/>
-    <parameter name="page" value="ListEdit"/>
-    <parameter name="component" value="form"/>
+		<parameter name="service" value="direct" />
+    <parameter name="page" value="ListEdit" />
+    <parameter name="component" value="form" />
 		<parameter name="e">
 			<value>Clothing</value>
 			<value>SEye Color</value>
 			<value>SFood</value>
 		</parameter>
-		<parameter name="inputColor" value="3"/>
-		<parameter name="inputColor_0" value="0"/>
-		<parameter name="inputColor_1" value="2"/>
-		<parameter name="formids" value="e,inputColor,inputColor_0,inputColor_1"/>
+		<parameter name="inputColor" value="3" />
+		<parameter name="inputColor_0" value="0" />
+		<parameter name="inputColor_1" value="2" />
+		<parameter name="formids" value="e,inputColor,inputColor_0,inputColor_1" />
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -90,18 +90,18 @@
 	<!-- Hack the submission so that one of the values passed up can't be unsqueezed. -->
 	
 	<request>
-		<parameter name="service" value="direct"/>
-    <parameter name="page" value="ListEdit"/>
-    <parameter name="component" value="form"/>
+		<parameter name="service" value="direct" />
+    <parameter name="page" value="ListEdit" />
+    <parameter name="component" value="form" />
 		<parameter name="e">
 			<value>3Clothing</value>
 			<value>SEye Color</value>
 			<value>SFood</value>
 		</parameter>
-		<parameter name="inputColor" value="3"/>
-		<parameter name="inputColor_0" value="0"/>
-		<parameter name="inputColor_1" value="2"/>
-		<parameter name="formids" value="e,inputColor,inputColor_0,inputColor_1"/>
+		<parameter name="inputColor" value="3" />
+		<parameter name="inputColor_0" value="0" />
+		<parameter name="inputColor_1" value="2" />
+		<parameter name="formids" value="e,inputColor,inputColor_0,inputColor_1" />
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -130,8 +130,8 @@
 		 as the source. -->
 	
 	<request>
-		<parameter name="service" value="page"/>
-    <parameter name="page" value="ListEditArray"/>
+		<parameter name="service" value="page" />
+    <parameter name="page" value="ListEditArray" />
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -141,7 +141,7 @@
 		
 		<assert-output-matches name="Hidden Fields" subgroup="1">
 <![CDATA[
-<input type="hidden" (name="(.*?)" value="(.*?)")/>
+<input type="hidden" (name="(.*?)" value="(.*?)") />
 ]]>
 			<match>name="formids" value="e"</match>			
       <match>name="component" value="$ListEditForm.$Form"</match>
@@ -158,8 +158,8 @@
 	<!-- Test where the ListEdit gets a null source. -->
 	
 	<request>
-		<parameter name="service" value="page"/>
-    <parameter name="page" value="ListEditNull"/>
+		<parameter name="service" value="page" />
+    <parameter name="page" value="ListEditNull" />
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -169,7 +169,7 @@
 		
 		<assert-output-matches name="Hidden Fields" subgroup="1">
 <![CDATA[
-<input type="hidden" (name="(.*?)" value="(.*?)")/>
+<input type="hidden" (name="(.*?)" value="(.*?)") />
 ]]>
 			<match>name="formids" value="e"</match>
       <match>name="component" value="$ListEditForm.$Form"</match>

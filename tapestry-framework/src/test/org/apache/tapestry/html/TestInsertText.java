@@ -173,6 +173,6 @@ public class TestInsertText extends BaseComponentTestCase
         
         nested.close();
         
-        assertBuffer("output<br/><b>raw</b>");
+        assertBuffer("output<br /><b>raw</b>");
     }
 }

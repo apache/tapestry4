@@ -16,37 +16,37 @@
 -->
 
 <mock-test>
-    <context name="mock" root="context51"/>
+    <context name="mock" root="context51" />
 
     <servlet name="app" class="org.apache.tapestry.ApplicationServlet">
         <init-parameter
             name="org.apache.tapestry.application-specification"
-            value="/org/apache/tapestry/junit/mock/wml/Mock.application"/>
+            value="/org/apache/tapestry/junit/mock/wml/Mock.application" />
         <init-parameter
-            name="org.apache.tapestry.application-mode" value="wml"/>                 
+            name="org.apache.tapestry.application-mode" value="wml" />                 
     </servlet>
 
     <request>
-        <parameter name="service" value="page"/>
-        <parameter name="page" value="Input"/>
+        <parameter name="service" value="page" />
+        <parameter name="page" value="Input" />
 
         <assert-output name="Input component">
             <![CDATA[
-            <input type="text" name="fname" title="FName" value="Ronnie"/>
+            <input type="text" name="fname" title="FName" value="Ronnie" />
             ]]>
         </assert-output>
 
         <assert-output name="Input component">
             <![CDATA[
-            <input type="text" name="lname" title="LName"/>
+            <input type="text" name="lname" title="LName" />
             ]]>
         </assert-output>
 
     </request>
 
     <request>
-        <parameter name="service" value="page"/>
-        <parameter name="page" value="NoGo"/>
+        <parameter name="service" value="page" />
+        <parameter name="page" value="NoGo" />
 
         <assert-output name="Card">
             <![CDATA[
@@ -65,13 +65,13 @@
     </request>
 
     <request>
-        <parameter name="service" value="direct"/>
-        <parameter name="page" value="Rewind"/>
-        <parameter name="direct" value="1"/>
-        <parameter name="component" value="h"/>
-        <parameter name="formids" value="v"/>
-        <parameter name="reservedids" value="direct"/>
-        <parameter name="v" value="VVV"/>
+        <parameter name="service" value="direct" />
+        <parameter name="page" value="Rewind" />
+        <parameter name="direct" value="1" />
+        <parameter name="component" value="h" />
+        <parameter name="formids" value="v" />
+        <parameter name="reservedids" value="direct" />
+        <parameter name="v" value="VVV" />
 
         <assert-output name="Card">
             <![CDATA[
@@ -90,12 +90,12 @@
     </request>
 
     <request>
-        <parameter name="service" value="direct"/>
-        <parameter name="page" value="Rewind"/>
-        <parameter name="component" value="g"/>
+        <parameter name="service" value="direct" />
+        <parameter name="page" value="Rewind" />
+        <parameter name="component" value="g" />
 
-        <parameter name="formids" value="v"/>
-        <parameter name="u" value="VVV"/>
+        <parameter name="formids" value="v" />
+        <parameter name="u" value="VVV" />
 
         <assert-output name="Card">
             <![CDATA[

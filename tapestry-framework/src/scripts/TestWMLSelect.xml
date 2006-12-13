@@ -16,19 +16,19 @@
 -->
 
 <mock-test>
-    <context name="mock" root="context51"/>
+    <context name="mock" root="context51" />
 
   	<servlet name="app" class="org.apache.tapestry.ApplicationServlet">
   		<init-parameter
   			name="org.apache.tapestry.application-specification"
-  			value="/org/apache/tapestry/junit/mock/wml/Mock.application"/>
+  			value="/org/apache/tapestry/junit/mock/wml/Mock.application" />
       <init-parameter
-          name="org.apache.tapestry.application-mode" value="wml"/>             
+          name="org.apache.tapestry.application-mode" value="wml" />             
   	</servlet>
 
     <request>
-        <parameter name="service" value="page"/>
-        <parameter name="page" value="NestedSelect"/>
+        <parameter name="service" value="page" />
+        <parameter name="page" value="NestedSelect" />
 
         <assert-output name="Card">
             <![CDATA[
@@ -50,8 +50,8 @@
     </request>
 
     <request>
-        <parameter name="service" value="page"/>
-        <parameter name="page" value="Select"/>
+        <parameter name="service" value="page" />
+        <parameter name="page" value="Select" />
 
         <assert-output name="Card">
             <![CDATA[
@@ -71,15 +71,15 @@
 
     <request>
 
-        <parameter name="service" value="direct"/>
-        <parameter name="direct" value="0"/>
-        <parameter name="page" value="Select"/>
-        <parameter name="component" value="go"/>
+        <parameter name="service" value="direct" />
+        <parameter name="direct" value="0" />
+        <parameter name="page" value="Select" />
+        <parameter name="component" value="go" />
 
-        <parameter name="formids" value="sex,income,hobbies"/>
-        <parameter name="sex" value="Male"/>
-        <parameter name="income" value="Over $100K"/>
-        <parameter name="hobbies" value="Skiing,Book,Traveling"/>
+        <parameter name="formids" value="sex,income,hobbies" />
+        <parameter name="sex" value="Male" />
+        <parameter name="income" value="Over $100K" />
+        <parameter name="hobbies" value="Skiing,Book,Traveling" />
 
         <assert-output name="Card">
             <![CDATA[

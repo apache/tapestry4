@@ -16,13 +16,13 @@
 -->
 
 <mock-test>
-    <context name="junit"/>
+    <context name="junit" />
 
     <servlet name="simple" class="org.apache.tapestry.ApplicationServlet">
   		<init-parameter
   			name="org.apache.tapestry.application-specification"
-  			value="/org/apache/tapestry/junit/mock/simple/Simple.application"/>
-      <init-parameter name="org.apache.tapestry.servlet-path" value="/simple"/>
+  			value="/org/apache/tapestry/junit/mock/simple/Simple.application" />
+      <init-parameter name="org.apache.tapestry.servlet-path" value="/simple" />
   	</servlet>
   	
   	<request>
@@ -89,8 +89,8 @@ The start of the JUnit test suite: JUnit Simple Application.
 <!-- Request #2 simulates the user clicking the PageLink URL on the Home page. -->
 
   <request>
-  	<parameter name="service" value="page"/>
-    <parameter name="page" value="Two"/>	
+  	<parameter name="service" value="page" />
+    <parameter name="page" value="Two" />	
   	
   	<assert-output name="Page Two Title">
 <![CDATA[
@@ -122,9 +122,9 @@ The start of the JUnit test suite: JUnit Simple Application.
 <!-- Request #3: Simulate clicking the DirectLink. -->
   
   <request>
-  	<parameter name="service" value="direct"/>
-    <parameter name="page" value="Two"/>
-    <parameter name="component" value="link"/>	
+  	<parameter name="service" value="direct" />
+    <parameter name="page" value="Two" />
+    <parameter name="component" value="link" />	
   	
 	<assert-regexp name="Third request, message displayed">
 <![CDATA[

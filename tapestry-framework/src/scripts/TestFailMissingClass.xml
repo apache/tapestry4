@@ -16,17 +16,17 @@
 -->
 
 <mock-test>
-    <context name="fail"/>
+    <context name="fail" />
 
   	<servlet name="app" class="org.apache.tapestry.ApplicationServlet">
   		<init-parameter
   			name="org.apache.tapestry.application-specification"
-  			value="/org/apache/tapestry/junit/mock/fail/Fail.application"/>
+  			value="/org/apache/tapestry/junit/mock/fail/Fail.application" />
   	</servlet>      
     
     <request>
-    	<parameter name="service" value="page"/>
-      <parameter name="page" value="MissingClass"/>
+    	<parameter name="service" value="page" />
+      <parameter name="page" value="MissingClass" />
     	
     	<assert-output name="Page Title">
 <![CDATA[

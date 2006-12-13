@@ -16,12 +16,12 @@
 -->
 
 <mock-test>
-    <context name="c3" root="context3"/>
+    <context name="c3" root="context3" />
 
   	<servlet name="app" class="org.apache.tapestry.ApplicationServlet">
   		<init-parameter
   			name="org.apache.tapestry.engine-class"
-  			value="org.apache.tapestry.junit.mock.c3.C3Engine"/>
+  			value="org.apache.tapestry.junit.mock.c3.C3Engine" />
   	</servlet>
        
     <request>

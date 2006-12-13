@@ -16,12 +16,12 @@
 -->
 
 <mock-test>
-    <context name="mock"/>
+    <context name="mock" />
 
   	<servlet name="app" class="org.apache.tapestry.ApplicationServlet">
   		<init-parameter
   			name="org.apache.tapestry.application-specification"
-  			value="/org/apache/tapestry/junit/mock/app/Mock.application"/>
+  			value="/org/apache/tapestry/junit/mock/app/Mock.application" />
   	</servlet>      
     
     <!-- Check that the home service is the default service. -->
@@ -34,8 +34,8 @@ If it's not Scottish, it's crap!
 	</request>		
 
 	<request>
-	  	<parameter name="service" value="page"/>
-      <parameter name="page" value="Assets"/>
+	  	<parameter name="service" value="page" />
+      <parameter name="page" value="Assets" />
 		
 		<assert-output name="Home Link">
 <![CDATA[		
@@ -48,7 +48,7 @@ href="/mock/app?service=home"
 <!-- Double check that home service works when named. -->
 	
 	<request>
-	  	<parameter name="service" value="home"/>
+	  	<parameter name="service" value="home" />
 		
 		<assert-output name="English Blurb">
 If it's not Scottish, it's crap!

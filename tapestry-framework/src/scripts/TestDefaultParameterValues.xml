@@ -16,9 +16,9 @@
 -->
 
 <mock-test>
-    <context name="c27" root="context27"/>
+    <context name="c27" root="context27" />
 
-  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet"/>
+  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet" />
 
 	<request>
 		<assert-output name="Page Title">

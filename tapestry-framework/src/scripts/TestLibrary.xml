@@ -16,13 +16,13 @@
 -->
 
 <mock-test>
-    <context name="junit"/>
+    <context name="junit" />
 
   	<servlet name="mock" class="org.apache.tapestry.ApplicationServlet">
   		<init-parameter
   			name="org.apache.tapestry.application-specification"
-  			value="/org/apache/tapestry/junit/mock/app/Mock.application"/>
-      <init-parameter name="org.apache.tapestry.servlet-path" value="/mock"/>
+  			value="/org/apache/tapestry/junit/mock/app/Mock.application" />
+      <init-parameter name="org.apache.tapestry.servlet-path" value="/mock" />
   	</servlet>
   	
   	<request>
@@ -81,9 +81,9 @@
   </request>
   
   <request>
-  	<parameter name="service" value="direct"/>
-    <parameter name="page" value="Home"/>
-    <parameter name="component" value="link"/>
+  	<parameter name="service" value="direct" />
+    <parameter name="page" value="Home" />
+    <parameter name="component" value="link" />
   	<parameter name="sp">
   		<value>2</value>
   		<value>d3.5</value>
@@ -123,8 +123,8 @@
   <!-- Click the "refresh" link and check that the persistent state is still there. -->
   
   <request>
-  	<parameter name="service" value="page"/>
-    <parameter name="page" value="lib:Dumper"/>
+  	<parameter name="service" value="page" />
+    <parameter name="page" value="lib:Dumper" />
   	
   	<assert-output-matches name="Cells (after refresh)" subgroup="1">
 <![CDATA[
@@ -165,8 +165,8 @@
   </request>
 
   <request>
-  	<parameter name="service" value="page"/>
-    <parameter name="page" value="lib:Properties"/>
+  	<parameter name="service" value="page" />
+    <parameter name="page" value="lib:Properties" />
   	
   	<assert-output name="Page Name">
   	Page Name: [lib:Properties]	

@@ -16,23 +16,23 @@
 -->
 
 <mock-test>
-    <context name="mock"/>
+    <context name="mock" />
 
   	<servlet name="app" class="org.apache.tapestry.ApplicationServlet">
   		<init-parameter
   			name="org.apache.tapestry.application-specification"
-  			value="/org/apache/tapestry/junit/mock/app/Mock.application"/>
+  			value="/org/apache/tapestry/junit/mock/app/Mock.application" />
   	</servlet>      
     
     <!-- Check that Relation component correctly adds a stylesheet in head. -->    	
 
 	<request>
-	  	<parameter name="service" value="page"/>
-      <parameter name="page" value="Styled"/>
+	  	<parameter name="service" value="page" />
+      <parameter name="page" value="Styled" />
 		
 		<assert-output name="Added stylesheet">
 <![CDATA[		
-<link rel="stylesheet" type="text/css" href="dummy.css"/>
+<link rel="stylesheet" type="text/css" href="dummy.css" />
 ]]>
 		</assert-output>
 		

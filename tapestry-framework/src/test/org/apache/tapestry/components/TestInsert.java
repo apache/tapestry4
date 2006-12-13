@@ -351,6 +351,6 @@ public class TestInsert extends BaseComponentTestCase
         
         nested.close();
         
-        assertBuffer("output<br/><b>raw</b>");
+        assertBuffer("output<br /><b>raw</b>");
     }
 }

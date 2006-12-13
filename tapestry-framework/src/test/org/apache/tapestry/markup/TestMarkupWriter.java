@@ -452,7 +452,7 @@ public class TestMarkupWriter extends BaseComponentTestCase
         mw.beginEmpty("img");
         mw.closeTag();
 
-        assertOutput("<img/>");
+        assertOutput("<img />");
 
         verify();
     }
@@ -472,7 +472,7 @@ public class TestMarkupWriter extends BaseComponentTestCase
         mw.begin("span");
         mw.closeTag();
 
-        assertOutput("<h1><b><img/><span>");
+        assertOutput("<h1><b><img /><span>");
 
         mw.end();
 
@@ -506,7 +506,7 @@ public class TestMarkupWriter extends BaseComponentTestCase
         mw.begin("span");
         mw.closeTag();
 
-        assertOutput("<h1><b><img/><span>");
+        assertOutput("<h1><b><img /><span>");
 
         // Uses the stack to close elements.
 

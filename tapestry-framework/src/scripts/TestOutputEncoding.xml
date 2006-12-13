@@ -16,16 +16,16 @@
 -->
 
 <mock-test>
-    <context name="c28" root="context28"/>
+    <context name="c28" root="context28" />
 
   	<servlet name="latin1" class="org.apache.tapestry.ApplicationServlet">
-      <init-parameter name="org.apache.tapestry.servlet-path" value="/latin1"/>
+      <init-parameter name="org.apache.tapestry.servlet-path" value="/latin1" />
   	</servlet>
 
 	<request>
-		<parameter name="service" value="direct"/>
-    <parameter name="page" value="Home"/>
-    <parameter name="component" value="$DirectLink"/>
+		<parameter name="service" value="direct" />
+    <parameter name="page" value="Home" />
+    <parameter name="component" value="$DirectLink" />
     	<parameter name="sp">
 	  		<value>STwo</value>
 	  		<value>Ses</value>
@@ -50,9 +50,9 @@ Espa&#241;a
 	
 	
 	<request>
-		<parameter name="service" value="direct"/>
-    <parameter name="page" value="Home"/>
-    <parameter name="component" value="$DirectLink"/>
+		<parameter name="service" value="direct" />
+    <parameter name="page" value="Home" />
+    <parameter name="component" value="$DirectLink" />
     	<parameter name="sp">
 	  		<value>STwo</value>
 	  		<value>Sfr</value>
@@ -84,9 +84,9 @@ Fran&#231;ais
 	</request>
 	
 	<request>
-		<parameter name="service" value="direct"/>
-    <parameter name="page" value="Home"/>
-    <parameter name="component" value="$DirectLink"/>
+		<parameter name="service" value="direct" />
+    <parameter name="page" value="Home" />
+    <parameter name="component" value="$DirectLink" />
     	<parameter name="sp">
 	  		<value>STwo</value>
 	  		<value>Sbg</value>

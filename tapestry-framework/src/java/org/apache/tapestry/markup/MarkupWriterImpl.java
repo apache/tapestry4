@@ -272,7 +272,7 @@ public class MarkupWriterImpl implements IMarkupWriter
         flushAttributes();
         
         if (_emptyTag)
-            _writer.print('/');
+            _writer.print(" /");
 
         _writer.print('>');
 
