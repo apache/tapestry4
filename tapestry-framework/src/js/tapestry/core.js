@@ -132,7 +132,7 @@ tapestry={
 					bodyScripts.push(elms[i]);
 					continue;
 				} else if (id == "includescript") {
-					// includes get processed immediately (syncrhonously)
+					// includes get processed immediately (synchronously)
 					var includes=elms[i].getElementsByTagName("include");
 					if (!includes){continue;}
 					for (var e=0; e<includes.length;e++) {
@@ -210,7 +210,7 @@ tapestry={
     	if (classStr) {
     		dojo.html.setClass(node, classStr);
     	}
-	},
+	},        
 	
 	/**
 	 * Function: loadScriptContent
@@ -306,7 +306,7 @@ tapestry={
 	 * 
 	 * Parameters: 
 	 * 	node - The incoming xml exception node.
-	 * 	kwArgs - The kwArfs used to initiate the original IO request.
+	 * 	kwArgs - The kwArgs used to initiate the original IO request.
 	 */
 	presentException:function(node, kwArgs) {
 		var excnode=document.createElement("div");
