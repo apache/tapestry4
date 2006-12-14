@@ -20,7 +20,8 @@ this.isShowingNow = false;if(this.parent){setTimeout(
 dojo.lang.hitch(this,function(){try{if(this.parent['focus']){this.parent.focus();}else{this.parent.domNode.focus();}}catch(e){dojo.debug("No idea how to focus to parent", e);}}
 ),10
 );}
-if(this._bookmark && dojo.withGlobal(this.openedForWindow||dojo.global(), dojo.html.selection.isCollapsed)){if(this.openedForWindow){this.openedForWindow.focus()}
+if(this._bookmark && dojo.withGlobal(this.openedForWindow||dojo.global(), dojo.html.selection.isCollapsed)){if(this.openedForWindow){this.openedForWindow.focus()
+}
 try{dojo.withGlobal(this.openedForWindow||dojo.global(), "moveToBookmark", dojo.html.selection, [this._bookmark]);}catch(e){}}
 this._bookmark = null;},closeAll: function(force){if (this.parentPopup){this.parentPopup.closeAll(force);}else{this.close(force);}},setOpenedSubpopup: function(popup) {this.currentSubpopup = popup;},closeSubpopup: function(force) {if(this.currentSubpopup == null){ return; }
 this.currentSubpopup.close(force);this.currentSubpopup = null;},onShow: function() {dojo.widget.PopupContainer.superclass.onShow.apply(this, arguments);this.openedSize={w: this.domNode.style.width, h: this.domNode.style.height};if(dojo.render.html.ie){if(!this.bgIframe){this.bgIframe = new dojo.html.BackgroundIframe();this.bgIframe.setZIndex(this.domNode);}
@@ -29,7 +30,8 @@ this.processQueue();},processQueue: function() {if (!this.queueOnAnimationFinish
 this.processQueue();}});dojo.widget.defineWidget(
 "dojo.widget.PopupContainer",[dojo.widget.HtmlWidget, dojo.widget.PopupContainerBase], {});dojo.widget.PopupManager = new function(){this.currentMenu = null;this.currentButton = null;this.currentFocusMenu = null;this.focusNode = null;this.registeredWindows = [];this.registerWin = function(win){if(!win.__PopupManagerRegistered)
 {dojo.event.connect(win.document, 'onmousedown', this, 'onClick');dojo.event.connect(win, "onscroll", this, "onClick");dojo.event.connect(win.document, "onkey", this, 'onKey');win.__PopupManagerRegistered = true;this.registeredWindows.push(win);}};this.registerAllWindows = function(targetWindow){if(!targetWindow) {targetWindow = dojo.html.getDocumentWindow(window.top && window.top.document || window.document);}
-this.registerWin(targetWindow);for (var i = 0; i < targetWindow.frames.length; i++){try{var win = dojo.html.getDocumentWindow(targetWindow.frames[i].document);if(win){this.registerAllWindows(win);}}catch(e){  }}};this.unRegisterWin = function(win){if(win.__PopupManagerRegistered)
+this.registerWin(targetWindow);for (var i = 0; i < targetWindow.frames.length; i++){try{var win = dojo.html.getDocumentWindow(targetWindow.frames[i].document);if(win){this.registerAllWindows(win);}}catch(e){  }}
+};this.unRegisterWin = function(win){if(win.__PopupManagerRegistered)
 {dojo.event.disconnect(win.document, 'onmousedown', this, 'onClick');dojo.event.disconnect(win, "onscroll", this, "onClick");dojo.event.disconnect(win.document, "onkey", this, 'onKey');win.__PopupManagerRegistered = false;}};this.unRegisterAllWindows = function(){for(var i=0;i<this.registeredWindows.length;++i){this.unRegisterWin(this.registeredWindows[i]);}
 this.registeredWindows = [];};dojo.addOnLoad(this, "registerAllWindows");dojo.addOnUnload(this, "unRegisterAllWindows");this.closed = function(menu){if (this.currentMenu == menu){this.currentMenu = null;this.currentButton = null;this.currentFocusMenu = null;}};this.opened = function(menu, button){if (menu == this.currentMenu){ return; }
 if (this.currentMenu){this.currentMenu.close();}

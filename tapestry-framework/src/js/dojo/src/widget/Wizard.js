@@ -14,4 +14,5 @@ this._checkButtons();},hasNextPanel: function() {var selectedIndex = this.select
 "dojo.widget.WizardPane",dojo.widget.ContentPane,{canGoBack: true,passFunction: "",doneFunction: "",postMixInProperties: function(args, frag) {if (this.passFunction) {this.passFunction = dj_global[this.passFunction];}
 if (this.doneFunction) {this.doneFunction = dj_global[this.doneFunction];}
 dojo.widget.WizardPane.superclass.postMixInProperties.apply(this, arguments);},_checkPass: function() {if (this.passFunction && dojo.lang.isFunction(this.passFunction)) {var failMessage = this.passFunction();if (failMessage) {alert(failMessage);return false;}}
-return true;},done: function() {if (this.doneFunction && dojo.lang.isFunction(this.doneFunction)) {this.doneFunction();}}});
+return true;},done: function() {if (this.doneFunction && dojo.lang.isFunction(this.doneFunction)) {this.doneFunction();}}
+});

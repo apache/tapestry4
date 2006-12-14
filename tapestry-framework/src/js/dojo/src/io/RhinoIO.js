@@ -8,7 +8,8 @@ req.load("load", ret, req);}
 function connect(req){var content = req.content || {};var query;if (req.sendTransport){content["dojo.transport"] = "rhinohttp";}
 if(req.postContent){query = req.postContent;}else{query = dojo.io.argsFromMap(content, req.encoding);}
 var url_text = req.url;if(req.method.toLowerCase() == "get" && query != ""){url_text = url_text + "?" + query;}
-var url  = new java.net.URL(url_text);var conn = url.openConnection();conn.setRequestMethod(req.method.toUpperCase());if(req.headers){for(var header in req.headers){if(header.toLowerCase() == "content-type" && !req.contentType){req.contentType = req.headers[header];}else{conn.setRequestProperty(header, req.headers[header]);}}}
+var url  = new java.net.URL(url_text);var conn = url.openConnection();conn.setRequestMethod(req.method.toUpperCase());if(req.headers){for(var header in req.headers){if(header.toLowerCase() == "content-type" && !req.contentType){req.contentType = req.headers[header];}else{conn.setRequestProperty(header, req.headers[header]);}}
+}
 if(req.contentType){conn.setRequestProperty("Content-Type", req.contentType);}
 if(req.method.toLowerCase() == "post"){conn.setDoOutput(true);var output_stream = conn.getOutputStream();var byte_array = (new java.lang.String(query)).getBytes();output_stream.write(byte_array, 0, byte_array.length);}
 conn.connect();doLoad(req, conn);}

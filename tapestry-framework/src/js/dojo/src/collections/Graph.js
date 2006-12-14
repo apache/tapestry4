@@ -1,5 +1,6 @@
 
-dojo.provide("dojo.collections.Graph");dojo.require("dojo.collections.Collections");dojo.experimental("dojo.collections.Graph");dojo.collections.Graph=function(nodes){function node(key, data, neighbors) {this.key=key;this.data=data;this.neighbors=neighbors||new adjacencyList();this.addDirected=function(){if (arguments[0].constructor==edgeToNeighbor){this.neighbors.add(arguments[0]);}else{var n=arguments[0];var cost=arguments[1]||0;this.neighbors.add(new edgeToNeighbor(n, cost));}}}
+dojo.provide("dojo.collections.Graph");dojo.require("dojo.collections.Collections");dojo.experimental("dojo.collections.Graph");dojo.collections.Graph=function(nodes){function node(key, data, neighbors) {this.key=key;this.data=data;this.neighbors=neighbors||new adjacencyList();this.addDirected=function(){if (arguments[0].constructor==edgeToNeighbor){this.neighbors.add(arguments[0]);}else{var n=arguments[0];var cost=arguments[1]||0;this.neighbors.add(new edgeToNeighbor(n, cost));}}
+}
 function nodeList(){var d=new dojo.collections.Dictionary();function nodelistiterator(){var o=[] ;var e=d.getIterator();while(e.get()){o[o.length]=e.element;}
 var position=0;this.element=o[position]||null;this.atEnd=function(){return (position>=o.length);}
 this.get=function(){if(this.atEnd()){return null;}

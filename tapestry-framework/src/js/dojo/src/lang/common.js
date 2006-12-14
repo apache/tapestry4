@@ -14,7 +14,7 @@ dojo.lang.extend = function( constructor,  props){for(var i=1, l=arguments.lengt
 return constructor;}
 dojo.lang._delegate = function(obj, props){function TMP(){};TMP.prototype = obj;var tmp = new TMP();if(props){dojo.lang.mixin(tmp, props);}
 return tmp;}
-dojo.inherits = dojo.lang.inherits;dojo.mixin = dojo.lang.mixin;dojo.extend = dojo.lang.extend;dojo.lang.find = function(			array,value,identity,findLast){var isString = dojo.lang.isString(array);if(isString) { array = array.split(""); }
+dojo.inherits = dojo.lang.inherits;dojo.mixin = dojo.lang.mixin;dojo.extend = dojo.lang.extend;dojo.lang.find = function(array,value,identity,findLast){var isString = dojo.lang.isString(array);if(isString) { array = array.split(""); }
 if(findLast) {var step = -1;var i = array.length - 1;var end = -1;} else {var step = 1;var i = 0;var end = array.length;}
 if(identity){while(i != end) {if(array[i] === value){ return i; }
 i += step;}}else{while(i != end) {if(array[i] == value){ return i; }
@@ -33,7 +33,8 @@ if((it.tagName)&&(it.tagName.toLowerCase()=='form')){ return false; }
 if(dojo.lang.isNumber(it.length) && isFinite(it.length)){ return true; }
 return false;}
 dojo.lang.isFunction = function( it){return (it instanceof Function || typeof it == "function");};(function(){if((dojo.render.html.capable)&&(dojo.render.html["safari"])){dojo.lang.isFunction = function( it){if((typeof(it) == "function") && (it == "[object NodeList]")) { return false; }
-return (it instanceof Function || typeof it == "function");}}})();dojo.lang.isString = function( it){return (typeof it == "string" || it instanceof String);}
+return (it instanceof Function || typeof it == "function");}}
+})();dojo.lang.isString = function( it){return (typeof it == "string" || it instanceof String);}
 dojo.lang.isAlien = function( it){if(!it){ return false; }
 return !dojo.lang.isFunction(it) && /\{\s*\[native code\]\s*\}/.test(String(it));}
 dojo.lang.isBoolean = function( it){return (it instanceof Boolean || typeof it == "boolean");}

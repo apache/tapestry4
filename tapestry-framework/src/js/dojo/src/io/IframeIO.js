@@ -9,13 +9,14 @@ return cframe;}
 dojo.io.IframeTransport = new function(){var _this = this;this.currentRequest = null;this.requestQueue = [];this.iframeName = "dojoIoIframe";this.fireNextRequest = function(){try{if((this.currentRequest)||(this.requestQueue.length == 0)){ return; }
 var cr = this.currentRequest = this.requestQueue.shift();cr._contentToClean = [];var fn = cr["formNode"];var content = cr["content"] || {};if(cr.sendTransport) {content["dojo.transport"] = "iframe";}
 if(fn){if(content){for(var x in content){if(!fn[x]){var tn;if(dojo.render.html.ie){tn = document.createElement("<input type='hidden' name='"+x+"' value='"+content[x]+"'>");fn.appendChild(tn);}else{tn = document.createElement("input");fn.appendChild(tn);tn.type = "hidden";tn.name = x;tn.value = content[x];}
-cr._contentToClean.push(x);}else{fn[x].value = content[x];}}}
+cr._contentToClean.push(x);}else{fn[x].value = content[x];}}
+}
 if(cr["url"]){cr._originalAction = fn.getAttribute("action");fn.setAttribute("action", cr.url);}
 if(!fn.getAttribute("method")){fn.setAttribute("method", (cr["method"]) ? cr["method"] : "post");}
 cr._originalTarget = fn.getAttribute("target");fn.setAttribute("target", this.iframeName);fn.target = this.iframeName;fn.submit();}else{var query = dojo.io.argsFromMap(this.currentRequest.content);var tmpUrl = cr.url + (cr.url.indexOf("?") > -1 ? "&" : "?") + query;dojo.io.setIFrameSrc(this.iframe, tmpUrl, true);}}catch(e){this.iframeOnload(e);}}
 this.canHandle = function(kwArgs){return (
 (
-dojo.lang.inArray([	"text/plain", "text/html", "text/javascript", "text/json", "application/json"], kwArgs["mimetype"])
+dojo.lang.inArray(["text/plain", "text/html", "text/javascript", "text/json", "application/json"], kwArgs["mimetype"])
 )&&(
 dojo.lang.inArray(["post", "get"], kwArgs["method"].toLowerCase())
 )&&(
@@ -26,7 +27,8 @@ this.bind = function(kwArgs){if(!this["iframe"]){ this.setUpIframe(); }
 this.requestQueue.push(kwArgs);this.fireNextRequest();return;}
 this.setUpIframe = function(){this.iframe = dojo.io.createIFrame(this.iframeName, "dojo.io.IframeTransport.iframeOnload();");}
 this.iframeOnload = function(errorObject ){if(!_this.currentRequest){_this.fireNextRequest();return;}
-var req = _this.currentRequest;if(req.formNode){var toClean = req._contentToClean;for(var i = 0; i < toClean.length; i++) {var key = toClean[i];if(dojo.render.html.safari){var fNode = req.formNode;for(var j = 0; j < fNode.childNodes.length; j++){var chNode = fNode.childNodes[j];if(chNode.name == key){var pNode = chNode.parentNode;pNode.removeChild(chNode);break;}}}else{var input = req.formNode[key];req.formNode.removeChild(input);req.formNode[key] = null;}}
+var req = _this.currentRequest;if(req.formNode){var toClean = req._contentToClean;for(var i = 0; i < toClean.length; i++) {var key = toClean[i];if(dojo.render.html.safari){var fNode = req.formNode;for(var j = 0; j < fNode.childNodes.length; j++){var chNode = fNode.childNodes[j];if(chNode.name == key){var pNode = chNode.parentNode;pNode.removeChild(chNode);break;}}
+}else{var input = req.formNode[key];req.formNode.removeChild(input);req.formNode[key] = null;}}
 if(req["_originalAction"]){req.formNode.setAttribute("action", req._originalAction);}
 if(req["_originalTarget"]){req.formNode.setAttribute("target", req._originalTarget);req.formNode.target = req._originalTarget;}}
 var contentDoc = function(iframe_el){var doc = iframe_el.contentDocument ||

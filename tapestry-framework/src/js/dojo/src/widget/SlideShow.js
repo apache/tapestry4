@@ -5,5 +5,7 @@ dojo.html.setOpacity(this.img1, 0.9999);dojo.html.setOpacity(this.img2, 0.9999);
 if(this.fadeAnim) {this.fadeAnim.stop();}
 this.fadeAnim = dojo.lfx.fadeOut(this[this._foreground],this.transitionInterval, null);dojo.event.connect(this.fadeAnim,"onEnd",this,"_endTransition");this.fadeAnim.play();},_endTransition: function(){with(this[this._background].style){ zIndex = parseInt(zIndex)+1; }
 with(this[this._foreground].style){ zIndex = parseInt(zIndex)-1; }
-var tmp = this._foreground;this._foreground = this._background;this._background = tmp;this._loadNextImage();},_loadNextImage: function(){dojo.event.kwConnect({srcObj: this[this._background],srcFunc: "onload",adviceObj: this,adviceFunc: "_backgroundImageLoaded",once: true,delay: this.delay});dojo.html.setOpacity(this[this._background], 1.0);this[this._background].src = this.imgUrlBase+this.imgUrls[this._urlsIdx++];if(this._urlsIdx>(this.imgUrls.length-1)){this._urlsIdx = 0;}}}
+var tmp = this._foreground;this._foreground = this._background;this._background = tmp;this._loadNextImage();},_loadNextImage: function(){dojo.event.kwConnect({srcObj: this[this._background],srcFunc: "onload",adviceObj: this,adviceFunc: "_backgroundImageLoaded",once: true,delay: this.delay
+});dojo.html.setOpacity(this[this._background], 1.0);this[this._background].src = this.imgUrlBase+this.imgUrls[this._urlsIdx++];if(this._urlsIdx>(this.imgUrls.length-1)){this._urlsIdx = 0;}}
+}
 );

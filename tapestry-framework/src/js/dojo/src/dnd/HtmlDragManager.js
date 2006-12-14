@@ -1,5 +1,7 @@
 
-dojo.provide("dojo.dnd.HtmlDragManager");dojo.require("dojo.dnd.DragAndDrop");dojo.require("dojo.event.*");dojo.require("dojo.lang.array");dojo.require("dojo.html.common");dojo.require("dojo.html.layout");dojo.declare("dojo.dnd.HtmlDragManager", dojo.dnd.DragManager, {disabled: false,nestedTargets: false,mouseDownTimer: null,dsCounter: 0,dsPrefix: "dojoDragSource",dropTargetDimensions: [],currentDropTarget: null,previousDropTarget: null,_dragTriggered: false,selectedSources: [],dragObjects: [],dragSources: [],currentX: null,currentY: null,lastX: null,lastY: null,mouseDownX: null,mouseDownY: null,threshold: 7,dropAcceptable: false,cancelEvent: function(e){ e.stopPropagation(); e.preventDefault();},registerDragSource: function(ds){if(ds["domNode"]){var dp = this.dsPrefix;var dpIdx = dp+"Idx_"+(this.dsCounter++);ds.dragSourceId = dpIdx;this.dragSources[dpIdx] = ds;ds.domNode.setAttribute(dp, dpIdx);if(dojo.render.html.ie){dojo.event.browser.addListener(ds.domNode, "ondragstart", this.cancelEvent);}}},unregisterDragSource: function(ds){if (ds["domNode"]){var dp = this.dsPrefix;var dpIdx = ds.dragSourceId;delete ds.dragSourceId;delete this.dragSources[dpIdx];ds.domNode.setAttribute(dp, null);if(dojo.render.html.ie){dojo.event.browser.removeListener(ds.domNode, "ondragstart", this.cancelEvent);}}},registerDropTarget: function(dt){this.dropTargets.push(dt);},unregisterDropTarget: function(dt){var index = dojo.lang.find(this.dropTargets, dt, true);if (index>=0) {this.dropTargets.splice(index, 1);}},getDragSource: function(e){var tn = e.target;if(tn === dojo.body()){ return; }
+dojo.provide("dojo.dnd.HtmlDragManager");dojo.require("dojo.dnd.DragAndDrop");dojo.require("dojo.event.*");dojo.require("dojo.lang.array");dojo.require("dojo.html.common");dojo.require("dojo.html.layout");dojo.declare("dojo.dnd.HtmlDragManager", dojo.dnd.DragManager, {disabled: false,nestedTargets: false,mouseDownTimer: null,dsCounter: 0,dsPrefix: "dojoDragSource",dropTargetDimensions: [],currentDropTarget: null,previousDropTarget: null,_dragTriggered: false,selectedSources: [],dragObjects: [],dragSources: [],currentX: null,currentY: null,lastX: null,lastY: null,mouseDownX: null,mouseDownY: null,threshold: 7,dropAcceptable: false,cancelEvent: function(e){ e.stopPropagation(); e.preventDefault();},registerDragSource: function(ds){if(ds["domNode"]){var dp = this.dsPrefix;var dpIdx = dp+"Idx_"+(this.dsCounter++);ds.dragSourceId = dpIdx;this.dragSources[dpIdx] = ds;ds.domNode.setAttribute(dp, dpIdx);if(dojo.render.html.ie){dojo.event.browser.addListener(ds.domNode, "ondragstart", this.cancelEvent);}}
+},unregisterDragSource: function(ds){if (ds["domNode"]){var dp = this.dsPrefix;var dpIdx = ds.dragSourceId;delete ds.dragSourceId;delete this.dragSources[dpIdx];ds.domNode.setAttribute(dp, null);if(dojo.render.html.ie){dojo.event.browser.removeListener(ds.domNode, "ondragstart", this.cancelEvent);}}
+},registerDropTarget: function(dt){this.dropTargets.push(dt);},unregisterDropTarget: function(dt){var index = dojo.lang.find(this.dropTargets, dt, true);if (index>=0) {this.dropTargets.splice(index, 1);}},getDragSource: function(e){var tn = e.target;if(tn === dojo.body()){ return; }
 var ta = dojo.html.getAttribute(tn, this.dsPrefix);while((!ta)&&(tn)){tn = tn.parentNode;if((!tn)||(tn === dojo.body())){ return; }
 ta = dojo.html.getAttribute(tn, this.dsPrefix);}
 return this.dragSources[ta];},onKeyDown: function(e){},onMouseDown: function(e){if(this.disabled) { return; }
@@ -14,7 +16,8 @@ dojo.lang.forEach(this.dragObjects, function(tempDragObj){var ret = null;if(!tem
 if(this.currentDropTarget) {e.dragObject = tempDragObj;var ce = this.currentDropTarget.domNode.childNodes;if(ce.length > 0){e.dropTarget = ce[0];while(e.dropTarget == tempDragObj.domNode){e.dropTarget = e.dropTarget.nextSibling;}}else{e.dropTarget = this.currentDropTarget.domNode;}
 if(this.dropAcceptable){ret = this.currentDropTarget.onDrop(e);}else{this.currentDropTarget.onDragOut(e);}}
 e.dragStatus = this.dropAcceptable && ret ? "dropSuccess" : "dropFailure";dojo.lang.delayThese([
-function() {try{tempDragObj.dragSource.onDragEnd(e)} catch(err) {var ecopy = {};for (var i in e) {if (i=="type") {ecopy.type = "mouseup";continue;}
+function() {try{tempDragObj.dragSource.onDragEnd(e)
+} catch(err) {var ecopy = {};for (var i in e) {if (i=="type") {ecopy.type = "mouseup";continue;}
 ecopy[i] = e[i];}
 tempDragObj.dragSource.onDragEnd(ecopy);}}
 , function() {tempDragObj.onDragEnd(e)}]);}, this);this.selectedSources = [];this.dragObjects = [];this.dragSource = null;if(this.currentDropTarget) {this.currentDropTarget.onDropEnd();}} else {}
@@ -24,7 +27,7 @@ var dx = Math.abs(x-this.mouseDownX);var dx2 = dx*dx;var dy = Math.abs(y-this.mo
 var abs = dojo.html.getAbsolutePosition(tn, true);var bb = dojo.html.getBorderBox(tn);this.dropTargetDimensions.push([
 [abs.x, abs.y],[ abs.x+bb.width, abs.y+bb.height ],tempTarget
 ]);}, this);dojo.profile.end("cacheTargetLocations");},onMouseMove: function(e){if((dojo.render.html.ie)&&(e.button != 1)){this.currentDropTarget = null;this.onMouseUp(e, true);return;}
-if(	(this.selectedSources.length)&&
+if((this.selectedSources.length)&&
 (!this.dragObjects.length) ){var dx;var dy;if(!this._dragTriggered){this._dragTriggered = (this._dragStartDistance(e.pageX, e.pageY) > this.threshold);if(!this._dragTriggered){ return; }
 dx = e.pageX - this.mouseDownX;dy = e.pageY - this.mouseDownY;}
 this.dragSource = this.selectedSources[0];dojo.lang.forEach(this.selectedSources, function(tempSource){if(!tempSource){ return; }
@@ -35,8 +38,9 @@ dojo.lang.forEach(this.dragObjects, function(dragObj){if(dragObj){ dragObj.onDra
 if((!this.nestedTargets)&&(dtp)&&(this.isInsideBox(e, dtp))){if(this.dropAcceptable){this.currentDropTarget.onDragMove(e, this.dragObjects);}}else{var bestBox = this.findBestTarget(e);if(bestBox.target === null){if(this.currentDropTarget){this.currentDropTarget.onDragOut(e);this.previousDropTarget = this.currentDropTarget;this.currentDropTarget = null;}
 this.dropAcceptable = false;return;}
 if(this.currentDropTarget !== bestBox.target){if(this.currentDropTarget){this.previousDropTarget = this.currentDropTarget;this.currentDropTarget.onDragOut(e);}
-this.currentDropTarget = bestBox.target;e.dragObjects = this.dragObjects;this.dropAcceptable = this.currentDropTarget.onDragOver(e);}else{if(this.dropAcceptable){this.currentDropTarget.onDragMove(e, this.dragObjects);}}}},findBestTarget: function(e) {var _this = this;var bestBox = new Object();bestBox.target = null;bestBox.points = null;dojo.lang.every(this.dropTargetDimensions, function(tmpDA) {if(!_this.isInsideBox(e, tmpDA)){return true;}
-bestBox.target = tmpDA[2];bestBox.points = tmpDA;return Boolean(_this.nestedTargets);});return bestBox;},isInsideBox: function(e, coords){if(	(e.pageX > coords[0][0])&&
+this.currentDropTarget = bestBox.target;e.dragObjects = this.dragObjects;this.dropAcceptable = this.currentDropTarget.onDragOver(e);}else{if(this.dropAcceptable){this.currentDropTarget.onDragMove(e, this.dragObjects);}}
+}},findBestTarget: function(e) {var _this = this;var bestBox = new Object();bestBox.target = null;bestBox.points = null;dojo.lang.every(this.dropTargetDimensions, function(tmpDA) {if(!_this.isInsideBox(e, tmpDA)){return true;}
+bestBox.target = tmpDA[2];bestBox.points = tmpDA;return Boolean(_this.nestedTargets);});return bestBox;},isInsideBox: function(e, coords){if((e.pageX > coords[0][0])&&
 (e.pageX < coords[1][0])&&
 (e.pageY > coords[0][1])&&
 (e.pageY < coords[1][1]) ){return true;}

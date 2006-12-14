@@ -1,5 +1,6 @@
 
-dojo.provide("dojo.widget.html.stabile");dojo.widget.html.stabile = {_sqQuotables: new RegExp("([\\\\'])", "g"),_depth: 0,_recur: false,depthLimit: 2};dojo.widget.html.stabile.getState = function(id){dojo.widget.html.stabile.setup();return dojo.widget.html.stabile.widgetState[id];}
+dojo.provide("dojo.widget.html.stabile");dojo.widget.html.stabile = {_sqQuotables: new RegExp("([\\\\'])", "g"),_depth: 0,_recur: false,depthLimit: 2
+};dojo.widget.html.stabile.getState = function(id){dojo.widget.html.stabile.setup();return dojo.widget.html.stabile.widgetState[id];}
 dojo.widget.html.stabile.setState = function(id, state, isCommit){dojo.widget.html.stabile.setup();dojo.widget.html.stabile.widgetState[id] = state;if(isCommit){dojo.widget.html.stabile.commit(dojo.widget.html.stabile.widgetState);}}
 dojo.widget.html.stabile.setup = function(){if(!dojo.widget.html.stabile.widgetState){var text = dojo.widget.html.stabile._getStorage().value;dojo.widget.html.stabile.widgetState = text ? dj_eval("("+text+")") : {};}}
 dojo.widget.html.stabile.commit = function(state){dojo.widget.html.stabile._getStorage().value = dojo.widget.html.stabile.description(state);}

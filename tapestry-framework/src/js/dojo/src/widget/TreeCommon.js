@@ -11,4 +11,5 @@ if (!domElement) {return null;}
 var widget = dojo.widget.byId(domElement.widgetId);if (!widget.isTreeNode) {return null;}
 return widget;},processDescendants: function(elem, filter, func, skipFirst) {var _this = this;if (!skipFirst) {if (!filter.call(_this,elem)) {return;}
 func.call(_this,elem);}
-var stack = [elem];while (elem = stack.pop()) {dojo.lang.forEach(elem.children, function(elem) {if (filter.call(_this, elem)) {func.call(_this, elem);stack.push(elem);}});}}});
+var stack = [elem];while (elem = stack.pop()) {dojo.lang.forEach(elem.children, function(elem) {if (filter.call(_this, elem)) {func.call(_this, elem);stack.push(elem);}});}}
+});

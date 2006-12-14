@@ -3,7 +3,8 @@ dojo.provide("dojo.html.style");dojo.require("dojo.html.common");dojo.require("d
 var cs = "";if(node.className){cs = node.className;}else if(dojo.html.hasAttribute(node, "class")){cs = dojo.html.getAttribute(node, "class");}
 return cs.replace(/^\s+|\s+$/g, "");}
 dojo.html.getClasses = function(node) {var c = dojo.html.getClass(node);return (c == "") ? [] : c.split(/\s+/g);}
-dojo.html.hasClass = function(node, classname){return (new RegExp('(^|\\s+)'+classname+'(\\s+|$)')).test(dojo.html.getClass(node))}
+dojo.html.hasClass = function(node, classname){return (new RegExp('(^|\\s+)'+classname+'(\\s+|$)')).test(dojo.html.getClass(node))
+}
 dojo.html.prependClass = function(node, classStr){classStr += " " + dojo.html.getClass(node);return dojo.html.setClass(node, classStr);}
 dojo.html.addClass = function(node, classStr){if (dojo.html.hasClass(node, classStr)) {return false;}
 classStr = (dojo.html.getClass(node) + " " + classStr).replace(/^\s+|\s+$/g,"");return dojo.html.setClass(node, classStr);}
@@ -13,7 +14,8 @@ dojo.html.removeClass = function(node, classStr, allowPartialMatches){try{if (!a
 dojo.html.setClass(node, newcs);}catch(e){dojo.debug("dojo.html.removeClass() failed", e);}
 return true;}
 dojo.html.replaceClass = function(node, newClass, oldClass) {dojo.html.removeClass(node, oldClass);dojo.html.addClass(node, newClass);}
-dojo.html.classMatchType = {ContainsAll : 0,ContainsAny : 1,IsOnly : 2}
+dojo.html.classMatchType = {ContainsAll : 0,ContainsAny : 1,IsOnly : 2
+}
 dojo.html.getElementsByClass = function(
 classStr,parent,nodeType,classMatchType,useNonXpath
 ){useNonXpath = false;var _document = dojo.doc();parent = dojo.byId(parent) || _document;var classes = classStr.split(/\s+/g);var nodes = [];if( classMatchType != 1 && classMatchType != 2 ) classMatchType = 0;var reClass = new RegExp("(\\s|^)((" + classes.join(")|(") + "))(\\s|$)");var srtLength = classes.join(" ").length;var candidateNodes = [];if(!useNonXpath && _document.evaluate) {var xpath = ".//" + (nodeType || "*") + "[contains(";if(classMatchType != dojo.html.classMatchType.ContainsAny){xpath += "concat(' ',@class,' '), ' " +
@@ -25,14 +27,17 @@ var xpathResult = _document.evaluate(xpath, parent, null, XPathResult.ANY_TYPE, 
 return candidateNodes;}else{if(!nodeType){nodeType = "*";}
 candidateNodes = parent.getElementsByTagName(nodeType);var node, i = 0;outer:
 while(node = candidateNodes[i++]){var nodeClasses = dojo.html.getClasses(node);if(nodeClasses.length == 0){ continue outer; }
-var matches = 0;for(var j = 0; j < nodeClasses.length; j++){if(reClass.test(nodeClasses[j])){if(classMatchType == dojo.html.classMatchType.ContainsAny){nodes.push(node);continue outer;}else{matches++;}}else{if(classMatchType == dojo.html.classMatchType.IsOnly){continue outer;}}}
-if(matches == classes.length){if(	(classMatchType == dojo.html.classMatchType.IsOnly)&&
-(matches == nodeClasses.length)){nodes.push(node);}else if(classMatchType == dojo.html.classMatchType.ContainsAll){nodes.push(node);}}}
+var matches = 0;for(var j = 0; j < nodeClasses.length; j++){if(reClass.test(nodeClasses[j])){if(classMatchType == dojo.html.classMatchType.ContainsAny){nodes.push(node);continue outer;}else{matches++;}}else{if(classMatchType == dojo.html.classMatchType.IsOnly){continue outer;}}
+}
+if(matches == classes.length){if((classMatchType == dojo.html.classMatchType.IsOnly)&&
+(matches == nodeClasses.length)){nodes.push(node);}else if(classMatchType == dojo.html.classMatchType.ContainsAll){nodes.push(node);}}
+}
 return nodes;}}
 dojo.html.getElementsByClassName = dojo.html.getElementsByClass;dojo.html.toCamelCase = function(selector){var arr = selector.split('-'), cc = arr[0];for(var i = 1; i < arr.length; i++) {cc += arr[i].charAt(0).toUpperCase() + arr[i].substring(1);}
 return cc;}
 dojo.html.toSelectorCase = function(selector){return selector.replace(/([A-Z])/g, "-$1" ).toLowerCase();}
-dojo.html.getComputedStyle = function(node, cssSelector, inValue){node = dojo.byId(node);var cssSelector = dojo.html.toSelectorCase(cssSelector);var property = dojo.html.toCamelCase(cssSelector);if(!node || !node.style){return inValue;} else if (document.defaultView && dojo.html.isDescendantOf(node, node.ownerDocument)){try{var cs = document.defaultView.getComputedStyle(node, "");if(cs){return cs.getPropertyValue(cssSelector);}}catch(e){if(node.style.getPropertyValue){return node.style.getPropertyValue(cssSelector);} else {return inValue;}}} else if(node.currentStyle){return node.currentStyle[property];}
+dojo.html.getComputedStyle = function(node, cssSelector, inValue){node = dojo.byId(node);var cssSelector = dojo.html.toSelectorCase(cssSelector);var property = dojo.html.toCamelCase(cssSelector);if(!node || !node.style){return inValue;} else if (document.defaultView && dojo.html.isDescendantOf(node, node.ownerDocument)){try{var cs = document.defaultView.getComputedStyle(node, "");if(cs){return cs.getPropertyValue(cssSelector);}}catch(e){if(node.style.getPropertyValue){return node.style.getPropertyValue(cssSelector);} else {return inValue;}}
+} else if(node.currentStyle){return node.currentStyle[property];}
 if(node.style.getPropertyValue){return node.style.getPropertyValue(cssSelector);}else{return inValue;}}
 dojo.html.getStyleProperty = function(node, cssSelector){node = dojo.byId(node);return (node && node.style ? node.style[dojo.html.toCamelCase(cssSelector)] : undefined);}
 dojo.html.getStyle = function(node, cssSelector){var value = dojo.html.getStyleProperty(node, cssSelector);return (value ? value : dojo.html.getComputedStyle(node, cssSelector));}
@@ -76,7 +81,8 @@ cssStr = str + cssStr;str = "";}
 while(match = regex.exec(cssStr)){url = match[1].replace(regexTrim, "$2");if(!regexProtocol.exec(url)){url = (new dojo.uri.Uri(URI, url).toString());}
 str += cssStr.substring(0, match.index) + "url(" + url + ")";cssStr = cssStr.substr(match.index + match[0].length);}
 return str + cssStr;}
-dojo.html.setActiveStyleSheet = function(title){var i = 0, a, els = dojo.doc().getElementsByTagName("link");while (a = els[i++]) {if(a.getAttribute("rel").indexOf("style") != -1 && a.getAttribute("title")){a.disabled = true;if (a.getAttribute("title") == title) { a.disabled = false; }}}}
+dojo.html.setActiveStyleSheet = function(title){var i = 0, a, els = dojo.doc().getElementsByTagName("link");while (a = els[i++]) {if(a.getAttribute("rel").indexOf("style") != -1 && a.getAttribute("title")){a.disabled = true;if (a.getAttribute("title") == title) { a.disabled = false; }}
+}}
 dojo.html.getActiveStyleSheet = function(){var i = 0, a, els = dojo.doc().getElementsByTagName("link");while (a = els[i++]) {if (a.getAttribute("rel").indexOf("style") != -1
 && a.getAttribute("title")
 && !a.disabled
@@ -87,4 +93,6 @@ dojo.html.getPreferredStyleSheet = function(){var i = 0, a, els = dojo.doc().get
 && a.getAttribute("title")
 ){return a.getAttribute("title");}}
 return null;}
-dojo.html.applyBrowserClass = function(node){var drh=dojo.render.html;var classes = {dj_ie: drh.ie,dj_ie55: drh.ie55,dj_ie6: drh.ie60,dj_ie7: drh.ie70,dj_iequirks: drh.ie && drh.quirks,dj_opera: drh.opera,dj_opera8: drh.opera && (Math.floor(dojo.render.version)==8),dj_opera9: drh.opera && (Math.floor(dojo.render.version)==9),dj_khtml: drh.khtml,dj_safari: drh.safari,dj_gecko: drh.mozilla};for(var p in classes){if(classes[p]){dojo.html.addClass(node, p);}}};
+dojo.html.applyBrowserClass = function(node){var drh=dojo.render.html;var classes = {dj_ie: drh.ie,dj_ie55: drh.ie55,dj_ie6: drh.ie60,dj_ie7: drh.ie70,dj_iequirks: drh.ie && drh.quirks,dj_opera: drh.opera,dj_opera8: drh.opera && (Math.floor(dojo.render.version)==8),dj_opera9: drh.opera && (Math.floor(dojo.render.version)==9),dj_khtml: drh.khtml,dj_safari: drh.safari,dj_gecko: drh.mozilla
+};for(var p in classes){if(classes[p]){dojo.html.addClass(node, p);}}
+};

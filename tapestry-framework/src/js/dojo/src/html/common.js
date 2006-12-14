@@ -16,6 +16,7 @@ return null;}
 dojo.html.hasAttribute = function(node, attr){return dojo.html.getAttribute(dojo.byId(node), attr) ? true : false;}
 dojo.html.getCursorPosition = function(e){e = e || dojo.global().event;var cursor = {x:0, y:0};if(e.pageX || e.pageY){cursor.x = e.pageX;cursor.y = e.pageY;}else{var de = dojo.doc().documentElement;var db = dojo.body();cursor.x = e.clientX + ((de||db)["scrollLeft"]) - ((de||db)["clientLeft"]);cursor.y = e.clientY + ((de||db)["scrollTop"]) - ((de||db)["clientTop"]);}
 return cursor;}
-dojo.html.isTag = function(node) {node = dojo.byId(node);if(node && node.tagName) {for (var i=1; i<arguments.length; i++){if (node.tagName.toLowerCase()==String(arguments[i]).toLowerCase()){return String(arguments[i]).toLowerCase();}}}
+dojo.html.isTag = function(node) {node = dojo.byId(node);if(node && node.tagName) {for (var i=1; i<arguments.length; i++){if (node.tagName.toLowerCase()==String(arguments[i]).toLowerCase()){return String(arguments[i]).toLowerCase();}}
+}
 return "";}
 if(dojo.render.html.ie && !dojo.render.html.ie70){if(window.location.href.substr(0,6).toLowerCase() != "https:"){(function(){var xscript = dojo.doc().createElement('script');xscript.src = "javascript:'dojo.html.createExternalElement=function(doc, tag){ return doc.createElement(tag); }'";dojo.doc().getElementsByTagName("head")[0].appendChild(xscript);})();}}else{dojo.html.createExternalElement = function(doc, tag){return doc.createElement(tag);}}

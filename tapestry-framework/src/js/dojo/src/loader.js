@@ -1,6 +1,7 @@
 
 ;(function(){var _addHostEnv = {pkgFileName: "__package__",loading_modules_: {},loaded_modules_: {},addedToLoadingCount: [],removedFromLoadingCount: [],inFlightCount: 0,modulePrefixes_: {dojo: {name: "dojo", value: "src"}},registerModulePath: function(module, prefix){this.modulePrefixes_[module] = {name: module, value: prefix};},moduleHasPrefix: function(module){var mp = this.modulePrefixes_;return Boolean(mp[module] && mp[module].value);},getModulePrefix: function(module){if(this.moduleHasPrefix(module)){return this.modulePrefixes_[module].value;}
-return module;},getTextStack: [],loadUriStack: [],loadedUris: [],post_load_: false,modulesLoadedListeners: [],unloadListeners: [],loadNotifying: false};for(var param in _addHostEnv){dojo.hostenv[param] = _addHostEnv[param];}})();dojo.hostenv.loadPath = function(relpath, module, cb){var uri;if(relpath.charAt(0) == '/' || relpath.match(/^\w+:/)){uri = relpath;}else{uri = this.getBaseScriptUri() + relpath;}
+return module;},getTextStack: [],loadUriStack: [],loadedUris: [],post_load_: false,modulesLoadedListeners: [],unloadListeners: [],loadNotifying: false
+};for(var param in _addHostEnv){dojo.hostenv[param] = _addHostEnv[param];}})();dojo.hostenv.loadPath = function(relpath, module, cb){var uri;if(relpath.charAt(0) == '/' || relpath.match(/^\w+:/)){uri = relpath;}else{uri = this.getBaseScriptUri() + relpath;}
 if(djConfig.cacheBust && dojo.render.html.capable){uri += "?" + String(djConfig.cacheBust).replace(/\W+/g,"");}
 try{return !module ? this.loadUri(uri, cb) : this.loadUriAndCheck(uri, module, cb);}catch(e){dojo.debug(e);return false;}}
 dojo.hostenv.loadUri = function(uri, cb){if(this.loadedUris[uri]){return true;}
@@ -23,7 +24,8 @@ dojo.hostenv.modulesLoaded = function(){if(this.post_load_){ return; }
 if(this.loadUriStack.length==0 && this.getTextStack.length==0){if(this.inFlightCount > 0){dojo.debug("files still in flight!");return;}
 dojo.hostenv.callLoaded();}}
 dojo.hostenv.callLoaded = function(){if(typeof setTimeout == "object"){setTimeout("dojo.hostenv.loaded();", 0);}else{dojo.hostenv.loaded();}}
-dojo.hostenv.getModuleSymbols = function(modulename){var syms = modulename.split(".");for(var i = syms.length; i>0; i--){var parentModule = syms.slice(0, i).join(".");if((i==1) && !this.moduleHasPrefix(parentModule)){syms[0] = "../" + syms[0];}else{var parentModulePath = this.getModulePrefix(parentModule);if(parentModulePath != parentModule){syms.splice(0, i, parentModulePath);break;}}}
+dojo.hostenv.getModuleSymbols = function(modulename){var syms = modulename.split(".");for(var i = syms.length; i>0; i--){var parentModule = syms.slice(0, i).join(".");if((i==1) && !this.moduleHasPrefix(parentModule)){syms[0] = "../" + syms[0];}else{var parentModulePath = this.getModulePrefix(parentModule);if(parentModulePath != parentModule){syms.splice(0, i, parentModulePath);break;}}
+}
 return syms;}
 dojo.hostenv._global_omit_module_check = false;dojo.hostenv.loadModule = function(moduleName, exactOnly, omitModuleCheck){if(!moduleName){ return; }
 omitModuleCheck = this._global_omit_module_check || omitModuleCheck;var module = this.findModule(moduleName, false);if(module){return module;}
@@ -32,7 +34,8 @@ this.loading_modules_[moduleName] = 1;var relpath = moduleName.replace(/\./g, '/
 ok = this.loadPath(relpath, !omitModuleCheck ? moduleName : null);if(ok){ break; }
 syms.pop();}}else{relpath = syms.join("/") + '.js';moduleName = nsyms.join('.');var modArg = !omitModuleCheck ? moduleName : null;ok = this.loadPath(relpath, modArg);if(!ok && !exactOnly){syms.pop();while(syms.length){relpath = syms.join('/') + '.js';ok = this.loadPath(relpath, modArg);if(ok){ break; }
 syms.pop();relpath = syms.join('/') + '/'+this.pkgFileName+'.js';if(startedRelative && relpath.charAt(0)=="/"){relpath = relpath.slice(1);}
-ok = this.loadPath(relpath, modArg);if(ok){ break; }}}
+ok = this.loadPath(relpath, modArg);if(ok){ break; }}
+}
 if(!ok && !omitModuleCheck){dojo.raise("Could not load '" + moduleName + "'; last tried '" + relpath + "'");}}
 if(!omitModuleCheck && !this["isXDomain"]){module = this.findModule(moduleName, false);if(!module){dojo.raise("symbol '" + moduleName + "' is not defined after loading '" + relpath + "'");}}
 return module;}
@@ -41,7 +44,8 @@ var evaledPkg = dojo.evalObjPath(strippedPkgName, true);this.loaded_modules_[ful
 dojo.hostenv.findModule = function(moduleName, mustExist){var lmn = String(moduleName);if(this.loaded_modules_[lmn]){return this.loaded_modules_[lmn];}
 if(mustExist){dojo.raise("no loaded module named '" + moduleName + "'");}
 return null;}
-dojo.kwCompoundRequire = function(modMap){var common = modMap["common"]||[];var result = modMap[dojo.hostenv.name_] ? common.concat(modMap[dojo.hostenv.name_]||[]) : common.concat(modMap["default"]||[]);for(var x=0; x<result.length; x++){var curr = result[x];if(curr.constructor == Array){dojo.hostenv.loadModule.apply(dojo.hostenv, curr);}else{dojo.hostenv.loadModule(curr);}}}
+dojo.kwCompoundRequire = function(modMap){var common = modMap["common"]||[];var result = modMap[dojo.hostenv.name_] ? common.concat(modMap[dojo.hostenv.name_]||[]) : common.concat(modMap["default"]||[]);for(var x=0; x<result.length; x++){var curr = result[x];if(curr.constructor == Array){dojo.hostenv.loadModule.apply(dojo.hostenv, curr);}else{dojo.hostenv.loadModule(curr);}}
+}
 dojo.require = function( resourceName){dojo.hostenv.loadModule.apply(dojo.hostenv, arguments);}
 dojo.requireIf = function( condition,  resourceName){var arg0 = arguments[0];if((arg0 === true)||(arg0=="common")||(arg0 && dojo.render[arg0].capable)){var args = [];for (var i = 1; i < arguments.length; i++) { args.push(arguments[i]); }
 dojo.require.apply(dojo, args);}}
@@ -53,13 +57,15 @@ return true;}
 dojo.hostenv.normalizeLocale = function(locale){var result = locale ? locale.toLowerCase() : dojo.locale;if(result == "root"){result = "ROOT";}
 return result;};dojo.hostenv.searchLocalePath = function(locale, down, searchFunc){locale = dojo.hostenv.normalizeLocale(locale);var elements = locale.split('-');var searchlist = [];for(var i = elements.length; i > 0; i--){searchlist.push(elements.slice(0, i).join('-'));}
 searchlist.push(false);if(down){searchlist.reverse();}
-for(var j = searchlist.length - 1; j >= 0; j--){var loc = searchlist[j] || "ROOT";var stop = searchFunc(loc);if(stop){ break; }}}
+for(var j = searchlist.length - 1; j >= 0; j--){var loc = searchlist[j] || "ROOT";var stop = searchFunc(loc);if(stop){ break; }}
+}
 dojo.hostenv.localesGenerated ;dojo.hostenv.registerNlsPrefix = function(){dojo.registerModulePath("nls","nls");}
 dojo.hostenv.preloadLocalizations = function(){if(dojo.hostenv.localesGenerated){dojo.hostenv.registerNlsPrefix();function preload(locale){locale = dojo.hostenv.normalizeLocale(locale);dojo.hostenv.searchLocalePath(locale, true, function(loc){for(var i=0; i<dojo.hostenv.localesGenerated.length;i++){if(dojo.hostenv.localesGenerated[i] == loc){dojo["require"]("nls.dojo_"+loc);return true;}}
 return false;});}
 preload();var extra = djConfig.extraLocale||[];for(var i=0; i<extra.length; i++){preload(extra[i]);}}
 dojo.hostenv.preloadLocalizations = function(){};}
-dojo.requireLocalization = function(moduleName, bundleName, locale, availableFlatLocales){dojo.hostenv.preloadLocalizations();var targetLocale = dojo.hostenv.normalizeLocale(locale);var bundlePackage = [moduleName, "nls", bundleName].join(".");var bestLocale = "";if(availableFlatLocales){var flatLocales = availableFlatLocales.split(",");for(var i = 0; i < flatLocales.length; i++){if(targetLocale.indexOf(flatLocales[i]) == 0){if(flatLocales[i].length > bestLocale.length){bestLocale = flatLocales[i];}}}
+dojo.requireLocalization = function(moduleName, bundleName, locale, availableFlatLocales){dojo.hostenv.preloadLocalizations();var targetLocale = dojo.hostenv.normalizeLocale(locale);var bundlePackage = [moduleName, "nls", bundleName].join(".");var bestLocale = "";if(availableFlatLocales){var flatLocales = availableFlatLocales.split(",");for(var i = 0; i < flatLocales.length; i++){if(targetLocale.indexOf(flatLocales[i]) == 0){if(flatLocales[i].length > bestLocale.length){bestLocale = flatLocales[i];}}
+}
 if(!bestLocale){bestLocale = "ROOT";}}
 var tempLocale = availableFlatLocales ? bestLocale : targetLocale;var bundle = dojo.hostenv.findModule(bundlePackage);var localizedBundle = null;if(bundle){if(djConfig.localizationComplete && bundle._built){return;}
 var jsLoc = tempLocale.replace('-', '_');var translationPackage = bundlePackage+"."+jsLoc;localizedBundle = dojo.hostenv.findModule(translationPackage);}

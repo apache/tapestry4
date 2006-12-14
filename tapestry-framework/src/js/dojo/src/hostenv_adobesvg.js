@@ -13,14 +13,17 @@ dojo.hostenv.startPackage("dojo.hostenv");dojo.hostenv.name_ = 'adobesvg';dojo.h
 nso[ret] = anonFuncPtr;return ret;}
 dojo.hostenv.modulesLoadedFired = false;dojo.hostenv.modulesLoadedListeners = [];dojo.hostenv.getTextStack = [];dojo.hostenv.loadUriStack = [];dojo.hostenv.loadedUris = [];dojo.hostenv.modulesLoaded = function(){if(this.modulesLoadedFired){ return; }
 if((this.loadUriStack.length==0)&&(this.getTextStack.length==0)){if(this.inFlightCount > 0){dojo.debug("couldn't initialize, there are files still in flight");return;}
-this.modulesLoadedFired = true;var mll = this.modulesLoadedListeners;for(var x=0; x<mll.length; x++){mll[x]();}}}
+this.modulesLoadedFired = true;var mll = this.modulesLoadedListeners;for(var x=0; x<mll.length; x++){mll[x]();}}
+}
 dojo.hostenv.getNewAnonFunc = function(){var ret = "_"+this.anonCtr++;while(typeof this.anon[ret] != "undefined"){ret = "_"+this.anonCtr++;}
 eval("dojo.nostenv.anon."+ret+" = function(){};");return [ret, this.anon[ret]];}
 dojo.hostenv.displayStack = function(){var oa = [];var stack = this.loadUriStack;for(var x=0; x<stack.length; x++){oa.unshift([stack[x][0], (typeof stack[x][2])]);}
 dojo.debug("<pre>"+oa.join("\n")+"</pre>");}
-dojo.hostenv.unwindUriStack = function(){var stack = this.loadUriStack;for(var x in dojo.hostenv.loadedUris){for(var y=stack.length-1; y>=0; y--){if(stack[y][0]==x){stack.splice(y, 1);}}}
+dojo.hostenv.unwindUriStack = function(){var stack = this.loadUriStack;for(var x in dojo.hostenv.loadedUris){for(var y=stack.length-1; y>=0; y--){if(stack[y][0]==x){stack.splice(y, 1);}}
+}
 var next = stack.pop();if((!next)&&(stack.length==0)){return;}
-for(var x=0; x<stack.length; x++){if((stack[x][0]==next[0])&&(stack[x][2])){next[2] == stack[x][2]}}
+for(var x=0; x<stack.length; x++){if((stack[x][0]==next[0])&&(stack[x][2])){next[2] == stack[x][2]
+}}
 var last = next;while(dojo.hostenv.loadedUris[next[0]]){last = next;next = stack.pop();}
 while(typeof next[2] == "string"){try{dj_eval(next[2]);next[1](true);}catch(e){dojo.debug("we got an error when loading "+next[0]);dojo.debug("error: "+e);}
 dojo.hostenv.loadedUris[next[0]] = true;dojo.hostenv.loadedUris.push(next[0]);last = next;next = stack.pop();if((!next)&&(stack.length==0)){ break; }
@@ -32,7 +35,8 @@ var next = stack.pop();if((!next)&&(stack.length==0)){dojo.hostenv.modulesLoaded
 if(typeof contents == "string"){stack.push(next);for(var x=0; x<stack.length; x++){if(stack[x][0]==uri){stack[x][2] = contents;}}
 next = stack.pop();}
 if(dojo.hostenv.loadedUris[next[0]]){dojo.hostenv.unwindUriStack();return;}
-stack.push(next);if(next[0]!=uri){if(typeof next[2] == "string"){dojo.hostenv.unwindUriStack();}}else{if(!contents){next[1](false);}else{var deps = dojo.hostenv.getDepsForEval(next[2]);if(deps.length>0){eval(deps.join(";"));}else{dojo.hostenv.unwindUriStack();}}}}
+stack.push(next);if(next[0]!=uri){if(typeof next[2] == "string"){dojo.hostenv.unwindUriStack();}}else{if(!contents){next[1](false);}else{var deps = dojo.hostenv.getDepsForEval(next[2]);if(deps.length>0){eval(deps.join(";"));}else{dojo.hostenv.unwindUriStack();}}
+}}
 this.getText(uri, tcb, true);}
 dojo.hostenv.loadModule = function(modulename, exact_only, omit_module_check){var module = this.findModule(modulename, 0);if(module){return module;}
 if (typeof this.loading_modules_[modulename] !== 'undefined'){dojo.debug("recursive attempt to load module '" + modulename + "'");}else{this.addedToLoadingCount.push(modulename);}

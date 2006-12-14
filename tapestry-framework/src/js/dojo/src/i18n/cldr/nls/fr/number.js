@@ -1,0 +1,2 @@
+
+({"group":" ","percentFormat":"#,##0 %","currencyFormat":"#,##0.00 ¤","decimal":",","percentSign":"%","scientificFormat":"#E0","infinity":"∞","list":";","exponential":"E","patternDigit":"#","minusSign":"-","nan":"NaN","nativeZeroDigit":"0","perMille":"‰","decimalFormat":"#,##0.###","plusSign":"+"})

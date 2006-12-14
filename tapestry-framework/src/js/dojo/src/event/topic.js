@@ -8,10 +8,12 @@ this.destroy = function(topic){this.getTopic(topic).destroy();delete this.topics
 this.publishApply = function(topic, args){var topic = this.getTopic(topic);topic.sendMessage.apply(topic, args);}
 this.publish = function(topic, message){var topic = this.getTopic(topic);var args = [];for(var x=1; x<arguments.length; x++){args.push(arguments[x]);}
 topic.sendMessage.apply(topic, args);}}
-dojo.event.topic.TopicImpl = function(topicName){this.topicName = topicName;this.subscribe = function(listenerObject, listenerMethod){var tf = listenerMethod||listenerObject;var to = (!listenerMethod) ? dj_global : listenerObject;return dojo.event.kwConnect({srcObj:		this,srcFunc:	"sendMessage",adviceObj:	to,adviceFunc: tf});}
-this.unsubscribe = function(listenerObject, listenerMethod){var tf = (!listenerMethod) ? listenerObject : listenerMethod;var to = (!listenerMethod) ? null : listenerObject;return dojo.event.kwDisconnect({srcObj:		this,srcFunc:	"sendMessage",adviceObj:	to,adviceFunc: tf});}
+dojo.event.topic.TopicImpl = function(topicName){this.topicName = topicName;this.subscribe = function(listenerObject, listenerMethod){var tf = listenerMethod||listenerObject;var to = (!listenerMethod) ? dj_global : listenerObject;return dojo.event.kwConnect({srcObj:this,srcFunc:"sendMessage",adviceObj:to,adviceFunc: tf
+});}
+this.unsubscribe = function(listenerObject, listenerMethod){var tf = (!listenerMethod) ? listenerObject : listenerMethod;var to = (!listenerMethod) ? null : listenerObject;return dojo.event.kwDisconnect({srcObj:this,srcFunc:"sendMessage",adviceObj:to,adviceFunc: tf
+});}
 this._getJoinPoint = function(){return dojo.event.MethodJoinPoint.getForMethod(this, "sendMessage");}
 this.setSquelch = function(shouldSquelch){this._getJoinPoint().squelch = shouldSquelch;}
 this.destroy = function(){this._getJoinPoint().disconnect();}
-this.registerPublisher = function(	publisherObject,publisherMethod){dojo.event.connect(publisherObject, publisherMethod, this, "sendMessage");}
+this.registerPublisher = function(publisherObject,publisherMethod){dojo.event.connect(publisherObject, publisherMethod, this, "sendMessage");}
 this.sendMessage = function(message){}}

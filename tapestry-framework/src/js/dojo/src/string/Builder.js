@@ -9,6 +9,7 @@ b = s + b.substring(f + l);length = this.length = b.length;if(this.arrConcat){a.
 return this;};this.replace = function(o, n){if(this.arrConcat){b = a.join("");}
 a = [];b = b.replace(o,n);length = this.length = b.length;if(this.arrConcat){a.push(b);b="";}
 return this;};this.insert = function(idx, s){if(this.arrConcat){b = a.join("");}
-a=[];if(idx == 0){b = s + b;}else{var t = b.split("");t.splice(idx,0,s);b = t.join("")}
+a=[];if(idx == 0){b = s + b;}else{var t = b.split("");t.splice(idx,0,s);b = t.join("")
+}
 length = this.length = b.length;if(this.arrConcat){a.push(b);b="";}
 return this;};this.append.apply(this, arguments);};

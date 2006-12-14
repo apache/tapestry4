@@ -17,13 +17,15 @@ else if(!dj_undef("type", elem) && (elem.type == "select-one" || elem.type == "s
 && (elem.selectedIndex == -1
 || /^\s*$/.test(elem.options[elem.selectedIndex].value))){missing[missing.length] = elem.name;}
 else if(elem instanceof Array){var checked = false;for(var j = 0; j < elem.length; j++){if (elem[j].checked) { checked = true; }}
-if(!checked){missing[missing.length] = elem[0].name;}}}}
+if(!checked){missing[missing.length] = elem[0].name;}}
+}}
 if(profile.required instanceof Array){for (var i = 0; i < profile.required.length; i++){if(!dojo.lang.isObject(profile.required[i])){ continue; }
 var elem, numRequired;for(var name in profile.required[i]){elem = form[name];numRequired = profile.required[i][name];}
 if(elem instanceof Array){var checked = 0;for(var j = 0; j < elem.length; j++){if(elem[j].checked){ checked++; }}
 if(checked < numRequired){missing[missing.length] = elem[0].name;}}
 else if(!dj_undef("type", elem) && elem.type == "select-multiple" ){var selected = 0;for(var j = 0; j < elem.options.length; j++){if (elem.options[j].selected && !/^\s*$/.test(elem.options[j].value)) { selected++; }}
-if(selected < numRequired){missing[missing.length] = elem.name;}}}}
+if(selected < numRequired){missing[missing.length] = elem.name;}}
+}}
 if(dojo.lang.isObject(profile.dependencies)){for(name in profile.dependencies){var elem = form[name];if(dj_undef("type", elem)){continue;}
 if(elem.type != "text" && elem.type != "textarea" && elem.type != "password"){ continue; }
 if(/\S+/.test(elem.value)){ continue; }
@@ -36,8 +38,10 @@ if(!dj_undef("tagName",elem)
 && (elem.tagName.toLowerCase().indexOf("input") >= 0
 || elem.tagName.toLowerCase().indexOf("textarea") >= 0)
 && /^\s*$/.test(elem.value)){continue;}
-var isValid = true;if(dojo.lang.isFunction(profile.constraints[name])){isValid = profile.constraints[name](elem.value);}else if(dojo.lang.isArray(profile.constraints[name])){if(dojo.lang.isArray(profile.constraints[name][0])){for (var i=0; i<profile.constraints[name].length; i++){isValid = dojo.validate.evaluateConstraint(profile, profile.constraints[name][i], name, elem);if(!isValid){ break; }}}else{isValid = dojo.validate.evaluateConstraint(profile, profile.constraints[name], name, elem);}}
-if(!isValid){invalid[invalid.length] = elem.name;}}}
+var isValid = true;if(dojo.lang.isFunction(profile.constraints[name])){isValid = profile.constraints[name](elem.value);}else if(dojo.lang.isArray(profile.constraints[name])){if(dojo.lang.isArray(profile.constraints[name][0])){for (var i=0; i<profile.constraints[name].length; i++){isValid = dojo.validate.evaluateConstraint(profile, profile.constraints[name][i], name, elem);if(!isValid){ break; }}
+}else{isValid = dojo.validate.evaluateConstraint(profile, profile.constraints[name], name, elem);}}
+if(!isValid){invalid[invalid.length] = elem.name;}}
+}
 if(dojo.lang.isObject(profile.confirm)){for(name in profile.confirm){var elem = form[name];var target = form[profile.confirm[name]];if (dj_undef("type", elem) || dj_undef("type", target) || (elem.type != "text" && elem.type != "textarea" && elem.type != "password")
 ||(target.type != elem.type)
 ||(target.value == elem.value)

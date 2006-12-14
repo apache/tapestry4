@@ -3,7 +3,8 @@ var dj_global = this;var dj_currentContext = this;function dj_undef( name,  obje
 if(dj_undef("djConfig", this)){var djConfig = {};}
 if(dj_undef("dojo", this)){var dojo = {};}
 dojo.global = function(){return dj_currentContext;}
-dojo.locale  = djConfig.locale;dojo.version = {major: 0, minor: 4, patch: 0, flag: "+",revision: Number("$Rev: 6425 $".match(/[0-9]+/)[0]),toString: function(){with(dojo.version){return major + "." + minor + "." + patch + flag + " (" + revision + ")";}}}
+dojo.locale  = djConfig.locale;dojo.version = {major: 0, minor: 4, patch: 0, flag: "+",revision: Number("$Rev: 6425 $".match(/[0-9]+/)[0]),toString: function(){with(dojo.version){return major + "." + minor + "." + patch + flag + " (" + revision + ")";}}
+}
 dojo.evalProp = function( name,  object,  create){if((!object)||(!name)) return undefined;if(!dj_undef(name, object)) return object[name];return (create ? (object[name]={}) : undefined);}
 dojo.parseObjPath = function( path,  context,  create){var object = (context || dojo.global());var names = path.split('.');var prop = names.pop();for (var i=0,l=names.length;i<l && object;i++){object = dojo.evalProp(names[i], object, create);}
 return {obj: object, prop: prop};}
@@ -21,10 +22,15 @@ dojo.raise(message);}
 dojo.deprecated = function( behaviour,  extra,  removal){var message = "DEPRECATED: " + behaviour;if(extra){ message += " " + extra; }
 if(removal){ message += " -- will be removed in version: " + removal; }
 dojo.debug(message);}
-dojo.render = (function(){function vscaffold(prefs, names){var tmp = {capable: false,support: {builtin: false,plugin: false},prefixes: prefs};for(var i=0; i<names.length; i++){tmp[names[i]] = false;}
+dojo.render = (function(){function vscaffold(prefs, names){var tmp = {capable: false,support: {builtin: false,plugin: false
+},prefixes: prefs
+};for(var i=0; i<names.length; i++){tmp[names[i]] = false;}
 return tmp;}
-return {name: "",ver: dojo.version,os: { win: false, linux: false, osx: false },html: vscaffold(["html"], ["ie", "opera", "khtml", "safari", "moz"]),svg: vscaffold(["svg"], ["corel", "adobe", "batik"]),vml: vscaffold(["vml"], ["ie"]),swf: vscaffold(["Swf", "Flash", "Mm"], ["mm"]),swt: vscaffold(["Swt"], ["ibm"])};})();dojo.hostenv = (function(){var config = {isDebug: false,allowQueryConfig: false,baseScriptUri: "",baseRelativePath: "",libraryScriptUri: "",iePreventClobber: false,ieClobberMinimal: true,preventBackButtonFix: true,delayMozLoadingFix: false,searchIds: [],parseWidgets: true};if (typeof djConfig == "undefined") { djConfig = config; }
-else {for (var option in config) {if (typeof djConfig[option] == "undefined") {djConfig[option] = config[option];}}}
+return {name: "",ver: dojo.version,os: { win: false, linux: false, osx: false },html: vscaffold(["html"], ["ie", "opera", "khtml", "safari", "moz"]),svg: vscaffold(["svg"], ["corel", "adobe", "batik"]),vml: vscaffold(["vml"], ["ie"]),swf: vscaffold(["Swf", "Flash", "Mm"], ["mm"]),swt: vscaffold(["Swt"], ["ibm"])
+};})();dojo.hostenv = (function(){var config = {isDebug: false,allowQueryConfig: false,baseScriptUri: "",baseRelativePath: "",libraryScriptUri: "",iePreventClobber: false,ieClobberMinimal: true,preventBackButtonFix: true,delayMozLoadingFix: false,searchIds: [],parseWidgets: true
+};if (typeof djConfig == "undefined") { djConfig = config; }
+else {for (var option in config) {if (typeof djConfig[option] == "undefined") {djConfig[option] = config[option];}}
+}
 return {name_: '(unset)',version_: '(unset)',getName: function(){return this.name_;},getVersion: function(){return this.version_;},getText: function( uri){dojo.unimplemented('getText', "uri=" + uri);}};})();dojo.hostenv.getBaseScriptUri = function(){if(djConfig.baseScriptUri.length){return djConfig.baseScriptUri;}
 var uri = new String(djConfig.libraryScriptUri||djConfig.baseRelativePath);if (!uri) { dojo.raise("Nothing returned by getLibraryScriptUri(): " + uri); }
 var lastslash = uri.lastIndexOf('/');djConfig.baseScriptUri = djConfig.baseRelativePath;return djConfig.baseScriptUri;}

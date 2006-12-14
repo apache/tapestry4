@@ -17,13 +17,15 @@ else { return days[month]; }}
 dojo.date.isLeapYear = function(dateObject){var year = dateObject.getFullYear();return (year%400 == 0) ? true : (year%100 == 0) ? false : (year%4 == 0) ? true : false;}
 dojo.date.getTimezoneName = function(dateObject){var str = dateObject.toString();var tz = '';var match;var pos = str.indexOf('(');if (pos > -1) {pos++;tz = str.substring(pos, str.indexOf(')'));}
 else{var pat = /([A-Z\/]+) \d{4}$/;if((match = str.match(pat))) {tz = match[1];}
-else{str = dateObject.toLocaleString();pat = / ([A-Z\/]+)$/;if((match = str.match(pat))) {tz = match[1];}}}
+else{str = dateObject.toLocaleString();pat = / ([A-Z\/]+)$/;if((match = str.match(pat))) {tz = match[1];}}
+}
 return tz == 'AM' || tz == 'PM' ? '' : tz;}
 dojo.date.getOrdinal = function(dateObject){var date = dateObject.getDate();if(date%100 != 11 && date%10 == 1){ return "st"; }
 else if(date%100 != 12 && date%10 == 2){ return "nd"; }
 else if(date%100 != 13 && date%10 == 3){ return "rd"; }
 else{ return "th"; }}
-dojo.date.compareTypes={DATE:1, TIME:2};dojo.date.compare=function( dateA,  dateB,  options){var dA=dateA;var dB=dateB||new Date();var now=new Date();with(dojo.date.compareTypes){var opt=options||(DATE|TIME);var d1=new Date(
+dojo.date.compareTypes={DATE:1, TIME:2
+};dojo.date.compare=function( dateA,  dateB,  options){var dA=dateA;var dB=dateB||new Date();var now=new Date();with(dojo.date.compareTypes){var opt=options||(DATE|TIME);var d1=new Date(
 (opt&DATE)?dA.getFullYear():now.getFullYear(),(opt&DATE)?dA.getMonth():now.getMonth(),(opt&DATE)?dA.getDate():now.getDate(),(opt&TIME)?dA.getHours():0,(opt&TIME)?dA.getMinutes():0,(opt&TIME)?dA.getSeconds():0
 );var d2=new Date(
 (opt&DATE)?dB.getFullYear():now.getFullYear(),(opt&DATE)?dB.getMonth():now.getMonth(),(opt&DATE)?dB.getDate():now.getDate(),(opt&TIME)?dB.getHours():0,(opt&TIME)?dB.getMinutes():0,(opt&TIME)?dB.getSeconds():0
@@ -31,7 +33,8 @@ dojo.date.compareTypes={DATE:1, TIME:2};dojo.date.compare=function( dateA,  date
 if(d1.valueOf()>d2.valueOf()){return 1;}
 if(d1.valueOf()<d2.valueOf()){return -1;}
 return 0;}
-dojo.date.dateParts={YEAR:0, MONTH:1, DAY:2, HOUR:3, MINUTE:4, SECOND:5, MILLISECOND:6, QUARTER:7, WEEK:8, WEEKDAY:9};dojo.date.add = function( dt,  interv,  incr){if(typeof dt == 'number'){dt = new Date(dt);}
+dojo.date.dateParts={YEAR:0, MONTH:1, DAY:2, HOUR:3, MINUTE:4, SECOND:5, MILLISECOND:6, QUARTER:7, WEEK:8, WEEKDAY:9
+};dojo.date.add = function( dt,  interv,  incr){if(typeof dt == 'number'){dt = new Date(dt);}
 function fixOvershoot(){if (sum.getDate() < dt.getDate()){sum.setDate(0);}}
 var sum = new Date(dt);with(dojo.date.dateParts){switch(interv){case YEAR:
 sum.setFullYear(dt.getFullYear()+incr);fixOvershoot();break;case QUARTER:

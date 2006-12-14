@@ -10,15 +10,18 @@ dojo.html.setContentBox(node, {height: value});break;case "content-width":
 dojo.html.setContentBox(node, {width: value});break;case "outer-height":
 dojo.html.setMarginBox(node, {height: value});break;case "outer-width":
 dojo.html.setMarginBox(node, {width: value});break;default:
-node.style[dojo.html.toCamelCase(name)]=value;}}}
-dojo.html.boxSizing = {MARGIN_BOX: "margin-box",BORDER_BOX: "border-box",PADDING_BOX: "padding-box",CONTENT_BOX: "content-box"};dojo.html.getAbsolutePosition = dojo.html.abs = function(node, includeScroll, boxType){node = dojo.byId(node);var ownerDocument = dojo.doc();var ret = {x: 0,y: 0};var bs = dojo.html.boxSizing;if(!boxType) { boxType = bs.CONTENT_BOX; }
+node.style[dojo.html.toCamelCase(name)]=value;}}
+}
+dojo.html.boxSizing = {MARGIN_BOX: "margin-box",BORDER_BOX: "border-box",PADDING_BOX: "padding-box",CONTENT_BOX: "content-box"
+};dojo.html.getAbsolutePosition = dojo.html.abs = function(node, includeScroll, boxType){node = dojo.byId(node);var ownerDocument = dojo.doc();var ret = {x: 0,y: 0
+};var bs = dojo.html.boxSizing;if(!boxType) { boxType = bs.CONTENT_BOX; }
 var nativeBoxType = 2;var targetBoxType;switch(boxType){case bs.MARGIN_BOX:
 targetBoxType = 3;break;case bs.BORDER_BOX:
 targetBoxType = 2;break;case bs.PADDING_BOX:
 default:
 targetBoxType = 1;break;case bs.CONTENT_BOX:
 targetBoxType = 0;break;}
-var h = dojo.render.html;var db = ownerDocument["body"]||ownerDocument["documentElement"];if(h.ie){with(node.getBoundingClientRect()){ret.x = left-2;ret.y = top-2;}}else if(ownerDocument['getBoxObjectFor']){nativeBoxType = 1;try{var bo = ownerDocument.getBoxObjectFor(node);ret.x = bo.x - dojo.html.sumAncestorProperties(node, "scrollLeft");ret.y = bo.y - dojo.html.sumAncestorProperties(node, "scrollTop");}catch(e){}}else{if(node["offsetParent"]){var endNode;if(	(h.safari)&&
+var h = dojo.render.html;var db = ownerDocument["body"]||ownerDocument["documentElement"];if(h.ie){with(node.getBoundingClientRect()){ret.x = left-2;ret.y = top-2;}}else if(ownerDocument['getBoxObjectFor']){nativeBoxType = 1;try{var bo = ownerDocument.getBoxObjectFor(node);ret.x = bo.x - dojo.html.sumAncestorProperties(node, "scrollLeft");ret.y = bo.y - dojo.html.sumAncestorProperties(node, "scrollTop");}catch(e){}}else{if(node["offsetParent"]){var endNode;if((h.safari)&&
 (node.style.getPropertyValue("position") == "absolute")&&
 (node.parentNode == db)){endNode = db;}else{endNode = db.parentNode;}
 if(node.parentNode != db){var nd = node;if(dojo.render.html.opera){ nd = db; }
@@ -43,8 +46,10 @@ var sizing = dojo.html.getStyle(node, "-moz-box-sizing");if(!sizing){ sizing = d
 return (sizing ? sizing : bs.CONTENT_BOX);}}
 dojo.html.isBorderBox = function(node){return (dojo.html.getBoxSizing(node) == dojo.html.boxSizing.BORDER_BOX);}
 dojo.html.getBorderBox = function(node){node = dojo.byId(node);return { width: node.offsetWidth, height: node.offsetHeight };}
-dojo.html.getPaddingBox = function(node){var box = dojo.html.getBorderBox(node);var border = dojo.html.getBorder(node);return {width: box.width - border.width,height:box.height - border.height};}
-dojo.html.getContentBox = function(node){node = dojo.byId(node);var padborder = dojo.html.getPadBorder(node);return {width: node.offsetWidth - padborder.width,height: node.offsetHeight - padborder.height};}
+dojo.html.getPaddingBox = function(node){var box = dojo.html.getBorderBox(node);var border = dojo.html.getBorder(node);return {width: box.width - border.width,height:box.height - border.height
+};}
+dojo.html.getContentBox = function(node){node = dojo.byId(node);var padborder = dojo.html.getPadBorder(node);return {width: node.offsetWidth - padborder.width,height: node.offsetHeight - padborder.height
+};}
 dojo.html.setContentBox = function(node, args){node = dojo.byId(node);var width = 0; var height = 0;var isbb = dojo.html.isBorderBox(node);var padborder = (isbb ? dojo.html.getPadBorder(node) : { width: 0, height: 0});var ret = {};if(typeof args.width != "undefined"){width = args.width + padborder.width;ret.width = dojo.html.setPositivePixelValue(node, "width", width);}
 if(typeof args.height != "undefined"){height = args.height + padborder.height;ret.height = dojo.html.setPositivePixelValue(node, "height", height);}
 return ret;}
@@ -60,7 +65,9 @@ default:
 return dojo.html.getContentBox(node);}}
 dojo.html.toCoordinateObject = dojo.html.toCoordinateArray = function(coords, includeScroll, boxtype) {if(!coords.nodeType && !(coords instanceof String || typeof coords == "string") &&
 ('width' in coords || 'height' in coords || 'left' in coords ||
-'x' in coords || 'top' in coords || 'y' in coords)){var ret = {left: coords.left||coords.x||0,top: coords.top||coords.y||0,width: coords.width||0,height: coords.height||0};}else{var node = dojo.byId(coords);var pos = dojo.html.abs(node, includeScroll, boxtype);var marginbox = dojo.html.getMarginBox(node);var ret = {left: pos.left,top: pos.top,width: marginbox.width,height: marginbox.height};}
+'x' in coords || 'top' in coords || 'y' in coords)){var ret = {left: coords.left||coords.x||0,top: coords.top||coords.y||0,width: coords.width||0,height: coords.height||0
+};}else{var node = dojo.byId(coords);var pos = dojo.html.abs(node, includeScroll, boxtype);var marginbox = dojo.html.getMarginBox(node);var ret = {left: pos.left,top: pos.top,width: marginbox.width,height: marginbox.height
+};}
 ret.x = ret.left;ret.y = ret.top;return ret;}
 dojo.html.setMarginBoxWidth = dojo.html.setOuterWidth = function(node, width){return dojo.html._callDeprecated("setMarginBoxWidth", "setMarginBox", arguments, "width");}
 dojo.html.setMarginBoxHeight = dojo.html.setOuterHeight = function(){return dojo.html._callDeprecated("setMarginBoxHeight", "setMarginBox", arguments, "height");}

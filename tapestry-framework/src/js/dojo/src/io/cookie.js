@@ -9,7 +9,7 @@ dojo.io.cookie.set = dojo.io.cookie.setCookie;dojo.io.cookie.getCookie = functio
 var value = document.cookie.substring(idx+name.length+1);var end = value.indexOf(';');if(end == -1) { end = value.length; }
 value = value.substring(0, end);value = unescape(value);return value;}
 dojo.io.cookie.get = dojo.io.cookie.getCookie;dojo.io.cookie.deleteCookie = function(name){dojo.io.cookie.setCookie(name, "-", 0);}
-dojo.io.cookie.setObjectCookie = function(	name, obj,days, path,domain, secure,clearCurrent){if(arguments.length == 5){clearCurrent = domain;domain = null;secure = null;}
+dojo.io.cookie.setObjectCookie = function(name, obj,days, path,domain, secure,clearCurrent){if(arguments.length == 5){clearCurrent = domain;domain = null;secure = null;}
 var pairs = [], cookie, value = "";if(!clearCurrent){cookie = dojo.io.cookie.getObjectCookie(name);}
 if(days >= 0){if(!cookie){ cookie = {}; }
 for(var prop in obj){if(obj[prop] == null){delete cookie[prop];}else if((typeof obj[prop] == "string")||(typeof obj[prop] == "number")){cookie[prop] = obj[prop];}}

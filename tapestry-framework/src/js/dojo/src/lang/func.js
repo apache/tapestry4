@@ -3,7 +3,8 @@ dojo.provide("dojo.lang.func");dojo.require("dojo.lang.common");dojo.lang.hitch 
 var fcn = (dojo.lang.isString(method) ? thisObject[method] : method) || function(){};return function(){var ta = args.concat([]);for(var x=0; x<arguments.length; x++){ta.push(arguments[x]);}
 return fcn.apply(thisObject, ta);};}
 dojo.lang.anonCtr = 0;dojo.lang.anon = {};dojo.lang.nameAnonFunc = function(anonFuncPtr, thisObj, searchForNames){var nso = (thisObj|| dojo.lang.anon);if( (searchForNames) ||
-((dj_global["djConfig"])&&(djConfig["slowAnonFuncLookups"] == true)) ){for(var x in nso){try{if(nso[x] === anonFuncPtr){return x;}}catch(e){}}}
+((dj_global["djConfig"])&&(djConfig["slowAnonFuncLookups"] == true)) ){for(var x in nso){try{if(nso[x] === anonFuncPtr){return x;}}catch(e){}}
+}
 var ret = "__"+dojo.lang.anonCtr++;while(typeof nso[ret] != "undefined"){ret = "__"+dojo.lang.anonCtr++;}
 nso[ret] = anonFuncPtr;return ret;}
 dojo.lang.forward = function(funcName){return function(){return this[funcName].apply(this, arguments);};}
@@ -14,7 +15,9 @@ expected = expected-nextArgs.length;if(expected<=0){var res = func.apply(thisObj
 return gather([], outerArgs, ecount);}
 dojo.lang.curryArguments = function(thisObj, func, args, offset){var targs = [];var x = offset||0;for(x=offset; x<args.length; x++){targs.push(args[x]);}
 return dojo.lang.curry.apply(dojo.lang, [thisObj, func].concat(targs));}
-dojo.lang.tryThese = function(){for(var x=0; x<arguments.length; x++){try{if(typeof arguments[x] == "function"){var ret = (arguments[x]());if(ret){return ret;}}}catch(e){dojo.debug(e);}}}
+dojo.lang.tryThese = function(){for(var x=0; x<arguments.length; x++){try{if(typeof arguments[x] == "function"){var ret = (arguments[x]());if(ret){return ret;}}
+}catch(e){dojo.debug(e);}}
+}
 dojo.lang.delayThese = function(farr, cb, delay, onend){if(!farr.length){if(typeof onend == "function"){onend();}
 return;}
 if((typeof delay == "undefined")&&(typeof cb == "number")){delay = cb;cb = function(){};}else if(!cb){cb = function(){};if(!delay){ delay = 0; }}
