@@ -7,10 +7,13 @@ return true;},redo: function() {if(!this.canRedo){ return false; }
 this.isRedoing = true;var top = this._redoStack.pop();if(top instanceof dojo.undo.Manager) {top.redoAll();}else{top.redo();}
 this._undoStack.push(top);this.isRedoing = false;this._updateStatus();this.onRedo(this, top);if(!(top instanceof dojo.undo.Manager)){this.getTop().onRedoAny(this, top);}
 return true;},undoAll: function() {while(this._undoStack.length > 0) {this.undo();}},redoAll: function() {while(this._redoStack.length > 0) {this.redo();}},push: function(undo, redo, description) {if(!undo) { return; }
-if(this._currentManager == this) {this._undoStack.push({undo: undo,redo: redo,description: description});} else {this._currentManager.push.apply(this._currentManager, arguments);}
+if(this._currentManager == this) {this._undoStack.push({undo: undo,redo: redo,description: description
+});} else {this._currentManager.push.apply(this._currentManager, arguments);}
 this._redoStack = [];this._updateStatus();},concat: function(manager) {if ( !manager ) { return; }
 if (this._currentManager == this ) {for(var x=0; x < manager._undoStack.length; x++) {this._undoStack.push(manager._undoStack[x]);}
 if (manager._undoStack.length > 0) {this._redoStack = [];}
 this._updateStatus();} else {this._currentManager.concat.apply(this._currentManager, arguments);}},beginTransaction: function(description) {if(this._currentManager == this) {var mgr = new dojo.undo.Manager(this);mgr.description = description ? description : "";this._undoStack.push(mgr);this._currentManager = mgr;return mgr;} else {this._currentManager = this._currentManager.beginTransaction.apply(this._currentManager, arguments);}},endTransaction: function(flatten ) {if(this._currentManager == this) {if(this._parent) {this._parent._currentManager = this._parent;if(this._undoStack.length == 0 || flatten) {var idx = dojo.lang.find(this._parent._undoStack, this);if (idx >= 0) {this._parent._undoStack.splice(idx, 1);if (flatten) {for(var x=0; x < this._undoStack.length; x++){this._parent._undoStack.splice(idx++, 0, this._undoStack[x]);}
-this._updateStatus();}}}
-return this._parent;}} else {this._currentManager = this._currentManager.endTransaction.apply(this._currentManager, arguments);}},endAllTransactions: function() {while(this._currentManager != this) {this.endTransaction();}},getTop: function() {if(this._parent) {return this._parent.getTop();} else {return this;}}});
+this._updateStatus();}}
+}
+return this._parent;}} else {this._currentManager = this._currentManager.endTransaction.apply(this._currentManager, arguments);}},endAllTransactions: function() {while(this._currentManager != this) {this.endTransaction();}},getTop: function() {if(this._parent) {return this._parent.getTop();} else {return this;}}
+});

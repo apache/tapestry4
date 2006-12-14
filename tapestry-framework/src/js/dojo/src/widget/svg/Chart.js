@@ -1,6 +1,10 @@
 
 dojo.provide("dojo.widget.svg.Chart");dojo.require("dojo.widget.HtmlWidget");dojo.require("dojo.widget.Chart");dojo.require("dojo.html.layout");dojo.require("dojo.math");dojo.require("dojo.svg");dojo.require("dojo.gfx.color");dojo.require("dojo.json");dojo.widget.defineWidget(
-"dojo.widget.svg.Chart",[dojo.widget.HtmlWidget, dojo.widget.Chart],function(){this.templatePath=null;this.templateCssPath=null;this._isInitialize=false;this.hasData=false;this.vectorNode=null;this.plotArea=null;this.dataGroup=null;this.axisGroup=null;this.properties={height:0,width:0,defaultWidth:600,defaultHeight:400,plotType:null,padding:{top:10,bottom:2,left:60,right:30},axes:{x:{plotAt:0,label:"",unitLabel:"",unitType:Number,nUnitsToShow:10,range:{min:0,max:200}},y:{plotAt:0,label:"",unitLabel:"",unitType:Number,nUnitsToShow:10,range:{min:0,max:200}}}};},{parseProperties:function(node){var bRangeX=false;var bRangeY=false;if (node.getAttribute("width")){this.properties.width=node.getAttribute("width");}
+"dojo.widget.svg.Chart",[dojo.widget.HtmlWidget, dojo.widget.Chart],function(){this.templatePath=null;this.templateCssPath=null;this._isInitialize=false;this.hasData=false;this.vectorNode=null;this.plotArea=null;this.dataGroup=null;this.axisGroup=null;this.properties={height:0,width:0,defaultWidth:600,defaultHeight:400,plotType:null,padding:{top:10,bottom:2,left:60,right:30
+},axes:{x:{plotAt:0,label:"",unitLabel:"",unitType:Number,nUnitsToShow:10,range:{min:0,max:200
+}},y:{plotAt:0,label:"",unitLabel:"",unitType:Number,nUnitsToShow:10,range:{min:0,max:200
+}}
+}};},{parseProperties:function(node){var bRangeX=false;var bRangeY=false;if (node.getAttribute("width")){this.properties.width=node.getAttribute("width");}
 if (node.getAttribute("height")){this.properties.height=node.getAttribute("height");}
 if (node.getAttribute("plotType")){this.properties.plotType=node.getAttribute("plotType");}
 if (node.getAttribute("padding")){if (node.getAttribute("padding").indexOf(",") > -1)
@@ -19,7 +23,8 @@ for(var i=0; i<this.series.length; i++){dojo.widget.svg.Chart.Plotter.plot(this.
 dojo.svg.g.resume();},postCreate:function(){var table=this.domNode.getElementsByTagName("table")[0];if (table){var ranges=this.parseProperties(table);var bRangeX=false;var bRangeY=false;var axisValues = this.parseData(table);if(!bRangeX){this.properties.axes.x.range={min:axisValues.x.min, max:axisValues.x.max};}
 if(!bRangeY){this.properties.axes.y.range={min:axisValues.y.min, max:axisValues.y.max};}
 this.setAxesPlot(table);this.domNode.removeChild(table);}
-if(this.series.length>0){this.render();}}}
+if(this.series.length>0){this.render();}}
+}
 );dojo.widget.svg.Chart.Plotter=new function(){var self=this;var plotters = {};var types=dojo.widget.Chart.PlotTypes;this.getX=function(value, chart){var v=parseFloat(value);var min=chart.properties.axes.x.range.min;var max=chart.properties.axes.x.range.max;var ofst=0-min;min+=ofst; max+=ofst; v+=ofst;var xmin=chart.properties.padding.left;var xmax=chart.properties.width-chart.properties.padding.right;var x=(v*((xmax-xmin)/max))+xmin;return x;};this.getY=function(value, chart){var v=parseFloat(value);var max=chart.properties.axes.y.range.max;var min=chart.properties.axes.y.range.min;var ofst=0;if(min<0)ofst+=Math.abs(min);min+=ofst; max+=ofst; v+=ofst;var ymin=chart.properties.height-chart.properties.padding.bottom;var ymax=chart.properties.padding.top;var y=(((ymin-ymax)/(max-min))*(max-v))+ymax;return y;};this.addPlotter=function(name, func){plotters[name]=func;};this.plot=function(series, chart){if (series.values.length==0) return;if (series.plotType && plotters[series.plotType]){return plotters[series.plotType](series, chart);}
 else if (chart.plotType && plotters[chart.plotType]){return plotters[chart.plotType](series, chart);}};plotters["bar"]=function(series, chart){var space=1;var lastW = 0;for (var i=0; i<series.values.length; i++){var x=self.getX(series.values[i].x, chart);var w;if (i==series.values.length-1){w=lastW;} else{w=self.getX(series.values[i+1].x, chart)-x-space;lastW=w;}
 x-=(w/2);var yA=self.getY(chart.properties.axes.x.plotAt, chart);var y=self.getY(series.values[i].value, chart);var h=Math.abs(yA-y);if (parseFloat(series.values[i].value)<chart.properties.axes.x.plotAt){var oy=yA;yA=y;y=oy;}

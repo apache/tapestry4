@@ -12,7 +12,7 @@ return false;},removeAllFilters: function(){this.filters = [];},filter: function
 (rec.level<this.cutOffLevel)){return false;}}
 return true;},addHandler: function(hdlr){this.handlers.push(hdlr);return this.handlers.length-1;},handle: function(rec){if((!this.filter(rec))||(rec.level<this.cutOffLevel)){ return false; }
 for(var x=0; x<this.handlers.length; x++){if(this.handlers[x]["handle"]){this.handlers[x].handle(rec);}}
-return true;},log: function(lvl, msg){if(	(this.propagate)&&(this.parent)&&
+return true;},log: function(lvl, msg){if((this.propagate)&&(this.parent)&&
 (this.parent.rec.level>=this.cutOffLevel)){this.parent.log(lvl, msg);return false;}
 this.handle(new dojo.logging.Record(lvl, msg));return true;},debug:function(msg){return this.logType("DEBUG", this._argsToArr(arguments));},info: function(msg){return this.logType("INFO", this._argsToArr(arguments));},warning: function(msg){return this.logType("WARNING", this._argsToArr(arguments));},error: function(msg){return this.logType("ERROR", this._argsToArr(arguments));},critical: function(msg){return this.logType("CRITICAL", this._argsToArr(arguments));},exception: function(msg, e, squelch){if(e){var eparts = [e.name, (e.description||e.message)];if(e.fileName){eparts.push(e.fileName);eparts.push("line "+e.lineNumber);}
 msg += " "+eparts.join(" : ");}
@@ -28,5 +28,6 @@ return null;}
 dojo.declare("dojo.logging.MemoryLogHandler",dojo.logging.LogHandler,function(level, recordsToKeep, postType, postInterval){dojo.logging.LogHandler.call(this, level);this.numRecords = (typeof djConfig['loggingNumRecords'] != 'undefined') ? djConfig['loggingNumRecords'] : ((recordsToKeep) ? recordsToKeep : -1);this.postType = (typeof djConfig['loggingPostType'] != 'undefined') ? djConfig['loggingPostType'] : ( postType || -1);this.postInterval = (typeof djConfig['loggingPostInterval'] != 'undefined') ? djConfig['loggingPostInterval'] : ( postType || -1);},{emit: function(record){if(!djConfig.isDebug){ return; }
 var logStr = String(dojo.log.getLevelName(record.level)+": "
 +record.time.toLocaleTimeString())+": "+record.message;if(!dj_undef("println", dojo.hostenv)){dojo.hostenv.println(logStr, record.msgArgs);}
-this.data.push(record);if(this.numRecords != -1){while(this.data.length>this.numRecords){this.data.shift();}}}}
+this.data.push(record);if(this.numRecords != -1){while(this.data.length>this.numRecords){this.data.shift();}}
+}}
 );dojo.logging.logQueueHandler = new dojo.logging.MemoryLogHandler(0,50,0,10000);dojo.logging.log.addHandler(dojo.logging.logQueueHandler);dojo.log = dojo.logging.log;

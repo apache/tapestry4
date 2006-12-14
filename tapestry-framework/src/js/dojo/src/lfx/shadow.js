@@ -5,4 +5,5 @@ dojo.extend(dojo.lfx.shadow, {init: function(node){this.node=node;this.pieces={}
 img.style.position="absolute";img.style[vertAttach]=vertCoord+"px";img.style[horzAttach]=horzCoord+"px";img.style.width=this.shadowThickness+"px";img.style.height=this.shadowThickness+"px";this.pieces[name]=img;this.node.appendChild(img);},size: function(width, height){var sideHeight = height - (this.shadowOffset+this.shadowThickness+1);if (sideHeight < 0) { sideHeight = 0; }
 if (height < 1) { height = 1; }
 if (width < 1) { width = 1; }
-with(this.pieces){l.style.height = sideHeight+"px";r.style.height = sideHeight+"px";b.style.width = (width-1)+"px";bl.style.top = (height-1)+"px";b.style.top = (height-1)+"px";br.style.top = (height-1)+"px";tr.style.left = (width-1)+"px";r.style.left = (width-1)+"px";br.style.left = (width-1)+"px";}}});
+with(this.pieces){l.style.height = sideHeight+"px";r.style.height = sideHeight+"px";b.style.width = (width-1)+"px";bl.style.top = (height-1)+"px";b.style.top = (height-1)+"px";br.style.top = (height-1)+"px";tr.style.left = (width-1)+"px";r.style.left = (width-1)+"px";br.style.left = (width-1)+"px";}}
+});

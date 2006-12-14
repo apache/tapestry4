@@ -17,7 +17,8 @@ var xdUri = uri.substring(0, lastIndex) + ".xd";if(lastIndex != uri.length - 1){
 var element = document.createElement("script");element.type = "text/javascript";element.src = xdUri;if(!this.headElement){this.headElement = document.getElementsByTagName("head")[0];}
 this.headElement.appendChild(element);}else{var contents = this.getText(uri, null, true);if(contents == null){ return 0; }
 if(this.isXDomain){var pkg = this.createXdPackage(contents);dj_eval(pkg);}else{if(cb){ contents = '('+contents+')'; }
-var value = dj_eval(contents);if(cb){cb(value);}}}
+var value = dj_eval(contents);if(cb){cb(value);}}
+}
 this.loadedUris[uri] = true;return 1;}
 dojo.hostenv.packageLoaded = function(pkg){var deps = pkg.depends;var requireList = null;var requireAfterList = null;var provideList = [];if(deps && deps.length > 0){var dep = null;var insertHint = 0;var attachedPackage = false;for(var i = 0; i < deps.length; i++){dep = deps[i];if (dep[0] == "provide" || dep[0] == "hostenv.moduleLoaded"){provideList.push(dep[1]);}else{if(!requireList){requireList = [];}
 if(!requireAfterList){requireAfterList = [];}
@@ -25,8 +26,11 @@ var unpackedDeps = this.unpackXdDependency(dep);if(unpackedDeps.requires){requir
 if(unpackedDeps.requiresAfter){requireAfterList = requireAfterList.concat(unpackedDeps.requiresAfter);}}
 var depType = dep[0];var objPath = depType.split(".");if(objPath.length == 2){dojo[objPath[0]][objPath[1]].apply(dojo[objPath[0]], dep.slice(1));}else{dojo[depType].apply(dojo, dep.slice(1));}}
 var contentIndex = this.xdContents.push({content: pkg.definePackage, isDefined: false}) - 1;for(var i = 0; i < provideList.length; i++){this.xdDepMap[provideList[i]] = { requires: requireList, requiresAfter: requireAfterList, contentIndex: contentIndex };}
-for(var i = 0; i < provideList.length; i++){this.xdInFlight[provideList[i]] = false;}}}
-dojo.hostenv.xdLoadFlattenedBundle = function(moduleName, bundleName, locale, bundleData){locale = locale || "root";var jsLoc = dojo.hostenv.normalizeLocale(locale).replace('-', '_');var bundlePackage = [moduleName, "nls", bundleName].join(".");var bundle = dojo.hostenv.startPackage(bundlePackage);bundle[jsLoc] = bundleData;var mapName = [moduleName, jsLoc, bundleName].join(".");var bundleMap = dojo.hostenv.xdBundleMap[mapName];if(bundleMap){for(var param in bundleMap){bundle[param] = bundleData;}}};dojo.hostenv.xdBundleMap = {};dojo.xdRequireLocalization = function(moduleName, bundleName, locale, availableFlatLocales){var locales = availableFlatLocales.split(",");var jsLoc = dojo.hostenv.normalizeLocale(locale);var bestLocale = "";for(var i = 0; i < locales.length; i++){if(jsLoc.indexOf(locales[i]) == 0){if(locales[i].length > bestLocale.length){bestLocale = locales[i];}}}
+for(var i = 0; i < provideList.length; i++){this.xdInFlight[provideList[i]] = false;}}
+}
+dojo.hostenv.xdLoadFlattenedBundle = function(moduleName, bundleName, locale, bundleData){locale = locale || "root";var jsLoc = dojo.hostenv.normalizeLocale(locale).replace('-', '_');var bundlePackage = [moduleName, "nls", bundleName].join(".");var bundle = dojo.hostenv.startPackage(bundlePackage);bundle[jsLoc] = bundleData;var mapName = [moduleName, jsLoc, bundleName].join(".");var bundleMap = dojo.hostenv.xdBundleMap[mapName];if(bundleMap){for(var param in bundleMap){bundle[param] = bundleData;}}
+};dojo.hostenv.xdBundleMap = {};dojo.xdRequireLocalization = function(moduleName, bundleName, locale, availableFlatLocales){var locales = availableFlatLocales.split(",");var jsLoc = dojo.hostenv.normalizeLocale(locale);var bestLocale = "";for(var i = 0; i < locales.length; i++){if(jsLoc.indexOf(locales[i]) == 0){if(locales[i].length > bestLocale.length){bestLocale = locales[i];}}
+}
 var fixedBestLocale = bestLocale.replace('-', '_');var bundlePackage = dojo.evalObjPath([moduleName, "nls", bundleName].join("."));if(bundlePackage && bundlePackage[fixedBestLocale]){bundle[jsLoc.replace('-', '_')] = bundlePackage[fixedBestLocale];}else{var mapName = [moduleName, (fixedBestLocale||"root"), bundleName].join(".");var bundleMap = dojo.hostenv.xdBundleMap[mapName];if(!bundleMap){bundleMap = dojo.hostenv.xdBundleMap[mapName] = {};}
 bundleMap[jsLoc.replace('-', '_')] = true;dojo.require(moduleName + ".nls" + (bestLocale ? "." + bestLocale : "") + "." + bundleName);}}
 ;(function(){var extra = djConfig.extraLocale;if(extra){if(!extra instanceof Array){extra = [extra];}
@@ -44,8 +48,10 @@ case "hostenv.loadModule":
 newDeps = [{name: dep[1], content: null}];break;}
 if(dep[0] == "requireAfterIf"){newAfterDeps = newDeps;newDeps = null;}
 return {requires: newDeps, requiresAfter: newAfterDeps};}
-dojo.hostenv.xdWalkReqs = function(){var reqChain = null;var req;for(var i = 0; i < this.xdOrderedReqs.length; i++){req = this.xdOrderedReqs[i];if(this.xdDepMap[req]){reqChain = [req];reqChain[req] = true;this.xdEvalReqs(reqChain);}}}
-dojo.hostenv.xdTraceReqs = function(reqs, reqChain){if(reqs && reqs.length > 0){var nextReq;for(var i = 0; i < reqs.length; i++){nextReq = reqs[i].name;if(nextReq && !reqChain[nextReq]){reqChain.push(nextReq);reqChain[nextReq] = true;this.xdEvalReqs(reqChain);}}}}
+dojo.hostenv.xdWalkReqs = function(){var reqChain = null;var req;for(var i = 0; i < this.xdOrderedReqs.length; i++){req = this.xdOrderedReqs[i];if(this.xdDepMap[req]){reqChain = [req];reqChain[req] = true;this.xdEvalReqs(reqChain);}}
+}
+dojo.hostenv.xdTraceReqs = function(reqs, reqChain){if(reqs && reqs.length > 0){var nextReq;for(var i = 0; i < reqs.length; i++){nextReq = reqs[i].name;if(nextReq && !reqChain[nextReq]){reqChain.push(nextReq);reqChain[nextReq] = true;this.xdEvalReqs(reqChain);}}
+}}
 dojo.hostenv.xdEvalReqs = function(reqChain){if(reqChain.length > 0){var req = reqChain[reqChain.length - 1];var pkg = this.xdDepMap[req];if(pkg){this.xdTraceReqs(pkg.requires, reqChain);var contents = this.xdContents[pkg.contentIndex];if(!contents.isDefined){contents.content(dojo);contents.isDefined = true;}
 this.xdDepMap[req] = null;this.xdTraceReqs(pkg.requiresAfter, reqChain);}
 reqChain.pop();this.xdEvalReqs(reqChain);}}
@@ -55,6 +61,7 @@ dojo.raise("Could not load cross-domain packages: " + noLoads);}
 for(var param in this.xdInFlight){if(this.xdInFlight[param]){return;}}
 this.clearXdInterval();this.xdWalkReqs();for(var i = 0; i < this.xdContents.length; i++){var current = this.xdContents[i];if(current.content && !current.isDefined){current.content(dojo);}}
 this.resetXd();this.inFlightCount = 0;this.callLoaded();}
-dojo.hostenv.flattenRequireArray = function(target){if(target){for(var i = 0; i < target.length; i++){if(target[i] instanceof Array){target[i] = {name: target[i][0], content: null};}else{target[i] = {name: target[i], content: null};}}}}
+dojo.hostenv.flattenRequireArray = function(target){if(target){for(var i = 0; i < target.length; i++){if(target[i] instanceof Array){target[i] = {name: target[i][0], content: null};}else{target[i] = {name: target[i], content: null};}}
+}}
 dojo.hostenv.xdHasCalledPreload = false;dojo.hostenv.xdRealCallLoaded = dojo.hostenv.callLoaded;dojo.hostenv.callLoaded = function(){if(this.xdHasCalledPreload || dojo.hostenv.getModulePrefix("dojo") == "src" || !this.localesGenerated){this.xdRealCallLoaded();this.xdHasCalledPreload = true;}else{if(this.localesGenerated){this.registerNlsPrefix = function(){dojo.registerModulePath("nls", dojo.hostenv.getModulePrefix("dojo") + "/../nls");};this.preloadLocalizations();}
 this.xdHasCalledPreload = true;}}

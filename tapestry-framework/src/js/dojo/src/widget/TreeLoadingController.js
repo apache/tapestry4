@@ -10,7 +10,9 @@ node.state = node.loadStates.LOADED;if (dojo.lang.isFunction(callFunc)) {callFun
 if(type == "load"){kw.load.call(this, data);}else{this.RPCErrorHandler(type, data, evt);}}
 if (kw.lock) {dojo.lang.forEach(kw.lock,function(t) { t.lock() }
 );}
-dojo.io.bind({url: kw.url,handle: dojo.lang.hitch(this, handle),mimetype: "text/json",preventCache: _this.preventCache,sync: kw.sync,content: { data: dojo.json.serialize(kw.params) }});},loadRemote: function(node, sync, callObj, callFunc){var _this = this;var params = {node: this.getInfo(node),tree: this.getInfo(node.tree)};this.runRPC({url: this.getRPCUrl('getChildren'),load: function(result) {_this.loadProcessResponse(node, result, callObj, callFunc) ;},sync: sync,lock: [node],params: params});},expand: function(node, sync, callObj, callFunc) {if (node.state == node.loadStates.UNCHECKED && node.isFolder) {this.loadRemote(node, sync,this,function(node, newChildren) {this.expand(node, sync, callObj, callFunc);}
+dojo.io.bind({url: kw.url,handle: dojo.lang.hitch(this, handle),mimetype: "text/json",preventCache: _this.preventCache,sync: kw.sync,content: { data: dojo.json.serialize(kw.params) }});},loadRemote: function(node, sync, callObj, callFunc){var _this = this;var params = {node: this.getInfo(node),tree: this.getInfo(node.tree)
+};this.runRPC({url: this.getRPCUrl('getChildren'),load: function(result) {_this.loadProcessResponse(node, result, callObj, callFunc) ;},sync: sync,lock: [node],params: params
+});},expand: function(node, sync, callObj, callFunc) {if (node.state == node.loadStates.UNCHECKED && node.isFolder) {this.loadRemote(node, sync,this,function(node, newChildren) {this.expand(node, sync, callObj, callFunc);}
 );return;}
 dojo.widget.TreeBasicController.prototype.expand.apply(this, arguments);},doMove: function(child, newParent, index) {if (newParent.isTreeNode && newParent.state == newParent.loadStates.UNCHECKED) {this.loadRemote(newParent, true);}
 return dojo.widget.TreeBasicController.prototype.doMove.apply(this, arguments);},doCreateChild: function(parent, index, data, callObj, callFunc) {if (parent.state == parent.loadStates.UNCHECKED) {this.loadRemote(parent, true);}

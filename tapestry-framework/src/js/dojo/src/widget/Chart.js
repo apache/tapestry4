@@ -6,7 +6,8 @@ var rows=tbody.rows;var xMin=Number.MAX_VALUE,xMax=Number.MIN_VALUE;var yMin=Num
 "accesskey","align","bgcolor","class","colspan","height","id","nowrap","rowspan","style","tabindex","title","valign","width"
 ];for(var i=0; i<rows.length; i++){var row=rows[i];var cells=row.cells;var x=Number.MIN_VALUE;for (var j=0; j<cells.length; j++){if (j==0){x=parseFloat(cells[j].innerHTML);xMin=Math.min(xMin, x);xMax=Math.max(xMax, x);} else {var ds=this.series[j-1];var y=parseFloat(cells[j].innerHTML);yMin=Math.min(yMin,y);yMax=Math.max(yMax,y);var o={x:x, value:y};var attrs=cells[j].attributes;for(var k=0; k<attrs.length; k++){var attr=attrs.item(k);var bIgnore=false;for (var l=0; l<ignore.length; l++){if (attr.nodeName.toLowerCase()==ignore[l]){bIgnore=true;break;}}
 if(!bIgnore) o[attr.nodeName]=attr.nodeValue;}
-ds.add(o);}}}
+ds.add(o);}}
+}
 return { x:{ min:xMin, max:xMax}, y:{ min:yMin, max:yMax}};}});dojo.declare(
 "dojo.widget.Chart.DataSeries",null,function(key, label, plotType, color){this.id = "DataSeries"+dojo.widget.Chart.DataSeries.count++;this.key = key;this.label = label||this.id;this.plotType = plotType||"line";this.color = color;this.values = [];},{add: function(v){if(v.x==null||v.value==null){dojo.raise("dojo.widget.Chart.DataSeries.add: v must have both an 'x' and 'value' property.");}
 this.values.push(v);},clear: function(){this.values=[];},createRange: function(len){var idx = this.values.length-1;var length = (len||this.values.length);return { "index": idx, "length": length, "start":Math.max(idx-length,0) };},getMean: function(len){var range = this.createRange(len);if(range.index<0){ return 0; }
@@ -21,7 +22,8 @@ return t;},getMin: function(len){var range=this.createRange(len);if(range.index 
 var t = 0;for(var i=range.index; i>=range.start; i--){var n = parseFloat(this.values[i].value);if(!isNaN(n)){t=Math.min(n,t);}}
 return t;},getMedian: function(len){var range = this.createRange(len);if(range.index<0){ return 0; }
 var a = [];for (var i=range.index; i>=range.start; i--){var n=parseFloat(this.values[i].value);if (!isNaN(n)){var b=false;for(var j=0; j<a.length&&!b; j++){if (n==a[j]) b=true;}
-if(!b){ a.push(n); }}}
+if(!b){ a.push(n); }}
+}
 a.sort();if(a.length>0){ return a[Math.ceil(a.length/2)]; }
 return 0;},getMode: function(len){var range=this.createRange(len);if(range.index<0){ return 0; }
 var o = {};var ret = 0

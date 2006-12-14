@@ -1,6 +1,7 @@
 
 dojo.provide("dojo.cal.textDirectory");dojo.require("dojo.string");dojo.cal.textDirectory.Property = function(line){var left = dojo.string.trim(line.substring(0, line.indexOf(':')));var right = dojo.string.trim(line.substr(line.indexOf(':') + 1));var parameters = dojo.string.splitEscaped(left,';');this.name = parameters[0];parameters.splice(0, 1);this.params = [];var arr;for(var i = 0; i < parameters.length; i++){arr = parameters[i].split("=");var key = dojo.string.trim(arr[0].toUpperCase());if(arr.length == 1){ this.params.push([key]); continue; }
-var values = dojo.string.splitEscaped(arr[1],',');for(var j = 0; j < values.length; j++){if(dojo.string.trim(values[j]) != ''){this.params.push([key, dojo.string.trim(values[j])]);}}}
+var values = dojo.string.splitEscaped(arr[1],',');for(var j = 0; j < values.length; j++){if(dojo.string.trim(values[j]) != ''){this.params.push([key, dojo.string.trim(values[j])]);}}
+}
 if(this.name.indexOf('.') > 0){arr = this.name.split('.');this.group = arr[0];this.name = arr[1];}
 this.value = right;}
 dojo.cal.textDirectory.tokenise = function(text){var nText = dojo.string.normalizeNewlines(text,"\n").

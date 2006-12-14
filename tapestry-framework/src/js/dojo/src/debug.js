@@ -3,7 +3,8 @@ dojo.debug = function(){if (!djConfig.isDebug) { return; }
 var args = arguments;if(dj_undef("println", dojo.hostenv)){dojo.raise("dojo.debug not available (yet?)");}
 var isJUM = dj_global["jum"] && !dj_global["jum"].isBrowser;var s = [(isJUM ? "": "DEBUG: ")];for(var i=0;i<args.length;++i){if(!false && args[i] && args[i] instanceof Error){var msg = "[" + args[i].name + ": " + dojo.errorToString(args[i]) +
 (args[i].fileName ? ", file: " + args[i].fileName : "") +
-(args[i].lineNumber ? ", line: " + args[i].lineNumber : "") + "]";} else {try {var msg = String(args[i]);} catch(e) {if(dojo.render.html.ie) {var msg = "[ActiveXObject]";} else {var msg = "[unknown]";}}}
+(args[i].lineNumber ? ", line: " + args[i].lineNumber : "") + "]";} else {try {var msg = String(args[i]);} catch(e) {if(dojo.render.html.ie) {var msg = "[ActiveXObject]";} else {var msg = "[unknown]";}}
+}
 s.push(msg);}
 dojo.hostenv.println(s.join(" "));}
 dojo.debugShallow = function(obj){if (!djConfig.isDebug) { return; }

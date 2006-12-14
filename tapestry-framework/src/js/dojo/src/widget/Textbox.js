@@ -4,5 +4,6 @@ dojo.provide("dojo.widget.Textbox");dojo.require("dojo.widget.*");dojo.require("
 if (this.uppercase) {this.textbox.value = this.textbox.value.toUpperCase();}
 if (this.lowercase) {this.textbox.value = this.textbox.value.toLowerCase();}
 if (this.ucFirst) {this.textbox.value = this.textbox.value.replace(/\b\w+\b/g,function(word) { return word.substring(0,1).toUpperCase() + word.substring(1).toLowerCase(); });}
-if (this.digit) {this.textbox.value = this.textbox.value.replace(/\D/g, "");}},onfocus: function() {},onblur: function() { this.filter(); },mixInProperties: function(localProperties, frag) {dojo.widget.Textbox.superclass.mixInProperties.apply(this, arguments);if ( localProperties["class"] ) {this.className = localProperties["class"];}}}
+if (this.digit) {this.textbox.value = this.textbox.value.replace(/\D/g, "");}},onfocus: function() {},onblur: function() { this.filter(); },mixInProperties: function(localProperties, frag) {dojo.widget.Textbox.superclass.mixInProperties.apply(this, arguments);if ( localProperties["class"] ) {this.className = localProperties["class"];}}
+}
 );

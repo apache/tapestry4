@@ -8,10 +8,12 @@ dojo.lang.getNameInObj = function(ns, item){if(!ns){ ns = dj_global; }
 for(var x in ns){if(ns[x] === item){return new String(x);}}
 return null;}
 dojo.lang.shallowCopy = function(obj, deep){var i, ret;if(obj === null){  return null; }
-if(dojo.lang.isObject(obj)){ret = new obj.constructor();for(i in obj){if(dojo.lang.isUndefined(ret[i])){ret[i] = deep ? dojo.lang.shallowCopy(obj[i], deep) : obj[i];}}}else if(dojo.lang.isArray(obj)){ret = [];for(i=0; i<obj.length; i++){ret[i] = deep ? dojo.lang.shallowCopy(obj[i], deep) : obj[i];}}else{ret = obj;}
+if(dojo.lang.isObject(obj)){ret = new obj.constructor();for(i in obj){if(dojo.lang.isUndefined(ret[i])){ret[i] = deep ? dojo.lang.shallowCopy(obj[i], deep) : obj[i];}}
+}else if(dojo.lang.isArray(obj)){ret = [];for(i=0; i<obj.length; i++){ret[i] = deep ? dojo.lang.shallowCopy(obj[i], deep) : obj[i];}}else{ret = obj;}
 return ret;}
 dojo.lang.firstValued = function(){for(var i = 0; i < arguments.length; i++){if(typeof arguments[i] != "undefined"){return arguments[i];}}
 return undefined;}
 dojo.lang.getObjPathValue = function(objpath, context, create){with(dojo.parseObjPath(objpath, context, create)){return dojo.evalProp(prop, obj, create);}}
 dojo.lang.setObjPathValue = function(objpath, value, context, create){dojo.deprecated("dojo.lang.setObjPathValue", "use dojo.parseObjPath and the '=' operator", "0.6");if(arguments.length < 4){create = true;}
-with(dojo.parseObjPath(objpath, context, create)){if(obj && (create || (prop in obj))){obj[prop] = value;}}}
+with(dojo.parseObjPath(objpath, context, create)){if(obj && (create || (prop in obj))){obj[prop] = value;}}
+}

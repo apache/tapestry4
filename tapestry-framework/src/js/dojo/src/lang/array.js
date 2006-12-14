@@ -7,13 +7,15 @@ if(isString){return outArr.join("");}else{return outArr;}},reduce: function(arr,
 var ob = obj ? obj : dj_global;dojo.lang.map(arr,function(val){reducedValue = binary_func.call(ob, reducedValue, val);}
 );return reducedValue;},forEach: function(anArray, callback, thisObject){if(dojo.lang.isString(anArray)){anArray = anArray.split("");}
 if(Array.forEach){Array.forEach(anArray, callback, thisObject);}else{if(!thisObject){thisObject=dj_global;}
-for(var i=0,l=anArray.length; i<l; i++){callback.call(thisObject, anArray[i], i, anArray);}}},_everyOrSome: function(every, arr, callback, thisObject){if(dojo.lang.isString(arr)){arr = arr.split("");}
+for(var i=0,l=anArray.length; i<l; i++){callback.call(thisObject, anArray[i], i, anArray);}}
+},_everyOrSome: function(every, arr, callback, thisObject){if(dojo.lang.isString(arr)){arr = arr.split("");}
 if(Array.every){return Array[ every ? "every" : "some" ](arr, callback, thisObject);}else{if(!thisObject){thisObject = dj_global;}
 for(var i=0,l=arr.length; i<l; i++){var result = callback.call(thisObject, arr[i], i, arr);if(every && !result){return false;}else if((!every)&&(result)){return true;}}
 return Boolean(every);}},every: function(arr, callback, thisObject){return this._everyOrSome(true, arr, callback, thisObject);},some: function(arr, callback, thisObject){return this._everyOrSome(false, arr, callback, thisObject);},filter: function(arr, callback, thisObject){var isString = dojo.lang.isString(arr);if(isString){ arr = arr.split(""); }
 var outArr;if(Array.filter){outArr = Array.filter(arr, callback, thisObject);}else{if(!thisObject){if(arguments.length >= 3){ dojo.raise("thisObject doesn't exist!"); }
 thisObject = dj_global;}
-outArr = [];for(var i = 0; i < arr.length; i++){if(callback.call(thisObject, arr[i], i, arr)){outArr.push(arr[i]);}}}
+outArr = [];for(var i = 0; i < arr.length; i++){if(callback.call(thisObject, arr[i], i, arr)){outArr.push(arr[i]);}}
+}
 if(isString){return outArr.join("");} else {return outArr;}},unnest: function(){var out = [];for(var i = 0; i < arguments.length; i++){if(dojo.lang.isArrayLike(arguments[i])){var add = dojo.lang.unnest.apply(this, arguments[i]);out = out.concat(add);}else{out.push(arguments[i]);}}
 return out;},toArray: function(arrayLike, startOffset){var array = [];for(var i = startOffset||0; i < arrayLike.length; i++){array.push(arrayLike[i]);}
 return array;}});

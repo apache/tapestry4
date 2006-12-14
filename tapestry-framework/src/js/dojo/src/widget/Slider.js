@@ -1,11 +1,15 @@
 
 dojo.provide("dojo.widget.Slider");dojo.require("dojo.event.*");dojo.require("dojo.dnd.*");dojo.require("dojo.dnd.HtmlDragMove");dojo.require("dojo.widget.*");dojo.require("dojo.html.layout");dojo.widget.defineWidget (
 "dojo.widget.Slider",dojo.widget.HtmlWidget,{minimumX: 0,minimumY: 0,maximumX: 10,maximumY: 10,snapValuesX: 0,snapValuesY: 0,_snapToGrid: true,isEnableX: true,isEnableY: true,_valueSizeX: 0.0,_valueSizeY: 0.0,_minX: 0,_minY: 0,_constraintWidth: 0,_constraintHeight: 0,_clipLeft: 0,_clipRight: 0,_clipTop: 0,_clipBottom: 0,_clipXdelta: 0,_clipYdelta: 0,initialValueX: 0,initialValueY: 0,flipX: false,flipY: false,clickSelect: true,activeDrag: false,templateCssPath: dojo.uri.dojoUri ("src/widget/templates/Slider.css"),templatePath: dojo.uri.dojoUri ("src/widget/templates/Slider.html"),_isDragInProgress: false,bottomButtonSrc: dojo.uri.dojoUri("src/widget/templates/images/slider_down_arrow.png"),topButtonSrc: dojo.uri.dojoUri("src/widget/templates/images/slider_up_arrow.png"),leftButtonSrc: dojo.uri.dojoUri("src/widget/templates/images/slider_left_arrow.png"),rightButtonSrc: dojo.uri.dojoUri("src/widget/templates/images/slider_right_arrow.png"),backgroundSrc: dojo.uri.dojoUri("src/widget/templates/images/blank.gif"),progressBackgroundSrc: dojo.uri.dojoUri("src/widget/templates/images/blank.gif"),backgroundSize: "width:200px;height:200px;",backgroundStyle: "",buttonStyleX: "",buttonStyleY: "",handleStyle: "",handleSrc: dojo.uri.dojoUri("src/widget/templates/images/slider-button.png"),showButtons: true,_eventCount: 0,_typamaticTimer: null,_typamaticFunction: null,defaultTimeout: 500,timeoutChangeRate: 0.90,_currentTimeout: this.defaultTimeout,_handleKeyEvents: function( evt){if(!evt.key){ return; }
-if(!evt.ctrlKey && !evt.altKey){switch(evt.key){case evt.KEY_LEFT_ARROW:
-dojo.event.browser.stopEvent(evt);this._leftButtonPressed(evt);return;case evt.KEY_RIGHT_ARROW:
-dojo.event.browser.stopEvent(evt);this._rightButtonPressed(evt);return;case evt.KEY_DOWN_ARROW:
-dojo.event.browser.stopEvent(evt);this._bottomButtonPressed(evt);return;case evt.KEY_UP_ARROW:
-dojo.event.browser.stopEvent(evt);this._topButtonPressed(evt);return;}}
+if(!evt.ctrlKey && !evt.altKey){var isXOnly = this.isEnableX && !this.isEnableY;var isYOnly = this.isEnableY && !this.isEnableX;switch(evt.key){case evt.KEY_LEFT_ARROW:
+dojo.event.browser.stopEvent(evt);if (isYOnly){this._bottomButtonPressed(evt);}else{this._leftButtonPressed(evt);}
+return;case evt.KEY_RIGHT_ARROW:
+dojo.event.browser.stopEvent(evt);if (isYOnly){this._topButtonPressed(evt);}else{this._rightButtonPressed(evt);}
+return;case evt.KEY_DOWN_ARROW:
+dojo.event.browser.stopEvent(evt);if (isXOnly){this._leftButtonPressed(evt);}else{this._bottomButtonPressed(evt);}
+return;case evt.KEY_UP_ARROW:
+dojo.event.browser.stopEvent(evt);if (isXOnly){this._rightButtonPressed(evt);}else{this._topButtonPressed(evt);}
+return;}}
 this._eventCount++;},_pressButton: function( buttonNode){buttonNode.className = buttonNode.className.replace("Outset","Inset");},_releaseButton: function( buttonNode){buttonNode.className = buttonNode.className.replace("Inset","Outset");},_buttonPressed: function( evt,  buttonNode){this._setFocus();if(typeof evt == "object"){if(this._typamaticTimer != null){if(this._typamaticNode == buttonNode){return;}
 clearTimeout(this._typamaticTimer);}
 this._buttonReleased(null);this._eventCount++;this._typamaticTimer = null;this._currentTimeout = this.defaultTimeout;dojo.event.browser.stopEvent(evt);}else if (evt != this._eventCount){this._buttonReleased(null);return false;}
@@ -21,7 +25,8 @@ case evt.KEY_UP_ARROW:
 dojo.event.browser.stopEvent(evt);break;}}
 this._releaseButton(this.topButtonNode);this._releaseButton(this.bottomButtonNode);this._releaseButton(this.leftButtonNode);this._releaseButton(this.rightButtonNode);this._eventCount++;if(this._typamaticTimer != null){clearTimeout(this._typamaticTimer);}
 this._typamaticTimer = null;this._currentTimeout = this.defaultTimeout;},_mouseWheeled: function( evt){var scrollAmount = 0;if(typeof evt.wheelDelta == 'number'){scrollAmount = evt.wheelDelta;}else if (typeof evt.detail == 'number'){scrollAmount = -evt.detail;}
-if (this.isEnableY){if(scrollAmount > 0){this._topButtonPressed(evt);this._buttonReleased(evt);}else if (scrollAmount < 0){this._bottomButtonPressed(evt);this._buttonReleased(evt);}} else if (this.isEnableX){if(scrollAmount > 0){this._rightButtonPressed(evt);this._buttonReleased(evt);}else if (scrollAmount < 0){this._leftButtonPressed(evt);this._buttonReleased(evt);}}},_discardEvent: function( evt){dojo.event.browser.stopEvent(evt);},_setFocus: function(){if (this.focusNode.focus){this.focusNode.focus();}},fillInTemplate: function ( args,  frag)
+if (this.isEnableY){if(scrollAmount > 0){this._topButtonPressed(evt);this._buttonReleased(evt);}else if (scrollAmount < 0){this._bottomButtonPressed(evt);this._buttonReleased(evt);}} else if (this.isEnableX){if(scrollAmount > 0){this._rightButtonPressed(evt);this._buttonReleased(evt);}else if (scrollAmount < 0){this._leftButtonPressed(evt);this._buttonReleased(evt);}}
+},_discardEvent: function( evt){dojo.event.browser.stopEvent(evt);},_setFocus: function(){if (this.focusNode.focus){this.focusNode.focus();}},fillInTemplate: function ( args,  frag)
 {var source = this.getFragNodeRef(frag);dojo.html.copyStyle(this.domNode, source);var padding = this.domNode.style.padding;if (dojo.lang.isString(padding) && padding != "" && padding != "0px" && padding != "0px 0px 0px 0px"){this.topBorderNode.style.padding =
 this.bottomBorderNode.style.padding = padding;this.topBorderNode.style.paddingBottom = "0px";this.bottomBorderNode.style.paddingTop = "0px";this.rightBorderNode.style.paddingRight = this.domNode.style.paddingRight;this.leftBorderNode.style.paddingLeft= this.domNode.style.paddingLeft;this.domNode.style.padding = "0px 0px 0px 0px";}
 var borderWidth = this.domNode.style.borderWidth;if (dojo.lang.isString(borderWidth) && borderWidth != "" && borderWidth != "0px" && borderWidth != "0px 0px 0px 0px"){this.topBorderNode.style.borderStyle =
@@ -96,4 +101,5 @@ if (dojo.lang.isBoolean(this.flip)){this.flipY = this.flip;}},notifyListeners: f
 return dragObj;},setParent: function ( slider){this.slider = slider;}});dojo.declare (
 "dojo.widget._SliderDragMoveObject",dojo.dnd.HtmlDragMoveObject,{slider: null,onDragMove: function( evt){this.updateDragOffset ();if (this.slider.isEnableX){var x = this.dragOffset.x + evt.pageX;this.slider._snapX(x);}
 if (this.slider.isEnableY){var y = this.dragOffset.y + evt.pageY;this.slider._snapY(y);}
-if(this.slider.activeDrag){this.slider.notifyListeners();}}});
+if(this.slider.activeDrag){this.slider.notifyListeners();}}
+});

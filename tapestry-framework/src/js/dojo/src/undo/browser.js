@@ -9,14 +9,17 @@ oldCB.apply(this, [handleName]);}
 if(args["back"]){args.back = tcb;}else if(args["backButton"]){args.backButton = tcb;}else if(args["handle"]){args.handle = tcb;}
 var oldFW = args["forward"]||args["forwardButton"]||args["handle"];var tfw = function(handleName){if(window.location.hash != ""){window.location.href = hash;}
 if(oldFW){oldFW.apply(this, [handleName]);}}
-if(args["forward"]){args.forward = tfw;}else if(args["forwardButton"]){args.forwardButton = tfw;}else if(args["handle"]){args.handle = tfw;}}else if(dojo.render.html.moz){if(!this.locationTimer){this.locationTimer = setInterval("dojo.undo.browser.checkLocation();", 200);}}}else{url = this._loadIframeHistory();}
+if(args["forward"]){args.forward = tfw;}else if(args["forwardButton"]){args.forwardButton = tfw;}else if(args["handle"]){args.handle = tfw;}}else if(dojo.render.html.moz){if(!this.locationTimer){this.locationTimer = setInterval("dojo.undo.browser.checkLocation();", 200);}}
+}else{url = this._loadIframeHistory();}
 this.historyStack.push(this._createState(url, args, hash));},checkLocation: function(){if (!this.changingUrl){var hsl = this.historyStack.length;if((window.location.hash == this.initialHash||window.location.href == this.initialHref)&&(hsl == 1)){this.handleBackButton();return;}
 if(this.forwardStack.length > 0){if(this.forwardStack[this.forwardStack.length-1].urlHash == window.location.hash){this.handleForwardButton();return;}}
-if((hsl >= 2)&&(this.historyStack[hsl-2])){if(this.historyStack[hsl-2].urlHash==window.location.hash){this.handleBackButton();return;}}}},iframeLoaded: function(evt, ifrLoc){if(!dojo.render.html.opera){var query = this._getUrlQuery(ifrLoc.href);if(query == null){if(this.historyStack.length == 1){this.handleBackButton();}
+if((hsl >= 2)&&(this.historyStack[hsl-2])){if(this.historyStack[hsl-2].urlHash==window.location.hash){this.handleBackButton();return;}}
+}},iframeLoaded: function(evt, ifrLoc){if(!dojo.render.html.opera){var query = this._getUrlQuery(ifrLoc.href);if(query == null){if(this.historyStack.length == 1){this.handleBackButton();}
 return;}
 if(this.moveForward){this.moveForward = false;return;}
 if(this.historyStack.length >= 2 && query == this._getUrlQuery(this.historyStack[this.historyStack.length-2].url)){this.handleBackButton();}
-else if(this.forwardStack.length > 0 && query == this._getUrlQuery(this.forwardStack[this.forwardStack.length-1].url)){this.handleForwardButton();}}},handleBackButton: function(){var current = this.historyStack.pop();if(!current){ return; }
+else if(this.forwardStack.length > 0 && query == this._getUrlQuery(this.forwardStack[this.forwardStack.length-1].url)){this.handleForwardButton();}}
+},handleBackButton: function(){var current = this.historyStack.pop();if(!current){ return; }
 var last = this.historyStack[this.historyStack.length-1];if(!last && this.historyStack.length == 0){last = this.initialState;}
 if (last){if(last.kwArgs["back"]){last.kwArgs["back"]();}else if(last.kwArgs["backButton"]){last.kwArgs["backButton"]();}else if(last.kwArgs["handle"]){last.kwArgs.handle("back");}}
 this.forwardStack.push(current);},handleForwardButton: function(){var last = this.forwardStack.pop();if(!last){ return; }

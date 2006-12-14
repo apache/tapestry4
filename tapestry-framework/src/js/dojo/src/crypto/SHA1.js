@@ -20,6 +20,8 @@ function hmac(data,key){var wa=toWord(key);if(wa.length>16) wa=core(wa,key.lengt
 var h=core(l.concat(toWord(data)),512+data.length*chrsz);return core(r.concat(h),640);}
 this.compute=function(data,outputType){var out=outputType||dojo.crypto.outputTypes.Base64;switch(out){case dojo.crypto.outputTypes.Hex:{return toHex(core(toWord(data),data.length*chrsz));}
 case dojo.crypto.outputTypes.String:{return toString(core(toWord(data),data.length*chrsz));}
-default:{return toBase64(core(toWord(data),data.length*chrsz));}}};this.getHMAC=function(data,key,outputType){var out=outputType||dojo.crypto.outputTypes.Base64;switch(out){case dojo.crypto.outputTypes.Hex:{return toHex(hmac(data,key));}
+default:{return toBase64(core(toWord(data),data.length*chrsz));}}
+};this.getHMAC=function(data,key,outputType){var out=outputType||dojo.crypto.outputTypes.Base64;switch(out){case dojo.crypto.outputTypes.Hex:{return toHex(hmac(data,key));}
 case dojo.crypto.outputTypes.String:{return toString(hmac(data,key));}
-default:{return toBase64(hmac(data,key));}}};}();
+default:{return toBase64(hmac(data,key));}}
+};}();

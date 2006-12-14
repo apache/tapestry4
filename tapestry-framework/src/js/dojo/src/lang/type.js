@@ -53,7 +53,8 @@ return dojo.lang.isAlien(value);case "undefined":
 return dojo.lang.isUndefined(value);case null:
 case "null":
 return (value === null);default:
-if(dojo.lang.isFunction(type)){return (value instanceof type);}else{dojo.raise("dojo.lang.isOfType() was passed an invalid type");}}}
+if(dojo.lang.isFunction(type)){return (value instanceof type);}else{dojo.raise("dojo.lang.isOfType() was passed an invalid type");}}
+}
 dojo.raise("If we get here, it means a bug was introduced above.");}
 dojo.lang.getObject=function( str){var parts=str.split("."), i=0, obj=dj_global;do{obj=obj[parts[i++]];}while(i<parts.length&&obj);return (obj!=dj_global)?obj:null;}
 dojo.lang.doesObjectExist=function( str){var parts=str.split("."), i=0, obj=dj_global;do{obj=obj[parts[i++]];}while(i<parts.length&&obj);return (obj&&obj!=dj_global);}

@@ -77,21 +77,21 @@ plotarea,plot,applyTo
 ){var area = plotarea.getArea();var group = dojo.charting.Plotters._group(plotarea);var n = data.length;var part = ((area.right-area.left)/(plot.axisX.range.upper - plot.axisX.range.lower))/4;var w = part*2;for(var i=0; i<n; i++){var high = data[i].high;var low = data[i].low;if(low > high){var t = low;low = high;high = t;}
 var x = plot.axisX.getCoord(data[i].x, plotarea, plot) - (w/2);var y = plot.axisY.getCoord(high, plotarea, plot);var h = plot.axisY.getCoord(low, plotarea, plot)-y;var bar=document.createElement("v:rect");bar.style.position="absolute";bar.style.top=y+1+"px";bar.style.left=x+"px";bar.style.width=w+"px";bar.style.height=h+"px";bar.setAttribute("fillColor", data[i].series.color);bar.setAttribute("stroked", "false");bar.style.antialias="false";var fill=document.createElement("v:fill");fill.setAttribute("opacity", "0.6");bar.appendChild(fill);if(applyTo){ applyTo(bar, data[i].src); }
 group.appendChild(bar);}
-return group;},	
+return group;},
 HighLowClose: function(
 data, 
 plotarea,plot,applyTo
 ){var area = plotarea.getArea();var group = dojo.charting.Plotters._group(plotarea);var n = data.length;var part = ((area.right-area.left)/(plot.axisX.range.upper - plot.axisX.range.lower))/4;var w = part*2;for(var i=0; i<n; i++){var high = data[i].high;var low = data[i].low;if(low > high){var t = low;low = high;high = t;}
 var c = data[i].close;var x = plot.axisX.getCoord(data[i].x, plotarea, plot) - (w/2);var y = plot.axisY.getCoord(high, plotarea, plot);var h = plot.axisY.getCoord(low, plotarea, plot)-y;var close = plot.axisY.getCoord(c, plotarea, plot);var g = document.createElement("div");var bar=document.createElement("v:rect");bar.style.position="absolute";bar.style.top=y+1+"px";bar.style.left=x+"px";bar.style.width=w+"px";bar.style.height=h+"px";bar.setAttribute("fillColor", data[i].series.color);bar.setAttribute("stroked", "false");bar.style.antialias="false";var fill=document.createElement("v:fill");fill.setAttribute("opacity", "0.6");bar.appendChild(fill);g.appendChild(bar);var line = document.createElement("v:line");line.setAttribute("strokecolor", data[i].series.color);line.setAttribute("strokeweight", "1px");line.setAttribute("from", x+"px,"+close+"px");line.setAttribute("to", (x+w+(part*2)-2)+"px,"+close+"px");var s=line.style;s.position="absolute";s.top="0px";s.left="0px";s.antialias="false";var str=document.createElement("v:stroke");str.setAttribute("opacity","0.6");line.appendChild(str);g.appendChild(line);if(applyTo){ applyTo(g, data[i].src); }
 group.appendChild(g);}
-return group;},	
+return group;},
 HighLowOpenClose: function(
 data, 
 plotarea,plot,applyTo
 ){var area = plotarea.getArea();var group = dojo.charting.Plotters._group(plotarea);var n = data.length;var part = ((area.right-area.left)/(plot.axisX.range.upper - plot.axisX.range.lower))/4;var w = part*2;for(var i=0; i<n; i++){var high = data[i].high;var low = data[i].low;if(low > high){var t = low;low = high;high = t;}
 var o = data[i].open;var c = data[i].close;var x = plot.axisX.getCoord(data[i].x, plotarea, plot) - (w/2);var y = plot.axisY.getCoord(high, plotarea, plot);var h = plot.axisY.getCoord(low, plotarea, plot)-y;var open = plot.axisY.getCoord(o, plotarea, plot);var close = plot.axisY.getCoord(c, plotarea, plot);var g = document.createElement("div");var bar=document.createElement("v:rect");bar.style.position="absolute";bar.style.top=y+1+"px";bar.style.left=x+"px";bar.style.width=w+"px";bar.style.height=h+"px";bar.setAttribute("fillColor", data[i].series.color);bar.setAttribute("stroked", "false");bar.style.antialias="false";var fill=document.createElement("v:fill");fill.setAttribute("opacity", "0.6");bar.appendChild(fill);g.appendChild(bar);var line = document.createElement("v:line");line.setAttribute("strokecolor", data[i].series.color);line.setAttribute("strokeweight", "1px");line.setAttribute("from", (x-(part*2))+"px,"+open+"px");line.setAttribute("to", (x+w-2)+"px,"+open+"px");var s=line.style;s.position="absolute";s.top="0px";s.left="0px";s.antialias="false";var str=document.createElement("v:stroke");str.setAttribute("opacity","0.6");line.appendChild(str);g.appendChild(line);var line = document.createElement("v:line");line.setAttribute("strokecolor", data[i].series.color);line.setAttribute("strokeweight", "1px");line.setAttribute("from", x+"px,"+close+"px");line.setAttribute("to", (x+w+(part*2)-2)+"px,"+close+"px");var s=line.style;s.position="absolute";s.top="0px";s.left="0px";s.antialias="false";var str=document.createElement("v:stroke");str.setAttribute("opacity","0.6");line.appendChild(str);g.appendChild(line);if(applyTo){ applyTo(g, data[i].src); }
 group.appendChild(g);}
-return group;},	
+return group;},
 Scatter: function(
 data, 
 plotarea,plot,applyTo

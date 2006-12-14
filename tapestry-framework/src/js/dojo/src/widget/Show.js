@@ -4,16 +4,19 @@ dojo.provide("dojo.widget.Show");dojo.require("dojo.lang.common");dojo.require("
 var source = this.getFragNodeRef(frag);this.sourceNode = dojo.body().appendChild(source.cloneNode(true));for(var i = 0, child; child = this.sourceNode.childNodes[i]; i++){if(child.tagName && child.getAttribute("dojotype").toLowerCase() == "showslide"){child.className = "dojoShowPrintSlide";child.innerHTML = "<h1>" + child.title + "</h1>" + child.innerHTML;}}
 this.sourceNode.className = "dojoShowPrint";this.sourceNode.style.display = "none";dojo.event.connect(document, "onclick", this, "gotoSlideByEvent");if(dojo.render.html.ie) {dojo.event.connect(document,"onkeydown",this, "gotoSlideByEvent");} else {dojo.event.connect(document,"onkeypress",this, "gotoSlideByEvent");}
 dojo.event.connect(window, "onresize", this, "resizeWindow");dojo.event.connect(this.nav, "onmousemove", this, "popUpNav");},postCreate: function(){this._slides = [];for(var i = 0, child; child = this.children[i]; i++){if(child.widgetType == "ShowSlide"){this._slides.push(child);this.option.text = child.title+" ("+(i+1)+")";this.option.parentNode.insertBefore(this.option.cloneNode(true), this.option);}}
-this.option.parentNode.removeChild(this.option);this.domNode.style.display = "block";this.resizeWindow();this.gotoSlide(0, true);dojo.addOnLoad(dojo.lang.hitch(this,function(){var th = window.location.hash;if(th.length){var parts = (""+window.location).split(this.widgetId+"_SlideNo_");if(parts.length > 1){setTimeout(dojo.lang.hitch(this, function(){this.gotoSlide(parseInt(parts[1]), true);}), 300);}}})
+this.option.parentNode.removeChild(this.option);this.domNode.style.display = "block";this.resizeWindow();this.gotoSlide(0, true);dojo.addOnLoad(dojo.lang.hitch(this,function(){var th = window.location.hash;if(th.length){var parts = (""+window.location).split(this.widgetId+"_SlideNo_");if(parts.length > 1){setTimeout(dojo.lang.hitch(this, function(){this.gotoSlide(parseInt(parts[1]), true);}), 300);}}
+})
 );},gotoSlide: function( slide, preventSetHash){if(slide == this._slide){return;}
-if(!this._slides[slide]){for(var i = 0, child; child = this._slides[i]; i++){if(child.title == slide){slide = i;break;}}}
+if(!this._slides[slide]){for(var i = 0, child; child = this._slides[i]; i++){if(child.title == slide){slide = i;break;}}
+}
 if(!this._slides[slide]){return;}
 if(this.debugPane){if(this._slides[slide].debug){this.debugPane.show();}else{this.debugPane.hide();}}
 if(this._slide != -1){while(this._slides[this._slide].previousAction()){}}
 if(!preventSetHash){window.location.href = "#"+this.widgetId+"_SlideNo_"+slide;}
 if(this._slides[this._slide]){this._slides[this._slide].hide();}
 this._slide = slide;this.select.selectedIndex = slide;var cn = this.contentNode;while(cn.firstChild){ cn.removeChild(cn.firstChild); }
-cn.appendChild(this._slides[slide].domNode);this._slides[slide].show();},gotoSlideByEvent: function( event){var node = event.target;var type = event.type;if(type == "click"){if(node.tagName == "OPTION" && node.parentNode == this.select){this.gotoSlide(node.index);}else if(node == this.select){this.gotoSlide(node.selectedIndex);}else{this.nextSlide(event);}}else if (type=="keydown" || type=="keypress") {var key = event.keyCode;var ch = event.charCode;if(key == 63234 || key == 37){this.previousSlide(event);}else if(key == 63235 || key == 39 || ch == 32){this.nextSlide(event);}}},nextSlide: function( event){if(!this.stopEvent(event)){return false;}
+cn.appendChild(this._slides[slide].domNode);this._slides[slide].show();},gotoSlideByEvent: function( event){var node = event.target;var type = event.type;if(type == "click"){if(node.tagName == "OPTION" && node.parentNode == this.select){this.gotoSlide(node.index);}else if(node == this.select){this.gotoSlide(node.selectedIndex);}else{this.nextSlide(event);}}else if (type=="keydown" || type=="keypress") {var key = event.keyCode;var ch = event.charCode;if(key == 63234 || key == 37){this.previousSlide(event);}else if(key == 63235 || key == 39 || ch == 32){this.nextSlide(event);}}
+},nextSlide: function( event){if(!this.stopEvent(event)){return false;}
 if(!this._slides[this._slide].nextAction(event)){if((this._slide + 1) != this._slides.length){this.gotoSlide(this._slide + 1);return true;}
 return false;}},previousSlide: function( event){if(!this.stopEvent(event)){return false;}
 if(!this._slides[this._slide].previousAction(event)){if((this._slide - 1) != -1){this.gotoSlide(this._slide - 1);return true;}
@@ -28,15 +31,18 @@ if(window.event){ev.returnValue = false;ev.cancelBubble = true;}else{ev.preventD
 return true;},popUpNav: function(){if(!this.inNav){dojo.lfx.propertyAnimation(this.nav, {"height": { start: 5, end: 30 }}, 250).play();}
 clearTimeout(this.inNav);this.inNav = setTimeout(dojo.lang.hitch(this, "hideNav"), 2000);},hideNav: function(){clearTimeout(this.inNav);this.inNav = false;dojo.lfx.propertyAnimation(this.nav, {"height": { start: 30, end: 5 }}, 250).play();},resizeWindow: function( ev){dojo.body().style.height = "auto";var h = Math.max(
 document.documentElement.scrollHeight || dojo.body().scrollHeight,dojo.html.getViewport().height);dojo.body().style.height = h + "px";}});dojo.widget.defineWidget(
-"dojo.widget.ShowAction",dojo.widget.HtmlWidget,{on: "",action: "fade",duration: 350,from: "",to: "",auto: "false",postMixInProperties: function(){if(dojo.render.html.opera){this.action = this.action.split("/").pop();}}});dojo.widget.defineWidget(
+"dojo.widget.ShowAction",dojo.widget.HtmlWidget,{on: "",action: "fade",duration: 350,from: "",to: "",auto: "false",postMixInProperties: function(){if(dojo.render.html.opera){this.action = this.action.split("/").pop();}}
+});dojo.widget.defineWidget(
 "dojo.widget.ShowSlide",dojo.widget.HtmlWidget,{title: "",_action: -1,isContainer: true,_components: {},_actions: [],gotoAction: function( action){this._action = action;},_nextAction: function( event){if((this._action + 1) != this._actions.length){++this._action;return true;}
 return false;},_previousAction: function( event){if((this._action - 1) != -1){--this._action;return true;}
 return false;},htmlTitle: null,debug: false,noClick: false,templatePath: dojo.uri.dojoUri("src/widget/templates/ShowSlide.html"),templateCssPath: dojo.uri.dojoUri("src/widget/templates/ShowSlide.css"),postCreate: function(){this.htmlTitle.innerHTML = this.title;var actions = this.getChildrenOfType("ShowAction", false);var atypes = {};dojo.lang.forEach(actions, function(act){ atypes[act.on] = true; });this._components = {};var cn = this.containerNode;var nodes = dojo.render.html.ie ? cn.all : cn.getElementsByTagName('*');dojo.lang.forEach(nodes, function(node){var as = node.getAttribute("as");if(as){if(!this._components[as]){this._components[as] = [];}
-this._components[as].push(node);if(!atypes[as]){var tmpAction = dojo.widget.createWidget("ShowAction", { on: as });this.addChild(tmpAction);atypes[as] = true;}}}, this);this._actions = [];actions = this.getChildrenOfType("ShowAction", false);dojo.lang.forEach(actions, function(child){this._actions.push(child);var components = this._components[child.on];for(var j = 0, component; component = components[j]; j++){if(child["action"] && (
+this._components[as].push(node);if(!atypes[as]){var tmpAction = dojo.widget.createWidget("ShowAction", { on: as });this.addChild(tmpAction);atypes[as] = true;}}
+}, this);this._actions = [];actions = this.getChildrenOfType("ShowAction", false);dojo.lang.forEach(actions, function(child){this._actions.push(child);var components = this._components[child.on];for(var j = 0, component; component = components[j]; j++){if(child["action"] && (
 (child.action != "remove")&&
 (child.action != "fadeout")&&
 (child.action != "wipeout")
-) ){this.hideComponent(component);}}}, this);},previousAction: function( event){if(!this.parent.stopEvent(event)){return false;}
+) ){this.hideComponent(component);}}
+}, this);},previousAction: function( event){if(!this.parent.stopEvent(event)){return false;}
 var action = this._actions[this._action];if(!action){return false;}
 var on = action.on;while(action.on == on){var components = this._components[on];for(var i = 0, component; component = components[i]; i++){if(
 (action.action == "remove")||
@@ -51,8 +57,10 @@ return true;},hideComponent: function( component){component.style.visibility = "
 if(!this._nextAction(this)){return false;}
 var action = this._actions[this._action];if(!action){return false;}
 var tmpAction = action["action"];var components = this._components[action.on];for(var i = 0, component; component = components[i]; i++){if(tmpAction){var duration = action.duration || 1000;if((tmpAction == "fade")||(tmpAction == "fadeIn")){dojo.html.setOpacity(component, 0);dojo.lfx.html.fadeShow(component, duration).play(true);}else if(tmpAction == "fadeout"){dojo.lfx.html.fadeHide(component, duration).play(true);}else if(tmpAction == "fly"){var width = dojo.html.getMarginBox(component).width;var position = dojo.html.getAbsolutePosition(component);component.style.position = "relative";component.style.left = -(width + position.x) + "px";dojo.lfx.html.slideBy(component, { top: 0, left: (width + position.x)}, duration, -1, this.callWith).play(true);}else if((tmpAction == "wipe")||(tmpAction == "wipein")){dojo.lfx.html.wipeIn(component, duration).play();}else if(tmpAction == "wipeout"){dojo.lfx.html.wipeOut(component, duration).play();}else if(tmpAction == "color"){var from = new dojo.gfx.color.Color(action.from).toRgb();var to = new dojo.gfx.color.Color(action.to).toRgb();var anim = new dojo.animation.Animation(new dojo.math.curves.Line(from, to), duration, 0);var node = component;dojo.event.connect(anim, "onAnimate", function(e) {node.style.color = "rgb(" + e.coordsAsInts().join(",") + ")";});anim.play(true);}else if(tmpAction == "bgcolor"){dojo.lfx.html.unhighlight(component, action.to, duration).play();}else if(tmpAction == "remove"){component.style.display = "none";}
-if(tmpAction == "hide"){component.style.visibility = "hidden";}else{component.style.visibility = "visible";}}}
+if(tmpAction == "hide"){component.style.visibility = "hidden";}else{component.style.visibility = "visible";}}
+}
 action = this._actions[this._action + 1];if(action && action.auto == "true"){this.nextAction();}
 return true;},callWith: function( node){if(!node){ return; }
 if(dojo.lang.isArray(node)){dojo.lang.forEach(node, arguments.callee);return;}
-var parent = node.parentNode;if((parent)&&(parent.tagName.toLowerCase() == "li")){parent.style.listStyleType = parent.oldType;}}});
+var parent = node.parentNode;if((parent)&&(parent.tagName.toLowerCase() == "li")){parent.style.listStyleType = parent.oldType;}}
+});

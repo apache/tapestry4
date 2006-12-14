@@ -20,7 +20,8 @@ if(xsltUri == null || xsltUri == undefined){dojo.raise("You must pass the URI St
 var xsltDocument = null;var xsltProcessor = null;if(IS_IE){xsltDocument = new ActiveXObject(getActiveXImpl(ACTIVEX_FT_DOMS));xsltDocument.async = false;}else{xsltProcessor = new XSLTProcessor();xsltDocument = document.implementation.createDocument("", "", null);xsltDocument.addEventListener("load", onXslLoad, false);}
 xsltDocument.load(xsltUri);if(IS_IE){var xslt = new ActiveXObject(getActiveXImpl(ACTIVEX_TEMPLATES));xslt.stylesheet = xsltDocument;  
 xsltProcessor = xslt.createProcessor();}
-function onXslLoad(){xsltProcessor.importStylesheet(xsltDocument); }
+function onXslLoad(){xsltProcessor.importStylesheet(xsltDocument); 
+}
 function getResultDom(xmlDoc, params){if(IS_IE){addIeParams(params);var result = getIeResultDom(xmlDoc);removeIeParams(params);   
 return result;}else{return getMozillaResultDom(xmlDoc, params);}}
 function addIeParams(params){if(!params){ return; }
@@ -36,16 +37,19 @@ function addMozillaParams(params){if(!params){ return; }
 for(var i=0; i<params.length; i++){xsltProcessor.setParameter(null, params[i][0], params[i][1]);}}
 function getMozillaResultDom(xmlDoc, params){addMozillaParams(params);var resultDoc = xsltProcessor.transformToDocument(xmlDoc);xsltProcessor.clearParameters();return resultDoc;}
 function getMozillaResultStr(xmlDoc, params, parentDoc){addMozillaParams(params);var resultDoc = xsltProcessor.transformToFragment(xmlDoc, parentDoc);var serializer = new XMLSerializer();xsltProcessor.clearParameters();return serializer.serializeToString(resultDoc);}
-this.getResultString = function(	xmlDoc, 
+this.getResultString = function(xmlDoc, 
 params, 
-parentDoc){var content = null;if(IS_IE){addIeParams(params);content = getIeResultStr(xmlDoc, params);removeIeParams(params);  }else{content = getMozillaResultStr(xmlDoc, params, parentDoc);} 
-return content;};this.transformToContentPane = function(	xmlDoc,params, 
+parentDoc){var content = null;if(IS_IE){addIeParams(params);content = getIeResultStr(xmlDoc, params);removeIeParams(params);  
+}else{content = getMozillaResultStr(xmlDoc, params, parentDoc);} 
+return content;};this.transformToContentPane = function(xmlDoc,params, 
 contentPane, 
-parentDoc){var content = this.getResultString(xmlDoc, params, parentDoc);contentPane.setContent(content);};this.transformToRegion = function(	xmlDoc, 
+parentDoc){var content = this.getResultString(xmlDoc, params, parentDoc);contentPane.setContent(content);};this.transformToRegion = function(xmlDoc, 
 params, 
 region, 
-parentDoc){try{var content = this.getResultString(xmlDoc, params, parentDoc);region.innerHTML = content;}catch (e){dojo.raise(e.message + "\n\n xsltUri: " + xsltUri)}};this.transformToDocument = function(	 xmlDoc, 
+parentDoc){try{var content = this.getResultString(xmlDoc, params, parentDoc);region.innerHTML = content;}catch (e){dojo.raise(e.message + "\n\n xsltUri: " + xsltUri)
+}};this.transformToDocument = function( xmlDoc, 
 params){return getResultDom(xmlDoc, params);}
-this.transformToWindow = function(	 xmlDoc,params, 
+this.transformToWindow = function( xmlDoc,params, 
 windowDoc, 
-parentDoc){try{windowDoc.open();windowDoc.write(this.getResultString(xmlDoc, params, parentDoc));windowDoc.close();}catch(e){dojo.raise(e.message + "\n\n xsltUri: " + xsltUri)}};};
+parentDoc){try{windowDoc.open();windowDoc.write(this.getResultString(xmlDoc, params, parentDoc));windowDoc.close();}catch(e){dojo.raise(e.message + "\n\n xsltUri: " + xsltUri)
+}};};

@@ -6,4 +6,6 @@ dojo.lang.assertType = function( value,  type,  keywordParameters){if(!dojo.lang
 dojo.lang.assert(false, dojo.lang.assertType._errorMessage);}}
 dojo.lang.assertValidKeywords = function( object,  expectedProperties,  message){var key;if(!message){if(!dojo.lang.assertValidKeywords._errorMessage){dojo.lang.assertValidKeywords._errorMessage = "In dojo.lang.assertValidKeywords(), found invalid keyword:";}
 message = dojo.lang.assertValidKeywords._errorMessage;}
-if(dojo.lang.isArray(expectedProperties)){for(key in object){if(!dojo.lang.inArray(expectedProperties, key)){dojo.lang.assert(false, message + " " + key);}}}else{for(key in object){if(!(key in expectedProperties)){dojo.lang.assert(false, message + " " + key);}}}}
+if(dojo.lang.isArray(expectedProperties)){for(key in object){if(!dojo.lang.inArray(expectedProperties, key)){dojo.lang.assert(false, message + " " + key);}}
+}else{for(key in object){if(!(key in expectedProperties)){dojo.lang.assert(false, message + " " + key);}}
+}}

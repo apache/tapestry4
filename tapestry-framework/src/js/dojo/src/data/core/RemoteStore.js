@@ -1,7 +1,8 @@
 
 dojo.provide("dojo.data.core.RemoteStore");dojo.require("dojo.data.core.Read");dojo.require("dojo.data.core.Write");dojo.require("dojo.data.core.Result");dojo.require("dojo.experimental");dojo.require("dojo.Deferred");dojo.require("dojo.lang.declare");dojo.require("dojo.json");dojo.require("dojo.io.*");dojo.experimental("dojo.data.core.RemoteStore");dojo.lang.declare("dojo.data.core.RemoteStore", [dojo.data.core.Read, dojo.data.core.Write], {_datatypeMap: {},_jsonRegistry: dojo.json.jsonRegistry,initializer: function( kwArgs) {if (!kwArgs) {kwArgs = {};}
 this._serverQueryUrl = kwArgs.queryUrl || "";this._serverSaveUrl = kwArgs.saveUrl || "";this._deleted = {};this._changed = {};this._added = {};this._results = {};this._data = {};this._numItems = 0;},_setupQueryRequest: function( result,  requestKw) {result.query = result.query || "";requestKw.url = this._serverQueryUrl + encodeURIComponent(result.query);requestKw.method = 'get';requestKw.mimetype = "text/json";},_resultToQueryMetadata: function( serverResponseData) {return serverResponseData;},_resultToQueryData: function( serverResponseData) {return serverResponseData.data;},_remoteToLocalValues: function( attributes) {for (var key in attributes) {var values = attributes[key];for (var i = 0; i < values.length; i++) {var value = values[i];var type = value.datatype || value.type;if (type) {var localValue = value.value;if (this._datatypeMap[type])
-localValue = this._datatypeMap[type](value);values[i] = localValue;}}}
+localValue = this._datatypeMap[type](value);values[i] = localValue;}}
+}
 return attributes;},_queryToQueryKey: function(query) {if (typeof query == "string")
 return query;else
 return dojo.json.serialize(query);},_assertIsItem: function( item) {if (!this.isItem(item)) {throw new Error("dojo.data.RemoteStore: a function was passed an item argument that was not an item");}},get: function( item,  attribute,  defaultValue) {var valueArray = this.getValues(item, attribute);if (valueArray.length == 0) {return defaultValue;}
@@ -18,11 +19,14 @@ return false;},find: function( keywordArgs) {var result = null;if (keywordArgs i
 var query = result.query;var self = this;var bindfunc = function(type, data, evt) {var scope = result.scope || dj_global;if(type == "load") {result.resultMetadata = self._resultToQueryMetadata(data);var dataDict = self._resultToQueryData(data);if (result.onbegin) {result.onbegin.call(scope, result);}
 var count = 0;var resultData = [];var newItemCount = 0;for (var key in dataDict) {if (result._aborted)  {break;}
 if (!self._deleted[key]) {var values = dataDict[key];var attributeDict = self._remoteToLocalValues(values);var existingValue = self._data[key];var refCount = 1;if (existingValue) {refCount = ++existingValue[1];} else {newItemCount++;}
-self._data[key] = [ attributeDict, refCount];resultData.push(key);count++;if (result.onnext) {result.onnext.call(scope, key, result);}}}
+self._data[key] = [ attributeDict, refCount];resultData.push(key);count++;if (result.onnext) {result.onnext.call(scope, key, result);}}
+}
 self._results[self._queryToQueryKey(query)] = resultData;self._numItems += newItemCount;result.length = count;if (result.saveResult) {result.items = resultData;}
-if (!result._aborted && result.oncompleted) {result.oncompleted.call(scope, result);}} else if(type == "error" || type == 'timeout') {dojo.debug("find error: " + dojo.json.serialize(data));if (result.onerror) {result.onerror.call(scope, data);}}};var bindKw = keywordArgs.bindArgs || {};bindKw.sync = result.sync;bindKw.handle = bindfunc;this._setupQueryRequest(result, bindKw);var request = dojo.io.bind(bindKw);result._abortFunc = request.abort;return result;},getIdentity: function(item) {if (!this.isItem(item)) {return null;}
+if (!result._aborted && result.oncompleted) {result.oncompleted.call(scope, result);}} else if(type == "error" || type == 'timeout') {dojo.debug("find error: " + dojo.json.serialize(data));if (result.onerror) {result.onerror.call(scope, data);}}
+};var bindKw = keywordArgs.bindArgs || {};bindKw.sync = result.sync;bindKw.handle = bindfunc;this._setupQueryRequest(result, bindKw);var request = dojo.io.bind(bindKw);result._abortFunc = request.abort;return result;},getIdentity: function(item) {if (!this.isItem(item)) {return null;}
 return (item.id ? item.id : item);},newItem: function( attributes,  keywordArgs) {var itemIdentity = keywordArgs['identity'];if (this._deleted[itemIdentity]) {delete this._deleted[itemIdentity];} else {this._added[itemIdentity] = 1;}
-if (attributes) {for (var attribute in attributes) {var valueOrArrayOfValues = attributes[attribute];if (dojo.lang.isArray(valueOrArrayOfValues)) {this.setValues(itemIdentity, attribute, valueOrArrayOfValues);} else {this.set(itemIdentity, attribute, valueOrArrayOfValues);}}}
+if (attributes) {for (var attribute in attributes) {var valueOrArrayOfValues = attributes[attribute];if (dojo.lang.isArray(valueOrArrayOfValues)) {this.setValues(itemIdentity, attribute, valueOrArrayOfValues);} else {this.set(itemIdentity, attribute, valueOrArrayOfValues);}}
+}
 return { id: itemIdentity };},deleteItem: function( item) {var identity = this.getIdentity(item);if (!identity) {return false;}
 if (this._added[identity]) {delete this._added[identity];} else {this._deleted[identity] = 1;}
 if (this._changed[identity]) {delete this._changed[identity];}

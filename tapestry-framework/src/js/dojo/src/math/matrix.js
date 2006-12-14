@@ -1,6 +1,7 @@
 
 dojo.provide("dojo.math.matrix");dojo.math.matrix.iDF = 0;dojo.math.matrix.ALMOST_ZERO = 1e-10;dojo.math.matrix.multiply = function(a, b){var ay = a.length;var ax = a[0].length;var by = b.length;var bx = b[0].length;if (ax != by){dojo.debug("Can't multiply matricies of sizes "+ax+','+ay+' and '+bx+','+by);return [[0]];}
-var c = [];for(var k=0; k<ay; k++){c[k] = [];for(var i=0; i<bx; i++){c[k][i] = 0;for(var m=0; m<ax; m++){c[k][i] += a[k][m]*b[m][i];}}}
+var c = [];for(var k=0; k<ay; k++){c[k] = [];for(var i=0; i<bx; i++){c[k][i] = 0;for(var m=0; m<ax; m++){c[k][i] += a[k][m]*b[m][i];}}
+}
 return c;}
 dojo.math.matrix.product = function() {if (arguments.length==0) {dojo.debug ("can't multiply 0 matrices!");return 1;}
 var result = arguments[0];for (var i=1; i<arguments.length; i++){result = dojo.math.matrix.multiply(result,arguments[i]);}
@@ -9,7 +10,8 @@ dojo.math.matrix.sum = function() {if (arguments.length==0) {dojo.debug ("can't 
 var result = dojo.math.matrix.copy(arguments[0]);var rows = result.length;if (rows==0) {dojo.debug ("can't deal with matrices of 0 rows!");return 0;}
 var cols = result[0].length;if (cols==0) {dojo.debug ("can't deal with matrices of 0 cols!");return 0;}
 for (var i=1; i<arguments.length; ++i) {var arg = arguments[i];if (arg.length!=rows || arg[0].length!=cols) {dojo.debug ("can't add matrices of different dimensions: first dimensions were " + rows + "x" + cols + ", current dimensions are "+arg.length + "x" + arg[0].length);return 0;}
-for (var r=0; r<rows; r++){for (var c=0; c<cols; c++){result[r][c] += arg[r][c];}}}
+for (var r=0; r<rows; r++){for (var c=0; c<cols; c++){result[r][c] += arg[r][c];}}
+}
 return result;}
 dojo.math.matrix.inverse = function(a){if (a.length==1 && a[0].length==1){return [[ 1 / a[0][0] ]];}
 var tms = a.length;var m = dojo.math.matrix.create(tms, tms);var mm = dojo.math.matrix.adjoint(a);var det = dojo.math.matrix.determinant(a);var dd = 0;if(det == 0){dojo.debug("Determinant Equals 0, Not Invertible.");return [[0]];}else{dd = 1 / det;}
@@ -24,7 +26,8 @@ v = 1;var stop_loop = 0;while ((m[col][col] == 0) && !stop_loop) {if (col + v >=
 v++;dojo.math.matrix.iDF *= -1;}}
 for (var row = col + 1; row < tms; row++) {if (typeof m[row][col] != 'number'){dojo.debug("non-numeric entry found in a numeric matrix: m["+row+"]["+col+"]="+m[row][col]);}
 if (typeof m[col][row] != 'number'){dojo.debug("non-numeric entry found in a numeric matrix: m["+col+"]["+row+"]="+m[col][row]);}
-if (m[col][col] != 0) {var f1 = (-1) * m[row][col] / m[col][col];for (var i = col; i < tms; i++) {m[row][i] = f1 * m[col][i] + m[row][i];}}}}
+if (m[col][col] != 0) {var f1 = (-1) * m[row][col] / m[col][col];for (var i = col; i < tms; i++) {m[row][i] = f1 * m[col][i] + m[row][i];}}
+}}
 return m;}
 dojo.math.matrix.create = function(a, b, value){if(!value){value = 0;}
 var m = [];for(var i=0; i<b; i++){m[i] = [];for(var j=0; j<a; j++){m[i][j] = value;}}

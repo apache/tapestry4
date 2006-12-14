@@ -24,11 +24,13 @@ this.checkNodeValue(node);this.decorateInput(node);}
 this.nodeKeyPressed = function(evt){if(!evt){return;}
 var node=evt.target;if (evt.keyCode == evt.KEY_ESCAPE) {this.checkNodeValue(node);} else if (this.processing[node]){this.cleanupBlurProcess(node);return;} else {return;}
 node.blur();}
-this.checkNodeValue = function(node){if (!node.getAttribute("prevesc")){var value=node.value;var title=node.getAttribute("title");if (value && value.length > 0 && !equals(value,title)){node.setAttribute("prevesc","1");node.value="";this.processing[node]=true;node.blur();}}}
+this.checkNodeValue = function(node){if (!node.getAttribute("prevesc")){var value=node.value;var title=node.getAttribute("title");if (value && value.length > 0 && !equals(value,title)){node.setAttribute("prevesc","1");node.value="";this.processing[node]=true;node.blur();}}
+}
 this.cleanupBlurProcess = function(node){delete this.processing[node];setTimeout(function(){node.focus();}, 10);}
 this.clearDecorations = function(evt){if(!evt){return;}
 var form=evt.target;if(!form) { return; }
 var elms=form.getElementsByTagName("input");for(var i=0;i<elms.length;i++){if (dj_undef("value", elms[i])) {continue;}
 var title=elms[i].getAttribute("title");if (!title || title.length <= 0) { continue; }
 var value=elms[i].value;if (equals(value,title)){elms[i].value="";}
-dojo.event.browser.removeListener(elms[i], "onfocus", dojo.lang.hitch(this, this.nodeFocused));dojo.event.browser.removeListener(elms[i], "onblur", dojo.lang.hitch(this, this.nodeBlurred));dojo.event.browser.removeListener(elms[i], "onkeyup", dojo.lang.hitch(this, this.nodeBlurred));}}}
+dojo.event.browser.removeListener(elms[i], "onfocus", dojo.lang.hitch(this, this.nodeFocused));dojo.event.browser.removeListener(elms[i], "onblur", dojo.lang.hitch(this, this.nodeBlurred));dojo.event.browser.removeListener(elms[i], "onkeyup", dojo.lang.hitch(this, this.nodeBlurred));}}
+}
