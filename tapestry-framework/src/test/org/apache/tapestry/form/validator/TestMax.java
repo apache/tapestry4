@@ -16,6 +16,7 @@ package org.apache.tapestry.form.validator;
 
 import static org.easymock.EasyMock.expect;
 
+import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
 import org.apache.tapestry.IMarkupWriter;
@@ -110,6 +111,7 @@ public class TestMax extends BaseValidatorTestCase
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
         
         Locale locale = Locale.GERMAN;
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
         
         expect(context.getLocale()).andReturn(locale);
         
@@ -126,7 +128,9 @@ public class TestMax extends BaseValidatorTestCase
         
         assertEquals(json.toString(), 
                 "{\"constraints\":{\"myfield\":" +
-                "[[dojo.validate.isInRange,{max:20.0,decimal:\",\",separator:\".\"}]]}," +
+                "[[dojo.validate.isInRange,{max:20.0,decimal:\",\",separator:\"" 
+                + symbols.getGroupingSeparator() 
+                + "\"}]]}," +
                 "\"myfield\":{\"constraints\":[\"default message\"]}}");
     }
     
@@ -142,6 +146,7 @@ public class TestMax extends BaseValidatorTestCase
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
         
         Locale locale = Locale.JAPAN;
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
         
         expect(context.getLocale()).andReturn(locale);
         
@@ -163,7 +168,9 @@ public class TestMax extends BaseValidatorTestCase
         
         assertEquals(json.toString(),
                 "{\"constraints\":{\"myfield\":[[dojo.validate.isInRange," +
-                "{max:20.0,decimal:\".\",separator:\",\"}]]}," +
+                "{max:20.0,decimal:\".\",separator:\"" 
+                + symbols.getGroupingSeparator() 
+                + "\"}]]}," +
                 "\"myfield\":{\"constraints\":[\"custom\\\\message\"]}}");
     }
 
