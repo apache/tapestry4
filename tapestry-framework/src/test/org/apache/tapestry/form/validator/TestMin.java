@@ -16,6 +16,7 @@ package org.apache.tapestry.form.validator;
 
 import static org.easymock.EasyMock.expect;
 
+import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
 import org.apache.tapestry.IMarkupWriter;
@@ -109,6 +110,7 @@ public class TestMin extends BaseValidatorTestCase
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
         
         Locale locale = Locale.FRANCE;
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
         
         expect(context.getLocale()).andReturn(locale);
         
@@ -125,7 +127,9 @@ public class TestMin extends BaseValidatorTestCase
         
         assertEquals(json.toString(), 
                 "{\"constraints\":{\"myfield\":[[dojo.validate.isInRange," +
-                "{min:20.0,decimal:\",\",separator:\" \"}]]}," +
+                "{min:20.0,decimal:\",\",separator:\""
+                + symbols.getGroupingSeparator()
+                + "\"}]]}," +
                 "\"myfield\":{\"constraints\":[\"default message\"]}}");
     }
     
@@ -141,6 +145,7 @@ public class TestMin extends BaseValidatorTestCase
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
         
         Locale locale = Locale.FRANCE;
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
         
         expect(context.getLocale()).andReturn(locale);
         
@@ -162,7 +167,9 @@ public class TestMin extends BaseValidatorTestCase
         
         assertEquals(json.toString(),
                 "{\"constraints\":{\"myfield\":[[dojo.validate.isInRange," +
-                "{min:20.0,decimal:\",\",separator:\" \"}]]},\"myfield\":" +
+                "{min:20.0,decimal:\",\",separator:\""
+                + symbols.getGroupingSeparator()
+                + "\"}]]},\"myfield\":" +
                 "{\"constraints\":[\"custom\\\\message\"]}}");
     }
     
