@@ -31,16 +31,13 @@ import org.apache.tapestry.services.ResponseRenderer;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class StaleLinkExceptionPresenterImpl implements
-        StaleLinkExceptionPresenter
+public class StaleLinkExceptionPresenterImpl implements StaleLinkExceptionPresenter
 {
-
     private ResponseRenderer _responseRenderer;
-
+    
     private String _pageName;
-
-    public void presentStaleLinkException(IRequestCycle cycle,
-            StaleLinkException cause)
+    
+    public void presentStaleLinkException(IRequestCycle cycle, StaleLinkException cause)
         throws IOException
     {
         IPage exceptionPage = cycle.getPage(_pageName);

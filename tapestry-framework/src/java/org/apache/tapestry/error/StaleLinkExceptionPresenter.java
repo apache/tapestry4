@@ -37,7 +37,6 @@ public interface StaleLinkExceptionPresenter
      * @param cause
      *            the exception that was caught
      */
-    void presentStaleLinkException(IRequestCycle cycle,
-            StaleLinkException cause)
+    void presentStaleLinkException(IRequestCycle cycle, StaleLinkException cause)
         throws IOException;
 }
