@@ -16,9 +16,15 @@ package org.apache.tapestry.annotations;
 
 import java.lang.reflect.Method;
 
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Location;
+import org.apache.hivemind.Resource;
+import org.apache.hivemind.util.ClasspathResource;
 import org.apache.tapestry.enhance.EnhancementOperation;
+import org.apache.tapestry.enhance.EnhancementWorker;
 import org.apache.tapestry.enhance.InjectAssetWorker;
+import org.apache.tapestry.spec.IAssetSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
@@ -29,10 +35,12 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @see org.apache.tapestry.annotations.InjectAsset
  * @see org.apache.tapestry.enhance.InjectAssetWorker
  */
-public class InjectAssetAnnotationWorker implements MethodAnnotationEnhancementWorker
+public class InjectAssetAnnotationWorker implements EnhancementWorker
 {
     InjectAssetWorker _delegate;
-
+    
+    private ClassResolver _classResolver;
+    
     InjectAssetAnnotationWorker(InjectAssetWorker delegate)
     {
         _delegate = delegate;
@@ -42,15 +50,48 @@ public class InjectAssetAnnotationWorker implements MethodAnnotationEnhancementW
     {
         this(new InjectAssetWorker());
     }
-
-    public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Method method, Location location)
+    
+    public void performEnhancement(EnhancementOperation op, IComponentSpecification spec)
+    {
+        Class clazz = op.getBaseClass();
+        
+        Resource classResource = newClassResource(clazz);
+        
+        for (Method m : clazz.getMethods())
+        {
+            if (m.getAnnotation(InjectAsset.class) != null) {
+                
+                performEnhancement(op, spec, m, 
+                        AnnotationUtils.buildLocationForAnnotation(
+                        m,
+                        m.getAnnotation(InjectAsset.class),
+                        classResource));
+            }
+        }
+    }
+    
+    private ClasspathResource newClassResource(Class clazz)
+    {
+        return new ClasspathResource(_classResolver, clazz.getName().replace('.', '/'));
+    }
+    
+    public void performEnhancement(EnhancementOperation op, IComponentSpecification spec, Method method, Location location)
     {
         InjectAsset as = method.getAnnotation(InjectAsset.class);
-
+        
+        IAssetSpecification asset = spec.getAsset(as.value());
+        if (asset == null) {
+            
+            throw new ApplicationRuntimeException(AnnotationMessages.unknownAsset(as.value(), location));
+        }
+        
         String propertyName = AnnotationUtils.getPropertyName(method);
-
+        
         _delegate.injectAsset(op, as.value(), propertyName, location);
     }
 
+    public void setClassResolver(ClassResolver classResolver)
+    {
+        _classResolver = classResolver;
+    }
 }

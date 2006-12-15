@@ -66,7 +66,10 @@ public abstract class AnnotatedPage extends BasePage
 
     @InjectAsset("stylesheet")
     public abstract IAsset getStylesheetAsset();
-
+    
+    @InjectAsset("homageDeFred")
+    public abstract IAsset getUnknownAsset();
+    
     @InjectComponent("fred")
     public abstract TextField getFredField();
 

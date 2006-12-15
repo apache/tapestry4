@@ -17,6 +17,7 @@ package org.apache.tapestry.annotations;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
+import org.apache.hivemind.Location;
 import org.apache.hivemind.impl.MessageFormatter;
 import org.apache.hivemind.service.ClassFabUtils;
 
@@ -122,4 +123,9 @@ final class AnnotationMessages
     {
         return _formatter.format("both-type-and-copy-of", id);
     }  
+    
+    static String unknownAsset(String name, Location l)
+    {
+        return _formatter.format("missing-asset-property", name, l);
+    }
 }
