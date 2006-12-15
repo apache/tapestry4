@@ -59,11 +59,11 @@ public class ComponentAnnotationWorker implements MethodAnnotationEnhancementWor
             if (type.equals(""))
             {
                 Class retTypeClazz = method.getReturnType();
-                type = retTypeClazz.getSimpleName();
+                type = resolveComponentType(retTypeClazz);
             }
             copyOf = null;
-        }        
-
+        }
+        
         IContainedComponent cc = new ContainedComponent();
 
         cc.setInheritInformalParameters(component.inheritInformalParameters());
@@ -91,6 +91,11 @@ public class ComponentAnnotationWorker implements MethodAnnotationEnhancementWor
                 AnnotationUtils.copyBindings(source, cc);
         }
     }
+    
+    protected String resolveComponentType(Class retTypeClass)
+    {
+        return retTypeClass.getSimpleName();
+    }
 
     void addBinding(IContainedComponent component, String binding, Location location)
     {
@@ -113,7 +118,7 @@ public class ComponentAnnotationWorker implements MethodAnnotationEnhancementWor
         component.setBinding(name, bs);
     }    
 
-    private void invalidBinding(String binding)
+    protected void invalidBinding(String binding)
     {
         throw new ApplicationRuntimeException(AnnotationMessages.bindingWrongFormat(binding));
     }

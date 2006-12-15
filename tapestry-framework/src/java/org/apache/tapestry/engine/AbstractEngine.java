@@ -360,8 +360,7 @@ public abstract class AbstractEngine implements IEngine
     protected void handleStaleLinkException(IRequestCycle cycle, StaleLinkException exception)
             throws IOException
     {
-        _infrastructure.getStaleLinkExceptionPresenter()
-                .presentStaleLinkException(cycle, exception);
+        _infrastructure.getStaleLinkExceptionPresenter().presentStaleLinkException(cycle, exception);
     }
 
     /**
@@ -380,9 +379,7 @@ public abstract class AbstractEngine implements IEngine
     protected void handleStaleSessionException(IRequestCycle cycle, StaleSessionException exception)
             throws IOException
     {
-        _infrastructure.getStaleSessionExceptionPresenter().presentStaleSessionException(
-                cycle,
-                exception);
+        _infrastructure.getStaleSessionExceptionPresenter().presentStaleSessionException(cycle, exception);
     }
 
     /**

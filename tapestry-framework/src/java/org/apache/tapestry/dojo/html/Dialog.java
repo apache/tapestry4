@@ -73,7 +73,7 @@ public abstract class Dialog extends AbstractWidget
             Map parms = new HashMap();
             parms.put("component", this);
             parms.put("props", json.toString());
-
+            
             getScript().execute(this, cycle, TapestryUtils.getPageRenderSupport(cycle, this), parms);
         }
     }

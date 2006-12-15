@@ -36,7 +36,6 @@ public interface StaleSessionExceptionPresenter
      * @param cause
      *            the exception that was caught
      */
-    void presentStaleSessionException(IRequestCycle cycle,
-            StaleSessionException cause)
+    void presentStaleSessionException(IRequestCycle cycle, StaleSessionException cause)
         throws IOException;
 }
