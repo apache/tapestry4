@@ -48,10 +48,11 @@
   <!-- Only contribute when in JDK 1.5 and java.lang.Annotation exists -->
   
   <contribution configuration-id="tapestry.enhance.EnhancementWorkers" if="class java.lang.annotation.Annotation">    
-    <!-- Needs to come very much first, because some enhancements modify
+    <!-- Needs to come first because some enhancements modify
          the component specification, affecting what occurs in later commands. -->
     <command id="annotation-worker" object="service:AnnotationEnhancementWorker" before="*"/>
     <command id="component-housekeeping-worker" object="service:ComponentHousekeepingWorker" after="annotation-worker"/>
+    <command id="inject-asset-annotation" object="service:InjectAssetAnnotationWorker" after="tapestry.enhance.inject-asset"/>
   </contribution>
   
   <configuration-point id="ClassWorkers">
@@ -125,7 +126,6 @@
          
     <worker annotation="InjectState" object="instance:InjectStateAnnotationWorker"/>
     <worker annotation="InjectStateFlag" object="instance:InjectStateFlagAnnotationWorker"/>
-    <worker annotation="InjectAsset" object="instance:InjectAssetAnnotationWorker"/>
     <worker annotation="Persist" object="instance:PersistAnnotationWorker"/>
     <worker annotation="Bean" object="instance:BeanAnnotationWorker"/>
     <worker annotation="Asset" object="instance:AssetAnnotationWorker"/>
@@ -135,6 +135,16 @@
     <worker annotation="InjectMeta" object="instance:InjectMetaAnnotationWorker"/>
     <worker annotation="InjectScript" object="instance:InjectScriptAnnotationWorker"/>
   </contribution>
+  
+  <service-point id="InjectAssetAnnotationWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+    
+    Injects IAsset assets based on previously defined asset alias names. (such as in a .page or .jwc spec )
+    
+    <invoke-factory>
+      <construct class="InjectAssetAnnotationWorker"/>
+    </invoke-factory>
+    
+  </service-point>
   
   <service-point id="InjectObjectAnnotationWorker" interface="MethodAnnotationEnhancementWorker">
     

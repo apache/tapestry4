@@ -42,11 +42,13 @@ public class ComponentHousekeepingWorker implements EnhancementWorker
             IContainedComponent cc = spec.getComponent(id);
             String copyOf = cc.getCopyOf();
             Collection bindingNames = cc.getBindingNames();
+            
             if (HiveMind.isNonBlank(copyOf) && bindingNames.size() == 0)
             {
                 IContainedComponent source = spec.getComponent(copyOf);
                 if (source == null)
                     throw new ApplicationRuntimeException(AnnotationMessages.unableToCopy(copyOf));                
+                
                 AnnotationUtils.copyBindings(source, cc);
             }            
         }
