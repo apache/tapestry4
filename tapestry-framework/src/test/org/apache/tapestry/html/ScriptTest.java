@@ -103,8 +103,6 @@ public class ScriptTest extends BaseComponentTestCase
         trainResponseBuilder(cycle, writer);
         
         body.render(writer, cycle);
-
-        //trainResponseBuilder(cycle, writer);
         
         replay();
 
@@ -220,8 +218,6 @@ public class ScriptTest extends BaseComponentTestCase
         IRender body = newRender();
 
         body.render(writer, cycle);
-
-        //trainResponseBuilder(cycle, writer);
         
         replay();
 
@@ -268,7 +264,7 @@ public class ScriptTest extends BaseComponentTestCase
         verify();
     }
     
-    public void test_IAsset_ParamRender()
+    public void test_IAsset_Param_Render()
     {
         IScriptSource source = newScriptSource();
         IScript script = newScript();

@@ -109,7 +109,7 @@ public abstract class Script extends AbstractComponent
         if (scriptAsset != null && scriptPath != null)
             throw new ApplicationRuntimeException(HTMLMessages
                     .multiAssetParameterError(getBinding("scriptAsset"),
-                            getBinding("scriptPath")));
+                            getBinding("script")));
 
         if (scriptPath == null && scriptAsset == null)
             throw new ApplicationRuntimeException(HTMLMessages
