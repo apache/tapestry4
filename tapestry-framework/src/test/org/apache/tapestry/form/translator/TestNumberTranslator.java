@@ -39,28 +39,28 @@ import org.testng.annotations.Test;
 @Test
 public class TestNumberTranslator extends FormComponentContributorTestCase
 {
-    public void testDefaultFormat()
+    public void test_Default_Format()
     {
         NumberTranslator translator = new NumberTranslator();
 
         testFormat(translator, new Integer(10), "10");
     }
 
-    public void testOmitZero()
+    public void test_Omit_Zero()
     {
-        NumberTranslator translator = new NumberTranslator("pattern=0.00");
-
+        NumberTranslator translator = new NumberTranslator("pattern=0.00,omitZero=true");
+        
         testFormat(translator, new Integer(0), "");
     }
 
-    public void testOmitZeroOff()
+    public void test_Omit_Zero_Off()
     {
         NumberTranslator translator = new NumberTranslator("!omitZero,pattern=0.00");
-
+        
         testFormat(translator, new Integer(0), "0.00");
     }
 
-    public void testCustomFormat()
+    public void test_Custom_Format()
     {
         NumberTranslator translator = new NumberTranslator();
 
@@ -69,7 +69,7 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         testFormat(translator, new Integer(10), "$10.00");
     }
 
-    public void testInitializerFormat()
+    public void test_Initializer_Format()
     {
         NumberTranslator translator = new NumberTranslator("pattern=#0%");
 
@@ -82,10 +82,26 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
 
         String result = translator.format(field, Locale.ENGLISH, number);
 
-        assertEquals(expected, result);
+        assertEquals(result, expected);
     }
 
-    public void testNullFormat()
+    public void test_Null_Format()
+    throws Exception
+    {
+        NumberTranslator translator = new NumberTranslator("pattern=0.00,omitZero");
+        IFormComponent field = newField();
+        ValidationMessages messages = newMock(ValidationMessages.class);
+        
+        replay();
+        
+        Number num = (Number)translator.parse(field, messages, "");
+        
+        assertEquals(num.doubleValue(), 0.0);
+        
+        verify();
+    }
+
+    public void test_Null_Format_Pattern()
     {
         NumberTranslator translator = new NumberTranslator();
 
@@ -97,15 +113,15 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
 
         verify();
     }
-
-    public void testDefaultParse() throws Exception
+    
+    public void test_Default_Parse() throws Exception
     {
         NumberTranslator translator = new NumberTranslator();
 
         testParse(translator, "0.1", new Double(0.1));
     }
 
-    public void testCustomParse() throws Exception
+    public void test_Custom_Parse() throws Exception
     {
         NumberTranslator translator = new NumberTranslator();
 
@@ -114,7 +130,7 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         testParse(translator, "10%", new Double(0.1));
     }
 
-    public void testTrimmedParse() throws Exception
+    public void test_Trimmed_Parse() throws Exception
     {
         NumberTranslator translator = new NumberTranslator();
 
@@ -141,14 +157,14 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
 
     }
 
-    public void testFailedParseDefaultMessage()
+    public void test_Failed_Parse_Default_Message()
     {
         NumberTranslator translator = new NumberTranslator();
         
         testFailedParse(translator, null);
     }
 
-    public void testFailedParseCustomMessage()
+    public void test_Failed_Parse_Custom_Message()
     {
         NumberTranslator translator = new NumberTranslator();
 
@@ -192,7 +208,7 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         verify();
     }
 
-    public void testRenderContribution()
+    public void test_Render_Contribution()
     {
         NumberTranslator translator = new NumberTranslator();
         IFormComponent field = newField("Number Field", "numberField", 1);
@@ -223,7 +239,7 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
                 "{\"constraints\":[\"invalid number message\"]}}");
     }
 
-    public void testMessageRenderContribution()
+    public void test_Message_Render_Contribution()
     {
         NumberTranslator translator = new NumberTranslator();
         IFormComponent field = newField("Number Field", "myfield", 1);
@@ -262,7 +278,7 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
                 "{\"constraints\":[\"Blah Blah \'Field Name\' Blah.\"]}}");
     }
     
-    public void testTrimRenderContribution()
+    public void test_Trim_Render_Contribution()
     {
         IFormComponent field = newField("Number Field", "myfield", 2);
         
