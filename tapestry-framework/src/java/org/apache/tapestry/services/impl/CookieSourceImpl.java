@@ -63,7 +63,40 @@ public class CookieSourceImpl implements CookieSource
 
         _response.addCookie(cookie);
     }
-
+    
+    public void writeCookieValue(String name, String value, String path) 
+    {
+        Cookie cookie = new Cookie(name, value);
+        cookie.setPath(path);
+        _response.addCookie(cookie);
+    }
+    
+    public void writeDomainCookieValue(String name, String value, String domain) 
+    {
+        Cookie cookie = new Cookie(name, value);
+        cookie.setPath(_request.getContextPath() + "/");
+        cookie.setDomain(domain);
+        _response.addCookie(cookie);
+    }
+    
+    public void writeDomainCookieValue(String name, String value, String domain, int maxAge) 
+    {
+        Cookie cookie = new Cookie(name, value);
+        cookie.setPath(_request.getContextPath() + "/");
+        cookie.setDomain(domain);
+        cookie.setMaxAge(maxAge);
+        
+        _response.addCookie(cookie);
+    }
+    
+    public void writeCookieValue(String name, String value, String path, String domain) 
+    {
+        Cookie cookie = new Cookie(name, value);
+        cookie.setPath(path);
+        cookie.setDomain(domain);
+        _response.addCookie(cookie);
+    }
+    
     public void removeCookieValue(String name)
     {
         Cookie cookie = new Cookie(name, null);

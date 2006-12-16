@@ -107,29 +107,28 @@ public class CookieSourceTest extends BaseComponentTestCase
 
         String actual = cs.readCookieValue(name);
 
-        assertEquals(expected, actual);
+        assertEquals(actual, expected);
 
         verify();
     }
 
-    public void testNoCookies()
+    public void test_No_Cookies()
     {
         attempt("foo", null, null);
     }
 
-    public void testMatch()
+    public void test_Match()
     {
-        attempt("fred", "flintstone", new String[]
-        { "barney", "rubble", "fred", "flintstone" });
+        attempt("fred", "flintstone", 
+                new String[] { "barney", "rubble", "fred", "flintstone" });
     }
 
-    public void testNoMatch()
+    public void test_No_Match()
     {
-        attempt("foo", null, new String[]
-        { "bar", "baz" });
+        attempt("foo", null, new String[] { "bar", "baz" });
     }
 
-    public void testWriteCookie()
+    public void test_Write_Cookie_Domain()
     {
         HttpServletRequest request = newHttpRequest();
         HttpServletResponse response = newResponse();
@@ -137,25 +136,26 @@ public class CookieSourceTest extends BaseComponentTestCase
         // Training
 
         trainGetContextPath(request, "/context");
-
+        
         Cookie cookie = new ComparableCookie("foo", "bar", ONE_WEEK);
         cookie.setPath("/context/");
-
+        cookie.setDomain("fobar.com");
+        
         response.addCookie(cookie);
-
+        
         replay();
-
+        
         CookieSourceImpl cs = new CookieSourceImpl();
         cs.setRequest(request);
         cs.setResponse(response);
         cs.setDefaultMaxAge(ONE_WEEK);
-
-        cs.writeCookieValue("foo", "bar");
+        
+        cs.writeDomainCookieValue("foo", "bar", "fobar.com", ONE_WEEK);
 
         verify();
     }
 
-    public void testWriteCookieWithMaxAge()
+    public void test_Write_Cookie_With_Max_Age()
     {
         HttpServletRequest request = newHttpRequest();
         HttpServletResponse response = newResponse();
@@ -181,6 +181,32 @@ public class CookieSourceTest extends BaseComponentTestCase
         verify();
     }
 
+    public void test_Write_Cookie()
+    {
+        HttpServletRequest request = newHttpRequest();
+        HttpServletResponse response = newResponse();
+
+        // Training
+        
+        trainGetContextPath(request, "/context");
+        
+        Cookie cookie = new ComparableCookie("foo", "bar", ONE_WEEK);
+        cookie.setPath("/context/");
+
+        response.addCookie(cookie);
+
+        replay();
+
+        CookieSourceImpl cs = new CookieSourceImpl();
+        cs.setRequest(request);
+        cs.setResponse(response);
+        cs.setDefaultMaxAge(ONE_WEEK);
+
+        cs.writeCookieValue("foo", "bar");
+
+        verify();
+    }
+    
     private void trainGetContextPath(HttpServletRequest request, String contextPath)
     {
         expect(request.getContextPath()).andReturn(contextPath);
@@ -191,7 +217,7 @@ public class CookieSourceTest extends BaseComponentTestCase
         return newMock(HttpServletResponse.class);
     }
 
-    public void testRemoveCookie()
+    public void test_Remove_Cookie()
     {
         HttpServletRequest request = newHttpRequest();
         HttpServletResponse response = newResponse();

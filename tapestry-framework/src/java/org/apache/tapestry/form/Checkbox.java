@@ -71,8 +71,9 @@ public abstract class Checkbox extends AbstractFormComponent implements Validata
         try
         {
             // This is atypical validation - since this component does not explicitly bind to an object
+            
             getValidatableFieldSupport().validate(this, writer, cycle, value);
-
+            
             setValue(value != null);
         }
         catch (ValidatorException e)

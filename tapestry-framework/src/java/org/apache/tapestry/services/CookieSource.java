@@ -50,7 +50,31 @@ public interface CookieSource
      */
 
     void writeCookieValue(String name, String value, int maxAge);
-
+    
+    /**
+     * As with {@link #writeCookieValue(String, String)} but an explicit path
+     * may be set.
+     */
+    void writeCookieValue(String name, String value, String path);
+    
+    /**
+     * As with {@link #writeCookieValue(String, String)} but an explicit path
+     * may be set.
+     */
+    void writeDomainCookieValue(String name, String value, String domain);
+    
+    /**
+     * As with {@link #writeCookieValue(String, String)} but an explicit path
+     * may be set.
+     */
+    void writeDomainCookieValue(String name, String value, String domain, int maxAge);
+    
+    /**
+     * As with {@link #writeCookieValue(String, String, String)} but an explicit
+     * domain may be set.
+     */
+    void writeCookieValue(String name, String value, String path, String domain);
+    
     /**
      * Removes a previously written cookie, by writing a new cookie with a maxAge of 0.
      */
