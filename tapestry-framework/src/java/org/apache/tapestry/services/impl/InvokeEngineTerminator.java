@@ -20,7 +20,6 @@ import org.apache.tapestry.Constants;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.services.EngineManager;
 import org.apache.tapestry.services.Infrastructure;
-import org.apache.tapestry.services.RequestGlobals;
 import org.apache.tapestry.services.WebRequestServicer;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
@@ -29,7 +28,6 @@ import org.apache.tapestry.web.WebResponse;
  * The terminatior for the <code>tapestry.RequestProcessor</code> pipeline, this service is
  * responsible for:
  * <ul>
- * <li>Storing the request and response into {@link org.apache.tapestry.services.RequestGlobals}.
  * <li>Locating the correct engine instance and letting it to the rest of the request.
  * <li>Returning the engine instance to the pool at the end of the request. </ul>
  * 
@@ -42,14 +40,10 @@ public class InvokeEngineTerminator implements WebRequestServicer
 
     private Infrastructure _infrastructure;
 
-    private RequestGlobals _requestGlobals;
-
     public void service(WebRequest request, WebResponse response) throws IOException
     {
-        _requestGlobals.store(request, response);
-
         IEngine engine = _engineManager.getEngineInstance();
-
+        
         // Until we can inject the infrastructure into the engine
         // we do this to let the engine know about it.
 
@@ -74,10 +68,5 @@ public class InvokeEngineTerminator implements WebRequestServicer
     public void setInfrastructure(Infrastructure infrastructure)
     {
         _infrastructure = infrastructure;
-    }
-
-    public void setRequestGlobals(RequestGlobals requestGlobals)
-    {
-        _requestGlobals = requestGlobals;
     }
 }

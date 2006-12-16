@@ -34,6 +34,9 @@ import org.apache.tapestry.web.WebResponse;
  * web response into {@link org.apache.tapestry.services.RequestGlobals}. Intercepts runtime
  * exceptions and throws them wrapped as {@link javax.servlet.ServletException}.
  * 
+ * <p>This service is responsible for for storing the http/web request wrappers into 
+ *  {@link RequestGlobals}.</p>
+ * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
@@ -47,10 +50,12 @@ public class WebRequestServicerPipelineBridge implements ServletRequestServicer
             throws IOException, ServletException
     {
         _requestGlobals.store(request, response);
-
+        
         WebRequest webRequest = new ServletWebRequest(request, response);
         WebResponse webResponse = new ServletWebResponse(response);
-
+        
+        _requestGlobals.store(webRequest, webResponse);
+        
         try
         {
             _webRequestServicer.service(webRequest, webResponse);
