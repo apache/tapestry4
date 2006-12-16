@@ -38,7 +38,7 @@ import org.apache.tapestry.valid.ValidationStrings;
  */
 public class NumberTranslator extends FormatTranslator
 {
-    private boolean _omitZero = true;
+    private boolean _omitZero = false;
 
     public NumberTranslator()
     {
@@ -57,13 +57,17 @@ public class NumberTranslator extends FormatTranslator
         if (_omitZero)
         {
             if (number.doubleValue() == 0)
-
                 return "";
         }
-
+        
         return super.formatObject(field, locale, object);
     }
-
+    
+    protected Object getValueForEmptyInput()
+    {
+        return new Double(0);
+    }
+    
     /**
      * @see org.apache.tapestry.form.translator.FormatTranslator#defaultPattern()
      */
