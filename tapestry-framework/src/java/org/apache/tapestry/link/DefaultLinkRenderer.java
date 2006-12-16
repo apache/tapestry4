@@ -70,8 +70,7 @@ public class DefaultLinkRenderer implements ILinkRenderer
             
             linkComponent.renderAdditionalAttributes(writer, cycle);
             
-            writer.attribute(getUrlAttribute(), constructURL(linkComponent,
-                    cycle));
+            writer.attribute(getUrlAttribute(), constructURL(linkComponent, cycle));
             
             String target = linkComponent.getTarget();
             
