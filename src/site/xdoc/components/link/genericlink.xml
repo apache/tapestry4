@@ -89,6 +89,17 @@
                         </td>
                     </tr>
                     <tr>
+                        <td>target</td>
+
+                        <td>String</td>
+                        <td>no</td>
+                        <td />
+                        <td>
+                            The name of the html target for this link, this is just the normal html attribute that will
+                            control where the response generated from this link will go. (Usually used in frames) 
+                        </td>
+                    </tr>
+                    <tr>
                         <td>anchor</td>
 
                         <td>String</td>
