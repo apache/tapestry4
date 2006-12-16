@@ -26,14 +26,14 @@ import org.testng.annotations.Test;
 @Test
 public class LabeledPropertySelectionModelTest extends BaseComponentTestCase
 {
-    public void testNullValue()
+    public void test_Null_Value()
     {
         LabeledPropertySelectionModel model = new LabeledPropertySelectionModel();
-
+        
         assertEquals(null, model.translateValue(null));
     }
 
-    public void testEmptyModel()
+    public void test_Empty_Model()
     {
         LabeledPropertySelectionModel model = new LabeledPropertySelectionModel();
 
@@ -42,7 +42,7 @@ public class LabeledPropertySelectionModelTest extends BaseComponentTestCase
         assertEquals(model.getOptionCount(), 1);
     }
 
-    public void testDefaultLabeledModel()
+    public void test_Default_Labeled_Model()
     {
         LabeledPropertySelectionModel model = new LabeledPropertySelectionModel(createInnerModel());
 
@@ -51,7 +51,7 @@ public class LabeledPropertySelectionModelTest extends BaseComponentTestCase
         validateModel(model);
     }
 
-    public void testLabeledModel()
+    public void test_Labeled_Model()
     {
         String label = "Select a value";
         Object option = null;
