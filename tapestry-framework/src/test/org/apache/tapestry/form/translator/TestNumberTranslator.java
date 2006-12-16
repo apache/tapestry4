@@ -16,6 +16,7 @@ package org.apache.tapestry.form.translator;
 
 import static org.easymock.EasyMock.expect;
 
+import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
 import org.apache.tapestry.IMarkupWriter;
@@ -112,6 +113,23 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         assertEquals("", result);
 
         verify();
+    }
+    
+    public void test_Localized_Format()
+    {
+        IFormComponent field = newField();
+        NumberTranslator translator = new NumberTranslator();
+        translator.setPattern("#,###");
+        
+        replay();
+        
+        Integer input = new Integer(10999999);
+        String result = translator.format(field, Locale.FRENCH, input);
+        DecimalFormatSymbols sym = new DecimalFormatSymbols(Locale.FRENCH);
+        
+        verify();
+        
+        assertEquals(result, "10" + sym.getGroupingSeparator() + "999" + sym.getGroupingSeparator() + "999");
     }
     
     public void test_Default_Parse() throws Exception
