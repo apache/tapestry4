@@ -13,11 +13,11 @@
 // limitations under the License.
 package org.apache.tapestry.dojo.form;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IScript;
@@ -39,6 +39,7 @@ import org.apache.tapestry.valid.ValidatorException;
 public abstract class DropdownTimePicker extends AbstractFormWidget
     implements TranslatedField
 {
+    private static final SimpleDateFormat RFC3339_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     
     /** parameter. */
     public abstract Date getValue();
@@ -81,9 +82,10 @@ public abstract class DropdownTimePicker extends AbstractFormWidget
         json.put("inputName", getName());
         json.put("iconAlt", getIconAlt());
         json.put("displayFormat", translator.getPattern());
+        json.put("saveFormat", translator.getPattern());
         
         if (getValue() != null) {
-            json.put("value", DateFormatUtils.ISO_TIME_NO_T_TIME_ZONE_FORMAT.format(getValue()));
+            json.put("value", RFC3339_FORMAT.format(getValue()));
         }
         
         json.put("disabled", isDisabled());

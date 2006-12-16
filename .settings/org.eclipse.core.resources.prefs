@@ -1,3 +1,7 @@
-#Tue Jul 04 14:49:56 EDT 2006
+#Sat Dec 16 02:01:37 EST 2006
 eclipse.preferences.version=1
+encoding//tapestry-framework/src/java/org/apache/tapestry/dojo/form/Autocompleter.jwc=UTF-8
+encoding//tapestry-framework/src/java/org/apache/tapestry/dojo/form/DropdownDatePicker.jwc=UTF-8
+encoding//tapestry-framework/src/java/org/apache/tapestry/dojo/form/DropdownDatePicker.script=UTF-8
+encoding//tapestry-framework/src/java/org/apache/tapestry/dojo/form/DropdownTimePicker.jwc=UTF-8
 encoding//tapestry-framework/src/test-data/context19/upload-image.request=ISO-8859-1
