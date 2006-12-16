@@ -54,18 +54,17 @@ public class AssetSourceImpl implements AssetSource
 
     public IAsset findAsset(Resource base, String path, Locale locale, Location location)
     {
-        Defense.notNull(base, "base");
         Defense.notNull(path, "path");
         Defense.notNull(location, "location");
 
         int colonx = path.indexOf(':');
-
+        
         if (colonx < 0)
             return _lookupAssetFactory.createAsset(base, path, locale, location);
-
+        
         String prefix = path.substring(0, colonx);
         String truePath = path.substring(colonx + 1);
-
+        
         AssetFactory factory = (AssetFactory) _assetFactoryByPrefix.get(prefix);
 
         // Unknown prefix is expected to happen when an external asset (using an established
@@ -80,7 +79,7 @@ public class AssetSourceImpl implements AssetSource
 
             truePath = path;
         }
-
+        
         if (truePath.startsWith("/"))
             return factory.createAbsoluteAsset(truePath, locale, location);
 

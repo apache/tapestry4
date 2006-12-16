@@ -59,7 +59,7 @@ public class TestAssetSource extends BaseComponentTestCase
         return f;
     }
     
-    public void testKnownPrefix()
+    public void test_Known_Prefix()
     {
         Location l = newLocation();
 
@@ -87,7 +87,7 @@ public class TestAssetSource extends BaseComponentTestCase
         verify();
     }
 
-    public void testUnknownPrefix()
+    public void test_Unknown_Prefix()
     {
         Location l = fabricateLocation(17);
 
@@ -108,7 +108,7 @@ public class TestAssetSource extends BaseComponentTestCase
         verify();
     }
 
-    public void testNoPrefix()
+    public void test_No_Prefix()
     {
         Location l = fabricateLocation(17);
 
@@ -123,6 +123,32 @@ public class TestAssetSource extends BaseComponentTestCase
         as.setLookupAssetFactory(f);
 
         IAsset actual = as.findAsset(r, "path/to/asset", Locale.ENGLISH, l);
+
+        assertSame(actual, asset);
+
+        verify();
+    }
+    
+    public void test_Known_Prefix_Null_Base()
+    {
+        Location l = newLocation();
+        IAsset asset = newAsset();
+
+        List contributions = newContributions("known", newAssetFactory(
+                null,
+                "path/to/asset",
+                Locale.ENGLISH,
+                l,
+                asset));
+
+        replay();
+
+        AssetSourceImpl as = new AssetSourceImpl();
+        as.setContributions(contributions);
+
+        as.initializeService();
+
+        IAsset actual = as.findAsset(null, "known:path/to/asset", Locale.ENGLISH, l);
 
         assertSame(actual, asset);
 
