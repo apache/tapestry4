@@ -153,8 +153,7 @@
     <invoke-factory>
       <construct class="impl.InvokeEngineTerminator">
         <set-service property="engineManager" service-id="EngineManager"/>
-        <set-service property="infrastructure" service-id="tapestry.Infrastructure"/>
-        <set-service property="requestGlobals" service-id="tapestry.globals.RequestGlobals"/>		
+        <set-service property="infrastructure" service-id="tapestry.Infrastructure"/>	
       </construct>
     </invoke-factory>
   </service-point> 
