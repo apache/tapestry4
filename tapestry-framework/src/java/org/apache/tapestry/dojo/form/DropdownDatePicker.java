@@ -13,6 +13,7 @@
 // limitations under the License.
 package org.apache.tapestry.dojo.form;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,6 +39,8 @@ import org.apache.tapestry.valid.ValidatorException;
 public abstract class DropdownDatePicker extends AbstractFormWidget
     implements TranslatedField
 {
+    
+    private static final SimpleDateFormat RFC3339_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     
     /** parameter. */
     public abstract Date getValue();
@@ -80,9 +83,10 @@ public abstract class DropdownDatePicker extends AbstractFormWidget
         json.put("inputName", getName());
         json.put("iconAlt", getIconAlt());
         json.put("displayFormat", translator.getPattern());
+        json.put("saveFormat", translator.getPattern());
         
         if (getValue() != null) {
-            json.put("value", getValue().getTime());
+            json.put("value", RFC3339_FORMAT.format(getValue()));
         }
         
         json.put("disabled", isDisabled());
