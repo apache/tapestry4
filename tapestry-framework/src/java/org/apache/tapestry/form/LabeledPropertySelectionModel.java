@@ -214,7 +214,7 @@ public class LabeledPropertySelectionModel implements IPropertySelectionModel
     {
         if (value == null)
             return null;
-
+        
         return value.equals(_value) ? _option : _model.translateValue(value);
     }
 

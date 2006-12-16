@@ -31,9 +31,9 @@ public abstract class TextArea extends AbstractFormComponent implements
         TranslatedField
 {
 
-    public abstract String getValue();
+    public abstract Object getValue();
 
-    public abstract void setValue(String value);
+    public abstract void setValue(Object value);
 
     /**
      * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter,
@@ -42,7 +42,7 @@ public abstract class TextArea extends AbstractFormComponent implements
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         String value = getTranslatedFieldSupport().format(this, getValue());
-
+        
         renderDelegatePrefix(writer, cycle);
 
         writer.begin("textarea");
@@ -74,14 +74,13 @@ public abstract class TextArea extends AbstractFormComponent implements
     protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         String value = cycle.getParameter(getName());
-
+        
         try
         {
-            String text = (String) getTranslatedFieldSupport().parse(this,
-                    value);
-
+            String text = (String) getTranslatedFieldSupport().parse(this, value);
+            
             getValidatableFieldSupport().validate(this, writer, cycle, text);
-
+            
             setValue(text);
         }
         catch (ValidatorException e)
