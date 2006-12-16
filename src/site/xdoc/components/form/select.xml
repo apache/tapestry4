@@ -115,22 +115,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>translator</td>
-                        <td>
-                            <a
-                                href="../../tapestry/apidocs/org/apache/tapestry/form/translator/Translator.html">
-                                Translator
-                            </a>
-                        </td>
-                        <td>no</td>
-                        <td></td>
-                        <td>
-                            The translator to use when displaying and parsing the date.
-                            <br/><br/>
-                            <strong>See also:</strong> <a href="../../usersguide/validation.html">Validation</a>
-                        </td>
-                    </tr>
-                    <tr>
                         <td>id</td>
                         <td>String</td>
                         <td>no</td>
