@@ -12,7 +12,9 @@ elem.value = elem.value.replace(/\b\w+\b/g, function(word) { return word.substri
 if(profile.digit instanceof Array){for(var i = 0; i < profile.digit.length; i++){var elem = form[profile.digit[i]];if(dj_undef("type", elem) || elem.type != "text" && elem.type != "textarea" && elem.type != "password"){ continue; }
 elem.value = elem.value.replace(/\D/g, "");}}
 if(profile.required instanceof Array){for(var i = 0; i < profile.required.length; i++){if(!dojo.lang.isString(profile.required[i])){ continue; }
-var elem = form[profile.required[i]];if(!dj_undef("type", elem) && (elem.type == "text" || elem.type == "textarea" || elem.type == "password") && /^\s*$/.test(elem.value)){missing[missing.length] = elem.name;}
+var elem = form[profile.required[i]];if(!dj_undef("type", elem)
+&& (elem.type == "text" || elem.type == "textarea" || elem.type == "password" || elem.type == "file")
+&& /^\s*$/.test(elem.value)){missing[missing.length] = elem.name;}
 else if(!dj_undef("type", elem) && (elem.type == "select-one" || elem.type == "select-multiple")
 && (elem.selectedIndex == -1
 || /^\s*$/.test(elem.options[elem.selectedIndex].value))){missing[missing.length] = elem.name;}

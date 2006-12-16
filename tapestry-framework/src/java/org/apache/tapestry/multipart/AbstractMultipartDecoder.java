@@ -127,7 +127,8 @@ public abstract class AbstractMultipartDecoder
 
         if (part == null)
             _valueParts.put(name, new ValuePart(value));
-        else part.add(value);
+        else 
+            part.add(value);
     }
 
     private String extractFileItemValue(FileItem item)
