@@ -32,9 +32,9 @@
   <parameter name="validators"/>
   
   <parameter name="id" property="idParameter" default-value="ognl:id"/>
-  		  
+  
   <reserved-parameter name="name"/>
 
   <inject property="validatableFieldSupport" object="service:tapestry.form.ValidatableFieldSupport"/>
-    
+  
 </component-specification>
