@@ -34,7 +34,7 @@ public interface AssetSource
      * specification).
      * 
      * @param base
-     *            the base resource used for resolving the asset
+     *            The base resource used for resolving the asset
      * @param path
      *            the path relative to the base resource; alternately, the path may include a prefix
      *            that defines a domain (such as "classpath:" or "context:") in which case the base
@@ -44,7 +44,9 @@ public interface AssetSource
      *            localization
      * @param location
      *            used to report errors (such as missing resources)
+     *            
      * @return the asset, possibly localized
+     * 
      * @throws org.apache.hivemind.ApplicationRuntimeException
      *             if the asset does not exist
      */
