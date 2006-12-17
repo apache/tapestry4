@@ -35,7 +35,7 @@ import javax.portlet.PortletRequest;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-@Test
+@Test(sequential=true)
 public class TestUserAttributeBinding extends BaseComponentTestCase
 {
     private IBinding newBinding(String bindingDescription, ValueConverter converter,
