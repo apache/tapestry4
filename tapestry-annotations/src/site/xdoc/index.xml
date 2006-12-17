@@ -265,7 +265,7 @@ public abstact class YeOldeComponent extends AbstractComponent
                 <p>
                     The
                     <a
-                        href="../tapestry-framework/apidocs/org/apache/tapestry/annotations/EventListener.html">
+                        href="../tapestry-annotations/apidocs/org/apache/tapestry/annotations/EventListener.html">
                         EventListener
                     </a>
                     annotation is attached to
