@@ -45,8 +45,7 @@ import org.apache.tapestry.valid.ValidatorException;
  * 
  * @author jkuhnert
  */
-public abstract class Autocompleter extends AbstractFormWidget 
-    implements ValidatableField, IJSONRender, IDirect
+public abstract class Autocompleter extends AbstractFormWidget implements ValidatableField, IJSONRender, IDirect
 {
     // mode, can be remote or local (local being from html rendered option elements)
     private static final String MODE_REMOTE = "remote";
@@ -109,6 +108,7 @@ public abstract class Autocompleter extends AbstractFormWidget
         
         parms.put("props", json.toString());
         parms.put("form", getForm().getName());
+        parms.put("widget", this);
         
         PageRenderSupport prs = TapestryUtils.getPageRenderSupport(cycle, this);
         getScript().execute(this, cycle, prs, parms);

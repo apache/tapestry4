@@ -6,6 +6,7 @@
 <input-symbol key="id" required="yes" />
 <input-symbol key="props" required="yes" />
 <input-symbol key="form" required="yes" />
+<input-symbol key="widget" required="yes" />
     <body>
         <unique>
             dojo.require("dojo.widget.Manager");
@@ -16,7 +17,7 @@
     </body>
     <initialization>
         var ${id}prop=${props};
-        tapestry.widget.synchronizeWidgetState("${id}", "Select", ${id}prop);
+        tapestry.widget.synchronizeWidgetState("${id}", "Select", ${id}prop, ${widget.destroy});
         if (${id}prop["label"] &amp;&amp; ${id}prop["value"]){
             var selw=dojo.widget.byId("${id}");
             selw.setValue(${id}prop["value"]);

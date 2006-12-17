@@ -5,6 +5,7 @@
 <script>
 <input-symbol key="clientId" required="yes" />
 <input-symbol key="props" required="yes" />
+<input-symbol key="widget" required="yes" />
     <body>
         <unique>
             dojo.require("dojo.widget.Manager");
@@ -13,6 +14,6 @@
         </unique>
     </body>
     <initialization>
-        tapestry.widget.synchronizeWidgetState("${clientId}", "dropdowntimepicker", ${props});
+        tapestry.widget.synchronizeWidgetState("${clientId}", "dropdowntimepicker", ${props}, ${widget.destroy});
     </initialization>
 </script>

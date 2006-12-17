@@ -36,8 +36,7 @@ import org.apache.tapestry.valid.ValidatorException;
  * 
  * @author jkuhnert
  */
-public abstract class DropdownDatePicker extends AbstractFormWidget
-    implements TranslatedField
+public abstract class DropdownDatePicker extends AbstractFormWidget implements TranslatedField
 {
     
     private static final SimpleDateFormat RFC3339_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -94,6 +93,7 @@ public abstract class DropdownDatePicker extends AbstractFormWidget
         Map parms = new HashMap();
         parms.put("clientId", getClientId());
         parms.put("props", json.toString());
+        parms.put("widget", this);
         
         getScript().execute(this, cycle, TapestryUtils.getPageRenderSupport(cycle, this), parms);
     }

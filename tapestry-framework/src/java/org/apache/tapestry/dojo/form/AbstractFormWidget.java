@@ -27,6 +27,17 @@ import org.apache.tapestry.form.AbstractFormComponent;
  */
 public abstract class AbstractFormWidget extends AbstractFormComponent implements IFormWidget
 {
+    
+    public abstract void setDestroy(boolean destroy);
+    
+    /**
+     * Determined dynamically at runtime during rendering, informs widget implementations
+     * if they should destroy their client side widget equivalents or leave them in tact.
+     * 
+     * @return True if the widget should be destroyed on this render, false otherwise.
+     */
+    public abstract boolean getDestroy();
+    
     /**
      * {@inheritDoc}
      */
@@ -40,6 +51,25 @@ public abstract class AbstractFormWidget extends AbstractFormComponent implement
      */
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
+        if(!cycle.isRewinding()) {
+            
+            if (!cycle.getResponseBuilder().isDynamic() 
+                    || cycle.getResponseBuilder().explicitlyContains(this)) {
+                
+                setDestroy(false);
+            } else
+                setDestroy(true);
+        }
+        
+        // don't render if not part of update response
+        
+        if (cycle.getResponseBuilder().isDynamic()
+                && (!cycle.getResponseBuilder().explicitlyContains(this) 
+                        && !cycle.getResponseBuilder().contains(this))) {
+            
+            return;
+        }
+        
         renderFormWidget(writer, cycle);
     }
     
