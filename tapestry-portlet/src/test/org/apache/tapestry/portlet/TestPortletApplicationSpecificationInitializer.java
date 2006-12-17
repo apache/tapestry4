@@ -36,7 +36,7 @@ import javax.portlet.PortletConfig;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-@Test
+@Test(sequential=true)
 public class TestPortletApplicationSpecificationInitializer extends BaseComponentTestCase
 {
     private PortletConfig newConfig(String name)
