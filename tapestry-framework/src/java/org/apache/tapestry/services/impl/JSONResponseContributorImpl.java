@@ -25,8 +25,8 @@ import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
 
 /**
- * Determines if incoming request is a valid dojo request via the javascript
- * added parameter of "dojoRequest" = "true".
+ * Determines if incoming request is a valid json request via the "json" http header
+ * or the "json" = "true" request parameter.
  * 
  * @author jkuhnert
  */
