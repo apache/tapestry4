@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
  * @author Andreas Andreou
  * @since 4.1.1
  */
-@Test
+@Test(sequential=true)
 public class TestRelation extends BaseComponentTestCase
 {
     
