@@ -1,5 +1,5 @@
 <assembly>
-    <id>bin</id>
+    <id>project</id>
     <formats>
         <format>tar.gz</format>
         <format>tar.bz2</format>
@@ -8,18 +8,12 @@
     <includeBaseDirectory>false</includeBaseDirectory>
     <fileSets>
         <fileSet>
-            <includes>
-                <include>README*</include>
-                <include>LICENSE*</include>
-                <include>NOTICE*</include>
-            </includes>
-        </fileSet>
-        <fileSet>
-            <directory>target</directory>
+            <directory>.</directory>
             <outputDirectory></outputDirectory>
-            <includes>
-                <include>*.jar</include>
-            </includes>
+            <useDefaultExcludes>true</useDefaultExcludes>
+            <excludes>
+                <exclude>**/target/**</exclude>
+            </excludes>
         </fileSet>
     </fileSets>
     <moduleSets>
@@ -31,11 +25,6 @@
                 <include>org.apache.tapestry:tapestry-framework</include>
                 <include>org.apache.tapestry:tapestry-portlet</include>
             </includes>
-            <binaries>
-                <outputDirectory>modules/${artifactId}</outputDirectory>
-                <includeDependencies>true</includeDependencies>
-                <unpack>false</unpack>
-            </binaries>
         </moduleSet>
     </moduleSets>
 </assembly>

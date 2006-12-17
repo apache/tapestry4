@@ -4,7 +4,7 @@
     <groupId>org.apache.tapestry</groupId>
     <artifactId>tapestry-project</artifactId>
     <packaging>pom</packaging>
-    <version>4.1.1-SNAPSHOT</version>
+    <version>4.1.1</version>
     <description>Java Web Application Framework</description>
     <name>Tapestry</name>
     <inceptionYear>2006</inceptionYear>
@@ -349,6 +349,7 @@
                     <configuration>
                         <descriptors>
                             <descriptor>src/main/assembly/dep.xml</descriptor>
+                            <descriptor>src/main/assembly/project.xml</descriptor>
                         </descriptors>
                     </configuration>
                 </plugin>

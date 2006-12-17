@@ -4,12 +4,12 @@
     <groupId>org.apache.tapestry</groupId>
     <artifactId>tapestry-framework</artifactId>
     <packaging>jar</packaging>
-    <version>4.1.1-SNAPSHOT</version>
+    <version>4.1.1</version>
     <!-- This should change to tapestry-project -->
     <parent>
         <groupId>org.apache.tapestry</groupId>
         <artifactId>tapestry-project</artifactId>
-        <version>4.1.1-SNAPSHOT</version>
+        <version>4.1.1</version>
     </parent>
     <name>Tapestry Core Library - ${version}</name>
     <inceptionYear>2006</inceptionYear>
