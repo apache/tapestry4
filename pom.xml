@@ -347,7 +347,9 @@
                     <version>2.2-SNAPSHOT</version>
                     <inherited>true</inherited>
                     <configuration>
-                        <descriptor>src/main/assembly/dep.xml</descriptor>
+                        <descriptors>
+                            <descriptor>src/main/assembly/dep.xml</descriptor>
+                        </descriptors>
                     </configuration>
                 </plugin>
                 <plugin>
