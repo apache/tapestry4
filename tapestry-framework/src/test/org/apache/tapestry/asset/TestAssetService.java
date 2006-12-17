@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author jkuhnert
  */
-@Test
+@Test(sequential=true)
 public class TestAssetService extends TestBase
 {   
     
