@@ -37,6 +37,7 @@ import org.apache.tapestry.form.ValidatableFieldSupport;
 import org.apache.tapestry.json.IJSONWriter;
 import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.services.DataSqueezer;
+import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidatorException;
 import org.testng.annotations.Test;
@@ -156,6 +157,7 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         IAutocompleteModel model = createModel();
         ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
         DataSqueezer ds = newMock(DataSqueezer.class);
+        ResponseBuilder resp = newMock(ResponseBuilder.class);
         
         IRequestCycle cycle = newMock(IRequestCycle.class);
         IForm form = newMock(IForm.class);
@@ -200,9 +202,12 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         
         trainGetElementId(form, component, "fred");
         trainIsRewinding(form, false);
-        trainIsRewinding(cycle, false);
+        expect(cycle.isRewinding()).andReturn(false).anyTimes();
         
         delegate.setFormComponent(component);
+        
+        expect(cycle.getResponseBuilder()).andReturn(resp).anyTimes();
+        expect(resp.isDynamic()).andReturn(false).anyTimes();
         
         vfs.renderContributions(component, writer, cycle);
         

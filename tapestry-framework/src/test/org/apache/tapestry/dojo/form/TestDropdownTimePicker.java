@@ -32,6 +32,7 @@ import org.apache.tapestry.form.MockDelegate;
 import org.apache.tapestry.form.ValidatableFieldSupport;
 import org.apache.tapestry.form.translator.DateTranslator;
 import org.apache.tapestry.json.JSONObject;
+import org.apache.tapestry.services.ResponseBuilder;
 import org.testng.annotations.Test;
 
 
@@ -49,6 +50,7 @@ public class TestDropdownTimePicker extends BaseFormComponentTestCase
         ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
         DateTranslator translator = new DateTranslator();
         translator.setPattern("hh:mm a");
+        ResponseBuilder resp = newMock(ResponseBuilder.class);
         
         IRequestCycle cycle = newMock(IRequestCycle.class);
         IForm form = newMock(IForm.class);
@@ -88,9 +90,12 @@ public class TestDropdownTimePicker extends BaseFormComponentTestCase
         
         trainGetElementId(form, component, "fred");
         trainIsRewinding(form, false);
-        trainIsRewinding(cycle, false);
+        expect(cycle.isRewinding()).andReturn(false).anyTimes();
         
         delegate.setFormComponent(component);
+        
+        expect(cycle.getResponseBuilder()).andReturn(resp).anyTimes();
+        expect(resp.isDynamic()).andReturn(false).anyTimes();
         
         vfs.renderContributions(component, writer, cycle);
         
