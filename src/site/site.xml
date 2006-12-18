@@ -15,7 +15,7 @@
     <skin>
         <groupId>org.apache.tapestry</groupId>
         <artifactId>maven-skin</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.1</version>
     </skin>
     
     <publishDate format="dd MMM yyyy" />
