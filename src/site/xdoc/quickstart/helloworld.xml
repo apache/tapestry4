@@ -231,9 +231,9 @@
                 was correct.
             </p>
 
-            <p>
+            <span class="info">
                 <strong>Note:</strong>
-                <br />
+                <p>
                 This side track, about previewability, is actually one of the cornerstones of
                 Tapestry: a
                 <em>clean</em>
@@ -246,7 +246,8 @@
                 junction between content and runtime behavior, that is,
                 <em>inside</em>
                 components, that HTML and Java developers need to work together.
-            </p>
+                </p>
+            </span>
 
             <p>
                 So, what does
