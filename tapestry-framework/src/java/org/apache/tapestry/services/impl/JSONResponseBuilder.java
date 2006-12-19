@@ -142,6 +142,11 @@ public class JSONResponseBuilder implements ResponseBuilder
         
         _writer = _markupWriterSource.newJSONWriter(printWriter, _contentType);
         
+        // Important - causes any cookies stored to properly be written out before the
+        // rest of the response starts being written - see TAPESTRY-825
+        
+        _writer.flush();
+        
         // render response
         
         parseParameters(cycle);

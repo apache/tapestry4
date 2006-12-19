@@ -50,4 +50,10 @@ public interface IJSONWriter
      * any reasources associated with writer to be flushed/written.
      */
     void close();
+    
+    /**
+     * Forwards <code>flush()</code> to this <code>IMarkupWriter</code>'s
+     * <code>PrintWriter</code>.
+     */
+    void flush();
 }
