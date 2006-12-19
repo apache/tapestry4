@@ -98,6 +98,11 @@ public class JSONWriterImpl implements IJSONWriter
         return _array;
     }
     
+    public void flush()
+    {
+        _writer.flush();
+    }
+    
     /**
      * The outputstream being used to write this 
      * instance's content.

@@ -148,6 +148,11 @@ public class DefaultResponseBuilder implements ResponseBuilder
             _writer = _markupWriterSource.newMarkupWriter(printWriter, contentType);
         }
         
+        // Important - causes any cookies stored to properly be written out before the
+        // rest of the response starts being written - see TAPESTRY-825
+        
+        _writer.flush();
+        
         // render response
         
         _prs = new PageRenderSupportImpl(_assetFactory, _namespace, cycle.getPage().getLocation(), this);
