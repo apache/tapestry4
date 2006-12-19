@@ -21,6 +21,9 @@
 
 <input-symbol key="component" required="yes" />
 <input-symbol key="props" required="yes" />
+<let key="box" unique="yes">
+inlineBox
+</let>
     <body>
     <unique>
     dojo.require("tapestry.widget.Widget");
@@ -29,15 +32,15 @@
     <initialization>
     tapestry.widget.synchronizeWidgetState("${component.clientId}", "InlineEditBox", ${props}, ${component.destroy});
     
-    var w=dojo.widget.byId("${component.clientId}");
+    var ${box}=dojo.widget.byId("${component.clientId}");
     <if-not expression="component.disabled">
-        w.enable();
+        ${box}.enable();
     </if-not><if expression="component.disabled">
-        w.disable();
+        ${box}.disable();
     </if>
     
     <if expression="component.destroy">
-    dojo.event.connectOnce(w, "onSave", function(newValue, oldValue){
+    dojo.event.connectOnce(${box}, "onSave", function(newValue, oldValue){
     	tapestry.bind("${component.updateUrl}", {"${component.clientId}":newValue}, true);
     });
     </if>
