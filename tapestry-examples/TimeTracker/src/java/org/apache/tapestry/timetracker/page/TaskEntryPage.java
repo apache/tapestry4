@@ -132,6 +132,7 @@ public abstract class TaskEntryPage extends BasePage
     @EventListener(events = "onSave", targets="projName")
     public void onNameUpdate()
     {
-        getProjectDao().update(getSelectedProject());
+        if (getSelectedProject() != null)
+            getProjectDao().update(getSelectedProject());
     }
 }

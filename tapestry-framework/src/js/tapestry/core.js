@@ -42,7 +42,6 @@ tapestry={
 			content:content,
             useCache:true,
             preventCache:true,
-            load: (function(){tapestry.load.apply(this, arguments);}),
             error: (function(){tapestry.error.apply(this, arguments);})
 		};
 		
@@ -50,10 +49,12 @@ tapestry={
 		if (typeof json != "undefined" && json == true) {
 			parms.mimetype = "text/json";
 			parms.headers={"json":true};
+			parms.load=(function(){tapestry.loadJson.apply(this, arguments);});
 		} else {
 			parms.headers={"dojo-ajax-request":true};
 			parms.mimetype="text/xml";
 			parms.encoding="UTF-8";
+			parms.load=(function(){tapestry.load.apply(this, arguments);});
 		}
 		
 		dojo.io.queueBind(parms);
@@ -90,9 +91,7 @@ tapestry={
 	 * 
 	 */
 	load:function(type, data, http, kwArgs){
-		if (djConfig["isDebug"]) {
-			dojo.log.debug("Response recieved.", data);
-		}
+		dojo.log.debug("tapestry.load() Response recieved.", data);
 		if (!data) {
 			dojo.log.warn("No data received in response.");
 			return;
@@ -163,6 +162,10 @@ tapestry={
 		for (var i=0; i<initScripts.length; i++) {
 			tapestry.loadScriptContent(initScripts[i], true);
 		}
+	},
+	
+	loadJson:function(type, data, http, kwArgs){
+		dojo.log.debug("tapestry.loadJson() Response recieved.", data);
 	},
 	
 	/**

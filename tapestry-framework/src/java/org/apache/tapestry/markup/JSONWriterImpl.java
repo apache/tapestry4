@@ -59,12 +59,15 @@ public class JSONWriterImpl implements IJSONWriter
      */
     public void close()
     {
-        if (_json != null && _json.length() > 0) {
+        if (_json == null && _array == null)
+            _json = new JSONObject();
+        
+        if (_json != null) {
             
             _writer.write(_json.toString());
         }
         
-        if (_array != null && _array.length() > 0) {
+        if (_array != null) {
             
             _writer.write(_array.toString());
         }

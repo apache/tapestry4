@@ -90,9 +90,7 @@ public abstract class InlineEditBox extends AbstractWidget implements IDirect
         if (!cycle.isRewinding()) {
             
             writer.begin(getTemplateTagName()); // use whatever template tag they specified
-            
             renderInformalParameters(writer, cycle);
-            
             renderIdAttribute(writer, cycle);
         }
         
