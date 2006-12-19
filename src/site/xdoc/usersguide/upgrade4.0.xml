@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Copyright 2004, 2005 The Apache Software Foundation
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN"
+    "http://maven.apache.org/dtd/xdoc_1_0.dtd">
+<document>
+<properties>
+    <title>Upgrading from 4.0</title>
+</properties>
+<body>
+    <navbar />
+    <section name="Upgrading from 4.0">
+        <p>
+            There have been a large number of bug general bug fixes made in Tapestry 4.1, as well as a large amount of work
+            in the area of "ajax" support in the core framework.
+        </p>
+        <p>
+            This guide will attempt to highlight some of the key changes that might affect people trying to upgrade from <strong>4.0.X</strong> 
+            to the current <strong>4.1.X</strong> version. 
+        </p>
+    </section>
+    
+    <section name="Javascript">
+        <p>
+            One of the largest changes to come about has been the general strategy in dealing with javascript inclusions as well 
+            as bundling of the <a href="http://dojotoolkit.org">Dojo</a> javascript toolkit directly in Tapestry. More about these 
+            packaging changes can be found in the <a href="../javascript/index.html">javascript guide</a>.
+        </p>
+        
+        <ul>
+            <li>
+            <strong>Javascript includes -</strong> The inclusion of dojo now happens automatically if you are using the <a href="../components/general/shell.html">Shell</a> component, 
+            and is in general required for Tapestry to function properly in many circumstances. If don't currently use / can't use the 
+            <a href="../components/general/shell.html">Shell</a> component the same logic is also encapsulated in the 
+            <a href="../components/general/scriptincludes.html">ScriptIncludes</a> component. Both components provide a variety of options 
+            allowing for client side debugging / level of debug statements / whether to use the built in dojo provided or a custom build of your own / etc..
+            </li>
+            
+            <li>
+                <strong>form.events removed -</strong> A good majority of the core Tapestry javascript includes have either been modified or entirely replaced 
+                with new versions that are slightly easier to manage using <a href="http://dojotoolkit.org">Dojo's</a> dynamic module inclusion capability. 
+                <em>Almost</em> 
+                all of the changes are backwards compatible and include new deprecation warning messages when you call one of the old Tapestry javascript
+                functions. The new javascript API's are also heavily documented, which you can browse <a href="../javascript/index.html">here</a>.
+                
+                <br/><br/>
+                
+                There is one change that is unfortunately not backwards compatible with these javascript changes, specifically dealing with the old
+                Form.js javascript functions and how they interact with client side events for the <a href="../components/form/form.html">Form</a> 
+                component. Tapestry used to modify the client side DOM <code>&lt;form&gt;</code> element by attaching a <code>form.events</code> property 
+                to the object. This is no longer the case. Tapestry doesn't modify any of the DOM elements or client side events on your page anymore. While
+                this change has resulted in much easier form handling abilities on the client side it has come with a price of breaking anyone previously
+                relying on this functionality.  
+            </li>
+            
+            <li>
+                <strong>onload and <a href="../components/general/script.html">Script</a> templates -</strong> In previous versions of the framework 
+                Tapestry would try to ensure that javascript was written to the document body in such a way that the various sections of 
+                a <a href="../components/general/script.html">Script</a> template were written out at the correct points in the document to match the 
+                various sections of your template. This has now been modified slightly to use <a href="http://dojotoolkit.org">Dojo's</a> event handling
+                facilities to control this behaviour. 
+                
+                <br/><br/>
+                
+                <strong>Example Javascript Template:</strong>
+<source xml:space="preserve"><![CDATA[
+<script>
+<input-symbol key="component" required="yes"/>
+<let key="formObject">
+    document.${component.form.name}
+</let>
+<let key="componentObject">
+    ${formObject}.${component.name}
+</let>
+
+<body>
+function setFocus() {
+    var inputField = ${componentObject};
+    if (inputField.type != "hidden") {
+        if (inputField.disabled != true) {
+            inputField.focus();
+        }
+    } else {
+         window.alert('InputFocus.script cannot set focus on a hidden field');
+    }
+}
+</body>
+<initialization>
+    setFocus();
+</initialization>
+</script>
+]]></source>
+            
+            <p>
+            In previous versions of the framework the template above would be rendered out as html looking somewhat like:
+            </p>
+<p><strong>Previous Tapestry 4.0.X generated output:</strong></p>
+<source xml:space="preserve"><![CDATA[
+<html>
+<head><title>Sample</title></head>
+
+<body>
+<script type="text/javascript">
+function setFocus() {
+    var inputField = ${componentObject};
+    if (inputField.type != "hidden") {
+        if (inputField.disabled != true) {
+            inputField.focus();
+        }
+    } else {
+         window.alert('InputFocus.script cannot set focus on a hidden field');
+    }
+}
+</script>
+
+<p>Hello! This is my sample page.</p>
+
+<script type="text/javascript">
+setFocus();
+</script>
+</body>
+</html>
+]]></source>
+            
+            <p>With the changes made this section would now be rendered as:</p>
+<p><strong>New Tapestry 4.1.X generated output:</strong></p>
+<source xml:space="preserve"><![CDATA[
+<html>
+<head><title>Sample</title></head>
+
+<body>
+<script type="text/javascript">
+function setFocus() {
+    var inputField = ${componentObject};
+    if (inputField.type != "hidden") {
+        if (inputField.disabled != true) {
+            inputField.focus();
+        }
+    } else {
+         window.alert('InputFocus.script cannot set focus on a hidden field');
+    }
+}
+</script>
+
+<p>Hello! This is my sample page.</p>
+
+<script type="text/javascript">
+dojo.addOnLoad(function(){
+setFocus();
+});
+</script>
+</body>
+</html>
+]]></source>
+            
+            </li>
+        </ul>
+    </section>
+    
+</body>
+</document>
