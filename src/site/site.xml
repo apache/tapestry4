@@ -71,6 +71,7 @@
                 <item name="Configuration" href="/usersguide/configuration.html" />
                 <item name="Shared Properties" href="/usersguide/properties.html" />
                 <item name="Upgrading from 3.0" href="/usersguide/upgrade.html" />
+                <item name="Upgrading from 4.0" href="/usersguide/upgrade4.0.html" />
                 <item name="Specification DTD" href="/usersguide/spec.html" />
                 <item name="Script Template DTD" href="/usersguide/script.html" />
             </item>
