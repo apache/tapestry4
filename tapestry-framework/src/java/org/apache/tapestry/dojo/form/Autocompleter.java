@@ -245,7 +245,7 @@ public abstract class Autocompleter extends AbstractFormWidget implements Valida
     public List getUpdateComponents()
     {
         List comps = new ArrayList();
-        comps.add(getId());
+        comps.add(getClientId());
         
         return comps;
     }
