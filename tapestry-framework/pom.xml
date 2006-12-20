@@ -270,6 +270,21 @@
                     </dependency>
                 </dependencies>
             </plugin>
+            
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>clirr-maven-plugin</artifactId>
+                <configuration>
+                    <comparisonVersion>4.1.1</comparisonVersion>
+                    <minSeverity>info</minSeverity>
+                    <textOutputFile>${project.build.directory}/clirr.txt</textOutputFile>
+                    <excludes>
+                        <exclude>**/internal/**</exclude>
+                        <exclude>**/spi/**</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            
         </plugins>
     </build>
 
