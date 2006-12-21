@@ -52,9 +52,8 @@ public class TestInjectMetaWorker extends BaseComponentTestCase
     {
         return newMock(ComponentPropertySource.class);
     }
-
-    @Test
-    public void testPrimitive()
+    
+    public void test_Primitive()
     {
         Location l = newLocation();
         InjectSpecification spec = newSpec("fooBar", "foo.bar", l);
@@ -92,9 +91,46 @@ public class TestInjectMetaWorker extends BaseComponentTestCase
 
         verify();
     }
+    
+    public void test_Boolean()
+    {
+        Location l = newLocation();
+        InjectSpecification spec = newSpec("fooBar", "foo.bar", l);
+        
+        ComponentPropertySource source = newSource();
+        
+        EnhancementOperation op = newMock(EnhancementOperation.class);
 
-    @Test
-    public void testCharacter()
+        expect(op.getPropertyType("fooBar")).andReturn(boolean.class);
+
+        op.claimReadonlyProperty("fooBar");
+
+        MethodSignature sig = new MethodSignature(boolean.class, "getFooBar", null, null);
+
+        expect(op.addInjectedField(InjectMetaWorker.SOURCE_NAME, ComponentPropertySource.class, source)).andReturn("_source");
+        
+        expect(op.getAccessorMethodName("fooBar")).andReturn("getFooBar");
+
+        BodyBuilder builder = new BodyBuilder();
+        builder.begin();
+        builder.addln("java.lang.String meta = _source.getComponentProperty(this, \"foo.bar\");");
+        builder.addln("return java.lang.Boolean.valueOf(meta).booleanValue();");
+        builder.end();
+
+        op.addMethod(Modifier.PUBLIC, sig, builder.toString(), l);
+
+        replay();
+
+        InjectMetaWorker worker = new InjectMetaWorker();
+
+        worker.setSource(source);
+
+        worker.performEnhancement(op, spec);
+
+        verify();
+    }
+    
+    public void test_Character()
     {
         Location l = newLocation();
         InjectSpecification spec = newSpec("fooBar", "foo.bar", l);
@@ -132,9 +168,8 @@ public class TestInjectMetaWorker extends BaseComponentTestCase
 
         verify();
     }
-
-    @Test
-    public void testObject()
+    
+    public void test_Object()
     {
         Location l = newLocation();
         InjectSpecification spec = newSpec("fooBar", "foo.bar", l);
