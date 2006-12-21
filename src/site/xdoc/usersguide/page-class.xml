@@ -98,7 +98,7 @@
                 <p>
                     These steps are specified in the
                     <a
-                        href="../tapestry/hivedocs/config/tapestry.page.PageClassProviderChain.html">
+                        href="../tapestry-framework/hivedoc/config/tapestry.page.PageClassProviderChain.html">
                         tapestry.page.PageClassProviderChain
                     </a>
                     configuration point.
@@ -145,7 +145,7 @@
                     <p>
                         These steps are specified in the
                         <a
-                            href="../tapestry/hivedocs/config/tapestry.page.ComponentClassProviderChain.html">
+                            href="../tapestry-framework/hivedoc/config/tapestry.page.ComponentClassProviderChain.html">
                             tapestry.page.ComponentClassProviderChain
                         </a>
                         configuration point.

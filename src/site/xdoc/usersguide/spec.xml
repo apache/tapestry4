@@ -123,7 +123,7 @@
                         ) is no longer supported in release 4.0. 3.0 DTD specifications that use
                         &lt;service&gt; will generate a warning. Use the
                         <a
-                            href="../tapestry/hivedocs/service/tapestry.services.ApplicationServices.html">
+                            href="../tapestry-framework/hivedoc/service/tapestry.services.ApplicationServices.html">
                             tapestry.services.ApplicationServices
                         </a>
                         configuration point instead.

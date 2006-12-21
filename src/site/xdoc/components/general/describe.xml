@@ -28,7 +28,7 @@
                 cases, a property may be described recursively. Simple objects may be described as
                 strings. The behavior behind this is extensible, defined in terms of contributions
                 to the
-                <a href="../../tapestry-framework/hivedocs/config/tapestry.describe.DescribableStrategies">
+                <a href="../../tapestry-framework/hivedoc/config/tapestry.describe.DescribableStrategies">
                     tapestry.describe.DescribableStrategies
                 </a>
                 configuration point.
@@ -45,7 +45,7 @@
                         org.apache.tapestry.html.Describe
                     </a>
                     ,
-                    <a href="../../tapestry-framework/hivedocs/service/tapestry.describe.HTMLDescriber">
+                    <a href="../../tapestry-framework/hivedoc/service/tapestry.describe.HTMLDescriber">
                         tapestry.describe.HTMLDescriber
                     </a>
                 </strong>

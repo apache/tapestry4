@@ -49,11 +49,11 @@
 
             <p>
                 Like so much in Tapestry, this list is open to extension. The
-                <a href="../tapestry/hivedocs/config/tapestry.enhance.InjectWorkers.html">
+                <a href="../tapestry-framework/hivedoc/config/tapestry.enhance.InjectWorkers.html">
                     tapestry.enhance.InjectWorkers
                 </a>
                 configuration point defines the available types of injection. The
-                <a href="../tapestry/hivedocs/config/tapestry.enhance.EnhancementWorkers.html">
+                <a href="../tapestry-framework/hivedoc/config/tapestry.enhance.EnhancementWorkers.html">
                     tapestry.enhance.EnhancementWorkers
                 </a>
                 configuration point defines an entire pipeline used to perform runtime code
