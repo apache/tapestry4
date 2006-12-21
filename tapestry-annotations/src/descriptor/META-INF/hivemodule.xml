@@ -131,10 +131,16 @@
     <worker annotation="Asset" object="instance:AssetAnnotationWorker"/>
     <worker annotation="Parameter" object="instance:ParameterAnnotationWorker"/>
     <worker annotation="InjectPage" object="instance:InjectPageAnnotationWorker"/>
-    <worker annotation="Component" object="instance:ComponentAnnotationWorker"/>
+    <worker annotation="Component" object="service:ComponentAnnotationWorker"/>
     <worker annotation="InjectMeta" object="instance:InjectMetaAnnotationWorker"/>
     <worker annotation="InjectScript" object="instance:InjectScriptAnnotationWorker"/>
   </contribution>
+  
+  <service-point id="ComponentAnnotationWorker" interface="MethodAnnotationEnhancementWorker">
+    <invoke-factory>
+      <construct class="ComponentAnnotationWorker" />
+    </invoke-factory>
+  </service-point>
   
   <service-point id="InjectAssetAnnotationWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
     

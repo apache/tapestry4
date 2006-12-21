@@ -16,6 +16,7 @@ package org.apache.tapestry.form;
 
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
@@ -44,10 +45,20 @@ public abstract class Checkbox extends AbstractFormComponent implements Validata
 
         if (isDisabled())
             writer.attribute("disabled", "disabled");
-
-        if (getValue())
+        
+        // write out submitted input for case of validation errors
+        
+        IValidationDelegate delegate = getForm().getDelegate();
+        boolean checked = getValue();
+        if (delegate != null && delegate.isInError()) {
+            
+            checked = Boolean.valueOf(delegate.getFieldInputValue()).booleanValue();
+        }
+        
+        if (checked) {
             writer.attribute("checked", "checked");
-
+        }
+        
         renderIdAttribute(writer, cycle);
 
         getValidatableFieldSupport().renderContributions(this, writer, cycle);
@@ -79,6 +90,7 @@ public abstract class Checkbox extends AbstractFormComponent implements Validata
         catch (ValidatorException e)
         {
             getForm().getDelegate().record(e);
+            getForm().getDelegate().recordFieldInputValue(Boolean.valueOf(value).toString());
         }
     }
 
