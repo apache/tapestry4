@@ -29,6 +29,7 @@ dojo.widget.defineWidget(
 		dialogClass:"alertDialog",
 		contentClass:"alertContent",
 		buttonClass:"alertButton",
+		buttonText:"OK",
 		
 		/**
 		 * Function: postCreate
@@ -50,7 +51,7 @@ dojo.widget.defineWidget(
 			var buttNode=document.createElement("button");
 			dojo.html.setClass(buttNode, this.buttonClass);
 			buttNode.setAttribute("id", "alertButton");
-			buttNode.innerHTML = "Ok";
+			buttNode.innerHTML = this.buttonText;
 			content.appendChild(buttNode);
 			
 			this.okButton=buttNode;

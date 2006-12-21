@@ -36,12 +36,14 @@ import org.testng.annotations.Test;
 @Test(sequential=true)
 public class TestCheckbox extends BaseFormComponentTestCase
 {
-    public void testRenderChecked()
+    
+    public void test_Render_Checked()
     {
         ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
         
-        Checkbox cb = newInstance(Checkbox.class, new Object[]
-        { "name", "assignedName", "value", Boolean.TRUE, "validatableFieldSupport", vfs });
+        Checkbox cb = newInstance(Checkbox.class, 
+                new Object[]{ "name", "assignedName", "value", Boolean.TRUE, 
+            "validatableFieldSupport", vfs });
         
         IForm form = newMock(IForm.class);
         
@@ -69,6 +71,10 @@ public class TestCheckbox extends BaseFormComponentTestCase
         trainGetDelegate(form, delegate);
         
         delegate.writePrefix(writer, cycle, cb, null);
+        expect(delegate.isInError()).andReturn(false).anyTimes();
+        
+        trainGetDelegate(form, delegate);
+        expect(delegate.isInError()).andReturn(false);
         
         vfs.renderContributions(cb, writer, cycle);
         
@@ -108,6 +114,9 @@ public class TestCheckbox extends BaseFormComponentTestCase
         trainGetDelegate(form, delegate);
         delegate.writePrefix(writer, cycle, cb, null);
         
+        trainGetDelegate(form, delegate);
+        expect(delegate.isInError()).andReturn(false);
+        
         vfs.renderContributions(cb, writer, cycle);
         
         trainGetDelegate(form, delegate);
@@ -145,6 +154,8 @@ public class TestCheckbox extends BaseFormComponentTestCase
         trainGetDelegate(form, delegate);
         delegate.writePrefix(writer, cycle, cb, null);
         
+        expect(delegate.isInError()).andReturn(false).anyTimes();
+        
         vfs.renderContributions(cb, writer, cycle);
         
         delegate.writeSuffix(writer, cycle, cb, null);
@@ -175,7 +186,9 @@ public class TestCheckbox extends BaseFormComponentTestCase
         
         delegate.writePrefix(writer, cycle, cb, null);
         
-        // expect(cycle.getUniqueId("foo")).andReturn("foo$unique");
+        trainGetDelegate(form, delegate);
+        
+        expect(delegate.isInError()).andReturn(false).anyTimes();
         
         vfs.renderContributions(cb, writer, cycle);
         
@@ -192,7 +205,7 @@ public class TestCheckbox extends BaseFormComponentTestCase
         assertBuffer("<input type=\"checkbox\" name=\"assignedName\" checked=\"checked\" id=\"assignedName\" />");
     }
 
-    public void testSubmitNull()
+    public void test_Submit_Null()
     {
         ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
     	
@@ -220,7 +233,7 @@ public class TestCheckbox extends BaseFormComponentTestCase
         assertEquals(false, cb.getValue());
     }
 
-    public void testSubmitValidateFailed()
+    public void test_Submit_Validate_Failed()
     {
         ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
         IForm form = newMock(IForm.class);
@@ -244,11 +257,13 @@ public class TestCheckbox extends BaseFormComponentTestCase
         {
         	unreachable();
         }
-
-        expect(form.getDelegate()).andReturn(delegate);
         
+        expect(form.getDelegate()).andReturn(delegate);
         delegate.record(exception);
-
+        
+        expect(form.getDelegate()).andReturn(delegate);
+        delegate.recordFieldInputValue("false");
+        
         replay();
 
         cb.rewindFormComponent(writer, cycle);
@@ -258,7 +273,7 @@ public class TestCheckbox extends BaseFormComponentTestCase
         assertEquals(false, cb.getValue());
     }
 
-    public void testSubmitNonNull()
+    public void test_Submit_Non_Null()
     {
         ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
         
