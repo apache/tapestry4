@@ -42,11 +42,9 @@ public class InjectMetaWorker implements InjectEnhancementWorker
     private ComponentPropertySource _source;
 
     private ValueConverter _valueConverter;
-
+    
     private Map _primitiveParser = new HashMap();
-
     {
-        _primitiveParser.put(boolean.class, "java.lang.Boolean.getBoolean");
         _primitiveParser.put(short.class, "java.lang.Short.parseShort");
         _primitiveParser.put(int.class, "java.lang.Integer.parseInt");
         _primitiveParser.put(long.class, "java.lang.Long.parseLong");
@@ -85,8 +83,12 @@ public class InjectMetaWorker implements InjectEnhancementWorker
         {
             addPrimitive(op, metaKey, propertyName, sig, sourceName, parser, location);
             return;
+        } else if (propertyType == boolean.class) 
+        {
+            addBoolean(op, metaKey, propertyName, sig, sourceName, location);
+            return;
         }
-
+        
         if (propertyType == char.class)
         {
             addCharacterPrimitive(op, metaKey, propertyName, sig, sourceName, location);
@@ -110,7 +112,22 @@ public class InjectMetaWorker implements InjectEnhancementWorker
 
         op.addMethod(Modifier.PUBLIC, sig, builder.toString(), location);
     }
-
+    
+    private void addBoolean(EnhancementOperation op, String metaKey, String propertyName,
+            MethodSignature sig, String sourceName, Location location)
+    {
+        BodyBuilder builder = new BodyBuilder();
+        builder.begin();
+        builder.addln(
+                "java.lang.String meta = {0}.getComponentProperty(this, \"{1}\");",
+                sourceName,
+                metaKey);
+        builder.addln("return java.lang.Boolean.valueOf(meta).booleanValue();");
+        builder.end();
+        
+        op.addMethod(Modifier.PUBLIC, sig, builder.toString(), location);
+    }
+    
     private void addCharacterPrimitive(EnhancementOperation op, String metaKey,
             String propertyName, MethodSignature sig, String sourceName, Location location)
     {
