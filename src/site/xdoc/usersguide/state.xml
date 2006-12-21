@@ -498,7 +498,7 @@ public abstract class MyPage extends <a
                         <a href="hivemind.html">HiveMind module deployment descriptor</a>
                         and add a contribution to the
                         <a
-                            href="../tapestry/hivedocs/config/tapestry.state.ApplicationObjects.html">
+                            href="../tapestry-framework/hivedoc/config/tapestry.state.ApplicationObjects.html">
                             tapestry.state.ApplicationObjects
                         </a>
                         configuration point:
