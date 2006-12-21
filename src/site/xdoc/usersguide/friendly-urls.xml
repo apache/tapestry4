@@ -217,7 +217,7 @@
 
                     <p>
                         This contribution to the
-                        <a href="../tapestry/hivedocs/config/tapestry.url.ServiceEncoders.html">
+                        <a href="../tapestry-framework/hivedoc/config/tapestry.url.ServiceEncoders.html">
                             tapestry.url.ServiceEncoders
                         </a>
                         configuration point creates a

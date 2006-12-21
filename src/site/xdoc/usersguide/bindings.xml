@@ -208,7 +208,7 @@
                 <td>translator</td>
                 <td>
                     <a
-                        href="../tapestry/hivedocs/config/tapestry.form.translator.Translators.html">
+                        href="../tapestry-framework/hivedoc/config/tapestry.form.translator.Translators.html">
                         tapestry.form.translator.Translators
                     </a>
                 </td>
@@ -216,7 +216,7 @@
             <tr>
                 <td>state</td>
                 <td>
-                    <a href="../tapestry/hivedocs/config/tapestry.state.ApplicationObjects.html">
+                    <a href="../tapestry-framework/hivedoc/config/tapestry.state.ApplicationObjects.html">
                         tapestry.state.ApplicationObjects
                     </a>
                 </td>
@@ -224,7 +224,7 @@
             <tr>
                 <td>validator</td>
                 <td>
-                    <a href="../tapestry/hivedocs/config/tapestry.valid.Validators.html">
+                    <a href="../tapestry-framework/hivedoc/config/tapestry.valid.Validators.html">
                         tapestry.valid.Validators
                     </a>
                 </td>
