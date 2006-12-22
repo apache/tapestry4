@@ -21,10 +21,9 @@
     <title>Upgrading from 4.0</title>
 </properties>
 <body>
-    <navbar />
     <section name="Upgrading from 4.0">
         <p>
-            There have been a large number of bug general bug fixes made in Tapestry 4.1, as well as a large amount of work
+            There have been a large number of general bug fixes made in Tapestry 4.1, as well as a lot of work
             in the area of "ajax" support in the core framework.
         </p>
         <p>
@@ -167,7 +166,51 @@ setFocus();
 ]]></source>
             
             </li>
+            
+            <li>
+                <strong><a href="../apidocs/org/apache/tapestry/services/ResponseBuilder.html">ResponseBuilder</a> -</strong> Don't like the way
+                javascript is being managed? Don't want to use <a href="http://dojotoolkit.org">Dojo</a> to manage your javascript either? That's ok 
+                too. 
+                
+                <p>
+                    The new response management system allows for easy contribution to many different response types in Tapestry so that you have 
+                    complete control over the whole process. Currently these different types cover normal html rendering / Dojo XHR responses / JSON 
+                    responses. Feel free to replace one of the existing implementations or add your own. More can be found by looking at the hivemind
+                    configuration point for it <a href="../tapestry-framework/hivedoc/config/tapestry.services.ResponseContributors.html">here</a>.
+                </p>
+            </li>
+            
+            <li>
+                <strong><a href="../apidocs/org/apache/tapestry/IComponent.html#getClientId()">IComponent.getClientId()</a> -</strong> The method 
+                that was previously only available to form components has now been moved back up the chain to IComponent itself. The logic surrounding 
+                generating / working with these client ID's has also undergone extensive refactoring / improvements so that you can reliably use this method
+                for (almost?) all of <em>your</em> and the core Tapestry components. This of course means that all of the core Tapestry components now output 
+                unique <code>id="foo"</code> attributes to support the new method as well. 
+            </li>
+          </ul>
+        
+        <span class="info">
+            <strong>Note:</strong>
+            <p>
+                The logic of what value is actually used for the id attribute varies widely depending on many different
+                things
+                <em>(such as finding informal id parameters)</em>
+                , but all of changes are things to make it more intuitive for you / ie tries to do what you expect most
+                of the time.
+            </p>
+        </span>
+    </section>
+    
+    <section name="Asset Management">
+        <ul>
+          <li>
+            <strong><a href="http://blog.opencomponentry.com/?p=30">Gzip Compression</a> -</strong>
+          </li>
         </ul>
+    </section>
+    
+    <section name="To be continued..">
+        <p>This is very much a work in progress, expect to see much more leak in over the next few weeks.</p>
     </section>
     
 </body>
