@@ -378,6 +378,15 @@
                     conflicts between different script templates, or successive executions of the
                     same script template.
                 </p>
+               
+                <span class="info">
+                    <strong>Note:</strong>
+                    <p>
+                        Starting with Tapestry 4.1.2, unique also ensures that the returned string can
+                        be safely used as a javascript identifier (by replacing hyphens, colons and periods with
+                        underscores).
+                    </p>
+                </span>
 
                 <table>
 
