@@ -58,7 +58,12 @@ class LetToken extends AbstractToken
 
         String value = useBuffer.toString().trim();
 
-        if (_unique) value = session.getUniqueString(value);
+        if (_unique) {
+            value = session.getUniqueString(value);
+            
+            // unique in scripts is mostly used to generate javascript identifiers
+            value = makeValidIdentifier(value);
+        }
 
         symbols.put(_key, value);
 
@@ -67,5 +72,19 @@ class LetToken extends AbstractToken
 
         _bufferLengthHighwater = Math.max(_bufferLengthHighwater, useBuffer
                 .length());
+    }
+    
+    /**
+     * Replaces hyphens, colons and periods (which are allowed in html 
+     * but not in javascript identifiers) with underscores.
+     */
+    private static String makeValidIdentifier(String id) {
+        char[] chars = id.toCharArray();
+        for (int i=0; i<chars.length; i++) {
+            char c = chars[i];
+            if (c==':' || c=='-' || c=='.')
+                chars[i]='_';
+        }
+        return new String(chars);
     }
 }

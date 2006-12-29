@@ -33,4 +33,16 @@
 	Alpha	
 </let>
 
+<let key="id1" unique="yes">
+	form1:field
+</let>
+
+<let key="id2" unique="yes">
+	form1:field	
+</let>
+
+<let key="id3" unique="yes">
+	form1:field-last.name	
+</let>
+
 </script>

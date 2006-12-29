@@ -177,6 +177,10 @@ public class TestScript extends TapestryTestCase
         assertSymbol(symbols, "alpha", "Alpha");
         assertSymbol(symbols, "beta", "Alpha_0");
         assertSymbol(symbols, "gamma", "Alpha_1");
+        
+        assertSymbol(symbols, "id1", "form1_field");
+        assertSymbol(symbols, "id2", "form1_field_0");
+        assertSymbol(symbols, "id3", "form1_field_last_name");
     }
 
     public void testIncludeScript() throws Exception
