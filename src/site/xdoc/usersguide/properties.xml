@@ -211,6 +211,20 @@
                     <td>ClassResolver</td>
                     <td>Object responsible for locating classes and classpath resources.</td>
                 </tr>
+                
+                <tr>
+                    <td>clientId</td>
+                    <td>
+                        <a
+                            href="../apidocs/org/apache/tapestry/IComponent.html">
+                            IComponent
+                        </a>
+                    </td>
+                    <td>String</td>
+                    <td>
+                        The component's client-side element id.
+                    </td>                    
+                </tr>                
 
                 <tr>
                     <td>componentMessagesSource</td>
