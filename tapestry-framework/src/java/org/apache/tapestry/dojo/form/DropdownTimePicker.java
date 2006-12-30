@@ -72,6 +72,8 @@ public abstract class DropdownTimePicker extends AbstractFormWidget implements T
         
         renderInformalParameters(writer, cycle);
         
+        writer.print(" ");
+        
         writer.end();
         renderDelegateSuffix(writer, cycle);
         
