@@ -74,6 +74,8 @@ public abstract class Autocompleter extends AbstractFormWidget implements Valida
         // Apply informal attributes.
         renderInformalParameters(writer, cycle);
         
+        writer.print(" ");
+        
         writer.end();
         renderDelegateSuffix(writer, cycle);
         
