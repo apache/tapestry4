@@ -229,13 +229,13 @@ tapestry={
 	loadScriptContent:function(element, async){
 		if (typeof async == "undefined") { async = true; }
 		
-		var text=tapestry.html.getContentAsString(element);
-		
 		if (tapestry.scriptInFlight) {
 			dojo.log.debug("loadScriptContent(): scriptInFlight is true, sleeping");
-			setTimeout(function() { tapestry.loadScriptContent(text, async);}, 5);
+			setTimeout(function() { tapestry.loadScriptContent(element, async);}, 5);
 			return;
-		}
+		}                
+                
+		var text=tapestry.html.getContentAsString(element);
 		
 		var match = new RegExp(tapestry.ScriptFragment, 'img');
 	    var response = text.replace(match, '');
