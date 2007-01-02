@@ -450,7 +450,7 @@
                         <td>string</td>
                         <td>no</td>
                         <td />
-                        <td>The name of a property into which the asset shoud be `ed.</td>
+                        <td>The name of a property into which the asset shoud be injected.</td>
                     </tr>
 
                 </table>
