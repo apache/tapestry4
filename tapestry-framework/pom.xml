@@ -218,7 +218,7 @@
                 <inherited>true</inherited>
                 <executions>
                     <execution>
-                        <phase>compile</phase>
+                        <phase>site</phase>
                         <configuration>
                             <tasks>
                                 <ant antfile="../support/build.xml" inheritRefs="true">
