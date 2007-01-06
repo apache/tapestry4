@@ -112,7 +112,7 @@ public class TestDropdownTimePicker extends BaseFormComponentTestCase
         
         verify();
         
-        assertBuffer("<span class=\"prefix\"><div id=\"fred\" class=\"validation-delegate\"></div></span>");
+        assertBuffer("<span class=\"prefix\"><div id=\"fred\" class=\"validation-delegate\"> </div></span>");
     }
     
     public void test_Json_Time()
