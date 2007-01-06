@@ -230,7 +230,7 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         
         verify();
         
-        assertBuffer("<span class=\"prefix\"><select name=\"fred\" autocomplete=\"off\" id=\"fred\" class=\"validation-delegate\"></select></span>");
+        assertBuffer("<span class=\"prefix\"><select name=\"fred\" autocomplete=\"off\" id=\"fred\" class=\"validation-delegate\"> </select></span>");
     }
     
     public void test_Render_JSON()
