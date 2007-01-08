@@ -127,7 +127,7 @@ public class FormSupportImpl implements FormSupport
 
     private final List _allocatedIds = new ArrayList();
 
-    private final IdAllocator _elementIdAllocator = new IdAllocator();
+    protected final IdAllocator _elementIdAllocator = new IdAllocator();
 
     private String _encodingType;
 
