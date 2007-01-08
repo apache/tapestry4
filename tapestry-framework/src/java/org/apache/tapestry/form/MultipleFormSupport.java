@@ -52,6 +52,20 @@ public class MultipleFormSupport extends FormSupportImpl
         return super.getElementId(component, _prefix + ":" + baseId);        
     }
     
+    public String peekClientId(IFormComponent comp)
+    {
+        String id = comp.getSpecifiedId();
+        if (id == null)
+            return null;
+        
+        return peekClientId(comp, id);
+    }    
+    
+    protected String peekClientId(IFormComponent comp, String baseId)
+    {        
+        return _elementIdAllocator.peekNextId(_prefix + ":" + baseId);
+    } 
+    
     public String rewind()
     {
         findIdPrefix();
