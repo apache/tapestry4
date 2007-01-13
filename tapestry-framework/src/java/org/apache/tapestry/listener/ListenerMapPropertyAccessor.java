@@ -17,7 +17,12 @@ package org.apache.tapestry.listener;
 import java.util.Map;
 
 import ognl.ObjectPropertyAccessor;
+import ognl.OgnlContext;
 import ognl.OgnlException;
+import ognl.OgnlRuntime;
+import ognl.PropertyAccessor;
+import ognl.enhance.ExpressionCompiler;
+import ognl.enhance.UnsupportedCompilationException;
 
 /**
  * Exposes {@link org.apache.tapestry.IActionListener}&nbsp;listeners provided
@@ -28,7 +33,7 @@ import ognl.OgnlException;
  * @since 2.2
  */
 
-public class ListenerMapPropertyAccessor extends ObjectPropertyAccessor
+public class ListenerMapPropertyAccessor extends ObjectPropertyAccessor implements PropertyAccessor
 {
 
     /**
@@ -64,5 +69,35 @@ public class ListenerMapPropertyAccessor extends ObjectPropertyAccessor
 
         return super.hasGetProperty(context, target, oname);
     }
-
+    
+    public Class getPropertyClass(OgnlContext context, Object target, Object name)
+    {
+        ListenerMap map = (ListenerMap) target;
+        String listenerName = (String) name;
+        
+        if (map.canProvideListener(listenerName))
+            return map.getListener(listenerName).getClass();
+        
+        return super.getPropertyClass(context, target, name);
+    }
+    
+    public String getSourceAccessor(OgnlContext context, Object target, Object name)
+    {
+        ListenerMap map = (ListenerMap) target;
+        String listenerName = ((String)name).replaceAll("\"", "");
+        
+        if (map.canProvideListener(listenerName)) {
+            ExpressionCompiler.addCastString(context, "((" 
+                    + OgnlRuntime.getCompiler().getInterfaceClass(map.getListener(listenerName).getClass()).getName() + ")");
+            
+            return ".getListener(" + name + "))";
+        }
+        
+        return super.getSourceAccessor(context, target, name);
+    }
+    
+    public String getSourceSetter(OgnlContext context, Object target, Object name)
+    {
+        throw new UnsupportedCompilationException("Can't set listeners on ListenerMap.");
+    }
 }

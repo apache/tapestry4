@@ -17,7 +17,12 @@ package org.apache.tapestry.bean;
 import java.util.Map;
 
 import ognl.ObjectPropertyAccessor;
+import ognl.OgnlContext;
 import ognl.OgnlException;
+import ognl.OgnlRuntime;
+import ognl.PropertyAccessor;
+import ognl.enhance.ExpressionCompiler;
+import ognl.enhance.UnsupportedCompilationException;
 
 import org.apache.tapestry.IBeanProvider;
 
@@ -34,7 +39,7 @@ import org.apache.tapestry.IBeanProvider;
  *
  **/
 
-public class BeanProviderPropertyAccessor extends ObjectPropertyAccessor
+public class BeanProviderPropertyAccessor extends ObjectPropertyAccessor implements PropertyAccessor
 {
     /**
      *  Checks to see if the name matches the name of a bean inside
@@ -63,12 +68,42 @@ public class BeanProviderPropertyAccessor extends ObjectPropertyAccessor
     public boolean hasGetProperty(Map context, Object target, Object oname) throws OgnlException
     {
         IBeanProvider provider = (IBeanProvider)target;
-        String beanName = (String)oname;
+        String beanName = ((String)oname).replaceAll("\"", "");
 
         if (provider.canProvideBean(beanName))
             return true;
             
         return super.hasGetProperty(context, target, oname);
     }
-
+    
+    public Class getPropertyClass(OgnlContext context, Object target, Object name)
+    {
+        IBeanProvider provider = (IBeanProvider)target;
+        String beanName = ((String)name).replaceAll("\"", "");
+        
+        if (provider.canProvideBean(beanName))
+            return provider.getBean(beanName).getClass();
+        
+        return super.getPropertyClass(context, target, name);
+    }
+    
+    public String getSourceAccessor(OgnlContext context, Object target, Object name)
+    {
+        IBeanProvider provider = (IBeanProvider)target;
+        String beanName = ((String)name).replaceAll("\"", "");
+        
+        if (provider.canProvideBean(beanName)) {
+            ExpressionCompiler.addCastString(context, "((" 
+                    + OgnlRuntime.getCompiler().getInterfaceClass(provider.getBean(beanName).getClass()).getName() + ")");
+            
+            return ".getBean(" + name + "))";
+        }
+        
+        return super.getSourceAccessor(context, target, name);
+    }
+    
+    public String getSourceSetter(OgnlContext context, Object target, Object name)
+    {
+        throw new UnsupportedCompilationException("Can't set beans on IBeanProvider.");
+    }
 }

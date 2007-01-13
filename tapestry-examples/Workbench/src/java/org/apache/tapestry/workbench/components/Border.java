@@ -48,13 +48,13 @@ public abstract class Border extends BaseComponent implements PageBeginRenderLis
 
     @Message
     public abstract String getTabOrder();
-
+    
     public void pageBeginRender(PageEvent event)
     {
         Visit visit = getVisit();
 
         setActivePageName(visit.getActiveTabName());
-
+        
         if (_tabOrder == null)
             _tabOrder = TapestryUtils.split(getTabOrder(), ' ');
     }

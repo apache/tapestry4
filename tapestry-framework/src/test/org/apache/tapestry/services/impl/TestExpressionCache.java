@@ -14,8 +14,13 @@
 
 package org.apache.tapestry.services.impl;
 
+import static org.easymock.EasyMock.expect;
+import ognl.Node;
+import ognl.OgnlContext;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponentTestCase;
+import org.apache.tapestry.services.ExpressionEvaluator;
 import org.testng.annotations.Test;
 
 /**
@@ -27,7 +32,7 @@ import org.testng.annotations.Test;
 @Test
 public class TestExpressionCache extends BaseComponentTestCase
 {
-    public void testValidExpression()
+    public void test_Valid_Expression()
     {
         ExpressionCacheImpl ec = new ExpressionCacheImpl();
 
@@ -36,10 +41,10 @@ public class TestExpressionCache extends BaseComponentTestCase
         assertNotNull(compiled);
     }
 
-    public void testCaching()
+    public void test_Caching()
     {
         ExpressionCacheImpl ec = new ExpressionCacheImpl();
-
+        
         Object c1 = ec.getCompiledExpression("foo + bar");
         Object c2 = ec.getCompiledExpression("zip.zap.zoom");
         Object c3 = ec.getCompiledExpression("foo + bar");
@@ -48,7 +53,32 @@ public class TestExpressionCache extends BaseComponentTestCase
         assertNotSame(c1, c2);
     }
 
-    public void testInvalidExpression()
+    public void test_Compiled_Caching()
+    {
+        ExpressionEvaluator evaluator = newMock(ExpressionEvaluator.class);
+        ExpressionCacheImpl ec = new ExpressionCacheImpl();
+        ec.setEvaluator(evaluator);
+        
+        BasicObject target = new BasicObject();
+        OgnlContext context = new OgnlContext();
+        
+        expect(evaluator.createContext(target)).andReturn(context);
+        
+        replay();
+        
+        Node e1 = (Node)ec.getCompiledExpression(target, "value");
+        
+        assertNotNull(e1.getAccessor());
+        assertEquals(e1.getAccessor().get(context, target), "foo");
+        
+        Node e2 = (Node)ec.getCompiledExpression(target, "value");
+        
+        assertSame(e1, e2);
+        
+        verify();
+    }
+    
+    public void test_Invalid_Expression()
     {
         ExpressionCacheImpl ec = new ExpressionCacheImpl();
 
@@ -62,18 +92,29 @@ public class TestExpressionCache extends BaseComponentTestCase
             assertExceptionSubstring(ex, "Unable to parse OGNL expression 'foo and bar and'");
         }
     }
-
-    public void testClearCache()
+    
+    public void test_Clear_Cache()
     {
+        ExpressionEvaluator evaluator = newMock(ExpressionEvaluator.class);
         ExpressionCacheImpl ec = new ExpressionCacheImpl();
-
-        Object c1 = ec.getCompiledExpression("foo + bar");
-
+        ec.setEvaluator(evaluator);
+        
+        BasicObject target = new BasicObject();
+        OgnlContext context = new OgnlContext();
+        
+        expect(evaluator.createContext(target)).andReturn(context).anyTimes();
+        
+        replay();
+        
+        Node e1 = (Node)ec.getCompiledExpression(target, "value");
+        
         ec.resetEventDidOccur();
-
-        Object c2 = ec.getCompiledExpression("foo + bar");
-
-        assertNotSame(c1, c2);
+        
+        Node e2 = (Node)ec.getCompiledExpression(target, "value");
+        
+        assertNotSame(e1, e2);
+        
+        verify();
     }
 
 }

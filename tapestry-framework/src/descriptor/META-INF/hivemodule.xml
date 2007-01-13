@@ -22,6 +22,14 @@
   <dependency module-id="hivemind" version="1.1.0"/>
   <dependency module-id="hivemind.lib" version="1.1.0"/>
   
+  <implementation service-id="hivemind.ClassFactory" >
+    
+    Wrapper around Javassist used to dynamically create classes such as service interceptors.
+    
+    <create-instance class="org.apache.tapestry.enhance.ClassFactoryImpl" model="primitive"/>
+    
+  </implementation>
+  
   <sub-module descriptor="tapestry.init.xml"/>
   <sub-module descriptor="tapestry.globals.xml"/>
   <sub-module descriptor="tapestry.props.xml"/>

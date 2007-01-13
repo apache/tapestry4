@@ -135,12 +135,17 @@ public class JSONResponseBuilder implements ResponseBuilder
             _contentType.setParameter(ENCODING_KEY, encoding);
         }
         
-        // _output = new ByteArrayOutputStream();
-        
-        PrintWriter printWriter = _response.getPrintWriter(_contentType);
-        // PrintWriter printWriter = new PrintWriter(_output, true);
-        
-        _writer = _markupWriterSource.newJSONWriter(printWriter, _contentType);
+        if (_writer == null) {
+            
+            // _output = new ByteArrayOutputStream();
+
+            PrintWriter printWriter = _response.getPrintWriter(_contentType);
+            // PrintWriter printWriter = new PrintWriter(_output, true);
+
+            _writer = _markupWriterSource.newJSONWriter(printWriter, _contentType);
+            
+            parseParameters(cycle);
+        }
         
         // Important - causes any cookies stored to properly be written out before the
         // rest of the response starts being written - see TAPESTRY-825
@@ -148,8 +153,6 @@ public class JSONResponseBuilder implements ResponseBuilder
         _writer.flush();
         
         // render response
-        
-        parseParameters(cycle);
         
         _prs = new PageRenderSupportImpl(_assetFactory, _namespace, cycle.getPage().getLocation(), this);
         

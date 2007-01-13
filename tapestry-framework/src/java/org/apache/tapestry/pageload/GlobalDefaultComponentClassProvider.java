@@ -21,8 +21,7 @@ package org.apache.tapestry.pageload;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class GlobalDefaultComponentClassProvider implements
-        ComponentClassProvider
+public class GlobalDefaultComponentClassProvider implements ComponentClassProvider
 {
 
     private String _componentClassName;
@@ -32,8 +31,7 @@ public class GlobalDefaultComponentClassProvider implements
         _componentClassName = componentClassName;
     }
 
-    public String provideComponentClassName(
-            ComponentClassProviderContext context)
+    public String provideComponentClassName(ComponentClassProviderContext context)
     {
         return _componentClassName;
     }

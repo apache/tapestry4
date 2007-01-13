@@ -488,12 +488,10 @@ public class EnhancementOperationImpl implements EnhancementOperation
         if (_constructorBuilder != null)
         {
             _constructorBuilder.end();
-
-            Class[] types = (Class[]) _constructorTypes
-                    .toArray(new Class[_constructorTypes.size()]);
-
-            _classFab.addConstructor(types, null, _constructorBuilder
-                    .toString());
+            
+            Class[] types = (Class[]) _constructorTypes.toArray(new Class[_constructorTypes.size()]);
+            
+            _classFab.addConstructor(types, null, _constructorBuilder.toString());
         }
 
         if (_log != null) _log.debug("Creating class:\n\n" + _classFab);
@@ -624,8 +622,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
         {
             try
             {
-                return c.getDeclaredMethod(sig.getName(), sig
-                        .getParameterTypes());
+                return c.getDeclaredMethod(sig.getName(), sig.getParameterTypes());
             }
             catch (NoSuchMethodException ex)
             {

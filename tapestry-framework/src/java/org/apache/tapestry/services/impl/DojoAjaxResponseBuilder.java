@@ -181,21 +181,23 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
             _contentType.setParameter(ENCODING_KEY, encoding);
         }
         
-        // _output = new ByteArrayOutputStream();
-        
-        PrintWriter printWriter = _response.getPrintWriter(_contentType);
-        // PrintWriter printWriter = new PrintWriter(_output, true);
-        
-        _writer = _markupWriterSource.newMarkupWriter(printWriter, _contentType);
+        if (_writer == null) {
+            // _output = new ByteArrayOutputStream();
+            
+            PrintWriter printWriter = _response.getPrintWriter(_contentType);
+            // PrintWriter printWriter = new PrintWriter(_output, true);
+            
+            _writer = _markupWriterSource.newMarkupWriter(printWriter, _contentType);
+            
+            parseParameters(cycle);
+            
+            beginResponse();
+        }
         
         // Important - causes any cookies stored to properly be written out before the
         // rest of the response starts being written - see TAPESTRY-825
         
         _writer.flush();
-        
-        parseParameters(cycle);
-        
-        beginResponse();
         
         // render response
         

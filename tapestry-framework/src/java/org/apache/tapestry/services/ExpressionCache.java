@@ -28,6 +28,20 @@ public interface ExpressionCache
      * 
      * @throws org.apache.hivemind.ApplicationRuntimeException
      *             if the expression is not valid
+     * @deprecated To be removed in Tapestry 4.2, use {@link #getCompiledExpression(Object, String)} instead.
      */
     Object getCompiledExpression(String expression);
+    
+    /**
+     * Returns the compiled ognl expression for the given target object class / expression
+     * combination.
+     * 
+     * @param target
+     *          The object this expression is to be used for.
+     * @param expression
+     *          The expression.
+     * @return
+     *      The compiled (or new if neccessary) ognl statement.
+     */
+    Object getCompiledExpression(Object target, String expression);
 }

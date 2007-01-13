@@ -108,7 +108,7 @@
             <dependency>
                 <groupId>jboss</groupId>
                 <artifactId>javassist</artifactId>
-                <version>3.0</version>
+                <version>3.4.ga</version>
                 <scope>runtime</scope>
             </dependency>
             <dependency>

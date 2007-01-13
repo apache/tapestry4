@@ -37,6 +37,7 @@
       <construct class="impl.ExpressionCacheImpl">
         <event-listener service-id="tapestry.ResetEventHub"/>
         <event-listener service-id="tapestry.describe.ReportStatusHub"/>
+        <set-service property="evaluator" service-id="ExpressionEvaluator"/>
       </construct>
     </invoke-factory>
   </service-point>
@@ -98,7 +99,7 @@
   <contribution configuration-id="PropertyAccessors">
     
     <accessor class="org.apache.tapestry.IBeanProvider" object="instance:org.apache.tapestry.bean.BeanProviderPropertyAccessor"/>
-    <accessor class="org.apache.tapestry.listener.ListenerMap"
-      object="instance:org.apache.tapestry.listener.ListenerMapPropertyAccessor"/>
+    <accessor class="org.apache.tapestry.listener.ListenerMap" object="instance:org.apache.tapestry.listener.ListenerMapPropertyAccessor"/>
   </contribution>
+  
 </module>
