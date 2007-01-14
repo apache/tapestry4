@@ -86,10 +86,10 @@ public class ExpressionCacheImpl implements ExpressionCache, ResetEventListener,
             
             Node result = (Node)cached.get(expression);
             
-            if (result == null)
+            if (result == null || result.getAccessor() == null)
             {
-                
                 result = parse(target, expression);
+                
                 cached.put(expression, result);
             }
             

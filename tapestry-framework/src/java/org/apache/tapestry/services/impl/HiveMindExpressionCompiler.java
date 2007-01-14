@@ -192,15 +192,17 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
             
         } catch (UnsupportedCompilationException uc) {
             
-            //System.out.println("Unsupported getter compilation caught: " + uc.getMessage());
+            //System.out.println("Unsupported getter compilation caught: " + uc.getMessage() + " for expression: " + expression.toString());
             
+            return;
+            /*
             getBody = generateOgnlGetter(classFab, valueGetter);
             
             if (!classFab.containsMethod(expressionSetter)) {
                 
                 classFab.addField("_node", Node.class);
                 classFab.addMethod(Modifier.PUBLIC, expressionSetter, "{ _node = $1; }");
-            }
+            }*/
         }
         
         classFab.addMethod(Modifier.PUBLIC, valueGetter, getBody);
@@ -211,7 +213,7 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
             
         } catch (UnsupportedCompilationException uc) {
             
-            //System.out.println("Unsupported setter compilation caught: " + uc.getMessage());
+            //System.out.println("Unsupported setter compilation caught: " + uc.getMessage() + " for expression: " + expression.toString());
             
             setBody = generateOgnlSetter(classFab, valueSetter);
             

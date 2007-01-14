@@ -111,7 +111,7 @@
                     <systemProperties>
                         <systemProperty>
                             <name>org.apache.tapestry.disable-caching</name>
-                            <value>false</value>
+                            <value>true</value>
                         </systemProperty>
                     </systemProperties>
                 </configuration>

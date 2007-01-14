@@ -123,7 +123,10 @@ public class ExpressionBinding extends AbstractBinding
                 _accessor = _parsedExpression.getAccessor();
             }
             
-            return _evaluator.read(_root, _accessor);
+            if (_accessor != null)
+                return _evaluator.read(_root, _accessor);
+            
+            return _evaluator.readCompiled(_root, _parsedExpression);
         }
         catch (Throwable t)
         {
