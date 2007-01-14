@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import ognl.ClassResolver;
+import ognl.Node;
 import ognl.Ognl;
 import ognl.OgnlContext;
 import ognl.OgnlRuntime;
@@ -96,7 +97,14 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator
 
     public Object read(Object target, String expression)
     {
-        return readCompiled(target, _expressionCache.getCompiledExpression(expression));
+        Node node = (Node)_expressionCache.getCompiledExpression(target, expression);
+        
+        if (node.getAccessor() != null)
+            return read(target, node.getAccessor());
+        
+        return readCompiled(target, node);
+        
+        //return read(target, _expressionCache.getCompiledExpression(expression));
     }
 
     public Object readCompiled(Object target, Object expression)
