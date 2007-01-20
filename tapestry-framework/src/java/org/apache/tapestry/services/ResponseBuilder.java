@@ -95,6 +95,15 @@ public interface ResponseBuilder extends PageRenderSupport {
     boolean isDynamic();
     
     /**
+     * Causes the output stream to be flushed, used primarily in concert with {@link IRequestCycle} to sync
+     * up flushing of headers to the browser once any page changes have been committed.
+     * 
+     * @throws IOException
+     */
+    void flush()
+    throws IOException;
+    
+    /**
      * Renders the response to a client. Handles transitioning logic
      * for setting up page and associated components for response.
      * 

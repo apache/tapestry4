@@ -13,14 +13,11 @@
 // limitations under the License.
 package org.apache.tapestry.services.impl;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.zip.GZIPOutputStream;
 
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.Defense;
@@ -41,7 +38,6 @@ import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.ContentType;
 import org.apache.tapestry.util.PageRenderSupportImpl;
-import org.apache.tapestry.util.io.GzipUtil;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
 
@@ -63,10 +59,9 @@ public class JSONResponseBuilder implements ResponseBuilder
     
     protected RequestLocaleManager _localeManager;
     protected MarkupWriterSource _markupWriterSource;
-    private WebRequest _request;
+    
     private WebResponse _response;
     
-    private ByteArrayOutputStream _output;
     private ContentType _contentType;
     
     private final AssetFactory _assetFactory;
@@ -98,9 +93,9 @@ public class JSONResponseBuilder implements ResponseBuilder
         _localeManager = localeManager;
         _markupWriterSource = markupWriterSource;
         _response = webResponse;
-        _request = request;
         
         // Used by PageRenderSupport
+        
         _assetFactory = assetFactory;
         _namespace = namespace;
     }
@@ -135,21 +130,16 @@ public class JSONResponseBuilder implements ResponseBuilder
             _contentType.setParameter(ENCODING_KEY, encoding);
         }
         
-        // _output = new ByteArrayOutputStream();
-        
-        PrintWriter printWriter = _response.getPrintWriter(_contentType);
-        // PrintWriter printWriter = new PrintWriter(_output, true);
-        
-        _writer = _markupWriterSource.newJSONWriter(printWriter, _contentType);
-        
-        // Important - causes any cookies stored to properly be written out before the
-        // rest of the response starts being written - see TAPESTRY-825
-        
-        _writer.flush();
+        if (_writer == null) {
+            
+            parseParameters(cycle);
+
+            PrintWriter printWriter = _response.getPrintWriter(_contentType);
+            
+            _writer = _markupWriterSource.newJSONWriter(printWriter, _contentType);
+        }
         
         // render response
-        
-        parseParameters(cycle);
         
         _prs = new PageRenderSupportImpl(_assetFactory, _namespace, cycle.getPage().getLocation(), this);
         
@@ -160,41 +150,15 @@ public class JSONResponseBuilder implements ResponseBuilder
         TapestryUtils.removePageRenderSupport(cycle);
         
         _writer.close();
-        
-        // writeResponse();
     }
     
-    /**
-     * Causes the actual / real response to be written to the output stream.
-     */
-    void writeResponse()
+    public void flush()
     throws IOException
     {
-        byte[] data = _output.toByteArray();
+        // Important - causes any cookies stored to properly be written out before the
+        // rest of the response starts being written - see TAPESTRY-825
         
-        if (GzipUtil.isGzipCapable(_request)) {
-            
-            // reset data buffer
-            _output.reset();
-            
-            GZIPOutputStream gzip = new GZIPOutputStream(_output);
-            
-            gzip.write(data);
-            gzip.close();
-            
-            data = _output.toByteArray();
-            
-            _response.setHeader("Content-Encoding", "gzip");
-        }
-        
-        _response.setContentLength(data.length);
-        
-        OutputStream output = _response.getOutputStream(_contentType);
-        
-        output.write(data);
-        
-        output.flush();
-        output.close();
+        _writer.flush();
     }
     
     /**

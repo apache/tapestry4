@@ -123,7 +123,7 @@ public class TestPortletRenderer extends BaseComponentTestCase
         return cycle;
     }
 
-    public void testSuccess() throws Exception
+    public void test_Success() throws Exception
     {
         ContentType ct = new ContentType("text/html");
         PrintWriter pw = newPrintWriter();
@@ -135,8 +135,6 @@ public class TestPortletRenderer extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         
         expect(writer.getNestedWriter()).andReturn((NestedMarkupWriter)nested);
-        
-        nested.flush();
         
         MarkupWriterSource source = newSource(pw, ct, writer);
         IPage page = newPage(ct);

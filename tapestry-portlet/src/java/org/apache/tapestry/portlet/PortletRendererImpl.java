@@ -63,7 +63,7 @@ public class PortletRendererImpl implements PortletRenderer
                 contentType);
         
         String namespace = _response.getNamespace();
-
+        
         IMarkupWriter nested = writer.getNestedWriter();
         
         ResponseBuilder builder = new DefaultResponseBuilder(nested, _assetFactory, namespace, false);
@@ -71,7 +71,7 @@ public class PortletRendererImpl implements PortletRenderer
         builder.renderResponse(cycle);
         
         String id = "Tapestry Portlet " + _applicationId + " " + namespace;
-
+        
         writer.comment("BEGIN " + id);
         writer.comment("Page: " + page.getPageName());
         writer.comment("Generated: " + new Date());
@@ -86,7 +86,7 @@ public class PortletRendererImpl implements PortletRenderer
         writer.comment("END " + id);
         
         writer.close();
-
+        
         // TODO: Trap errors and do some error reporting here?
     }
 
