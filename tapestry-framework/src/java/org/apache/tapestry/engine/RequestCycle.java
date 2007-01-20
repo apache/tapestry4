@@ -519,6 +519,20 @@ public class RequestCycle implements IRequestCycle
 
             recorder.commit();
         }
+        
+        try {
+            
+            // cause headers / cookies to be flushed out to browser 
+
+            _responseBuilder.flush();
+        
+        } catch (Throwable ex)
+        {
+            // But wrap other exceptions in a ApplicationRuntimeException ... this
+            // will ensure that some of the context is available.
+            
+            throw new ApplicationRuntimeException(ex.getMessage(), getPage(), null, ex);
+        }
     }
 
     /**

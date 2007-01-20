@@ -140,6 +140,8 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         IMarkupWriter writer = newMock(IMarkupWriter.class);
         NestedMarkupWriter nested = newMock(NestedMarkupWriter.class);
         
+        Infrastructure infra = newMock(Infrastructure.class);
+        
         List parts = new ArrayList();
         parts.add("id1");
         
@@ -150,6 +152,18 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         expect(comp1.getClientId()).andReturn("id1").anyTimes();
         
         expect(comp1.peekClientId()).andReturn("id1").anyTimes();
+        
+        expect(cycle.getInfrastructure()).andReturn(infra);
+        
+        expect(infra.getOutputEncoding()).andReturn("UTF-8");
+        
+        writer.printRaw("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+        writer.printRaw("<!DOCTYPE html "
+                + "PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" "
+                + "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\" [\n"
+                + "<!ENTITY nbsp '&#160;'>\n"
+                + "]>\n");
+        writer.printRaw("<ajax-response>");
         
         expect(writer.getNestedWriter()).andReturn(nested);
         

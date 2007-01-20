@@ -106,6 +106,7 @@ public class DefaultResponseBuilder implements ResponseBuilder
         _webResponse = webResponse;
         
         // Used by PageRenderSupport
+        
         _assetFactory = assetFactory;
         _namespace = namespace;
     }
@@ -148,11 +149,6 @@ public class DefaultResponseBuilder implements ResponseBuilder
             _writer = _markupWriterSource.newMarkupWriter(printWriter, contentType);
         }
         
-        // Important - causes any cookies stored to properly be written out before the
-        // rest of the response starts being written - see TAPESTRY-825
-        
-        _writer.flush();
-        
         // render response
         
         _prs = new PageRenderSupportImpl(_assetFactory, _namespace, cycle.getPage().getLocation(), this);
@@ -165,6 +161,15 @@ public class DefaultResponseBuilder implements ResponseBuilder
         
         if (_closeWriter)
             _writer.close();
+    }
+    
+    public void flush()
+    throws IOException
+    {
+        // Important - causes any cookies stored to properly be written out before the
+        // rest of the response starts being written - see TAPESTRY-825
+
+        _writer.flush();
     }
     
     /**

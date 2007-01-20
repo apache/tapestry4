@@ -113,6 +113,8 @@ public class FormSupportImpl implements FormSupport
 
     protected final IRequestCycle _cycle;
     
+    protected final IdAllocator _elementIdAllocator = new IdAllocator();
+    
     /**
      * Used when rewinding the form to figure to match allocated ids (allocated during the rewind)
      * against expected ids (allocated in the previous request cycle, when the form was rendered).
@@ -126,8 +128,6 @@ public class FormSupportImpl implements FormSupport
      */
 
     private final List _allocatedIds = new ArrayList();
-
-    protected final IdAllocator _elementIdAllocator = new IdAllocator();
 
     private String _encodingType;
 

@@ -13,16 +13,13 @@
 // limitations under the License.
 package org.apache.tapestry.services.impl;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.GZIPOutputStream;
 
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.Defense;
@@ -46,7 +43,6 @@ import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.ContentType;
 import org.apache.tapestry.util.PageRenderSupportImpl;
 import org.apache.tapestry.util.ScriptUtils;
-import org.apache.tapestry.util.io.GzipUtil;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
 
@@ -70,11 +66,10 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     // used to create IMarkupWriter
     private RequestLocaleManager _localeManager;
     private MarkupWriterSource _markupWriterSource;
-    private WebRequest _request;
     private WebResponse _response;
+    
     private List _errorPages;
     
-    private ByteArrayOutputStream _output;
     private ContentType _contentType;
     
     // our response writer
@@ -93,6 +88,12 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      * as exception pages or pages activated via {@link IRequestCycle#activate(IPage)}.
      */
     private boolean _pageRender = false;
+    
+    /**
+     * Used to keep track of whether or not the appropriate xml response start
+     * block has been started.
+     */
+    private boolean _responseStarted = false;
     
     /**
      * Creates a builder with a pre-configured {@link IMarkupWriter}. 
@@ -143,11 +144,11 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         _localeManager = localeManager;
         _markupWriterSource = markupWriterSource;
         _response = webResponse;
-        _request = request;
         _errorPages = errorPages;
         _pageService = service;
         
         // Used by PageRenderSupport
+        
         _assetFactory = assetFactory;
         _namespace = namespace;
     }
@@ -181,21 +182,14 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
             _contentType.setParameter(ENCODING_KEY, encoding);
         }
         
-        // _output = new ByteArrayOutputStream();
-        
-        PrintWriter printWriter = _response.getPrintWriter(_contentType);
-        // PrintWriter printWriter = new PrintWriter(_output, true);
-        
-        _writer = _markupWriterSource.newMarkupWriter(printWriter, _contentType);
-        
-        // Important - causes any cookies stored to properly be written out before the
-        // rest of the response starts being written - see TAPESTRY-825
-        
-        _writer.flush();
-        
-        parseParameters(cycle);
-        
-        beginResponse();
+        if (_writer == null) {
+            
+            parseParameters(cycle);
+            
+            PrintWriter printWriter = _response.getPrintWriter(_contentType);
+            
+            _writer = _markupWriterSource.newMarkupWriter(printWriter, _contentType);
+        }
         
         // render response
         
@@ -210,41 +204,18 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         endResponse();
         
         _writer.close();
-        
-        // writeResponse();
     }
     
-    /**
-     * Causes the actual / real response to be written to the output stream.
-     */
-    void writeResponse()
+    public void flush()
     throws IOException
     {
-        byte[] data = _output.toByteArray();
+        // Important - causes any cookies stored to properly be written out before the
+        // rest of the response starts being written - see TAPESTRY-825
         
-        if (GzipUtil.isGzipCapable(_request)) {
-            
-            // reset data buffer
-            _output.reset();
-            
-            GZIPOutputStream gzip = new GZIPOutputStream(_output);
-            
-            gzip.write(data);
-            gzip.close();
-            
-            data = _output.toByteArray();
-            
-            _response.setHeader("Content-Encoding", "gzip");
-        }
+        _writer.flush();
         
-        _response.setContentLength(data.length);
-        
-        OutputStream output = _response.getOutputStream(_contentType);
-        
-        output.write(data);
-        
-        output.flush();
-        output.close();
+        if (!_responseStarted)
+            beginResponse();
     }
     
     /** 
@@ -592,6 +563,9 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     {
         Defense.notNull(id, "id can't be null");
         
+        if (!_responseStarted)
+            beginResponse();
+        
         IMarkupWriter w = (IMarkupWriter)_writers.get(id);
         if (w != null) 
             return w;
@@ -619,6 +593,8 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      */
     void beginResponse()
     {
+        _responseStarted = true;
+        
         _writer.printRaw("<?xml version=\"1.0\" encoding=\"" + _cycle.getInfrastructure().getOutputEncoding() + "\"?>");
         _writer.printRaw("<!DOCTYPE html "
                 + "PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" "
