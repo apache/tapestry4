@@ -25,7 +25,7 @@ import org.apache.tapestry.timetracker.model.Project;
  * 
  * @author jkuhnert
  */
-public class ProjectDao extends BaseDao
+public class ProjectDao extends BaseDao implements GenericDao<Project>
 {
     
     /**
@@ -41,7 +41,7 @@ public class ProjectDao extends BaseDao
      * 
      * @return All projects.
      */
-    public List<Project> listProjects()
+    public List<Project> list()
     {
         List<Project> ret = new ArrayList();
         PreparedStatement ps = null;

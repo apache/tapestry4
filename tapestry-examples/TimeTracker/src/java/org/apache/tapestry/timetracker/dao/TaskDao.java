@@ -14,6 +14,9 @@
 package org.apache.tapestry.timetracker.dao;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.tapestry.timetracker.model.Task;
 
@@ -21,10 +24,53 @@ import org.apache.tapestry.timetracker.model.Task;
 /**
  * Manages DB operations for {@link Task}s.
  * 
- * @author jkuhnert
  */
-public class TaskDao extends BaseDao
+public class TaskDao extends BaseDao implements GenericDao<Task>
 {
+    
+    /**
+     * Creates a list of all tasks.
+     * 
+     * @return All projects.
+     */
+    public List<Task> list()
+    {
+        List<Task> ret = new ArrayList();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        try {
+            ps = _conn.prepareStatement("select task_id, project_id, start_dt, end_dt, descr_txt from tasks");
+            rs = ps.executeQuery();
+            
+            int x = 0;
+            while (rs.next()) {
+                x = 0;
+                
+                Task task = new Task();
+                
+                task.setId(rs.getLong(++x));
+                task.setProjectId(rs.getLong(++x));
+                task.setStartDate(rs.getTimestamp(++x));
+                task.setEndDate(rs.getTimestamp(++x));
+                
+                ret.add(task);
+            }
+            
+            return ret;
+            
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            try { if (rs != null) rs.close(); } catch (Exception e) { }
+            try { if (ps != null) ps.close(); } catch (Exception e) { }
+        }
+    }
+    
+    public void update(Task task)
+    {
+        
+    }
     
     /**
      * Adds a new task to the project.

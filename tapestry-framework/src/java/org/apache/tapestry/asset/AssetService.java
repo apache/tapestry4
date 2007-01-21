@@ -278,39 +278,13 @@ public class AssetService implements IEngineService
     {
         if (path == null) 
             return null;
-
-        String tpath = translateCssPath(path);
         
-        String ret = FilenameUtils.normalize(tpath);
+        String ret = FilenameUtils.normalize(path);
         ret = FilenameUtils.separatorsToUnix(ret);
         
         return ret;
     }
     
-    /**
-     * Fixes any paths containing .css extension relative references.
-     * 
-     * @param path The path to fix.
-     * @return The absolute path to the resource referenced in the path. (if any)
-     */
-    private String translateCssPath(String path) {
-        
-        // don't parse out actual css files
-        if (path.endsWith(".css")) 
-            return path;
-        
-        int index = path.lastIndexOf(".css");
-        if (index <= -1) 
-            return path;
-        
-        // now need to parse out whatever css file was referenced to get the real path
-        int pathEnd = path.lastIndexOf("/", index);
-        if (pathEnd <= -1) 
-            return path;
-        
-        return path.substring(0, pathEnd + 1) + path.substring(index + 4, path.length());
-    }
-
     /**
      * Checks if the resource contained within the specified URL 
      * has a modified time greater than the request header value

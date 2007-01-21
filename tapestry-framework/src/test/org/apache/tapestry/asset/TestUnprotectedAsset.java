@@ -187,22 +187,6 @@ public class TestUnprotectedAsset extends BaseComponentTestCase
         assertTrue(rm.containsResource("/org/apache/tapestry/html/dojo/dojo.js"));
         assertTrue(rm.containsResource("/org/apache/tapestry/html/dojo/src/json.js"));
     }
-    
-    public void test_Css_Paths()
-    {
-        AssetService service = new AssetService();
-        
-        String path = "/dojo/src/widget/template/HtmlComboBox.cssimages/foo.gif";
-        
-        assertEquals("/dojo/src/widget/template/images/foo.gif", service.translatePath(path));
-        assertEquals("/boo/templates/things/", 
-                service.translatePath("/boo/templates/somethingdumb.cssthings/"));
-        assertEquals("/foo/path/css/images.png", 
-                service.translatePath("/foo/path/css/images.png"));
-        assertEquals("/things/mytemplate.css",
-                service.translatePath("/things/mytemplate.css"));
-        assertNull(service.translatePath(null));
-    }
 
     public void test_Relative_Paths()
     {
@@ -219,22 +203,6 @@ public class TestUnprotectedAsset extends BaseComponentTestCase
         assertEquals("/", service.translatePath("/dojo/../"));
         assertEquals("", service.translatePath("dojo/../"));
     }
-
-    public void test_Relative_Css_Paths()
-    {
-        AssetService service = new AssetService();
-        
-        String path = "/dojo/src/widget/template/HtmlComboBox.css../images/foo.gif";
-        
-        assertEquals("/dojo/src/widget/images/foo.gif", service.translatePath(path));
-
-        path = "/dojo/src/widget/template/HtmlComboBox.css../../images/foo.gif";
-        assertEquals("/dojo/src/images/foo.gif", service.translatePath(path));
-
-        assertEquals("/boo/things/",
-                service.translatePath("/boo/templates/somethingdumb.css../things/"));
-    }
-
 
     public void test_Resource_Link_Paths()
     {
