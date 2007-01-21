@@ -29,8 +29,9 @@ import org.apache.tapestry.dojo.html.Dialog;
 import org.apache.tapestry.form.TextField;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.services.ResponseBuilder;
-import org.apache.tapestry.timetracker.dao.ProjectDao;
+import org.apache.tapestry.timetracker.dao.GenericDao;
 import org.apache.tapestry.timetracker.dao.TaskDao;
+import org.apache.tapestry.timetracker.model.Persistent;
 import org.apache.tapestry.timetracker.model.Project;
 import org.apache.tapestry.timetracker.model.Task;
 
@@ -40,7 +41,7 @@ import org.apache.tapestry.timetracker.model.Task;
  *
  * @author jkuhnert
  */
-public abstract class TaskEntryPage extends BasePage
+public abstract class TaskEntryPage<E extends Persistent> extends BasePage
 {   
     private static final Logger _log = Logger.getLogger(TaskEntryPage.class);
     
@@ -50,10 +51,10 @@ public abstract class TaskEntryPage extends BasePage
     public abstract Autocompleter getProjectChoose();
     
     @InjectObject("service:timetracker.dao.ProjectDao")
-    public abstract ProjectDao getProjectDao();
+    public abstract GenericDao<E> getProjectDao();
     
     @Persist("session")
-    public abstract Project getSelectedProject();
+    public abstract E getSelectedProject();
     
     public abstract Project getCurrentProject();
     
@@ -90,7 +91,7 @@ public abstract class TaskEntryPage extends BasePage
      */
     public IAutocompleteModel getProjectModel()
     {
-        return new DefaultAutocompleteModel(getProjectDao().listProjects(), "id", "name");
+        return new DefaultAutocompleteModel(getProjectDao().list(), "id", "name");
     }
     
     /**

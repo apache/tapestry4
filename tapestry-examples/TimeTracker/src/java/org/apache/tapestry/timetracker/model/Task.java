@@ -22,7 +22,7 @@ import java.util.Date;
  * 
  * @author jkuhnert
  */
-public class Task implements Serializable
+public class Task implements Serializable, Persistent
 {
     /** generated. */
     private static final long serialVersionUID = 7257377128183799387L;

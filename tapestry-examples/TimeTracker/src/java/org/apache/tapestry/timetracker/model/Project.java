@@ -21,7 +21,7 @@ import java.io.Serializable;
  *
  * @author jkuhnert
  */
-public class Project implements Serializable
+public class Project implements Serializable, Persistent
 {
     /** generated serial id. */
     private static final long serialVersionUID = 9198547617843380606L;
