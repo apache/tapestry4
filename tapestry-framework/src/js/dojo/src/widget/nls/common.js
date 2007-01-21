@@ -1,2 +1,0 @@
-
-({"buttonCancel":"Cancel","buttonOk":"OK"})
