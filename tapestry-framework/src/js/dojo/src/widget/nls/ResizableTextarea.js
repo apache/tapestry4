@@ -1,2 +1,0 @@
-
-({"statusLabel":"drag to resize"})
