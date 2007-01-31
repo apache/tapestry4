@@ -407,7 +407,7 @@ if(node.removeEventListener){node.removeEventListener(evtName, fp, capture);}}
 this.addListener = function(node, evtName, fp, capture, dontFix){if(!node){ return; }
 if(!capture){ var capture = false; }
 evtName = dojo.event.browser.normalizedEventName(evtName);if(evtName == "key"){if(dojo.render.html.ie){this.addListener(node, "onkeydown", fp, capture, dontFix);}
-evtName = "onkeypress";}
+evtName = "keypress";}
 if(!dontFix){var newfp = function(evt){if(!evt){ evt = window.event; }
 var ret = fp(dojo.event.browser.fixEvent(evt, this));if(capture){dojo.event.browser.stopEvent(evt);}
 return ret;}}else{newfp = fp;}
