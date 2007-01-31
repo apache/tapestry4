@@ -328,7 +328,7 @@ _20e="keypress";}
 if(node.removeEventListener){node.removeEventListener(_20e,fp,_210);}};this.addListener=function(node,_212,fp,_214,_215){if(!node){return;}
 if(!_214){var _214=false;}
 _212=dojo.event.browser.normalizedEventName(_212);if(_212=="key"){if(dojo.render.html.ie){this.addListener(node,"onkeydown",fp,_214,_215);}
-_212="onkeypress";}
+_212="keypress";}
 if(!_215){var _216=function(evt){if(!evt){evt=window.event;}
 var ret=fp(dojo.event.browser.fixEvent(evt,this));if(_214){dojo.event.browser.stopEvent(evt);}
 return ret;};}else{_216=fp;}
