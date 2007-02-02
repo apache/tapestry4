@@ -74,15 +74,16 @@ public class PopupLinkRenderer extends DefaultLinkRenderer
 
         BodyBuilder builder = new BodyBuilder();
 
-        builder.addln("function {0}()", functionName);
+        builder.addln("{0}=function()", functionName);
         builder.begin();
-        builder.addln(
+        builder.add(
                 "var newWindow = window.open({0}, {1}, {2});",
                 TapestryUtils.enquote(url),
                 TapestryUtils.enquote(getWindowName()),
                 TapestryUtils.enquote(getFeatures()));
-        builder.addln("newWindow.focus();");
+        builder.add("newWindow.focus();");
         builder.end();
+        builder.addln(";");
 
         support.addBodyScript(component, builder.toString());
 
