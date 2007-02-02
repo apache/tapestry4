@@ -37,6 +37,7 @@
   <component-type type="NumericField" specification-path="valid/NumericField.jwc"/>
   <component-type type="ValidatingTextField" specification-path="valid/ValidatingTextField.jwc"/>
   <component-type type="FormConditional" specification-path="form/FormConditional.jwc"/>
+  
   <component-type type="Table" specification-path="table/components/Table.jwc"/>
   <component-type type="TableColumns" specification-path="table/components/TableColumns.jwc"/>
   <component-type type="TablePages" specification-path="table/components/TablePages.jwc"/>
@@ -51,6 +52,11 @@
     specification-path="table/components/inserted/SimpleTableColumnComponent.jwc"/>
   <component-type type="SimpleTableColumnFormComponent" 
     specification-path="table/components/inserted/SimpleTableColumnFormComponent.jwc"/>
+  <component-type type="ColumnSortLink" 
+    specification-path="table/components/inserted/SimpleTableColumnSortLink.jwc"/>
+  <component-type type="ColumnSortImage" 
+    specification-path="table/components/inserted/SimpleTableColumnSortImage.jwc"/>    
+    
   <component-type type="Tree" specification-path="tree/components/Tree.jwc"/>
   <component-type type="TreeDataView" specification-path="tree/components/TreeDataView.jwc"/>
   <component-type type="TreeNodeView" specification-path="tree/components/TreeNodeView.jwc"/>

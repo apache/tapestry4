@@ -41,6 +41,8 @@
                 
             <item name="Components" href="/componentreference/index.html" collapse="true">
                 <item name="CheckboxGroup" href="/componentreference/checkboxgroup.html" />
+                <item name="ColumnSortImage" href="/componentreference/columnsortimage.html" />
+                <item name="ColumnSortLink" href="/componentreference/columnsortlink.html" />                
                 <item name="ControlCheckbox" href="/componentreference/controlcheckbox.html" />
                 <item name="ControlledCheckbox" href="/componentreference/controlledcheckbox.html" />
                 <item name="DumpObject" href="/componentreference/dumpobject.html" />
