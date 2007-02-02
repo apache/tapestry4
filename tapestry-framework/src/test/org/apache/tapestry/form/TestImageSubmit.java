@@ -99,8 +99,7 @@ public class TestImageSubmit extends BaseFormComponentTestCase
         
         writer.beginEmpty("input");
         writer.attribute("type", "image");
-        writer.attribute("name", "fred");
-        writer.attribute("border", 0);
+        writer.attribute("name", "fred");        
         writer.attribute("src", "image-url");
         
         writer.attribute("id", "fred");
@@ -150,8 +149,7 @@ public class TestImageSubmit extends BaseFormComponentTestCase
         writer.beginEmpty("input");
         writer.attribute("type", "image");
         writer.attribute("name", "fred");
-        writer.attribute("disabled", "disabled");
-        writer.attribute("border", 0);
+        writer.attribute("disabled", "disabled");        
         writer.attribute("src", "disabled-image-url");
         
         writer.attribute("id", "fred");
@@ -197,8 +195,7 @@ public class TestImageSubmit extends BaseFormComponentTestCase
         writer.beginEmpty("input");
         writer.attribute("type", "image");
         writer.attribute("name", "fred");
-        writer.attribute("disabled", "disabled");
-        writer.attribute("border", 0);
+        writer.attribute("disabled", "disabled");        
         writer.attribute("src", "image-url");
         
         writer.attribute("id", "fred");
@@ -243,8 +240,7 @@ public class TestImageSubmit extends BaseFormComponentTestCase
         
         writer.beginEmpty("input");
         writer.attribute("type", "image");
-        writer.attribute("name", "barney$0");
-        writer.attribute("border", 0);
+        writer.attribute("name", "barney$0");        
         writer.attribute("src", "image-url");
         writer.closeTag();
 

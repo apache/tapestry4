@@ -284,7 +284,7 @@
 
                 <p>
                     Reserved parameters:
-                    <em>type, src, border</em>
+                    <em>type, src</em>
                 </p>
 
                 <span class="warn">
