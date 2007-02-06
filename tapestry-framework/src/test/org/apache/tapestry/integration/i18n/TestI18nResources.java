@@ -27,8 +27,7 @@ import com.thoughtworks.selenium.Selenium;
  * Tests the i18n test application. 
  * 
  * Initially created to test TAPESTRY-881 feature enhancement.
- *
- * @author jkuhnert
+ * 
  */
 @Test(timeOut = 50000, groups = "integration", sequential=true)
 public class TestI18nResources

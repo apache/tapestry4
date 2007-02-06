@@ -99,8 +99,7 @@ public class LinkFactoryImpl implements LinkFactory
 
     }
 
-    public ILink constructLink(IEngineService service, boolean post, Map parameters,
-            boolean stateful)
+    public ILink constructLink(IEngineService service, boolean post, Map parameters, boolean stateful)
     {
         finalizeParameters(service, parameters);
 

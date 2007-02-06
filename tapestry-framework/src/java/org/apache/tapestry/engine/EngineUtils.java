@@ -29,8 +29,7 @@ public final class EngineUtils
     private EngineUtils() { }
     
     /**
-     * Invoked by to see
-     * if an absolute URL is needed (because a specific scheme, server or port
+     * Invoked by to see if an absolute URL is needed (because a specific scheme, server or port
      * was indicated that does not match the incoming request).
      * 
      * @param scheme
@@ -43,8 +42,7 @@ public final class EngineUtils
      *            the request to check against
      * @return true if absolute URL is needed, false otherwise
      */
-    public static boolean needAbsoluteURL(String scheme, String server,
-            int port, WebRequest request)
+    public static boolean needAbsoluteURL(String scheme, String server, int port, WebRequest request)
     {
         if (scheme != null && !scheme.equals(request.getScheme())) return true;
 

@@ -48,11 +48,10 @@ public class TestBrowserIssues extends Assert
         _jettyRunner = new JettyRunner("/", JETTY_PORT, "src/test-data/app1");
 
         _server = new SeleniumServer();
-
+        
         _server.start();
 
-        _selenium = new DefaultSelenium("localhost", SeleniumServer.DEFAULT_PORT, "*firefox",
-                BASE_URL);
+        _selenium = new DefaultSelenium("localhost", SeleniumServer.DEFAULT_PORT, "*firefox", BASE_URL);
 
         _selenium.start();
     }

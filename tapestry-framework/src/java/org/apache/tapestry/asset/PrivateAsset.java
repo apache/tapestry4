@@ -68,7 +68,7 @@ public class PrivateAsset extends AbstractAsset
         String path = getResourceLocation().getPath();
 
         ILink link = _assetService.getLink(false, path);
-
+        
         return link.getURL();
     }
 

@@ -31,5 +31,9 @@ public final class DojoMessages
     {
         return _formatter.format("must-use-valid-json-in-parameter", parameterName);
     }
-
+    
+    public static String invalidEncoding(String url)
+    {
+        return _formatter.format("invalid-encoding", url);
+    }
 }

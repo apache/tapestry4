@@ -1,0 +1,24 @@
+
+dojo.provide("dojo.dot");dojo.lang.mixin(dojo.dot, {NETWORK_CHECK: 20,enabled: true,isOnline: false,requireOfflineCache: true,availabilityURL: djConfig.baseRelativePath + "src/dot/network_check.txt",goingOnline: false,coreSaveFailed: false,doNetworkChecking: true,_onLoadListeners: new Array(),_storageLoaded: false,_pageLoaded: false,hasOfflineCache: function(){return false;},onOnline: function(){},onOffline: function(){},goOffline: function(){if(dojo.sync.isSyncing == true
+|| this.goingOnline == true){return;}
+this.goingOnline = false;this.isOnline = false;if(this.onOffline){this.onOffline();}},goOnline: function(finishedCallback){if(dojo.sync.isSyncing == true
+|| dojo.dot.goingOnline == true){return;}
+this.goingOnline = true;this.isOnline = false;this._isSiteAvailable(finishedCallback);},clear: function(){},addOnLoad: function(func){this._onLoadListeners.push(func);},removeOnLoad: function(func){for(var i = 0; i < this._onLoadListeners.length; i++){if(func == this._onLoadListeners[i]){this._onLoadListeners = this._onLoadListeners.splice(i, 1);break;}}
+},save: function(){},load: function(){},onSave: function(status, isCoreSave, dataStore, item){},_onLoad: function(){dojo.dot.files.cache(dojo.storage.getResourceList());this.load();this._startNetworkThread();for(var i = 0; i < this._onLoadListeners.length; i++){this._onLoadListeners[i]();}},_onPageLoad: function(){this._pageLoaded = true;if(this._pageLoaded == true
+&& this._storageLoaded == true){this._onLoad();}},_onStorageLoad: function(){this._storageLoaded = true;if(this._pageLoaded == true
+&& this._storageLoaded == true){this._onLoad();}},_isSiteAvailable: function(finishedCallback){var bindArgs = {url: dojo.dot._getAvailabilityURL(),sync:false,mimetype:"text/plain",error:function(type, errObj){dojo.dot.goingOnline = false;dojo.dot.isOnline = false;if(finishedCallback){finishedCallback(false);}},load:function(type, data, evt){dojo.dot.goingOnline = false;dojo.dot.isOnline = true;if(finishedCallback){finishedCallback(true);}else if(dojo.dot.onOnline){dojo.dot.onOnline();}}
+};dojo.io.bind(bindArgs);},standardSaveHandler: function(status, isCoreSave, dataStore, item){if(status == dojo.storage.FAILED
+&& isCoreSave == true){this.coreSaveFailed = true;this.enabled = false;}
+if(this.onSave){onSave(status, isCoreSave, dataStore, item);}},_startNetworkThread: function(){if(this.doNetworkChecking == false){return;}
+window.setInterval(function(){var bindArgs = {url: dojo.dot._getAvailabilityURL(),sync:false,mimetype:"text/plain",error:function(type, errObj){if(dojo.dot.isOnline == true){dojo.dot.isOnline = false;dojo.dot.onOffline();}},load:function(type, data, evt){if(dojo.dot.isOnline == false){dojo.dot.isOnline = true;dojo.dot.onOnline();}}
+};dojo.io.bind(bindArgs);}, this.NETWORK_CHECK * 1000);},_getAvailabilityURL: function(){var url = this.availabilityURL;if(url.indexOf("?") == -1){url += "?";}else{url += "&";}
+url += new Date().getTime();return url;}});dojo.dot.files = {listOfURLs: new Array(),_refreshCounter: 0,_error: false,_errorMessage: null,_finishedCallback: null,cache: function(urlOrList){if(dojo.lang.isString(urlOrList)){var url = urlOrList;this.listOfURLs.push(url);}else{var listOfURLs = urlOrList;for(var i = 0; i < listOfURLs.length; i++){this.listOfURLs.push(listOfURLs[i]);}}
+},remove: function(url){for(var i = 0; i < this.listOfURLs.length; i++){if(this.listOfURLs[i] == url){this.listOfURLs = this.listOfURLs.splice(i, 1);break;}}
+},isAvailable: function(url){for(var i = 0; i < this.listOfURLs.length; i++){if(this.listOfURLs[i] == url){return true;}}
+return false;},refresh: function(finishedCallback){dojo.dot.files._refreshCounter = 0;dojo.dot.files._error = false;dojo.dot.files._errorMessage = null;dojo.dot.files._finishedCallback = finishedCallback;for(var i = 0; i < this.listOfURLs.length; i++){var url = this.listOfURLs[i];window.setTimeout("dojo.dot.files._loadFile('" + url + "')", 10);}},_loadFile: function(url){var xhr = dojo.hostenv.getXmlhttpObject();xhr.url = url;xhr.onreadystatechange = function(){if(xhr.readyState == 4 && dojo.dot.files._error != true){if(xhr.status == 200){}else{dojo.dot.files._error = true;dojo.dot.files._errorMessage =
+"Error loading offline resource " + xhr.url + ": "
++ xhr.statusText;}
+dojo.dot.files._refreshCounter++;if(dojo.dot.files._refreshCounter == dojo.dot.files.listOfURLs.length
+|| dojo.dot.files._error == true){dojo.dot.files._finishedCallback(dojo.dot.files._error,dojo.dot.files._errorMessage);}}
+};xhr.open("GET", url, true);xhr.send(null);}}
+dojo.storage.manager.addOnLoad(dojo.lang.hitch(dojo.dot, dojo.dot._onStorageLoad));dojo.event.connect(dojo, "loaded", dojo.dot, dojo.dot._onPageLoad);
