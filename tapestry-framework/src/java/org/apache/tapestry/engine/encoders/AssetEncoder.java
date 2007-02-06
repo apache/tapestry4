@@ -53,7 +53,6 @@ public class AssetEncoder implements ServiceEncoder
         if (!path.startsWith(PATH_SEPARATOR))
             path = PATH_SEPARATOR + path;
         
-        
         // _path ends with a slash, path starts with one.
         
         String fullPath = _path + ((digest != null) ? "/" + digest : "/" + DIGEST_STATIC) + path;

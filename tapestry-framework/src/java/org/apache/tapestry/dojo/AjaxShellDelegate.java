@@ -117,14 +117,9 @@ public class AjaxShellDelegate implements IRender
         
         // module path registration to tapestry javascript sources
         
-        String tapUrl = _tapestryPath.buildURL();
-        if (tapUrl.endsWith("/")){
-            tapUrl = tapUrl.substring(0, tapUrl.length() - 1);
-        }
-        
         str.append("\n<script type=\"text/javascript\">\n")
         .append("dojo.registerModulePath(\"tapestry\", \"")
-        .append(tapUrl).append("\");\n");
+        .append(_tapestryPath.buildURL()).append("\");\n");
         str.append("</script>\n");
         
         // include core tapestry.js package

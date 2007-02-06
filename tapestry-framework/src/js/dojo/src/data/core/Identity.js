@@ -1,0 +1,3 @@
+
+dojo.provide("dojo.data.core.Identity");dojo.require("dojo.data.core.Read");dojo.require("dojo.lang.declare");dojo.require("dojo.experimental");dojo.experimental("dojo.data.core.Identity");dojo.declare("dojo.data.core.Identity", dojo.data.core.Read, null, {getFeatures: function() {var features = {'dojo.data.core.Read': true,'dojo.data.core.Identity': true
+};return features;},getIdentity: function( item) {dojo.unimplemented('dojo.data.core.Identity.getIdentity');var itemIdentityString = null;return itemIdentityString;},findByIdentity: function( identity) {dojo.unimplemented('dojo.data.core.Identity.findByIdentity');var item = null;return item;}});

@@ -1,0 +1,33 @@
+
+#dot-widget-container{width: 13em;height: 14em;border: 2px solid #CDDDE9;position: relative;visibility: visible !important;}
+#dot-widget-title-bar{background-color: #CDDDE9;padding-top: 0.2em;padding-bottom: 0.2em;}
+#dot-widget-network-indicator{height: 8px;width: 8px;padding-left: 0.3em;}
+#dot-widget-title-text{vertical-align: middle;font-weight: bold;font-size: 14pt;padding-left: 2px;}
+#dot-widget-contents{padding: 8px 5px 8px 5px;}
+#dot-widget-learn-how{font-size: 11pt;}
+#dot-sync-button,#dot-syncing,#dot-configure-button,#dot-work-online-button,#dot-work-offline-button{font-size: 14pt;}
+#dot-recommended,#dot-sync-cancel{font-size: 11pt;}
+#dot-sync-controls{margin-top: 0.8em;}
+#dot-sync-status{font-size: 11pt;}
+#dot-success-checkmark{display: none;}
+#dot-roller{display: none;padding-right: 4px;}
+.dot-sync-error{color: red;}
+#dot-sync-details{display: none;padding-left: 0.2em;}
+#dot-sync-status{height: 2em;margin-top: 0.8em;margin-bottom: 0.8em;}
+#dot-last-sync{line-height: 1.5em;}
+#dot-last-sync,#dot-num-modified-items{font-size: 11pt;}
+#dot-num-modified-items{padding-bottom: 0.3em;}
+#dot-more-commands{position: absolute;bottom: 8px;padding-top: 3px;}
+#dot-configure-button{margin-right: 0.5em;}
+a.dot-disabled{text-decoration: none;color: LightGray;cursor: text;}
+.dot-needs-offline-cache{padding-top: 1.5em;font-size: 16pt !important;text-align: center;line-height: 1.2;}
+#dot-configure{display: none;}
+#dot-configure a{margin-bottom: 0.5em;}
+#dot-configure-buttons{position: absolute;bottom: 8px;width: 95%;}
+#dot-configure-ok-button{float: right;}
+#dot-learn-how-body{padding: 3em;background-color: #CDDDE9;}
+#dot-learn-how-contents{border: 1px solid black;background-color: white;padding: 0.4em 0.6em 0.4em 0.6em;font-size: 16pt;}
+#dot-learn-how-contents h1{font-size: 24pt;}
+#dot-learn-how-contents h2{font-size: 18pt;}
+#dot-learn-how-contents li{padding-bottom: 0.6em;}
+#dot-learn-how-contents #dot-see-how{text-align: right;font-size: 12pt;padding-right: 2em;}

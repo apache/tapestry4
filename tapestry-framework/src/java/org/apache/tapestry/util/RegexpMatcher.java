@@ -19,11 +19,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.pool.KeyedPoolableObjectFactory;
+import org.apache.commons.pool.impl.GenericKeyedObjectPool;
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.MatchResult;
 import org.apache.oro.text.regex.Pattern;
-import org.apache.oro.text.regex.PatternCompiler;
 import org.apache.oro.text.regex.PatternMatcher;
 import org.apache.oro.text.regex.PatternMatcherInput;
 import org.apache.oro.text.regex.Perl5Compiler;
@@ -39,49 +39,33 @@ import org.apache.oro.text.regex.Perl5Matcher;
 
 public class RegexpMatcher
 {
-    private PatternCompiler _patternCompiler;
-
+    private static final int MAX_ACTIVE = 100;
+    
+    private static final long SLEEP_TIME = 1000 * 60 * 2;
+    
     private PatternMatcher _matcher;
-
-    private Map _compiledPatterns = new HashMap();
-
+    
+    private final KeyedPoolableObjectFactory _factory = new RegexpPoolObjectFactory();
+    
+    private final GenericKeyedObjectPool _pool;
+    
     private Map _escapedPatternStrings = new HashMap();
-
-    protected Pattern compilePattern(String pattern)
+    
+    public RegexpMatcher()
     {
-        if (_patternCompiler == null)
-            _patternCompiler = new Perl5Compiler();
-
-        try
-        {
-            return _patternCompiler.compile(pattern, Perl5Compiler.SINGLELINE_MASK | Perl5Compiler.READ_ONLY_MASK);
-        }
-        catch (MalformedPatternException ex)
-        {
-            throw new ApplicationRuntimeException(ex);
-        }
+        _pool = new GenericKeyedObjectPool(_factory, MAX_ACTIVE, GenericKeyedObjectPool.WHEN_EXHAUSTED_BLOCK, -1);
+        
+        _pool.setMaxIdle(MAX_ACTIVE / 2);
+        _pool.setMinEvictableIdleTimeMillis(MAX_ACTIVE);
+        _pool.setTimeBetweenEvictionRunsMillis(SLEEP_TIME);
     }
-
-    protected Pattern getCompiledPattern(String pattern)
-    {
-        Pattern result = (Pattern) _compiledPatterns.get(pattern);
-
-        if (result == null)
-        {
-            result = compilePattern(pattern);
-            _compiledPatterns.put(pattern, result);
-        }
-
-        return result;
-    }
-
+    
     /**
      * Clears any previously compiled patterns.
      */
-
     public void clear()
     {
-        _compiledPatterns.clear();
+        _pool.clear();
     }
 
     protected PatternMatcher getPatternMatcher()
@@ -94,32 +78,56 @@ public class RegexpMatcher
 
     public boolean matches(String pattern, String input)
     {
-        Pattern compiledPattern = getCompiledPattern(pattern);
-
-        return getPatternMatcher().matches(input, compiledPattern);
+        Pattern compiled = null;
+        
+        try {
+            
+            compiled = (Pattern)_pool.borrowObject(pattern);
+            
+            return getPatternMatcher().matches(input, compiled);
+            
+        } catch (Exception e) {
+            
+            throw new ApplicationRuntimeException(e);
+        } finally {
+            
+            try { _pool.returnObject(pattern, compiled); } catch (Throwable t) { }
+        }
     }
-
+    
     public boolean contains(String pattern, String input)
     {
-        Pattern compiledPattern = getCompiledPattern(pattern);
-
-        return getPatternMatcher().contains(input, compiledPattern);
+        Pattern compiled = null;
+        
+        try {
+            
+            compiled = (Pattern)_pool.borrowObject(pattern);
+            
+            return getPatternMatcher().contains(input, compiled);
+            
+        } catch (Exception e) {
+            
+            throw new ApplicationRuntimeException(e);
+        } finally {
+            
+            try { _pool.returnObject(pattern, compiled); } catch (Throwable t) { }
+        }
     }
 
     public String getEscapedPatternString(String pattern)
     {
         String result = (String) _escapedPatternStrings.get(pattern);
-
+        
         if (result == null)
         {
             result = Perl5Compiler.quotemeta(pattern);
-
+            
             _escapedPatternStrings.put(pattern, result);
         }
-
+        
         return result;
     }
-
+    
     /**
      * Given an input string, finds all matches in an input string for the pattern.
      * 
@@ -132,21 +140,33 @@ public class RegexpMatcher
      */
     public RegexpMatch[] getMatches(String pattern, String input)
     {
-        Pattern compiledPattern = getCompiledPattern(pattern);
+        Pattern compiled = null;
+        
+        try {
+            
+            compiled = (Pattern)_pool.borrowObject(pattern);
+            
+            PatternMatcher matcher = getPatternMatcher();
+            PatternMatcherInput matcherInput = new PatternMatcherInput(input);
 
-        PatternMatcher matcher = getPatternMatcher();
-        PatternMatcherInput matcherInput = new PatternMatcherInput(input);
+            List matches = new ArrayList();
+            
+            while (matcher.contains(matcherInput, compiled))
+            {
+                MatchResult match = matcher.getMatch();
 
-        List matches = new ArrayList();
-
-        while (matcher.contains(matcherInput, compiledPattern))
-        {
-            MatchResult match = matcher.getMatch();
-
-            matches.add(new RegexpMatch(match));
+                matches.add(new RegexpMatch(match));
+            }
+            
+            return (RegexpMatch[]) matches.toArray(new RegexpMatch[matches.size()]);
+            
+        } catch (Exception e) {
+            
+            throw new ApplicationRuntimeException(e);
+        } finally {
+            
+            try { _pool.returnObject(pattern, compiled); } catch (Throwable t) { }
         }
-
-        return (RegexpMatch[]) matches.toArray(new RegexpMatch[matches.size()]);
     }
 
     /**
@@ -162,23 +182,35 @@ public class RegexpMatcher
      */
     public String[] getMatches(String pattern, String input, int subgroup)
     {
-        Pattern compiledPattern = getCompiledPattern(pattern);
+        Pattern compiled = null;
+        
+        try {
 
-        PatternMatcher matcher = getPatternMatcher();
-        PatternMatcherInput matcherInput = new PatternMatcherInput(input);
+            compiled = (Pattern)_pool.borrowObject(pattern);
+            
+            PatternMatcher matcher = getPatternMatcher();
+            PatternMatcherInput matcherInput = new PatternMatcherInput(input);
+            
+            List matches = new ArrayList();
+            
+            while (matcher.contains(matcherInput, compiled))
+            {
+                MatchResult match = matcher.getMatch();
 
-        List matches = new ArrayList();
+                String matchedInput = match.group(subgroup);
 
-        while (matcher.contains(matcherInput, compiledPattern))
-        {
-            MatchResult match = matcher.getMatch();
+                matches.add(matchedInput);
+            }
 
-            String matchedInput = match.group(subgroup);
+            return (String[]) matches.toArray(new String[matches.size()]);
+            
+        } catch (Exception e) {
 
-            matches.add(matchedInput);
+            throw new ApplicationRuntimeException(e);
+        } finally {
+
+            try { _pool.returnObject(pattern, compiled); } catch (Throwable t) { }
         }
-
-        return (String[]) matches.toArray(new String[matches.size()]);
     }
 
 }

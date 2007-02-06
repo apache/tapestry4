@@ -21,8 +21,7 @@ import org.apache.tapestry.util.RegexpMatcher;
 
 /**
  * Implementation of {@link ResourceMatcher}.
- *
- * @author jkuhnert
+ * 
  */
 public class ResourceMatcherImpl implements ResetEventListener, ResourceMatcher {
     
