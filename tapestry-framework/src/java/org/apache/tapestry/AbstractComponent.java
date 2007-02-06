@@ -30,7 +30,6 @@ import org.apache.tapestry.bean.BeanProvider;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.form.AbstractFormComponent;
 import org.apache.tapestry.internal.event.IComponentEventInvoker;
 import org.apache.tapestry.listener.ListenerMap;
 import org.apache.tapestry.services.ComponentRenderWorker;
@@ -292,8 +291,7 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
     }
     
     /**
-     * Overriden by {@link AbstractFormComponent} to provide different 
-     * behaviour. 
+     * Renders the (unique) id attribute for this component. 
      * 
      * @param writer
      * @param cycle
