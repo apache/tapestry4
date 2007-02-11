@@ -270,6 +270,7 @@
                         </systemProperties>
                         <parallel>true</parallel>
                         <threadCount>4</threadCount>
+			<excludedGroups>integration</excludedGroups>
                     </configuration>
                 </plugin>
                 <plugin>
