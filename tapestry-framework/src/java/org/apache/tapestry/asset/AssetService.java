@@ -21,8 +21,6 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -34,6 +32,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
+import org.apache.commons.pool.ObjectPool;
+import org.apache.commons.pool.impl.StackObjectPool;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IRequestCycle;
@@ -82,7 +82,10 @@ public class AssetService implements IEngineService
 
     public static final String DIGEST = "digest";
     
-    static final DateFormat CACHED_FORMAT = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
+    /**
+     * Pool of date format objects. (pooled because DateFormat isn't thread safe )
+     */
+    static final ObjectPool CACHED_FORMAT_POOL = new StackObjectPool(new PoolableDateFormatFactory("EEE, d MMM yyyy HH:mm:ss Z", Locale.ENGLISH));
     
     /**
      * Defaults MIME types, by extension, used when the servlet container doesn't provide MIME
@@ -304,10 +307,26 @@ public class AssetService implements IEngineService
         String header = _request.getHeader("If-Modified-Since");
         long modify = -1;
         
+        if (_log.isDebugEnabled())
+            _log.debug("cachedResource(" + resourceURL.getURL() + ") modified-since header is: " + header);
+        
+        DateFormat format = null;
+        
         try {
-            if (header != null)
-                modify = CACHED_FORMAT.parse(header).getTime();
-        } catch (ParseException e) { e.printStackTrace(); }
+            
+            if (header != null) {
+                
+                format = (DateFormat) CACHED_FORMAT_POOL.borrowObject();
+                
+                modify = format.parse(header).getTime();
+            }
+            
+        } catch (Exception e) { e.printStackTrace(); }
+        finally {
+            
+            if (format != null) 
+                try { CACHED_FORMAT_POOL.returnObject(format); } catch (Throwable t) { t.printStackTrace(); }
+        }
         
         if (resourceURL.getLastModified() > modify)
             return false;
