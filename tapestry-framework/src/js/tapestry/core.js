@@ -1,7 +1,11 @@
 dojo.provide("tapestry.core");
+dojo.provide("tapestry.html");
+dojo.provide("tapestry.event");
+dojo.provide("tapestry.lang");
 
+dojo.require("dojo.lang.common");
 dojo.require("dojo.logging.Logger");
-dojo.require("dojo.io.*");
+dojo.require("dojo.io.BrowserIO");
 dojo.require("dojo.event.browser");
 dojo.require("dojo.widget.*");
 dojo.require("dojo.widget.Dialog");
@@ -18,7 +22,7 @@ tapestry={
 	
 	// property: version 
 	// The current client side library version, usually matching the current java library version. (ie 4.1, etc..)
-	version:"4.1",
+	version:"4.1.2",
 	scriptInFlight:false, // whether or not javascript is currently being eval'd, default false
 	ScriptFragment:'(?:<script.*?>)((\n|.|\r)*?)(?:<\/script>)', // regexp for script elements
 	
@@ -358,4 +362,253 @@ tapestry={
 	}
 }
 
-dojo.require("tapestry.html");
+/**
+ * package: tapestry.html
+ * Provides functionality related to parsing and rendering dom nodes.
+ */
+tapestry.html={
+    
+    TextareaMatcher:'<textarea(.*?)/>', // regexp for compact textarea elements
+    TextareaReplacer:'<textarea$1></textarea>', // replace pattern for compact textareas
+	
+    /**
+	 * Function: getContentAsString
+	 * 
+	 * Takes a dom node and returns its contents rendered in a string.
+     *
+     * The resulting string does NOT contain any markup (or attributes) of
+     * the given node - only child nodes are rendered and returned.Content
+     *
+     * Implementation Note: This function tries to make use of browser 
+     * specific features (the xml attribute of nodes in IE and the XMLSerializer
+     * object in Mozilla derivatives) - if those fails, a generic implementation
+     * is used that is guaranteed to work in all platforms.
+	 * 
+	 * Parameters: 
+	 * 
+	 *	node - The dom node.
+	 * Returns:
+	 * 
+	 * The string representation of the given node's contents.
+	 */    
+	getContentAsString:function(node){
+		if (typeof node.xml != "undefined")
+			return this._getContentAsStringIE(node);
+		else if (typeof XMLSerializer != "undefined" )
+			return this._getContentAsStringMozilla(node);
+		else
+			return this._getContentAsStringGeneric(node);
+	},        
+	
+   /**
+	 * Function: getElementAsString
+	 * 
+	 * Takes a dom node and returns itself and its contents rendered in a string.
+     *
+     * Implementation Note: This function uses a generic implementation in order
+     * to generate the returned string.
+	 * 
+	 * Parameters: 
+	 * 
+	 *	node - The dom node.
+	 * Returns:
+	 * 
+	 * The string representation of the given node.
+	 */         
+	getElementAsString:function(node){
+		if (!node) { return ""; }
+		
+		var s='<' + node.nodeName;
+		// add attributes
+		if (node.attributes && node.attributes.length > 0) {
+			for (var i=0; i < node.attributes.length; i++) {
+				s += " " + node.attributes[i].name + "=\"" + node.attributes[i].value + "\"";	
+			}
+		}
+		// close start tag
+		s += '>';
+		// content of tag
+		s += this._getContentAsStringGeneric(node);
+		// end tag
+		s += '</' + node.nodeName + '>';
+		return s;
+	},        
+
+	_getContentAsStringIE:function(node){
+		var s="";
+    	for (var i = 0; i < node.childNodes.length; i++)
+        	s += node.childNodes[i].xml;
+    	return s;
+	},
+	
+	_getContentAsStringMozilla:function(node){
+		var xmlSerializer = new XMLSerializer();
+	    var s = "";
+	    for (var i = 0; i < node.childNodes.length; i++) {
+	        s += xmlSerializer.serializeToString(node.childNodes[i]);
+	        if (s == "undefined")
+		        return this._getContentAsStringGeneric(node);
+	    }
+	    
+        s = this._processTextareas(s);
+        
+	    return s;
+	},
+	
+	_getContentAsStringGeneric:function(node){
+		var s="";
+		if (node == null) { return s; }
+		for (var i = 0; i < node.childNodes.length; i++) {
+			switch (node.childNodes[i].nodeType) {
+				case 1: // ELEMENT_NODE
+				case 5: // ENTITY_REFERENCE_NODE
+					s += this.getElementAsString(node.childNodes[i]);
+					break;
+				case 3: // TEXT_NODE
+				case 2: // ATTRIBUTE_NODE
+				case 4: // CDATA_SECTION_NODE
+					s += node.childNodes[i].nodeValue;
+					break;
+				default:
+					break;
+			}
+		}
+		return s;	
+	},
+
+	_processTextareas:function(htmlData)
+ 	{
+        var match = new RegExp(tapestry.html.TextareaMatcher);
+        while (htmlData.match(match)){
+            htmlData = htmlData.replace(match, tapestry.html.TextareaReplacer);
+        }
+        return htmlData;
+ 	}
+}
+
+/**
+ * package: tapestry.event
+ * 
+ * Utility functions that handle converting javascript event objects into 
+ * a name/value pair format that can be sent to the remote server.
+ */
+tapestry.event={
+	
+	/**
+	 * Function: buildEventProperties
+	 * 
+	 * Takes an incoming browser generated event (like key/mouse events) and
+	 * creates a js object holding the basic values of the event in order for 
+	 * it to be submitted to the server.
+	 * 
+	 * Parameters: 
+	 * 
+	 *	event - The javascript event method is based on, if it isn't a valid
+	 * 				browser event it will be ignored.
+	 *	props - The existing property object to set the values on, if it doesn't
+	 * 				exist one will be created.
+	 * Returns:
+	 * 
+	 * The desired event properties bound to an object. Ie obj.target,obj.charCode, etc..
+	 */
+	buildEventProperties:function(event, props){
+		if (!dojo.event.browser.isEvent(event)) return {};
+		if (!props) props={};
+		
+		if(event["type"]) props.beventtype=event.type;
+		if(event["keys"]) props.beventkeys=event.keys;
+		if(event["charCode"]) props.beventcharCode=event.charCode;
+		if(event["pageX"]) props.beventpageX=event.pageX;
+		if(event["pageY"]) props.beventpageY=event.pageY;
+		if(event["layerX"]) props.beventlayerX=event.layerX;
+		if(event["layerY"]) props.beventlayerY=event.layerY;
+		
+		if (event["target"]) this.buildTargetProperties(props, event.target);
+		
+		return props;
+	},
+	
+	/**
+	 * Function: buildTargetProperties
+	 * 
+	 * Generic function to build a properties object populated with
+	 * relevent target data.
+	 * 
+	 * Parameters:
+	 * 	
+	 * 	props - The object that event properties are being set on to return to
+	 * 			the server.
+	 * 	target - The javscript Event.target object that the original event was targeted for.
+	 * 
+	 * Returns:
+	 * 	The original props object passed in, populated with any data found.
+	 */
+	buildTargetProperties:function(props, target){
+		if(!target) { return; }
+		
+		if (dojo.dom.isNode(target)) {
+			return this.buildNodeProperties(props, target);
+		} else {
+			dojo.raise("buildTargetProperties() Unknown target type:" + target);
+		}
+	},
+	
+	/**
+	 * Function: buildNodeProperties
+	 * 
+	 * Builds needed target node properties, like the node's id.
+	 * 
+	 * Parameters:
+	 * 	props - The object that event properties are being set on to return to
+	 * 			the server.
+	 * 	node - The dom node specified as the Event.target in a javascript event.
+	 */
+	buildNodeProperties:function(props, node) {
+		if (node.getAttribute("id")) {
+			props["beventtarget.id"]=node.getAttribute("id");
+		}
+	}
+}
+
+tapestry.lang = {
+
+	/**
+	 * Searches the specified list for an object with a matching propertyName/value pair. 
+	 * @param list 			The array of objects to search.
+	 * @param properyName	The object property key to match on. (ie object[propertyName]) 
+	 * 			Can also be a template object to match in the form of {key:{key:value}} nested
+	 * 			as deeply as you like. 
+	 * @param value 		The value to be matched against
+	 * @return The matching array object found, or null.
+	 */
+	find:function(list, property, value){
+		if (!list || !property || list.length < 1) return null;
+		
+		// if not propMatch then template object was passed in
+		var propMatch=dojo.lang.isString(property);
+		if (propMatch && !value) return null; //if doing string/other non template match and no value
+		
+		for (var i=0; i < list.length; i++) {
+			if (!list[i]) continue;
+			if (propMatch) {
+				if (list[i] && list[i][property] && list[i][property] == value) return list[i];
+			} else {
+				if (this.matchProperty(property, list[i])) return list[i];
+			}
+		}
+		return null;
+	},
+	
+	// called recursively to match object properties
+	// partially stolen logic from dojo.widget.html.SortableTable.sort
+	matchProperty:function(template, object){
+		if(!dojo.lang.isObject(template) || !dojo.lang.isObject(object))
+			return template.valueOf() == object.valueOf();
+		
+		for(var p in template){
+			if(!(p in object)) return false;	//	boolean
+			if (!this.matchProperty(template[p], object[p])) return false;
+		}
+		return true;
+	}
+}

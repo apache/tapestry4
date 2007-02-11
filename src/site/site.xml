@@ -82,6 +82,7 @@
             
             <item name="XHR/DHTML Guide" href="/ajax/index.html" collapse="true">
                 <item name="Introduction" href="/ajax/index.html" />
+                <item name="Debugging" href="/ajax/debugging.html" />
                 <item name="EventListener" href="/ajax/eventlistener.html" />
                 <item name="ResponseBuilder" href="/ajax/responsebuilder.html" />
             </item>
