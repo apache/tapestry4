@@ -33,7 +33,7 @@
             </includes>
             <binaries>
                 <outputDirectory>modules/${artifactId}</outputDirectory>
-                <includeDependencies>true</includeDependencies>
+                <includeDependencies>false</includeDependencies>
                 <unpack>false</unpack>
             </binaries>
         </moduleSet>

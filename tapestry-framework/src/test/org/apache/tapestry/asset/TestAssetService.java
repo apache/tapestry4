@@ -16,7 +16,9 @@ package org.apache.tapestry.asset;
 import static org.easymock.EasyMock.*;
 
 import java.net.URLConnection;
+import java.text.DateFormat;
 
+import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
 import org.testng.annotations.Test;
@@ -42,6 +44,7 @@ public class TestAssetService extends TestBase
         
         AssetService service = new AssetService();
         service.setRequest(request);
+        service.setLog(LogFactory.getLog("test"));
         
         URLConnection url = org.easymock.classextension.EasyMock.createMock(URLConnection.class);
         
@@ -64,6 +67,7 @@ public class TestAssetService extends TestBase
         
         AssetService service = new AssetService();
         service.setRequest(request);
+        service.setLog(LogFactory.getLog("test"));
         
         URLConnection url = org.easymock.classextension.EasyMock.createMock(URLConnection.class);
         
@@ -86,6 +90,7 @@ public class TestAssetService extends TestBase
         
         AssetService service = new AssetService();
         service.setRequest(request);
+        service.setLog(LogFactory.getLog("test"));
         
         URLConnection url = org.easymock.classextension.EasyMock.createMock(URLConnection.class);
         
@@ -111,11 +116,24 @@ public class TestAssetService extends TestBase
         AssetService service = new AssetService();
         service.setRequest(request);
         service.setResponse(response);
+        service.setLog(LogFactory.getLog("test"));
         
         URLConnection url = org.easymock.classextension.EasyMock.createMock(URLConnection.class);
         
-        expect(request.getHeader("If-Modified-Since")).andReturn("Sat, 29 Oct 1994 19:43:31 GMT");
-        expect(url.getLastModified()).andReturn(AssetService.CACHED_FORMAT.parse("Sat, 1 Dec 1991 19:43:31 GMT").getTime());
+        DateFormat format = null;
+        
+        try {
+            
+            format = (DateFormat) AssetService.CACHED_FORMAT_POOL.borrowObject();
+            
+            expect(request.getHeader("If-Modified-Since")).andReturn("Sat, 29 Oct 1994 19:43:31 GMT");
+            expect(url.getLastModified()).andReturn(format.parse("Sat, 1 Dec 1991 19:43:31 GMT").getTime());
+            
+        } finally {
+            if (format != null) {
+                try { AssetService.CACHED_FORMAT_POOL.returnObject(format); } catch (Throwable t) {}
+            }
+        }
         
         response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
         

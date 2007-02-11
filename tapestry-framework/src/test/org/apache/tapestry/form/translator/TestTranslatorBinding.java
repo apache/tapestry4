@@ -32,10 +32,10 @@ import org.testng.annotations.Test;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-@Test
+@Test(sequential = true)
 public class TestTranslatorBinding extends BindingTestCase
 {
-    public void testCreate()
+    public void test_Create()
     {
         Location l = newLocation();
         ValueConverter vc = newValueConverter();
@@ -63,7 +63,7 @@ public class TestTranslatorBinding extends BindingTestCase
         verify();
     }
 
-    public void testFailure()
+    public void test_Failure()
     {
         Location l = newLocation();
         IComponent component = newComponent();
