@@ -21,6 +21,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IAsset;
@@ -53,10 +55,11 @@ import org.apache.tapestry.web.WebResponse;
  * types into easy to manage xml elements that can then be interpreted and managed by 
  * running client-side javascript.
  * 
- * @author jkuhnert
  */
 public class DojoAjaxResponseBuilder implements ResponseBuilder
 {
+    private static final Log _log = LogFactory.getLog(DojoAjaxResponseBuilder.class);
+    
     private final AssetFactory _assetFactory;
     
     private final String _namespace;
@@ -170,8 +173,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     {
         _localeManager.persistLocale();
         
-        _contentType = new ContentType(CONTENT_TYPE
-                + ";charset=" + cycle.getInfrastructure().getOutputEncoding());
+        _contentType = new ContentType(CONTENT_TYPE + ";charset=" + cycle.getInfrastructure().getOutputEncoding());
         
         String encoding = _contentType.getParameter(ENCODING_KEY);
         
@@ -614,6 +616,8 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         // write out captured content
         
         Iterator keys = _writers.keySet().iterator();
+        String buffer = null;
+        
         while (keys.hasNext()) {
             
             String key = (String)keys.next();
@@ -621,10 +625,17 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
             
             nw.end();
             
+            buffer = nw.getBuffer();
+            
+            if (_log.isDebugEnabled()) {
+                
+                _log.debug("Ajax markup buffer for key <" + key + " contains: " + buffer);
+            }
+            
             if (!isScriptWriter(key))
-                _writer.printRaw(ScriptUtils.ensureValidScriptTags(nw.getBuffer()));
+                _writer.printRaw(ScriptUtils.ensureValidScriptTags(buffer));
             else
-                _writer.printRaw(nw.getBuffer());
+                _writer.printRaw(buffer);
         }
         
         // end response
