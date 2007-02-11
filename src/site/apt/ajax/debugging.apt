@@ -61,4 +61,4 @@ Client Side Debugging
 
   Following is a sample screenshot of the kind of debugging statements you'll find in debug mode from the {{{../demos.html}TimeTracker demo}}.
   
-[/images/ajax-firebug.png] Sample firebug output with console debugging enabled.
+[../images/ajax-firebug.png] Sample firebug output with console debugging enabled.
