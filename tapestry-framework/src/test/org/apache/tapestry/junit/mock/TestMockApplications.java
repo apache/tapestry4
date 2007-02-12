@@ -582,7 +582,7 @@ public class TestMockApplications
 
     /**
      * Handles &lt;assert-no-output&gt; elements inside &lt;request&gt;. Checks that a substring
-     * appears in the output. Content of element is the substring to search for.
+     * does not appear in the output. Content of element is the substring to search for.
      * <p>
      * Attribute name is used in error messages.
      */

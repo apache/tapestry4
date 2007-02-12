@@ -42,9 +42,15 @@
 a {background:yellow;}
 </style>
 ]]>
-		</assert-output>		
-	
-	</request>	
+		</assert-output>
+
+		<assert-no-output name="Drop style if no body">
+<![CDATA[
+<style type="text/css" media="unknown"></style>
+]]>
+		</assert-no-output>
+
+    </request>
 			 	 	 
 </mock-test>
     	
