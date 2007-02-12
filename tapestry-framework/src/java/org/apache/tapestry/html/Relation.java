@@ -90,6 +90,10 @@ public abstract class Relation extends AbstractComponent
     
     protected void renderStyleTag(Shell shell, IMarkupWriter writer, IRequestCycle cycle)
     {
+        if (getBody()==null) //nothing to include
+        {
+            return;
+        }
         StringWriter sWriter = new StringWriter();
         IMarkupWriter nested = getMarkupWriterSource().newMarkupWriter(new PrintWriter(sWriter),
                 new ContentType(writer.getContentType()));
@@ -99,7 +103,7 @@ public abstract class Relation extends AbstractComponent
             nested.attribute("media", getMedia());
         if (getTitle()!=null)
             nested.attribute("title", getTitle());        
-        
+
         renderBody(nested, cycle);
         nested.close();
 
