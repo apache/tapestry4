@@ -687,7 +687,7 @@ public class FormSupportImpl implements FormSupport
     /**
      * Writes out all hidden values previously added by
      * {@link #addHiddenValue(String, String, String)}. Writes a &lt;div&gt; tag around
-     * {@link #writeHiddenFieldList()}. Overriden by
+     * {@link #writeHiddenFieldList(IMarkupWriter)}. Overriden by
      * {@link org.apache.tapestry.wml.GoFormSupportImpl}.
      */
     
