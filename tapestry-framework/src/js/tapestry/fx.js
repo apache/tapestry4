@@ -1,5 +1,6 @@
 dojo.provide("tapestry.fx");
 
+dojo.require("dojo.logging.Logger");
 dojo.require("tapestry.core");
 
 /**
@@ -15,7 +16,9 @@ tapestry.fx={
     // property: postEffects
     // Contains a reference to all registered post-effects, i.e. effects that are
     // executed when new content arrives through an XHR response.
-    postEffects:{},    
+    postEffects:{},
+    // property: ajaxStatusAction
+    ajaxStatusAction:'loading',
     
     /**
      * Function: attachPreEffect
@@ -76,14 +79,49 @@ tapestry.fx={
         this.preEffects={};
         this.postEffects={};
     },
+
+    /**
+     * Function: attachAjaxStatus
+     * Allows specifying a dom node that will be shown or hidden while ajax requests
+     * are in progress or have finished.
+     * Alternatively, one can specify a custom
+     * function which will get invoked when an ajax request starts or ends - the first
+     * argument to that function will be a boolean corresponding to wheather the status
+     * element should be showing or not.
+     *
+     * Parameters:
+     *  a1 - The dom id to show - hide, or the function to invoke when ajax starts or ends.
+     */
+    attachAjaxStatus:function(a1){
+        dojo.log.debug("Attaching ajax status listener");
+        if (dojo.lang.isString(a1)) {
+            tapestry.fx.ajaxStatusAction =
+                function(bShow){if (bShow) dojo.html.show(a1); else dojo.html.hide(a1);};
+        }
+        else if (dojo.lang.isFunction(a1)) {
+            tapestry.fx.ajaxStatusAction = a1;
+        }
+        else {
+            dojo.log.warn("Argument to tapestry.fx.attachAjaxStatus should be either a string or a function");
+            return;
+        }
+        dojo.event.connectOnce(tapestry, "bind", tapestry.fx._processAjaxStatus);
+        dojo.event.connectOnce(tapestry, "error", tapestry.fx._processAjaxStatus);
+        dojo.event.connectOnce(tapestry, "load", tapestry.fx._processAjaxStatus);
+        dojo.event.connectOnce(tapestry, "loadJson", tapestry.fx._processAjaxStatus);
+    },
+
+    _processAjaxStatus:function(){
+        tapestry.fx.ajaxStatusAction.apply(this, [tapestry.isServingRequests()]);
+    },
     
     _initPreEffects:function(){
-        dojo.debug("Advising tapestry.linkOnClick");
+        dojo.log.debug("Advising tapestry.linkOnClick");
         dojo.event.connectAround(tapestry, "linkOnClick", tapestry.fx, "_applyPreEffects");
     },
     
     _initPostEffects:function(){
-        dojo.debug("Advising tapestry.loadContent");
+        dojo.log.debug("Advising tapestry.loadContent");
         dojo.event.connectAround(tapestry, "loadContent", tapestry.fx, "_applyPostEffects");
     },
     
@@ -91,7 +129,7 @@ tapestry.fx={
         var id = miObj.args[1];        
         var effect = this.preEffects[id];
         if (effect){
-            dojo.debug("Found pre-effect:", effect, id);
+            dojo.log.debug("Found pre-effect:", effect, id);
                        
             var anim = effect.animation();
             
@@ -114,7 +152,7 @@ tapestry.fx={
         var id = miObj.args[0];
         var effect = this.postEffects[id];
         if (effect){
-            dojo.debug("Found post-effect:", effect, id);
+            dojo.log.debug("Found post-effect:", effect, id);
             
             var ret = miObj.proceed();
             
