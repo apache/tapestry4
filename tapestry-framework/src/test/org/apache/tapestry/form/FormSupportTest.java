@@ -297,7 +297,7 @@ public class FormSupportTest extends BaseComponentTestCase
         verify();
     }
 
-    @Test(dataProvider = "mainSupport")
+    @Test(dataProvider = "allSupports")
     public void test_Complex_Submit_Event_Handler(FormSupportFactory factory)
     {
         IMarkupWriter writer = newWriter();
@@ -372,7 +372,7 @@ public class FormSupportTest extends BaseComponentTestCase
         verify();
     }
 
-    @Test(dataProvider = "mainSupport")
+    @Test(dataProvider = "allSupports")
     public void test_Encoding_Type(FormSupportFactory factory)
     {
         IMarkupWriter writer = newWriter();
@@ -442,7 +442,7 @@ public class FormSupportTest extends BaseComponentTestCase
         verify();
     }
 
-    @Test(dataProvider = "mainSupport")
+    @Test(dataProvider = "allSupports")
     public void test_Field_Prerender_Twice()
     {
         IFormComponent field = newField();
@@ -500,7 +500,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
     }
 
-    @Test(dataProvider = "mainSupport")
+    @Test(dataProvider = "allSupports")
     public void test_Hidden_Values(FormSupportFactory factory)
     {
         IMarkupWriter writer = newWriter();
@@ -583,7 +583,7 @@ public class FormSupportTest extends BaseComponentTestCase
         verify();
     }
 
-    @Test(dataProvider = "mainSupport")
+    @Test(dataProvider = "allSupports")
     public void test_Invalid_Encoding_Type(FormSupportFactory factory)
     {
         IMarkupWriter writer = newWriter();
@@ -763,7 +763,7 @@ public class FormSupportTest extends BaseComponentTestCase
         verify();
     }
 
-    @Test(dataProvider = "mainSupport")
+    @Test(dataProvider = "allSupports")
     public void test_Reset_Event_Handler(FormSupportFactory factory)
     {
         IMarkupWriter writer = newWriter();
@@ -1128,7 +1128,7 @@ public class FormSupportTest extends BaseComponentTestCase
         verify();
     }
 
-    @Test(dataProvider = "mainSupport")
+    @Test(dataProvider = "allSupports")
     public void test_Simple_Render_With_Deferred_Runnable(FormSupportFactory factory)
     {
         IMarkupWriter writer = newWriter();
@@ -1384,7 +1384,7 @@ public class FormSupportTest extends BaseComponentTestCase
         verify();
     }
 
-    @Test(dataProvider = "mainSupport")
+    @Test(dataProvider = "allSupports")
     public void test_Simple_Submit_Event_Handler(FormSupportFactory factory)
     {
         IMarkupWriter writer = newWriter();
