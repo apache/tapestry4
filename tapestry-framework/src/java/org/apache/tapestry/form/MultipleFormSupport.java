@@ -39,7 +39,7 @@ public class MultipleFormSupport extends FormSupportImpl
     public MultipleFormSupport(IMarkupWriter writer, IRequestCycle cycle, IForm form)
     {
         super(writer, cycle, form);
-        _prefix = form.getClientId();
+        _prefix = form.getClientId() + ":";
     }
     
     /**
@@ -49,7 +49,7 @@ public class MultipleFormSupport extends FormSupportImpl
 
     public String getElementId(IFormComponent component, String baseId)
     {
-        return super.getElementId(component, _prefix + ":" + baseId);        
+        return super.getElementId(component, _prefix + baseId);
     }
     
     public String peekClientId(IFormComponent comp)
@@ -63,7 +63,7 @@ public class MultipleFormSupport extends FormSupportImpl
     
     protected String peekClientId(IFormComponent comp, String baseId)
     {        
-        return _elementIdAllocator.peekNextId(_prefix + ":" + baseId);
+        return _elementIdAllocator.peekNextId(_prefix + baseId);
     } 
     
     public String rewind()
@@ -75,8 +75,10 @@ public class MultipleFormSupport extends FormSupportImpl
     private void findIdPrefix()
     {
         String allocatedFormIds = _cycle.getParameter(FORM_IDS);
+        if (allocatedFormIds==null)
+            return;
         int pos = allocatedFormIds.indexOf(':');
         if (pos>=0)
-            _prefix = allocatedFormIds.substring(0, pos);
+            _prefix = allocatedFormIds.substring(0, pos + 1);
     }    
 }
