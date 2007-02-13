@@ -25,8 +25,9 @@ tapestry={
 	version:"4.1.2",
 	scriptInFlight:false, // whether or not javascript is currently being eval'd, default false
 	ScriptFragment:'(?:<script.*?>)((\n|.|\r)*?)(?:<\/script>)', // regexp for script elements
-	
-	/**
+    requestsInFlight:0, // how many ajax requests are currently in progress
+
+    /**
 	 * Function: bind
 	 * 
 	 * Core XHR bind function for tapestry internals. The 
@@ -60,8 +61,9 @@ tapestry={
 			parms.encoding="UTF-8";
 			parms.load=(function(){tapestry.load.apply(this, arguments);});
 		}
-		
-		dojo.io.queueBind(parms);
+
+        tapestry.requestsInFlight++;
+        dojo.io.queueBind(parms);
 	},
 	
 	/**
@@ -75,7 +77,8 @@ tapestry={
 	 * 	<tapestry.bind>
 	 */
 	error:function(type, exception, http, kwArgs){
-		dojo.log.exception("Error received in IO response.", exception);
+        tapestry.requestsInFlight--;
+        dojo.log.exception("Error received in IO response.", exception);
 	},
 	
 	/**
@@ -95,15 +98,16 @@ tapestry={
 	 * 
 	 */
 	load:function(type, data, http, kwArgs){
-		dojo.log.debug("tapestry.load() Response recieved.", data);
-		if (!data) {
+		dojo.log.debug("tapestry.load() Response received.", data);
+        tapestry.requestsInFlight--;
+        if (!data) {
 			dojo.log.warn("No data received in response.");
 			return;
 		}
 		
 		var resp=data.getElementsByTagName("ajax-response");
 		if (!resp || resp.length < 1 || !resp[0].childNodes) {
-			dojo.log.warn("No ajax-response elements recieved.");
+			dojo.log.warn("No ajax-response elements received.");
 			return; 
 		}
 		
@@ -169,8 +173,9 @@ tapestry={
 	},
 	
 	loadJson:function(type, data, http, kwArgs){
-		dojo.log.debug("tapestry.loadJson() Response recieved.", data);
-	},
+        dojo.log.debug("tapestry.loadJson() Response received.", data);
+        tapestry.requestsInFlight--;
+    },
 	
 	/**
 	 * Function: loadContent
@@ -359,7 +364,16 @@ tapestry={
 		
 		tapestry.bind(url, content, isJson);
 		return false;
-	}
+	},
+
+    /**
+	 * Function: isServingRequests
+	 *
+	 * Utility used to find out if there are any ajax requests in progress.
+	 */
+    isServingRequests:function(){
+	    return (tapestry.requestsInFlight > 0);
+    }
 }
 
 /**
