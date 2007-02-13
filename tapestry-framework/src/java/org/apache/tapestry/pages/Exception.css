@@ -71,8 +71,8 @@ SPAN.exception-message {
 }
 
 UL  {
-	margin-top : 0px;
-	margin-bottom : 0px;
+	margin-top : 0;
+	margin-bottom : 0;
 	margin-left : 20px;
 }
 
@@ -86,22 +86,22 @@ TABLE.exception-display TR.exception-name TD  {
 
 TABLE.exception-display  {
 	width : 100%;
-	maring:0;
+	margin:0;
 	padding:0;
 }
 
 TABLE.exception-display TR.exception-message TD  {
-	border-width : 1;
+	border-width : 1px;
 	border-color : Black;
 	border-style : solid;
-	padding : 2;
+	padding : 2px;
 	text-align : left;
 	font-style : italic;
 }
 
 TABLE.exception-display TR.strack-trace-label TD  {
-	margin : 2;
-	border-width : 1;
+	margin : 2px;
+	border-width : 1px;
 	border-color : Black;
 	border-style : solid;
 	text-align : center;
@@ -119,8 +119,8 @@ TABLE.location-content TR.target-line TD
 
 TABLE.location-content TR
 {
-  padding: 0px;
-  margin: 0px; 
+  padding: 0;
+  margin: 0;
 }
 
 TABLE.location-content TD.line-number
@@ -133,8 +133,8 @@ TABLE.location-content TD.line-number
 TABLE.location-content TD
 {
   font: terminal;
-  padding: 0px;
-  margin: 0px; 
+  padding: 0;
+  margin: 0;
 }
 
 DIV.described-object-title
