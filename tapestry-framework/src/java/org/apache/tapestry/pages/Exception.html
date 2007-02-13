@@ -14,8 +14,10 @@
    limitations under the License.
 -->
 <span jwcid="$content$">
-<html jwcid="@Shell" title="Exception" stylesheet="ognl:assets.stylesheet" 
+<html jwcid="@Shell" title="Exception" stylesheet="asset:stylesheet" 
 	  disableCaching="true" doctype="ognl:''">
+  <head jwcid="@If" condition="ognl:dynamic"
+        renderTag="false"><style jwcid="@Style" href="asset:dynamicStylesheet"/></head>
 <body>
 
 <span class="exception-top">

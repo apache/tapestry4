@@ -39,4 +39,9 @@ public abstract class Exception extends BasePage implements PageDetachListener
 
         setExceptions(exceptions);
     }
+
+    public boolean isDynamic()
+    {
+        return getRequestCycle().getResponseBuilder().isDynamic();
+    }
 }
