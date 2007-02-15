@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.Tapestry;
@@ -53,7 +54,7 @@ public class UploadPart extends Object implements IUploadFile
      */
     public String getFileName()
     {
-        File file = new File(this.getFilePath());
+        File file = new File(FilenameUtils.separatorsToSystem(getFilePath()));
 
         return file.getName();
     }

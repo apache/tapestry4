@@ -14,15 +14,12 @@
 
 package org.apache.tapestry.contrib.table.components.inserted;
 
-import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.contrib.table.components.Table;
 import org.apache.tapestry.contrib.table.components.TableColumns;
-import org.apache.tapestry.contrib.table.components.TableMessages;
 import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.apache.tapestry.contrib.table.model.ITableModel;
 import org.apache.tapestry.contrib.table.model.ITableModelSource;
@@ -40,17 +37,17 @@ import org.apache.tapestry.event.PageEvent;
 public abstract class SimpleTableColumnSortImage extends BaseComponent
         implements PageDetachListener, ITableRendererListener
 {
-    public abstract Table getTable();
-
     // transient
     private ITableModelSource m_objModelSource;
     private ITableColumn m_objColumn;
-
+    
     public SimpleTableColumnSortImage()
     {
         init();
     }
 
+    public abstract Table getTable();
+    
     /**
      * @see org.apache.tapestry.event.PageDetachListener#pageDetached(PageEvent)
      */

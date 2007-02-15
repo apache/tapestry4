@@ -35,8 +35,6 @@ import org.apache.tapestry.util.ComponentAddress;
 public abstract class SimpleTableColumnSortLink extends BaseComponent
         implements ITableRendererListener, PageDetachListener
 {
-    public abstract Table getTable();
-    
     // transient
     private ITableColumn m_objColumn;
     private ITableModelSource m_objModelSource;
@@ -46,6 +44,8 @@ public abstract class SimpleTableColumnSortLink extends BaseComponent
         init();
     }
 
+    public abstract Table getTable();
+    
     /**
      * @see org.apache.tapestry.event.PageDetachListener#pageDetached(PageEvent)
      */
