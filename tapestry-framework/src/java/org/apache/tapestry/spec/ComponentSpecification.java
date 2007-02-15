@@ -712,6 +712,10 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
             String methodName, String formId, boolean validateForm, boolean async, boolean focus)
     {
         ComponentEventProperty property = getComponentEvents(componentId);
+        if (property == null) {
+            property = new ComponentEventProperty(componentId);
+            _componentEvents.put(componentId, property);
+        }
         
         property.addListener(events, methodName, formId, validateForm, async, focus);
     }
@@ -723,6 +727,10 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
             String methodName, String formId, boolean validateForm, boolean async, boolean focus)
     {
         ComponentEventProperty property = getElementEvents(elementId);
+        if (property == null) {
+            property = new ComponentEventProperty(elementId);
+            _elementEvents.put(elementId, property);
+        }
         
         property.addListener(events, methodName, formId, validateForm, async, focus);
     }
@@ -732,13 +740,7 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
      */
     public ComponentEventProperty getComponentEvents(String id)
     {
-        ComponentEventProperty prop = (ComponentEventProperty)_componentEvents.get(id);
-        if (prop == null) {
-            prop = new ComponentEventProperty(id);
-            _componentEvents.put(id, prop);
-        }
-        
-        return prop;
+        return (ComponentEventProperty)_componentEvents.get(id);
     }
     
     /**
@@ -746,13 +748,7 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
      */
     public ComponentEventProperty getElementEvents(String id)
     {
-        ComponentEventProperty prop = (ComponentEventProperty)_elementEvents.get(id);
-        if (prop == null) {
-            prop = new ComponentEventProperty(id);
-            _elementEvents.put(id, prop);
-        }
-        
-        return prop;
+        return (ComponentEventProperty)_elementEvents.get(id);
     }
     
     /**
@@ -789,30 +785,6 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
         }
         
         return (EventBoundListener[])ret.toArray(new EventBoundListener[ret.size()]);
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public boolean hasEvents()
-    {
-        return _componentEvents.size() > 0;
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public boolean hasEvents(String id)
-    {
-        return _componentEvents.get(id) != null;
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public boolean hasElementEvents(String id)
-    {
-        return _elementEvents.get(id) != null;
     }
     
     /**

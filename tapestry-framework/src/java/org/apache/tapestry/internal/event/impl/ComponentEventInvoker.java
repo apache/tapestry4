@@ -26,6 +26,7 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.event.BrowserEvent;
+import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.form.FormSupport;
 import org.apache.tapestry.form.FormSupportImpl;
 import org.apache.tapestry.internal.event.ComponentEventProperty;
@@ -40,7 +41,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  *
  * @author jkuhnert
  */
-public class ComponentEventInvoker implements IComponentEventInvoker
+public class ComponentEventInvoker implements IComponentEventInvoker, ResetEventListener
 {
     private Map _components = new HashMap();
     
@@ -147,6 +148,8 @@ public class ComponentEventInvoker implements IComponentEventInvoker
                 target = findComponent(component.getPage().getComponents().values(), listener);
                 props = target.getSpecification().getComponentEvents(component.getId());
             }
+            if (props == null)
+                continue;
             
             List clisteners = props.getEventListeners(event.getName());
             for (int e=0; e < clisteners.size(); e++) {
@@ -277,6 +280,7 @@ public class ComponentEventInvoker implements IComponentEventInvoker
     public void resetEventDidOccur()
     {
         _components.clear();
+        _formComponents.clear();
     }
     
     /** Injected. */

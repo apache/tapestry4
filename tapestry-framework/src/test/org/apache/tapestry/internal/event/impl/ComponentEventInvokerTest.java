@@ -18,7 +18,6 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isA;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.tapestry.BaseComponentTestCase;
@@ -54,20 +53,15 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         spec.addEventListener("comp1", new String[] {"onClick"}, "testFoo", 
                 null, false, false, false);
         
-        assertTrue(spec.hasEvents("comp1"));
+        assert spec.getComponentEvents("comp1") != null;
+        assert spec.getComponentEvents("comp1").getEvents().size() == 1;
         
         ComponentEventProperty prop = spec.getComponentEvents("comp1");
         assertNotNull(prop);
         assertEquals(prop.getEventListeners("onClick").size(), 1);
         
-        // ensure valid props always returned
         prop = spec.getComponentEvents("comp2");
-        assertNotNull(prop);
-        assertEquals(prop.getEvents().size(), 0);
-        
-        List listeners = prop.getEventListeners("nonExistant");
-        assertNotNull(listeners);
-        assertEquals(listeners.size(), 0);
+        assert prop == null;
     }
     
     public void test_Invoke_Component_Listener()
