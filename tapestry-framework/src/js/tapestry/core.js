@@ -242,8 +242,8 @@ tapestry={
 			dojo.log.debug("loadScriptContent(): scriptInFlight is true, sleeping");
 			setTimeout(function() { tapestry.loadScriptContent(element, async);}, 5);
 			return;
-		}                
-                
+		}
+        
 		var text=tapestry.html.getContentAsString(element);
 		
 		var match = new RegExp(tapestry.ScriptFragment, 'img');

@@ -68,14 +68,15 @@ public class InjectMetaWorker implements InjectEnhancementWorker
         Defense.notNull(metaKey, "metaKey");
 
         Class propertyType = op.getPropertyType(propertyName);
-
+        if (propertyType == null) {
+            
+        }
+        
         op.claimReadonlyProperty(propertyName);
 
-        String sourceName = op
-                .addInjectedField(SOURCE_NAME, ComponentPropertySource.class, _source);
+        String sourceName = op.addInjectedField(SOURCE_NAME, ComponentPropertySource.class, _source);
 
-        MethodSignature sig = new MethodSignature(propertyType, op
-                .getAccessorMethodName(propertyName), null, null);
+        MethodSignature sig = new MethodSignature(propertyType, op.getAccessorMethodName(propertyName), null, null);
 
         String parser = (String) _primitiveParser.get(propertyType);
 
