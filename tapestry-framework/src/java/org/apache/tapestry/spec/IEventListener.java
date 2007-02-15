@@ -68,30 +68,6 @@ public interface IEventListener
     boolean hasElementEvents();
     
     /**
-     * Checks if this listener has any element events bound to the specified 
-     * element id.
-     * 
-     * @return True, if the html element has events.
-     */
-    boolean hasElementEvents(String id);
-    
-    /**
-     * Checks if any component events are bound to this component.
-     * 
-     * @return True if any component events are mapped from this component.
-     */
-    boolean hasEvents();
-    
-    /**
-     * Determines if this listener has any component events bound at all.
-     * 
-     * @param id The component id to check for events.
-     * 
-     * @return True if any component event listeners are bound to this listener.
-     */
-    boolean hasEvents(String id);
-    
-    /**
      * Gets component bound event properties.
      * 
      * @param componentId The component to get event listeners for.

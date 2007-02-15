@@ -185,7 +185,7 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         expect(widget.getId()).andReturn("wid1").anyTimes();
         expect(widget.getClientId()).andReturn("wid1").anyTimes();
         
-        assertTrue(widgetSpec.hasEvents("wid1"));
+        assert widgetSpec.getComponentEvents("wid1") != null;
         
         trainGetLinkCheckIgnoreParameter(engine, cycle, false, new Object(), link);
         trainGetURL(link, "/some/url2");

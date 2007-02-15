@@ -45,8 +45,7 @@ public class TestUploadFormParametersWrapper extends BaseComponentTestCase
 
         Map map = new HashMap();
 
-        map.put("key", new String[]
-        { "value" });
+        map.put("key", new String[] { "value" });
 
         HttpServletRequest r = new UploadFormParametersWrapper(request, map);
 

@@ -50,7 +50,7 @@ import org.testng.annotations.DataProvider;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-@Test
+@Test(sequential = true)
 public class FormSupportTest extends BaseComponentTestCase
 {
     @DataProvider(name="allSupports")
@@ -443,7 +443,7 @@ public class FormSupportTest extends BaseComponentTestCase
     }
 
     @Test(dataProvider = "allSupports")
-    public void test_Field_Prerender_Twice()
+    public void test_Field_Prerender_Twice(FormSupportFactory factory)
     {
         IFormComponent field = newField();
         IMarkupWriter writer = newWriter();
