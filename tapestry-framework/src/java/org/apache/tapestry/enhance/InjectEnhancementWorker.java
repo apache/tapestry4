@@ -36,7 +36,6 @@ public interface InjectEnhancementWorker
      * exceptions are caught and reported by the invoker.
      */
 
-    void performEnhancement(EnhancementOperation op,
-            InjectSpecification spec);
+    void performEnhancement(EnhancementOperation op, InjectSpecification spec);
 
 }
