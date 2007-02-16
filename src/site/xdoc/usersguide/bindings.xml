@@ -116,7 +116,14 @@
                 <td>message:page-title</td>
                 <td>ognl:messages.getMessage("page-title")</td>
             </tr>
-
+            
+            <tr>
+                <td>meta</td>
+                <td>References a meta configured value for a specific component/page or global configuration file. (such as APPNAME.application or FooComponent.jwc)</td>
+                <td>meta:renderIfTags</td>
+                <td>n/a</td>
+            </tr>
+            
             <tr>
                 <td>ognl</td>
                 <td>An OGNL expression to be evaluated.</td>

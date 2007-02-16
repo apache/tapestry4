@@ -125,8 +125,7 @@ public final class EnhanceUtils
      *            the type of an existing property.
      */
 
-    public static Class extractPropertyType(EnhancementOperation op, String propertyName,
-            String definedTypeName)
+    public static Class extractPropertyType(EnhancementOperation op, String propertyName, String definedTypeName)
     {
         Defense.notNull(op, "op");
         Defense.notNull(propertyName, "propertyName");
@@ -139,7 +138,7 @@ public final class EnhanceUtils
 
             return propertyType;
         }
-
+        
         Class propertyType = op.getPropertyType(propertyName);
 
         return propertyType == null ? Object.class : propertyType;

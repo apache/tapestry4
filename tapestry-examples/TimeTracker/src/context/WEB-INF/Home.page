@@ -20,12 +20,8 @@
   "http://tapestry.apache.org/dtd/Tapestry_4_0.dtd">
 
 <page-specification class="org.apache.tapestry.timetracker.page.TaskEntryPage">
-   
-   <meta key="dlHiddenMeta" value="true" />
-   <inject property="dlHidden" object="dlHiddenMeta" type="meta"/>
-   <!-- 
+
    <property name="dlHidden" initial-value="true" />
-    -->
-    
+   
 </page-specification>
 

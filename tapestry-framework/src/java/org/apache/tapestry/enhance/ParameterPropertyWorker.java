@@ -74,14 +74,14 @@ public class ParameterPropertyWorker implements EnhancementWorker
         // If the parameter name doesn't match, its because this is an alias
         // for a true parameter; we ignore aliases.
 
-        if (!parameterName.equals(ps.getParameterName())) return;
-
+        if (!parameterName.equals(ps.getParameterName())) 
+            return;
+        
         String propertyName = ps.getPropertyName();
         String specifiedType = ps.getType();
         boolean cache = ps.getCache();
-
-        addParameter(op, parameterName, propertyName, specifiedType, cache, ps
-                .getLocation());
+        
+        addParameter(op, parameterName, propertyName, specifiedType, cache, ps.getLocation());
     }
 
     /**
@@ -113,9 +113,8 @@ public class ParameterPropertyWorker implements EnhancementWorker
         Defense.notNull(parameterName, "parameterName");
         Defense.notNull(propertyName, "propertyName");
 
-        Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName,
-                specifiedType);
-
+        Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName, specifiedType);
+        
         // 3.0 would allow connected parameter properties to be fully
         // implemented
         // in the component class. This is not supported in 4.0 and an existing
@@ -129,7 +128,7 @@ public class ParameterPropertyWorker implements EnhancementWorker
         String fieldName = "_$" + propertyName;
         String defaultFieldName = fieldName + "$Default";
         String cachedFieldName = fieldName + "$Cached";
-
+        
         op.addField(fieldName, propertyType);
         op.addField(defaultFieldName, propertyType);
         op.addField(cachedFieldName, boolean.class);
@@ -203,11 +202,8 @@ public class ParameterPropertyWorker implements EnhancementWorker
         addBindingReference(builder, "binding", parameterName);
 
         builder.addln("if (binding == null)");
-        builder
-                .addln(
-                        "  throw new {0}(\"Parameter ''{1}'' is not bound and can not be updated.\");",
-                        ApplicationRuntimeException.class.getName(),
-                        parameterName);
+        builder.addln("  throw new {0}(\"Parameter ''{1}'' is not bound and can not be updated.\");",
+                        ApplicationRuntimeException.class.getName(), parameterName);
 
         // Always updated the binding first (which may fail with an exception).
 
@@ -225,12 +221,11 @@ public class ParameterPropertyWorker implements EnhancementWorker
 
         builder.end();
 
-        String mutatorMethodName = EnhanceUtils
-                .createMutatorMethodName(propertyName);
+        String mutatorMethodName = EnhanceUtils.createMutatorMethodName(propertyName);
 
-        op.addMethod(Modifier.PUBLIC, new MethodSignature(void.class,
-                mutatorMethodName, new Class[] { propertyType }, null), builder
-                .toString(), location);
+        op.addMethod(Modifier.PUBLIC, 
+                new MethodSignature(void.class, mutatorMethodName, new Class[] { propertyType }, null), 
+                builder.toString(), location);
     }
 
     // Package private for testing
@@ -251,8 +246,7 @@ public class ParameterPropertyWorker implements EnhancementWorker
 
         String javaTypeName = ClassFabUtils.getJavaClassName(propertyType);
 
-        builder.addln("{0} result = {1};", javaTypeName, EnhanceUtils
-                .createUnwrapExpression(op, "binding", propertyType));
+        builder.addln("{0} result = {1};", javaTypeName, EnhanceUtils.createUnwrapExpression(op, "binding", propertyType));
 
         // Values read via the binding are cached during the render of
         // the component (if the parameter defines cache to be true, which
