@@ -215,39 +215,43 @@ public class TestInjectMetaWorker extends BaseComponentTestCase
         verify();
     }
     
-    @Test(enabled = false)
     public void test_Unimplemented_Property()
     {
         Location l = newLocation();
         InjectSpecification spec = newSpec("fooBar", "foo.bar", l);
         
         ComponentPropertySource source = newSource();
+        ValueConverter converter = newMock(ValueConverter.class);
         
         EnhancementOperation op = newMock(EnhancementOperation.class);
 
         expect(op.getPropertyType("fooBar")).andReturn(null);
-
+        
         op.claimReadonlyProperty("fooBar");
 
-        MethodSignature sig = new MethodSignature(boolean.class, "getFooBar", null, null);
-
+        MethodSignature sig = new MethodSignature(Object.class, "getFooBar", null, null);
+        
         expect(op.addInjectedField(InjectMetaWorker.SOURCE_NAME, ComponentPropertySource.class, source)).andReturn("_source");
         
         expect(op.getAccessorMethodName("fooBar")).andReturn("getFooBar");
-
+        
+        expect(op.addInjectedField("_$valueConverter", ValueConverter.class, converter)).andReturn("vc");
+        
+        expect(op.getClassReference(Object.class)).andReturn("_$Object");
+        
         BodyBuilder builder = new BodyBuilder();
         builder.begin();
         builder.addln("java.lang.String meta = _source.getComponentProperty(this, \"foo.bar\");");
-        builder.addln("return java.lang.Boolean.valueOf(meta).booleanValue();");
+        builder.addln("return (java.lang.Object) vc.coerceValue(meta, _$Object);");
         builder.end();
-
+        
         op.addMethod(Modifier.PUBLIC, sig, builder.toString(), l);
 
         replay();
 
         InjectMetaWorker worker = new InjectMetaWorker();
-
         worker.setSource(source);
+        worker.setValueConverter(converter);
 
         worker.performEnhancement(op, spec);
 

@@ -40,7 +40,6 @@ import org.apache.tapestry.spec.IPropertySpecification;
  */
 public class SpecifiedPropertyWorker implements EnhancementWorker
 {
-
     private ErrorLog _errorLog;
 
     private BindingSource _bindingSource;
@@ -93,8 +92,7 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
             String specifiedType, boolean persistent, String initialValue,
             Location location)
     {
-        Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName,
-                specifiedType);
+        Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName, specifiedType);
 
         op.claimProperty(propertyName);
 

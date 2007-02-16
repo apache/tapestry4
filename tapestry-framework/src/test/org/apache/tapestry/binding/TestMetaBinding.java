@@ -11,76 +11,56 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 package org.apache.tapestry.binding;
 
 import static org.easymock.EasyMock.expect;
 
 import org.apache.hivemind.Location;
-import org.apache.hivemind.Messages;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.coerce.ValueConverter;
+import org.apache.tapestry.services.ComponentPropertySource;
 import org.testng.annotations.Test;
 
 /**
- * Tests for {@link org.apache.tapestry.binding.MessageBinding}.
- * 
- * @author Howard M. Lewis Ship
- * @since 4.0
+ * Tests functionality of {@link MetaBinding}.
  */
 @Test
-public class TestMessageBinding extends BindingTestCase
+public class TestMetaBinding extends BindingTestCase
 {
-
-    public void testCreate()
+    
+    public void test_Create()
     {
         IComponent component = newMock(IComponent.class);
         ValueConverter vc = newValueConverter();
         Location l = fabricateLocation(12);
+        ComponentPropertySource src = newMock(ComponentPropertySource.class);
+        
+        expect(src.getComponentProperty(component, "key")).andReturn("wiggle");
         
         replay();
 
-        MessageBinding b = new MessageBinding("param", vc, l, component, "key");
-
+        MetaBinding b = new MetaBinding("param", vc, l, component, src, "key");
+        
         assertSame(component, b.getComponent());
-        assertEquals("key", b.getKey());
+        assertEquals(b.getObject(), "wiggle");
 
         verify();
     }
 
-    public void testToString()
+    public void test_To_String()
     {
         IComponent component = newComponent();
         ValueConverter vc = newValueConverter();
         Location l = fabricateLocation(12);
+        ComponentPropertySource src = newMock(ComponentPropertySource.class);
         
         expect(component.getExtendedId()).andReturn("Foo/bar.baz");
-
+        
         replay();
 
-        MessageBinding b = new MessageBinding("param", vc, l, component, "key");
-
-        assertEquals("StringBinding[Foo/bar.baz key]", b.toString());
-
-        verify();
-    }
-
-    public void testGetObject()
-    {
-        Messages m = newMock(Messages.class);
-        IComponent component = newComponent();
-        Location l = fabricateLocation(12);
+        MetaBinding b = new MetaBinding("param", vc, l, component, src, "key");
         
-        ValueConverter vc = newValueConverter();
-
-        expect(component.getMessages()).andReturn(m);
-        
-        expect(m.getMessage("key")).andReturn("value");
-
-        replay();
-        MessageBinding b = new MessageBinding("param", vc, l, component, "key");
-
-        assertEquals("value", b.getObject());
+        assertEquals(b.toString(), "MetaBinding[Foo/bar.baz key]");
 
         verify();
     }

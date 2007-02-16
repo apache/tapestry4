@@ -142,6 +142,18 @@
     </invoke-factory>
   </service-point>  
   
+  <service-point id="MetaBindingFactory" interface="BindingFactory">    
+      
+    Utility binding for searching for a meta property value using org.apache.tapestry.services.ComponentPropertySource for meta key/value pairs.
+    
+    <invoke-factory>
+      <construct class="MetaBindingFactory">
+        <set-object property="propertySource" value="service:tapestry.props.ComponentPropertySource"/>
+        <set-object property="valueConverter" value="infrastructure:valueConverter"/>
+      </construct>
+    </invoke-factory>
+  </service-point>
+  
   <configuration-point id="BindingFactories">
     
     Used to map binding prefixes to binding factories.
@@ -177,6 +189,7 @@
     <binding prefix="state" service-id="StateBindingFactory"/>
     <binding prefix="hivemind" service-id="HiveMindBindingFactory"/>
     <binding prefix="clientId" service-id="ClientIdBindingFactory"/>
+    <binding prefix="meta" service-id="MetaBindingFactory" />
   </contribution>
   
   <service-point id="BindingSource">

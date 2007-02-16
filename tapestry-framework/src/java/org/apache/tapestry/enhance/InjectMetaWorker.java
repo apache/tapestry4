@@ -68,8 +68,12 @@ public class InjectMetaWorker implements InjectEnhancementWorker
         Defense.notNull(metaKey, "metaKey");
 
         Class propertyType = op.getPropertyType(propertyName);
+        
+        // Default to object if not specified
+        
         if (propertyType == null) {
             
+            propertyType = Object.class;
         }
         
         op.claimReadonlyProperty(propertyName);
@@ -147,22 +151,19 @@ public class InjectMetaWorker implements InjectEnhancementWorker
     private void addObject(EnhancementOperation op, String metaKey, String propertyName,
             Class propertyType, MethodSignature sig, String sourceName, Location location)
     {
-        String valueConverterName = op.addInjectedField(
-                "_$valueConverter",
-                ValueConverter.class,
-                _valueConverter);
+        String valueConverterName = op.addInjectedField("_$valueConverter", ValueConverter.class, _valueConverter);
+        
         String classRef = op.getClassReference(propertyType);
-
+        
         BodyBuilder builder = new BodyBuilder();
         builder.begin();
-        builder.addln(
-                "java.lang.String meta = {0}.getComponentProperty(this, \"{1}\");",
+        builder.addln("java.lang.String meta = {0}.getComponentProperty(this, \"{1}\");",
                 sourceName,
                 metaKey);
         builder.addln("return ({0}) {1}.coerceValue(meta, {2});", ClassFabUtils
                 .getJavaClassName(propertyType), valueConverterName, classRef);
         builder.end();
-
+        
         op.addMethod(Modifier.PUBLIC, sig, builder.toString(), location);
     }
 

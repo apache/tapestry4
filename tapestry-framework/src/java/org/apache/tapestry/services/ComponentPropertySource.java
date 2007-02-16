@@ -54,8 +54,7 @@ public interface ComponentPropertySource
      * 
      * @return the value of the given property name, or null if not found.
      */
-    String getLocalizedComponentProperty(IComponent component, Locale locale,
-            String propertyName);
+    String getLocalizedComponentProperty(IComponent component, Locale locale, String propertyName);
 
     /**
      * Returns the property value for a particular named meta-data property of the namespace. The
@@ -75,6 +74,5 @@ public interface ComponentPropertySource
      * {@link INamespace}.
      */
 
-    String getLocalizedNamespaceProperty(INamespace namespace, Locale locale,
-            String propertyName);
+    String getLocalizedNamespaceProperty(INamespace namespace, Locale locale, String propertyName);
 }
