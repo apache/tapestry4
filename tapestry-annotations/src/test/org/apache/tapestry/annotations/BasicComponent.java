@@ -23,5 +23,4 @@ package org.apache.tapestry.annotations;
 @ComponentClass
 public class BasicComponent
 {
-
 }

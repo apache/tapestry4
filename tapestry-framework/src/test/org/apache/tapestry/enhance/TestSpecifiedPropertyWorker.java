@@ -98,6 +98,19 @@ public class TestSpecifiedPropertyWorker extends BaseComponentTestCase
         return buildComponentSpecification(buildPropertySpecs(name, type, persistent));
     }
 
+    public enum TestEnum {
+        First,
+        Second
+    }
+    
+    public void test_Can_Proxy_Enum() 
+    {
+        Object obj = TestEnum.First;
+        
+        assert !EnhanceUtils.canProxyPropertyType(obj.getClass());
+        assert EnhanceUtils.canProxyPropertyType(List.class);
+    }
+    
     public void testAddNormal() throws Exception
     {
         Location l = newLocation();
@@ -218,7 +231,7 @@ public class TestSpecifiedPropertyWorker extends BaseComponentTestCase
         verify();
     }
 
-    public void testAddPersistent() throws Exception
+    public void test_Add_Persistent() throws Exception
     {
         IComponentSpecification spec = buildComponentSpecification(
                 "barney",

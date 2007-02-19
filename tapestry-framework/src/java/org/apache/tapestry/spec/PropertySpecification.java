@@ -38,6 +38,10 @@ public class PropertySpecification extends BaseLocatable implements
 
     private String _persistence;
 
+    private boolean _proxyChecked;
+    
+    private boolean _canProxy;
+    
     public String getInitialValue()
     {
         return _initialValue;
@@ -96,5 +100,37 @@ public class PropertySpecification extends BaseLocatable implements
     public void setPersistence(String persistence)
     {
         _persistence = persistence;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean canProxy()
+    {
+        return _canProxy;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isProxyChecked()
+    {
+        return _proxyChecked;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setCanProxy(boolean canProxy)
+    {
+        _canProxy = canProxy;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setProxyChecked(boolean checked)
+    {
+        _proxyChecked = checked;
     }
 }

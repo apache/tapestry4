@@ -20,6 +20,7 @@ import java.util.Iterator;
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.service.BodyBuilder;
+import org.apache.hivemind.service.ClassFabUtils;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IBinding;
@@ -31,7 +32,8 @@ import org.apache.tapestry.spec.IPropertySpecification;
 
 /**
  * Responsible for adding properties to a class corresponding to specified
- * properties in the component's specification.
+ * properties in the component's specification - which may come from .jwc / .page specifications
+ * or annotated abstract methods.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
@@ -43,7 +45,7 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
     private ErrorLog _errorLog;
 
     private BindingSource _bindingSource;
-
+    
     /**
      * Iterates over the specified properties, creating an enhanced property for
      * each (a field, an accessor, a mutator). Persistent properties will invoke
@@ -83,17 +85,15 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
         boolean persistent = ps.isPersistent();
         String initialValue = ps.getInitialValue();
         Location location = ps.getLocation();
-
-        addProperty(op, propertyName, specifiedType, persistent, initialValue,
-                location);
+        
+        addProperty(op, propertyName, specifiedType, persistent, initialValue, location, ps);
     }
 
-    public void addProperty(EnhancementOperation op, String propertyName,
-            String specifiedType, boolean persistent, String initialValue,
-            Location location)
+    public void addProperty(EnhancementOperation op, String propertyName, String specifiedType, 
+            boolean persistent, String initialValue, Location location, IPropertySpecification ps)
     {
         Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName, specifiedType);
-
+        
         op.claimProperty(propertyName);
 
         String field = "_$" + propertyName;
@@ -104,83 +104,86 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
         // if they exist. 4.0 is less picky ... it blindly adds new methods,
         // possibly
         // overwriting methods in the base component class.
-
-        EnhanceUtils.createSimpleAccessor(op, field, propertyName,
-                propertyType, location);
-
-        addMutator(op, propertyName, propertyType, field, persistent, location);
-
+        
+        EnhanceUtils.createSimpleAccessor(op, field, propertyName, propertyType, location);
+        
+        boolean canProxy = false;
+        if (ps.isProxyChecked())
+            canProxy = ps.canProxy();
+        else
+            canProxy = persistent && EnhanceUtils.canProxyPropertyType(propertyType);
+        
+        addMutator(op, propertyName, propertyType, field, persistent, canProxy, location);
+        
         if (initialValue == null)
             addReinitializer(op, propertyType, field);
-        else addInitialValue(op, propertyName, propertyType, field,
-                initialValue, location);
+        else 
+            addInitialValue(op, propertyName, propertyType, field, initialValue, persistent, canProxy, location);
     }
 
-    private void addReinitializer(EnhancementOperation op, Class propertyType,
-            String fieldName)
+    private void addReinitializer(EnhancementOperation op, Class propertyType, String fieldName)
     {
         String defaultFieldName = fieldName + "$default";
-
+        
         op.addField(defaultFieldName, propertyType);
-
+        
         // On finishLoad(), store the current value into the default field.
 
-        op.extendMethodImplementation(IComponent.class,
-                EnhanceUtils.FINISH_LOAD_SIGNATURE, defaultFieldName + " = "
-                        + fieldName + ";");
+        op.extendMethodImplementation(IComponent.class, EnhanceUtils.FINISH_LOAD_SIGNATURE, 
+                defaultFieldName + " = " + fieldName + ";");
 
         // On pageDetach(), restore the attribute to its default value.
-
+        
         op.extendMethodImplementation(PageDetachListener.class,
-                EnhanceUtils.PAGE_DETACHED_SIGNATURE, fieldName + " = "
-                        + defaultFieldName + ";");
+                EnhanceUtils.PAGE_DETACHED_SIGNATURE, fieldName + " = " + defaultFieldName + ";");
     }
 
-    private void addInitialValue(EnhancementOperation op, String propertyName,
-            Class propertyType, String fieldName, String initialValue,
-            Location location)
+    private void addInitialValue(EnhancementOperation op, String propertyName, Class propertyType, 
+            String fieldName, String initialValue, boolean persistent, boolean canProxy, Location location)
     {
-        String description = EnhanceMessages
-                .initialValueForProperty(propertyName);
+        String description = EnhanceMessages.initialValueForProperty(propertyName);
 
-        InitialValueBindingCreator creator = new InitialValueBindingCreator(
-                _bindingSource, description, initialValue, location);
-
-        String creatorField = op.addInjectedField(fieldName
-                + "$initialValueBindingCreator",
-                InitialValueBindingCreator.class, creator);
+        InitialValueBindingCreator creator = 
+            new InitialValueBindingCreator(_bindingSource, description, initialValue, location);
+        
+        String creatorField = op.addInjectedField(fieldName + "$initialValueBindingCreator", InitialValueBindingCreator.class, creator);
 
         String bindingField = fieldName + "$initialValueBinding";
         op.addField(bindingField, IBinding.class);
 
         BodyBuilder builder = new BodyBuilder();
+        
+        builder.addln("{0} = {1}.createBinding(this);", bindingField, creatorField);
 
-        builder.addln("{0} = {1}.createBinding(this);", bindingField,
-                creatorField);
-
-        op.extendMethodImplementation(IComponent.class,
-                EnhanceUtils.FINISH_LOAD_SIGNATURE, builder.toString());
+        op.extendMethodImplementation(IComponent.class, EnhanceUtils.FINISH_LOAD_SIGNATURE, builder.toString());
 
         builder.clear();
-
-        builder.addln("{0} = {1};", fieldName, EnhanceUtils
-                .createUnwrapExpression(op, bindingField, propertyType));
-
+        
+        builder.addln("{0} = {1};", fieldName, EnhanceUtils.createUnwrapExpression(op, bindingField, propertyType));
+        
+        // add proxy observers if we can
+        
+        if (canProxy)  {
+            
+            builder.add(fieldName + " = (" + ClassFabUtils.getJavaClassName(propertyType) + ") getPage().getPropertyChangeObserver().observePropertyChanges(this, (" 
+                    + ClassFabUtils.getJavaClassName(propertyType) + ") " + fieldName + ",");
+            builder.addQuoted(propertyName);
+            builder.addln(");");
+        }
+        
         String code = builder.toString();
-
+        
         // In finishLoad() and pageDetach(), de-reference the binding to get the
         // value
         // for the property.
 
-        op.extendMethodImplementation(IComponent.class,
-                EnhanceUtils.FINISH_LOAD_SIGNATURE, code);
-        op.extendMethodImplementation(PageDetachListener.class,
-                EnhanceUtils.PAGE_DETACHED_SIGNATURE, code);
-
+        op.extendMethodImplementation(IComponent.class, EnhanceUtils.FINISH_LOAD_SIGNATURE, code);
+        
+        op.extendMethodImplementation(PageDetachListener.class, EnhanceUtils.PAGE_DETACHED_SIGNATURE, code);
     }
 
     private void addMutator(EnhancementOperation op, String propertyName,
-            Class propertyType, String fieldName, boolean persistent,
+            Class propertyType, String fieldName, boolean persistent,  boolean canProxy, 
             Location location)
     {
         String methodName = EnhanceUtils.createMutatorMethodName(propertyName);
@@ -188,20 +191,30 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
         BodyBuilder body = new BodyBuilder();
 
         body.begin();
-
-        if (persistent)
-        {
+        
+        if (persistent) {
+            
             body.add("org.apache.tapestry.Tapestry#fireObservedChange(this, ");
             body.addQuoted(propertyName);
             body.addln(", ($w) $1);");
         }
-
-        body.addln(fieldName + " = $1;");
-
+        
+        if (canProxy) {
+            
+            // set the field to the proxied type
+            
+            body.add(fieldName + " = (" + ClassFabUtils.getJavaClassName(propertyType) + ") getPage().getPropertyChangeObserver().observePropertyChanges(this, ($w) $1,");
+            body.addQuoted(propertyName);
+            body.addln(");");
+            
+        } else {
+            
+            body.addln(fieldName + " = $1;");
+        }
+        
         body.end();
 
-        MethodSignature sig = new MethodSignature(void.class, methodName,
-                new Class[] { propertyType }, null);
+        MethodSignature sig = new MethodSignature(void.class, methodName, new Class[] { propertyType }, null);
 
         op.addMethod(Modifier.PUBLIC, sig, body.toString(), location);
     }

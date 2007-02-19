@@ -18,6 +18,9 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.Factory;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.service.ClassFabUtils;
@@ -48,7 +51,7 @@ public final class EnhanceUtils
     public static final MethodSignature CLEANUP_AFTER_RENDER_SIGNATURE = new MethodSignature(
             void.class, "cleanupAfterRender", new Class[]
             { IRequestCycle.class }, null);
-
+    
     /**
      * Used to unwrap primitive types inside the accessor method. In each case, the binding is in a
      * variable named "binding", and {0} will be the actual type of the property. The Map is keyed
@@ -91,12 +94,9 @@ public final class EnhanceUtils
             String propertyName, Class propertyType, Location location)
     {
         String methodName = op.getAccessorMethodName(propertyName);
-
-        op.addMethod(
-                Modifier.PUBLIC,
-                new MethodSignature(propertyType, methodName, null, null),
-                "return " + fieldName + ";",
-                location);
+        
+        op.addMethod( Modifier.PUBLIC, new MethodSignature(propertyType, methodName, null, null),
+                "return " + fieldName + ";", location);
     }
 
     public static void createSimpleMutator(EnhancementOperation op, String fieldName,
@@ -104,8 +104,8 @@ public final class EnhanceUtils
     {
         String methodName = createMutatorMethodName(propertyName);
 
-        op.addMethod(Modifier.PUBLIC, new MethodSignature(void.class, methodName, new Class[]
-        { propertyType }, null), fieldName + " = $1;", location);
+        op.addMethod(Modifier.PUBLIC, new MethodSignature(void.class, methodName, 
+                new Class[] { propertyType }, null), fieldName + " = $1;", location);
     }
 
     /**
@@ -129,13 +129,13 @@ public final class EnhanceUtils
     {
         Defense.notNull(op, "op");
         Defense.notNull(propertyName, "propertyName");
-
+        
         if (definedTypeName != null)
         {
             Class propertyType = op.convertTypeName(definedTypeName);
-
+            
             op.validateProperty(propertyName, propertyType);
-
+            
             return propertyType;
         }
         
@@ -228,8 +228,7 @@ public final class EnhanceUtils
      *            the type of value to be extracted from the binding.
      */
 
-    public static String createUnwrapExpression(EnhancementOperation op, String bindingName,
-            Class valueType)
+    public static String createUnwrapExpression(EnhancementOperation op, String bindingName, Class valueType)
     {
         Defense.notNull(op, "op");
         Defense.notNull(bindingName, "bindingName");
@@ -263,7 +262,7 @@ public final class EnhanceUtils
 
         return buffer.toString();
     }
-
+    
     /**
      * Verifies that a property type can be assigned a particular type of value.
      * 
@@ -298,5 +297,52 @@ public final class EnhanceUtils
                     requiredType));
 
         return propertyType;
+    }
+    
+    /**
+     * Determines whether or not the specified class type is elligable for proxying. This generally
+     * means it needs a default constructor, can't be final / primitive / array. 
+     * 
+     * @param type 
+     *          The class to check for proxying elligibility.
+     * @return True if the type can be proxied, false otherwise.
+     */
+    public static boolean canProxyPropertyType(Class type)
+    {
+        // if it's already enhanced it must be by someone else
+        
+        if (Enhancer.isEnhanced(type) || Factory.class.isAssignableFrom(type))
+            return false;
+        
+        if (type.isInterface())
+            return true;
+        
+        if (!hasEmptyConstructor(type))
+            return false;
+        
+        if (type.isArray() || type.isPrimitive() || Modifier.isFinal(type.getModifiers()) || Object.class == type)
+            return false;
+        
+        return true;
+    }
+    
+    /**
+     * Checks if the specified class type has an empty constructor.
+     * 
+     * @param type
+     *          The class to check, can't be null.
+     *          
+     * @return True if a no args constructor exists.
+     */
+    public static boolean hasEmptyConstructor(Class type)
+    {
+        Defense.notNull(type, "type");
+        
+        try {
+            
+            return type.getConstructor(null) != null;
+        } catch (Throwable t) {
+            return false;
+        }
     }
 }

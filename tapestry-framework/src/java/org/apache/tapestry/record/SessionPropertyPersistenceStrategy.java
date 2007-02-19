@@ -45,16 +45,14 @@ public class SessionPropertyPersistenceStrategy implements
 
     private WebRequest _request;
 
-    public void store(String pageName, String idPath, String propertyName,
-            Object newValue)
+    public void store(String pageName, String idPath, String propertyName, Object newValue)
     {
         Defense.notNull(pageName, "pageName");
         Defense.notNull(propertyName, "propertyName");
 
         WebSession session = _request.getSession(true);
 
-        String attributeName = RecordUtils.buildChangeKey(STRATEGY_ID,
-                _applicationId, pageName, idPath, propertyName);
+        String attributeName = RecordUtils.buildChangeKey(STRATEGY_ID, _applicationId, pageName, idPath, propertyName);
 
         session.setAttribute(attributeName, newValue);
     }
@@ -65,24 +63,22 @@ public class SessionPropertyPersistenceStrategy implements
 
         WebSession session = _request.getSession(false);
 
-        if (session == null) return Collections.EMPTY_LIST;
+        if (session == null) 
+            return Collections.EMPTY_LIST;
 
         final Collection result = new ArrayList();
 
         WebSessionAttributeCallback callback = new WebSessionAttributeCallback()
         {
-
             public void handleAttribute(WebSession sess, String name)
             {
-                PropertyChange change = RecordUtils.buildChange(name, sess
-                        .getAttribute(name));
+                PropertyChange change = RecordUtils.buildChange(name, sess.getAttribute(name));
 
                 result.add(change);
             }
         };
 
-        RecordUtils.iterateOverMatchingAttributes(STRATEGY_ID, _applicationId,
-                pageName, session, callback);
+        RecordUtils.iterateOverMatchingAttributes(STRATEGY_ID, _applicationId, pageName, session, callback);
 
         return result;
     }
@@ -95,7 +91,6 @@ public class SessionPropertyPersistenceStrategy implements
 
         WebSessionAttributeCallback callback = new WebSessionAttributeCallback()
         {
-
             public void handleAttribute(WebSession sess, String name)
             {
                 sess.setAttribute(name, null);

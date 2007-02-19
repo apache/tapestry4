@@ -96,8 +96,7 @@ public interface EnhancementOperation
      *         prevent naming conflicts.
      */
 
-    String addInjectedField(String fieldName, Class fieldType,
-            Object value);
+    String addInjectedField(String fieldName, Class fieldType, Object value);
 
     /**
      * Converts a type name (an object class name, a primtive name, or an array)

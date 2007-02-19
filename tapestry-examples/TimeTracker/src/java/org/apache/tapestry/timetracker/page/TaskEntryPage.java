@@ -53,7 +53,7 @@ public abstract class TaskEntryPage<E extends Persistent> extends BasePage
     @InjectObject("service:timetracker.dao.ProjectDao")
     public abstract GenericDao<E> getProjectDao();
     
-    @Persist("session")
+    @Persist
     public abstract E getSelectedProject();
     
     public abstract Project getCurrentProject();

@@ -165,4 +165,10 @@ public abstract class AnnotatedPage extends BasePage
     
     @InitialValue("literal:5")
     public abstract int getDefaultPageSize();
+    
+    @Persist
+    public abstract SimpleBean getBean();
+    
+    @Persist
+    public abstract SubSimpleBean getSubBean();
 }
