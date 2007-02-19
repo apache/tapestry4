@@ -15,8 +15,8 @@
     <inceptionYear>2006</inceptionYear>
 
     <modules>
-        <module>Vlib</module>
-        <module>VlibBeans</module>
+        <!-- <module>Vlib</module>
+        <module>VlibBeans</module> -->
         <module>TimeTracker</module>
         <module>Workbench</module>
     </modules>
