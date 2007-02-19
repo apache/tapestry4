@@ -51,7 +51,38 @@ public interface IPropertySpecification extends LocationHolder
     void setName(String name);
 
     void setType(String type);
-
+    
+    /**
+     * Checks if this property has previously had it's type information examined to
+     * determine if it is elligable for proxying. Meaning {@link #canProxy()} should
+     * be a real value.
+     * 
+     * @return True if the proxy type has been checked, false otherwise.
+     */
+    boolean isProxyChecked();
+    
+    /**
+     * Sets the state of this property so that it is known whether or not the type
+     * it represents has been checked as being compatible with proxying or not.
+     * 
+     * @param checked
+     */
+    void setProxyChecked(boolean checked);
+    
+    /**
+     * Checks if this parameter can be proxied. 
+     * 
+     * @return True if the type can be proxied, false otherwise.
+     */
+    boolean canProxy();
+    
+    /**
+     * Sets whether or not this property can be proxied.
+     * 
+     * @param canProxy
+     */
+    void setCanProxy(boolean canProxy);
+    
     /**
      * A string indicating how the property is persisted.
      * 

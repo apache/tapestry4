@@ -50,7 +50,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
      */
 
     private ChangeObserver _changeObserver;
-
+    
     /**
      * The {@link IEngine}the page is currently attached to.
      */

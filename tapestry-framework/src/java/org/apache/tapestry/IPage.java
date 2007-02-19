@@ -23,6 +23,7 @@ import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEndRenderListener;
 import org.apache.tapestry.event.PageValidateListener;
+import org.apache.tapestry.record.PropertyChangeObserver;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.util.ContentType;
 
@@ -63,7 +64,15 @@ public interface IPage extends IComponent
      */
 
     ChangeObserver getChangeObserver();
-
+    
+    /**
+     * Returns the injected property change service responsible for monitoring changes to 
+     * individual object properties being persisted.
+     * 
+     * @return The injected property change service.
+     */
+    PropertyChangeObserver getPropertyChangeObserver();
+    
     /**
      * Returns the <code>Locale</code> of the page. The locale may be used to determine what
      * template is used by the page and the components contained by the page.

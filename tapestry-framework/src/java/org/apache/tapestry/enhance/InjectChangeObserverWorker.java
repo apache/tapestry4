@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,35 +11,37 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 package org.apache.tapestry.enhance;
 
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.services.ComponentRenderWorker;
+import org.apache.tapestry.record.PropertyChangeObserver;
 import org.apache.tapestry.spec.IComponentSpecification;
 
-/**
- * Injects the component's render worker chain as the
- * {@link org.apache.tapestry.IComponent renderWorker}property.
- * 
- * @author jkuhnert
- * @since 4.1
- */
-public class InjectRenderWorker implements EnhancementWorker
-{
 
-    public static final String PROPERTY_NAME = "renderWorker";
+/**
+ * Responsible for injecting the {@link PropertyChangeObserver} service into each page
+ * instance.
+ */
+public class InjectChangeObserverWorker implements EnhancementWorker
+{
+    static final String PROPERTY_NAME = "propertyChangeObserver";
     
     private ErrorLog _errorLog;
     
-    private ComponentRenderWorker _renderWorker;
+    private PropertyChangeObserver _observer;
     
+    /**
+     * {@inheritDoc}
+     */
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec)
     {
+        if (!spec.isPageSpecification())
+            return;
+        
         try
         {
-            injectRenderWorker(op, spec);
+            injectChangeObserver(op, spec);
         }
         catch (Exception ex)
         {
@@ -48,18 +50,17 @@ public class InjectRenderWorker implements EnhancementWorker
         }
     }
     
-    public void injectRenderWorker(EnhancementOperation op, IComponentSpecification spec)
+    public void injectChangeObserver(EnhancementOperation op, IComponentSpecification spec)
     {
         Defense.notNull(op, "op");
         Defense.notNull(spec, "spec");
         
         op.claimReadonlyProperty(PROPERTY_NAME);
         
-        String fieldName = op.addInjectedField("_$" + PROPERTY_NAME, ComponentRenderWorker.class, _renderWorker);
+        String fieldName = op.addInjectedField("_$" + PROPERTY_NAME, PropertyChangeObserver.class, _observer);
         
-        EnhanceUtils.createSimpleAccessor(op, fieldName,
-                PROPERTY_NAME, ComponentRenderWorker.class,
-                spec.getLocation());
+        EnhanceUtils.createSimpleAccessor(op, fieldName, PROPERTY_NAME, 
+                PropertyChangeObserver.class, spec.getLocation());
     }
     
     public void setErrorLog(ErrorLog errorLog)
@@ -67,8 +68,8 @@ public class InjectRenderWorker implements EnhancementWorker
         _errorLog = errorLog;
     }
     
-    public void setRenderWorker(ComponentRenderWorker worker)
+    public void setPropertyChangeObserver(PropertyChangeObserver observer)
     {
-        _renderWorker = worker;
+        _observer = observer;
     }
 }

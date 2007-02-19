@@ -38,7 +38,7 @@ public interface IPageRecorder extends ChangeObserver
      */
 
     void commit();
-
+    
     /**
      * Rolls back the page to the currently persisted state.
      * <p>

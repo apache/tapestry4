@@ -54,8 +54,7 @@ public class ObservedChangeEvent extends EventObject
      *             serializable
      */
 
-    public ObservedChangeEvent(IComponent component, String propertyName,
-            Object newValue)
+    public ObservedChangeEvent(IComponent component, String propertyName, Object newValue)
     {
         super(component);
 

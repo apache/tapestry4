@@ -54,7 +54,8 @@ import org.apache.tapestry.util.xml.DocumentParseException;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
-import org.testng.annotations.Configuration;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -126,7 +127,7 @@ public class TestMockApplications
     /**
      * Closes System.out and System.err, then restores them to their original values.
      */
-    @Configuration(afterTestMethod = true)
+    @AfterMethod
     public void tearDown() throws Exception
     {
         System.err.close();
@@ -483,9 +484,6 @@ public class TestMockApplications
 
     private boolean evaluate(String expression) throws DocumentParseException
     {
-        // if (_ognlContext == null)
-           // _ognlContext = Ognl.createDefaultContext(this);
-
         Object value = null;
 
         try
@@ -615,9 +613,6 @@ public class TestMockApplications
 
     private PatternMatcher getMatcher()
     {
-        //if (_matcher == null)
-          //  _matcher = new Perl5Matcher();
-
         return _matcher;
     }
 
@@ -628,9 +623,6 @@ public class TestMockApplications
 
         if (result != null)
             return result;
-
-        // if (_compiler == null)
-           // _compiler = new Perl5Compiler();
 
         try
         {
@@ -945,7 +937,7 @@ public class TestMockApplications
         return new PrintStream(bos, true);
     }
     
-    @Configuration(afterTestClass = true)
+    @AfterClass
     public static void deleteDir()
     {
         File file = new File(getBaseDirectory() + "/target/.private");

@@ -1,205 +1,241 @@
 <?xml version="1.0"?>
 <!-- 
-   Copyright 2005 The Apache Software Foundation
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+    Copyright 2005 The Apache Software Foundation
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
 -->
 
 <module id="tapestry.annotation" version="4.0.0" package="org.apache.tapestry.annotations">
-  
-  JDK 1.5 annotation support for Tapestry, allowing classes (including base classes) to provide details normally
-  specified in the XML component or page specification.
-  
-  <service-point id="AnnotationEnhancementWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
-    
-    Bridge from ordinary specification-based enhancements, to annotation-driven enhancements.
-    
-    <invoke-factory>
-      <construct class="AnnotationEnhancementWorker">
-        <set-configuration property="methodWorkers" configuration-id="MethodWorkers"/>
-        <set-configuration property="classWorkers" configuration-id="ClassWorkers"/>
-        <set-configuration property="secondaryAnnotationWorkers" configuration-id="SecondaryAnnotationWorkers"/>
-      </construct>
-    </invoke-factory>
-    
-  </service-point>
-  
-  <service-point id="ComponentHousekeepingWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
-  
-  	Perform additional housekeeping relating to injected components, i.e. ensure bindings are set
-  	for copyOf components.
-  
-  	<invoke-factory>
-      <construct class="ComponentHousekeepingWorker">
-      </construct>
-    </invoke-factory>
-  </service-point>
-  
-  <!-- Only contribute when in JDK 1.5 and java.lang.Annotation exists -->
-  
-  <contribution configuration-id="tapestry.enhance.EnhancementWorkers" if="class java.lang.annotation.Annotation">    
-    <!-- Needs to come first because some enhancements modify
-         the component specification, affecting what occurs in later commands. -->
-    <command id="annotation-worker" object="service:AnnotationEnhancementWorker" before="*"/>
-    <command id="component-housekeeping-worker" object="service:ComponentHousekeepingWorker" after="annotation-worker"/>
-    <command id="inject-asset-annotation" object="service:InjectAssetAnnotationWorker" after="tapestry.enhance.inject-asset"/>
-  </contribution>
-  
-  <configuration-point id="ClassWorkers">
-    
-    Maps from a specific Annotation class, to a particular ClassAnnotationEnhancementWorker (typically,
-    a service).
-    <schema>
-      <element name="worker" key-attribute="annotation">
+
+    JDK 1.5 annotation support for Tapestry, allowing classes (including base classes) to provide details normally
+    specified in the XML component or page specification.
+
+    <service-point id="AnnotationEnhancementWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+
+        Bridge from ordinary specification-based enhancements, to annotation-driven enhancements.
+
+        <invoke-factory>
+            <construct class="AnnotationEnhancementWorker">
+                <set-configuration property="methodWorkers" configuration-id="MethodWorkers" />
+                <set-configuration property="classWorkers" configuration-id="ClassWorkers" />
+                <set-configuration property="secondaryAnnotationWorkers" configuration-id="SecondaryAnnotationWorkers" />
+            </construct>
+        </invoke-factory>
+
+    </service-point>
+
+    <service-point id="ComponentHousekeepingWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+
+        Perform additional housekeeping relating to injected components, i.e. ensure bindings are set for copyOf
+        components.
+
+        <invoke-factory>
+            <construct class="ComponentHousekeepingWorker"></construct>
+        </invoke-factory>
+    </service-point>
+
+    <service-point id="ComponentPropertyProxyWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+
+        Checks for proxy capabilities of specified properties.
         
-        <attribute name="annotation" translator="class">
-          The name of an Annotation class which triggers the enhancement worker's behavior.
-        </attribute>
+        <invoke-factory>
+            <construct class="ComponentPropertyProxyWorker">
+                <set-configuration property="excludedPackages" configuration-id="ExcludedProxyAnnotations" />
+            </construct>
+        </invoke-factory>
+    </service-point>
+
+    <!-- Only contribute when in JDK 1.5 and java.lang.Annotation exists -->
+
+    <contribution configuration-id="tapestry.enhance.EnhancementWorkers" if="class java.lang.annotation.Annotation">
+        <!-- Needs to come first because some enhancements modify
+            the component specification, affecting what occurs in later commands. -->
+        <command id="annotation-worker" object="service:AnnotationEnhancementWorker" before="*" />
         
-        <attribute name="object" translator="object">
-          
-          An object that implements the ClassAnnotationEnhancementWorker interface.
-        </attribute>
+        <command id="component-housekeeping-worker" object="service:ComponentHousekeepingWorker" after="annotation-worker" />
+        <command id="component-propertyproxy-worker" object="service:ComponentPropertyProxyWorker" before="tapestry.enhance.specified-property" />
+        <command id="inject-asset-annotation" object="service:InjectAssetAnnotationWorker" after="tapestry.enhance.inject-asset" />
+    </contribution>
+
+    <configuration-point id="ExcludedProxyAnnotations">
+    
+        Definition of simple string match configurations that will cause any annotation class name 
+        matching any of the definitions in this configuration point to not be eligable for cglib proxying
+        enhancements later on. This is done to prevent issues with popular persistence frameworks like
+        Hibernate.
         
-        <rules>
-          <push-attribute attribute="object"/>
-          <invoke-parent method="addElement"/>
-        </rules>
-        
-      </element>
-    </schema>
-    
-  </configuration-point>
-  
-  <contribution configuration-id="ClassWorkers">
-    <worker annotation="ComponentClass" object="instance:ComponentClassAnnotationWorker"/>
-    <worker annotation="Meta" object="instance:MetaAnnotationWorker"/>
-  </contribution>
-  
-  <configuration-point id="MethodWorkers">
-    
-    Maps from a specific Annotation class, to a particular MethodAnnotationEnhancementWorker (typically,
-    a service).
-    <schema>
-      <element name="worker" key-attribute="annotation">
-        
-        <attribute name="annotation" translator="class">
-          The name of an Annotation class which triggers the enhancement worker's behavior.
-        </attribute>
-        
-        <attribute name="object" translator="object">
-          
-          An object that implements the MethodAnnotationEnhancementWorker interface.
-        </attribute>
-        
-        <rules>
-          <push-attribute attribute="object"/>
-          <invoke-parent method="addElement"/>
-        </rules>
-        
-      </element>
-    </schema>
-    
-  </configuration-point>
-  
-  <contribution configuration-id="MethodWorkers">
-    
-    <!-- These instantiate the corresponding enhancement worker, and delegate to it. -->
-    <worker annotation="InjectObject" object="service:InjectObjectAnnotationWorker"/>
-    <worker annotation="InjectComponent" object="instance:InjectComponentAnnotationWorker"/>
-    <worker annotation="Message" object="instance:MessageAnnotationWorker"/>
-    
-    <!-- These update the component specification with new sub-elements. Later, the 
-         existing enhancement workers perform the work, as if the sub-elements were
-         specified in the XML. This is actually a lot easier and just as powerful, and
-         the delegating style will probably go pretty soon.  -->
-         
-    <worker annotation="InjectState" object="instance:InjectStateAnnotationWorker"/>
-    <worker annotation="InjectStateFlag" object="instance:InjectStateFlagAnnotationWorker"/>
-    <worker annotation="Persist" object="instance:PersistAnnotationWorker"/>
-    <worker annotation="Bean" object="instance:BeanAnnotationWorker"/>
-    <worker annotation="Asset" object="instance:AssetAnnotationWorker"/>
-    <worker annotation="Parameter" object="instance:ParameterAnnotationWorker"/>
-    <worker annotation="InjectPage" object="instance:InjectPageAnnotationWorker"/>
-    <worker annotation="Component" object="service:ComponentAnnotationWorker"/>
-    <worker annotation="InjectMeta" object="instance:InjectMetaAnnotationWorker"/>
-    <worker annotation="InjectScript" object="instance:InjectScriptAnnotationWorker"/>
-  </contribution>
-  
-  <service-point id="ComponentAnnotationWorker" interface="MethodAnnotationEnhancementWorker">
-    <invoke-factory>
-      <construct class="ComponentAnnotationWorker" />
-    </invoke-factory>
-  </service-point>
-  
-  <service-point id="InjectAssetAnnotationWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
-    
-    Injects IAsset assets based on previously defined asset alias names. (such as in a .page or .jwc spec )
-    
-    <invoke-factory>
-      <construct class="InjectAssetAnnotationWorker"/>
-    </invoke-factory>
-    
-  </service-point>
-  
-  <service-point id="InjectObjectAnnotationWorker" interface="MethodAnnotationEnhancementWorker">
-    
-    Injects HiveMind objects, based on the InjectObject annotation.
-    
-    <invoke-factory>
-      <construct class="InjectObjectAnnotationWorker">
-        <set-service property="provider" service-id="tapestry.InjectedValueProvider"/>
-      </construct>
-    </invoke-factory>
-    
-  </service-point>
-  
-  <service-point id="EventListenerAnnotationWorker" interface="EventListenerAnnotationWorker">
-    
-    Handles EventListener annotations.
-    
-    <invoke-factory>
-      <construct class="EventListenerAnnotationWorker">
-        <set-service property="invoker" service-id="tapestry.event.EventInvoker"/>
-      </construct>
-    </invoke-factory>
-    
-  </service-point>
-  
-  <configuration-point id="SecondaryAnnotationWorkers">
-    
-    Configures a list of secondary annotation workers.
-    <schema>
-      <element name="worker">
-        
-        <attribute name="object" translator="object" required="true">
-          
-          An object that implements the SecondaryAnnotationEnhancementWorker interface.
-        </attribute>
-        
-        <rules>
-          <push-attribute attribute="object"/>
-          <invoke-parent method="addElement"/>
-        </rules>
-        
-      </element>
-    </schema>
-    
-  </configuration-point>
-  
-  <contribution configuration-id="SecondaryAnnotationWorkers"> 
-    <worker object="instance:InitialValueAnnotationWorker"/>
-    <worker object="service:EventListenerAnnotationWorker"/>
-  </contribution>
-  
+        <schema>
+            <element name="exclude">
+                <attribute name="match" required="true" unique="true" >
+                    The string to use in matching containment within the string returned from Annotation.annotationType().getName().
+                </attribute>
+                <rules>
+                    <push-attribute attribute="match" />
+                    <invoke-parent method="addElement" />
+                </rules>
+            </element>
+        </schema>
+    </configuration-point>
+
+    <contribution configuration-id="ExcludedProxyAnnotations">
+        <exclude match="org.hibernate" />
+        <exclude match="javax.persistence" />
+        <exclude match="Entity" />
+    </contribution>
+
+    <configuration-point id="ClassWorkers">
+
+        Maps from a specific Annotation class, to a particular ClassAnnotationEnhancementWorker (typically, a service).
+        <schema>
+            <element name="worker" key-attribute="annotation">
+
+                <attribute name="annotation" translator="class">
+                    The name of an Annotation class which triggers the enhancement worker's behavior.
+                </attribute>
+
+                <attribute name="object" translator="object">
+
+                    An object that implements the ClassAnnotationEnhancementWorker interface.
+                </attribute>
+
+                <rules>
+                    <push-attribute attribute="object" />
+                    <invoke-parent method="addElement" />
+                </rules>
+
+            </element>
+        </schema>
+
+    </configuration-point>
+
+    <contribution configuration-id="ClassWorkers">
+        <worker annotation="ComponentClass" object="instance:ComponentClassAnnotationWorker" />
+        <worker annotation="Meta" object="instance:MetaAnnotationWorker" />
+    </contribution>
+
+    <configuration-point id="MethodWorkers">
+
+        Maps from a specific Annotation class, to a particular MethodAnnotationEnhancementWorker (typically, a service).
+        <schema>
+            <element name="worker" key-attribute="annotation">
+
+                <attribute name="annotation" translator="class">
+                    The name of an Annotation class which triggers the enhancement worker's behavior.
+                </attribute>
+
+                <attribute name="object" translator="object">
+
+                    An object that implements the MethodAnnotationEnhancementWorker interface.
+                </attribute>
+
+                <rules>
+                    <push-attribute attribute="object" />
+                    <invoke-parent method="addElement" />
+                </rules>
+
+            </element>
+        </schema>
+
+    </configuration-point>
+
+    <contribution configuration-id="MethodWorkers">
+
+        <!-- These instantiate the corresponding enhancement worker, and delegate to it. -->
+        <worker annotation="InjectObject" object="service:InjectObjectAnnotationWorker" />
+        <worker annotation="InjectComponent" object="instance:InjectComponentAnnotationWorker" />
+        <worker annotation="Message" object="instance:MessageAnnotationWorker" />
+
+        <!-- These update the component specification with new sub-elements. Later, the 
+            existing enhancement workers perform the work, as if the sub-elements were
+            specified in the XML. This is actually a lot easier and just as powerful, and
+            the delegating style will probably go pretty soon.  -->
+
+        <worker annotation="InjectState" object="instance:InjectStateAnnotationWorker" />
+        <worker annotation="InjectStateFlag" object="instance:InjectStateFlagAnnotationWorker" />
+        <worker annotation="Persist" object="instance:PersistAnnotationWorker" />
+        <worker annotation="Bean" object="instance:BeanAnnotationWorker" />
+        <worker annotation="Asset" object="instance:AssetAnnotationWorker" />
+        <worker annotation="Parameter" object="instance:ParameterAnnotationWorker" />
+        <worker annotation="InjectPage" object="instance:InjectPageAnnotationWorker" />
+        <worker annotation="Component" object="service:ComponentAnnotationWorker" />
+        <worker annotation="InjectMeta" object="instance:InjectMetaAnnotationWorker" />
+        <worker annotation="InjectScript" object="instance:InjectScriptAnnotationWorker" />
+    </contribution>
+
+    <service-point id="ComponentAnnotationWorker" interface="MethodAnnotationEnhancementWorker">
+        <invoke-factory>
+            <construct class="ComponentAnnotationWorker" />
+        </invoke-factory>
+    </service-point>
+
+    <service-point id="InjectAssetAnnotationWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+
+        Injects IAsset assets based on previously defined asset alias names. (such as in a .page or .jwc spec )
+
+        <invoke-factory>
+            <construct class="InjectAssetAnnotationWorker" />
+        </invoke-factory>
+
+    </service-point>
+
+    <service-point id="InjectObjectAnnotationWorker" interface="MethodAnnotationEnhancementWorker">
+
+        Injects HiveMind objects, based on the InjectObject annotation.
+
+        <invoke-factory>
+            <construct class="InjectObjectAnnotationWorker">
+                <set-service property="provider" service-id="tapestry.InjectedValueProvider" />
+            </construct>
+        </invoke-factory>
+
+    </service-point>
+
+    <service-point id="EventListenerAnnotationWorker" interface="EventListenerAnnotationWorker">
+
+        Handles EventListener annotations.
+
+        <invoke-factory>
+            <construct class="EventListenerAnnotationWorker">
+                <set-service property="invoker" service-id="tapestry.event.EventInvoker" />
+            </construct>
+        </invoke-factory>
+
+    </service-point>
+
+    <configuration-point id="SecondaryAnnotationWorkers">
+
+        Configures a list of secondary annotation workers.
+        <schema>
+            <element name="worker">
+
+                <attribute name="object" translator="object" required="true">
+
+                    An object that implements the SecondaryAnnotationEnhancementWorker interface.
+                </attribute>
+
+                <rules>
+                    <push-attribute attribute="object" />
+                    <invoke-parent method="addElement" />
+                </rules>
+
+            </element>
+        </schema>
+
+    </configuration-point>
+
+    <contribution configuration-id="SecondaryAnnotationWorkers">
+        <worker object="instance:InitialValueAnnotationWorker" />
+        <worker object="service:EventListenerAnnotationWorker" />
+    </contribution>
+
 </module>

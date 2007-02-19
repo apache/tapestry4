@@ -92,18 +92,6 @@
 ]]>
 		</assert-output>
 		
-		<assert-output name="b tag">
-<![CDATA[
-<b id="Any_1">b tag</b>
-]]>
-		</assert-output>
-		
-		<assert-output name="i tag">
-<![CDATA[
-<i id="Any_2">i tag</i>
-]]>
-		</assert-output>
-		
 	</request>
 		
  </mock-test>

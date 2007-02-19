@@ -20,9 +20,5 @@
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
 
 <page-specification>
-	
-	<component id="any" type="Any">
-		<binding name="templateTag" expression='"i"'/>
-	</component>
 
 </page-specification>

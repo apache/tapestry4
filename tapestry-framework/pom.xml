@@ -22,6 +22,10 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-nodep</artifactId>
+        </dependency>
+        <dependency>
             <groupId>hivemind</groupId>
             <artifactId>hivemind</artifactId>
         </dependency>
@@ -274,7 +278,7 @@
                     </dependency>
                 </dependencies>
             </plugin>
-            
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>clirr-maven-plugin</artifactId>
@@ -288,7 +292,7 @@
                     </excludes>
                 </configuration>
             </plugin>
-            
+
         </plugins>
     </build>
 

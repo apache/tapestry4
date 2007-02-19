@@ -42,8 +42,7 @@ public class PageRecorderImpl implements IPageRecorder
 
     private ErrorLog _log;
 
-    public PageRecorderImpl(String pageName, PropertyPersistenceStrategySource strategySource, 
-            ErrorLog log)
+    public PageRecorderImpl(String pageName, PropertyPersistenceStrategySource strategySource, ErrorLog log)
     {
         Defense.notNull(pageName, "pageName");
         Defense.notNull(strategySource, "strategySource");
@@ -59,6 +58,11 @@ public class PageRecorderImpl implements IPageRecorder
         _locked = true;
     }
 
+    public boolean isLocked()
+    {
+        return _locked;
+    }
+    
     public Collection getChanges()
     {
         return _strategySource.getAllStoredChanges(_pageName);
@@ -82,11 +86,9 @@ public class PageRecorderImpl implements IPageRecorder
     {
         String idPath = change.getComponentPath();
 
-        IComponent component = (idPath == null) ? page : page
-                .getNestedComponent(idPath);
-
-        PropertyUtils.write(component, change.getPropertyName(), change
-                .getNewValue());
+        IComponent component = (idPath == null) ? page : page.getNestedComponent(idPath);
+        
+        PropertyUtils.write(component, change.getPropertyName(), change.getNewValue());
     }
 
     public void observeChange(ObservedChangeEvent event)
@@ -96,33 +98,27 @@ public class PageRecorderImpl implements IPageRecorder
 
         if (_locked)
         {
-            _log.error(RecordMessages.recorderLocked(propertyName, component),
-                    null, null);
+            _log.error(RecordMessages.recorderLocked(propertyName, component), null, null);
             return;
         }
-
-        PropertyPersistenceStrategy strategy = findStrategy(component,
-                propertyName);
+        
+        PropertyPersistenceStrategy strategy = findStrategy(component, propertyName);
 
         if (strategy != null)
-            strategy.store(_pageName, component.getIdPath(), propertyName,
-                    event.getNewValue());
+            strategy.store(_pageName, component.getIdPath(), propertyName, event.getNewValue());
     }
 
     // package private for testing
 
-    PropertyPersistenceStrategy findStrategy(IComponent component,
-            String propertyName)
+    PropertyPersistenceStrategy findStrategy(IComponent component, String propertyName)
     {
         // So much for Law of Demeter!
 
-        IPropertySpecification propertySpecification = component
-                .getSpecification().getPropertySpecification(propertyName);
+        IPropertySpecification propertySpecification = component.getSpecification().getPropertySpecification(propertyName);
 
         if (propertySpecification == null)
         {
-            _log.error(RecordMessages.missingPropertySpecification(
-                    propertyName, component), null, null);
+            _log.error(RecordMessages.missingPropertySpecification(propertyName, component), null, null);
             return null;
         }
 
@@ -139,10 +135,7 @@ public class PageRecorderImpl implements IPageRecorder
         }
         catch (ApplicationRuntimeException ex)
         {
-            _log
-                    .error(ex.getMessage(),
-                            propertySpecification.getLocation(), ex);
-
+            _log.error(ex.getMessage(), propertySpecification.getLocation(), ex);
             return null;
         }
     }

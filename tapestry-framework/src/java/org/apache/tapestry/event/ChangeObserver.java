@@ -33,4 +33,11 @@ public interface ChangeObserver
      **/
 
     void observeChange(ObservedChangeEvent event);
+    
+    /**
+     * Checks if the current state changes have already been committed.
+     * 
+     * @return True if state changes are locked, false otherwise.
+     */
+    boolean isLocked();
 }

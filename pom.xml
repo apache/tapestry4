@@ -123,6 +123,12 @@
                 <version>1.1.1</version>
                 <scope>compile</scope>
             </dependency>
+            <dependency>
+                <groupId>cglib</groupId>
+                <artifactId>cglib-nodep</artifactId>
+                <version>2.1_3</version>
+                <scope>compile</scope>
+            </dependency>
             <!-- Really, a transitive dependency of hivemind. -->
             <dependency>
                 <groupId>oro</groupId>
@@ -270,7 +276,7 @@
                         </systemProperties>
                         <parallel>true</parallel>
                         <threadCount>4</threadCount>
-			<excludedGroups>integration</excludedGroups>
+                        <excludedGroups>integration</excludedGroups>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -297,6 +303,12 @@
                     </executions>
                 </plugin>
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>2.0.2-SNAPSHOT</version>
+                    <inherited>true</inherited>
+                </plugin>
+               <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-dependency-plugin</artifactId>
                     <version>2.0-alpha-1-SNAPSHOT</version>

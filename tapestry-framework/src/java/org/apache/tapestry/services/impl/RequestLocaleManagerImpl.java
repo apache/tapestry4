@@ -91,9 +91,8 @@ public class RequestLocaleManagerImpl implements RequestLocaleManager
     {
         String localeName = _cookieSource.readCookieValue(TapestryConstants.LOCALE_COOKIE_NAME);
 
-        String requestedLocale = (localeName != null) ? localeName : _request.getLocale()
-                .toString();
-
+        String requestedLocale = (localeName != null) ? localeName : _request.getLocale().toString();
+        
         _requestLocale = filterRequestedLocale(requestedLocale);
 
         _threadLocale.setLocale(_requestLocale);

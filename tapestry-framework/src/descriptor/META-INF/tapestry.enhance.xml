@@ -84,6 +84,7 @@
     <command id="inject-event-invoker" object="service:InjectEventInvokerWorker" before="abstract-property"/>
     <command id="inject-render-worker" object="service:InjectRenderWorker" before="abstract-property"/>
     <command id="specified-property" object="service:SpecifiedPropertyWorker" before="abstract-property"/>
+    <command id="inject-propertychange-worker" object="service:InjectChangeObserverWorker" before="abstract-property" />
     <command id="parameter" object="service:ParameterPropertyWorker" before="abstract-property"/>
     <command id="dispatch-inject" object="service:DispatchToInjectWorker" before="abstract-property"/>
     <command id="inject-component" object="service:InjectComponentWorker" before="abstract-property"/>
@@ -110,7 +111,6 @@
     <command id="page-validate-listener" object="service:InjectPageValidateListenerWorker" after="abstract-property"/>
     <command id="page-begin-render-listener" object="service:InjectPageBeginRenderListenerWorker" after="abstract-property"/>
     <command id="page-end-render-listener" object="service:InjectPageEndRenderListenerWorker" after="abstract-property"/>
-        
     
   </contribution>
   
@@ -314,6 +314,18 @@
     
     <invoke-factory>
       <construct class="InjectAssetWorker"/>
+    </invoke-factory>
+    
+  </service-point>
+
+  <service-point id="InjectChangeObserverWorker" interface="EnhancementWorker">
+    
+    Injects the PropertyChangeObserver service into page instances.
+    
+    <invoke-factory>
+      <construct class="InjectChangeObserverWorker" >
+        <set-service property="propertyChangeObserver" service-id="tapestry.persist.PropertyChangeObserver" />
+      </construct>
     </invoke-factory>
     
   </service-point>

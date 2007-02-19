@@ -235,7 +235,8 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
             String name = pd.getName();
 
-            if (!_properties.containsKey(name)) _properties.put(name, pd);
+            if (!_properties.containsKey(name)) 
+                _properties.put(name, pd);
         }
     }
 
@@ -244,8 +245,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
         Defense.notNull(propertyName, "propertyName");
 
         if (_claimedProperties.contains(propertyName))
-            throw new ApplicationRuntimeException(EnhanceMessages
-                    .claimedProperty(propertyName));
+            throw new ApplicationRuntimeException(EnhanceMessages.claimedProperty(propertyName));
 
         _claimedProperties.add(propertyName);
     }
@@ -260,7 +260,8 @@ public class EnhancementOperationImpl implements EnhancementOperation
         
         PropertyDescriptor pd = getPropertyDescriptor(propertyName);
         
-        if (pd == null) return false;
+        if (pd == null) 
+            return false;
         
         return pd.getWriteMethod() == null ? true : false;
     }
@@ -272,8 +273,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
         PropertyDescriptor pd = getPropertyDescriptor(propertyName);
         
         if (pd != null && pd.getWriteMethod() != null)
-            throw new ApplicationRuntimeException(EnhanceMessages
-                    .readonlyProperty(propertyName, pd.getWriteMethod()));
+            throw new ApplicationRuntimeException(EnhanceMessages.readonlyProperty(propertyName, pd.getWriteMethod()));
     }
 
     public void addField(String name, Class type)
@@ -281,8 +281,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
         _classFab.addField(name, type);
     }
 
-    public String addInjectedField(String fieldName, Class fieldType,
-            Object value)
+    public String addInjectedField(String fieldName, Class fieldType, Object value)
     {
         Defense.notNull(fieldName, "fieldName");
         Defense.notNull(fieldType, "fieldType");
@@ -292,7 +291,8 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
         // See if this object has been previously added.
 
-        if (existing != null) return existing;
+        if (existing != null) 
+            return existing;
 
         // TODO: Should be ensure that the name is unique?
 
@@ -310,8 +310,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
         int parameterIndex = addConstructorParameter(fieldType, value);
 
-        constructorBuilder().addln("{0} = ${1};", uniqueName,
-                Integer.toString(parameterIndex));
+        constructorBuilder().addln("{0} = ${1};", uniqueName, Integer.toString(parameterIndex));
 
         // Remember the mapping from the value to the field name.
 
@@ -352,15 +351,15 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
         PropertyDescriptor pd = getPropertyDescriptor(name);
 
-        if (pd == null) return;
+        if (pd == null) 
+            return;
 
         Class propertyType = pd.getPropertyType();
 
-        if (propertyType.equals(expectedType)) return;
+        if (propertyType.equals(expectedType)) 
+            return;
 
-        throw new ApplicationRuntimeException(EnhanceMessages
-                .propertyTypeMismatch(_baseClass, name, propertyType,
-                        expectedType));
+        throw new ApplicationRuntimeException(EnhanceMessages.propertyTypeMismatch(_baseClass, name, propertyType, expectedType));
     }
     
     PropertyDescriptor getPropertyDescriptor(String name)
@@ -389,8 +388,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
         Location existing = (Location) _methods.get(sig);
         if (existing != null)
-            throw new ApplicationRuntimeException(EnhanceMessages
-                    .methodConflict(sig, existing), location, null);
+            throw new ApplicationRuntimeException(EnhanceMessages.methodConflict(sig, existing), location, null);
 
         _methods.put(sig, location);
 
@@ -408,7 +406,8 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
         String result = (String) _finalFields.get(clazz);
 
-        if (result == null) result = addClassReference(clazz);
+        if (result == null) 
+            result = addClassReference(clazz);
 
         return result;
     }
@@ -476,8 +475,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
         }
         catch (Throwable t)
         {
-            throw new ApplicationRuntimeException(EnhanceMessages
-                    .classEnhancementFailure(_baseClass, t), _classFab, null, t);
+            throw new ApplicationRuntimeException(EnhanceMessages.classEnhancementFailure(_baseClass, t), _classFab, null, t);
         }
     }
 
@@ -489,14 +487,13 @@ public class EnhancementOperationImpl implements EnhancementOperation
         {
             _constructorBuilder.end();
 
-            Class[] types = (Class[]) _constructorTypes
-                    .toArray(new Class[_constructorTypes.size()]);
+            Class[] types = (Class[]) _constructorTypes.toArray(new Class[_constructorTypes.size()]);
 
-            _classFab.addConstructor(types, null, _constructorBuilder
-                    .toString());
+            _classFab.addConstructor(types, null, _constructorBuilder.toString());
         }
 
-        if (_log != null) _log.debug("Creating class:\n\n" + _classFab);
+        if (_log != null && _log.isDebugEnabled()) 
+            _log.debug("Creating class:\n\n" + _classFab);
     }
 
     private void finalizeIncompleteMethods()
@@ -539,8 +536,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
     {
         addInterfaceIfNeeded(interfaceClass);
 
-        BodyBuilder builder = (BodyBuilder) _incompleteMethods
-                .get(methodSignature);
+        BodyBuilder builder = (BodyBuilder) _incompleteMethods.get(methodSignature);
 
         if (builder == null)
         {
@@ -554,7 +550,8 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
     private void addInterfaceIfNeeded(Class interfaceClass)
     {
-        if (implementsInterface(interfaceClass)) return;
+        if (implementsInterface(interfaceClass)) 
+            return;
 
         _classFab.addInterface(interfaceClass);
         _addedInterfaces.add(interfaceClass);
@@ -562,14 +559,16 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
     public boolean implementsInterface(Class interfaceClass)
     {
-        if (interfaceClass.isAssignableFrom(_baseClass)) return true;
+        if (interfaceClass.isAssignableFrom(_baseClass)) 
+            return true;
 
         Iterator i = _addedInterfaces.iterator();
         while(i.hasNext())
         {
             Class addedInterface = (Class) i.next();
 
-            if (interfaceClass.isAssignableFrom(addedInterface)) return true;
+            if (interfaceClass.isAssignableFrom(addedInterface)) 
+                return true;
         }
 
         return false;
@@ -650,9 +649,11 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
             String name = pd.getName();
 
-            if (_claimedProperties.contains(name)) continue;
+            if (_claimedProperties.contains(name)) 
+                continue;
 
-            if (isAbstractProperty(pd)) result.add(name);
+            if (isAbstractProperty(pd)) 
+                result.add(name);
         }
 
         return result;

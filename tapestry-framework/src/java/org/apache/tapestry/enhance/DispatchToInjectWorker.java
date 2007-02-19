@@ -50,13 +50,11 @@ public class DispatchToInjectWorker implements EnhancementWorker
     {
         try
         {
-            InjectEnhancementWorker worker = (InjectEnhancementWorker) _injectWorkers.get(spec
-                    .getType());
+            InjectEnhancementWorker worker = (InjectEnhancementWorker) _injectWorkers.get(spec.getType());
 
             if (worker == null)
             {
-                _errorLog.error(EnhanceMessages.unknownInjectType(spec.getProperty(), spec
-                        .getType()), spec.getLocation(), null);
+                _errorLog.error(EnhanceMessages.unknownInjectType(spec.getProperty(), spec.getType()), spec.getLocation(), null);
                 return;
             }
 
@@ -65,8 +63,8 @@ public class DispatchToInjectWorker implements EnhancementWorker
         }
         catch (Exception ex)
         {
-            _errorLog.error(EnhanceMessages.errorAddingProperty(spec.getProperty(), op
-                    .getBaseClass(), ex), spec.getLocation(), ex);
+            _errorLog.error(EnhanceMessages.errorAddingProperty(spec.getProperty(), op.getBaseClass(), ex), 
+                    spec.getLocation(), ex);
         }
     }
 

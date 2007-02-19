@@ -119,9 +119,8 @@ public class PersistentPropertyData
             ChangeKey changeKey = (ChangeKey) me.getKey();
             Object value = me.getValue();
 
-            PropertyChange change = new PropertyChangeImpl(changeKey
-                    .getComponentPath(), changeKey.getPropertyName(), value);
-
+            PropertyChange change = new PropertyChangeImpl(changeKey.getComponentPath(), changeKey.getPropertyName(), value);
+            
             result.add(change);
         }
 
