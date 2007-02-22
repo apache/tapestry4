@@ -11,16 +11,19 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+package org.apache.tapestry.annotations;
 
-package org.apache.tapestry.enhance;
+import org.apache.tapestry.html.BasePage;
 
-import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
- * @author Howard M. Lewis Ship
+ * Tests generic types.
  */
-public interface EnhancedClassValidator
+public abstract class AnnotatedGenericPage<E extends Persistent> extends BasePage
 {
 
-    void validate(Class baseClass, Class enhancedClass, IComponentSpecification specification);
+    @Persist
+    public abstract E getValue();
+    
+    public abstract void setSecondValue(E value);
 }

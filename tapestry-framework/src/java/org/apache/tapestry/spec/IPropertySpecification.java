@@ -53,6 +53,20 @@ public interface IPropertySpecification extends LocationHolder
     void setType(String type);
     
     /**
+     * Sets whether or not this property represents a concrete generic type.
+     * 
+     * @param isGeneric
+     */
+    void setGeneric(boolean isGeneric);
+    
+    /**
+     * Checks if the type represented by this property is in a generic declaration.
+     * 
+     * @return True if it is generic, false otherwise.
+     */
+    boolean isGeneric();
+    
+    /**
      * Checks if this property has previously had it's type information examined to
      * determine if it is elligable for proxying. Meaning {@link #canProxy()} should
      * be a real value.

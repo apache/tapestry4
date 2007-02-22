@@ -127,6 +127,29 @@ public final class EnhanceUtils
 
     public static Class extractPropertyType(EnhancementOperation op, String propertyName, String definedTypeName)
     {
+        return extractPropertyType(op, propertyName, definedTypeName, false);
+    }
+    
+    /**
+     * Does the same thing as {@link #extractPropertyType(EnhancementOperation, String, String)}, with the added
+     * knowledge of knowing whether or not the type is generic and thus skips over type validation operations
+     * as generic type checking can't be safely done in this jre 1.4 compatible section of the codebase.
+     * 
+     * @param op
+     *            the enhancement operation, which provides most of this logic
+     * @param propertyName
+     *            the name of the property (the property may or may not exist)
+     * @param definedTypeName
+     *            the type indicated for the property, may be null to make the return value match
+     *            the type of an existing property.
+     * @param isGeneric 
+     *          Whether or not the type was previously discoverd and found to be generic, if true 
+     *          type validation is skipped.
+     */
+    
+    public static Class extractPropertyType(EnhancementOperation op, String propertyName, 
+            String definedTypeName, boolean isGeneric)
+    {
         Defense.notNull(op, "op");
         Defense.notNull(propertyName, "propertyName");
         
@@ -134,7 +157,8 @@ public final class EnhanceUtils
         {
             Class propertyType = op.convertTypeName(definedTypeName);
             
-            op.validateProperty(propertyName, propertyType);
+            if (!isGeneric)
+                op.validateProperty(propertyName, propertyType);
             
             return propertyType;
         }

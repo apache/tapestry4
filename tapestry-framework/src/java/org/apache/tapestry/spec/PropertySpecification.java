@@ -34,6 +34,8 @@ public class PropertySpecification extends BaseLocatable implements
 
     private String _type;
 
+    private boolean _isGeneric;
+    
     private String _initialValue;
 
     private String _persistence;
@@ -90,6 +92,16 @@ public class PropertySpecification extends BaseLocatable implements
         _type = type;
     }
 
+    public void setGeneric(boolean isGeneric)
+    {
+        _isGeneric = isGeneric;
+    }
+    
+    public boolean isGeneric()
+    {
+        return _isGeneric;
+    }
+    
     /** @since 4.0 */
     public String getPersistence()
     {

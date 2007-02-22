@@ -92,8 +92,8 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
     public void addProperty(EnhancementOperation op, String propertyName, String specifiedType, 
             boolean persistent, String initialValue, Location location, IPropertySpecification ps)
     {
-        Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName, specifiedType);
-        
+        Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName, specifiedType, ps.isGeneric());
+
         op.claimProperty(propertyName);
 
         String field = "_$" + propertyName;
@@ -194,6 +194,14 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
         
         if (persistent) {
             
+            if (!propertyType.isArray() && !propertyType.isPrimitive()) {
+                
+                body.addln("if ($1 != null && org.apache.tapestry.record.ObservedProperty.class.isAssignableFrom($1.getClass())) {");
+                body.add(" $1 = (" + ClassFabUtils.getJavaClassName(propertyType) + ")((org.apache.tapestry.record.ObservedProperty)$1)");
+                body.addln(".getCGProperty();");
+                body.addln("}");
+            }
+            
             body.add("org.apache.tapestry.Tapestry#fireObservedChange(this, ");
             body.addQuoted(propertyName);
             body.addln(", ($w) $1);");
@@ -213,7 +221,7 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
         }
         
         body.end();
-
+        
         MethodSignature sig = new MethodSignature(void.class, methodName, new Class[] { propertyType }, null);
 
         op.addMethod(Modifier.PUBLIC, sig, body.toString(), location);

@@ -32,8 +32,9 @@ public class ObservableMethodFilter implements CallbackFilter
     {
         boolean hasParams = method.getParameterTypes() != null && method.getParameterTypes().length > 0;
         
-        if (method.getReturnType() == void.class && hasParams
-                || method.getReturnType() != boolean.class && hasParams) {
+        if (method.getDeclaringClass() == ObservedProperty.class
+                || (method.getReturnType() == void.class && hasParams
+                || method.getReturnType() != boolean.class && hasParams)) {
             
             return 1;
         }

@@ -20,8 +20,7 @@ import net.sf.cglib.proxy.LazyLoader;
  * Implementation of {@link LazyLoader} interface for {@link CglibProxiedPropertyChangeObserverImpl}.
  */
 public class LazyProxyDelegate implements LazyLoader
-{
-
+{   
     Object _target;
     
     /**

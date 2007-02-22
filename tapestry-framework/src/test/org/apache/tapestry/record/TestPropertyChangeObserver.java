@@ -229,6 +229,13 @@ public class TestPropertyChangeObserver extends BaseComponentTestCase
         assert state.getClass() != newState.getClass();
         assert enewState.getClass() == state2.getClass();
         
+        assert ObservedProperty.class.isAssignableFrom(state.getClass());
+        
+        SimpleState preEnhanced = (SimpleState)((ObservedProperty)state).getCGProperty();
+        
+        assert preEnhanced != null;
+        assert !ObservedProperty.class.isAssignableFrom(preEnhanced.getClass());
+        
         verify();
     }
     

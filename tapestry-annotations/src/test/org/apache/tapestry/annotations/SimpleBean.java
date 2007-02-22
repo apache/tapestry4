@@ -18,9 +18,14 @@ package org.apache.tapestry.annotations;
  * Used to test proxy ignore rules.
  */
 @Entity
-public class SimpleBean
+public class SimpleBean implements Persistent
 {
     public SimpleBean()
     {
+    }
+    
+    public boolean isValid()
+    {
+        return true;
     }
 }

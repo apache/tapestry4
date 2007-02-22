@@ -27,7 +27,7 @@ import org.apache.tapestry.Tapestry;
  * 
  * Used by the default {@link PropertyChangeObserver} service.
  */
-public class CglibPropertyChangeInterceptor implements MethodInterceptor
+public class CglibPropertyChangeInterceptor implements MethodInterceptor, ObservedProperty
 {
     private Object _property;
     
@@ -51,12 +51,20 @@ public class CglibPropertyChangeInterceptor implements MethodInterceptor
         _propertyName = propertyName;
     }
     
+    public Object getCGProperty()
+    {
+        return _property;
+    }
+    
     /**
      * {@inheritDoc}
      */
     public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy)
         throws Throwable
     {
+        if (method.getDeclaringClass() == ObservedProperty.class)
+            return getCGProperty();
+        
         if (_component.getPage().getChangeObserver() != null
                 && !_component.getPage().getChangeObserver().isLocked()) {
             

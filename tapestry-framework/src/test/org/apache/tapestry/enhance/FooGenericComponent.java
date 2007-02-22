@@ -11,16 +11,24 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 package org.apache.tapestry.enhance;
 
-import org.apache.tapestry.spec.IComponentSpecification;
+import java.util.Map;
+
 
 /**
- * @author Howard M. Lewis Ship
+ * 
  */
-public interface EnhancedClassValidator
+public abstract class FooGenericComponent extends AbstractGenericBase<FooGeneric>
 {
-
-    void validate(Class baseClass, Class enhancedClass, IComponentSpecification specification);
+    
+    public Map getMap()
+    {
+        return null;
+    }
+    
+    public FooGeneric getOperationValue()
+    {
+        return null;
+    }
 }

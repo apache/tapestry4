@@ -11,16 +11,21 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+package org.apache.tapestry.annotations;
 
-package org.apache.tapestry.enhance;
+import java.util.List;
+import java.util.Map;
 
-import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
- * @author Howard M. Lewis Ship
+ * A real implementation of {@link AnnotatedGenericPage}.
  */
-public interface EnhancedClassValidator
+public abstract class AnnotatedGenericPersistentPage extends AnnotatedGenericPage<SimpleBean>
 {
-
-    void validate(Class baseClass, Class enhancedClass, IComponentSpecification specification);
+    
+    @Persist
+    public abstract Map getObject();
+    
+    @Persist
+    public abstract void setListValue(List value);
 }
