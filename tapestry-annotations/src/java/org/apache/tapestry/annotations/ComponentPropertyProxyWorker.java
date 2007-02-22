@@ -51,7 +51,7 @@ public class ComponentPropertyProxyWorker implements EnhancementWorker {
             checkProxy(op, ps);
         }
     }
-
+    
     public Class extractPropertyType(Class type, String propertyName, IPropertySpecification ps) {
         
         try {
@@ -69,7 +69,6 @@ public class ComponentPropertyProxyWorker implements EnhancementWorker {
                         && TypeVariable.class.isAssignableFrom(m.getGenericReturnType().getClass())) {
                     
                     ps.setGeneric(true);
-                    
                     TypeVariable tvar = (TypeVariable)m.getGenericReturnType();
                     
                     // try to set the actual type
@@ -79,19 +78,19 @@ public class ComponentPropertyProxyWorker implements EnhancementWorker {
                         ParameterizedType ptype = (ParameterizedType)type.getGenericSuperclass();
                         if (ptype.getActualTypeArguments().length > 0) {
                             
+                            ps.setCanProxy(canProxyType((Class)ptype.getActualTypeArguments()[0]));
                             ps.setType(((Class)tvar.getBounds()[0]).getName());
+                            
                             return (Class)tvar.getBounds()[0];
-                            
-                            // ps.setType(((Class)ptype.getActualTypeArguments()[0]).getName());
-                            
-                            //return (Class)ptype.getActualTypeArguments()[0];
                         }
                     }
                     
                     return null;
                 } else if (m != null) {
                     
+                    ps.setCanProxy(canProxyType(m.getReturnType()));
                     ps.setType(m.getReturnType().getName());
+                    
                     return m.getReturnType();
                 }
                 
@@ -111,7 +110,6 @@ public class ComponentPropertyProxyWorker implements EnhancementWorker {
                         && TypeVariable.class.isAssignableFrom(genParam.getClass())) {
                     
                     TypeVariable tvar = (TypeVariable)genParam;
-                    
                     ps.setGeneric(true);
                     
                     if (type.getGenericSuperclass() != null) {
@@ -119,16 +117,15 @@ public class ComponentPropertyProxyWorker implements EnhancementWorker {
                         ParameterizedType ptype = (ParameterizedType)type.getGenericSuperclass();
                         if (ptype.getActualTypeArguments().length > 0) {
                             
+                            ps.setCanProxy(canProxyType((Class)ptype.getActualTypeArguments()[0]));
                             ps.setType(((Class)tvar.getBounds()[0]).getName());
                             
                             return (Class)tvar.getBounds()[0];
-                            //ps.setType(((Class)ptype.getActualTypeArguments()[0]).getName());
-                            
-                            //return (Class)ptype.getActualTypeArguments()[0];
                         }
                     }
                 }
                 
+                ps.setCanProxy(canProxyType(param));
                 ps.setType(param.getName());
                 return param;
             }
@@ -141,29 +138,31 @@ public class ComponentPropertyProxyWorker implements EnhancementWorker {
         return null;
     }
 
+    boolean canProxyType(Class type)
+    {
+        if (type == null)
+            return false;
+        
+        if (!EnhanceUtils.canProxyPropertyType(type))
+            return false;
+        
+        for (Annotation an : type.getAnnotations()) {
+            if (isExcluded(an)) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
     void checkProxy(EnhancementOperation op, IPropertySpecification ps) {
         ps.setProxyChecked(true);
 
         if (!ps.isPersistent()) {
             return;
         }
-
-        Class propertyType = extractPropertyType(op.getBaseClass(), ps.getName(), ps);
-        if (propertyType == null) {
-            return;
-        }
-
-        if (!EnhanceUtils.canProxyPropertyType(propertyType)) {
-            return;
-        }
-
-        for (Annotation an : propertyType.getAnnotations()) {
-            if (isExcluded(an)) {
-                return;
-            }
-        }
-
-        ps.setCanProxy(true);
+        
+        extractPropertyType(op.getBaseClass(), ps.getName(), ps);
     }
     
     boolean isExcluded(Annotation annotation) {
