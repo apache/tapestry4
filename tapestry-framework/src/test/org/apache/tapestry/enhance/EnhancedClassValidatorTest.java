@@ -35,13 +35,14 @@ public class EnhancedClassValidatorTest extends BaseComponentTestCase
      * methods.
      */
 
-    public void testComplete()
+    public void test_Complete()
     {
-        EnhancedClassValidator v = new EnhancedClassValidatorImpl();
-
+        EnhancedClassValidatorImpl v = new EnhancedClassValidatorImpl();
+        v.setClassInspector(new ClassInspectorImpl());
+        
         v.validate(AbstractBase.class, Complete.class, new ComponentSpecification());
     }
-
+    
     /**
      * Pass in an abstract class (with enhancement, its possible that a supposedly concrete class
      * may omit implementing an inherited abstract method, which is the whole point of the
@@ -68,6 +69,7 @@ public class EnhancedClassValidatorTest extends BaseComponentTestCase
         replay();
 
         EnhancedClassValidatorImpl v = new EnhancedClassValidatorImpl();
+        v.setClassInspector(new ClassInspectorImpl());
         v.setErrorLog(log);
 
         v.validate(AbstractBase.class, Incomplete.class, spec);
@@ -75,7 +77,7 @@ public class EnhancedClassValidatorTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testInheritsMissingMethod()
+    public void test_Inherits_Missing_Method()
     {
         ErrorLog log = newErrorLog();
         Location l = newLocation();
@@ -96,6 +98,7 @@ public class EnhancedClassValidatorTest extends BaseComponentTestCase
 
         EnhancedClassValidatorImpl v = new EnhancedClassValidatorImpl();
         v.setErrorLog(log);
+        v.setClassInspector(new ClassInspectorImpl());
 
         v.validate(AbstractRunnable.class, AbstractRunnableSubclass.class, spec);
 
@@ -114,7 +117,8 @@ public class EnhancedClassValidatorTest extends BaseComponentTestCase
 
     public void testObject()
     {
-        EnhancedClassValidator v = new EnhancedClassValidatorImpl();
+        EnhancedClassValidatorImpl v = new EnhancedClassValidatorImpl();
+        v.setClassInspector(new ClassInspectorImpl());
 
         v.validate(Object.class, Object.class, new ComponentSpecification());
     }

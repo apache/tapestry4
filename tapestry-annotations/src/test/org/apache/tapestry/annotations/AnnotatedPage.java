@@ -171,4 +171,5 @@ public abstract class AnnotatedPage extends BasePage
     
     @Persist
     public abstract SubSimpleBean getSubBean();
+    
 }

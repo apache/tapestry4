@@ -13,10 +13,17 @@
 // limitations under the License.
 package org.apache.tapestry.annotations;
 
+import java.beans.BeanInfo;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
-import java.util.Iterator;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.util.List;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.enhance.EnhanceUtils;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.enhance.EnhancementWorker;
@@ -29,64 +36,149 @@ import org.apache.tapestry.spec.IPropertySpecification;
  * managed by competing bytecode enhancement libraries (such as Hibernate) aren't
  * proxied.
  */
-public class ComponentPropertyProxyWorker implements EnhancementWorker
-{
-    
+public class ComponentPropertyProxyWorker implements EnhancementWorker {
+
     private List<String> _excludedPackages;
-    
+
     /**
      * {@inheritDoc}
      */
-    public void performEnhancement(EnhancementOperation op, IComponentSpecification spec)
-    {
-        Iterator i = spec.getPropertySpecificationNames().iterator();
-
-        while(i.hasNext())
-        {
-            String name = (String) i.next();
+    public void performEnhancement(EnhancementOperation op, IComponentSpecification spec) {
+        for (Object o : spec.getPropertySpecificationNames()) {
+            String name = (String) o;
             IPropertySpecification ps = spec.getPropertySpecification(name);
 
             checkProxy(op, ps);
         }
     }
 
-    void checkProxy(EnhancementOperation op, IPropertySpecification ps)
-    {
-        ps.setProxyChecked(true);
+    public Class extractPropertyType(Class type, String propertyName, IPropertySpecification ps) {
         
-        if (!ps.isPersistent())
-            return;
-        
-        Class propertyType = EnhanceUtils.extractPropertyType(op, ps.getName(), ps.getType());
-        if (propertyType == null)
-            return;
-        
-        if (!EnhanceUtils.canProxyPropertyType(propertyType))
-            return;
-        
-        Annotation[] annotations = propertyType.getAnnotations();
-        
-        for (int i = 0; i < annotations.length; i++) {
-            if (isExcluded(annotations[i]))
-                return;
+        try {
+            BeanInfo info = Introspector.getBeanInfo(type);
+            PropertyDescriptor[] props = info.getPropertyDescriptors();
+
+            for (PropertyDescriptor prop : props) {
+
+                if (!propertyName.equals(prop.getName())) {
+                    continue;
+                }
+                
+                Method m = prop.getReadMethod();
+                if (m != null && !m.getGenericReturnType().getClass().getName().equals("java.lang.Class")
+                        && TypeVariable.class.isAssignableFrom(m.getGenericReturnType().getClass())) {
+                    
+                    ps.setGeneric(true);
+                    
+                    TypeVariable tvar = (TypeVariable)m.getGenericReturnType();
+                    
+                    // try to set the actual type
+                    if (type.getGenericSuperclass() != null 
+                            && ParameterizedType.class.isInstance(type.getGenericSuperclass())) {
+                        
+                        ParameterizedType ptype = (ParameterizedType)type.getGenericSuperclass();
+                        if (ptype.getActualTypeArguments().length > 0) {
+                            
+                            ps.setType(((Class)tvar.getBounds()[0]).getName());
+                            return (Class)tvar.getBounds()[0];
+                            
+                            // ps.setType(((Class)ptype.getActualTypeArguments()[0]).getName());
+                            
+                            //return (Class)ptype.getActualTypeArguments()[0];
+                        }
+                    }
+                    
+                    return null;
+                } else if (m != null) {
+                    
+                    ps.setType(m.getReturnType().getName());
+                    return m.getReturnType();
+                }
+                
+                // try write method instead
+                
+                if (m == null && prop.getWriteMethod() == null)
+                    return null;
+                
+                m = prop.getWriteMethod();
+                if (m.getParameterTypes().length != 1)
+                    return null;
+                
+                Type genParam = m.getGenericParameterTypes()[0];
+                Class param = m.getParameterTypes()[0];
+                
+                if (!genParam.getClass().getName().equals("java.lang.Class")
+                        && TypeVariable.class.isAssignableFrom(genParam.getClass())) {
+                    
+                    TypeVariable tvar = (TypeVariable)genParam;
+                    
+                    ps.setGeneric(true);
+                    
+                    if (type.getGenericSuperclass() != null) {
+                        
+                        ParameterizedType ptype = (ParameterizedType)type.getGenericSuperclass();
+                        if (ptype.getActualTypeArguments().length > 0) {
+                            
+                            ps.setType(((Class)tvar.getBounds()[0]).getName());
+                            
+                            return (Class)tvar.getBounds()[0];
+                            //ps.setType(((Class)ptype.getActualTypeArguments()[0]).getName());
+                            
+                            //return (Class)ptype.getActualTypeArguments()[0];
+                        }
+                    }
+                }
+                
+                ps.setType(param.getName());
+                return param;
+            }
+
+        } catch (Throwable t) {
+            
+            throw new ApplicationRuntimeException("Error reading property " + propertyName + " from base component class : " + type, t);
         }
-        
+
+        return null;
+    }
+
+    void checkProxy(EnhancementOperation op, IPropertySpecification ps) {
+        ps.setProxyChecked(true);
+
+        if (!ps.isPersistent()) {
+            return;
+        }
+
+        Class propertyType = extractPropertyType(op.getBaseClass(), ps.getName(), ps);
+        if (propertyType == null) {
+            return;
+        }
+
+        if (!EnhanceUtils.canProxyPropertyType(propertyType)) {
+            return;
+        }
+
+        for (Annotation an : propertyType.getAnnotations()) {
+            if (isExcluded(an)) {
+                return;
+            }
+        }
+
         ps.setCanProxy(true);
     }
     
-    boolean isExcluded(Annotation annotation)
-    {
+    boolean isExcluded(Annotation annotation) {
         for (String match : _excludedPackages) {
-            
-            if (annotation.annotationType().getName().indexOf(match) > -1)
+
+            if (annotation.annotationType().getName().indexOf(match) > -1) {
                 return true;
+            }
         }
-        
+
         return false;
     }
-    
-    public void setExcludedPackages(List packages)
-    {
+
+    public void setExcludedPackages(List<String> packages) {
         _excludedPackages = packages;
     }
 }
+

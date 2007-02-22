@@ -33,22 +33,171 @@ import org.testng.annotations.Test;
 @Test
 public class TestComponentPropertyProxyWorker extends BaseAnnotationTestCase
 {
-    
-    void addProperty(EnhancementOperation op, IComponentSpecification spec, Location l, 
-            String propertyName, Class type)
-    {
+
+    IPropertySpecification addProperty(EnhancementOperation op, IComponentSpecification spec, Location l,
+            String propertyName) {
         IPropertySpecification pspec = new PropertySpecification();
 
         pspec.setName(propertyName);
         pspec.setPersistence("session");
         pspec.setLocation(l);
-        pspec.setType(type.getName());
-        
+
         spec.addPropertySpecification(pspec);
         
-        expect(op.convertTypeName(type.getName())).andReturn(type);
-        op.validateProperty(propertyName, type);
+        return pspec;
     }
+    
+    
+    public void test_Generics_Excluded() {
+        Location l = newLocation();
+        EnhancementOperation op = newMock(EnhancementOperation.class);
+        checkOrder(op, false);
+
+        IComponentSpecification spec = new ComponentSpecification();
+
+        expect(op.getBaseClass()).andReturn(AnnotatedGenericPage.class).anyTimes();
+
+        ComponentPropertyProxyWorker worker = new ComponentPropertyProxyWorker();
+        
+        addProperty(op, spec, l, "value");
+
+        List<String> exclude = new ArrayList<String>();
+        exclude.add("Entity");
+        worker.setExcludedPackages(exclude);
+        
+        replay();
+
+        worker.performEnhancement(op, spec);
+
+        verify();
+
+        IPropertySpecification prop = spec.getPropertySpecification("value");
+
+        assert prop != null;
+        assert prop.isPersistent();
+        assert prop.isProxyChecked();
+        assert !prop.canProxy();
+    }
+
+    public void test_Valid_Property() {
+        Location l = newLocation();
+        EnhancementOperation op = newMock(EnhancementOperation.class);
+        checkOrder(op, false);
+
+        IComponentSpecification spec = new ComponentSpecification();
+
+        expect(op.getBaseClass()).andReturn(AnnotatedGenericPersistentPage.class).anyTimes();
+
+        ComponentPropertyProxyWorker worker = new ComponentPropertyProxyWorker();
+
+        addProperty(op, spec, l, "object");
+
+        List<String> exclude = new ArrayList<String>();
+        exclude.add("Entity");
+        worker.setExcludedPackages(exclude);
+
+        replay();
+
+        worker.performEnhancement(op, spec);
+
+        verify();
+
+        IPropertySpecification prop = spec.getPropertySpecification("object");
+
+        assert prop != null;
+        assert prop.isPersistent();
+        assert prop.isProxyChecked();
+        assert prop.canProxy();
+    }
+    
+    public void test_Type_Found()
+    {
+        ComponentPropertyProxyWorker worker = new ComponentPropertyProxyWorker();
+        
+        IPropertySpecification prop = new PropertySpecification();
+        prop.setName("value");
+        prop.setPersistence("session");
+        
+        assertEquals(worker.extractPropertyType(AnnotatedGenericPersistentPage.class, "value", prop), Persistent.class);
+        
+        prop.setGeneric(false);
+        prop.setType(null);
+        prop.setName("secondValue");
+        
+        Class type = worker.extractPropertyType(AnnotatedGenericPersistentPage.class, "secondValue", prop);
+        
+        assert type != null;
+        assert prop.isGeneric();
+        
+        assertEquals(type, Persistent.class);
+    }
+    
+    public void test_Write_Property_Non_Generic() {
+        Location l = newLocation();
+        EnhancementOperation op = newMock(EnhancementOperation.class);
+        checkOrder(op, false);
+
+        IComponentSpecification spec = new ComponentSpecification();
+
+        expect(op.getBaseClass()).andReturn(AnnotatedGenericPersistentPage.class).anyTimes();
+
+        ComponentPropertyProxyWorker worker = new ComponentPropertyProxyWorker();
+        
+        IPropertySpecification p = addProperty(op, spec, l, "listValue");
+
+        List<String> exclude = new ArrayList<String>();
+        exclude.add("Entity");
+        worker.setExcludedPackages(exclude);
+
+        replay();
+
+        worker.performEnhancement(op, spec);
+
+        verify();
+
+        IPropertySpecification prop = spec.getPropertySpecification("listValue");
+
+        assert prop != null;
+        assert prop.isPersistent();
+        assert prop.isProxyChecked();
+        assert prop.canProxy();
+        
+        assertEquals(p.getType(), "java.util.List");
+    }
+    
+    public void test_Write_Property_Generic() {
+        Location l = newLocation();
+        EnhancementOperation op = newMock(EnhancementOperation.class);
+        checkOrder(op, false);
+
+        IComponentSpecification spec = new ComponentSpecification();
+
+        expect(op.getBaseClass()).andReturn(AnnotatedGenericPersistentPage.class).anyTimes();
+
+        ComponentPropertyProxyWorker worker = new ComponentPropertyProxyWorker();
+        
+        IPropertySpecification p = addProperty(op, spec, l, "secondValue");
+
+        List<String> exclude = new ArrayList<String>();
+        exclude.add("Entity");
+        worker.setExcludedPackages(exclude);
+
+        replay();
+
+        worker.performEnhancement(op, spec);
+
+        verify();
+
+        IPropertySpecification prop = spec.getPropertySpecification("secondValue");
+        
+        assert prop != null;
+        assert prop.isPersistent();
+        assert prop.isProxyChecked();
+        assert prop.canProxy();
+        
+        assertEquals(p.getType(), Persistent.class.getName());
+    }
+    
     
     public void test_Excluded()
     {
@@ -56,7 +205,9 @@ public class TestComponentPropertyProxyWorker extends BaseAnnotationTestCase
         EnhancementOperation op = newOp();
         IComponentSpecification spec = new ComponentSpecification();
         
-        addProperty(op, spec, l, "bean", SimpleBean.class);
+        expect(op.getBaseClass()).andReturn(AnnotatedPage.class).anyTimes();
+        
+        addProperty(op, spec, l, "bean");
         
         ComponentPropertyProxyWorker worker = new ComponentPropertyProxyWorker();
         
@@ -84,7 +235,9 @@ public class TestComponentPropertyProxyWorker extends BaseAnnotationTestCase
         EnhancementOperation op = newOp();
         IComponentSpecification spec = new ComponentSpecification();
         
-        addProperty(op, spec, l, "subBean", SubSimpleBean.class);
+        expect(op.getBaseClass()).andReturn(AnnotatedPage.class).anyTimes();
+        
+        addProperty(op, spec, l, "subBean");
         
         ComponentPropertyProxyWorker worker = new ComponentPropertyProxyWorker();
         

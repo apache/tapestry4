@@ -81,8 +81,13 @@ public class CglibProxiedPropertyChangeObserverImpl implements PropertyChangeObs
                 _badMap.put(property.getClass().getName(), Boolean.TRUE);
                 return property;
             }
-
-            Object ret = Enhancer.create(property.getClass(), property.getClass().getInterfaces(), 
+            
+            Class[] interfaces = new Class[property.getClass().getInterfaces().length + 1];
+            System.arraycopy(property.getClass().getInterfaces(), 0, interfaces, 0, interfaces.length - 1);
+            
+            interfaces[interfaces.length - 1] = ObservedProperty.class;
+            
+            Object ret = Enhancer.create(property.getClass(), interfaces, 
                     new ObservableMethodFilter(), 
                     new Callback[] { new LazyProxyDelegate(property), new CglibPropertyChangeInterceptor(component, property, propertyName)});
             

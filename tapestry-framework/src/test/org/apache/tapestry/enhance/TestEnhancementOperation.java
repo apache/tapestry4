@@ -885,9 +885,8 @@ public class TestEnhancementOperation extends BaseComponentTestCase
         ClassFactory cf = newClassFactory(ServiceLink.class);
 
         replay();
-
-        EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
-                ServiceLink.class, cf, null);
+        
+        EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec, ServiceLink.class, cf, null);
 
         assertEquals(String.class, eo.getPropertyType("target"));
 
@@ -927,4 +926,5 @@ public class TestEnhancementOperation extends BaseComponentTestCase
 
         verify();
     }
+    
 }

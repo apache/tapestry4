@@ -163,6 +163,7 @@ public class PersistentPropertyDataEncoderImpl implements PersistentPropertyData
                 oos.writeUTF(componentPath);
 
             oos.writeUTF(propertyName);
+            
             oos.writeObject(value);
         }
     }
