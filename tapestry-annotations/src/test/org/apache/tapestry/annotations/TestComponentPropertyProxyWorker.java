@@ -113,6 +113,9 @@ public class TestComponentPropertyProxyWorker extends BaseAnnotationTestCase
     public void test_Type_Found()
     {
         ComponentPropertyProxyWorker worker = new ComponentPropertyProxyWorker();
+        List<String> exclude = new ArrayList<String>();
+        exclude.add("Entity");
+        worker.setExcludedPackages(exclude);
         
         IPropertySpecification prop = new PropertySpecification();
         prop.setName("value");
@@ -193,7 +196,7 @@ public class TestComponentPropertyProxyWorker extends BaseAnnotationTestCase
         assert prop != null;
         assert prop.isPersistent();
         assert prop.isProxyChecked();
-        assert prop.canProxy();
+        assert !prop.canProxy();
         
         assertEquals(p.getType(), Persistent.class.getName());
     }
