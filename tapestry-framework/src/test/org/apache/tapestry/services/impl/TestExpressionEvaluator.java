@@ -14,21 +14,17 @@
 
 package org.apache.tapestry.services.impl;
 
-import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
 
-import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Map;
 
 import ognl.TypeConverter;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.services.ExpressionCache;
+import org.apache.tapestry.enhance.ClassFactoryImpl;
 import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.testng.annotations.Test;
@@ -42,11 +38,14 @@ public class TestExpressionEvaluator extends BaseComponentTestCase
 {
     private ExpressionEvaluatorImpl create()
     {
-        ExpressionCache cache = new ExpressionCacheImpl();
+        ExpressionCacheImpl cache = new ExpressionCacheImpl();
 
         ExpressionEvaluatorImpl result = new ExpressionEvaluatorImpl();
+        result.setClassFactory(new ClassFactoryImpl());
 
         result.setExpressionCache(cache);
+        
+        cache.setEvaluator(result);
 
         return result;
     }
@@ -97,8 +96,7 @@ public class TestExpressionEvaluator extends BaseComponentTestCase
         }
         catch (ApplicationRuntimeException ex)
         {
-            assertExceptionSubstring(ex, "Unable to read OGNL expression");
-            assertSame(f, ex.getComponent());
+            assertExceptionSubstring(ex, "Unable to parse OGNL expression");
         }
     }
 
@@ -191,38 +189,33 @@ public class TestExpressionEvaluator extends BaseComponentTestCase
 
         replay();
 
-        ExpressionCache cache = new ExpressionCacheImpl();
+        ExpressionCacheImpl cache = new ExpressionCacheImpl();
 
         ExpressionEvaluatorImpl ee = new ExpressionEvaluatorImpl();
-
+        
         ee.setExpressionCache(cache);
         ee.setApplicationSpecification(as);
         ee.setContributions(Collections.EMPTY_LIST);
         ee.setNullHandlerContributions(Collections.EMPTY_LIST);
-
+        ee.setClassFactory(new ClassFactoryImpl());
+        
         ee.initializeService();
-
+        
         verify();
-
+        
+        cache.setEvaluator(ee);
+        
         Fixture f = new Fixture();
-
-        Method m = Fixture.class.getMethod("setValue", new Class[]
-        { String.class });
-
+        
         Date d = new Date();
 
         // Training
-
-        // Since we have no idea what OGNL will stuff into that Map parameter,
-        // we just ignore it.
-        expect(tc.convertValue(isA(Map.class), eq(f), eq(m), eq("value"), eq(d), eq(String.class)))
-        .andReturn("FROM-TYPE-CONVERTER");
-
+        
         replay();
-
+        
         ee.write(f, "value", d);
 
-        assertEquals("FROM-TYPE-CONVERTER", f.getValue());
+        assertEquals(f.getValue(), d.toString());
 
         verify();
     }

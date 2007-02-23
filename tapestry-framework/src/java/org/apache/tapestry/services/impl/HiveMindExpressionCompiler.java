@@ -165,10 +165,15 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
     public void compileExpression(OgnlContext context, Node expression, Object root)
     throws Exception
     {
-        System.out.println("Compiling expr class " + expression.getClass().getName() + " and root " + root.getClass().getName() + " with toString:" + expression.toString());
+        //System.out.println("Compiling expr class " + expression.getClass().getName() + " and root " + root.getClass().getName() + " with toString:" + expression.toString());
         
         if (expression.getAccessor() != null)
             return;
+        
+        if (Map.class.isInstance(root)) {
+            context.putAll((Map)root);
+            root = null;
+        }
         
         String getBody = null;
         String setBody = null;
@@ -192,17 +197,10 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
             
         } catch (UnsupportedCompilationException uc) {
             
-            //System.out.println("Unsupported getter compilation caught: " + uc.getMessage() + " for expression: " + expression.toString());
+            // The target object may not fully resolve yet because of a partial tree with a null somewhere, we 
+            // don't want to bail out forever because it might be enhancable on another pass eventually
             
             return;
-            /*
-            getBody = generateOgnlGetter(classFab, valueGetter);
-            
-            if (!classFab.containsMethod(expressionSetter)) {
-                
-                classFab.addField("_node", Node.class);
-                classFab.addMethod(Modifier.PUBLIC, expressionSetter, "{ _node = $1; }");
-            }*/
         }
         
         classFab.addMethod(Modifier.PUBLIC, valueGetter, getBody);
@@ -330,7 +328,7 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
         
         body = body.replaceAll("\\.\\.", ".");
         
-        System.out.println("Getter Body: ===================================\n"+body);
+        // System.out.println("Getter Body: ===================================\n"+body);
 
         return body;
     }
@@ -370,7 +368,7 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
         
         body = body.replaceAll("\\.\\.", ".");
         
-        System.out.println("Setter Body: ===================================\n"+body);
+        //System.out.println("Setter Body: ===================================\n"+body);
 
         return body;
     }

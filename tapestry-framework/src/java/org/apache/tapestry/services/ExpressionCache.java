@@ -28,7 +28,6 @@ public interface ExpressionCache
      * 
      * @throws org.apache.hivemind.ApplicationRuntimeException
      *             if the expression is not valid
-     * @deprecated To be removed in Tapestry 4.2, use {@link #getCompiledExpression(Object, String)} instead.
      */
     Object getCompiledExpression(String expression);
     

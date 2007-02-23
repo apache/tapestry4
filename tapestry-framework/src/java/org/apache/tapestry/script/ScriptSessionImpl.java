@@ -83,7 +83,7 @@ public class ScriptSessionImpl implements ScriptSession
 
     public Object evaluate(String expression)
     {
-        return _evaluator.read(_symbols, expression);
+        return _evaluator.read(_symbols, expression); //_evaluator.read(_symbols, expression);
     }
 
     public Object evaluate(String expression, Class desiredType)
