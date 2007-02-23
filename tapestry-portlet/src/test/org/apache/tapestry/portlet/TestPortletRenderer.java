@@ -136,7 +136,7 @@ public class TestPortletRenderer extends BaseComponentTestCase
         
         expect(writer.getNestedWriter()).andReturn((NestedMarkupWriter)nested);
         
-        nested.flush();
+        //nested.flush();
         
         MarkupWriterSource source = newSource(pw, ct, writer);
         IPage page = newPage(ct);

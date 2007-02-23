@@ -76,7 +76,7 @@ public class TestBrowserIssues extends Assert
 
         clickAndWait("link=TAPESTRY-1141");
 
-        assertTrue(_selenium.getTitle().contains("TAPESTRY-1141"));
+        assertTrue(_selenium.getTitle().contains("TAPESTRY-1141"), _selenium.getHtmlSource());
 
         String body = _selenium.getBodyText();
 
