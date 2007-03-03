@@ -230,7 +230,14 @@ tapestry={
     	if (classStr) {
     		dojo.html.setClass(node, classStr);
     	}
-	},        
+    	// apply disabled/not disabled
+    	var disabled = element.getAttribute("disabled");
+    	if (!disabled && node["disabled"]) { 
+    		node.disabled = false;
+    	} else if (disabled) {
+    		node.disabled = true;
+    	}
+	},
 	
 	/**
 	 * Function: loadScriptContent
