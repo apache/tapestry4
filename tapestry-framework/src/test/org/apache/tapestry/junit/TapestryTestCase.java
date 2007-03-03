@@ -45,8 +45,7 @@ import org.apache.tapestry.util.IPropertyHolder;
  */
 public abstract class TapestryTestCase extends BaseComponentTestCase
 {
-    protected static final boolean IS_JDK13 = System.getProperty("java.specification.version")
-            .equals("1.3");
+    protected static final boolean IS_JDK13 = System.getProperty("java.specification.version").equals("1.3");
 
     private ClassResolver _resolver = new DefaultClassResolver();
 

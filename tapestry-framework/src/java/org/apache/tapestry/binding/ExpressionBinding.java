@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.binding;
 
+import ognl.Node;
+import ognl.enhance.ExpressionAccessor;
+
 import org.apache.hivemind.Location;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IComponent;
@@ -55,8 +58,14 @@ public class ExpressionBinding extends AbstractBinding
      * Parsed OGNL expression.
      */
 
-    private Object _parsedExpression;
-
+    private Node _parsedExpression;
+    
+    /**
+     * Compiled OGNL expression.
+     */
+    
+    private ExpressionAccessor _accessor;
+    
     /**
      * Flag set to true once the binding has initialized.
      */
@@ -107,6 +116,16 @@ public class ExpressionBinding extends AbstractBinding
     {
         try
         {
+            if (_accessor == null) {
+                
+                _parsedExpression = (Node)_cache.getCompiledExpression(_root, _expression);
+                
+                _accessor = _parsedExpression.getAccessor();
+            }
+            
+            if (_accessor != null)
+                return _evaluator.read(_root, _accessor);
+            
             return _evaluator.readCompiled(_root, _parsedExpression);
         }
         catch (Throwable t)
@@ -140,8 +159,8 @@ public class ExpressionBinding extends AbstractBinding
 
         try
         {
-            _parsedExpression = _cache.getCompiledExpression(_expression);
-
+            _parsedExpression = (Node)_cache.getCompiledExpression(_expression);
+            
             _invariant = _evaluator.isConstant(_expression);
         }
         catch (Exception ex)
@@ -161,13 +180,17 @@ public class ExpressionBinding extends AbstractBinding
     public void setObject(Object value)
     {
         initialize();
-
+        
         if (_invariant)
             throw createReadOnlyBindingException(this);
-
+        
         try
         {
-            _evaluator.writeCompiled(_root, _parsedExpression, value);
+            if (_accessor == null) {
+                
+                _evaluator.writeCompiled(_root, _parsedExpression, value);
+            } else 
+                _evaluator.write(_root, _accessor, value);
         }
         catch (Throwable ex)
         {
@@ -186,7 +209,8 @@ public class ExpressionBinding extends AbstractBinding
         StringBuffer buffer = new StringBuffer();
 
         buffer.append("ExpressionBinding[");
-        buffer.append(_root.getExtendedId());
+        buffer.append(_root.getId());
+        //buffer.append(_root.getExtendedId());
 
         if (_expression != null)
         {

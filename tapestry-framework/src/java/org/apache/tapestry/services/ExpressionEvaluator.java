@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.services;
 
+import ognl.OgnlContext;
+import ognl.enhance.ExpressionAccessor;
+
 /**
  * Wrapper around the OGNL library.
  * 
@@ -41,7 +44,20 @@ public interface ExpressionEvaluator
      *             expression.
      */
     Object readCompiled(Object target, Object expression);
-
+    
+    /**
+     * Reads a property of the target, defined by the (previously compiled)
+     * expression.
+     * 
+     * @param target
+     *          The object to resolve the expression against.
+     * @param expression
+     *          The compiled expression.
+     * @return
+     *          The result of reading on the expression.
+     */
+    Object read(Object target, ExpressionAccessor expression);
+    
     /**
      * Updates a property of the target, defined by the expression.
      * 
@@ -60,7 +76,20 @@ public interface ExpressionEvaluator
      *             expression.
      */
     void writeCompiled(Object target, Object expression, Object value);
-
+    
+    /**
+     * Updates a property of the target, defined by the (previously compiled)
+     * expression.
+     * 
+     * @param target
+     *          The target object to set a value on.
+     * @param expression
+     *          The pre-compiled expression.
+     * @param value
+     *          The value to set.
+     */
+    void write(Object target, ExpressionAccessor expression, Object value);
+    
     /**
      * Returns true if the expression evaluates to a constant or other literal
      * value.
@@ -69,4 +98,24 @@ public interface ExpressionEvaluator
      *             if the expression is not valid
      */
     boolean isConstant(String expression);
+    
+    /**
+     * Returns true if the expression evaluates to a constant or other literal
+     * value.
+     * 
+     * @throws org.apache.hivemind.ApplicationRuntimeException
+     *             if the expression is not valid
+     */
+    boolean isConstant(Object target, String expression);
+    
+    /**
+     * Creates a default OGNL context object that can be used against
+     * the specified object for expression evaluation.
+     * 
+     * @param target 
+     *          The object to get a context for.
+     * @return 
+     *          An ognl context map.
+     */
+    OgnlContext createContext(Object target);
 }

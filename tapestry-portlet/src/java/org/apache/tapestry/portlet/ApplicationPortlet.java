@@ -70,8 +70,7 @@ public class ApplicationPortlet implements Portlet
     {
         _registry = constructRegistry(config);
 
-        PortletApplicationInitializer initializer = (PortletApplicationInitializer) _registry
-                .getService(
+        PortletApplicationInitializer initializer = (PortletApplicationInitializer) _registry.getService(
                         "tapestry.portlet.PortletApplicationInitializer",
                         PortletApplicationInitializer.class);
 

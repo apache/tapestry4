@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.vlib.services;
 
-import static org.easymock.EasyMock.*;
+
 import java.io.IOException;
 
 import org.apache.hivemind.test.HiveMindTestCase;
@@ -22,6 +22,8 @@ import org.apache.tapestry.services.WebRequestServicer;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
 import org.apache.tapestry.web.WebSession;
+
+import static org.easymock.EasyMock.expect;
 
 /**
  * Tests for {@link org.apache.tapestry.vlib.services.DiscardSessionFilter}.

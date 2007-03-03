@@ -126,6 +126,12 @@
         <dependency>
             <groupId>org.apache.tapestry</groupId>
             <artifactId>tapestry-test</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>tapestry</groupId>
+                    <artifactId>tapestry</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -299,5 +305,5 @@
     <reporting>
         <outputDirectory>../target/site/tapestry-framework</outputDirectory>
     </reporting>
-
+    
 </project>

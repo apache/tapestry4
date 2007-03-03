@@ -74,7 +74,7 @@ abstract class AbstractToken implements IScriptToken
 
     /**
      * Evaluates the expression against the session's symbols, using
-     * {@link ExpressionEvaluator#read(Object, String)}and returns the result.
+     * {@link ExpressionEvaluator#read(Object, String)} and returns the result.
      */
     protected Object evaluate(String expression, ScriptSession session)
     {

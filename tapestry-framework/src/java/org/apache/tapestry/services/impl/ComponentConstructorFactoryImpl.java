@@ -74,7 +74,7 @@ public class ComponentConstructorFactoryImpl implements ComponentConstructorFact
     public synchronized void reportStatus(ReportStatusEvent event)
     {
         event.title(_serviceId);
-
+        
         event.property("enhanced class count", _cachedConstructors.size());
         event.collection("enhanced classes", _cachedConstructors.keySet());
     }

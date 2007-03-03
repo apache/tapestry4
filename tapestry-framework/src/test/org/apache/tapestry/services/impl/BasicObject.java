@@ -11,28 +11,25 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+package org.apache.tapestry.services.impl;
 
-package org.apache.tapestry.workbench;
-
-import org.apache.tapestry.RedirectException;
-import org.apache.tapestry.html.BasePage;
 
 /**
- * PageLink to demonstrate redirect from a listener method.
- * 
- * @author Howard Lewis Ship
+ * Basic class for testing ognl expression resolution.
  */
-
-public abstract class Redirect extends BasePage
+public class BasicObject
 {
-
-    public void redirectInternal()
+    private String _stringValue = "foo";
+    
+    public BasicObject(){}
+    
+    public String getValue()
     {
-        throw new RedirectException("redirect-target.html");
+        return _stringValue;
     }
-
-    public void redirectExternal()
+    
+    public void setValue(String value)
     {
-        throw new RedirectException("http://tapestry.apache.org");
+        _stringValue = value;
     }
 }
