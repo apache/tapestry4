@@ -50,8 +50,7 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
     public void test_Event_Properties()
     {
         IComponentSpecification spec = new ComponentSpecification();
-        spec.addEventListener("comp1", new String[] {"onClick"}, "testFoo", 
-                null, false, false, false);
+        spec.addEventListener("comp1", new String[] {"onClick"}, "testFoo", null, false, false, false);
         
         assert spec.getComponentEvents("comp1") != null;
         assert spec.getComponentEvents("comp1").getEvents().size() == 1;
@@ -62,6 +61,25 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         
         prop = spec.getComponentEvents("comp2");
         assert prop == null;
+    }
+    
+    public void test_Form_Event_Properties()
+    {
+        IComponentSpecification spec = new ComponentSpecification();
+        spec.addEventListener("comp1", new String[] {"onClick"}, "testFoo", "form", false, true, false);
+        spec.addEventListener("comp1", new String[] {"onClick"}, "testBar", "form", false, true, false);
+        
+        assert spec.getComponentEvents("comp1") != null;
+        
+        ComponentEventProperty p = spec.getComponentEvents("comp1");
+        
+        // should be only form events bound
+        assertEquals(p.getEvents().size(), 0);
+        assertEquals(p.getEventListeners("onClick").size(), 0);
+        
+        assertEquals(p.getComponentId(), "comp1");
+        assertEquals(p.getFormEventListeners("onClick").size(), 2);
+        assertEquals(p.getFormEvents().size(), 1);
     }
     
     public void test_Invoke_Component_Listener()

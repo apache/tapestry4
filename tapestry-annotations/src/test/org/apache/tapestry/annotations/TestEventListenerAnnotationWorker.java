@@ -147,4 +147,5 @@ public class TestEventListenerAnnotationWorker extends BaseAnnotationTestCase
         
         verify();
     }
+    
 }

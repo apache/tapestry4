@@ -123,7 +123,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
             Object[][] formEvents = filterFormEvents(props[i], parms, cycle);
             
             if (events.length < 1 && formEvents.length < 1)
-                return;
+                continue;
             
             DirectEventServiceParameter dsp =
                 new DirectEventServiceParameter((IDirectEvent)component, new Object[] {}, new String[] {}, false);
@@ -288,8 +288,8 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
         return (Object[][])ret.toArray(new Object[ret.size()][2]);
     }
     
-    Object[][] buildFormEvents(IRequestCycle cycle, String formId, 
-            Set events, Boolean async, Boolean validate, Object uniqueHash)
+    Object[][] buildFormEvents(IRequestCycle cycle, String formId, Set events, Boolean async, 
+            Boolean validate, Object uniqueHash)
     {
         List formNames = (List)cycle.getAttribute(FORM_NAME_LIST + formId);
         List retval = new ArrayList();
