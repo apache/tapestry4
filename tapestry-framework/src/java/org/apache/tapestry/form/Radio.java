@@ -74,13 +74,13 @@ public abstract class Radio extends AbstractComponent
             
             return;
         }
-
+        
         setClientId(group.getName()+option);
         
         writer.beginEmpty("input");
-
+        
         writer.attribute("type", "radio");
-
+        
         writer.attribute("name", group.getName());
         
         renderIdAttribute(writer, cycle);

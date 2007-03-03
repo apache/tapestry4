@@ -120,6 +120,7 @@ public class TestApplicationPortlet extends BaseComponentTestCase
         checkOrder(context, false);
         
         expect(config.getPortletName()).andReturn("myportlet").anyTimes();
+        
         // Called once in ApplicationPortlet code,
         // then inside PortletWebContextInitializer
 

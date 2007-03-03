@@ -114,6 +114,7 @@ tapestry={
 		var elms=resp[0].childNodes;
 		var bodyScripts=[];
 		var initScripts=[];
+		var rawData=[];
 		for (var i=0; i<elms.length; i++) {
 			var type=elms[i].getAttribute("type");
 			var id=elms[i].getAttribute("id");
@@ -147,6 +148,8 @@ tapestry={
 					}
 					continue;
 				}
+			} else {
+				rawData.push(elms[i]);
 			}
 			
 			if (!id){
@@ -167,6 +170,11 @@ tapestry={
 		for (var i=0; i<bodyScripts.length; i++) {
 			tapestry.loadScriptContent(bodyScripts[i], true);
 		}
+		
+		for (var i=0; i<rawData.length; i++) {
+			tapestry.loadScriptContent(rawData[i], true);
+		}
+		
 		for (var i=0; i<initScripts.length; i++) {
 			tapestry.loadScriptContent(initScripts[i], true);
 		}

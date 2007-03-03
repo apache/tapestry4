@@ -486,9 +486,9 @@ public class EnhancementOperationImpl implements EnhancementOperation
         if (_constructorBuilder != null)
         {
             _constructorBuilder.end();
-
+            
             Class[] types = (Class[]) _constructorTypes.toArray(new Class[_constructorTypes.size()]);
-
+            
             _classFab.addConstructor(types, null, _constructorBuilder.toString());
         }
 

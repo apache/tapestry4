@@ -19,11 +19,15 @@ import java.util.List;
 import java.util.Map;
 
 import ognl.ClassResolver;
+import ognl.Node;
 import ognl.Ognl;
+import ognl.OgnlContext;
 import ognl.OgnlRuntime;
 import ognl.TypeConverter;
+import ognl.enhance.ExpressionAccessor;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.service.ClassFactory;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.services.ExpressionCache;
 import org.apache.tapestry.services.ExpressionEvaluator;
@@ -53,7 +57,9 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator
     // to see if it is a constant.
 
     private Map _defaultContext;
-
+    
+    private ClassFactory _classFactory;
+    
     public void setApplicationSpecification(IApplicationSpecification applicationSpecification)
     {
         _applicationSpecification = applicationSpecification;
@@ -71,26 +77,34 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator
         while (i.hasNext())
         {
             PropertyAccessorContribution c = (PropertyAccessorContribution) i.next();
-
+            
             OgnlRuntime.setPropertyAccessor(c.getSubjectClass(), c.getAccessor());
         }
         
         Iterator j = _nullHandlerContributions.iterator();
-
+        
         while (j.hasNext())
         {
             NullHandlerContribution h = (NullHandlerContribution) j.next();
             
             OgnlRuntime.setNullHandler(h.getSubjectClass(), h.getHandler());
         }        
-
+        
         _defaultContext = Ognl.createDefaultContext(null, _ognlResolver, _typeConverter);
-
+        
+        OgnlRuntime.setCompiler(new HiveMindExpressionCompiler(_classFactory));
     }
 
     public Object read(Object target, String expression)
     {
-        return readCompiled(target, _expressionCache.getCompiledExpression(expression));
+        Node node = (Node)_expressionCache.getCompiledExpression(target, expression);
+        
+        if (node.getAccessor() != null)
+            return read(target, node.getAccessor());
+        
+        return readCompiled(target, node);
+        
+        //return read(target, _expressionCache.getCompiledExpression(expression));
     }
 
     public Object readCompiled(Object target, Object expression)
@@ -107,10 +121,25 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator
                     .parsedExpression(), target, ex), target, null, ex);
         }
     }
-
-    private Map createContext(Object target)
+    
+    public Object read(Object target, ExpressionAccessor expression)
     {
-        Map result = Ognl.createDefaultContext(target, _ognlResolver);
+        try
+        {
+            OgnlContext context = createContext(target);
+            
+            return expression.get(context, target);
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationRuntimeException(ImplMessages.unableToReadExpression(ImplMessages
+                    .parsedExpression(), target, ex), target, null, ex);
+        }
+    }
+    
+    public OgnlContext createContext(Object target)
+    {
+        OgnlContext result = (OgnlContext)Ognl.createDefaultContext(target, _ognlResolver);
 
         if (_typeConverter != null)
             Ognl.setTypeConverter(result, _typeConverter);
@@ -120,9 +149,25 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator
 
     public void write(Object target, String expression, Object value)
     {
-        writeCompiled(target, _expressionCache.getCompiledExpression(expression), value);
+        writeCompiled(target, _expressionCache.getCompiledExpression(target, expression), value);
     }
 
+    public void write(Object target, ExpressionAccessor expression, Object value)
+    {
+        try
+        {
+            OgnlContext context = createContext(target);
+            
+            expression.set(context, target, value);
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationRuntimeException(ImplMessages.unableToWriteExpression(ImplMessages
+                    .parsedExpression(), target, value, ex), target, null, ex);
+        }
+
+    }
+    
     public void writeCompiled(Object target, Object expression, Object value)
     {
         try
@@ -138,7 +183,23 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator
         }
 
     }
+    
+    public boolean isConstant(Object target, String expression)
+    {
+        Object compiled = _expressionCache.getCompiledExpression(target, expression);
 
+        try
+        {
+            return Ognl.isConstant(compiled, _defaultContext);
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationRuntimeException(ImplMessages.isConstantExpressionError(
+                    expression,
+                    ex), ex);
+        }
+    }
+    
     public boolean isConstant(String expression)
     {
         Object compiled = _expressionCache.getCompiledExpression(expression);
@@ -154,7 +215,7 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator
                     ex), ex);
         }
     }
-
+    
     public void setExpressionCache(ExpressionCache expressionCache)
     {
         _expressionCache = expressionCache;
@@ -169,4 +230,9 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator
     {
         _nullHandlerContributions = nullHandlerContributions;
     }    
+    
+    public void setClassFactory(ClassFactory classFactory)
+    {
+        _classFactory = classFactory;
+    }
 }

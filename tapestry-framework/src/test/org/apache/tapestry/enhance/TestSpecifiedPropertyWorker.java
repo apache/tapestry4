@@ -27,7 +27,6 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.service.BodyBuilder;
-import org.apache.hivemind.service.ClassFabUtils;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.BaseComponentTestCase;
@@ -259,12 +258,12 @@ public class TestSpecifiedPropertyWorker extends BaseComponentTestCase
 
         BodyBuilder b = new BodyBuilder();
         b.begin();
-        
+        /*
         b.addln("if ($1 != null && org.apache.tapestry.record.ObservedProperty.class.isAssignableFrom($1.getClass())) {");
         b.add(" $1 = (" + ClassFabUtils.getJavaClassName(String.class) + ")((org.apache.tapestry.record.ObservedProperty)$1)");
         b.addln(".getCGProperty();");
         b.addln("}");
-        
+        */
         b.addln("org.apache.tapestry.Tapestry#fireObservedChange(this, \"barney\", ($w) $1);");
         b.addln("_$barney = $1;");
         b.end();

@@ -30,4 +30,17 @@ public interface ExpressionCache
      *             if the expression is not valid
      */
     Object getCompiledExpression(String expression);
+    
+    /**
+     * Returns the compiled ognl expression for the given target object class / expression
+     * combination.
+     * 
+     * @param target
+     *          The object this expression is to be used for.
+     * @param expression
+     *          The expression.
+     * @return
+     *      The compiled (or new if neccessary) ognl statement.
+     */
+    Object getCompiledExpression(Object target, String expression);
 }

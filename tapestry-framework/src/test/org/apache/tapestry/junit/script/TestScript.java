@@ -14,7 +14,10 @@
 
 package org.apache.tapestry.junit.script;
 
+import static org.easymock.EasyMock.expect;
+
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,15 +27,17 @@ import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.util.ClasspathResource;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IScript;
+import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.RequestCycle;
+import org.apache.tapestry.enhance.ClassFactoryImpl;
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.script.ScriptParser;
 import org.apache.tapestry.script.ScriptSession;
 import org.apache.tapestry.script.ScriptSessionImpl;
-import org.apache.tapestry.services.ExpressionCache;
 import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.services.impl.ExpressionCacheImpl;
 import org.apache.tapestry.services.impl.ExpressionEvaluatorImpl;
+import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.util.xml.DocumentParseException;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
@@ -48,19 +53,32 @@ public class TestScript extends TapestryTestCase
 {
     private MockScriptProcessor _processor = new MockScriptProcessor();
 
+    private ExpressionEvaluatorImpl _eval;
+    
     @AfterMethod
     public void reset()
     {
         _processor.reset();
     }
     
-    protected static ExpressionEvaluator createExpressionEvaluator()
+    protected ExpressionEvaluator createExpressionEvaluator()
     {
-        ExpressionCache cache = new ExpressionCacheImpl();
-        ExpressionEvaluatorImpl result = new ExpressionEvaluatorImpl();
-        result.setExpressionCache(cache);
-
-        return result;
+        IApplicationSpecification spec = newMock(IApplicationSpecification.class);
+        
+        expect(spec.checkExtension(Tapestry.OGNL_TYPE_CONVERTER)).andReturn(false);
+        
+        ExpressionCacheImpl cache = new ExpressionCacheImpl();
+        _eval = new ExpressionEvaluatorImpl();
+        _eval.setExpressionCache(cache);
+        _eval.setClassFactory(new ClassFactoryImpl());
+        
+        cache.setEvaluator(_eval);
+        
+        _eval.setApplicationSpecification(spec);
+        _eval.setContributions(Collections.EMPTY_LIST);
+        _eval.setNullHandlerContributions(Collections.EMPTY_LIST);
+        
+        return _eval;
     }
 
     private IScript read(String file) throws DocumentParseException
@@ -81,9 +99,11 @@ public class TestScript extends TapestryTestCase
         IScript script = read(file);
 
         IRequestCycle cycle = newMock(IRequestCycle.class);
-
+        
         replay();
-
+        
+        _eval.initializeService();
+        
         script.execute(cycle, _processor, symbols);
 
         verify();

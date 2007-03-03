@@ -74,7 +74,7 @@
     <component id="verbosity" type="Any">
 		<binding name="element" value="literal:td"/>
 		<binding name="style">ognl:  
-            "background-color:blue; width:"
+            "background-color:#A2E283;border:1px solid #88BD6D; width:"
 			+ (currentLocaleVerbosity / 2) + "px"
 		</binding>
 	</component>

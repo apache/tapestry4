@@ -17,6 +17,9 @@ package org.apache.tapestry.enhance;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
+import javassist.CtClass;
+import javassist.CtMethod;
+
 import org.apache.hivemind.Location;
 import org.apache.hivemind.impl.MessageFormatter;
 import org.apache.hivemind.service.ClassFabUtils;
@@ -163,5 +166,47 @@ final class EnhanceMessages
     static String autowiring( String propertyName, IComponentSpecification spec, Object proxy )
     {
         return _formatter.format( "autowiring", propertyName, spec.getDescription(), proxy );
+    }
+    
+    static String unableToCreateClass(String name, Class superClass, Throwable cause)
+    {
+        return _formatter.format("unable-to-create-class", name, superClass.getName(), cause);
+    }
+    
+    static String unableToCreateInterface(String name, Exception cause)
+    {
+        return _formatter.format("unable-to-create-interface", name, cause);
+    }
+    
+    static String unableToAddField(String fieldName, CtClass ctClass, Throwable cause)
+    {
+        return _formatter.format("unable-to-add-field", fieldName, ctClass.getName(), cause);
+    }
+    
+    static String duplicateMethodInClass(MethodSignature ms, ClassFabImpl cf)
+    {
+        return _formatter.format("duplicate-method-in-class", ms, cf.getName());
+    }
+    
+    static String unableToAddMethod(MethodSignature methodSignature, CtClass ctClass,
+            Throwable cause)
+    {
+        return _formatter.format("unable-to-add-method", methodSignature, ctClass.getName(), cause);
+    }
+    
+    static String unableToAddConstructor(CtClass ctClass, Throwable cause)
+    {
+        return _formatter.format("unable-to-add-constructor", ctClass.getName(), cause);
+    }
+    
+    static String unableToAddCatch(Class exceptionClass, CtMethod method, Throwable cause)
+    {
+        return _formatter.format("unable-to-add-catch", exceptionClass.getName(), method
+                .getDeclaringClass().getName(), cause);
+    }
+    
+    static String unableToExtendMethod(MethodSignature ms, String className, Throwable cause)
+    {
+        return _formatter.format("unable-to-extend-method", ms, className, cause);
     }
 }

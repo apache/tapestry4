@@ -108,11 +108,11 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
         EnhanceUtils.createSimpleAccessor(op, field, propertyName, propertyType, location);
         
         boolean canProxy = false;
-        if (ps.isProxyChecked())
+        /* if (ps.isProxyChecked())
             canProxy = ps.canProxy();
         else
             canProxy = persistent && EnhanceUtils.canProxyPropertyType(propertyType);
-        
+        */
         addMutator(op, propertyName, propertyType, field, persistent, canProxy, location);
         
         if (initialValue == null)
@@ -194,7 +194,7 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
         
         if (persistent) {
             
-            if (!propertyType.isArray() && !propertyType.isPrimitive()) {
+            if (!propertyType.isArray() && !propertyType.isPrimitive() && canProxy) {
                 
                 body.addln("if ($1 != null && org.apache.tapestry.record.ObservedProperty.class.isAssignableFrom($1.getClass())) {");
                 body.add(" $1 = (" + ClassFabUtils.getJavaClassName(propertyType) + ")((org.apache.tapestry.record.ObservedProperty)$1)");

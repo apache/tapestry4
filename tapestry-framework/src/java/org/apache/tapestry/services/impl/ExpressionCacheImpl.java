@@ -14,9 +14,13 @@
 
 package org.apache.tapestry.services.impl;
 
+import edu.emory.mathcs.backport.java.util.concurrent.locks.ReentrantLock;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 
+import ognl.Node;
 import ognl.Ognl;
 
 import org.apache.hivemind.ApplicationRuntimeException;
@@ -24,21 +28,36 @@ import org.apache.tapestry.event.ReportStatusEvent;
 import org.apache.tapestry.event.ReportStatusListener;
 import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.services.ExpressionCache;
+import org.apache.tapestry.services.ExpressionEvaluator;
 
 /**
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class ExpressionCacheImpl implements ExpressionCache, ResetEventListener,
-        ReportStatusListener
+public class ExpressionCacheImpl implements ExpressionCache, ResetEventListener, ReportStatusListener
 {
+    private final ReentrantLock _lock = new ReentrantLock();
+    
     private String _serviceId;
 
-    private Map _cache = new HashMap();
-
-    public synchronized void resetEventDidOccur()
+    private Map _cache = new WeakHashMap();
+    
+    private Map _objectCache = new WeakHashMap();
+    
+    private ExpressionEvaluator _evaluator;
+    
+    public void resetEventDidOccur()
     {
-        _cache.clear();
+        try {
+            
+            _lock.lock();
+            
+            _cache.clear();
+            _objectCache.clear();
+        } finally {
+            
+            _lock.unlock();
+        }
     }
 
     public void reportStatus(ReportStatusEvent event)
@@ -47,21 +66,76 @@ public class ExpressionCacheImpl implements ExpressionCache, ResetEventListener,
 
         event.property("cached expression count", _cache.size());
         event.collection("cached expressions", _cache.keySet());
+        
+        event.property("cached object expression count", _objectCache.size());
     }
-
-    public synchronized Object getCompiledExpression(String expression)
+    
+    public Object getCompiledExpression(Object target, String expression)
     {
-        Object result = _cache.get(expression);
+        try {   
+            
+            _lock.lock();
+            
+            Map cached = (Map)_objectCache.get(target.getClass());
+            
+            if (cached == null) {
+                
+                cached = new HashMap();
+                _objectCache.put(target.getClass(), cached);
+            }
+            
+            Node result = (Node)cached.get(expression);
+            
+            if (result == null || result.getAccessor() == null)
+            {
+                result = parse(target, expression);
+                
+                cached.put(expression, result);
+            }
+            
+            return result;
+            
+        } finally {
 
-        if (result == null)
-        {
-            result = parse(expression);
-            _cache.put(expression, result);
+            _lock.unlock();
         }
+    }
+    
+    public Object getCompiledExpression(String expression)
+    {
+        try {
+            
+            _lock.lock();
+            
+            Object result = _cache.get(expression);
 
-        return result;
+            if (result == null)
+            {
+                result = parse(expression);
+                _cache.put(expression, result);
+            }
+            
+            return result;
+        } finally {
+
+            _lock.unlock();
+        }
     }
 
+    private Node parse(Object target, String expression)
+    {
+        try
+        {
+            return Ognl.compileExpression(_evaluator.createContext(target), target, expression);
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationRuntimeException(ImplMessages.unableToParseExpression(
+                    expression,
+                    ex), ex);
+        }
+    }
+    
     private Object parse(String expression)
     {
         try
@@ -80,5 +154,10 @@ public class ExpressionCacheImpl implements ExpressionCache, ResetEventListener,
     {
         _serviceId = serviceId;
     }
-
+    
+    public void setEvaluator(ExpressionEvaluator evaluator)
+    {
+        _evaluator = evaluator;
+    }
+    
 }

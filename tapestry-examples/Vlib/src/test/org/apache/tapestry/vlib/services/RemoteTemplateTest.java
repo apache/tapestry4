@@ -14,7 +14,8 @@
 
 package org.apache.tapestry.vlib.services;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.expect;
+
 import java.rmi.RemoteException;
 
 import org.apache.hivemind.ApplicationRuntimeException;
