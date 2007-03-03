@@ -26,8 +26,6 @@ import org.apache.tapestry.event.BrowserEvent;
  * Represents a configured listener/event(s) binding for a 
  * a component and the events that may be optionally listened
  * for on the client browser.
- * 
- * @author jkuhnert
  */
 public class ComponentEventProperty
 {
@@ -74,8 +72,7 @@ public class ComponentEventProperty
     public void addFormEventListener(String event, String methodName,
             String formId, boolean validateForm, boolean async, boolean focus)
     {
-        EventBoundListener listener = 
-            new EventBoundListener(methodName, formId, validateForm, _componentId, async, focus);
+        EventBoundListener listener = new EventBoundListener(methodName, formId, validateForm, _componentId, async, focus);
         
         List listeners = getFormEventListeners(event);
         if (!listeners.contains(listener))

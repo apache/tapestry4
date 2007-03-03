@@ -160,6 +160,12 @@ public abstract class AnnotatedPage extends BasePage
     @EventListener(events = { "onClick" }, targets = { "email" }, submitForm = "testForm", focus=true)
     public void formListener() { }
     
+    @EventListener(events = { "onClick" }, targets = { "phone" }, submitForm = "testForm")
+    public void anotherFormListener() { }
+    
+    @EventListener(events = { "onClick" }, targets = { "phone" }, submitForm = "form")
+    public void yetAnotherFormListener() { }
+    
     @EventListener(events = { "onClick" }, targets = { "email" }, submitForm = "notExisting")
     public void brokenFormListener() { }
     

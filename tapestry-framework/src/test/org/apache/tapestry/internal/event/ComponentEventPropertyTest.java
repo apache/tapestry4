@@ -14,6 +14,7 @@
 package org.apache.tapestry.internal.event;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.tapestry.event.BrowserEvent;
 import org.testng.annotations.Test;
@@ -30,7 +31,7 @@ import com.javaforge.tapestry.testng.TestBase;
 public class ComponentEventPropertyTest extends TestBase
 {
 
-    public void testAddEventListener()
+    public void test_Add_Event_Listener()
     {
         String[] events = {"onClick", "onFoo"};
         ComponentEventProperty prop = new ComponentEventProperty("compid");
@@ -52,7 +53,7 @@ public class ComponentEventPropertyTest extends TestBase
         assertEquals("doFoo", listener.getMethodName());
     }
     
-    public void testAddFormEventListener()
+    public void test_Add_Form_Event_Listener()
     {
         String[] events = {"onFoo"};
         ComponentEventProperty prop = new ComponentEventProperty("compid");
@@ -79,7 +80,39 @@ public class ComponentEventPropertyTest extends TestBase
         assertEquals("doFoo", listener.getMethodName());
     }
     
-    public void testGetFormEvents()
+    public void test_Add_Multiple_Event_Listener()
+    {
+        String[] events = {"onClick", "onFoo"};
+        ComponentEventProperty prop = new ComponentEventProperty("compid");
+        
+        prop.addListener(events, "doFoo", "form1", false, false, false);
+        prop.addListener(new String[]{"onchange"}, "doBar", "form2", false, false, false);
+        prop.addListener(new String[]{"onchange"}, "secondForm", "form1", false, false, false);
+        
+        assertEquals("compid", prop.getComponentId());
+        assertEquals(prop.getEvents().size(), 0);
+        assertEquals(prop.getFormEvents().size(), 3);
+        
+        Set s = prop.getFormEvents();
+        String[] fevents = (String[])s.toArray(new String[s.size()]);
+        
+        assertEquals(fevents.length, 3);
+        
+        List listeners = prop.getFormEventListeners("onchange");
+        assertEquals(listeners.size(), 2);
+        
+        /*
+        List listeners = prop.getFormEventListeners("onClick");
+        assertEquals(listeners.size(), 2);
+        
+        EventBoundListener listener = (EventBoundListener)listeners.get(0);
+        assertEquals("compid", listener.getComponentId());
+        assertNull(listener.getFormId());
+        assertEquals("doFoo", listener.getMethodName());
+        */
+    }
+    
+    public void test_Get_Form_Events()
     {
         String[] events = {"onFoo"};
         ComponentEventProperty prop = new ComponentEventProperty("compid");
