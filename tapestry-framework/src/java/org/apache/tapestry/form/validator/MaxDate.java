@@ -110,4 +110,8 @@ public class MaxDate extends BaseValidator
         _maxDate = minDate;
     }
 
+    public Date getMaxDate()
+    {
+        return _maxDate;
+    }
 }

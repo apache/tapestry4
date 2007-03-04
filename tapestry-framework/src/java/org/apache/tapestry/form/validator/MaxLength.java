@@ -51,6 +51,11 @@ public class MaxLength extends BaseValidator
         _maxLength = maxLength;
     }
 
+    public int getMaxLength()
+    {
+        return _maxLength;
+    }
+    
     public void validate(IFormComponent field, ValidationMessages messages, Object object)
             throws ValidatorException
     {

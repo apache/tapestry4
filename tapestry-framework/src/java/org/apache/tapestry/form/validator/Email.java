@@ -36,7 +36,7 @@ import org.apache.tapestry.valid.ValidatorException;
  */
 public class Email extends BaseValidator
 {
-    static final String PATTERN = "^[A-Za-z0-9]+([-_\\.]*[A-Za-z0-9]+)*@[A-Za-z0-9]+([-_\\.]*[A-Za-z0-9]+)*(\\.[_A-Za-z]{2,6})$";
+    public static final String PATTERN = "^[A-Za-z0-9]+([-_\\.]*[A-Za-z0-9]+)*@[A-Za-z0-9]+([-_\\.]*[A-Za-z0-9]+)*(\\.[_A-Za-z]{2,6})$";
     
     // TODO: Possible thread safety issue if the validator
     // is shared across threads, because the matcher
@@ -52,7 +52,7 @@ public class Email extends BaseValidator
     {
         super(initializer);
     }
-
+    
     public void validate(IFormComponent field, ValidationMessages messages, Object object)
             throws ValidatorException
     {

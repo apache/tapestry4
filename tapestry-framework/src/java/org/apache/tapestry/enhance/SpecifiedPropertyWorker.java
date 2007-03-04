@@ -53,8 +53,7 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
      * thier mutator.
      */
 
-    public void performEnhancement(EnhancementOperation op,
-            IComponentSpecification spec)
+    public void performEnhancement(EnhancementOperation op, IComponentSpecification spec)
     {
         Iterator i = spec.getPropertySpecificationNames().iterator();
 
@@ -62,7 +61,7 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
         {
             String name = (String) i.next();
             IPropertySpecification ps = spec.getPropertySpecification(name);
-
+            
             try
             {
                 performEnhancement(op, ps);

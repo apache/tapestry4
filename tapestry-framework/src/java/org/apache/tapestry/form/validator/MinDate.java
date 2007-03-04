@@ -54,6 +54,11 @@ public class MinDate extends BaseValidator
         _minDate = minDate;
     }
     
+    public Date getMinDate()
+    {
+        return _minDate;
+    }
+    
     public void validate(IFormComponent field, ValidationMessages messages, Object object)
     throws ValidatorException
     {

@@ -379,8 +379,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
         return EnhanceUtils.createAccessorMethodName(propertyName);
     }
 
-    public void addMethod(int modifier, MethodSignature sig, String methodBody,
-            Location location)
+    public void addMethod(int modifier, MethodSignature sig, String methodBody, Location location)
     {
         Defense.notNull(sig, "sig");
         Defense.notNull(methodBody, "methodBody");
@@ -531,8 +530,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
         return "$" + baseName.substring(dotx + 1) + "_" + _uid++;
     }
 
-    public void extendMethodImplementation(Class interfaceClass,
-            MethodSignature methodSignature, String code)
+    public void extendMethodImplementation(Class interfaceClass, MethodSignature methodSignature, String code)
     {
         addInterfaceIfNeeded(interfaceClass);
 

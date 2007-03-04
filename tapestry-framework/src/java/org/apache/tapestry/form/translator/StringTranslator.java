@@ -71,4 +71,8 @@ public class StringTranslator extends AbstractTranslator
         _empty = empty;
     }
 
+    public String getEmpty()
+    {
+        return _empty;
+    }
 }
