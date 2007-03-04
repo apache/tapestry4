@@ -26,7 +26,8 @@ tapestry={
 	scriptInFlight:false, // whether or not javascript is currently being eval'd, default false
 	ScriptFragment:'(?:<script.*?>)((\n|.|\r)*?)(?:<\/script>)', // regexp for script elements
     requestsInFlight:0, // how many ajax requests are currently in progress
-
+    isIE:dojo.render.html.ie,
+    
     /**
 	 * Function: bind
 	 * 
@@ -199,12 +200,12 @@ tapestry={
 	 * 
 	 */
 	loadContent:function(id, node, element){
-    	if (element.childNodes && element.childNodes.length > 0) {
+    	if (typeof element.childNodes != "undefined" && element.childNodes.length > 0) {
         	for (var i = 0; i < element.childNodes.length; i++) {
             	if (element.childNodes[i].nodeType != 1) { continue; }
 				
             	var nodeId = element.childNodes[i].getAttribute("id");
-            	if (nodeId && nodeId) {
+            	if (nodeId) {
                 	element=element.childNodes[i];
                 	break;
             	}
@@ -213,23 +214,41 @@ tapestry={
     	
     	dojo.event.browser.clean(node); // prevent mem leaks in ie
     	
+    	var content=tapestry.html.getContentAsString(element);
     	if (djConfig["isDebug"]) {
-    		var content=tapestry.html.getContentAsString(element);
     		dojo.log.debug("Received element content for id <" + id + "> of:", content);
+    	}
+    	if (content && content.length > 0) {
     		node.innerHTML=content;
-    	} else {
-    		node.innerHTML=tapestry.html.getContentAsString(element);
     	}
     	
-    	// copy style/class css attributes
-    	var style=element.getAttribute("style");
-    	if(style) {
-    		dojo.html.setStyleText(node, style);
-    	}
-    	var classStr=element.getAttribute("class");
-    	if (classStr) {
-    		dojo.html.setClass(node, classStr);
-    	}
+    	// copy attributes
+		var atts=element.attributes;
+		var attnode, i=0;
+		while((attnode=atts[i++])){
+			if(tapestry.isIE){
+				if(!attnode){ continue; }
+				if((typeof attnode == "object")&&
+					(typeof attnode.nodeValue == 'undefined')||
+					(attnode.nodeValue == null)||
+					(attnode.nodeValue == '')){
+					continue;
+				}
+			}
+			
+			var nn = attnode.nodeName;
+			var nv = attnode.nodeValue;
+			if (nn == "id" || nn == "type" || nn == "name"){continue;}
+			
+			if (nn == "style") {
+				dojo.html.setStyleText(node, nv);
+			} else if (nn == "class") {
+				dojo.html.setClass(node, nv);
+			} else {
+				node.setAttribute(nn, nv);
+			}
+		}
+    	
     	// apply disabled/not disabled
     	var disabled = element.getAttribute("disabled");
     	if (!disabled && node["disabled"]) { 
@@ -421,12 +440,13 @@ tapestry.html={
 	 * The string representation of the given node's contents.
 	 */    
 	getContentAsString:function(node){
-		if (typeof node.xml != "undefined")
+		if (typeof node.xml != "undefined") {
 			return this._getContentAsStringIE(node);
-		else if (typeof XMLSerializer != "undefined" )
+		} else if (typeof XMLSerializer != "undefined" ) {
 			return this._getContentAsStringMozilla(node);
-		else
+		} else {
 			return this._getContentAsStringGeneric(node);
+		}
 	},        
 	
    /**
