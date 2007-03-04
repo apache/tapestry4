@@ -183,6 +183,16 @@ final class EnhanceMessages
         return _formatter.format("unable-to-add-field", fieldName, ctClass.getName(), cause);
     }
     
+    static String unableToLookupClass(String name, Throwable cause)
+    {
+        return _formatter.format("unable-to-lookup", name, cause);
+    }
+    
+    static String unableToWriteClass(CtClass ctClass, Throwable cause)
+    {
+        return _formatter.format("unable-to-write-class", ctClass.getName(), cause);
+    }
+    
     static String duplicateMethodInClass(MethodSignature ms, ClassFabImpl cf)
     {
         return _formatter.format("duplicate-method-in-class", ms, cf.getName());
