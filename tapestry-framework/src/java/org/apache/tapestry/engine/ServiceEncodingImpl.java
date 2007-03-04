@@ -28,18 +28,18 @@ import org.apache.tapestry.util.QueryParameterMap;
  */
 public class ServiceEncodingImpl implements ServiceEncoding
 {
-    private String _servletPath;
+    protected String _servletPath;
 
-    private String _pathInfo;
+    protected String _pathInfo;
 
     /**
      * Map of query parameter values; key is string name, value is either a string, an array of
      * strings, or null. Could have done this with subclassing rather than delegation.
      */
 
-    private final QueryParameterMap _parameters;
+    protected final QueryParameterMap _parameters;
 
-    private boolean _modified;
+    protected boolean _modified;
 
     /**
      * Creates a new instance with a new map of parameters.
