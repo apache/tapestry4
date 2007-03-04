@@ -65,7 +65,7 @@ public class NumberTranslator extends FormatTranslator
     
     protected Object getValueForEmptyInput()
     {
-        return new Double(0);
+        return _omitZero ? null : new Double(0);
     }
     
     /**
