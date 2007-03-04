@@ -19,9 +19,6 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.service.ClassFab;
 import org.apache.hivemind.service.ClassFactory;
 import org.apache.hivemind.service.InterfaceFab;
-import org.apache.hivemind.service.impl.CtClassSource;
-import org.apache.hivemind.service.impl.HiveMindClassPool;
-import org.apache.hivemind.service.impl.InterfaceFabImpl;
 
 /**
  * Implementation of the hivemind core {@link ClassFactory} service to get around some incompatibilities 
@@ -31,6 +28,8 @@ import org.apache.hivemind.service.impl.InterfaceFabImpl;
  */
 public class ClassFactoryImpl implements ClassFactory
 {
+    static final int EXPIRED_CLASS_COUNT = 100;
+    
     /**
      * ClassPool shared by all modules (all CtClassSource instances).
      */
@@ -38,10 +37,14 @@ public class ClassFactoryImpl implements ClassFactory
 
     private CtClassSource _classSource = new CtClassSource(_pool);
 
+    private int _classCounter = 0;
+    
     public ClassFab newClass(String name, Class superClass)
     {
         try
         {
+            checkPoolExpiration();
+            
             CtClass ctNewClass = _classSource.newClass(name, superClass);
             
             return new ClassFabImpl(_classSource, ctNewClass);
@@ -61,6 +64,8 @@ public class ClassFactoryImpl implements ClassFactory
     {
         try
         {
+            checkPoolExpiration();
+            
             CtClass ctNewClass = _classSource.newInterface(name);
 
             return new InterfaceFabImpl(_classSource, ctNewClass);
@@ -71,5 +76,18 @@ public class ClassFactoryImpl implements ClassFactory
                     EnhanceMessages.unableToCreateInterface(name, ex), ex);
         }
 
+    }
+    
+    void checkPoolExpiration()
+    {
+        _classCounter++;
+        
+        synchronized(_classSource) {
+            if (_classCounter >= EXPIRED_CLASS_COUNT) {
+                _pool.clearImportedPackages();
+                
+                _classCounter = 0;
+            }
+        }
     }
 }

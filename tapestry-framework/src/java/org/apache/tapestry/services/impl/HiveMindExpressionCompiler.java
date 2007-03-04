@@ -46,6 +46,7 @@ import org.apache.hivemind.service.ClassFab;
 import org.apache.hivemind.service.ClassFactory;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.tapestry.IRender;
+import org.apache.tapestry.enhance.AbstractFab;
 
 /**
  * Adds to default ognl compiler class pools.
@@ -186,9 +187,7 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
             return;
 
         synchronized (expression) {
-
-
-
+            
             String getBody = null;
             String setBody = null;
 
@@ -244,7 +243,7 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
 
                 classFab.addConstructor(new Class[0], new Class[0], "{}");
 
-                Class clazz = classFab.createClass();
+                Class clazz = ((AbstractFab)classFab).createClass(true);
 
                 expression.setAccessor((ExpressionAccessor)clazz.newInstance());
 

@@ -31,8 +31,6 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.service.ClassFab;
 import org.apache.hivemind.service.MethodFab;
 import org.apache.hivemind.service.MethodSignature;
-import org.apache.hivemind.service.impl.AbstractFab;
-import org.apache.hivemind.service.impl.CtClassSource;
 
 /**
  * Implementation replacement for hivemind {@link ClassFab} utiltity to get around some javassist
@@ -50,7 +48,6 @@ public class ClassFabImpl extends AbstractFab implements ClassFab
 
     private class AddedConstructor
     {
-
         private Class[] _parameterTypes;
 
         private Class[] _exceptionTypes;

@@ -21,7 +21,6 @@ import javassist.CtMethod;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.service.MethodFab;
 import org.apache.hivemind.service.MethodSignature;
-import org.apache.hivemind.service.impl.CtClassSource;
 
 /**
  * Implementation of hivemind {@link MethodFab} utiltity.
