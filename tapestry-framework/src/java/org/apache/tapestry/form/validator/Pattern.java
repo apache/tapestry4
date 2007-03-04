@@ -96,4 +96,8 @@ public class Pattern extends BaseValidator
         _pattern = pattern;
     }
 
+    public String getPattern()
+    {
+        return _pattern;
+    }
 }

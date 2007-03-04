@@ -47,7 +47,7 @@ public class Max extends BaseValidator
     {
         super(initializer);
     }
-
+    
     /**
      * Does comparison based on the {@link Number#doubleValue()}.
      */
@@ -108,4 +108,8 @@ public class Max extends BaseValidator
         _max = max;
     }
 
+    public double getMax()
+    {
+        return _max;
+    }
 }

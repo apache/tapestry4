@@ -159,4 +159,8 @@ public class NumberTranslator extends FormatTranslator
         _omitZero = omitZero;
     }
 
+    public boolean isOmitZero()
+    {
+        return _omitZero;
+    }
 }

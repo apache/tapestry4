@@ -78,8 +78,8 @@ public abstract class AbstractTranslator extends AbstractFormComponentContributo
 
     protected abstract String formatObject(IFormComponent field, Locale locale, Object object);
 
-    protected abstract Object parseText(IFormComponent field, ValidationMessages messages,
-            String text) throws ValidatorException;
+    protected abstract Object parseText(IFormComponent field, ValidationMessages messages, String text) 
+    throws ValidatorException;
 
     /**
      * The value to be used when the value supplied in the request is blank (null or empty). The

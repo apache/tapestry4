@@ -108,4 +108,8 @@ public class Min extends BaseValidator
         _min = min;
     }
 
+    public double getMin()
+    {
+        return _min;
+    }
 }
