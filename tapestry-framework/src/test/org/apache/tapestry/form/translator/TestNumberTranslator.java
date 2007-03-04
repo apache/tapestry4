@@ -52,6 +52,8 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         NumberTranslator translator = new NumberTranslator("pattern=0.00,omitZero=true");
         
         testFormat(translator, new Integer(0), "");
+        
+        assertEquals(translator.getValueForEmptyInput(), null);
     }
 
     public void test_Omit_Zero_Off()
@@ -97,7 +99,7 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         
         Number num = (Number)translator.parse(field, messages, "");
         
-        assertEquals(num.doubleValue(), 0.0);
+        assert num == null;
         
         verify();
     }
