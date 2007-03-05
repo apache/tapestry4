@@ -126,6 +126,8 @@ public class RequestCycle implements IRequestCycle
 
     private Stack _renderStack = new Stack();
     
+    private boolean _focusDisabled = false;
+    
     /**
      * Standard constructor used to render a response page.
      * 
@@ -189,7 +191,6 @@ public class RequestCycle implements IRequestCycle
         _loadedPages = null;
         _pageRecorders = null;
         _renderStack.clear();
-        
     }
 
     public IEngineService getService()
@@ -488,6 +489,22 @@ public class RequestCycle implements IRequestCycle
             reset();
             _rewinding = false;
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void disableFocus()
+    {
+        _focusDisabled = true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isFocusDisabled()
+    {
+        return _focusDisabled;
     }
 
     public void setAttribute(String name, Object value)

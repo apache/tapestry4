@@ -488,8 +488,7 @@ public class FormSupportImpl implements FormSupport
         return Integer.parseInt(input.substring(index, input.length()));
     }
     
-    public void render(String method, IRender informalParametersRenderer, ILink link, 
-            String scheme, Integer port)
+    public void render(String method, IRender informalParametersRenderer, ILink link, String scheme, Integer port)
     {
         String formId = _form.getName();
 
@@ -554,7 +553,7 @@ public class FormSupportImpl implements FormSupport
         // If the form doesn't support focus, or the focus has already been set by a different form,
         // then do nothing.
         
-        if (fieldId != null && _form.getFocus() 
+        if (!_cycle.isFocusDisabled() && fieldId != null && _form.getFocus() 
                 && _cycle.getAttribute(FIELD_FOCUS_ATTRIBUTE) == null) {
             
             _pageRenderSupport.addInitializationScript(_form, "dojo.require(\"tapestry.form\");tapestry.form.focusField('" + fieldId + "');");
@@ -564,6 +563,7 @@ public class FormSupportImpl implements FormSupport
         // register the validation profile with client side form manager
         
         if (_form.isClientValidationEnabled()) {
+            
             _pageRenderSupport.addInitializationScript(_form, "dojo.require(\"tapestry.form\");tapestry.form.clearProfiles('"
                     + formId + "'); tapestry.form.registerProfile('" + formId + "'," 
                     + _profile.toString() + ");");

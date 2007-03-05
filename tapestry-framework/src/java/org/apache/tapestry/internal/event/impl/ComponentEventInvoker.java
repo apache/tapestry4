@@ -28,7 +28,6 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.form.FormSupport;
-import org.apache.tapestry.form.FormSupportImpl;
 import org.apache.tapestry.internal.event.ComponentEventProperty;
 import org.apache.tapestry.internal.event.EventBoundListener;
 import org.apache.tapestry.internal.event.IComponentEventInvoker;
@@ -82,7 +81,7 @@ public class ComponentEventInvoker implements IComponentEventInvoker, ResetEvent
         if (comps == null)
             return;
         
-        boolean disableFocus = true;
+        boolean disableFocus = false;
         
         for (int i=0; i < comps.size(); i++) {
             
@@ -106,8 +105,8 @@ public class ComponentEventInvoker implements IComponentEventInvoker, ResetEvent
                     continue;
                 
                 // handle disabling focus 
-                if (listeners[e].shouldFocusForm())
-                    disableFocus = false;
+                if (!disableFocus && !listeners[e].shouldFocusForm())
+                    disableFocus = true;
                 
                 // defer execution until after form is done rewinding
                 
@@ -120,9 +119,9 @@ public class ComponentEventInvoker implements IComponentEventInvoker, ResetEvent
         
         // Form uses cycle attributes to test whether or not to focus .
         // The attribute existing at all is enough to bypass focusing.
-        if (disableFocus){
+        if (disableFocus) {
             
-            cycle.setAttribute(FormSupportImpl.FIELD_FOCUS_ATTRIBUTE, Boolean.TRUE);
+            cycle.disableFocus();
         }
     }
     
