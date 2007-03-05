@@ -21,8 +21,8 @@
 	
 <application name="Tapestry TimeTracker">
    
-   <meta key="org.apache.tapestry.page-class-packages" 
-        value="org.apache.tapestry.timetracker.page"/>
+   <meta key="org.apache.tapestry.namespace-properties-name" value="messages" />
+   <meta key="org.apache.tapestry.page-class-packages" value="org.apache.tapestry.timetracker.page"/>
   
   <library id="contrib" specification-path="classpath:/org/apache/tapestry/contrib/Contrib.library"/>
   

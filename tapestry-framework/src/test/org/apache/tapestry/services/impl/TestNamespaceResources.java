@@ -122,7 +122,7 @@ public class TestNamespaceResources extends BaseComponentTestCase
         return newMock(IComponentSpecification.class);
     }
 
-    public void testGetPageSpecification()
+    public void test_Get_Page_Specification()
     {
         Resource libraryResource = newResource();
         Resource specResource = newResource();
@@ -144,7 +144,7 @@ public class TestNamespaceResources extends BaseComponentTestCase
         verify();
     }
 
-    public void testGetComponentSpecification()
+    public void test_Get_Component_Specification()
     {
         Resource libraryResource = newResource();
         Resource specResource = newResource();
