@@ -36,6 +36,7 @@ import org.apache.tapestry.enhance.InjectSpecificationWorker;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.services.ComponentMessagesSource;
 import org.apache.tapestry.services.ComponentPropertySource;
+import org.apache.tapestry.services.impl.ClasspathResourceFactoryImpl;
 import org.apache.tapestry.services.impl.ComponentMessagesSourceImpl;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -121,8 +122,7 @@ public class TestComponentMessages extends TapestryTestCase
 
     private ILibrarySpecification newLibrarySpec()
     {
-        Resource resource = new ClasspathResource(new DefaultClassResolver(),
-                "/org/apache/tapestry/junit/Library.library");
+        Resource resource = new ClasspathResource(new DefaultClassResolver(), "/org/apache/tapestry/junit/Library.library");
 
         ILibrarySpecification spec = new LibrarySpecification();
         spec.setSpecificationLocation(resource);
@@ -162,6 +162,7 @@ public class TestComponentMessages extends TapestryTestCase
     private Messages createMessages(String location, Locale locale)
     {
         ComponentMessagesSourceImpl source = new ComponentMessagesSourceImpl();
+        source.setClasspathResourceFactory(new ClasspathResourceFactoryImpl(new DefaultClassResolver()));
         source.setComponentPropertySource(new NullComponentPropertySource());
 
         IComponentSpecification spec = newSpec(location);
@@ -176,15 +177,50 @@ public class TestComponentMessages extends TapestryTestCase
         return source.getMessages(page);
     }
 
-    public void testOnlyInBase()
+    private Messages createMessages(String location, Locale locale, String propname)
+    {
+        ComponentMessagesSourceImpl source = new ComponentMessagesSourceImpl();
+        source.setClasspathResourceFactory(new ClasspathResourceFactoryImpl(new DefaultClassResolver()));
+        source.setComponentPropertySource(new NullComponentPropertySource());
+
+        IComponentSpecification spec = newSpec(location);
+        spec.setLocation(_locationFixture);
+
+        IPage page = newPage(spec, source, locale);
+        
+        ILibrarySpecification lspec = newLibrarySpec();
+        lspec.setProperty(ComponentMessagesSourceImpl.NAMESPACE_PROPERTIES_NAME, propname);
+        
+        INamespace namespace = new Namespace(null, null, lspec, null);
+
+        page.setNamespace(namespace);
+
+        return source.getMessages(page);
+    }
+    
+    public void test_Only_In_Base()
     {
         Messages messages = createMessages(MOCK1, new Locale("en", "US"));
 
         check(messages, "only-in-base", "BASE1");
     }
 
+    public void test_Specification_Properties_File_Change()
+    {
+        Messages msgs = createMessages(MOCK1, new Locale("en", "US"), "override");
+        
+        check(msgs, "standard-property", "Whispering wind");
+    }
+    
+    public void test_Specification_Properties_File_Classpath_Change()
+    {
+        Messages msgs = createMessages(MOCK1, new Locale("en", "US"), "org.apache.tapestry.junit.mock.app.impl.classpath");
+        
+        check(msgs, "standard-property", "Here!");
+    }
+    
     /** @since 4.0 */
-    public void testOnlyInNamespace()
+    public void test_Only_In_Namespace()
     {
         Messages messages = createMessages(MOCK1, new Locale("en", "US"));
 
@@ -192,7 +228,7 @@ public class TestComponentMessages extends TapestryTestCase
     }
 
     /** @since 4.0 */
-    public void testLocalizedInNamespace()
+    public void test_Localized_In_Namespace()
     {
         Messages messages = createMessages(MOCK1, new Locale("fr"));
 
@@ -200,7 +236,7 @@ public class TestComponentMessages extends TapestryTestCase
     }
 
     /** @since 4.0 */
-    public void testComponentOverridesNamespace()
+    public void test_Component_Overrides_Namespace()
     {
         Messages messages = createMessages(MOCK1, new Locale("en", "US"));
 
@@ -315,6 +351,7 @@ public class TestComponentMessages extends TapestryTestCase
     public void testMultipleLocalesWithNamespace()
     {
         ComponentMessagesSourceImpl source = new ComponentMessagesSourceImpl();
+        source.setClasspathResourceFactory(new ClasspathResourceFactoryImpl(new DefaultClassResolver()));
         source.setComponentPropertySource(new NullComponentPropertySource());
 
         IComponentSpecification spec = newSpec(MOCK1);

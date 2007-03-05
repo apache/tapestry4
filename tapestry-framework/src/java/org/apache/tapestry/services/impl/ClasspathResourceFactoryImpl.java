@@ -28,6 +28,13 @@ public class ClasspathResourceFactoryImpl implements ClasspathResourceFactory
 {
     private ClassResolver _classResolver;
 
+    public ClasspathResourceFactoryImpl() {} 
+    
+    public ClasspathResourceFactoryImpl(ClassResolver resolver)
+    {
+        _classResolver = resolver;
+    }
+    
     public ClasspathResource newResource(String path)
     {
         return new ClasspathResource(_classResolver, path);

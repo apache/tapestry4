@@ -119,8 +119,7 @@ public class ApplicationSpecificationInitializer implements ApplicationInitializ
 
         // Pretend the file exists in the most common expected location.
 
-        Resource virtualLocation = new ContextResource(servlet.getServletContext(), "/WEB-INF/"
-                + servletName + ".application");
+        Resource virtualLocation = new ContextResource(servlet.getServletContext(), "/WEB-INF/" + servletName + ".application");
 
         result.setSpecificationLocation(virtualLocation);
 

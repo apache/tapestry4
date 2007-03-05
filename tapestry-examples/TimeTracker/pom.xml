@@ -97,7 +97,16 @@
     <build>
         <sourceDirectory>src/java</sourceDirectory>
         <testSourceDirectory>src/test</testSourceDirectory>
-
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>*.sql</include>
+                    <include>*.properties</include>
+                </includes>
+            </resource>
+        </resources>
+        
         <plugins>
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
@@ -111,7 +120,7 @@
                     <systemProperties>
                         <systemProperty>
                             <name>org.apache.tapestry.disable-caching</name>
-                            <value>false</value>
+                            <value>true</value>
                         </systemProperty>
                     </systemProperties>
                 </configuration>
