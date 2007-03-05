@@ -29,7 +29,6 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.event.EventTarget;
 import org.apache.tapestry.form.FormSupport;
-import org.apache.tapestry.form.FormSupportImpl;
 import org.apache.tapestry.internal.event.ComponentEventProperty;
 import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.listener.ListenerMap;
@@ -223,7 +222,7 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         
         form.addDeferredRunnable(isA(Runnable.class));
         
-        cycle.setAttribute(FormSupportImpl.FIELD_FOCUS_ATTRIBUTE, Boolean.TRUE);
+        cycle.disableFocus();
         
         replay();
         

@@ -233,6 +233,8 @@ public class FormSupportTest extends BaseComponentTestCase
         
         trainGetFocusField(delegate, "wilma");
         
+        expect(cycle.isFocusDisabled()).andReturn(false);
+        
         // effectively means someone else has already claimed focus
         
         trainGetFieldFocus(cycle, null);
@@ -365,6 +367,8 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetFocusField(delegate, null);
         
+        expect(cycle.isFocusDisabled()).andReturn(false);
+        
         replay();
 
         fs.render("post", render, link, null, null);
@@ -435,6 +439,8 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetFocusField(delegate, null);
 
+        expect(cycle.isFocusDisabled()).andReturn(false);
+        
         replay();
 
         fs.render("post", render, link, null, null);
@@ -576,6 +582,8 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetFocusField(delegate, null);
 
+        expect(cycle.isFocusDisabled()).andReturn(false);
+        
         replay();
 
         fs.render("post", render, link, null, null);
@@ -756,6 +764,8 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetFocusField(delegate, null);
 
+        expect(cycle.isFocusDisabled()).andReturn(false);
+        
         replay();
 
         fs.render("post", render, link, null, null);
@@ -827,9 +837,11 @@ public class FormSupportTest extends BaseComponentTestCase
         nested.close();
 
         writer.end();
-
+        
         trainGetFocusField(delegate, null);
 
+        expect(cycle.isFocusDisabled()).andReturn(false);
+        
         replay();
 
         fs.render("post", render, link, null, null);
@@ -1113,6 +1125,8 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetFocusField(delegate, "barney");
 
+        expect(cycle.isFocusDisabled()).andReturn(false);
+        
         // Side test: check for another form already grabbing focus
 
         trainGetFieldFocus(cycle, null);
@@ -1203,6 +1217,8 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetFocusField(delegate, null);
 
+        expect(cycle.isFocusDisabled()).andReturn(false);
+        
         replay();
 
         fs.render("post", render, link, null, null);
@@ -1269,6 +1285,8 @@ public class FormSupportTest extends BaseComponentTestCase
         writer.end();
         
         trainGetFocusField(delegate, "barney");
+        
+        expect(cycle.isFocusDisabled()).andReturn(false);
         
         // Side test: check for another form already grabbing focus
         
@@ -1449,6 +1467,8 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetFocusField(delegate, null);
 
+        expect(cycle.isFocusDisabled()).andReturn(false);
+        
         replay();
 
         fs.render("post", render, link, null, null);

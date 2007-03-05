@@ -34,7 +34,7 @@ public abstract class Dates extends BasePage
     
     public abstract IValidationDelegate getDelegate();
     
-    @EventListener(targets = "startDate", events = {"onchange"}, submitForm = "dateForm")
+    @EventListener(targets = "startDate", events = {"onchange"}, submitForm = "dateForm", focus = false)
     public void startChanged()
     {
         if (getStartDate() == null)

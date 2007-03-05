@@ -253,6 +253,17 @@ public interface IRequestCycle
     void rewindForm(IForm form);
 
     /**
+     * Sets client side form focus off globally for all forms in this request cycle.
+     */
+    void disableFocus();
+    
+    /**
+     * Check for global focus being disabled.
+     * @return True if focus is disabled, false otherwise.
+     */
+    boolean isFocusDisabled();
+    
+    /**
      * Invoked by a {@link IEngineService service}&nbsp;to store an array of application-specific
      * parameters. These can later be retrieved (typically, by an application-specific listener
      * method) by invoking {@link #getListenerParameters()}.
