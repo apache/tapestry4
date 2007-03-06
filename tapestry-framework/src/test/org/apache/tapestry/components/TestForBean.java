@@ -38,9 +38,8 @@ import org.testng.annotations.Test;
 /**
  * Tests functionality of {@link ForBean} .
  *
- * @author jkuhnert
  */
-@Test
+@Test(sequential = true)
 public class TestForBean extends BaseComponentTestCase
 {   
     public void test_Render()
