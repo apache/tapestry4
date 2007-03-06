@@ -42,4 +42,9 @@ final class ComponentMessages
     {
         return _formatter.format("text-conversion-error", cause);
     }
+    
+    static String keySqueezeError(IComponent component, Object value, Throwable cause)
+    {
+        return _formatter.format("squeeze-primary-key-error", component.getExtendedId(), value, cause);
+    }
 }
