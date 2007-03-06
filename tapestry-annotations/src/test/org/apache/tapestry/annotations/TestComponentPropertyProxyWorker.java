@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
 /**
  * Tests functionality of {@link ComponentPropertyProxyWorker}.
  */
-@Test
+@Test(sequential = true)
 public class TestComponentPropertyProxyWorker extends BaseAnnotationTestCase
 {
 
