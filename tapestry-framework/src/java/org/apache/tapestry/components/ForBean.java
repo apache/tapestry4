@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;
@@ -437,6 +438,8 @@ public abstract class ForBean extends AbstractFormComponent
         {
             Object value = _delegate.next();
 
+            
+            
             String rep = getStringRepFromValue(value);
 
             _form.addHiddenValue(_name, rep);
@@ -467,14 +470,20 @@ public abstract class ForBean extends AbstractFormComponent
         
         Object pk = getPrimaryKeyFromValue(value);
         
-        if (pk != null) {
+        try {
+
+            if (pk != null) {
+
+                // Primary key was extracted successfully.
+                rep = DESC_PRIMARY_KEY + squeezer.squeeze(pk);
+            } else {
+
+                // primary key could not be extracted. squeeze value.
+                rep = DESC_VALUE + squeezer.squeeze(value);
+            }
             
-            // Primary key was extracted successfully.
-            rep = DESC_PRIMARY_KEY + squeezer.squeeze(pk);
-        } else {
-            
-            // primary key could not be extracted. squeeze value.
-            rep = DESC_VALUE + squeezer.squeeze(value);
+        } catch (Exception e) {
+            throw new ApplicationRuntimeException(ComponentMessages.keySqueezeError(this, value, e), this, getLocation(), e);
         }
         
         return rep;
@@ -561,12 +570,8 @@ public abstract class ForBean extends AbstractFormComponent
         boolean match = getMatch();
         if (match)
         {
-            value = findValueWithStringRep(
-                    sourceIterator,
-                    fullSourceIterator,
-                    repToValueMap,
-                    rep,
-                    _completeRepSource);
+            value = findValueWithStringRep( sourceIterator, fullSourceIterator, repToValueMap,
+                    rep, _completeRepSource);
             
             if (value != null)
                 return value;

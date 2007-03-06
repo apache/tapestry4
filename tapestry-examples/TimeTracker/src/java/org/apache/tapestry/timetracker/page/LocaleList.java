@@ -47,5 +47,4 @@ public abstract class LocaleList extends BasePage
         setStatus(event.toString());
         getBuilder().updateComponent("status");
     }
-    
 }

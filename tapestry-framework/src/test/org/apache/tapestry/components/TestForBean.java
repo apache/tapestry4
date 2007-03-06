@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;
@@ -30,6 +31,7 @@ import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
+import org.apache.tapestry.util.io.DataSqueezerImpl;
 import org.testng.annotations.Test;
 
 
@@ -147,6 +149,88 @@ public class TestForBean extends BaseComponentTestCase
         bean.setBinding("source", source);
         
         bean.render(writer, cycle);
+        
+        verify();
+    }
+    
+    class NotSerializable {
+        
+        String _value;
+        
+        public NotSerializable(String value)
+        {
+            _value = value;
+        }
+        
+        public String toString()
+        {
+            return "NotSerializable[" + _value + "]";
+        }
+    }
+    
+    public void test_Render_Line_Precise_Error()
+    {
+        IRequestCycle cycle = newMock(IRequestCycle.class);
+        IMarkupWriter writer = newBufferWriter();
+        ValueConverter conv = newMock(ValueConverter.class);
+        ResponseBuilder resp = newMock(ResponseBuilder.class);
+        IComponentSpecification spec = newSpec();
+        IParameterSpecification pspec = newMock(IParameterSpecification.class);
+        IForm form = newMock(IForm.class);
+        
+        List src = new ArrayList();
+        src.add(new NotSerializable("Test1"));
+        src.add(new NotSerializable("Test2"));
+        
+        IBinding source = newBinding(src);
+        
+        ForBean bean = newInstance(ForBean.class, new Object[] {
+            "valueConverter", conv,
+            "responseBuilder", resp,
+            "templateTagName", "div",
+            "renderTag", true,
+            "specification", spec,
+            "dataSqueezer", new DataSqueezerImpl()
+            });
+        
+        expect(cycle.renderStackPush(bean)).andReturn(bean);
+        
+        expect(cycle.isRewinding()).andReturn(false).anyTimes();
+        
+        expect(cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE)).andReturn(form);
+        
+        expect(form.getElementId(bean)).andReturn("For_1");
+        
+        expect(spec.getParameter("source")).andReturn(pspec).anyTimes();
+        
+        expect(conv.coerceValue(src, Iterator.class)).andReturn(src.iterator());
+        
+        expect(resp.isDynamic()).andReturn(false).anyTimes();
+        
+        expect(cycle.getResponseBuilder()).andReturn(resp).anyTimes();
+        
+        IRender body = newMock(IRender.class);
+        
+        resp.render(writer, body, cycle);
+        expectLastCall().anyTimes();
+        
+        form.setFormFieldUpdating(true);
+        
+        expect(cycle.renderStackPop()).andReturn(bean);
+        
+        replay();
+        
+        bean.addBody(body);
+        bean.setBinding("source", source);
+        
+        try {
+            
+            bean.render(writer, cycle);
+            fail("Exception should have been thrown");
+        } catch (ApplicationRuntimeException ex) {
+            
+            assertExceptionSubstring(ex, "error squeezing primary key value");
+        }
         
         verify();
     }
