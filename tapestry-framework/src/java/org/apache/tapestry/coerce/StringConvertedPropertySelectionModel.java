@@ -97,6 +97,11 @@ public final class StringConvertedPropertySelectionModel implements IPropertySel
         return getEntry(index)._value;
     }
 
+    public boolean isDisabled(int index)
+    {
+        return false;
+    }
+    
     public Object translateValue(String value)
     {
         // Values are the same on the client and the server, so no translation needed.

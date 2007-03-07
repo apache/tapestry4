@@ -60,6 +60,11 @@ public class LabeledPropertySelectionModel implements IPropertySelectionModel
             return null;
         }
 
+        public boolean isDisabled(int index)
+        {
+            return false;
+        }
+        
         /**
          * @see org.apache.tapestry.form.IPropertySelectionModel#translateValue(java.lang.String)
          */
@@ -207,6 +212,11 @@ public class LabeledPropertySelectionModel implements IPropertySelectionModel
         return (index == 0) ? _value : _model.getValue(index - 1);
     }
 
+    public boolean isDisabled(int index)
+    {
+        return false;
+    }
+    
     /**
      * @see org.apache.tapestry.form.IPropertySelectionModel#translateValue(java.lang.String)
      */

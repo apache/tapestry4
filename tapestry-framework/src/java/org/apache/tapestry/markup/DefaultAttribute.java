@@ -23,8 +23,8 @@ import java.io.PrintWriter;
  */
 public class DefaultAttribute implements Attribute
 {
-    private String _value;
-    private boolean _raw;
+    protected String _value;
+    protected boolean _raw;
     
     public DefaultAttribute(String value, boolean raw)
     {
@@ -60,7 +60,7 @@ public class DefaultAttribute implements Attribute
         writer.print(' ');
         writer.print(name);
         writer.print("=\"");
-        
+
         if (_raw && _value != null) {
             
             writer.write(_value);

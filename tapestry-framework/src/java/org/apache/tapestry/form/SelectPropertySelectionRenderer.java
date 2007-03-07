@@ -24,8 +24,7 @@ import org.apache.tapestry.IRequestCycle;
  * @author Howard Lewis Ship
  */
 
-public class SelectPropertySelectionRenderer implements
-        IPropertySelectionRenderer
+public class SelectPropertySelectionRenderer implements IPropertySelectionRenderer
 {
 
     /**
@@ -35,13 +34,13 @@ public class SelectPropertySelectionRenderer implements
      * Navigator 4 will ignore this).
      */
 
-    public void beginRender(PropertySelection component, IMarkupWriter writer,
-            IRequestCycle cycle)
+    public void beginRender(PropertySelection component, IMarkupWriter writer, IRequestCycle cycle)
     {
         writer.begin("select");
         writer.attribute("name", component.getName());
 
-        if (component.isDisabled()) writer.attribute("disabled", "disabled");
+        if (component.isDisabled()) 
+            writer.attribute("disabled", "disabled");
 
         writer.println();
     }

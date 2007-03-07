@@ -143,6 +143,10 @@ public class NullWriter implements NestedMarkupWriter
     {
     }
     
+    public void attribute(String value)
+    {
+    }
+    
     public void appendAttribute(String name, boolean value)
     {
     }

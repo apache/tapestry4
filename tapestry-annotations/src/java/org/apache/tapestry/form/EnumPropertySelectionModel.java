@@ -74,6 +74,11 @@ public class EnumPropertySelectionModel implements IPropertySelectionModel
         return _set[index - 1].toString();
     }
     
+    public boolean isDisabled(int index)
+    {
+        return false;
+    }
+    
     /**
      * {@inheritDoc}
      */

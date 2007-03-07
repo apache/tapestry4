@@ -34,7 +34,7 @@ import javax.portlet.RenderResponse;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-@Test
+@Test(sequential = true)
 public class TestApplicationPortlet extends BaseComponentTestCase
 {
     public static class ApplicationPortletFixture extends ApplicationPortlet

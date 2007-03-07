@@ -30,22 +30,17 @@
   <parameter name="value" required="yes"/>
   
   <parameter name="model" required="yes"/>
-  	
+  
   <parameter name="disabled"/>
-    
-  <parameter name="submitOnChange" deprecated="true">
-  	<description>
-  	Enables logic to submit containing form when value changes.
-  	</description>
-  </parameter>
   
   <parameter name="displayName"/>
-  <parameter name="validators"/>
   
-  <parameter name="id" property="idParameter" default-value="id"/>
-
+  <parameter name="validators" />
+  
+  <parameter name="optionRenderer" default-value="ognl:@org.apache.tapestry.form.DefaultOptionRenderer@DEFAULT_INSTANCE" cache="no" />
+  
   <reserved-parameter name="name"/>
-
+  
   <inject property="validatableFieldSupport" object="service:tapestry.form.ValidatableFieldSupport"/>
   
 </component-specification>

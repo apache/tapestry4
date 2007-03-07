@@ -156,6 +156,7 @@ public class MarkupWriterImpl implements IMarkupWriter
         
         if (attr == null) {
             attr = new DefaultAttribute(value, true);
+            
             _attrMap.put(name, attr);
             return;
         }
