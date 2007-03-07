@@ -30,13 +30,24 @@ public class StringPropertySelectionModel implements IPropertySelectionModel
 
     private String[] _options;
 
+    private boolean[] _disabled;
+    
+    /**
+     * Standard constructor. The options are retained (not copied).
+     */
+    public StringPropertySelectionModel(String[] options)
+    {
+        this._options = options;
+    }
+    
     /**
      * Standard constructor. The options are retained (not copied).
      */
 
-    public StringPropertySelectionModel(String[] options)
+    public StringPropertySelectionModel(String[] options, boolean[] disabled)
     {
-        this._options = options;
+        this(options);
+        _disabled = disabled;
     }
 
     public int getOptionCount()
@@ -67,6 +78,11 @@ public class StringPropertySelectionModel implements IPropertySelectionModel
         return Integer.toString(index);
     }
 
+    public boolean isDisabled(int index)
+    {
+        return _disabled != null && _disabled[index];
+    }
+    
     public Object translateValue(String value)
     {
         if (value == null)

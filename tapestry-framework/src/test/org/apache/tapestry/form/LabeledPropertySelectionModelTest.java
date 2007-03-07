@@ -122,6 +122,11 @@ public class LabeledPropertySelectionModelTest extends BaseComponentTestCase
                 return Integer.toString(index);
             }
 
+            public boolean isDisabled(int index)
+            {
+                return false;
+            }
+            
             public Object translateValue(String value)
             {
                 return getOption(Integer.parseInt(value));

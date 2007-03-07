@@ -65,6 +65,15 @@ public interface IPropertySelectionModel
     String getValue(int index);
 
     /**
+     * Used to help rendering of options that should be marked with the html <code>disabled</code>
+     * attribute.
+     * 
+     * @param index The option to check.
+     * @return True if the option shouldn't be selectable, false otherwise.
+     */
+    boolean isDisabled(int index);
+    
+    /**
      * Returns the option corresponding to a value. This is used when interpreting submitted form
      * parameters.
      */

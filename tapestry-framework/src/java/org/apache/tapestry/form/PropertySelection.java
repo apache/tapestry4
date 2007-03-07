@@ -44,8 +44,7 @@ import org.apache.tapestry.valid.ValidatorException;
  * @author Howard Lewis Ship
  * @author Paul Ferraro
  */
-public abstract class PropertySelection extends AbstractFormComponent 
-    implements ValidatableField
+public abstract class PropertySelection extends AbstractFormComponent implements ValidatableField
 {   
     /**
      * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
@@ -59,9 +58,6 @@ public abstract class PropertySelection extends AbstractFormComponent
         
         if (isDisabled())
             writer.attribute("disabled", "disabled");
-        
-        if (getSubmitOnChange())
-            writer.attribute("onchange", "javascript: this.form.events.submit();");
         
         renderIdAttribute(writer, cycle);
         
@@ -79,31 +75,8 @@ public abstract class PropertySelection extends AbstractFormComponent
         if (model == null)
             throw Tapestry.createRequiredParameterException(this, "model");
         
-        int count = model.getOptionCount();
-        boolean foundSelected = false;
-        Object value = getValue();
+        getOptionRenderer().renderOptions(writer, cycle, model, getValue());
         
-        for (int i = 0; i < count; i++)
-        {
-            Object option = model.getOption(i);
-
-            writer.begin("option");
-            writer.attribute("value", model.getValue(i));
-
-            if (!foundSelected && isEqual(option, value))
-            {
-                writer.attribute("selected", "selected");
-
-                foundSelected = true;
-            }
-
-            writer.print(model.getLabel(i));
-
-            writer.end();
-
-            writer.println();
-        }
-
         writer.end(); // <select>
 
         renderDelegateSuffix(writer, cycle);
@@ -130,33 +103,16 @@ public abstract class PropertySelection extends AbstractFormComponent
         }
     }
     
-    private boolean isEqual(Object left, Object right)
-    {
-        // Both null, or same object, then are equal
-
-        if (left == right)
-            return true;
-        
-        // If one is null, the other isn't, then not equal.
-        
-        if (left == null || right == null)
-            return false;
-        
-        // Both non-null; use standard comparison.
-        
-        return left.equals(right);
-    }
-    
     public abstract IPropertySelectionModel getModel();
     
-    /** @since 2.2 * */
-    public abstract boolean getSubmitOnChange();
-
     /** @since 2.2 * */
     public abstract Object getValue();
 
     /** @since 2.2 * */
     public abstract void setValue(Object value);
+    
+    /** Responsible for rendering individual options. */
+    public abstract IOptionRenderer getOptionRenderer();
     
     /**
      * Injected.
