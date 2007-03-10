@@ -306,6 +306,35 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         verify();
     }
     
+    public void test_Script_Contains_Stack()
+    {
+        IRequestCycle cycle = newMock(IRequestCycle.class);
+        IComponent comp = newMock(IComponent.class);
+        checkOrder(comp, false);
+        
+        IMarkupWriter writer = newWriter();
+        
+        List parts = new ArrayList();
+        parts.add("comp1");
+        
+        List stack = new ArrayList();
+        stack.add(comp);
+        
+        ResponseBuilder builder = new DojoAjaxResponseBuilder(cycle, writer, parts);
+        
+        expect(comp.getClientId()).andReturn("comp").anyTimes();
+        
+        expect(cycle.renderStackIterator()).andReturn(stack.iterator()).anyTimes();
+        
+        replay();
+        
+        assertFalse(builder.isBodyScriptAllowed(comp));
+        assertFalse(builder.isExternalScriptAllowed(comp));
+        assertFalse(builder.isInitializationScriptAllowed(comp));
+        
+        verify();
+    }
+    
     public void test_Write_Body_Script()
     {
         MarkupFilter filter = new UTFMarkupFilter();

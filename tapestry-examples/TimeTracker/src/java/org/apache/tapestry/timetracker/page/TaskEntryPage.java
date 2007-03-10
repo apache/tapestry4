@@ -57,6 +57,13 @@ public abstract class TaskEntryPage<E extends Persistent> extends BasePage
     public abstract E getSelectedProject();
     public abstract void setSelectedProject(E val);
     
+    public abstract void setSubProject(E value);
+    public abstract E getSubProject();
+    
+    @Persist
+    public abstract void setShowSubProject(boolean show);
+    public abstract boolean getShowSubProject();
+    
     public abstract Project getCurrentProject();
     
     @Component(bindings = {"value=date", 
@@ -140,5 +147,10 @@ public abstract class TaskEntryPage<E extends Persistent> extends BasePage
             getBuilder().updateComponent("projectChoose");
             setSelectedProject(getSelectedProject());
         }
+    }
+    
+    public void showSubProject()
+    {
+        setShowSubProject(true);
     }
 }

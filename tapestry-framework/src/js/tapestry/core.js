@@ -216,7 +216,7 @@ tapestry={
     	
     	var content=tapestry.html.getContentAsString(element);
     	if (djConfig["isDebug"]) {
-    		dojo.log.debug("Received element content for id <" + id + "> of:", content);
+    		dojo.log.debug("Received element content for id <" + id + "> of: ", content);
     	}
     	if (content && content.length > 0) {
     		node.innerHTML=content;
@@ -485,8 +485,9 @@ tapestry.html={
 
 	_getContentAsStringIE:function(node){
 		var s="";
-    	for (var i = 0; i < node.childNodes.length; i++)
+    	for (var i = 0; i < node.childNodes.length; i++){
         	s += node.childNodes[i].xml;
+    	}
     	return s;
 	},
 	
