@@ -26,7 +26,7 @@ import org.apache.tapestry.services.ExpressionEvaluator;
 /**
  * The result of executing a script, the session is used during the parsing
  * process as well. Following
- * {@link org.apache.tapestry.IScript#execute(org.apache.tapestry.IRequestCycle, org.apache.tapestry.IScriptProcessor, java.util.Map)},
+ * {@link org.apache.tapestry.IScript#execute(IComponent, org.apache.tapestry.IRequestCycle, org.apache.tapestry.IScriptProcessor, java.util.Map)},
  * the session provides access to output symbols as well as the body and
  * initialization blocks created by the script tokens.
  * 
@@ -113,9 +113,34 @@ public class ScriptSessionImpl implements ScriptSession
         addBodyScript(_component, script);
     }
     
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isBodyScriptAllowed(IComponent target)
+    {
+        return _processor.isBodyScriptAllowed(target);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isExternalScriptAllowed(IComponent target)
+    {
+        return _processor.isExternalScriptAllowed(target);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isInitializationScriptAllowed(IComponent target)
+    {
+        return _processor.isInitializationScriptAllowed(target);
+    }
+
     public void addBodyScript(IComponent target, String script)
     {
-        _processor.addBodyScript(target, script);
+        if (_processor.isBodyScriptAllowed(target))
+            _processor.addBodyScript(target, script);
     }
     
     public void addExternalScript(Resource resource)
@@ -125,7 +150,8 @@ public class ScriptSessionImpl implements ScriptSession
     
     public void addExternalScript(IComponent target, Resource resource)
     {
-        _processor.addExternalScript(target, resource);
+        if (_processor.isExternalScriptAllowed(target))
+            _processor.addExternalScript(target, resource);
     }
 
     public void addInitializationScript(String script)
@@ -135,7 +161,8 @@ public class ScriptSessionImpl implements ScriptSession
 
     public void addInitializationScript(IComponent target, String script)
     {
-        _processor.addInitializationScript(target, script);
+        if (_processor.isInitializationScriptAllowed(target))
+            _processor.addInitializationScript(target, script);
     }
 
     public String getUniqueString(String baseValue)

@@ -217,12 +217,22 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
     }
     
     /**
+     * Returns the list of of {@link IRender} elements contained by this component. Ie whatever
+     * has been added via {@link #addBody(IRender)}.
+     * 
+     * @return The values, if any. Null otherwise.
+     */
+    protected IRender[] getContainedRenderers()
+    {
+        return _body;
+    }
+    
+    /**
      * Invokes {@link #finishLoad()}. Subclasses may overide as needed, but must invoke this
      * implementation. {@link BaseComponent} loads its HTML template.
      */
 
-    public void finishLoad(IRequestCycle cycle, IPageLoader loader,
-            IComponentSpecification specification)
+    public void finishLoad(IRequestCycle cycle, IPageLoader loader, IComponentSpecification specification)
     {
         finishLoad();
     }

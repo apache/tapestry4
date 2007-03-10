@@ -312,35 +312,4 @@ public interface ResponseBuilder extends PageRenderSupport {
      * @return True if the component script should be allowed.
      */
     boolean isImageInitializationAllowed(IComponent target);
-    
-    /**
-     * Determines if the specified component should have its javascript 
-     * body added to the response.
-     * 
-     * @param target
-     *          The component to allow/disallow body script content from.
-     * @return True if the component script should be allowed.
-     */
-    boolean isBodyScriptAllowed(IComponent target);
-    
-    /**
-     * Determines if the specified component should have its javascript 
-     * initialization added to the response.
-     * 
-     * @param target
-     *          The component to allow/disallow initialization script content from.
-     * @return True if the component script should be allowed.
-     */
-    boolean isInitializationScriptAllowed(IComponent target);
-    
-    /**
-     * Determines if the specified component should have its javascript 
-     * external resource scripts added to the response.
-     * 
-     * @param target
-     *          The component to check for inclusion/exclusion.
-     * @return True if external scripts from this component should be added to
-     *          the response.
-     */
-    boolean isExternalScriptAllowed(IComponent target);
 }

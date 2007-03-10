@@ -18,8 +18,6 @@ import java.io.Serializable;
 
 /**
  * Represents a project for which time will be tracked.
- *
- * @author jkuhnert
  */
 public class Project implements Serializable, Persistent
 {

@@ -281,6 +281,11 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      */
     public boolean isInitializationScriptAllowed(IComponent target)
     {
+        if (_log.isDebugEnabled()) {
+            
+            _log.debug("isInitializationScriptAllowed(" + target + ") contains?: " + contains(target) + " _pageRender: " + _pageRender);
+        }
+        
         if (_pageRender)
             return true;
         
@@ -530,7 +535,6 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         if (IComponent.class.isInstance(render)
                 && contains((IComponent)render, ((IComponent)render).peekClientId()))
         {
-            _pageRender = true;
             render.render(getComponentWriter( ((IComponent)render).peekClientId() ), cycle);
             return;
         }

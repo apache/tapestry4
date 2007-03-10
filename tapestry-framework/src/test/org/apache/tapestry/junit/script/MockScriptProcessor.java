@@ -96,6 +96,30 @@ public class MockScriptProcessor implements IScriptProcessor
         addExternalScript(null, scriptResource);
     }
     
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isBodyScriptAllowed(IComponent target)
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isExternalScriptAllowed(IComponent target)
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isInitializationScriptAllowed(IComponent target)
+    {
+        return true;
+    }
+
     public void addExternalScript(IComponent target, Resource scriptResource)
     {
         if (_externalScripts == null)

@@ -47,17 +47,10 @@ public abstract class AbstractWidget extends AbstractComponent implements IWidge
                     || cycle.getResponseBuilder().explicitlyContains(this)) {
                 
                 setDestroy(false);
-            } else
+            } else {
+                
                 setDestroy(true);
-        }
-        
-        // don't render if not part of update response
-        
-        if (cycle.getResponseBuilder().isDynamic()
-                && (!cycle.getResponseBuilder().explicitlyContains(this) 
-                        && !cycle.getResponseBuilder().contains(this))) {
-            
-            return;
+            }
         }
         
         renderWidget(writer, cycle);

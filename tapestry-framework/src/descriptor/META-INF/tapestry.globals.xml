@@ -49,7 +49,6 @@
     </invoke-factory> 
     
     <interceptor service-id="hivemind.LoggingInterceptor" />
-    
   </service-point>
   
   <service-point id="HttpServletRequest" interface="javax.servlet.http.HttpServletRequest">

@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.Locatable;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
@@ -165,6 +167,30 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
         _bodyScript.append("\n").append(val);
     }
     
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isBodyScriptAllowed(IComponent target)
+    {
+        return _builder.isBodyScriptAllowed(target);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isExternalScriptAllowed(IComponent target)
+    {
+        return _builder.isExternalScriptAllowed(target);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isInitializationScriptAllowed(IComponent target)
+    {
+        return _builder.isInitializationScriptAllowed(target);
+    }
+
     public void addInitializationScript(String script)
     {
         addInitializationScript(null, script);
