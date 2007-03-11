@@ -324,6 +324,9 @@ public class ValidationDelegate implements IValidationDelegate
     public void writeAttributes(IMarkupWriter writer, IRequestCycle cycle,
             IFormComponent component, IValidator validator)
     {
+        if (isInError()) {
+            writer.appendAttribute("class", "fieldInvalid");
+        }
     }
 
     /**
