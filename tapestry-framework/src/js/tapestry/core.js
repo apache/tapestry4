@@ -154,7 +154,7 @@ tapestry={
 			}
 			
 			if (!id){
-				dojo.warn("No element id found in ajax-response node.");
+				dojo.log.warn("No element id found in ajax-response node.");
 				continue;
 			}
 			
