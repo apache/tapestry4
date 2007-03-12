@@ -257,7 +257,7 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
             } catch (Throwable t) {
                 throw new ApplicationRuntimeException("Error compiling expression on object " + root
                         + " with expression node " + expression + " getter body: " + getBody 
-                        + " setter body: " + setBody + t.getMessage());
+                        + " setter body: " + setBody, t);
             }
         }
     }
