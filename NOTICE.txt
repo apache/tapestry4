@@ -1,5 +1,5 @@
 This product includes software developed by
 The Apache Software Foundation (http://www.apache.org/).
 
-This product additionally includes script code developed by the Dojo Foundation under 
-the Academic free license or BSD license. (http://opensource.org/licenses/afl-2.1.php , http://opensource.org/licenses/bsd-license.php).
+This product additionally includes script code developed by the Dojo Foundation under
+the BSD license. (http://opensource.org/licenses/bsd-license.php).
