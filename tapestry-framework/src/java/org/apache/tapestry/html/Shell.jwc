@@ -66,6 +66,15 @@
         </description>
     </parameter>
 
+    <parameter name="disableTapestryMeta" default-value="false" >
+        <description>
+            When set to true, disables rendering of hidden comment meta content normally
+            written out which includes the Tapestry version being used as well as total rendering time 
+            that each response takes. This should be used by people not wanting to make their use or version
+            of any particular framework a widely known item.
+        </description>
+    </parameter>
+
     <parameter name="refresh">
         <description>
             If specified, the page will refresh itself after the specified delay (in seconds).
