@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IAsset;
@@ -48,8 +49,7 @@ public abstract class Shell extends AbstractComponent
 {
     public static final String SHELL_ATTRIBUTE = "org.apache.tapestry.html.Shell";
     
-    private static final String GENERATOR_CONTENT = "Tapestry Application Framework, version "
-            + Tapestry.VERSION;
+    private static final String GENERATOR_CONTENT = "Tapestry Application Framework, version " + Tapestry.VERSION;
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -71,17 +71,21 @@ public abstract class Shell extends AbstractComponent
 
             IPage page = getPage();
             
-            writer.comment("Application: " + getApplicationSpecification().getName());
-            
-            writer.comment("Page: " + page.getPageName());
-            writer.comment("Generated: " + new Date());
+            if (!isDisableTapestryMeta()) {
+                
+                writer.comment("Application: " + getApplicationSpecification().getName());
+
+                writer.comment("Page: " + page.getPageName());
+                writer.comment("Generated: " + new Date());
+            }
             
             writer.begin("html");
             writer.println();
             writer.begin("head");
             writer.println();
 
-            writeMetaTag(writer, "name", "generator", GENERATOR_CONTENT);
+            if (!isDisableTapestryMeta())
+                writeMetaTag(writer, "name", "generator", GENERATOR_CONTENT);
             
             if (isDisableCaching())
                 writeMetaTag(writer, "http-equiv", "content", "no-cache");
@@ -144,9 +148,12 @@ public abstract class Shell extends AbstractComponent
             writer.end(); // html
             writer.println();
 
-            long endTime = System.currentTimeMillis();
+            if (!isDisableTapestryMeta()) {
+                
+                long endTime = System.currentTimeMillis();
 
-            writer.comment("Render time: ~ " + (endTime - startTime) + " ms");                    
+                writer.comment("Render time: ~ " + (endTime - startTime) + " ms");     
+            }
         }
 
     }
@@ -196,7 +203,7 @@ public abstract class Shell extends AbstractComponent
         StringBuffer buffer = new StringBuffer();
         buffer.append(refresh);
         buffer.append("; URL=");
-        buffer.append(link.getAbsoluteURL());
+        buffer.append(StringUtils.replace(link.getAbsoluteURL(), "&amp;", "&"));
 
         writeMetaTag(writer, "http-equiv", "Refresh", buffer.toString());
     }
@@ -307,6 +314,8 @@ public abstract class Shell extends AbstractComponent
 
     public abstract boolean getRenderContentType();
 
+    public abstract boolean isDisableTapestryMeta();
+    
     /** @since 4.0 */
     public abstract ValueConverter getValueConverter();
 

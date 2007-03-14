@@ -136,6 +136,19 @@
                             the content type of the page.
                         </td>
                     </tr>
+                    
+                    <tr>
+                        <td>disableTapestryMeta</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            When set to true, disables rendering of hidden comment meta content normally
+                            written out which includes the Tapestry version being used as well as total rendering time 
+            	            that each response takes. This should be used by people not wanting to make their use or version
+                            of any particular framework a widely known item.
+                        </td>
+                    </tr>
 
                     <tr>
                         <td>refresh</td>
