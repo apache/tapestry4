@@ -22,6 +22,7 @@ import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.json.JSONLiteral;
 import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.valid.ValidationConstants;
+import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
 import org.apache.tapestry.valid.ValidationConstraint;
 
@@ -143,7 +144,7 @@ public class Identity extends BaseValidator {
                 field.getDisplayName(), new Integer(_matchType), referent.getDisplayName()
         };
         return messages.formatValidationMessage(_identityMessage,
-                "invalid-field-equality", parameters);
+                ValidationStrings.INVALID_FIELD_EQUALITY, parameters);
 
     }
 
