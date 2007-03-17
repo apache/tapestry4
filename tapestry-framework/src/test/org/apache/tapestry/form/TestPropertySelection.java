@@ -29,7 +29,9 @@ import org.testng.annotations.Test;
 @Test(sequential = true)
 public class TestPropertySelection extends BaseFormComponentTestCase
 {
-
+    private static final String SYSTEM_NEWLINE= (String)java.security.AccessController.doPrivileged(
+            new sun.security.action.GetPropertyAction("line.separator"));
+    
     public void test_Rewind()
     {
         ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
@@ -136,10 +138,10 @@ public class TestPropertySelection extends BaseFormComponentTestCase
 
         verify();
 
-        assertBuffer("<span class=\"prefix\"><select name=\"hannah\" id=\"hannah\" class=\"validation-delegate\">\n" + 
-                "<option value=\"0\" selected=\"selected\">One</option>\n" + 
-                "<option value=\"1\">Two</option>\n" + 
-                "<option value=\"2\" disabled=\"true\">Three</option>\n" + 
+        assertBuffer("<span class=\"prefix\"><select name=\"hannah\" id=\"hannah\" class=\"validation-delegate\">" + SYSTEM_NEWLINE +
+                "<option value=\"0\" selected=\"selected\">One</option>" + SYSTEM_NEWLINE +
+                "<option value=\"1\">Two</option>" + SYSTEM_NEWLINE +
+                "<option value=\"2\" disabled=\"true\">Three</option>" + SYSTEM_NEWLINE +
                 "</select></span>");
     }
 }
