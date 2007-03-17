@@ -32,7 +32,7 @@ public interface ValidationMessages
      *            a supplied override to the default message format taken from the
      *            ValidationStrings.properties message catalog.
      * @param messageKey
-     *            used to look up pa message format when messageOverride is blank (null or empty)
+     *            used to look up the message format when messageOverride is blank (null or empty)
      * @param arguments
      *            array of arguments formatted with the message format
      */
