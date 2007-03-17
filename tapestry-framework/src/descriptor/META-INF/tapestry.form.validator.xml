@@ -49,7 +49,9 @@
     <validator name="min" class="Min"/>
     <validator name="minDate" class="MinDate"/>
     <validator name="minLength" class="MinLength"/>
-    <validator name="pattern" class="Pattern"/>    
+    <validator name="pattern" class="Pattern"/>
+    <validator name="match" configurable="true" class="Identity"/>
+    <validator name="differ" configurable="true" class="Identity"/>    
   </contribution>
   
   <service-point id="ValidatorFactory">
