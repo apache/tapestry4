@@ -94,7 +94,8 @@ public class Identity extends BaseValidator {
         accumulateProperty(cons, field.getClientId(), 
                 new JSONLiteral("[" + func + ",\""
                         + referent.getClientId() + "\"]"));                
-        
+        // could define and use a new ValidationConstants.CONFIRM here to apply to
+        // the profile, but it doesn't support differ.
         accumulateProfileProperty(field, profile, 
                 ValidationConstants.CONSTRAINTS, buildIdentityMessage(context, field, referent));        
     }

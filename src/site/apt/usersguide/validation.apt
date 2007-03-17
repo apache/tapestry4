@@ -162,6 +162,10 @@ required,email[%email-format],minLength=20[Email addresses must be at least 20 c
 *-----------------+-------------------------------------------+
  {{{../apidocs/org/apache/tapestry/form/validator/MinLength.html}MinLength}} | <<< minLength=<minmum length, 15> >>>
 *-----------------+-------------------------------------------+
+ {{{../apidocs/org/apache/tapestry/form/validator/Identity.html}Match}} | <<< match=<component to compare against> (since v4.1.2)>>>
+*-----------------+-------------------------------------------+
+ {{{../apidocs/org/apache/tapestry/form/validator/Identity.html}Differ}} | <<< differ=<component to compare against> (since v4.1.2)>>>
+*-----------------+-------------------------------------------+
 
 ** translator: binding prefix
 
