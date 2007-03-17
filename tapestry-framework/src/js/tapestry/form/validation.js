@@ -250,5 +250,20 @@ tapestry.form.validation={
 	isPalleteSelected:function(elem){
 		if (elem.length > 0) { return true; }
 		return false;
-	}
+	},
+
+        /**
+         * Validates that the input value is equal with the value of the given input control.
+         */
+        isEqual:function(value, other) {
+                var otherValue = dojo.byId(other).value;
+                return value == otherValue;
+        },
+
+        /**
+         * Validates that the input value is not equal with the value of the given input control.
+         */
+        isNotEqual:function(value, other) {
+            return !tapestry.form.validation.isEqual(value, other);
+        },
 }
