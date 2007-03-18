@@ -30,6 +30,13 @@ import org.apache.tapestry.IRequestCycle;
 public interface ListenerInvokerFilter
 {
 
-    void invokeListener(IActionListener listener, IComponent source,
-            IRequestCycle cycle, ListenerInvoker delegate);
+    /**
+     * Invoked when a particular listener is being called.
+     *
+     * @param listener The listener reference being invoked.
+     * @param source The component the listener is being invoked on.
+     * @param cycle The associated request.
+     * @param delegate The delegate responsible for actually invoking the method.
+     */
+    void invokeListener(IActionListener listener, IComponent source, IRequestCycle cycle, ListenerInvoker delegate);
 }

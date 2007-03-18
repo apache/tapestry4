@@ -14,17 +14,17 @@
 
 package org.apache.tapestry.listener;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.event.BrowserEvent;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Logic for mapping a listener method name to an actual method invocation; this
@@ -201,5 +201,18 @@ public class ListenerMethodInvokerImpl implements ListenerMethodInvoker
         throws IllegalAccessException, InvocationTargetException
     {
         return listenerMethod.invoke(target, parameters);
+    }
+
+
+    public String getMethodName()
+    {
+        return _name;
+    }
+
+    public String toString()
+    {
+        return "ListenerMethodInvokerImpl[" +
+               "_name='" + _name + '\'' +
+               ']';
     }
 }

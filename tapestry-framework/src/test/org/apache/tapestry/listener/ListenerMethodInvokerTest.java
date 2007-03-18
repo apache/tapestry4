@@ -13,11 +13,10 @@
 // limitations under the License.
 package org.apache.tapestry.listener;
 
-import static org.easymock.EasyMock.expect;
-
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.event.BrowserEvent;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
 
 
@@ -70,5 +69,14 @@ public class ListenerMethodInvokerTest extends BaseComponentTestCase
         invoker.invokeListenerMethod(target, cycle);
         
         verify();
+    }
+
+    public void test_To_String()
+    {
+        ListenerMethodInvoker invoker =
+            new ListenerMethodInvokerImpl("bangbangClicked", ListenerMethodHolder.class.getDeclaredMethods());
+
+        
+        assertEquals(invoker.toString(), "ListenerMethodInvokerImpl[_name='bangbangClicked']");
     }
 }
