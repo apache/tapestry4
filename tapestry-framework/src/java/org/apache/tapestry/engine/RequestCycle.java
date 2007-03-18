@@ -14,11 +14,6 @@
 
 package org.apache.tapestry.engine;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Stack;
-
 import org.apache.commons.fileupload.RequestContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,17 +22,7 @@ import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.impl.ErrorLogImpl;
 import org.apache.hivemind.util.Defense;
 import org.apache.hivemind.util.ToStringBuilder;
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IEngine;
-import org.apache.tapestry.IForm;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRender;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RedirectException;
-import org.apache.tapestry.RenderRewoundException;
-import org.apache.tapestry.StaleLinkException;
-import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.*;
 import org.apache.tapestry.record.PageRecorderImpl;
 import org.apache.tapestry.record.PropertyPersistenceStrategySource;
 import org.apache.tapestry.services.AbsoluteURLBuilder;
@@ -45,6 +30,11 @@ import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.util.IdAllocator;
 import org.apache.tapestry.util.QueryParameterMap;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Stack;
 
 /**
  * Provides the logic for processing a single request cycle. Provides access to the
@@ -264,8 +254,11 @@ public class RequestCycle implements IRequestCycle
 
         result.setChangeObserver(recorder);
 
-        return result;
+        // fire off pageAttached now that properties have been restored
 
+        result.firePageAttached();
+
+        return result;
     }
 
     /**
@@ -379,8 +372,7 @@ public class RequestCycle implements IRequestCycle
 
         // Woops. Mismatch.
 
-        throw new StaleLinkException(component, Integer.toHexString(_targetActionId),
-                _targetComponent.getExtendedId());
+        throw new StaleLinkException(component, Integer.toHexString(_targetActionId), _targetComponent.getExtendedId());
     }
 
     public void removeAttribute(String name)
@@ -463,8 +455,7 @@ public class RequestCycle implements IRequestCycle
             // Shouldn't get this far, because the form should
             // throw the RenderRewoundException.
 
-            throw new StaleLinkException(Tapestry.format("RequestCycle.form-rewind-failure", form
-                    .getExtendedId()), form);
+            throw new StaleLinkException(Tapestry.format("RequestCycle.form-rewind-failure", form.getExtendedId()), form);
         }
         catch (RenderRewoundException ex)
         {

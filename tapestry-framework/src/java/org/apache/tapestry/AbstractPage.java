@@ -14,24 +14,17 @@
 
 package org.apache.tapestry;
 
-import java.util.EventListener;
-import java.util.Locale;
-
-import javax.swing.event.EventListenerList;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.engine.NullWriter;
-import org.apache.tapestry.event.ChangeObserver;
-import org.apache.tapestry.event.PageAttachListener;
-import org.apache.tapestry.event.PageBeginRenderListener;
-import org.apache.tapestry.event.PageDetachListener;
-import org.apache.tapestry.event.PageEndRenderListener;
-import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.event.PageValidateListener;
+import org.apache.tapestry.event.*;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.util.StringSplitter;
+
+import javax.swing.event.EventListenerList;
+import java.util.EventListener;
+import java.util.Locale;
 
 /**
  * Abstract base class implementing the {@link IPage}interface.
@@ -207,7 +200,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     /**
      * Called by the {@link IEngine engine}to attach the page to itself. Does <em>not</em> change
      * the locale, but since a page is selected from the
-     * {@link org.apache.tapestry.engine.IPageSource}pool based on its locale matching the engine's
+     * {@link org.apache.tapestry.engine.IPageSource} pool based on its locale matching the engine's
      * locale, they should match anyway.
      */
 
@@ -218,8 +211,6 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
         _engine = engine;
         _requestCycle = cycle;
-
-        firePageAttached();
     }
 
     /**

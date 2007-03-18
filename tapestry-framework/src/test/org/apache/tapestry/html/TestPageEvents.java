@@ -14,14 +14,13 @@
 
 package org.apache.tapestry.html;
 
-import static org.easymock.EasyMock.expect;
-
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.NullWriter;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.test.Creator;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
 
 /**
@@ -77,7 +76,11 @@ public class TestPageEvents extends BaseComponentTestCase
 
         page.attach(null, null);
 
-        assertEquals("pageAttached", l.getMethod());
+        assertEquals(l.getMethod(), null);
+
+        page.firePageAttached();
+
+        assertEquals(l.getMethod(), "pageAttached");
 
         l.reset();
 
