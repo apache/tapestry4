@@ -14,18 +14,16 @@
 
 package org.apache.tapestry.binding;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-
 import ognl.Node;
 import ognl.enhance.ExpressionAccessor;
-
 import org.apache.hivemind.Location;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.services.ExpressionCache;
 import org.apache.tapestry.services.ExpressionEvaluator;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
 import org.testng.annotations.Test;
 
 /**
@@ -62,12 +60,11 @@ public class TestExpressionBinding extends BindingTestCase
         
         expect(ev.readCompiled(component, compiled)).andReturn(expressionValue);
         
-        expect(component.getId()).andReturn("Foo/bar.baz");
-        
+        expect(component.getExtendedId()).andReturn("Foo/bar");
+
         replay();
         
-        ExpressionBinding b = new ExpressionBinding("param", l, vc, component,
-                "exp", ev, ec);
+        ExpressionBinding b = new ExpressionBinding("param", l, vc, component, "exp", ev, ec);
         
         assertEquals(true, b.isInvariant());
         
@@ -82,7 +79,7 @@ public class TestExpressionBinding extends BindingTestCase
         
         assertSame(component, b.getComponent());
 
-        assertEquals(b.toString(), "ExpressionBinding[Foo/bar.baz exp]");
+        assertEquals(b.toString(), "ExpressionBinding[Foo/bar exp]");
 
         verify();
     }
@@ -177,8 +174,8 @@ public class TestExpressionBinding extends BindingTestCase
         
         expect(ev.isConstant("exp")).andReturn(true);
 
-        expect(component.getId()).andReturn("Foo/bar.baz");
-        
+        expect(component.getExtendedId()).andReturn("Foo/bar.baz");
+
         replay();
 
         ExpressionBinding b = new ExpressionBinding("parameter foo", l, vc, component,

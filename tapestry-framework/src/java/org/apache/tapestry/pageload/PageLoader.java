@@ -14,28 +14,11 @@
 
 package org.apache.tapestry.pageload;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-
 import org.apache.commons.logging.Log;
-import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.ClassResolver;
-import org.apache.hivemind.HiveMind;
-import org.apache.hivemind.Location;
-import org.apache.hivemind.Resource;
+import org.apache.hivemind.*;
 import org.apache.hivemind.service.ThreadLocale;
 import org.apache.hivemind.util.ContextResource;
-import org.apache.tapestry.BaseComponent;
-import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IBinding;
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.INamespace;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.ITemplateComponent;
-import org.apache.tapestry.TapestryConstants;
+import org.apache.tapestry.*;
 import org.apache.tapestry.asset.AssetSource;
 import org.apache.tapestry.binding.BindingSource;
 import org.apache.tapestry.engine.IPageLoader;
@@ -44,14 +27,13 @@ import org.apache.tapestry.services.ComponentConstructor;
 import org.apache.tapestry.services.ComponentConstructorFactory;
 import org.apache.tapestry.services.ComponentPropertySource;
 import org.apache.tapestry.services.ComponentTemplateLoader;
-import org.apache.tapestry.spec.BindingType;
-import org.apache.tapestry.spec.ContainedComponent;
-import org.apache.tapestry.spec.IAssetSpecification;
-import org.apache.tapestry.spec.IBindingSpecification;
-import org.apache.tapestry.spec.IComponentSpecification;
-import org.apache.tapestry.spec.IContainedComponent;
-import org.apache.tapestry.spec.IParameterSpecification;
+import org.apache.tapestry.spec.*;
 import org.apache.tapestry.web.WebContextResource;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Implementation of tapestry.page.PageLoader. Runs the process of building the
@@ -183,15 +165,15 @@ public class PageLoader implements IPageLoader
      * checking and eror checking in the final version.
      * 
      * @param container
-     *            The containing component. For a dynamic binding ({@link ExpressionBinding})
+     *            The containing component. For a dynamic binding ({@link org.apache.tapestry.binding.ExpressionBinding})
      *            the property name is evaluated with the container as the root.
      * @param component
      *            The contained component being bound.
-     * @param spec
-     *            The specification of the contained component.
      * @param contained
      *            The contained component specification (from the container's
      *            {@link IComponentSpecification}).
+     * @param defaultBindingPrefix
+     *            The default binding prefix to be used with the component.
      */
 
     void bind(IComponent container, IComponent component,
@@ -355,8 +337,8 @@ public class PageLoader implements IPageLoader
      *            The component to be set up.
      * @param containerSpec
      *            The specification for the container.
-     * @param the
-     *            namespace of the container
+     * @param namespace
+     *            The namespace of the container
      */
 
     private void constructComponent(IRequestCycle cycle, IPage page,
@@ -484,7 +466,7 @@ public class PageLoader implements IPageLoader
      * Instantiates a component from its specification. We instantiate the
      * component object, then set its specification, page, container and id.
      * 
-     * @see AbstractComponent
+     * @see org.apache.tapestry.AbstractComponent
      */
 
     private IComponent instantiateComponent(IPage page, IComponent container,
@@ -540,8 +522,8 @@ public class PageLoader implements IPageLoader
      * @param spec
      *            the page's specification We instantiate the page object, then
      *            set its specification, names and locale.
-     * @see IEngine
-     * @see ChangeObserver
+     * @see org.apache.tapestry.IEngine
+     * @see org.apache.tapestry.event.ChangeObserver
      */
 
     private IPage instantiatePage(String name, INamespace namespace,
@@ -609,12 +591,6 @@ public class PageLoader implements IPageLoader
             // Walk through the complete component tree to ensure that required
             // parameters are bound
             _verifyRequiredParametersWalker.walkComponentTree(page);
-
-            // Now that the page has been properly constructed, the page
-            // or any components on the page will have been registered as
-            // page attach listeners.
-
-            page.firePageAttached();
         }
         finally
         {

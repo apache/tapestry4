@@ -208,7 +208,6 @@ public class ExpressionBinding extends AbstractBinding
         StringBuffer buffer = new StringBuffer();
 
         buffer.append("ExpressionBinding[");
-        buffer.append(_root.getId());
         buffer.append(_root.getExtendedId());
 
         if (_expression != null)
