@@ -14,17 +14,16 @@
 
 package org.apache.tapestry.multipart;
 
-import java.io.File;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.hivemind.ApplicationRuntimeException;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Implementation of {@link org.apache.tapestry.multipart.MultipartDecoder} that
@@ -69,9 +68,10 @@ public class MultipartDecoderImpl extends AbstractMultipartDecoder implements Se
         ServletFileUpload upload = new ServletFileUpload(factory);
         
         // set maximum file upload size
+
         upload.setSizeMax(_maxSize);
         
-        if (_encoding != null) 
+        if (_encoding != null)
             upload.setHeaderEncoding(_encoding);
 
         return upload;
