@@ -22,13 +22,13 @@ import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.json.JSONLiteral;
 import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.valid.ValidationConstants;
+import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
-import org.apache.tapestry.valid.ValidationConstraint;
 
 /**
  * Validates that the input value is the same as the value of another field.
- * This validator can also work in 'differ' mode. 
+ * This validator can also work in 'differ' mode.
  * <p/>
  * Apply this validator to the second field in question and define the name
  * of the component against which to compare the current value.
@@ -36,6 +36,7 @@ import org.apache.tapestry.valid.ValidationConstraint;
  * @since 4.1.2
  */
 public class Identity extends BaseValidator {
+
     private String _fieldName;
     private int _matchType;
     private String _identityMessage;
@@ -43,17 +44,18 @@ public class Identity extends BaseValidator {
     private static final int DIFFER = 0;
     private static final int MATCH = 1;
 
-
-    public Identity() {
+    public Identity()
+    {
         super();
     }
 
-
-    public Identity(String initializer) {
+    public Identity(String initializer)
+    {
         super(initializer);
     }
 
-    public String toString(IFormComponent field, Object value) {
+    public String toString(IFormComponent field, Object value)
+    {
         if (value == null)
             return null;
 
@@ -61,7 +63,8 @@ public class Identity extends BaseValidator {
     }
 
     public void validate(IFormComponent field, ValidationMessages messages, Object object)
-            throws ValidatorException {
+            throws ValidatorException
+    {
         IFormComponent referent = (IFormComponent) field.getContainer().getComponent(_fieldName);
         Object referentValue = referent.getBinding("value").getObject();
 
@@ -72,57 +75,67 @@ public class Identity extends BaseValidator {
             throw new ValidatorException(buildIdentityMessage(messages, field, referent),
                     ValidationConstraint.CONSISTENCY);
     }
-    
+
     public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
-            FormComponentContributorContext context, IFormComponent field)
+                                   FormComponentContributorContext context, IFormComponent field)
     {
-        if(field.isDisabled())
+        if (field.isDisabled())
             return;
-        
+
         IFormComponent referent = (IFormComponent) field.getContainer().getComponent(_fieldName);
-        
+
         JSONObject profile = context.getProfile();
-        
+
         if (!profile.has(ValidationConstants.CONSTRAINTS)) {
             profile.put(ValidationConstants.CONSTRAINTS, new JSONObject());
         }
         JSONObject cons = profile.getJSONObject(ValidationConstants.CONSTRAINTS);
-        
-        String func = (_matchType == MATCH) ? 
-            "tapestry.form.validation.isEqual" :
-            "tapestry.form.validation.isNotEqual";
-        
-        accumulateProperty(cons, field.getClientId(), 
+
+        String func = (_matchType == MATCH) ?
+                "tapestry.form.validation.isEqual" :
+                "tapestry.form.validation.isNotEqual";
+
+        accumulateProperty(cons, field.getClientId(),
                 new JSONLiteral("[" + func + ",\""
-                        + referent.getClientId() + "\"]"));                
+                                + referent.getClientId() + "\"]"));
         // could define and use a new ValidationConstants.CONFIRM here to apply to
         // the profile, but it doesn't support differ.
-        accumulateProfileProperty(field, profile, 
-                ValidationConstants.CONSTRAINTS, buildIdentityMessage(context, field, referent));        
+        accumulateProfileProperty(field, profile,
+                ValidationConstants.CONSTRAINTS, buildIdentityMessage(context, field, referent));
     }
 
-    public String getMatch() {
+    public String getMatch()
+    {
         return _fieldName;
     }
 
-    public void setMatch(String field) {
+    public void setMatch(String field)
+    {
         _fieldName = field;
         _matchType = MATCH;
 
     }
 
-    public String getDiffer() {
+    public String getDiffer()
+    {
         return _fieldName;
     }
 
-    public void setDiffer(String field) {
+    public void setDiffer(String field)
+    {
         _fieldName = field;
         _matchType = DIFFER;
     }
 
 
-    /** @since 3.0 */
-    public String getIdentityMessage() {
+    /**
+     * Get the validation message.
+     *
+     * @return The message configured for this validator, will be null unless configured
+     *          via {@link #setIdentityMessage(String)}.
+     */
+    public String getIdentityMessage()
+    {
         return _identityMessage;
     }
 
@@ -130,29 +143,32 @@ public class Identity extends BaseValidator {
      * Overrides the <code>field-too-short</code> bundle key. Parameter {0} is the minimum length.
      * Parameter {1} is the display name of the field.
      *
-     * @since 3.0
+     * @param message The message to set for this validator.
      */
 
-    public void setIdentityMessage(String string) {
-        _identityMessage = string;
+    public void setIdentityMessage(String message)
+    {
+        _identityMessage = message;
     }
 
-    /** @since 3.0 */
-
-    protected String buildIdentityMessage(ValidationMessages messages, IFormComponent field, IFormComponent referent) {
+    
+    protected String buildIdentityMessage(ValidationMessages messages, IFormComponent field, IFormComponent referent)
+    {
         Object[] parameters = new Object[]{
                 field.getDisplayName(), new Integer(_matchType), referent.getDisplayName()
         };
+        
         return messages.formatValidationMessage(_identityMessage,
                 ValidationStrings.INVALID_FIELD_EQUALITY, parameters);
-
     }
 
-    private boolean notEqual(Object o1, Object o2) {
+    private boolean notEqual(Object o1, Object o2)
+    {
         if (o1 == null && o2 == null)
             return false;
         if (o1 == null || o2 == null)
             return true;
+        
         return !o1.equals(o2);
     }
 

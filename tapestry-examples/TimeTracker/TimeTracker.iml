@@ -351,6 +351,10 @@
     <setting name="RUN_JASPER_VALIDATION" value="true" />
   </component>
   <component name="WebModuleProperties">
+    <containerElement type="module" name="tapestry">
+      <attribute name="method" value="0" />
+      <attribute name="URI" value="/WEB-INF/classes" />
+    </containerElement>
     <containerElement type="module" name="tapestry-annotations">
       <attribute name="method" value="0" />
       <attribute name="URI" value="/WEB-INF/classes" />
@@ -436,6 +440,10 @@
       <attribute name="method" value="0" />
       <attribute name="URI" value="/WEB-INF/lib/hsqldb-1.8.0.1.jar" />
     </containerElement>
+    <containerElement type="library" name="Maven Dependency: javax.portlet:portlet-api:jar:1.0:provided" level="module">
+      <attribute name="method" value="0" />
+      <attribute name="URI" value="/WEB-INF/lib/portlet-api-1.0.jar" />
+    </containerElement>
     <containerElement type="library" name="Maven Dependency: javax.servlet:servlet-api:jar:2.4:provided" level="module">
       <attribute name="method" value="0" />
       <attribute name="URI" value="&lt;N/A&gt;" />
@@ -444,9 +452,17 @@
       <attribute name="method" value="0" />
       <attribute name="URI" value="/WEB-INF/lib/javassist-3.4.ga.jar" />
     </containerElement>
+    <containerElement type="library" name="Maven Dependency: jboss:jboss-j2ee:jar:4.0.2:compile" level="module">
+      <attribute name="method" value="0" />
+      <attribute name="URI" value="/WEB-INF/lib/jboss-j2ee-4.0.2.jar" />
+    </containerElement>
     <containerElement type="library" name="Maven Dependency: jboss:jboss-j2ee:jar:4.0.2:provided" level="module">
       <attribute name="method" value="0" />
       <attribute name="URI" value="/WEB-INF/lib/jboss-j2ee-4.0.2.jar" />
+    </containerElement>
+    <containerElement type="library" name="Maven Dependency: jcharts:jcharts:jar:0.6.0:compile" level="module">
+      <attribute name="method" value="0" />
+      <attribute name="URI" value="/WEB-INF/lib/jcharts-0.6.0.jar" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: jdom:jdom:jar:1.0:test" level="module">
       <attribute name="method" value="0" />
@@ -519,6 +535,10 @@
     <containerElement type="library" name="Maven Dependency: oro:oro:jar:2.0.8:compile" level="module">
       <attribute name="method" value="0" />
       <attribute name="URI" value="/WEB-INF/lib/oro-2.0.8.jar" />
+    </containerElement>
+    <containerElement type="library" name="Maven Dependency: portlet-api:portlet-api:jar:1.0:compile" level="module">
+      <attribute name="method" value="0" />
+      <attribute name="URI" value="/WEB-INF/lib/portlet-api-1.0.jar" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: xerces:xercesImpl:jar:2.0.2:compile" level="module">
       <attribute name="method" value="0" />

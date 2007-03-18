@@ -6,7 +6,7 @@
     <artifactId>tapestry-contrib</artifactId>
     <packaging>jar</packaging>
     <version>4.1.2-SNAPSHOT</version>
-    <!-- This should change to tapestry-project -->
+    
     <parent>
         <groupId>org.apache.tapestry</groupId>
         <artifactId>tapestry-project</artifactId>

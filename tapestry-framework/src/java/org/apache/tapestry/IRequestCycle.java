@@ -14,12 +14,12 @@
 
 package org.apache.tapestry;
 
-import java.util.Iterator;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.ResponseBuilder;
+
+import java.util.Iterator;
 
 /**
  * Controller object that manages a single request cycle. A request cycle is one 'hit' on the web
@@ -71,12 +71,17 @@ public interface IRequestCycle
      * Passes the String through
      * {@link javax.servlet.http.HttpServletResponse#encodeURL(java.lang.String)}, which ensures
      * that the session id is encoded in the URL (if necessary).
+     *
+     * @param URL The url to encode.
+     * @return The encoded form of the url.
      */
 
     String encodeURL(String URL);
 
     /**
      * Returns the engine which is processing this request cycle.
+     *
+     * @return The engine.
      */
 
     IEngine getEngine();
@@ -85,12 +90,17 @@ public interface IRequestCycle
      * Retrieves a previously stored attribute, returning null if not found. Attributes allow
      * components to locate each other; primarily they allow a wrapped component to locate a
      * component which wraps it. Attributes are cleared at the end of the render (or rewind).
+     *
+     * @param name The name of the attribute to retrieve.
+     * @return The matching attribute with the specified name, or null if none found.
      */
 
     Object getAttribute(String name);
 
     /**
      * Identifies the active page, the page which will ultimately render the response.
+     *
+     * @return The active page.
      */
 
     IPage getPage();
@@ -99,6 +109,9 @@ public interface IRequestCycle
      * Returns the page with the given name. If the page has been previously loaded in the current
      * request cycle, that page is returned. Otherwise, the engine's page loader is used to load the
      * page.
+     *
+     * @param name The page to get a reference to.
+     * @return The page instance.
      * 
      * @throws PageNotFoundException
      *             if the page does not exist.
@@ -111,6 +124,8 @@ public interface IRequestCycle
     /**
      * Returns true if the context is being used to rewind a prior state of the page. This is only
      * true when there is a target action id.
+     *
+     * @return True if rewinding a form, false otherwise.
      */
 
     boolean isRewinding();
@@ -121,6 +136,9 @@ public interface IRequestCycle
      * <p>
      * If theres a match on action id, then the component is compared against the target component.
      * If there's a mismatch then a {@link StaleLinkException}is thrown.
+     *
+     * @param component The component to check.
+     * @return True if the specified component has been rewound.
      */
 
     boolean isRewound(IComponent component);
@@ -197,6 +215,8 @@ public interface IRequestCycle
     
     /**
      * Removes a previously stored attribute, if one with the given name exists.
+     *
+     * @param name The key name of the attribute to remove.
      */
 
     void removeAttribute(String name);
@@ -205,6 +225,8 @@ public interface IRequestCycle
      * Renders the given page. Applications should always use this method to render the page, rather
      * than directly invoking {@link IPage#render(IMarkupWriter, IRequestCycle)}since the request
      * cycle must perform some setup before rendering.
+     *
+     * @param builder Renders the currently active page using the specified builder.
      */
 
     void renderPage(ResponseBuilder builder);
@@ -219,6 +241,9 @@ public interface IRequestCycle
      * request cycle, and components it wraps can locate it by that name.
      * <p>
      * Attributes are cleared at the end of each render or rewind phase.
+     *
+     * @param name Key name of the attribute to store.
+     * @param value Value of the attribute.
      */
 
     void setAttribute(String name, Object value);
@@ -235,7 +260,8 @@ public interface IRequestCycle
 
     /**
      * Returns the service which initiated this request cycle.
-     * 
+     *
+     * @return The service associated with current request.
      * @since 1.0.1
      */
 
@@ -244,8 +270,8 @@ public interface IRequestCycle
     /**
      * Used by {@link IForm forms}to perform a <em>partial</em> rewind so as to respond to the
      * form submission (using the direct service).
-     * <p>
-     * Note: the targetActionId parameter was removed in release 4.0.
+     *
+     * @param form The form to rewind.
      * 
      * @since 1.0.2
      */
@@ -267,7 +293,9 @@ public interface IRequestCycle
      * Invoked by a {@link IEngineService service}&nbsp;to store an array of application-specific
      * parameters. These can later be retrieved (typically, by an application-specific listener
      * method) by invoking {@link #getListenerParameters()}.
-     * 
+     *
+     * @param parameters The parameters to set which will be available as method parameters
+     *                  to any listeners invoked in this request.
      * @see org.apache.tapestry.engine.DirectService
      * @since 4.0
      */
@@ -275,7 +303,8 @@ public interface IRequestCycle
 
     /**
      * Returns parameters previously stored by {@link #setListenerParameters(Object[])}.
-     * 
+     *
+     * @return The current set of bound listener parameters for the current service.
      * @since 4.0
      */
 
@@ -284,7 +313,8 @@ public interface IRequestCycle
     /**
      * A convienience for invoking {@link #activate(IPage)}. Invokes {@link #getPage(String)}to
      * get an instance of the named page.
-     * 
+     *
+     * @param name The name of the page to activate.
      * @since 3.0
      */
 
@@ -305,7 +335,9 @@ public interface IRequestCycle
      * Validation loops can occur, where page A redirects to page B and then page B redirects back
      * to page A (possibly with intermediate steps). This is detected and results in an
      * {@link ApplicationRuntimeException}.
-     * 
+     *
+     * @param page The page to activate.
+     *
      * @since 3.0
      */
     void activate(IPage page);
@@ -313,7 +345,9 @@ public interface IRequestCycle
     /**
      * Returns a query parameter value, or null if not provided in the request. If multiple values
      * are provided, returns the first value.
-     * 
+     *
+     * @param name The name of the request parameter to retrieve.
+     * @return The value matching the specified parameter name, or null if none found.
      * @since 4.0
      */
     String getParameter(String name);
@@ -321,7 +355,9 @@ public interface IRequestCycle
     /**
      * Returns all query parameter values for the given name. Returns null if no values were
      * provided.
-     * 
+     *
+     * @param name The name of the parameters to retrieve.
+     * @return The matching multi value array for the specified name, or null if none found.
      * @since 4.0
      */
     String[] getParameters(String name);
@@ -330,7 +366,9 @@ public interface IRequestCycle
      * Converts a partial URL into an absolute URL. Prefixes the provided URL with servlet context
      * path (if any), then expands it to a full URL by prepending with the scheme, server and port
      * (determined from the current {@link org.apache.tapestry.web.WebRequest request}.
-     * 
+     *
+     * @param partialURL The url to modify into an absolute url.
+     * @return The converted absolute url representation of the specified partialURL.
      * @since 4.0
      */
 
@@ -340,7 +378,8 @@ public interface IRequestCycle
      * Forgets any stored changes to the specified page. If the page has already been loaded (and
      * rolled back) then the loaded page instance is not affected; if the page is only loaded
      * subsequently, the page instance will not see any persisted property changes.
-     * 
+     *
+     * @param name The name of the page instance to throw all persistent properties away for.
      * @since 4.0
      */
 
@@ -349,7 +388,8 @@ public interface IRequestCycle
     /**
      * Returns the central {@link org.apache.tapestry.services.Infrastructure}&nbsp;object used to
      * manage the processing of the request.
-     * 
+     *
+     * @return The {@link Infrastructure} object associated with this request.
      * @since 4.0
      */
 
@@ -381,7 +421,8 @@ public interface IRequestCycle
     /**
      * Sends a redirect to the client web browser. This is currently a convinience for constructing
      * and throwing a {@link RedirectException}, but may change in a later release.
-     * 
+     *
+     * @param URL The url to send a client redirect for.
      * @since 4.0
      * @throws RedirectException
      */
