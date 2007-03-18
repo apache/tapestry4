@@ -54,6 +54,7 @@ public abstract class Dialog extends AbstractWidget
     public void renderWidget(IMarkupWriter writer, IRequestCycle cycle)
     {
         if (!cycle.isRewinding()) {
+            
             writer.begin(getTemplateTagName()); // use element specified
             renderIdAttribute(writer, cycle); // render id="" client id
             renderInformalParameters(writer, cycle);

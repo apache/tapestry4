@@ -24,19 +24,16 @@ import org.apache.tapestry.form.IPropertySelectionModel;
  * This class is used as a property selection model to select a primary key. We
  * assume that the primary keys are integers, which makes it easy to translate
  * between the various representations.
- * 
+ *
  * @author Howard Lewis Ship
  */
 
-public class EntitySelectionModel implements IPropertySelectionModel
-{
+public class EntitySelectionModel implements IPropertySelectionModel {
 
     /**
-     * 
      * @author hls
      */
-    private static class Entry
-    {
+    private static class Entry {
 
         Integer primaryKey;
 
@@ -82,6 +79,11 @@ public class EntitySelectionModel implements IPropertySelectionModel
         return get(index).label;
     }
 
+    public boolean isDisabled(int index)
+    {
+        return false;
+    }
+
     public String getValue(int index)
     {
         Integer primaryKey;
@@ -97,14 +99,12 @@ public class EntitySelectionModel implements IPropertySelectionModel
     {
         if (value.equals("")) return null;
 
-        try
-        {
+        try {
             return new Integer(value);
         }
-        catch (NumberFormatException e)
-        {
+        catch (NumberFormatException e) {
             throw new ApplicationRuntimeException("Could not convert '" + value
-                    + "' to an Integer.", e);
+                                                  + "' to an Integer.", e);
         }
     }
 }
