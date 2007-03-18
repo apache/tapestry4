@@ -512,6 +512,18 @@
       <attribute name="method" value="0" />
       <attribute name="URI" value="/WEB-INF/lib/easymockclassextension-2.2.jar" />
     </containerElement>
+    <containerElement type="library" name="Maven Dependency: org.mortbay.jetty:jetty-util:jar:6.1.1:compile" level="module">
+      <attribute name="method" value="0" />
+      <attribute name="URI" value="/WEB-INF/lib/jetty-util-6.1.1.jar" />
+    </containerElement>
+    <containerElement type="library" name="Maven Dependency: org.mortbay.jetty:jetty:jar:6.1.1:compile" level="module">
+      <attribute name="method" value="0" />
+      <attribute name="URI" value="/WEB-INF/lib/jetty-6.1.1.jar" />
+    </containerElement>
+    <containerElement type="library" name="Maven Dependency: org.mortbay.jetty:start:jar:6.1.1:compile" level="module">
+      <attribute name="method" value="0" />
+      <attribute name="URI" value="/WEB-INF/lib/start-6.1.1.jar" />
+    </containerElement>
     <containerElement type="library" name="Maven Dependency: org.openqa.selenium.client-drivers:selenium-java-client-driver:jar:0.9.1-SNAPSHOT:test" level="module">
       <attribute name="method" value="0" />
       <attribute name="URI" value="/WEB-INF/lib/selenium-java-client-driver-0.9.1-SNAPSHOT.jar" />

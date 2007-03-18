@@ -14,24 +14,18 @@
 
 package org.apache.tapestry.services.impl;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import ognl.ClassResolver;
-import ognl.Node;
-import ognl.Ognl;
-import ognl.OgnlContext;
-import ognl.OgnlRuntime;
-import ognl.TypeConverter;
+import ognl.*;
 import ognl.enhance.ExpressionAccessor;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.service.ClassFactory;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.services.ExpressionCache;
 import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.spec.IApplicationSpecification;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Howard M. Lewis Ship
@@ -103,8 +97,6 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator
             return read(target, node.getAccessor());
         
         return readCompiled(target, node);
-        
-        //return read(target, _expressionCache.getCompiledExpression(expression));
     }
 
     public Object readCompiled(Object target, Object expression)

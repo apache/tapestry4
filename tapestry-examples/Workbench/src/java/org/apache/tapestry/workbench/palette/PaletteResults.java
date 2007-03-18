@@ -14,9 +14,9 @@
 
 package org.apache.tapestry.workbench.palette;
 
-import java.util.List;
-
 import org.apache.tapestry.html.BasePage;
+
+import java.util.List;
 
 /**
  * @author Howard Lewis Ship
