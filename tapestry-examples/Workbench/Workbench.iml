@@ -3,8 +3,11 @@
   <component name="AppServerSpecificValidatorsManager" />
   <component name="ModuleRootManager" />
   <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <output url="file://$MODULE_DIR$/src/context/WEB-INF/classes" />
     <exclude-output />
+    <exploded url="file://$MODULE_DIR$/target/exploded" />
     <exclude-exploded />
+    <output-test url="file://$MODULE_DIR$/../../target/classes/test/Workbench" />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/test" isTestSource="true" />
@@ -13,8 +16,8 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="tapestry" />
-    <orderEntry type="module" module-name="tapestry-annotations" />
-    <orderEntry type="module" module-name="tapestry-contrib" />
+    <orderEntry type="module" module-name="tapestry-annotations" exported="" />
+    <orderEntry type="module" module-name="tapestry-contrib" exported="" />
     <orderEntry type="module" module-name="tapestry-framework" />
     <orderEntry type="module-library">
       <library>
@@ -250,31 +253,31 @@
     <orderEntryProperties />
   </component>
   <component name="WebModuleBuildComponent">
-    <setting name="EXPLODED_URL" value="file://" />
+    <setting name="EXPLODED_URL" value="file://$MODULE_DIR$/target/exploded" />
     <setting name="EXPLODED_ENABLED" value="false" />
     <setting name="JAR_URL" value="file://" />
     <setting name="JAR_ENABLED" value="false" />
     <setting name="SYNC_EXPLODED_DIR" value="true" />
     <setting name="BUILD_MODULE_ON_FRAME_DEACTIVATION" value="false" />
     <setting name="BUILD_EXTERNAL_DEPENDENCIES" value="false" />
-    <setting name="RUN_JASPER_VALIDATION" value="true" />
+    <setting name="RUN_JASPER_VALIDATION" value="false" />
   </component>
   <component name="WebModuleProperties">
     <containerElement type="module" name="tapestry">
       <attribute name="method" value="0" />
-      <attribute name="URI" value="/WEB-INF/classes" />
+      <attribute name="URI" value="&lt;N/A&gt;" />
     </containerElement>
     <containerElement type="module" name="tapestry-annotations">
-      <attribute name="method" value="1" />
-      <attribute name="URI" value="/WEB-INF/classes" />
+      <attribute name="method" value="0" />
+      <attribute name="URI" value="&lt;N/A&gt;" />
     </containerElement>
     <containerElement type="module" name="tapestry-contrib">
-      <attribute name="method" value="1" />
-      <attribute name="URI" value="/WEB-INF/classes" />
+      <attribute name="method" value="0" />
+      <attribute name="URI" value="&lt;N/A&gt;" />
     </containerElement>
     <containerElement type="module" name="tapestry-framework">
-      <attribute name="method" value="1" />
-      <attribute name="URI" value="/WEB-INF/classes" />
+      <attribute name="method" value="0" />
+      <attribute name="URI" value="&lt;N/A&gt;" />
     </containerElement>
     <containerElement type="library" level="module">
       <attribute name="method" value="0" />
@@ -282,16 +285,16 @@
       <url>jar://$MODULE_DIR$/../../../idea/lib/j2ee.jar!/</url>
     </containerElement>
     <containerElement type="library" name="Maven Dependency: ant:ant:jar:1.6.5:test" level="module">
-      <attribute name="method" value="1" />
-      <attribute name="URI" value="/WEB-INF/lib/ant-1.6.5.jar" />
+      <attribute name="method" value="0" />
+      <attribute name="URI" value="&lt;N/A&gt;" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: avalon-framework:avalon-framework:jar:4.1.3:provided" level="module">
-      <attribute name="method" value="1" />
-      <attribute name="URI" value="/WEB-INF/lib/avalon-framework-4.1.3.jar" />
+      <attribute name="method" value="0" />
+      <attribute name="URI" value="&lt;N/A&gt;" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: backport-util-concurrent:backport-util-concurrent:jar:2.2:compile" level="module">
       <attribute name="method" value="0" />
-      <attribute name="URI" value="/WEB-INF/lib/backport-util-concurrent-2.2.jar" />
+      <attribute name="URI" value="&lt;N/A&gt;" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: cglib:cglib-nodep:jar:2.1_3:compile" level="module">
       <attribute name="method" value="0" />
@@ -331,27 +334,27 @@
     </containerElement>
     <containerElement type="library" name="Maven Dependency: commons-logging:commons-logging:jar:1.1:provided" level="module">
       <attribute name="method" value="0" />
-      <attribute name="URI" value="/WEB-INF/lib/commons-logging-1.1.jar" />
+      <attribute name="URI" value="&lt;N/A&gt;" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: commons-pool:commons-pool:jar:1.3:compile" level="module">
       <attribute name="method" value="0" />
-      <attribute name="URI" value="/WEB-INF/lib/commons-pool-1.3.jar" />
+      <attribute name="URI" value="&lt;N/A&gt;" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: hivemind:hivemind-lib:jar:1.1.1:compile" level="module">
       <attribute name="method" value="0" />
-      <attribute name="URI" value="/WEB-INF/lib/hivemind-lib-1.1.1.jar" />
+      <attribute name="URI" value="&lt;N/A&gt;" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: hivemind:hivemind:jar:1.1.1:compile" level="module">
       <attribute name="method" value="0" />
-      <attribute name="URI" value="/WEB-INF/lib/hivemind-1.1.1.jar" />
+      <attribute name="URI" value="&lt;N/A&gt;" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: hsqldb:hsqldb:jar:1.8.0.1:compile" level="module">
       <attribute name="method" value="0" />
-      <attribute name="URI" value="/WEB-INF/lib/hsqldb-1.8.0.1.jar" />
+      <attribute name="URI" value="&lt;N/A&gt;" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: javax.portlet:portlet-api:jar:1.0:provided" level="module">
       <attribute name="method" value="0" />
-      <attribute name="URI" value="/WEB-INF/lib/portlet-api-1.0.jar" />
+      <attribute name="URI" value="&lt;N/A&gt;" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: javax.servlet:servlet-api:jar:2.4:provided" level="module">
       <attribute name="method" value="0" />
@@ -359,7 +362,7 @@
     </containerElement>
     <containerElement type="library" name="Maven Dependency: jboss:javassist:jar:3.4.ga:runtime" level="module">
       <attribute name="method" value="0" />
-      <attribute name="URI" value="/WEB-INF/lib/javassist-3.4.ga.jar" />
+      <attribute name="URI" value="&lt;N/A&gt;" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: jboss:jboss-j2ee:jar:4.0.2:compile" level="module">
       <attribute name="method" value="0" />
@@ -382,40 +385,40 @@
       <attribute name="URI" value="/WEB-INF/lib/jcharts-0.6.0.jar" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: jdom:jdom:jar:1.0:test" level="module">
-      <attribute name="method" value="1" />
-      <attribute name="URI" value="/WEB-INF/lib/jdom-1.0.jar" />
+      <attribute name="method" value="0" />
+      <attribute name="URI" value="&lt;N/A&gt;" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: jetty:org.mortbay.jetty:jar:5.1.10:test" level="module">
-      <attribute name="method" value="1" />
-      <attribute name="URI" value="/WEB-INF/lib/org.mortbay.jetty-5.1.10.jar" />
+      <attribute name="method" value="0" />
+      <attribute name="URI" value="&lt;N/A&gt;" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: junit:junit:jar:3.8.1:provided" level="module">
-      <attribute name="method" value="1" />
-      <attribute name="URI" value="/WEB-INF/lib/junit-3.8.1.jar" />
+      <attribute name="method" value="0" />
+      <attribute name="URI" value="&lt;N/A&gt;" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: junit:junit:jar:3.8.1:test" level="module">
-      <attribute name="method" value="1" />
-      <attribute name="URI" value="/WEB-INF/lib/junit-3.8.1.jar" />
+      <attribute name="method" value="0" />
+      <attribute name="URI" value="&lt;N/A&gt;" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: log4j:log4j:jar:1.2.8:test" level="module">
-      <attribute name="method" value="1" />
-      <attribute name="URI" value="/WEB-INF/lib/log4j-1.2.8.jar" />
+      <attribute name="method" value="0" />
+      <attribute name="URI" value="&lt;N/A&gt;" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: log4j:log4j:jar:1.2.9:compile" level="module">
       <attribute name="method" value="0" />
       <attribute name="URI" value="/WEB-INF/lib/log4j-1.2.9.jar" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: log4j:log4j:jar:1.2.9:test" level="module">
-      <attribute name="method" value="1" />
-      <attribute name="URI" value="/WEB-INF/lib/log4j-1.2.9.jar" />
+      <attribute name="method" value="0" />
+      <attribute name="URI" value="&lt;N/A&gt;" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: logkit:logkit:jar:1.0.1:provided" level="module">
-      <attribute name="method" value="1" />
-      <attribute name="URI" value="/WEB-INF/lib/logkit-1.0.1.jar" />
+      <attribute name="method" value="0" />
+      <attribute name="URI" value="&lt;N/A&gt;" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: ognl:ognl:jar:2.7-SNAPSHOT:compile" level="module">
       <attribute name="method" value="0" />
-      <attribute name="URI" value="/WEB-INF/lib/ognl-2.7-SNAPSHOT.jar" />
+      <attribute name="URI" value="&lt;N/A&gt;" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: org.apache.tapestry:tapestry-test:jar:4.1.1-SNAPSHOT:test" level="module">
       <attribute name="method" value="0" />
@@ -430,40 +433,40 @@
       <attribute name="URI" value="/WEB-INF/lib/easymockclassextension-2.2.jar" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: org.openqa.selenium.client-drivers:selenium-java-client-driver:jar:0.9.1-SNAPSHOT:test" level="module">
-      <attribute name="method" value="1" />
-      <attribute name="URI" value="/WEB-INF/lib/selenium-java-client-driver-0.9.1-SNAPSHOT.jar" />
+      <attribute name="method" value="0" />
+      <attribute name="URI" value="&lt;N/A&gt;" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: org.openqa.selenium.core:selenium-core:jar:0.8.2-SNAPSHOT:test" level="module">
-      <attribute name="method" value="1" />
-      <attribute name="URI" value="/WEB-INF/lib/selenium-core-0.8.2-SNAPSHOT.jar" />
+      <attribute name="method" value="0" />
+      <attribute name="URI" value="&lt;N/A&gt;" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: org.openqa.selenium.server:selenium-server-coreless:jar:0.9.1-SNAPSHOT:test" level="module">
-      <attribute name="method" value="1" />
-      <attribute name="URI" value="/WEB-INF/lib/selenium-server-coreless-0.9.1-SNAPSHOT.jar" />
+      <attribute name="method" value="0" />
+      <attribute name="URI" value="&lt;N/A&gt;" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: org.openqa.selenium.server:selenium-server:jar:0.9.1-SNAPSHOT:test" level="module">
-      <attribute name="method" value="1" />
-      <attribute name="URI" value="/WEB-INF/lib/selenium-server-0.9.1-SNAPSHOT.jar" />
+      <attribute name="method" value="0" />
+      <attribute name="URI" value="&lt;N/A&gt;" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: org.testng:testng:jar:jdk15:5.1:test" level="module">
-      <attribute name="method" value="1" />
-      <attribute name="URI" value="/WEB-INF/lib/testng-5.1-jdk15.jar" />
+      <attribute name="method" value="0" />
+      <attribute name="URI" value="&lt;N/A&gt;" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: oro:oro:jar:2.0.8:compile" level="module">
       <attribute name="method" value="0" />
-      <attribute name="URI" value="/WEB-INF/lib/oro-2.0.8.jar" />
+      <attribute name="URI" value="&lt;N/A&gt;" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: portlet-api:portlet-api:jar:1.0:compile" level="module">
       <attribute name="method" value="0" />
-      <attribute name="URI" value="/WEB-INF/lib/portlet-api-1.0.jar" />
+      <attribute name="URI" value="&lt;N/A&gt;" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: xerces:xercesImpl:jar:2.0.2:compile" level="module">
       <attribute name="method" value="0" />
-      <attribute name="URI" value="/WEB-INF/lib/xercesImpl-2.0.2.jar" />
+      <attribute name="URI" value="&lt;N/A&gt;" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: xml-apis:xml-apis:jar:1.0.b2:compile" level="module">
       <attribute name="method" value="0" />
-      <attribute name="URI" value="/WEB-INF/lib/xml-apis-1.0.b2.jar" />
+      <attribute name="URI" value="&lt;N/A&gt;" />
     </containerElement>
     <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/src/context/WEB-INF/web.xml" optional="false" version="2.3" />
     <webroots>

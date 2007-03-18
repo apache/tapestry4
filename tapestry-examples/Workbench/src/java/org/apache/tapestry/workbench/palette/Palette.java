@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.workbench.palette;
 
-import java.util.List;
-
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.annotations.InjectPage;
 import org.apache.tapestry.annotations.Persist;
@@ -25,6 +23,8 @@ import org.apache.tapestry.form.StringPropertySelectionModel;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.valid.IValidationDelegate;
 
+import java.util.List;
+
 /**
  * @author Howard Lewis Ship
  */
@@ -33,8 +33,7 @@ public abstract class Palette extends BasePage
 {
     private IPropertySelectionModel colorModel;
 
-    private String[] colors =
-    { "Red", "Orange", "Yellow", "Green", "Blue", "Indigo", "Violet" };
+    private String[] colors = { "Red", "Orange", "Yellow", "Green", "Blue", "Indigo", "Violet" };
     
     public abstract List getSelectedColors();
 

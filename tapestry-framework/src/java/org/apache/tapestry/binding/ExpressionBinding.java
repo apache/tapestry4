@@ -16,7 +16,6 @@ package org.apache.tapestry.binding;
 
 import ognl.Node;
 import ognl.enhance.ExpressionAccessor;
-
 import org.apache.hivemind.Location;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IComponent;
@@ -210,7 +209,7 @@ public class ExpressionBinding extends AbstractBinding
 
         buffer.append("ExpressionBinding[");
         buffer.append(_root.getId());
-        //buffer.append(_root.getExtendedId());
+        buffer.append(_root.getExtendedId());
 
         if (_expression != null)
         {
