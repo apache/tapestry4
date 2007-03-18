@@ -34,7 +34,6 @@ import org.apache.tapestry.IRequestCycle;
  */
 public class SyntheticListener implements IActionListener
 {
-
     private final Object _target;
 
     private final ListenerMethodInvoker _invoker;
@@ -51,5 +50,15 @@ public class SyntheticListener implements IActionListener
     public void actionTriggered(IComponent component, IRequestCycle cycle)
     {
         _invoker.invokeListenerMethod(_target, cycle);
+    }
+    
+    public String getMethodName()
+    {
+        return _invoker.getMethodName();
+    }
+
+    public String toString()
+    {
+        return "SyntheticListener[methodName = " + _invoker.getMethodName() + "]";
     }
 }

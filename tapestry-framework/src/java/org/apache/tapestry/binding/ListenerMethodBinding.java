@@ -16,12 +16,7 @@ package org.apache.tapestry.binding;
 
 import org.apache.hivemind.Location;
 import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.BindingException;
-import org.apache.tapestry.IActionListener;
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.PageRedirectException;
-import org.apache.tapestry.RedirectException;
+import org.apache.tapestry.*;
 import org.apache.tapestry.coerce.ValueConverter;
 
 /**
@@ -67,6 +62,11 @@ public class ListenerMethodBinding extends AbstractBinding implements IActionLis
         return this;
     }
 
+    public String getMethodName()
+    {
+        return _methodName;
+    }
+
     public void actionTriggered(IComponent component, IRequestCycle cycle)
     {
         try
@@ -100,5 +100,4 @@ public class ListenerMethodBinding extends AbstractBinding implements IActionLis
         buffer.append(", methodName=");
         buffer.append(_methodName);
     }
-
 }

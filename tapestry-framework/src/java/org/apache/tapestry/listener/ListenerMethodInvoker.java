@@ -36,5 +36,18 @@ import org.apache.tapestry.IRequestCycle;
 public interface ListenerMethodInvoker
 {
 
+    /**
+     * Called to invoke the bound listener method.
+     *
+     * @param target The object to call the listener method on.
+     * @param cycle The associated request.
+     */
     void invokeListenerMethod(Object target, IRequestCycle cycle);
+    
+    /**
+     * The actual method name that this listener represents.
+     *
+     * @return The method name this listener is bound to.
+     */
+    String getMethodName();
 }

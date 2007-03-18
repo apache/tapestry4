@@ -14,18 +14,12 @@
 
 package org.apache.tapestry.binding;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-
 import org.apache.hivemind.Location;
-import org.apache.tapestry.BindingException;
-import org.apache.tapestry.IActionListener;
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.PageRedirectException;
-import org.apache.tapestry.RedirectException;
+import org.apache.tapestry.*;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.listener.ListenerMap;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
 import org.testng.annotations.Test;
 
 /**
@@ -37,7 +31,7 @@ import org.testng.annotations.Test;
 @Test
 public class TestListenerMethodBinding extends BindingTestCase
 {
-    public void testInvokeListener()
+    public void test_Invoke_Listener()
     {
         IComponent component = newComponent();
         ListenerMap map = newListenerMap();
@@ -63,7 +57,7 @@ public class TestListenerMethodBinding extends BindingTestCase
         verify();
     }
 
-    public void testToString()
+    public void test_To_String()
     {
         IComponent component = newComponent();
         Location l = newLocation();
@@ -83,7 +77,7 @@ public class TestListenerMethodBinding extends BindingTestCase
         verify();
     }
 
-    public void testInvokeAndPageRedirect()
+    public void test_Invoke_And_Page_Redirect()
     {
         IComponent component = newComponent();
         ListenerMap map = newListenerMap();
@@ -117,7 +111,7 @@ public class TestListenerMethodBinding extends BindingTestCase
         verify();
     }
 
-    public void testInvokeAndRedirect()
+    public void test_Invoke_And_Redirect()
     {
         IComponent component = newComponent();
         ListenerMap map = newListenerMap();
@@ -151,7 +145,7 @@ public class TestListenerMethodBinding extends BindingTestCase
         verify();
     }
 
-    public void testInvokeListenerFailure()
+    public void test_Invoke_Listener_Failure()
     {
         IComponent component = newComponent();
         ListenerMap map = newListenerMap();
@@ -192,15 +186,25 @@ public class TestListenerMethodBinding extends BindingTestCase
         verify();
     }
 
+    public void test_Get_Method_Name()
+    {
+        IComponent component = newComponent();
+        Location l = newLocation();
+        ValueConverter vc = newValueConverter();
+        
+        replay();
+
+        ListenerMethodBinding b = new ListenerMethodBinding("param", vc, l, component, "foo");
+
+        assertEquals(b.getMethodName(), "foo");
+
+        verify();
+    }
+
     private void trainGetListener(IComponent component, ListenerMap lm, IActionListener listener)
     {
         trainGetListeners(component, lm);
         trainGetListener(lm, "foo", listener);
-    }
-
-    protected IRequestCycle newCycle()
-    {
-        return newMock(IRequestCycle.class);
     }
 
     private void trainGetListener(ListenerMap map, String methodName, IActionListener listener)

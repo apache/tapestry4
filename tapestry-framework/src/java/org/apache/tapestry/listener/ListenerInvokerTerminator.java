@@ -46,7 +46,8 @@ public class ListenerInvokerTerminator implements ListenerInvoker
         Defense.notNull(source, "source");
         Defense.notNull(cycle, "cycle");
 
-        if (listener != null) listener.actionTriggered(source, cycle);
+        if (listener != null)
+            listener.actionTriggered(source, cycle);
     }
 
 }

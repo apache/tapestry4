@@ -38,4 +38,11 @@ public interface IActionListener
      **/
 
     void actionTriggered(IComponent component, IRequestCycle cycle);
+
+    /**
+     * The actual method name that this listener represents.
+     *
+     * @return The method name this listener is bound to.
+     */
+    String getMethodName();
 }
