@@ -18,11 +18,28 @@
   <component name="ChangeListManager">
     <list default="true" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry.iws" afterPath="$PROJECT_DIR$/tapestry.iws" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/config/jboss/data/hypersonic/localDB.properties" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-contrib/pom.xml" afterPath="$PROJECT_DIR$/tapestry-contrib/pom.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-annotations/tapestry-annotations.iml" afterPath="$PROJECT_DIR$/tapestry-annotations/tapestry-annotations.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry.ipr" afterPath="$PROJECT_DIR$/tapestry.ipr" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/config/jboss/data/hypersonic/localDB.script" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/form/validator/Identity.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/form/validator/Identity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-examples/TimeTracker/TimeTracker.iml" afterPath="$PROJECT_DIR$/tapestry-examples/TimeTracker/TimeTracker.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-examples/Workbench/Workbench.iml" afterPath="$PROJECT_DIR$/tapestry-examples/Workbench/Workbench.iml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tapestry-contrib/.cvsignore" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/site/apt/usersguide/validation.apt" afterPath="$PROJECT_DIR$/src/site/apt/usersguide/validation.apt" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tapestry-portlet/.cvsignore" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/config/.cvsignore" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/config/jboss" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-contrib/tapestry-contrib.iml" afterPath="$PROJECT_DIR$/tapestry-contrib/tapestry-contrib.iml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/config/jboss/data/hypersonic" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/IRequestCycle.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/IRequestCycle.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/config/jboss/deploy" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tapestry-examples/Workbench/.cvsignore" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry.iml" afterPath="$PROJECT_DIR$/tapestry.iml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.cvsignore" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-portlet/tapestry-portlet.iml" afterPath="$PROJECT_DIR$/tapestry-portlet/tapestry-portlet.iml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/config/jboss/data" afterPath="" />
     </list>
   </component>
   <component name="ChangesViewManager" flattened_view="true" />
@@ -196,6 +213,48 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
         </PATH_ELEMENT>
       </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="tapestry.ipr" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="tapestry" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="tapestry.ipr" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="tapestry" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="PsiDirectory:$PROJECT_DIR$" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="tapestry.ipr" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="tapestry" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="PsiDirectory:$PROJECT_DIR$" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="PsiDirectory:$PROJECT_DIR$/config" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
     </subPane>
   </component>
   <component name="ProjectReloadState">
@@ -220,6 +279,8 @@
     <property name="TEMP_MODULE_EXPLODED_DIR_FOR_Workbench" value="/tmp/webExplodedDir16585tmp" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="TEMP_MODULE_EXPLODED_DIR_FOR_TimeTracker" value="/tmp/webExplodedDir16584tmp" />
+    <property name="RunManagerConfig.compileBeforeRunning" value="true" />
+    <property name="RunManagerConfig.showSettingsBeforeRunnig" value="true" />
     <property name="MemberChooser.sorted" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
@@ -230,136 +291,27 @@
     <option name="SHOW_DIALOG" value="true" />
   </component>
   <component name="RecentsManager" />
-  <component name="RestoreUpdateTree">
-    <UpdateInfo date="3/18/07 11:24 AM" ActionInfo="Chec_k Status">
-      <UpdatedFiles>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Updated from server" />
-          <option name="myStatusName" value="Changed on server" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="CHANGED_ON_SERVER" />
-          <FILE-GROUP>
-            <option name="myUpdateName" value="Updated" />
-            <option name="myStatusName" value="Changed" />
-            <option name="mySupportsDeletion" value="false" />
-            <option name="myCanBeAbsent" value="false" />
-            <option name="myId" value="UPDATED" />
-          </FILE-GROUP>
-          <FILE-GROUP>
-            <option name="myUpdateName" value="Created" />
-            <option name="myStatusName" value="Created" />
-            <option name="mySupportsDeletion" value="false" />
-            <option name="myCanBeAbsent" value="false" />
-            <option name="myId" value="CREATED" />
-          </FILE-GROUP>
-          <FILE-GROUP>
-            <option name="myUpdateName" value="Deleted" />
-            <option name="myStatusName" value="Deleted" />
-            <option name="mySupportsDeletion" value="false" />
-            <option name="myCanBeAbsent" value="true" />
-            <option name="myId" value="REMOVED_FROM_REPOSITORY" />
-          </FILE-GROUP>
-          <FILE-GROUP>
-            <option name="myUpdateName" value="Restored" />
-            <option name="myStatusName" value="Will be restored" />
-            <option name="mySupportsDeletion" value="false" />
-            <option name="myCanBeAbsent" value="false" />
-            <option name="myId" value="RESTORED" />
-          </FILE-GROUP>
-          <FILE-GROUP>
-            <option name="myUpdateName" value="UpdatedOnServer" />
-            <option name="myStatusName" value="Modified on Server" />
-            <option name="mySupportsDeletion" value="true" />
-            <option name="myCanBeAbsent" value="false" />
-            <option name="myId" value="Modified On Server" />
-          </FILE-GROUP>
-          <FILE-GROUP>
-            <option name="myUpdateName" value="ReplacedOnServer" />
-            <option name="myStatusName" value="Replaced on Server" />
-            <option name="mySupportsDeletion" value="true" />
-            <option name="myCanBeAbsent" value="false" />
-            <option name="myId" value="Replaced On Server" />
-          </FILE-GROUP>
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Modified" />
-          <option name="myStatusName" value="Modified" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="MODIFIED" />
-          <PATH>$PROJECT_DIR$/tapestry-annotations/tapestry-annotations.iml</PATH>
-          <PATH>$PROJECT_DIR$/tapestry-examples/TimeTracker/TimeTracker.iml</PATH>
-          <PATH>$PROJECT_DIR$/tapestry-examples/Workbench/Workbench.iml</PATH>
-          <PATH>$PROJECT_DIR$/tapestry-portlet/tapestry-portlet.iml</PATH>
-          <PATH>$PROJECT_DIR$/tapestry.iml</PATH>
-          <PATH>$PROJECT_DIR$/tapestry.iws</PATH>
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Skipped" />
-          <option name="myStatusName" value="Skipped" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="SKIPPED" />
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Merged with conflicts" />
-          <option name="myStatusName" value="Will be merged with conflicts" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="MERGED_WITH_CONFLICTS" />
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Merged" />
-          <option name="myStatusName" value="Will be merged" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="MERGED" />
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Not in repository" />
-          <option name="myStatusName" value="Not in repository" />
-          <option name="mySupportsDeletion" value="true" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="UNKNOWN" />
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Locally added" />
-          <option name="myStatusName" value="Locally added" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="LOCALLY_ADDED" />
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Locally removed" />
-          <option name="myStatusName" value="Locally removed" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="LOCALLY_REMOVED" />
-        </FILE-GROUP>
-      </UpdatedFiles>
-    </UpdateInfo>
-  </component>
+  <component name="RestoreUpdateTree" />
   <component name="RunManager" selected="TestNG.ExternalServiceTest">
     <tempConfiguration default="false" name="ExternalServiceTest" type="TestNG" factoryName="TestNG" enabled="false" merge="false">
       <module name="tapestry-framework" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="SUITE_NAME" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="SUITE_NAME" value="" />
       <option name="PACKAGE_NAME" value="org.apache.tapestry.engine" />
       <option name="MAIN_CLASS_NAME" value="org.apache.tapestry.engine.ExternalServiceTest" />
       <option name="METHOD_NAME" />
-      <option name="GROUP_NAME" />
+      <option name="GROUP_NAME" value="" />
       <option name="TEST_OBJECT" value="CLASS" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" />
-      <option name="OUTPUT_DIRECTORY" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="OUTPUT_DIRECTORY" value="" />
       <option name="ADDITIONAL_CLASS_PATH" />
       <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="wholeProject" />
+        <value defaultName="singleModule" />
       </option>
-      <option name="PROPERTIES_FILE" />
+      <option name="PROPERTIES_FILE" value="" />
       <properties />
       <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Run" />
@@ -374,21 +326,17 @@
       <option name="HOST" value="localhost" />
       <option name="PORT" value="5005" />
     </configuration>
-    <configuration default="true" type="JUnit" factoryName="JUnit" enabled="false" merge="false">
+    <configuration default="true" type="Applet" factoryName="Applet">
       <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ADDITIONAL_CLASS_PATH" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="wholeProject" />
-      </option>
     </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG" enabled="false" merge="false">
       <module name="" />
@@ -414,17 +362,21 @@
         <option name="Make" value="true" />
       </method>
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
+    <configuration default="true" type="JUnit" factoryName="JUnit" enabled="false" merge="false">
       <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ADDITIONAL_CLASS_PATH" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="wholeProject" />
+      </option>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application" enabled="false" merge="false">
       <option name="MAIN_CLASS_NAME" />
@@ -507,7 +459,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="84" y="151" width="2112" height="1362" extended-state="0" />
+    <frame x="67" y="150" width="2112" height="1362" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="3" />
@@ -517,7 +469,7 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="1" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" order="3" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32974318" order="8" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20995851" order="8" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20829876" order="8" />
       <window_info id="Maven" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19568823" order="8" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="7" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" order="1" />
@@ -526,10 +478,10 @@
       <window_info id="Module Dependencies" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="3" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="8" />
       <window_info id="File View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="3" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19376826" order="0" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1932814" order="0" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" order="2" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" order="6" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26224068" order="2" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2620232" order="2" />
       <window_info id="SVN Repositories" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27219918" order="8" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" order="5" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="0" />
@@ -546,15 +498,15 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="true" />
-    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="PERFORM_UPDATE_IN_BACKGROUND" value="false" />
     <option name="PERFORM_COMMIT_IN_BACKGROUND" value="false" />
     <option name="PUT_FOCUS_INTO_COMMENT" value="false" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" />
+    <option name="LAST_COMMIT_MESSAGE" value="Minor code cleanup, removal of old .cvsignore properties." />
     <option name="SAVE_LAST_COMMIT_MESSAGE" value="true" />
     <option name="CHECKIN_DIALOG_SPLITTER_PROPORTION" value="0.8" />
-    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="REFORMAT_BEFORE_FILE_COMMIT" value="false" />
     <option name="FILE_HISTORY_DIALOG_COMMENTS_SPLITTER_PROPORTION" value="0.8" />
@@ -564,64 +516,24 @@
     <option name="UPDATE_GROUP_BY_PACKAGES" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
+    <MESSAGE value="Cleaned up shared idea properties." />
+    <MESSAGE value="Minor code cleanup, removal of old .cvsignore properties." />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
     <option name="FILTER_TARGETS" value="false" />
   </component>
-  <component name="com.intellij.ide.util.scopeChooser.ScopeChooserConfigurable" proportions="" version="1">
-    <option name="myLastEditedConfigurable" />
+  <component name="com.intellij.ide.util.scopeChooser.ScopeChooserConfigurable" proportions="0.16666667" version="1">
+    <option name="myLastEditedConfigurable" value="Shared Scopes" />
   </component>
-  <component name="com.intellij.openapi.roots.ui.configuration.projectRoot.ProjectRootMasterDetailsConfigurable" proportions="0.22673559" version="1">
+  <component name="com.intellij.openapi.roots.ui.configuration.projectRoot.ProjectRootMasterDetailsConfigurable" proportions="0.22673559,0.5" version="1">
     <option name="myPlainMode" value="false" />
-    <option name="myLastEditedConfigurable" value="Workbench" />
+    <option name="myLastEditedConfigurable" value="tapestry" />
   </component>
   <component name="com.intellij.profile.ui.ErrorOptionsConfigurable" proportions="0.16666667,0.5642857" version="1">
     <option name="myLastEditedConfigurable" value="Project Default" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/descriptor/META-INF/tapestry.coerce.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="2" selection-start="948" selection-end="948" vertical-scroll-proportion="-0.67717206">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/engine/EngineServiceLinkTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="0" selection-start="1507" selection-end="1507" vertical-scroll-proportion="0.012776831">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-examples/Vlib/src/java/org/apache/tapestry/vlib/services/ModelSource.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="0" selection-start="1262" selection-end="1262" vertical-scroll-proportion="0.3321976">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/engine/ResetServiceTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="49" column="0" selection-start="1580" selection-end="1580" vertical-scroll-proportion="0.35775128">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-examples/Vlib/src/java/org/apache/tapestry/vlib/EntitySelectionModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="0" selection-start="1224" selection-end="1224" vertical-scroll-proportion="0.2810903">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-examples/VlibBeans/src/java/org/apache/tapestry/vlib/ejb/impl/AbstractEntityBean.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="62" column="5" selection-start="1886" selection-end="1886" vertical-scroll-proportion="0.42163545">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tapestry-examples/TimeTracker/src/java/org/apache/tapestry/timetracker/servlet/ConfigurationServlet.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="30" column="7" selection-start="1044" selection-end="1044" vertical-scroll-proportion="0.17887564">
@@ -629,9 +541,110 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/conf/log4j.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="0" selection-start="926" selection-end="926" vertical-scroll-proportion="0.31942078">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/site/apt/index.apt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="0" selection-start="244" selection-end="244" vertical-scroll-proportion="0.15332198">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/scripts/TestDefaultParameterValues.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="30" column="19" selection-start="914" selection-end="914" vertical-scroll-proportion="0.38330495">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/js/build.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="4" selection-start="1021" selection-end="1021" vertical-scroll-proportion="0.34497446">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/js/tapestry.profile.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="0" selection-start="708" selection-end="708" vertical-scroll-proportion="0.25553662">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/ConfigurationDefaults.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="0" selection-start="738" selection-end="738" vertical-scroll-proportion="0.21720614">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/ComponentEvent.script">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="21" selection-start="1002" selection-end="1002" vertical-scroll-proportion="0.30664396">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/package.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="44" column="0" selection-start="1576" selection-end="1576" vertical-scroll-proportion="0.5749129">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="HtmlPreview">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/IRequestCycle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="40" column="3" selection-start="1487" selection-end="1487" vertical-scroll-proportion="-0.051107325">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tapestry-contrib/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="4" selection-start="647" selection-end="647" vertical-scroll-proportion="0.2044293">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/form/validator/Identity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="127" column="5" selection-start="4265" selection-end="4265" vertical-scroll-proportion="0.2640545">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/form/FormEventType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="53" column="5" selection-start="2023" selection-end="2023" vertical-scroll-proportion="0.5238501">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tapestry-examples/Workbench/src/context/WEB-INF/Fields.page">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="50" column="0" selection-start="2037" selection-end="2037" vertical-scroll-proportion="0.06729131">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/site/apt/usersguide/validation.apt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="168" column="0" selection-start="9264" selection-end="9264" vertical-scroll-proportion="0.5340811">
+          <folding />
+        </state>
+      </provider>
+    </entry>
   </component>
   <component name="testng.defaultConfiguration">
-    <outputDirectory>/tmp</outputDirectory>
+    <outputDirectory />
     <properties />
   </component>
 </project>

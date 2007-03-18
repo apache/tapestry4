@@ -29,14 +29,17 @@
       <sourceFolder url="file://$MODULE_DIR$/tapestry-portlet/src/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/tapestry-portlet/src/test" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/tapestry-annotations" />
       <excludeFolder url="file://$MODULE_DIR$/tapestry-annotations/target" />
-      <excludeFolder url="file://$MODULE_DIR$/tapestry-contrib/target" />
+      <excludeFolder url="file://$MODULE_DIR$/tapestry-contrib" />
+      <excludeFolder url="file://$MODULE_DIR$/tapestry-examples" />
       <excludeFolder url="file://$MODULE_DIR$/tapestry-examples/TimeTracker/target" />
       <excludeFolder url="file://$MODULE_DIR$/tapestry-examples/Vlib/target" />
       <excludeFolder url="file://$MODULE_DIR$/tapestry-examples/VlibBeans/target" />
       <excludeFolder url="file://$MODULE_DIR$/tapestry-examples/Workbench/target" />
       <excludeFolder url="file://$MODULE_DIR$/tapestry-examples/target" />
-      <excludeFolder url="file://$MODULE_DIR$/tapestry-framework/target" />
+      <excludeFolder url="file://$MODULE_DIR$/tapestry-framework" />
+      <excludeFolder url="file://$MODULE_DIR$/tapestry-portlet" />
       <excludeFolder url="file://$MODULE_DIR$/tapestry-portlet/target" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
