@@ -11,9 +11,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="tapestry-annotations" />
-    <orderEntry type="module" module-name="tapestry-framework" />
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="Maven Dependency: backport-util-concurrent:backport-util-concurrent:jar:2.2:compile">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.m2/repository/backport-util-concurrent/backport-util-concurrent/2.2/backport-util-concurrent-2.2.jar!/" />
@@ -24,7 +22,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="Maven Dependency: cglib:cglib-nodep:jar:2.1_3:compile">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.m2/repository/cglib/cglib-nodep/2.1_3/cglib-nodep-2.1_3.jar!/" />
@@ -35,7 +33,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="Maven Dependency: com.javaforge.tapestry:tapestry-testng:jar:1.0.0-SNAPSHOT:provided">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.m2/repository/com/javaforge/tapestry/tapestry-testng/1.0.0-SNAPSHOT/tapestry-testng-1.0.0-SNAPSHOT.jar!/" />
@@ -46,7 +44,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="Maven Dependency: commons-beanutils:commons-beanutils:jar:1.7.0:compile">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.m2/repository/commons-beanutils/commons-beanutils/1.7.0/commons-beanutils-1.7.0.jar!/" />
@@ -59,7 +57,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="Maven Dependency: commons-codec:commons-codec:jar:1.3:compile">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.m2/repository/commons-codec/commons-codec/1.3/commons-codec-1.3.jar!/" />
@@ -72,29 +70,25 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
-      <library name="Maven Dependency: commons-fileupload:commons-fileupload:jar:1.1.1:compile">
+    <orderEntry type="module-library" exported="">
+      <library name="Maven Dependency: commons-fileupload:commons-fileupload:jar:1.2:compile">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../.m2/repository/commons-fileupload/commons-fileupload/1.1.1/commons-fileupload-1.1.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../../.m2/repository/commons-fileupload/commons-fileupload/1.2/commons-fileupload-1.2.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
-      <library name="Maven Dependency: commons-io:commons-io:jar:1.1:compile">
+    <orderEntry type="module-library" exported="">
+      <library name="Maven Dependency: commons-io:commons-io:jar:1.3.1:compile">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../.m2/repository/commons-io/commons-io/1.1/commons-io-1.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../../.m2/repository/commons-io/commons-io/1.3.1/commons-io-1.3.1.jar!/" />
         </CLASSES>
-        <JAVADOC>
-          <root url="jar://$MODULE_DIR$/../../../.m2/repository/commons-io/commons-io/1.1/commons-io-1.1-javadoc.jar!/" />
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://$MODULE_DIR$/../../../.m2/repository/commons-io/commons-io/1.1/commons-io-1.1-sources.jar!/" />
-        </SOURCES>
+        <JAVADOC />
+        <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="Maven Dependency: commons-lang:commons-lang:jar:2.2:compile">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.m2/repository/commons-lang/commons-lang/2.2/commons-lang-2.2.jar!/" />
@@ -107,7 +101,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="Maven Dependency: commons-logging:commons-logging:jar:1.1:provided">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.m2/repository/commons-logging/commons-logging/1.1/commons-logging-1.1.jar!/" />
@@ -118,7 +112,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="Maven Dependency: commons-pool:commons-pool:jar:1.3:compile">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.m2/repository/commons-pool/commons-pool/1.3/commons-pool-1.3.jar!/" />
@@ -127,7 +121,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="Maven Dependency: hivemind:hivemind-lib:jar:1.1.1:compile">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.m2/repository/hivemind/hivemind-lib/1.1.1/hivemind-lib-1.1.1.jar!/" />
@@ -138,7 +132,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="Maven Dependency: hivemind:hivemind:jar:1.1.1:compile">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.m2/repository/hivemind/hivemind/1.1.1/hivemind-1.1.1.jar!/" />
@@ -149,7 +143,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="Maven Dependency: javax.servlet:servlet-api:jar:2.4:provided">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.m2/repository/javax/servlet/servlet-api/2.4/servlet-api-2.4.jar!/" />
@@ -160,7 +154,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="Maven Dependency: jboss:javassist:jar:3.4.ga:runtime">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.m2/repository/jboss/javassist/3.4.ga/javassist-3.4.ga.jar!/" />
@@ -169,7 +163,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="Maven Dependency: jboss:jboss-j2ee:jar:4.0.2:provided">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.m2/repository/jboss/jboss-j2ee/4.0.2/jboss-j2ee-4.0.2.jar!/" />
@@ -178,7 +172,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="Maven Dependency: junit:junit:jar:3.8.1:test">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.m2/repository/junit/junit/3.8.1/junit-3.8.1.jar!/" />
@@ -189,7 +183,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="Maven Dependency: log4j:log4j:jar:1.2.9:test">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.m2/repository/log4j/log4j/1.2.9/log4j-1.2.9.jar!/" />
@@ -200,7 +194,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="Maven Dependency: ognl:ognl:jar:2.7-SNAPSHOT:compile">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.m2/repository/ognl/ognl/2.7-SNAPSHOT/ognl-2.7-SNAPSHOT.jar!/" />
@@ -213,7 +207,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="Maven Dependency: org.apache.tapestry:tapestry-test:jar:4.1.1-SNAPSHOT:test">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.m2/repository/org/apache/tapestry/tapestry-test/4.1.1-SNAPSHOT/tapestry-test-4.1.1-SNAPSHOT.jar!/" />
@@ -224,7 +218,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="Maven Dependency: org.easymock:easymock:jar:2.2:test">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.m2/repository/org/easymock/easymock/2.2/easymock-2.2.jar!/" />
@@ -235,7 +229,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="Maven Dependency: org.easymock:easymockclassextension:jar:2.2:test">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.m2/repository/org/easymock/easymockclassextension/2.2/easymockclassextension-2.2.jar!/" />
@@ -246,7 +240,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="Maven Dependency: org.testng:testng:jar:jdk15:5.1:test">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.m2/repository/org/testng/testng/5.1/testng-5.1-jdk15.jar!/" />
@@ -255,7 +249,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="Maven Dependency: oro:oro:jar:2.0.8:compile">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.m2/repository/oro/oro/2.0.8/oro-2.0.8.jar!/" />
@@ -266,6 +260,7 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="tapestry-framework" />
     <orderEntryProperties />
   </component>
 </module>

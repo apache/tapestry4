@@ -13,15 +13,15 @@
 // limitations under the License.
 package org.apache.tapestry.multipart;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.tapestry.request.IUploadFile;
+
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.fileupload.FileItem;
-import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.tapestry.request.IUploadFile;
 
 /**
  * @author Raphael Jean
@@ -135,8 +135,7 @@ public abstract class AbstractMultipartDecoder
     {
         try
         {
-            return (_encoding == null) ? item.getString() : item
-                    .getString(_encoding);
+            return (_encoding == null) ? item.getString() : item.getString(_encoding);
         }
         catch (UnsupportedEncodingException ex)
         {
