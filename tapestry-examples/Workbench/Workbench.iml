@@ -15,6 +15,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="tapestry" />
+    <orderEntry type="module" module-name="tapestry-annotations" />
+    <orderEntry type="module" module-name="tapestry-contrib" />
+    <orderEntry type="module" module-name="tapestry-framework" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -88,8 +92,12 @@
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../../.m2/repository/commons-fileupload/commons-fileupload/1.2/commons-fileupload-1.2.jar!/" />
         </CLASSES>
-        <JAVADOC />
-        <SOURCES />
+        <JAVADOC>
+          <root url="jar://$MODULE_DIR$/../../../../.m2/repository/commons-fileupload/commons-fileupload/1.2/commons-fileupload-1.2-javadoc.jar!/" />
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/../../../../.m2/repository/commons-fileupload/commons-fileupload/1.2/commons-fileupload-1.2-sources.jar!/" />
+        </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
@@ -98,7 +106,9 @@
           <root url="jar://$MODULE_DIR$/../../../../.m2/repository/commons-io/commons-io/1.3.1/commons-io-1.3.1.jar!/" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/../../../../.m2/repository/commons-io/commons-io/1.3.1/commons-io-1.3.1-sources.jar!/" />
+        </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
@@ -242,9 +252,6 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="tapestry-annotations" />
-    <orderEntry type="module" module-name="tapestry-contrib" />
-    <orderEntry type="module" module-name="tapestry-framework" />
     <orderEntryProperties />
   </component>
   <component name="WebModuleBuildComponent">

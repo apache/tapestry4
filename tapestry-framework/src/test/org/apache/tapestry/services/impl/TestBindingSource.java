@@ -14,17 +14,16 @@
 
 package org.apache.tapestry.services.impl;
 
-import static org.easymock.EasyMock.expect;
-
-import java.util.Collections;
-
 import org.apache.hivemind.Location;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.binding.BindingConstants;
 import org.apache.tapestry.binding.BindingFactory;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
+
+import java.util.Collections;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.BindingSourceImpl}.
@@ -35,7 +34,7 @@ import org.testng.annotations.Test;
 @Test
 public class TestBindingSource extends BaseComponentTestCase
 {
-    public void testNoPrefix()
+    public void test_No_Prefix()
     {
         IComponent component = newComponent();
         IBinding binding = newBinding();
@@ -69,7 +68,7 @@ public class TestBindingSource extends BaseComponentTestCase
         verify();
     }
 
-    public void testNoPrefixWithDefault()
+    public void test_No_Prefix_With_Default()
     {
         IComponent component = newComponent();
         IBinding binding = newBinding();
@@ -102,7 +101,7 @@ public class TestBindingSource extends BaseComponentTestCase
         verify();
     }
 
-    public void testKnownPrefix()
+    public void test_Known_Prefix()
     {
         IComponent component = newComponent();
         IBinding binding = newBinding();
@@ -136,7 +135,7 @@ public class TestBindingSource extends BaseComponentTestCase
         verify();
     }
 
-    public void testPrefixNoMatch()
+    public void test_Prefix_No_Match()
     {
         IComponent component = newComponent();
         IBinding binding = newBinding();
@@ -163,6 +162,74 @@ public class TestBindingSource extends BaseComponentTestCase
                 "zip",
                 "unknown:path part of locator",
                 BindingConstants.LITERAL_PREFIX,
+                l);
+
+        assertSame(binding, actual);
+
+        verify();
+    }
+
+    public void test_Single_Character_Prefix()
+    {
+        IComponent component = newComponent();
+        IBinding binding = newBinding();
+        BindingFactory factory = newFactory();
+        Location l = newLocation();
+
+        // Training
+
+        expect(factory.createBinding(component, "bar", "path part of locator", l)).andReturn(binding);
+
+        BindingPrefixContribution c = new BindingPrefixContribution();
+        c.setPrefix("c");
+        c.setFactory(factory);
+
+        replay();
+
+        BindingSourceImpl bs = new BindingSourceImpl();
+        bs.setContributions(Collections.singletonList(c));
+
+        bs.initializeService();
+
+        IBinding actual = bs.createBinding(
+                component,
+                "bar",
+                "c:path part of locator",
+                "c",
+                l);
+
+        assertSame(binding, actual);
+
+        verify();
+    }
+
+    public void test_Empty_Character_Prefix()
+    {
+        IComponent component = newComponent();
+        IBinding binding = newBinding();
+        BindingFactory factory = newFactory();
+        Location l = newLocation();
+
+        // Training
+
+        expect(factory.createBinding(component, "bar", "path part of locator", l)).andReturn(binding);
+
+        BindingPrefixContribution c = new BindingPrefixContribution();
+        c.setPrefix("");
+        c.setFactory(factory);
+
+        replay();
+
+        BindingSourceImpl bs = new BindingSourceImpl();
+        bs.setContributions(Collections.singletonList(c));
+
+        bs.initializeService();
+
+        IBinding actual = bs.createBinding(
+                component,
+                "bar",
+                ":path part of locator",
+                "",
                 l);
 
         assertSame(binding, actual);
