@@ -14,19 +14,14 @@
 
 package org.apache.tapestry.services.impl;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.hivemind.service.ThreadLocale;
 import org.apache.tapestry.TapestryConstants;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.services.CookieSource;
 import org.apache.tapestry.services.RequestLocaleManager;
 import org.apache.tapestry.web.WebRequest;
+
+import java.util.*;
 
 /**
  * Service tapestry.request.RequestLocaleManager. Identifies the Locale provided by the client
@@ -111,16 +106,24 @@ public class RequestLocaleManagerImpl implements RequestLocaleManager
         if (_acceptedLocaleNamesSet.isEmpty())
             return getLocale(requestLocaleName);
 
-        while (true)
+        while (requestLocaleName.length() > 0)
         {
             if (_acceptedLocaleNamesSet.contains(requestLocaleName))
                 return getLocale(requestLocaleName);
 
             requestLocaleName = stripTerm(requestLocaleName);
-
-            if (requestLocaleName.length() == 0)
-                return _defaultLocale;
         }
+
+        // now try "best match"
+
+        for (Iterator it = _acceptedLocaleNamesSet.iterator(); it.hasNext();) {
+
+            String locale = (String) it.next();
+            if (locale.startsWith(localeName))
+                return getLocale(locale);
+        }
+
+        return _defaultLocale;
     }
 
     private String stripTerm(String localeName)

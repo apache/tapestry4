@@ -14,16 +14,15 @@
 
 package org.apache.tapestry.services.impl;
 
-import static org.easymock.EasyMock.expect;
-
-import java.util.Locale;
-
 import org.apache.hivemind.service.ThreadLocale;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.TapestryConstants;
 import org.apache.tapestry.services.CookieSource;
 import org.apache.tapestry.web.WebRequest;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
+
+import java.util.Locale;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.RequestLocaleManagerImpl}.
@@ -48,7 +47,7 @@ public class TestRequestLocaleManager extends BaseComponentTestCase
         return threadLocale;
     }
 
-    public void testSuppliedByRequest()
+    public void test_Supplied_By_Request()
     {
         CookieSource source = newMock(CookieSource.class);
         
@@ -103,22 +102,22 @@ public class TestRequestLocaleManager extends BaseComponentTestCase
         verify();
     }
 
-    public void testJustLanguage()
+    public void test_Just_Language()
     {
         attempt("en", Locale.ENGLISH);
     }
 
-    public void testLanguageAndCountry()
+    public void test_Language_And_Country()
     {
         attempt("fr_FR", Locale.FRANCE);
     }
 
-    public void testWithVariant()
+    public void test_With_Variant()
     {
         attempt("en_US_Bahstohn", new Locale("en", "US", "Bahstohn"));
     }
 
-    public void testPersist()
+    public void test_Persist()
     {
         Locale locale = Locale.SIMPLIFIED_CHINESE;
 
@@ -140,7 +139,7 @@ public class TestRequestLocaleManager extends BaseComponentTestCase
         verify();
     }
 
-    public void testPersistNoChange()
+    public void test_Persist_No_Change()
     {
         CookieSource source = newMock(CookieSource.class);
         
@@ -180,7 +179,7 @@ public class TestRequestLocaleManager extends BaseComponentTestCase
         verify();
     }
 
-    public void testGetLocaleValuesAreCached()
+    public void test_Get_Locale_Values_Are_Cached()
     {
         RequestLocaleManagerImpl manager = new RequestLocaleManagerImpl();
 
@@ -194,7 +193,7 @@ public class TestRequestLocaleManager extends BaseComponentTestCase
      * Test when filtering of incoming locales is disabled.
      */
 
-    public void testFilterDisabled()
+    public void test_Filter_Disabled()
     {
         RequestLocaleManagerImpl manager = new RequestLocaleManagerImpl();
 
@@ -207,19 +206,31 @@ public class TestRequestLocaleManager extends BaseComponentTestCase
      * Test with filtering enabled.
      */
 
-    public void testFilterEnabled()
+    public void test_Filter_Enabled()
     {
         RequestLocaleManagerImpl manager = new RequestLocaleManagerImpl();
         manager.setAcceptedLocales("en,fr");
         manager.initializeService();
 
-        assertEquals(Locale.ENGLISH, manager.filterRequestedLocale("en"));
-        assertEquals(Locale.ENGLISH, manager.filterRequestedLocale("en_US"));
-        assertEquals(Locale.FRENCH, manager.filterRequestedLocale("fr"));
-        assertEquals(Locale.FRENCH, manager.filterRequestedLocale("fr_FR"));
+        assertEquals(manager.filterRequestedLocale("en"), Locale.ENGLISH);
+        assertEquals(manager.filterRequestedLocale("en_US"), Locale.ENGLISH);
+        assertEquals(manager.filterRequestedLocale("fr"), Locale.FRENCH);
+        assertEquals(manager.filterRequestedLocale("fr_FR"), Locale.FRENCH);
 
         // Unrecognized locales filter to the first accepted locale.
 
-        assertEquals(Locale.ENGLISH, manager.filterRequestedLocale("foo_bar_BAZ"));
+        assertEquals(manager.filterRequestedLocale("foo_bar_BAZ"), Locale.ENGLISH);
+    }
+
+    public void test_Filter_Best_Guess()
+    {
+        RequestLocaleManagerImpl manager = new RequestLocaleManagerImpl();
+        manager.setAcceptedLocales("en_US,fr_FR");
+        manager.initializeService();
+
+        assertEquals(manager.filterRequestedLocale("en"), Locale.US);
+        assertEquals(manager.filterRequestedLocale("en_GB"), Locale.US);
+        assertEquals(manager.filterRequestedLocale("fr"), Locale.FRANCE);
+        assertEquals(manager.filterRequestedLocale("fr_FR"), Locale.FRANCE);
     }
 }
