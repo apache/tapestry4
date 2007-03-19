@@ -158,8 +158,8 @@
         <option name="respondToPomChangesEnabled" value="true" />
         <option name="manageSourceRootsEnabled" value="true" />
         <option name="manageModuleInterdependenciesEnabled" value="true" />
-        <option name="downloadSourcesEnabled" value="true" />
-        <option name="downloadJavadocEnabled" value="true" />
+        <option name="downloadSourcesEnabled" value="false" />
+        <option name="downloadJavadocEnabled" value="false" />
         <option name="generateSourcesEnabled" value="false" />
         <option name="settingsPath" value="$USERPROFILE$/.m2/settings.xml" />
         <option name="searchFilter" value="target" />

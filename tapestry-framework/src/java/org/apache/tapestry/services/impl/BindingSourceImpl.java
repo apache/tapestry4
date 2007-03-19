@@ -14,16 +14,16 @@
 
 package org.apache.tapestry.services.impl;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.hivemind.Location;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.binding.BindingFactory;
 import org.apache.tapestry.binding.BindingSource;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Implementation of the <code>tapestry.bindings.BindingSource</code> service.
@@ -60,7 +60,7 @@ public class BindingSourceImpl implements BindingSource
 
         int colonx = reference.indexOf(':');
 
-        if (colonx > 1)
+        if (colonx > -1)
         {
             String pathPrefix = reference.substring(0, colonx);
 
