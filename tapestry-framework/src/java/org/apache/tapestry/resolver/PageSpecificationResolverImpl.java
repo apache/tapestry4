@@ -163,10 +163,8 @@ public class PageSpecificationResolverImpl extends
         // Check with and without the leading slash
 
         if (_simpleName.regionMatches(true, 0, WEB_INF, 0, WEB_INF.length())
-                || _simpleName.regionMatches(true, 0, WEB_INF, 1, WEB_INF
-                        .length() - 1))
-            throw new ApplicationRuntimeException(ResolverMessages
-                    .webInfNotAllowed(_simpleName));
+                || _simpleName.regionMatches(true, 0, WEB_INF, 1, WEB_INF.length() - 1))
+            throw new ApplicationRuntimeException(ResolverMessages.webInfNotAllowed(_simpleName));
 
         String expectedName = _simpleName + ".page";
 
@@ -176,18 +174,22 @@ public class PageSpecificationResolverImpl extends
         // as the library or application specification that's
         // supposed to contain the page.
 
-        if (found(namespaceLocation, expectedName)) return;
+        if (found(namespaceLocation, expectedName))
+            return;
 
         if (namespace.isApplicationNamespace())
         {
 
             // The application namespace gets some extra searching.
 
-            if (found(getWebInfAppLocation(), expectedName)) return;
+            if (found(getWebInfAppLocation(), expectedName))
+                return;
 
-            if (found(getWebInfLocation(), expectedName)) return;
+            if (found(getWebInfLocation(), expectedName))
+                return;
 
-            if (found(getContextRoot(), expectedName)) return;
+            if (found(getContextRoot(), expectedName))
+                return;
 
             // The wierd one ... where we see if there's a template in the
             // application root
@@ -195,8 +197,7 @@ public class PageSpecificationResolverImpl extends
 
             String templateName = _simpleName + "." + getTemplateExtension();
 
-            Resource templateResource = getContextRoot().getRelativeResource(
-                    templateName);
+            Resource templateResource = getContextRoot().getRelativeResource(templateName);
 
             if (_log.isDebugEnabled())
                 _log.debug(ResolverMessages.checkingResource(templateResource));
@@ -213,9 +214,7 @@ public class PageSpecificationResolverImpl extends
             if (_frameworkNamespace.containsPage(_simpleName))
             {
                 if (_log.isDebugEnabled())
-                    _log
-                            .debug(ResolverMessages
-                                    .foundFrameworkPage(_simpleName));
+                    _log.debug(ResolverMessages.foundFrameworkPage(_simpleName));
 
                 setNamespace(_frameworkNamespace);
 
@@ -223,8 +222,7 @@ public class PageSpecificationResolverImpl extends
                 // for the framework! Framework pages must be
                 // defined in the framework library specification.
 
-                setSpecification(_frameworkNamespace
-                        .getPageSpecification(_simpleName));
+                setSpecification(_frameworkNamespace.getPageSpecification(_simpleName));
                 return;
             }
         }
@@ -232,8 +230,7 @@ public class PageSpecificationResolverImpl extends
         // Not found by any normal rule, so its time to
         // consult the delegate.
 
-        IComponentSpecification specification = getDelegate()
-                .findPageSpecification(cycle, namespace, _simpleName);
+        IComponentSpecification specification = getDelegate().findPageSpecification(cycle, namespace, _simpleName);
 
         if (specification != null)
         {
@@ -247,14 +244,12 @@ public class PageSpecificationResolverImpl extends
         if (_log.isDebugEnabled())
             _log.debug(ResolverMessages.foundHTMLTemplate(resource));
 
-        // TODO The SpecFactory in Specification parser should be used in some
-        // way to
-        // create an IComponentSpecification!
+        // TODO: The SpecFactory in Specification parser should be used in some
+        // way to create an IComponentSpecification!
 
         // The virtual location of the page specification is relative to the
         // namespace (typically, the application specification). This will be
-        // used when
-        // searching for the page's message catalog or other related assets.
+        // used when searching for the page's message catalog or other related assets.
         
         Resource pageResource = namespaceLocation.getRelativeResource(_simpleName + ".page");
         
@@ -275,10 +270,10 @@ public class PageSpecificationResolverImpl extends
         if (_log.isDebugEnabled())
             _log.debug(ResolverMessages.checkingResource(resource));
 
-        if (resource.getResourceURL() == null) return false;
+        if (resource.getResourceURL() == null)
+            return false;
 
-        setSpecification(getSpecificationSource()
-                .getPageSpecification(resource));
+        setSpecification(getSpecificationSource().getPageSpecification(resource));
 
         install();
 
@@ -291,8 +286,7 @@ public class PageSpecificationResolverImpl extends
         IComponentSpecification specification = getSpecification();
         
         if (_log.isDebugEnabled())
-            _log.debug(ResolverMessages.installingPage(_simpleName, namespace,
-                    specification));
+            _log.debug(ResolverMessages.installingPage(_simpleName, namespace, specification));
         
         namespace.installPageSpecification(_simpleName, specification);
     }
@@ -305,8 +299,7 @@ public class PageSpecificationResolverImpl extends
 
     private String getTemplateExtension()
     {
-        return _componentPropertySource.getNamespaceProperty(getNamespace(),
-                Tapestry.TEMPLATE_EXTENSION_PROPERTY);
+        return _componentPropertySource.getNamespaceProperty(getNamespace(), Tapestry.TEMPLATE_EXTENSION_PROPERTY);
     }
 
     /** @since 4.0 */
@@ -317,8 +310,7 @@ public class PageSpecificationResolverImpl extends
     }
 
     /** @since 4.0 */
-    public void setComponentPropertySource(
-            ComponentPropertySource componentPropertySource)
+    public void setComponentPropertySource(ComponentPropertySource componentPropertySource)
     {
         _componentPropertySource = componentPropertySource;
     }
