@@ -13,11 +13,6 @@
 // limitations under the License.
 package org.apache.tapestry.dojo.form;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IScript;
@@ -29,6 +24,9 @@ import org.apache.tapestry.form.translator.DateTranslator;
 import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.valid.ValidatorException;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Implementation of the dojo DropdownDatePicker widget as a tapestry
  * component. Wraps a form input field with a date picker icon next to it
@@ -39,12 +37,10 @@ import org.apache.tapestry.valid.ValidatorException;
 public abstract class DropdownDatePicker extends AbstractFormWidget implements TranslatedField
 {
     
-    private static final SimpleDateFormat RFC3339_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-    
     /** parameter. */
-    public abstract Date getValue();
+    public abstract Object getValue();
     
-    public abstract void setValue(Date value);
+    public abstract void setValue(Object value);
     
     public abstract boolean isDisabled();
     
@@ -83,11 +79,11 @@ public abstract class DropdownDatePicker extends AbstractFormWidget implements T
         json.put("inputId", getClientId());
         json.put("inputName", getName());
         json.put("iconAlt", getIconAlt());
-        json.put("displayFormat", translator.getPattern());
-        json.put("saveFormat", translator.getPattern());
+        json.put("displayFormat", translator.getPattern(getPage().getLocale()));
+        json.put("saveFormat", translator.getPattern(getPage().getLocale()));
         
         if (getValue() != null) {
-            json.put("value", RFC3339_FORMAT.format(getValue()));
+            json.put("value", translator.formatRfc3339(getValue()));
         }
         
         json.put("disabled", isDisabled());
@@ -109,11 +105,11 @@ public abstract class DropdownDatePicker extends AbstractFormWidget implements T
         
         try
         {
-            Date date = (Date) getTranslatedFieldSupport().parse(this, value);
+            Object translated = getTranslatedFieldSupport().parse(this, value);
             
-            getValidatableFieldSupport().validate(this, writer, cycle, date);
+            getValidatableFieldSupport().validate(this, writer, cycle, translated);
             
-            setValue(date);
+            setValue(translated);
         }
         catch (ValidatorException e)
         {

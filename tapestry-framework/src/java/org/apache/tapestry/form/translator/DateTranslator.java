@@ -14,11 +14,6 @@
 
 package org.apache.tapestry.form.translator;
 
-import java.text.DateFormatSymbols;
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-
 import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
@@ -30,6 +25,11 @@ import org.apache.tapestry.valid.ValidationConstants;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 
+import java.text.DateFormatSymbols;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 /**
  * A {@link java.text.SimpleDateFormat}-based {@link Translator} implementation.
  * 
@@ -39,6 +39,8 @@ import org.apache.tapestry.valid.ValidationStrings;
 public class DateTranslator extends FormatTranslator
 {
     private boolean _lenient=true;
+
+    protected SimpleDateFormat _rfc339Format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     
     public DateTranslator()
     {
@@ -65,7 +67,19 @@ public class DateTranslator extends FormatTranslator
     {
         return getDateFormat(locale);
     }
-    
+
+    /**
+     * Get the RFC339 equivalent for the given object.
+     *
+     * @param input The object to be formatted.
+     * 
+     * @return A string value compliant with rfc339 internet time.
+     */
+    public String formatRfc3339(Object input)
+    {
+        return _rfc339Format.format(input);
+    }
+
     public SimpleDateFormat getDateFormat(Locale locale)
     {
         SimpleDateFormat ret = new SimpleDateFormat(getPattern(), new DateFormatSymbols(locale));

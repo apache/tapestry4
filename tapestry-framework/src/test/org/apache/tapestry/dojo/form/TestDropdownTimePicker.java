@@ -13,27 +13,19 @@
 // limitations under the License.
 package org.apache.tapestry.dojo.form;
 
-import static org.easymock.EasyMock.checkOrder;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-
-import java.util.Date;
-import java.util.Map;
-
-import org.apache.tapestry.IForm;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IScript;
-import org.apache.tapestry.PageRenderSupport;
+import org.apache.tapestry.*;
 import org.apache.tapestry.form.BaseFormComponentTestCase;
 import org.apache.tapestry.form.MockDelegate;
 import org.apache.tapestry.form.ValidatableFieldSupport;
 import org.apache.tapestry.form.translator.DateTranslator;
 import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.services.ResponseBuilder;
+import static org.easymock.EasyMock.*;
 import org.testng.annotations.Test;
+
+import java.util.Date;
+import java.util.Locale;
+import java.util.Map;
 
 
 /**
@@ -56,6 +48,7 @@ public class TestDropdownTimePicker extends BaseFormComponentTestCase
         IForm form = newMock(IForm.class);
         checkOrder(form, false);
         IPage page = newPage();
+        Locale locale = Locale.getDefault();
         
         MockDelegate delegate = new MockDelegate();
         
@@ -98,7 +91,9 @@ public class TestDropdownTimePicker extends BaseFormComponentTestCase
         expect(resp.isDynamic()).andReturn(false).anyTimes();
         
         vfs.renderContributions(component, writer, cycle);
-        
+
+        expect(page.getLocale()).andReturn(locale).anyTimes();
+
         PageRenderSupport prs = newPageRenderSupport();
         trainGetPageRenderSupport(cycle, prs);
         
