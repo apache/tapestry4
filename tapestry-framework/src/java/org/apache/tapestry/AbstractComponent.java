@@ -14,14 +14,6 @@
 
 package org.apache.tapestry;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.BaseLocatable;
@@ -35,6 +27,8 @@ import org.apache.tapestry.listener.ListenerMap;
 import org.apache.tapestry.services.ComponentRenderWorker;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
+
+import java.util.*;
 
 /**
  * Abstract base class implementing the {@link IComponent}interface.

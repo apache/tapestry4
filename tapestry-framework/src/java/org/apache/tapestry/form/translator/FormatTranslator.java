@@ -14,16 +14,16 @@
 
 package org.apache.tapestry.form.translator;
 
-import java.text.Format;
-import java.text.ParseException;
-import java.util.Locale;
-
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidatorException;
+
+import java.text.Format;
+import java.text.ParseException;
+import java.util.Locale;
 
 /**
  * Abstract {@link Translator} implementation for {@link java.text.Format}-based translators.
@@ -101,5 +101,17 @@ public abstract class FormatTranslator extends AbstractTranslator
     public void setPattern(String pattern)
     {
         _pattern = pattern;
+    }
+
+    /**
+     * Gets the pattern encapsulated by this translator, subclasses may optionally use the
+     * passed in {@link Locale} to return patterns specific to that locale.
+     * 
+     * @param locale The locale to use to format the pattern, if applicable.
+     * @return The pattern used to format/parse objects.
+     */
+    public String getPattern(Locale locale)
+    {
+        return _pattern;
     }
 }

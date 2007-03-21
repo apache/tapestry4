@@ -14,9 +14,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="tapestry" />
-    <orderEntry type="module" module-name="tapestry-annotations" />
-    <orderEntry type="module" module-name="tapestry-contrib" />
-    <orderEntry type="module" module-name="tapestry-framework" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -340,6 +337,9 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="tapestry-annotations" />
+    <orderEntry type="module" module-name="tapestry-contrib" />
+    <orderEntry type="module" module-name="tapestry-framework" />
     <orderEntryProperties />
   </component>
   <component name="WebModuleBuildComponent">
@@ -470,6 +470,10 @@
       <attribute name="method" value="1" />
       <attribute name="URI" value="/WEB-INF/lib/jboss-j2ee-4.0.2.jar" />
     </containerElement>
+    <containerElement type="library" name="Maven Dependency: jboss:jboss-j2ee:jar:4.0.2:provided" level="module">
+      <attribute name="method" value="1" />
+      <attribute name="URI" value="/WEB-INF/lib/jboss-j2ee-4.0.2.jar" />
+    </containerElement>
     <containerElement type="library" name="Maven Dependency: jcharts:jcharts:jar:0.6.0:compile" level="module">
       <attribute name="method" value="0" />
       <attribute name="URI" value="/WEB-INF/lib/jcharts-0.6.0.jar" />
@@ -486,6 +490,10 @@
       <attribute name="method" value="1" />
       <attribute name="URI" value="/WEB-INF/lib/junit-3.8.1.jar" />
     </containerElement>
+    <containerElement type="library" name="Maven Dependency: junit:junit:jar:3.8.1:provided" level="module">
+      <attribute name="method" value="1" />
+      <attribute name="URI" value="/WEB-INF/lib/junit-3.8.1.jar" />
+    </containerElement>
     <containerElement type="library" name="Maven Dependency: junit:junit:jar:3.8.1:test" level="module">
       <attribute name="method" value="0" />
       <attribute name="URI" value="/WEB-INF/lib/junit-3.8.1.jar" />
@@ -494,8 +502,16 @@
       <attribute name="method" value="1" />
       <attribute name="URI" value="/WEB-INF/lib/log4j-1.2.8.jar" />
     </containerElement>
+    <containerElement type="library" name="Maven Dependency: log4j:log4j:jar:1.2.8:test" level="module">
+      <attribute name="method" value="1" />
+      <attribute name="URI" value="/WEB-INF/lib/log4j-1.2.8.jar" />
+    </containerElement>
     <containerElement type="library" name="Maven Dependency: log4j:log4j:jar:1.2.9:compile" level="module">
       <attribute name="method" value="0" />
+      <attribute name="URI" value="/WEB-INF/lib/log4j-1.2.9.jar" />
+    </containerElement>
+    <containerElement type="library" name="Maven Dependency: log4j:log4j:jar:1.2.9:test" level="module">
+      <attribute name="method" value="1" />
       <attribute name="URI" value="/WEB-INF/lib/log4j-1.2.9.jar" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: log4j:log4j:jar:1.2.9:test" level="module">
