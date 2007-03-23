@@ -13,8 +13,6 @@
 // limitations under the License.
 package org.apache.tapestry.timetracker.page;
 
-import java.util.Date;
-
 import org.apache.log4j.Logger;
 import org.apache.tapestry.annotations.Component;
 import org.apache.tapestry.annotations.EventListener;
@@ -34,6 +32,8 @@ import org.apache.tapestry.timetracker.dao.TaskDao;
 import org.apache.tapestry.timetracker.model.Persistent;
 import org.apache.tapestry.timetracker.model.Project;
 import org.apache.tapestry.timetracker.model.Task;
+
+import java.util.Date;
 
 
 /**
@@ -77,7 +77,7 @@ public abstract class TaskEntryPage<E extends Persistent> extends BasePage
     public abstract Date getStartTime();
     
     @Component(bindings = {"value=endTime", "displayName=message:task.end.time",
-            "validators=validators:required"})
+            "validators=validators:required,differ=startPicker"})
     public abstract DropdownTimePicker getEndPicker();
     public abstract Date getEndTime();
     
