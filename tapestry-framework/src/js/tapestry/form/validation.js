@@ -265,5 +265,5 @@ tapestry.form.validation={
          */
         isNotEqual:function(value, other) {
             return !tapestry.form.validation.isEqual(value, other);
-        },
+        }
 }
