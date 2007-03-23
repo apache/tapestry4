@@ -1,3 +1,6 @@
+<html>
+<head><link rel="stylesheet" href="css/timetracker.css"/></head>
+<body jwcid="$content$">
 <span jwcid="@Border">
 
 <p>
@@ -7,26 +10,26 @@ using them.
 </p>
 
 <form jwcid="taskForm@Form" class="container" clientValidationEnabled="true" >
-<h3><span jwcid="@Insert" value="message:new.task"/></h3>
+<h3><span jwcid="@Insert" value="message:new.task">Task Entry</span></h3>
 	<fieldset>
     <table width="90%" class="form" cellpadding="2" cellspacing="0" >
     <tr>
-      <td><label jwcid="@FieldLabel" field="component:projectChoose" /></td>
-      <td><label jwcid="@FieldLabel" field="component:descriptionField" /></td>
+      <td><label jwcid="@FieldLabel" field="component:projectChoose">Choose Project</label></td>
+      <td><label jwcid="@FieldLabel" field="component:descriptionField">Description</label></td>
       <td><label>Duration</label></td>
       <td>&nbsp;</td>
     </tr>
     <tr id="secondRow">
-      <td><div class="field required"><span jwcid="projectChoose" /></div></td>
+      <td><div class="field required"><select jwcid="projectChoose" /></div></td>
       <td><div class="field required"><input jwcid="descriptionField" /></div></td>
       <td><div jwcid="duration@Any">18 minutes</div></td>
       <td>&nbsp;</td>
     </tr>
     
     <tr>
-      <td><label jwcid="@FieldLabel" field="component:datePicker" /></td>
-      <td><label jwcid="@FieldLabel" field="component:startPicker" /></td>
-      <td><label jwcid="@FieldLabel" field="component:endPicker" /></td>
+      <td><label jwcid="@FieldLabel" field="component:datePicker">Date Picker</label></td>
+      <td><label jwcid="@FieldLabel" field="component:startPicker">Start Picker</label></td>
+      <td><label jwcid="@FieldLabel" field="component:endPicker">End Picker</label></td>
       <td>&nbsp;</td>
     </tr>
     
@@ -83,3 +86,4 @@ using them.
 </div>
 
 </span>
+</body>
