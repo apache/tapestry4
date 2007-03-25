@@ -13,11 +13,12 @@
   <component name="CodeStyleSettingsManager">
     <option name="PER_PROJECT_SETTINGS">
       <value>
+        <option name="METHOD_BRACE_STYLE" value="2" />
         <option name="ALIGN_MULTILINE_BINARY_OPERATION" value="true" />
         <option name="ALIGN_MULTILINE_PARENTHESIZED_EXPRESSION" value="true" />
       </value>
     </option>
-    <option name="USE_PER_PROJECT_SETTINGS" value="false" />
+    <option name="USE_PER_PROJECT_SETTINGS" value="true" />
   </component>
   <component name="CompilerConfiguration">
     <option name="DEFAULT_COMPILER" value="Javac" />
@@ -175,6 +176,7 @@
                 <value>
                   <collection type="java.util.TreeSet">
                     <entry type="java.lang.String" value="tapestry" />
+                    <entry type="java.lang.String" value="tapestry-annotations" />
                   </collection>
                 </value>
                 <key type="java.lang.String" value="TimeTracker" />
@@ -183,9 +185,18 @@
                 <value>
                   <collection type="java.util.TreeSet">
                     <entry type="java.lang.String" value="tapestry" />
+                    <entry type="java.lang.String" value="tapestry-annotations" />
                   </collection>
                 </value>
                 <key type="java.lang.String" value="Workbench" />
+              </entry>
+              <entry>
+                <value>
+                  <collection type="java.util.TreeSet">
+                    <entry type="java.lang.String" value="tapestry-annotations" />
+                  </collection>
+                </value>
+                <key type="java.lang.String" value="tapestry" />
               </entry>
               <entry>
                 <value>
