@@ -13,11 +13,12 @@
 // limitations under the License.
 package org.apache.tapestry.enhance;
 
-import java.util.Map;
-
+import com.javaforge.tapestry.testng.TestBase;
+import org.apache.tapestry.IPage;
 import org.testng.annotations.Test;
 
-import com.javaforge.tapestry.testng.TestBase;
+import java.lang.reflect.Method;
+import java.util.Map;
 
 
 /**
@@ -110,4 +111,31 @@ public class MethodSignatureTest extends TestBase
         assert child.equals(base);
         assert base.equals(child);
     }
+
+    public void test_Find_Type()
+    {
+        Class clazz=TestGeneric.class;
+        Method[] ms = clazz.getMethods();
+        
+        for (Method m : ms) {
+
+            MethodSignature sig = new GenericsMethodSignatureImpl(clazz, m);
+
+            assertEquals(sig.getName(), m.getName());
+            assertEquals(sig.getReturnType(), m.getReturnType());
+            assertEquals(sig.getParameterTypes(), m.getParameterTypes());
+            assertEquals(sig.getExceptionTypes(), m.getExceptionTypes());
+            assertEquals(sig.getReturnType(), m.getReturnType());
+        }
+    }
+
+    public class TestGeneric<T> extends BaseGeneric<T>{
+
+    }
+    public class BaseGeneric<T> {
+        public IPage doDeleteEntityAction(T entity) {
+            return null;
+        }
+    }
+
 }

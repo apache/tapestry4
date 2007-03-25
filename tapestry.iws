@@ -18,15 +18,8 @@
   <component name="ChangeListManager">
     <list default="true" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry.iws" afterPath="$PROJECT_DIR$/tapestry.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-annotations/tapestry-annotations.iml" afterPath="$PROJECT_DIR$/tapestry-annotations/tapestry-annotations.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-contrib/tapestry-contrib.iml" afterPath="$PROJECT_DIR$/tapestry-contrib/tapestry-contrib.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/tapestry-framework.iml" afterPath="$PROJECT_DIR$/tapestry-framework/tapestry-framework.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry.ipr" afterPath="$PROJECT_DIR$/tapestry.ipr" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/js/tapestry/form/validation.js" afterPath="$PROJECT_DIR$/tapestry-framework/src/js/tapestry/form/validation.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-examples/TimeTracker/TimeTracker.iml" afterPath="$PROJECT_DIR$/tapestry-examples/TimeTracker/TimeTracker.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-examples/Workbench/Workbench.iml" afterPath="$PROJECT_DIR$/tapestry-examples/Workbench/Workbench.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry.iml" afterPath="$PROJECT_DIR$/tapestry.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-portlet/tapestry-portlet.iml" afterPath="$PROJECT_DIR$/tapestry-portlet/tapestry-portlet.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/enhance/MethodSignatureTest.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/enhance/MethodSignatureTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/enhance/GenericsMethodSignatureImpl.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/enhance/GenericsMethodSignatureImpl.java" />
     </list>
   </component>
   <component name="ChangesViewManager" flattened_view="true" />
@@ -149,17 +142,7 @@
     </subPane>
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="validation.js" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/tapestry-framework/src/js/tapestry/form/validation.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="170" column="0" selection-start="5737" selection-end="5737" vertical-scroll-proportion="0.16950597">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -349,14 +332,14 @@
       </UpdatedFiles>
     </UpdateInfo>
   </component>
-  <component name="RunManager" selected="TestNG.TestDropdownTimePicker">
-    <tempConfiguration default="false" name="TestDropdownTimePicker" type="TestNG" factoryName="TestNG" enabled="false" merge="false">
+  <component name="RunManager" selected="TestNG.MethodSignatureTest">
+    <tempConfiguration default="false" name="MethodSignatureTest" type="TestNG" factoryName="TestNG" enabled="false" merge="false">
       <module name="tapestry-framework" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="SUITE_NAME" />
-      <option name="PACKAGE_NAME" value="org.apache.tapestry.dojo.form" />
-      <option name="MAIN_CLASS_NAME" value="org.apache.tapestry.dojo.form.TestDropdownTimePicker" />
+      <option name="PACKAGE_NAME" value="org.apache.tapestry.enhance" />
+      <option name="MAIN_CLASS_NAME" value="org.apache.tapestry.enhance.MethodSignatureTest" />
       <option name="METHOD_NAME" />
       <option name="GROUP_NAME" />
       <option name="TEST_OBJECT" value="CLASS" />
@@ -434,6 +417,9 @@
       <option name="TEST_SEARCH_SCOPE">
         <value defaultName="wholeProject" />
       </option>
+      <method>
+        <option name="Make" value="true" />
+      </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application" enabled="false" merge="false">
       <option name="MAIN_CLASS_NAME" />
@@ -599,41 +585,6 @@
     <option name="myLastEditedConfigurable" value="Project Default" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar:///usr/local/jdk1.6.0/src.zip!/java/text/Format.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="160" column="33" selection-start="6506" selection-end="6506" vertical-scroll-proportion="0.33304942">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///usr/local/jdk1.6.0/src.zip!/java/text/SimpleDateFormat.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="850" column="42" selection-start="30898" selection-end="30898" vertical-scroll-proportion="0.46763203">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/form/translator/Translator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="0" selection-start="1487" selection-end="1487" vertical-scroll-proportion="0.26831347">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-framework/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="139" column="0" selection-start="5013" selection-end="5013" vertical-scroll-proportion="0.4088586">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/form/translator/DateTranslator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="43" column="4" selection-start="1591" selection-end="1591" vertical-scroll-proportion="0.21720614">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/form/translator/TestDateTranslator.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="108" column="0" selection-start="3147" selection-end="3147" vertical-scroll-proportion="0.2810903">
@@ -699,7 +650,42 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/tapestry-framework/src/js/tapestry/form/validation.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="170" column="0" selection-start="5737" selection-end="5737" vertical-scroll-proportion="0.16950597">
+        <state line="185" column="9" selection-start="6260" selection-end="6260" vertical-scroll-proportion="1.0127769">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/enhance/autowire-multiple.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="30" column="0" selection-start="1120" selection-end="1120" vertical-scroll-proportion="0.38330495">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/enhance/TestEnhancementOperation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="74" column="0" selection-start="2620" selection-end="2620" vertical-scroll-proportion="-0.88160133">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/enhance/FooGenericComponent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="34" column="0" selection-start="915" selection-end="915" vertical-scroll-proportion="0.2810903">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/enhance/MethodSignatureTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="93" column="8" selection-start="3118" selection-end="3118" vertical-scroll-proportion="0.3100511">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/enhance/GenericsMethodSignatureImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="72" column="43" selection-start="2430" selection-end="2430" vertical-scroll-proportion="0.39608178">
           <folding />
         </state>
       </provider>
