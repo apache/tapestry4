@@ -70,7 +70,7 @@ public class GenericsMethodSignatureImpl extends MethodSignatureImpl implements 
     {
         for (int i = 0; i < types.length; i++) {
 
-            if (type.isAssignableFrom((Class)types[i]))
+            if (Class.class.isInstance(types[i]) && type.isAssignableFrom((Class)types[i]))
                 return (Class)types[i];
         }
 
