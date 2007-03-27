@@ -13,11 +13,11 @@
 // limitations under the License.
 package org.apache.tapestry.spec;
 
-import java.util.Map;
-
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.internal.event.ComponentEventProperty;
 import org.apache.tapestry.internal.event.EventBoundListener;
+
+import java.util.Map;
 
 
 /**
@@ -44,7 +44,7 @@ public interface IEventListener
      *          If submitting a form, controls whether or not to focus it after an update.
      */
     void addEventListener(String componentId, String[] events, 
-            String methodName, String formId, boolean validateForm, boolean async, boolean focus);
+            String methodName, String formId, boolean validateForm, boolean async, boolean focus, boolean autoSubmit);
     
     /**
      * Adds a deferred event listener binding for the specified html element.

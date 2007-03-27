@@ -13,9 +13,6 @@
 // limitations under the License.
 package org.apache.tapestry.annotations;
 
-import java.lang.reflect.Method;
-import java.util.List;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.enhance.EnhancementOperation;
@@ -26,6 +23,9 @@ import org.apache.tapestry.internal.event.impl.ComponentEventInvoker;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.testng.annotations.Test;
+
+import java.lang.reflect.Method;
+import java.util.List;
 
 
 /**
@@ -73,7 +73,7 @@ public class TestEventListenerAnnotationWorker extends BaseAnnotationTestCase
         assertNotNull(listeners);
         assertEquals(1, listeners.size());
         
-        assert ((EventBoundListener)listeners.get(0)).shouldFocusForm() == false;
+        assert !((EventBoundListener)listeners.get(0)).shouldFocusForm();
     }
     
     public void test_Form_Event_Connection()
@@ -109,6 +109,7 @@ public class TestEventListenerAnnotationWorker extends BaseAnnotationTestCase
         assertEquals("testForm", formListener.getFormId());
         assertFalse(formListener.isValidateForm());
         assert formListener.shouldFocusForm();
+        assert !formListener.isAutoSubmit();
     }
     
     public void test_Targets_Not_Found()

@@ -14,11 +14,6 @@
 
 package org.apache.tapestry.resolver;
 
-import static org.easymock.EasyMock.checkOrder;
-import static org.easymock.EasyMock.expect;
-
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
@@ -32,7 +27,11 @@ import org.apache.tapestry.services.ComponentPropertySource;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
+import static org.easymock.EasyMock.checkOrder;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
+
+import java.util.List;
 
 /**
  * Tests for {@link org.apache.tapestry.resolver.PageSpecificationResolverImpl}.
@@ -618,6 +617,59 @@ public class PageSpecificationResolverTest extends AbstractSpecificationResolver
         resolver.resolve(cycle, "MyAppPage");
 
         assertEquals("MyAppPage", resolver.getSimplePageName());
+        assertSame(spec, resolver.getSpecification());
+        assertSame(application, resolver.getNamespace());
+
+        verify();
+    }
+
+    // TODO: Recreate TAPESTRY-1376
+    public void test_Malformed_Found_In_WebInf_App_Folder()
+    {
+        Log log = newLog();
+
+        Resource contextRoot = newResource("context/");
+        IComponentSpecification spec = newSpecification();
+
+        Resource resource = contextRoot.getRelativeResource("WEB-INF/myapp/MalformedXmlTag.page");
+
+        INamespace application = newNamespace();
+
+        INamespace framework = newNamespace();
+        ISpecificationSource source = newSource(application, framework, resource, spec);
+        IRequestCycle cycle = newCycle();
+
+        trainContainsPage(application, "MalformedXmlTag", false);
+
+        train(log, ResolverMessages.resolvingPage("MalformedXmlTag", application));
+
+        // Pretend the app spec is in the WEB-INF folder
+
+        trainGetSpecificationLocation(application, contextRoot, "WEB-INF/");
+
+        train(log, ResolverMessages.checkingResource(contextRoot.getRelativeResource("WEB-INF/MalformedXmlTag.page")));
+
+        trainIsApplicationNamespace(application, true);
+
+        train(log, ResolverMessages.checkingResource(resource));
+
+        train(log, ResolverMessages.installingPage("MalformedXmlTag", application, spec));
+
+        application.installPageSpecification("MalformedXmlTag", spec);
+
+        replay();
+
+        PageSpecificationResolverImpl resolver = new PageSpecificationResolverImpl();
+        resolver.setContextRoot(contextRoot);
+        resolver.setSpecificationSource(source);
+        resolver.setLog(log);
+        resolver.setApplicationId("myapp");
+
+        resolver.initializeService();
+
+        resolver.resolve(cycle, "MalformedXmlTag");
+
+        assertEquals("MalformedXmlTag", resolver.getSimplePageName());
         assertSame(spec, resolver.getSpecification());
         assertSame(application, resolver.getNamespace());
 

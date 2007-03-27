@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.junit.parse;
 
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.Locatable;
 import org.apache.hivemind.Resource;
@@ -25,21 +23,11 @@ import org.apache.tapestry.bean.BindingBeanInitializer;
 import org.apache.tapestry.bean.LightweightBeanInitializer;
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.parse.SpecificationParser;
-import org.apache.tapestry.spec.BindingType;
-import org.apache.tapestry.spec.IApplicationSpecification;
-import org.apache.tapestry.spec.IAssetSpecification;
-import org.apache.tapestry.spec.IBeanSpecification;
-import org.apache.tapestry.spec.IBindingSpecification;
-import org.apache.tapestry.spec.IComponentSpecification;
-import org.apache.tapestry.spec.IContainedComponent;
-import org.apache.tapestry.spec.IExtensionSpecification;
-import org.apache.tapestry.spec.ILibrarySpecification;
-import org.apache.tapestry.spec.IParameterSpecification;
-import org.apache.tapestry.spec.IPropertySpecification;
-import org.apache.tapestry.spec.InjectSpecification;
-import org.apache.tapestry.spec.SpecFactory;
+import org.apache.tapestry.spec.*;
 import org.apache.tapestry.util.xml.DocumentParseException;
 import org.testng.annotations.Test;
+
+import java.util.List;
 
 /**
  * Tests the specification parser (which reads page and component specifications). Came into being
@@ -61,7 +49,7 @@ public class TestSpecificationParser extends TapestryTestCase
      * Test 3.0 &lt;message-binding&gt; element.
      */
 
-    public void tesMessageBinding() throws Exception
+    public void tes_Message_Binding() throws Exception
     {
         IComponentSpecification spec = parseComponent("TestMessageBinding.jwc");
 
@@ -277,6 +265,20 @@ public class TestSpecificationParser extends TapestryTestCase
         {
             checkException(ex, "Invalid$Extension");
             checkException(ex, "extension name");
+        }
+    }
+
+    public void test_Malformed_Xml_Tag() throws Exception
+    {
+        try
+        {
+             parsePage("MalformedXmlTag.page");
+
+            unreachable();
+        }
+        catch (DocumentParseException ex)
+        {
+            checkException(ex, "Element type \"binding\" must be followed by either attribute");
         }
     }
 

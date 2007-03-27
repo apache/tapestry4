@@ -28,6 +28,11 @@
       <entry name=".+\.(gif|png|jpeg|jpg)" />
     </resourceExtensions>
     <wildcardResourcePatterns>
+      <entry name="?*.library" />
+      <entry name="?*.page" />
+      <entry name="?*.jwc" />
+      <entry name="?*.application" />
+      <entry name="?*.script" />
       <entry name="?*.properties" />
       <entry name="?*.xml" />
       <entry name="?*.gif" />
@@ -176,7 +181,6 @@
                 <value>
                   <collection type="java.util.TreeSet">
                     <entry type="java.lang.String" value="tapestry" />
-                    <entry type="java.lang.String" value="tapestry-annotations" />
                   </collection>
                 </value>
                 <key type="java.lang.String" value="TimeTracker" />
@@ -185,18 +189,9 @@
                 <value>
                   <collection type="java.util.TreeSet">
                     <entry type="java.lang.String" value="tapestry" />
-                    <entry type="java.lang.String" value="tapestry-annotations" />
                   </collection>
                 </value>
                 <key type="java.lang.String" value="Workbench" />
-              </entry>
-              <entry>
-                <value>
-                  <collection type="java.util.TreeSet">
-                    <entry type="java.lang.String" value="tapestry-annotations" />
-                  </collection>
-                </value>
-                <key type="java.lang.String" value="tapestry" />
               </entry>
               <entry>
                 <value>
@@ -380,7 +375,15 @@
       </value>
     </option>
   </component>
-  <component name="libraryTable" />
+  <component name="libraryTable">
+    <library name="descriptor">
+      <CLASSES>
+        <root url="file://$PROJECT_DIR$/tapestry-framework/src/descriptor" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+  </component>
   <component name="uidesigner-configuration">
     <option name="INSTRUMENT_CLASSES" value="true" />
     <option name="COPY_FORMS_RUNTIME_TO_OUTPUT" value="true" />

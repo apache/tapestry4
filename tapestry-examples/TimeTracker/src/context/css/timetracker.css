@@ -5,6 +5,8 @@
 body {
     width: auto;
     margin-left: 3%;
+    background:#FFFFFF url(../images/body-bkg.png) repeat-x;
+    color:#000000;
 }
 
 body, td, th {

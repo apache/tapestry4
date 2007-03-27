@@ -13,32 +13,8 @@
 //limitations under the License.
 package org.apache.tapestry.services.impl;
 
-import java.lang.reflect.Modifier;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import ognl.ASTAnd;
-import ognl.ASTChain;
-import ognl.ASTConst;
-import ognl.ASTMethod;
-import ognl.ASTOr;
-import ognl.ASTRootVarRef;
-import ognl.ASTStaticField;
-import ognl.ASTVarRef;
-import ognl.ExpressionNode;
-import ognl.Node;
-import ognl.NodeType;
-import ognl.Ognl;
-import ognl.OgnlContext;
-import ognl.enhance.ExpressionAccessor;
-import ognl.enhance.ExpressionCompiler;
-import ognl.enhance.OgnlExpressionCompiler;
-import ognl.enhance.OrderedReturn;
-import ognl.enhance.UnsupportedCompilationException;
-
+import ognl.*;
+import ognl.enhance.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
@@ -47,6 +23,9 @@ import org.apache.hivemind.service.ClassFactory;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.enhance.AbstractFab;
+
+import java.lang.reflect.Modifier;
+import java.util.*;
 
 /**
  * Adds to default ognl compiler class pools.
@@ -106,8 +85,11 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
         } else if (context.getCurrentAccessor().isArray()) {
 
             castClass = context.getCurrentAccessor().getCanonicalName();
-        } else
-            castClass = context.getCurrentAccessor().getName();
+        } else {
+            castClass = (context.getCurrentAccessor().getName().indexOf("$") > -1)
+            ? OgnlRuntime.getCompiler().getInterfaceClass(context.getCurrentAccessor()).getName()
+                : context.getCurrentAccessor().getName();
+        }
 
         ExpressionCompiler.addCastString(context, "((" + castClass + ")");
 

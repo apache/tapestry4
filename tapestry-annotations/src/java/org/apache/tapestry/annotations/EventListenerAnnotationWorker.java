@@ -13,13 +13,13 @@
 // limitations under the License.
 package org.apache.tapestry.annotations;
 
-import java.lang.reflect.Method;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.internal.event.IComponentEventInvoker;
 import org.apache.tapestry.spec.IComponentSpecification;
+
+import java.lang.reflect.Method;
 
 
 /**
@@ -54,6 +54,7 @@ public class EventListenerAnnotationWorker implements SecondaryAnnotationWorker
         boolean validateForm = listener.validateForm();
         boolean async = listener.async();
         boolean focus = listener.focus();
+        boolean autoSubmit = listener.autoSubmit();
         
         if (targets.length < 1 && elements.length < 1)
             throw new ApplicationRuntimeException(AnnotationMessages.targetsNotFound(method));
@@ -61,7 +62,7 @@ public class EventListenerAnnotationWorker implements SecondaryAnnotationWorker
         for (int i=0; i < targets.length; i++) {
             
             spec.addEventListener(targets[i], listener.events(), 
-                    method.getName(), formId, validateForm, async, focus);
+                    method.getName(), formId, validateForm, async, focus, autoSubmit);
             
             _invoker.addEventListener(targets[i], spec);
             

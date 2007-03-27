@@ -13,20 +13,15 @@
 // limitations under the License.
 package org.apache.tapestry.annotations;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.apache.tapestry.IComponent;
+
+import java.lang.annotation.*;
 
 /**
  * Annotation used to connect an event on a component / page with a particular listener method. This
  * is currently intended to be used to connect client side events to listener methods but may have
  * uses elsewhere.
  * 
- * @author jkuhnert
  */
 @Target( { ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
@@ -58,6 +53,15 @@ public @interface EventListener
      * @return The form name (or id of component) to submit when event is triggered.
      */
     String submitForm() default "";
+
+    /**
+     * When any of the components targeted for an event is an instance of {@link org.apache.tapestry.form.IFormComponent} this
+     * setting can allow the form to be automatically discovered when wiring this listener up to the event such that it is
+     * submitted for you automatically without having to specify a {@link #submitForm()} parameter. The default is true.
+     *
+     * @return True if {@link org.apache.tapestry.form.IFormComponent}s should submit their containing forms by default, false otherwise.
+     */
+    boolean autoSubmit() default true;
 
     /**
      * Whether or not to perform form validation if the {@link #submitForm()} parameter has been set.

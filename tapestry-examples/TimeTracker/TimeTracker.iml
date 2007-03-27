@@ -14,9 +14,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="tapestry" />
-    <orderEntry type="module" module-name="tapestry-annotations" />
-    <orderEntry type="module" module-name="tapestry-contrib" />
-    <orderEntry type="module" module-name="tapestry-framework" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>

@@ -14,9 +14,6 @@
 
 package org.apache.tapestry.junit;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Registry;
@@ -36,6 +33,9 @@ import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
 import org.apache.tapestry.util.IPropertyHolder;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Base class for Tapestry test cases.
@@ -164,17 +164,19 @@ public abstract class TapestryTestCase extends BaseComponentTestCase
         // Only build the Registry the first time this is called. The same Registry
         // can then be used for any remaining calls.
 
-        if (_sharedValueConverter == null)
-        {
+        try {
+            
+            if (_sharedValueConverter == null)
+            {
+                Registry r =  RegistryBuilder.constructDefaultRegistry();
 
-            Registry r = RegistryBuilder.constructDefaultRegistry();
+                _sharedValueConverter = (ValueConverter) r.getService("tapestry.coerce.ValueConverter", ValueConverter.class);
+            }
 
-            _sharedValueConverter = (ValueConverter) r.getService(
-                    "tapestry.coerce.ValueConverter",
-                    ValueConverter.class);
+            return _sharedValueConverter;
+        } catch (Throwable t) {
+            throw new RuntimeException(t);
         }
-
-        return _sharedValueConverter;
     }
 
     protected IComponent newComponent()

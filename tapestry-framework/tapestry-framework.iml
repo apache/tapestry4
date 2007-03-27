@@ -327,7 +327,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="Maven Dependency: org.openqa.selenium.server:selenium-server:jar:standalone:0.9.1-SNAPSHOT:test">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.m2/repository/org/openqa/selenium/server/selenium-server/0.9.1-SNAPSHOT/selenium-server-0.9.1-SNAPSHOT-standalone.jar!/" />
@@ -358,6 +358,7 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="library" exported="" name="descriptor" level="project" />
     <orderEntryProperties />
   </component>
 </module>
