@@ -17,7 +17,9 @@ package org.apache.tapestry.spec;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Resource;
+import org.apache.hivemind.util.Defense;
 import org.apache.hivemind.util.ToStringBuilder;
+import org.apache.tapestry.IForm;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.internal.event.ComponentEventProperty;
 import org.apache.tapestry.internal.event.EventBoundListener;
@@ -603,8 +605,7 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
                 .get(name);
 
         if (existing != null)
-            throw new ApplicationRuntimeException(SpecMessages.duplicateProperty(name, existing),
-                    spec.getLocation(), null);
+            throw new ApplicationRuntimeException(SpecMessages.duplicateProperty(name, existing), spec.getLocation(), null);
 
         claimProperty(name, spec);
 
@@ -724,9 +725,21 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
             _elementEvents.put(elementId, property);
         }
         
-        property.addListener(events, methodName, formId, validateForm, async, focus);
+        property.addListener(events, methodName, formId, validateForm, async, focus, true);
     }
-    
+
+    public void connectAutoSubmitEvents(String componentId, IForm form)
+    {
+        Defense.notNull(form, "form");
+        
+        ComponentEventProperty property = getComponentEvents(componentId);
+        
+        if (property == null)
+            return;
+        
+        property.connectAutoSubmitEvents(form.getId());
+    }
+
     /**
      * {@inheritDoc}
      */

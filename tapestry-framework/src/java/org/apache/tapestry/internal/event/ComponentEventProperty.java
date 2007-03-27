@@ -106,7 +106,34 @@ public class ComponentEventProperty
         if (!listeners.contains(listener))
             listeners.add(listener);
     }
-    
+
+    public void connectAutoSubmitEvents(String formId)
+    {
+        Iterator it = getEvents().iterator();
+        while (it.hasNext()) {
+            String key = (String)it.next();
+
+            List listeners = (List) _eventMap.get(key);
+            Iterator lit = listeners.iterator();
+            while (lit.hasNext()) {
+                
+                EventBoundListener listener = (EventBoundListener) lit.next();
+
+                listener.setFormId(formId);
+                lit.remove();
+
+                List formListeners = getFormEventListeners(key);
+                if (!formListeners.contains(listener))
+                    formListeners.add(listener);
+            }
+            
+            // remove mapping if empty
+            
+            if (listeners.size() == 0)
+                it.remove();
+        }
+    }
+
     /**
      * @return the componentId
      */

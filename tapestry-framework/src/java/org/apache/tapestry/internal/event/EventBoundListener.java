@@ -50,7 +50,7 @@ public class EventBoundListener
      */
     public EventBoundListener(String methodName, String componentId)
     {
-        this(methodName, componentId, false);
+        this(methodName, componentId, true);
     }
 
     /**
@@ -60,7 +60,7 @@ public class EventBoundListener
      */
     public EventBoundListener(String methodName, String componentId, boolean autoSubmit)
     {
-        this(methodName, null, false, componentId, false, false, autoSubmit);
+        this(methodName, null, false, componentId, true, false, autoSubmit);
     }
 
     /**
@@ -96,7 +96,7 @@ public class EventBoundListener
     public EventBoundListener(String methodName, String formId,
             boolean validateForm, String componentId, boolean async, boolean focus)
     {
-        this(methodName, formId, validateForm, componentId, async, focus, false);
+        this(methodName, formId, validateForm, componentId, async, focus, true);
     }
     
     /**

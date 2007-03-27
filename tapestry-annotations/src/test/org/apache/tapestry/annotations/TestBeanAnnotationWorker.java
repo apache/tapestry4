@@ -14,12 +14,6 @@
 
 package org.apache.tapestry.annotations;
 
-import static org.easymock.EasyMock.expect;
-
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.List;
-
 import org.apache.hivemind.Location;
 import org.apache.tapestry.bean.LightweightBeanInitializer;
 import org.apache.tapestry.enhance.EnhancementOperation;
@@ -27,7 +21,12 @@ import org.apache.tapestry.spec.BeanLifecycle;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IBeanSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
+
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Tests for {@link org.apache.tapestry.annotations.BeanAnnotationWorker}.
@@ -95,7 +94,7 @@ public class TestBeanAnnotationWorker extends BaseAnnotationTestCase
 
     public void testInitializer()
     {
-        EnhancementOperation op = newOp("beanWithInitializer", Target.class);
+        EnhancementOperation op = newOp("beanWithInitializer", TargetValues.class);
         IComponentSpecification spec = new ComponentSpecification();
 
         Method m = findMethod(AnnotatedPage.class, "getBeanWithInitializer");

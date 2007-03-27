@@ -18,11 +18,7 @@ import org.apache.tapestry.annotations.Component;
 import org.apache.tapestry.annotations.EventListener;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.Persist;
-import org.apache.tapestry.dojo.form.Autocompleter;
-import org.apache.tapestry.dojo.form.DefaultAutocompleteModel;
-import org.apache.tapestry.dojo.form.DropdownDatePicker;
-import org.apache.tapestry.dojo.form.DropdownTimePicker;
-import org.apache.tapestry.dojo.form.IAutocompleteModel;
+import org.apache.tapestry.dojo.form.*;
 import org.apache.tapestry.dojo.html.Dialog;
 import org.apache.tapestry.form.TextField;
 import org.apache.tapestry.html.BasePage;
@@ -106,8 +102,7 @@ public abstract class TaskEntryPage<E extends Persistent> extends BasePage
      * Invoked when an item is selected from the project
      * selection list.
      */
-    @EventListener(events = "onValueChanged", targets = "projectChoose", 
-            submitForm = "taskForm")
+    @EventListener(events = "onValueChanged", targets = "projectChoose")
     public void projectSelected()
     {
         getBuilder().updateComponent("projectDescription");

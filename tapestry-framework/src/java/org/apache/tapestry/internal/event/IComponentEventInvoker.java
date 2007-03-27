@@ -13,15 +13,16 @@
 // limitations under the License.
 package org.apache.tapestry.internal.event;
 
-import java.util.List;
-
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.form.FormSupport;
+import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.spec.IComponentSpecification;
+
+import java.util.List;
 
 
 /**
@@ -66,7 +67,24 @@ public interface IComponentEventInvoker extends ResetEventListener
      *          The listener that has form bound event listeners.
      */
     void addFormEventListener(String formId, IComponentSpecification listener);
-    
+
+    /**
+     * Invoked to auto connect and re-wire any events on the specified component to whatever
+     * containing form it is in.
+     * 
+     * @param component The component to re-wire for submission to its form.
+     */
+    void connectAutoSubmitEvents(IFormComponent component);
+
+    /**
+     * Utility method used for autoSubmit bindings with listeners bound to {@link IFormComponent}s
+     * that don't know what their enclosing form id is until they are rendered.
+     * 
+     * @param formComponentId The components id.
+     * @return The previously mapped form id for that component, may be null.
+     */
+    String getPreviouslyMappedFormId(String formComponentId);
+
     /**
      * Gets a list of form bound event listeners previously bound via {@link #addFormEventListener(String, IComponentSpecification)}.
      * 

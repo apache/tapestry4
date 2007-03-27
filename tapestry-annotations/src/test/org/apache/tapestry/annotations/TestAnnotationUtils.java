@@ -14,10 +14,10 @@
 
 package org.apache.tapestry.annotations;
 
-import java.lang.reflect.Method;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.testng.annotations.Test;
+
+import java.lang.reflect.Method;
 
 /**
  * Tests for {@link org.apache.tapestry.annotations.AnnotationUtils}.
@@ -37,22 +37,22 @@ public class TestAnnotationUtils extends BaseAnnotationTestCase
 
     public void testGetPropertyName()
     {
-        assertEquals("stringValue", attemptGetPropertyName(Target.class, "getStringValue"));
-        assertEquals("intValue", attemptGetPropertyName(Target.class, "setIntValue"));
-        assertEquals("booleanValue", attemptGetPropertyName(Target.class, "isBooleanValue"));
+        assertEquals("stringValue", attemptGetPropertyName(TargetValues.class, "getStringValue"));
+        assertEquals("intValue", attemptGetPropertyName(TargetValues.class, "setIntValue"));
+        assertEquals("booleanValue", attemptGetPropertyName(TargetValues.class, "isBooleanValue"));
     }
 
     public void testGetPropertyNameNotAGetter()
     {
         try
         {
-            attemptGetPropertyName(Target.class, "notAGetter");
+            attemptGetPropertyName(TargetValues.class, "notAGetter");
             unreachable();
         }
         catch (ApplicationRuntimeException ex)
         {
             assertEquals(
-                    "Annotated method public abstract java.lang.String org.apache.tapestry.annotations.Target.notAGetter() "
+                    "Annotated method public abstract java.lang.String org.apache.tapestry.annotations.TargetValues.notAGetter() "
                             + "should be an accessor (no parameters), or a mutator (single parameter, returns void).",
                     ex.getMessage());
         }
@@ -62,13 +62,13 @@ public class TestAnnotationUtils extends BaseAnnotationTestCase
     {
         try
         {
-            attemptGetPropertyName(Target.class, "setNoParameters");
+            attemptGetPropertyName(TargetValues.class, "setNoParameters");
             unreachable();
         }
         catch (ApplicationRuntimeException ex)
         {
             assertEquals(
-                    "Annotated method public abstract void org.apache.tapestry.annotations.Target.setNoParameters() is named like a mutator method,"
+                    "Annotated method public abstract void org.apache.tapestry.annotations.TargetValues.setNoParameters() is named like a mutator method,"
                             + " but takes an incorrect number of parameters (it should have exactly one parameter).",
                     ex.getMessage());
         }
@@ -78,13 +78,13 @@ public class TestAnnotationUtils extends BaseAnnotationTestCase
     {
         try
         {
-            attemptGetPropertyName(Target.class, "setNonVoidMethod");
+            attemptGetPropertyName(TargetValues.class, "setNonVoidMethod");
             unreachable();
         }
         catch (ApplicationRuntimeException ex)
         {
             assertEquals(
-                    "Annotated method public abstract java.lang.String org.apache.tapestry.annotations.Target.setNonVoidMethod(java.lang.String) "
+                    "Annotated method public abstract java.lang.String org.apache.tapestry.annotations.TargetValues.setNonVoidMethod(java.lang.String) "
                             + "is named like a mutator method, but does not return void.",
                     ex.getMessage());
         }
@@ -94,13 +94,13 @@ public class TestAnnotationUtils extends BaseAnnotationTestCase
     {
         try
         {
-            attemptGetPropertyName(Target.class, "getHasParameters");
+            attemptGetPropertyName(TargetValues.class, "getHasParameters");
             unreachable();
         }
         catch (ApplicationRuntimeException ex)
         {
             assertEquals(
-                    "Annotated method public abstract java.lang.String org.apache.tapestry.annotations.Target.getHasParameters(java.lang.String) "
+                    "Annotated method public abstract java.lang.String org.apache.tapestry.annotations.TargetValues.getHasParameters(java.lang.String) "
                             + "is expected to be an accessor, and should have no parameters.",
                     ex.getMessage());
         }
@@ -110,13 +110,13 @@ public class TestAnnotationUtils extends BaseAnnotationTestCase
     {
         try
         {
-            attemptGetPropertyName(Target.class, "isVoidGetter");
+            attemptGetPropertyName(TargetValues.class, "isVoidGetter");
             unreachable();
         }
         catch (ApplicationRuntimeException ex)
         {
             assertEquals(
-                    "Annotated method public abstract void org.apache.tapestry.annotations.Target.isVoidGetter() "
+                    "Annotated method public abstract void org.apache.tapestry.annotations.TargetValues.isVoidGetter() "
                             + "is named like an accessor method, but returns void.",
                     ex.getMessage());
         }

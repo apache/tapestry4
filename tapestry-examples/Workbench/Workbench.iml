@@ -16,6 +16,9 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="tapestry" />
+    <orderEntry type="module" module-name="tapestry-annotations" />
+    <orderEntry type="module" module-name="tapestry-contrib" />
+    <orderEntry type="module" module-name="tapestry-framework" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -283,6 +286,10 @@
       <attribute name="URI" value="&lt;N/A&gt;" />
       <url>jar://$MODULE_DIR$/../../../idea/lib/j2ee.jar!/</url>
     </containerElement>
+    <containerElement type="library" name="descriptor" level="project">
+      <attribute name="method" value="0" />
+      <attribute name="URI" value="/WEB-INF/classes" />
+    </containerElement>
     <containerElement type="library" name="Maven Dependency: ant:ant:jar:1.6.5:test" level="module">
       <attribute name="method" value="1" />
       <attribute name="URI" value="/WEB-INF/lib/ant-1.6.5.jar" />
@@ -454,6 +461,10 @@
     <containerElement type="library" name="Maven Dependency: org.openqa.selenium.server:selenium-server:jar:0.9.1-SNAPSHOT:test" level="module">
       <attribute name="method" value="1" />
       <attribute name="URI" value="/WEB-INF/lib/selenium-server-0.9.1-SNAPSHOT.jar" />
+    </containerElement>
+    <containerElement type="library" name="Maven Dependency: org.openqa.selenium.server:selenium-server:jar:standalone:0.9.1-SNAPSHOT:test" level="module">
+      <attribute name="method" value="0" />
+      <attribute name="URI" value="&lt;N/A&gt;" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: org.testng:testng:jar:jdk15:5.1:test" level="module">
       <attribute name="method" value="1" />

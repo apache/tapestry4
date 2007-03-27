@@ -17,6 +17,7 @@ import org.apache.tapestry.*;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.event.EventTarget;
 import org.apache.tapestry.form.FormSupport;
+import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.internal.event.ComponentEventProperty;
 import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.listener.ListenerMap;
@@ -72,7 +73,63 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         assertEquals(p.getFormEventListeners("onClick").size(), 2);
         assertEquals(p.getFormEvents().size(), 1);
     }
-    
+
+     public void test_Connect_Auto_Submit_Events()
+    {
+        IForm form = newMock(IForm.class);
+        checkOrder(form, false);
+        
+        IFormComponent formComponent = newMock(IFormComponent.class);
+        checkOrder(formComponent, false);
+        
+        ComponentEventInvoker invoker = new ComponentEventInvoker();
+        
+        IComponentSpecification spec = new ComponentSpecification();
+        spec.addEventListener("comp1", new String[] {"onClick"}, "testFoo", null, false, true, false, true);
+        spec.addEventListener("comp1", new String[] {"onClick"}, "testBar", null, false, true, false, true);
+
+        assert spec.getComponentEvents("comp1") != null;
+
+        ComponentEventProperty p = spec.getComponentEvents("comp1");
+
+        // should be only form events bound
+        
+        assertEquals(p.getEvents().size(), 1);
+        assertEquals(p.getEventListeners("onClick").size(), 2);
+
+        assertEquals(p.getComponentId(), "comp1");
+        assertEquals(p.getFormEventListeners("onClick").size(), 0);
+        assertEquals(p.getFormEvents().size(), 1);
+
+        // now re-connect with form
+
+        expect(formComponent.getForm()).andReturn(form);
+
+        expect(form.getId()).andReturn("form").anyTimes();
+        
+        expect(formComponent.getId()).andReturn("comp1").anyTimes();
+
+        replay();
+
+        invoker.addEventListener("comp1", spec);
+
+        invoker.connectAutoSubmitEvents(formComponent);
+
+        verify();
+
+        assertEquals(invoker.getEventListeners("comp1").size(), 1);
+        assertEquals(invoker.getFormEventListeners("form").size(), 1);
+
+        assertEquals(p.getEvents().size(), 0);
+        assertEquals(p.getEventListeners("onClick").size(), 0);
+
+        assertEquals(p.getComponentId(), "comp1");
+        assertEquals(p.getFormEventListeners("onClick").size(), 2);
+        assertEquals(p.getFormEvents().size(), 1);
+
+        assertEquals(invoker.getPreviouslyMappedFormId("comp1"), "form");
+    }
+
     public void test_Invoke_Component_Listener()
     {
         IRequestCycle cycle = newCycle();

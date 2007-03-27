@@ -13,6 +13,7 @@
 // limitations under the License.
 package org.apache.tapestry.spec;
 
+import org.apache.tapestry.IForm;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.internal.event.ComponentEventProperty;
 import org.apache.tapestry.internal.event.EventBoundListener;
@@ -59,7 +60,16 @@ public interface IEventListener
      */
     void addElementEventListener(String elementId, String[] events, 
             String methodName, String formId, boolean validateForm, boolean async, boolean focus);
-    
+
+    /**
+     * Invoked during rendering when a component has been detected as a {@link org.apache.tapestry.form.IFormComponent} and maye
+     * possibly need its events to be wired up as form events.
+     *
+     * @param componentId The components standard base id.
+     * @param form The form containing the component.
+     */
+    void connectAutoSubmitEvents(String componentId, IForm form);
+
     /**
      * Checks if any element events are bound to this component.
      * 
