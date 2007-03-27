@@ -14,16 +14,6 @@
 
 package org.apache.tapestry.spec;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Resource;
@@ -31,6 +21,8 @@ import org.apache.hivemind.util.ToStringBuilder;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.internal.event.ComponentEventProperty;
 import org.apache.tapestry.internal.event.EventBoundListener;
+
+import java.util.*;
 
 /**
  * A specification for a component, as read from an XML specification file.
@@ -709,7 +701,7 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
      * {@inheritDoc}
      */
     public void addEventListener(String componentId, String[] events, 
-            String methodName, String formId, boolean validateForm, boolean async, boolean focus)
+            String methodName, String formId, boolean validateForm, boolean async, boolean focus, boolean autoSubmit)
     {
         ComponentEventProperty property = getComponentEvents(componentId);
         if (property == null) {
@@ -717,7 +709,7 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
             _componentEvents.put(componentId, property);
         }
         
-        property.addListener(events, methodName, formId, validateForm, async, focus);
+        property.addListener(events, methodName, formId, validateForm, async, focus, autoSubmit);
     }
     
     /**

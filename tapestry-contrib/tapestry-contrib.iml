@@ -12,7 +12,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="tapestry" />
-    <orderEntry type="module" module-name="tapestry-framework" />
     <orderEntry type="module-library" exported="">
       <library name="Maven Dependency: backport-util-concurrent:backport-util-concurrent:jar:2.2:compile">
         <CLASSES>

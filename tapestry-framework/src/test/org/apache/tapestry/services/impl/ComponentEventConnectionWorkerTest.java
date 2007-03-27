@@ -13,28 +13,11 @@
 // limitations under the License.
 package org.apache.tapestry.services.impl;
 
-import static org.easymock.EasyMock.checkOrder;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.util.ClasspathResource;
-import org.apache.tapestry.BaseComponentTestCase;
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IDirectEvent;
-import org.apache.tapestry.IForm;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IScript;
-import org.apache.tapestry.PageRenderSupport;
-import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.*;
 import org.apache.tapestry.dojo.IWidget;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
@@ -45,9 +28,15 @@ import org.apache.tapestry.internal.event.IComponentEventInvoker;
 import org.apache.tapestry.internal.event.impl.ComponentEventInvoker;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
+import static org.easymock.EasyMock.*;
 import org.easymock.MockControl;
 import org.easymock.classextension.MockClassControl;
 import org.testng.annotations.Test;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -108,7 +97,7 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         // now test render
         invoker.addEventListener("comp1", spec);
-        spec.addEventListener("comp1", new String[] {"onclick"}, "testMethod", null, false, true, false);
+        spec.addEventListener("comp1", new String[] {"onclick"}, "testMethod", null, false, true, false, false);
         spec.addElementEventListener("elementId", new String[] {"onclick"}, "testMethod", null, false, true, false);
         
         /////////////////////////////////
@@ -172,7 +161,7 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         // test widget render
         
         invoker.addEventListener("wid1", widgetSpec);
-        widgetSpec.addEventListener("wid1", new String[] {"onclick"}, "testMethod", null, false, true, false);
+        widgetSpec.addEventListener("wid1", new String[] {"onclick"}, "testMethod", null, false, true, false, false);
         
         checkOrder(cycle, false);
         expect(cycle.isRewinding()).andReturn(false);
@@ -257,11 +246,11 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         IComponentSpecification comp2Spec = new ComponentSpecification();
         
         // now test render
-        spec.addEventListener("comp1", new String[] {"onclick"}, "testMethod", "form1", true, true, false);
+        spec.addEventListener("comp1", new String[] {"onclick"}, "testMethod", "form1", true, true, false, false);
         invoker.addEventListener("comp1", spec);
         invoker.addFormEventListener("form1", spec);
         
-        spec.addEventListener("comp2", new String[] {"onclick"}, "testAnotherMethod", "form1", true, true, false);
+        spec.addEventListener("comp2", new String[] {"onclick"}, "testAnotherMethod", "form1", true, true, false, false);
         invoker.addEventListener("comp2", spec);
         invoker.addFormEventListener("form1", spec);
         
@@ -401,11 +390,11 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         IComponentSpecification formSpec = new ComponentSpecification();
         
         // now test render
-        spec.addEventListener("comp1", new String[] {"onclick"}, "testMethod", "form1", false, true, false);
+        spec.addEventListener("comp1", new String[] {"onclick"}, "testMethod", "form1", false, true, false, false);
         invoker.addEventListener("comp1", spec);
         invoker.addFormEventListener("form1", spec);
         
-        spec.addEventListener("comp2", new String[] {"ondoubleclick"}, "clickMethod", "form1", false, true, false);
+        spec.addEventListener("comp2", new String[] {"ondoubleclick"}, "clickMethod", "form1", false, true, false, false);
         invoker.addEventListener("comp2", spec);
         invoker.addFormEventListener("form1", spec);
         
@@ -572,7 +561,7 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         // now test render
         invoker.addEventListener("comp1", spec);
-        spec.addEventListener("comp1", new String[] {"onclick"}, "testMethod", "form1", false, false, false);
+        spec.addEventListener("comp1", new String[] {"onclick"}, "testMethod", "form1", false, false, false, false);
         
         expect(cycle.isRewinding()).andReturn(false);
         

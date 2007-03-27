@@ -40,6 +40,8 @@ public class EventBoundListener
     private boolean _async;
     // Whether or not to focus the form
     private boolean _focus;
+    // If this is an autoSubmit form bound event, ie we need to discover the formId dynamically
+    private boolean _autoSubmit;
     
     /**
      * Creates a new listener binding. 
@@ -48,10 +50,19 @@ public class EventBoundListener
      */
     public EventBoundListener(String methodName, String componentId)
     {
-        _methodName = methodName;
-        _componentId = componentId;
+        this(methodName, componentId, false);
     }
-    
+
+    /**
+     * Creates a new listener binding.
+     * @param methodName
+     *          The method to invoke.
+     */
+    public EventBoundListener(String methodName, String componentId, boolean autoSubmit)
+    {
+        this(methodName, null, false, componentId, false, false, autoSubmit);
+    }
+
     /**
      * Creates a new listener binding. 
      * @param methodName
@@ -62,7 +73,7 @@ public class EventBoundListener
      *          If formId is set, whether or not to validate form when submitting.
      */
     public EventBoundListener(String methodName, String formId, 
-            boolean validateForm, String componentId, boolean async, boolean focus)
+            boolean validateForm, String componentId, boolean async, boolean focus, boolean autoSubmit)
     {
         _methodName = methodName;
         _formId = formId;
@@ -70,6 +81,22 @@ public class EventBoundListener
         _componentId = componentId;
         _async = async;
         _focus = focus;
+        _autoSubmit = autoSubmit;
+    }
+
+    /**
+     * Creates a new listener binding.
+     * @param methodName
+     *          The method to invoke.
+     * @param formId
+     *          If not null the form to submit before invoking listener
+     * @param validateForm
+     *          If formId is set, whether or not to validate form when submitting.
+     */
+    public EventBoundListener(String methodName, String formId,
+            boolean validateForm, String componentId, boolean async, boolean focus)
+    {
+        this(methodName, formId, validateForm, componentId, async, focus, false);
     }
     
     /**
@@ -79,7 +106,12 @@ public class EventBoundListener
     {
         return _formId;
     }
-    
+
+    public void setFormId(String id)
+    {
+        _formId = id;
+    }
+
     /**
      * @return the methodName
      */
@@ -151,8 +183,13 @@ public class EventBoundListener
     {
         return _focus;
     }
-    
-    /** 
+
+    public boolean isAutoSubmit()
+    {
+        return _autoSubmit;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public int hashCode()

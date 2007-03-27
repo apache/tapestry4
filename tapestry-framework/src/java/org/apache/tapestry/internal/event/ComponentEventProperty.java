@@ -13,13 +13,9 @@
 // limitations under the License.
 package org.apache.tapestry.internal.event;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.tapestry.event.BrowserEvent;
+
+import java.util.*;
 
 
 /**
@@ -43,22 +39,40 @@ public class ComponentEventProperty
     {
         _componentId = componentId;
     }
-    
+
     /**
      * Adds a listener bound to the specified client side
      * events.
      * @param events
      * @param methodName
-     * @param async 
+     * @param async
+     */
+    public void addListener(String[] events, String methodName,
+            String formId, boolean validateForm, boolean async, boolean focus)
+    {
+        addListener(events, methodName, formId, validateForm, async, focus, false);
+    }
+
+    /**
+     * Adds a listener bound to the specified client side
+     * events.
+     * 
+     * @param events The javascript events to bind to.
+     * @param methodName The method to invoke when triggered.
+     * @param formId Optional form to bind event to.
+     * @param validateForm Whether or not form client side validation should be performed.
+     * @param async  Whether or not the request should be asynchronous.
+     * @param focus Whether or not the form should recieve focus events. (if any forms are involved)
+     * @param autoSubmit Whether or not {@link org.apache.tapestry.form.IFormComponent}s should have their forms autowired for submission.
      */
     public void addListener(String[] events, String methodName, 
-            String formId, boolean validateForm, boolean async, boolean focus)
+            String formId, boolean validateForm, boolean async, boolean focus, boolean autoSubmit)
     {
         for (int i=0; i < events.length; i++) {
             if (formId != null && formId.length() > 0)
                 addFormEventListener(events[i], methodName, formId, validateForm, async, focus);
             else
-                addEventListener(events[i], methodName);
+                addEventListener(events[i], methodName, autoSubmit);
         }
     }
     
@@ -84,10 +98,9 @@ public class ComponentEventProperty
      * @param event
      * @param methodName
      */
-    public void addEventListener(String event, String methodName)
+    public void addEventListener(String event, String methodName, boolean autoSubmit)
     {
-        EventBoundListener listener = 
-            new EventBoundListener(methodName, _componentId);
+        EventBoundListener listener = new EventBoundListener(methodName, _componentId);
         
         List listeners = getEventListeners(event);
         if (!listeners.contains(listener))

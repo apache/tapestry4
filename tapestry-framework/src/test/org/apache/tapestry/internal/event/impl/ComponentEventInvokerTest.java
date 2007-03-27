@@ -13,19 +13,7 @@
 // limitations under the License.
 package org.apache.tapestry.internal.event.impl;
 
-import static org.easymock.EasyMock.checkOrder;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.tapestry.BaseComponentTestCase;
-import org.apache.tapestry.IActionListener;
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IForm;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.*;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.event.EventTarget;
 import org.apache.tapestry.form.FormSupport;
@@ -34,7 +22,11 @@ import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.listener.ListenerMap;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
+import static org.easymock.EasyMock.*;
 import org.testng.annotations.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -49,7 +41,7 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
     public void test_Event_Properties()
     {
         IComponentSpecification spec = new ComponentSpecification();
-        spec.addEventListener("comp1", new String[] {"onClick"}, "testFoo", null, false, false, false);
+        spec.addEventListener("comp1", new String[] {"onClick"}, "testFoo", null, false, false, false, false);
         
         assert spec.getComponentEvents("comp1") != null;
         assert spec.getComponentEvents("comp1").getEvents().size() == 1;
@@ -65,8 +57,8 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
     public void test_Form_Event_Properties()
     {
         IComponentSpecification spec = new ComponentSpecification();
-        spec.addEventListener("comp1", new String[] {"onClick"}, "testFoo", "form", false, true, false);
-        spec.addEventListener("comp1", new String[] {"onClick"}, "testBar", "form", false, true, false);
+        spec.addEventListener("comp1", new String[] {"onClick"}, "testFoo", "form", false, true, false, false);
+        spec.addEventListener("comp1", new String[] {"onClick"}, "testBar", "form", false, true, false, false);
         
         assert spec.getComponentEvents("comp1") != null;
         
@@ -106,7 +98,7 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         invoker.setInvoker(listenerInvoker);
         
         spec.addEventListener("testId", new String[] { "onSelect" }, 
-                "fooListener", null, false, false, false);
+                "fooListener", null, false, false, false, false);
         invoker.addEventListener("testId", spec);
         
         expect(comp.getId()).andReturn("testId").anyTimes();
@@ -203,7 +195,7 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         invoker.setInvoker(listenerInvoker);
         
         spec.addEventListener("form1", new String[] { "onSelect" }, "fooListener",
-                "form1", false, false, false);
+                "form1", false, false, false, false);
         invoker.addFormEventListener("form1", spec);
         
         expect(formSupport.getForm()).andReturn(form);
@@ -256,7 +248,7 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         invoker.setInvoker(listenerInvoker);
         
         spec.addEventListener("form1", new String[] { "onSelect" }, "fooListener",
-                "form1", false, false, true);
+                "form1", false, false, true, false);
         invoker.addFormEventListener("form1", spec);
         
         expect(formSupport.getForm()).andReturn(form);
