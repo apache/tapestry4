@@ -14,11 +14,11 @@
 
 package org.apache.tapestry.annotations;
 
-import java.util.ArrayList;
-import java.util.Map;
-
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IComponent;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Used by {@link org.apache.tapestry.annotations.TestAnnotationUtils}.
@@ -26,8 +26,7 @@ import org.apache.tapestry.IComponent;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public abstract class Target
-{
+public abstract class TargetValues {
     public abstract String getStringValue();
 
     public abstract void setIntValue(int value);

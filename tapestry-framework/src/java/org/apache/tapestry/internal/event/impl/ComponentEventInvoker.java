@@ -13,13 +13,6 @@
 // limitations under the License.
 package org.apache.tapestry.internal.event.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IComponent;
@@ -28,11 +21,14 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.form.FormSupport;
+import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.internal.event.ComponentEventProperty;
 import org.apache.tapestry.internal.event.EventBoundListener;
 import org.apache.tapestry.internal.event.IComponentEventInvoker;
 import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.spec.IComponentSpecification;
+
+import java.util.*;
 
 
 /**
@@ -47,7 +43,9 @@ public class ComponentEventInvoker implements IComponentEventInvoker, ResetEvent
     private Map _formComponents = new HashMap();
     
     private ListenerInvoker _invoker;
-    
+
+    private Map _formIdMappings = new HashMap();
+
     /**
      * {@inheritDoc}
      */
@@ -263,6 +261,35 @@ public class ComponentEventInvoker implements IComponentEventInvoker, ResetEvent
         if (!listeners.contains(listener)) {
             listeners.add(listener);
         }
+    }
+
+    public void connectAutoSubmitEvents(IFormComponent component)
+    {
+        IForm form = component.getForm();
+        Defense.notNull(form, "form");
+        
+        String formId = form.getId();
+        Defense.notNull(formId, "formId");
+
+        List listeners = (List)_components.get(component.getId());
+        if (listeners == null)
+            return;
+
+        for (int i=0; i < listeners.size(); i++) {
+
+            IComponentSpecification spec = (IComponentSpecification)listeners.get(i);
+
+            spec.connectAutoSubmitEvents(component.getId(), form);
+            
+            addFormEventListener(formId, spec);
+            
+            _formIdMappings.put(component.getId(), formId);
+        }
+    }
+
+    public String getPreviouslyMappedFormId(String formComponentId)
+    {
+        return (String)_formIdMappings.get(formComponentId);
     }
 
     /**

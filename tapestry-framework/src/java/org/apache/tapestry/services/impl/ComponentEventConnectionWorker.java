@@ -13,26 +13,15 @@
 // limitations under the License.
 package org.apache.tapestry.services.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.ClasspathResource;
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IDirectEvent;
-import org.apache.tapestry.IForm;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.PageRenderSupport;
-import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.*;
 import org.apache.tapestry.dojo.IWidget;
 import org.apache.tapestry.engine.DirectEventServiceParameter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.IScriptSource;
+import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.html.Body;
 import org.apache.tapestry.internal.event.ComponentEventProperty;
 import org.apache.tapestry.internal.event.EventBoundListener;
@@ -40,6 +29,8 @@ import org.apache.tapestry.internal.event.IComponentEventInvoker;
 import org.apache.tapestry.services.ComponentRenderWorker;
 import org.apache.tapestry.spec.IEventListener;
 import org.apache.tapestry.util.ScriptUtils;
+
+import java.util.*;
 
 
 /**
@@ -144,7 +135,19 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
         List listeners = _invoker.getEventListeners(comp.getId());
         if (listeners == null)
             return null;
-        
+
+        if (IFormComponent.class.isInstance(comp)) {
+            IFormComponent formComp = (IFormComponent)comp;
+            
+            _invoker.connectAutoSubmitEvents(formComp);
+
+            // re-wire form related events
+
+            comp.getSpecification().connectAutoSubmitEvents(comp.getId(), formComp.getForm());
+
+            listeners = _invoker.getEventListeners(comp.getId());
+        }
+
         List ret = new ArrayList();
         
         for (int i=0; i < listeners.size(); i++) {

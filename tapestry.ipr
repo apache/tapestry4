@@ -161,7 +161,7 @@
         <option name="updateClasspathsEnabled" value="true" />
         <option name="sortDependenciesEnabled" value="true" />
         <option name="removeDuplicateDependenciesEnabled" value="true" />
-        <option name="respondToPomChangesEnabled" value="true" />
+        <option name="respondToPomChangesEnabled" value="false" />
         <option name="manageSourceRootsEnabled" value="true" />
         <option name="manageModuleInterdependenciesEnabled" value="true" />
         <option name="downloadSourcesEnabled" value="false" />
@@ -181,6 +181,8 @@
                 <value>
                   <collection type="java.util.TreeSet">
                     <entry type="java.lang.String" value="tapestry" />
+                    <entry type="java.lang.String" value="tapestry-annotations" />
+                    <entry type="java.lang.String" value="tapestry-framework" />
                   </collection>
                 </value>
                 <key type="java.lang.String" value="TimeTracker" />
@@ -189,6 +191,8 @@
                 <value>
                   <collection type="java.util.TreeSet">
                     <entry type="java.lang.String" value="tapestry" />
+                    <entry type="java.lang.String" value="tapestry-annotations" />
+                    <entry type="java.lang.String" value="tapestry-framework" />
                   </collection>
                 </value>
                 <key type="java.lang.String" value="Workbench" />
@@ -196,7 +200,16 @@
               <entry>
                 <value>
                   <collection type="java.util.TreeSet">
-                    <entry type="java.lang.String" value="tapestry" />
+                    <entry type="java.lang.String" value="tapestry-annotations" />
+                    <entry type="java.lang.String" value="tapestry-framework" />
+                  </collection>
+                </value>
+                <key type="java.lang.String" value="tapestry" />
+              </entry>
+              <entry>
+                <value>
+                  <collection type="java.util.TreeSet">
+                    <entry type="java.lang.String" value="tapestry-framework" />
                   </collection>
                 </value>
                 <key type="java.lang.String" value="tapestry-annotations" />
@@ -204,7 +217,7 @@
               <entry>
                 <value>
                   <collection type="java.util.TreeSet">
-                    <entry type="java.lang.String" value="tapestry" />
+                    <entry type="java.lang.String" value="tapestry-framework" />
                   </collection>
                 </value>
                 <key type="java.lang.String" value="tapestry-contrib" />
@@ -212,7 +225,7 @@
               <entry>
                 <value>
                   <collection type="java.util.TreeSet">
-                    <entry type="java.lang.String" value="tapestry" />
+                    <entry type="java.lang.String" value="tapestry-framework" />
                   </collection>
                 </value>
                 <key type="java.lang.String" value="tapestry-portlet" />

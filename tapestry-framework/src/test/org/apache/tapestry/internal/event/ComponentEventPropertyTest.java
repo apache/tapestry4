@@ -13,13 +13,12 @@
 // limitations under the License.
 package org.apache.tapestry.internal.event;
 
-import java.util.List;
-import java.util.Set;
-
+import com.javaforge.tapestry.testng.TestBase;
 import org.apache.tapestry.event.BrowserEvent;
 import org.testng.annotations.Test;
 
-import com.javaforge.tapestry.testng.TestBase;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -51,6 +50,7 @@ public class ComponentEventPropertyTest extends TestBase
         assertEquals("compid", listener.getComponentId());
         assertNull(listener.getFormId());
         assertEquals("doFoo", listener.getMethodName());
+        assert listener.isAutoSubmit();
     }
     
     public void test_Add_Form_Event_Listener()
@@ -78,6 +78,7 @@ public class ComponentEventPropertyTest extends TestBase
         assertEquals(1, prop.getFormEvents().size());
         
         assertEquals("doFoo", listener.getMethodName());
+        assert listener.isAutoSubmit();
     }
     
     public void test_Add_Multiple_Event_Listener()
@@ -101,15 +102,14 @@ public class ComponentEventPropertyTest extends TestBase
         List listeners = prop.getFormEventListeners("onchange");
         assertEquals(listeners.size(), 2);
         
-        /*
-        List listeners = prop.getFormEventListeners("onClick");
-        assertEquals(listeners.size(), 2);
+        listeners = prop.getFormEventListeners("onClick");
+        assertEquals(listeners.size(), 1);
         
         EventBoundListener listener = (EventBoundListener)listeners.get(0);
         assertEquals("compid", listener.getComponentId());
-        assertNull(listener.getFormId());
+        assertEquals("form1", listener.getFormId());
         assertEquals("doFoo", listener.getMethodName());
-        */
+        
     }
     
     public void test_Get_Form_Events()
@@ -130,5 +130,41 @@ public class ComponentEventPropertyTest extends TestBase
         
         assertEquals("doFoo", listener.getMethodName());
         assertTrue(listener.shouldFocusForm());
+    }
+
+    public void test_Connect_Auto_Submit_Events()
+    {
+        String[] events = {"onClick"};
+        ComponentEventProperty prop = new ComponentEventProperty("compid");
+        
+        prop.addListener(events, "doFoo", null, false, false, false, true);
+
+        assertEquals("compid", prop.getComponentId());
+        assertEquals(prop.getEvents().size(), 1);
+        assertEquals(prop.getFormEvents().size(), 0);
+        
+        assertNotNull(prop.getEventListeners("onClick"));
+
+        List listeners = prop.getEventListeners("onClick");
+        assertEquals(listeners.size(), 1);
+        
+        EventBoundListener listener = (EventBoundListener)listeners.get(0);
+        assertEquals(listener.getComponentId(), "compid");
+        assertNull(listener.getFormId());
+        assertEquals(listener.getMethodName(), "doFoo");
+        assert listener.isAutoSubmit();
+
+        prop.connectAutoSubmitEvents("form");
+
+        assertEquals(prop.getEvents().size(), 0);
+        assertEquals(prop.getFormEvents().size(), 1);
+
+        listeners = prop.getFormEventListeners("onClick");
+        assertEquals(listeners.size(), 1);
+
+        listener = (EventBoundListener)listeners.get(0);
+        assertEquals(listener.getComponentId(), "compid");
+        assertEquals(listener.getFormId(), "form");
+        assertEquals(listener.getMethodName(), "doFoo");
     }
 }

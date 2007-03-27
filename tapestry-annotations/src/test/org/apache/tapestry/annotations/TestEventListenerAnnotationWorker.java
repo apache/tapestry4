@@ -74,6 +74,7 @@ public class TestEventListenerAnnotationWorker extends BaseAnnotationTestCase
         assertEquals(1, listeners.size());
         
         assert !((EventBoundListener)listeners.get(0)).shouldFocusForm();
+        assert ((EventBoundListener)listeners.get(0)).isAutoSubmit();
     }
     
     public void test_Form_Event_Connection()
@@ -109,7 +110,7 @@ public class TestEventListenerAnnotationWorker extends BaseAnnotationTestCase
         assertEquals("testForm", formListener.getFormId());
         assertFalse(formListener.isValidateForm());
         assert formListener.shouldFocusForm();
-        assert !formListener.isAutoSubmit();
+        assert formListener.isAutoSubmit();
     }
     
     public void test_Targets_Not_Found()

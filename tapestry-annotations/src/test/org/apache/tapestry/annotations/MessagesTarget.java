@@ -16,7 +16,7 @@ package org.apache.tapestry.annotations;
 import org.apache.tapestry.AbstractComponent;
 
 /**
- * Target "component" used to test the
+ * TargetValues "component" used to test the
  * {@link org.apache.tapestry.annotations.MessageAnnotationWorker}.
  * 
  * @author Howard Lewis Ship

@@ -29,7 +29,6 @@ import java.lang.reflect.Method;
  */
 public class EventListenerAnnotationWorker implements SecondaryAnnotationWorker
 {
- 
     private IComponentEventInvoker _invoker;
     
     /** 
@@ -43,8 +42,7 @@ public class EventListenerAnnotationWorker implements SecondaryAnnotationWorker
     /** 
      * {@inheritDoc}
      */
-    public void peformEnhancement(EnhancementOperation op, IComponentSpecification spec, 
-            Method method, Resource classResource)
+    public void peformEnhancement(EnhancementOperation op, IComponentSpecification spec, Method method, Resource classResource)
     {
         EventListener listener = method.getAnnotation(EventListener.class);
         
@@ -58,16 +56,22 @@ public class EventListenerAnnotationWorker implements SecondaryAnnotationWorker
         
         if (targets.length < 1 && elements.length < 1)
             throw new ApplicationRuntimeException(AnnotationMessages.targetsNotFound(method));
-        
+
         for (int i=0; i < targets.length; i++) {
-            
-            spec.addEventListener(targets[i], listener.events(), 
-                    method.getName(), formId, validateForm, async, focus, autoSubmit);
+
+            String mappedFormId = formId;
+
+            if (mappedFormId == null || mappedFormId.length() < 1) {
+                mappedFormId = _invoker.getPreviouslyMappedFormId(targets[i]);
+            }
+
+            spec.addEventListener(targets[i], listener.events(),
+                    method.getName(), mappedFormId, validateForm, async, focus, autoSubmit);
             
             _invoker.addEventListener(targets[i], spec);
             
-            if (formId != null)
-                _invoker.addFormEventListener(formId, spec);
+            if (mappedFormId != null && mappedFormId.length() > 0)
+                _invoker.addFormEventListener(mappedFormId, spec);
         }
         
         for (int i=0; i < elements.length; i++) {
