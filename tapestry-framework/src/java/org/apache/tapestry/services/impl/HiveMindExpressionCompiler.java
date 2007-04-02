@@ -194,12 +194,62 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
                     expression.getAccessor().setExpression(expression);
                 }
 
+            } catch (CannotCompileException et) {
+                et.printStackTrace();
+
+                generateFailSafe(context, expression, root);
+                
             } catch (Throwable t) {
                 t.printStackTrace();
+                
                 throw new ApplicationRuntimeException("Error compiling expression on object " + root
                                                       + " with expression node " + expression + " getter body: " + getBody
                                                       + " setter body: " + setBody, t);
             }
+        }
+    }
+
+    protected void generateFailSafe(OgnlContext context, Node expression, Object root)
+    {
+        if (expression.getAccessor() != null)
+            return;
+        
+        try {
+            ClassFab classFab = _classFactory.newClass(expression.getClass().getName() + expression.hashCode() + "Accessor", Object.class);
+            classFab.addInterface(ExpressionAccessor.class);
+
+            MethodSignature valueGetter = new MethodSignature(Object.class, "get", new Class[]{OgnlContext.class, Object.class}, null);
+            MethodSignature valueSetter = new MethodSignature(void.class, "set", new Class[]{OgnlContext.class, Object.class, Object.class}, null);
+
+            MethodSignature expressionSetter = new MethodSignature(void.class, "setExpression", new Class[]{Node.class}, null);
+
+            if (!classFab.containsMethod(expressionSetter)) {
+
+                classFab.addField("_node", Node.class);
+                classFab.addMethod(Modifier.PUBLIC, expressionSetter, "{ _node = $1; }");
+            }
+
+            classFab.addMethod(Modifier.PUBLIC, valueGetter, generateOgnlGetter(classFab, valueGetter));
+
+            classFab.addMethod(Modifier.PUBLIC, valueSetter, generateOgnlSetter(classFab, valueSetter));
+
+            
+            classFab.addConstructor(new Class[0], new Class[0], "{}");
+
+            Class clazz = ((AbstractFab) classFab).createClass(true);
+
+            expression.setAccessor((ExpressionAccessor) clazz.newInstance());
+
+            // need to set expression on node if the field was just defined.
+
+            if (classFab.containsMethod(expressionSetter)) {
+
+                expression.getAccessor().setExpression(expression);
+            }
+
+        } catch (Throwable t) {
+            
+            t.printStackTrace();
         }
     }
 
