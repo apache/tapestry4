@@ -13,10 +13,10 @@
 // limitations under the License.
 package org.apache.tapestry.enhance;
 
+import javassist.CtClass;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import javassist.CtClass;
 
 /**
  * Common code for {@link org.apache.hivemind.service.impl.ClassFabImpl} and

@@ -14,9 +14,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="tapestry" />
-    <orderEntry type="module" module-name="tapestry-annotations" />
-    <orderEntry type="module" module-name="tapestry-contrib" />
-    <orderEntry type="module" module-name="tapestry-framework" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -340,6 +337,9 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="tapestry-annotations" />
+    <orderEntry type="module" module-name="tapestry-contrib" />
+    <orderEntry type="module" module-name="tapestry-framework" />
     <orderEntryProperties />
   </component>
   <component name="WebModuleBuildComponent">
@@ -375,7 +375,7 @@
       <url>jar://$MODULE_DIR$/../../../idea/lib/j2ee.jar!/</url>
     </containerElement>
     <containerElement type="library" name="descriptor" level="project">
-      <attribute name="method" value="0" />
+      <attribute name="method" value="1" />
       <attribute name="URI" value="/WEB-INF/classes" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: ant:ant:jar:1.6.5:test" level="module">

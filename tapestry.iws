@@ -17,31 +17,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/spec/IEventListener.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/spec/IEventListener.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-annotations/src/test/org/apache/tapestry/annotations/MessagesTarget.java" afterPath="$PROJECT_DIR$/tapestry-annotations/src/test/org/apache/tapestry/annotations/MessagesTarget.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/internal/event/impl/ComponentEventInvoker.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/internal/event/impl/ComponentEventInvoker.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tapestry-annotations/src/test/org/apache/tapestry/annotations/TargetValues.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/internal/event/ComponentEventProperty.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/internal/event/ComponentEventProperty.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-annotations/src/test/org/apache/tapestry/annotations/TestEventListenerAnnotationWorker.java" afterPath="$PROJECT_DIR$/tapestry-annotations/src/test/org/apache/tapestry/annotations/TestEventListenerAnnotationWorker.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-examples/Workbench/Workbench.iml" afterPath="$PROJECT_DIR$/tapestry-examples/Workbench/Workbench.iml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/tapestry-annotations/src/test/org/apache/tapestry/annotations/Target.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/internal/event/IComponentEventInvoker.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/internal/event/IComponentEventInvoker.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-contrib/tapestry-contrib.iml" afterPath="$PROJECT_DIR$/tapestry-contrib/tapestry-contrib.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-annotations/src/java/org/apache/tapestry/annotations/EventListenerAnnotationWorker.java" afterPath="$PROJECT_DIR$/tapestry-annotations/src/java/org/apache/tapestry/annotations/EventListenerAnnotationWorker.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-portlet/tapestry-portlet.iml" afterPath="$PROJECT_DIR$/tapestry-portlet/tapestry-portlet.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry.iws" afterPath="$PROJECT_DIR$/tapestry.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-annotations/src/test/org/apache/tapestry/annotations/TestBeanAnnotationWorker.java" afterPath="$PROJECT_DIR$/tapestry-annotations/src/test/org/apache/tapestry/annotations/TestBeanAnnotationWorker.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-annotations/tapestry-annotations.iml" afterPath="$PROJECT_DIR$/tapestry-annotations/tapestry-annotations.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-annotations/src/test/org/apache/tapestry/annotations/TestAnnotationUtils.java" afterPath="$PROJECT_DIR$/tapestry-annotations/src/test/org/apache/tapestry/annotations/TestAnnotationUtils.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-contrib/tapestry-contrib.iml" afterPath="$PROJECT_DIR$/tapestry-contrib/tapestry-contrib.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry.ipr" afterPath="$PROJECT_DIR$/tapestry.ipr" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/internal/event/impl/ComponentEventInvokerTest.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/internal/event/impl/ComponentEventInvokerTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/spec/ComponentSpecification.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/spec/ComponentSpecification.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/services/impl/HiveMindExpressionCompiler.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/services/impl/HiveMindExpressionCompiler.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-examples/TimeTracker/TimeTracker.iml" afterPath="$PROJECT_DIR$/tapestry-examples/TimeTracker/TimeTracker.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/services/impl/ComponentEventConnectionWorker.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/services/impl/ComponentEventConnectionWorker.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/internal/event/ComponentEventPropertyTest.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/internal/event/ComponentEventPropertyTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/internal/event/EventBoundListener.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/internal/event/EventBoundListener.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-examples/TimeTracker/src/java/org/apache/tapestry/timetracker/page/TaskEntryPage.java" afterPath="$PROJECT_DIR$/tapestry-examples/TimeTracker/src/java/org/apache/tapestry/timetracker/page/TaskEntryPage.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/services/impl/TestExpressionEvaluator.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/services/impl/TestExpressionEvaluator.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-examples/Workbench/Workbench.iml" afterPath="$PROJECT_DIR$/tapestry-examples/Workbench/Workbench.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry.iml" afterPath="$PROJECT_DIR$/tapestry.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-portlet/tapestry-portlet.iml" afterPath="$PROJECT_DIR$/tapestry-portlet/tapestry-portlet.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/enhance/AbstractFab.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/enhance/AbstractFab.java" />
     </list>
   </component>
   <component name="ChangesViewManager" flattened_view="true" />
@@ -262,14 +248,14 @@
   </component>
   <component name="RecentsManager" />
   <component name="RestoreUpdateTree" />
-  <component name="RunManager" selected="TestNG.TestEventListenerAnnotationWorker">
-    <tempConfiguration default="false" name="TestEventListenerAnnotationWorker" type="TestNG" factoryName="TestNG" enabled="false" merge="false">
-      <module name="tapestry-annotations" />
+  <component name="RunManager" selected="TestNG.TestExpressionEvaluator">
+    <tempConfiguration default="false" name="TestExpressionEvaluator" type="TestNG" factoryName="TestNG" enabled="false" merge="false">
+      <module name="tapestry-framework" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="SUITE_NAME" />
-      <option name="PACKAGE_NAME" value="org.apache.tapestry.annotations" />
-      <option name="MAIN_CLASS_NAME" value="org.apache.tapestry.annotations.TestEventListenerAnnotationWorker" />
+      <option name="PACKAGE_NAME" value="org.apache.tapestry.services.impl" />
+      <option name="MAIN_CLASS_NAME" value="org.apache.tapestry.services.impl.TestExpressionEvaluator" />
       <option name="METHOD_NAME" />
       <option name="GROUP_NAME" />
       <option name="TEST_OBJECT" value="CLASS" />
@@ -289,6 +275,40 @@
         <option name="Make" value="true" />
       </method>
     </tempConfiguration>
+    <configuration default="true" type="TestNG" factoryName="TestNG" enabled="false" merge="false">
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="ADDITIONAL_CLASS_PATH" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="wholeProject" />
+      </option>
+      <option name="PROPERTIES_FILE" />
+      <properties />
+      <method>
+        <option name="Make" value="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application" enabled="false" merge="false">
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <module name="" />
+    </configuration>
     <configuration default="true" type="Remote" factoryName="Remote">
       <option name="USE_SOCKET_TRANSPORT" value="true" />
       <option name="SERVER_MODE" value="false" />
@@ -311,40 +331,6 @@
       <option name="TEST_SEARCH_SCOPE">
         <value defaultName="wholeProject" />
       </option>
-      <method>
-        <option name="Make" value="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="Application" factoryName="Application" enabled="false" merge="false">
-      <option name="MAIN_CLASS_NAME" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <module name="" />
-    </configuration>
-    <configuration default="true" type="TestNG" factoryName="TestNG" enabled="false" merge="false">
-      <module name="" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="SUITE_NAME" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="GROUP_NAME" />
-      <option name="TEST_OBJECT" value="CLASS" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" />
-      <option name="OUTPUT_DIRECTORY" />
-      <option name="ADDITIONAL_CLASS_PATH" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="wholeProject" />
-      </option>
-      <option name="PROPERTIES_FILE" />
-      <properties />
       <method>
         <option name="Make" value="true" />
       </method>
@@ -448,8 +434,8 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="91" y="145" width="2112" height="1362" extended-state="0" />
-    <editor active="false" />
+    <frame x="96" y="160" width="2112" height="1361" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="3" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20563847" order="8" />
@@ -457,9 +443,9 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" order="1" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23568465" order="1" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2514523" order="3" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28524047" order="8" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20829876" order="8" />
-      <window_info id="Maven" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19568823" order="8" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2599668" order="8" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2076412" order="8" />
+      <window_info id="Maven" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19502075" order="8" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="7" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" order="1" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" order="0" />
@@ -467,10 +453,10 @@
       <window_info id="Module Dependencies" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="3" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="8" />
       <window_info id="File View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="3" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23369037" order="0" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23661149" order="0" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" order="2" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" order="6" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25892118" order="2" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25830564" order="2" />
       <window_info id="SVN Repositories" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27219918" order="8" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" order="5" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="0" />
@@ -492,7 +478,7 @@
     <option name="PERFORM_COMMIT_IN_BACKGROUND" value="false" />
     <option name="PUT_FOCUS_INTO_COMMENT" value="false" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added auto form binding support to @EventListener. It now automatically figures out which form a targeted IFormComponent is attached to and wires the event up to submit the enclosing form when the event is triggered - unless autoSubmit = false on the annotation." />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated relevant OGNL interfaces to work with new codebase." />
     <option name="SAVE_LAST_COMMIT_MESSAGE" value="true" />
     <option name="CHECKIN_DIALOG_SPLITTER_PROPORTION" value="0.8" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
@@ -505,7 +491,6 @@
     <option name="UPDATE_GROUP_BY_PACKAGES" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
-    <MESSAGE value="Minor code cleanup. &#10;&#10;Fixed Palette documentation by removing funky character causing td definitions." />
     <MESSAGE value="Fixes TAPESTRY-872. &#10;&#10;The documented usage of PageAttachListener stated that page properties should be restored before the listener is called. Modified logic so that RequestCycle calls firePageAttached directly and removed the firePageAttached call within AbstractPage.attach" />
     <MESSAGE value="Upgraded commons-fileupload/commons-io." />
     <MESSAGE value="Fixes TAPESTRY-937. Simple stupid indexOf check using &gt; 1 instead of &gt; -1. I'm sure I added this bug at some point." />
@@ -515,6 +500,7 @@
     <MESSAGE value="Js formatting looked a little funky towards the bottom." />
     <MESSAGE value="-) Started partial implementation for doing form auto submissions on IFormComponent EventListener targets.&#10;&#10;-) Updated styling of TimeTracker&#10;&#10;-) Updated HiveMindExpressionCompiler to reflect new changes in ognl 2.7-SNAPSHOT." />
     <MESSAGE value="Added auto form binding support to @EventListener. It now automatically figures out which form a targeted IFormComponent is attached to and wires the event up to submit the enclosing form when the event is triggered - unless autoSubmit = false on the annotation." />
+    <MESSAGE value="Updated relevant OGNL interfaces to work with new codebase." />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
@@ -525,113 +511,118 @@
   </component>
   <component name="com.intellij.openapi.roots.ui.configuration.projectRoot.ProjectRootMasterDetailsConfigurable" proportions="0.22673559" version="1">
     <option name="myPlainMode" value="false" />
-    <option name="myLastEditedConfigurable" value="TimeTracker" />
+    <option name="myLastEditedConfigurable" value="Workbench" />
   </component>
   <component name="com.intellij.profile.ui.ErrorOptionsConfigurable" proportions="0.16666667,0.5642857" version="1">
     <option name="myLastEditedConfigurable" value="Project Default" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/spec/IEventListener.java">
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/bean/BeanProviderPropertyAccessor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="67" column="58" selection-start="2681" selection-end="2681" vertical-scroll-proportion="0.51192504">
+        <state line="99" column="12" selection-start="3410" selection-end="3410" vertical-scroll-proportion="0.73168653">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-annotations/src/test/org/apache/tapestry/annotations/AnnotatedPage.java">
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/web/WebSession.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="24" selection-start="1532" selection-end="1532" vertical-scroll-proportion="0.07785467">
+        <state line="25" column="1" selection-start="889" selection-end="889" vertical-scroll-proportion="0.1660988">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/internal/event/ComponentEventPropertyTest.java">
+    <entry file="file://$PROJECT_DIR$/tapestry-contrib/src/java/org/apache/tapestry/contrib/inspector/ShowProperties.jwc">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="145" column="45" selection-start="5522" selection-end="5522" vertical-scroll-proportion="0.59775084">
+        <state line="47" column="14" selection-start="1938" selection-end="1938" vertical-scroll-proportion="0.6005111">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/internal/event/ComponentEventProperty.java">
+    <entry file="file://$PROJECT_DIR$/tapestry-contrib/src/java/org/apache/tapestry/contrib/inspector/ShowEngine.jwc">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="128" column="12" selection-start="4580" selection-end="4580" vertical-scroll-proportion="0.3654174">
+        <state line="34" column="2" selection-start="1405" selection-end="1405" vertical-scroll-proportion="0.4347826">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/internal/event/EventBoundListener.java">
+    <entry file="file://$PROJECT_DIR$/tapestry-contrib/src/java/org/apache/tapestry/contrib/inspector/ShowEngine.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="145" column="5" selection-start="4303" selection-end="4303" vertical-scroll-proportion="0.4471891">
+        <state line="42" column="16" selection-start="1500" selection-end="1500" vertical-scroll-proportion="0.28132993">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/services/impl/ComponentEventConnectionWorkerTest.java">
+    <entry file="file://$PROJECT_DIR$/tapestry-contrib/src/java/org/apache/tapestry/contrib/inspector/ShowEngine.html">
+      <provider editor-type-id="HtmlPreview">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state line="71" column="8" selection-start="2827" selection-end="2827" vertical-scroll-proportion="0.43441227">
+        <state line="54" column="7" selection-start="1357" selection-end="1358" vertical-scroll-proportion="0.41238013">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-examples/TimeTracker/src/java/org/apache/tapestry/timetracker/page/TaskEntryPage.java">
+    <entry file="jar://$USERPROFILE$/.m2/repository/hivemind/hivemind/1.1.1/hivemind-1.1.1-sources.jar!/org/apache/hivemind/service/MethodSignature.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="110" column="5" selection-start="4176" selection-end="4176" vertical-scroll-proportion="0.30664396">
+        <state line="117" column="35" selection-start="3424" selection-end="3424" vertical-scroll-proportion="0.16709292">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/spec/ComponentSpecification.java">
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="733" column="8" selection-start="19827" selection-end="19827" vertical-scroll-proportion="0.43611583">
+        <state line="17" column="20" selection-start="755" selection-end="755" vertical-scroll-proportion="0.2173913">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/services/impl/ComponentEventConnectionWorker.java">
+    <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="369" column="45" selection-start="12977" selection-end="12977" vertical-scroll-proportion="0.29471892">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/internal/event/IComponentEventInvoker.java">
+    <entry file="file://$PROJECT_DIR$/tapestry-examples/TimeTracker/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="85" column="61" selection-start="3308" selection-end="3365" vertical-scroll-proportion="0.43781942">
+        <state line="120" column="40" selection-start="4435" selection-end="4435" vertical-scroll-proportion="0.5396419">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/internal/event/impl/ComponentEventInvokerTest.java">
+    <entry file="file://$PROJECT_DIR$/tapestry-examples/TimeTracker/src/java/org/apache/tapestry/timetracker/page/LocaleList.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="129" column="73" selection-start="4904" selection-end="4904" vertical-scroll-proportion="1.0175439">
+        <state line="42" column="4" selection-start="1264" selection-end="1264" vertical-scroll-proportion="0.33248082">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-annotations/src/descriptor/META-INF/hivemodule.xml">
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/services/impl/TestExpressionEvaluator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="206" column="24" selection-start="9256" selection-end="9256" vertical-scroll-proportion="0.48892674">
+        <state line="186" column="0" selection-start="4672" selection-end="4672" vertical-scroll-proportion="0.4117647">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/services/impl/HiveMindExpressionCompiler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="175" column="63" selection-start="6647" selection-end="6647" vertical-scroll-proportion="0.46035805">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/internal/event/impl/ComponentEventInvoker.java">
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/services/impl/ExpressionEvaluatorImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="301" column="4" selection-start="9763" selection-end="9763" vertical-scroll-proportion="0.7189097">
+        <state line="152" column="12" selection-start="4886" selection-end="4886" vertical-scroll-proportion="0.012787724">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-annotations/src/test/org/apache/tapestry/annotations/TestEventListenerAnnotationWorker.java">
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/enhance/AbstractFab.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="95" column="8" selection-start="3618" selection-end="3618" vertical-scroll-proportion="0.41226575">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-annotations/src/java/org/apache/tapestry/annotations/EventListenerAnnotationWorker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="66" column="0" selection-start="2376" selection-end="2376" vertical-scroll-proportion="0.5911414">
+        <state line="56" column="29" selection-start="1569" selection-end="1569" vertical-scroll-proportion="0.25575447">
           <folding />
         </state>
       </provider>
@@ -640,6 +631,7 @@
   <component name="testng.defaultConfiguration">
     <outputDirectory />
     <properties />
+    <groups />
   </component>
 </project>
 
