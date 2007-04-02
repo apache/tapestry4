@@ -45,8 +45,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="tapestry-annotations" exported="" />
-    <orderEntry type="module" module-name="tapestry-framework" exported="" />
     <orderEntry type="module-library" exported="">
       <library name="Maven Dependency: ant:ant:jar:1.6.5:test">
         <CLASSES>
