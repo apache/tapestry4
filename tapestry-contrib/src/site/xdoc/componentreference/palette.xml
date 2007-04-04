@@ -58,7 +58,7 @@
                         <td>selected</td>
                         <td>java.util.List</td>
                         <td>yes</td>
-                        <td>&nbsp;</td>
+                        <td></td>
                         <td>
                             A List of selected values. Possible selections are defined by the model;
                             this should be a subset of the possible values. This may be null when
@@ -78,7 +78,7 @@
                             </a>
                         </td>
                         <td>yes</td>
-                        <td>&nbsp;</td>
+                        <td></td>
                         <td>
                             Works, as with a
                             <a href="../../components/form/propertyselection.html">PropertySelection</a>
@@ -106,7 +106,7 @@
                         <td>id</td>
                         <td>string</td>
                         <td>no</td>
-                        <td>&nbsp;</td>
+                        <td></td>
                         <td>
                             Sets the id for the rendered <code>&lt;select&gt;</code> element that displays the 
                             selected items.
@@ -116,7 +116,7 @@
                         <td>displayName</td>
                         <td>string</td>
                         <td>no</td>
-                        <td>&nbsp;</td>
+                        <td></td>
                         <td>
                             The user-presentable name for the component, which will be used by a
                             <a href="../../components/form/fieldlabel.html">FieldLabel</a>
@@ -133,7 +133,7 @@
                             </a>
                         </td>
                         <td>no</td>
-                        <td>&nbsp;</td>
+                        <td></td>
                         <td>
                             The validators to apply to the component. Something along the lines of:
                             <code>validators:required</code> .<br/><br/>
@@ -211,7 +211,7 @@
                             </a>
                         </td>
                         <td>no</td>
-                        <td>&nbsp;</td>
+                        <td></td>
                         <td>
                             If any of these are specified then they override the default images
                             provided with the component. This allows the look and feel to be

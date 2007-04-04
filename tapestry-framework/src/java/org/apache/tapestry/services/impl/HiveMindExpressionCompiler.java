@@ -19,7 +19,6 @@ import ognl.*;
 import ognl.enhance.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.service.ClassFab;
 import org.apache.hivemind.service.ClassFactory;
 import org.apache.hivemind.service.MethodSignature;
@@ -121,52 +120,62 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
             String getBody = null;
             String setBody = null;
 
+            ClassFab classFab = _classFactory.newClass(expression.getClass().getName() + expression.hashCode() + "Accessor", Object.class);
+            classFab.addInterface(ExpressionAccessor.class);
+
+            MethodSignature valueGetter = new MethodSignature(Object.class, "get", new Class[]{OgnlContext.class, Object.class}, null);
+            MethodSignature valueSetter = new MethodSignature(void.class, "set", new Class[]{OgnlContext.class, Object.class, Object.class}, null);
+
+            MethodSignature expressionSetter = new MethodSignature(void.class, "setExpression", new Class[]{Node.class}, null);
+
+            // must evaluate expression value at least once if object isn't null
+
+            if (root != null)
+                Ognl.getValue(expression, context, root);
+
             try {
 
-                ClassFab classFab = _classFactory.newClass(expression.getClass().getName() + expression.hashCode() + "Accessor", Object.class);
-                classFab.addInterface(ExpressionAccessor.class);
+                getBody = generateGetter(context, classFab, valueGetter, expression, root);
 
-                MethodSignature valueGetter = new MethodSignature(Object.class, "get", new Class[]{OgnlContext.class, Object.class}, null);
-                MethodSignature valueSetter = new MethodSignature(void.class, "set", new Class[]{OgnlContext.class, Object.class, Object.class}, null);
+            } catch (UnsupportedCompilationException uc) {
 
-                MethodSignature expressionSetter = new MethodSignature(void.class, "setExpression", new Class[]{Node.class}, null);
+                // The target object may not fully resolve yet because of a partial tree with a null somewhere, we
+                // don't want to bail out forever because it might be enhancable on another pass eventually
 
-                // must evaluate expression value at least once if object isn't null
+                return;
+            }
 
-                if (root != null)
-                    Ognl.getValue(expression, context, root);
-
-                try {
-
-                    getBody = generateGetter(context, classFab, valueGetter, expression, root);
-
-                } catch (UnsupportedCompilationException uc) {
-
-                    // The target object may not fully resolve yet because of a partial tree with a null somewhere, we 
-                    // don't want to bail out forever because it might be enhancable on another pass eventually
-
-                    return;
-                }
+            try {
 
                 classFab.addMethod(Modifier.PUBLIC, valueGetter, getBody);
 
-                try {
+            } catch (Throwable t) {
 
-                    setBody = generateSetter(context, classFab, valueSetter, expression, root);
+                t.printStackTrace();
 
-                } catch (UnsupportedCompilationException uc) {
-                    
-                    if (_log.isDebugEnabled())
-                        _log.warn("Unsupported setter compilation caught: " + uc.getMessage() + " for expression: " + expression.toString());
+                generateFailSafe(context, expression, root);
+                return;
+            }
 
-                    setBody = generateOgnlSetter(classFab, valueSetter);
-                    
-                    if (!classFab.containsMethod(expressionSetter)) {
+            try {
 
-                        classFab.addField("_node", Node.class);
-                        classFab.addMethod(Modifier.PUBLIC, expressionSetter, "{ _node = $1; }");
-                    }
+                setBody = generateSetter(context, classFab, valueSetter, expression, root);
+
+            } catch (UnsupportedCompilationException uc) {
+
+                if (_log.isDebugEnabled())
+                    _log.warn("Unsupported setter compilation caught: " + uc.getMessage() + " for expression: " + expression.toString());
+
+                setBody = generateOgnlSetter(classFab, valueSetter);
+
+                if (!classFab.containsMethod(expressionSetter)) {
+
+                    classFab.addField("_node", Node.class);
+                    classFab.addMethod(Modifier.PUBLIC, expressionSetter, "{ _node = $1; }");
                 }
+            }
+
+            try {
 
                 if (setBody == null) {
                     setBody = generateOgnlSetter(classFab, valueSetter);
@@ -187,25 +196,21 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
 
                 expression.setAccessor((ExpressionAccessor) clazz.newInstance());
 
-                // need to set expression on node if the field was just defined.
+            }  catch (Throwable t) {
 
-                if (classFab.containsMethod(expressionSetter)) {
-
-                    expression.getAccessor().setExpression(expression);
-                }
-
-            } catch (CannotCompileException et) {
-                et.printStackTrace();
+                t.printStackTrace();
 
                 generateFailSafe(context, expression, root);
-                
-            } catch (Throwable t) {
-                t.printStackTrace();
-                
-                throw new ApplicationRuntimeException("Error compiling expression on object " + root
-                                                      + " with expression node " + expression + " getter body: " + getBody
-                                                      + " setter body: " + setBody, t);
+                return;
             }
+
+            // need to set expression on node if the field was just defined.
+
+            if (classFab.containsMethod(expressionSetter)) {
+
+                expression.getAccessor().setExpression(expression);
+            }
+
         }
     }
 
