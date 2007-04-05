@@ -73,4 +73,5 @@
   <component-type type="ControlledCheckbox" specification-path="form/checkboxes/ControlledCheckbox.jwc"/>
   <component-type type="XTile" specification-path="ajax/XTile.jwc"/>
   <component-type type="Timeout" specification-path="ajax/Timeout.jwc"/>
+  <component-type type="AjaxStatus" specification-path="ajax/AjaxStatus.jwc"/>
 </library-specification>
