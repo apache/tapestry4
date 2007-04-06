@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-    Copyright 2005 The Apache Software Foundation
+    Copyright 2007 The Apache Software Foundation
     
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@
         <section name="AjaxStatus">
 
             <p>
-                An extension of the <a href="../../components/general/any.html">Any</a> component that .
+                An extension of the <a href="../../components/general/any.html">Any</a> component that
                 defines an html node that becomes visible when ajax requests are in progress, 
                 and gets hidden when those requests end.
             </p>
