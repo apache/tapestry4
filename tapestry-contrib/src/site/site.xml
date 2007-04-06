@@ -40,6 +40,7 @@
             <item name="Overview" href="/index.html" />
                 
             <item name="Components" href="/componentreference/index.html" collapse="true">
+                <item name="AjaxStatus" href="/componentreference/ajaxstatus.html" />
                 <item name="CheckboxGroup" href="/componentreference/checkboxgroup.html" />
                 <item name="ColumnSortImage" href="/componentreference/columnsortimage.html" />
                 <item name="ColumnSortLink" href="/componentreference/columnsortlink.html" />                
