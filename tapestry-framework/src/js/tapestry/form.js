@@ -416,8 +416,8 @@ tapestry.form={
 			kwArgs.mimetype="text/xml";
 			kwArgs.load=(function(){tapestry.load.apply(this, arguments);});
 		}
-		
-		dojo.io.queueBind(kwArgs);
+		tapestry.requestsInFlight++;
+		dojo.io.queueBind(kwArgs);                
 	}
 }
 

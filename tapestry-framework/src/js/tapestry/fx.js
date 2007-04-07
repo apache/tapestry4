@@ -105,10 +105,10 @@ tapestry.fx={
             dojo.log.warn("Argument to tapestry.fx.attachAjaxStatus should be either a string or a function");
             return;
         }
-        dojo.event.connectOnce(tapestry, "bind", tapestry.fx._processAjaxStatus);
+        dojo.event.connectOnce(dojo.io, "queueBind", tapestry.fx._processAjaxStatus);
         dojo.event.connectOnce(tapestry, "error", tapestry.fx._processAjaxStatus);
         dojo.event.connectOnce(tapestry, "load", tapestry.fx._processAjaxStatus);
-        dojo.event.connectOnce(tapestry, "loadJson", tapestry.fx._processAjaxStatus);
+        dojo.event.connectOnce(tapestry, "loadJson", tapestry.fx._processAjaxStatus);        
     },
 
     _processAjaxStatus:function(){
