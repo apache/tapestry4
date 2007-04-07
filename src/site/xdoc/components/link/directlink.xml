@@ -121,8 +121,8 @@
                                 may now be of any type; type will be maintained when the parameters
                                 are later retrieved by a listener. See
                                 <a
-                                    href="../../apidocs/org/apache/tapestry/util/io/SqueezAdaptor.html">
-                                    SqueezAdaptor
+                                    href="../../apidocs/org/apache/tapestry/util/io/SqueezeAdaptor.html">
+                                    SqueezeAdaptor
                                 </a>
                                 for more details.
                             </p>
