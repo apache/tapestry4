@@ -13,22 +13,7 @@
 // limitations under the License.
 package org.apache.tapestry.services.impl;
 
-import static org.easymock.EasyMock.checkOrder;
-import static org.easymock.EasyMock.expect;
-
-import java.io.CharArrayWriter;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.apache.tapestry.BaseComponentTestCase;
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRender;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.NestedMarkupWriter;
+import org.apache.tapestry.*;
 import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
@@ -43,8 +28,16 @@ import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
+import static org.easymock.EasyMock.checkOrder;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
+
+import java.io.CharArrayWriter;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 /**
@@ -193,8 +186,8 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         checkOrder(page, false);
         
         IRequestCycle cycle = newMock(IRequestCycle.class);
-        // IMarkupWriter writer = newMock(IMarkupWriter.class);
         RequestLocaleManager rlm = newMock(RequestLocaleManager.class);
+        
         MarkupWriterSource mrs = newMock(MarkupWriterSource.class);
         WebResponse resp = newMock(WebResponse.class);
         WebRequest req = newMock(WebRequest.class);
@@ -226,7 +219,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         
         verify();
     }
-    
+
     public void test_New_Page_Render()
     {
         IPage page = newMock(IPage.class);

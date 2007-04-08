@@ -13,27 +13,11 @@
 // limitations under the License.
 package org.apache.tapestry.services.impl;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IForm;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRender;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.NestedMarkupWriter;
-import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.*;
 import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.NullWriter;
@@ -47,6 +31,10 @@ import org.apache.tapestry.util.PageRenderSupportImpl;
 import org.apache.tapestry.util.ScriptUtils;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.*;
 
 
 /**
@@ -97,7 +85,33 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      * block has been started.
      */
     private boolean _responseStarted = false;
-    
+
+    /**
+     * Creates a builder with a pre-configured {@link IMarkupWriter}.
+     * Currently only used for testing.
+     *
+     * @param writer
+     *          The markup writer to render all "good" content to.
+     * @param parts
+     *          A set of string ids of the components that may have
+     *          their responses rendered.
+     */
+    public DojoAjaxResponseBuilder(IRequestCycle cycle, IMarkupWriter writer, List parts, List errorPages)
+    {
+        Defense.notNull(cycle, "cycle");
+        Defense.notNull(writer, "writer");
+
+        _writer = writer;
+        _cycle = cycle;
+
+        if (parts != null)
+            _parts.addAll(parts);
+
+        _namespace = null;
+        _assetFactory = null;
+        _errorPages = errorPages;
+    }
+
     /**
      * Creates a builder with a pre-configured {@link IMarkupWriter}. 
      * Currently only used for testing.
@@ -110,19 +124,9 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      */
     public DojoAjaxResponseBuilder(IRequestCycle cycle, IMarkupWriter writer, List parts)
     {
-        Defense.notNull(cycle, "cycle");
-        Defense.notNull(writer, "writer");
-        
-        _writer = writer;
-        _cycle = cycle;
-        
-        if (parts != null) 
-            _parts.addAll(parts);
-        
-        _namespace = null;
-        _assetFactory = null;
+        this(cycle, writer, parts, null);
     }
-    
+
     /**
      * Creates a new response builder with the required services it needs
      * to render the response when {@link #renderResponse(IRequestCycle)} is called.
@@ -510,6 +514,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
             
             if (errorPage != null) {
                 _pageRender = true;
+                clearPartialWriters();
                 render.render(getWriter(errorPage, EXCEPTION_TYPE), cycle);
                 return;
             }
@@ -609,7 +614,16 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
                 + "]>\n");
         _writer.printRaw("<ajax-response>");
     }
-    
+
+    /**
+     * Invoked to clear out tempoary partial writer buffers before rendering exception
+     * page.
+     */
+    void clearPartialWriters()
+    {
+        _writers.clear();
+    }
+
     /**
      * Called after the entire response has been captured. Causes
      * the writer buffer output captured to be segmented and written

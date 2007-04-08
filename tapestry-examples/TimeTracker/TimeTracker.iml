@@ -13,8 +13,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="tapestry" />
     <orderEntry type="module" module-name="tapestry-annotations" />
+    <orderEntry type="module" module-name="tapestry-contrib" />
+    <orderEntry type="module" module-name="tapestry-framework" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -275,6 +276,39 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.tapestry:tapestry-annotations:jar:4.1.2-SNAPSHOT:compile">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../.m2/repository/org/apache/tapestry/tapestry-annotations/4.1.2-SNAPSHOT/tapestry-annotations-4.1.2-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/../../../../.m2/repository/org/apache/tapestry/tapestry-annotations/4.1.2-SNAPSHOT/tapestry-annotations-4.1.2-SNAPSHOT-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.tapestry:tapestry-contrib:jar:4.1.2-SNAPSHOT:compile">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../.m2/repository/org/apache/tapestry/tapestry-contrib/4.1.2-SNAPSHOT/tapestry-contrib-4.1.2-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/../../../../.m2/repository/org/apache/tapestry/tapestry-contrib/4.1.2-SNAPSHOT/tapestry-contrib-4.1.2-SNAPSHOT-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.tapestry:tapestry-framework:jar:4.1.2-SNAPSHOT:compile">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../.m2/repository/org/apache/tapestry/tapestry-framework/4.1.2-SNAPSHOT/tapestry-framework-4.1.2-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/../../../../.m2/repository/org/apache/tapestry/tapestry-framework/4.1.2-SNAPSHOT/tapestry-framework-4.1.2-SNAPSHOT-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
       <library name="Maven Dependency: org.apache.tapestry:tapestry-test:jar:4.1.1-SNAPSHOT:test">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../../.m2/repository/org/apache/tapestry/tapestry-test/4.1.1-SNAPSHOT/tapestry-test-4.1.1-SNAPSHOT.jar!/" />
@@ -351,10 +385,6 @@
     <setting name="RUN_JASPER_VALIDATION" value="true" />
   </component>
   <component name="WebModuleProperties">
-    <containerElement type="module" name="tapestry">
-      <attribute name="method" value="0" />
-      <attribute name="URI" value="/WEB-INF/classes" />
-    </containerElement>
     <containerElement type="module" name="tapestry-annotations">
       <attribute name="method" value="1" />
       <attribute name="URI" value="/WEB-INF/classes" />
@@ -452,10 +482,6 @@
       <attribute name="method" value="0" />
       <attribute name="URI" value="/WEB-INF/lib/hsqldb-1.8.0.1.jar" />
     </containerElement>
-    <containerElement type="library" name="Maven Dependency: javax.portlet:portlet-api:jar:1.0:provided" level="module">
-      <attribute name="method" value="0" />
-      <attribute name="URI" value="/WEB-INF/lib/portlet-api-1.0.jar" />
-    </containerElement>
     <containerElement type="library" name="Maven Dependency: javax.servlet:servlet-api:jar:2.4:provided" level="module">
       <attribute name="method" value="0" />
       <attribute name="URI" value="&lt;N/A&gt;" />
@@ -464,17 +490,9 @@
       <attribute name="method" value="0" />
       <attribute name="URI" value="/WEB-INF/lib/javassist-3.4.ga.jar" />
     </containerElement>
-    <containerElement type="library" name="Maven Dependency: jboss:jboss-j2ee:jar:4.0.2:compile" level="module">
-      <attribute name="method" value="0" />
-      <attribute name="URI" value="/WEB-INF/lib/jboss-j2ee-4.0.2.jar" />
-    </containerElement>
     <containerElement type="library" name="Maven Dependency: jboss:jboss-j2ee:jar:4.0.2:provided" level="module">
       <attribute name="method" value="1" />
       <attribute name="URI" value="/WEB-INF/lib/jboss-j2ee-4.0.2.jar" />
-    </containerElement>
-    <containerElement type="library" name="Maven Dependency: jcharts:jcharts:jar:0.6.0:compile" level="module">
-      <attribute name="method" value="0" />
-      <attribute name="URI" value="/WEB-INF/lib/jcharts-0.6.0.jar" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: jdom:jdom:jar:1.0:test" level="module">
       <attribute name="method" value="0" />
@@ -563,10 +581,6 @@
     <containerElement type="library" name="Maven Dependency: oro:oro:jar:2.0.8:compile" level="module">
       <attribute name="method" value="0" />
       <attribute name="URI" value="/WEB-INF/lib/oro-2.0.8.jar" />
-    </containerElement>
-    <containerElement type="library" name="Maven Dependency: portlet-api:portlet-api:jar:1.0:compile" level="module">
-      <attribute name="method" value="0" />
-      <attribute name="URI" value="/WEB-INF/lib/portlet-api-1.0.jar" />
     </containerElement>
     <containerElement type="library" name="Maven Dependency: xerces:xercesImpl:jar:2.0.2:compile" level="module">
       <attribute name="method" value="0" />

@@ -141,7 +141,6 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
 
                 // The target object may not fully resolve yet because of a partial tree with a null somewhere, we
                 // don't want to bail out forever because it might be enhancable on another pass eventually
-
                 return;
             }
 

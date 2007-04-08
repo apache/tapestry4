@@ -11,7 +11,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="tapestry" exported="" />
+    <orderEntry type="module" module-name="tapestry-framework" />
     <orderEntry type="module-library" exported="">
       <library name="Maven Dependency: backport-util-concurrent:backport-util-concurrent:jar:2.2:compile">
         <CLASSES>
@@ -205,6 +205,17 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.tapestry:tapestry-framework:jar:4.1.2-SNAPSHOT:compile">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../.m2/repository/org/apache/tapestry/tapestry-framework/4.1.2-SNAPSHOT/tapestry-framework-4.1.2-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/../../../.m2/repository/org/apache/tapestry/tapestry-framework/4.1.2-SNAPSHOT/tapestry-framework-4.1.2-SNAPSHOT-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
     <orderEntry type="module-library" exported="">
       <library name="Maven Dependency: org.apache.tapestry:tapestry-test:jar:4.1.1-SNAPSHOT:test">
         <CLASSES>
@@ -238,7 +249,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library name="Maven Dependency: org.testng:testng:jar:jdk15:5.1:test">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.m2/repository/org/testng/testng/5.1/testng-5.1-jdk15.jar!/" />

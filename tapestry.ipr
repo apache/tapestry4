@@ -160,14 +160,14 @@
         <option name="pluginEnabled" value="true" />
         <option name="updateClasspathsEnabled" value="true" />
         <option name="sortDependenciesEnabled" value="true" />
-        <option name="removeDuplicateDependenciesEnabled" value="true" />
+        <option name="removeDuplicateDependenciesEnabled" value="false" />
         <option name="respondToPomChangesEnabled" value="false" />
         <option name="manageSourceRootsEnabled" value="true" />
-        <option name="manageModuleInterdependenciesEnabled" value="true" />
+        <option name="manageModuleInterdependenciesEnabled" value="false" />
         <option name="downloadSourcesEnabled" value="false" />
         <option name="downloadJavadocEnabled" value="false" />
         <option name="generateSourcesEnabled" value="false" />
-        <option name="settingsPath" value="$USERPROFILE$/.m2/settings.xml" />
+        <option name="settingsPath" value="$USERPROFILE$/settings.xml" />
         <option name="searchFilter" value="target" />
         <option name="disabledPoms">
           <value>
@@ -181,7 +181,8 @@
                 <value>
                   <collection type="java.util.TreeSet">
                     <entry type="java.lang.String" value="tapestry" />
-                    <entry type="java.lang.String" value="tapestry-annotations" />
+                    <entry type="java.lang.String" value="tapestry-contrib" />
+                    <entry type="java.lang.String" value="tapestry-framework" />
                   </collection>
                 </value>
                 <key type="java.lang.String" value="TimeTracker" />
@@ -190,7 +191,8 @@
                 <value>
                   <collection type="java.util.TreeSet">
                     <entry type="java.lang.String" value="tapestry" />
-                    <entry type="java.lang.String" value="tapestry-annotations" />
+                    <entry type="java.lang.String" value="tapestry-contrib" />
+                    <entry type="java.lang.String" value="tapestry-framework" />
                   </collection>
                 </value>
                 <key type="java.lang.String" value="Workbench" />
@@ -198,7 +200,8 @@
               <entry>
                 <value>
                   <collection type="java.util.TreeSet">
-                    <entry type="java.lang.String" value="tapestry-annotations" />
+                    <entry type="java.lang.String" value="tapestry-contrib" />
+                    <entry type="java.lang.String" value="tapestry-framework" />
                   </collection>
                 </value>
                 <key type="java.lang.String" value="tapestry" />
@@ -206,7 +209,7 @@
               <entry>
                 <value>
                   <collection type="java.util.TreeSet">
-                    <entry type="java.lang.String" value="tapestry" />
+                    <entry type="java.lang.String" value="tapestry-framework" />
                   </collection>
                 </value>
                 <key type="java.lang.String" value="tapestry-annotations" />
@@ -214,7 +217,7 @@
               <entry>
                 <value>
                   <collection type="java.util.TreeSet">
-                    <entry type="java.lang.String" value="tapestry" />
+                    <entry type="java.lang.String" value="tapestry-framework" />
                   </collection>
                 </value>
                 <key type="java.lang.String" value="tapestry-contrib" />
@@ -222,7 +225,7 @@
               <entry>
                 <value>
                   <collection type="java.util.TreeSet">
-                    <entry type="java.lang.String" value="tapestry" />
+                    <entry type="java.lang.String" value="tapestry-framework" />
                   </collection>
                 </value>
                 <key type="java.lang.String" value="tapestry-portlet" />
@@ -378,6 +381,7 @@
     <option name="ADDITIONAL_OPTIONS_STRING" value="" />
   </component>
   <component name="StarteamVcsAdapter" />
+  <component name="XSLT-Support.FileAssociationsManager" />
   <component name="com.intellij.jsf.UserDefinedFacesConfigs">
     <option name="USER_DEFINED_CONFIGS">
       <value>

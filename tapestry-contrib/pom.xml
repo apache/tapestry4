@@ -183,6 +183,7 @@
     
     <reporting>
         <outputDirectory>../target/site/tapestry-contrib</outputDirectory>
+        <excludeDefaults>true</excludeDefaults>
     </reporting>
 
 </project>
