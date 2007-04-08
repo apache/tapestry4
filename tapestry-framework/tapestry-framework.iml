@@ -328,6 +328,15 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library" exported="">
+      <library name="Maven Dependency: org.openqa.selenium.server:selenium-server:jar:0.9.1-SNAPSHOT:test">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../.m2/repository/org/openqa/selenium/server/selenium-server/0.9.1-SNAPSHOT/selenium-server-0.9.1-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
       <library name="Maven Dependency: org.openqa.selenium.server:selenium-server:jar:standalone:0.9.1-SNAPSHOT:test">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.m2/repository/org/openqa/selenium/server/selenium-server/0.9.1-SNAPSHOT/selenium-server-0.9.1-SNAPSHOT-standalone.jar!/" />

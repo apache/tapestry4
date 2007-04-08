@@ -13,11 +13,11 @@
 // limitations under the License.
 package org.apache.tapestry.timetracker.page;
 
-import java.util.Locale;
-
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.services.ResponseBuilder;
+
+import java.util.Locale;
 
 
 /**

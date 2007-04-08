@@ -12,7 +12,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="tapestry" />
+    <orderEntry type="module" module-name="tapestry-framework" />
     <orderEntry type="module-library">
       <library name="Maven Dependency: backport-util-concurrent:backport-util-concurrent:jar:2.2:compile">
         <CLASSES>
@@ -212,6 +212,17 @@
         </JAVADOC>
         <SOURCES>
           <root url="jar://$MODULE_DIR$/../../../.m2/repository/ognl/ognl/2.7-SNAPSHOT/ognl-2.7-SNAPSHOT-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.tapestry:tapestry-framework:jar:4.1.2-SNAPSHOT:compile">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../.m2/repository/org/apache/tapestry/tapestry-framework/4.1.2-SNAPSHOT/tapestry-framework-4.1.2-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/../../../.m2/repository/org/apache/tapestry/tapestry-framework/4.1.2-SNAPSHOT/tapestry-framework-4.1.2-SNAPSHOT-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>

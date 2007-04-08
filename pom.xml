@@ -420,9 +420,13 @@
                             <report>scm</report>
                             <report>index</report>
                             <report>dependencies</report>
+                            <report>dependency-convergence</report>
                         </reports>
                     </reportSet>
                 </reportSets>
+                <configuration>
+                    <dependencyLocationsEnabled>true</dependencyLocationsEnabled>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -436,6 +440,11 @@
                         </reports>
                     </reportSet>
                 </reportSets>
+                <configuration>
+                    <filter>pid=10573&amp;status=5&amp;fixfor=12312202&amp;sorter/field=issuekey&amp;sorter/order=DESC</filter>
+                    <statusIds>Resolved,Closed</statusIds>
+                    <maxEntries>200</maxEntries>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

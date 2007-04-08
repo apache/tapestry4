@@ -45,7 +45,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="tapestry-annotations" exported="" />
     <orderEntry type="module-library" exported="">
       <library name="Maven Dependency: ant:ant:jar:1.6.5:test">
         <CLASSES>
@@ -320,6 +319,17 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library" exported="">
+      <library name="Maven Dependency: log4j:log4j:jar:1.2.8:test">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../.m2/repository/log4j/log4j/1.2.8/log4j-1.2.8.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/../../.m2/repository/log4j/log4j/1.2.8/log4j-1.2.8-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
       <library name="Maven Dependency: log4j:log4j:jar:1.2.9:compile">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../.m2/repository/log4j/log4j/1.2.9/log4j-1.2.9.jar!/" />
@@ -351,6 +361,48 @@
         </JAVADOC>
         <SOURCES>
           <root url="jar://$MODULE_DIR$/../../.m2/repository/ognl/ognl/2.7-SNAPSHOT/ognl-2.7-SNAPSHOT-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.tapestry:tapestry-VlibBeans:jar:4.1.2-SNAPSHOT:compile">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../.m2/repository/org/apache/tapestry/tapestry-VlibBeans/4.1.2-SNAPSHOT/tapestry-VlibBeans-4.1.2-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.tapestry:tapestry-annotations:jar:4.1.2-SNAPSHOT:compile">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../.m2/repository/org/apache/tapestry/tapestry-annotations/4.1.2-SNAPSHOT/tapestry-annotations-4.1.2-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/../../.m2/repository/org/apache/tapestry/tapestry-annotations/4.1.2-SNAPSHOT/tapestry-annotations-4.1.2-SNAPSHOT-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.tapestry:tapestry-contrib:jar:4.1.2-SNAPSHOT:compile">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../.m2/repository/org/apache/tapestry/tapestry-contrib/4.1.2-SNAPSHOT/tapestry-contrib-4.1.2-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/../../.m2/repository/org/apache/tapestry/tapestry-contrib/4.1.2-SNAPSHOT/tapestry-contrib-4.1.2-SNAPSHOT-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.tapestry:tapestry-framework:jar:4.1.2-SNAPSHOT:compile">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../.m2/repository/org/apache/tapestry/tapestry-framework/4.1.2-SNAPSHOT/tapestry-framework-4.1.2-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/../../.m2/repository/org/apache/tapestry/tapestry-framework/4.1.2-SNAPSHOT/tapestry-framework-4.1.2-SNAPSHOT-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
@@ -420,6 +472,15 @@
         <SOURCES>
           <root url="jar://$MODULE_DIR$/../../.m2/repository/org/openqa/selenium/server/selenium-server-coreless/0.9.1-SNAPSHOT/selenium-server-coreless-0.9.1-SNAPSHOT-sources.jar!/" />
         </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="Maven Dependency: org.openqa.selenium.server:selenium-server:jar:0.9.1-SNAPSHOT:test">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../.m2/repository/org/openqa/selenium/server/selenium-server/0.9.1-SNAPSHOT/selenium-server-0.9.1-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
       </library>
     </orderEntry>
     <orderEntry type="module-library" exported="">

@@ -149,7 +149,7 @@ public abstract class TaskEntryPage<E extends Persistent> extends BasePage
             setSelectedProject(getSelectedProject());
         }
     }
-    
+
     public void showSubProject()
     {
         setShowSubProject(true);

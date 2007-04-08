@@ -164,7 +164,7 @@
             </item>
             
         </menu>
-                
+
         <menu name="Modules">
             <item name="Tapestry Core" href="/tapestry-framework/index.html" />
             <item name="Contrib Library" href="/tapestry-contrib/index.html" />
