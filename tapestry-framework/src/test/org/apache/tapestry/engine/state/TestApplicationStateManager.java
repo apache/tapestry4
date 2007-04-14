@@ -14,9 +14,8 @@
 
 package org.apache.tapestry.engine.state;
 
-import static org.easymock.EasyMock.expect;
-
 import org.apache.tapestry.BaseComponentTestCase;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
 
 /**
@@ -25,7 +24,7 @@ import org.testng.annotations.Test;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-@Test
+@Test(sequential = true)
 public class TestApplicationStateManager extends BaseComponentTestCase
 {
     private StateObjectManagerRegistry newRegistry(String name,

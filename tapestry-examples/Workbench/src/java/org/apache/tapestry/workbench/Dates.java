@@ -13,12 +13,12 @@
 // limitations under the License.
 package org.apache.tapestry.workbench;
 
-import java.util.Date;
-
 import org.apache.tapestry.annotations.EventListener;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.valid.IValidationDelegate;
+
+import java.util.Date;
 
 
 /**
@@ -33,7 +33,7 @@ public abstract class Dates extends BasePage
     public abstract Date getStartDate();
     
     public abstract IValidationDelegate getDelegate();
-    
+
     @EventListener(targets = "startDate", events = {"onchange"}, submitForm = "dateForm", focus = false)
     public void startChanged()
     {

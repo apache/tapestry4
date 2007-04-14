@@ -14,18 +14,14 @@
 
 package org.apache.tapestry.annotations;
 
-import java.lang.annotation.Target;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IForm;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IScript;
+import org.apache.tapestry.*;
 import org.apache.tapestry.form.Checkbox;
 import org.apache.tapestry.form.TextField;
 import org.apache.tapestry.html.BasePage;
+
+import java.lang.annotation.Target;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Used by {@link org.apache.tapestry.annotations.AnnotationEnhancementWorkerTest}. Also a chance
@@ -177,5 +173,7 @@ public abstract class AnnotatedPage extends BasePage
     
     @Persist
     public abstract SubSimpleBean getSubBean();
-    
+
+    @Asset("images/test-asset.txt")
+    public abstract IAsset getTextAsset();
 }

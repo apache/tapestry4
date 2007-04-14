@@ -30,12 +30,11 @@ public class TestDefaultAssetFactory extends BaseComponentTestCase
     public void testCreateAssetFull()
     {
         Location l = newLocation();
-
         replay();
 
         AssetFactory factory = new DefaultAssetFactory();
 
-        ExternalAsset asset = (ExternalAsset) factory.createAsset(null, "/foo/bar/baz", null, l);
+        ExternalAsset asset = (ExternalAsset) factory.createAsset(null, null, "/foo/bar/baz", null, l);
 
         assertEquals("ExternalAsset[/foo/bar/baz]", asset.toString());
         assertSame(l, asset.getLocation());
@@ -51,7 +50,7 @@ public class TestDefaultAssetFactory extends BaseComponentTestCase
 
         AssetFactory factory = new DefaultAssetFactory();
 
-        ExternalAsset asset = (ExternalAsset) factory.createAsset(null, "/foo/bar/baz", null, l);
+        ExternalAsset asset = (ExternalAsset) factory.createAsset(null, null, "/foo/bar/baz", null, l);
 
         assertEquals("ExternalAsset[/foo/bar/baz]", asset.toString());
         assertSame(l, asset.getLocation());

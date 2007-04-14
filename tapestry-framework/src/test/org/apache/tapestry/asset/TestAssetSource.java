@@ -14,17 +14,16 @@
 
 package org.apache.tapestry.asset;
 
-import static org.easymock.EasyMock.expect;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IAsset;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Tests for {@link org.apache.tapestry.asset.AssetSourceImpl}.
@@ -49,12 +48,11 @@ public class TestAssetSource extends BaseComponentTestCase
         return Collections.singletonList(newContribution(prefix, factory));
     }
 
-    private AssetFactory newAssetFactory(Resource base, String path, Locale locale,
-            Location location, IAsset asset)
+    private AssetFactory newAssetFactory(Resource base, String path, Locale locale, Location location, IAsset asset)
     {
         AssetFactory f = newMock(AssetFactory.class);
-
-        expect(f.createAsset(base, path, locale, location)).andReturn(asset);
+        
+        expect(f.createAsset(null, base, path, locale, location)).andReturn(asset);
 
         return f;
     }
@@ -115,12 +113,14 @@ public class TestAssetSource extends BaseComponentTestCase
         Resource r = newResource();
         IAsset asset = newAsset();
 
-        AssetFactory f = newAssetFactory(r, "path/to/asset", Locale.ENGLISH, l, asset);
+        AssetFactory classFactory = newAssetFactory(r, "path/to/asset", Locale.ENGLISH, l, asset);
+
+        expect(classFactory.assetExists(null, r, "path/to/asset", Locale.ENGLISH)).andReturn(true);
 
         replay();
 
         AssetSourceImpl as = new AssetSourceImpl();
-        as.setLookupAssetFactory(f);
+        as.setClasspathAssetFactory(classFactory);
 
         IAsset actual = as.findAsset(r, "path/to/asset", Locale.ENGLISH, l);
 

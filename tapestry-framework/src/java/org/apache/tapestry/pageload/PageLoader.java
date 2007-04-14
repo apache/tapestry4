@@ -15,9 +15,11 @@
 package org.apache.tapestry.pageload;
 
 import org.apache.commons.logging.Log;
-import org.apache.hivemind.*;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.HiveMind;
+import org.apache.hivemind.Location;
 import org.apache.hivemind.service.ThreadLocale;
-import org.apache.hivemind.util.ContextResource;
 import org.apache.tapestry.*;
 import org.apache.tapestry.asset.AssetSource;
 import org.apache.tapestry.binding.BindingSource;
@@ -28,7 +30,6 @@ import org.apache.tapestry.services.ComponentConstructorFactory;
 import org.apache.tapestry.services.ComponentPropertySource;
 import org.apache.tapestry.services.ComponentTemplateLoader;
 import org.apache.tapestry.spec.*;
-import org.apache.tapestry.web.WebContextResource;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -465,7 +466,24 @@ public class PageLoader implements IPageLoader
     /**
      * Instantiates a component from its specification. We instantiate the
      * component object, then set its specification, page, container and id.
-     * 
+     *
+     * @param page
+     *          The page component is to be attached to.
+     * @param container
+     *          The containing component.
+     * @param id
+     *          The components unique id
+     * @param spec
+     *          The specification for the component
+     * @param type
+     *          The type (ie Any / For / DirectLink)
+     * @param namespace
+     *          Which namespace / library
+     * @param containedComponent
+     *          Possible contained component.
+     *
+     * @return The instantiated component instance.
+     *
      * @see org.apache.tapestry.AbstractComponent
      */
 
@@ -473,10 +491,9 @@ public class PageLoader implements IPageLoader
             String id, IComponentSpecification spec, String type,
             INamespace namespace, IContainedComponent containedComponent)
     {
-        ComponentClassProviderContext context = new ComponentClassProviderContext(
-                type, spec, namespace);
-        String className = _componentClassProvider
-                .provideComponentClassName(context);
+        ComponentClassProviderContext context = new ComponentClassProviderContext(type, spec, namespace);
+        
+        String className = _componentClassProvider.provideComponentClassName(context);
 
         if (HiveMind.isBlank(className))
             className = BaseComponent.class.getName();
@@ -495,8 +512,7 @@ public class PageLoader implements IPageLoader
                         null);
         }
 
-        ComponentConstructor cc = _componentConstructorFactory
-                .getComponentConstructor(spec, className);
+        ComponentConstructor cc = _componentConstructorFactory.getComponentConstructor(spec, className);
 
         IComponent result = (IComponent) cc.newInstance();
         
@@ -522,12 +538,14 @@ public class PageLoader implements IPageLoader
      * @param spec
      *            the page's specification We instantiate the page object, then
      *            set its specification, names and locale.
+     *
+     * @return The instantiated page instance.
+     * 
      * @see org.apache.tapestry.IEngine
      * @see org.apache.tapestry.event.ChangeObserver
      */
 
-    private IPage instantiatePage(String name, INamespace namespace,
-            IComponentSpecification spec)
+    private IPage instantiatePage(String name, INamespace namespace, IComponentSpecification spec)
     {
         Location location = spec.getLocation();
         ComponentClassProviderContext context = new ComponentClassProviderContext(
@@ -628,8 +646,7 @@ public class PageLoader implements IPageLoader
         }
     }
 
-    private void addAssets(IComponent component,
-            IComponentSpecification specification)
+    private void addAssets(IComponent component, IComponentSpecification specification)
     {
         List names = specification.getAssetNames();
 
@@ -642,39 +659,11 @@ public class PageLoader implements IPageLoader
             String name = (String) i.next();
 
             IAssetSpecification assetSpec = specification.getAsset(name);
-
-            IAsset asset = convertAsset(assetSpec);
-
+            
+            IAsset asset = _assetSource.findAsset(specification, assetSpec.getLocation().getResource(), assetSpec.getPath(), _locale, assetSpec.getLocation());
+            
             component.addAsset(name, asset);
         }
-    }
-
-    /**
-     * Builds an instance of {@link IAsset} from the specification.
-     */
-
-    private IAsset convertAsset(IAssetSpecification spec)
-    {
-        // AssetType type = spec.getType();
-        String path = spec.getPath();
-        Location location = spec.getLocation();
-
-        Resource specResource = location.getResource();
-
-        // And ugly, ugly kludge. For page and component specifications in the
-        // context (typically, somewhere under WEB-INF), we evaluate them
-        // relative the web application root.
-
-        if (isContextResource(specResource))
-            specResource = specResource.getRelativeResource("/");
-
-        return _assetSource.findAsset(specResource, path, _locale, location);
-    }
-
-    private boolean isContextResource(Resource resource)
-    {
-        return (resource instanceof WebContextResource)
-                || (resource instanceof ContextResource);
     }
 
     /** @since 4.0 */

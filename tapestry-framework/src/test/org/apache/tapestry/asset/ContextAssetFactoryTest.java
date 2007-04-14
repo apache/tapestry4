@@ -14,11 +14,6 @@
 
 package org.apache.tapestry.asset;
 
-import static org.easymock.EasyMock.expect;
-
-import java.net.URL;
-import java.util.Locale;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
@@ -26,8 +21,13 @@ import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.l10n.DefaultResourceLocalizer;
+import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.web.WebContext;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
+
+import java.net.URL;
+import java.util.Locale;
 
 @Test
 public class ContextAssetFactoryTest extends BaseComponentTestCase
@@ -42,18 +42,20 @@ public class ContextAssetFactoryTest extends BaseComponentTestCase
         return getClass().getResource("base-resource.txt");
     }
 
-    public void testCreateAsset()
+    public void test_Create_Asset()
     {
         Resource base = newResource();
         Resource relative = newResource();
         Resource localized = newResource();
         Location l = newLocation();
         URL url = newURL();
+        IComponentSpecification spec = newSpec();
 
+        trainGetRelativeResource(base, "/", base);
         trainGetRelativeResource(base, "asset.png", relative);
-        trainGetResourceURL(relative, url);
         trainGetLocalization(relative, Locale.FRENCH, localized);
-
+        expect(localized.getResourceURL()).andReturn(url).anyTimes();
+        
         replay();
 
         ContextAssetFactory factory = new ContextAssetFactory();
@@ -61,7 +63,7 @@ public class ContextAssetFactoryTest extends BaseComponentTestCase
 
         factory.setContextPath("/context");
 
-        IAsset asset = factory.createAsset(base, "asset.png", Locale.FRENCH, l);
+        IAsset asset = factory.createAsset(spec, base, "asset.png", Locale.FRENCH, l);
 
         assertTrue(asset instanceof ContextAsset);
         assertSame(localized, asset.getResourceLocation());
@@ -70,24 +72,34 @@ public class ContextAssetFactoryTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testCreateAssetMissing()
+    public void test_Create_Asset_Missing()
     {
         Resource base = newResource();
         Resource relative = newResource();
         Location l = newLocation();
+        IComponentSpecification spec = newMock(IComponentSpecification.class);
+        WebContext context = newMock(WebContext.class);
+
+        trainGetRelativeResource(base, "/", base);
         trainGetRelativeResource(base, "asset.png", relative);
-        trainGetResourceURL(relative, null);
         trainGetLocalization(relative, Locale.FRENCH, null);
+
+        expect(spec.getLocation()).andReturn(l);
+        expect(l.getResource()).andReturn(null);
+
+        expect(context.getResource("asset_fr.png")).andReturn(null);
+        expect(context.getResource("asset.png")).andReturn(null);
 
         replay();
 
         ContextAssetFactory factory = new ContextAssetFactory();
         factory.setLocalizer(new DefaultResourceLocalizer());
         factory.setContextPath("/context");
+        factory.setWebContext(context);
 
         try
         {
-            factory.createAsset(base, "asset.png", Locale.FRENCH, l);
+            factory.createAsset(spec, base, "asset.png", Locale.FRENCH, l);
             unreachable();
         }
         catch (ApplicationRuntimeException ex)
@@ -100,39 +112,12 @@ public class ContextAssetFactoryTest extends BaseComponentTestCase
 
         verify();
     }
-
-    public void testCreateAssetForClasspath()
-    {
-        Resource base = newResource();
-        Resource relative = newResource();
-        Location l = newLocation();
-        AssetFactory classpathFactory = newMock(AssetFactory.class);
-        IAsset asset = newMock(IAsset.class);
-
-        trainGetRelativeResource(base, "/asset.png", relative);
-        trainGetResourceURL(relative, null);
-
-        expect(classpathFactory.createAbsoluteAsset("/asset.png", Locale.FRENCH, l))
-        .andReturn(asset);
-
-        replay();
-
-        ContextAssetFactory factory = new ContextAssetFactory();
-
-        factory.setContextPath("/context");
-        factory.setClasspathAssetFactory(classpathFactory);
-
-        assertSame(asset, factory.createAsset(base, "/asset.png", Locale.FRENCH, l));
-
-        verify();
-    }
-
-    public void testCreateAbsoluteAsset()
+    
+    public void test_Create_Absolute_Asset()
     {
         Location l = newLocation();
         URL url = newURL();
         WebContext context = newMock(WebContext.class);
-
         trainGetResource(context, "/asset_fr.png", url);
 
         replay();
@@ -151,7 +136,7 @@ public class ContextAssetFactoryTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testCreateAbsoluteAssetMissing()
+    public void test_Create_Absolute_Asset_Missing()
     {
         Location l = newLocation();
         WebContext context = newMock(WebContext.class);
@@ -179,7 +164,7 @@ public class ContextAssetFactoryTest extends BaseComponentTestCase
         verify();
     }
     
-    public void testCreateAssetEncodeURL()
+    public void test_Create_Asset_Encode_URL()
     {
         Location l = newLocation();
         URL url = newURL();

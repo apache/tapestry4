@@ -234,8 +234,7 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
 
     IComponentSpecification searchForComponentClass(INamespace namespace, String type)
     {
-        String packages = namespace
-                .getPropertyValue("org.apache.tapestry.component-class-packages");
+        String packages = namespace.getPropertyValue("org.apache.tapestry.component-class-packages");
 
         String className = type.replace('/', '.');
 

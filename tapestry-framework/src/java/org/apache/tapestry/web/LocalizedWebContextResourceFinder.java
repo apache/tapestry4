@@ -14,10 +14,11 @@
 
 package org.apache.tapestry.web;
 
-import java.util.Locale;
-
+import org.apache.hivemind.util.Defense;
 import org.apache.hivemind.util.LocalizedNameGenerator;
 import org.apache.hivemind.util.LocalizedResource;
+
+import java.util.Locale;
 
 /**
  * Finds localized resources within a {@link org.apache.tapestry.web.WebContext}..
@@ -33,6 +34,8 @@ public class LocalizedWebContextResourceFinder
 
     public LocalizedWebContextResourceFinder(WebContext context)
     {
+        Defense.notNull(context, "context");
+
         _context = context;
     }
 

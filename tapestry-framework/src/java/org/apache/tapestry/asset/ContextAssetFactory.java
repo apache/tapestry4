@@ -14,16 +14,17 @@
 
 package org.apache.tapestry.asset;
 
-import java.util.Locale;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.l10n.ResourceLocalizer;
+import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.web.WebContext;
 import org.apache.tapestry.web.WebContextResource;
+
+import java.util.Locale;
 
 /**
  * All "context:" prefixed asset paths are interpreted relative to the web context (the web
@@ -36,8 +37,6 @@ public class ContextAssetFactory implements AssetFactory
 {
     private String _contextPath;
 
-    private AssetFactory _classpathAssetFactory;
-
     private WebContext _webContext;
 
     private ResourceLocalizer _localizer;
@@ -49,27 +48,59 @@ public class ContextAssetFactory implements AssetFactory
         _webContext = webContext;
     }
 
-    public IAsset createAsset(Resource baseResource, String path, Locale locale, Location location)
+    public boolean assetExists(IComponentSpecification spec, Resource baseResource, String path, Locale locale)
     {
+        return findAsset(spec, baseResource, path, locale) != null;
+    }
+
+    Resource findAsset(IComponentSpecification spec, Resource baseResource, String path, Locale locale)
+    {
+        Resource assetResource = baseResource.getRelativeResource("/").getRelativeResource(path);
+        
+        Resource localized = _localizer.findLocalization(assetResource, locale);
+
+        if (localized == null && spec != null && spec.getLocation().getResource() != null) {
+            // try relative to specification
+
+            assetResource = spec.getLocation().getResource().getRelativeResource("/").getRelativeResource(path);
+            
+            localized = _localizer.findLocalization(assetResource, locale);
+        }
+
+        if (localized == null || localized.getResourceURL() == null) {
+            // try relative to context root
+
+            Resource base = new WebContextResource(_webContext, path);
+            localized = _localizer.findLocalization(base, locale);
+        }
+
+        return localized;
+    }
+
+    public IAsset createAsset(IComponentSpecification spec, Resource baseResource, String path, Locale locale, Location location)
+    {
+        Resource localized = findAsset(spec, baseResource, path, locale);
+        
         // We always create a new asset relative to an existing resource; the type of resource
         // will jive with the type of asset returned. Path may start with a leading slash, which
         // yields an absolute, not relative, path to the resource.
 
-        Resource assetResource = baseResource.getRelativeResource(path);
+        if ( (localized == null || localized.getResourceURL() == null)
+             && path.startsWith("/")) {
+
+            return createAbsoluteAsset(path, locale, location);
+        }
 
         // Here's the thing; In Tapestry 3.0 and earlier, you could specify
         // library path like /org/apache/tapestry/contrib/Contrib.library. In the new scheme
         // of things, that should be "classpath:/org/apache/tapestry/contrib/Contrib.library".
         // But to keep a lot of things from breaking, we'll kludgely allow that here.
 
-        if (assetResource.getResourceURL() == null && path.startsWith("/"))
-            return _classpathAssetFactory.createAbsoluteAsset(path, locale, location);
-
-        Resource localized = _localizer.findLocalization(assetResource, locale);
-
+        //if (assetResource.getResourceURL() == null && path.startsWith("/"))
+          //  return _classpathAssetFactory.createAbsoluteAsset(path, locale, location);
+        
         if (localized == null)
-            throw new ApplicationRuntimeException(AssetMessages.missingAsset(path, baseResource),
-                    location, null);
+            throw new ApplicationRuntimeException(AssetMessages.missingAsset(path, baseResource), location, null);
 
         return createAsset(localized, location);
     }
@@ -80,8 +111,7 @@ public class ContextAssetFactory implements AssetFactory
         Resource localized = _localizer.findLocalization(base, locale);
 
         if (localized == null)
-            throw new ApplicationRuntimeException(AssetMessages.missingContextResource(path),
-                    location, null);
+            throw new ApplicationRuntimeException(AssetMessages.missingContextResource(path), location, null);
 
         return createAsset(localized, location);
     }
@@ -95,12 +125,7 @@ public class ContextAssetFactory implements AssetFactory
     {
         _contextPath = contextPath;
     }
-
-    public void setClasspathAssetFactory(AssetFactory classpathAssetFactory)
-    {
-        _classpathAssetFactory = classpathAssetFactory;
-    }
-
+    
     public void setLocalizer(ResourceLocalizer localizer)
     {
         _localizer = localizer;

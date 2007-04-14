@@ -14,13 +14,15 @@
 
 package org.apache.tapestry.workbench.fields;
 
-import java.math.BigDecimal;
-
+import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IPage;
+import org.apache.tapestry.annotations.Asset;
 import org.apache.tapestry.annotations.InjectPage;
 import org.apache.tapestry.annotations.InjectState;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.workbench.Visit;
+
+import java.math.BigDecimal;
 
 /**
  * @author Howard Lewis Ship
@@ -63,4 +65,7 @@ public abstract class Fields extends BasePage
     
     @InjectState("session-data")
     public abstract Visit getVisit();
+
+    @Asset("images/Continue.gif")
+    public abstract IAsset getContinue();
 }

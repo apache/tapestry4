@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.asset;
 
-import java.util.Locale;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
@@ -25,7 +23,10 @@ import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.l10n.DefaultResourceLocalizer;
+import org.apache.tapestry.spec.IComponentSpecification;
 import org.testng.annotations.Test;
+
+import java.util.Locale;
 
 /**
  * Tests for {@link org.apache.tapestry.asset.ClasspathAssetFactory}.
@@ -35,11 +36,12 @@ import org.testng.annotations.Test;
 @Test
 public class ClasspathAssetFactoryTest extends BaseComponentTestCase
 {
-    public void testCreateAsset()
+    public void test_Create_Asset()
     {
         IEngineService assetService = newService();
         Location l = newLocation();
-
+        IComponentSpecification spec = newSpec();
+        
         replay();
 
         ClasspathAssetFactory factory = new ClasspathAssetFactory();
@@ -49,20 +51,20 @@ public class ClasspathAssetFactoryTest extends BaseComponentTestCase
 
         Resource base = newBaseResource();
 
-        IAsset asset = factory.createAsset(base, "relative-resource.txt", Locale.FRENCH, l);
+        IAsset asset = factory.createAsset(spec, base, "relative-resource.txt", Locale.FRENCH, l);
 
         assertTrue(asset instanceof PrivateAsset);
-        assertEquals("/org/apache/tapestry/asset/relative-resource_fr.txt", asset
-                .getResourceLocation().getPath());
+        assertEquals("/org/apache/tapestry/asset/relative-resource_fr.txt", asset.getResourceLocation().getPath());
         assertSame(l, asset.getLocation());
 
         verify();
     }
 
-    public void testCreateAssetMissing()
+    public void test_Create_Asset_Missing()
     {
         IEngineService assetService = newService();
         Location l = newLocation();
+        IComponentSpecification spec = newSpec();
 
         replay();
 
@@ -75,7 +77,7 @@ public class ClasspathAssetFactoryTest extends BaseComponentTestCase
 
         try
         {
-            factory.createAsset(base, "does-not-exist.txt", Locale.ENGLISH, l);
+            factory.createAsset(spec, base, "does-not-exist.txt", Locale.ENGLISH, l);
             unreachable();
         }
         catch (ApplicationRuntimeException ex)
@@ -89,11 +91,10 @@ public class ClasspathAssetFactoryTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testCreateAbsoluteAsset()
+    public void test_Create_Absolute_Asset()
     {
         IEngineService assetService = newService();
         Location l = newLocation();
-
         replay();
 
         ClasspathAssetFactory factory = new ClasspathAssetFactory();
@@ -114,7 +115,7 @@ public class ClasspathAssetFactoryTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testCreateAbsoluteAssetMissing()
+    public void test_Create_Absolute_Asset_Missing()
     {
         IEngineService assetService = newService();
         Location l = newLocation();
@@ -145,7 +146,7 @@ public class ClasspathAssetFactoryTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testCreateDirectoryAsset()
+    public void test_Create_Directory_Asset()
     {
         IEngineService assetService = newService();
         Location l = newLocation();
@@ -170,12 +171,13 @@ public class ClasspathAssetFactoryTest extends BaseComponentTestCase
         verify();
     }
     
-    public void testCreateRelativeDirectoryAsset()
+    public void test_Create_Relative_Directory_Asset()
     {
         IEngineService assetService = newService();
         Resource shell = new ClasspathResource(getClassResolver(),
             "/org/apache/tapestry/html/Shell.jwc");
         Location l = new LocationImpl(shell);
+        IComponentSpecification spec = newSpec();
         
         replay();
         
@@ -186,7 +188,7 @@ public class ClasspathAssetFactoryTest extends BaseComponentTestCase
         
         String path = "/dojo/dojo.js";
         
-        IAsset asset = factory.createAsset(shell, path, 
+        IAsset asset = factory.createAsset(spec, shell, path, 
                 Locale.getDefault(),
                 l);
         
@@ -198,12 +200,13 @@ public class ClasspathAssetFactoryTest extends BaseComponentTestCase
         verify();
     }
     
-    public void testCreateRelativeDirectoryMissingAsset()
+    public void test_Create_Relative_Directory_Missing_Asset()
     {
         IEngineService assetService = newService();
         Resource shell = new ClasspathResource(getClassResolver(),
             "/org/apache/tapestry/html/Shell.jwc");
         Location l = new LocationImpl(shell);
+        IComponentSpecification spec = newSpec();
         
         replay();
         
@@ -214,7 +217,7 @@ public class ClasspathAssetFactoryTest extends BaseComponentTestCase
         
         String path = "/dojo/";
         
-        IAsset asset = factory.createAsset(shell, path, 
+        IAsset asset = factory.createAsset(spec, shell, path, 
                 Locale.getDefault(),
                 l);
         
@@ -229,7 +232,7 @@ public class ClasspathAssetFactoryTest extends BaseComponentTestCase
     /**
      * Tests relative sub-directory paths.
      */
-    public void testRelativeDirectoryPath()
+    public void test_Relative_Directory_Path()
     {
         IEngineService assetService = newService();
         Location l = newLocation();

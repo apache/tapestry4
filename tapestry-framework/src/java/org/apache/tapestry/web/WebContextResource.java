@@ -14,17 +14,16 @@
 
 package org.apache.tapestry.web;
 
-import java.net.URL;
-import java.util.Locale;
-
-import javax.servlet.ServletContext;
-
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.AbstractResource;
 import org.apache.hivemind.util.LocalizedResource;
 
+import javax.servlet.ServletContext;
+import java.net.URL;
+import java.util.Locale;
+
 /**
- * Implementation of {@link org.apache.hivemind.Resource}for resources found within a
+ * Implementation of {@link org.apache.hivemind.Resource} for resources found within a
  * {@link org.apache.tapestry.web.WebContext}.
  * 
  * @author Howard Lewis Ship
