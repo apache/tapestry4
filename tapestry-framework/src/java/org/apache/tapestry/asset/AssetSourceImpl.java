@@ -14,22 +14,17 @@
 
 package org.apache.tapestry.asset;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IAsset;
+import org.apache.tapestry.spec.IComponentSpecification;
+
+import java.util.*;
 
 /**
- * Implementation of the {@link org.apache.tapestry.asset.AssetSource}service interface.
+ * Implementation of the {@link org.apache.tapestry.asset.AssetSource} service interface.
  * 
- * @author Howard M. Lewis Ship
- * @since 4.0
  */
 public class AssetSourceImpl implements AssetSource
 {
@@ -40,6 +35,10 @@ public class AssetSourceImpl implements AssetSource
     private AssetFactory _defaultAssetFactory;
 
     private AssetFactory _lookupAssetFactory;
+
+    private AssetFactory _classpathAssetFactory;
+
+    private AssetFactory _contextAssetFactory;
 
     public void initializeService()
     {
@@ -54,19 +53,34 @@ public class AssetSourceImpl implements AssetSource
 
     public IAsset findAsset(Resource base, String path, Locale locale, Location location)
     {
+        return findAsset(null, base, path, locale, location);
+    }
+
+    public IAsset findAsset(IComponentSpecification spec, Resource base, String path, Locale locale, Location location)
+    {
         Defense.notNull(path, "path");
         Defense.notNull(location, "location");
 
         int colonx = path.indexOf(':');
         
-        if (colonx < 0)
-            return _lookupAssetFactory.createAsset(base, path, locale, location);
-        
-        String prefix = path.substring(0, colonx);
-        String truePath = path.substring(colonx + 1);
-        
-        AssetFactory factory = (AssetFactory) _assetFactoryByPrefix.get(prefix);
+        String prefix = colonx > -1 ? path.substring(0, colonx) : null;
+        String truePath = colonx > -1 ? path.substring(colonx + 1) : path;
 
+        Resource assetBase = base;
+        AssetFactory factory = null;
+
+        if (prefix != null) {
+
+            factory = (AssetFactory) _assetFactoryByPrefix.get(prefix);
+        }
+
+        // now we have to search
+        
+        if (factory == null && prefix == null) {
+            
+            factory = findAssetFactory(spec, assetBase, path, locale);
+        }
+        
         // Unknown prefix is expected to happen when an external asset (using an established
         // prefix such as http:) is referenced.
 
@@ -85,7 +99,28 @@ public class AssetSourceImpl implements AssetSource
 
         // This can happen when a 3.0 DTD is read in
 
-        return factory.createAsset(base, truePath, locale, location);
+        return factory.createAsset(spec, assetBase, truePath, locale, location);
+    }
+
+    AssetFactory findAssetFactory(IComponentSpecification spec, Resource baseResource, String path, Locale locale)
+    {
+        // need to check these two core factories in order first
+
+        if (_classpathAssetFactory.assetExists(spec, baseResource, path, locale))
+            return _classpathAssetFactory;
+
+        if (_contextAssetFactory.assetExists(spec, baseResource, path, locale))
+            return _contextAssetFactory;
+        
+        for (int i=0; i < _contributions.size(); i++) {
+
+            AssetFactoryContribution c = (AssetFactoryContribution)_contributions.get(i);
+
+            if (c.getFactory().assetExists(spec, baseResource, path, locale))
+                return c.getFactory();
+        }
+
+        return null;
     }
 
     /**
@@ -116,4 +151,13 @@ public class AssetSourceImpl implements AssetSource
         _defaultAssetFactory = defaultAssetFactory;
     }
 
+    public void setClasspathAssetFactory(AssetFactory classpathAssetFactory)
+    {
+        _classpathAssetFactory = classpathAssetFactory;
+    }
+
+    public void setContextAssetFactory(AssetFactory contextAssetFactory)
+    {
+        _contextAssetFactory = contextAssetFactory;
+    }
 }

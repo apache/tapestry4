@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.asset;
 
-import java.util.Locale;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Location;
@@ -24,6 +22,9 @@ import org.apache.hivemind.util.ClasspathResource;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.l10n.ResourceLocalizer;
+import org.apache.tapestry.spec.IComponentSpecification;
+
+import java.util.Locale;
 
 /**
  * Creates instances of {@link org.apache.tapestry.asset.PrivateAsset}, which are the holders of
@@ -40,7 +41,16 @@ public class ClasspathAssetFactory implements AssetFactory
 
     private ResourceLocalizer _localizer;
 
-    public IAsset createAsset(Resource baseResource, String path, Locale locale, Location location)
+    public boolean assetExists(IComponentSpecification spec, Resource baseResource, String path, Locale locale)
+    {
+        Resource assetResource = baseResource.getRelativeResource(path);
+
+        Resource localized = _localizer.findLocalization(assetResource, locale);
+
+        return localized != null;
+    }
+
+    public IAsset createAsset(IComponentSpecification spec, Resource baseResource, String path, Locale locale, Location location)
     {
         Resource asset = baseResource.getRelativeResource(path);
         Resource localized = _localizer.findLocalization(asset, locale);

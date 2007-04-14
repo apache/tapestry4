@@ -14,11 +14,12 @@
 
 package org.apache.tapestry.asset;
 
-import java.util.Locale;
-
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.IAsset;
+import org.apache.tapestry.spec.IComponentSpecification;
+
+import java.util.Locale;
 
 /**
  * Used to create an {@link org.apache.tapestry.IAsset} instance for a particular asset path. The
@@ -51,4 +52,25 @@ public interface AssetSource
      *             if the asset does not exist
      */
     IAsset findAsset(Resource base, String path, Locale locale, Location location);
+
+    /**
+     * Finds an asset relative to the specified <code>base</code> resources OR {@link IComponentSpecification} passed in.
+     *
+     * @param spec
+     *            The specification the resource may be relative to if not found relative to base.
+     * @param base
+     *            The base resource used for resolving the asset
+     * @param path
+     *            the path relative to the base resource; alternately, the path may include a prefix
+     *            that defines a domain (such as "classpath:" or "context:") in which case the base
+     *            resource is ignored and the resource resolved within that domain
+     * @param locale
+     *            used to find a localized version of the asset, may be null to indicate no
+     *            localization
+     * @param location
+     *            used to report errors (such as missing resources)
+     *
+     * @return the asset, possibly localized
+     */
+    IAsset findAsset(IComponentSpecification spec, Resource base, String path, Locale locale, Location location);
 }

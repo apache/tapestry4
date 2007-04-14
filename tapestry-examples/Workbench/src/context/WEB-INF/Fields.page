@@ -110,8 +110,6 @@
     <binding name="validators" value="validators:required,minLength=20"/>
     <binding name="displayName" value="literal:Text Area"/>
   </component>
-  
-  <asset name="continue" path="images/Continue.gif"/>
 
 </page-specification>
 

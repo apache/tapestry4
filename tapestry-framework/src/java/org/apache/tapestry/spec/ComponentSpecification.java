@@ -52,8 +52,7 @@ import java.util.*;
  * @author Howard Lewis Ship
  */
 
-public class ComponentSpecification extends LocatablePropertyHolder implements
-        IComponentSpecification
+public class ComponentSpecification extends LocatablePropertyHolder implements IComponentSpecification
 {
     /**
      * Keyed on component id, value is {@link IContainedComponent}.
@@ -187,12 +186,10 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
         claimProperty(asset.getPropertyName(), asset);
 
         _assets.put(name, asset);
-
     }
 
     /**
-     * @throws ApplicationRuntimeException
-     *             if the id is already defined.
+     * @throws ApplicationRuntimeException if the id is already defined.
      */
 
     public void addComponent(String id, IContainedComponent component)
@@ -214,8 +211,7 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
     /**
      * Adds the parameter. The name is added as a reserved name.
      * 
-     * @throws ApplicationRuntimeException
-     *             if the name already exists.
+     * @throws ApplicationRuntimeException if the name already exists.
      */
 
     public void addParameter(IParameterSpecification spec)
@@ -288,7 +284,6 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
 
     public IAssetSpecification getAsset(String name)
     {
-
         return (IAssetSpecification) get(_assets, name);
     }
 
@@ -313,6 +308,7 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
         return (IContainedComponent) get(_components, id);
     }
 
+    
     public String getComponentClassName()
     {
         return _componentClassName;

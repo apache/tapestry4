@@ -14,11 +14,6 @@
 
 package org.apache.tapestry.annotations;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
@@ -28,6 +23,11 @@ import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.enhance.EnhancementWorker;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.util.DescribedLocation;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Implementation of {@link org.apache.tapestry.enhance.EnhancementWorker} that finds class and

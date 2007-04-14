@@ -14,11 +14,14 @@
 
 package org.apache.tapestry.asset;
 
-import java.util.Locale;
-
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.IAsset;
+import org.apache.tapestry.spec.IComponentSpecification;
+
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Locale;
 
 /**
  * Default asset factory used when the asset path contains a prefix that is not recognized. It is
@@ -30,7 +33,21 @@ import org.apache.tapestry.IAsset;
 public class DefaultAssetFactory implements AssetFactory
 {
 
-    public IAsset createAsset(Resource baseResource, String path, Locale locale, Location location)
+    public boolean assetExists(IComponentSpecification spec, Resource baseResource, String path, Locale locale)
+    {
+        try {
+            URL url = new URL(path);
+
+            URLConnection conn = url.openConnection();
+
+            return true;
+        } catch (Throwable t) {
+
+            return false;
+        }
+    }
+
+    public IAsset createAsset(IComponentSpecification spec, Resource baseResource, String path, Locale locale, Location location)
     {
         return new ExternalAsset(path, location);
     }

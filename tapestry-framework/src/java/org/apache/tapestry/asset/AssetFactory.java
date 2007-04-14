@@ -14,11 +14,12 @@
 
 package org.apache.tapestry.asset;
 
-import java.util.Locale;
-
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.IAsset;
+import org.apache.tapestry.spec.IComponentSpecification;
+
+import java.util.Locale;
 
 /**
  * A service which creates an asset. In some cases, the asset is selected based on the Resource
@@ -29,8 +30,23 @@ import org.apache.tapestry.IAsset;
  */
 public interface AssetFactory
 {
+
+    /**
+     * Invoked to check if the factory instance can find a matching asset using the appropriate
+     * strategy specific to its implementation.
+     *
+     * @param spec The optional component specification to check the path against.
+     * @param baseResource The resource that the path may be relative to.
+     * @param path The asset path, relative to baseResource. 
+     * @param locale Optional parameter when a localized version is desired. (may be null)
+     * @return True if the requested asset can be found, false otherwise.
+     */
+    boolean assetExists(IComponentSpecification spec, Resource baseResource, String path, Locale locale);
+
     /**
      * Creates a new asset relative to an existing asset.
+     *
+     * @param spec The optional component specification to check the path against.
      * 
      * @param baseResource
      *            the base resource from which an asset path may be calculated. Each type of asset
@@ -48,7 +64,7 @@ public interface AssetFactory
      * @throws org.apache.hivemind.ApplicationRuntimeException
      *             if no matching asset may be found.
      */
-    IAsset createAsset(Resource baseResource, String path, Locale locale, Location location);
+    IAsset createAsset(IComponentSpecification spec, Resource baseResource, String path, Locale locale, Location location);
 
     /**
      * Creates a new asset relative to the root of the domain defined by the type of asset.

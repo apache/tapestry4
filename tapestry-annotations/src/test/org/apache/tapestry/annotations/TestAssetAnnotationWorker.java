@@ -14,27 +14,24 @@
 
 package org.apache.tapestry.annotations;
 
-import java.lang.reflect.Method;
-
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IAssetSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.apache.tapestry.util.DescribedLocation;
 import org.testng.annotations.Test;
+
+import java.lang.reflect.Method;
 
 /**
  * Tests for {@link org.apache.tapestry.annotations.AssetAnnotationWorker}.
  * 
- * @author Howard Lewis Ship
- * @since 4.0
  */
 @Test
 public class TestAssetAnnotationWorker extends BaseAnnotationTestCase
 {
-    public void testSuccess()
+    public void test_Success()
     {
         Location l = newLocation();
         Resource r = newMock(Resource.class);
@@ -51,8 +48,32 @@ public class TestAssetAnnotationWorker extends BaseAnnotationTestCase
         verify();
 
         IAssetSpecification as = spec.getAsset("globalStylesheet");
+
         assertEquals("/style/global.css", as.getPath());
-        assertEquals(new DescribedLocation(r, l.toString()), as.getLocation());
+        assertEquals(as.getLocation(), l);
         assertEquals("globalStylesheet", as.getPropertyName());
+    }
+
+    public void test_Class_Relative_Asset()
+    {
+        Location l = newLocation();
+        Resource r = newMock(Resource.class);
+        EnhancementOperation op = newOp();
+        IComponentSpecification spec = new ComponentSpecification();
+        spec.setSpecificationLocation(r);
+
+        replay();
+
+        Method m = findMethod(AnnotatedPage.class, "getTextAsset");
+
+        new AssetAnnotationWorker().performEnhancement(op, spec, m, l);
+
+        verify();
+
+        IAssetSpecification as = spec.getAsset("textAsset");
+
+        assertEquals("images/test-asset.txt", as.getPath());
+        assertEquals(as.getLocation(), l);
+        assertEquals("textAsset", as.getPropertyName());
     }
 }

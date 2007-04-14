@@ -14,23 +14,19 @@
 
 package org.apache.tapestry.annotations;
 
-import java.lang.reflect.Method;
-
 import org.apache.hivemind.Location;
-import org.apache.hivemind.Resource;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.AssetSpecification;
 import org.apache.tapestry.spec.IAssetSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.apache.tapestry.util.DescribedLocation;
+
+import java.lang.reflect.Method;
 
 /**
  * Uses the {@link org.apache.tapestry.annotations.Asset} annotation to create a new
  * {@link org.apache.tapestry.spec.IAssetSpecification} which is then added to the
  * {@link org.apache.tapestry.spec.IComponentSpecification}.
  * 
- * @author Howard Lewis Ship
- * @since 4.0
  */
 public class AssetAnnotationWorker implements MethodAnnotationEnhancementWorker
 {
@@ -48,10 +44,10 @@ public class AssetAnnotationWorker implements MethodAnnotationEnhancementWorker
         // Very important for assets, as they need a location (really, the Resource
         // of a location) to figure out what kind of asset they are.
 
-        Resource specResource = spec.getSpecificationLocation();
-        Location assetLocation = new DescribedLocation(specResource, location.toString());
-
-        as.setLocation(assetLocation);
+        //Resource specResource = spec.getSpecificationLocation();
+        //Location assetLocation = new DescribedLocation(specResource, location.toString());
+        
+        as.setLocation(location);
 
         spec.addAsset(propertyName, as);
     }

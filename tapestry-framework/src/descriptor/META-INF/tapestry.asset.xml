@@ -61,7 +61,6 @@
     
     <invoke-factory>
       <construct class="ContextAssetFactory">
-        <set-service property="classpathAssetFactory" service-id="ClasspathAssetFactory"/>
         <set-object property="contextPath" value="infrastructure:contextPath"/>
         <set-service property="webContext" service-id="tapestry.globals.WebContext"/>
         <set-object property="localizer" value="infrastructure:resourceLocalizer"/>
@@ -118,6 +117,8 @@
         <set-configuration property="contributions" configuration-id="AssetFactories"/>
         <set-service property="lookupAssetFactory" service-id="LookupAssetFactory"/>
         <set-service property="defaultAssetFactory" service-id="DefaultAssetFactory"/>
+        <set-service property="contextAssetFactory" service-id="ContextAssetFactory" />
+        <set-service property="classpathAssetFactory" service-id="ClasspathAssetFactory" />
       </construct>
     </invoke-factory>
   </service-point>
