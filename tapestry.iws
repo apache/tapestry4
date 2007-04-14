@@ -27,52 +27,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tapestry-annotations/src/test/org/apache/tapestry/annotations/images/test-asset.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/web/LocalizedWebContextResourceFinder.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/web/LocalizedWebContextResourceFinder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/asset/TestDefaultAssetFactory.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/asset/TestDefaultAssetFactory.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-annotations/src/java/org/apache/tapestry/annotations/AnnotationEnhancementWorker.java" afterPath="$PROJECT_DIR$/tapestry-annotations/src/java/org/apache/tapestry/annotations/AnnotationEnhancementWorker.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/asset/AssetFactory.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/asset/AssetFactory.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/asset/ClasspathAssetFactory.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/asset/ClasspathAssetFactory.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-examples/Workbench/Workbench.iml" afterPath="$PROJECT_DIR$/tapestry-examples/Workbench/Workbench.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-annotations/src/test/org/apache/tapestry/annotations/AnnotatedPage.java" afterPath="$PROJECT_DIR$/tapestry-annotations/src/test/org/apache/tapestry/annotations/AnnotatedPage.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tapestry-examples/Workbench/src/java/org/apache/tapestry/workbench/fields/images/Continue.gif" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-examples/Workbench/src/java/org/apache/tapestry/workbench/Dates.java" afterPath="$PROJECT_DIR$/tapestry-examples/Workbench/src/java/org/apache/tapestry/workbench/Dates.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-annotations/src/test/org/apache/tapestry/annotations/TestAssetAnnotationWorker.java" afterPath="$PROJECT_DIR$/tapestry-annotations/src/test/org/apache/tapestry/annotations/TestAssetAnnotationWorker.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/pageload/PageLoader.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/pageload/PageLoader.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/engine/state/TestApplicationStateManager.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/engine/state/TestApplicationStateManager.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/tapestry-examples/Workbench/src/java/org/apache/tapestry/workbench/components/.cvsignore" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-contrib/tapestry-contrib.iml" afterPath="$PROJECT_DIR$/tapestry-contrib/tapestry-contrib.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-examples/Workbench/src/context/WEB-INF/Fields.page" afterPath="$PROJECT_DIR$/tapestry-examples/Workbench/src/context/WEB-INF/Fields.page" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/tapestry-framework.iml" afterPath="$PROJECT_DIR$/tapestry-framework/tapestry-framework.iml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/tapestry-examples/Workbench/src/images/.cvsignore" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/web/WebContextResource.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/web/WebContextResource.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/resolver/ComponentSpecificationResolverImpl.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/resolver/ComponentSpecificationResolverImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/asset/ContextAssetFactory.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/asset/ContextAssetFactory.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/asset/DefaultAssetFactory.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/asset/DefaultAssetFactory.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tapestry-examples/Workbench/src/java/org/apache/tapestry/workbench/dateIcon.gif" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-portlet/tapestry-portlet.iml" afterPath="$PROJECT_DIR$/tapestry-portlet/tapestry-portlet.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry.iws" afterPath="$PROJECT_DIR$/tapestry.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-annotations/src/java/org/apache/tapestry/annotations/AssetAnnotationWorker.java" afterPath="$PROJECT_DIR$/tapestry-annotations/src/java/org/apache/tapestry/annotations/AssetAnnotationWorker.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-annotations/tapestry-annotations.iml" afterPath="$PROJECT_DIR$/tapestry-annotations/tapestry-annotations.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/junit/utils/TestRegexpMatcher.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/junit/utils/TestRegexpMatcher.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/asset/ContextAssetFactoryTest.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/asset/ContextAssetFactoryTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-examples/Workbench/src/context/Dates.html" afterPath="$PROJECT_DIR$/tapestry-examples/Workbench/src/context/Dates.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-examples/Workbench/pom.xml" afterPath="$PROJECT_DIR$/tapestry-examples/Workbench/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry.ipr" afterPath="$PROJECT_DIR$/tapestry.ipr" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/asset/TestAssetSource.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/asset/TestAssetSource.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/spec/ComponentSpecification.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/spec/ComponentSpecification.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-examples/Workbench/src/java/org/apache/tapestry/workbench/fields/Fields.java" afterPath="$PROJECT_DIR$/tapestry-examples/Workbench/src/java/org/apache/tapestry/workbench/fields/Fields.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-annotations/tapestry-annotations.iml" afterPath="$PROJECT_DIR$/tapestry-annotations/tapestry-annotations.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-examples/TimeTracker/TimeTracker.iml" afterPath="$PROJECT_DIR$/tapestry-examples/TimeTracker/TimeTracker.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tapestry-examples/Workbench/src/java/org/apache/tapestry/workbench/fields/images" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/asset/AssetSource.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/asset/AssetSource.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-examples/Workbench/src/context/images/Continue.gif" afterPath="$PROJECT_DIR$/tapestry-examples/Workbench/src/context/images/Continue.gif" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/descriptor/META-INF/tapestry.asset.xml" afterPath="$PROJECT_DIR$/tapestry-framework/src/descriptor/META-INF/tapestry.asset.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tapestry-examples/TimeTracker/src/context/images/body-bkg.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/asset/AssetSourceImpl.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/asset/AssetSourceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/asset/ClasspathAssetFactoryTest.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/asset/ClasspathAssetFactoryTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry.iml" afterPath="$PROJECT_DIR$/tapestry.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tapestry-annotations/src/test/org/apache/tapestry/annotations/images" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/tapestry-examples/Workbench/src/context/images/.cvsignore" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/multipart/UploadPart.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/multipart/UploadPart.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-examples/Workbench/Workbench.iml" afterPath="$PROJECT_DIR$/tapestry-examples/Workbench/Workbench.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/util/RegexpPoolObjectFactory.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/util/RegexpPoolObjectFactory.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-contrib/tapestry-contrib.iml" afterPath="$PROJECT_DIR$/tapestry-contrib/tapestry-contrib.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/util/RegexpMatch.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/util/RegexpMatch.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/form/validator/TestValidatorFactory.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/form/validator/TestValidatorFactory.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/web/TestServletWebContext.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/web/TestServletWebContext.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/tapestry-framework.iml" afterPath="$PROJECT_DIR$/tapestry-framework/tapestry-framework.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/util/RegexpMatcher.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/util/RegexpMatcher.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/form/validator/ValidatorFactoryImpl.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/form/validator/ValidatorFactoryImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/util/RegexpMatcherTest.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/util/RegexpMatcherTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/util/ScriptUtils.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/util/ScriptUtils.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/asset/TestUnprotectedAsset.java" afterPath="$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/asset/TestUnprotectedAsset.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tapestry-portlet/tapestry-portlet.iml" afterPath="$PROJECT_DIR$/tapestry-portlet/tapestry-portlet.iml" />
     </list>
   </component>
   <component name="ChangeListSynchronizer" />
@@ -277,7 +250,7 @@
     </subPane>
   </component>
   <component name="ProjectReloadState">
-    <option name="STATE" value="2" />
+    <option name="STATE" value="0" />
   </component>
   <component name="ProjectRootConfigurable.UI">
     <option name="proportions">
@@ -299,23 +272,43 @@
       <showLibraryContents />
       <hideEmptyPackages />
       <abbreviatePackageNames />
-      <showStructure ProjectPane="false" Scope="false" PackagesPane="false" Favorites="false" />
+      <showStructure Favorites="false" Scope="false" PackagesPane="false" ProjectPane="false" />
       <autoscrollToSource />
       <autoscrollFromSource />
       <sortByType />
     </navigator>
   </component>
   <component name="PropertiesComponent">
-    <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth1" value="329" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth0" value="284" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth3" value="35" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth2" value="304" />
     <property name="TEMP_MODULE_EXPLODED_DIR_FOR_Workbench" value="/tmp/webExplodedDir16585tmp" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder1" value="1" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder0" value="0" />
+    <property name="RunManagerConfig.showSettingsBeforeRunnig" value="false" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder3" value="3" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder2" value="2" />
+    <property name="MemberChooser.sorted" value="false" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth2" value="248" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder4" value="4" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth1" value="273" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth0" value="243" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth4" value="1043" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth3" value="243" />
+    <property name="GoToClass.includeJavaFiles" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="TEMP_MODULE_EXPLODED_DIR_FOR_TimeTracker" value="/tmp/webExplodedDir16584tmp" />
-    <property name="RunManagerConfig.showSettingsBeforeRunnig" value="false" />
-    <property name="RunManagerConfig.compileBeforeRunning" value="true" />
-    <property name="MemberChooser.sorted" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth4" value="1098" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="GoToClass.includeJavaFiles" value="false" />
+    <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="RunManagerConfig.compileBeforeRunning" value="true" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder3" value="3" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder4" value="4" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder1" value="1" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder2" value="2" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder0" value="0" />
     <property name="Web Module Deployment Descriptor Default Version" value="2.3" />
     <property name="MemberChooser.copyJavadoc" value="false" />
   </component>
@@ -323,15 +316,26 @@
     <option name="SHOW_DIALOG" value="true" />
   </component>
   <component name="RecentsManager" />
+  <component name="Regex">
+    <option name="pos1" value="700" />
+    <option name="pos2" value="700" />
+    <option name="pos3" value="174" />
+    <option name="pos4" value="1400" />
+    <option name="pos5" value="190" />
+    <option name="autoUpdate" value="true" />
+    <option name="referenceOn" value="false" />
+    <option name="referencePos" value="0" />
+    <option name="showLabels" value="true" />
+  </component>
   <component name="RestoreUpdateTree" />
-  <component name="RunManager" selected="TestNG.TestAssetSource">
-    <tempConfiguration default="false" name="TestAssetSource" type="TestNG" factoryName="TestNG" enabled="false" merge="false">
+  <component name="RunManager" selected="TestNG.TestUploadPart">
+    <tempConfiguration default="false" name="TestUploadPart" type="TestNG" factoryName="TestNG" enabled="false" merge="false">
       <module name="tapestry-framework" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="SUITE_NAME" />
-      <option name="PACKAGE_NAME" value="org.apache.tapestry.asset" />
-      <option name="MAIN_CLASS_NAME" value="org.apache.tapestry.asset.TestAssetSource" />
+      <option name="PACKAGE_NAME" value="org.apache.tapestry.multipart" />
+      <option name="MAIN_CLASS_NAME" value="org.apache.tapestry.multipart.TestUploadPart" />
       <option name="METHOD_NAME" />
       <option name="GROUP_NAME" />
       <option name="TEST_OBJECT" value="CLASS" />
@@ -351,6 +355,44 @@
         <option name="Make" value="true" />
       </method>
     </tempConfiguration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+    </configuration>
+    <configuration default="true" type="Remote" factoryName="Remote">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" value="javadebug" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5005" />
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit" enabled="false" merge="false">
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ADDITIONAL_CLASS_PATH" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="wholeProject" />
+      </option>
+      <method>
+        <option name="Make" value="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG" enabled="false" merge="false">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -375,32 +417,6 @@
         <option name="Make" value="true" />
       </method>
     </configuration>
-    <configuration default="true" type="JUnit" factoryName="JUnit" enabled="false" merge="false">
-      <module name="" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ADDITIONAL_CLASS_PATH" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="wholeProject" />
-      </option>
-      <method>
-        <option name="Make" value="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="Remote" factoryName="Remote">
-      <option name="USE_SOCKET_TRANSPORT" value="true" />
-      <option name="SERVER_MODE" value="false" />
-      <option name="SHMEM_ADDRESS" value="javadebug" />
-      <option name="HOST" value="localhost" />
-      <option name="PORT" value="5005" />
-    </configuration>
     <configuration default="true" type="Application" factoryName="Application" enabled="false" merge="false">
       <option name="MAIN_CLASS_NAME" />
       <option name="VM_PARAMETERS" />
@@ -410,18 +426,6 @@
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="ENABLE_SWING_INSPECTOR" value="false" />
       <module name="" />
-    </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
     </configuration>
     <configuration default="false" name="RemoteTimeTracker" type="Remote" factoryName="Remote">
       <option name="USE_SOCKET_TRANSPORT" value="true" />
@@ -517,18 +521,19 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" order="1" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23447712" order="1" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.376634" order="3" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19933555" order="8" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1985294" order="8" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20669934" order="8" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="7" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" order="1" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" order="0" />
       <window_info id="Module Dependencies" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="3" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21889839" order="0" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="8" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22839506" order="0" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24975657" order="2" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" order="6" />
       <window_info id="Duplicates" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="8" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25816995" order="2" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25898692" order="2" />
+      <window_info id="Regex" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32924837" order="8" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="3" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="8" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="3" />
@@ -557,7 +562,7 @@
     <option name="PERFORM_EDIT_IN_BACKGROUND" value="true" />
     <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixes TAPESTRY-1396 and TAPESTRY-1091." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixes TAPESTRY-1120 - UploadPart file names were still geting mangled.&#10;&#10;Updated regexp matcher to use java 1.4 matchers which are quite a bit faster." />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="REFORMAT_BEFORE_FILE_COMMIT" value="false" />
@@ -579,6 +584,7 @@
     <MESSAGE value="Fixes TAPESTRY-1402. &#10;&#10;For whatever reason my previous catch blocks weren't being executed so I moved them around some and things seem to work now." />
     <MESSAGE value="Fixes TAPESTRY-1407. During XHR exception page renders it was possible to have the response returned be ill formed xml if other components had partially written content before the exception page was rendered. Added clear method to clear out previous writers before rendering exception pages." />
     <MESSAGE value="Fixes TAPESTRY-1396 and TAPESTRY-1091." />
+    <MESSAGE value="Fixes TAPESTRY-1120 - UploadPart file names were still geting mangled.&#10;&#10;Updated regexp matcher to use java 1.4 matchers which are quite a bit faster." />
   </component>
   <component name="VssConfiguration">
     <option name="CLIENT_PATH" value="" />
@@ -635,95 +641,104 @@
     <option name="myLastEditedConfigurable" value="Project Default" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/tapestry-examples/TimeTracker/src/context/Home.html">
+    <entry file="jar:///usr/local/jdk1.6.0_02/src.zip!/java/util/regex/Matcher.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="43" selection-start="255" selection-end="255" vertical-scroll-proportion="0.091145836">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="HtmlPreview">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-examples/TimeTracker/src/context/WEB-INF/Border.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="28" selection-start="131" selection-end="131" vertical-scroll-proportion="0.052083332">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="HtmlPreview">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-examples/Workbench/src/java/org/apache/tapestry/workbench/palette/Palette.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="45" column="0" selection-start="1543" selection-end="1543" vertical-scroll-proportion="0.30176026">
+        <state line="449" column="6" selection-start="16262" selection-end="16262" vertical-scroll-proportion="0.47126436">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-examples/Workbench/src/context/WEB-INF/Border.jwc">
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/util/RegexpMatcherTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="0" selection-start="1245" selection-end="1245" vertical-scroll-proportion="0.42020375">
+        <state line="50" column="0" selection-start="1788" selection-end="1788" vertical-scroll-proportion="0.46521375">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-examples/Workbench/src/context/WEB-INF/LocaleList.jwc">
+    <entry file="jar:///home/jkuhnert/.m2/repository/oro/oro/2.0.8/oro-2.0.8-sources.jar!/org/apache/oro/text/regex/MatchResult.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="0" selection-start="1163" selection-end="1163" vertical-scroll-proportion="0.3820034">
+        <state line="158" column="8" selection-start="6123" selection-end="6123" vertical-scroll-proportion="0.20620285">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-examples/Workbench/src/context/WEB-INF/Table.page">
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/util/RegexpMatch.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+        <state line="50" column="5" selection-start="1351" selection-end="1351" vertical-scroll-proportion="0.47778708">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-examples/Workbench/src/context/WEB-INF/Palette.page">
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/util/ScriptUtils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="66" column="2" selection-start="2603" selection-end="2603" vertical-scroll-proportion="0.8404075">
+        <state line="76" column="71" selection-start="2823" selection-end="2823" vertical-scroll-proportion="0.39647946">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-examples/Workbench/src/context/WEB-INF/Fields.page">
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/form/validator/ValidatorFactoryImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="42" column="0" selection-start="1689" selection-end="1689" vertical-scroll-proportion="0.49066213">
+        <state line="68" column="0" selection-start="2254" selection-end="2254" vertical-scroll-proportion="0.31433362">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-examples/Workbench/src/context/WEB-INF/Dates.page">
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/form/validator/TestValidatorFactory.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="46" column="0" selection-start="1908" selection-end="1908" vertical-scroll-proportion="0.58573854">
+        <state line="117" column="0" selection-start="3419" selection-end="3419" vertical-scroll-proportion="0.26404023">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-examples/Workbench/src/context/WEB-INF/Chart.page">
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/web/ServletWebContext.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="2" selection-start="925" selection-end="925" vertical-scroll-proportion="0.30560273">
+        <state line="43" column="11" selection-start="1356" selection-end="1356" vertical-scroll-proportion="0.33256617">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-examples/Workbench/src/context/Dates.html">
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/web/TestServletWebContext.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="4" selection-start="201" selection-end="201" vertical-scroll-proportion="0.1171875">
+        <state line="27" column="3" selection-start="919" selection-end="919" vertical-scroll-proportion="0.15535098">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/junit/utils/TestRegexpMatcher.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="60" column="69" selection-start="1763" selection-end="1763" vertical-scroll-proportion="0.44006705">
           <folding />
         </state>
       </provider>
-      <provider editor-type-id="HtmlPreview">
-        <state />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/util/RegexpMatcher.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="183" column="13" selection-start="5534" selection-end="5534" vertical-scroll-proportion="0.69823974">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-examples/Workbench/src/java/org/apache/tapestry/workbench/Dates.java">
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/multipart/UploadPart.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="0" selection-start="1163" selection-end="1163" vertical-scroll-proportion="0.30176026">
+        <state line="58" column="0" selection-start="1644" selection-end="1644" vertical-scroll-proportion="0.42749372">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/request/IUploadFile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="33" column="0" selection-start="981" selection-end="981" vertical-scroll-proportion="0.2514669">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/test/org/apache/tapestry/asset/TestUnprotectedAsset.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="154" column="5" selection-start="5881" selection-end="5881" vertical-scroll-proportion="0.35624477">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -732,21 +747,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/tapestry-examples/Workbench/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="48" column="0" selection-start="1741" selection-end="1741" vertical-scroll-proportion="0.2359932">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-examples/TimeTracker/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="102" column="19" selection-start="3704" selection-end="3704" vertical-scroll-proportion="0.35059422">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tapestry-framework/src/java/org/apache/tapestry/asset/ClasspathAssetFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="59" column="36" selection-start="2212" selection-end="2212" vertical-scroll-proportion="0.43419948">
+        <state line="74" column="39" selection-start="2730" selection-end="2730" vertical-scroll-proportion="0.8344652">
           <folding />
         </state>
       </provider>

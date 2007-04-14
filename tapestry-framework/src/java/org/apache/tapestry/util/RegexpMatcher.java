@@ -14,36 +14,29 @@
 
 package org.apache.tapestry.util;
 
+import org.apache.commons.pool.KeyedPoolableObjectFactory;
+import org.apache.commons.pool.impl.GenericKeyedObjectPool;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.oro.text.regex.Perl5Compiler;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.pool.KeyedPoolableObjectFactory;
-import org.apache.commons.pool.impl.GenericKeyedObjectPool;
-import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.oro.text.regex.MatchResult;
-import org.apache.oro.text.regex.Pattern;
-import org.apache.oro.text.regex.PatternMatcher;
-import org.apache.oro.text.regex.PatternMatcherInput;
-import org.apache.oro.text.regex.Perl5Compiler;
-import org.apache.oro.text.regex.Perl5Matcher;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Streamlines the interface to ORO by implicitly constructing the necessary compilers and matchers,
  * and by caching compiled patterns.
  * 
- * @author Howard Lewis Ship
- * @since 3.0
  */
 
 public class RegexpMatcher
 {
     private static final int MAX_ACTIVE = 100;
     
-    private static final long SLEEP_TIME = 1000 * 60 * 2;
-    
-    private PatternMatcher _matcher;
+    private static final long SLEEP_TIME = 1000 * 60 * 4;
     
     private final KeyedPoolableObjectFactory _factory = new RegexpPoolObjectFactory();
     
@@ -67,15 +60,7 @@ public class RegexpMatcher
     {
         _pool.clear();
     }
-
-    protected PatternMatcher getPatternMatcher()
-    {
-        if (_matcher == null)
-            _matcher = new Perl5Matcher();
-
-        return _matcher;
-    }
-
+    
     public boolean matches(String pattern, String input)
     {
         Pattern compiled = null;
@@ -84,7 +69,7 @@ public class RegexpMatcher
             
             compiled = (Pattern)_pool.borrowObject(pattern);
             
-            return getPatternMatcher().matches(input, compiled);
+            return compiled.matcher(input).matches();
             
         } catch (Exception e) {
             
@@ -103,7 +88,7 @@ public class RegexpMatcher
             
             compiled = (Pattern)_pool.borrowObject(pattern);
             
-            return getPatternMatcher().contains(input, compiled);
+            return compiled.matcher(input).find();
             
         } catch (Exception e) {
             
@@ -121,7 +106,7 @@ public class RegexpMatcher
         if (result == null)
         {
             result = Perl5Compiler.quotemeta(pattern);
-            
+
             _escapedPatternStrings.put(pattern, result);
         }
         
@@ -145,17 +130,21 @@ public class RegexpMatcher
         try {
             
             compiled = (Pattern)_pool.borrowObject(pattern);
-            
-            PatternMatcher matcher = getPatternMatcher();
-            PatternMatcherInput matcherInput = new PatternMatcherInput(input);
 
+            Matcher matcher = compiled.matcher(input);
             List matches = new ArrayList();
             
-            while (matcher.contains(matcherInput, compiled))
+            while (matcher.find())
             {
-                MatchResult match = matcher.getMatch();
+                int length = matcher.groupCount();
+                String[] groups = new String[length + 1];
+                groups[0] = matcher.group();
+                
+                for (int i=1; i <= length; i++) {
+                    groups[i] = matcher.group(i);
+                }
 
-                matches.add(new RegexpMatch(match));
+                matches.add(new RegexpMatch(length, groups));
             }
             
             return (RegexpMatch[]) matches.toArray(new RegexpMatch[matches.size()]);
@@ -187,18 +176,14 @@ public class RegexpMatcher
         try {
 
             compiled = (Pattern)_pool.borrowObject(pattern);
-            
-            PatternMatcher matcher = getPatternMatcher();
-            PatternMatcherInput matcherInput = new PatternMatcherInput(input);
-            
+
+            Matcher matcher = compiled.matcher(input);
             List matches = new ArrayList();
             
-            while (matcher.contains(matcherInput, compiled))
+            while (matcher.find())
             {
-                MatchResult match = matcher.getMatch();
-
-                String matchedInput = match.group(subgroup);
-
+                String matchedInput = matcher.group(subgroup);
+                
                 matches.add(matchedInput);
             }
 

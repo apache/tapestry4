@@ -14,27 +14,19 @@
 
 package org.apache.tapestry.asset;
 
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
+import org.apache.hivemind.impl.DefaultClassResolver;
+import org.apache.oro.text.regex.*;
+import org.apache.tapestry.BaseComponentTestCase;
+import org.apache.tapestry.engine.ILink;
+import org.apache.tapestry.services.LinkFactory;
+import org.apache.tapestry.services.ServiceConstants;
+import static org.easymock.EasyMock.*;
+import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
-import org.apache.hivemind.impl.DefaultClassResolver;
-import org.apache.oro.text.regex.MalformedPatternException;
-import org.apache.oro.text.regex.Pattern;
-import org.apache.oro.text.regex.PatternCompiler;
-import org.apache.oro.text.regex.PatternMatcher;
-import org.apache.oro.text.regex.Perl5Compiler;
-import org.apache.oro.text.regex.Perl5Matcher;
-import org.apache.tapestry.BaseComponentTestCase;
-import org.apache.tapestry.engine.ILink;
-import org.apache.tapestry.services.LinkFactory;
-import org.apache.tapestry.services.ServiceConstants;
-import org.testng.annotations.Test;
 
 /**
  * Tests for unprotected resource contributions.
@@ -142,7 +134,6 @@ public class TestUnprotectedAsset extends BaseComponentTestCase
         patterns.add("/org/apache/tapestry/asset/.*.txt");
         patterns.add("/org/apache/tapestry/asset/.*.css");
         patterns.add("/org/apache/tapestry/asset/.*.js");
-        patterns.add("/org/apache/tapestry/asset/[%$4]rew\\invalidpattern");
         patterns.add("/org/apache/tapestry/html/dojo*");
         patterns.add("org/apache/tapestry/html/dojo/*/*.png");
         rm.setContributions(patterns);

@@ -14,11 +14,6 @@
 
 package org.apache.tapestry.form.validator;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.util.Defense;
@@ -26,6 +21,11 @@ import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.util.RegexpMatch;
 import org.apache.tapestry.util.RegexpMatcher;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Implementation of the tapestry.form.validator.ValidatorFactory service, which builds and caches
@@ -73,8 +73,7 @@ public class ValidatorFactoryImpl implements ValidatorFactory
             RegexpMatch[] matches = matcher.getMatches(PATTERN, chopped);
 
             if (matches.length != 1)
-                throw new ApplicationRuntimeException(ValidatorMessages
-                        .badSpecification(specification));
+                throw new ApplicationRuntimeException(ValidatorMessages.badSpecification(specification));
 
             RegexpMatch match = matches[0];
 

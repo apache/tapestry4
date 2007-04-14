@@ -15,22 +15,18 @@
 package org.apache.tapestry.web;
 
 import static org.easymock.EasyMock.expect;
+import org.testng.annotations.Test;
 
+import javax.servlet.ServletContext;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-import org.testng.annotations.Test;
-
-import javax.servlet.ServletContext;
-
 /**
  * Tests for {@link org.apache.tapestry.web.ServletWebContext}.
  * 
- * @author Howard M. Lewis Ship
- * @since 4.0
  */
-@Test
+@Test(sequential = true)
 public class TestServletWebContext extends BaseWebTestCase
 {
 

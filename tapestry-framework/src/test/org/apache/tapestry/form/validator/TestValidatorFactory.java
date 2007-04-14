@@ -14,21 +14,20 @@
 
 package org.apache.tapestry.form.validator;
 
-import static org.easymock.EasyMock.checkOrder;
-import static org.easymock.EasyMock.expect;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IBeanProvider;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.junit.TapestryTestCase;
+import static org.easymock.EasyMock.checkOrder;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Tests for {@link org.apache.tapestry.form.validator.ValidatorFactoryImpl}.
@@ -119,8 +118,8 @@ public class TestValidatorFactory extends TapestryTestCase
 
         ValidatorFixture fixture = (ValidatorFixture) result.get(0);
 
-        assertEquals("biff", fixture.getValue());
-        assertEquals("fred's message", fixture.getMessage());
+        assertEquals(fixture.getValue(), "biff");
+        assertEquals(fixture.getMessage(), "fred's message");
 
         verify();
     }

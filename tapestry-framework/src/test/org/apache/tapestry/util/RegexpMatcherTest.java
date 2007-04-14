@@ -13,9 +13,8 @@
 // limitations under the License.
 package org.apache.tapestry.util;
 
-import org.testng.annotations.Test;
-
 import com.javaforge.tapestry.testng.TestBase;
+import org.testng.annotations.Test;
 
 
 /**
@@ -25,10 +24,27 @@ import com.javaforge.tapestry.testng.TestBase;
 public class RegexpMatcherTest extends TestBase
 {
     RegexpMatcher _matcher = new RegexpMatcher();
-    
+
     public void test_Basic_Match()
     {
         assertTrue(_matcher.contains("/\\w+.css", "/a/b/FooBar.css"));
         assertFalse(_matcher.contains("/\\w+.css", "/a/b/FooBar.gif"));
+    }
+
+    public void test_Begin_Line_Match()
+    {
+        assertTrue(_matcher.contains("^/org/apache/tapestry/.*.gif", "/org/apache/tapestry/util/things/wiggle.gif"));
+        assertFalse(_matcher.contains("^/org/apache/tapestry/.*.gif", "apache/tapestry/util/things/wiggle.gif"));
+    }
+
+    public void test_Match_Result()
+    {
+        String input = "value=biff[fred's message]";
+        RegexpMatch[] matches = _matcher.getMatches("^\\s*(\\$?\\w+)\\s*(=\\s*(((?!,|\\[).)*))?", input);
+
+        assertEquals(matches.length, 1);
+        assertEquals(matches[0].getMatchLength(), 10);
+        assertEquals(matches[0].getGroup(1), "value");
+        assertEquals(matches[0].getGroup(3), "biff");
     }
 }

@@ -38,15 +38,15 @@ public class TestRegexpMatcher extends TapestryTestCase
         assertTrue(m.matches("foo|foot", "foo"));
     }
 
-    public void testNonmatch()
+    public void test_Non_Match()
     {
         RegexpMatcher m = new RegexpMatcher();
 
-        assertTrue(!m.matches("[0-9]+", "q"));
-        assertTrue(!m.matches("foo|foot", "foot"));
+        assert !m.matches("[0-9]+", "q");
+        assert !m.matches("foo|efoot", "foot");
     }
 
-    public void testBadPattern()
+    public void test_Bad_Pattern()
     {
         RegexpMatcher m = new RegexpMatcher();
 
@@ -58,7 +58,7 @@ public class TestRegexpMatcher extends TapestryTestCase
         }
         catch (ApplicationRuntimeException ex)
         {
-            checkException(ex, "Unmatched [] in expression");
+            checkException(ex, "Unclosed character class near index 2");
         }
     }
 
@@ -100,14 +100,13 @@ public class TestRegexpMatcher extends TapestryTestCase
 
     /** @since 4.0 */
 
-    public void testGetMatches()
+    public void test_Get_Matches()
     {
         RegexpMatcher m = new RegexpMatcher();
 
         String[] matches = m.getMatches("\\d+", "57,232 89 147", 0);
 
-        assertListEquals(new String[]
-        { "57", "232", "89", "147" }, matches);
+        assertEquals(new String[] { "57", "232", "89", "147" }, matches);
     }
 
     /** @since 4.0 */

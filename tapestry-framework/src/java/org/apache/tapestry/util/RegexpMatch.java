@@ -14,21 +14,18 @@
 
 package org.apache.tapestry.util;
 
-import org.apache.oro.text.regex.MatchResult;
-
 /**
- * A "friendly" version of a regular expression match.
- * 
- * @author Howard Lewis Ship
- * @since 4.0
+ * A "friendly" version of a regular expression match. 
  */
 public class RegexpMatch
 {
-    private final MatchResult _match;
+    private final int _groupCount;
+    private final String[] _groups;
 
-    RegexpMatch(MatchResult match)
+    RegexpMatch(int groupCount, String[] groups)
     {
-        _match = match;
+        _groupCount = groupCount;
+        _groups = groups;
     }
 
     /**
@@ -38,7 +35,7 @@ public class RegexpMatch
 
     public String getGroup(int group)
     {
-        return _match.group(group);
+        return _groups[group];
     }
 
     /**
@@ -47,11 +44,11 @@ public class RegexpMatch
 
     public String getInput()
     {
-        return _match.toString();
+        return _groups[0];
     }
     
     public int getMatchLength()
     {
-        return _match.length();
+        return _groups[0].length();
     }
 }
