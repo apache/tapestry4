@@ -13,16 +13,14 @@
 // limitations under the License.
 package org.apache.tapestry.util;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.commons.lang.StringUtils;
 
 
 /**
  * Various scripting utility methods.
- * 
- * @author jkuhnert
  */
 public final class ScriptUtils
 {

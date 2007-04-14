@@ -15,19 +15,16 @@ package org.apache.tapestry.util;
 
 import org.apache.commons.pool.BaseKeyedPoolableObjectFactory;
 import org.apache.hivemind.util.Defense;
-import org.apache.oro.text.regex.Pattern;
-import org.apache.oro.text.regex.PatternCompiler;
-import org.apache.oro.text.regex.Perl5Compiler;
 
 
 /**
  * Implementation of {@link BaseKeyedPoolableObjectFactory} for regexp patterns
- * that compiles incoming String regexp patterns into compiled {@link Pattern} 
+ * that compiles incoming String regexp patterns into compiled {@link java.util.regex.Pattern}
  * objects.
  */
 public class RegexpPoolObjectFactory extends BaseKeyedPoolableObjectFactory
 {
-    private PatternCompiler _patternCompiler;
+    //private PatternCompiler _patternCompiler;
     
     /**
      * {@inheritDoc}
@@ -38,12 +35,9 @@ public class RegexpPoolObjectFactory extends BaseKeyedPoolableObjectFactory
         Defense.notNull(pattern, "Regexp pattern");
         Defense.isAssignable(pattern, String.class, "Regexp pattern");
         
-        if (_patternCompiler == null)
-            _patternCompiler = new Perl5Compiler();
-        
         String regexp = (String)pattern;
-        
-        return _patternCompiler.compile(regexp, Perl5Compiler.SINGLELINE_MASK | Perl5Compiler.READ_ONLY_MASK);
+
+        return java.util.regex.Pattern.compile(regexp, java.util.regex.Pattern.COMMENTS | java.util.regex.Pattern.DOTALL);
     }
 
 }

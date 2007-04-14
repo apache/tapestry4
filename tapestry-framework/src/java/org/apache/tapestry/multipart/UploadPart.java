@@ -14,16 +14,16 @@
 
 package org.apache.tapestry.multipart;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.IUploadFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Portion of a multi-part request representing an uploaded file.
@@ -54,9 +54,7 @@ public class UploadPart extends Object implements IUploadFile
      */
     public String getFileName()
     {
-        File file = new File(FilenameUtils.separatorsToSystem(getFilePath()));
-
-        return file.getName();
+        return FilenameUtils.getName(getFilePath());
     }
 
     /**
