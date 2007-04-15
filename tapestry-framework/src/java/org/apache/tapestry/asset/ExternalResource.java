@@ -14,17 +14,15 @@
 
 package org.apache.tapestry.asset;
 
-import java.net.URL;
-import java.util.Locale;
-
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.AbstractResource;
+
+import java.net.URL;
+import java.util.Locale;
 
 /**
  * Corresponds to the {@link org.apache.tapestry.asset.ExternalAsset}.
  * 
- * @author Howard M. Lewis Ship
- * @since 4.0
  */
 public class ExternalResource extends AbstractResource
 {

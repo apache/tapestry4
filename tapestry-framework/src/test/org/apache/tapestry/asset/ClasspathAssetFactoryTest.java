@@ -60,6 +60,27 @@ public class ClasspathAssetFactoryTest extends BaseComponentTestCase
         verify();
     }
 
+    public void test_Absolute_Asset_Exists()
+    {
+        String path = "/org/apache/tapestry/html/Shell.jwc";
+
+        IEngineService assetService = newService();
+        IComponentSpecification spec = newSpec();
+        
+        replay();
+
+        ClasspathAssetFactory factory = new ClasspathAssetFactory();
+        factory.setClassResolver(getClassResolver());
+        factory.setAssetService(assetService);
+        factory.setLocalizer(new DefaultResourceLocalizer());
+
+        Resource base = newBaseResource();
+
+        assert factory.assetExists(spec, base, path, null);
+
+        verify();
+    }
+
     public void test_Create_Asset_Missing()
     {
         IEngineService assetService = newService();

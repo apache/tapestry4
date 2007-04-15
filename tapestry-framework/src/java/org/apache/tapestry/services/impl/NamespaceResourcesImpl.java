@@ -53,15 +53,14 @@ public class NamespaceResourcesImpl implements NamespaceResources
 
     }
 
-    private Resource findSpecificationResource(Resource libraryResource, String path,
-            Location location)
+    private Resource findSpecificationResource(Resource libraryResource, String path, Location location)
     {
         // TODO: This is where we'll play with assets and asset prefixes
-
+        
         IAsset childAsset = _assetSource.findAsset(libraryResource, path, null, location);
 
         Resource childResource = childAsset.getResourceLocation();
-
+        
         return childResource;
     }
 

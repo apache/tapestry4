@@ -90,14 +90,6 @@ public class ContextAssetFactory implements AssetFactory
 
             return createAbsoluteAsset(path, locale, location);
         }
-
-        // Here's the thing; In Tapestry 3.0 and earlier, you could specify
-        // library path like /org/apache/tapestry/contrib/Contrib.library. In the new scheme
-        // of things, that should be "classpath:/org/apache/tapestry/contrib/Contrib.library".
-        // But to keep a lot of things from breaking, we'll kludgely allow that here.
-
-        //if (assetResource.getResourceURL() == null && path.startsWith("/"))
-          //  return _classpathAssetFactory.createAbsoluteAsset(path, locale, location);
         
         if (localized == null)
             throw new ApplicationRuntimeException(AssetMessages.missingAsset(path, baseResource), location, null);

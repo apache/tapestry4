@@ -53,7 +53,6 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * <li>By searching the framework namespace
  * </ul>
  * 
- * @author Howard Lewis Ship
  * @since 3.0
  */
 
@@ -91,8 +90,7 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
      * @see #getSpecification()
      */
 
-    public void resolve(IRequestCycle cycle, INamespace containerNamespace, String type,
-            Location location)
+    public void resolve(IRequestCycle cycle, INamespace containerNamespace, String type, Location location)
     {
         int colonx = type.indexOf(':');
 
