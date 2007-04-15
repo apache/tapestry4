@@ -14,35 +14,24 @@
 
 package org.apache.tapestry.services.impl;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
-import org.apache.tapestry.IBinding;
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IRender;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.ITemplateComponent;
-import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.*;
 import org.apache.tapestry.binding.BindingConstants;
 import org.apache.tapestry.binding.BindingSource;
 import org.apache.tapestry.binding.LiteralBinding;
 import org.apache.tapestry.engine.IPageLoader;
-import org.apache.tapestry.parse.CloseToken;
-import org.apache.tapestry.parse.ComponentTemplate;
-import org.apache.tapestry.parse.LocalizationToken;
-import org.apache.tapestry.parse.OpenToken;
-import org.apache.tapestry.parse.TemplateToken;
-import org.apache.tapestry.parse.TextToken;
-import org.apache.tapestry.parse.TokenType;
+import org.apache.tapestry.parse.*;
 import org.apache.tapestry.services.TemplateSource;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
 import org.apache.tapestry.spec.IParameterSpecification;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Contains the logic from {@link org.apache.tapestry.services.impl.ComponentTemplateLoaderImpl},
@@ -138,7 +127,7 @@ public class ComponentTemplateLoaderLogic
     /**
      * Adds the token (which implements {@link IRender}) to the active component (using
      * {@link IComponent#addBody(IRender)}), or to this component
-     * {@link BaseComponent#addOuter(IRender)}.
+     * {@link org.apache.tapestry.BaseComponent#addOuter(IRender)}.
      * <p>
      * A check is made that the active component allows a body.
      */

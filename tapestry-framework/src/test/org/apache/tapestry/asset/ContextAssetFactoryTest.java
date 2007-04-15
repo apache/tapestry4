@@ -72,6 +72,32 @@ public class ContextAssetFactoryTest extends BaseComponentTestCase
         verify();
     }
 
+    public void test_Absolute_Asset_Exists()
+    {
+        Resource base = newResource();
+        Resource relative = newResource();
+        Resource localized = newResource();
+        Location l = newLocation();
+        URL url = newURL();
+        IComponentSpecification spec = newSpec();
+
+        trainGetRelativeResource(base, "/", base);
+        trainGetRelativeResource(base, "/images/asset.png", relative);
+        trainGetLocalization(relative, Locale.FRENCH, localized);
+        expect(localized.getResourceURL()).andReturn(url).anyTimes();
+
+        replay();
+
+        ContextAssetFactory factory = new ContextAssetFactory();
+        factory.setLocalizer(new DefaultResourceLocalizer());
+
+        factory.setContextPath("/context");
+
+        assert factory.assetExists(spec, base, "/images/asset.png", Locale.FRENCH);
+
+        verify();
+    }
+
     public void test_Create_Asset_Missing()
     {
         Resource base = newResource();

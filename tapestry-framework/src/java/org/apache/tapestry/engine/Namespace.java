@@ -14,14 +14,7 @@
 
 package org.apache.tapestry.engine;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import edu.emory.mathcs.backport.java.util.concurrent.ConcurrentHashMap;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
@@ -30,6 +23,8 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.services.NamespaceResources;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
+
+import java.util.*;
 
 /**
  * Implementation of {@link org.apache.tapestry.INamespace} that works with a
@@ -66,20 +61,20 @@ public class Namespace implements INamespace
      * application namespace).
      */
 
-    private final Map _pages = Collections.synchronizedMap(new HashMap());
+    private final Map _pages = new ConcurrentHashMap();
 
     /**
      * Map of {@link org.apache.tapestry.spec.ComponentSpecification}keyed on
      * component alias.
      */
 
-    private final Map _components = Collections.synchronizedMap(new HashMap());
+    private final Map _components = new ConcurrentHashMap();
 
     /**
      * Map, keyed on id, of {@link INamespace}.
      */
 
-    private final Map _children = Collections.synchronizedMap(new HashMap());
+    private final Map _children = new ConcurrentHashMap();
 
     public Namespace(String id, INamespace parent,
             ILibrarySpecification specification, NamespaceResources resources)
@@ -165,8 +160,7 @@ public class Namespace implements INamespace
 
     public IComponentSpecification getPageSpecification(String name)
     {
-        IComponentSpecification result = (IComponentSpecification) _pages
-                .get(name);
+        IComponentSpecification result = (IComponentSpecification) _pages.get(name);
 
         if (result == null)
         {
@@ -293,16 +287,14 @@ public class Namespace implements INamespace
         // identifying
         // the right file)
 
-        ILibrarySpecification ls = _resources.findChildLibrarySpecification(
-                getSpecificationLocation(), path, getLocation());
+        ILibrarySpecification ls = _resources.findChildLibrarySpecification(getSpecificationLocation(), path, getLocation());
 
         return new Namespace(id, this, ls, _resources);
     }
 
-    public synchronized boolean containsPage(String name)
+    public boolean containsPage(String name)
     {
-        return _pages.containsKey(name)
-                || (_specification.getPageSpecificationPath(name) != null);
+        return _pages.containsKey(name) || (_specification.getPageSpecificationPath(name) != null);
     }
 
     /** @since 2.3 * */
@@ -332,26 +324,23 @@ public class Namespace implements INamespace
 
     /** @since 3.0 * */
 
-    public synchronized void installPageSpecification(String pageName,
-            IComponentSpecification specification)
+    public void installPageSpecification(String pageName, IComponentSpecification specification)
     {
         _pages.put(pageName, specification);
     }
 
     /** @since 3.0 * */
 
-    public synchronized void installComponentSpecification(String type,
-            IComponentSpecification specification)
+    public void installComponentSpecification(String type, IComponentSpecification specification)
     {
         _components.put(type, specification);
     }
 
     /** @since 3.0 * */
 
-    public synchronized boolean containsComponentType(String type)
+    public boolean containsComponentType(String type)
     {
-        return _components.containsKey(type)
-                || (_specification.getComponentSpecificationPath(type) != null);
+        return _components.containsKey(type) || (_specification.getComponentSpecificationPath(type) != null);
     }
 
     /** @since 3.0 * */

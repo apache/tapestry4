@@ -41,9 +41,22 @@ public class ClasspathAssetFactory implements AssetFactory
 
     private ResourceLocalizer _localizer;
 
+    private Resource _rootClassPath;
+
     public boolean assetExists(IComponentSpecification spec, Resource baseResource, String path, Locale locale)
     {
-        Resource assetResource = baseResource.getRelativeResource(path);
+        Resource assetResource = null;
+        if (path.startsWith("/")) {
+
+            if (_rootClassPath == null) {
+                _rootClassPath = new ClasspathResource(_classResolver, "");
+            }
+
+            assetResource = _rootClassPath.getRelativeResource(path);
+        } else {
+            
+            assetResource = baseResource.getRelativeResource(path);
+        }
 
         Resource localized = _localizer.findLocalization(assetResource, locale);
 
@@ -56,8 +69,7 @@ public class ClasspathAssetFactory implements AssetFactory
         Resource localized = _localizer.findLocalization(asset, locale);
 
         if (localized == null)
-            throw new ApplicationRuntimeException(AssetMessages.missingAsset(path, baseResource),
-                    location, null);
+            throw new ApplicationRuntimeException(AssetMessages.missingAsset(path, baseResource), location, null);
 
         return createAsset(localized, location);
     }
@@ -68,17 +80,14 @@ public class ClasspathAssetFactory implements AssetFactory
         Resource localized = _localizer.findLocalization(base, locale);
 
         if (localized == null)
-            throw new ApplicationRuntimeException(AssetMessages.missingClasspathResource(path),
-                    location, null);
+            throw new ApplicationRuntimeException(AssetMessages.missingClasspathResource(path), location, null);
 
         return createAsset(localized, location);
     }
 
     public IAsset createAsset(Resource resource, Location location)
     {
-        ClasspathResource cr = (ClasspathResource) resource;
-
-        return new PrivateAsset(cr, _assetService, location);
+        return new PrivateAsset(resource, _assetService, location);
     }
 
     public void setAssetService(IEngineService assetService)

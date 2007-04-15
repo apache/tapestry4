@@ -14,19 +14,18 @@
 
 package org.apache.tapestry.asset;
 
-import java.io.InputStream;
-import java.net.URL;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
-import org.apache.hivemind.util.ClasspathResource;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 
+import java.io.InputStream;
+import java.net.URL;
+
 /**
- * An implementation of {@link org.apache.tapestry.IAsset}for localizable assets within the JVM's
+ * An implementation of {@link org.apache.tapestry.IAsset} for localizable assets within the JVM's
  * classpath.
  * <p>
  * The localization code here is largely cut-and-paste from {@link ContextAsset}.
@@ -40,14 +39,14 @@ public class PrivateAsset extends AbstractAsset
 
     /**
      * @deprecated To be removed (someday). Use
-     *             {@link #PrivateAsset(ClasspathResource, IEngineService, Location)}&nbsp;instead.
+     *             {@link #PrivateAsset(Resource, IEngineService, Location)}&nbsp;instead.
      */
-    public PrivateAsset(ClasspathResource resourceLocation, Location location)
+    public PrivateAsset(Resource resourceLocation, Location location)
     {
         this(resourceLocation, null, location);
     }
 
-    public PrivateAsset(ClasspathResource resourceLocation, IEngineService assetService,
+    public PrivateAsset(Resource resourceLocation, IEngineService assetService,
             Location location)
     {
         super(resourceLocation, location);
