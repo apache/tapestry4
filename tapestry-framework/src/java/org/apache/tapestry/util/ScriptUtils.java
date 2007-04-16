@@ -14,6 +14,9 @@
 package org.apache.tapestry.util;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.pool.KeyedPoolableObjectFactory;
+import org.apache.commons.pool.impl.GenericKeyedObjectPool;
+import org.apache.hivemind.ApplicationRuntimeException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,16 +35,31 @@ public final class ScriptUtils
      * XML character data end.
      */
     public static final String END_COMMENT = "\n//]]>\n</script>\n";
+
     /**
      * Regexp represenging javascript matches.
      */
-    public static final Pattern SCRIPT_PATTERN =
-        Pattern.compile("(?:<script.*?>)(.*?)(?:<\\/script>)",
-            Pattern.COMMENTS | Pattern.DOTALL | Pattern.MULTILINE);
-    
+    public static final String SCRIPT_PATTERN = "(?:<script.*?>)(.*?)(?:<\\/script>)";
+
+    private static final KeyedPoolableObjectFactory _factory = new RegexpPoolObjectFactory();
+
+    private static final GenericKeyedObjectPool _pool;
+
+    private static final int MAX_ACTIVE = 100;
+
+    private static final long SLEEP_TIME = 1000 * 60 * 4;
+
+    static {
+        _pool = new GenericKeyedObjectPool(_factory, MAX_ACTIVE, GenericKeyedObjectPool.WHEN_EXHAUSTED_BLOCK, -1);
+
+        _pool.setMaxIdle(MAX_ACTIVE / 2);
+        _pool.setMinEvictableIdleTimeMillis(MAX_ACTIVE);
+        _pool.setTimeBetweenEvictionRunsMillis(SLEEP_TIME);
+    }
+
     /* defeat instantiation */
     private ScriptUtils() { }
-    
+
     /**
      * Takes any <script>contents..</script> tags found in the specified
      * input string and replaces their contents into one large <script></script>
@@ -49,53 +67,69 @@ public final class ScriptUtils
      * with the addition of {@link #BEGIN_COMMENT} inserted before the logic block and
      * {@link #END_COMMENT} inserted after the logic block.
      *
-     * @param input 
+     * @param input
      *          The string to replace tags on
      * @return The properly formatted string, if any formatting needed to occur.
      */
-    public static synchronized String ensureValidScriptTags(String input) {
+    public static String ensureValidScriptTags(String input) {
+
         if (input == null)
             return null;
-        
-        Matcher matcher = SCRIPT_PATTERN.matcher(input);
-        StringBuffer buffer = new StringBuffer(input.length());
-        
-        boolean matched = false;
-        int end = 0;
-        while (matcher.find()) {
-            
-            matched = true;
-            String str = matcher.group(1);
-            int pos = matcher.start() - end;
-            end = matcher.end();
-            
-            if (str == null || str.trim().equals(""))
-                matcher.appendReplacement(buffer, "");
-            else {
-                // gather the text from the beggining to the match into a new buffer
-                StringBuffer matchLocal = new StringBuffer();
-                matcher.appendReplacement(matchLocal, BEGIN_COMMENT + "$1" + END_COMMENT);
-                
-                // the first part is always script-less, no need to remove comments from it.
-                String curr =  matchLocal.toString();
-                String prefix = curr.substring(0, pos);
-                String suffix = curr.substring(pos);
-                
-                // the second part is in a script, so remove comments.
-                suffix = StringUtils.replace(suffix, "<!--", "");
-                suffix = StringUtils.replace(suffix, "// -->", "");
-                buffer.append(prefix).append(suffix);
-            }
-        }
-        
-        if (!matched)
-            buffer.append(input);
-        else {
-            //copies non matched character input, ie content after the last script.
-            matcher.appendTail(buffer);
-        }
 
-        return buffer.toString();
+
+        Pattern compiled = null;
+
+        try {
+
+            compiled = (Pattern)_pool.borrowObject(SCRIPT_PATTERN);
+
+            Matcher matcher = compiled.matcher(input);
+            StringBuffer buffer = new StringBuffer(input.length());
+
+            boolean matched = false;
+            int end = 0;
+            while (matcher.find()) {
+
+                matched = true;
+                String str = matcher.group(1);
+                int pos = matcher.start() - end;
+                end = matcher.end();
+
+                if (str == null || str.trim().equals(""))
+                    matcher.appendReplacement(buffer, "");
+                else {
+                    // gather the text from the beggining to the match into a new buffer
+                    StringBuffer matchLocal = new StringBuffer();
+                    matcher.appendReplacement(matchLocal, BEGIN_COMMENT + "$1" + END_COMMENT);
+
+                    // the first part is always script-less, no need to remove comments from it.
+                    String curr =  matchLocal.toString();
+                    String prefix = curr.substring(0, pos);
+                    String suffix = curr.substring(pos);
+
+                    // the second part is in a script, so remove comments.
+                    suffix = StringUtils.replace(suffix, "<!--", "");
+                    suffix = StringUtils.replace(suffix, "// -->", "");
+                    buffer.append(prefix).append(suffix);
+                }
+            }
+
+            if (!matched)
+                buffer.append(input);
+            else {
+                //copies non matched character input, ie content after the last script.
+                matcher.appendTail(buffer);
+            }
+
+            return buffer.toString();
+
+        } catch (Exception e) {
+
+            throw new ApplicationRuntimeException(e);
+        } finally {
+
+            try { _pool.returnObject(SCRIPT_PATTERN, compiled); } catch (Throwable t) { }
+        }
     }
     
     /**

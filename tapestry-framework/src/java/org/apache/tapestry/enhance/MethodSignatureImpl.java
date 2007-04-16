@@ -13,9 +13,9 @@
 // limitations under the License.
 package org.apache.tapestry.enhance;
 
-import java.lang.reflect.Method;
-
 import org.apache.hivemind.service.ClassFabUtils;
+
+import java.lang.reflect.Method;
 
 
 /**
@@ -71,7 +71,6 @@ public class MethodSignatureImpl implements MethodSignature
     {
         if (_hashCode == -1)
         {
-
             _hashCode = _returnType.hashCode();
 
             _hashCode = 31 * _hashCode + _name.hashCode();

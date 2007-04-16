@@ -59,7 +59,7 @@ public class GenericsMethodSignatureImpl extends MethodSignatureImpl implements 
                         return resolvedType;
                 }
 
-                return null;
+                return Void.TYPE;
             }
         }
 

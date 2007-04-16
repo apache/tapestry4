@@ -112,6 +112,27 @@ public class MethodSignatureTest extends TestBase
         assert base.equals(child);
     }
 
+    public void test_Generic_Method_Hash() {
+
+        Class testClass=MyTest.class;
+
+        Method[] methods = testClass.getMethods();
+
+        for (Method method : methods) {
+            
+            MethodSignatureImpl msi = new GenericsMethodSignatureImpl(testClass, method);
+            msi.hashCode();
+        }
+    }
+
+    public static abstract class BaseTest<T>{ }
+    
+    public static abstract class MyTest<T,E>extends BaseTest<T> {
+
+        public abstract E getRelativeObject();
+        public abstract void setRelativeObject(E e);
+    }
+
     public void test_Find_Type()
     {
         Class clazz=TestGeneric.class;
