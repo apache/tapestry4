@@ -22,7 +22,6 @@ import org.testng.annotations.Test;
 /**
  * Tests functionality of {@link ScriptUtils}.
  * 
- * @author jkuhnert
  */
 @Test
 public class ScriptUtilsTest extends BaseComponentTestCase
@@ -110,9 +109,8 @@ public class ScriptUtilsTest extends BaseComponentTestCase
     /**
      * Tests finding {@link #JAVASCRIPT_NOCOMMENT} with 
      * regular expressions.
-     * @testng.test groups = "functest", "util"
      */
-    public void testFindScript()
+    public void test_Find_Script()
     {
         Perl5Util util = new Perl5Util();
         String expr = "/(?:<script.*?>)((\\n|.)*?)(?:<\\/script>)/";
@@ -129,9 +127,8 @@ public class ScriptUtilsTest extends BaseComponentTestCase
     /**
      * Tests finding {@link #JAVASCRIPT_NOCOMMENT} with 
      * regular expressions.
-     * @testng.test groups = "functest", "util"
      */
-    public void testFindMultipleScripts()
+    public void test_Find_Multiple_Scripts()
     {
         Perl5Util util = new Perl5Util();
         String expr = "/(?:<script.*?>)((\\n|.)*?)(?:<\\/script>)/";
@@ -150,9 +147,8 @@ public class ScriptUtilsTest extends BaseComponentTestCase
      * Calls {@link ScriptUtils#ensureValidScriptTags(String)} with 
      * {@link #JAVASCRIPT_NOCOMMENT} and tests that it returns a validly
      * marked up content block capable of being embedded in an xml document.
-     * @testng.test groups = "functest" , "util"
      */
-    public void testEnsureValidScriptTags()
+    public void test_Ensure_Valid_Script_Tags()
     {
         assertEquals(ScriptUtils.ensureValidScriptTags(JAVASCRIPT_NOCOMMENT),
                 ScriptUtils.BEGIN_COMMENT
@@ -165,14 +161,12 @@ public class ScriptUtilsTest extends BaseComponentTestCase
         assertEquals(ScriptUtils.ensureValidScriptTags("<html>This is html</html>"),
                 "<html>This is html</html>");
     }
-    
-    /**
-     * @testng.test groups = "functest" , "util"
-     */
-    public void testEnsureValidScriptTagsWithHtmlComments()
+
+    public void test_Ensure_Valid_Script_Tags_With_Html_Comments()
     {  
         String data = "<!-- some comments1 -->" + TEST_INPUT1 + "<b>test</b><!-- some comments2 -->";
         data += " <!-- some comments3 -->" + TEST_INPUT1 + "<b>test</b><!-- some comments4 -->";
+        
         String result = ScriptUtils.ensureValidScriptTags(data);
         
         assertTrue(result.indexOf("<!-- some comments1 -->") >= 0);
@@ -184,9 +178,8 @@ public class ScriptUtilsTest extends BaseComponentTestCase
     /**
      * Tests that the complete string is returned, with 
      * any js in it "fixed".
-     * @testng.test groups = "functest", "util"
      */
-    public void testCompleteReturn()
+    public void test_Complete_Return()
     {
         assertEquals(ScriptUtils.ensureValidScriptTags(TEST_INPUT1),
                 ScriptUtils.BEGIN_COMMENT
