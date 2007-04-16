@@ -14,24 +14,9 @@
 
 package org.apache.tapestry.parse;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.hivemind.ClassResolver;
-import org.apache.hivemind.ErrorHandler;
-import org.apache.hivemind.HiveMind;
-import org.apache.hivemind.Location;
-import org.apache.hivemind.Resource;
+import org.apache.hivemind.*;
 import org.apache.hivemind.impl.DefaultErrorHandler;
 import org.apache.hivemind.impl.LocationImpl;
 import org.apache.hivemind.parse.AbstractParser;
@@ -42,20 +27,7 @@ import org.apache.tapestry.bean.LightweightBeanInitializer;
 import org.apache.tapestry.binding.BindingConstants;
 import org.apache.tapestry.binding.BindingSource;
 import org.apache.tapestry.coerce.ValueConverter;
-import org.apache.tapestry.spec.BeanLifecycle;
-import org.apache.tapestry.spec.BindingType;
-import org.apache.tapestry.spec.IApplicationSpecification;
-import org.apache.tapestry.spec.IAssetSpecification;
-import org.apache.tapestry.spec.IBeanSpecification;
-import org.apache.tapestry.spec.IBindingSpecification;
-import org.apache.tapestry.spec.IComponentSpecification;
-import org.apache.tapestry.spec.IContainedComponent;
-import org.apache.tapestry.spec.IExtensionSpecification;
-import org.apache.tapestry.spec.ILibrarySpecification;
-import org.apache.tapestry.spec.IParameterSpecification;
-import org.apache.tapestry.spec.IPropertySpecification;
-import org.apache.tapestry.spec.InjectSpecification;
-import org.apache.tapestry.spec.SpecFactory;
+import org.apache.tapestry.spec.*;
 import org.apache.tapestry.util.IPropertyHolder;
 import org.apache.tapestry.util.RegexpMatcher;
 import org.apache.tapestry.util.xml.DocumentParseException;
@@ -63,6 +35,16 @@ import org.apache.tapestry.util.xml.InvalidStringException;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Parses the different types of Tapestry specifications.
@@ -80,8 +62,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
      * @since 2.2
      */
 
-    public static final String ASSET_NAME_PATTERN = "(\\$template)|("
-            + Tapestry.SIMPLE_PROPERTY_NAME_PATTERN + ")";
+    public static final String ASSET_NAME_PATTERN = "(\\$template)|(" + Tapestry.SIMPLE_PROPERTY_NAME_PATTERN + ")";
 
     /**
      * Perl5 pattern for helper bean names. Letter, followed by letter, number or underscore.
@@ -164,8 +145,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
      * @since 2.2
      */
 
-    public static final String PAGE_NAME_PATTERN = "^" + IDENTIFIER_PATTERN + "(/"
-            + IDENTIFIER_PATTERN + ")*$";
+    public static final String PAGE_NAME_PATTERN = "^" + IDENTIFIER_PATTERN + "(/" + EXTENDED_IDENTIFIER_PATTERN + ")*$";
 
     /**
      * Perl5 pattern that parameter names must conform to. Letter, followed by letter, number or
