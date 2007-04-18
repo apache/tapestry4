@@ -25,10 +25,9 @@ function mock(){
 	this.intercept=function(){
 		this.called=true;
 		jum.assertEquals("mockArgLength", this.mockArgs.length, arguments.length);
-		
+
 		for (var i=0; i < this.mockArgs.length; i++) {
 			jum.assertEquals("mockArgument", this.mockArgs[i], arguments[i]);
 		}
 	}
 }
-

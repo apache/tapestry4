@@ -14,26 +14,21 @@
 
 package org.apache.tapestry.link;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.PageRenderSupport;
-import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.*;
 import org.apache.tapestry.components.ILinkComponent;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.util.ScriptUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Default implementation of {@link org.apache.tapestry.link.ILinkRenderer},
  * which does nothing special. Can be used as a base class to provide additional
  * handling.
  * 
- * @author Howard Lewis Ship, David Solis
  * @since 3.0
  */
 
@@ -52,8 +47,7 @@ public class DefaultLinkRenderer implements ILinkRenderer
         IMarkupWriter wrappedWriter = null;
         
         if (cycle.getAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME) != null)
-            throw new ApplicationRuntimeException(LinkMessages.noNesting(),
-                    linkComponent, null, null);
+            throw new ApplicationRuntimeException(LinkMessages.noNesting(), linkComponent, null, null);
         
         cycle.setAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME, linkComponent);
         
@@ -139,10 +133,17 @@ public class DefaultLinkRenderer implements ILinkRenderer
      * the link is rendered (but only if the link is not disabled).
      * <p>
      * This implementation does nothing.
+     * </p>
+     *
+     * @param writer
+     *          Markup writer.
+     * @param cycle
+     *          Current request cycle.
+     * @param link
+     *          The link component being rendered.
      */
 
-    protected void beforeBodyRender(IMarkupWriter writer, IRequestCycle cycle,
-            ILinkComponent link)
+    protected void beforeBodyRender(IMarkupWriter writer, IRequestCycle cycle, ILinkComponent link)
     {
     }
 
@@ -150,12 +151,19 @@ public class DefaultLinkRenderer implements ILinkRenderer
      * Invoked after the body of the link is rendered, but before
      * {@link ILinkComponent#renderAdditionalAttributes(IMarkupWriter, IRequestCycle)}is
      * invoked (but only if the link is not disabled).
+     * 
      * <p>
      * This implementation does nothing.
+     * </p>
+     * @param writer
+     *          Markup writer.
+     * @param cycle
+     *          Current request cycle.
+     * @param link
+     *          The link component being rendered.
      */
 
-    protected void afterBodyRender(IMarkupWriter writer, IRequestCycle cycle,
-            ILinkComponent link)
+    protected void afterBodyRender(IMarkupWriter writer, IRequestCycle cycle, ILinkComponent link)
     {
     }
 
@@ -184,8 +192,7 @@ public class DefaultLinkRenderer implements ILinkRenderer
         
         if (!link.isParameterBound("onclick") && !link.isParameterBound("onClick")) {
             writer.attribute("onclick", 
-                    "return tapestry.linkOnClick(this.href,'" + link.getClientId() + "', " 
-                    + link.isJson() + ")");
+                    "return tapestry.linkOnClick(this.href,'" + link.getClientId() + "', " + link.isJson() + ")");
             return;
         }
         

@@ -60,11 +60,9 @@ using them.
 <div jwcid="testDialog@Dialog" hidden="ognl:dlHidden" >
 	<p style="display:block;background:#ffffff;width:20em;">
 	This is content hidden in a Dialog.
-	<!-- 
-	<a href="#" onClick="dojo.widget.byId('testDialog').hide();return false">Close</a>
-	 -->
-	 <a jwcid="@DirectLink" listener="listener:hideDialog" >Close</a>
-	</p>
+
+	    <a href="#" onClick="dojo.widget.byId('testDialog').hide();return false">Close</a>
+    </p>
 	
 	<div style="display:block;background:#ffffff;width:20em;">
 	<a jwcid="@DirectLink" listener="listener:showSubProject" updateComponents="subArea" >Show sub project</a>

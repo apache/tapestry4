@@ -248,8 +248,8 @@ tapestry.form.validation={
 	},
 
 	isPalleteSelected:function(elem){
-		if (elem.length > 0) { return true; }
-		return false;
+		return elem.length > 0;
+
 	},
 
     /**

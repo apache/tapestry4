@@ -16,8 +16,8 @@
 -->
 
 <!DOCTYPE library-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://tapestry.apache.org/dtd/Tapestry_4_0.dtd">
 	
 <!--
  
@@ -67,7 +67,7 @@
     <component-type type="PropertySelection" specification-path="form/PropertySelection.jwc"/>
     <component-type type="Radio" specification-path="form/Radio.jwc"/>
     <component-type type="RadioGroup" specification-path="form/RadioGroup.jwc"/>
-    <component-type type="Relation" specification-path="html/Relation.jwc"/>    
+    <component-type type="Relation" specification-path="html/Relation.jwc"/>
     <component-type type="RenderBlock" specification-path="components/RenderBlock.jwc"/>
     <component-type type="RenderBody" specification-path="components/RenderBody.jwc"/>
     <component-type type="RequestDisplay" specification-path="html/RequestDisplay.jwc"/>
@@ -77,12 +77,12 @@
     <component-type type="Script" specification-path="html/Script.jwc"/>
     <component-type type="ScriptIncludes" specification-path="dojo/html/ScriptIncludes.jwc"/>
     <component-type type="Shell" specification-path="html/Shell.jwc"/>
-	<component-type type="Style" specification-path="html/Style.jwc"/>    
+	<component-type type="Style" specification-path="html/Style.jwc"/>
     <component-type type="Submit" specification-path="form/Submit.jwc"/>
     <component-type type="TextArea" specification-path="form/TextArea.jwc"/>
     <component-type type="TextField" specification-path="form/TextField.jwc"/>
     <component-type type="Upload" specification-path="form/Upload.jwc"/>
-    <component-type type="ValidField" specification-path="valid/ValidField.jwc"/>                
+    <component-type type="ValidField" specification-path="valid/ValidField.jwc"/>
 
     <page name="StaleLink" specification-path="pages/StaleLink.page"/>
     <page name="StaleSession" specification-path="pages/StaleSession.page"/>

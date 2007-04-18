@@ -23,10 +23,11 @@ import java.util.Locale;
 /**
  * Simple locale listing example.
  *
- * @author jkuhnert
  */
 public abstract class LocaleList extends BasePage
 {
+
+    public static Locale[] LOCALES = Locale.getAvailableLocales();
     
     public abstract Locale getCurrLocale();
     
@@ -35,11 +36,6 @@ public abstract class LocaleList extends BasePage
     public abstract void setStatus(String status);
     
     public abstract ResponseBuilder getBuilder();
-    
-    public Locale[] getLocales()
-    {
-        return Locale.getAvailableLocales();
-    }
     
     public void selectLocale(BrowserEvent event, String language, String country, String variant)
     {

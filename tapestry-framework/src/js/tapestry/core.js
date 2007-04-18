@@ -7,8 +7,6 @@ dojo.require("dojo.lang.common");
 dojo.require("dojo.logging.Logger");
 dojo.require("dojo.io.BrowserIO");
 dojo.require("dojo.event.browser");
-dojo.require("dojo.widget.*");
-dojo.require("dojo.widget.Dialog");
 dojo.require("dojo.html.style");
 
 /**
@@ -18,7 +16,7 @@ dojo.require("dojo.html.style");
  * Most of the functions in here are related to initiating and parsing IO 
  * requests. 
  */
-tapestry={
+var tapestry={
 	
 	// property: version 
 	// The current client side library version, usually matching the current java library version. (ie 4.1, etc..)
@@ -52,7 +50,7 @@ tapestry={
 		};
 		
 		// setup content type
-		if (typeof json != "undefined" && json == true) {
+		if (typeof json != "undefined" && json) {
 			parms.mimetype = "text/json";
 			parms.headers={"json":true};
 			parms.load=(function(){tapestry.loadJson.apply(this, arguments);});
@@ -117,22 +115,22 @@ tapestry={
 		var initScripts=[];
 		var rawData=[];
 		for (var i=0; i<elms.length; i++) {
-			var type=elms[i].getAttribute("type");
+			var elmType=elms[i].getAttribute("type");
 			var id=elms[i].getAttribute("id");
 			
-			if (type == "exception") {
+			if (elmType == "exception") {
 				dojo.log.err("Remote server exception received.");
 				tapestry.presentException(elms[i], kwArgs);
 				return;
 			}
 			
-			if (type == "page") {
+			if (elmType == "page") {
 				window.location=elms[i].getAttribute("url");
 				return;
 			}
 			
 			// handle javascript evaluations
-			if (type == "script") {
+			if (elmType == "script") {
 				
 				if (id == "initializationscript") {
 					initScripts.push(elms[i]);
@@ -355,7 +353,10 @@ tapestry={
 	 * 	kwArgs - The kwArgs used to initiate the original IO request.
 	 */
 	presentException:function(node, kwArgs) {
-		var excnode=document.createElement("div");
+        dojo.require("dojo.widget.*");
+        dojo.require("dojo.widget.Dialog");
+        
+        var excnode=document.createElement("div");
 		excnode.setAttribute("id", "exceptiondialog");
 		document.body.appendChild(excnode);
 		
