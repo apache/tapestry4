@@ -14,24 +14,19 @@
 
 package org.apache.tapestry.link;
 
-import java.util.List;
-
-import org.apache.tapestry.IActionListener;
-import org.apache.tapestry.IDirect;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IScript;
-import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.*;
 import org.apache.tapestry.engine.DirectServiceParameter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.listener.ListenerInvoker;
+
+import java.util.List;
 
 /**
  * A component for creating a link using the direct service; used for actions that are not dependant
  * on dynamic page state. [ <a href="../../../../../ComponentReference/DirectLink.html">Component
  * Reference </a>]
  * 
- * @author Howard Lewis Ship
  */
 
 public abstract class DirectLink extends AbstractLinkComponent implements IDirect
@@ -61,10 +56,10 @@ public abstract class DirectLink extends AbstractLinkComponent implements IDirec
      * @param parameterValue
      *            the input value which may be
      *            <ul>
-     *            <li>null (returns null)
-     *            <li>An array of Object (returns the array)
-     *            <li>A {@link List}(returns an array of the values in the List})
-     *            <li>A single object (returns the object as a single-element array)
+     *              <li>null (returns null)
+     *              <li>An array of Object (returns the array)
+     *              <li>A {@link List}(returns an array of the values in the List})
+     *              <li>A single object (returns the object as a single-element array)
      *            </ul>
      * @return An array representation of the input object.
      * @since 2.2

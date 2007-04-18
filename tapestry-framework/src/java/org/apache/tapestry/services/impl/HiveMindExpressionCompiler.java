@@ -282,22 +282,9 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
         if (getterCode == null || getterCode.trim().length() <= 0 && !ASTVarRef.class.isAssignableFrom(expression.getClass()))
             getterCode = "null";
 
-        Class returnType = null;
-
-        if (NodeType.class.isInstance(expression)) {
-            NodeType nType = (NodeType) expression;
-            returnType = nType.getGetterClass();
-
-            if (returnType != null && !String.class.isAssignableFrom(returnType)) {
-
-                pre = pre + " ($w) (";
-                post = post + ")";
-            }
-        }
-
         String castExpression = (String) context.get(PRE_CAST);
 
-        if (returnType == null) {
+        if (context.getCurrentType() == null || context.getCurrentType().isPrimitive() || Character.class.isAssignableFrom(context.getCurrentType())) {
             pre = pre + " ($w) (";
             post = post + ")";
         }
@@ -361,8 +348,6 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
             body += "}";
 
             body = body.replaceAll("\\.\\.", ".");
-
-            // System.out.println("adding method " + ref.getName() + " with body:\n" + body + " and return type: " + ref.getType());
             
             MethodSignature method = new MethodSignature(ref.getType(), ref.getName(), params, null);
             classFab.addMethod(Modifier.PUBLIC, method, body);

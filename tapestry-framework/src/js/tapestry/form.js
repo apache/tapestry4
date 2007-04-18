@@ -219,7 +219,7 @@ tapestry.form={
 	 */
 	setFormValidating:function(formId, validate){
 		if (this.forms[formId]){
-			this.forms[formId].validateForm = validate ? true : false;
+			this.forms[formId].validateForm = validate;
 		}
 	},
 	
@@ -268,7 +268,7 @@ tapestry.form={
 	 * 					such as url/async/json/etc. 
 	 */
 	submit:function(form, submitName, parms){
-		var form=dojo.byId(form);
+		form=dojo.byId(form);
 		if (!form) {
 			dojo.raise("Form not found with id " + form);
 			return;
@@ -314,7 +314,7 @@ tapestry.form={
 	 * 					Submit/LinkSubmit/etc..
 	 */
 	cancel:function(form, submitName){
-		var form=dojo.byId(form);
+		form=dojo.byId(form);
 		if (!form){
 			dojo.raise("Form not found with id " + form);
 			return;
@@ -339,7 +339,7 @@ tapestry.form={
 	 * 					Submit/LinkSubmit/etc..
 	 */
 	refresh:function(form, submitName){
-		var form=dojo.byId(form);
+		form=dojo.byId(form);
 		if (!form){
 			dojo.raise("Form not found with id " + form);
 			return;
@@ -368,7 +368,7 @@ tapestry.form={
 	 * 					the submission.
 	 */
 	submitAsync:function(form, content, submitName, parms){
-		var form=dojo.byId(form);
+		form=dojo.byId(form);
 		if (!form) {
 			dojo.raise("Form not found with id " + id);
 			return;

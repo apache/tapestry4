@@ -72,7 +72,7 @@ Simple For loop listing locales.
 
 <div class="ognl:(selected != null and currLocale.toString() == selected.toString()) ? 'selected localeList' : 'localeList'" 
 		jwcid="localeList@For" 
-		source="ognl:locales" value="ognl:currLocale">
+		source="ognl:@org.apache.tapestry.timetracker.page.LocaleList@LOCALES" value="ognl:currLocale">
 	
 	<a jwcid="localeLink@DirectLink" listener="listener:selectLocale" parameters="ognl:{currLocale.language, currLocale.country, currLocale.variant}"
 		updateComponents="ognl:{'localeDetail',page.components.localeList.clientId}">

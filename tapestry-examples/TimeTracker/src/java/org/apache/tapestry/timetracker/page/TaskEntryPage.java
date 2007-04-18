@@ -114,12 +114,6 @@ public abstract class TaskEntryPage<E extends Persistent> extends BasePage
         dlg.show();
     }
     
-    public void hideDialog()
-    {
-        Dialog dlg = (Dialog)getComponent("testDialog");
-        dlg.hide();
-    }
-    
     /**
      * Invoked by form to add a new task.
      */
