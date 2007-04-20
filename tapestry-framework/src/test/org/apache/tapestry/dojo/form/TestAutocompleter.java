@@ -159,7 +159,7 @@ public class TestAutocompleter extends BaseFormComponentTestCase
             {"<span class=\"prefix\"><select name=\"fred\" autocomplete=\"off\" id=\"fred\" class=\"validation-delegate\"> </select></span>",
                      Boolean.FALSE},
             {"<span class=\"prefix\"><select name=\"fred\" autocomplete=\"off\" id=\"fred\" class=\"validation-delegate\"> <option " +
-                     "value=\"1p\">Simple 1</option><option value=\"2p\">Simple 2</option><option value=\"3p\">Simple 3</option></select></span>",
+                     "value=\"1p\">Simple 1</option><option value=\"2p\" selected=\"selected\">Simple 2</option><option value=\"3p\">Simple 3</option></select></span>",
                      Boolean.TRUE}
         };
     }    
