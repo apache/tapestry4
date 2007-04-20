@@ -105,6 +105,19 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
         return clazz;
     }
 
+    public Class getRootExpressionClass(Node rootNode, OgnlContext context)
+    {
+        if (context.getRoot() == null)
+            return null;
+
+        Class ret = context.getRoot().getClass();
+
+        if (!IRender.class.isInstance(context.getRoot()) && context.getFirstAccessor() != null && context.getFirstAccessor().isInstance(context.getRoot()))
+            ret = context.getFirstAccessor();
+
+        return ret;
+    }
+
     public void compileExpression(OgnlContext context, Node expression, Object root)
             throws Exception
     {
