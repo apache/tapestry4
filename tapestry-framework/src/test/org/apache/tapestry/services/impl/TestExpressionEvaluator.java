@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.services.impl;
 
-import ognl.OgnlContext;
 import ognl.TypeConverter;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponentTestCase;
@@ -22,10 +21,9 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.enhance.ClassFactoryImpl;
 import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.spec.IApplicationSpecification;
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
 
-import java.lang.reflect.Member;
 import java.util.Collections;
 import java.util.Date;
 
@@ -208,8 +206,6 @@ public class TestExpressionEvaluator extends BaseComponentTestCase
         Fixture f = new Fixture();
 
         Date d = new Date();
-
-        expect(tc.convertValue(isA(OgnlContext.class), eq(f), isA(Member.class), eq("value"), eq(d), eq(String.class))).andReturn(d.toString());
 
         // Training
         

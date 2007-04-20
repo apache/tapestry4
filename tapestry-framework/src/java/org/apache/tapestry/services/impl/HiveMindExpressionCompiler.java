@@ -31,7 +31,6 @@ import java.util.*;
 /**
  * Adds to default ognl compiler class pools.
  *
- * @author jkuhnert
  */
 public class HiveMindExpressionCompiler extends ExpressionCompiler implements OgnlExpressionCompiler {
     private static final Log _log = LogFactory.getLog(HiveMindExpressionCompiler.class);
@@ -42,7 +41,7 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
     {
         _classFactory = classfactory;
     }
-    
+
     public String getClassName(Class clazz)
     {
         if (IRender.class.isAssignableFrom(clazz) || Modifier.isPublic(clazz.getModifiers()))
@@ -268,7 +267,7 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
         context.setRoot(root);
         context.setCurrentObject(root);
         context.remove(PRE_CAST);
-
+        
         try {
 
             getterCode = expression.toGetSourceString(context, root);
@@ -289,7 +288,7 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
             post = post + ")";
         }
 
-        String rootExpr = !getterCode.equals("null") ? getRootExpression(expression, root, false) : "";
+        String rootExpr = !getterCode.equals("null") ? getRootExpression(expression, root, context) : "";
 
         String noRoot = (String) context.remove("_noRoot");
         if (noRoot != null)
@@ -376,7 +375,7 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
         if (root == null)
             throw new UnsupportedCompilationException("Can't compile setters with a null root object.");
 
-        String pre = getRootExpression(expression, root, false);
+        String pre = getRootExpression(expression, root, context);
 
         String noRoot = (String) context.remove("_noRoot");
         if (noRoot != null)
@@ -395,9 +394,6 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
                + setterCode + ";}";
 
         body = body.replaceAll("\\.\\.", ".");
-
-        if (body.indexOf("$3") < 0)
-            body = null;
 
         if (_log.isDebugEnabled())
             _log.debug("Setter Body: ===================================\n" + body);
