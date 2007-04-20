@@ -40,6 +40,7 @@ import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidatorException;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
@@ -152,8 +153,20 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         verify();
     }
     
-    public void test_Render()
-    {
+    @DataProvider(name="renderings")
+    public Object[][] createRenderings() {
+        return new Object[][] {
+            {"<span class=\"prefix\"><select name=\"fred\" autocomplete=\"off\" id=\"fred\" class=\"validation-delegate\"> </select></span>",
+                     Boolean.FALSE},
+            {"<span class=\"prefix\"><select name=\"fred\" autocomplete=\"off\" id=\"fred\" class=\"validation-delegate\"> <option " +
+                     "value=\"1p\">Simple 1</option><option value=\"2p\">Simple 2</option><option value=\"3p\">Simple 3</option></select></span>",
+                     Boolean.TRUE}
+        };
+    }    
+    
+    @Test(dataProvider = "renderings")
+    public void test_Render(String outcome, Boolean local)
+    {           
         IAutocompleteModel model = createModel();
         ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
         DataSqueezer ds = newMock(DataSqueezer.class);
@@ -179,7 +192,7 @@ public class TestAutocompleter extends BaseFormComponentTestCase
             "script", script,
             "validatableFieldSupport", vfs, 
             "value", match,
-            "dataSqueezer", ds
+            "dataSqueezer", ds, "local", local
         });
         
         expect(cycle.renderStackPush(component)).andReturn(component);
@@ -210,15 +223,22 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         expect(resp.isDynamic()).andReturn(false).anyTimes();
         
         vfs.renderContributions(component, writer, cycle);
-        
-        trainGetLinkCheckIgnoreParameter(engine, cycle, true, dsp, link);
-        
-        trainGetURL(link, "urlstring");
+        if (!local.booleanValue()) 
+        {
+            trainGetLinkCheckIgnoreParameter(engine, cycle, true, dsp, link);        
+            trainGetURL(link, "urlstring");
+        }
+        else 
+        {
+            expect(ds.squeeze(1)).andReturn("1p");
+            expect(ds.squeeze(2)).andReturn("2p");
+            expect(ds.squeeze(3)).andReturn("3p");
+        }
+        // for the default value
+        expect(ds.squeeze(2)).andReturn("2p"); 
         
         PageRenderSupport prs = newPageRenderSupport();
         trainGetPageRenderSupport(cycle, prs);
-        
-        expect(ds.squeeze(2)).andReturn("2p");
         
         script.execute(eq(component), eq(cycle), eq(prs), isA(Map.class));
         
@@ -230,7 +250,7 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         
         verify();
         
-        assertBuffer("<span class=\"prefix\"><select name=\"fred\" autocomplete=\"off\" id=\"fred\" class=\"validation-delegate\"> </select></span>");
+        assertBuffer(outcome);
     }
     
     public void test_Render_JSON()
