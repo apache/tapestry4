@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IAsset;
@@ -137,8 +138,14 @@ public abstract class Script extends AbstractComponent
         }
         catch (RuntimeException ex)
         {
+            Location location = null;
+            if (getBinding("script")!=null)
+                location = getBinding("script").getLocation();
+            else if (getBinding("scriptAsset")!=null)
+                location = getBinding("scriptAsset").getLocation();
+            
             throw new ApplicationRuntimeException(ex.getMessage(), this,
-                    getBinding("script").getLocation(), ex);
+                    location, ex);
         }
 
     }

@@ -264,6 +264,80 @@ public class ScriptTest extends BaseComponentTestCase
         verify();
     }
     
+    public void test_NoParam_Exception() 
+    {
+    	IScriptSource source = newScriptSource();
+        
+        PageRenderSupport support = newPageRenderSupport();
+        IRequestCycle cycle = newCycle(false, false);
+        IMarkupWriter writer = newWriter();
+        IRender body = newRender();
+        
+        IComponent container = newComponent();
+
+        String scriptPath = "MyScript.script";
+        
+        IAsset scriptAsset = newAsset();
+        
+        Script component = newInstance(Script.class, new Object[]
+        { "specification", new ComponentSpecification(), "container", container, "scriptSource",
+                source});
+        
+        trainGetPageRenderSupport(cycle, support);
+        
+        replay();
+        
+        component.addBody(body);
+        
+        try {
+        	component.renderComponent(writer, cycle);
+        } catch (ApplicationRuntimeException ex) {
+        	assertExceptionSubstring(ex, "neither parameter was set");
+        }
+        
+        verify();
+    }    
+    
+    public void test_IAsset_NotFound_Exception() 
+    {
+        IScriptSource source = newScriptSource();
+        IScript script = newScript();
+        
+        PageRenderSupport support = newPageRenderSupport();
+        
+        IRequestCycle cycle = newCycle(false, null);
+        
+        trainGetPageRenderSupport(cycle, support);
+        
+        IMarkupWriter writer = newWriter();
+        Resource scriptLocation = newResource();
+        IRender body = newRender();
+        
+        IComponent container = newComponent();
+        
+        IAsset scriptAsset = newAsset();
+        
+        expect(scriptAsset.getResourceLocation()).andReturn(scriptLocation);
+        
+        Script component = newInstance(Script.class, new Object[]
+        { "specification", new ComponentSpecification(), "container", container, "scriptSource",
+                source, "scriptAsset", scriptAsset });
+        
+        expect(source.getScript(scriptLocation)).andThrow(new RuntimeException());
+        
+        replay();
+        
+        component.addBody(body);
+        
+        try {
+        	component.renderComponent(writer, cycle);
+                unreachable();
+        } catch (ApplicationRuntimeException ex) {
+        }        
+        
+        verify();
+    }      
+    
     public void test_IAsset_Param_Render()
     {
         IScriptSource source = newScriptSource();
