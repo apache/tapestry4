@@ -60,7 +60,10 @@ public abstract class Autocompleter extends AbstractFormWidget implements Valida
         IAutocompleteModel model = getModel();
         if (model == null)
             throw Tapestry.createRequiredParameterException(this, "model");
-                
+        
+        Object value = getValue();
+        Object key = value != null ? model.getPrimaryKey(value) : null;                
+        
         renderDelegatePrefix(writer, cycle);
         
         writer.begin("select");
@@ -86,9 +89,11 @@ public abstract class Autocompleter extends AbstractFormWidget implements Valida
             List list = model.getValues("");
             for (int i=0; i<list.size(); i++) 
             {
-                Object key = model.getPrimaryKey(list.get(i));
+                Object optionKey = model.getPrimaryKey(list.get(i));
                 writer.begin("option");
-                writer.attribute("value", getDataSqueezer().squeeze(key));
+                writer.attribute("value", getDataSqueezer().squeeze(optionKey));
+                if (optionKey!=null && optionKey.equals(key))
+                    writer.attribute("selected", "selected");
                 writer.print(model.getLabelFor(list.get(i)));
                 writer.end();
             }
@@ -115,12 +120,7 @@ public abstract class Autocompleter extends AbstractFormWidget implements Valida
         json.put("forceValidOption", isForceValidOption());
         json.put("disabled", isDisabled());
         
-        
-        Object value = getValue();
-        Object key = value != null ? model.getPrimaryKey(value) : null;
-        
         if (value != null && key != null) {
-            
             json.put("value", getDataSqueezer().squeeze(key));
             json.put("label", model.getLabelFor(value));
         }
