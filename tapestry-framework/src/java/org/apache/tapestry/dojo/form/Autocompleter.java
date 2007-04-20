@@ -49,6 +49,7 @@ public abstract class Autocompleter extends AbstractFormWidget implements Valida
 {
     // mode, can be remote or local (local being from html rendered option elements)
     private static final String MODE_REMOTE = "remote";
+    private static final String MODE_LOCAL = "local";    
     
     /**
      * 
@@ -56,6 +57,10 @@ public abstract class Autocompleter extends AbstractFormWidget implements Valida
      */
     protected void renderFormWidget(IMarkupWriter writer, IRequestCycle cycle)
     {
+        IAutocompleteModel model = getModel();
+        if (model == null)
+            throw Tapestry.createRequiredParameterException(this, "model");
+                
         renderDelegatePrefix(writer, cycle);
         
         writer.begin("select");
@@ -76,17 +81,32 @@ public abstract class Autocompleter extends AbstractFormWidget implements Valida
         
         writer.print(" ");
         
+        if (isLocal()) 
+        {
+            List list = model.getValues("");
+            for (int i=0; i<list.size(); i++) 
+            {
+                Object key = model.getPrimaryKey(list.get(i));
+                writer.begin("option");
+                writer.attribute("value", getDataSqueezer().squeeze(key));
+                writer.print(model.getLabelFor(list.get(i)));
+                writer.end();
+            }
+        }
+        
         writer.end();
         renderDelegateSuffix(writer, cycle);
-        
-        ILink link = getDirectService().getLink(true, new DirectServiceParameter(this));
         
         Map parms = new HashMap();
         parms.put("id", getClientId());
         
         JSONObject json = new JSONObject();
-        json.put("dataUrl", link.getURL() + "&filter=%{searchString}");
-        json.put("mode", MODE_REMOTE);
+        if (!isLocal())
+        {
+            ILink link = getDirectService().getLink(true, new DirectServiceParameter(this));
+            json.put("dataUrl", link.getURL() + "&filter=%{searchString}");
+        }
+        json.put("mode", isLocal() ? MODE_LOCAL : MODE_REMOTE);
         json.put("widgetId", getName());
         json.put("name", getName());
         json.put("searchDelay", getSearchDelay());
@@ -95,9 +115,6 @@ public abstract class Autocompleter extends AbstractFormWidget implements Valida
         json.put("forceValidOption", isForceValidOption());
         json.put("disabled", isDisabled());
         
-        IAutocompleteModel model = getModel();
-        if (model == null)
-            throw Tapestry.createRequiredParameterException(this, "model");
         
         Object value = getValue();
         Object key = value != null ? model.getPrimaryKey(value) : null;
@@ -202,6 +219,9 @@ public abstract class Autocompleter extends AbstractFormWidget implements Valida
     
     /** Forces select to only allow valid option strings. */
     public abstract boolean isForceValidOption();
+    
+    /** Forces select to work in local mode (no xhr). */
+    public abstract boolean isLocal();    
     
     /** @since 2.2 * */
     public abstract Object getValue();

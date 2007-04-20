@@ -41,6 +41,13 @@
   
   <parameter name="forceValidOption" default-value="true" />
   
+  <parameter name="local">
+    <description>Makes the autocompleter work in local mode.
+        All values provided by the model are rendered as options in the 
+        html and are used for autocomplete.
+    </description>
+  </parameter>
+  
   <parameter name="displayName"/>
   <parameter name="validators"/>
   
