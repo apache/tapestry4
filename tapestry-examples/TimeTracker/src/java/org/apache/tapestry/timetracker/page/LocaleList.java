@@ -28,12 +28,30 @@ public abstract class LocaleList extends BasePage
 {
 
     public static Locale[] LOCALES = Locale.getAvailableLocales();
-    
-    public abstract Locale getCurrLocale();
+
+    public abstract Locale getStoredCurrent();
+    public abstract void setStoredCurrent(Locale locale);
+
+    public abstract int getCurrentHash();
+    public abstract void setCurrentHash(int hash);
+
+    public Locale getCurrLocale()
+    {
+        return getStoredCurrent();
+    }
+
+    public void setCurrLocale(Locale locale)
+    {
+        setStoredCurrent(locale);
+        setCurrentHash(locale.hashCode());
+    }
     
     public abstract void setSelected(Locale locale);
     public abstract Locale getSelected();
-    
+
+    public abstract void setSelectedHash(int hash);
+    public abstract int getSelectedHash();
+
     public abstract void setStatus(String status);
     
     public abstract ResponseBuilder getBuilder();
@@ -41,18 +59,20 @@ public abstract class LocaleList extends BasePage
     public void selectLocale(BrowserEvent event, String language, String country, String variant)
     {
         setSelected(new Locale(language, country, variant));
+        setSelectedHash(getSelected().hashCode());
+        
         setStatus(event.toString());
         getBuilder().updateComponent("status");
     }
 
     public boolean isCurrentSelected()
     {
-        return getSelected() != null && getCurrLocale().toString().equals(getSelected().toString());
+        return getSelected() != null && getCurrentHash() == getSelectedHash();
     }
 
     public String getRoundedUrl(String anchor)
     {
-        return "/rounded?c=" +
+        return "rounded?c=" +
                (isCurrentSelected() ? "efefef" : "2A78B0")
                + "&bc=white&w=8&h=8&a=" + anchor;
     }

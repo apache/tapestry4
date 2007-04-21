@@ -8,8 +8,10 @@ import org.apache.tapestry.error.RequestExceptionReporter;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.ContentType;
+import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
@@ -36,6 +38,8 @@ public class RoundedCornerService implements IEngineService {
     private RequestExceptionReporter _exceptionReporter;
 
     private LinkFactory _linkFactory;
+
+    private WebRequest _request;
 
     private WebResponse _response;
 
@@ -67,6 +71,12 @@ public class RoundedCornerService implements IEngineService {
         OutputStream os = null;
 
         try {
+
+            if (_request.getHeader("If-Modified-Since") != null)
+            {
+                _response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+                return;
+            }
 
             byte[] data = _generator.buildCorner(color, bgColor, width, height, angle);
 
@@ -118,6 +128,12 @@ public class RoundedCornerService implements IEngineService {
     public void setLinkFactory(LinkFactory linkFactory)
     {
         _linkFactory = linkFactory;
+    }
+
+    /* Injected */
+    public void setRequest(WebRequest request)
+    {
+        _request = request;
     }
 
     /* Injected */

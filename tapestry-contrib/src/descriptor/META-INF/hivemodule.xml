@@ -66,6 +66,7 @@
                 <set-object property="exceptionReporter" value="infrastructure:requestExceptionReporter"/>
                 <set-object property="response" value="infrastructure:response"/>
                 <set-object property="linkFactory" value="infrastructure:linkFactory"/>
+                <set-object property="request" value="infrastructure:request" />
             </construct>
         </invoke-factory>
     </service-point>
