@@ -28,8 +28,6 @@ import java.util.Collections;
 import java.util.Date;
 
 /**
- * @author Howard M. Lewis Ship
- * @since 4.0
  */
 @Test
 public class TestExpressionEvaluator extends BaseComponentTestCase
@@ -72,16 +70,17 @@ public class TestExpressionEvaluator extends BaseComponentTestCase
         }
     }
 
-    public void testRead()
+    public void test_Read()
     {
         Fixture f = new Fixture("Foo");
 
         ExpressionEvaluator ee = create();
+        trainIntialize(ee);
 
         assertEquals("Foo", ee.read(f, "value"));
     }
 
-    public void testReadFail()
+    public void test_Read_Fail()
     {
         Fixture f = new Fixture();
 
@@ -98,18 +97,19 @@ public class TestExpressionEvaluator extends BaseComponentTestCase
         }
     }
 
-    public void testWrite()
+    public void test_Write()
     {
         Fixture f = new Fixture("Foo");
 
         ExpressionEvaluator ee = create();
-
+        trainIntialize(ee);
+        
         ee.write(f, "value", "Bar");
 
         assertEquals("Bar", f.getValue());
     }
 
-    public void testWriteFail()
+    public void test_Write_Fail()
     {
         Fixture f = new Fixture();
 
@@ -127,7 +127,7 @@ public class TestExpressionEvaluator extends BaseComponentTestCase
         }
     }
 
-    public void testIsConstant()
+    public void test_Is_Constant()
     {
         ExpressionEvaluatorImpl ee = create();
 
@@ -157,7 +157,7 @@ public class TestExpressionEvaluator extends BaseComponentTestCase
         return spec;
     }
 
-    public void testIsConstantFail()
+    public void test_Is_Constant_Fail()
     {
         ExpressionEvaluator ee = create();
 
@@ -173,7 +173,27 @@ public class TestExpressionEvaluator extends BaseComponentTestCase
 
     }
 
-    public void testTypeConverter() throws Exception
+    void trainIntialize(ExpressionEvaluator evaluator)
+    {
+        ExpressionEvaluatorImpl impl = (ExpressionEvaluatorImpl)evaluator;
+        
+        IApplicationSpecification as = newMock(IApplicationSpecification.class);
+
+        expect(as.checkExtension(Tapestry.OGNL_TYPE_CONVERTER)).andReturn(false);
+
+        impl.setApplicationSpecification(as);
+        impl.setContributions(Collections.EMPTY_LIST);
+        impl.setNullHandlerContributions(Collections.EMPTY_LIST);
+        impl.setClassFactory(new ClassFactoryImpl());
+
+        replay();
+
+        impl.initializeService();
+
+        verify();
+    }
+
+    public void test_Type_Converter() throws Exception
     {
         IApplicationSpecification as = newMock(IApplicationSpecification.class);
         

@@ -16,6 +16,8 @@ package org.apache.tapestry.services.impl;
 
 import ognl.*;
 import ognl.enhance.ExpressionAccessor;
+import org.apache.commons.pool.impl.GenericKeyedObjectPool;
+import org.apache.commons.pool.impl.GenericObjectPool;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.service.ClassFactory;
 import org.apache.tapestry.Tapestry;
@@ -28,11 +30,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class ExpressionEvaluatorImpl implements ExpressionEvaluator
 {
+    private static final int POOL_MAX_ACTIVE = 200;
+
+    private static final long POOL_MIN_IDLE_TIME = 1000 * 60 * 2;
+
+    private static final long POOL_SLEEP_TIME = 1000 * 60 * 4;
+
     // Uses Thread's context class loader
 
     private final ClassResolver _ognlResolver = new OgnlClassResolver();
@@ -53,7 +60,9 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator
     private Map _defaultContext;
     
     private ClassFactory _classFactory;
-    
+
+    private GenericObjectPool _contextPool;
+
     public void setApplicationSpecification(IApplicationSpecification applicationSpecification)
     {
         _applicationSpecification = applicationSpecification;
@@ -62,8 +71,7 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator
     public void initializeService()
     {
         if (_applicationSpecification.checkExtension(Tapestry.OGNL_TYPE_CONVERTER))
-            _typeConverter = (TypeConverter) _applicationSpecification.getExtension(
-                    Tapestry.OGNL_TYPE_CONVERTER,
+            _typeConverter = (TypeConverter) _applicationSpecification.getExtension(Tapestry.OGNL_TYPE_CONVERTER,
                     TypeConverter.class);
 
         Iterator i = _contributions.iterator();
@@ -82,11 +90,16 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator
             NullHandlerContribution h = (NullHandlerContribution) j.next();
             
             OgnlRuntime.setNullHandler(h.getSubjectClass(), h.getHandler());
-        }        
+        }
         
         _defaultContext = Ognl.createDefaultContext(null, _ognlResolver, _typeConverter);
         
         OgnlRuntime.setCompiler(new HiveMindExpressionCompiler(_classFactory));
+        
+        _contextPool = new GenericObjectPool(new PoolableOgnlContextFactory(_ognlResolver, _typeConverter), POOL_MAX_ACTIVE, GenericKeyedObjectPool.WHEN_EXHAUSTED_GROW, -1);
+        _contextPool.setMaxIdle(POOL_MAX_ACTIVE / 2);
+        _contextPool.setMinEvictableIdleTimeMillis(POOL_MIN_IDLE_TIME);
+        _contextPool.setTimeBetweenEvictionRunsMillis(POOL_SLEEP_TIME);
     }
 
     public Object read(Object target, String expression)
@@ -101,9 +114,11 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator
 
     public Object readCompiled(Object target, Object expression)
     {
+        OgnlContext context = null;
         try
         {
-            Map context = createContext(target);
+            context = (OgnlContext)_contextPool.borrowObject();
+            context.setRoot(target);
 
             return Ognl.getValue(expression, context, target);
         }
@@ -111,14 +126,17 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator
         {
             throw new ApplicationRuntimeException(ImplMessages.unableToReadExpression(ImplMessages
                     .parsedExpression(), target, ex), target, null, ex);
+        } finally {
+            try { if (context != null) _contextPool.returnObject(context); } catch (Exception e) {}
         }
     }
     
     public Object read(Object target, ExpressionAccessor expression)
     {
+        OgnlContext context = null;
         try
         {
-            OgnlContext context = createContext(target);
+            context = (OgnlContext)_contextPool.borrowObject();
             
             return expression.get(context, target);
         }
@@ -126,6 +144,8 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator
         {
             throw new ApplicationRuntimeException(ImplMessages.unableToReadExpression(ImplMessages
                     .parsedExpression(), target, ex), target, null, ex);
+        } finally {
+            try { if (context != null) _contextPool.returnObject(context); } catch (Exception e) {}
         }
     }
     
@@ -146,9 +166,10 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator
 
     public void write(Object target, ExpressionAccessor expression, Object value)
     {
+        OgnlContext context = null;
         try
         {
-            OgnlContext context = createContext(target);
+            context = (OgnlContext)_contextPool.borrowObject();
             
             expression.set(context, target, value);
         }
@@ -156,15 +177,17 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator
         {
             throw new ApplicationRuntimeException(ImplMessages.unableToWriteExpression(ImplMessages
                     .parsedExpression(), target, value, ex), target, null, ex);
+        } finally {
+            try { if (context != null) _contextPool.returnObject(context); } catch (Exception e) {}
         }
-
     }
     
     public void writeCompiled(Object target, Object expression, Object value)
     {
+        OgnlContext context = null;
         try
         {
-            Map context = createContext(target);
+            context = (OgnlContext)_contextPool.borrowObject();
 
             Ognl.setValue(expression, context, target, value);
         }
@@ -172,8 +195,9 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator
         {
             throw new ApplicationRuntimeException(ImplMessages.unableToWriteExpression(ImplMessages
                     .parsedExpression(), target, value, ex), target, null, ex);
+        } finally {
+            try { if (context != null) _contextPool.returnObject(context); } catch (Exception e) {}
         }
-
     }
     
     public boolean isConstant(Object target, String expression)

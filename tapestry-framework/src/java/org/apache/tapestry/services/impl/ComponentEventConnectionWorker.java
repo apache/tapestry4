@@ -133,7 +133,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
     ComponentEventProperty[] getComponentEvents(IComponent comp)
     {
         List listeners = _invoker.getEventListeners(comp.getId());
-        if (listeners == null)
+        if (listeners == null || listeners.size() < 1)
             return null;
 
         if (IFormComponent.class.isInstance(comp)) {

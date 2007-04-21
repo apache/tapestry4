@@ -14,28 +14,21 @@
 
 package org.apache.tapestry.engine;
 
-import static org.easymock.EasyMock.checkOrder;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IDirect;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.StaleSessionException;
+import org.apache.tapestry.*;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebSession;
+import static org.easymock.EasyMock.*;
 import org.testng.annotations.Test;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Tests for {@link org.apache.tapestry.engine.DirectService}.
@@ -52,9 +45,11 @@ public class DirectServiceTest extends ServiceTestCase
         
         if (checkParameters) {
             checkOrder(c, false);
+
             expect(c.getUpdateComponents()).andReturn(Collections.EMPTY_LIST);
             expect(c.isJson()).andReturn(false);
             expect(c.isAsync()).andReturn(false);
+            expect(c.isStateful()).andReturn(true);
         }
         
         return c;

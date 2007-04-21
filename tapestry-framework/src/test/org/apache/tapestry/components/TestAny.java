@@ -14,64 +14,25 @@
 
 package org.apache.tapestry.components;
 
-import static org.easymock.EasyMock.expect;
-
-import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.Location;
-import org.apache.tapestry.BaseComponentTestCase;
-import org.apache.tapestry.IBinding;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRender;
-import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.*;
 import org.apache.tapestry.spec.ComponentSpecification;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
 
 /**
  * Tests for the {@link org.apache.tapestry.components.Any} component.
  * 
- * @author Howard M. Lewis Ship
- * @since 4.0
  */
 @Test
 public class TestAny extends BaseComponentTestCase
 {
-
-    public void testElementNull()
-    {
-        IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newMock(IRequestCycle.class);
-        Location l = newLocation();
-        
-        Any any = newInstance(Any.class, new Object[] { "location", l });
-        
-        expect(cycle.renderStackPush(any)).andReturn(any);
-        
-        expect(cycle.renderStackPop()).andReturn(any);
-        
-        replay();
-
-        try
-        {
-            any.render(writer, cycle);
-            unreachable();
-        }
-        catch (ApplicationRuntimeException ex)
-        {
-            assertEquals(ComponentMessages.anyElementNotDefined(), ex
-                    .getMessage());
-            assertSame(l, ex.getLocation());
-        }
-
-        verify();
-    }
 
     public void testRender()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle(false, writer);
         
-        Any any = newInstance(Any.class,
-                new Object[] { "element", "span" });
+        Any any = newInstance(Any.class, new Object[] { "templateTagName", "span" });
         
         expect(cycle.renderStackPush(any)).andReturn(any);
         
@@ -100,8 +61,7 @@ public class TestAny extends BaseComponentTestCase
         IRender body = newRender();
         IBinding binding = newBinding("fred");
         
-        Any any = newInstance(Any.class, new Object[] { "element",
-            "span", "specification", new ComponentSpecification() });
+        Any any = newInstance(Any.class, "templateTagName", "span", "specification", new ComponentSpecification());
         
         expect(cycle.renderStackPush(any)).andReturn(any);
         
@@ -130,8 +90,7 @@ public class TestAny extends BaseComponentTestCase
         IRequestCycle cycle = newCycle(true, writer);
         IRender body = newRender();
         
-        Any any = newInstance(Any.class,
-                new Object[] { "element", "span" });
+        Any any = newInstance(Any.class, new Object[] { "templateTagName", "span" });
         
         expect(cycle.renderStackPush(any)).andReturn(any);
         

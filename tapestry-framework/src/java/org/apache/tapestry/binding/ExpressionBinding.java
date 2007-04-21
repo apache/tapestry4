@@ -81,6 +81,8 @@ public class ExpressionBinding extends AbstractBinding
 
     private ExpressionCache _cache;
 
+    private boolean _writeFailed;
+
     /**
      * Creates a {@link ExpressionBinding}from the root object and an OGNL expression.
      */
@@ -115,7 +117,7 @@ public class ExpressionBinding extends AbstractBinding
     {
         try
         {
-            if (_accessor == null) {
+            if (_accessor == null && !_writeFailed) {
                 
                 _parsedExpression = (Node)_cache.getCompiledExpression(_root, _expression);
                 
@@ -185,10 +187,26 @@ public class ExpressionBinding extends AbstractBinding
         
         try
         {
-            if (_accessor == null) {
+            if (_accessor == null && !_writeFailed) {
                 
                 _evaluator.writeCompiled(_root, _parsedExpression, value);
-            } else 
+
+                // re-parse expression as compilation may be possible now that it potentially has a value
+                try {
+                    _parsedExpression = (Node)_cache.getCompiledExpression(_root, _expression);
+
+                    _accessor = _parsedExpression.getAccessor();
+                } catch (Throwable t) {
+                    
+                    // ignore re-read failures as they aren't supposed to be happening now anyways
+                    // and a more user friendly version will be available if someone actually calls
+                    // getObject
+
+                    // if writing fails then we're probably screwed...so don't do it again
+                    if (value != null)
+                        _writeFailed = true;
+                }
+            } else
                 _evaluator.write(_root, _accessor, value);
         }
         catch (Throwable ex)

@@ -14,24 +14,19 @@
 
 package org.apache.tapestry.engine;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IDirect;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.StaleSessionException;
-import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.*;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebSession;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Implementation of the direct service, which encodes the page and component id in the service
@@ -62,6 +57,7 @@ public class DirectService implements IEngineService
         DirectServiceParameter dsp = (DirectServiceParameter) parameter;
 
         IComponent component = dsp.getDirect();
+        IDirect direct = dsp.getDirect();
 
         // New since 1.0.1, we use the component to determine
         // the page, not the cycle. Through the use of tricky
@@ -75,7 +71,7 @@ public class DirectService implements IEngineService
         IPage componentPage = component.getPage();
         
         Map parameters = new HashMap();
-        
+
         boolean stateful = _request.getSession(false) != null;
         
         parameters.put(ServiceConstants.PAGE, activePage.getPageName());
@@ -98,7 +94,7 @@ public class DirectService implements IEngineService
         
         parameters.put(ServiceConstants.PARAMETER, dsp.getServiceParameters());
         
-        return _linkFactory.constructLink(this, post, parameters, true);
+        return _linkFactory.constructLink(this, post, parameters, direct.isStateful());
     }
 
     public void service(IRequestCycle cycle) throws IOException

@@ -111,7 +111,7 @@ Simple For loop listing locales.
     </div>
     <p>
     <a jwcid="localeLink@DirectLink" listener="listener:selectLocale" parameters="ognl:{currLocale.language, currLocale.country, currLocale.variant}"
-       updateComponents="ognl:{'localeDetail',page.components.localeList.clientId}">
+       updateComponents="ognl:{'localeDetail',page.components.localeList.clientId}" stateful="ognl:false">
         <span jwcid="@Insert" value="ognl:currLocale.toString()" />
     </a>
     </p>
