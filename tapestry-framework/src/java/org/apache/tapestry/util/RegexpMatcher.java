@@ -49,7 +49,7 @@ public class RegexpMatcher
         _pool = new GenericKeyedObjectPool(_factory, MAX_ACTIVE, GenericKeyedObjectPool.WHEN_EXHAUSTED_BLOCK, -1);
         
         _pool.setMaxIdle(MAX_ACTIVE / 2);
-        _pool.setMinEvictableIdleTimeMillis(MAX_ACTIVE);
+        _pool.setMinEvictableIdleTimeMillis(SLEEP_TIME);
         _pool.setTimeBetweenEvictionRunsMillis(SLEEP_TIME);
     }
     

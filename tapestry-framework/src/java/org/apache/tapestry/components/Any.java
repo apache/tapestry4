@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.components;
 
-import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
@@ -23,18 +22,13 @@ import org.apache.tapestry.IRequestCycle;
  * A component that can substitute for any HTML element. [<a
  * href="../../../../../ComponentReference/Any.html">Component Reference</a>]
  * 
- * @author Howard Lewis Ship
  */
 
 public abstract class Any extends AbstractComponent
 {
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        String element = getElement();
-        
-        if (element == null)
-            throw new ApplicationRuntimeException(ComponentMessages.anyElementNotDefined(), this,
-                    null, null);
+        String element = isParameterBound("element") ? getElement() : getTemplateTagName();
         
         boolean rewinding = cycle.isRewinding();
         

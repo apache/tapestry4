@@ -139,12 +139,16 @@ public class TestExpressionBinding extends BindingTestCase
         ValueConverter vc = newValueConverter();
         
         expect(ec.getCompiledExpression("exp")).andReturn(compiled);
-        
+
         expect(ev.isConstant("exp")).andReturn(false);
 
         Object newValue = new Object();
 
         ev.writeCompiled(component, compiled, newValue);
+
+        expect(ec.getCompiledExpression(component, "exp")).andReturn(compiled);
+
+        expect(compiled.getAccessor()).andReturn(null);
 
         replay();
 
