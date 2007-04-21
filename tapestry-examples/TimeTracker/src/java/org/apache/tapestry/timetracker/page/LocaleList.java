@@ -32,6 +32,7 @@ public abstract class LocaleList extends BasePage
     public abstract Locale getCurrLocale();
     
     public abstract void setSelected(Locale locale);
+    public abstract Locale getSelected();
     
     public abstract void setStatus(String status);
     
@@ -42,5 +43,17 @@ public abstract class LocaleList extends BasePage
         setSelected(new Locale(language, country, variant));
         setStatus(event.toString());
         getBuilder().updateComponent("status");
+    }
+
+    public boolean isCurrentSelected()
+    {
+        return getSelected() != null && getCurrLocale().toString().equals(getSelected().toString());
+    }
+
+    public String getRoundedUrl(String anchor)
+    {
+        return "/rounded?c=" +
+               (isCurrentSelected() ? "efefef" : "2A78B0")
+               + "&bc=white&w=8&h=8&a=" + anchor;
     }
 }

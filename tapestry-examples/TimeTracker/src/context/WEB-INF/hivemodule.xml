@@ -22,6 +22,7 @@
         <extension-encoder id="extension" extension="svc" after="*"/>
         <direct-service-encoder id="direct" stateless-extension="direct" stateful-extension="sdirect"/>
         <page-service-encoder id="page" extension="html" service="page"/>
+        <path-encoder id="rounded" path="/rounded" service="rounded" />
     </contribution>
     
     <sub-module descriptor="timetracker.db.xml" />
