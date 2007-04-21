@@ -6,19 +6,41 @@ Simple For loop listing locales.
 
 <style>
 	.localeList {
-		-moz-border-radius: 8px;
-		background: #2A78B0;
-		display:block;
+		/* padding:0.3em; */
+        background: #2A78B0;
+        display:block;
 		float:left;
 		width:20%;
-		margin-top:0.6em;
+        margin-top:0.6em;
 		margin-left:0.5em;
-		padding:0.3em;
-	}
-	
-	.localeList a { color: #fff;}
-	
-	.selected {
+    }
+
+    .localeList a { color: #fff;}
+
+    .localeList p { margin: 0 10px;}
+
+    .roundtop {
+        background: url("/rounded?c=2A78B0&bc=white&w=8&h=8&a=tr") no-repeat top right;
+    }
+    .selectedRoundtop {
+        background: url("/rounded?c=efefef&bc=white&w=8&h=8&a=tr") no-repeat top right;
+    }
+
+    .roundbottom {
+        background: url("/rounded?c=2A78B0&bc=white&w=8&h=8&a=br") no-repeat top right;
+    }
+    .selectedRoundbottom {
+        background: url("/rounded?c=efefef&bc=white&w=8&h=8&a=br") no-repeat top right;
+    }
+
+    img.corner {
+        width: 8px;
+        height: 8px;
+        border: none;
+        display: block !important;
+    }
+
+    .selected {
 		background: #efefef;
 	}
 	
@@ -45,12 +67,11 @@ Simple For loop listing locales.
 		width:70%;
 		height: 50px;
 		overflow:auto;
-		font-family:Arial;
+		font-family: arial;
 		font-size:8pt;
 		padding: 0.4em;
 		border:1px dotted #D6AE33;
 	}
-	
 </style>
 
 <span jwcid="localeDetail@Any">
@@ -70,14 +91,26 @@ Simple For loop listing locales.
 	<span jwcid="@Insert" value="ognl:status" />
 </div>
 
-<div class="ognl:(selected != null and currLocale.toString() == selected.toString()) ? 'selected localeList' : 'localeList'" 
-		jwcid="localeList@For" 
-		source="ognl:@org.apache.tapestry.timetracker.page.LocaleList@LOCALES" value="ognl:currLocale">
-	
-	<a jwcid="localeLink@DirectLink" listener="listener:selectLocale" parameters="ognl:{currLocale.language, currLocale.country, currLocale.variant}"
-		updateComponents="ognl:{'localeDetail',page.components.localeList.clientId}">
-		<span jwcid="@Insert" value="ognl:currLocale.toString()" />
-	</a>
+<div class="ognl:currentSelected ? 'selected localeList' : 'localeList'"
+     jwcid="localeList@For"
+     source="ognl:@org.apache.tapestry.timetracker.page.LocaleList@LOCALES" value="ognl:currLocale">
+
+    <div jwcid="@Any" class="ognl:currentSelected ? 'selectedRoundtop' : 'roundtop'">
+        
+        <img jwcid="@Any" src="ognl:getRoundedUrl('tl')" width="8" height="8" class="corner" style="display: none" />
+        
+    </div>
+    <p>
+    <a jwcid="localeLink@DirectLink" listener="listener:selectLocale" parameters="ognl:{currLocale.language, currLocale.country, currLocale.variant}"
+       updateComponents="ognl:{'localeDetail',page.components.localeList.clientId}">
+        <span jwcid="@Insert" value="ognl:currLocale.toString()" />
+    </a>
+    </p>
+    <div jwcid="@Any" class="ognl:currentSelected ? 'selectedRoundbottom' : 'roundbottom'">
+
+        <img jwcid="@Any" src="ognl:getRoundedUrl('bl')" width="8" height="8" class="corner" style="display: none" />
+
+    </div>
 </div>
 <br/>
 

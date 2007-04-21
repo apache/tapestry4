@@ -14,21 +14,6 @@
 
 package org.apache.tapestry.asset;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
-import java.net.URLConnection;
-import java.text.DateFormat;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.zip.GZIPOutputStream;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
@@ -48,6 +33,20 @@ import org.apache.tapestry.util.io.GzipUtil;
 import org.apache.tapestry.web.WebContext;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.text.DateFormat;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * A service for building URLs to and accessing {@link org.apache.tapestry.IAsset}s. Most of the
@@ -220,7 +219,7 @@ public class AssetService implements IEngineService
         String md5Digest = cycle.getParameter(DIGEST);
         boolean checkDigest = !_unprotectedMatcher.containsResource(path);
         
-        URLConnection resourceConnection = null;
+        URLConnection resourceConnection;
         
         try
         {
@@ -261,10 +260,7 @@ public class AssetService implements IEngineService
         catch (Throwable ex)
         {
             _exceptionReporter.reportRequestException(AssetMessages.exceptionReportTitle(path), ex);
-        } finally {
-            resourceConnection = null;
         }
-
     }
 
     /**
@@ -391,7 +387,7 @@ public class AssetService implements IEngineService
 
         try {
             
-            CachedAsset cache = null;
+            CachedAsset cache;
             byte[] data = null;
             
             // check cache first
@@ -447,7 +443,6 @@ public class AssetService implements IEngineService
             
             if (input != null) {
                 IOUtils.closeQuietly(input);
-                input = null;
             }
         }
     }
