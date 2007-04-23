@@ -128,6 +128,13 @@ var tapestry={
 				window.location=elms[i].getAttribute("url");
 				return;
 			}
+                        
+                        if (elmType == "status") {
+                                dojo.event.topic.publish(id,
+                                    {message: tapestry.html.getContentAsString(elms[i])}
+                                );
+				continue;
+			}
 			
 			// handle javascript evaluations
 			if (elmType == "script") {
