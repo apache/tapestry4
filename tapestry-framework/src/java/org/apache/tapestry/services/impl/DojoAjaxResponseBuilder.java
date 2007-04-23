@@ -69,6 +69,8 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     private List _parts = new ArrayList();
     // Map of specialized writers, like scripts
     private Map _writers = new HashMap();
+    // List of status messages.
+    private List _statusMessages;
     
     private IRequestCycle _cycle;
     
@@ -492,6 +494,30 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         
         writer.end();
     }
+        
+    public void addStatus(IMarkupWriter normalWriter, String text)
+    {
+        addStatus(normalWriter, text, "info");
+    }  
+    
+    public void addStatus(IMarkupWriter normalWriter, String text, String category)
+    {
+        if (_statusMessages==null)
+        {
+            _statusMessages = new ArrayList();
+        }
+        _statusMessages.add(category);
+        _statusMessages.add(text);        
+    }
+    
+    void writeStatusMessages() {
+        for (int i=0; i<_statusMessages.size(); i+=2)
+        {
+            IMarkupWriter writer = getWriter((String) _statusMessages.get(i), "status");
+            writer.printRaw((String) _statusMessages.get(i+1));                
+        }
+        _statusMessages = null;            
+    }
     
     /** 
      * {@inheritDoc}
@@ -632,6 +658,8 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     void endResponse()
     {
         // write out captured content
+        if (_statusMessages != null)        
+            writeStatusMessages();
         
         Iterator keys = _writers.keySet().iterator();
         String buffer = null;
