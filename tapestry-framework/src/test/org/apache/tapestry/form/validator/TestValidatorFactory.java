@@ -55,7 +55,7 @@ public class TestValidatorFactory extends TapestryTestCase
         return vc;
     }
 
-    public void testEmpty()
+    public void test_Empty()
     {
         IComponent component = newComponent();
         ValidatorFactoryImpl vf = new ValidatorFactoryImpl();
@@ -69,7 +69,7 @@ public class TestValidatorFactory extends TapestryTestCase
         verify();
     }
 
-    public void testSingle()
+    public void test_Single()
     {
         IComponent component = newComponent();
 
@@ -87,7 +87,7 @@ public class TestValidatorFactory extends TapestryTestCase
         verify();
     }
 
-    public void testMessage()
+    public void test_Message()
     {
         IComponent component = newComponent();
 
@@ -105,7 +105,25 @@ public class TestValidatorFactory extends TapestryTestCase
         verify();
     }
 
-    public void testConfigureAndMessage()
+    public void test_Localized_Message()
+    {
+        IComponent component = newComponent();
+
+        replay();
+
+        ValidatorFactoryImpl vf = new ValidatorFactoryImpl();
+        vf.setValidators(buildContributions("value", true));
+
+        List result = vf.constructValidatorList(component, "value=199.9999999999999[%defaultProb-interestRate]");
+
+        ValidatorFixture fixture = (ValidatorFixture) result.get(0);
+
+        assertEquals(fixture.getMessage(), "%defaultProb-interestRate");
+
+        verify();
+    }
+
+    public void test_Configure_And_Message()
     {
         IComponent component = newComponent();
 
@@ -124,7 +142,7 @@ public class TestValidatorFactory extends TapestryTestCase
         verify();
     }
 
-    public void testMissingConfiguration()
+    public void test_Missing_Configuration()
     {
         IComponent component = newComponent();
 
@@ -147,7 +165,7 @@ public class TestValidatorFactory extends TapestryTestCase
         verify();
     }
 
-    public void testMultiple()
+    public void test_Multiple()
     {
         IComponent component = newComponent();
 
@@ -179,7 +197,42 @@ public class TestValidatorFactory extends TapestryTestCase
         verify();
     }
 
-    public void testUnparseable()
+    public void test_Multiple_Localized()
+    {
+        IComponent component = newComponent();
+
+        replay();
+
+        Map map = new HashMap();
+        map.put("required", newContribution(false, Required.class));
+        map.put("min", newContribution(true, Min.class));
+        map.put("max", newContribution(true, Max.class));
+
+        ValidatorFactoryImpl vf = new ValidatorFactoryImpl();
+        vf.setValidators(map);
+
+        List result = vf.constructValidatorList(component,
+                "required,min=0.000000000001[%defaultProbInterestRate],\n" +
+                "max=199.9999999999999[%defaultProb-interestRate]");
+
+        assertEquals(3, result.size());
+
+        Required r = (Required) result.get(0);
+        assert r.getMessage() == null;
+        assert r.isRequired();
+
+        Min min = (Min) result.get(1);
+        assertEquals(min.getMessage(), "%defaultProbInterestRate");
+        assertEquals(min.getMin(), 0.000000000001);
+
+        Max max = (Max) result.get(2);
+        assertEquals(max.getMessage(), "%defaultProb-interestRate");
+        assertEquals(max.getMax(), 199.9999999999999);
+       
+        verify();
+    }
+
+    public void test_Unparseable()
     {
         IComponent component = newComponent();
 
@@ -200,7 +253,7 @@ public class TestValidatorFactory extends TapestryTestCase
         verify();
     }
 
-    public void testUnwantedConfiguration()
+    public void test_Unwanted_Configuration()
     {
         IComponent component = newComponent();
 
@@ -223,7 +276,7 @@ public class TestValidatorFactory extends TapestryTestCase
         verify();
     }
 
-    public void testMissingValidator()
+    public void test_Missing_Validator()
     {
         IComponent component = newComponent();
 
@@ -245,7 +298,7 @@ public class TestValidatorFactory extends TapestryTestCase
         verify();
     }
 
-    public void testInstantiateFailure()
+    public void test_Instantiate_Failure()
     {
         IComponent component = newComponent();
 
@@ -296,7 +349,7 @@ public class TestValidatorFactory extends TapestryTestCase
         return component;
     }
 
-    public void testBeanReference()
+    public void test_Bean_Reference()
         throws Exception
     {
         Validator validator = newValidator();
@@ -335,7 +388,7 @@ public class TestValidatorFactory extends TapestryTestCase
         return newMock(IFormComponent.class);
     }
 
-    public void testBeanReferenceNotValidator()
+    public void test_Bean_Reference_Not_Validator()
     {
         Object bean = new Object();
         IBeanProvider provider = newBeanProvider("fred", bean);
@@ -366,7 +419,7 @@ public class TestValidatorFactory extends TapestryTestCase
         verify();
     }
 
-    public void testBeanReferenceWithValue()
+    public void test_Bean_Reference_With_Value()
     {
         IComponent component = newComponent();
 
@@ -390,7 +443,7 @@ public class TestValidatorFactory extends TapestryTestCase
         verify();
     }
 
-    public void testBeanReferenceWithMessage()
+    public void test_Bean_Reference_With_Message()
     {
         IComponent component = newComponent();
 
