@@ -11,7 +11,10 @@ import org.apache.tapestry.util.ContentType;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
@@ -31,6 +34,14 @@ public class RoundedCornerService implements IEngineService {
     public static final String PARM_HEIGHT = "h";
     public static final String PARM_ANGLE = "a";
 
+    public static final String PARM_SHADOW_WIDTH ="sw";
+    public static final String PARM_SHADOW_OPACITY ="o";
+    public static final String PARM_SHADOW_SIDE = "s";
+
+    public static final String PARM_WHOLE_SHADOW = "shadow";
+    public static final String PARM_ARC_HEIGHT = "ah";
+    public static final String PARM_ARC_WIDTH = "aw";
+
     private static final long MONTH_SECONDS = 60 * 60 * 24 * 30;
 
     private static final long EXPIRES = System.currentTimeMillis() + 365 * 24 * 60 * 60 * 1000L;
@@ -44,7 +55,10 @@ public class RoundedCornerService implements IEngineService {
     private WebResponse _response;
 
     private RoundedCornerGenerator _generator = new RoundedCornerGenerator();
-    
+
+    // holds pre-built binaries for previously generated colors
+    private Map _imageCache = new HashMap();
+
     public ILink getLink(boolean post, Object parameter)
     {
         Defense.notNull(parameter, "parameter");
@@ -62,37 +76,95 @@ public class RoundedCornerService implements IEngineService {
     public void service(IRequestCycle cycle)
             throws IOException
     {
+        if (_request.getHeader("If-Modified-Since") != null)
+        {
+            _response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+            return;
+        }
+
         String color = cycle.getParameter(PARM_COLOR);
         String bgColor = cycle.getParameter(PARM_BACKGROUND_COLOR);
         int width = getIntParam(cycle.getParameter(PARM_WIDTH));
         int height = getIntParam(cycle.getParameter(PARM_HEIGHT));
         String angle = cycle.getParameter(PARM_ANGLE);
+        
+        int shadowWidth = getIntParam(cycle.getParameter(PARM_SHADOW_WIDTH));
+        float shadowOpacity = getFloatParam(cycle.getParameter(PARM_SHADOW_OPACITY));
+        String side = cycle.getParameter(PARM_SHADOW_SIDE);
 
-        OutputStream os = null;
+        boolean wholeShadow = Boolean.valueOf(cycle.getParameter(PARM_WHOLE_SHADOW)).booleanValue();
+        float arcWidth = getFloatParam(cycle.getParameter(PARM_ARC_WIDTH));
+        float arcHeight = getFloatParam(cycle.getParameter(PARM_ARC_HEIGHT));
 
+        String hashKey = color + bgColor + width + height + angle + shadowWidth + shadowOpacity + side + wholeShadow;
+
+        ByteArrayOutputStream bo = null;
+        
         try {
+            
+            String type = (bgColor != null) ? "gif" : "png";
 
-            if (_request.getHeader("If-Modified-Since") != null)
-            {
-                _response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+            byte[] data = (byte[])_imageCache.get(hashKey);
+            if (data != null) {
+
+                writeImageResponse(data, type);
                 return;
             }
 
-            byte[] data = _generator.buildCorner(color, bgColor, width, height, angle);
+            BufferedImage image = null;
 
-            _response.setDateHeader("Expires", EXPIRES);
-            _response.setHeader("Cache-Control", "public, max-age=" + (MONTH_SECONDS * 3));
-            _response.setContentLength(data.length);
-            
-            os = _response.getOutputStream(new ContentType("image/gif"));
+            if (wholeShadow) {
 
-            os.write(data);
+                image = _generator.buildShadow(bgColor, width, height, arcWidth, arcHeight, shadowWidth, shadowOpacity);
+            } else if (side != null) {
+
+                image = _generator.buildSideShadow(side, shadowWidth, shadowOpacity);
+            } else {
+
+                image = _generator.buildCorner(color, bgColor, width, height, angle, shadowWidth, shadowOpacity);
+            }
+
+            bo = new ByteArrayOutputStream();
+
+            ImageIO.write(image, type, bo);
+
+            data = bo.toByteArray();
+
+            _imageCache.put(hashKey, data);
+
+            writeImageResponse(data, type);
             
         } catch (Throwable ex) {
 
             ex.printStackTrace();
             _exceptionReporter.reportRequestException("Error creating image.", ex);
         } finally {
+            try {
+                if (bo != null) {
+                    bo.close();
+                }
+            } catch (Throwable t) {
+                // ignore
+            }
+
+        }
+    }
+
+    void writeImageResponse(byte[] data, String type)
+    throws Exception
+    {
+        OutputStream os = null;
+
+        try {
+            _response.setDateHeader("Expires", EXPIRES);
+            _response.setHeader("Cache-Control", "public, max-age=" + (MONTH_SECONDS * 3));
+            _response.setContentLength(data.length);
+
+            os = _response.getOutputStream(new ContentType("image/" + type));
+
+            os.write(data);
+
+        }  finally {
             try {
                 if (os != null) {
                     os.flush();
@@ -101,7 +173,6 @@ public class RoundedCornerService implements IEngineService {
             } catch (Throwable t) {
                 // ignore
             }
-
         }
     }
 
@@ -111,6 +182,14 @@ public class RoundedCornerService implements IEngineService {
             return 0;
         
         return Integer.valueOf(value).intValue();
+    }
+
+    private float getFloatParam(String value)
+    {
+        if (value == null)
+            return 0f;
+        
+        return Float.valueOf(value).floatValue();
     }
 
     public String getName()

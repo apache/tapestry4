@@ -108,6 +108,13 @@
                     <include>*.properties</include>
                 </includes>
             </resource>
+            <resource>
+                <directory>src/java</directory>
+                <includes>
+                    <include>**/*.page</include>
+                    <include>**/*.jwc</include>
+                </includes>
+            </resource>
         </resources>
         
         <plugins>

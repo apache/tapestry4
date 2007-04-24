@@ -1,22 +1,20 @@
 <span jwcid="@Border">
 
 <p>
-Simple For loop listing locales.
+Simple <code>For</code> loop listing locales.
 </p>
 
 <style>
-	.localeList {
-		/* padding:0.3em; */
+
+    .localeList {
         background: #2A78B0;
         display:block;
 		float:left;
-		width:20%;
+        width:20%;
         margin-top:0.6em;
 		margin-left:0.5em;
     }
-
     .localeList a { color: #fff;}
-
     .localeList p { margin: 0 10px;}
 
     .roundtop {
@@ -40,38 +38,28 @@ Simple For loop listing locales.
         display: block !important;
     }
 
-    .selected {
-		background: #efefef;
-	}
-	
-	.selected a {
-		color: #000;
-	}
+    .selected { background: #efefef; }
+	.selected a { color: #000; }
 	
 	.detail {
-		clear:left;
-		display:block;
-		padding: 1em;
-		width: 56%;
-		margin-top:1em;
-		border-left: 1px solid #efefef;
-		border-top: 1px solid #efefef;
-		border-bottom: 1px solid #aaa;
-		border-right: 1px solid #aaa;
-		-moz-border-radius: 0.7em;
-	}
-	
-	.status {
+        display:block;
+        margin-top:2em;
+        padding: 0 1.1em 2em;
+        background: url("rounded?bc=white&w=600&h=40&shadow=true&ah=10&aw=10&sw=4&o=.5") left bottom no-repeat;
+    }
+
+    .status {
 		display:block;
 		clear:both;
-		width:70%;
-		height: 50px;
+		width:80%;
+		height: 4em;
 		overflow:auto;
 		font-family: arial;
 		font-size:8pt;
 		padding: 0.4em;
 		border:1px dotted #D6AE33;
-	}
+        margin-top:1em;
+    }
 
     .clear {
         clear:both;
@@ -80,45 +68,37 @@ Simple For loop listing locales.
         width:100%;
         height: 20px;
     }
-
 </style>
 
-<span jwcid="localeDetail@Any">
-	<p class="detail" jwcid="@If" condition="ognl:selected" >
-		<strong>Country:</strong> 
-		<span jwcid="@Insert" value="ognl:selected.displayCountry" mode="ognl:@org.apache.tapestry.components.InsertMode@BREAK" />
-		&nbsp;
-		<strong>Language:</strong>
-		<span jwcid="@Insert" value="ognl:selected.displayLanguage" mode="ognl:@org.apache.tapestry.components.InsertMode@BREAK" />
-		&nbsp;
-		<strong>Variant:</strong>
-		<span jwcid="@Insert" value="ognl:selected.displayVariant" mode="ognl:@org.apache.tapestry.components.InsertMode@BREAK" />
-	</p>
-</span>
+<div jwcid="localeDetail@Any">
+    <p class="detail" jwcid="@If" condition="ognl:selected" >
+            <strong>Country:</strong>
+            <span jwcid="@Insert" value="ognl:selected.displayCountry" mode="ognl:@org.apache.tapestry.components.InsertMode@BREAK" />
+            &nbsp;
+            <strong>Language:</strong>
+            <span jwcid="@Insert" value="ognl:selected.displayLanguage" mode="ognl:@org.apache.tapestry.components.InsertMode@BREAK" />
+            &nbsp;
+            <strong>Variant:</strong>
+            <span jwcid="@Insert" value="ognl:selected.displayVariant" mode="ognl:@org.apache.tapestry.components.InsertMode@BREAK" />
+    </p>
+</div>
 
 <div jwcid="status@Any" class="status" >
-	<span jwcid="@Insert" value="ognl:status" />
+    <span jwcid="@Insert" value="ognl:status" />
 </div>
+
 
 <div class="ognl:currentSelected ? 'selected localeList' : 'localeList'"
      jwcid="localeList@For"
      source="ognl:@org.apache.tapestry.timetracker.page.LocaleList@LOCALES" value="ognl:currLocale">
 
-    <div jwcid="@Any" class="ognl:currentSelected ? 'selectedRoundtop' : 'roundtop'">
-        
-        <img jwcid="@Any" src="ognl:getRoundedUrl('tl')" width="8" height="8" class="corner" style="display: none" />
-        
-    </div>
-    <p>
-    <a jwcid="localeLink@DirectLink" listener="listener:selectLocale" parameters="ognl:{currLocale.language, currLocale.country, currLocale.variant}"
-       updateComponents="ognl:{'localeDetail',page.components.localeList.clientId}" stateful="ognl:false">
-        <span jwcid="@Insert" value="ognl:currLocale.toString()" />
-    </a>
-    </p>
-    <div jwcid="@Any" class="ognl:currentSelected ? 'selectedRoundbottom' : 'roundbottom'">
-
-        <img jwcid="@Any" src="ognl:getRoundedUrl('bl')" width="8" height="8" class="corner" style="display: none" />
-
+    <div jwcid="@Locale" selected="ognl:currentSelected">
+        <p>
+            <a jwcid="localeLink@DirectLink" listener="listener:selectLocale" parameters="ognl:{currLocale.language, currLocale.country, currLocale.variant}"
+               updateComponents="ognl:{'localeDetail',page.components.localeList.clientId}" stateful="ognl:false">
+                <span jwcid="@Insert" value="ognl:currLocale.toString()" />
+            </a>
+        </p>
     </div>
 </div>
 
