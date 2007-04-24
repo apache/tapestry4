@@ -102,7 +102,7 @@ public class RoundedCornerService implements IEngineService {
         
         try {
             
-            String type = (bgColor != null) ? "gif" : "png";
+            String type = "png"; //(bgColor != null) ? "gif" : "png";
 
             byte[] data = (byte[])_imageCache.get(hashKey);
             if (data != null) {
@@ -179,7 +179,7 @@ public class RoundedCornerService implements IEngineService {
     private int getIntParam(String value)
     {
         if (value == null)
-            return 0;
+            return -1;
         
         return Integer.valueOf(value).intValue();
     }
@@ -187,7 +187,7 @@ public class RoundedCornerService implements IEngineService {
     private float getFloatParam(String value)
     {
         if (value == null)
-            return 0f;
+            return -1f;
         
         return Float.valueOf(value).floatValue();
     }

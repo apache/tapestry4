@@ -16,8 +16,6 @@ package org.apache.tapestry.util;
 import org.apache.commons.pool.BaseKeyedPoolableObjectFactory;
 import org.apache.hivemind.util.Defense;
 
-import java.util.regex.Pattern;
-
 
 /**
  * Implementation of {@link BaseKeyedPoolableObjectFactory} for regexp patterns
@@ -37,7 +35,7 @@ public class RegexpPoolObjectFactory extends BaseKeyedPoolableObjectFactory
         
         String regexp = (String)pattern;
 
-        return java.util.regex.Pattern.compile(regexp, java.util.regex.Pattern.COMMENTS | java.util.regex.Pattern.DOTALL | Pattern.MULTILINE);
+        return java.util.regex.Pattern.compile(regexp, java.util.regex.Pattern.COMMENTS | java.util.regex.Pattern.DOTALL);
     }
 
 }
