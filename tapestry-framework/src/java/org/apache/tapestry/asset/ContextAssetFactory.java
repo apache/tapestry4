@@ -77,7 +77,7 @@ public class ContextAssetFactory implements AssetFactory
         return localized;
     }
 
-    public IAsset createAsset(IComponentSpecification spec, Resource baseResource, String path, Locale locale, Location location)
+    public IAsset createAsset(Resource baseResource, IComponentSpecification spec, String path, Locale locale, Location location)
     {
         Resource localized = findAsset(spec, baseResource, path, locale);
         

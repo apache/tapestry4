@@ -47,7 +47,7 @@ public class DefaultAssetFactory implements AssetFactory
         }
     }
 
-    public IAsset createAsset(IComponentSpecification spec, Resource baseResource, String path, Locale locale, Location location)
+    public IAsset createAsset(Resource baseResource, IComponentSpecification spec, String path, Locale locale, Location location)
     {
         return new ExternalAsset(path, location);
     }

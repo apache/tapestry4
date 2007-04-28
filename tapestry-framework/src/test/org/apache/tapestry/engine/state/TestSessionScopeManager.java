@@ -14,13 +14,12 @@
 
 package org.apache.tapestry.engine.state;
 
-import static org.easymock.EasyMock.checkOrder;
-import static org.easymock.EasyMock.expect;
-
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.SessionStoreOptimized;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebSession;
+import static org.easymock.EasyMock.checkOrder;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
 
 /**
@@ -29,7 +28,7 @@ import org.testng.annotations.Test;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-@Test
+@Test(sequential = true)
 public class TestSessionScopeManager extends BaseComponentTestCase
 {
     private WebRequest newRequest(boolean create, WebSession session)

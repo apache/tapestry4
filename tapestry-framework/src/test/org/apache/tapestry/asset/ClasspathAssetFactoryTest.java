@@ -51,7 +51,7 @@ public class ClasspathAssetFactoryTest extends BaseComponentTestCase
 
         Resource base = newBaseResource();
 
-        IAsset asset = factory.createAsset(spec, base, "relative-resource.txt", Locale.FRENCH, l);
+        IAsset asset = factory.createAsset(base, spec, "relative-resource.txt", Locale.FRENCH, l);
 
         assertTrue(asset instanceof PrivateAsset);
         assertEquals("/org/apache/tapestry/asset/relative-resource_fr.txt", asset.getResourceLocation().getPath());
@@ -98,7 +98,7 @@ public class ClasspathAssetFactoryTest extends BaseComponentTestCase
 
         try
         {
-            factory.createAsset(spec, base, "does-not-exist.txt", Locale.ENGLISH, l);
+            factory.createAsset(base, spec, "does-not-exist.txt", Locale.ENGLISH, l);
             unreachable();
         }
         catch (ApplicationRuntimeException ex)
@@ -209,7 +209,7 @@ public class ClasspathAssetFactoryTest extends BaseComponentTestCase
         
         String path = "/dojo/dojo.js";
         
-        IAsset asset = factory.createAsset(spec, shell, path, 
+        IAsset asset = factory.createAsset(shell, spec, path, 
                 Locale.getDefault(),
                 l);
         
@@ -238,7 +238,7 @@ public class ClasspathAssetFactoryTest extends BaseComponentTestCase
         
         String path = "/dojo/";
         
-        IAsset asset = factory.createAsset(spec, shell, path, 
+        IAsset asset = factory.createAsset(shell, spec, path, 
                 Locale.getDefault(),
                 l);
         

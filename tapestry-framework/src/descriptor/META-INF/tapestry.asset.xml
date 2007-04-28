@@ -92,7 +92,6 @@
     <strategy class="org.apache.hivemind.util.ClasspathResource" object="service:ClasspathAssetFactory"/>
             
     <strategy class="ExternalResource" object="service:DefaultAssetFactory"/>
-            
   </contribution>
   
   <service-point id="LookupAssetFactory" interface="AssetFactory">
