@@ -16,9 +16,11 @@ package org.apache.tapestry.resolver;
 
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.LocationImpl;
+import org.apache.hivemind.util.ClasspathResource;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.services.ClassFinder;
@@ -66,7 +68,9 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
     private String _type;
 
     private ClassFinder _classFinder;
-    
+
+    private ClassResolver _classResolver;
+
     protected void reset()
     {
         _type = null;
@@ -237,15 +241,21 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
         String className = type.replace('/', '.');
 
         Class componentClass = _classFinder.findClass(packages, className);
-
         if (componentClass == null)
             return null;
 
         IComponentSpecification spec = new ComponentSpecification();
 
         Resource namespaceResource = namespace.getSpecificationLocation();
-
         Resource componentResource = namespaceResource.getRelativeResource(type + ".jwc");
+
+        // try classpath relative if namespace relative doesn't resolve
+
+        if (componentResource.getResourceURL() == null) {
+            
+            Resource classResource = new ClasspathResource(_classResolver, componentClass.getName().replace('.', '/'));
+            componentResource = classResource.getRelativeResource(type + ".jwc");
+        }
 
         Location location = new LocationImpl(componentResource);
 
@@ -293,4 +303,8 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
         _classFinder = classFinder;
     }
 
+    public void setClassResolver(ClassResolver classResolver)
+    {
+        _classResolver = classResolver;
+    }
 }
