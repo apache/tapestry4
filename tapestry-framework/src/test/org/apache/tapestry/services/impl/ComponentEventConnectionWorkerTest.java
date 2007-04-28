@@ -122,28 +122,23 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         ////////////////////////////////////////////
         
         expect(cycle.isRewinding()).andReturn(false);
-        
         expect(cycle.getAttribute(TapestryUtils.FIELD_PRERENDER)).andReturn(null);
         
-        expect(component.getId()).andReturn("comp1").anyTimes();
+        expect(component.getIdPath()).andReturn("comp1").anyTimes();
         expect(component.getClientId()).andReturn("comp1").anyTimes();
         
-        expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE))
-        .andReturn(prs).anyTimes();
-        
+        expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE)).andReturn(prs).anyTimes();
         expect(component.getSpecification()).andReturn(spec);
         
         trainGetLinkCheckIgnoreParameter(engine, cycle, false, new Object(), link);
         trainGetURL(link, "/some/url");
         
         expect(scriptSource.getScript(compScriptResource)).andReturn(script);
-        
         script.execute(eq(component), eq(cycle), eq(prs), isA(Map.class));
         
         expect(component.getSpecification()).andReturn(spec);
         
         trainGetLinkCheckIgnoreParameter(engine, cycle, false, new Object(), link);
-        
         trainGetURL(link, "/some/url");
         
         expect(scriptSource.getScript(elemScriptResource)).andReturn(script);
@@ -165,15 +160,13 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         checkOrder(cycle, false);
         expect(cycle.isRewinding()).andReturn(false);
-        
-        expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE))
-        .andReturn(prs).anyTimes();
+        expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE)).andReturn(prs).anyTimes();
         
         expect(widget.getSpecification()).andReturn(widgetSpec);
         
         expect(cycle.getAttribute(TapestryUtils.FIELD_PRERENDER)).andReturn(null);
         
-        expect(widget.getId()).andReturn("wid1").anyTimes();
+        expect(widget.getIdPath()).andReturn("wid1").anyTimes();
         expect(widget.getClientId()).andReturn("wid1").anyTimes();
         
         assert widgetSpec.getComponentEvents("wid1") != null;
@@ -257,12 +250,10 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         // render of comp1
         
         expect(cycle.isRewinding()).andReturn(false);
-        
         expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE)).andReturn(prs);
-        
         expect(cycle.getAttribute(TapestryUtils.FIELD_PRERENDER)).andReturn(null);
         
-        expect(comp1.getId()).andReturn("comp1").anyTimes();
+        expect(comp1.getIdPath()).andReturn("comp1").anyTimes();
         expect(comp1.getClientId()).andReturn("comp1").anyTimes();
         
         expect(cycle.getAttribute(ComponentEventConnectionWorker.FORM_NAME_LIST + "form1")).andReturn(null);
@@ -272,12 +263,10 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         // render of comp2
         
         expect(cycle.isRewinding()).andReturn(false);
-        
         expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE)).andReturn(prs);
-        
         expect(cycle.getAttribute(TapestryUtils.FIELD_PRERENDER)).andReturn(null);
         
-        expect(comp2.getId()).andReturn("comp2").anyTimes();
+        expect(comp2.getIdPath()).andReturn("comp2").anyTimes();
         expect(comp2.getClientId()).andReturn("comp2").anyTimes();
         
         expect(cycle.getAttribute(ComponentEventConnectionWorker.FORM_NAME_LIST + "form1")).andReturn(null);
@@ -287,13 +276,10 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         // render of component
         
         expect(cycle.isRewinding()).andReturn(false);
-        
         expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE)).andReturn(prs);
-        
         expect(cycle.getAttribute(TapestryUtils.FIELD_PRERENDER)).andReturn(null);
         
-        expect(component.getId()).andReturn("comp").anyTimes();
-        
+        expect(component.getIdPath()).andReturn("comp").anyTimes();
         expect(component.getSpecification()).andReturn(spec);
         
         replay();
@@ -399,25 +385,20 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         invoker.addFormEventListener("form1", spec);
         
         expect(cycle.isRewinding()).andReturn(false);
-        
         expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE)).andReturn(prs);
-        
         expect(cycle.getAttribute(TapestryUtils.FIELD_PRERENDER)).andReturn(null);
         
-        expect(component.getId()).andReturn("compListener").anyTimes();
+        expect(component.getIdPath()).andReturn("compListener").anyTimes();
         expect(component.getClientId()).andReturn("compListener").anyTimes();
-        
         expect(component.getSpecification()).andReturn(spec);
         
         // comp1 render
         
         expect(cycle.isRewinding()).andReturn(false);
-        
         expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE)).andReturn(prs);
-        
         expect(cycle.getAttribute(TapestryUtils.FIELD_PRERENDER)).andReturn(null);
         
-        expect(comp1.getId()).andReturn("comp1").anyTimes();
+        expect(comp1.getIdPath()).andReturn("comp1").anyTimes();
         expect(comp1.getClientId()).andReturn("comp1").anyTimes();
         
         expect(cycle.getAttribute(ComponentEventConnectionWorker.FORM_NAME_LIST + "form1")).andReturn(null);
@@ -427,12 +408,10 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         // comp2 render
         
         expect(cycle.isRewinding()).andReturn(false);
-        
         expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE)).andReturn(prs);
-        
         expect(cycle.getAttribute(TapestryUtils.FIELD_PRERENDER)).andReturn(null);
         
-        expect(comp2.getId()).andReturn("comp2").anyTimes();
+        expect(comp2.getIdPath()).andReturn("comp2").anyTimes();
         expect(comp2.getClientId()).andReturn("comp2").anyTimes();
         
         expect(cycle.getAttribute(ComponentEventConnectionWorker.FORM_NAME_LIST + "form1")).andReturn(null);
@@ -456,42 +435,35 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         checkOrder(comp2, false);
         
         expect(cycle.isRewinding()).andReturn(false);
-        
         expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE)).andReturn(prs);
         
         expect(form.getSpecification()).andReturn(formSpec);
         
         expect(cycle.getAttribute(TapestryUtils.FIELD_PRERENDER)).andReturn(null);
         
-        expect(form.getId()).andReturn("form1").anyTimes();
+        expect(form.getIdPath()).andReturn("form1").anyTimes();
         
         expect(cycle.getAttribute(ComponentEventConnectionWorker.FORM_NAME_LIST + "form1")).andReturn(null);
-        
         cycle.setAttribute(eq(ComponentEventConnectionWorker.FORM_NAME_LIST + "form1"), isA(List.class));
         
         expect(form.getName()).andReturn("form1_0").anyTimes();
-        
+
         expect(comp1.getSpecification()).andReturn(comp1Spec);
-        
-        expect(comp1.getId()).andReturn("comp1").anyTimes();
+        expect(comp1.getIdPath()).andReturn("comp1").anyTimes();
         
         expect(comp2.getSpecification()).andReturn(comp2Spec);
-        
-        expect(comp2.getId()).andReturn("comp2").anyTimes();
+        expect(comp2.getIdPath()).andReturn("comp2").anyTimes();
         
         List formNames = new ArrayList();
         formNames.add("form1_0");
         
         expect(cycle.getAttribute(ComponentEventConnectionWorker.FORM_NAME_LIST + "form1")).andReturn(formNames).anyTimes();
-        
         expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE)).andReturn(prs).anyTimes();
         
         expect(scriptSource.getScript(compScriptResource)).andReturn(script);
-        
         script.execute(eq(form), eq(cycle), eq(prs), isA(Map.class));
         
         expect(scriptSource.getScript(compScriptResource)).andReturn(script);
-        
         script.execute(eq(form), eq(cycle), eq(prs), isA(Map.class));
         
         replay();
@@ -520,6 +492,7 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         IDirectEvent component = newMock(IDirectEvent.class);
         IWidget widget = newMock(IWidget.class);
+        
         MockControl bodyControl = MockClassControl.createControl(Body.class);
         Body body = (Body) bodyControl.getMock();
         

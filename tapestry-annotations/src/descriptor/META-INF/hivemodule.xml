@@ -200,18 +200,6 @@
 
     </service-point>
 
-    <service-point id="EventListenerAnnotationWorker" interface="EventListenerAnnotationWorker">
-
-        Handles EventListener annotations.
-
-        <invoke-factory>
-            <construct class="EventListenerAnnotationWorker">
-                <set-service property="invoker" service-id="tapestry.event.EventInvoker" />
-            </construct>
-        </invoke-factory>
-
-    </service-point>
-
     <configuration-point id="SecondaryAnnotationWorkers">
 
         Configures a list of secondary annotation workers.
@@ -235,7 +223,7 @@
 
     <contribution configuration-id="SecondaryAnnotationWorkers">
         <worker object="instance:InitialValueAnnotationWorker" />
-        <worker object="service:EventListenerAnnotationWorker" />
+        <worker object="instance:EventListenerAnnotationWorker" />
     </contribution>
 
 </module>

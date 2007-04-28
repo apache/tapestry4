@@ -14,9 +14,6 @@
 
 package org.apache.tapestry;
 
-import java.util.Collection;
-import java.util.Map;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.LocationHolder;
 import org.apache.hivemind.Messages;
@@ -26,6 +23,9 @@ import org.apache.tapestry.internal.event.IComponentEventInvoker;
 import org.apache.tapestry.listener.ListenerMap;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
+
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * Defines an object which may be used to provide dynamic content on a Tapestry web page.
@@ -41,14 +41,21 @@ public interface IComponent extends IRender, LocationHolder
 
     /**
      * Adds an asset to the component. This is invoked from the page loader.
+     *
+     * @param name
+     *          The lookup name the asset will be bound to and referenacable as.
+     * @param asset
+     *          The asset to add.
      */
 
     void addAsset(String name, IAsset asset);
 
     /**
      * Adds a component to a container. Should only be called during the page loading process, which
-     * is responsible for any checking.
-     * 
+     * is responsible for doing all the necessary work of managing component state.
+     *
+     * @param component
+     *          The component to add.
      * @see IPageLoader
      */
 
@@ -308,17 +315,11 @@ public interface IComponent extends IRender, LocationHolder
      * <p>
      * The exact timing is not specified, but any components contained by the receiving component
      * will also have been constructed before this method is invoked.
-     * <p>
-     * As of release 1.0.6, this method is invoked <em>before</em> bindings are set. This should
-     * not affect anything, as bindings should only be used during renderring.
-     * <p>
-     * Release 2.2 added the cycle parameter which is, regretfully, not backwards compatible.
      * 
      * @since 0.2.12
      */
 
-    void finishLoad(IRequestCycle cycle, IPageLoader loader,
-            IComponentSpecification specification);
+    void finishLoad(IRequestCycle cycle, IPageLoader loader, IComponentSpecification specification);
 
     /**
      * Returns component strings for the component. Starting in release 4.0, this method is

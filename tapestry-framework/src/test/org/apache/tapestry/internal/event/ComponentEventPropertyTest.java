@@ -17,6 +17,7 @@ import com.javaforge.tapestry.testng.TestBase;
 import org.apache.tapestry.event.BrowserEvent;
 import org.testng.annotations.Test;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -166,5 +167,50 @@ public class ComponentEventPropertyTest extends TestBase
         assertEquals(listener.getComponentId(), "compid");
         assertEquals(listener.getFormId(), "form");
         assertEquals(listener.getMethodName(), "doFoo");
+    }
+
+    public void test_ReWire_Component_Id()
+    {
+        String[] events = {"onClick", "onFoo"};
+        ComponentEventProperty prop = new ComponentEventProperty("compid");
+
+        prop.addListener(events, "doFoo", null, false, false, false);
+        prop.addListener(new String[]{"onchange"}, "doBar", "form2", false, false, false);
+        prop.addListener(new String[]{"onchange"}, "secondForm", "form1", false, false, false);
+        
+        assertEquals("compid", prop.getComponentId());
+        assertEquals(prop.getEvents().size(), 2);
+        assertEquals(prop.getFormEvents().size(), 1);
+
+        String path = "new/Path/Id";
+        prop.rewireComponentId(path);
+
+        assertEquals(prop.getComponentId(), path);
+
+        Iterator it = prop.getEvents().iterator();
+        while (it.hasNext())
+        {
+            String key = (String) it.next();
+
+            List listeners = prop.getEventListeners(key);
+            for (int i=0; i < listeners.size(); i++) {
+
+                EventBoundListener listener = (EventBoundListener) listeners.get(i);
+                assertEquals(listener.getComponentId(), path);
+            }
+        }
+
+        it = prop.getFormEvents().iterator();
+        while (it.hasNext())
+        {
+            String key = (String) it.next();
+
+            List listeners = prop.getFormEventListeners(key);
+            for (int i=0; i < listeners.size(); i++) {
+
+                EventBoundListener listener = (EventBoundListener) listeners.get(i);
+                assertEquals(listener.getComponentId(), path);
+            }
+        }
     }
 }

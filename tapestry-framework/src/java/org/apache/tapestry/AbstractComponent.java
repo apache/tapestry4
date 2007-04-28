@@ -22,6 +22,7 @@ import org.apache.tapestry.bean.BeanProvider;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.event.PageEvent;
+import org.apache.tapestry.internal.Component;
 import org.apache.tapestry.internal.event.IComponentEventInvoker;
 import org.apache.tapestry.listener.ListenerMap;
 import org.apache.tapestry.services.ComponentRenderWorker;
@@ -36,8 +37,8 @@ import java.util.*;
  * @author Howard Lewis Ship
  */
 
-public abstract class AbstractComponent extends BaseLocatable implements IDirectEvent
-{   
+public abstract class AbstractComponent extends BaseLocatable implements IDirectEvent, Component {
+    
     private static final int MAP_SIZE = 5;
     
     private static final int BODY_INIT_SIZE = 5;
@@ -216,7 +217,7 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
      * 
      * @return The values, if any. Null otherwise.
      */
-    protected IRender[] getContainedRenderers()
+    public IRender[] getContainedRenderers()
     {
         return _body;
     }
@@ -424,11 +425,13 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
     
     public String getIdPath()
     {
+        if (_idPath != null)
+            return _idPath;
+        
         String containerIdPath;
         
         if (_container == null)
-            throw new NullPointerException(Tapestry
-                    .format("AbstractComponent.null-container", this));
+            throw new NullPointerException(Tapestry.format("AbstractComponent.null-container", this));
         
         containerIdPath = _container.getIdPath();
         
@@ -495,8 +498,7 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
     public void setTemplateTagName(String tag)
     {
         if (_templateTagName != null)
-            throw new ApplicationRuntimeException(Tapestry
-                    .getMessage("AbstractComponent.attempt-to-change-template-tag"));
+            throw new ApplicationRuntimeException(Tapestry.getMessage("AbstractComponent.attempt-to-change-template-tag"));
         
         _templateTagName = tag;
     }
@@ -509,8 +511,7 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
     public void setPage(IPage value)
     {
         if (_page != null)
-            throw new ApplicationRuntimeException(Tapestry
-                    .getMessage("AbstractComponent.attempt-to-change-page"));
+            throw new ApplicationRuntimeException(Tapestry.getMessage("AbstractComponent.attempt-to-change-page"));
 
         _page = value;
     }

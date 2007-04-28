@@ -163,6 +163,8 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
 
             } catch (Throwable t) {
 
+                _log.error("Error generating OGNL getter for expression " + expression + " with root " + root + " and body:\n" + getBody, t);
+
                 t.printStackTrace();
 
                 generateFailSafe(context, expression, root);
@@ -174,11 +176,8 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
                 setBody = generateSetter(context, classFab, valueSetter, expression, root);
 
             } catch (UnsupportedCompilationException uc) {
-
-                // uc.printStackTrace();
                 
-                if (_log.isDebugEnabled())
-                    _log.warn("Unsupported setter compilation caught: " + uc.getMessage() + " for expression: " + expression.toString());
+                //_log.warn("Unsupported setter compilation caught: " + uc.getMessage() + " for expression: " + expression.toString(), uc);
 
                 setBody = generateOgnlSetter(classFab, valueSetter);
 
@@ -212,6 +211,7 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
 
             }  catch (Throwable t) {
 
+                _log.error("Error generating OGNL statements for expression " + expression + " with root " + root, t);
                 t.printStackTrace();
 
                 generateFailSafe(context, expression, root);

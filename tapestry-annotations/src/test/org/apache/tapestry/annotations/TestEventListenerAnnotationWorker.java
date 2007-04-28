@@ -18,8 +18,6 @@ import org.apache.hivemind.Resource;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.internal.event.ComponentEventProperty;
 import org.apache.tapestry.internal.event.EventBoundListener;
-import org.apache.tapestry.internal.event.IComponentEventInvoker;
-import org.apache.tapestry.internal.event.impl.ComponentEventInvoker;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.testng.annotations.Test;
@@ -41,12 +39,9 @@ public class TestEventListenerAnnotationWorker extends BaseAnnotationTestCase
         EnhancementOperation op = newOp();
         IComponentSpecification spec = new ComponentSpecification();
         Resource resource = newResource(AnnotatedPage.class);
-        
-        IComponentEventInvoker invoker = new ComponentEventInvoker();
-        
+                
         EventListenerAnnotationWorker worker = new EventListenerAnnotationWorker();
-        worker.setInvoker(invoker);
-        
+
         replay();
         
         Method m = findMethod(AnnotatedPage.class, "eventListener");
@@ -56,9 +51,7 @@ public class TestEventListenerAnnotationWorker extends BaseAnnotationTestCase
         worker.peformEnhancement(op, spec, m, resource);
         
         verify();
-        
-        assertEquals(1, invoker.getEventListeners("email").size());
-        
+                
         ComponentEventProperty property = spec.getComponentEvents("email");
         assertNotNull(property);
         
@@ -82,11 +75,9 @@ public class TestEventListenerAnnotationWorker extends BaseAnnotationTestCase
         EnhancementOperation op = newOp();
         IComponentSpecification spec = new ComponentSpecification();
         Resource resource = newResource(AnnotatedPage.class);
-        IComponentEventInvoker invoker = new ComponentEventInvoker();
-        
+
         EventListenerAnnotationWorker worker = new EventListenerAnnotationWorker();
-        worker.setInvoker(invoker);
-        
+
         replay();
         
         Method m = findMethod(AnnotatedPage.class, "formListener");
@@ -95,10 +86,7 @@ public class TestEventListenerAnnotationWorker extends BaseAnnotationTestCase
         worker.peformEnhancement(op, spec, m, resource);
         
         verify();
-        
-        assertEquals(1, invoker.getEventListeners("email").size());
-        assertEquals(1, invoker.getFormEventListeners("testForm").size());
-        
+                
         ComponentEventProperty property = spec.getComponentEvents("email");
         assertNotNull(property);
         
