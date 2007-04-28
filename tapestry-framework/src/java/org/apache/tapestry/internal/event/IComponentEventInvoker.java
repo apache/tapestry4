@@ -51,7 +51,17 @@ public interface IComponentEventInvoker extends ResetEventListener
      * @return The bound listeners, or null if none exist.
      */
     List getEventListeners(String componentId);
-    
+
+    /**
+     * Gets all bound property event listeners for the specified componentIdPath.
+     *
+     * @param componentIdPath
+     *          The unique id path of the component, as returned from {@link org.apache.tapestry.IComponent#getIdPath()}.
+     *
+     * @return The aggregated array of all event properties bound to the specified component, empty if none exist.
+     */
+    ComponentEventProperty[] getEventPropertyListeners(String componentIdPath);
+
     /**
      * Adds a mapping for an event listener that should be triggered when the specified
      * form component with id of <code>formId</code> is submitted. This will later
