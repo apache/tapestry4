@@ -21,7 +21,6 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.form.FormSupport;
-import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.internal.event.ComponentEventProperty;
 import org.apache.tapestry.internal.event.EventBoundListener;
 import org.apache.tapestry.internal.event.IComponentEventInvoker;
@@ -38,13 +37,12 @@ import java.util.*;
  */
 public class ComponentEventInvoker implements IComponentEventInvoker, ResetEventListener
 {
+    // Mapped component id path -> List of IEventListeners
     private Map _components = new HashMap();
-    
+    // Mapped form id path -> List of IEventListeners
     private Map _formComponents = new HashMap();
-    
+    // Used to invoke actual listener methods
     private ListenerInvoker _invoker;
-
-    private Map _formIdMappings = new HashMap();
 
     /**
      * {@inheritDoc}
@@ -70,12 +68,13 @@ public class ComponentEventInvoker implements IComponentEventInvoker, ResetEvent
         Defense.notNull(event, "event");
         
         IForm form = formSupport.getForm();
-        
+        String formIdPath = form.getIdPath();
+
         String targetId = (String)event.getTarget().get("id");
         if (targetId == null)
             return;
-        
-        List comps = getFormEventListeners(form.getId());
+
+        List comps = getFormEventListeners(formIdPath);
         if (comps == null)
             return;
         
@@ -84,7 +83,7 @@ public class ComponentEventInvoker implements IComponentEventInvoker, ResetEvent
         for (int i=0; i < comps.size(); i++) {
             
             IComponentSpecification spec = (IComponentSpecification)comps.get(i);
-            EventBoundListener[] listeners = spec.getFormEvents(form.getId(), event);
+            EventBoundListener[] listeners = spec.getFormEvents(formIdPath, event);
             
             IComponent target = null;
             if (spec.isPageSpecification()) {
@@ -99,7 +98,7 @@ public class ComponentEventInvoker implements IComponentEventInvoker, ResetEvent
                 
                 // ensure ~only~ the method that targeted this event gets called!
                 
-                if (!targetId.startsWith(listeners[e].getComponentId()))
+                if (!listeners[e].getComponentId().endsWith(targetId))
                     continue;
                 
                 // handle disabling focus 
@@ -125,7 +124,8 @@ public class ComponentEventInvoker implements IComponentEventInvoker, ResetEvent
     
     void invokeComponentListeners(IComponent component, IRequestCycle cycle, BrowserEvent event)
     {
-        List listeners = getEventListeners(component.getId());
+        String idPath = component.getIdPath();
+        List listeners = getEventListeners(idPath);
         if (listeners == null)
             return;
         
@@ -139,11 +139,11 @@ public class ComponentEventInvoker implements IComponentEventInvoker, ResetEvent
             if (listener.isPageSpecification()) {
                 
                 target = component.getPage();
-                props = listener.getComponentEvents(component.getId());
+                props = listener.getComponentEvents(idPath);
             } else {
                 
                 target = findComponent(component.getPage().getComponents().values(), listener);
-                props = target.getSpecification().getComponentEvents(component.getId());
+                props = target.getSpecification().getComponentEvents(idPath);
             }
             if (props == null)
                 continue;
@@ -262,36 +262,7 @@ public class ComponentEventInvoker implements IComponentEventInvoker, ResetEvent
             listeners.add(listener);
         }
     }
-
-    public void connectAutoSubmitEvents(IFormComponent component)
-    {
-        IForm form = component.getForm();
-        Defense.notNull(form, "form");
-        
-        String formId = form.getId();
-        Defense.notNull(formId, "formId");
-
-        List listeners = (List)_components.get(component.getId());
-        if (listeners == null)
-            return;
-
-        for (int i=0; i < listeners.size(); i++) {
-
-            IComponentSpecification spec = (IComponentSpecification)listeners.get(i);
-
-            spec.connectAutoSubmitEvents(component.getId(), form);
-            
-            addFormEventListener(formId, spec);
-            
-            _formIdMappings.put(component.getId(), formId);
-        }
-    }
-
-    public String getPreviouslyMappedFormId(String formComponentId)
-    {
-        return (String)_formIdMappings.get(formComponentId);
-    }
-
+    
     /**
      * {@inheritDoc}
      */

@@ -68,6 +68,11 @@ public abstract class BaseComponent extends AbstractComponent implements ITempla
         _outer[_outerCount++] = element;
     }
 
+    public IRender[] getContainedRenderers()
+    {
+        return _outer;
+    }
+
     /**
      * Reads the receiver's template and figures out which elements wrap which other elements.
      */

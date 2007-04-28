@@ -29,9 +29,7 @@ import org.apache.tapestry.spec.IContainedComponent;
  */
 final class PageloadMessages
 {
-
-    private static final MessageFormatter _formatter = new MessageFormatter(
-            PageloadMessages.class);
+    private static final MessageFormatter _formatter = new MessageFormatter(PageloadMessages.class);
 
     /* defeat instantiation */
     private PageloadMessages()
@@ -144,4 +142,8 @@ final class PageloadMessages
                 HiveMind.getLocationString(location), componentType);
     }
 
+    public static String componentNotFound(String id)
+    {
+        return _formatter.format("component-not-found", id);
+    }
 }

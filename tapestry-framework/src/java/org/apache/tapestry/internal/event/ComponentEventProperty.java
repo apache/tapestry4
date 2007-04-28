@@ -31,9 +31,10 @@ public class ComponentEventProperty
     private String _componentId;
     
     /**
-     * Creates a new component event property with
-     * the specified component id.
+     * Creates a new component event property mapped to the specified component id.
+     *
      * @param componentId
+     *          The component which is the target of all mappings in this property.
      */
     public ComponentEventProperty(String componentId)
     {
@@ -107,7 +108,7 @@ public class ComponentEventProperty
             listeners.add(listener);
     }
 
-    public void connectAutoSubmitEvents(String formId)
+    public void connectAutoSubmitEvents(String formIdPath)
     {
         Iterator it = getEvents().iterator();
         while (it.hasNext()) {
@@ -119,7 +120,7 @@ public class ComponentEventProperty
                 
                 EventBoundListener listener = (EventBoundListener) lit.next();
 
-                listener.setFormId(formId);
+                listener.setFormId(formIdPath);
                 lit.remove();
 
                 List formListeners = getFormEventListeners(key);
@@ -131,6 +132,45 @@ public class ComponentEventProperty
             
             if (listeners.size() == 0)
                 it.remove();
+        }
+    }
+
+    /**
+     * Replaces all instances of the existing component id mapped for this property with the new
+     * {@link org.apache.tapestry.IComponent#getIdPath()} version.
+     *
+     * @param idPath The component id path.
+     */
+    public void rewireComponentId(String idPath)
+    {
+        _componentId = idPath;
+
+        Iterator it = getEvents().iterator();
+        while (it.hasNext())
+        {
+            String key = (String) it.next();
+
+            List listeners = (List)_eventMap.get(key);
+
+            for (int i=0; i < listeners.size(); i++) {
+
+                EventBoundListener listener = (EventBoundListener) listeners.get(i);
+                listener.setComponentId(idPath);
+            }
+        }
+
+        it = getFormEvents().iterator();
+        while (it.hasNext())
+        {
+            String key = (String) it.next();
+
+            List listeners = (List)_formEventMap.get(key);
+
+            for (int i=0; i < listeners.size(); i++) {
+
+                EventBoundListener listener = (EventBoundListener) listeners.get(i);
+                listener.setComponentId(idPath);
+            }
         }
     }
 

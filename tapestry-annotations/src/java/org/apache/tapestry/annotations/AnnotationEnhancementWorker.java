@@ -44,13 +44,13 @@ public class AnnotationEnhancementWorker implements EnhancementWorker
 
     private ErrorLog _errorLog;
 
-    private Map _methodWorkers;
+    private Map<Class, MethodAnnotationEnhancementWorker> _methodWorkers;
 
-    private Map _classWorkers;
+    private Map<Class, ClassAnnotationEnhancementWorker> _classWorkers;
 
     private List<SecondaryAnnotationWorker> _secondaryAnnotationWorkers;
 
-    public void setClassWorkers(Map classWorkers)
+    public void setClassWorkers(Map<Class, ClassAnnotationEnhancementWorker> classWorkers)
     {
         _classWorkers = classWorkers;
     }
@@ -80,16 +80,14 @@ public class AnnotationEnhancementWorker implements EnhancementWorker
     void performClassEnhancement(EnhancementOperation op, IComponentSpecification spec,
             Class clazz, Annotation annotation, Resource classResource)
     {
-        ClassAnnotationEnhancementWorker worker = (ClassAnnotationEnhancementWorker) _classWorkers
-                .get(annotation.annotationType());
+        ClassAnnotationEnhancementWorker worker = _classWorkers.get(annotation.annotationType());
 
         if (worker == null)
             return;
 
         try
         {
-            Location location = new DescribedLocation(classResource, AnnotationMessages
-                    .classAnnotation(annotation, clazz));
+            Location location = new DescribedLocation(classResource, AnnotationMessages.classAnnotation(annotation, clazz));
 
             worker.performEnhancement(op, spec, clazz, location);
         }
@@ -128,8 +126,7 @@ public class AnnotationEnhancementWorker implements EnhancementWorker
     void performMethodEnhancement(EnhancementOperation op, IComponentSpecification spec,
             Method method, Annotation annotation, Resource classResource)
     {
-        MethodAnnotationEnhancementWorker worker = (MethodAnnotationEnhancementWorker) _methodWorkers
-                .get(annotation.annotationType());
+        MethodAnnotationEnhancementWorker worker = _methodWorkers.get(annotation.annotationType());
 
         if (worker == null)
             return;
@@ -152,7 +149,7 @@ public class AnnotationEnhancementWorker implements EnhancementWorker
 
     }
 
-    public void setMethodWorkers(Map methodWorkers)
+    public void setMethodWorkers(Map<Class, MethodAnnotationEnhancementWorker> methodWorkers)
     {
         _methodWorkers = methodWorkers;
     }

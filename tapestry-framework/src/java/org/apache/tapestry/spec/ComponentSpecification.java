@@ -164,9 +164,10 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
     private boolean _deprecated = false;
     
     private Map _componentEvents = new HashMap();
-    
     private Map _elementEvents = new HashMap();
-    
+
+    private boolean _targetsResolved = false;
+
     /**
      * @throws ApplicationRuntimeException
      *             if the name already exists.
@@ -733,7 +734,19 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
         if (property == null)
             return;
         
-        property.connectAutoSubmitEvents(form.getId());
+        property.connectAutoSubmitEvents(form.getIdPath());
+    }
+
+    public void rewireComponentId(String componentId, String idPath)
+    {
+        ComponentEventProperty prop = getComponentEvents(componentId);
+        if (prop == null)
+            return;
+
+        prop.rewireComponentId(idPath);
+        
+        _componentEvents.remove(componentId);
+        _componentEvents.put(idPath, prop);
     }
 
     /**
@@ -743,7 +756,12 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
     {
         return (ComponentEventProperty)_componentEvents.get(id);
     }
-    
+
+    public Map getComponentEvents()
+    {
+        return _componentEvents;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -794,6 +812,16 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
     public boolean hasElementEvents()
     {
         return _elementEvents.size() > 0;
+    }
+
+    public boolean getTargetsResolved()
+    {
+        return _targetsResolved;
+    }
+
+    public void setTargetsResolved(boolean resolved)
+    {
+        _targetsResolved = resolved;
     }
 
     /**

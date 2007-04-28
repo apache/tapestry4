@@ -21,7 +21,6 @@ import org.apache.tapestry.dojo.IWidget;
 import org.apache.tapestry.engine.DirectEventServiceParameter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.IScriptSource;
-import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.html.Body;
 import org.apache.tapestry.internal.event.ComponentEventProperty;
 import org.apache.tapestry.internal.event.EventBoundListener;
@@ -76,8 +75,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
      */
     public void renderComponent(IRequestCycle cycle, IComponent component)
     {
-        if (cycle.isRewinding() 
-                || TapestryUtils.getOptionalPageRenderSupport(cycle) == null) 
+        if (cycle.isRewinding() || TapestryUtils.getOptionalPageRenderSupport(cycle) == null)
             return;
         
         // Don't render fields being pre-rendered, otherwise we'll render twice 
@@ -132,21 +130,9 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
     
     ComponentEventProperty[] getComponentEvents(IComponent comp)
     {
-        List listeners = _invoker.getEventListeners(comp.getId());
+        List listeners = _invoker.getEventListeners(comp.getIdPath());
         if (listeners == null || listeners.size() < 1)
             return null;
-
-        if (IFormComponent.class.isInstance(comp)) {
-            IFormComponent formComp = (IFormComponent)comp;
-            
-            _invoker.connectAutoSubmitEvents(formComp);
-
-            // re-wire form related events
-
-            comp.getSpecification().connectAutoSubmitEvents(comp.getId(), formComp.getForm());
-
-            listeners = _invoker.getEventListeners(comp.getId());
-        }
 
         List ret = new ArrayList();
         
@@ -154,7 +140,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
             
             IEventListener listener = (IEventListener)listeners.get(i);
             
-            ret.add(listener.getComponentEvents(comp.getId()));
+            ret.add(listener.getComponentEvents(comp.getIdPath()));
         }
         
         return (ComponentEventProperty[])ret.toArray(new ComponentEventProperty[ret.size()]);
@@ -211,12 +197,12 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
     
     void mapFormNames(IRequestCycle cycle, IForm form)
     {
-        List names = (List)cycle.getAttribute(FORM_NAME_LIST + form.getId());
+        List names = (List)cycle.getAttribute(FORM_NAME_LIST + form.getIdPath());
         
         if (names == null) {
             names = new ArrayList();
             
-            cycle.setAttribute(FORM_NAME_LIST + form.getId(), names);
+            cycle.setAttribute(FORM_NAME_LIST + form.getIdPath(), names);
         }
         
         names.add(form.getName());
@@ -224,7 +210,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
     
     void linkDeferredForm(IRequestCycle cycle, IForm form)
     {
-        List deferred = (List)_deferredFormConnections.remove(form.getId());
+        List deferred = (List)_deferredFormConnections.remove(form.getIdPath());
         
         for (int i=0; i < deferred.size(); i++) {
             
@@ -247,7 +233,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
             
             for (int e=0; e < props.length; e++) {
                 
-                Object[][] formEvents = buildFormEvents(cycle, form.getId(), 
+                Object[][] formEvents = buildFormEvents(cycle, form.getIdPath(), 
                         props[e].getFormEvents(), (Boolean)val[1], (Boolean)val[2], val[3]);
                 
                 scriptParms.put("formEvents", formEvents);
@@ -303,8 +289,8 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
             
             String event = (String)it.next();
             
-            retval.add(new Object[]{event, formNames, async, 
-                    validate, ScriptUtils.functionHash(new String(uniqueHash + event)) });
+            retval.add(new Object[]{event, formNames, async, validate,
+                    ScriptUtils.functionHash(new String(uniqueHash + event)) });
         }
         
         return (Object[][])retval.toArray(new Object[retval.size()][5]);
@@ -337,7 +323,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
     boolean isDeferredForm(IComponent component)
     {
         if (IForm.class.isInstance(component) 
-                && _deferredFormConnections.get(((IForm)component).getId()) != null)
+                && _deferredFormConnections.get(((IForm)component).getIdPath()) != null)
             return true;
         
         return false;

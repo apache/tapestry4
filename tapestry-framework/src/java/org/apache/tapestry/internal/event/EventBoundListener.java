@@ -17,8 +17,6 @@ package org.apache.tapestry.internal.event;
 /**
  * Provides a mapping for listener methods that are bound to events, used
  * internally by {@link ComponentEventProperty}.
- * 
- * @author jkuhnert
  */
 public class EventBoundListener
 {
@@ -30,11 +28,6 @@ public class EventBoundListener
     private boolean _validateForm;
     // The targeted component to listen to events on
     private String _componentId;
-    
-    // The component id path of component to recieve event listener calls on (or page name in the case of page listeners)
-    private String _recieverIdPath;
-    // Whether or not receiver is page
-    private boolean _isPage;
     
     // If targeting a form, whether or not to submit it asynchronously
     private boolean _async;
@@ -128,6 +121,11 @@ public class EventBoundListener
         return _componentId;
     }
 
+    public void setComponentId(String id)
+    {
+        _componentId = id;
+    }
+
     /**
      * @return the validateForm
      */
@@ -145,38 +143,6 @@ public class EventBoundListener
     public boolean isAsync()
     {
         return _async;
-    }
-    
-    /**
-     * @return Returns the recieverIdPath.
-     */
-    public String getRecieverIdPath()
-    {
-        return _recieverIdPath;
-    }
-    
-    /**
-     * @param recieverIdPath The recieverIdPath to set.
-     */
-    public void setRecieverIdPath(String recieverIdPath)
-    {
-        _recieverIdPath = recieverIdPath;
-    }
-    
-    /**
-     * @return Returns the isPage.
-     */
-    public boolean isPage()
-    {
-        return _isPage;
-    }
-    
-    /**
-     * @param isPage The isPage to set.
-     */
-    public void setPage(boolean isPage)
-    {
-        _isPage = isPage;
     }
     
     public boolean shouldFocusForm()
