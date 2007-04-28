@@ -14,10 +14,6 @@
 
 package org.apache.tapestry.resolver;
 
-import static org.easymock.EasyMock.checkOrder;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.startsWith;
-
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
@@ -28,7 +24,10 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.services.ClassFinder;
 import org.apache.tapestry.spec.IComponentSpecification;
+import static org.easymock.EasyMock.*;
 import org.testng.annotations.Test;
+
+import java.net.URL;
 
 /**
  * Tests for {@link org.apache.tapestry.resolver.ComponentSpecificationResolverImpl}.
@@ -74,7 +73,7 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         return delegate;
     }
     
-    public void testNotFoundInAnyNamespace()
+    public void test_Not_Found_In_Any_Namespace()
     {
         IRequestCycle cycle = newCycle();
         Location l = newLocation();
@@ -102,7 +101,7 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         verify();
     }    
 
-    public void testFoundInNamespace()
+    public void test_Found_In_Namespace()
     {
         IRequestCycle cycle = newCycle();
         Location l = newLocation();
@@ -128,7 +127,7 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         verify();
     }
 
-    public void testDeprecated()
+    public void test_Deprecated()
     {
         IRequestCycle cycle = newCycle();
         Location l = newLocation();
@@ -145,7 +144,8 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         Log log = newMock(Log.class);
         
         log.warn(startsWith("Component 'MyComponent' ("));
-        // at classpath:/org/apache/tapestry/resolver/TestComponentSpecificationResolver, line 1) is deprecated, and will likely be removed in a later release. Consult its documentation to find a replacement component.");
+        // at classpath:/org/apache/tapestry/resolver/TestComponentSpecificationResolver, line 1) is deprecated, and will likely
+        // be removed in a later release. Consult its documentation to find a replacement component.");
         
         replay();
         
@@ -160,7 +160,7 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         verify();
     }
 
-    public void testFoundInChildNamespace()
+    public void test_Found_In_Child_Namespace()
     {
         IRequestCycle cycle = newCycle();
         Location l = newLocation();
@@ -189,7 +189,7 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         verify();
     }
 
-    public void testSearchFoundRelative()
+    public void test_Search_Found_Relative()
     {
         IRequestCycle cycle = newCycle();
         Location l = newLocation();
@@ -474,7 +474,7 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         verify();
     }
 
-    public void testFoundInWebInfFolder()
+    public void test_Found_In_Web_Inf_Folder()
     {
         IRequestCycle cycle = newCycle();
         Location l = newLocation();
@@ -529,7 +529,7 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         verify();
     }
 
-    public void testFoundInContextRoot()
+    public void test_Found_In_Context_Root()
     {
         IRequestCycle cycle = newCycle();
         Location l = newLocation();
@@ -592,7 +592,7 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         verify();
     }
 
-    public void testFoundComponentClass()
+    public void test_Found_Component_Class()
     {   
         INamespace namespace = newMock(INamespace.class);
 
@@ -604,14 +604,15 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         
         trainGetResource(namespace, namespaceResource);
 
+        URL componentUrl = this.getClass().getResource("MyComponent.jwc");
+        expect(componentResource.getResourceURL()).andReturn(componentUrl);
+
         replay();
 
         ComponentSpecificationResolverImpl resolver = new ComponentSpecificationResolverImpl();
         resolver.setClassFinder(finder);
 
-        IComponentSpecification spec = resolver.searchForComponentClass(
-                namespace,
-                "folder/MyComponent");
+        IComponentSpecification spec = resolver.searchForComponentClass(namespace, "folder/MyComponent");
 
         assertEquals(BaseComponent.class.getName(), spec.getComponentClassName());
         assertSame(componentResource, spec.getSpecificationLocation());
