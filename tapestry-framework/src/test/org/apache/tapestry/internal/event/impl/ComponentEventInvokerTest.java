@@ -73,6 +73,32 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         assertEquals(p.getFormEvents().size(), 1);
     }
 
+    public void test_Get_Event_Property_Listeners()
+    {
+        IComponentSpecification spec = new ComponentSpecification();
+        spec.setComponentClassName("first.test");
+        spec.addEventListener("comp1", new String[] {"onClick"}, "testFoo", null, false, true, false, false);
+        spec.addEventListener("comp1", new String[] {"onClick"}, "testBar", null, false, true, false, false);
+
+        IComponentSpecification spec2 = new ComponentSpecification();
+        spec.setComponentClassName("second.test"); // to make .equals unique
+        spec2.addEventListener("comp1", new String[] {"onClick"}, "testFoo", null, false, true, false, false);
+        spec2.addEventListener("comp1", new String[] {"onClick"}, "testBar", null, false, true, false, false);
+
+        ComponentEventInvoker invoker = new ComponentEventInvoker();
+        invoker.addEventListener("comp1", spec);
+        invoker.addEventListener("comp1", spec2);
+
+        ComponentEventProperty[] empty = invoker.getEventPropertyListeners("bogus");
+        assert empty != null;
+        assertEquals(empty.length, 0);
+
+        ComponentEventProperty[] props = invoker.getEventPropertyListeners("comp1");
+        assertEquals(props.length, 2);
+
+        assert invoker.getEventPropertyListeners("comp1") == props;
+    }
+
     public void test_Invoke_Component_Listener()
     {
         IRequestCycle cycle = newCycle();

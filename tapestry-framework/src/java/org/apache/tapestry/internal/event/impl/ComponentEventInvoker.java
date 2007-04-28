@@ -13,6 +13,7 @@
 // limitations under the License.
 package org.apache.tapestry.internal.event.impl;
 
+import edu.emory.mathcs.backport.java.util.concurrent.ConcurrentHashMap;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IComponent;
@@ -26,6 +27,7 @@ import org.apache.tapestry.internal.event.EventBoundListener;
 import org.apache.tapestry.internal.event.IComponentEventInvoker;
 import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.spec.IEventListener;
 
 import java.util.*;
 
@@ -37,12 +39,17 @@ import java.util.*;
  */
 public class ComponentEventInvoker implements IComponentEventInvoker, ResetEventListener
 {
+    static final ComponentEventProperty[] EMPTY_PROPERTIES = new ComponentEventProperty[0];
+
     // Mapped component id path -> List of IEventListeners
-    private Map _components = new HashMap();
+    private Map _components = new ConcurrentHashMap();
     // Mapped form id path -> List of IEventListeners
-    private Map _formComponents = new HashMap();
+    private Map _formComponents = new ConcurrentHashMap();
     // Used to invoke actual listener methods
     private ListenerInvoker _invoker;
+
+    // Cached set of ComponentEventProperty[] arrays mapped to specific components
+    private Map _propertyCache = new ConcurrentHashMap();
 
     /**
      * {@inheritDoc}
@@ -236,6 +243,8 @@ public class ComponentEventInvoker implements IComponentEventInvoker, ResetEvent
         if (!listeners.contains(listener)) {
             listeners.add(listener);
         }
+        
+        _propertyCache.remove(componentId);
     }
     
     /**
@@ -243,9 +252,40 @@ public class ComponentEventInvoker implements IComponentEventInvoker, ResetEvent
      */
     public List getEventListeners(String componentId)
     {
+        if (componentId == null)
+            return null;
+        
         return (List)_components.get(componentId);
     }
-    
+
+    public ComponentEventProperty[] getEventPropertyListeners(String componentIdPath)
+    {
+        if (componentIdPath == null)
+            return EMPTY_PROPERTIES;
+        
+        ComponentEventProperty[] ret = (ComponentEventProperty[])_propertyCache.get(componentIdPath);
+        if (ret != null)
+            return ret;
+
+        List listeners = getEventListeners(componentIdPath);
+        if (listeners == null || listeners.size() < 1)
+            return EMPTY_PROPERTIES;
+
+        List props = new ArrayList();
+        for (int i=0; i < listeners.size(); i++) {
+
+            IEventListener listener = (IEventListener)listeners.get(i);
+
+            props.add(listener.getComponentEvents(componentIdPath));
+        }
+
+        ret = (ComponentEventProperty[])props.toArray(new ComponentEventProperty[props.size()]);
+
+        _propertyCache.put(componentIdPath, ret);
+
+        return ret;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -268,6 +308,9 @@ public class ComponentEventInvoker implements IComponentEventInvoker, ResetEvent
      */
     public List getFormEventListeners(String formId)
     {
+        if (formId == null)
+            return null;
+        
         return (List)_formComponents.get(formId);
     }
     
@@ -278,6 +321,7 @@ public class ComponentEventInvoker implements IComponentEventInvoker, ResetEvent
     {
         _components.clear();
         _formComponents.clear();
+        _propertyCache.clear();
     }
     
     /** Injected. */

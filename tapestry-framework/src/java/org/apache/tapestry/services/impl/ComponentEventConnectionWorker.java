@@ -26,7 +26,6 @@ import org.apache.tapestry.internal.event.ComponentEventProperty;
 import org.apache.tapestry.internal.event.EventBoundListener;
 import org.apache.tapestry.internal.event.IComponentEventInvoker;
 import org.apache.tapestry.services.ComponentRenderWorker;
-import org.apache.tapestry.spec.IEventListener;
 import org.apache.tapestry.util.ScriptUtils;
 
 import java.util.*;
@@ -96,7 +95,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
     
     void linkComponentEvents(IRequestCycle cycle, IComponent component)
     {
-        ComponentEventProperty[] props = getComponentEvents(component);
+        ComponentEventProperty[] props = _invoker.getEventPropertyListeners(component.getIdPath());
         if (props == null)
             return;
         
@@ -126,24 +125,6 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
 
             _scriptSource.getScript(resource).execute(component, cycle, prs, parms);
         }
-    }
-    
-    ComponentEventProperty[] getComponentEvents(IComponent comp)
-    {
-        List listeners = _invoker.getEventListeners(comp.getIdPath());
-        if (listeners == null || listeners.size() < 1)
-            return null;
-
-        List ret = new ArrayList();
-        
-        for (int i=0; i < listeners.size(); i++) {
-            
-            IEventListener listener = (IEventListener)listeners.get(i);
-            
-            ret.add(listener.getComponentEvents(comp.getIdPath()));
-        }
-        
-        return (ComponentEventProperty[])ret.toArray(new ComponentEventProperty[ret.size()]);
     }
     
     void linkElementEvents(IRequestCycle cycle, IComponent component)
@@ -227,7 +208,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
             
             linkElementEvents(cycle, component);
             
-            ComponentEventProperty[] props = getComponentEvents(component);
+            ComponentEventProperty[] props = _invoker.getEventPropertyListeners(component.getIdPath());
             if (props == null)
                 continue;
             
