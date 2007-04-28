@@ -23,9 +23,12 @@
 
     <meta key="org.apache.tapestry.namespace-properties-name" value="messages" />
     <meta key="org.apache.tapestry.page-class-packages" value="org.apache.tapestry.timetracker.page"/>
+    <meta key="org.apache.tapestry.component-class-packages" value="org.apache.tapestry.timetracker.component"/>
 
     <library id="contrib" specification-path="classpath:/org/apache/tapestry/contrib/Contrib.library"/>
 
+    <!--
     <component-type type="Locale" specification-path="classpath:/org/apache/tapestry/timetracker/component/Locale.jwc" />
+    -->
 
 </application>
