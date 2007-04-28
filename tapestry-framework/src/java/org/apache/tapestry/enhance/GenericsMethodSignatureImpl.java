@@ -58,8 +58,6 @@ public class GenericsMethodSignatureImpl extends MethodSignatureImpl implements 
                     if (resolvedType != null)
                         return resolvedType;
                 }
-
-                return Void.TYPE;
             }
         }
 
@@ -69,7 +67,7 @@ public class GenericsMethodSignatureImpl extends MethodSignatureImpl implements 
     static Class findType(Type[] types, Class type)
     {
         for (int i = 0; i < types.length; i++) {
-
+            
             if (Class.class.isInstance(types[i]) && type.isAssignableFrom((Class)types[i]))
                 return (Class)types[i];
         }

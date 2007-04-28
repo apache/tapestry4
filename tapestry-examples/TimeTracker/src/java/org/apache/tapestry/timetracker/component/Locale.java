@@ -3,11 +3,13 @@ package org.apache.tapestry.timetracker.component;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.annotations.ComponentClass;
 import org.apache.tapestry.annotations.Parameter;
 
 /**
  *
  */
+@ComponentClass
 public abstract class Locale extends AbstractComponent {
 
     @Parameter(required = true)
