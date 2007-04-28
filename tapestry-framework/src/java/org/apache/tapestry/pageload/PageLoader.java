@@ -651,7 +651,7 @@ public class PageLoader implements IPageLoader
 
             IAssetSpecification assetSpec = specification.getAsset(name);
             
-            IAsset asset = _assetSource.findAsset(specification, assetSpec.getLocation().getResource(),
+            IAsset asset = _assetSource.findAsset(assetSpec.getLocation().getResource(), specification,
                     assetSpec.getPath(), _locale, assetSpec.getLocation());
             
             component.addAsset(name, asset);

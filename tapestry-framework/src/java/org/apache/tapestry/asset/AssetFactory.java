@@ -64,7 +64,7 @@ public interface AssetFactory
      * @throws org.apache.hivemind.ApplicationRuntimeException
      *             if no matching asset may be found.
      */
-    IAsset createAsset(IComponentSpecification spec, Resource baseResource, String path, Locale locale, Location location);
+    IAsset createAsset(Resource baseResource, IComponentSpecification spec, String path, Locale locale, Location location);
 
     /**
      * Creates a new asset relative to the root of the domain defined by the type of asset.

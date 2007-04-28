@@ -63,7 +63,7 @@ public class ClasspathAssetFactory implements AssetFactory
         return localized != null;
     }
 
-    public IAsset createAsset(IComponentSpecification spec, Resource baseResource, String path, Locale locale, Location location)
+    public IAsset createAsset(Resource baseResource, IComponentSpecification spec, String path, Locale locale, Location location)
     {
         Resource asset = baseResource.getRelativeResource(path);
         Resource localized = _localizer.findLocalization(asset, locale);

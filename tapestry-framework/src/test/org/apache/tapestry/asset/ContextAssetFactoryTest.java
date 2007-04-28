@@ -63,7 +63,7 @@ public class ContextAssetFactoryTest extends BaseComponentTestCase
 
         factory.setContextPath("/context");
 
-        IAsset asset = factory.createAsset(spec, base, "asset.png", Locale.FRENCH, l);
+        IAsset asset = factory.createAsset(base, spec, "asset.png", Locale.FRENCH, l);
 
         assertTrue(asset instanceof ContextAsset);
         assertSame(localized, asset.getResourceLocation());
@@ -125,7 +125,7 @@ public class ContextAssetFactoryTest extends BaseComponentTestCase
 
         try
         {
-            factory.createAsset(spec, base, "asset.png", Locale.FRENCH, l);
+            factory.createAsset(base, spec, "asset.png", Locale.FRENCH, l);
             unreachable();
         }
         catch (ApplicationRuntimeException ex)

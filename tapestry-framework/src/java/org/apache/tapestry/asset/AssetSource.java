@@ -56,10 +56,10 @@ public interface AssetSource
     /**
      * Finds an asset relative to the specified <code>base</code> resources OR {@link IComponentSpecification} passed in.
      *
-     * @param spec
-     *            The specification the resource may be relative to if not found relative to base.
      * @param base
      *            The base resource used for resolving the asset
+     * @param spec
+     *            The specification the resource may be relative to if not found relative to base.
      * @param path
      *            the path relative to the base resource; alternately, the path may include a prefix
      *            that defines a domain (such as "classpath:" or "context:") in which case the base
@@ -72,5 +72,5 @@ public interface AssetSource
      *
      * @return the asset, possibly localized
      */
-    IAsset findAsset(IComponentSpecification spec, Resource base, String path, Locale locale, Location location);
+    IAsset findAsset(Resource base, IComponentSpecification spec, String path, Locale locale, Location location);
 }

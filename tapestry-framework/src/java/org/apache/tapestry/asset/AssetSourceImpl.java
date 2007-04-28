@@ -53,10 +53,10 @@ public class AssetSourceImpl implements AssetSource
 
     public IAsset findAsset(Resource base, String path, Locale locale, Location location)
     {
-        return findAsset(null, base, path, locale, location);
+        return findAsset(base, null, path, locale, location);
     }
 
-    public IAsset findAsset(IComponentSpecification spec, Resource base, String path, Locale locale, Location location)
+    public IAsset findAsset(Resource base, IComponentSpecification spec, String path, Locale locale, Location location)
     {
         Defense.notNull(path, "path");
         Defense.notNull(location, "location");
@@ -99,7 +99,7 @@ public class AssetSourceImpl implements AssetSource
 
         // This can happen when a 3.0 DTD is read in
 
-        return factory.createAsset(spec, assetBase, truePath, locale, location);
+        return factory.createAsset(assetBase, spec, truePath, locale, location);
     }
 
     AssetFactory findAssetFactory(IComponentSpecification spec, Resource baseResource, String path, Locale locale)

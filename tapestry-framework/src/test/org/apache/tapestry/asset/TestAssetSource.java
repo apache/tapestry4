@@ -28,8 +28,6 @@ import java.util.Locale;
 /**
  * Tests for {@link org.apache.tapestry.asset.AssetSourceImpl}.
  * 
- * @author Howard M. Lewis Ship
- * @since 4.0
  */
 @Test
 public class TestAssetSource extends BaseComponentTestCase
@@ -52,7 +50,7 @@ public class TestAssetSource extends BaseComponentTestCase
     {
         AssetFactory f = newMock(AssetFactory.class);
         
-        expect(f.createAsset(null, base, path, locale, location)).andReturn(asset);
+        expect(f.createAsset(base, null, path, locale, location)).andReturn(asset);
 
         return f;
     }

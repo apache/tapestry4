@@ -279,7 +279,7 @@
                                 <value>en_US</value>
                             </property>
                         </systemProperties>
-                        <parallel>tests</parallel>
+                        <parallel>methods</parallel>
                         <threadCount>4</threadCount>
                         <excludedGroups>integration</excludedGroups>
                     </configuration>
