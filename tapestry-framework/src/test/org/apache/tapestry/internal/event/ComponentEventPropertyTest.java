@@ -13,7 +13,7 @@
 // limitations under the License.
 package org.apache.tapestry.internal.event;
 
-import com.javaforge.tapestry.testng.TestBase;
+import org.apache.tapestry.TestBase;
 import org.apache.tapestry.event.BrowserEvent;
 import org.testng.annotations.Test;
 
@@ -28,8 +28,7 @@ import java.util.Set;
  * @author jkuhnert
  */
 @Test
-public class ComponentEventPropertyTest extends TestBase
-{
+public class ComponentEventPropertyTest extends TestBase {
 
     public void test_Add_Event_Listener()
     {

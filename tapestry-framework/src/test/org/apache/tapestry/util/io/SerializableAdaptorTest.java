@@ -1,6 +1,6 @@
 package org.apache.tapestry.util.io;
 
-import com.javaforge.tapestry.testng.TestBase;
+import org.apache.tapestry.TestBase;
 import org.testng.annotations.Test;
 
 import java.util.Locale;

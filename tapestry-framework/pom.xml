@@ -110,24 +110,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.javaforge.tapestry</groupId>
-            <artifactId>tapestry-testng</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>tapestry</groupId>
-                    <artifactId>tapestry</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.testng</groupId>
-                    <artifactId>testng</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>jwebunit</groupId>
-                    <artifactId>jwebunit</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
             <groupId>org.apache.tapestry</groupId>
             <artifactId>tapestry-test</artifactId>
             <exclusions>

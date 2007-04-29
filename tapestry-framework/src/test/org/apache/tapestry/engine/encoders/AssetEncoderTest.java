@@ -14,15 +14,13 @@
 
 package org.apache.tapestry.engine.encoders;
 
-import static org.easymock.EasyMock.expect;
-
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.TestBase;
 import org.apache.tapestry.asset.AssetService;
 import org.apache.tapestry.engine.ServiceEncoding;
 import org.apache.tapestry.services.ServiceConstants;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
-
-import com.javaforge.tapestry.testng.TestBase;
 
 /**
  * Tests for {@link org.apache.tapestry.engine.encoders.AssetEncoder}.
@@ -31,8 +29,7 @@ import com.javaforge.tapestry.testng.TestBase;
  * @since 4.0
  */
 @Test
-public class AssetEncoderTest extends TestBase
-{
+public class AssetEncoderTest extends TestBase {
     public void test_Wrong_Service()
     {
         ServiceEncoding encoding = newEncoding();

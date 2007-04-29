@@ -1,6 +1,6 @@
 package org.apache.tapestry.engine.encoders;
 
-import com.javaforge.tapestry.testng.TestBase;
+import org.apache.tapestry.TestBase;
 import org.apache.tapestry.engine.ServiceEncoding;
 import org.apache.tapestry.services.ServiceConstants;
 import static org.easymock.EasyMock.expect;

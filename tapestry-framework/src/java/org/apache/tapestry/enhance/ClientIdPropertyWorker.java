@@ -13,15 +13,15 @@
 // limitations under the License.
 package org.apache.tapestry.enhance;
 
-import java.lang.reflect.Modifier;
-import java.util.Iterator;
-
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.spec.IComponentSpecification;
+
+import java.lang.reflect.Modifier;
+import java.util.Iterator;
 
 
 /**
@@ -74,8 +74,6 @@ public class ClientIdPropertyWorker implements EnhancementWorker
         op.addField(fieldName, propertyType);
         op.addField(defaultFieldName, propertyType);
         
-        // EnhanceUtils.createSimpleAccessor(op, fieldName, name, propertyType, location);
-        
         String methodName = op.getAccessorMethodName(name);
         
         // Build special getter logic 
@@ -93,7 +91,6 @@ public class ClientIdPropertyWorker implements EnhancementWorker
         // else return the existing clientId
         
         str.append("return ").append(fieldName).append(";");
-        
         str.append("}");
         
         op.addMethod(

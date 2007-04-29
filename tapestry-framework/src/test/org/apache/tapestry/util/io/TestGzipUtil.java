@@ -13,14 +13,11 @@
 // limitations under the License.
 package org.apache.tapestry.util.io;
 
+import org.apache.tapestry.TestBase;
+import org.apache.tapestry.web.WebRequest;
 import static org.easymock.EasyMock.checkOrder;
 import static org.easymock.EasyMock.expect;
-
-import org.apache.tapestry.web.WebRequest;
 import org.testng.annotations.Test;
-
-import com.javaforge.tapestry.testng.TestBase;
-
 
 /**
  * Tests functionality of {@link GzipUtil} .
@@ -28,8 +25,7 @@ import com.javaforge.tapestry.testng.TestBase;
  * @author jkuhnert
  */
 @Test
-public class TestGzipUtil extends TestBase
-{
+public class TestGzipUtil extends TestBase {
     
     // for more see http://en.wikipedia.org/wiki/User_agent
     static final String MSIE_5_SUNOS = "Mozilla/4.0 (compatible; MSIE 5.0; SunOS 5.9 sun4u; X11)";

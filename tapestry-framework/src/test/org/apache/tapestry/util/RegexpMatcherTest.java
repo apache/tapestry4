@@ -13,7 +13,7 @@
 // limitations under the License.
 package org.apache.tapestry.util;
 
-import com.javaforge.tapestry.testng.TestBase;
+import org.apache.tapestry.TestBase;
 import org.testng.annotations.Test;
 
 
@@ -21,8 +21,8 @@ import org.testng.annotations.Test;
  * Tests functionality of {@link RegexpMatcher}.
  */
 @Test
-public class RegexpMatcherTest extends TestBase
-{
+public class RegexpMatcherTest extends TestBase {
+    
     RegexpMatcher _matcher = new RegexpMatcher();
 
     public void test_Basic_Match()

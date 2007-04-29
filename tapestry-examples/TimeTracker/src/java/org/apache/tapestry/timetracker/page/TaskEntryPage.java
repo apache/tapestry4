@@ -87,7 +87,7 @@ public abstract class TaskEntryPage<E extends Persistent> extends BasePage
     public abstract TaskDao getTaskDao();
     
     public abstract ResponseBuilder getBuilder();
-    
+
     /**
      * Selection model for projects.
      * 
