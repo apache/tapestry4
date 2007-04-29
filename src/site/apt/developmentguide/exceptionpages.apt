@@ -21,7 +21,7 @@ Custom Exception Pages
   services:
 
 +-----------------------------------------------------------
-<contribution configuration-id="tapestry.Infrastructure">
+<contribution configuration-id="tapestry.InfrastructureOverrides">
     <property name="exceptionPageName" value="Exception"/>
     <property name="exceptionPageName" mode="wml" value="WMLException"/>
     
