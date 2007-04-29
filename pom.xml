@@ -101,6 +101,7 @@
         <module>tapestry-annotations</module>
         <module>tapestry-portlet</module>
         <module>tapestry-examples</module>
+		<module>tapestry-archetype</module>	
     </modules>
 
     <dependencyManagement>

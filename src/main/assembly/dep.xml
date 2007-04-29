@@ -29,8 +29,10 @@
                 <include>org.apache.tapestry:tapestry-contrib</include>
                 <include>org.apache.tapestry:tapestry-examples</include>
                 <include>org.apache.tapestry:tapestry-framework</include>
-                <include>org.apache.tapestry:tapestry-portlet</include>
+                <include>org.apache.tapestry:tapestry-portlet</include>    
+	            <include>org.apache.tapestry:tapestry-archetype</include>
             </includes>
+            
             <binaries>
                 <outputDirectory>modules/${artifactId}</outputDirectory>
                 <includeDependencies>false</includeDependencies>

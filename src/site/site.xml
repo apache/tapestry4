@@ -172,6 +172,7 @@
             <item name="Annotations" href="/tapestry-annotations/index.html" />
             <item name="Portlet Support" href="/tapestry-portlet/index.html" />
             <item name="Examples" href="/tapestry-examples/index.html" />
+            <item name="Archetype" href="/tapestry-archetype/index.html" />
         </menu>
         
         ${reports} 
