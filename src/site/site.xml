@@ -78,6 +78,7 @@
             
             <item name="Development Guide" href="/developmentguide/index.html" collapse="true">
                 <item name="Exception Pages" href="/developmentguide/exceptionpages.html" />
+                <item name="Testing" href="/developmentguide/testing.html" />
             </item>
             
             <item name="XHR/DHTML Guide" href="/ajax/index.html" collapse="true">

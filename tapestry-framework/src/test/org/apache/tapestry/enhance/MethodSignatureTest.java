@@ -13,8 +13,8 @@
 // limitations under the License.
 package org.apache.tapestry.enhance;
 
-import com.javaforge.tapestry.testng.TestBase;
 import org.apache.tapestry.IPage;
+import org.apache.tapestry.TestBase;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Method;
@@ -25,8 +25,7 @@ import java.util.Map;
  * Tests functionality of {@link MethodSignature} implementations.
  */
 @Test
-public class MethodSignatureTest extends TestBase
-{
+public class MethodSignatureTest extends TestBase {
     // used for non generic tests
     class Simple {
         

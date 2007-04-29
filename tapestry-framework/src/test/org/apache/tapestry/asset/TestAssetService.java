@@ -13,19 +13,17 @@
 // limitations under the License.
 package org.apache.tapestry.asset;
 
-import static org.easymock.EasyMock.*;
-
-import java.net.URLConnection;
-import java.text.DateFormat;
-
 import org.apache.commons.logging.LogFactory;
+import org.apache.tapestry.TestBase;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
+import static org.easymock.EasyMock.checkOrder;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
 
-import com.javaforge.tapestry.testng.TestBase;
-
 import javax.servlet.http.HttpServletResponse;
+import java.net.URLConnection;
+import java.text.DateFormat;
 
 
 /**
@@ -34,8 +32,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author jkuhnert
  */
 @Test(sequential=true)
-public class TestAssetService extends TestBase
-{   
+public class TestAssetService extends TestBase {
     
     public void test_Cached_Resource_Null_Modified()
     {

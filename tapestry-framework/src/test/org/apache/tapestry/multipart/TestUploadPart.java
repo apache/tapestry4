@@ -13,20 +13,16 @@
 // limitations under the License.
 package org.apache.tapestry.multipart;
 
-import static org.easymock.EasyMock.*;
-
 import org.apache.commons.fileupload.FileItem;
+import org.apache.tapestry.TestBase;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
-
-import com.javaforge.tapestry.testng.TestBase;
-
 
 /**
  *  Tests functionality of {@link UploadPart}.
  */
 @Test
-public class TestUploadPart extends TestBase
-{
+public class TestUploadPart extends TestBase {
 
     public void test_Windows_File_Name()
     {

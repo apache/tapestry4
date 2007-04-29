@@ -1,6 +1,6 @@
 package org.apache.tapestry.contrib.services;
 
-import com.javaforge.tapestry.testng.TestBase;
+import org.apache.tapestry.TestBase;
 import org.apache.tapestry.contrib.services.impl.RoundedCornerGenerator;
 import org.testng.annotations.Test;
 
