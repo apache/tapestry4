@@ -14,14 +14,14 @@
 
 package org.apache.tapestry.enhance;
 
-import java.lang.reflect.Modifier;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.services.InjectedValueProvider;
 import org.apache.tapestry.spec.InjectSpecification;
+
+import java.lang.reflect.Modifier;
 
 /**
  * Implementation for injection type "object" (the default). Adds read-only
@@ -53,7 +53,8 @@ public class InjectObjectWorker implements InjectEnhancementWorker
         Defense.notNull(objectReference, "objectReference");
 
         Class propertyType = op.getPropertyType(propertyName);
-        if (propertyType == null) propertyType = Object.class;
+        if (propertyType == null)
+            propertyType = Object.class;
 
         op.claimReadonlyProperty(propertyName);
 
@@ -63,10 +64,9 @@ public class InjectObjectWorker implements InjectEnhancementWorker
             throw new ApplicationRuntimeException(EnhanceMessages
                     .locatedValueIsNull(objectReference), location, null);
         
-        if (!propertyType.isAssignableFrom(injectedValue.getClass()))
-            throw new ApplicationRuntimeException(EnhanceMessages
-                    .incompatibleInjectType(objectReference, injectedValue,
-                            propertyType), location, null);
+        if (!propertyType.isInstance(injectedValue))
+            throw new ApplicationRuntimeException(EnhanceMessages.incompatibleInjectType(objectReference, injectedValue, propertyType),
+                    location, null);
         
         String fieldName = op.addInjectedField("_$" + propertyName,
                 propertyType, injectedValue);

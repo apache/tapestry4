@@ -113,7 +113,7 @@ public class MethodSignatureTest extends TestBase {
 
     public void test_Generic_Method_Hash() {
 
-        Class testClass=MyTest.class;
+        Class testClass = MyTest.class;
 
         Method[] methods = testClass.getMethods();
 
@@ -122,11 +122,17 @@ public class MethodSignatureTest extends TestBase {
             MethodSignatureImpl msi = new GenericsMethodSignatureImpl(testClass, method);
             msi.hashCode();
         }
+
+        ClassInspector ins = new GenericsClassInspectorImpl();
+        MethodSignature sig = ins.getPropertyAccessor(MyTest.class, "relativeObject");
+
+        assert sig.getReturnType() != null;
+        assertEquals(sig.getReturnType(), BaseTest.class);
     }
 
     public static abstract class BaseTest<T>{ }
     
-    public static abstract class MyTest<T,E>extends BaseTest<T> {
+    public static abstract class MyTest<T,E extends BaseTest<T>> extends BaseTest<T> {
 
         public abstract E getRelativeObject();
         public abstract void setRelativeObject(E e);
