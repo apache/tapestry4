@@ -50,18 +50,59 @@ public class GenericsMethodSignatureImpl extends MethodSignatureImpl implements 
             TypeVariable tvar = (TypeVariable)ret;
             ParameterizedType param = (ParameterizedType)type.getGenericSuperclass();
 
+            Class resolvedType = resolveType(param, tvar);
+            if (resolvedType != null)
+                return resolvedType;
+            /*
             if (param.getActualTypeArguments().length > 0) {
 
                 for (int i = 0; i < tvar.getBounds().length; i++) {
+                    System.out.println("bounds value class is: " + tvar.getBounds()[i].getClass());
+                    Type t = tvar.getBounds()[i];
+                    if (ParameterizedType.class.isInstance(t)) {
+                        ParameterizedType pt = (ParameterizedType)t;
 
+                        //System.out.println("bounds param type arguments are: " + pt.getActualTypeArguments()[0].getClass() + " and param type arguments are: " + param.getA);
+                    }
+                    
                     Class resolvedType = findType(param.getActualTypeArguments(), (Class)tvar.getBounds()[i]);
                     if (resolvedType != null)
                         return resolvedType;
                 }
-            }
+            }*/
         }
 
         return m.getReturnType();
+    }
+
+    static Class resolveType(ParameterizedType param, TypeVariable var)
+    {
+        if (param.getActualTypeArguments().length < 1)
+            return null;
+
+        for (int i=0; i < var.getBounds().length; i++) {
+
+            Type t = var.getBounds()[i];
+            Class resolvedType = null;
+            if (ParameterizedType.class.isInstance(t)) {
+
+                ParameterizedType pparam = (ParameterizedType)t;
+                for (int e=0; e < pparam.getActualTypeArguments().length; e++) {
+                    if (!TypeVariable.class.isInstance(pparam.getActualTypeArguments()[e]))
+                        continue;
+                    
+                    resolvedType = resolveType(pparam, (TypeVariable)pparam.getActualTypeArguments()[e]);
+                }
+            } else {
+
+                resolvedType = findType(param.getActualTypeArguments(), (Class)t);
+            }
+            
+            if (resolvedType != null)
+                return resolvedType;
+        }
+
+        return null;
     }
 
     static Class findType(Type[] types, Class type)
@@ -90,8 +131,13 @@ public class GenericsMethodSignatureImpl extends MethodSignatureImpl implements 
 
                 if (TypeVariable.class.isInstance(genTypes[i])) {
 
-                    TypeVariable tvar = (TypeVariable)genTypes[i];
+                    Class resolved = resolveType(param, (TypeVariable)genTypes[i]);
+                    System.out.println("Resolved parameter type is : " + resolved);
+
+                    /* TypeVariable tvar = (TypeVariable)genTypes[i];
                     for (int p = 0; p < tvar.getBounds().length; p++) {
+
+                        //System.out.println("Bounds parameter type is: " + tvar.getBounds()[p].getClass());
 
                         Class resolvedType = findType(param.getActualTypeArguments(), (Class)tvar.getBounds()[p]);
                         if (resolvedType != null) {
@@ -100,6 +146,10 @@ public class GenericsMethodSignatureImpl extends MethodSignatureImpl implements 
                         }
 
                         types[i] = m.getParameterTypes()[i];
+                    }*/
+                    if (resolved != null) {
+                        types[i] = resolved;
+                        continue;
                     }
                 }
 
