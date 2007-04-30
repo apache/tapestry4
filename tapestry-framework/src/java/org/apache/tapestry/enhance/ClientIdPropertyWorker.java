@@ -85,7 +85,7 @@ public class ClientIdPropertyWorker implements EnhancementWorker
         .append(" if (getPage() == null) { return null; }")
         .append(" String tempId = getSpecifiedId();")
         .append(" if (tempId == null) { return null; }")
-        .append(" return getPage().getRequestCycle().peekUniqueId(org.apache.tapestry.TapestryUtils.convertTapestryIdToNMToken(tempId));")
+        .append(" return getPage().getRequestCycle().peekUniqueId(org.apache.tapestry.TapestryUtils#convertTapestryIdToNMToken(tempId));")
         .append("} else { ");
         
         // else return the existing clientId
