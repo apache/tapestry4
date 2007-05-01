@@ -17,6 +17,8 @@ package org.apache.tapestry.spec;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.BaseComponentTestCase;
+import org.apache.tapestry.internal.event.ComponentEventProperty;
+import org.apache.tapestry.internal.event.EventBoundListener;
 import org.testng.annotations.Test;
 
 /**
@@ -31,7 +33,7 @@ import org.testng.annotations.Test;
 @Test
 public class TestComponentSpecification extends BaseComponentTestCase
 {
-    public void testClaimPropertyOK()
+    public void test_Claim_Property_OK()
     {
         InjectSpecificationImpl inject1 = new InjectSpecificationImpl();
         inject1.setProperty("fred");
@@ -47,7 +49,7 @@ public class TestComponentSpecification extends BaseComponentTestCase
         assertEquals(2, cs.getInjectSpecifications().size());
     }
 
-    public void testClaimPropertyConflict()
+    public void test_Claim_Property_Conflict()
     {
         Location l1 = fabricateLocation(13);
         Location l2 = fabricateLocation(97);
@@ -78,7 +80,7 @@ public class TestComponentSpecification extends BaseComponentTestCase
         assertEquals(1, cs.getInjectSpecifications().size());
     }
 
-    public void testAddAssetConflict()
+    public void test_Add_Asset_Conflict()
     {
         Location l1 = fabricateLocation(13);
         Location l2 = fabricateLocation(97);
@@ -104,7 +106,7 @@ public class TestComponentSpecification extends BaseComponentTestCase
         }
     }
 
-    public void testAddComponentConflict()
+    public void test_Add_Component_Conflict()
     {
         Location l1 = fabricateLocation(13);
         Location l2 = fabricateLocation(97);
@@ -130,7 +132,7 @@ public class TestComponentSpecification extends BaseComponentTestCase
         }
     }
 
-    public void testAddParameterConflict()
+    public void test_Add_Parameter_Conflict()
     {
         Location l1 = fabricateLocation(13);
         Location l2 = fabricateLocation(97);
@@ -159,7 +161,7 @@ public class TestComponentSpecification extends BaseComponentTestCase
         }
     }
 
-    public void testAddBeanSpecificationConflict()
+    public void test_Add_Bean_Specification_Conflict()
     {
         Location l1 = fabricateLocation(13);
         Location l2 = fabricateLocation(97);
@@ -186,14 +188,14 @@ public class TestComponentSpecification extends BaseComponentTestCase
         }
     }
 
-    public void testGetRequiredParametersNone()
+    public void test_Get_Required_Parameters_None()
     {
         ComponentSpecification cs = new ComponentSpecification();
 
         assertTrue(cs.getRequiredParameters().isEmpty());
     }
 
-    public void testGetRequiredParametersOptional()
+    public void test_Get_Required_Parameters_Optional()
     {
         ComponentSpecification cs = new ComponentSpecification();
 
@@ -206,7 +208,7 @@ public class TestComponentSpecification extends BaseComponentTestCase
         assertTrue(cs.getRequiredParameters().isEmpty());
     }
 
-    public void testGetRequiredParametersFiltersAliases()
+    public void test_Get_Required_Parameters_Filters_Aliases()
     {
         ComponentSpecification cs = new ComponentSpecification();
 
@@ -218,5 +220,37 @@ public class TestComponentSpecification extends BaseComponentTestCase
         cs.addParameter(ps);
 
         assertListEquals(new Object[] { ps }, cs.getRequiredParameters().toArray());
+    }
+
+    public void test_Rewire_Component_Id()
+    {
+        ComponentSpecification cs = new ComponentSpecification();
+        cs.addEventListener("comp", new String[] {"foo"}, "doFoo", null, false, true, false, false);
+
+        assertEquals(cs.getComponentEvents().size(), 1);
+        assert cs.getComponentEvents("comp") != null;
+
+        cs.rewireComponentId("unknown", "new/path");
+
+        assertEquals(cs.getComponentEvents().size(), 1);
+
+        cs.rewireComponentId("comp", "page/comp");
+        cs.rewireComponentId("comp", "page/comp");
+
+        assertEquals(cs.getComponentEvents().size(), 2);
+        assert cs.getComponentEvents("comp") != null;
+        assert cs.getComponentEvents("page/comp") != null;
+
+        ComponentEventProperty prop = cs.getComponentEvents("comp");
+        assertEquals(prop.getComponentId(), "comp");
+        assertEquals(prop.getEvents().size(), 1);
+        EventBoundListener listener = (EventBoundListener)prop.getEventListeners("foo").get(0);
+        assertEquals(listener.getComponentId(), "comp");
+
+        prop = cs.getComponentEvents("page/comp");
+        assertEquals(prop.getComponentId(), "page/comp");
+        assertEquals(prop.getEvents().size(), 1);
+        listener = (EventBoundListener)prop.getEventListeners("foo").get(0);
+        assertEquals(listener.getComponentId(), "page/comp");
     }
 }

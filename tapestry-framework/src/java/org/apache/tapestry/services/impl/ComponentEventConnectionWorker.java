@@ -95,7 +95,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
     
     void linkComponentEvents(IRequestCycle cycle, IComponent component)
     {
-        ComponentEventProperty[] props = _invoker.getEventPropertyListeners(component.getIdPath());
+        ComponentEventProperty[] props = _invoker.getEventPropertyListeners(component.getExtendedId());
         if (props == null)
             return;
         
@@ -178,12 +178,12 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
     
     void mapFormNames(IRequestCycle cycle, IForm form)
     {
-        List names = (List)cycle.getAttribute(FORM_NAME_LIST + form.getIdPath());
+        List names = (List)cycle.getAttribute(FORM_NAME_LIST + form.getExtendedId());
         
         if (names == null) {
             names = new ArrayList();
             
-            cycle.setAttribute(FORM_NAME_LIST + form.getIdPath(), names);
+            cycle.setAttribute(FORM_NAME_LIST + form.getExtendedId(), names);
         }
         
         names.add(form.getName());
@@ -191,7 +191,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
     
     void linkDeferredForm(IRequestCycle cycle, IForm form)
     {
-        List deferred = (List)_deferredFormConnections.remove(form.getIdPath());
+        List deferred = (List)_deferredFormConnections.remove(form.getExtendedId());
         
         for (int i=0; i < deferred.size(); i++) {
             
@@ -208,13 +208,13 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
             
             linkElementEvents(cycle, component);
             
-            ComponentEventProperty[] props = _invoker.getEventPropertyListeners(component.getIdPath());
+            ComponentEventProperty[] props = _invoker.getEventPropertyListeners(component.getExtendedId());
             if (props == null)
                 continue;
             
             for (int e=0; e < props.length; e++) {
                 
-                Object[][] formEvents = buildFormEvents(cycle, form.getIdPath(), 
+                Object[][] formEvents = buildFormEvents(cycle, form.getExtendedId(), 
                         props[e].getFormEvents(), (Boolean)val[1], (Boolean)val[2], val[3]);
                 
                 scriptParms.put("formEvents", formEvents);
@@ -304,7 +304,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
     boolean isDeferredForm(IComponent component)
     {
         if (IForm.class.isInstance(component) 
-                && _deferredFormConnections.get(((IForm)component).getIdPath()) != null)
+                && _deferredFormConnections.get(((IForm)component).getExtendedId()) != null)
             return true;
         
         return false;

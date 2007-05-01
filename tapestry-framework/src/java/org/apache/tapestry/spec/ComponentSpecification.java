@@ -19,6 +19,7 @@ import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.Defense;
 import org.apache.hivemind.util.ToStringBuilder;
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.internal.event.ComponentEventProperty;
@@ -165,8 +166,6 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
     
     private Map _componentEvents = new HashMap();
     private Map _elementEvents = new HashMap();
-
-    private boolean _targetsResolved = false;
 
     /**
      * @throws ApplicationRuntimeException
@@ -706,7 +705,7 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
             property = new ComponentEventProperty(componentId);
             _componentEvents.put(componentId, property);
         }
-        
+
         property.addListener(events, methodName, formId, validateForm, async, focus, autoSubmit);
     }
     
@@ -721,20 +720,20 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
             property = new ComponentEventProperty(elementId);
             _elementEvents.put(elementId, property);
         }
-        
+
         property.addListener(events, methodName, formId, validateForm, async, focus, true);
     }
 
-    public void connectAutoSubmitEvents(String componentId, IForm form)
+    public void connectAutoSubmitEvents(IComponent component, IForm form)
     {
         Defense.notNull(form, "form");
         
-        ComponentEventProperty property = getComponentEvents(componentId);
+        ComponentEventProperty property = getComponentEvents(component.getExtendedId());
         
         if (property == null)
             return;
-        
-        property.connectAutoSubmitEvents(form.getIdPath());
+
+        property.connectAutoSubmitEvents(form.getExtendedId());
     }
 
     public void rewireComponentId(String componentId, String idPath)
@@ -743,10 +742,21 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
         if (prop == null)
             return;
 
-        prop.rewireComponentId(idPath);
-        
-        _componentEvents.remove(componentId);
-        _componentEvents.put(idPath, prop);
+        if (_componentEvents.containsKey(idPath))
+            return;
+
+        try {
+
+            ComponentEventProperty clone = (ComponentEventProperty) prop.clone();
+
+            clone.rewireComponentId(idPath);
+
+            _componentEvents.put(idPath, clone);
+
+        } catch (CloneNotSupportedException e) {
+
+            throw new ApplicationRuntimeException(e);
+        }
     }
 
     /**
@@ -790,7 +800,7 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
             
             String compId = (String)it.next();
             ComponentEventProperty prop = (ComponentEventProperty)_componentEvents.get(compId);
-            
+
             ret.addAll(prop.getFormEventListeners(formId, event, null));
         }
         
@@ -799,7 +809,7 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
             
             String compId = (String)it.next();
             ComponentEventProperty prop = (ComponentEventProperty)_elementEvents.get(compId);
-            
+
             ret.addAll(prop.getFormEventListeners(formId, event, null));
         }
         
@@ -812,16 +822,6 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
     public boolean hasElementEvents()
     {
         return _elementEvents.size() > 0;
-    }
-
-    public boolean getTargetsResolved()
-    {
-        return _targetsResolved;
-    }
-
-    public void setTargetsResolved(boolean resolved)
-    {
-        _targetsResolved = resolved;
     }
 
     /**

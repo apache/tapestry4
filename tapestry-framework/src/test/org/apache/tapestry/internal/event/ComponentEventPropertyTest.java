@@ -180,11 +180,12 @@ public class ComponentEventPropertyTest extends TestBase {
         assertEquals("compid", prop.getComponentId());
         assertEquals(prop.getEvents().size(), 2);
         assertEquals(prop.getFormEvents().size(), 1);
-
+        
         String path = "new/Path/Id";
         prop.rewireComponentId(path);
 
         assertEquals(prop.getComponentId(), path);
+
 
         Iterator it = prop.getEvents().iterator();
         while (it.hasNext())

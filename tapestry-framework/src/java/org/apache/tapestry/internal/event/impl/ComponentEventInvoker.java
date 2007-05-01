@@ -75,7 +75,7 @@ public class ComponentEventInvoker implements IComponentEventInvoker, ResetEvent
         Defense.notNull(event, "event");
         
         IForm form = formSupport.getForm();
-        String formIdPath = form.getIdPath();
+        String formIdPath = form.getExtendedId();
 
         String targetId = (String)event.getTarget().get("id");
         if (targetId == null)
@@ -131,7 +131,7 @@ public class ComponentEventInvoker implements IComponentEventInvoker, ResetEvent
     
     void invokeComponentListeners(IComponent component, IRequestCycle cycle, BrowserEvent event)
     {
-        String idPath = component.getIdPath();
+        String idPath = component.getExtendedId();
         List listeners = getEventListeners(idPath);
         if (listeners == null)
             return;

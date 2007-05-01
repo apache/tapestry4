@@ -23,13 +23,13 @@ import java.util.*;
  * a component and the events that may be optionally listened
  * for on the client browser.
  */
-public class ComponentEventProperty
+public class ComponentEventProperty implements Cloneable
 {
     private Map _eventMap = new HashMap();
     private Map _formEventMap = new HashMap();
     
     private String _componentId;
-    
+
     /**
      * Creates a new component event property mapped to the specified component id.
      *
@@ -39,6 +39,23 @@ public class ComponentEventProperty
     public ComponentEventProperty(String componentId)
     {
         _componentId = componentId;
+    }
+
+    /**
+     * Used in cloning only currently.
+     *
+     * @param componentId
+     *          The component this property is bound to.
+     * @param events
+     *          The list of event mappings.
+     * @param formEvents
+     *          The list of form event mappings.
+     */
+    public ComponentEventProperty(String componentId, Map events, Map formEvents)
+    {
+        _componentId = componentId;
+        _eventMap = events;
+        _formEventMap = formEvents;
     }
 
     /**
@@ -111,6 +128,8 @@ public class ComponentEventProperty
     public void connectAutoSubmitEvents(String formIdPath)
     {
         Iterator it = getEvents().iterator();
+        List removeKeys = new ArrayList();
+        
         while (it.hasNext()) {
             String key = (String)it.next();
 
@@ -122,7 +141,7 @@ public class ComponentEventProperty
 
                 listener.setFormId(formIdPath);
                 lit.remove();
-
+                
                 List formListeners = getFormEventListeners(key);
                 if (!formListeners.contains(listener))
                     formListeners.add(listener);
@@ -130,8 +149,29 @@ public class ComponentEventProperty
             
             // remove mapping if empty
             
-            if (listeners.size() == 0)
-                it.remove();
+            if (listeners.size() == 0) {
+                removeKeys.add(key);
+            }
+        }
+
+        for (int i=0; i < removeKeys.size(); i++) {
+            
+            _eventMap.remove(removeKeys.get(i));
+        }
+
+        it = getFormEvents().iterator();
+        
+        while (it.hasNext())
+        {
+            String key = (String) it.next();
+            List listeners = (List) _formEventMap.get(key);
+            Iterator lit = listeners.iterator();
+
+            while(lit.hasNext())
+            {
+                EventBoundListener listener = (EventBoundListener) lit.next();
+                listener.setFormId(formIdPath);
+            }
         }
     }
 
@@ -268,5 +308,36 @@ public class ComponentEventProperty
         }
         
         return ret;
+    }
+
+    void cloneEvents(Map source, Map target)
+            throws CloneNotSupportedException
+    {
+        Iterator it = source.keySet().iterator();
+        while (it.hasNext())
+        {
+            String event = (String) it.next();
+            List listeners = (List)source.get(event);
+
+            List newListeners = new ArrayList();
+            for (int i=0; i < listeners.size(); i++) {
+                EventBoundListener listener = (EventBoundListener) listeners.get(i);
+                newListeners.add(listener.clone());
+            }
+
+            target.put(event, newListeners);
+        }
+    }
+
+    public Object clone()
+    throws CloneNotSupportedException
+    {
+        Map events = new HashMap();
+        Map formEvents = new HashMap();
+
+        cloneEvents(_eventMap, events);
+        cloneEvents(_formEventMap, formEvents);
+
+        return new ComponentEventProperty(_componentId, events, formEvents);
     }
 }

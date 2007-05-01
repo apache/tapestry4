@@ -13,6 +13,7 @@
 // limitations under the License.
 package org.apache.tapestry.spec;
 
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.internal.event.ComponentEventProperty;
@@ -81,10 +82,10 @@ public interface IEventListener
      * Invoked during rendering when a component has been detected as a {@link org.apache.tapestry.form.IFormComponent} and may
      * possibly need its events to be wired up as form events.
      *
-     * @param componentId The components standard base id.
+     * @param component The component to rewire form events for.
      * @param form The form containing the component.
      */
-    void connectAutoSubmitEvents(String componentId, IForm form);
+    void connectAutoSubmitEvents(IComponent component, IForm form);
 
     /**
      * Checks if any element events are bound to this component.
@@ -147,19 +148,4 @@ public interface IEventListener
      *          The id of the component pre-pended with the path of components containing it.
      */
     void rewireComponentId(String componentId, String idPath);
-
-    /**
-     * Used during page load to test if this event listener has already had its component / form target
-     * id paths resolved.
-     *
-     * @return True if connections have been resolved, false otherwise.
-     */
-    boolean getTargetsResolved();
-
-    /**
-     * Sets the resolved state to that found, ie what is returned by {@link #getTargetsResolved()}.
-     *
-     * @param resolved The resolution state.
-     */
-    void setTargetsResolved(boolean resolved);
 }

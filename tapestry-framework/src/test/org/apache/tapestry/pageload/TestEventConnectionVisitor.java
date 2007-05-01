@@ -1,7 +1,5 @@
 package org.apache.tapestry.pageload;
 
-import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.Location;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
@@ -23,20 +21,6 @@ import java.util.Map;
 @Test
 public class TestEventConnectionVisitor extends BaseComponentTestCase {
 
-    public void test_Targets_Resolved()
-    {
-        IComponentSpecification spec = new ComponentSpecification();
-        spec.setTargetsResolved(true);
-        
-        IComponent comp = newComponent(spec);
-
-        replay();
-
-        new EventConnectionVisitor().visitComponent(comp);
-
-        verify();
-    }
-
     public void test_Wire_Component_Event()
     {
         IComponentSpecification spec = new ComponentSpecification();
@@ -57,24 +41,6 @@ public class TestEventConnectionVisitor extends BaseComponentTestCase {
         verify();
     }
 
-    @Test(expectedExceptions = ApplicationRuntimeException.class)
-    public void test_Component_Not_Found()
-    {
-        IComponentSpecification spec = new ComponentSpecification();
-        spec.addEventListener("comp1", new String[] {"onClick"}, "testFoo", null, false, false, false, false);
-
-        IComponent comp = newComponent(spec, "comp2");
-        Location l = newLocation();
-
-        expect(comp.getLocation()).andReturn(l);
-
-        replay();
-
-        new EventConnectionVisitor().visitComponent(comp);
-
-        verify();
-    }
-
     public void test_Spec_Rewire_Id()
     {
         IComponentSpecification spec = newMock(IComponentSpecification.class);
@@ -86,15 +52,13 @@ public class TestEventConnectionVisitor extends BaseComponentTestCase {
 
         Map compEvents = new HashMap();
         compEvents.put("comp1", p);
-
-        expect(spec.getTargetsResolved()).andReturn(false);
+        
         expect(spec.getComponentEvents()).andReturn(compEvents);
         expect(spec.getElementEvents()).andReturn(Collections.EMPTY_MAP);
 
         invoker.addEventListener("path/comp1", spec);
 
         spec.rewireComponentId("comp1", "path/comp1");
-        spec.setTargetsResolved(true);
 
         replay();
 
@@ -121,7 +85,7 @@ public class TestEventConnectionVisitor extends BaseComponentTestCase {
 
         if (args.length > 0) {
         
-            expect(comp.getIdPath()).andReturn(args[0] + findCompId).anyTimes();
+            expect(comp.getExtendedId()).andReturn(args[0] + findCompId).anyTimes();
         }
 
         return comp;
