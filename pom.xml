@@ -514,8 +514,8 @@
             <url>http://people.apache.org/repo/m2-snapshot-repository</url>
         </pluginRepository>
         <pluginRepository>
-            <id>tapestry.javaforge</id>
-            <url>http://howardlewisship.com/repository</url>
+            <id>opencomponentry.com</id>
+            <url>http://opencomponentry.com/repository/m2-snapshot-repo</url>
         </pluginRepository>
         <pluginRepository>
             <id>codehaus.org</id>
