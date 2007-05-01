@@ -18,7 +18,7 @@ package org.apache.tapestry.internal.event;
  * Provides a mapping for listener methods that are bound to events, used
  * internally by {@link ComponentEventProperty}.
  */
-public class EventBoundListener
+public class EventBoundListener implements Cloneable
 {
     // the method name to invoke
     private String _methodName;
@@ -153,6 +153,12 @@ public class EventBoundListener
     public boolean isAutoSubmit()
     {
         return _autoSubmit;
+    }
+
+    public Object clone()
+    throws CloneNotSupportedException
+    {
+        return super.clone();
     }
 
     /**

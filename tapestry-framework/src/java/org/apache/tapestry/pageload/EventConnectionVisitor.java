@@ -13,10 +13,7 @@ import org.apache.tapestry.internal.event.EventBoundListener;
 import org.apache.tapestry.internal.event.IComponentEventInvoker;
 import org.apache.tapestry.spec.IComponentSpecification;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Handles connecting up components and forms targeted with the EventListener annotation.
@@ -30,21 +27,15 @@ public class EventConnectionVisitor implements IComponentVisitor, PoolManageable
 
     public void visitComponent(IComponent component)
     {
-        if (component.getSpecification().getTargetsResolved())
-            return;
-
         checkComponentPage(component);
         
         Map events = component.getSpecification().getComponentEvents();
-        Iterator it = events.keySet().iterator();
-
-        String[] idPaths = new String[events.size()];
-        String[] ids = new String[events.size()];
-        int count = 0;
+        Set keySet = events.keySet();
+        String[] compIds = (String[]) keySet.toArray(new String[keySet.size()]);
         
-        while (it.hasNext())
+        for (int i=0; i < compIds.length; i++)
         {
-            String compId = (String)it.next();
+            String compId = compIds[i];
             ComponentEventProperty property = (ComponentEventProperty) events.get(compId);
 
             // find the targeted component
@@ -52,30 +43,22 @@ public class EventConnectionVisitor implements IComponentVisitor, PoolManageable
             IComponent comp = findComponent(compId, component.getPage());
 
             if (comp == null)
-                throw new ApplicationRuntimeException(PageloadMessages.componentNotFound(compId), component, component.getLocation(), null);
+                continue;
 
             // wire up with idPath
 
-            String idPath = comp.getIdPath();
-
-            idPaths[count] = idPath;
-            ids[count] = compId;
-
+            String idPath = comp.getExtendedId();
+            
+            component.getSpecification().rewireComponentId(compId, idPath);
+            
             _invoker.addEventListener(idPath, component.getSpecification());
             wireFormEvents(comp, component.getSpecification());
-            
-            count++;
         }
-
-        for (int i=0; i < idPaths.length; i++) {
-            
-            component.getSpecification().rewireComponentId(ids[i], idPaths[i]);
-        }
-
+        
         // find form element targets for re-mapping with proper idpath && IEventInvoker connection
 
         events = component.getSpecification().getElementEvents();
-        it = events.keySet().iterator();
+        Iterator it = events.keySet().iterator();
 
         while (it.hasNext())
         {
@@ -95,10 +78,6 @@ public class EventConnectionVisitor implements IComponentVisitor, PoolManageable
                 }
             }
         }
-
-        // set resolved so we don't do it again
-
-        component.getSpecification().setTargetsResolved(true);
     }
 
     void wireElementFormEvents(EventBoundListener listener, IComponent component, IComponentSpecification spec)
@@ -124,7 +103,7 @@ public class EventConnectionVisitor implements IComponentVisitor, PoolManageable
         if (form == null)
             throw new ApplicationRuntimeException(PageloadMessages.componentNotFound(listener.getFormId()), component, component.getLocation(), null);
 
-        String idPath = form.getIdPath();
+        String idPath = form.getExtendedId();
         
         listener.setFormId(idPath);
         _invoker.addFormEventListener(idPath, spec);
@@ -144,8 +123,8 @@ public class EventConnectionVisitor implements IComponentVisitor, PoolManageable
         if (form == null)
             return;
 
-        listener.connectAutoSubmitEvents(component.getId(), form);
-        _invoker.addFormEventListener(form.getIdPath(), listener);
+        listener.connectAutoSubmitEvents(component, form);
+        _invoker.addFormEventListener(form.getExtendedId(), listener);
     }
 
     IComponent findComponent(String id, IComponent target)
@@ -192,7 +171,7 @@ public class EventConnectionVisitor implements IComponentVisitor, PoolManageable
 
             IForm form = (IForm) _forms.get(i);
 
-            IComponent match = findContainedComponent(child.getIdPath(), (Component)form);
+            IComponent match = findContainedComponent(child.getExtendedId(), (Component)form);
             if (match != null)
                 return form;
         }
@@ -204,7 +183,7 @@ public class EventConnectionVisitor implements IComponentVisitor, PoolManageable
     {
         IComponent comp = (IComponent) container;
 
-        if (idPath.equals(comp.getIdPath()))
+        if (idPath.equals(comp.getExtendedId()))
             return comp;
 
         IRender[] children = container.getContainedRenderers();

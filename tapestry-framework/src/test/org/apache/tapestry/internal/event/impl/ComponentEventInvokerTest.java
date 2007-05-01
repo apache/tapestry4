@@ -104,14 +104,13 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         IRequestCycle cycle = newCycle();
         IComponent comp = newComponent();
         checkOrder(comp, false);
+        
         IPage page = newMock(IPage.class);
-        
-        IComponentSpecification spec = new ComponentSpecification();
-        
         ListenerInvoker listenerInvoker = newMock(ListenerInvoker.class);
         ListenerMap listenerMap = newMock(ListenerMap.class);
-        
         IActionListener listener1 = newMock(IActionListener.class);
+
+        IComponentSpecification spec = new ComponentSpecification();
         
         Map comps = new HashMap();
         comps.put("testId", comp);
@@ -127,7 +126,7 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
                 "fooListener", null, false, false, false, false);
         invoker.addEventListener("testId", spec);
 
-        expect(comp.getIdPath()).andReturn("testId").anyTimes();
+        expect(comp.getExtendedId()).andReturn("testId").anyTimes();
         expect(comp.getSpecification()).andReturn(spec).anyTimes();
         expect(comp.getPage()).andReturn(page);
 
@@ -172,7 +171,7 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
                 "fooListener", null, false, true, true);
         invoker.addEventListener("testId", spec);
         
-        expect(comp.getIdPath()).andReturn("testId").anyTimes();
+        expect(comp.getExtendedId()).andReturn("testId").anyTimes();
         expect(comp.getSpecification()).andReturn(spec).anyTimes();
         expect(comp.getPage()).andReturn(page);
         expect(page.getComponents()).andReturn(comps);
@@ -218,7 +217,7 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         invoker.addFormEventListener("form1", spec);
         
         expect(formSupport.getForm()).andReturn(form);
-        expect(form.getIdPath()).andReturn("form1").anyTimes();
+        expect(form.getExtendedId()).andReturn("form1").anyTimes();
         expect(form.getPage()).andReturn(page);
 
         expect(page.getComponents()).andReturn(comps);
@@ -268,7 +267,7 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         invoker.addFormEventListener("form1", spec);
         
         expect(formSupport.getForm()).andReturn(form);
-        expect(form.getIdPath()).andReturn("form1").anyTimes();
+        expect(form.getExtendedId()).andReturn("form1").anyTimes();
         expect(form.getPage()).andReturn(page);
         
         expect(page.getComponents()).andReturn(comps);
