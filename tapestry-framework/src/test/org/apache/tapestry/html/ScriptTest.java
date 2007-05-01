@@ -14,27 +14,20 @@
 
 package org.apache.tapestry.html;
 
-import static org.easymock.EasyMock.expect;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
-import org.apache.tapestry.BaseComponentTestCase;
-import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IBinding;
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRender;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IScript;
-import org.apache.tapestry.IScriptProcessor;
-import org.apache.tapestry.PageRenderSupport;
+import org.apache.tapestry.*;
+import org.apache.tapestry.asset.AssetSource;
 import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
+import static org.easymock.EasyMock.*;
 import org.testng.annotations.Test;
+
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * Tests for the {@link Script} component.
@@ -80,6 +73,9 @@ public class ScriptTest extends BaseComponentTestCase
         PageRenderSupport support = newPageRenderSupport();
         
         IRequestCycle cycle = newCycle(false, null);
+        AssetSource assetSource = newMock(AssetSource.class);
+        IPage page = newMock(IPage.class);
+        expect(page.getLocale()).andReturn(Locale.getDefault());
         
         trainGetPageRenderSupport(cycle, support);
         
@@ -90,11 +86,16 @@ public class ScriptTest extends BaseComponentTestCase
 
         String scriptPath = "MyScript.script";
 
-        Script component = newInstance(Script.class, new Object[]
-        { "specification", new ComponentSpecification(), "container", container, "scriptSource",
-                source, "scriptPath", scriptPath });
+        Script component = newInstance(Script.class,
+                "specification", new ComponentSpecification(),
+                "container", container,
+                "scriptSource", source,
+                "scriptPath", scriptPath,
+                "assetSource", assetSource,
+                "page", page
+        );
         
-        trainGetScriptLocation(container, scriptPath, scriptLocation);
+        trainGetScriptLocation(container, scriptPath, scriptLocation, assetSource);
         
         trainGetScript(source, scriptLocation, script);
 
@@ -121,7 +122,11 @@ public class ScriptTest extends BaseComponentTestCase
         PageRenderSupport support = newPageRenderSupport();
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle(false, null);
-        
+        AssetSource assetSource = newMock(AssetSource.class);
+
+        IPage page = newMock(IPage.class);
+        expect(page.getLocale()).andReturn(Locale.getDefault());
+
         trainGetPageRenderSupport(cycle, support);
         
         Resource scriptLocation = newResource();
@@ -134,11 +139,17 @@ public class ScriptTest extends BaseComponentTestCase
 
         String scriptPath = "MyScript.script";
 
-        Script component = newInstance(Script.class, new Object[]
-        { "specification", new ComponentSpecification(), "container", container, "scriptSource",
-                source, "scriptPath", scriptPath, "baseSymbols", baseSymbols });
+        Script component = newInstance(Script.class,
+                "specification", new ComponentSpecification(),
+                "container", container,
+                "scriptSource", source,
+                "scriptPath", scriptPath,
+                "baseSymbols", baseSymbols,
+                "assetSource", assetSource,
+                "page", page
+        );
 
-        trainGetScriptLocation(container, scriptPath, scriptLocation);
+        trainGetScriptLocation(container, scriptPath, scriptLocation, assetSource);
 
         trainGetScript(source, scriptLocation, script);
 
@@ -166,7 +177,11 @@ public class ScriptTest extends BaseComponentTestCase
 
         PageRenderSupport support = newPageRenderSupport();
         IRequestCycle cycle = newCycle(false, null);
+        AssetSource assetSource = newMock(AssetSource.class);
         
+        IPage page = newMock(IPage.class);
+        expect(page.getLocale()).andReturn(Locale.getDefault());
+
         trainGetPageRenderSupport(cycle, support);
         
         IMarkupWriter writer = newWriter();
@@ -183,12 +198,18 @@ public class ScriptTest extends BaseComponentTestCase
 
         String scriptPath = "MyScript.script";
 
-        Script component = newInstance(Script.class, new Object[]
-        { "specification", new ComponentSpecification(), "container", container, "scriptSource",
-                source, "scriptPath", scriptPath, "baseSymbols", baseSymbols });
+        Script component = newInstance(Script.class,
+                "specification", new ComponentSpecification(),
+                "container", container,
+                "scriptSource", source,
+                "scriptPath", scriptPath,
+                "baseSymbols", baseSymbols,
+                "assetSource", assetSource,
+                "page", page
+        );
         component.setBinding("fred", informal);
 
-        trainGetScriptLocation(container, scriptPath, scriptLocation);
+        trainGetScriptLocation(container, scriptPath, scriptLocation, assetSource);
 
         trainGetScript(source, scriptLocation, script);
 
@@ -244,11 +265,15 @@ public class ScriptTest extends BaseComponentTestCase
         String scriptPath = "MyScript.script";
         
         IAsset scriptAsset = newAsset();
-        
-        Script component = newInstance(Script.class, new Object[]
-        { "specification", new ComponentSpecification(), "container", container, "scriptSource",
-                source, "scriptPath", scriptPath, "scriptAsset", scriptAsset });
-        
+
+        Script component = newInstance(Script.class,
+                "specification", new ComponentSpecification(),
+                "container", container,
+                "scriptSource", source,
+                "scriptPath", scriptPath,
+                "scriptAsset", scriptAsset
+        );
+
         trainGetPageRenderSupport(cycle, support);
         
         replay();
@@ -278,11 +303,13 @@ public class ScriptTest extends BaseComponentTestCase
         String scriptPath = "MyScript.script";
         
         IAsset scriptAsset = newAsset();
-        
-        Script component = newInstance(Script.class, new Object[]
-        { "specification", new ComponentSpecification(), "container", container, "scriptSource",
-                source});
-        
+
+        Script component = newInstance(Script.class,
+                "specification", new ComponentSpecification(),
+                "container", container,
+                "scriptSource", source
+        );
+
         trainGetPageRenderSupport(cycle, support);
         
         replay();
@@ -318,10 +345,13 @@ public class ScriptTest extends BaseComponentTestCase
         IAsset scriptAsset = newAsset();
         
         expect(scriptAsset.getResourceLocation()).andReturn(scriptLocation);
-        
-        Script component = newInstance(Script.class, new Object[]
-        { "specification", new ComponentSpecification(), "container", container, "scriptSource",
-                source, "scriptAsset", scriptAsset });
+
+        Script component = newInstance(Script.class,
+                "specification", new ComponentSpecification(),
+                "container", container,
+                "scriptSource", source,
+                "scriptAsset", scriptAsset
+        );
         
         expect(source.getScript(scriptLocation)).andThrow(new RuntimeException());
         
@@ -358,11 +388,14 @@ public class ScriptTest extends BaseComponentTestCase
         IAsset scriptAsset = newAsset();
         
         expect(scriptAsset.getResourceLocation()).andReturn(scriptLocation);
-        
-        Script component = newInstance(Script.class, new Object[]
-        { "specification", new ComponentSpecification(), "container", container, "scriptSource",
-                source, "scriptAsset", scriptAsset });
-        
+
+        Script component = newInstance(Script.class,
+                "specification", new ComponentSpecification(),
+                "container", container,
+                "scriptSource", source,
+                "scriptAsset", scriptAsset
+        );
+
         trainGetScript(source, scriptLocation, script);
         
         script.execute(component, cycle, support, new HashMap());
@@ -396,15 +429,17 @@ public class ScriptTest extends BaseComponentTestCase
     }
 
     protected void trainGetScriptLocation(IComponent component, String scriptPath,
-            Resource scriptLocation)
+            Resource scriptLocation, AssetSource assetSource)
     {
         IComponentSpecification spec = newSpec();
         Resource resource = newResource();
+        IAsset asset = newMock(IAsset.class);
 
-        expect(component.getSpecification()).andReturn(spec);
+        expect(component.getSpecification()).andReturn(spec).anyTimes();
         
         expect(spec.getSpecificationLocation()).andReturn(resource);
 
-        expect(resource.getRelativeResource(scriptPath)).andReturn(scriptLocation);
+        expect(assetSource.findAsset(eq(resource), eq(spec), eq(scriptPath), isA(Locale.class), (Location)isNull())).andReturn(asset);
+        expect(asset.getResourceLocation()).andReturn(scriptLocation);        
     }
 }

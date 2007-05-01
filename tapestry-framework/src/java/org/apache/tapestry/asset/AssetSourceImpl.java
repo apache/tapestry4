@@ -66,7 +66,6 @@ public class AssetSourceImpl implements AssetSource
         String prefix = colonx > -1 ? path.substring(0, colonx) : null;
         String truePath = colonx > -1 ? path.substring(colonx + 1) : path;
 
-        Resource assetBase = base;
         AssetFactory factory = null;
 
         if (prefix != null) {
@@ -78,7 +77,7 @@ public class AssetSourceImpl implements AssetSource
         
         if (factory == null && prefix == null) {
             
-            factory = findAssetFactory(spec, assetBase, path, locale);
+            factory = findAssetFactory(spec, base, truePath, locale);
         }
         
         // Unknown prefix is expected to happen when an external asset (using an established
@@ -99,7 +98,7 @@ public class AssetSourceImpl implements AssetSource
 
         // This can happen when a 3.0 DTD is read in
 
-        return factory.createAsset(assetBase, spec, truePath, locale, location);
+        return factory.createAsset(base, spec, truePath, locale, location);
     }
 
     AssetFactory findAssetFactory(IComponentSpecification spec, Resource baseResource, String path, Locale locale)
