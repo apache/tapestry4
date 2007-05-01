@@ -14,22 +14,17 @@
 
 package org.apache.tapestry.html;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
-import org.apache.tapestry.AbstractComponent;
-import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IBinding;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IScript;
-import org.apache.tapestry.PageRenderSupport;
-import org.apache.tapestry.TapestryUtils;
+import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.*;
+import org.apache.tapestry.asset.AssetSource;
 import org.apache.tapestry.engine.IScriptSource;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Works with the {@link Body}component to add a script (and perhaps some
@@ -108,46 +103,48 @@ public abstract class Script extends AbstractComponent
 
         // only one of the two is allowed
         if (scriptAsset != null && scriptPath != null)
-            throw new ApplicationRuntimeException(HTMLMessages
-                    .multiAssetParameterError(getBinding("scriptAsset"),
+            throw new ApplicationRuntimeException(HTMLMessages.multiAssetParameterError(getBinding("scriptAsset"),
                             getBinding("script")));
 
         if (scriptPath == null && scriptAsset == null)
-            throw new ApplicationRuntimeException(HTMLMessages
-                    .noScriptPathError());
+            throw new ApplicationRuntimeException(HTMLMessages.noScriptPathError());
 
         IScriptSource source = getScriptSource();
-
-        Resource scriptLocation = null;
+        
         if (scriptPath != null)
         {
-
             // If the script path is relative, it should be relative to the
             // Script component's
             // container (i.e., relative to a page in the application).
 
-            Resource rootLocation = getContainer().getSpecification()
-                    .getSpecificationLocation();
-            scriptLocation = rootLocation.getRelativeResource(scriptPath);
+            Resource rootLocation = getContainer().getSpecification().getSpecificationLocation();
+
+            scriptAsset = getAssetSource().findAsset(rootLocation, getContainer().getSpecification(), scriptPath, getPage().getLocale(), getScriptLocation());
         }
-        else scriptLocation = scriptAsset.getResourceLocation();
+
+        Defense.notNull(scriptAsset, "script");
 
         try
         {
-            return source.getScript(scriptLocation);
+            return source.getScript(scriptAsset.getResourceLocation());
         }
         catch (RuntimeException ex)
         {
-            Location location = null;
-            if (getBinding("script")!=null)
-                location = getBinding("script").getLocation();
-            else if (getBinding("scriptAsset")!=null)
-                location = getBinding("scriptAsset").getLocation();
-            
-            throw new ApplicationRuntimeException(ex.getMessage(), this,
-                    location, ex);
+            throw new ApplicationRuntimeException(ex.getMessage(), this, getScriptLocation(), ex);
         }
 
+    }
+
+    Location getScriptLocation()
+    {
+        Location location = null;
+
+        if (getBinding("script")!=null)
+            location = getBinding("script").getLocation();
+        else if (getBinding("scriptAsset")!=null)
+            location = getBinding("scriptAsset").getLocation();
+
+        return location;
     }
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
@@ -169,6 +166,9 @@ public abstract class Script extends AbstractComponent
     public abstract String getScriptPath();
 
     public abstract IAsset getScriptAsset();
+
+    // injected
+    public abstract AssetSource getAssetSource();
 
     // Parameter
 

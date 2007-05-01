@@ -113,6 +113,8 @@
                 <includes>
                     <include>**/*.page</include>
                     <include>**/*.jwc</include>
+                    <include>**/*.script</include>
+                    <include>**/*.library</include>
                 </includes>
             </resource>
         </resources>
