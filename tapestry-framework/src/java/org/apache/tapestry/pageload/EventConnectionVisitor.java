@@ -4,6 +4,7 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.PoolManageable;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IForm;
+import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.internal.Component;
@@ -24,6 +25,7 @@ public class EventConnectionVisitor implements IComponentVisitor, PoolManageable
 
     IComponentEventInvoker _invoker;
 
+    IPage _currentPage = null;
     List _forms = new ArrayList();
 
     public void visitComponent(IComponent component)
@@ -31,6 +33,8 @@ public class EventConnectionVisitor implements IComponentVisitor, PoolManageable
         if (component.getSpecification().getTargetsResolved())
             return;
 
+        checkComponentPage(component);
+        
         Map events = component.getSpecification().getComponentEvents();
         Iterator it = events.keySet().iterator();
 
@@ -223,12 +227,28 @@ public class EventConnectionVisitor implements IComponentVisitor, PoolManageable
         return null;
     }
 
+    void checkComponentPage(IComponent component)
+    {
+        if (_currentPage == null) {
+
+            _currentPage = component.getPage();
+            _forms.clear();
+        } else if (component.getPage() != _currentPage) {
+
+            _currentPage = component.getPage();
+            _forms.clear();
+        }
+    }
+
     public void activateService()
     {
+        _currentPage = null;
+        _forms.clear();
     }
 
     public void passivateService()
     {
+        _currentPage = null;
         _forms.clear();
     }
 

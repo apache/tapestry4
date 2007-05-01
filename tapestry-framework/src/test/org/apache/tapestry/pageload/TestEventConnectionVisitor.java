@@ -106,14 +106,12 @@ public class TestEventConnectionVisitor extends BaseComponentTestCase {
         verify();
     }
 
-    
-
     IComponent newComponent(IComponentSpecification spec, String findCompId, Object... args)
     {
         IComponent comp = newComponent(spec);
         IPage page = newMock(IPage.class);
 
-        expect(comp.getPage()).andReturn(page);
+        expect(comp.getPage()).andReturn(page).anyTimes();
 
         Map comps = new HashMap();
         comps.put(findCompId, comp);
