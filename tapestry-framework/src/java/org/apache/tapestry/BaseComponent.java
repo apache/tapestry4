@@ -72,9 +72,19 @@ public abstract class BaseComponent extends AbstractComponent implements ITempla
     {
         return _outer;
     }
+    
+    public IRender[] getInnerRenderers()
+    {
+        return _body;
+    }
 
     /**
      * Reads the receiver's template and figures out which elements wrap which other elements.
+     *
+     * @param cycle
+     *          The current request.
+     * @param loader
+     *          The service responsible for loading / resolving a page spec.
      */
 
     private void readTemplate(IRequestCycle cycle, IPageLoader loader)

@@ -14,10 +14,8 @@
 
 package org.apache.tapestry.components;
 
-import org.apache.tapestry.AbstractComponent;
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.*;
+import org.apache.tapestry.internal.Component;
 
 /**
  * Renders the text and components wrapped by a component. [<a
@@ -39,5 +37,12 @@ public abstract class RenderBody extends AbstractComponent
         IComponent container = getContainer();
 
         container.renderBody(writer, cycle);
+    }
+
+    public IRender[] getContainedRenderers()
+    {
+        Component container = (Component) getContainer();
+
+        return container.getInnerRenderers();
     }
 }

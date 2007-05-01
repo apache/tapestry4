@@ -20,5 +20,12 @@ public interface Component {
      */
     IRender[] getContainedRenderers();
 
-    
+    /**
+     * In some rare cases a component has both outer and inner renderers - such as with {@link org.apache.tapestry.BaseComponent}. This
+     * value should return the normal inner renderers most components do in those instances while the other
+     * {@link #getContainedRenderers()} should return the outer renderers.
+     * 
+     * @return The inner renderers if this component supports more than one type, null otherwise.
+     */
+    IRender[] getInnerRenderers();
 }

@@ -94,13 +94,13 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
      * The number of {@link IRender}objects in the body of this component.
      */
 
-    private int _bodyCount = 0;
+    protected int _bodyCount = 0;
 
     /**
      * An aray of elements in the body of this component.
      */
 
-    private IRender[] _body;
+    protected IRender[] _body;
 
     /**
      * The components' asset map.
@@ -210,18 +210,18 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
 
         _body[_bodyCount++] = element;
     }
+
     
-    /**
-     * Returns the list of of {@link IRender} elements contained by this component. Ie whatever
-     * has been added via {@link #addBody(IRender)}.
-     * 
-     * @return The values, if any. Null otherwise.
-     */
     public IRender[] getContainedRenderers()
     {
         return _body;
     }
-    
+
+    public IRender[] getInnerRenderers()
+    {
+        return null;
+    }
+
     /**
      * Invokes {@link #finishLoad()}. Subclasses may overide as needed, but must invoke this
      * implementation. {@link BaseComponent} loads its HTML template.
