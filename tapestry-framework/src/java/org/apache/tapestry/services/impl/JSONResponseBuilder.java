@@ -448,4 +448,12 @@ public class JSONResponseBuilder implements ResponseBuilder
     {
         // does nothing
     }
+
+    /**
+     * This implementation does nothing.
+     * {@inheritDoc}
+     */
+    public void addStatusMessage(IMarkupWriter normalWriter, String category, String text)
+    {
+    }
 }

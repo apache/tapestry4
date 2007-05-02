@@ -312,4 +312,18 @@ public interface ResponseBuilder extends PageRenderSupport {
      * @return True if the component script should be allowed.
      */
     boolean isImageInitializationAllowed(IComponent target);
+    
+    /**
+     * Adds a status message to the current response.
+     *
+     * @param writer
+     *          The markup writer to use, this may be ignored or swapped
+     *          out for a different writer depending on the implementation being used.
+     * @param category
+     *          Allows setting a category that best describes the type of the status message,
+     *          i.e. info, error, e.t.c.
+     * @param text
+     *          The status message. 
+     */
+    void addStatusMessage(IMarkupWriter normalWriter, String category, String text);
 }
