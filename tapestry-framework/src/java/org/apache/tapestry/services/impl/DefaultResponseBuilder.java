@@ -434,4 +434,12 @@ public class DefaultResponseBuilder implements ResponseBuilder
         writer.printRaw("\n// -->");
         writer.end();
     }
+
+    /**
+     * This implementation does nothing.
+     * {@inheritDoc}
+     */
+    public void addStatusMessage(IMarkupWriter normalWriter, String category, String text)
+    {
+    }
 }

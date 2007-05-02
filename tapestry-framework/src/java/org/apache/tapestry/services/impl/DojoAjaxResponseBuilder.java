@@ -497,10 +497,25 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         
     public void addStatus(IMarkupWriter normalWriter, String text)
     {
-        addStatus(normalWriter, text, "info");
+        addStatusMessage(normalWriter, "info", text);
     }  
     
-    public void addStatus(IMarkupWriter normalWriter, String text, String category)
+    /**
+     * Adds a status message to the current response. This implementation keeps track
+     * of all messages and appends them to the XHR response. On the client side, 
+     * the default behavior is to publish the message to a topic matching the category name
+     * using <code>dojo.event.topic.publish(category,text);</code>.
+     *
+     * @param writer
+     *          The markup writer to use, this may be ignored or swapped
+     *          out for a different writer depending on the implementation being used.
+     * @param category
+     *          Allows setting a category that best describes the type of the status message,
+     *          i.e. info, error, e.t.c.
+     * @param text
+     *          The status message. 
+     */
+    public void addStatusMessage(IMarkupWriter normalWriter, String category, String text)
     {
         if (_statusMessages==null)
         {
