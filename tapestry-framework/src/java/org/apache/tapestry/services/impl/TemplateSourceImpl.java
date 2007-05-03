@@ -295,15 +295,10 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
             int index = className.lastIndexOf(packages[i]);
             if (index < 0)
                 continue;
-
-            String templateName = name + "." + templateExtension;
-
-            if (_classpathAssetFactory.assetExists(component.getSpecification(), base, templateName, locale))
-                return _classpathAssetFactory.createAsset(base, component.getSpecification(), templateName, locale, component.getLocation());
             
-            // else try various forms of context searches
+            // First try context
 
-            templateName = className.substring((index + packages[i].length()) + 1, className.length()).replaceAll("\\.", "/");
+            String templateName = className.substring((index + packages[i].length()) + 1, className.length()).replaceAll("\\.", "/");
             templateName =  templateName + "." + templateExtension;
 
             if (_contextAssetFactory.assetExists(component.getSpecification(), _webInfAppLocation, templateName, locale)) {
@@ -313,6 +308,13 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
 
                 return _contextAssetFactory.createAsset(_webInfLocation, component.getSpecification(), templateName, locale, component.getLocation());
             }
+
+            // else classpath
+
+            templateName = name + "." + templateExtension;
+
+            if (_classpathAssetFactory.assetExists(component.getSpecification(), base, templateName, locale))
+                return _classpathAssetFactory.createAsset(base, component.getSpecification(), templateName, locale, component.getLocation());
         }
         
         return null;
