@@ -110,6 +110,8 @@ public class ContextAssetFactoryTest extends BaseComponentTestCase
         trainGetRelativeResource(base, "asset.png", relative);
         trainGetLocalization(relative, Locale.FRENCH, null);
 
+        trainGetRelativeResource(base, "asset.png", relative);
+        trainGetLocalization(relative, Locale.FRENCH, null);
         expect(spec.getLocation()).andReturn(l);
         expect(l.getResource()).andReturn(null);
 

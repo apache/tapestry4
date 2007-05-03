@@ -82,6 +82,7 @@
         <set-service property="parser" service-id="TemplateParser"/>
         <set-service property="delegate" service-id="TemplateSourceDelegate"/>
         <set-object property="contextRoot" value="infrastructure:contextRoot"/>
+        <set-object property="applicationId" value="infrastructure:applicationId"/>
         <set-service property="componentSpecificationResolver" service-id="tapestry.page.ComponentSpecificationResolver"/>
         <set-object property="componentPropertySource"  value="infrastructure:componentPropertySource"/>
         <set-object property="localizer" value="infrastructure:resourceLocalizer"/>
