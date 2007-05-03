@@ -294,9 +294,9 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
             templateName =  templateName + "." + templateExtension;
             Resource context = component.getNamespace().getSpecificationLocation();
             
-            if (_contextAssetFactory.assetExists(component.getSpecification(), context, templateName, locale)) {
+            if (_contextAssetFactory.assetExists(component.getSpecification(), context, "/" + templateName, locale)) {
 
-                return _classpathAssetFactory.createAsset(context, component.getSpecification(), templateName, locale, component.getLocation());
+                return _classpathAssetFactory.createAsset(context, component.getSpecification(), "/" + templateName, locale, component.getLocation());
             } else if (_contextAssetFactory.assetExists(component.getSpecification(), context, WEB_INF + templateName, locale)) {
 
                 return _classpathAssetFactory.createAsset(context, component.getSpecification(), WEB_INF + templateName, locale, component.getLocation());
