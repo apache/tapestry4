@@ -26,7 +26,7 @@
   <bean name="delegate" property="delegate"
         class="org.apache.tapestry.workbench.WorkbenchValidationDelegate"/>
 
-  <component id="showError" type="ShowError">
+  <component id="showError" type="form/ShowError">
      <binding name="delegate" value="bean:delegate"/>
   </component>
 

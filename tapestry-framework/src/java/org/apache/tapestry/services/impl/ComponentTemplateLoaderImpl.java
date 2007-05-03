@@ -55,8 +55,8 @@ public class ComponentTemplateLoaderImpl implements ComponentTemplateLoader
     {
         ComponentTemplate template = _templateSource.getTemplate(requestCycle, loadComponent);
 
-        ComponentTemplateLoaderLogic logic = new ComponentTemplateLoaderLogic(_log, _pageLoader,
-                _bindingSource);
+        ComponentTemplateLoaderLogic logic =
+                new ComponentTemplateLoaderLogic(_log, _pageLoader, _bindingSource);
 
         logic.loadTemplate(requestCycle, loadComponent, template);
     }

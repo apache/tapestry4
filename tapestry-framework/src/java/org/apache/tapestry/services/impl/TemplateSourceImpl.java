@@ -14,42 +14,32 @@
 
 package org.apache.tapestry.services.impl;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.Map;
-
+import edu.emory.mathcs.backport.java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Resource;
-import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.*;
+import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.engine.ITemplateSourceDelegate;
 import org.apache.tapestry.event.ReportStatusEvent;
 import org.apache.tapestry.event.ReportStatusListener;
 import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.l10n.ResourceLocalizer;
-import org.apache.tapestry.parse.ComponentTemplate;
-import org.apache.tapestry.parse.ITemplateParser;
-import org.apache.tapestry.parse.ITemplateParserDelegate;
-import org.apache.tapestry.parse.TemplateParseException;
-import org.apache.tapestry.parse.TemplateToken;
-import org.apache.tapestry.parse.TextToken;
-import org.apache.tapestry.parse.TokenType;
+import org.apache.tapestry.parse.*;
 import org.apache.tapestry.resolver.ComponentSpecificationResolver;
 import org.apache.tapestry.services.ComponentPropertySource;
 import org.apache.tapestry.services.TemplateSource;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.util.MultiKey;
+
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * Implementation of {@link org.apache.tapestry.services.TemplateSource}. Templates, once parsed,
@@ -66,6 +56,8 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
 
     public static final String TEMPLATE_ENCODING_PROPERTY_NAME = "org.apache.tapestry.template-encoding";
 
+    private static final String WEB_INF = "/WEB-INF/";
+
     private static final int BUFFER_SIZE = 2000;
 
     private String _serviceId;
@@ -76,12 +68,12 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
     // specification resource path and locale (local may be null), value
     // is the ComponentTemplate.
 
-    private Map _cache = Collections.synchronizedMap(new HashMap());
+    private Map _cache = new ConcurrentHashMap();
 
     // Previously read templates; key is the Resource, value
     // is the ComponentTemplate.
 
-    private Map _templates = Collections.synchronizedMap(new HashMap());
+    private Map _templates = new ConcurrentHashMap();
 
     private ITemplateParser _parser;
 
@@ -104,6 +96,12 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
     /** @since 4.0 */
 
     private ResourceLocalizer _localizer;
+
+    /** @since 4.1.2 */
+    private AssetFactory _classpathAssetFactory;
+
+    /** @since 4.1.2 */
+    private AssetFactory _contextAssetFactory;
 
     /**
      * Clears the template cache. This is used during debugging.
@@ -179,8 +177,7 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
 
         Locale locale = component.getPage().getLocale();
 
-        Object key = new MultiKey(new Object[]
-        { resource, locale }, false);
+        Object key = new MultiKey(new Object[] { resource, locale }, false);
 
         ComponentTemplate result = searchCache(key);
         if (result != null)
@@ -258,7 +255,55 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
                     templateExtension,
                     locale);
 
+        if (result == null) {
+            
+            templateAsset = findSpeclessTemplate(cycle, resource, component, locale, templateExtension);
+            
+            if (templateAsset != null)
+                return readTemplateFromAsset(cycle, component, templateAsset);
+        }
+
         return result;
+    }
+
+    private IAsset findSpeclessTemplate(IRequestCycle cycle, Resource base,
+                                                   IComponent component, Locale locale, String templateExtension)
+    {
+        String componentPackages = component.getNamespace().getPropertyValue("org.apache.tapestry.component-class-packages");
+        if (componentPackages == null)
+            return null;
+
+        String name = base.getName();
+        String className = component.getSpecification().getComponentClassName();
+
+        String[] packages = TapestryUtils.split(componentPackages);
+        for (int i=0; i < packages.length; i++)
+        {
+            int index = className.lastIndexOf(packages[i]);
+            if (index < 0)
+                continue;
+
+            String templateName = name + "." + templateExtension;
+
+            if (_classpathAssetFactory.assetExists(component.getSpecification(), base, templateName, locale))
+                return _classpathAssetFactory.createAsset(base, component.getSpecification(), templateName, locale, component.getLocation());
+
+            // else try various forms of context searches
+
+            templateName = className.substring((index + packages[i].length()) + 1, className.length()).replaceAll("\\.", "/");
+            templateName =  templateName + "." + templateExtension;
+            Resource context = component.getNamespace().getSpecificationLocation();
+            
+            if (_contextAssetFactory.assetExists(component.getSpecification(), context, templateName, locale)) {
+
+                return _classpathAssetFactory.createAsset(context, component.getSpecification(), templateName, locale, component.getLocation());
+            } else if (_contextAssetFactory.assetExists(component.getSpecification(), context, WEB_INF + templateName, locale)) {
+
+                return _classpathAssetFactory.createAsset(context, component.getSpecification(), WEB_INF + templateName, locale, component.getLocation());
+            }
+        }
+        
+        return null;
     }
 
     private ComponentTemplate findPageTemplateInApplicationRoot(IRequestCycle cycle, IPage page,
@@ -330,10 +375,7 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
                     + " in locale " + locale.getDisplayName());
 
         Resource baseTemplateLocation = resource.getRelativeResource(templateBaseName);
-
-        Resource localizedTemplateLocation = _localizer.findLocalization(
-                baseTemplateLocation,
-                locale);
+        Resource localizedTemplateLocation = _localizer.findLocalization(baseTemplateLocation, locale);
 
         if (localizedTemplateLocation == null)
             return null;
@@ -385,7 +427,7 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
     }
 
     /**
-     * This method is currently synchronized, because {@link TemplateParser}is not threadsafe.
+     * This method is currently synchronized, because {@link org.apache.tapestry.parse.TemplateParser} is not threadsafe.
      * Another good candidate for a pooling mechanism, especially because parsing a template may
      * take a while.
      */
@@ -509,7 +551,7 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
     /**
      * Checks for the {@link Tapestry#TEMPLATE_EXTENSION_PROPERTY}in the component's specification,
      * then in the component's namespace's specification. Returns
-     * {@link Tapestry#DEFAULT_TEMPLATE_EXTENSION}if not otherwise overriden.
+     * {@link Tapestry#TEMPLATE_EXTENSION_PROPERTY} if not otherwise overriden.
      */
 
     private String getTemplateExtension(IComponent component)
@@ -577,5 +619,17 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
     public void setLocalizer(ResourceLocalizer localizer)
     {
         _localizer = localizer;
+    }
+
+    /** @since 4.1.2 */
+    public void setClasspathAssetFactory(AssetFactory classpathAssetFactory)
+    {
+        _classpathAssetFactory = classpathAssetFactory;
+    }
+
+    /** @since 4.1.2 */
+    public void setContextAssetFactory(AssetFactory contextAssetFactory)
+    {
+        _contextAssetFactory = contextAssetFactory;
     }
 }

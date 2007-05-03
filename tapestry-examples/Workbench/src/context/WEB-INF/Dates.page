@@ -41,7 +41,7 @@
     <binding name="onchange" value="literal:tapestry.form.submit(this.form);"/>
   </component>
   
-  <component id="showError" type="ShowError">
+  <component id="showError" type="form/ShowError">
      <binding name="delegate" value="bean:delegate"/>
   </component>
 
