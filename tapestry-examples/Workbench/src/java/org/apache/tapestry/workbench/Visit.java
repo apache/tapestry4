@@ -67,7 +67,9 @@ public class Visit implements Serializable
     private String _zipCode;
     
     private String _phone;
-    
+
+    private String _ipAddress;
+
     /**
      * @return the phone
      */
@@ -203,5 +205,15 @@ public class Visit implements Serializable
     public void setZipCode(String zipCode)
     {
         _zipCode = zipCode;
+    }
+
+    public String getIpaddress()
+    {
+        return _ipAddress;
+    }
+
+    public void setIpaddress(String address)
+    {
+        _ipAddress = address;
     }
 }

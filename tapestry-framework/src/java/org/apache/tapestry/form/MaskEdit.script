@@ -21,22 +21,21 @@
   
 <script>
 
-<include-script resource-path="/org/apache/tapestry/contrib/form/MaskEdit.js"/>
+<include-script resource-path="/org/apache/tapestry/form/MaskEdit.js"/>
 
-<input-symbol key="maskEdit" required="yes"/>
-<input-symbol key="maskValue" required="yes"/>
+<input-symbol key="field" required="yes"/>
 
 <let key="formName">
-  ${maskEdit.form.name}
+  ${field.form.name}
 </let>
 
 <let key="functionName">
-  ${maskEdit.name}_init
+  ${field.name}_init
 </let>
 
 <body>
 tapestry.${functionName}=function() {
-  initMask(dojo.byId("${formName}").elements["${maskEdit.name}"], "${maskValue}");
+  initMask(dojo.byId("${formName}").elements["${field.name}"], "${field.mask}");
 }
 </body>
 <initialization>
