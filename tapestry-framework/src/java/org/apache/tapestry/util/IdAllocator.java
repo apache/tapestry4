@@ -14,11 +14,11 @@
 
 package org.apache.tapestry.util;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.util.Defense;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Used to "uniquify" names within a given context. A base name is passed in,
@@ -82,7 +82,25 @@ public class IdAllocator
 
         _namespace = namespace;
     }
-    
+
+    /**
+     * Utility for stripping out the standard allocator generated portion of a component id string
+     * in order to get what the most likely original component id was.
+     *
+     * @param input
+     *          The generated component id.
+     * @return The id stripped of any allocated id meta, if any was found.
+     */
+    public static String convertAllocatedComponentId(String input)
+    {
+        if (input == null)
+            return null;
+
+        int index = input.indexOf(SEPARATOR);
+        
+        return index > -1 ? input.substring(0, index) : input;
+    }
+
     /**
      * Allocates the id. Repeated calls for the same name will return "name",
      * "name_0", "name_1", etc.

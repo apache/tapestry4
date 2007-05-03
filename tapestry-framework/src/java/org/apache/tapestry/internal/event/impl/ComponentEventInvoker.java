@@ -28,6 +28,7 @@ import org.apache.tapestry.internal.event.IComponentEventInvoker;
 import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IEventListener;
+import org.apache.tapestry.util.IdAllocator;
 
 import java.util.*;
 
@@ -78,9 +79,10 @@ public class ComponentEventInvoker implements IComponentEventInvoker, ResetEvent
         String formIdPath = form.getExtendedId();
 
         String targetId = (String)event.getTarget().get("id");
+        String strippedId = IdAllocator.convertAllocatedComponentId(targetId);
         if (targetId == null)
             return;
-
+        
         List comps = getFormEventListeners(formIdPath);
         if (comps == null)
             return;
@@ -105,7 +107,7 @@ public class ComponentEventInvoker implements IComponentEventInvoker, ResetEvent
                 
                 // ensure ~only~ the method that targeted this event gets called!
                 
-                if (!listeners[e].getComponentId().endsWith(targetId))
+                if (!listeners[e].getComponentId().endsWith(strippedId))
                     continue;
                 
                 // handle disabling focus 
