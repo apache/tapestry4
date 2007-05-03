@@ -15,51 +15,59 @@
    limitations under the License.
 -->
 
-<!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
-  "http://tapestry.apache.org/dtd/Tapestry_4_0.dtd">
-	
+<!DOCTYPE component-specification PUBLIC
+        "-//Apache Software Foundation//Tapestry Specification 4.0//EN"
+        "http://tapestry.apache.org/dtd/Tapestry_4_0.dtd">
+
 <component-specification class="org.apache.tapestry.form.TextField" allow-body="no">
 
-  <description>
-    A text input field.
-  </description>
- 
-  <parameter name="value" required="yes">
     <description>
-      The text string to be read and updated.
+        A text input field.
     </description>
-  </parameter>
-  
-  <parameter name="disabled">
-    <description>
-      If true, then the disabled attribute will be written on render, and the
-      TextField will not update its value parameter when the form is submitted.
-    </description>
-  </parameter>
 
-  <parameter name="displayName">
-    <description>
-      The name of the field, which may be used by a FieldLabel.
-    </description>
-  </parameter>
-    
-  <parameter name="hidden">
-    <description>
-      If true, then the TextField will render itself as a password field (that hides the
-      content entered by the user).
-    </description>
-  </parameter>
-  
-  <parameter name="translator" default-value="translator:string"/>
-  <parameter name="validators"/>
-  <parameter name="id" property="idParameter" default-value="id"/>
-  		  
-  <reserved-parameter name="name"/>
-  <reserved-parameter name="type"/>
-  <reserved-parameter name="value"/>
+    <parameter name="value" required="yes">
+        <description>
+            The text string to be read and updated.
+        </description>
+    </parameter>
 
-  <inject property="validatableFieldSupport" object="service:tapestry.form.ValidatableFieldSupport"/>
-  <inject property="translatedFieldSupport" object="service:tapestry.form.TranslatedFieldSupport"/>
-    
+    <parameter name="disabled">
+        <description>
+            If true, then the disabled attribute will be written on render, and the
+            TextField will not update its value parameter when the form is submitted.
+        </description>
+    </parameter>
+
+    <parameter name="displayName">
+        <description>
+            The name of the field, which may be used by a FieldLabel.
+        </description>
+    </parameter>
+
+    <parameter name="hidden">
+        <description>
+            If true, then the TextField will render itself as a password field (that hides the
+            content entered by the user).
+        </description>
+    </parameter>
+
+    <parameter name="translator" default-value="translator:string"/>
+    <parameter name="validators"/>
+    <parameter name="id" property="idParameter" default-value="id"/>
+
+    <parameter name="mask" >
+        <description>
+            The optional regexp mask to apply to the textfield when input is being changed to
+            force a certain type of input.
+        </description>
+    </parameter>
+
+    <reserved-parameter name="name"/>
+    <reserved-parameter name="type"/>
+    <reserved-parameter name="value"/>
+
+    <inject property="validatableFieldSupport" object="service:tapestry.form.ValidatableFieldSupport"/>
+    <inject property="translatedFieldSupport" object="service:tapestry.form.TranslatedFieldSupport"/>
+    <inject property="maskScript" type="script" object="MaskEdit.script"/>
+
 </component-specification>

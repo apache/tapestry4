@@ -14,9 +14,11 @@
 
 package org.apache.tapestry.form;
 
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.*;
 import org.apache.tapestry.valid.ValidatorException;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Implements a component that manages an HTML &lt;input type=text&gt; or
@@ -38,6 +40,8 @@ public abstract class TextField extends AbstractFormComponent implements Transla
 
     public abstract void setValue(Object value);
 
+    public abstract String getMask();
+    
     /**
      * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter,
      *      org.apache.tapestry.IRequestCycle)
@@ -72,6 +76,16 @@ public abstract class TextField extends AbstractFormComponent implements Transla
         writer.closeTag();
 
         renderDelegateSuffix(writer, cycle);
+
+        if (isParameterBound("mask") && !isDisabled()) {
+
+            PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, this);
+
+            Map symbols = new HashMap();
+            symbols.put("field", this);
+            
+            getMaskScript().execute(this, cycle, pageRenderSupport, symbols);
+        }
     }
 
     /**
@@ -98,13 +112,23 @@ public abstract class TextField extends AbstractFormComponent implements Transla
 
     /**
      * Injected.
+     *
+     * @return The Validation service.
      */
     public abstract ValidatableFieldSupport getValidatableFieldSupport();
 
     /**
      * Injected.
+     *
+     * @return The translator service.
      */
     public abstract TranslatedFieldSupport getTranslatedFieldSupport();
+
+    /**
+     * Injected mask editing script.
+     * @return The local mask script template.
+     */
+    public abstract IScript getMaskScript();
 
     /**
      * @see org.apache.tapestry.form.AbstractFormComponent#isRequired()

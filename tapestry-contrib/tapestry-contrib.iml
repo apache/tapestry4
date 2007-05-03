@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module relativePaths="true" type="JAVA_MODULE" version="4">
   <component name="ModuleRootManager" />
-  <component name="NewModuleRootManager" inherit-compiler-output="true">
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/classes" />
     <exclude-output />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
@@ -61,25 +61,16 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../.m2/repository/org/apache/tapestry/tapestry-test/4.1.2-SNAPSHOT/tapestry-test-4.1.2-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.m2/repository/commons-fileupload/commons-fileupload/1.2/commons-fileupload-1.2.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../.m2/repository/org/apache/tapestry/tapestry-test/4.1.1-SNAPSHOT/tapestry-test-4.1.1-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../.m2/repository/org/testng/testng/5.1/testng-5.1-jdk15.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -106,15 +97,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../.m2/repository/com/javaforge/tapestry/tapestry-testng/1.0.0-SNAPSHOT/tapestry-testng-1.0.0-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.m2/repository/logkit/logkit/1.0.1/logkit-1.0.1.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -125,15 +107,6 @@
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.m2/repository/commons-beanutils/commons-beanutils/1.7.0/commons-beanutils-1.7.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../.m2/repository/org/easymock/easymockclassextension/2.2/easymockclassextension-2.2.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -178,6 +151,15 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../.m2/repository/org/easymock/easymockclassextension/2.2.2/easymockclassextension-2.2.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.m2/repository/cglib/cglib-nodep/2.1_3/cglib-nodep-2.1_3.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -197,6 +179,15 @@
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.m2/repository/hivemind/hivemind/1.1.1/hivemind-1.1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../.m2/repository/org/testng/testng/5.5/testng-5.5-jdk15.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

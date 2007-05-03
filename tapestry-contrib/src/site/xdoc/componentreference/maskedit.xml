@@ -92,7 +92,7 @@
                         <td>value</td>
                         <td>string</td>
                         <td>yes</td>
-                        <td> </td>
+                        <td></td>
                         <td>The value to be editted, which is is usually a string.</td>
                     </tr>
                     <tr>
