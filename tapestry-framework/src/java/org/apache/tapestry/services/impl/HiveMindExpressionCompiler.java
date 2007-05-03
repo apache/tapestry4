@@ -33,6 +33,7 @@ import java.util.*;
  *
  */
 public class HiveMindExpressionCompiler extends ExpressionCompiler implements OgnlExpressionCompiler {
+    
     private static final Log _log = LogFactory.getLog(HiveMindExpressionCompiler.class);
 
     private ClassFactory _classFactory;
@@ -154,6 +155,14 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
                 // uc.printStackTrace();
                 // The target object may not fully resolve yet because of a partial tree with a null somewhere, we
                 // don't want to bail out forever because it might be enhancable on another pass eventually
+                return;
+            } catch (javassist.CannotCompileException e) {
+
+                _log.error("Error generating OGNL getter for expression " + expression + " with root " + root + " and body:\n" + getBody, e);
+
+                e.printStackTrace();
+
+                generateFailSafe(context, expression, root);
                 return;
             }
 
@@ -363,7 +372,7 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
             body += "}";
 
             body = body.replaceAll("\\.\\.", ".");
-            
+
             MethodSignature method = new MethodSignature(ref.getType(), ref.getName(), params, null);
             classFab.addMethod(Modifier.PUBLIC, method, body);
         }

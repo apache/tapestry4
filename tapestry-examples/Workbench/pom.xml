@@ -60,6 +60,7 @@
                     <include>**/*.jwc</include>
                     <include>**/*.page</include>
                     <include>**/*.html</include>
+                    <include>**/*.properties</include>
                 </includes>
             </resource>
         </resources>

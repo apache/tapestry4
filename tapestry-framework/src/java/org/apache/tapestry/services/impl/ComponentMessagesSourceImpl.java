@@ -15,20 +15,6 @@
 package org.apache.tapestry.services.impl;
 
 import edu.emory.mathcs.backport.java.util.concurrent.ConcurrentHashMap;
-
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Properties;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Messages;
 import org.apache.hivemind.Resource;
@@ -41,6 +27,12 @@ import org.apache.tapestry.services.ClasspathResourceFactory;
 import org.apache.tapestry.services.ComponentMessagesSource;
 import org.apache.tapestry.services.ComponentPropertySource;
 import org.apache.tapestry.util.text.LocalizedProperties;
+
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.*;
 
 /**
  * Service used to access localized properties for a component.
@@ -275,7 +267,7 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
         String fileName = baseResourceLocation.getName();
         int dotx = fileName.lastIndexOf('.');
 
-        return fileName.substring(0, dotx);
+        return dotx > -1 ? fileName.substring(0, dotx) : fileName;
     }
 
     private Properties readComponentProperties(IComponent component,
@@ -296,7 +288,8 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
 
     private Properties readPropertiesResource(URL resourceURL, String encoding, Properties parent)
     {
-        if (resourceURL == null) return parent;
+        if (resourceURL == null)
+            return parent;
         
         Properties result = new Properties(parent);
         
