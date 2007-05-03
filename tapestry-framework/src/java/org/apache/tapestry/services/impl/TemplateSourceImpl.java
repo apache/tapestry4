@@ -56,7 +56,7 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
 
     public static final String TEMPLATE_ENCODING_PROPERTY_NAME = "org.apache.tapestry.template-encoding";
 
-    private static final String WEB_INF = "/WEB-INF/";
+    private static final String WEB_INF = "WEB-INF/";
 
     private static final int BUFFER_SIZE = 2000;
 
@@ -102,6 +102,19 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
 
     /** @since 4.1.2 */
     private AssetFactory _contextAssetFactory;
+
+    private String _applicationId;
+
+    private Resource _webInfLocation;
+
+    private Resource _webInfAppLocation;
+
+    public void initializeService()
+    {
+        _webInfLocation = _contextRoot.getRelativeResource(WEB_INF);
+
+        _webInfAppLocation = _webInfLocation.getRelativeResource(_applicationId + "/");
+    }
 
     /**
      * Clears the template cache. This is used during debugging.
@@ -287,19 +300,18 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
 
             if (_classpathAssetFactory.assetExists(component.getSpecification(), base, templateName, locale))
                 return _classpathAssetFactory.createAsset(base, component.getSpecification(), templateName, locale, component.getLocation());
-
+            
             // else try various forms of context searches
 
             templateName = className.substring((index + packages[i].length()) + 1, className.length()).replaceAll("\\.", "/");
             templateName =  templateName + "." + templateExtension;
-            Resource context = component.getNamespace().getSpecificationLocation();
-            
-            if (_contextAssetFactory.assetExists(component.getSpecification(), context, "/" + templateName, locale)) {
 
-                return _classpathAssetFactory.createAsset(context, component.getSpecification(), "/" + templateName, locale, component.getLocation());
-            } else if (_contextAssetFactory.assetExists(component.getSpecification(), context, WEB_INF + templateName, locale)) {
+            if (_contextAssetFactory.assetExists(component.getSpecification(), _webInfAppLocation, templateName, locale)) {
 
-                return _classpathAssetFactory.createAsset(context, component.getSpecification(), WEB_INF + templateName, locale, component.getLocation());
+                return _contextAssetFactory.createAsset(_webInfAppLocation, component.getSpecification(),  templateName, locale, component.getLocation());
+            } else if (_contextAssetFactory.assetExists(component.getSpecification(), _webInfLocation, templateName, locale)) {
+
+                return _contextAssetFactory.createAsset(_webInfLocation, component.getSpecification(), templateName, locale, component.getLocation());
             }
         }
         
@@ -631,5 +643,10 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
     public void setContextAssetFactory(AssetFactory contextAssetFactory)
     {
         _contextAssetFactory = contextAssetFactory;
+    }
+
+    public void setApplicationId(String applicationId)
+    {
+        _applicationId = applicationId;
     }
 }
