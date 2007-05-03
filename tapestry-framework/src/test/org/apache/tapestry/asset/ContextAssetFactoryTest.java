@@ -115,8 +115,8 @@ public class ContextAssetFactoryTest extends BaseComponentTestCase
         expect(spec.getLocation()).andReturn(l);
         expect(l.getResource()).andReturn(null);
 
-        expect(context.getResource("asset_fr.png")).andReturn(null);
-        expect(context.getResource("asset.png")).andReturn(null);
+        expect(context.getResource("/asset_fr.png")).andReturn(null);
+        expect(context.getResource("/asset.png")).andReturn(null);
 
         replay();
 

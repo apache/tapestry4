@@ -73,8 +73,14 @@ public class ContextAssetFactory implements AssetFactory
         }
 
         if (localized == null || localized.getResourceURL() == null) {
+            
             // try relative to context root
 
+            // paths must begin with "/" for context resolution
+            
+            if (path != null && !path.startsWith("/"))
+                path = "/" + path;
+            
             Resource base = new WebContextResource(_webContext, path);
             localized = _localizer.findLocalization(base, locale);
         }
