@@ -17,14 +17,14 @@
 
 <!DOCTYPE page-specification PUBLIC 
   "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "http://tapestry.apache.org/dtd/Tapestry_3_0.dtd">
 	
 <page-specification class="org.apache.tapestry.workbench.fields.Fields">
 
     <inject type="state" property="visit" object="session-data" />
 
 	<component id="border" type="Border"/>
-	<component id="showError" type="ShowError">
+	<component id="showError" type="form/ShowError">
 		<binding name="delegate" expression="beans.delegate"/>
 	</component>
 	<component id="form" type="Form">

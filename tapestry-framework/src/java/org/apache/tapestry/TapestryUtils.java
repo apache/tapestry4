@@ -14,13 +14,13 @@
 
 package org.apache.tapestry;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.util.Defense;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Constants and static methods.
@@ -226,8 +226,7 @@ public final class TapestryUtils
 
         if (start == 0 && length == buffer.length)
         {
-            return new String[]
-            { input };
+            return new String[] { input };
         }
 
         // The final token.

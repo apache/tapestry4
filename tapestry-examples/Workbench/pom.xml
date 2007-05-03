@@ -57,6 +57,9 @@
                 <includes>
                     <include>**/*.gif</include>
                     <include>**/*.png</include>
+                    <include>**/*.jwc</include>
+                    <include>**/*.page</include>
+                    <include>**/*.html</include>
                 </includes>
             </resource>
         </resources>

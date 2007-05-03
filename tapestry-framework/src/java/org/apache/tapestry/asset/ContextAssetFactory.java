@@ -56,7 +56,6 @@ public class ContextAssetFactory implements AssetFactory
     Resource findAsset(IComponentSpecification spec, Resource baseResource, String path, Locale locale)
     {
         Resource assetResource = baseResource.getRelativeResource("/").getRelativeResource(path);
-        
         Resource localized = _localizer.findLocalization(assetResource, locale);
 
         if (localized == null && spec != null && spec.getLocation().getResource() != null) {

@@ -253,8 +253,7 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
 
         if (componentResource.getResourceURL() == null) {
             
-            Resource classResource = new ClasspathResource(_classResolver, componentClass.getName().replace('.', '/'));
-            componentResource = classResource.getRelativeResource(type + ".jwc");
+            componentResource = new ClasspathResource(_classResolver, componentClass.getName().replace('.', '/'));
         }
 
         Location location = new LocationImpl(componentResource);

@@ -85,6 +85,8 @@
         <set-service property="componentSpecificationResolver" service-id="tapestry.page.ComponentSpecificationResolver"/>
         <set-object property="componentPropertySource"  value="infrastructure:componentPropertySource"/>
         <set-object property="localizer" value="infrastructure:resourceLocalizer"/>
+        <set-service property="contextAssetFactory" service-id="tapestry.asset.ContextAssetFactory" />
+        <set-service property="classpathAssetFactory" service-id="tapestry.asset.ClasspathAssetFactory" />
         <event-listener service-id="tapestry.ResetEventHub"/>
         <event-listener service-id="tapestry.describe.ReportStatusHub"/>
       </construct>
