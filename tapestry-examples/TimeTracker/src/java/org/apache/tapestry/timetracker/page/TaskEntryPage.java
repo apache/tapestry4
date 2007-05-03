@@ -107,7 +107,7 @@ public abstract class TaskEntryPage<E extends Persistent> extends BasePage
     {
         getBuilder().updateComponent("projectDescription");
     }
-    
+
     public void showDialog()
     {
         Dialog dlg = (Dialog)getComponent("testDialog");
