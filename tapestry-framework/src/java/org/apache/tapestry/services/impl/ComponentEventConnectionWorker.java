@@ -22,6 +22,7 @@ import org.apache.tapestry.engine.DirectEventServiceParameter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.html.Body;
+import org.apache.tapestry.internal.Component;
 import org.apache.tapestry.internal.event.ComponentEventProperty;
 import org.apache.tapestry.internal.event.EventBoundListener;
 import org.apache.tapestry.internal.event.IComponentEventInvoker;
@@ -76,8 +77,12 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
     {
         if (cycle.isRewinding() || TapestryUtils.getOptionalPageRenderSupport(cycle) == null)
             return;
-        
-        // Don't render fields being pre-rendered, otherwise we'll render twice 
+
+        Component icomp = Component.class.isInstance(component) ? (Component)component : null;
+        if (icomp != null && !icomp.hasEvents() && !IForm.class.isInstance(component))
+            return;
+
+        // Don't render fields being pre-rendered, otherwise we'll render twice
         IComponent field = (IComponent)cycle.getAttribute(TapestryUtils.FIELD_PRERENDER);
         if (field != null && field == component)
             return;

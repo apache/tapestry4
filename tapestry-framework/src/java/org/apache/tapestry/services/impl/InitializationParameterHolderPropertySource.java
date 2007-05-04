@@ -18,8 +18,7 @@ import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.web.InitializationParameterHolder;
 
 /**
- * Searches for property values inside objects that implement
- * {@link org.apache.tapestry.web.InitializationParameterHolder}.
+ * Searches for property values inside objects that implement {@link org.apache.tapestry.web.InitializationParameterHolder}.
  * 
  * @author Howard Lewis Ship
  * @since 4.0

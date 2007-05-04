@@ -36,8 +36,7 @@
     
   </configuration-point>
   
-  <service-point id="ComponentEventConnectionWorker" 
-                interface="org.apache.tapestry.services.ComponentRenderWorker">
+  <service-point id="ComponentEventConnectionWorker" interface="org.apache.tapestry.services.ComponentRenderWorker">
     
     Wires javascript events to components, adds javascript contributions to 
     render.

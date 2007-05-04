@@ -28,7 +28,7 @@ public class EventConnectionVisitor implements IComponentVisitor, PoolManageable
     public void visitComponent(IComponent component)
     {
         checkComponentPage(component);
-        
+
         Map events = component.getSpecification().getComponentEvents();
         Set keySet = events.keySet();
         String[] compIds = (String[]) keySet.toArray(new String[keySet.size()]);
@@ -45,6 +45,9 @@ public class EventConnectionVisitor implements IComponentVisitor, PoolManageable
             if (comp == null)
                 continue;
 
+            if (Component.class.isInstance(comp))
+                ((Component)comp).setHasEvents(true);
+            
             // wire up with idPath
 
             String idPath = comp.getExtendedId();
@@ -59,6 +62,12 @@ public class EventConnectionVisitor implements IComponentVisitor, PoolManageable
 
         events = component.getSpecification().getElementEvents();
         Iterator it = events.keySet().iterator();
+
+        // for efficiency later in ComponentEventConnectionWorker
+
+        if (events.size() > 0 && Component.class.isInstance(component)) {
+            ((Component)component).setHasEvents(true);
+        }
 
         while (it.hasNext())
         {
