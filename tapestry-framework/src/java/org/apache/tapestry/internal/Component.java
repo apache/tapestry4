@@ -28,4 +28,19 @@ public interface Component {
      * @return The inner renderers if this component supports more than one type, null otherwise.
      */
     IRender[] getInnerRenderers();
+
+    /**
+     * Checks if this component has been targeted / connected to for client side
+     * event listening via @EventListener.
+     *
+     * @return True if anything has targeted this component, false otherwise.
+     */
+    boolean hasEvents();
+
+    /**
+     * Sets whether or not this component has events.
+     *
+     * @param hasEvents Whether or not this component has connected events.
+     */
+    void setHasEvents(boolean hasEvents);
 }

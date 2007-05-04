@@ -14,12 +14,6 @@
 
 package org.apache.tapestry.services.impl;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.ErrorLog;
@@ -42,24 +36,14 @@ import org.apache.tapestry.error.StaleSessionExceptionPresenter;
 import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.listener.ListenerMapSource;
 import org.apache.tapestry.markup.MarkupWriterSource;
-import org.apache.tapestry.services.ClassFinder;
-import org.apache.tapestry.services.ComponentMessagesSource;
-import org.apache.tapestry.services.ComponentPropertySource;
-import org.apache.tapestry.services.CookieSource;
-import org.apache.tapestry.services.DataSqueezer;
-import org.apache.tapestry.services.Infrastructure;
-import org.apache.tapestry.services.LinkFactory;
-import org.apache.tapestry.services.ObjectPool;
-import org.apache.tapestry.services.RequestCycleFactory;
-import org.apache.tapestry.services.ResetEventHub;
-import org.apache.tapestry.services.ResponseRenderer;
-import org.apache.tapestry.services.ServiceMap;
-import org.apache.tapestry.services.TemplateSource;
+import org.apache.tapestry.services.*;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.web.WebContext;
 import org.apache.tapestry.web.WebContextResource;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
+
+import java.util.*;
 
 /**
  * Allows access to selected HiveMind services.
@@ -90,6 +74,8 @@ public class InfrastructureImpl implements Infrastructure
     private ClassResolver _classResolver;
 
     private ThreadLocale _threadLocale;
+
+    private String _outputEncoding;
 
     public void setLocale(Locale locale)
     {
@@ -220,8 +206,12 @@ public class InfrastructureImpl implements Infrastructure
 
     public String getOutputEncoding()
     {
-        return getApplicationPropertySource().getPropertyValue(
-                "org.apache.tapestry.output-encoding");
+        if (_outputEncoding != null)
+            return _outputEncoding;
+
+        _outputEncoding = getApplicationPropertySource().getPropertyValue("org.apache.tapestry.output-encoding");
+        
+        return _outputEncoding;
     }
 
     public MarkupWriterSource getMarkupWriterSource()
@@ -294,8 +284,7 @@ public class InfrastructureImpl implements Infrastructure
         Object result = _properties.get(propertyName);
 
         if (result == null)
-            throw new ApplicationRuntimeException(ImplMessages
-                    .missingInfrastructureProperty(propertyName));
+            throw new ApplicationRuntimeException(ImplMessages.missingInfrastructureProperty(propertyName));
 
         return result;
     }

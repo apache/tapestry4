@@ -144,7 +144,8 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
     /** @since 4.0 */
 
     private IContainedComponent _containedComponent;
-    
+
+    private boolean _hasEvents;
     
     public void addAsset(String name, IAsset asset)
     {
@@ -220,6 +221,16 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
     public IRender[] getInnerRenderers()
     {
         return null;
+    }
+
+    public boolean hasEvents()
+    {
+        return _hasEvents;
+    }
+
+    public void setHasEvents(boolean hasEvents)
+    {
+        _hasEvents = hasEvents;
     }
 
     /**
