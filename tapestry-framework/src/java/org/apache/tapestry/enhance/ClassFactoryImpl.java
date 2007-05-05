@@ -14,7 +14,6 @@
 package org.apache.tapestry.enhance;
 
 import javassist.CtClass;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.service.ClassFab;
 import org.apache.hivemind.service.ClassFactory;
@@ -46,7 +45,7 @@ public class ClassFactoryImpl implements ClassFactory
             checkPoolExpiration();
             
             CtClass ctNewClass = _classSource.newClass(name, superClass);
-            
+               
             return new ClassFabImpl(_classSource, ctNewClass);
         }
         catch (Exception ex)

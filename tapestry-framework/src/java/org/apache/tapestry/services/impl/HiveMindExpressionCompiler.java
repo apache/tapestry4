@@ -36,6 +36,8 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
     
     private static final Log _log = LogFactory.getLog(HiveMindExpressionCompiler.class);
 
+    private double _globalCounter = 0;
+    
     private ClassFactory _classFactory;
 
     public HiveMindExpressionCompiler(ClassFactory classfactory)
@@ -125,15 +127,16 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
         if (_log.isDebugEnabled())
             _log.debug("Compiling expr class " + expression.getClass().getName() + " and root " + root.getClass().getName() + " with toString:" + expression.toString());
 
-        if (expression.getAccessor() != null)
-            return;
-
         synchronized (expression) {
+
+            if (expression.getAccessor() != null)
+                return;
 
             String getBody = null;
             String setBody = null;
 
-            ClassFab classFab = _classFactory.newClass(expression.getClass().getName() + expression.hashCode() + "Accessor", Object.class);
+            ClassFab classFab = _classFactory.newClass(expression.getClass().getName() + expression.hashCode()
+                                                       + ++_globalCounter + "Accessor", Object.class);
             classFab.addInterface(ExpressionAccessor.class);
 
             MethodSignature valueGetter = new MethodSignature(Object.class, "get", new Class[]{OgnlContext.class, Object.class}, null);
