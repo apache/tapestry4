@@ -213,7 +213,8 @@ public class AssetService implements IEngineService
      * stream.
      */
 
-    public void service(IRequestCycle cycle) throws IOException
+    public void service(IRequestCycle cycle)
+            throws IOException
     {
         String path = cycle.getParameter(PATH);
         String md5Digest = cycle.getParameter(DIGEST);
@@ -334,8 +335,8 @@ public class AssetService implements IEngineService
     
     /** @since 2.2 */
 
-    private void writeAssetContent(IRequestCycle cycle, String resourcePath, URLConnection resourceConnection) 
-    throws IOException
+    private void writeAssetContent(IRequestCycle cycle, String resourcePath, URLConnection resourceConnection)
+            throws IOException
     {
         // Getting the content type and length is very dependant
         // on support from the application server (represented

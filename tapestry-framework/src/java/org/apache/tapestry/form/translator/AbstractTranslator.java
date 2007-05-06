@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.form.translator;
 
-import java.util.Locale;
-
 import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
@@ -26,6 +24,8 @@ import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.valid.ValidationConstants;
 import org.apache.tapestry.valid.ValidatorException;
+
+import java.util.Locale;
 
 /**
  * Abstract {@link Translator} implementation that provides default behavior for trimming, null
@@ -72,8 +72,7 @@ public abstract class AbstractTranslator extends AbstractFormComponentContributo
     {
         String value = text == null ? null : (_trim ? text.trim() : text);
 
-        return HiveMind.isBlank(value) ? getValueForEmptyInput()
-                : parseText(field, messages, value);
+        return HiveMind.isBlank(value) ? getValueForEmptyInput() : parseText(field, messages, value);
     }
 
     protected abstract String formatObject(IFormComponent field, Locale locale, Object object);

@@ -201,6 +201,8 @@ required,email[%email-format],minLength=20[Email addresses must be at least 20 c
 *-----------------+-------------------------------------------+
  {{{../apidocs/org/apache/tapestry/form/translator/NumberTranslator.html}NumberTranslator}} | <<< trim=<true/false>,pattern=<any pattern supported by {{{http://java.sun.com/j2se/1.4.2/docs/api/java/text/NumberFormat.html}NumberFormat}}>,omitZero=<true/false> >>> If true (which is the default for the property), then values that are 0 are rendered to an empty string, not "0" or "0.00". This is useful in most cases where the field is optional; it allows the field to render blank when no value is present.
 *-----------------+-------------------------------------------+
+ {{{../apidocs/org/apache/tapestry/form/translator/BigDecimalTranslator.html}BigDecimalTranslator}} | <<< trim=<true/false>
+*-----------------+-------------------------------------------+
 
 * Extending ValidationDelegate
 

@@ -16,43 +16,44 @@
 -->
 
 <module id="tapestry.form.translator" version="4.0.0" package="org.apache.tapestry.form.translator">
-  
-  Support for input field translators.
-  
 
-  <configuration-point id="Translators" schema-id="hivemind.lib.BeanFactoryContribution">
-    
-    Defines the available translators that can be used to validate user input on fields.
-    
-  </configuration-point>
-    
-  <contribution configuration-id="Translators">
-    <bean name="date" class="DateTranslator"/>
-    <bean name="number" class="NumberTranslator"/>
-    <bean name="string" class="StringTranslator"/>
-  </contribution>   
-  
-  <service-point id="TranslatorBeanFactory" interface="org.apache.hivemind.lib.BeanFactory">
-    <invoke-factory service-id="hivemind.lib.BeanFactoryBuilder">
-      <factory vend-class="Translator" configuration-id="Translators"/>
-    </invoke-factory>
-  </service-point> 
-  
-  <service-point id="TranslatorBindingFactory" interface="org.apache.tapestry.binding.BindingFactory">
-    
-    Factory for the "translator:" binding prefix.
-    
-    <invoke-factory>
-      <construct class="TranslatorBindingFactory">
-        <set-service property="translatorBeanFactory" service-id="TranslatorBeanFactory"/>
-        <set-object property="valueConverter" value="infrastructure:valueConverter"/>  
-      </construct>
-    </invoke-factory>
-    
-  </service-point>
-  
-  <contribution configuration-id="tapestry.bindings.BindingFactories">
-    <binding prefix="translator" service-id="TranslatorBindingFactory"/>
-  </contribution>
-    
+    Support for input field translators.
+
+
+    <configuration-point id="Translators" schema-id="hivemind.lib.BeanFactoryContribution">
+
+        Defines the available translators that can be used to validate user input on fields.
+
+    </configuration-point>
+
+    <contribution configuration-id="Translators">
+        <bean name="date" class="DateTranslator"/>
+        <bean name="number" class="NumberTranslator"/>
+        <bean name="string" class="StringTranslator"/>
+        <bean name="bigdecimal" class="BigDecimalTranslator" />
+    </contribution>
+
+    <service-point id="TranslatorBeanFactory" interface="org.apache.hivemind.lib.BeanFactory">
+        <invoke-factory service-id="hivemind.lib.BeanFactoryBuilder">
+            <factory vend-class="Translator" configuration-id="Translators"/>
+        </invoke-factory>
+    </service-point>
+
+    <service-point id="TranslatorBindingFactory" interface="org.apache.tapestry.binding.BindingFactory">
+
+        Factory for the "translator:" binding prefix.
+
+        <invoke-factory>
+            <construct class="TranslatorBindingFactory">
+                <set-service property="translatorBeanFactory" service-id="TranslatorBeanFactory"/>
+                <set-object property="valueConverter" value="infrastructure:valueConverter"/>
+            </construct>
+        </invoke-factory>
+
+    </service-point>
+
+    <contribution configuration-id="tapestry.bindings.BindingFactories">
+        <binding prefix="translator" service-id="TranslatorBindingFactory"/>
+    </contribution>
+
 </module>
