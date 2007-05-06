@@ -16,7 +16,7 @@
  * limitations under the License.
  */
  -->
-<module relativePaths="true" type="JAVA_MODULE" version="4">
+<module relativePaths="false" type="JAVA_MODULE" version="4">
   <!-- If it's a war project:
   <component name="WebModuleProperties">
     <containerElement type="module" name="${dep.artifactId}">
@@ -34,20 +34,16 @@
   </component>
   -->
   <component name="ModuleRootManager" />
-  <component name="NewModuleRootManager" inherit-compiler-output="true">
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/classes" />
     <exclude-output />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/src/main/resources/archetype-resources/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/main/resources/archetype-resources/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="tapestry-annotations" />
-    <orderEntry type="module" module-name="tapestry-contrib" />
-    <orderEntry type="module" module-name="tapestry-framework" />
     <orderEntryProperties />
   </component>
 </module>
