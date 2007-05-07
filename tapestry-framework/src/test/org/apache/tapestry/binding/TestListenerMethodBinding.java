@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.binding;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.*;
 import org.apache.tapestry.coerce.ValueConverter;
@@ -141,6 +142,33 @@ public class TestListenerMethodBinding extends BindingTestCase
         {
             assertSame(t, ex);
         }
+
+        verify();
+    }
+
+    @Test(expectedExceptions = RenderRewoundException.class)
+    public void test_Invoke_Render_Rewound()
+    {        
+        IComponent component = newMock(IComponent.class);
+        ListenerMap map = newListenerMap();
+        IActionListener listener = newMock(IActionListener.class);
+        ValueConverter vc = newMock(ValueConverter.class);
+        IComponent sourceComponent = newMock(IComponent.class);
+        Location l = newMock(Location.class);
+        IRequestCycle cycle = newMock(IRequestCycle.class);
+
+        trainGetListener(component, map, listener);
+
+        listener.actionTriggered(sourceComponent, cycle);
+
+        ApplicationRuntimeException t = new RenderRewoundException(null);
+        expectLastCall().andThrow(t);
+
+        replay();
+
+        ListenerMethodBinding b = new ListenerMethodBinding("param", vc, l, component, "foo");
+
+        b.actionTriggered(sourceComponent, cycle);
 
         verify();
     }
