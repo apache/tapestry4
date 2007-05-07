@@ -84,8 +84,12 @@ public class ListenerMethodBinding extends AbstractBinding implements IActionLis
         {
             throw ex;
         }
-        catch (RuntimeException ex)
+        catch (RenderRewoundException ex)
         {
+            throw ex;
+        }
+        catch (RuntimeException ex)
+        {   
             throw new BindingException(BindingMessages.listenerMethodFailure(
                     _component,
                     _methodName,

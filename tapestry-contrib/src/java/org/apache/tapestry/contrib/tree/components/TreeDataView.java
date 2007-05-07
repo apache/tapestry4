@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.contrib.tree.components;
 
-import java.util.Iterator;
-
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
@@ -24,13 +22,13 @@ import org.apache.tapestry.contrib.tree.model.ITreeModel;
 import org.apache.tapestry.contrib.tree.model.ITreeRowSource;
 import org.apache.tapestry.contrib.tree.model.TreeRowObject;
 
+import java.util.Iterator;
+
 /**
  * @author tsveltin ?
  */
 public abstract class TreeDataView extends BaseComponent implements
-        ITreeRowSource
-{
-
+        ITreeRowSource {
     private TreeRowObject m_objTreeRowObject = null;
 
     private int m_nTreeDeep = -1;
@@ -52,8 +50,7 @@ public abstract class TreeDataView extends BaseComponent implements
     public void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         // render data
-        Object objExistedTreeModelSource = cycle
-                .getAttribute(ITreeRowSource.TREE_ROW_SOURCE_ATTRIBUTE);
+        Object objExistedTreeModelSource = cycle.getAttribute(ITreeRowSource.TREE_ROW_SOURCE_ATTRIBUTE);
         cycle.setAttribute(ITreeRowSource.TREE_ROW_SOURCE_ATTRIBUTE, this);
 
         TreeView objView = getTreeView();
@@ -62,46 +59,45 @@ public abstract class TreeDataView extends BaseComponent implements
 
         Object objRoot = objTreeDataModel.getRoot();
         Object objRootUID = objTreeDataModel.getUniqueKey(objRoot, null);
-        if (getShowRootNode())
-        {
+        
+        if (getShowRootNode()) {
+
             walkTree(objRoot, objRootUID, 0, objTreeModel, writer, cycle,
-                    TreeRowObject.FIRST_LAST_ROW, new int[0], true);
-        }
-        else
-        {
+                     TreeRowObject.FIRST_LAST_ROW, new int[0], true);
+        } else {
+
             boolean bFirst = true;
-            int nChildenCount = objTreeModel.getTreeDataModel().getChildCount(
-                    objRoot);
-            int nRowPossiotionType = nChildenCount == 1 ? TreeRowObject.FIRST_LAST_ROW
-                    : TreeRowObject.FIRST_ROW;
-            for(Iterator iter = objTreeModel.getTreeDataModel().getChildren(
-                    objRoot); iter.hasNext();)
+
+            int nChildenCount = objTreeModel.getTreeDataModel().getChildCount(objRoot);
+            int nRowPossiotionType = nChildenCount == 1 ? TreeRowObject.FIRST_LAST_ROW : TreeRowObject.FIRST_ROW;
+
+            for (Iterator iter = objTreeModel.getTreeDataModel().getChildren(objRoot); iter.hasNext();)
             {
                 Object objChild = iter.next();
-                Object objChildUID = objTreeModel.getTreeDataModel()
-                        .getUniqueKey(objChild, objRoot);
+                Object objChildUID = objTreeModel.getTreeDataModel().getUniqueKey(objChild, objRoot);
+
                 boolean bChildLast = !iter.hasNext();
-                if (!bFirst)
-                {
+                if (!bFirst) {
+
                     if (bChildLast)
                         nRowPossiotionType = TreeRowObject.LAST_ROW;
-                    else nRowPossiotionType = TreeRowObject.MIDDLE_ROW;
+                    else
+                        nRowPossiotionType = TreeRowObject.MIDDLE_ROW;
                 }
 
                 walkTree(objChild, objChildUID, 0, objTreeModel, writer, cycle,
-                        nRowPossiotionType, new int[0], bChildLast);
+                         nRowPossiotionType, new int[0], bChildLast);
 
                 bFirst = false;
             }
         }
 
-        cycle.setAttribute(ITreeRowSource.TREE_ROW_SOURCE_ATTRIBUTE,
-                objExistedTreeModelSource);
+        cycle.setAttribute(ITreeRowSource.TREE_ROW_SOURCE_ATTRIBUTE, objExistedTreeModelSource);
     }
 
     public void walkTree(Object objParent, Object objParentUID, int nDepth,
-            ITreeModel objTreeModel, IMarkupWriter writer, IRequestCycle cycle,
-            int nRowPossiotionType, int[] arrConnectImages, boolean bLast)
+                         ITreeModel objTreeModel, IMarkupWriter writer, IRequestCycle cycle,
+                         int nRowPossiotionType, int[] arrConnectImages, boolean bLast)
     {
         int rowPositionType = nRowPossiotionType;
         m_nTreeDeep = nDepth;
@@ -109,24 +105,22 @@ public abstract class TreeDataView extends BaseComponent implements
                 objParent);
         boolean bLeaf = (nNumberOfChildren == 0) ? true : false;
         m_objTreeRowObject = new TreeRowObject(objParent, objParentUID, nDepth,
-                bLeaf, rowPositionType, arrConnectImages);
+                                               bLeaf, rowPositionType, arrConnectImages);
 
         super.renderComponent(writer, cycle);
 
         boolean bContain = objTreeModel.getTreeStateModel()
                 .isUniqueKeyExpanded(objParentUID);
-        if (bContain)
-        {
+        if (bContain) {
             int[] arrConnectImagesNew = new int[arrConnectImages.length + 1];
             System.arraycopy(arrConnectImages, 0, arrConnectImagesNew, 0,
-                    arrConnectImages.length);
+                             arrConnectImages.length);
             if (bLast)
                 arrConnectImagesNew[arrConnectImagesNew.length - 1] = TreeRowObject.EMPTY_CONN_IMG;
             else arrConnectImagesNew[arrConnectImagesNew.length - 1] = TreeRowObject.LINE_CONN_IMG;
 
-            for(Iterator iter = objTreeModel.getTreeDataModel().getChildren(
-                    objParent); iter.hasNext();)
-            {
+            for (Iterator iter = objTreeModel.getTreeDataModel().getChildren(
+                    objParent); iter.hasNext();) {
                 Object objChild = iter.next();
                 Object objChildUID = objTreeModel.getTreeDataModel()
                         .getUniqueKey(objChild, objParentUID);
@@ -135,8 +129,8 @@ public abstract class TreeDataView extends BaseComponent implements
                     rowPositionType = TreeRowObject.LAST_ROW;
                 else rowPositionType = TreeRowObject.MIDDLE_ROW;
                 walkTree(objChild, objChildUID, nDepth + 1, objTreeModel,
-                        writer, cycle, rowPositionType, arrConnectImagesNew,
-                        bChildLast);
+                         writer, cycle, rowPositionType, arrConnectImagesNew,
+                         bChildLast);
             }
         }
     }

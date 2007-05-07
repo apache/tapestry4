@@ -14,10 +14,6 @@
 
 package org.apache.tapestry.contrib.tree.components.table;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
@@ -28,13 +24,13 @@ import org.apache.tapestry.contrib.table.model.simple.SimpleListTableDataModel;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumnModel;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableModel;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableSessionStateManager;
-import org.apache.tapestry.contrib.tree.model.ITreeDataModel;
-import org.apache.tapestry.contrib.tree.model.ITreeModel;
-import org.apache.tapestry.contrib.tree.model.ITreeModelSource;
-import org.apache.tapestry.contrib.tree.model.ITreeRowSource;
-import org.apache.tapestry.contrib.tree.model.TreeRowObject;
+import org.apache.tapestry.contrib.tree.model.*;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEvent;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  */
@@ -94,6 +90,7 @@ public abstract class TreeTableDataView extends BaseComponent implements
 
             Object objRoot = objTreeDataModel.getRoot();
             Object objRootUID = objTreeDataModel.getUniqueKey(objRoot, null);
+            
             if (getShowRootNode())
             {
                 walkTree(arrAllExpandedNodes, objRoot, objRootUID, 0,

@@ -14,30 +14,11 @@
 
 package org.apache.tapestry.form;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IForm;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRender;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.NestedMarkupWriter;
-import org.apache.tapestry.PageRenderSupport;
-import org.apache.tapestry.StaleLinkException;
-import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.*;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.json.JSONObject;
@@ -46,11 +27,11 @@ import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.IdAllocator;
 import org.apache.tapestry.valid.IValidationDelegate;
 
+import java.util.*;
+
 /**
  * Encapsulates most of the behavior of a Form component.
  * 
- * @author Howard M. Lewis Ship
- * @since 4.0
  */
 public class FormSupportImpl implements FormSupport
 {
@@ -159,8 +140,14 @@ public class FormSupportImpl implements FormSupport
 
     private final PageRenderSupport _pageRenderSupport;
 
+    /**
+     * Client side validation is built up using a json object syntax structure
+     */
     private final JSONObject _profile;
     
+    /**
+     * Used to detect whether or not a form component has been updated and will require form sync on ajax requests
+     */
     private boolean _fieldUpdating;
     
     public FormSupportImpl(IMarkupWriter writer, IRequestCycle cycle, IForm form)
@@ -185,6 +172,7 @@ public class FormSupportImpl implements FormSupport
      * Alternate constructor used for testing only.
      * 
      * @param cycle
+     *          The current cycle.
      */
     FormSupportImpl(IRequestCycle cycle)
     {
@@ -554,16 +542,16 @@ public class FormSupportImpl implements FormSupport
         // then do nothing.
         
         if (!_cycle.isFocusDisabled() && fieldId != null && _form.getFocus() 
-                && _cycle.getAttribute(FIELD_FOCUS_ATTRIBUTE) == null) {
-            
+                && _cycle.getAttribute(FIELD_FOCUS_ATTRIBUTE) == null)
+        {
             _pageRenderSupport.addInitializationScript(_form, "dojo.require(\"tapestry.form\");tapestry.form.focusField('" + fieldId + "');");
             _cycle.setAttribute(FIELD_FOCUS_ATTRIBUTE, Boolean.TRUE);
         }
         
         // register the validation profile with client side form manager
         
-        if (_form.isClientValidationEnabled()) {
-            
+        if (_form.isClientValidationEnabled())
+        {    
             _pageRenderSupport.addInitializationScript(_form, "dojo.require(\"tapestry.form\");tapestry.form.clearProfiles('"
                     + formId + "'); tapestry.form.registerProfile('" + formId + "'," 
                     + _profile.toString() + ");");
@@ -573,6 +561,9 @@ public class FormSupportImpl implements FormSupport
     /**
      * Pre-renders the form, setting up some client-side form support. Returns the name of the
      * client-side form event manager variable.
+     *
+     * @param formId
+     *          The client id of the form.
      */
     protected void emitEventManagerInitialization(String formId)
     {
@@ -631,7 +622,6 @@ public class FormSupportImpl implements FormSupport
             throw new StaleLinkException(FormMessages.formTooFewIds(_form, expected
                     - _allocatedIdIndex, nextExpectedId), _form);
         }
-
         
         runDeferredRunnables();
         
@@ -642,7 +632,6 @@ public class FormSupportImpl implements FormSupport
         // javascript enabled.
         
         return FormConstants.SUBMIT_NORMAL;
-
     }
 
     private void runDeferredRunnables()
@@ -651,7 +640,7 @@ public class FormSupportImpl implements FormSupport
         while (i.hasNext())
         {
             Runnable r = (Runnable) i.next();
-
+            
             r.run();
         }
     }
