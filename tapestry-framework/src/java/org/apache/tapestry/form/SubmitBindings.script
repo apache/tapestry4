@@ -18,11 +18,21 @@
                               "onclick", "event${key}");
         tapestry.event${key}=function(e){
             dojo.event.browser.stopEvent(e);
-            <if expression="type != null">
-                tapestry.form.${type}("${submit.form.clientId}", "${submit.name}", ${parms});
+            <if expression="parms != null">
+                <if expression="type != null">
+                    tapestry.form.${type}("${submit.form.clientId}", "${submit.name}", ${parms});
+                </if>
+                <if-not expression="type != null">
+                    tapestry.form.submit("${submit.form.clientId}", "${submit.name}", ${parms});
+                </if-not>
             </if>
-            <if-not expression="type != null">
-                tapestry.form.submit("${submit.form.clientId}", "${submit.name}", ${parms});
+            <if-not expression="parms != null">
+                <if expression="type != null">
+                    tapestry.form.${type}("${submit.form.clientId}", "${submit.name}");
+                </if>
+                <if-not expression="type != null">
+                    tapestry.form.submit("${submit.form.clientId}", "${submit.name}");
+                </if-not>
             </if-not>
         };
         dojo.event.connect(dojo.byId("${submit.clientId}"), "onclick", tapestry, "event${key}");

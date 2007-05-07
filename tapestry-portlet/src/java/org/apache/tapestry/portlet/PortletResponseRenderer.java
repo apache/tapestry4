@@ -14,12 +14,12 @@
 
 package org.apache.tapestry.portlet;
 
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletRequest;
-
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
+
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
 
 /**
  * Sets render parameters on the current {@link javax.portlet.ActionResponse}
@@ -34,7 +34,6 @@ import org.apache.tapestry.services.ServiceConstants;
  */
 public class PortletResponseRenderer implements ResponseRenderer
 {
-
     private PortletRequest _request;
 
     private ActionResponse _response;
@@ -42,14 +41,11 @@ public class PortletResponseRenderer implements ResponseRenderer
     public void renderResponse(IRequestCycle cycle)
     {
         String pageName = cycle.getPage().getPageName();
-
-        _response.setRenderParameter(ServiceConstants.SERVICE,
-                PortletConstants.RENDER_SERVICE);
+        
+        _response.setRenderParameter(ServiceConstants.SERVICE, PortletConstants.RENDER_SERVICE);
         _response.setRenderParameter(ServiceConstants.PAGE, pageName);
-        _response.setRenderParameter(PortletConstants.PORTLET_MODE, _request
-                .getPortletMode().toString());
-        _response.setRenderParameter(PortletConstants.WINDOW_STATE, _request
-                .getWindowState().toString());
+        _response.setRenderParameter(PortletConstants.PORTLET_MODE, _request.getPortletMode().toString());
+        _response.setRenderParameter(PortletConstants.WINDOW_STATE, _request.getWindowState().toString());
     }
 
     public void setResponse(ActionResponse response)
