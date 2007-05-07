@@ -14,10 +14,6 @@
 
 package org.apache.tapestry.portlet;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Date;
-
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
@@ -28,6 +24,10 @@ import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.services.impl.DefaultResponseBuilder;
 import org.apache.tapestry.util.ContentType;
 import org.apache.tapestry.web.WebResponse;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Date;
 
 /**
  * The guts of rendering a page as a portlet response; used by
@@ -59,8 +59,7 @@ public class PortletRendererImpl implements PortletRenderer
         
         PrintWriter printWriter = _response.getPrintWriter(contentType);
         
-        IMarkupWriter writer = _markupWriterSource.newMarkupWriter(printWriter,
-                contentType);
+        IMarkupWriter writer = _markupWriterSource.newMarkupWriter(printWriter, contentType);
         
         String namespace = _response.getNamespace();
         
