@@ -37,9 +37,7 @@ import java.util.Set;
  * Contains the logic from {@link org.apache.tapestry.services.impl.ComponentTemplateLoaderImpl},
  * which creates one of these instances to process the request. This is necessary because the
  * service must be re-entrant (because templates can contain components that have templates).
- * 
- * @author Howard Lewis Ship
- * @since 4.0
+ *
  */
 public class ComponentTemplateLoaderLogic
 {
@@ -69,7 +67,7 @@ public class ComponentTemplateLoaderLogic
     }
 
     public void loadTemplate(IRequestCycle requestCycle, ITemplateComponent loadComponent,
-            ComponentTemplate template)
+                             ComponentTemplate template)
     {
         _requestCycle = requestCycle;
         _loadComponent = loadComponent;
@@ -110,7 +108,6 @@ public class ComponentTemplateLoaderLogic
             if (type == TokenType.LOCALIZATION)
             {
                 process((LocalizationToken) token);
-                continue;
             }
         }
 
@@ -118,8 +115,8 @@ public class ComponentTemplateLoaderLogic
         // of date, too.
 
         if (_stackx != 0)
-            throw new ApplicationRuntimeException(Tapestry
-                    .getMessage("BaseComponent.unbalance-open-tags"), _loadComponent, null, null);
+            throw new ApplicationRuntimeException(Tapestry.getMessage("BaseComponent.unbalance-open-tags"),
+                                                  _loadComponent, null, null);
 
         checkAllComponentsReferenced();
     }
@@ -142,7 +139,7 @@ public class ComponentTemplateLoaderLogic
 
         if (!_activeComponent.getSpecification().getAllowBody())
             throw createBodylessComponentException(_activeComponent);
-        
+
         _activeComponent.addBody(token);
     }
 
@@ -164,9 +161,8 @@ public class ComponentTemplateLoaderLogic
         // Make sure the template contains each component only once.
 
         if (_seenIds.contains(id))
-            throw new ApplicationRuntimeException(ImplMessages.multipleComponentReferences(
-                    _loadComponent,
-                    id), _loadComponent, token.getLocation(), null);
+            throw new ApplicationRuntimeException(ImplMessages.multipleComponentReferences(_loadComponent,id),
+                                                  _loadComponent, token.getLocation(), null);
 
         _seenIds.add(id);
 
@@ -179,7 +175,7 @@ public class ComponentTemplateLoaderLogic
 
             if (!_activeComponent.getSpecification().getAllowBody())
                 throw createBodylessComponentException(_activeComponent);
-            
+
             _activeComponent.addBody(component);
         }
 
@@ -199,19 +195,17 @@ public class ComponentTemplateLoaderLogic
 
         if (cc != null)
             throw new ApplicationRuntimeException(ImplMessages.dupeComponentId(id, cc),
-                    _loadComponent, location, null);
+                                                  _loadComponent, location, null);
     }
 
     private IComponent createImplicitComponent(String id, String componentType, Location location)
     {
-        IComponent result = _pageLoader.createImplicitComponent(
+        return _pageLoader.createImplicitComponent(
                 _requestCycle,
                 _loadComponent,
                 id,
                 componentType,
                 location);
-
-        return result;
     }
 
     private IComponent getEmbeddedComponent(String id)
@@ -226,7 +220,7 @@ public class ComponentTemplateLoaderLogic
 
         if (_stackx <= 0)
             throw new ApplicationRuntimeException(ImplMessages.unbalancedCloseTags(),
-                    _loadComponent, token.getLocation(), null);
+                                                  _loadComponent, token.getLocation(), null);
 
         // Null and forget the top element on the stack.
 
@@ -252,9 +246,9 @@ public class ComponentTemplateLoaderLogic
     void addTemplateBindings(IComponent component, OpenToken token)
     {
         // sets the html tag name used to specify the component
-        
+
         component.setTemplateTagName(token.getTag());
-        
+
         IComponentSpecification spec = component.getSpecification();
 
         Map attributes = token.getAttributesMap();
@@ -299,7 +293,7 @@ public class ComponentTemplateLoaderLogic
         // add a static binding carrying the template tag
 
         if (spec.getParameter(TemplateSource.TEMPLATE_TAG_PARAMETER_NAME) != null
-                && component.getBinding(TemplateSource.TEMPLATE_TAG_PARAMETER_NAME) == null)
+            && component.getBinding(TemplateSource.TEMPLATE_TAG_PARAMETER_NAME) == null)
         {
             IBinding binding = _bindingSource.createBinding(
                     component,
@@ -318,8 +312,8 @@ public class ComponentTemplateLoaderLogic
      * It is an error to specify expression bindings in both the specification and the template.
      */
 
-    private void addBinding(IComponent component, IComponentSpecification spec, String name,
-            IBinding binding)
+    private void addBinding(IComponent component, IComponentSpecification spec,
+                            String name, IBinding binding)
     {
 
         // If matches a formal parameter name, allow it to be set
@@ -331,8 +325,8 @@ public class ComponentTemplateLoaderLogic
             component.setBinding(name, binding);
     }
 
-    private boolean validate(IComponent component, IComponentSpecification spec, String name,
-            IBinding binding)
+    private boolean validate(IComponent component, IComponentSpecification spec,
+                             String name, IBinding binding)
     {
         // TODO: This is ugly! Need a better/smarter way, even if we have to extend BindingSource
         // to tell us.
@@ -351,9 +345,8 @@ public class ComponentTemplateLoaderLogic
                 if (isLiteral)
                     return false;
 
-                throw new ApplicationRuntimeException(ImplMessages
-                        .templateBindingForInformalParameter(_loadComponent, name, component),
-                        component, binding.getLocation(), null);
+                throw new ApplicationRuntimeException(ImplMessages.templateBindingForInformalParameter(_loadComponent, name, component),
+                                                      component, binding.getLocation(), null);
             }
 
             // If the name is reserved (matches a formal parameter
@@ -367,9 +360,8 @@ public class ComponentTemplateLoaderLogic
                 if (isLiteral)
                     return false;
 
-                throw new ApplicationRuntimeException(ImplMessages
-                        .templateBindingForReservedParameter(_loadComponent, name, component),
-                        component, binding.getLocation(), null);
+                throw new ApplicationRuntimeException(ImplMessages.templateBindingForReservedParameter(_loadComponent, name, component),
+                                                      component, binding.getLocation(), null);
             }
         }
 
@@ -424,7 +416,6 @@ public class ComponentTemplateLoaderLogic
 
     private ApplicationRuntimeException createBodylessComponentException(IComponent component)
     {
-        return new ApplicationRuntimeException(ImplMessages.bodylessComponent(), component, null,
-                null);
+        return new ApplicationRuntimeException(ImplMessages.bodylessComponent(), component, null, null);
     }
 }

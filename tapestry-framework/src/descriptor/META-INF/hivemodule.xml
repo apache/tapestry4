@@ -207,6 +207,7 @@
       <construct class="impl.ComponentMessagesSourceImpl">
         <event-listener service-id="ResetEventHub"/>
         <set-object property="componentPropertySource" value="infrastructure:componentPropertySource"/>
+        <set-service property="componentResourceResolver" service-id="tapestry.page.ComponentResourceResolver" />
       </construct>
     </invoke-factory>
     

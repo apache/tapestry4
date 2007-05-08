@@ -14,12 +14,6 @@
 
 package org.apache.tapestry.services.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.lib.chain.ChainBuilder;
 import org.apache.tapestry.IComponent;
@@ -29,6 +23,8 @@ import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.services.ComponentPropertySource;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.util.PropertyHolderPropertySource;
+
+import java.util.*;
 
 /**
  * Implementation of tapestry.props.ComponentPropertySource.
@@ -94,8 +90,7 @@ public class ComponentPropertySourceImpl implements ComponentPropertySource, Res
     {
         Resource key = component.getSpecification().getSpecificationLocation();
 
-        LocalizedPropertySource result = (LocalizedPropertySource) _localizedComponentSources
-                .get(key);
+        LocalizedPropertySource result = (LocalizedPropertySource) _localizedComponentSources.get(key);
 
         if (result == null)
         {
@@ -111,8 +106,7 @@ public class ComponentPropertySourceImpl implements ComponentPropertySource, Res
     {
         Resource key = namespace.getSpecificationLocation();
 
-        LocalizedPropertySource result = (LocalizedPropertySource) _localizedNamespaceSources
-                .get(key);
+        LocalizedPropertySource result = (LocalizedPropertySource) _localizedNamespaceSources.get(key);
 
         if (result == null)
         {
