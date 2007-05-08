@@ -1,2 +1,0 @@
-
-({"statusLabel":"trascina per ridimensionare"})

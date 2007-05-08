@@ -1,2 +1,0 @@
-
-({"selectDate":"Seleziona una data"})
