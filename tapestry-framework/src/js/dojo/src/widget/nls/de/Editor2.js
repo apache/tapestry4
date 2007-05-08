@@ -1,2 +1,0 @@
-
-({"linkTarget":"Ziel","createLinkDialogSelectError":"Bitte selekieren Sie text um daraus einen Link zu erzeugen.","linkClass":"Klasse","linkWindowTop":"Oberes Fenster","createLinkDialogTitle":"Link einfügen/bearbeiten","linkUrl":"URL","linkWindowNew":"Neues Fenster","insertImageDialogTitle":"Bild einfügen/bearbeiten","linkWindowSelf":"Self"})

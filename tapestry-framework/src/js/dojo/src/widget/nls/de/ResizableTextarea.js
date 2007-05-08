@@ -1,2 +1,0 @@
-
-({"statusLabel":"Ziehen zum Vergrößern"})
