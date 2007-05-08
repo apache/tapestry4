@@ -73,8 +73,7 @@ public class LocalizedWebContextResourceFinder
             String candidatePath = generator.next();
 
             if (isExistingResource(candidatePath))
-                return new LocalizedResource(candidatePath, generator
-                        .getCurrentLocale());
+                return new LocalizedResource(candidatePath, generator.getCurrentLocale());
         }
 
         return null;

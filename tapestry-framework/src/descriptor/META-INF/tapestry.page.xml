@@ -135,6 +135,21 @@
 
     </service-point>
 
+    <service-point id="ComponentResourceResolver" interface="org.apache.tapestry.resolver.IComponentResourceResolver">
+
+        Locates and loads resource relative to a component / page.
+
+        <invoke-factory>
+            <construct class="org.apache.tapestry.resolver.ComponentResourceResolverImpl">
+                <set-object property="contextRoot" value="infrastructure:contextRoot"/>
+                <set-object property="applicationId" value="infrastructure:applicationId"/>
+                <set-service property="contextAssetFactory" service-id="tapestry.asset.ContextAssetFactory" />
+                <set-service property="classpathAssetFactory" service-id="tapestry.asset.ClasspathAssetFactory" />
+            </construct>
+        </invoke-factory>
+
+    </service-point>
+
     <configuration-point id="PageClassProviderChain" schema-id="hivemind.lib.ChainContribution">
 
         Chain of objects implementing ComponentClassProvider that are used to locate  the page class

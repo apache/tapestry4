@@ -14,11 +14,6 @@
 
 package org.apache.tapestry.junit;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Locale;
-
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Messages;
 import org.apache.hivemind.Resource;
@@ -34,6 +29,7 @@ import org.apache.tapestry.enhance.EnhancementOperationImpl;
 import org.apache.tapestry.enhance.InjectMessagesWorker;
 import org.apache.tapestry.enhance.InjectSpecificationWorker;
 import org.apache.tapestry.html.BasePage;
+import org.apache.tapestry.resolver.ComponentResourceResolverImpl;
 import org.apache.tapestry.services.ComponentMessagesSource;
 import org.apache.tapestry.services.ComponentPropertySource;
 import org.apache.tapestry.services.impl.ClasspathResourceFactoryImpl;
@@ -43,6 +39,11 @@ import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
 import org.apache.tapestry.spec.LibrarySpecification;
 import org.testng.annotations.Test;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
 /**
  * Tests the class {@link org.apache.tapestry.services.impl.ComponentMessagesSourceImpl}.
@@ -105,7 +106,6 @@ public class TestComponentMessages extends TapestryTestCase
         String actual = messages.getMessage(key);
 
         assertEquals(expected, actual);
-
     }
 
     private static final String MOCK1 = "/org/apache/tapestry/junit/MockPage1.page";
@@ -164,6 +164,7 @@ public class TestComponentMessages extends TapestryTestCase
         ComponentMessagesSourceImpl source = new ComponentMessagesSourceImpl();
         source.setClasspathResourceFactory(new ClasspathResourceFactoryImpl(new DefaultClassResolver()));
         source.setComponentPropertySource(new NullComponentPropertySource());
+        source.setComponentResourceResolver(new ComponentResourceResolverImpl());
 
         IComponentSpecification spec = newSpec(location);
         spec.setLocation(_locationFixture);
@@ -182,6 +183,7 @@ public class TestComponentMessages extends TapestryTestCase
         ComponentMessagesSourceImpl source = new ComponentMessagesSourceImpl();
         source.setClasspathResourceFactory(new ClasspathResourceFactoryImpl(new DefaultClassResolver()));
         source.setComponentPropertySource(new NullComponentPropertySource());
+        source.setComponentResourceResolver(new ComponentResourceResolverImpl());
 
         IComponentSpecification spec = newSpec(location);
         spec.setLocation(_locationFixture);
@@ -353,6 +355,7 @@ public class TestComponentMessages extends TapestryTestCase
         ComponentMessagesSourceImpl source = new ComponentMessagesSourceImpl();
         source.setClasspathResourceFactory(new ClasspathResourceFactoryImpl(new DefaultClassResolver()));
         source.setComponentPropertySource(new NullComponentPropertySource());
+        source.setComponentResourceResolver(new ComponentResourceResolverImpl());
 
         IComponentSpecification spec = newSpec(MOCK1);
         spec.setLocation(_locationFixture);

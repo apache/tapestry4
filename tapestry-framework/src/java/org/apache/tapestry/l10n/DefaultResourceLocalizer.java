@@ -14,17 +14,15 @@
 
 package org.apache.tapestry.l10n;
 
-import java.util.Locale;
-
 import org.apache.hivemind.Resource;
+
+import java.util.Locale;
 
 /**
  * Default implementation of {@link org.apache.tapestry.l10n.ResourceLocalizer} that leverages the
  * localization rules built into
  * {@link org.apache.hivemind.Resource#getLocalization(java.util.Locale)}.
  * 
- * @author Howard M. Lewis Ship
- * @since 4.0
  */
 public class DefaultResourceLocalizer implements ResourceLocalizer
 {

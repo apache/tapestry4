@@ -19,7 +19,6 @@ import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.*;
-import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.engine.ITemplateSourceDelegate;
 import org.apache.tapestry.event.ReportStatusEvent;
 import org.apache.tapestry.event.ReportStatusListener;
@@ -27,6 +26,7 @@ import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.l10n.ResourceLocalizer;
 import org.apache.tapestry.parse.*;
 import org.apache.tapestry.resolver.ComponentSpecificationResolver;
+import org.apache.tapestry.resolver.IComponentResourceResolver;
 import org.apache.tapestry.services.ComponentPropertySource;
 import org.apache.tapestry.services.TemplateSource;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -55,8 +55,6 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
     // determine the encoding to use when loading the template
 
     public static final String TEMPLATE_ENCODING_PROPERTY_NAME = "org.apache.tapestry.template-encoding";
-
-    private static final String WEB_INF = "WEB-INF/";
 
     private static final int BUFFER_SIZE = 2000;
 
@@ -98,23 +96,8 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
     private ResourceLocalizer _localizer;
 
     /** @since 4.1.2 */
-    private AssetFactory _classpathAssetFactory;
-
-    /** @since 4.1.2 */
-    private AssetFactory _contextAssetFactory;
-
-    private String _applicationId;
-
-    private Resource _webInfLocation;
-
-    private Resource _webInfAppLocation;
-
-    public void initializeService()
-    {
-        _webInfLocation = _contextRoot.getRelativeResource(WEB_INF);
-
-        _webInfAppLocation = _webInfLocation.getRelativeResource(_applicationId + "/");
-    }
+    
+    private IComponentResourceResolver _resourceResolver;
 
     /**
      * Clears the template cache. This is used during debugging.
@@ -246,7 +229,7 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
         IAsset templateAsset = component.getAsset(TEMPLATE_ASSET_NAME);
 
         if (templateAsset != null)
-            return readTemplateFromAsset(cycle, component, templateAsset);
+            return readTemplateFromAsset(cycle, component, templateAsset.getResourceLocation());
 
         String name = resource.getName();
         int dotx = name.lastIndexOf('.');
@@ -269,55 +252,14 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
                     locale);
 
         if (result == null) {
+
+            Resource template = _resourceResolver.findComponentResource(component, cycle, null, "." + templateExtension, locale);
             
-            templateAsset = findSpeclessTemplate(cycle, resource, component, locale, templateExtension);
-            
-            if (templateAsset != null)
-                return readTemplateFromAsset(cycle, component, templateAsset);
+            if (template != null)
+                return readTemplateFromAsset(cycle, component, template);
         }
 
         return result;
-    }
-
-    private IAsset findSpeclessTemplate(IRequestCycle cycle, Resource base,
-                                                   IComponent component, Locale locale, String templateExtension)
-    {
-        String componentPackages = component.getNamespace().getPropertyValue("org.apache.tapestry.component-class-packages");
-        if (componentPackages == null)
-            return null;
-
-        String name = base.getName();
-        String className = component.getSpecification().getComponentClassName();
-
-        String[] packages = TapestryUtils.split(componentPackages);
-        for (int i=0; i < packages.length; i++)
-        {
-            int index = className.lastIndexOf(packages[i]);
-            if (index < 0)
-                continue;
-            
-            // First try context
-
-            String templateName = className.substring((index + packages[i].length()) + 1, className.length()).replaceAll("\\.", "/");
-            templateName =  templateName + "." + templateExtension;
-
-            if (_contextAssetFactory.assetExists(component.getSpecification(), _webInfAppLocation, templateName, locale)) {
-
-                return _contextAssetFactory.createAsset(_webInfAppLocation, component.getSpecification(),  templateName, locale, component.getLocation());
-            } else if (_contextAssetFactory.assetExists(component.getSpecification(), _webInfLocation, templateName, locale)) {
-
-                return _contextAssetFactory.createAsset(_webInfLocation, component.getSpecification(), templateName, locale, component.getLocation());
-            }
-
-            // else classpath
-
-            templateName = name + "." + templateExtension;
-
-            if (_classpathAssetFactory.assetExists(component.getSpecification(), base, templateName, locale))
-                return _classpathAssetFactory.createAsset(base, component.getSpecification(), templateName, locale, component.getLocation());
-        }
-        
-        return null;
     }
 
     private ComponentTemplate findPageTemplateInApplicationRoot(IRequestCycle cycle, IPage page,
@@ -345,19 +287,23 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
         return getOrParseTemplate(cycle, localizedLocation, page);
     }
 
+
+
     /**
      * Reads an asset to get the template.
      */
 
     private ComponentTemplate readTemplateFromAsset(IRequestCycle cycle, IComponent component,
-            IAsset asset)
+            Resource asset)
     {
-        InputStream stream = asset.getResourceAsStream();
+        InputStream stream = null;
 
         char[] templateData = null;
 
         try
         {
+            stream = asset.getResourceURL().openStream();
+
             String encoding = getTemplateEncoding(component, null);
 
             templateData = readTemplateStream(stream, encoding);
@@ -369,9 +315,7 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
             throw new ApplicationRuntimeException(ImplMessages.unableToReadTemplate(asset), ex);
         }
 
-        Resource resourceLocation = asset.getResourceLocation();
-
-        return constructTemplateInstance(cycle, templateData, resourceLocation, component);
+        return constructTemplateInstance(cycle, templateData, asset, component);
     }
 
     /**
@@ -635,20 +579,8 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
         _localizer = localizer;
     }
 
-    /** @since 4.1.2 */
-    public void setClasspathAssetFactory(AssetFactory classpathAssetFactory)
+    public void setComponentResourceResolver(IComponentResourceResolver resourceResolver)
     {
-        _classpathAssetFactory = classpathAssetFactory;
-    }
-
-    /** @since 4.1.2 */
-    public void setContextAssetFactory(AssetFactory contextAssetFactory)
-    {
-        _contextAssetFactory = contextAssetFactory;
-    }
-
-    public void setApplicationId(String applicationId)
-    {
-        _applicationId = applicationId;
+        _resourceResolver = resourceResolver;
     }
 }
