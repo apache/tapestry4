@@ -1,0 +1,12 @@
+
+.dojoButton {padding: 0 0 0 0;font-size: 8pt;white-space: nowrap;cursor: pointer;font-family: Myriad, Tahoma, Verdana, sans-serif;}
+.dojoButton .dojoButtonContents {padding: 2px 2px 2px 2px;text-align: center;color: white;}
+.dojoButtonLeftPart .dojoButtonContents {padding-right: 8px;}
+.dojoButtonDisabled {cursor: url("images/no.gif"), default;}
+.dojoButtonContents img {vertical-align: middle;}
+.dojoButtonHover .dojoButtonContents {}
+.dojoButtonDepressed .dojoButtonContents {color: #293a4b;}
+.dojoButtonDisabled .dojoButtonContents {color: #aaa;}
+.dojoButton .border {width: 1px;background: gray;}
+.dojoButton .downArrow {padding-left: 10px;text-align: center;}
+.dojoButton.disabled .downArrow {cursor : default;}

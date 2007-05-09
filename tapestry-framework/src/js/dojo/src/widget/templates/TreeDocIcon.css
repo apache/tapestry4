@@ -1,0 +1,11 @@
+
+.TreeStateChildrenYes-ExpandOpen .TreeIconContent {background-image : url('../templates/images/TreeV3/i_long.gif');background-repeat : no-repeat;background-position: 18px 9px;}
+.TreeStateChildrenYes-ExpandClosed .TreeIconContent {background-image : url();}
+.TreeStateChildrenNo-ExpandLeaf .TreeIconContent {background-image : url();}
+.TreeStateChildrenNo-ExpandClosed .TreeIconContent {background-image : url();}
+.TreeStateChildrenNo-ExpandOpen .TreeIconContent {background-image : url();}
+.TreeIconDocument {background-image: url('../templates/images/TreeV3/document.gif');}
+.TreeExpandOpen .TreeIconFolder {background-image: url('../templates/images/TreeV3/open.gif');}
+.TreeExpandClosed .TreeIconFolder {background-image: url('../templates/images/TreeV3/closed.gif');}
+.TreeIcon {width: 18px;height: 18px;float: left;display: inline;background-repeat : no-repeat;}
+div.TreeContent {margin-left: 36px;}
