@@ -1,0 +1,3 @@
+
+.TreeDisableWrap {white-space: nowrap;}
+.TreeIEDisableWrap {width: expression( 5 + firstChild.offsetWidth );}
