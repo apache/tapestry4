@@ -35,4 +35,16 @@ public class TestHiveMindExpressionCompiler extends TestBase {
 
         assertNotSame(expression2.getAccessor().getClass().getName(), expression.getAccessor().getClass().getName());
     }
+
+    public void test_Divide_By_Zero()
+    throws Exception
+    {
+        OgnlContext context = (OgnlContext) Ognl.createDefaultContext(null);
+        String expr = "true ? 1 : 1/0";
+
+        Node expression = (Node) Ognl.parseExpression(expr);
+        _compiler.compileExpression(context, expression, expr);
+        
+        assertEquals(expression.getAccessor().get(context, null), Integer.valueOf(1));
+    }
 }

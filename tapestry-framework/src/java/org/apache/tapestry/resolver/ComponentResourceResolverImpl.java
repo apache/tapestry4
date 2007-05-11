@@ -118,7 +118,7 @@ public class ComponentResourceResolverImpl implements IComponentResourceResolver
             int index = className.lastIndexOf(packages[i]);
             if (index < 0)
                 continue;
-            
+
             // First try context
 
             String templateName = className.substring((index + packages[i].length()) + 1, className.length()).replaceAll("\\.", "/");

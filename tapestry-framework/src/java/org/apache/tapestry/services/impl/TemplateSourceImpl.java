@@ -228,9 +228,9 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
     {
         IAsset templateAsset = component.getAsset(TEMPLATE_ASSET_NAME);
 
-        if (templateAsset != null)
+        if (templateAsset != null && templateAsset.getResourceLocation() != null && templateAsset.getResourceLocation().getResourceURL() != null)
             return readTemplateFromAsset(cycle, component, templateAsset.getResourceLocation());
-
+        
         String name = resource.getName();
         int dotx = name.lastIndexOf('.');
         String templateExtension = getTemplateExtension(component);
@@ -255,7 +255,7 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
 
             Resource template = _resourceResolver.findComponentResource(component, cycle, null, "." + templateExtension, locale);
             
-            if (template != null)
+            if (template != null && template.getResourceURL() != null)
                 return readTemplateFromAsset(cycle, component, template);
         }
 
