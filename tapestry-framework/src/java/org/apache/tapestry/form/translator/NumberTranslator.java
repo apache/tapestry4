@@ -14,11 +14,6 @@
 
 package org.apache.tapestry.form.translator;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.Format;
-import java.util.Locale;
-
 import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
@@ -29,6 +24,11 @@ import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.valid.ValidationConstants;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
+
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.Format;
+import java.util.Locale;
 
 /**
  * A {@link java.text.DecimalFormat}-based {@link Translator} implementation.
@@ -104,7 +104,7 @@ public class NumberTranslator extends FormatTranslator
     protected Object[] getMessageParameters(Locale locale, String label)
     {
         String pattern = getDecimalFormat(locale).toLocalizedPattern();
-        
+
         return new Object[] { label, pattern };
     }
 
@@ -128,13 +128,14 @@ public class NumberTranslator extends FormatTranslator
         JSONObject cons = profile.getJSONObject(ValidationConstants.CONSTRAINTS);
         
         DecimalFormat format = getDecimalFormat(context.getLocale());
-        
+
         cons.accumulate(field.getClientId(),
                 new JSONLiteral("[dojo.validate.isRealNumber,{"
                         + "places:" + format.getMaximumFractionDigits() + ","
                         + "decimal:" 
                         + JSONObject.quote(format.getDecimalFormatSymbols().getDecimalSeparator()) 
-                        + ",separator:" + JSONObject.quote(format.getDecimalFormatSymbols().getGroupingSeparator())
+                        + (format.isGroupingUsed() ? ",separator:" + JSONObject.quote(format.getDecimalFormatSymbols().getGroupingSeparator())
+                                                                  : "")
                         + "}]"));
         
         accumulateProfileProperty(field, profile, ValidationConstants.CONSTRAINTS, message);

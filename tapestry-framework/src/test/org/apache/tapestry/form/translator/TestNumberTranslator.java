@@ -14,11 +14,6 @@
 
 package org.apache.tapestry.form.translator;
 
-import static org.easymock.EasyMock.expect;
-
-import java.text.DecimalFormatSymbols;
-import java.util.Locale;
-
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
@@ -29,7 +24,11 @@ import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
+
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 /**
  * Tests for {@link org.apache.tapestry.form.translator.NumberTranslator}
@@ -254,6 +253,38 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         verify();
         
         assertEquals(json.toString(),
+                "{\"constraints\":{\"numberField\":" +
+                "[[dojo.validate.isRealNumber,{places:0,decimal:\".\"}]]}," +
+                "\"numberField\":{\"constraints\":[\"invalid number message\"]}}");
+    }
+
+    public void test_Render_Grouping_Separator()
+    {
+        NumberTranslator translator = new NumberTranslator();
+        translator.setPattern("###,##");
+        IFormComponent field = newField("Number Field", "numberField", 1);
+
+        JSONObject json = new JSONObject();
+
+        IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle();
+
+        FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
+
+        expect(context.getProfile()).andReturn(json);
+
+        trainGetLocale(context, Locale.US);
+
+        trainBuildMessage(context, null, ValidationStrings.INVALID_NUMBER, new String[] { "Number Field", "#,##" },
+                          "invalid number message");
+
+        replay();
+
+        translator.renderContribution(writer, cycle, context, field);
+
+        verify();
+
+        assertEquals(json.toString(),
                 "{\"constraints\":{\"numberField\":[[dojo.validate.isRealNumber," +
                 "{places:0,decimal:\".\",separator:\",\"}]]},\"numberField\":" +
                 "{\"constraints\":[\"invalid number message\"]}}");
@@ -293,9 +324,9 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         verify();
         
         assertEquals(json.toString(),
-                "{\"constraints\":{\"myfield\":[[dojo.validate.isRealNumber," +
-                "{places:0,decimal:\".\",separator:\",\"}]]},\"myfield\":" +
-                "{\"constraints\":[\"Blah Blah \'Field Name\' Blah.\"]}}");
+                "{\"constraints\":" +
+                "{\"myfield\":[[dojo.validate.isRealNumber,{places:0,decimal:\".\"}]]}," +
+                "\"myfield\":{\"constraints\":[\"Blah Blah 'Field Name' Blah.\"]}}");
     }
     
     public void test_Trim_Render_Contribution()
@@ -328,8 +359,9 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         verify();
         
         assertEquals(json.toString(),
-                "{\"trim\":[\"myfield\"],\"constraints\":{\"myfield\":" +
-                "[[dojo.validate.isRealNumber,{places:0,decimal:\".\",separator:\",\"}]]}," +
+                "{\"trim\":[\"myfield\"]," +
+                "\"constraints\":{\"myfield\":" +
+                "[[dojo.validate.isRealNumber,{places:0,decimal:\".\"}]]}," +
                 "\"myfield\":{\"constraints\":[\"invalid number message\"]}}");
                 
     }
