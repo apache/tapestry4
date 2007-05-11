@@ -63,8 +63,7 @@ public class ValidationConstraint implements Serializable
      * Indicates a general error in the format of a string that is to be interpreted as a number.
      */
 
-    public static final ValidationConstraint NUMBER_FORMAT = new ValidationConstraint(
-            "NUMBER_FORMAT");
+    public static final ValidationConstraint NUMBER_FORMAT = new ValidationConstraint("NUMBER_FORMAT");
 
     /**
      * Indicates that the value was too small (for a Date, too early).
