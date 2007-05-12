@@ -51,7 +51,9 @@ The start of the JUnit test suite: JUnit Simple Application.
         <match>/script</match>
         <match>script</match>
         <match>/script</match>
-		<match>/head</match>
+        <match>script</match>
+        <match>/script</match>
+        <match>/head</match>
 		<match>body</match>	
 		<match>br</match>	
 		<match>a</match>
