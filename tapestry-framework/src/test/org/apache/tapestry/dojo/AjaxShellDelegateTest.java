@@ -13,19 +13,14 @@
 // limitations under the License.
 package org.apache.tapestry.dojo;
 
-import static org.easymock.EasyMock.expect;
-
-import java.util.Locale;
-
 import org.apache.hivemind.Resource;
-import org.apache.tapestry.BaseComponentTestCase;
-import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.*;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
+
+import java.util.Locale;
 
 
 /**
@@ -142,19 +137,20 @@ public class AjaxShellDelegateTest extends BaseComponentTestCase
         
         verify();
         
-        assertBuffer("<script type=\"text/javascript\">djConfig = {\"isDebug\":true,"
-                + "\"baseRelativePath\":\"http:///dojo/path\","
-                +"\"preventBackButtonFix\":false,\"parseWidgets\":false,\"locale\":\"en-gb\"} </script>\n" + 
-                "\n" + 
-                " <script type=\"text/javascript\" src=\"http:///dojo/path/dojo.js\"></script>\n"
-                + "<script type=\"text/javascript\">\n" + 
-                "dojo.registerModulePath(\"tapestry\", \"/tapestry\");\n" + 
-                "</script>\n" + 
-                "<script type=\"text/javascript\" src=\"/tapestry/tapestry.js\"></script>\n" + 
-                "<script type=\"text/javascript\">\n" + 
-                "dojo.require(\"dojo.debug.console\");\n" + 
-                "dojo.log.setLevel(dojo.log.getLevel(\"DEBUG\"));\n" +
-                "dojo.require(\"tapestry.namespace\");\n" + 
-                "</script>" + SYSTEM_NEWLINE);
+        assertBuffer("<script type=\"text/javascript\">djConfig = {\"isDebug\":true,\"baseRelativePath\":\"http:///dojo/path\"," +
+                     "\"preventBackButtonFix\":false,\"parseWidgets\":false,\"locale\":\"en-gb\"} </script>\n" +
+                     "\n" +
+                     " <script type=\"text/javascript\" src=\"http:///dojo/path/dojo.js\"></script>\n" +
+                     "<script type=\"text/javascript\">\n" +
+                     "dojo.require(\"dojo.debug.console\");\n" +
+                     "dojo.log.setLevel(dojo.log.getLevel(\"DEBUG\"));\n" +
+                     "</script>\n" +
+                     "<script type=\"text/javascript\">\n" +
+                     "dojo.registerModulePath(\"tapestry\", \"/tapestry\");\n" +
+                     "</script>\n" +
+                     "<script type=\"text/javascript\" src=\"/tapestry/tapestry.js\"></script>\n" +
+                     "<script type=\"text/javascript\">\n" +
+                     "dojo.require(\"tapestry.namespace\");\n" +
+                     "</script>" + SYSTEM_NEWLINE);
     }
 }
