@@ -111,12 +111,31 @@ public class AjaxShellDelegate implements IRender
         
         str.append("<script type=\"text/javascript\" src=\"")
         .append(_dojoSource.buildURL()).append("\"></script>");
+
+        // configure basic dojo properties , logging includes
+
+        if (_debug) {
+
+            String logRequire = _consoleEnabled ? "dojo.require(\"dojo.debug.console\");\n"
+                : "dojo.require(\"dojo.logging.Logger\");\n";
+
+            str.append("\n<script type=\"text/javascript\">\n");
+            str.append(logRequire)
+            .append("dojo.log.setLevel(dojo.log.getLevel(\"").append(_browserLogLevel)
+            .append("\"));\n")
+            .append("</script>");
+        }
         
         // module path registration to tapestry javascript sources
-        
+
+        String tapestryUrl = _tapestryPath.buildURL();
+        if (tapestryUrl.endsWith("/")) {
+            tapestryUrl = tapestryUrl.substring(0, tapestryUrl.length() - 1);
+        }
+
         str.append("\n<script type=\"text/javascript\">\n")
         .append("dojo.registerModulePath(\"tapestry\", \"")
-        .append(_tapestryPath.buildURL()).append("\");\n");
+        .append(tapestryUrl).append("\");\n");
         str.append("</script>\n");
         
         // include core tapestry.js package
@@ -124,19 +143,9 @@ public class AjaxShellDelegate implements IRender
         str.append("<script type=\"text/javascript\" src=\"")
         .append(_tapestrySource.buildURL()).append("\"></script>");
         
-        String logRequire = _consoleEnabled ? "dojo.require(\"dojo.debug.console\");\n"
-                : "dojo.require(\"dojo.logging.Logger\");\n";
-        
-        // logging configuration
+        // namespace registration
         
         str.append("\n<script type=\"text/javascript\">\n");
-        
-        if (_debug) {
-            str.append(logRequire)
-            .append("dojo.log.setLevel(dojo.log.getLevel(\"").append(_browserLogLevel)
-            .append("\"));\n");
-        }
-        
         str.append("dojo.require(\"tapestry.namespace\");\n").append("</script>");
         
         writer.printRaw(str.toString());

@@ -4,10 +4,30 @@ dojo.provide("tapestry.event");
 dojo.provide("tapestry.lang");
 
 dojo.require("dojo.lang.common");
-dojo.require("dojo.logging.Logger");
 dojo.require("dojo.io.BrowserIO");
 dojo.require("dojo.event.browser");
 dojo.require("dojo.html.style");
+
+// redirect logging calls to standard debug if logging not enabled
+if (dj_undef("logging", dojo)) {
+    dojo.log = {
+        debug:function(){
+            dojo.debug.apply(this, arguments);
+        },
+        info:function(){
+            dojo.debug.apply(this, arguments);
+        },
+        warn:function(){
+            dojo.debug.apply(this, arguments);
+        },
+        err:function(){
+            dojo.debug.apply(this, arguments);
+        },
+        exception:function(){
+            dojo.debug.apply(this, arguments);
+        }
+    }
+}
 
 /**
  * package: tapestry
