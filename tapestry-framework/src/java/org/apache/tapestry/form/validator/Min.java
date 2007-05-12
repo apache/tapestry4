@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.form.validator;
 
-import java.text.DecimalFormatSymbols;
-
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
@@ -29,9 +27,13 @@ import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
+
 /**
  * Expects the object to be a number, and checks that the value not smaller than a specified value.
- * 
+ *
  * @author Howard Lewis Ship
  * @since 4.0
  */
@@ -58,8 +60,20 @@ public class Min extends BaseValidator
         Number value = (Number) object;
 
         if (_min > value.doubleValue())
-            throw new ValidatorException(buildMessage(messages, field),
-                    ValidationConstraint.TOO_SMALL);
+            throw new ValidatorException(buildMessage(messages, field), ValidationConstraint.TOO_SMALL);
+    }
+
+    private String getStringValue(Locale locale, IFormComponent field)
+    {
+        String ret = null;
+        NumberTranslator translator = (NumberTranslator)super.getFieldTranslator(field, NumberTranslator.class);
+
+        if (translator != null)
+            ret = translator.format(field, locale, new Double(_min));
+        else
+            ret = String.valueOf(_min);
+
+        return ret;
     }
 
     private String buildMessage(ValidationMessages messages, IFormComponent field)
@@ -67,40 +81,52 @@ public class Min extends BaseValidator
         return messages.formatValidationMessage(
                 getMessage(),
                 ValidationStrings.VALUE_TOO_SMALL,
-                new Object[]
-                { field.getDisplayName(), new Double(_min) });
+                new Object[] {
+                        field.getDisplayName(), getStringValue(messages.getLocale(), field)
+                });
     }
-    
+
     public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
-            FormComponentContributorContext context, IFormComponent field)
+                                   FormComponentContributorContext context, IFormComponent field)
     {
         JSONObject profile = context.getProfile();
-        
+
         if (!profile.has(ValidationConstants.CONSTRAINTS)) {
             profile.put(ValidationConstants.CONSTRAINTS, new JSONObject());
         }
         JSONObject cons = profile.getJSONObject(ValidationConstants.CONSTRAINTS);
-        
-        // TODO: Should find some way to provide this globally and cache.
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols(context.getLocale());
-        
-        String minString = null;
+
+        context.addInitializationScript(field, "dojo.require(\"dojo.i18n.number\");");
+
+        String minString = getStringValue(context.getLocale(), field);
+        String grouping = "";
+
+        DecimalFormatSymbols symbols = null;
         NumberTranslator translator = (NumberTranslator)super.getFieldTranslator(field, NumberTranslator.class);
-        
-        if (translator != null)
-            minString = translator.format(field, context.getLocale(), new Double(_min));
-        else
-            minString = String.valueOf(_min);
-        
-        accumulateProperty(cons, field.getClientId(), 
-                new JSONLiteral("[dojo.validate.isInRange,{"
-                        + "min:" + minString + ","
-                        + "decimal:" + JSONObject.quote(symbols.getDecimalSeparator())
-                        + ",separator:" + JSONObject.quote(symbols.getGroupingSeparator())
-                        + "}]"));
-        
-        accumulateProfileProperty(field, profile, 
-                ValidationConstants.CONSTRAINTS, buildMessage(context, field));
+
+        if (translator != null) {
+            DecimalFormat format = translator.getDecimalFormat(context.getLocale());
+
+            if (format.isGroupingUsed()) {
+                grouping += ",separator:" + JSONObject.quote(format.getDecimalFormatSymbols().getGroupingSeparator());
+                grouping += ",groupSize:" + format.getGroupingSize();
+            }
+            
+            symbols = format.getDecimalFormatSymbols();
+        } else {
+
+            symbols = new DecimalFormatSymbols(context.getLocale());
+        }
+
+        accumulateProperty(cons, field.getClientId(),
+                           new JSONLiteral("[tapestry.form.validation.greaterThanOrEqual,"
+                                           + JSONObject.quote(minString)
+                                           + ",{"
+                                           + "decimal:" + JSONObject.quote(symbols.getDecimalSeparator())
+                                           + grouping
+                                           + "}]"));
+
+        accumulateProfileProperty(field, profile, ValidationConstants.CONSTRAINTS, buildMessage(context, field));
     }
 
     public void setMin(double min)

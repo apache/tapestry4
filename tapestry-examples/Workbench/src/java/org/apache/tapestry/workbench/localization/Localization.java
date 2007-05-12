@@ -14,11 +14,11 @@
 
 package org.apache.tapestry.workbench.localization;
 
-import java.util.Locale;
-
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.apache.tapestry.html.BasePage;
+
+import java.util.Locale;
 
 /**
  * @author Howard Lewis Ship

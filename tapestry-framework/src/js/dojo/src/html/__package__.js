@@ -1,2 +1,2 @@
 
-dojo.kwCompoundRequire({common:["dojo.html.common", "dojo.html.style"]});dojo.provide("dojo.html.*");
+dojo.kwCompoundRequire({common: [ "dojo.html.common","dojo.html.style" ]});dojo.provide("dojo.html.*");

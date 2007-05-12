@@ -32,7 +32,7 @@ import java.util.Locale;
 
 /**
  * A {@link java.text.DecimalFormat}-based {@link Translator} implementation.
- * 
+ *
  * @author Paul Ferraro
  * @since 4.0
  */
@@ -49,7 +49,7 @@ public class NumberTranslator extends FormatTranslator
     {
         PropertyUtils.configureProperties(this, initializer);
     }
-    
+
     protected String formatObject(IFormComponent field, Locale locale, Object object)
     {
         Number number = (Number) object;
@@ -59,15 +59,15 @@ public class NumberTranslator extends FormatTranslator
             if (number.doubleValue() == 0)
                 return "";
         }
-        
+
         return super.formatObject(field, locale, object);
     }
-    
+
     protected Object getValueForEmptyInput()
     {
         return _omitZero ? null : new Double(0);
     }
-    
+
     /**
      * @see org.apache.tapestry.form.translator.FormatTranslator#defaultPattern()
      */
@@ -114,30 +114,35 @@ public class NumberTranslator extends FormatTranslator
      *      org.apache.tapestry.form.IFormComponent)
      */
     public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
-            FormComponentContributorContext context, IFormComponent field)
+                                   FormComponentContributorContext context, IFormComponent field)
     {
         super.renderContribution(writer, cycle, context, field);
-        
+
         String message = buildMessage(context, field, getMessageKey());
-        
+
         JSONObject profile = context.getProfile();
         if (!profile.has(ValidationConstants.CONSTRAINTS)) {
             profile.put(ValidationConstants.CONSTRAINTS, new JSONObject());
         }
-        
         JSONObject cons = profile.getJSONObject(ValidationConstants.CONSTRAINTS);
-        
+
         DecimalFormat format = getDecimalFormat(context.getLocale());
 
+        String grouping = "";
+        if (format.isGroupingUsed()) {
+
+            grouping += ",separator:" + JSONObject.quote(format.getDecimalFormatSymbols().getGroupingSeparator());
+            grouping += ",groupSize:" + format.getGroupingSize();
+        }
+
         cons.accumulate(field.getClientId(),
-                new JSONLiteral("[dojo.validate.isRealNumber,{"
-                        + "places:" + format.getMaximumFractionDigits() + ","
-                        + "decimal:" 
-                        + JSONObject.quote(format.getDecimalFormatSymbols().getDecimalSeparator()) 
-                        + (format.isGroupingUsed() ? ",separator:" + JSONObject.quote(format.getDecimalFormatSymbols().getGroupingSeparator())
-                                                                  : "")
-                        + "}]"));
-        
+                        new JSONLiteral("[dojo.i18n.number.isReal,null,{"
+                                        + "places:" + format.getMaximumFractionDigits() + ","
+                                        + "decimal:"
+                                        + JSONObject.quote(format.getDecimalFormatSymbols().getDecimalSeparator())
+                                        + grouping
+                                        + "}]"));
+
         accumulateProfileProperty(field, profile, ValidationConstants.CONSTRAINTS, message);
     }
 
@@ -153,6 +158,9 @@ public class NumberTranslator extends FormatTranslator
      * If true (which is the default for the property), then values that are 0 are rendered to an
      * empty string, not "0" or "0.00". This is useful in most cases where the field is optional; it
      * allows the field to render blank when no value is present.
+     *
+     * @param omitZero
+     *          Whether or not to omit zero.
      */
 
     public void setOmitZero(boolean omitZero)

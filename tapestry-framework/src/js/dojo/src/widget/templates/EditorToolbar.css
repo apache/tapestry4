@@ -1,17 +1,115 @@
-.StyleDropdownContainer {position: absolute;z-index: 1000;overflow: auto;cursor: default;width: 250px;height: 250px;background-color: white;border: 1px solid black;}
-.ColorDropdownContainer {position: absolute;z-index: 1000;overflow: auto;cursor: default;width: 250px;height: 150px;background-color: white;border: 1px solid black;}
-.EditorToolbarDomNode {background-image: url(buttons/bg-fade.png);background-repeat: repeat-x;background-position: 0px -50px;}
-.EditorToolbarSmallBg {background-image: url(images/toolbar-bg.gif);background-repeat: repeat-x;background-position: 0px 0px;}
-.IEFixedToolbar {position:absolute;top: expression(eval((document.documentElement||document.body).scrollTop));}
-div.bigIcon {width: 40px;height: 40px;font-family: Verdana, Trebuchet, Tahoma, Arial;}
-.iconContainer {font-family: Verdana, Trebuchet, Tahoma, Arial;font-size: 13px;float: left;height: 18px;display: block;cursor: pointer;padding: 1px 4px 1px 1px;border: 0px;}
-.dojoE2TBIcon {display: block;text-align: center;min-width: 18px;width: 18px;height: 18px;background-repeat: no-repeat;background-image: url(buttons/aggregate.gif);}
-.dojoE2TBIcon[class~=dojoE2TBIcon] {}
-.ToolbarButtonLatched {border: #316ac5 1px solid; !important;padding: 0px 3px 0px 0px; !important;background-color: #c1d2ee;}
-.ToolbarButtonHighlighted {border: #316ac5 1px solid; !important;padding: 0px 3px 0px 0px; !important;background-color: #dff1ff;}
-.ToolbarButtonDisabled{filter: gray() alpha(opacity=30);opacity: 0.30;}
-.headingContainer {width: 150px;height: 30px;margin: 0px;overflow: hidden;line-height: 25px;border-bottom: 1px solid black;border-top: 1px solid white;}
-.EditorToolbarDomNode select {font-size: 14px;}
+.StyleDropdownContainer {
+	position: absolute;
+	z-index: 1000;
+	overflow: auto;
+	cursor: default;
+	width: 250px;
+	height: 250px;
+	background-color: white;
+	border: 1px solid black;
+}
+
+.ColorDropdownContainer {
+	position: absolute;
+	z-index: 1000;
+	overflow: auto;
+	cursor: default;
+	width: 250px;
+	height: 150px;
+	background-color: white;
+	border: 1px solid black;
+}
+
+.EditorToolbarDomNode {
+	background-image: url(buttons/bg-fade.png);
+	background-repeat: repeat-x;
+	background-position: 0px -50px;
+}
+
+.EditorToolbarSmallBg {
+	background-image: url(images/toolbar-bg.gif);
+	background-repeat: repeat-x;
+	background-position: 0px 0px;
+}
+
+/*
+body {
+	background:url(images/blank.gif) fixed;
+}*/
+
+.IEFixedToolbar {
+	position:absolute;
+	/* top:0; */
+	top: expression(eval((document.documentElement||document.body).scrollTop));
+}
+
+div.bigIcon {
+	width: 40px;
+	height: 40px; 
+	/* background-color: white; */
+	/* border: 1px solid #a6a7a3; */
+	font-family: Verdana, Trebuchet, Tahoma, Arial;
+}
+
+.iconContainer {
+	font-family: Verdana, Trebuchet, Tahoma, Arial;
+	font-size: 13px;
+	float: left;
+	height: 18px;
+	display: block;
+	/* background-color: white; */
+	cursor: pointer;
+	padding: 1px 4px 1px 1px; /* almost the same as a transparent border */
+	border: 0px;
+}
+
+.dojoE2TBIcon {
+	display: block;
+	text-align: center;
+	min-width: 18px;
+	width: 18px;
+	height: 18px;
+	/* background-color: #a6a7a3; */
+	background-repeat: no-repeat;
+	background-image: url(buttons/aggregate.gif);
+}
+
+
+.dojoE2TBIcon[class~=dojoE2TBIcon] {
+}
+
+.ToolbarButtonLatched {
+    border: #316ac5 1px solid; !important;
+    padding: 0px 3px 0px 0px; !important; /* make room for border */
+    background-color: #c1d2ee;
+}
+
+.ToolbarButtonHighlighted {
+    border: #316ac5 1px solid; !important;
+    padding: 0px 3px 0px 0px; !important; /* make room for border */
+    background-color: #dff1ff;
+}
+
+.ToolbarButtonDisabled{
+    filter: gray() alpha(opacity=30); /* IE */
+    opacity: 0.30; /* Safari, Opera and Mozilla */
+}
+
+.headingContainer {
+	width: 150px;
+	height: 30px;
+	margin: 0px;
+	/* padding-left: 5px; */
+	overflow: hidden;
+	line-height: 25px;
+	border-bottom: 1px solid black;
+	border-top: 1px solid white;
+}
+
+.EditorToolbarDomNode select {
+	font-size: 14px;
+}
+ 
 .dojoE2TBIcon_Sep { width: 5px; min-width: 5px; max-width: 5px; background-position: 0px 0px}
 .dojoE2TBIcon_Backcolor { background-position: -18px 0px}
 .dojoE2TBIcon_Bold { background-position: -36px 0px}
@@ -51,3 +149,4 @@ dojoE2TBIcon_RemoveFormat { background-position: -522px 0px}
 .dojoE2TBIcon_Underline { background-position: -648px 0px}
 .dojoE2TBIcon_Undo { background-position: -666px 0px}
 .dojoE2TBIcon_WikiWord { background-position: -684px 0px}
+

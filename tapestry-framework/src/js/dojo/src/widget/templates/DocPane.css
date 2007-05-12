@@ -1,5 +1,7 @@
 .dojoDocPane { padding:1em; font: 1em Georgia,Times,"Times New Roman",serif; }
+
 .dojoDocPane .container{ }
+
 .dojoDocPane .dialog{ }
 .dojoDocPane .dialog .container{ padding: 0.5em; background: #fff; border: 2px solid #333; }
 .dojoDocPane .dialog .docDialog{ background: transparent; width: 20em; }
@@ -7,8 +9,10 @@
 .dojoDocPane .dialog .docDialog input { float: right; margin-right: 1em; }
 .dojoDocPane .dialog .docDialog p{ clear: both; }
 #dojoDocUserName, #dojoDocPassword { width: 10em; }
+
 .dojoDocPane .nav{ }
 .dojoDocPane .nav span{ }
+
 .dojoDocPane .detail{ }
 .dojoDocPane .detail h1{ }
 .dojoDocPane .detail h1 span.fn{ }
@@ -25,10 +29,12 @@
 .dojoDocPane .detail .signature .source .params{ }
 .dojoDocPane .detail .signature .source .params .type{ font-style: italic; color: #d17575; }
 .dojoDocPane .detail .signature .source .params .name{ color: #d14040; }
+
 .dojoDocPane .result{ }
 .dojoDocPane .result h1{ }
 .dojoDocPane .result .row{ }
 .dojoDocPane .result .row .summary{ }
+
 .dojoDocPane .package{ }
 .dojoDocPane .package h1{ }
 .dojoDocPane .package .row{ }

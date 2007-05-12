@@ -1,2 +1,2 @@
 
-({"displayName":"US Dollar","symbol":"$"})
+({"symbol":"$","displayName":"US Dollar"})

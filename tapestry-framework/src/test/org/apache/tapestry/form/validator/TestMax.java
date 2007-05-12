@@ -14,11 +14,6 @@
 
 package org.apache.tapestry.form.validator;
 
-import static org.easymock.EasyMock.expect;
-
-import java.text.DecimalFormatSymbols;
-import java.util.Locale;
-
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
@@ -28,11 +23,15 @@ import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
+
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 /**
  * Tests for {@link org.apache.tapestry.form.validator.Max}.
- * 
+ *
  * @author Howard Lewis Ship
  * @since 4.0
  */
@@ -40,7 +39,7 @@ import org.testng.annotations.Test;
 public class TestMax extends BaseValidatorTestCase
 {
 
-    public void testOK() throws Exception
+    public void test_OK() throws Exception
     {
         IFormComponent field = newField();
         ValidationMessages messages = newMessages();
@@ -54,15 +53,17 @@ public class TestMax extends BaseValidatorTestCase
         verify();
     }
 
-    public void testFail()
+    public void test_Fail()
     {
         IFormComponent field = newField("My Field");
         ValidationMessages messages = newMessages(
                 null,
                 ValidationStrings.VALUE_TOO_LARGE,
                 new Object[]
-                { "My Field", new Double(10) },
+                        { "My Field", new Double(10).toString() },
                 "Exception!");
+
+        expect(messages.getLocale()).andReturn(Locale.getDefault()).atLeastOnce();
 
         replay();
 
@@ -77,14 +78,14 @@ public class TestMax extends BaseValidatorTestCase
         }
     }
 
-    public void testFailCustomMessage()
+    public void test_Fail_Custom_Message()
     {
         IFormComponent field = newField("My Field");
         ValidationMessages messages = newMessages(
                 "custom",
                 ValidationStrings.VALUE_TOO_LARGE,
                 new Object[]
-                { "My Field", new Double(100) },
+                        { "My Field", new Double(100).toString() },
                 "custom message");
 
         replay();
@@ -105,73 +106,70 @@ public class TestMax extends BaseValidatorTestCase
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
         JSONObject json = new JSONObject();
-        
-        IFormComponent field = newField("My Field", "myfield");
-        
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
-        
+        IFormComponent field = newField("My Field", "myfield");
+
+        context.addInitializationScript(field, "dojo.require(\"dojo.i18n.number\");");
+
         Locale locale = Locale.GERMAN;
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
-        
-        expect(context.getLocale()).andReturn(locale);
-        
+
+        expect(context.getLocale()).andReturn(locale).anyTimes();
         expect(context.getProfile()).andReturn(json);
-        
-        trainFormatMessage(context, null, ValidationStrings.VALUE_TOO_LARGE, new Object[]
-        { "My Field", new Double(20) }, "default message");
-        
+
+        trainFormatMessage(context, null, ValidationStrings.VALUE_TOO_LARGE,
+                           new Object[] {
+                                   "My Field",
+                                   new Double(20).toString()
+                           }, "default message");
+
         replay();
-        
+
         new Max("max=20").renderContribution(writer, cycle, context, field);
 
         verify();
-        
-        assertEquals(json.toString(), 
-                "{\"constraints\":{\"myfield\":" +
-                "[[dojo.validate.isInRange,{max:20.0,decimal:\",\",separator:\"" 
-                + symbols.getGroupingSeparator() 
-                + "\"}]]}," +
-                "\"myfield\":{\"constraints\":[\"default message\"]}}");
+
+        assertEquals(json.toString(),
+                     "{\"constraints\":{\"myfield\":" +
+                     "[[tapestry.form.validation.lessThanOrEqual,\"20.0\",{decimal:\",\"}]]}," +
+                     "\"myfield\":{\"constraints\":[\"default message\"]}}");
     }
-    
+
     public void test_Render_Contribution_Custom_Message()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
-        
         JSONObject json = new JSONObject();
-        
-        IFormComponent field = newField("My Field", "myfield");
-        
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
-        
+        IFormComponent field = newField("My Field", "myfield");
+
+        context.addInitializationScript(field, "dojo.require(\"dojo.i18n.number\");");
+
         Locale locale = Locale.JAPAN;
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
-        
-        expect(context.getLocale()).andReturn(locale);
-        
+
+        expect(context.getLocale()).andReturn(locale).anyTimes();
         expect(context.getProfile()).andReturn(json);
-        
+
         trainFormatMessage(
                 context,
                 "custom",
                 ValidationStrings.VALUE_TOO_LARGE,
-                new Object[]
-                { "My Field", new Double(20) },
-                "custom\\message");
-        
+                new Object[] {
+                        "My Field",
+                        new Double(20).toString()
+                }, "custom\\message");
+
         replay();
-        
+
         new Max("max=20,message=custom").renderContribution(writer, cycle, context, field);
 
         verify();
-        
+
         assertEquals(json.toString(),
-                "{\"constraints\":{\"myfield\":[[dojo.validate.isInRange," +
-                "{max:20.0,decimal:\".\",separator:\"" 
-                + symbols.getGroupingSeparator() 
-                + "\"}]]}," +
-                "\"myfield\":{\"constraints\":[\"custom\\\\message\"]}}");
+                     "{\"constraints\":{\"myfield\":" +
+                     "[[tapestry.form.validation.lessThanOrEqual,\"20.0\",{decimal:\".\"}]]}," +
+                     "\"myfield\":{\"constraints\":[\"custom\\\\message\"]}}");
     }
 
 }
