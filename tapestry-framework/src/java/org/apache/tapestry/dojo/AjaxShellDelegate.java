@@ -13,8 +13,6 @@
 // limitations under the License.
 package org.apache.tapestry.dojo;
 
-import java.util.Locale;
-
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IMarkupWriter;
@@ -22,6 +20,8 @@ import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.html.Shell;
 import org.apache.tapestry.json.JSONObject;
+
+import java.util.Locale;
 
 /**
  * The default rendering delegate responseible for include the 
@@ -74,7 +74,6 @@ public class AjaxShellDelegate implements IRender
         
         JSONObject dojoConfig = new JSONObject();
         
-        //
         // Debugging configuration , debugAtAlCosts causes the individual 
         // .js files to included in the document head so that javascript errors
         // are able to resolve to the context of the file instead of just "dojo.js"
@@ -92,18 +91,16 @@ public class AjaxShellDelegate implements IRender
         dojoConfig.put("preventBackButtonFix", _preventBackButtonFix);
         dojoConfig.put("parseWidgets", _parseWidgets);
         
-        //
         // Supports setting up locale in dojo environment to match the requested page locale.
         // (for things that use these settings, like DropdownDatePicker / date parsing / etc..
-        
+
         Locale locale = cycle.getPage().getLocale();
-        
+
         dojoConfig.put("locale", locale.getLanguage().toLowerCase()
                 + ((locale.getCountry() != null && locale.getCountry().trim().length() > 0)
                 ? "-" + locale.getCountry().toLowerCase()
                         : ""));
         
-        //
         // Write the required script includes and dojo.requires
         
         StringBuffer str = new StringBuffer("<script type=\"text/javascript\">");

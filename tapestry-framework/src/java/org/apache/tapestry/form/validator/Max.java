@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.form.validator;
 
-import java.text.DecimalFormatSymbols;
-
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
@@ -28,6 +26,10 @@ import org.apache.tapestry.valid.ValidationConstants;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
+
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 /**
  * Validates that the input value is not larger than a particular maximum value.
@@ -62,13 +64,26 @@ public class Max extends BaseValidator
                     ValidationConstraint.TOO_LARGE);
     }
 
+    private String getStringValue(Locale locale, IFormComponent field)
+    {
+        String ret = null;
+        NumberTranslator translator = (NumberTranslator)super.getFieldTranslator(field, NumberTranslator.class);
+
+        if (translator != null)
+            ret = translator.format(field, locale, new Double(_max));
+        else
+            ret = String.valueOf(_max);
+
+        return ret;
+    }
+
     private String buildMessage(ValidationMessages messages, IFormComponent field)
     {
         return messages.formatValidationMessage(
                 getMessage(),
                 ValidationStrings.VALUE_TOO_LARGE,
                 new Object[]
-                { field.getDisplayName(), new Double(_max) });
+                        { field.getDisplayName(), getStringValue(messages.getLocale(), field) });
     }
 
     public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
@@ -80,27 +95,38 @@ public class Max extends BaseValidator
             profile.put(ValidationConstants.CONSTRAINTS, new JSONObject());
         }
         JSONObject cons = profile.getJSONObject(ValidationConstants.CONSTRAINTS);
-        
-        // TODO: Should find some way to provide this globally and cache.
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols(context.getLocale());
-        
-        String maxString = null;
+
+        context.addInitializationScript(field, "dojo.require(\"dojo.i18n.number\");");
+
+        String maxString = getStringValue(context.getLocale(), field);
+        String grouping = "";
+
+        DecimalFormatSymbols symbols = null;
         NumberTranslator translator = (NumberTranslator)super.getFieldTranslator(field, NumberTranslator.class);
+
+        if (translator != null) {
+            DecimalFormat format = translator.getDecimalFormat(context.getLocale());
+
+            if (format.isGroupingUsed()) {
+                grouping += ",separator:" + JSONObject.quote(format.getDecimalFormatSymbols().getGroupingSeparator());
+                grouping += ",groupSize:" + format.getGroupingSize();
+            }
+
+            symbols = format.getDecimalFormatSymbols();
+        } else {
+
+            symbols = new DecimalFormatSymbols(context.getLocale());
+        }
+
+        accumulateProperty(cons, field.getClientId(),
+                           new JSONLiteral("[tapestry.form.validation.lessThanOrEqual,"
+                                           + JSONObject.quote(maxString)
+                                           + ",{"
+                                           + "decimal:" + JSONObject.quote(symbols.getDecimalSeparator())
+                                           + grouping
+                                           + "}]"));
         
-        if (translator != null)
-            maxString = translator.format(field, context.getLocale(), new Double(_max));
-        else
-            maxString = String.valueOf(_max);
-        
-        accumulateProperty(cons, field.getClientId(), 
-                new JSONLiteral("[dojo.validate.isInRange,{"
-                        + "max:" + maxString + ","
-                        + "decimal:" + JSONObject.quote(symbols.getDecimalSeparator())
-                        + ",separator:" + JSONObject.quote(symbols.getGroupingSeparator())
-                        + "}]"));
-        
-        accumulateProfileProperty(field, profile, 
-                ValidationConstants.CONSTRAINTS, buildMessage(context, field));
+        accumulateProfileProperty(field, profile, ValidationConstants.CONSTRAINTS, buildMessage(context, field));
     }
 
     public void setMax(double max)

@@ -14,5 +14,4 @@ if (relobj.authority != null) { uri += "//" + relobj.authority; }
 uri += relobj.path;if (relobj.query != null) { uri += "?" + relobj.query; }
 if (relobj.fragment != null) { uri += "#" + relobj.fragment; }}
 this.uri = uri.toString();var r = this.uri.match(uriPattern);this.scheme = r[2] || (r[1] ? "" : null);this.authority = r[4] || (r[3] ? "" : null);this.path = r[5];this.query = r[7] || (r[6] ? "" : null);this.fragment  = r[9] || (r[8] ? "" : null);if (this.authority != null) {r = this.authority.match(authorityPattern);this.user = r[3] || null;this.password = r[4] || null;this.host = r[5];this.port = r[7] || null;}
-this.toString = function(){ return this.uri; }}
-};
+this.toString = function(){ return this.uri; }}};

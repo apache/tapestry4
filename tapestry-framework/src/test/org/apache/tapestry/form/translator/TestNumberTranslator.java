@@ -254,7 +254,7 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         
         assertEquals(json.toString(),
                 "{\"constraints\":{\"numberField\":" +
-                "[[dojo.validate.isRealNumber,{places:0,decimal:\".\"}]]}," +
+                "[[dojo.i18n.number.isReal,null,{places:0,decimal:\".\"}]]}," +
                 "\"numberField\":{\"constraints\":[\"invalid number message\"]}}");
     }
 
@@ -285,9 +285,10 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         verify();
 
         assertEquals(json.toString(),
-                "{\"constraints\":{\"numberField\":[[dojo.validate.isRealNumber," +
-                "{places:0,decimal:\".\",separator:\",\"}]]},\"numberField\":" +
-                "{\"constraints\":[\"invalid number message\"]}}");
+                "{\"constraints\":{\"numberField\":" +
+                "[[dojo.i18n.number.isReal,null," +
+                "{places:0,decimal:\".\",separator:\",\",groupSize:2}]]}," +
+                "\"numberField\":{\"constraints\":[\"invalid number message\"]}}");
     }
 
     public void test_Message_Render_Contribution()
@@ -324,8 +325,8 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         verify();
         
         assertEquals(json.toString(),
-                "{\"constraints\":" +
-                "{\"myfield\":[[dojo.validate.isRealNumber,{places:0,decimal:\".\"}]]}," +
+                "{\"constraints\":{\"myfield\":" +
+                "[[dojo.i18n.number.isReal,null,{places:0,decimal:\".\"}]]}," +
                 "\"myfield\":{\"constraints\":[\"Blah Blah 'Field Name' Blah.\"]}}");
     }
     
@@ -359,10 +360,8 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         verify();
         
         assertEquals(json.toString(),
-                "{\"trim\":[\"myfield\"]," +
-                "\"constraints\":{\"myfield\":" +
-                "[[dojo.validate.isRealNumber,{places:0,decimal:\".\"}]]}," +
+                "{\"trim\":[\"myfield\"],\"constraints\":{\"myfield\":" +
+                "[[dojo.i18n.number.isReal,null,{places:0,decimal:\".\"}]]}," +
                 "\"myfield\":{\"constraints\":[\"invalid number message\"]}}");
-                
     }
 }

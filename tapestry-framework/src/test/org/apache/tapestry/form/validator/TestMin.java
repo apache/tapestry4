@@ -14,11 +14,6 @@
 
 package org.apache.tapestry.form.validator;
 
-import static org.easymock.EasyMock.expect;
-
-import java.text.DecimalFormatSymbols;
-import java.util.Locale;
-
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
@@ -28,7 +23,11 @@ import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
+
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 /**
  * Tests for {@link org.apache.tapestry.form.validator.Min}.
@@ -39,7 +38,7 @@ import org.testng.annotations.Test;
 @Test
 public class TestMin extends BaseValidatorTestCase
 {
-    public void testOK() throws Exception
+    public void test_OK() throws Exception
     {
         IFormComponent field = newField();
         ValidationMessages messages = newMessages();
@@ -53,15 +52,17 @@ public class TestMin extends BaseValidatorTestCase
         verify();
     }
 
-    public void testFail()
+    public void test_Fail()
     {
         IFormComponent field = newField("My Field");
         ValidationMessages messages = newMessages(
                 null,
                 ValidationStrings.VALUE_TOO_SMALL,
                 new Object[]
-                { "My Field", new Double(10) },
+                { "My Field", String.valueOf(new Double(10).doubleValue()) },
                 "Exception!");
+
+        expect(messages.getLocale()).andReturn(Locale.getDefault()).atLeastOnce();
 
         replay();
 
@@ -76,15 +77,17 @@ public class TestMin extends BaseValidatorTestCase
         }
     }
 
-    public void testFailCustomMessage()
+    public void test_Fail_Custom_Message()
     {
         IFormComponent field = newField("My Field");
         ValidationMessages messages = newMessages(
                 "custom",
                 ValidationStrings.VALUE_TOO_SMALL,
                 new Object[]
-                { "My Field", new Double(10) },
+                { "My Field", String.valueOf(new Double(10).doubleValue()) },
                 "custom message");
+
+        expect(messages.getLocale()).andReturn(Locale.getDefault()).atLeastOnce();
 
         replay();
 
@@ -104,20 +107,19 @@ public class TestMin extends BaseValidatorTestCase
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
         JSONObject json = new JSONObject();
-        
-        IFormComponent field = newField("My Field", "myfield");
-        
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
-        
+        IFormComponent field = newField("My Field", "myfield");
+
+        context.addInitializationScript(field, "dojo.require(\"dojo.i18n.number\");");
+
         Locale locale = Locale.FRANCE;
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
         
-        expect(context.getLocale()).andReturn(locale);
-        
+        expect(context.getLocale()).andReturn(locale).atLeastOnce();
         expect(context.getProfile()).andReturn(json);
         
         trainFormatMessage(context, null, ValidationStrings.VALUE_TOO_SMALL, new Object[]
-        { "My Field", new Double(20) }, "default message");
+        { "My Field", String.valueOf(new Double(20).doubleValue())}, "default message");
         
         replay();
         
@@ -126,10 +128,8 @@ public class TestMin extends BaseValidatorTestCase
         verify();
         
         assertEquals(json.toString(), 
-                "{\"constraints\":{\"myfield\":[[dojo.validate.isInRange," +
-                "{min:20.0,decimal:\",\",separator:\""
-                + symbols.getGroupingSeparator()
-                + "\"}]]}," +
+                "{\"constraints\":{\"myfield\":" +
+                "[[tapestry.form.validation.greaterThanOrEqual,\"20.0\",{decimal:\",\"}]]}," +
                 "\"myfield\":{\"constraints\":[\"default message\"]}}");
     }
     
@@ -137,18 +137,16 @@ public class TestMin extends BaseValidatorTestCase
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
-        
         JSONObject json = new JSONObject();
-        
-        IFormComponent field = newField("My Field", "myfield");
-        
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
-        
+        IFormComponent field = newField("My Field", "myfield");
+
+        context.addInitializationScript(field, "dojo.require(\"dojo.i18n.number\");");
+
         Locale locale = Locale.FRANCE;
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
         
-        expect(context.getLocale()).andReturn(locale);
-        
+        expect(context.getLocale()).andReturn(locale).atLeastOnce();
         expect(context.getProfile()).andReturn(json);
         
         trainFormatMessage(
@@ -156,7 +154,7 @@ public class TestMin extends BaseValidatorTestCase
                 "custom",
                 ValidationStrings.VALUE_TOO_SMALL,
                 new Object[]
-                { "My Field", new Double(20) },
+                { "My Field", String.valueOf(new Double(20).doubleValue()) },
                 "custom\\message");
         
         replay();
@@ -166,11 +164,9 @@ public class TestMin extends BaseValidatorTestCase
         verify();
         
         assertEquals(json.toString(),
-                "{\"constraints\":{\"myfield\":[[dojo.validate.isInRange," +
-                "{min:20.0,decimal:\",\",separator:\""
-                + symbols.getGroupingSeparator()
-                + "\"}]]},\"myfield\":" +
-                "{\"constraints\":[\"custom\\\\message\"]}}");
+                "{\"constraints\":{\"myfield\":" +
+                "[[tapestry.form.validation.greaterThanOrEqual,\"20.0\",{decimal:\",\"}]]}," +
+                "\"myfield\":{\"constraints\":[\"custom\\\\message\"]}}");
     }
     
 }

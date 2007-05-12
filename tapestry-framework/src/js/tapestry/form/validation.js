@@ -145,14 +145,18 @@ tapestry.form.validation={
 	 * in error.
 	 */
 	clearValidationDecorations:function(form, props){
-		for (var i=0; i< form.elements.length; i++) {
-			if (dj_undef("type", form.elements[i]) || typeof form.elements[i].type == "undefined"
-				|| form.elements[i].type == "submit"
-				|| form.elements[i].type == "hidden") { continue; }
 
-			dojo.html.removeClass(form.elements[i], this.missingClass);
-			dojo.html.removeClass(form.elements[i], this.invalidClass);
-		}
+        for (var i=0; i < props.profiles.length; i++) {
+
+            for (var fieldName in props.profiles[i]) {
+                if (dj_undef("type", form.elements[fieldName]) || typeof form.elements[fieldName].type == "undefined"
+                        || form.elements[fieldName].type == "submit"
+                        || form.elements[fieldName].type == "hidden") { continue; }
+
+                dojo.html.removeClass(form.elements[fieldName], this.missingClass);
+                dojo.html.removeClass(form.elements[fieldName], this.invalidClass);
+            }
+        }
 	},
 
 	/**
@@ -249,23 +253,46 @@ tapestry.form.validation={
 
 	isPalleteSelected:function(elem){
 		return elem.length > 0;
-
 	},
 
-    /**
+   /**
     * Validates that the input value is equal with the value of the given input control.
     */
-    isEqual:function(value, other)
-    {
+    isEqual:function(value, other){
         var otherValue = dojo.byId(other).value;
         return value == otherValue;
     },
 
-    /**
+   /**
     * Validates that the input value is not equal with the value of the given input control.
     */
-    isNotEqual:function(value, other)
-    {
+    isNotEqual:function(value, other){
         return !tapestry.form.validation.isEqual(value, other);
+    },
+
+   /**
+    *  Checks that the value given is greater than or equal to the value of
+    *  minString. Uses dojo.i18n.number.parse() to parse out the values using
+    *  the locale settings configured for the current page.
+    */
+    greaterThanOrEqual:function(value, minString, flags){
+        var min = dojo.i18n.number.parse(minString, null, flags);
+        var num = dojo.i18n.number.parse(value, null, flags);
+        if ("NaN" == num) { return false; }
+
+        return num >= min;
+    },
+
+   /**
+    *  Checks that the value given is less than or equal to the value of
+    *  maxString. Uses dojo.i18n.number.parse() to parse out the values using
+    *  the locale settings configured for the current page.
+    */
+    lessThanOrEqual:function(value, maxString, flags){
+        var max = dojo.i18n.number.parse(maxString, null, flags);
+        var num = dojo.i18n.number.parse(value, null, flags);
+        if ("NaN" == num) { return false; }
+
+        return num <= max;
     }
 }

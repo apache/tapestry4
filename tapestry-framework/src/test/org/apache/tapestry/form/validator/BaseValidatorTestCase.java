@@ -14,15 +14,11 @@
 
 package org.apache.tapestry.form.validator;
 
-import static org.easymock.EasyMock.aryEq;
-import static org.easymock.EasyMock.checkOrder;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
+import static org.easymock.EasyMock.*;
 
 /**
  * Base class for writing {@link org.apache.tapestry.form.validator.Validator} tests.
@@ -44,6 +40,7 @@ public abstract class BaseValidatorTestCase extends BaseComponentTestCase
     protected IFormComponent newField(String displayName)
     {
         IFormComponent field = newMock(IFormComponent.class);
+        checkOrder(field, false);
         
         expect(field.getDisplayName()).andReturn(displayName);
         

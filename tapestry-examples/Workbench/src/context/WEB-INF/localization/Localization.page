@@ -46,9 +46,10 @@
     <binding name="value" value="page.engine.locale"/>
     <binding name="model" value="localeModel"/>
   </component>
-  
+
   <component id="changeButton" type="ImageSubmit">
     <binding name="image" value="asset:changeButton"/>
+    <binding name="action" value="listener:formSubmit" />
   </component>
   
   <asset name="changeButton" path="images/Change.gif"/>

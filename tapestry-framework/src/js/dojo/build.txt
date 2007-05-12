@@ -1,6 +1,4 @@
 Files baked into this build:
-
-dojo.js:
 dojoGuardStart.js
 ../src/bootstrap1.js
 ../src/loader.js
@@ -48,6 +46,9 @@ dojoGuardEnd.js
 ../src/html/iframe.js
 ../src/widget/PopupContainer.js
 ../src/widget/DropdownContainer.js
+../src/io/cookie.js
+../src/io/__package__.js
+../src/widget/ContentPane.js
 ../src/date/common.js
 ../src/date/supplemental.js
 ../src/i18n/common.js
