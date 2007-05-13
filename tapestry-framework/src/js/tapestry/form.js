@@ -1,9 +1,7 @@
 dojo.provide("tapestry.form");
-
 dojo.require("dojo.event.browser");
 dojo.require("dojo.dom");
 dojo.require("dojo.html.selection");
-
 dojo.require("tapestry.core");
 
 /**
@@ -296,8 +294,8 @@ tapestry.form={
 			tapestry.form.submitAsync(form);
 			return;
 		}
-		
-		form.submit();
+        
+        form.submit();
 	},
 	
 	/**

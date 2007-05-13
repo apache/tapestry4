@@ -46,6 +46,18 @@ public abstract class DropdownDatePicker extends AbstractFormWidget implements T
     
     /** Alt html text for the date icon, what is displayed when mouse hovers over icon. */
     public abstract String getIconAlt();
+
+    public abstract int getDisplayWeeks();
+
+    public abstract boolean isAdjustWeeks();
+
+    public abstract Object getStartDate();
+
+    public abstract Object getEndDate();
+
+    public abstract int getWeekStartsOn();
+
+    public abstract boolean isStaticDisplay();
     
     /**
      * {@inheritDoc}
@@ -87,7 +99,19 @@ public abstract class DropdownDatePicker extends AbstractFormWidget implements T
         }
         
         json.put("disabled", isDisabled());
-        
+        if (getDisplayWeeks() > 0)
+            json.put("displayWeeks", getDisplayWeeks());
+        if (isAdjustWeeks())
+            json.put("adjustWeeks", isAdjustWeeks());
+        if (getStartDate() != null)
+            json.put("startDate", translator.formatRfc3339(getStartDate()));
+        if (getEndDate() != null)
+            json.put("endDate", translator.formatRfc3339(getEndDate()));
+        if (getWeekStartsOn() > -1)
+            json.put("weekStartsOn", getWeekStartsOn());
+        if (isStaticDisplay())
+            json.put("staticDisplay", isStaticDisplay());
+
         Map parms = new HashMap();
         parms.put("clientId", getClientId());
         parms.put("props", json.toString());

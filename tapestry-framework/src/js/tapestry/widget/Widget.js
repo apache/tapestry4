@@ -13,7 +13,6 @@
 // limitations under the License.
 dojo.provide("tapestry.widget");
 dojo.provide("tapestry.widget.Widget");
-
 dojo.require("dojo.widget.*");
 
 // Define core widget management methods
