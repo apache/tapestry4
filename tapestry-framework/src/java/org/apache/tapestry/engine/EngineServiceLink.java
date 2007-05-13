@@ -14,9 +14,6 @@
 
 package org.apache.tapestry.engine;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Map;
-
 import org.apache.commons.codec.net.URLCodec;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.util.Defense;
@@ -24,6 +21,9 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.QueryParameterMap;
 import org.apache.tapestry.web.WebRequest;
+
+import java.io.UnsupportedEncodingException;
+import java.util.Map;
 
 /**
  * A EngineServiceLink represents a possible action within the client web browser; either clicking a
@@ -39,6 +39,8 @@ import org.apache.tapestry.web.WebRequest;
 public class EngineServiceLink implements ILink
 {
     private static final int DEFAULT_HTTP_PORT = 80;
+    
+    private static final int DEFAULT_HTTPS_PORT = 443;
 
     private final String _servletPath;
 
@@ -167,7 +169,7 @@ public class EngineServiceLink implements ILink
         
         buffer.append(server == null ? _request.getServerName() : server);
         
-        if (!(nscheme.equals("http") && nport == DEFAULT_HTTP_PORT))
+        if (!(nscheme.equals("http") && nport == DEFAULT_HTTP_PORT) && !(nscheme.equals("https") && nport == DEFAULT_HTTPS_PORT))
         {
             buffer.append(':');
             buffer.append(nport);
@@ -196,6 +198,7 @@ public class EngineServiceLink implements ILink
         
         // TODO: This is somewhat questionable right now, was added in to support TAPESTRY-802
         if (_cycle != null && _stateful) {
+            
             result = _cycle.encodeURL(result);
         }
         

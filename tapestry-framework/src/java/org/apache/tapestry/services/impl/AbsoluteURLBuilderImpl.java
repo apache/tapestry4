@@ -71,10 +71,11 @@ public class AbsoluteURLBuilderImpl implements AbsoluteURLBuilder
 
         // Keep things simple ... port 80 is accepted as the
         // standard port for http so it can be ommitted.
+        //
         // Some of the Tomcat code indicates that port 443 is the default
-        // for https, and that needs to be researched.
+        // for https.. And it is. 
 
-        if (scheme.equals("http") && port == 80)
+        if ((scheme.equals("http") && port == 80) || (scheme.equals("https") && port == 443))
             port = 0;
 
         return constructURL(URI, scheme, server, port);
