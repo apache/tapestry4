@@ -1,5 +1,4 @@
 dojo.provide("tapestry.form.validation");
-
 dojo.require("dojo.validate.check");
 dojo.require("dojo.html.style");
 dojo.require("dojo.widget.*");

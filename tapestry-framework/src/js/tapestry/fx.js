@@ -1,6 +1,4 @@
 dojo.provide("tapestry.fx");
-
-dojo.require("dojo.logging.Logger");
 dojo.require("tapestry.core");
 
 /**

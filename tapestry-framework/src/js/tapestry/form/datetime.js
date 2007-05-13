@@ -2,7 +2,6 @@ dojo.provide("tapestry.form.datetime");
 
 dojo.require("dojo.date.format");
 dojo.require("dojo.validate.datetime");
-dojo.require("dojo.logging.Logger");
 
 tapestry.form.datetime={
 	

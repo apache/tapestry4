@@ -2,7 +2,6 @@ dojo.provide("tapestry.widget.AlertDialog");
 
 dojo.require("dojo.widget.*");
 dojo.require("dojo.widget.Dialog");
-dojo.require("dojo.widget.Button");
 dojo.require("dojo.event.common");
 dojo.require("dojo.html.common");
 

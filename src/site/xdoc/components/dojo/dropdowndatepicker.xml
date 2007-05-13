@@ -54,11 +54,11 @@
                     </tr>
                     <tr>
                         <td>value</td>
-                        <td>java.util.Date</td>
+                        <td>Object</td>
                         <td>yes</td>
                         <td></td>
                         <td>
-                            The data value. Take care to ensure date time values are 'normalized'
+                            The date value. Take care to ensure date time values are 'normalized'
                             before performing any millisec based comparison or equality operations.
                         </td>
                     </tr>
@@ -123,6 +123,60 @@
                         <td>literal:Select a Date</td>
                         <td>
                            The textual name given to the date picking icon before the image is loaded.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>displayWeeks</td>
+                        <td>int</td>
+                        <td>no</td>
+                        <td>6</td>
+                        <td>
+                            Number of weeks to display, default is 6.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>adjustWeeks</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            If true, weekly size of calendar changes to accomodate the month. If false (the default), 42 day format is used.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>startDate</td>
+                        <td>Object</td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            First available date in the calendar set. If specified then no date earlier than startDate will be selectable.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>endDate</td>
+                        <td>Object</td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            Last available date in the calendar set. If specified then no date later than endDate will be selectable.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>weekStartsOn</td>
+                        <td>int</td>
+                        <td>no</td>
+                        <td>0</td>
+                        <td>
+                            Adjusts the first day of the week 0==Sunday..6==Saturday.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>staticDisplay</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            Disables all incremental controls, must pick a date in the current display. Default is false.
                         </td>
                     </tr>
                 </table>

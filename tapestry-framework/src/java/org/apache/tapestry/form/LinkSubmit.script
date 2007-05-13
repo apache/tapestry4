@@ -24,7 +24,7 @@
 <input-symbol key="form" required="yes" />
 
 <let key="href">
-javascript:tapestry.form.submit("${form.clientId}","${name}");
+javascript:tapestry.form.submit('${form.clientId}','${name}');
 </let>
 
 </script>
