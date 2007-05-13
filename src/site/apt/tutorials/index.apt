@@ -1,0 +1,28 @@
+ ------
+Tapestry 4 Tutorials
+ ------
+Jesse Kuhnert
+ ------
+12 May 2007
+ ------
+
+Tapestry tutorial series at DevShed
+
+  {{{http://sundraw.ws/}Alexander Kolesnikov}} has written a great series of Tapestry 4 tutorials that should be a great help for anyone
+  getting started with Tapestry or just wanting a quick reference for some of the common areas of development.
+
+  * {{{http://www.devshed.com/c/a/Apache/Making-a-CelebrityCollector-with-Apache-Tapestry-the-For-Component/}Making a CelebrityCollector with Apache Tapestry: the For Component}}
+
+  * {{{http://www.devshed.com/c/a/Apache/Apache-Tapestry-and-Listener-Methods-Conditional-Components-and-PageLink/}Apache Tapestry and Listener Methods, Conditional Components and PageLink}}
+
+  * {{{http://www.devshed.com/c/a/Apache/The-Properties-of-Tapestry-Pages/}The Properties of Tapestry Pages}}
+
+  * {{{http://www.devshed.com/c/a/Apache/A-Closer-Look-at-Simple-Components-in-Apache-Tapestry/}A Closer Look at Simple Components in Apache Tapestry}}
+
+  * {{{http://www.devshed.com/c/a/Apache/Introducing-Simple-Components-in-Apache-Tapestry/}Introducing Simple Components in Apache Tapestry}}
+
+  * {{{http://www.devshed.com/c/a/Apache/Creating-Your-First-Tapestry-Project/}Creating Your First Tapestry Project}}
+
+  * {{{http://www.devshed.com/c/a/Apache/Preparing-the-Workspace-for-Apache-Tapestry/}Preparing the Workspace for Apache Tapestry}}
+
+  * {{{http://www.devshed.com/c/a/Apache/Apache-Tapestry-4-Tutorial/}Apache Tapestry 4 Tutorial}}

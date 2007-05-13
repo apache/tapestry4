@@ -45,14 +45,16 @@
         </menu>
         
         <menu name="Documentation" >
-            
+
+            <item name="Tutorials" href="/tutorials/index.html" />
+
             <item name="Quick Start" href="/quickstart/helloworld.html" collapse="true">
                 <item name="Hello World" href="/quickstart/helloworld.html" />
                 <item name="Direct Links" href="/quickstart/directlink.html" />
                 <item name="Forms" href="/quickstart/forms.html" />
                 <item name="Contributed" href="/quickstart/contributed.html" />
             </item>
-            
+
             <item name="Users Guide" href="/usersguide/index.html" collapse="true">
                 <item name="Introduction" href="/usersguide/index.html" />
                 <item name="Templates" href="usersguide/template.html" />
