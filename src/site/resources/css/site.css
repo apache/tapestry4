@@ -1,6 +1,6 @@
 a.externalLink,a.externalLink:link,a.externalLink:visited,a.externalLink:active,a.externalLink:hover {
     background: none;
-    padding-right: 0;
+    padding: 0;
 }
 
 body ul {
@@ -41,4 +41,3 @@ body ul {
 .section ul li {
     margin-top: 8px;
 }
-
