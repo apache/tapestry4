@@ -70,7 +70,14 @@
             <p><strong>New Tutorials!:</strong></p><br/>
             <p><a href="/tutorials/index.html">Devshed Tutorial Series</a> written by <a href="http://sundraw.ws/">Alexander Kolesnikov</a>.</p>
 
+            <br />
+
+            <br />
+            <p><strong>Getting started?:</strong></p><br/>
+            <p>Try the maven2 <a href="/tapestry-archetype/index.html">Archetype</a> to bootstrap your project with some typical configurations.</p>
+
             <br /><br />
+
             <p>
                 Tapestry is an open-source framework for creating dynamic, robust, highly scalable
                 web applications in Java. Tapestry complements and builds upon the standard Java
