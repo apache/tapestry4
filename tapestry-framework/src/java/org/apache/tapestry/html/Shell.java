@@ -14,25 +14,18 @@
 
 package org.apache.tapestry.html;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.hivemind.HiveMind;
-import org.apache.tapestry.AbstractComponent;
-import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRender;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.*;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.spec.IApplicationSpecification;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Component for creating a standard 'shell' for a page, which comprises the &lt;html&gt; and
@@ -55,30 +48,23 @@ public abstract class Shell extends AbstractComponent
     {
         TapestryUtils.storeUniqueAttribute(cycle, SHELL_ATTRIBUTE, this);
         
-        long startTime = 0;
-
+        long startTime = System.currentTimeMillis();
         boolean rewinding = cycle.isRewinding();
-        
-        IMarkupWriter nested = writer.getNestedWriter();
-        // Render the body, the actual page content        
-        renderBody(nested, cycle);
 
         if (!rewinding)
         {
-            startTime = System.currentTimeMillis();
-
             writeDocType(writer, cycle);
 
             IPage page = getPage();
-            
+
             if (!isDisableTapestryMeta()) {
-                
+
                 writer.comment("Application: " + getApplicationSpecification().getName());
 
                 writer.comment("Page: " + page.getPageName());
                 writer.comment("Generated: " + new Date());
             }
-            
+
             writer.begin("html");
             writer.println();
             writer.begin("head");
@@ -86,32 +72,59 @@ public abstract class Shell extends AbstractComponent
 
             if (!isDisableTapestryMeta())
                 writeMetaTag(writer, "name", "generator", GENERATOR_CONTENT);
-            
+
             if (isDisableCaching())
                 writeMetaTag(writer, "http-equiv", "content", "no-cache");
-            
+
             if (getRenderContentType())
                 writeMetaTag(writer, "http-equiv", "Content-Type", writer.getContentType());
-            
+
+            writeRefresh(writer, cycle);
+
             if (getRenderBaseTag())
                 getBaseTagWriter().render(writer, cycle);
-            
+
             writer.begin("title");
-            
-            writer.print(getTitle(), getRaw());               
+
+            writer.print(getTitle(), getRaw());
             writer.end(); // title
             writer.println();
-            
+
             IRender delegate = getDelegate();
-            
+
             if (delegate != null)
                 delegate.render(writer, cycle);
-            
+
             IRender ajaxDelegate = getAjaxDelegate();
-            
+
             if (ajaxDelegate != null)
                 ajaxDelegate.render(writer, cycle);
             
+            IAsset stylesheet = getStylesheet();
+
+            if (stylesheet != null)
+                writeStylesheetLink(writer, cycle, stylesheet);
+
+            Iterator i = (Iterator) getValueConverter().coerceValue(
+                    getStylesheets(),
+                    Iterator.class);
+
+            while (i.hasNext())
+            {
+                stylesheet = (IAsset) i.next();
+
+                writeStylesheetLink(writer, cycle, stylesheet);
+            }
+        }
+
+        // Render the body, the actual page content
+
+        IMarkupWriter nested = writer.getNestedWriter();
+
+        renderBody(nested, cycle);
+
+        if (!rewinding)
+        {
             List relations = getRelations();
             if (relations != null)
                 writeRelations(writer, relations); 
@@ -119,24 +132,6 @@ public abstract class Shell extends AbstractComponent
             StringBuffer additionalContent = getContentBuffer();
             if (additionalContent != null)
                 writer.printRaw(additionalContent.toString());
-            
-            IAsset stylesheet = getStylesheet();
-            
-            if (stylesheet != null)
-                writeStylesheetLink(writer, cycle, stylesheet);
-            
-            Iterator i = (Iterator) getValueConverter().coerceValue(
-                    getStylesheets(),
-                    Iterator.class);
-            
-            while (i.hasNext())
-            {
-                stylesheet = (IAsset) i.next();
-
-                writeStylesheetLink(writer, cycle, stylesheet);
-            }
-            
-            writeRefresh(writer, cycle);
             
             writer.end(); // head
         }

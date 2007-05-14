@@ -27,8 +27,4 @@
 
     <library id="contrib" specification-path="classpath:/org/apache/tapestry/contrib/Contrib.library"/>
 
-    <!--
-    <component-type type="Locale" specification-path="classpath:/org/apache/tapestry/timetracker/component/Locale.jwc" />
-    -->
-
 </application>
