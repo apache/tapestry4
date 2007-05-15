@@ -207,7 +207,7 @@ public class ClasspathAssetFactoryTest extends BaseComponentTestCase
         factory.setAssetService(assetService);
         factory.setLocalizer(new DefaultResourceLocalizer());
         
-        String path = "/dojo/dojo.js";
+        String path = "/dojo-0.4.2/dojo.js";
         
         IAsset asset = factory.createAsset(shell, spec, path, 
                 Locale.getDefault(),
@@ -236,7 +236,7 @@ public class ClasspathAssetFactoryTest extends BaseComponentTestCase
         factory.setAssetService(assetService);
         factory.setLocalizer(new DefaultResourceLocalizer());
         
-        String path = "/dojo/";
+        String path = "/dojo-0.4.2/";
         
         IAsset asset = factory.createAsset(shell, spec, path, 
                 Locale.getDefault(),

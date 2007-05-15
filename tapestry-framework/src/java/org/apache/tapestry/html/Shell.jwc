@@ -184,8 +184,8 @@
         <set name="parseWidgets" value="parseWidgets" />
     </bean>
 
-    <asset name="defaultDojoSource" path="classpath:/dojo/dojo.js" />
-    <asset name="defaultDojoPath" path="classpath:/dojo/" />
+    <asset name="defaultDojoSource" path="classpath:/dojo-0.4.2/dojo.js" />
+    <asset name="defaultDojoPath" path="classpath:/dojo-0.4.2/" />
     <asset name="defaultTapestrySource" path="classpath:/tapestry/core.js" />
     <asset name="defaultTapestryPath" path="classpath:/tapestry/" />
     
