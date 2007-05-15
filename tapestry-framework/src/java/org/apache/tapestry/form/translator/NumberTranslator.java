@@ -126,6 +126,8 @@ public class NumberTranslator extends FormatTranslator
         }
         JSONObject cons = profile.getJSONObject(ValidationConstants.CONSTRAINTS);
 
+        context.addInitializationScript(field, "dojo.require(\"dojo.i18n.number\");");
+
         DecimalFormat format = getDecimalFormat(context.getLocale());
 
         String grouping = "";
