@@ -108,8 +108,12 @@ public class Min extends BaseValidator
             DecimalFormat format = translator.getDecimalFormat(context.getLocale());
 
             if (format.isGroupingUsed()) {
+
                 grouping += ",separator:" + JSONObject.quote(format.getDecimalFormatSymbols().getGroupingSeparator());
                 grouping += ",groupSize:" + format.getGroupingSize();
+            } else {
+
+                grouping += ",separator:\"\"";
             }
             
             symbols = format.getDecimalFormatSymbols();

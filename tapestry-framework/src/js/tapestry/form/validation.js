@@ -275,9 +275,10 @@ tapestry.form.validation={
     *  the locale settings configured for the current page.
     */
     greaterThanOrEqual:function(value, minString, flags){
+        flags.validate=false;
         var min = dojo.i18n.number.parse(minString, null, flags);
         var num = dojo.i18n.number.parse(value, null, flags);
-        if ("NaN" == num) { return false; }
+        if (Number.NaN == num) { return false; }
 
         return num >= min;
     },
@@ -288,9 +289,10 @@ tapestry.form.validation={
     *  the locale settings configured for the current page.
     */
     lessThanOrEqual:function(value, maxString, flags){
+        flags.validate=false;
         var max = dojo.i18n.number.parse(maxString, null, flags);
         var num = dojo.i18n.number.parse(value, null, flags);
-        if ("NaN" == num) { return false; }
+        if (Number.NaN == num) { return false; }
 
         return num <= max;
     }
