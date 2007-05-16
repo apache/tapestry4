@@ -59,7 +59,7 @@
   <component id="inputDouble" type="TextField">
     <binding name="value" value="visit.doubleValue"/>
     <binding name="translator" value="translator:number,pattern=#.#"/>
-    <binding name="validators" value="validators:required,min=3.14,max=27.5"/>
+    <binding name="validators" value="validators:required,min=3.14,max=4627.5"/>
     <binding name="displayName" value="literal:Double Field"/>
   </component>
 

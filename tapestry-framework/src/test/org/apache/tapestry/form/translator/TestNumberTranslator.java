@@ -255,7 +255,7 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         
         assertEquals(json.toString(),
                 "{\"constraints\":{\"numberField\":" +
-                "[[dojo.i18n.number.isReal,null,{places:0,decimal:\".\"}]]}," +
+                "[[dojo.i18n.number.isReal,null,{places:0,decimal:\".\",separator:\"\"}]]}," +
                 "\"numberField\":{\"constraints\":[\"invalid number message\"]}}");
     }
 
@@ -328,8 +328,8 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         verify();
         
         assertEquals(json.toString(),
-                "{\"constraints\":{\"myfield\":" +
-                "[[dojo.i18n.number.isReal,null,{places:0,decimal:\".\"}]]}," +
+                "{\"constraints\":{\"myfield\":[[dojo.i18n.number.isReal,null," +
+                "{places:0,decimal:\".\",separator:\"\"}]]}," +
                 "\"myfield\":{\"constraints\":[\"Blah Blah 'Field Name' Blah.\"]}}");
     }
     
@@ -364,8 +364,9 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         verify();
         
         assertEquals(json.toString(),
-                "{\"trim\":[\"myfield\"],\"constraints\":{\"myfield\":" +
-                "[[dojo.i18n.number.isReal,null,{places:0,decimal:\".\"}]]}," +
+                "{\"trim\":[\"myfield\"]," +
+                "\"constraints\":{\"myfield\":[[dojo.i18n.number.isReal,null," +
+                "{places:0,decimal:\".\",separator:\"\"}]]}," +
                 "\"myfield\":{\"constraints\":[\"invalid number message\"]}}");
     }
 }

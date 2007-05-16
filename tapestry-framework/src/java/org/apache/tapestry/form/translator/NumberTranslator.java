@@ -135,6 +135,9 @@ public class NumberTranslator extends FormatTranslator
 
             grouping += ",separator:" + JSONObject.quote(format.getDecimalFormatSymbols().getGroupingSeparator());
             grouping += ",groupSize:" + format.getGroupingSize();
+        } else {
+
+            grouping += ",separator:\"\"";
         }
 
         cons.accumulate(field.getClientId(),

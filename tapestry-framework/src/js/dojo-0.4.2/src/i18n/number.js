@@ -1,5 +1,4 @@
-
-dojo.provide("dojo.i18n.number");dojo.require("dojo.experimental");dojo.experimental("dojo.i18n.number");dojo.require("dojo.regexp");dojo.require("dojo.i18n.common");dojo.require("dojo.lang.common");dojo.i18n.number.format = function(value, flags , locale ){flags = (typeof flags == "object") ? flags : {};var formatData = dojo.i18n.number._mapToLocalizedFormatData(dojo.i18n.number.FORMAT_TABLE, locale);if (typeof flags.separator == "undefined") {flags.separator = formatData[1];}
+dojo.provide("dojo.i18n.number");dojo.require("dojo.experimental");dojo.require("dojo.regexp");dojo.require("dojo.i18n.common");dojo.require("dojo.lang.common");dojo.i18n.number.format = function(value, flags , locale ){flags = (typeof flags == "object") ? flags : {};var formatData = dojo.i18n.number._mapToLocalizedFormatData(dojo.i18n.number.FORMAT_TABLE, locale);if (typeof flags.separator == "undefined") {flags.separator = formatData[1];}
 if (typeof flags.decimal == "undefined") {flags.decimal = formatData[2];}
 if (typeof flags.groupSize == "undefined") {flags.groupSize = formatData[3];}
 if (typeof flags.groupSize2 == "undefined") {flags.groupSize2 = formatData[4];}
@@ -17,7 +16,8 @@ if (typeof flags.groupSize2 == "undefined") {flags.groupSize2 = formatData[4];}
 if (typeof flags.validate == "undefined") {flags.validate = true;}
 if (flags.validate && !dojo.i18n.number.isReal(value, locale, flags)) {return Number.NaN;}
 var numbers = value.split(flags.decimal);if (numbers.length > 2){return Number.NaN; }
-var whole = Number(numbers[0].replace(new RegExp("\\" + flags.separator, "g"), ""));var fract = (numbers.length == 1) ? 0 : Number(numbers[1]) / Math.pow(10, String(numbers[1]).length);return whole + fract;};dojo.i18n.number.isInteger = function(value, locale , flags ) {flags = (typeof flags == "object") ? flags : {};var formatData = dojo.i18n.number._mapToLocalizedFormatData(dojo.i18n.number.FORMAT_TABLE, locale);if (typeof flags.separator == "undefined") {flags.separator = formatData[1];}
+var whole; if (flags.separator != ""){ whole = Number(numbers[0].replace(new RegExp("\\" + flags.separator, "g"), ""));} else {whole = Number(numbers[0]);}
+var fract = (numbers.length == 1) ? 0 : Number(numbers[1]) / Math.pow(10, String(numbers[1]).length);return whole + fract;};dojo.i18n.number.isInteger = function(value, locale , flags ) {flags = (typeof flags == "object") ? flags : {};var formatData = dojo.i18n.number._mapToLocalizedFormatData(dojo.i18n.number.FORMAT_TABLE, locale);if (typeof flags.separator == "undefined") {flags.separator = formatData[1];}
 else if (dojo.lang.isArray(flags.separator) && flags.separator.length ===0){flags.separator = [formatData[1],""];}
 if (typeof flags.groupSize == "undefined") {flags.groupSize = formatData[3];}
 if (typeof flags.groupSize2 == "undefined") {flags.groupSize2 = formatData[4];}
