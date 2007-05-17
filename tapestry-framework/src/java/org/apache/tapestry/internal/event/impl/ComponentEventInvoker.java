@@ -109,8 +109,16 @@ public class ComponentEventInvoker implements IComponentEventInvoker, ResetEvent
                 
                 if (!listeners[e].getComponentId().endsWith(strippedId))
                     continue;
-                
-                // handle disabling focus 
+
+                // clear validation errors but not input if async validation is
+                // disabled
+
+                if (!listeners[e].isValidateForm()) {
+                    
+                    form.getDelegate().clearErrors();
+                }
+
+                // handle disabling focus
                 if (!disableFocus && !listeners[e].shouldFocusForm())
                     disableFocus = true;
                 

@@ -22,6 +22,7 @@ import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.listener.ListenerMap;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.valid.IValidationDelegate;
 import static org.easymock.EasyMock.*;
 import org.testng.annotations.Test;
 
@@ -195,7 +196,7 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         checkOrder(form, false);
         FormSupport formSupport = newMock(FormSupport.class);
         IComponentSpecification spec = new ComponentSpecification();
-        
+        IValidationDelegate delegate = newMock(IValidationDelegate.class);
         ListenerInvoker listenerInvoker = newMock(ListenerInvoker.class);
         ListenerMap listenerMap = newMock(ListenerMap.class);
         IActionListener listener = newMock(IActionListener.class);
@@ -223,6 +224,11 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         expect(page.getComponents()).andReturn(comps);
         
         expect(form.getSpecification()).andReturn(spec);
+        expect(form.getDelegate()).andReturn(delegate).anyTimes();
+
+        delegate.clearErrors();
+        expectLastCall().anyTimes();
+
         expect(form.getListeners()).andReturn(listenerMap);
         
         expect(listenerMap.getListener("fooListener")).andReturn(listener);
@@ -245,6 +251,7 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         checkOrder(form, false);
         FormSupport formSupport = newMock(FormSupport.class);
         IComponentSpecification spec = new ComponentSpecification();
+        IValidationDelegate delegate = newMock(IValidationDelegate.class);
         
         ListenerInvoker listenerInvoker = newMock(ListenerInvoker.class);
         ListenerMap listenerMap = newMock(ListenerMap.class);
@@ -273,6 +280,11 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         expect(page.getComponents()).andReturn(comps);
         
         expect(form.getSpecification()).andReturn(spec);
+        expect(form.getDelegate()).andReturn(delegate).anyTimes();
+
+        delegate.clearErrors();
+        expectLastCall().anyTimes();
+
         expect(form.getListeners()).andReturn(listenerMap);
         
         expect(listenerMap.getListener("fooListener")).andReturn(listener);
