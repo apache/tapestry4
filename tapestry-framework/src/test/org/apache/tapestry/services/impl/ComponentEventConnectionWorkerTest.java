@@ -239,7 +239,7 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         IComponentSpecification comp2Spec = new ComponentSpecification();
         
         // now test render
-        spec.addEventListener("comp1", new String[] {"onclick"}, "testMethod", "form1", true, true, false, false);
+        spec.addEventListener("comp1", new String[] {"onclick", "onchange"}, "testMethod", "form1", true, true, false, false);
         invoker.addEventListener("comp1", spec);
         invoker.addFormEventListener("form1", spec);
         
@@ -256,7 +256,7 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         expect(comp1.getExtendedId()).andReturn("comp1").anyTimes();
         expect(comp1.getClientId()).andReturn("comp1").anyTimes();
         
-        expect(cycle.getAttribute(ComponentEventConnectionWorker.FORM_NAME_LIST + "form1")).andReturn(null);
+        expect(cycle.getAttribute(ComponentEventConnectionWorker.FORM_NAME_LIST + "form1")).andReturn(null).times(2);
         
         expect(comp1.getSpecification()).andReturn(comp1Spec);
         
@@ -295,7 +295,7 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         List deferred = (List)worker.getDefferedFormConnections().get("form1");
         
         assert deferred != null;
-        assertEquals(deferred.size(), 2);
+        assertEquals(deferred.size(), 3);
         
         Object[] parms = (Object[])deferred.get(0);
         assertEquals(4, parms.length);
@@ -316,10 +316,18 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         assertEquals("comp1", parm.get("clientId"));
         assertEquals(comp1, parm.get("component"));
-        
+
+        // just make sure second element is targeted at comp1 to handle the two events we gave it
+
+        parms = (Object[])deferred.get(1);
+        assertEquals(parms.length, 4);
+
+        parm = (Map)parms[0];
+        assertEquals(parm.get("clientId"), "comp1");
+
         // test comp2 connections
         
-        parms = (Object[])deferred.get(1);
+        parms = (Object[])deferred.get(2);
         assertEquals(4, parms.length);
         
         // assert async is false
@@ -336,8 +344,8 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         assert parm.get("formEvents") == null;
         assert parm.get("target") == null;
         
-        assertEquals("comp2", parm.get("clientId"));
-        assertEquals(comp2, parm.get("component"));
+        assertEquals(parm.get("clientId"), "comp2");
+        assertEquals(parm.get("component"), comp2);
     }
     
     

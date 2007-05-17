@@ -355,7 +355,11 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
                             listener.isAsync(), 
                             listener.isValidateForm(), 
                             ScriptUtils.functionHash(listener));
-                    continue;
+
+                    // re-looping over the same property -> event listener list would
+                    // result in duplicate bindings so break out 
+
+                    break;
                 }
                 
                 // form has been rendered so go ahead
