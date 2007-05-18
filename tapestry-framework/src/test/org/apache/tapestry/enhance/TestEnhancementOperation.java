@@ -14,18 +14,6 @@
 
 package org.apache.tapestry.enhance;
 
-import static org.easymock.EasyMock.aryEq;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isNull;
-import static org.easymock.EasyMock.startsWith;
-
-import java.lang.reflect.Modifier;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Location;
@@ -35,19 +23,22 @@ import org.apache.hivemind.service.ClassFab;
 import org.apache.hivemind.service.ClassFactory;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.hivemind.service.impl.ClassFactoryImpl;
-import org.apache.tapestry.AbstractComponent;
-import org.apache.tapestry.BaseComponent;
-import org.apache.tapestry.BaseComponentTestCase;
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IPage;
+import org.apache.tapestry.*;
 import org.apache.tapestry.components.Insert;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageValidateListener;
 import org.apache.tapestry.link.ServiceLink;
 import org.apache.tapestry.services.ComponentConstructor;
 import org.apache.tapestry.spec.IComponentSpecification;
+import static org.easymock.EasyMock.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.EnhancementOperationImpl}.
@@ -108,7 +99,7 @@ public class TestEnhancementOperation extends BaseComponentTestCase
         }
     }
 
-    public void testClaimedProperty()
+    public void test_Claimed_Property()
     {
         EnhancementOperationImpl eo = new EnhancementOperationImpl();
 
@@ -126,7 +117,7 @@ public class TestEnhancementOperation extends BaseComponentTestCase
         }
     }
 
-    public void testClaimReadonlyPropertyDoesNotExist()
+    public void test_Claim_Readonly_Property_Does_Not_Exist()
     {
         IComponentSpecification spec = newSpec();
         ClassFactory cf = newClassFactory();
@@ -145,7 +136,7 @@ public class TestEnhancementOperation extends BaseComponentTestCase
         verify();
     }
 
-    public void testClaimReadonlyPropertyClaimed()
+    public void test_Claim_Readonly_Property_Claimed()
     {
         IComponentSpecification spec = newSpec();
         ClassFactory cf = newClassFactory();
@@ -171,7 +162,7 @@ public class TestEnhancementOperation extends BaseComponentTestCase
         verify();
     }
 
-    public void testClaimReadonlyPropertyHasSetter()
+    public void test_Claim_Readonly_Property_Has_Setter()
     {
         IComponentSpecification spec = newSpec();
         ClassFactory cf = newClassFactory();
@@ -225,7 +216,7 @@ public class TestEnhancementOperation extends BaseComponentTestCase
         return newMock(ClassFab.class);
     }
 
-    public void testConstructorAndAccessors()
+    public void test_Constructor_And_Accessors()
     {
         IComponentSpecification spec = newSpec();
         ClassFactory cf = newClassFactory();
@@ -240,7 +231,7 @@ public class TestEnhancementOperation extends BaseComponentTestCase
         verify();
     }
 
-    public void testCheckImplementsNoInterface()
+    public void test_Check_Implements_No_Interface()
     {
         IComponentSpecification spec = newSpec();
         ClassFactory cf = newClassFactory();
@@ -255,7 +246,7 @@ public class TestEnhancementOperation extends BaseComponentTestCase
         verify();
     }
 
-    public void testCheckImplementsClassImplements()
+    public void test_Check_Implements_Class_Implements()
     {
         IComponentSpecification spec = newSpec();
         ClassFactory cf = newClassFactory(ValidatingComponent.class);
@@ -579,7 +570,7 @@ public class TestEnhancementOperation extends BaseComponentTestCase
      * construct a new class; the class gets a class reference passed to it in its constructor.
      */
 
-    public void testGetClassReference() throws Exception
+    public void test_Get_Class_Reference() throws Exception
     {
         Location l = newLocation();
         IComponentSpecification spec = newSpec();
@@ -629,7 +620,7 @@ public class TestEnhancementOperation extends BaseComponentTestCase
 
     /**
      * Really a test for {@link org.apache.tapestry.enhance.ComponentConstructorImpl};
-     * {@link #testGetClassReference()}tests the success case, just want to fill in the failure.
+     * {@link #test_Get_Class_Reference()} tests the success case, just want to fill in the failure.
      */
 
     public void testComponentConstructorFailure()
@@ -654,7 +645,7 @@ public class TestEnhancementOperation extends BaseComponentTestCase
         }
     }
 
-    public void testGetPropertyType()
+    public void test_Get_Property_Type()
     {
         IComponentSpecification spec = newSpec();
         ClassFactory cf = newClassFactory();
@@ -674,7 +665,7 @@ public class TestEnhancementOperation extends BaseComponentTestCase
         verify();
     }
 
-    public void testFindUnclaimedAbstractProperties()
+    public void test_Find_Unclaimed_Abstract_Properties()
     {
         ClassResolver cr = newMock(ClassResolver.class);
         IComponentSpecification spec = newSpec();

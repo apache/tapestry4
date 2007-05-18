@@ -42,14 +42,22 @@ public class EnhancedClassValidatorTest extends BaseComponentTestCase
         
         v.validate(AbstractBase.class, Complete.class, new ComponentSpecification());
     }
-    
+
+    public void test_Generics_Complete()
+    {
+        EnhancedClassValidatorImpl v = new EnhancedClassValidatorImpl();
+        v.setClassInspector(new GenericsClassInspectorImpl());
+
+        v.validate(AbstractGenericBase.class, FooGenericComponent.class, new ComponentSpecification());
+    }
+
     /**
      * Pass in an abstract class (with enhancement, its possible that a supposedly concrete class
      * may omit implementing an inherited abstract method, which is the whole point of the
      * validator.
      */
 
-    public void testIncomplete()
+    public void test_Incomplete()
     {
         ErrorLog log = newErrorLog();
         Location l = newLocation();
@@ -58,13 +66,11 @@ public class EnhancedClassValidatorTest extends BaseComponentTestCase
 
         trainGetLocation(spec, l);
 
-        log
-                .error(
-                        "Method 'public abstract void org.apache.tapestry.enhance.AbstractBase.foo()' "
-                                + "(declared in class org.apache.tapestry.enhance.AbstractBase) has no implementation in class "
-                                + "org.apache.tapestry.enhance.AbstractBase (or enhanced subclass org.apache.tapestry.enhance.Incomplete).",
-                        l,
-                        null);
+        log.error("Method 'public abstract void org.apache.tapestry.enhance.AbstractBase.foo()' "
+                  + "(declared in class org.apache.tapestry.enhance.AbstractBase) has no implementation in class "
+                  + "org.apache.tapestry.enhance.AbstractBase (or enhanced subclass org.apache.tapestry.enhance.Incomplete).",
+                  l,
+                  null);
 
         replay();
 
@@ -86,13 +92,11 @@ public class EnhancedClassValidatorTest extends BaseComponentTestCase
 
         trainGetLocation(spec, l);
 
-        log
-                .error(
-                        "Method 'public abstract void java.lang.Runnable.run()' "
-                                + "has no implementation in class org.apache.tapestry.enhance.AbstractRunnable "
-                                + "(or enhanced subclass org.apache.tapestry.enhance.AbstractRunnableSubclass).",
-                        l,
-                        null);
+        log.error("Method 'public abstract void java.lang.Runnable.run()' "
+                  + "has no implementation in class org.apache.tapestry.enhance.AbstractRunnable "
+                  + "(or enhanced subclass org.apache.tapestry.enhance.AbstractRunnableSubclass).",
+                  l,
+                  null);
 
         replay();
 
@@ -115,7 +119,7 @@ public class EnhancedClassValidatorTest extends BaseComponentTestCase
      * than other classes.
      */
 
-    public void testObject()
+    public void test_Object()
     {
         EnhancedClassValidatorImpl v = new EnhancedClassValidatorImpl();
         v.setClassInspector(new ClassInspectorImpl());

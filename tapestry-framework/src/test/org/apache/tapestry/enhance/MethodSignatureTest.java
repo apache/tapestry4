@@ -26,6 +26,7 @@ import java.util.Map;
  */
 @Test
 public class MethodSignatureTest extends TestBase {
+    
     // used for non generic tests
     class Simple {
         
@@ -107,12 +108,12 @@ public class MethodSignatureTest extends TestBase {
         
         assert child.isOverridingSignatureOf(base);
         
-        assert child.equals(base);
-        assert base.equals(child);
+        assert !child.equals(base);
+        assert !base.equals(child);
     }
 
-    public void test_Generic_Method_Hash() {
-
+    public void test_Generic_Method_Hash()
+    {
         Class testClass = MyTest.class;
 
         Method[] methods = testClass.getMethods();
@@ -128,6 +129,15 @@ public class MethodSignatureTest extends TestBase {
 
         assert sig.getReturnType() != null;
         assertEquals(sig.getReturnType(), BaseTest.class);
+    }
+
+    public void test_Generic_Service_Property()
+            throws Exception
+    {
+        ClassInspector ins = new GenericsClassInspectorImpl();
+        MethodSignature m  = ins.getPropertyAccessor(GenericServiceImpl.class, "currentFoo");
+
+        assertEquals(m.getReturnType(), BasicObject.class);
     }
 
     public static abstract class BaseTest<T>{ }

@@ -31,4 +31,14 @@ public abstract class FooGenericComponent extends AbstractGenericBase<FooGeneric
     {
         return null;
     }
+
+    public FooGeneric getValue()
+    {
+        return null;
+    }
+
+    public void setSomethingCrazy(FooGeneric value)
+    {
+
+    }
 }

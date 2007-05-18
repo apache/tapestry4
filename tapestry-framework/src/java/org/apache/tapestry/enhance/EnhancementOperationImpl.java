@@ -14,21 +14,6 @@
 
 package org.apache.tapestry.enhance;
 
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
@@ -44,6 +29,15 @@ import org.apache.tapestry.services.ComponentConstructor;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.util.IdAllocator;
 import org.apache.tapestry.util.ObjectIdentityMap;
+
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.*;
 
 /**
  * Implementation of {@link org.apache.tapestry.enhance.EnhancementOperation}that
@@ -102,7 +96,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
     /**
      * Makes sure that names created by
-     * {@link #addInjectedField(String, Object)} have unique names.
+     * {@link #addInjectedField(String, Class, Object)} have unique names.
      */
 
     private final IdAllocator _idAllocator = new IdAllocator();
@@ -182,8 +176,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
         }
         catch (IntrospectionException ex)
         {
-            throw new ApplicationRuntimeException(EnhanceMessages
-                    .unabelToIntrospectClass(_baseClass, ex), ex);
+            throw new ApplicationRuntimeException(EnhanceMessages.unabelToIntrospectClass(_baseClass, ex), ex);
         }
 
     }
@@ -225,6 +218,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
     private void addPropertiesDeclaredInClass(Class introspectClass)
         throws IntrospectionException
     {
+        
         BeanInfo bi = Introspector.getBeanInfo(introspectClass);
 
         PropertyDescriptor[] pds = bi.getPropertyDescriptors();

@@ -18,8 +18,6 @@ import org.apache.commons.logging.Log;
 
 /**
  * Used to test {@link AutowireWorker}.
- *
- * @author jkuhnert
  */
 public class BaseAutowire {
     
