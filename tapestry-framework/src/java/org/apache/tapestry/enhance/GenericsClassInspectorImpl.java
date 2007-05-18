@@ -13,12 +13,10 @@
 // limitations under the License.
 package org.apache.tapestry.enhance;
 
-import java.beans.BeanInfo;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Method;
-
 import org.apache.hivemind.ApplicationRuntimeException;
+
+import java.beans.Introspector;
+import java.lang.reflect.Method;
 
 
 /**
@@ -42,18 +40,32 @@ public class GenericsClassInspectorImpl implements ClassInspector
     public MethodSignature getPropertyAccessor(Class type, String propertyName)
     {
         try {
-            BeanInfo info = Introspector.getBeanInfo(type);
-            PropertyDescriptor[] props = info.getPropertyDescriptors();
+            Method[] props = type.getMethods();
+            Method match = null;
             
             for (int i=0; i < props.length; i++) {
-                
-                if (!propertyName.equals(props[i].getName())) {
+
+                String propName = getPropertyName(props[i]);
+
+                if (!propertyName.equals(propName)) {
                     continue;
                 }
+
+                // store for later retrieval if necessary
+                if (match == null)
+                    match = props[i];
                 
-                return new GenericsMethodSignatureImpl(type, props[i].getReadMethod() != null ? props[i].getReadMethod() : props[i].getWriteMethod());
+                // try to find read methods before resorting to write
+                if (props[i].getReturnType() == void.class) {
+                    continue;
+                }
+
+                return new GenericsMethodSignatureImpl(type, props[i]);
             } 
-            
+
+            if (match != null)
+                return new GenericsMethodSignatureImpl(type, match);
+
         } catch (Throwable t) {
             
             throw new ApplicationRuntimeException("Error reading property " + propertyName + " from base class : " + type, t);
@@ -62,4 +74,17 @@ public class GenericsClassInspectorImpl implements ClassInspector
         return null;
     }
 
+    static String getPropertyName(Method m)
+    {
+        String name = m.getName();
+
+        if (name.startsWith("get"))
+            name = name.substring(3);
+        else if (name.startsWith("set"))
+            name = name.substring(3);
+        else if (name.startsWith("is"))
+            name = name.substring(2);
+
+        return Introspector.decapitalize(name);
+    }
 }

@@ -14,10 +14,10 @@
 
 package org.apache.tapestry.enhance;
 
-import java.util.List;
-
 import org.apache.hivemind.Location;
 import org.apache.hivemind.service.MethodSignature;
+
+import java.util.List;
 
 /**
  * A process object representing enhancements to a component class. The
@@ -58,6 +58,7 @@ public interface EnhancementOperation
      * 
      * @param propertyName
      *          The property to check.
+     * 
      * @return True, if no setter method has been created for the specified property and
      *          the property hasn't been claimed by someone else.
      */
@@ -117,6 +118,11 @@ public interface EnhancementOperation
      * Returns the name of the accessor method for the given property (if it
      * exists in the component base class), or fabricates a new name if it does
      * not.
+     *
+     * @param propertyName
+     *          The property to get an accessor method name of.
+     *
+     * @return The existing/future name of an appropriate accessor method for the property.
      */
 
     String getAccessorMethodName(String propertyName);
@@ -136,19 +142,24 @@ public interface EnhancementOperation
      *            location may later be used to describe conflicts. May not be
      *            null.
      */
-    void addMethod(int modifier, MethodSignature sig, String methodBody,
-            Location location);
+    void addMethod(int modifier, MethodSignature sig, String methodBody, Location location);
 
     /**
      * Returns the base component class, as defined in the specification (or
      * defaulted). An enhaced subclass of the component class will usually be
      * created.
+     *
+     * @return The class this enhancement operation is operating on.
      */
     Class getBaseClass();
 
     /**
      * Returns a reference to a particular class. This will, effectively, by the
      * name of a private field.
+     *
+     * @param clazz The class to get a string equivalent reference of.
+     *
+     * @return The enhancement (javassist) compatiable string version of the specified class.
      */
 
     String getClassReference(Class clazz);
@@ -156,6 +167,11 @@ public interface EnhancementOperation
     /**
      * Returns the type of an existing property of the base component class. If
      * the property does not exist, then returns null.
+     *
+     * @param name
+     *          The property name.
+     * 
+     * @return The property type, or null if it doesn't exist.
      */
 
     Class getPropertyType(String name);
@@ -180,14 +196,19 @@ public interface EnhancementOperation
      * @param code
      *            the Javassist markup to be added to the body of the method.
      */
-    void extendMethodImplementation(Class interfaceClass,
-            MethodSignature methodSignature, String code);
+    void extendMethodImplementation(Class interfaceClass, MethodSignature methodSignature, String code);
 
     /**
      * Returns true if the class implements the specified interface. Checks the
      * base class (as identified in the specification), but <em>also</em>
      * accounts for any additional interfaces that may be added by
      * {@link #extendMethodImplementation(Class, MethodSignature, String)}.
+     *
+     * @param interfaceClass
+     *          The class to check if the base class implements.
+     *
+     * @return Whether or not the specified interface is implemented by the base class
+     *          being enhanced.
      */
 
     boolean implementsInterface(Class interfaceClass);

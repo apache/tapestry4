@@ -107,7 +107,7 @@ public class MethodSignatureImpl implements MethodSignature
 
         if (_returnType != ms._returnType)
             return false;
-
+        
         if (!_name.equals(ms._name))
             return false;
 
@@ -198,8 +198,8 @@ public class MethodSignatureImpl implements MethodSignature
             return false;
         
         MethodSignatureImpl sig = (MethodSignatureImpl)ms;
-        
-        if (_returnType != sig._returnType)
+
+        if (!sig._returnType.isAssignableFrom(_returnType))
             return false;
 
         if (!_name.equals(sig._name))

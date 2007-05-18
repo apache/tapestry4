@@ -16,10 +16,17 @@
 -->
 
 <module id="autowire.single" version="1.0.0">
-  <service-point id="Hello" interface="org.apache.tapestry.enhance.HelloService">
-    <invoke-factory>
-      <construct class="org.apache.tapestry.enhance.HelloServiceImpl" />
-    </invoke-factory>
-  </service-point>
+
+    <service-point id="Hello" interface="org.apache.tapestry.enhance.HelloService">
+        <invoke-factory>
+            <construct class="org.apache.tapestry.enhance.HelloServiceImpl" />
+        </invoke-factory>
+    </service-point>
+
+    <service-point id="SimpleGeneric" interface="org.apache.tapestry.enhance.SimpleGenericsInterface">
+        <invoke-factory>
+            <construct class="org.apache.tapestry.enhance.GenericServiceImpl" />
+        </invoke-factory>
+    </service-point>
 
 </module>

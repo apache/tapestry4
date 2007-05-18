@@ -13,37 +13,38 @@
 // limitations under the License.
 package org.apache.tapestry.enhance;
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.internal.Module;
 import org.apache.tapestry.spec.IComponentSpecification;
+
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * An enhancement worker which automatically injects HiveMind services
  * into pages/components if exactly one service point exists which is
  * compatible with the read-only property's type.
  * 
- * @author James Carman
- * @version 1.0
  */
 public class AutowireWorker implements EnhancementWorker
 {
     private final Log _log;
+
     private final Module _module;
 
-    public AutowireWorker( Module module, Log log )
+    public AutowireWorker( Module module, Log log)
     {
-        this._module = module;
-        this._log = log;
+        _module = module;
+        _log = log;
     }
 
     public void performEnhancement( EnhancementOperation op, IComponentSpecification spec )
     {
         final List propertyNames = op.findUnclaimedAbstractProperties();
+
         for( Iterator i = propertyNames.iterator(); i.hasNext(); ) {
+            
             String propertyName = ( String ) i.next();
             
             Class propertyType = op.getPropertyType( propertyName );
@@ -52,8 +53,9 @@ public class AutowireWorker implements EnhancementWorker
             
             if (!op.canClaimAsReadOnlyProperty(propertyName))
                 continue;
-            
+
             if( _module.containsService( propertyType )) {
+                
                 final Object serviceProxy = _module.getService( propertyType );
                 final Location location = spec.getLocation();
                 
