@@ -20,6 +20,7 @@ import ognl.enhance.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.service.ClassFab;
+import org.apache.hivemind.service.ClassFabUtils;
 import org.apache.hivemind.service.ClassFactory;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.tapestry.IRender;
@@ -35,8 +36,6 @@ import java.util.*;
 public class HiveMindExpressionCompiler extends ExpressionCompiler implements OgnlExpressionCompiler {
     
     private static final Log _log = LogFactory.getLog(HiveMindExpressionCompiler.class);
-
-    private double _globalCounter = 0;
     
     private ClassFactory _classFactory;
 
@@ -133,10 +132,9 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
                 return;
 
             String getBody = null;
-            String setBody = null;
+            String setBody;
 
-            ClassFab classFab = _classFactory.newClass(expression.getClass().getName() + expression.hashCode()
-                                                       + ++_globalCounter + "Accessor", Object.class);
+            ClassFab classFab = _classFactory.newClass(ClassFabUtils.generateClassName(expression.getClass()), Object.class);
             classFab.addInterface(ExpressionAccessor.class);
 
             MethodSignature valueGetter = new MethodSignature(Object.class, "get", new Class[]{OgnlContext.class, Object.class}, null);
@@ -261,9 +259,7 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
             }
 
             classFab.addMethod(Modifier.PUBLIC, valueGetter, generateOgnlGetter(classFab, valueGetter));
-
             classFab.addMethod(Modifier.PUBLIC, valueSetter, generateOgnlSetter(classFab, valueSetter));
-
             
             classFab.addConstructor(new Class[0], new Class[0], "{}");
 
@@ -289,8 +285,8 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
     {
         String pre = "";
         String post = "";
-        String body = null;
-        String getterCode = null;
+        String body;
+        String getterCode;
 
         context.setRoot(root);
         context.setCurrentObject(root);
@@ -376,6 +372,9 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
 
             body = body.replaceAll("\\.\\.", ".");
 
+            if (_log.isDebugEnabled())
+                _log.debug("createLocalReferences() body is:\n" + body);
+
             MethodSignature method = new MethodSignature(ref.getType(), ref.getName(), params, null);
             classFab.addMethod(Modifier.PUBLIC, method, body);
         }
@@ -392,7 +391,7 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
         context.setCurrentObject(root);
         context.remove(PRE_CAST);
 
-        String body = null;
+        String body;
 
         String setterCode = expression.toSetSourceString(context, root);
         String castExpression = (String) context.get(PRE_CAST);
@@ -432,16 +431,12 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
     String generateOgnlGetter(ClassFab newClass, MethodSignature valueGetter)
             throws Exception
     {
-        String body = "{ return _node.getValue($1, $2); }";
-
-        return body;
+        return "{ return _node.getValue($1, $2); }";
     }
 
     String generateOgnlSetter(ClassFab newClass, MethodSignature valueSetter)
             throws Exception
     {
-        String body = "{ _node.setValue($1, $2, $3); }";
-
-        return body;
+        return "{ _node.setValue($1, $2, $3); }";
     }
 }
