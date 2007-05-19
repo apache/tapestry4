@@ -14,6 +14,7 @@
 package org.apache.tapestry.services.impl;
 
 import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.PoolManageable;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.ClasspathResource;
 import org.apache.tapestry.*;
@@ -38,7 +39,7 @@ import java.util.*;
  * 
  * @author jkuhnert
  */
-public class ComponentEventConnectionWorker implements ComponentRenderWorker
+public class ComponentEventConnectionWorker implements ComponentRenderWorker, PoolManageable
 {
     /** Stored in {@link IRequestCycle} with associated forms. */
     public static final String FORM_NAME_LIST =  "org.apache.tapestry.services.impl.ComponentEventConnectionFormNames-";
@@ -68,9 +69,18 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
     
     // For event connections referencing forms that have not 
     // been rendered yet.
-    private Map _deferredFormConnections = new HashMap();
-    
-    /** 
+    private Map _deferredFormConnections = new HashMap(24);
+
+    public void activateService()
+    {
+        _deferredFormConnections.clear();
+    }
+
+    public void passivateService()
+    {
+    }
+
+    /**
      * {@inheritDoc}
      */
     public void renderComponent(IRequestCycle cycle, IComponent component)
