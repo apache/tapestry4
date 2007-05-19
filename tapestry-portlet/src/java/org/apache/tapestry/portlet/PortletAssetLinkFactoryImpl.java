@@ -13,8 +13,6 @@
 // limitations under the License.
 package org.apache.tapestry.portlet;
 
-import java.util.Map;
-
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.EngineServiceLink;
@@ -22,13 +20,15 @@ import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.engine.ServiceEncoding;
 import org.apache.tapestry.services.impl.LinkFactoryImpl;
+import org.apache.tapestry.util.QueryParameterMap;
+
+import java.util.Map;
 
 
 /**
  * Creates {@link EngineServiceLink}s that will re-encode asset URL's
  * using {@link IRequestCycle#encodeURL(String)}.
  * 
- * @author jkuhnert
  */
 public class PortletAssetLinkFactoryImpl extends LinkFactoryImpl
 {
@@ -39,8 +39,10 @@ public class PortletAssetLinkFactoryImpl extends LinkFactoryImpl
         finalizeParameters(service, parameters);
         
         IEngine engine = _requestCycle.getEngine();
-        
-        ServiceEncoding serviceEncoding = createServiceEncoding(parameters);
+
+        QueryParameterMap qmap = new QueryParameterMap(parameters);
+
+        ServiceEncoding serviceEncoding = createServiceEncoding(qmap);
         
         // Give persistent property strategies a chance to store extra data
         // into the link.
@@ -48,9 +50,9 @@ public class PortletAssetLinkFactoryImpl extends LinkFactoryImpl
         if (stateful)
             _persistenceStrategySource.addParametersForPersistentProperties(serviceEncoding, post);
         
-        String fullServletPath = _contextPath + serviceEncoding.getServletPath();
+        String fullServletPath = _request.getContextPath() + serviceEncoding.getServletPath();
         
         return new EngineServiceLink(_requestCycle, fullServletPath, engine.getOutputEncoding(),
-                _codec, _request, parameters, stateful);
+                _codec, _request, qmap, stateful);
     }
 }

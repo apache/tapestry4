@@ -20,6 +20,7 @@ import org.apache.tapestry.*;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
+import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.spec.IApplicationSpecification;
 
 import java.util.ArrayList;
@@ -50,8 +51,9 @@ public abstract class Shell extends AbstractComponent
         
         long startTime = System.currentTimeMillis();
         boolean rewinding = cycle.isRewinding();
+        boolean dynamic = getBuilder().isDynamic();
 
-        if (!rewinding)
+        if (!rewinding && !dynamic)
         {
             writeDocType(writer, cycle);
 
@@ -119,11 +121,11 @@ public abstract class Shell extends AbstractComponent
 
         // Render the body, the actual page content
 
-        IMarkupWriter nested = writer.getNestedWriter();
+        IMarkupWriter nested = !dynamic ? writer.getNestedWriter() : writer;
 
         renderBody(nested, cycle);
 
-        if (!rewinding)
+        if (!rewinding && !dynamic)
         {
             List relations = getRelations();
             if (relations != null)
@@ -136,9 +138,10 @@ public abstract class Shell extends AbstractComponent
             writer.end(); // head
         }
         
-        nested.close();
+        if (!dynamic)
+            nested.close();
         
-        if (!rewinding)
+        if (!rewinding && !dynamic)
         {
             writer.end(); // html
             writer.println();
@@ -310,7 +313,9 @@ public abstract class Shell extends AbstractComponent
     public abstract boolean getRenderContentType();
 
     public abstract boolean isDisableTapestryMeta();
-    
+
+    public abstract ResponseBuilder getBuilder();
+
     /** @since 4.0 */
     public abstract ValueConverter getValueConverter();
 

@@ -85,11 +85,13 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker, Po
      */
     public void renderComponent(IRequestCycle cycle, IComponent component)
     {
-        if (cycle.isRewinding() || TapestryUtils.getOptionalPageRenderSupport(cycle) == null)
+        if (cycle.isRewinding())
             return;
 
-        Component icomp = Component.class.isInstance(component) ? (Component)component : null;
-        if (icomp != null && !icomp.hasEvents() && !IForm.class.isInstance(component))
+        if (Component.class.isInstance(component) && !((Component)component).hasEvents() && !IForm.class.isInstance(component))
+            return;
+
+        if (TapestryUtils.getOptionalPageRenderSupport(cycle) == null)
             return;
 
         // Don't render fields being pre-rendered, otherwise we'll render twice

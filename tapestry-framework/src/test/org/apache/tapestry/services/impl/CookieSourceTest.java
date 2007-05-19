@@ -14,23 +14,18 @@
 
 package org.apache.tapestry.services.impl;
 
-import static org.easymock.EasyMock.expect;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.tapestry.BaseComponentTestCase;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Tests for {@link org.apache.tapestry.services.impl.CookieSourceImpl}.
- * 
- * @author Howard Lewis Ship
- * @since 4.0
+ * Tests for {@link org.apache.tapestry.services.impl.CookieSourceImpl}. 
  */
 @Test
 public class CookieSourceTest extends BaseComponentTestCase

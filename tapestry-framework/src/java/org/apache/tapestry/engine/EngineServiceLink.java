@@ -23,7 +23,6 @@ import org.apache.tapestry.util.QueryParameterMap;
 import org.apache.tapestry.web.WebRequest;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Map;
 
 /**
  * A EngineServiceLink represents a possible action within the client web browser; either clicking a
@@ -77,7 +76,7 @@ public class EngineServiceLink implements ILink
      */
     
     public EngineServiceLink(String servletPath, String encoding,
-            URLCodec codec, WebRequest request, Map parameters, boolean stateful)
+            URLCodec codec, WebRequest request, QueryParameterMap parameters, boolean stateful)
     {
         Defense.notNull(servletPath, "servletPath");
         Defense.notNull(encoding, "encoding");
@@ -90,7 +89,7 @@ public class EngineServiceLink implements ILink
         _codec = codec;
         _request = request;
         _stateful = stateful;
-        _parameters = new QueryParameterMap(parameters);
+        _parameters = parameters;
     }
     
     /**
@@ -114,7 +113,7 @@ public class EngineServiceLink implements ILink
      */
 
     public EngineServiceLink(IRequestCycle cycle, String servletPath, String encoding,
-            URLCodec codec, WebRequest request, Map parameters, boolean stateful)
+            URLCodec codec, WebRequest request, QueryParameterMap parameters, boolean stateful)
     {
         Defense.notNull(cycle, "cycle");
         Defense.notNull(servletPath, "servletPath");
@@ -129,7 +128,7 @@ public class EngineServiceLink implements ILink
         _codec = codec;
         _request = request;
         _stateful = stateful;
-        _parameters = new QueryParameterMap(parameters);
+        _parameters = parameters;
     }
 
     public String getURL()

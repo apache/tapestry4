@@ -22,6 +22,7 @@ import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.util.ScriptUtils;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -185,9 +186,11 @@ public class DefaultLinkRenderer implements ILinkRenderer
      */
     protected void renderAsyncParams(IMarkupWriter writer, IRequestCycle cycle, DirectLink link)
     {
+        List comps = link.getUpdateComponents();
+        
         if (!link.isAsync() && !link.isJson() 
-                && (link.getUpdateComponents() == null 
-                || link.getUpdateComponents().size() <= 0))
+                && (comps == null
+                || comps.size() <= 0))
             return;
         
         if (!link.isParameterBound("onclick") && !link.isParameterBound("onClick")) {
