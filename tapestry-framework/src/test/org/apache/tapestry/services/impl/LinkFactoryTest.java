@@ -14,15 +14,6 @@
 
 package org.apache.tapestry.services.impl;
 
-import static org.easymock.EasyMock.expect;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorLog;
 import org.apache.tapestry.BaseComponentTestCase;
@@ -39,7 +30,11 @@ import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.io.DataSqueezerUtil;
 import org.apache.tapestry.web.WebRequest;
+import static org.easymock.EasyMock.checkOrder;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
+
+import java.util.*;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.LinkFactoryImpl}.
@@ -112,10 +107,20 @@ public class LinkFactoryTest extends BaseComponentTestCase
         expect(engine.getOutputEncoding()).andReturn(outputEncoding);
     }
 
-    public void testNoEncoders()
+    protected WebRequest newRequest(String contextPath)
+    {
+        WebRequest request = newRequest();
+        checkOrder(request, false);
+        
+        expect(request.getContextPath()).andReturn(contextPath).anyTimes();
+
+        return request;
+    }
+
+    public void test_No_Encoders()
     {
         ErrorLog log = newErrorLog();
-        WebRequest request = newRequest();
+        WebRequest request = newRequest("/context");
         IEngine engine = newEngine();
         IRequestCycle cycle = newCycle();
         IEngineService service = newService("myservice");
@@ -129,7 +134,6 @@ public class LinkFactoryTest extends BaseComponentTestCase
 
         lf.setContributions(Collections.EMPTY_LIST);
         lf.setErrorLog(log);
-        lf.setContextPath("/context");
         lf.setServletPath("/app");
         lf.setRequest(request);
         lf.setRequestCycle(cycle);
@@ -154,10 +158,10 @@ public class LinkFactoryTest extends BaseComponentTestCase
         return service;
     }
 
-    public void testStatefulRequest()
+    public void test_Stateful_Request()
     {
         ErrorLog log = newErrorLog();
-        WebRequest request = newRequest();
+        WebRequest request = newRequest("/context");
         IEngine engine = newEngine();
         IEngineService service = newService("myservice");
         IRequestCycle cycle = newCycle();
@@ -172,7 +176,6 @@ public class LinkFactoryTest extends BaseComponentTestCase
 
         lf.setContributions(Collections.EMPTY_LIST);
         lf.setErrorLog(log);
-        lf.setContextPath("/context");
         lf.setServletPath("/app");
         lf.setRequest(request);
         lf.setPersistenceStrategySource(new MockSource());
@@ -189,9 +192,9 @@ public class LinkFactoryTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testNoopEncoders()
+    public void test_Noop_Encoders()
     {
-        WebRequest request = newRequest();
+        WebRequest request = newRequest("/context");
         IRequestCycle cycle = newCycle();
         ErrorLog log = newErrorLog();
         IEngine engine = newEngine();
@@ -210,7 +213,6 @@ public class LinkFactoryTest extends BaseComponentTestCase
 
         lf.setContributions(l);
         lf.setErrorLog(log);
-        lf.setContextPath("/context");
         lf.setServletPath("/app");
         lf.setRequest(request);
         lf.setRequestCycle(cycle);
@@ -226,9 +228,9 @@ public class LinkFactoryTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testActiveEncoder()
+    public void test_Active_Encoder()
     {
-        WebRequest request = newRequest();
+        WebRequest request = newRequest("/context");
         IRequestCycle cycle = newCycle();
         ErrorLog log = newErrorLog();
         IEngineService service = newService("page");
@@ -249,7 +251,6 @@ public class LinkFactoryTest extends BaseComponentTestCase
 
         lf.setContributions(l);
         lf.setErrorLog(log);
-        lf.setContextPath("/context");
         lf.setServletPath("/app");
         lf.setRequest(request);
         lf.setRequestCycle(cycle);
@@ -266,7 +267,7 @@ public class LinkFactoryTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testServiceNameIsNull()
+    public void test_Service_Name_Is_Null()
     {
         IEngineService service = newService(null);
 
@@ -289,9 +290,9 @@ public class LinkFactoryTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testWithServiceParameters()
+    public void test_With_Service_Parameters()
     {
-        WebRequest request = newRequest();
+        WebRequest request = newRequest("/context");
         IRequestCycle cycle = newCycle();
         ErrorLog log = newErrorLog();
         IEngineService service = newService("external");
@@ -312,7 +313,6 @@ public class LinkFactoryTest extends BaseComponentTestCase
 
         lf.setContributions(l);
         lf.setErrorLog(log);
-        lf.setContextPath("/context");
         lf.setServletPath("/app");
         lf.setDataSqueezer(DataSqueezerUtil.createUnitTestSqueezer());
         lf.setRequest(request);

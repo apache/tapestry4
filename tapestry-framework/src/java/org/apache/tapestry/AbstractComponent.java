@@ -580,7 +580,7 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
         if (_components == null)
             return EMPTY_MAP;
 
-        return Collections.unmodifiableMap(_components);
+        return _components;
 
     }
 
@@ -589,7 +589,7 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
         if (_assets == null)
             return EMPTY_MAP;
 
-        return Collections.unmodifiableMap(_assets);
+        return _assets;
     }
 
     public IAsset getAsset(String name)
@@ -644,9 +644,9 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
     public Map getBindings()
     {
         if (_bindings == null)
-            return Collections.EMPTY_MAP;
+            return EMPTY_MAP;
 
-        return Collections.unmodifiableMap(_bindings);
+        return _bindings;
     }
 
     /**
@@ -664,8 +664,7 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
         // getMessages(), etc.
 
         if (_listeners == null)
-            _listeners = getPage().getEngine().getInfrastructure().getListenerMapSource()
-                    .getListenerMapForObject(this);
+            _listeners = getPage().getEngine().getInfrastructure().getListenerMapSource().getListenerMapForObject(this);
 
         return _listeners;
     }

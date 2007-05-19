@@ -14,16 +14,12 @@
 
 package org.apache.tapestry.html;
 
+import org.apache.tapestry.*;
+import org.apache.tapestry.services.ResponseBuilder;
 import static org.easymock.EasyMock.expect;
+import org.testng.annotations.Test;
 
 import java.util.List;
-
-import org.apache.tapestry.BaseComponentTestCase;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRender;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.NestedMarkupWriter;
-import org.testng.annotations.Test;
 
 /**
  * Tests for the {@link org.apache.tapestry.html.Shell}&nbsp; component.
@@ -44,17 +40,18 @@ public class TestShell extends BaseComponentTestCase
     {
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
-        
+        ResponseBuilder builder = newMock(ResponseBuilder.class);
         IRequestCycle cycle = newCycle(true, writer);
         IRender body = newRender();
         
-        Shell shell = newInstance(Shell.class, null);
+        Shell shell = (Shell) newInstance(Shell.class, "builder", builder);
         
         expect(cycle.renderStackPush(shell)).andReturn(shell);
         
         shell.addBody(body);
 
         trainStoreShellInCycle(cycle, shell);
+        expect(builder.isDynamic()).andReturn(false);
         trainGetNestedWriter(writer, nested);
         
         body.render(nested, cycle);

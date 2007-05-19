@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.engine;
 
-import java.util.Map;
-
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.util.QueryParameterMap;
 
@@ -50,9 +48,9 @@ public class ServiceEncodingImpl implements ServiceEncoding
         this(servletPath, null, new QueryParameterMap());
     }
 
-    public ServiceEncodingImpl(String servletPath, Map parametersMap)
+    public ServiceEncodingImpl(String servletPath, QueryParameterMap parametersMap)
     {
-        this(servletPath, null, new QueryParameterMap(parametersMap));
+        this(servletPath, null, parametersMap);
     }
 
     public ServiceEncodingImpl(String servletPath, String pathInfo, QueryParameterMap parameters)
@@ -62,7 +60,6 @@ public class ServiceEncodingImpl implements ServiceEncoding
 
         _servletPath = servletPath;
         _pathInfo = pathInfo;
-
         _parameters = parameters;
     }
     

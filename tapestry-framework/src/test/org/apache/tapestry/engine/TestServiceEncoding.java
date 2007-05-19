@@ -14,11 +14,12 @@
 
 package org.apache.tapestry.engine;
 
+import org.apache.tapestry.BaseComponentTestCase;
+import org.apache.tapestry.util.QueryParameterMap;
+import org.testng.annotations.Test;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.tapestry.BaseComponentTestCase;
-import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.engine.ServiceEncodingImpl}.
@@ -45,7 +46,7 @@ public class TestServiceEncoding extends BaseComponentTestCase
     {
         Map parameters = new HashMap();
 
-        ServiceEncodingImpl se = new ServiceEncodingImpl("/foo", parameters);
+        ServiceEncodingImpl se = new ServiceEncodingImpl("/foo", new QueryParameterMap(parameters));
 
         se.setParameterValue("foo", "bar");
 

@@ -14,16 +14,16 @@
 
 package org.apache.tapestry.coerce;
 
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.util.ConstructorUtils;
+import org.apache.hivemind.util.Defense;
+
 import java.beans.PropertyEditor;
 import java.beans.PropertyEditorManager;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.util.ConstructorUtils;
-import org.apache.hivemind.util.Defense;
 
 /**
  * Implementation of {@link org.apache.tapestry.coerce.ValueConverter}. Selects an appropriate type
@@ -170,8 +170,7 @@ public class ValueConverterImpl implements ValueConverter
 
         String valueAsString = value.toString();
 
-        return (Number) ConstructorUtils.invokeConstructor(targetType, new Object[]
-        { valueAsString });
+        return (Number) ConstructorUtils.invokeConstructor(targetType, new Object[] { valueAsString });
     }
 
     private Class convertType(Class possiblePrimitiveType)

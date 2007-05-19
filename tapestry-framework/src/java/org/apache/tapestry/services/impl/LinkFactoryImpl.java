@@ -14,10 +14,6 @@
 
 package org.apache.tapestry.services.impl;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.codec.net.URLCodec;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorLog;
@@ -26,17 +22,17 @@ import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.engine.EngineServiceLink;
-import org.apache.tapestry.engine.IEngineService;
-import org.apache.tapestry.engine.ILink;
-import org.apache.tapestry.engine.ServiceEncoder;
-import org.apache.tapestry.engine.ServiceEncoding;
-import org.apache.tapestry.engine.ServiceEncodingImpl;
+import org.apache.tapestry.engine.*;
 import org.apache.tapestry.record.PropertyPersistenceStrategySource;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ServiceConstants;
+import org.apache.tapestry.util.QueryParameterMap;
 import org.apache.tapestry.web.WebRequest;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Howard M. Lewis Ship
@@ -44,11 +40,9 @@ import org.apache.tapestry.web.WebRequest;
  */
 public class LinkFactoryImpl implements LinkFactory
 {
- 
+    
     protected URLCodec _codec = new URLCodec();
-    
-    protected String _contextPath;
-    
+        
     protected PropertyPersistenceStrategySource _persistenceStrategySource;
     
     protected IRequestCycle _requestCycle;
@@ -70,7 +64,6 @@ public class LinkFactoryImpl implements LinkFactory
     private String _servletPath;
 
     private final Object[] _empty = new Object[0];
-    
     
     public void initializeService()
     {
@@ -105,25 +98,27 @@ public class LinkFactoryImpl implements LinkFactory
 
         IEngine engine = _requestCycle.getEngine();
 
-        ServiceEncoding serviceEncoding = createServiceEncoding(parameters);
-
+        QueryParameterMap qmap = new QueryParameterMap(parameters);
+        
+        ServiceEncoding serviceEncoding = createServiceEncoding(qmap);
+        
         // Give persistent property strategies a chance to store extra data
         // into the link.
 
         if (stateful)
             _persistenceStrategySource.addParametersForPersistentProperties(serviceEncoding, post);
 
-        String fullServletPath = _contextPath + serviceEncoding.getServletPath();
-        
+        String fullServletPath = _request.getContextPath() + serviceEncoding.getServletPath();
+
         return new EngineServiceLink(_requestCycle, fullServletPath, engine.getOutputEncoding(),
-                _codec, _request, parameters, stateful);
+                _codec, _request, qmap, stateful);
     }
 
     protected void finalizeParameters(IEngineService service, Map parameters)
     {
         Defense.notNull(service, "service");
         Defense.notNull(parameters, "parameters");
-
+        
         String serviceName = service.getName();
 
         if (serviceName == null)
@@ -143,7 +138,7 @@ public class LinkFactoryImpl implements LinkFactory
      * Creates a new service encoding, and allows the encoders to modify it before returning.
      */
 
-    protected ServiceEncoding createServiceEncoding(Map parameters)
+    protected ServiceEncoding createServiceEncoding(QueryParameterMap parameters)
     {
         ServiceEncodingImpl result = new ServiceEncodingImpl(_servletPath, parameters);
 
@@ -164,10 +159,8 @@ public class LinkFactoryImpl implements LinkFactory
 
         if (serviceParameters == null)
             return;
-
-        String[] squeezed = squeeze(serviceParameters);
-
-        parameters.put(ServiceConstants.PARAMETER, squeezed);
+        
+        parameters.put(ServiceConstants.PARAMETER, squeeze(serviceParameters));
     }
 
     public Object[] extractListenerParameters(IRequestCycle cycle)
@@ -219,11 +212,6 @@ public class LinkFactoryImpl implements LinkFactory
         _servletPath = servletPath;
     }
 
-    public void setContextPath(String contextPath)
-    {
-        _contextPath = contextPath;
-    }
-
     public void setRequest(WebRequest request)
     {
         _request = request;
@@ -234,10 +222,12 @@ public class LinkFactoryImpl implements LinkFactory
      * want to have a hand at encoding data into URLs. If that comes to pass, we'll need to
      * implement an event coordinator/listener combo to let implementations know about links being
      * generated.
+     *
+     * @param persistenceStrategySource
+     *          The persistent strategy to use.
      */
 
-    public void setPersistenceStrategySource(
-            PropertyPersistenceStrategySource persistenceStrategySource)
+    public void setPersistenceStrategySource(PropertyPersistenceStrategySource persistenceStrategySource)
     {
         _persistenceStrategySource = persistenceStrategySource;
     }

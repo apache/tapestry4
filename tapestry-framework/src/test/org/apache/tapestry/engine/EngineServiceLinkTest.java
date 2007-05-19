@@ -14,14 +14,15 @@
 
 package org.apache.tapestry.engine;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.codec.net.URLCodec;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.services.ServiceConstants;
+import org.apache.tapestry.util.QueryParameterMap;
 import org.apache.tapestry.web.WebRequest;
 import org.testng.annotations.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Tests for {@link org.apache.tapestry.engine.EngineServiceLink}.
@@ -36,14 +37,14 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
 
     private static final String ENCODING = "utf-8";
 
-    private Map buildParameters(String serviceName, String[] serviceParameters)
+    private QueryParameterMap buildParameters(String serviceName, String[] serviceParameters)
     {
         Map result = new HashMap();
 
         result.put(ServiceConstants.SERVICE, serviceName);
         result.put(ServiceConstants.PARAMETER, serviceParameters);
 
-        return result;
+        return new QueryParameterMap(result);
     }
 
     /** @since 4.0 */
