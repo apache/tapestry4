@@ -14,14 +14,14 @@
 
 package org.apache.tapestry.listener;
 
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.IActionListener;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.IActionListener;
 
 /**
  * @author Howard M. Lewis Ship
@@ -70,12 +70,11 @@ public class ListenerMapImpl implements ListenerMap
 
     private IActionListener createListener(String name)
     {
-        ListenerMethodInvoker invoker = (ListenerMethodInvoker) _invokers
-                .get(name);
+        ListenerMethodInvoker invoker = (ListenerMethodInvoker) _invokers.get(name);
 
         if (invoker == null)
-            throw new ApplicationRuntimeException(ListenerMessages
-                    .objectMissingMethod(_target, name), _target, null, null);
+            throw new ApplicationRuntimeException(ListenerMessages.objectMissingMethod(_target, name),
+                                                  _target, null, null);
 
         return new SyntheticListener(_target, invoker);
     }

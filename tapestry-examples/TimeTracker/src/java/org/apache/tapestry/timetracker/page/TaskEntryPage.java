@@ -132,7 +132,7 @@ public abstract class TaskEntryPage<E extends Persistent> extends BasePage
         
         getTaskDao().addTask(task);
     }
-    
+
     @EventListener(events = "onSave", targets="projName")
     public void onNameUpdate()
     {

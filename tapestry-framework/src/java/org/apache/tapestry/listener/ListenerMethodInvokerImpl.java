@@ -39,6 +39,16 @@ public class ListenerMethodInvokerImpl implements ListenerMethodInvoker
 {
 
     /**
+     * Used as default byte value in null method parameters for native types
+     */
+    private static final byte DEFAULT_BYTE = -1;
+
+    /**
+     * Used as default short value in null method parameters for native types
+     */
+    private static final short DEFAULT_SHORT = -1;
+    
+    /**
      * Methods with a name appropriate for this class, sorted into descending
      * order by number of parameters.
      */
@@ -70,8 +80,7 @@ public class ListenerMethodInvokerImpl implements ListenerMethodInvoker
         if (searchAndInvoke(target, cycle, listenerParameters))
             return;
         
-        throw new ApplicationRuntimeException(ListenerMessages
-                .noListenerMethodFound(_name, listenerParameters, target),
+        throw new ApplicationRuntimeException(ListenerMessages.noListenerMethodFound(_name, listenerParameters, target),
                 target, null, null);
     }
     
@@ -83,7 +92,9 @@ public class ListenerMethodInvokerImpl implements ListenerMethodInvoker
             event = (BrowserEvent)listenerParameters[listenerParameters.length - 1];
         
         List invokeParms = new ArrayList();
-        
+
+        Method possibleMethod = null;
+
         methods:
             for (int i = 0; i < _methods.length; i++, invokeParms.clear()) {
                 
@@ -93,8 +104,16 @@ public class ListenerMethodInvokerImpl implements ListenerMethodInvoker
                 Class[] parms = _methods[i].getParameterTypes();
                 
                 // impossible to call this
-                if (parms.length > (listenerParameters.length + 1) )
+                
+                if (parms.length > (listenerParameters.length + 1) ) {
+                    
+                    if (possibleMethod == null)
+                        possibleMethod = _methods[i];
+                    else if (parms.length < possibleMethod.getParameterTypes().length)
+                        possibleMethod = _methods[i];
+                    
                     continue;
+                }
                 
                 int listenerIndex = 0;
                 for (int p = 0; p < parms.length && listenerIndex < (listenerParameters.length + 1); p++) {
@@ -123,18 +142,74 @@ public class ListenerMethodInvokerImpl implements ListenerMethodInvoker
                     }
                 }
                 
-                if (invokeParms.size() != parms.length)
+                if (invokeParms.size() != parms.length) {
+
+                    // set possible method just in case
+                    
+                    if (possibleMethod == null)
+                        possibleMethod = _methods[i];
+                    else if (parms.length < possibleMethod.getParameterTypes().length)
+                        possibleMethod = _methods[i];
+
                     continue;
+                }
                 
-                invokeListenerMethod(_methods[i], target, cycle,
-                        invokeParms.toArray(new Object[invokeParms.size()]));
+                invokeListenerMethod(_methods[i], target, cycle, invokeParms.toArray(new Object[invokeParms.size()]));
                 
                 return true;
             }
-        
+
+        // if we didn't have enough parameters but still found a matching method name go ahead
+        // and do your best to fill in the parameters and invoke it
+
+        if (possibleMethod != null) {
+
+            Class[] parms = possibleMethod.getParameterTypes();
+            Object[] args = new Object[parms.length];
+            
+            for (int p=0; p < parms.length; p++) {
+
+                // setup primitive defaults
+                
+                if (parms[p].isPrimitive()) {
+
+                    if (parms[p] == Boolean.TYPE) {
+
+                        args[p] = Boolean.FALSE;
+                    } else if (parms[p] == Byte.TYPE) {
+
+                        args[p] = new Byte(DEFAULT_BYTE);
+                    } else if (parms[p] == Short.TYPE) {
+
+                        args[p] = new Short(DEFAULT_SHORT);
+                    } else if (parms[p] == Integer.TYPE) {
+
+                        args[p] = new Integer(-1);
+                    } else if (parms[p] == Long.TYPE) {
+
+                        args[p] = new Long(-1);
+                    } else if (parms[p] == Float.TYPE) {
+
+                        args[p] = new Float(-1);
+                    } else if (parms[p] == Double.TYPE) {
+
+                        args[p] = new Double(-1);
+                    }
+                }
+
+                if (IRequestCycle.class.isAssignableFrom(parms[p])) {
+                    args[p] = cycle;
+                }
+            }
+            
+            invokeListenerMethod(possibleMethod, target, cycle, args);
+            
+            return true;
+        }
+
         return false;
     }
-    
+
     private void invokeListenerMethod(Method listenerMethod, Object target,
             IRequestCycle cycle, Object[] parameters)
     {
@@ -152,14 +227,12 @@ public class ListenerMethodInvokerImpl implements ListenerMethodInvoker
             if (targetException instanceof ApplicationRuntimeException)
                 throw (ApplicationRuntimeException) targetException;
 
-            throw new ApplicationRuntimeException(ListenerMessages
-                    .listenerMethodFailure(listenerMethod, target,
+            throw new ApplicationRuntimeException(ListenerMessages.listenerMethodFailure(listenerMethod, target,
                             targetException), target, null, targetException);
         }
         catch (Exception ex)
         {
-            throw new ApplicationRuntimeException(ListenerMessages
-                    .listenerMethodFailure(listenerMethod, target, ex), target,
+            throw new ApplicationRuntimeException(ListenerMessages.listenerMethodFailure(listenerMethod, target, ex), target,
                     null, ex);
 
         }
