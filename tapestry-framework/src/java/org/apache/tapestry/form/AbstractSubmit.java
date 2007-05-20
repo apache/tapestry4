@@ -76,8 +76,7 @@ abstract class AbstractSubmit extends AbstractFormComponent implements IDynamicI
             }
             else
             {
-                cycle.setListenerParameters(new Object[]
-                { parameters });
+                cycle.setListenerParameters(new Object[] { parameters });
             }
         }
         

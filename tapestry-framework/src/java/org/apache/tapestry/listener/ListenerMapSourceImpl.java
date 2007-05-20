@@ -14,27 +14,20 @@
 
 package org.apache.tapestry.listener;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.event.ResetEventListener;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.*;
+
 /**
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class ListenerMapSourceImpl implements ListenerMapSource,
-        ResetEventListener
+public class ListenerMapSourceImpl implements ListenerMapSource, ResetEventListener
 {
 
     /**

@@ -14,17 +14,16 @@
 
 package org.apache.tapestry.listener;
 
-import static org.easymock.EasyMock.expect;
-
-import java.lang.reflect.Method;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.event.BrowserEvent;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
+
+import java.lang.reflect.Method;
 
 /**
  * Tests for {@link org.apache.tapestry.listener.ListenerMapSourceImpl}&nbsp;and
@@ -243,7 +242,8 @@ public class TestListenerMapSource extends BaseComponentTestCase
         verify();
     }
 
-    public void testNoMatch()
+    @Test(expectedExceptions = ApplicationRuntimeException.class)
+    public void test_No_Match()
     {
         IRequestCycle cycle = newLCycle(new Object[] { "Hello", new Integer(7) });
 
@@ -254,19 +254,8 @@ public class TestListenerMapSource extends BaseComponentTestCase
         ListenerMapSource source = new ListenerMapSourceImpl();
 
         ListenerMap map = source.getListenerMapForObject(holder);
-        
-        try
-        {
-            map.getListener("noMatch").actionTriggered(null, cycle);
-            unreachable();
-        }
-        catch (ApplicationRuntimeException ex)
-        {
-            assertEquals(
-                    "No listener method named 'noMatch' suitable for 2 listener parameters found in ListenerMethodHolder.",
-                    ex.getMessage());
-            assertSame(holder, ex.getComponent());
-        }
+
+        map.getListener("noMatchFound").actionTriggered(null, cycle);
 
         verify();
     }
@@ -295,6 +284,7 @@ public class TestListenerMapSource extends BaseComponentTestCase
                     "Failure invoking listener method 'public void "
                             + "org.apache.tapestry.listener.ListenerMethodHolder."
                             + "wrongTypes(java.util.Map)' on ListenerMethodHolder:"));
+            
             // TODO: IBM jre doesn't format these messages the same as sun's
             // jre,
             // IBM's message has no message string source for the

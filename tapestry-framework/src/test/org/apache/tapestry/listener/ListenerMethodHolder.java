@@ -14,13 +14,13 @@
 
 package org.apache.tapestry.listener;
 
-import java.util.Map;
-
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.html.BasePage;
+
+import java.util.Map;
 
 /**
  * Used by {@link org.apache.tapestry.listener.TestListenerMapSource}.
@@ -37,7 +37,9 @@ public class ListenerMethodHolder
     private IPage _page;
 
     private ILink _link;
-    
+
+    int _stringArgCount;
+
     public ListenerMethodHolder()
     {
     }
@@ -55,6 +57,11 @@ public class ListenerMethodHolder
     public ListenerMethodHolder(IPage page)
     {
         _page = page;
+    }
+
+    public void stringArg(String value)
+    {
+        _stringArgCount++;
     }
 
     public void wrongTypes(Map map)

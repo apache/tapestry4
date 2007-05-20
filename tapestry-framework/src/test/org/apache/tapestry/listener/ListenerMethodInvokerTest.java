@@ -22,8 +22,6 @@ import org.testng.annotations.Test;
 
 /**
  * Tests functionality of {@link ListenerMethodInvokerImpl}.
- * 
- * @author jkuhnert
  */
 @Test(sequential=true)
 public class ListenerMethodInvokerTest extends BaseComponentTestCase
@@ -58,7 +56,7 @@ public class ListenerMethodInvokerTest extends BaseComponentTestCase
         
         ListenerMethodInvoker invoker = 
             new ListenerMethodInvokerImpl("bangbangClicked", target.getClass().getDeclaredMethods());
-        
+
         BrowserEvent event = new BrowserEvent("onClick", null);
         Object[] parms = { new Integer(12), event };
         
@@ -69,6 +67,50 @@ public class ListenerMethodInvokerTest extends BaseComponentTestCase
         invoker.invokeListenerMethod(target, cycle);
         
         verify();
+    }
+
+    public void test_Null_Parameter()
+    {
+        IRequestCycle cycle = newCycle();
+
+        ListenerMethodHolder target = new ListenerMethodHolder();
+
+        ListenerMethodInvoker invoker =
+            new ListenerMethodInvokerImpl("stringArg", target.getClass().getDeclaredMethods());
+
+        Object[] parms = { null };
+
+        expect(cycle.getListenerParameters()).andReturn(parms);
+
+        replay();
+
+        invoker.invokeListenerMethod(target, cycle);
+
+        verify();
+
+        assertEquals(target._stringArgCount, 1);
+    }
+
+    public void test_No_Parameters_With_Method_Parameters()
+    {
+        IRequestCycle cycle = newCycle();
+
+        ListenerMethodHolder target = new ListenerMethodHolder();
+
+        ListenerMethodInvoker invoker =
+            new ListenerMethodInvokerImpl("stringArg", target.getClass().getDeclaredMethods());
+
+        Object[] parms = new Object[0];
+
+        expect(cycle.getListenerParameters()).andReturn(parms);
+
+        replay();
+
+        invoker.invokeListenerMethod(target, cycle);
+
+        verify();
+
+        assertEquals(target._stringArgCount, 1);
     }
 
     public void test_To_String()
