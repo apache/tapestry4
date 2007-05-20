@@ -139,13 +139,13 @@ tapestry.form={
 	},
 	
 	overrideSubmit:function(e){
-		dojo.event.browser.stopEvent(e);
-                var elm = e.target;
-                if (!dj_undef("form", elm)){
-                    dojo.log.debug("Submit event was generated from element: ", elm);
-                    elm = elm.form;                    
-                }
-		tapestry.form.submitAsync(elm);
+        dojo.event.browser.stopEvent(e);
+        var elm = e.target;
+        if (!dj_undef("form", elm)){
+            dojo.log.debug("Submit event was generated from element: ", elm);
+            elm = elm.form;
+        }
+        tapestry.form.submitAsync(elm);
 	},
 	
 	/**
@@ -230,7 +230,6 @@ tapestry.form={
 			dojo.raise("No valid form event found with argument: " + evt);
 			return;
 		}
-
         var id=evt.target.getAttribute("id");
 		if (!id) {
 			dojo.raise("Form had no id attribute.");
@@ -272,7 +271,6 @@ tapestry.form={
 			return;
 		}
 		var id=form.getAttribute("id");
-		
 		if (submitName){
 			form.submitname.value=submitName;
 		}
@@ -414,7 +412,7 @@ tapestry.form={
 			if (!content) { content={}; }
 			content[this.forms[formId].clickedButton.getAttribute("name")]=this.forms[formId].clickedButton.getAttribute("value");
 		}
-		
+
 		var kwArgs={
 			formNode:form,
 			content:content,
@@ -428,7 +426,7 @@ tapestry.form={
 		if (parms){
 			if (!dj_undef("url", parms)) { kwArgs.url=parms.url; }
 		}
-		
+
 		if (this.forms[formId].json || parms && parms.json) {
 			kwArgs.headers={"json":true};
 			kwArgs.mimetype="text/json";
@@ -438,7 +436,7 @@ tapestry.form={
 			kwArgs.load=(function(){tapestry.load.apply(this, arguments);});
 		}
 		tapestry.requestsInFlight++;
-		dojo.io.queueBind(kwArgs);                
+        dojo.io.queueBind(kwArgs);
 	}
 }
 

@@ -34,8 +34,8 @@
                     var content={beventname:"${formEvent[0]}"};
                     tapestry.event.buildEventProperties(e, content);
                     if (!content["beventtarget.id"]) content["beventtarget.id"]="${clientId}";
-                    
-                   <foreach expression="formEvent[1]" key="formName">
+
+                  <foreach expression="formEvent[1]" key="formName">
                    var validateState=tapestry.form.forms["${formName}"].validateForm;
                    var validateForm=${formEvent[3]};
                    tapestry.form.setFormValidating("${formName}", validateForm);

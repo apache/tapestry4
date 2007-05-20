@@ -13,22 +13,17 @@
 // limitations under the License.
 package org.apache.tapestry.dojo.html;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.tapestry.IDirect;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IScript;
-import org.apache.tapestry.PageRenderSupport;
-import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.*;
 import org.apache.tapestry.dojo.AbstractWidget;
 import org.apache.tapestry.engine.DirectServiceParameter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.json.JSONObject;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -53,7 +48,6 @@ import org.apache.tapestry.json.JSONObject;
  * </ul>
  * </p>
  * 
- * @author Jesse Kuhnert
  */
 public abstract class InlineEditBox extends AbstractWidget implements IDirect
 {
@@ -134,7 +128,7 @@ public abstract class InlineEditBox extends AbstractWidget implements IDirect
         DirectServiceParameter dsp =
             new DirectServiceParameter(this);
         
-        return getEngine().getLink(true, dsp).getURL();
+        return getEngine().getLink(false, dsp).getURL();
     }
     
     /**
