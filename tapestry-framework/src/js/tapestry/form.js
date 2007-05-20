@@ -218,7 +218,7 @@ tapestry.form={
 	setFormValidating:function(formId, validate){
 		if (this.forms[formId]){
 			this.forms[formId].validateForm = validate;
-		}
+        }
 	},
 	
 	/**
@@ -230,8 +230,8 @@ tapestry.form={
 			dojo.raise("No valid form event found with argument: " + evt);
 			return;
 		}
-		
-		var id=evt.target.getAttribute("id");
+
+        var id=evt.target.getAttribute("id");
 		if (!id) {
 			dojo.raise("Form had no id attribute.");
 			return;
@@ -276,14 +276,15 @@ tapestry.form={
 		if (submitName){
 			form.submitname.value=submitName;
 		}
-		
-		if (!dj_undef("value", form.submitmode)
-			&& (form.submitmode.value == "cancel" || form.submitmode.value == "refresh")) {
-			form.submit();
-			return;
-		}
-		
-		if (!tapestry.form.validation.validateForm(form, this.forms[id])) {
+
+        if (!dj_undef("value", form.submitmode)
+                && (form.submitmode.value == "cancel" || form.submitmode.value == "refresh")
+                && !parms) {
+            form.submit();
+            return;
+        }
+
+        if (!tapestry.form.validation.validateForm(form, this.forms[id])) {
 			return;
 		}
 		
@@ -310,17 +311,28 @@ tapestry.form={
 	 * 	submitName	- 	Optional submit name string to use when submitting. This is used
 	 * 					to associate a form submission with a particular component, like a
 	 * 					Submit/LinkSubmit/etc..
+	 *  parms       -   Optional object parms passed through to tapestry.form.submit().
 	 */
-	cancel:function(form, submitName){
+	cancel:function(form, submitName, parms){
 		form=dojo.byId(form);
 		if (!form){
 			dojo.raise("Form not found with id " + form);
 			return;
 		}
-		
-		form.submitmode.value="cancel";
-		
-		this.submit(form, submitName);
+
+        var formName=form.getAttribute("id");
+        var validateState=tapestry.form.forms[formName].validateForm;
+        tapestry.form.setFormValidating(formName, false);
+        
+        form.submitmode.value="cancel";
+
+        if (parms && !dj_undef("async", parms) && parms.async){
+            this.submitAsync(form, null, submitName, parms);
+        } else {
+            this.submit(form, submitName, parms);
+        }
+        
+        tapestry.form.setFormValidating(formName, validateState);
 	},
 	
 	/**
@@ -335,18 +347,29 @@ tapestry.form={
 	 * 	submitName	- 	Optional submit name string to use when submitting. This is used
 	 * 					to associate a form submission with a particular component, like a
 	 * 					Submit/LinkSubmit/etc..
+	 *  parms       -   Optional object parms passed through to tapestry.form.submit().
 	 */
-	refresh:function(form, submitName){
+	refresh:function(form, submitName, parms){
 		form=dojo.byId(form);
 		if (!form){
 			dojo.raise("Form not found with id " + form);
 			return;
 		}
-		
-		form.submitmode.value="refresh";
-		
-		this.submit(form, submitName);
-	},
+
+        var formName=form.getAttribute("id");
+        var validateState=tapestry.form.forms[formName].validateForm;
+        tapestry.form.setFormValidating(formName, false);
+        
+        form.submitmode.value="refresh";
+
+        if (parms && !dj_undef("async", parms) && parms.async){
+            this.submitAsync(form, null, submitName, parms);
+        } else {
+            this.submit(form, submitName, parms);
+        }
+        
+        tapestry.form.setFormValidating(formName, validateState);
+    },
 	
 	/**
 	 * Function: submitAsync

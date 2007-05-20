@@ -608,7 +608,7 @@ public class FormSupportImpl implements FormSupport
         BrowserEvent event = new BrowserEvent(_cycle);
         
         _form.getEventInvoker().invokeFormListeners(this, _cycle, event);
-        
+
         int expected = _allocatedIds.size();
         
         // The other case, _allocatedIdIndex > expected, is
@@ -624,9 +624,18 @@ public class FormSupportImpl implements FormSupport
         }
         
         runDeferredRunnables();
-        
-        if (_submitModes.contains(mode))
+
+        if (_submitModes.contains(mode)) {
+
+            // clear errors during refresh
+            
+            if (FormConstants.SUBMIT_REFRESH.equals(mode)) {
+
+                _form.getDelegate().clearErrors();
+            }
+
             return mode;
+        }
         
         // Either something wacky on the client side, or a client without
         // javascript enabled.
