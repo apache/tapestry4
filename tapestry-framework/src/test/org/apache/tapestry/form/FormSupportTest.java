@@ -14,26 +14,9 @@
 
 package org.apache.tapestry.form;
 
-import static org.easymock.EasyMock.checkOrder;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
-import org.apache.tapestry.BaseComponentTestCase;
-import org.apache.tapestry.IEngine;
-import org.apache.tapestry.IForm;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRender;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.NestedMarkupWriter;
-import org.apache.tapestry.PageRenderSupport;
-import org.apache.tapestry.StaleLinkException;
-import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.*;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.event.EventTarget;
@@ -41,8 +24,12 @@ import org.apache.tapestry.internal.event.impl.ComponentEventInvoker;
 import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.valid.IValidationDelegate;
-import org.testng.annotations.Test;
+import static org.easymock.EasyMock.*;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Tests for {@link org.apache.tapestry.form.FormSupportImpl}.
@@ -684,7 +671,9 @@ public class FormSupportTest extends BaseComponentTestCase
         trainExtractBrowserEvent(cycle);
         
         invoker.invokeFormListeners(eq(fs), eq(cycle), isA(BrowserEvent.class));
-        
+
+        delegate.clearErrors();
+
         replay();
 
         assertEquals(FormConstants.SUBMIT_REFRESH, fs.rewind());

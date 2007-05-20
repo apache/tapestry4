@@ -14,25 +14,18 @@
 
 package org.apache.tapestry.form;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.IActionListener;
-import org.apache.tapestry.IDynamicInvoker;
-import org.apache.tapestry.IForm;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IScript;
-import org.apache.tapestry.PageRenderSupport;
-import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.*;
 import org.apache.tapestry.engine.DirectServiceParameter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.util.ScriptUtils;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Superclass for components submitting their form.
@@ -123,8 +116,9 @@ abstract class AbstractSubmit extends AbstractFormComponent implements IDynamicI
         
         Map parms = null;
         JSONObject json = null;
+        List update = getUpdateComponents();
         
-        if (isAsync()) {
+        if (isAsync() || (update != null && update.size() > 0)) {
             
             IForm form = getForm();
             
@@ -134,7 +128,7 @@ abstract class AbstractSubmit extends AbstractFormComponent implements IDynamicI
             
             json = new JSONObject();
             
-            json.put("async", isAsync());
+            json.put("async", Boolean.TRUE);
             json.put("json", isJson());
             
             DirectServiceParameter dsp = 
@@ -144,7 +138,8 @@ abstract class AbstractSubmit extends AbstractFormComponent implements IDynamicI
         }
         
         if (!type.equals(FormConstants.SUBMIT_NORMAL)) {
-            if (!isParameterBound("onClick")) {
+            if (!isParameterBound("onClick")
+                && (!isAsync() && (update == null || update.size() == 0))) {
                 
                 StringBuffer str = new StringBuffer();
                 
@@ -159,6 +154,7 @@ abstract class AbstractSubmit extends AbstractFormComponent implements IDynamicI
                 str.append(")");
                 
                 writer.attribute("onClick", str.toString());
+                return;
             } else {
                 if (parms == null) {
                     parms = new HashMap();
