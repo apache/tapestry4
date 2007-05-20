@@ -506,7 +506,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      * the default behavior is to publish the message to a topic matching the category name
      * using <code>dojo.event.topic.publish(category,text);</code>.
      *
-     * @param writer
+     * @param normalWriter
      *          The markup writer to use, this may be ignored or swapped
      *          out for a different writer depending on the implementation being used.
      * @param category
@@ -554,6 +554,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
             String errorPage = getErrorPage(page.getPageName());
             
             if (errorPage != null) {
+                
                 _pageRender = true;
                 clearPartialWriters();
                 render.render(getWriter(errorPage, EXCEPTION_TYPE), cycle);
@@ -594,7 +595,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     {
         for (int i=0; i < _errorPages.size(); i++) {
             String page = (String)_errorPages.get(i);
-            
+
             if (pageName.indexOf(page) > -1)
                 return page;
         }

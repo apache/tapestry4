@@ -38,11 +38,9 @@ inlineBox
     </if-not><if expression="component.disabled">
         ${box}.disable();
     </if>
-    
-    <if expression="component.destroy">
+    dojo.event.connectOnce(${box}.form, "onsubmit", function(e){dojo.event.browser.stopEvent(e);}); 
     dojo.event.connectOnce(${box}, "onSave", function(newValue, oldValue){
     	tapestry.bind("${component.updateUrl}", {"${component.clientId}":newValue}, true);
     });
-    </if>
     </initialization>
 </script>
