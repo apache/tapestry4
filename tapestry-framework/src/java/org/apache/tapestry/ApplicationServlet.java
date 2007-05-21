@@ -14,16 +14,6 @@
 
 package org.apache.tapestry;
 
-import java.io.IOException;
-import java.util.Locale;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ClassResolver;
@@ -39,13 +29,22 @@ import org.apache.tapestry.services.ApplicationInitializer;
 import org.apache.tapestry.services.ServletRequestServicer;
 import org.apache.tapestry.util.exception.ExceptionAnalyzer;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Locale;
+
 /**
  * Links a servlet container with a Tapestry application. The servlet init parameter
  * <code>org.apache.tapestry.application-specification</code> should be set to the complete
  * resource path (within the classpath) to the application specification, i.e.,
  * <code>/com/foo/bar/MyApp.application</code>. As of release 4.0, this servlet will also create
  * a HiveMind Registry and manage it.
- * 
+ *
  * @author Howard Lewis Ship
  * @see org.apache.tapestry.services.ApplicationInitializer
  * @see org.apache.tapestry.services.ServletRequestServicer
@@ -59,7 +58,7 @@ public class ApplicationServlet extends HttpServlet
      * Prefix used to store the HiveMind Registry into the ServletContext. This string is suffixed
      * with the servlet name (in case multiple Tapestry applications are executing within a single
      * web application).
-     * 
+     *
      * @since 4.0
      */
 
@@ -75,7 +74,7 @@ public class ApplicationServlet extends HttpServlet
 
     /**
      * The key used to store the registry into the ServletContext.
-     * 
+     *
      * @since 4.0
      */
 
@@ -91,10 +90,10 @@ public class ApplicationServlet extends HttpServlet
      * @since 4.0
      */
     private ServletRequestServicer _requestServicer;
-    
+
     /**
      * Invokes {@link #doService(HttpServletRequest, HttpServletResponse)}.
-     * 
+     *
      * @since 1.0.6
      */
 
@@ -106,10 +105,14 @@ public class ApplicationServlet extends HttpServlet
 
     /**
      * Handles the GET and POST requests. Performs the following:
+     *
      * <ul>
-     * <li>Construct a {@link RequestContext}
-     * <li>Invoke {@link #getEngine(RequestContext)}to get or create the {@link IEngine}
-     * <li>Invoke {@link IEngine#service(RequestContext)}on the application
+     *  <li>
+     *  Invokes {@link org.apache.hivemind.Registry#setupThread()}
+     * </li>
+     * <li>
+     *  Invokes {@link ServletRequestServicer#service(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)}.
+     * </li>
      * </ul>
      */
 
@@ -171,7 +174,7 @@ public class ApplicationServlet extends HttpServlet
     /**
      * Reads the application specification when the servlet is first initialized. All
      * {@link IEngine engine instances}will have access to the specification via the servlet.
-     * 
+     *
      * @see #constructRegistry(ServletConfig)
      * @see #createClassResolver()
      */
@@ -215,10 +218,10 @@ public class ApplicationServlet extends HttpServlet
      * Invoked from {@link #init(ServletConfig)}to create a resource resolver for the servlet
      * (which will utlimately be shared and used through the application).
      * <p>
-     * This implementation constructs a {@link DefaultResourceResolver}, subclasses may provide a
+     * This implementation constructs a {@link DefaultClassResolver}, subclasses may provide a
      * different implementation.
-     * 
-     * @see #getResourceResolver()
+     *
+     * @see DefaultClassResolver
      * @since 2.3
      */
 
@@ -233,7 +236,7 @@ public class ApplicationServlet extends HttpServlet
      * <p>
      * This looks in the standard places (on the classpath), but also in the WEB-INF/name and
      * WEB-INF folders (where name is the name of the servlet).
-     * 
+     *
      * @since 4.0
      */
     protected Registry constructRegistry(ServletConfig config)
@@ -258,7 +261,7 @@ public class ApplicationServlet extends HttpServlet
      * {@link ErrorHandler} instance to be used when constructing the Registry (and then to handle
      * any runtime exceptions). This implementation returns a new instance of
      * {@link org.apache.hivemind.impl.StrictErrorHandler}.
-     * 
+     *
      * @since 4.0
      */
     protected ErrorHandler constructErrorHandler(ServletConfig config)
@@ -269,7 +272,7 @@ public class ApplicationServlet extends HttpServlet
     /**
      * Looks for a file in the servlet context; if it exists, it is expected to be a HiveMind module
      * descriptor, and is added to the builder.
-     * 
+     *
      * @since 4.0
      */
 
@@ -287,7 +290,7 @@ public class ApplicationServlet extends HttpServlet
      * Invoked from {@link #init(ServletConfig)}, after the registry has been constructed, to
      * bootstrap the application via the <code>tapestry.MasterApplicationInitializer</code>
      * service.
-     * 
+     *
      * @since 4.0
      */
     protected void initializeApplication()
@@ -307,7 +310,7 @@ public class ApplicationServlet extends HttpServlet
 
     /**
      * Shuts down the registry (if it exists).
-     * 
+     *
      * @since 4.0
      */
     public void destroy()
@@ -319,7 +322,7 @@ public class ApplicationServlet extends HttpServlet
             _registry.shutdown();
             _registry = null;
         }
-        
+
         super.destroy();
     }
 }
