@@ -63,6 +63,8 @@ public class RoundedCornerGenerator {
                                      String angle, int shadowWidth, float endOpacity)
     throws Exception
     {
+        width = width * 2;
+        height = height * 2;
         float startAngle = getStartAngle(angle);
         Color bgColor = backgroundColor == null ? null : decodeColor(backgroundColor);
 
@@ -71,14 +73,14 @@ public class RoundedCornerGenerator {
             BufferedImage arc = drawArc(color, backgroundColor, width, height, angle, false, -1);
             BufferedImage ret = arc;
 
+            Arc2D.Float arcArea = new Arc2D.Float(0, 0, width, height, startAngle, 90, Arc2D.PIE);
             if (bgColor != null) {
                 
                 ret = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
                 Graphics2D g2 = (Graphics2D)ret.createGraphics();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-                Arc2D.Float arcArea = new Arc2D.Float(0, 0, width, height, startAngle, 90, Arc2D.PIE);
-
+                g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+                
                 g2.setColor(bgColor);
                 g2.fill(arcArea.getBounds2D());
 
@@ -86,8 +88,9 @@ public class RoundedCornerGenerator {
                 
                 g2.dispose();
             }
-
-            return ret;
+            
+            return convertType(ret, BufferedImage.TYPE_INT_RGB).getSubimage((int)arcArea.getBounds2D().getX(), (int)arcArea.getBounds2D().getY(),
+                    (int)arcArea.getBounds2D().getWidth(), (int)arcArea.getBounds2D().getHeight());
         }
 
         BufferedImage mask = drawArc(color, backgroundColor, width, height, angle, true, shadowWidth);
@@ -111,8 +114,6 @@ public class RoundedCornerGenerator {
 
             startX -= shadowSize * 2;
             startY -= shadowSize * 2;
-            // startX -= shadowSize;
-            // startY -= shadowSize;
         }
 
         BufferedImage ret = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -135,7 +136,18 @@ public class RoundedCornerGenerator {
         g2.setClip(null);
         g2.drawImage(arc, 0, 0, null);
 
-        return ret;
+        return convertType(ret, BufferedImage.TYPE_INT_RGB).getSubimage((int)arcArea.getBounds2D().getX(), (int)arcArea.getBounds2D().getY(),
+                    (int)arcArea.getBounds2D().getWidth(), (int)arcArea.getBounds2D().getHeight());
+    }
+
+    static BufferedImage convertType(BufferedImage image, int type) {
+        BufferedImage result = new BufferedImage(image.getWidth(), image.getHeight(), type);
+        Graphics2D g = result.createGraphics();
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g.drawRenderedImage(image, null);
+        g.dispose();
+        return result;
     }
 
     BufferedImage drawArc(String color, String backgroundColor, int width, int height, String angle, boolean masking, int shadowWidth)

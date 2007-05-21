@@ -28,7 +28,7 @@ public abstract class Locale extends AbstractComponent {
 
     void renderRow(IMarkupWriter writer, String selectedCssClass, String cssClass, String anchor, boolean selected)
     {
-         writer.begin("div");
+        writer.begin("div");
         writer.attribute("class", selected ? selectedCssClass :cssClass);
 
         writer.beginEmpty("img");
