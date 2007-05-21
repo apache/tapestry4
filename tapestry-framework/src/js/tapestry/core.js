@@ -243,11 +243,17 @@ var tapestry={
     	if (djConfig["isDebug"]) {
     		dojo.log.debug("Received element content for id <" + id + "> of: ", content);
     	}
-    	if (content && content.length > 0) {
-    		node.innerHTML=content;
-    	}
-    	
-    	// copy attributes
+
+        // fix for IE - setting innerHTML does not work for SELECTs
+        if (tapestry.isIE && node.outerHTML && node.nodeName == "SELECT") {
+            node.outerHTML = node.outerHTML.replace(/(<SELECT[^<]*>).*(<\/SELECT>)/, '$1' + content + '$2');
+        } else {
+            if (content && content.length > 0) {
+                node.innerHTML=content;
+            }
+        }
+
+        // copy attributes
 		var atts=element.attributes;
 		var attnode, i=0;
 		while((attnode=atts[i++])){
