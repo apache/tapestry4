@@ -73,7 +73,6 @@ public class TestRoundedUtil extends JComponent {
         g2.drawImage(image, 0, 0, null);
     }
     */
-    
 
     protected void paintComponent(Graphics g) {
 
@@ -84,7 +83,7 @@ public class TestRoundedUtil extends JComponent {
 
         try {
 
-            image = generator.buildCorner("FF7E00", "white", 60, 60, "tr", -1, -1);
+            image = generator.buildCorner("FF7E00", "white", 160, 160, "tr", 8, 0.6f);
         }
         catch (Exception e) {
             e.printStackTrace();

@@ -102,7 +102,7 @@ public class RoundedCornerService implements IEngineService {
         
         try {
             
-            String type = "png"; //(bgColor != null) ? "gif" : "png";
+            String type = (bgColor != null) ? "gif" : "png";
 
             byte[] data = (byte[])_imageCache.get(hashKey);
             if (data != null) {
