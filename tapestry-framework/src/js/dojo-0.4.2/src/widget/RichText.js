@@ -83,7 +83,7 @@ head.appendChild(stylesheet);}},removeStyleSheet: function (uri) {var url=uri.to
 var index = dojo.lang.find(this.editingAreaStyleSheets, url);if(index == -1){dojo.debug("dojo.widget.RichText.removeStyleSheet: Style sheet "+url+" is not applied to the editing area so it can not be removed!");return;}
 delete this.editingAreaStyleSheets[index];var links = this.document.getElementsByTagName("link");for(var i=0;i<links.length;i++){if(links[i].href == url){if(dojo.render.html.ie){links[i].href="";}
 dojo.html.removeNode(links[i]);break;}}},_drawObject: function (html) {this.object = dojo.html.createExternalElement(dojo.doc(), "object");with (this.object) {classid = "clsid:2D360201-FFF5-11D1-8D03-00A0C959BC0A";width = this.inheritWidth ? this._oldWidth : "100%";style.height = this.height ? this.height : (this._oldHeight+"px");Scrollbars = this.height ? true : false;Appearance = this._activeX.appearance.flat;}
-this.editorObject = this.object;this.editingArea.appendChild(this.object);this.object.attachEvent("DocumentComplete", dojo.lang.hitch(this, "onLoad"));dojo.lang.forEach(this.events, function(e){this.object.attachEvent(e.toLowerCase(), dojo.lang.hitch(this, e));}, this);this.object.DocumentHTML = '<!doctype HTML PUBLIC "-
+this.editorObject = this.object;this.editingArea.appendChild(this.object);this.object.attachEvent("DocumentComplete", dojo.lang.hitch(this, "onLoad"));dojo.lang.forEach(this.events, function(e){this.object.attachEvent(e.toLowerCase(), dojo.lang.hitch(this, e));}, this);this.object.DocumentHTML = '<!doctype HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">' +
 '<html><title></title>' +
 '<style type="text/css">' +
 '    body,html { padding: 0; margin: 0; }' +
