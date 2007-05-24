@@ -52,22 +52,15 @@ public abstract class AbstractFormWidget extends AbstractFormComponent implement
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         if(!cycle.isRewinding()) {
-            
-            if (!cycle.getResponseBuilder().isDynamic() 
+
+            if (!cycle.getResponseBuilder().isDynamic()
                     || cycle.getResponseBuilder().explicitlyContains(this)) {
-                
+
                 setDestroy(false);
-            } else
+            } else {
+
                 setDestroy(true);
-        }
-        
-        // don't render if not part of update response
-        
-        if (cycle.getResponseBuilder().isDynamic()
-                && (!cycle.getResponseBuilder().explicitlyContains(this) 
-                        && !cycle.getResponseBuilder().contains(this))) {
-            
-            return;
+            }
         }
         
         renderFormWidget(writer, cycle);
@@ -96,7 +89,7 @@ public abstract class AbstractFormWidget extends AbstractFormComponent implement
      * Components should do any validation/retrieval of values in this method. 
      * 
      * @param writer
-     *          The passed in {@link IMarkupWriter} will be a {@link NullMarkupWriter}, making 
+     *          The passed in {@link IMarkupWriter} will be a {@link org.apache.tapestry.engine.NullWriter}, making
      *          any content written ignored. 
      * @param cycle
      *           Typically used to retrieve submitted value via <code>cycle.getParameter(getName())</code>.

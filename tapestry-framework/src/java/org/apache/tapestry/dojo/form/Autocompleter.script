@@ -20,7 +20,7 @@ ${id}
     <initialization>
         var ${completer}=${props};
         tapestry.widget.synchronizeWidgetState("${id}", "Select", ${completer}, ${widget.destroy});
-        if (${completer}["label"] &amp;&amp; ${completer}["value"]){
+        if (!dj_undef("label", ${completer}) &amp;&amp; !dj_undef("value", ${completer})){
             var selw=dojo.widget.byId("${id}");
             selw.setValue(${completer}["value"]);
             selw.setLabel(${completer}["label"]);

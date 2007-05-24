@@ -13,19 +13,7 @@
 // limitations under the License.
 package org.apache.tapestry.dojo.form;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.tapestry.IDirect;
-import org.apache.tapestry.IJSONRender;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IScript;
-import org.apache.tapestry.PageRenderSupport;
-import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.*;
 import org.apache.tapestry.engine.DirectServiceParameter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
@@ -35,6 +23,11 @@ import org.apache.tapestry.json.IJSONWriter;
 import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.valid.ValidatorException;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * An html field similar to a <code>select</code> input field that 
@@ -120,10 +113,8 @@ public abstract class Autocompleter extends AbstractFormWidget implements Valida
         json.put("forceValidOption", isForceValidOption());
         json.put("disabled", isDisabled());
         
-        if (value != null && key != null) {
-            json.put("value", getDataSqueezer().squeeze(key));
-            json.put("label", model.getLabelFor(value));
-        }
+        json.put("value", getDataSqueezer().squeeze(key));
+        json.put("label", value != null ? model.getLabelFor(value) : "");
         
         parms.put("props", json.toString());
         parms.put("form", getForm().getName());
