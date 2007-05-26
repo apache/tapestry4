@@ -141,6 +141,21 @@
                         </td>
                     </tr>
                     <tr>
+                        <td>local</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            The autocompleter can work either in remote or in local mode. This parameter
+                            controls whether the component will contact the server for finding the matching 
+                            data, or use the values that it already contains within its html nodes.
+                            
+                            In the later case, the model parameter is used during render in order to provide all
+                            possible values. Those are are then rendered as options inside the select tag of the
+                            autocompleter.
+                        </td>
+                    </tr>                    
+                    <tr>
                         <td>searchDelay</td>
                         <td>long<em>(ms)</em></td>
                         <td>no</td>
