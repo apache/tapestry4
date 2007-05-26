@@ -430,7 +430,8 @@ tapestry.form={
 		if (this.forms[formId].json || parms && parms.json) {
 			kwArgs.headers={"json":true};
 			kwArgs.mimetype="text/json";
-		} else {
+            kwArgs.load=(function(){tapestry.loadJson.apply(this, arguments);});
+        } else {
 			kwArgs.headers={"dojo-ajax-request":true};
 			kwArgs.mimetype="text/xml";
 			kwArgs.load=(function(){tapestry.load.apply(this, arguments);});
