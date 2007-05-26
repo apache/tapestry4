@@ -14,10 +14,7 @@
 package org.apache.tapestry.dojo;
 
 import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRender;
-import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.*;
 import org.apache.tapestry.html.Shell;
 import org.apache.tapestry.json.JSONObject;
 
@@ -44,7 +41,11 @@ public class AjaxShellDelegate implements IRender
     public static final String BROWSER_LOG_CRITICAL="CRITICAL";
     
     private IAsset _dojoSource;
-    
+
+    private IAsset _dojoFormSource;
+
+    private IAsset _dojoWidgetSource;
+
     private IAsset _dojoPath;
     
     private IAsset _tapestrySource;
@@ -84,11 +85,17 @@ public class AjaxShellDelegate implements IRender
             dojoConfig.put("debugAtAllCosts", _debugAtAllCosts);
         if (_debugContainerId != null)
             dojoConfig.put("debugContainerId", _debugContainerId);
-        
+
+        IPage page = cycle.getPage();
+
         // The key to resolving everything out of the asset service
         
         dojoConfig.put("baseRelativePath", _dojoPath.buildURL());
-        dojoConfig.put("preventBackButtonFix", _preventBackButtonFix);
+        
+        if (page.hasFormComponents()) {
+
+            dojoConfig.put("preventBackButtonFix", false);
+        }
         dojoConfig.put("parseWidgets", _parseWidgets);
         
         // Supports setting up locale in dojo environment to match the requested page locale.
@@ -112,6 +119,18 @@ public class AjaxShellDelegate implements IRender
         str.append("<script type=\"text/javascript\" src=\"")
         .append(_dojoSource.buildURL()).append("\"></script>");
 
+        if (page.hasFormComponents()) {
+
+            str.append("<script type=\"text/javascript\" src=\"")
+                    .append(_dojoFormSource.buildURL()).append("\"></script>");
+        }
+
+        if (page.hasWidgets()) {
+
+            str.append("<script type=\"text/javascript\" src=\"")
+                    .append(_dojoWidgetSource.buildURL()).append("\"></script>");
+        }
+        
         // configure basic dojo properties , logging includes
 
         if (_debug) {
@@ -265,7 +284,17 @@ public class AjaxShellDelegate implements IRender
     {
         _dojoSource = dojoSource;
     }
-    
+
+    public void setDojoFormSource(IAsset formSource)
+    {
+        _dojoFormSource = formSource;
+    }
+
+    public void setDojoWidgetSource(IAsset widgetSource)
+    {
+        _dojoWidgetSource = widgetSource;
+    }
+
     /**
      * Sets the dojo baseRelativePath value.
      * @param dojoPath

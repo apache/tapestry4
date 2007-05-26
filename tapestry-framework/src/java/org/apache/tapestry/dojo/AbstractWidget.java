@@ -42,7 +42,7 @@ public abstract class AbstractWidget extends AbstractComponent implements IWidge
     public void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         if(!cycle.isRewinding()) {
-            
+
             if (!cycle.getResponseBuilder().isDynamic() 
                     || cycle.getResponseBuilder().explicitlyContains(this)) {
                 

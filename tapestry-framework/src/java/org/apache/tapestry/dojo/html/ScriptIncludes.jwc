@@ -91,6 +91,18 @@
         </description>
     </parameter>
 
+    <parameter name="dojoFormSource" default-value="asset:defaultDojoFormSource">
+        <description>
+            If specified, allows for the default dojo source included to be overriden.
+        </description>
+    </parameter>
+
+    <parameter name="dojoWidgetSource" default-value="asset:defaultDojoWidgetSource">
+        <description>
+            If specified, allows for the default dojo source included to be overriden.
+        </description>
+    </parameter>
+
     <parameter name="dojoPath" default-value="asset:defaultDojoPath">
         <description>
             Specifies the default path to the root dojo folder, not the dojo.js file itself. This is
@@ -100,6 +112,8 @@
 
     <bean name="coreAjaxDelegate" class="org.apache.tapestry.dojo.AjaxShellDelegate">
         <set name="dojoSource" value="dojoSource" />
+        <set name="dojoFormSource" value="dojoFormSource" />
+        <set name="dojoWidgetSource" value="dojoWidgetSource" />
         <set name="dojoPath" value="dojoPath" />
         <set name="tapestrySource" value="tapestrySource" />
         <set name="tapestryPath" value="tapestryPath" />
@@ -112,8 +126,10 @@
         <set name="parseWidgets" value="parseWidgets" />
     </bean>
 
-    <asset name="defaultDojoSource" path="classpath:/dojo-0.4.2/dojo.js" />
-    <asset name="defaultDojoPath" path="classpath:/dojo-0.4.2/" />
+    <asset name="defaultDojoSource" path="classpath:/dojo-0.4.3/dojo.js" />
+    <asset name="defaultDojoFormSource" path="classpath:/dojo-0.4.3/dojo2.js" />
+    <asset name="defaultDojoWidgetSource" path="classpath:/dojo-0.4.3/dojo3.js" />
+    <asset name="defaultDojoPath" path="classpath:/dojo-0.4.3/" />
     <asset name="defaultTapestrySource" path="classpath:/tapestry/core.js" />
     <asset name="defaultTapestryPath" path="classpath:/tapestry/" />
     

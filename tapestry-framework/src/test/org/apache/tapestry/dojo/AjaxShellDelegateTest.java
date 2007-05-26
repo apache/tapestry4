@@ -17,6 +17,7 @@ import org.apache.hivemind.Resource;
 import org.apache.tapestry.*;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
+import static org.easymock.EasyMock.checkOrder;
 import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
 
@@ -62,12 +63,18 @@ public class AjaxShellDelegateTest extends BaseComponentTestCase
         IAsset dojoPath = newAsset();
         IAsset tSource = newAsset();
         IAsset tPath = newAsset();
+        IPage page = newMock(IPage.class);
+        checkOrder(page, false);
         
         IRequestCycle cycle = newCycle();
         IMarkupWriter writer = newBufferWriter();
-        
+
+        expect(cycle.getPage()).andReturn(page);
         expect(dojoPath.buildURL()).andReturn("http:///dojo/path");
-        
+
+        expect(page.hasFormComponents()).andReturn(false).anyTimes();
+        expect(page.hasWidgets()).andReturn(false).anyTimes();
+
         trainPageLocale(cycle, Locale.US);
         
         expect(dojoSource.buildURL()).andReturn("http:///dojo/path/dojo.js");
@@ -90,7 +97,7 @@ public class AjaxShellDelegateTest extends BaseComponentTestCase
         
         assertBuffer("<script type=\"text/javascript\">djConfig = {\"isDebug\":false,"
                 + "\"baseRelativePath\":\"http:///dojo/path\","
-                +"\"preventBackButtonFix\":false,\"parseWidgets\":false,\"locale\":\"en-us\"} </script>\n" + 
+                +"\"parseWidgets\":false,\"locale\":\"en-us\"} </script>\n" + 
                 "\n" + 
                 " <script type=\"text/javascript\" src=\"http:///dojo/path/dojo.js\"></script>\n"
                 + "<script type=\"text/javascript\">\n" + 
@@ -108,12 +115,18 @@ public class AjaxShellDelegateTest extends BaseComponentTestCase
         IAsset dojoPath = newAsset();
         IAsset tSource = newAsset();
         IAsset tPath = newAsset();
+        IPage page = newMock(IPage.class);
+        checkOrder(page, false);
         
         IRequestCycle cycle = newCycle();
         IMarkupWriter writer = newBufferWriter();
-        
+
+        expect(cycle.getPage()).andReturn(page);
         expect(dojoPath.buildURL()).andReturn("http:///dojo/path");
-        
+
+        expect(page.hasFormComponents()).andReturn(false).anyTimes();
+        expect(page.hasWidgets()).andReturn(false).anyTimes();
+
         trainPageLocale(cycle, Locale.UK);
         
         expect(dojoSource.buildURL()).andReturn("http:///dojo/path/dojo.js");
@@ -138,7 +151,7 @@ public class AjaxShellDelegateTest extends BaseComponentTestCase
         verify();
         
         assertBuffer("<script type=\"text/javascript\">djConfig = {\"isDebug\":true,\"baseRelativePath\":\"http:///dojo/path\"," +
-                     "\"preventBackButtonFix\":false,\"parseWidgets\":false,\"locale\":\"en-gb\"} </script>\n" +
+                     "\"parseWidgets\":false,\"locale\":\"en-gb\"} </script>\n" +
                      "\n" +
                      " <script type=\"text/javascript\" src=\"http:///dojo/path/dojo.js\"></script>\n" +
                      "<script type=\"text/javascript\">\n" +

@@ -117,6 +117,10 @@ public abstract class Shell extends AbstractComponent
 
                 writeStylesheetLink(writer, cycle, stylesheet);
             }
+
+            // flush out whatever we have before buffering body
+
+            writer.flush();
         }
 
         // Render the body, the actual page content

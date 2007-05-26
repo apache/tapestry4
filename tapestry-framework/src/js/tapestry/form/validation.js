@@ -1,8 +1,6 @@
 dojo.provide("tapestry.form.validation");
 dojo.require("dojo.validate.check");
 dojo.require("dojo.html.style");
-dojo.require("dojo.widget.*");
-dojo.require("tapestry.widget.AlertDialog");
 
 tapestry.form.validation={
 
@@ -219,7 +217,10 @@ tapestry.form.validation={
 			msg+="</ul>";
 		}
 
-		var ad=dojo.widget.byId("validationDialog");
+        dojo.require("dojo.widget.*");
+        dojo.require("tapestry.widget.AlertDialog");
+
+        var ad=dojo.widget.byId("validationDialog");
 		if (ad) {
 			ad.setMessage(msg);
 			ad.show();
