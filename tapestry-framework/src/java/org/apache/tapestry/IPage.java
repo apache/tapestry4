@@ -14,18 +14,13 @@
 
 package org.apache.tapestry;
 
-import java.util.Locale;
-
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.tapestry.event.ChangeObserver;
-import org.apache.tapestry.event.PageAttachListener;
-import org.apache.tapestry.event.PageBeginRenderListener;
-import org.apache.tapestry.event.PageDetachListener;
-import org.apache.tapestry.event.PageEndRenderListener;
-import org.apache.tapestry.event.PageValidateListener;
+import org.apache.tapestry.event.*;
 import org.apache.tapestry.record.PropertyChangeObserver;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.util.ContentType;
+
+import java.util.Locale;
 
 /**
  * A root level component responsible for generating an entire a page within the application.
@@ -210,6 +205,34 @@ public interface IPage extends IComponent
      */
 
     IRequestCycle getRequestCycle();
+
+    /**
+     * Whether or not this page contains {@link IForm} instances.
+     *
+     * @return True if page contains forms, false otherwise.
+     */
+    boolean hasFormComponents();
+
+    /**
+     * Sets whether or not page has forms.
+     *
+     * @param value Indicator of containing forms.
+     */
+    void setHasFormComponents(boolean value);
+
+    /**
+     * Whether or not this page contains {@link org.apache.tapestry.dojo.IWidget} instances.
+     *
+     * @return True if page contains widgets, false otherwise.
+     */
+    boolean hasWidgets();
+
+    /**
+     * Sets whether or not page has widgets.
+     *
+     * @param value Indicator of containing widgets.
+     */
+    void setHasWidgets(boolean value);
 
     /** @since 4.0 */
     void addPageBeginRenderListener(PageBeginRenderListener listener);

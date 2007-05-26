@@ -154,11 +154,11 @@
                 </excludes>
             </resource>
             <resource>
-                <directory>src/js/dojo-0.4.2</directory>
+                <directory>src/js/dojo-0.4.3/</directory>
                 <includes>
                     <include>**/*</include>
                 </includes>
-                <targetPath>dojo-0.4.2</targetPath>
+                <targetPath>dojo-0.4.3</targetPath>
             </resource>
             <resource>
                 <directory>src/js/tapestry</directory>

@@ -160,8 +160,10 @@ public class PageLoader implements IPageLoader
         _establishDefaultParameterValuesWalker =
                 new ComponentTreeWalker( new IComponentVisitor[] { _establishDefaultParameterValuesVisitor });
 
+        IComponentVisitor componentTypeVisitor = new ComponentTypeVisitor();
+
         _eventConnectionWalker =
-                new ComponentTreeWalker( new IComponentVisitor[] { _eventConnectionVisitor });
+                new ComponentTreeWalker( new IComponentVisitor[] { _eventConnectionVisitor, componentTypeVisitor });
     }
 
     /**

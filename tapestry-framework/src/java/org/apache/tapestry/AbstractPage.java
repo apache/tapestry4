@@ -90,6 +90,18 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     private String _outputEncoding;
 
     /**
+     * Used to dynamically include script content automatically for form specific includes.
+     * @since 4.1.2
+     */
+    private boolean _hasForms;
+
+    /**
+     * Dynamically causes widget dojo layer to be included if set to true.
+     * @since 4.1.2.
+     */
+    private boolean _hasWidgets;
+
+    /**
      * Standard constructor. Does nothing.
      * 
      * @since 2.2
@@ -515,5 +527,25 @@ public abstract class AbstractPage extends BaseComponent implements IPage
             _outputEncoding = getEngine().getOutputEncoding();
 
         return _outputEncoding;
+    }
+
+    public boolean hasFormComponents()
+    {
+        return _hasForms;
+    }
+
+    public void setHasFormComponents(boolean value)
+    {
+        _hasForms = value;
+    }
+
+    public boolean hasWidgets()
+    {
+        return _hasWidgets;
+    }
+
+    public void setHasWidgets(boolean value)
+    {
+        _hasWidgets = value;
     }
 }

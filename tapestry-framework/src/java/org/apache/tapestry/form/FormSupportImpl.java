@@ -551,7 +551,19 @@ public class FormSupportImpl implements FormSupport
         // register the validation profile with client side form manager
         
         if (_form.isClientValidationEnabled())
-        {    
+        {
+            IPage page = _form.getPage();
+
+            // only include dojo widget layer if it's not already been included
+
+            if (!page.hasWidgets()) {
+                IAsset clientScript = _form.getAsset("clientValidationScript");
+                if (clientScript != null){
+
+                    _pageRenderSupport.addExternalScript(_form, clientScript.getResourceLocation());
+                }
+            }
+            
             _pageRenderSupport.addInitializationScript(_form, "dojo.require(\"tapestry.form\");tapestry.form.clearProfiles('"
                     + formId + "'); tapestry.form.registerProfile('" + formId + "'," 
                     + _profile.toString() + ");");
