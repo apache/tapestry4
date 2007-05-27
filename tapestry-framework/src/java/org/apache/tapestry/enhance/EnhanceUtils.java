@@ -14,13 +14,6 @@
 
 package org.apache.tapestry.enhance;
 
-import java.lang.reflect.Modifier;
-import java.util.HashMap;
-import java.util.Map;
-
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.Factory;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.service.ClassFabUtils;
@@ -31,6 +24,10 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.spec.IComponentSpecification;
+
+import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Convienience methods needed by various parts of the enhancement subsystem.
@@ -334,9 +331,6 @@ public final class EnhanceUtils
     public static boolean canProxyPropertyType(Class type)
     {
         // if it's already enhanced it must be by someone else
-        
-        if (Enhancer.isEnhanced(type) || Factory.class.isAssignableFrom(type))
-            return false;
         
         if (type.isInterface())
             return true;

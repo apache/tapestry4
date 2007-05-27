@@ -40,7 +40,7 @@
         components.
 
         <invoke-factory>
-            <construct class="ComponentHousekeepingWorker"></construct>
+            <construct class="ComponentHousekeepingWorker" />
         </invoke-factory>
     </service-point>
 
