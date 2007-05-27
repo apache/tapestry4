@@ -136,14 +136,4 @@
     <strategy name="client:app" object="service:AppClientPropertyPersistenceStrategy"/>
   </contribution>
   
-  <service-point id="PropertyChangeObserver" interface="PropertyChangeObserver">
-    
-    Used to observe changes to persistent page properties.
-    
-     <invoke-factory>
-      <construct class="CglibProxiedPropertyChangeObserverImpl" />
-    </invoke-factory>
-    
-  </service-point>
-  
 </module>
