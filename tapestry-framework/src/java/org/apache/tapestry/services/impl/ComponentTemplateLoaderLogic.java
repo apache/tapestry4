@@ -268,10 +268,7 @@ public class ComponentTemplateLoaderLogic
                 String parameterName = pspec == null ? attributeName : pspec.getParameterName();
 
                 if (!attributeName.equals(parameterName))
-                    _log.warn(ImplMessages.usedTemplateParameterAlias(
-                            token,
-                            attributeName,
-                            parameterName));
+                    _log.warn(ImplMessages.usedTemplateParameterAlias(token, attributeName, parameterName));
 
                 String description = ImplMessages.templateParameterName(parameterName);
 
@@ -279,6 +276,7 @@ public class ComponentTemplateLoaderLogic
 
                 IBinding binding = _bindingSource.createBinding(
                         _loadComponent,
+                        pspec,
                         description,
                         value,
                         BindingConstants.LITERAL_PREFIX,

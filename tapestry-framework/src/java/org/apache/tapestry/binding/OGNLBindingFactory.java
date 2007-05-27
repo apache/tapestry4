@@ -33,8 +33,7 @@ public class OGNLBindingFactory extends AbstractBindingFactory
 
     private ExpressionCache _expressionCache;
 
-    public IBinding createBinding(IComponent root, String description, String expression,
-            Location location)
+    public IBinding createBinding(IComponent root, String description, String expression, Location location)
     {
         return new ExpressionBinding(description, location, getValueConverter(), root, expression,
                 _expressionEvaluator, _expressionCache);
@@ -49,5 +48,4 @@ public class OGNLBindingFactory extends AbstractBindingFactory
     {
         _expressionEvaluator = expressionEvaluator;
     }
-
 }

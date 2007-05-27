@@ -32,8 +32,8 @@ public interface BindingFactory
      * @param root
      *            the component that is the source of properties or messages (or etc.). When the
      *            path is "evaluated", the root component provides a context.
-     * @param description
-     *            The {@link IBinding#getDescription() description}of the binding.
+     * @param bindingDescription
+     *            The {@link IBinding#getDescription() description} of the binding.
      * @param expression
      *            The expression used to get (or update) a value. The interpretation of this
      *            expression is determined by the type of {@link IBinding} created by this factory.
@@ -43,6 +43,8 @@ public interface BindingFactory
      * @param location
      *            The location of the binding, used to report any errors related to the binding, or
      *            to the component parameter the binding is bound to.
+     *
+     * @return A {@link IBinding} instance for the specific expression given. 
      */
     IBinding createBinding(IComponent root, String bindingDescription, String expression,
             Location location);

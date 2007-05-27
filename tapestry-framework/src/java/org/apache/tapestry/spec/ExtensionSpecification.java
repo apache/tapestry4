@@ -14,11 +14,6 @@
 
 package org.apache.tapestry.spec;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
@@ -26,6 +21,11 @@ import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.coerce.ValueConverter;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Defines an "extension", which is much like a helper bean, but is part of a library or application
@@ -35,8 +35,7 @@ import org.apache.tapestry.coerce.ValueConverter;
  * @since 2.2
  */
 
-public class ExtensionSpecification extends LocatablePropertyHolder implements
-        IExtensionSpecification
+public class ExtensionSpecification extends LocatablePropertyHolder implements IExtensionSpecification
 {
     private static final Log LOG = LogFactory.getLog(ExtensionSpecification.class);
     
@@ -47,13 +46,20 @@ public class ExtensionSpecification extends LocatablePropertyHolder implements
     private boolean _immediate;
 
     /** @since 4.0 */
-
     private ClassResolver _resolver;
 
     /** @since 4.0 */
     private ValueConverter _converter;
 
-    /** @since 4.0 */
+    /**
+     * Creates a new instance which will use the specified resolver to resolve classes and converter
+     * to coerce values to their desired type.
+     *
+     * @param resolver
+     *          The class resolver used to resolve classes safely in a servlet environment.
+     * @param valueConverter
+     *          Converter used to coerce values.
+     */
     public ExtensionSpecification(ClassResolver resolver, ValueConverter valueConverter)
     {
         _resolver = resolver;
@@ -73,10 +79,7 @@ public class ExtensionSpecification extends LocatablePropertyHolder implements
     public void addConfiguration(String propertyName, String value)
     {
         if (_configuration.containsKey(propertyName))
-            throw new IllegalArgumentException(Tapestry.format(
-                    "ExtensionSpecification.duplicate-property",
-                    this,
-                    propertyName));
+            throw new IllegalArgumentException(Tapestry.format("ExtensionSpecification.duplicate-property", this, propertyName));
 
         _configuration.put(propertyName, value);
     }

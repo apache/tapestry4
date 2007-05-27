@@ -42,13 +42,13 @@ import java.util.Locale;
  * <p>
  * This implementation is not threadsafe, therefore the pooled service model
  * must be used.
- * 
+ *
  * @author Howard Lewis Ship
  */
 
 public class PageLoader implements IPageLoader
 {
-    
+
     private Log _log;
 
     /** @since 4.0 */
@@ -85,7 +85,7 @@ public class PageLoader implements IPageLoader
 
     /**
      * Used to find the correct Java component class for a page.
-     * 
+     *
      * @since 4.0
      */
 
@@ -95,7 +95,7 @@ public class PageLoader implements IPageLoader
      * Used to find the correct Java component class for a component (a similar
      * process to resolving a page, but with slightly differen steps and
      * defaults).
-     * 
+     *
      * @since 4.0
      */
 
@@ -103,7 +103,7 @@ public class PageLoader implements IPageLoader
 
     /**
      * Used to resolve meta-data properties related to a component.
-     * 
+     *
      * @since 4.0
      */
 
@@ -111,7 +111,7 @@ public class PageLoader implements IPageLoader
 
     /**
      * Tracks the current locale into which pages are loaded.
-     * 
+     *
      * @since 4.0
      */
 
@@ -153,10 +153,10 @@ public class PageLoader implements IPageLoader
         // Create the mechanisms for walking the component tree when it is
         // complete
         IComponentVisitor verifyRequiredParametersVisitor = new VerifyRequiredParametersVisitor();
-        
+
         _verifyRequiredParametersWalker =
                 new ComponentTreeWalker( new IComponentVisitor[] { verifyRequiredParametersVisitor });
-        
+
         _establishDefaultParameterValuesWalker =
                 new ComponentTreeWalker( new IComponentVisitor[] { _establishDefaultParameterValuesVisitor });
 
@@ -172,7 +172,7 @@ public class PageLoader implements IPageLoader
      * <p>
      * This implementation is very simple, we will need a lot more sanity
      * checking and eror checking in the final version.
-     * 
+     *
      * @param container
      *            The containing component. For a dynamic binding ({@link org.apache.tapestry.binding.ExpressionBinding})
      *            the property name is evaluated with the container as the root.
@@ -186,7 +186,7 @@ public class PageLoader implements IPageLoader
      */
 
     void bind(IComponent container, IComponent component,
-            IContainedComponent contained, String defaultBindingPrefix)
+              IContainedComponent contained, String defaultBindingPrefix)
     {
         IComponentSpecification spec = component.getSpecification();
         boolean formalOnly = !spec.getAllowInformalParameters();
@@ -196,13 +196,13 @@ public class PageLoader implements IPageLoader
             if (formalOnly)
                 throw new ApplicationRuntimeException(PageloadMessages
                         .inheritInformalInvalidComponentFormalOnly(component),
-                        component, contained.getLocation(), null);
+                                                      component, contained.getLocation(), null);
 
             IComponentSpecification containerSpec = container.getSpecification();
 
             if (!containerSpec.getAllowInformalParameters())
                 throw new ApplicationRuntimeException(PageloadMessages.inheritInformalInvalidContainerFormalOnly(container, component),
-                        component, contained.getLocation(), null);
+                                                      component, contained.getLocation(), null);
 
             IQueuedInheritedBinding queued = new QueuedInheritInformalBindings(component);
             _inheritedBindingQueue.add(queued);
@@ -228,7 +228,7 @@ public class PageLoader implements IPageLoader
 
             if (formalOnly && !isFormal)
                 throw new ApplicationRuntimeException(PageloadMessages.formalParametersOnly(component, name),
-                        component, bspec.getLocation(), null);
+                                                      component, bspec.getLocation(), null);
 
             // If an informal parameter that conflicts with a reserved name,
             // then skip it.
@@ -241,7 +241,7 @@ public class PageLoader implements IPageLoader
                 if (!name.equals(parameterName))
                 {
                     _log.warn(PageloadMessages.usedParameterAlias(contained,
-                            name, parameterName, bspec.getLocation()));
+                                                                  name, parameterName, bspec.getLocation()));
                 }
                 else if (pspec.isDeprecated())
                     _log.warn(PageloadMessages.deprecatedParameter(name, bspec.getLocation(), contained.getType()));
@@ -273,7 +273,7 @@ public class PageLoader implements IPageLoader
 
             String description = PageloadMessages.parameterName(name);
 
-            IBinding binding = convert(container, description, defaultBindingPrefix, bspec);
+            IBinding binding = convert(container, description, pspec, defaultBindingPrefix, bspec);
 
             addBindingToComponent(component, parameterName, binding);
         }
@@ -283,7 +283,7 @@ public class PageLoader implements IPageLoader
      * Adds a binding to the component, checking to see if there's a name
      * conflict (an existing binding for the same parameter ... possibly because
      * parameter names can be aliased).
-     * 
+     *
      * @param component
      *            to which the binding should be added
      * @param parameterName
@@ -296,26 +296,25 @@ public class PageLoader implements IPageLoader
      * @since 4.0
      */
 
-    static void addBindingToComponent(IComponent component,
-            String parameterName, IBinding binding)
+    static void addBindingToComponent(IComponent component, String parameterName, IBinding binding)
     {
         IBinding existing = component.getBinding(parameterName);
 
         if (existing != null)
             throw new ApplicationRuntimeException(PageloadMessages.duplicateParameter(parameterName, existing),
-                    component, binding.getLocation(), null);
+                                                  component, binding.getLocation(), null);
 
         component.setBinding(parameterName, binding);
     }
 
-    private IBinding convert(IComponent container, String description,
-            String defaultBindingType, IBindingSpecification spec)
+    private IBinding convert(IComponent container, String description, IParameterSpecification param, 
+                             String defaultBindingType, IBindingSpecification spec)
     {
         Location location = spec.getLocation();
         String bindingReference = spec.getValue();
 
-        return _bindingSource.createBinding(container, description,
-                bindingReference, defaultBindingType, location);
+        return _bindingSource.createBinding(container, param, description,
+                                            bindingReference, defaultBindingType, location);
     }
 
     /**
@@ -328,7 +327,7 @@ public class PageLoader implements IPageLoader
      * <li>Invoking
      * {@link IComponent#finishLoad(IRequestCycle, IPageLoader, IComponentSpecification)}
      * </ul>
-     * 
+     *
      * @param cycle
      *            the request cycle for which the page is being (initially)
      *            constructed
@@ -343,8 +342,8 @@ public class PageLoader implements IPageLoader
      */
 
     private void constructComponent(IRequestCycle cycle, IPage page,
-            IComponent container, IComponentSpecification containerSpec,
-            INamespace namespace)
+                                    IComponent container, IComponentSpecification containerSpec,
+                                    INamespace namespace)
     {
         _depth++;
         if (_depth > _maxDepth)
@@ -363,22 +362,22 @@ public class PageLoader implements IPageLoader
 
                 // Get the sub-component specification from the
                 // container's specification.
-                
+
                 IContainedComponent contained = containerSpec.getComponent(id);
-                
+
                 String type = contained.getType();
                 Location location = contained.getLocation();
-                
+
                 _componentResolver.resolve(cycle, namespace, type, location);
-                
+
                 IComponentSpecification componentSpecification = _componentResolver.getSpecification();
                 INamespace componentNamespace = _componentResolver.getNamespace();
-                
+
                 // Instantiate the contained component.
-                
+
                 IComponent component = instantiateComponent(page, container,
-                        id, componentSpecification, _componentResolver.getType(), componentNamespace, contained);
-                
+                                                            id, componentSpecification, _componentResolver.getType(), componentNamespace, contained);
+
                 // Add it, by name, to the container.
 
                 container.addComponent(component);
@@ -392,7 +391,7 @@ public class PageLoader implements IPageLoader
 
                 constructComponent(cycle, page, component, componentSpecification, componentNamespace);
             }
-            
+
             addAssets(container, containerSpec);
 
             // Finish the load of the component; most components (which
@@ -415,7 +414,7 @@ public class PageLoader implements IPageLoader
         catch (RuntimeException ex)
         {
             throw new ApplicationRuntimeException(PageloadMessages.unableToInstantiateComponent(container, ex),
-                    container, null, ex);
+                                                  container, null, ex);
         }
 
         _depth--;
@@ -425,29 +424,29 @@ public class PageLoader implements IPageLoader
      * Invoked to create an implicit component (one which is defined in the
      * containing component's template, rather that in the containing
      * component's specification).
-     * 
+     *
      * @see org.apache.tapestry.services.impl.ComponentTemplateLoaderImpl
      * @since 3.0
      */
 
     public IComponent createImplicitComponent(IRequestCycle cycle,
-            IComponent container, String componentId, String componentType,
-            Location location)
+                                              IComponent container, String componentId, String componentType,
+                                              Location location)
     {
         IPage page = container.getPage();
 
         _componentResolver.resolve(cycle, container.getNamespace(), componentType, location);
-        
+
         INamespace componentNamespace = _componentResolver.getNamespace();
         IComponentSpecification spec = _componentResolver.getSpecification();
 
         IContainedComponent contained = new ContainedComponent();
         contained.setLocation(location);
         contained.setType(componentType);
-        
+
         IComponent result = instantiateComponent(page, container, componentId,
-                spec, _componentResolver.getType(), componentNamespace,
-                contained);
+                                                 spec, _componentResolver.getType(), componentNamespace,
+                                                 contained);
 
         container.addComponent(result);
 
@@ -483,11 +482,11 @@ public class PageLoader implements IPageLoader
      */
 
     private IComponent instantiateComponent(IPage page, IComponent container,
-            String id, IComponentSpecification spec, String type,
-            INamespace namespace, IContainedComponent containedComponent)
+                                            String id, IComponentSpecification spec, String type,
+                                            INamespace namespace, IContainedComponent containedComponent)
     {
         ComponentClassProviderContext context = new ComponentClassProviderContext(type, spec, namespace);
-        
+
         String className = _componentClassProvider.provideComponentClassName(context);
 
         if (HiveMind.isBlank(className))
@@ -498,17 +497,17 @@ public class PageLoader implements IPageLoader
 
             if (!IComponent.class.isAssignableFrom(componentClass))
                 throw new ApplicationRuntimeException(PageloadMessages.classNotComponent(componentClass),
-                        container, spec.getLocation(), null);
+                                                      container, spec.getLocation(), null);
 
             if (IPage.class.isAssignableFrom(componentClass))
                 throw new ApplicationRuntimeException(PageloadMessages.pageNotAllowed(id),
-                        container, spec.getLocation(), null);
+                                                      container, spec.getLocation(), null);
         }
 
         ComponentConstructor cc = _componentConstructorFactory.getComponentConstructor(spec, className);
 
         IComponent result = (IComponent) cc.newInstance();
-        
+
         result.setNamespace(namespace);
         result.setPage(page);
         result.setContainer(container);
@@ -523,7 +522,7 @@ public class PageLoader implements IPageLoader
 
     /**
      * Instantitates a page from its specification.
-     * 
+     *
      * @param name
      *            the unqualified, simple, name for the page
      * @param namespace
@@ -533,7 +532,7 @@ public class PageLoader implements IPageLoader
      *            set its specification, names and locale.
      *
      * @return The instantiated page instance.
-     * 
+     *
      * @see org.apache.tapestry.IEngine
      * @see org.apache.tapestry.event.ChangeObserver
      */
@@ -542,7 +541,7 @@ public class PageLoader implements IPageLoader
     {
         Location location = spec.getLocation();
         ComponentClassProviderContext context = new ComponentClassProviderContext(name, spec, namespace);
-        
+
         String className = _pageClassProvider.provideComponentClassName(context);
 
         Class pageClass = _classResolver.findClass(className);
@@ -566,7 +565,7 @@ public class PageLoader implements IPageLoader
     }
 
     public IPage loadPage(String name, INamespace namespace,
-            IRequestCycle cycle, IComponentSpecification specification)
+                          IRequestCycle cycle, IComponentSpecification specification)
     {
         IPage page = null;
 
@@ -591,16 +590,16 @@ public class PageLoader implements IPageLoader
 
             // Walk through the complete component tree to set up the default
             // parameter values.
-            
+
             _establishDefaultParameterValuesWalker.walkComponentTree(page);
-            
+
             establishInheritedBindings();
-            
+
             // Walk through the complete component tree to ensure that required
             // parameters are bound
 
             _verifyRequiredParametersWalker.walkComponentTree(page);
-            
+
             // connect @EventListener style client side events
 
             _eventConnectionWalker.walkComponentTree(page);
@@ -620,7 +619,7 @@ public class PageLoader implements IPageLoader
     /** @since 4.0 */
 
     public void loadTemplateForComponent(IRequestCycle cycle,
-            ITemplateComponent component)
+                                         ITemplateComponent component)
     {
         _componentTemplateLoader.loadTemplate(cycle, component);
     }
@@ -652,10 +651,10 @@ public class PageLoader implements IPageLoader
             String name = (String) i.next();
 
             IAssetSpecification assetSpec = specification.getAsset(name);
-            
+
             IAsset asset = _assetSource.findAsset(assetSpec.getLocation().getResource(), specification,
-                    assetSpec.getPath(), _locale, assetSpec.getLocation());
-            
+                                                  assetSpec.getPath(), _locale, assetSpec.getLocation());
+
             component.addAsset(name, asset);
         }
     }
@@ -687,7 +686,7 @@ public class PageLoader implements IPageLoader
 
     public void setEventConnectionVisitor(IComponentVisitor eventConnectionVisitor)
     {
-        _eventConnectionVisitor = eventConnectionVisitor; 
+        _eventConnectionVisitor = eventConnectionVisitor;
     }
 
     public void setComponentConstructorFactory(ComponentConstructorFactory componentConstructorFactory)

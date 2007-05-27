@@ -37,5 +37,4 @@ public abstract class AbstractBindingFactory implements BindingFactory
     {
         _valueConverter = valueConverter;
     }
-
 }

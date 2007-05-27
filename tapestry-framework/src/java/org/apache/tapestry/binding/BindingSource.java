@@ -17,6 +17,7 @@ package org.apache.tapestry.binding;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
+import org.apache.tapestry.spec.IParameterSpecification;
 
 /**
  * Used to convert a binding string (from a template or a specification) into an instance of
@@ -37,16 +38,50 @@ public interface BindingSource
      * is passed to the factory.  An unrecognized prefix is treated as a literal value
      * (it is often "javascript:" or "http:", etc.).
      * 
-     * @param component the component for which the binding is created; the component is used
-     * as a kind of context for certain types of bindings (for example, the root object when
-     * evaluating OGNL expressions).
-     * @param description {@link IBinding#getDescription() description} for the new binding
-     * @param reference the binding reference used to create the binding, possibly including a prefix to define the type.
-     * If the reference does not include a prefix, then  the defaultBindingType is used as the prefix
-     * @param defaultbindingType binding type to use when no prefix is provided in the reference
-     * or doesn't match a known binding factory.
-     * @param location location used to report errors in the binding
+     * @param component
+     *          The component for which the binding is created; the component is used
+     *          as a kind of context for certain types of bindings (for example, the root object when
+     *          evaluating OGNL expressions).
+     * @param description
+                {@link IBinding#getDescription() description} for the new binding
+     * @param reference
+     *          The binding reference used to create the binding, possibly including a prefix to define the type.
+     *          If the reference does not include a prefix, then  the defaultBindingType is used as the prefix
+     * @param defaultBindingType
+     *          Binding type to use when no prefix is provided in the reference
+     *          or doesn't match a known binding factory.
+     * @param location
+     *          Location used to report errors in the binding.
+     *
+     * @return A binding instance.
      */
     IBinding createBinding(IComponent component, String description, String reference,
+            String defaultBindingType, Location location);
+
+    /**
+     * Just like {@link #createBinding(org.apache.tapestry.IComponent, String, String, String, org.apache.hivemind.Location)} - except
+     * this version takes an additional parameter of type {@link IParameterSpecification} for those bindings that have a matching
+     * parameter.
+     * 
+     * @param component
+     *          The component for which the binding is created; the component is used
+     *          as a kind of context for certain types of bindings (for example, the root object when
+     *          evaluating OGNL expressions).
+     * @param parameter
+     *          Optional argument of the parameter this binding is being bound for - may be null.
+     * @param description
+                {@link IBinding#getDescription() description} for the new binding
+     * @param reference
+     *          The binding reference used to create the binding, possibly including a prefix to define the type.
+     *          If the reference does not include a prefix, then  the defaultBindingType is used as the prefix
+     * @param defaultBindingType
+     *          Binding type to use when no prefix is provided in the reference
+     *          or doesn't match a known binding factory.
+     * @param location
+     *          Location used to report errors in the binding.
+     *
+     * @return A binding instance.
+     */
+    IBinding createBinding(IComponent component, IParameterSpecification parameter, String description, String reference,
             String defaultBindingType, Location location);
 }

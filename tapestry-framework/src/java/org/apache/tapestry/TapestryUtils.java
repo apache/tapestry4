@@ -215,7 +215,7 @@ public final class TapestryUtils
             // of empty strings.
 
             String token = new String(buffer, start, length);
-            strings.add(token);
+            strings.add(token.trim());
 
             start = i + 1;
             length = 0;
@@ -231,7 +231,7 @@ public final class TapestryUtils
 
         // The final token.
         String token = new String(buffer, start, length);
-        strings.add(token);
+        strings.add(token.trim());
 
         return (String[]) strings.toArray(new String[strings.size()]);
     }

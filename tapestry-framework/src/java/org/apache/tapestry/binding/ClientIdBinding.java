@@ -27,6 +27,7 @@ import org.apache.tapestry.coerce.ValueConverter;
  * You can use this binding in order to safely find out the 
  * client-side id that was (or will be) generated for a given 
  * component.
+ * 
  * <p/>
  * Here's an example of how to get the client id of a Tapestry component:
  * <code>
