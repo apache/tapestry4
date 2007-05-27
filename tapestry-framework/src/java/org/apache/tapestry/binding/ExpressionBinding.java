@@ -81,12 +81,31 @@ public class ExpressionBinding extends AbstractBinding
 
     private ExpressionCache _cache;
 
+    /**
+     * Used to detect previous failed attempts at writing values when compiling expressions so
+     * that as many expressions as possible can be fully compiled into their java byte form when
+     * all objects in the expression are available.
+     */
     private boolean _writeFailed;
 
     /**
-     * Creates a {@link ExpressionBinding}from the root object and an OGNL expression.
+     * Creates a {@link ExpressionBinding} from the root object and an OGNL expression.
+     *
+     * @param description
+     *          Used by superclass constructor - {@link AbstractBinding#AbstractBinding(String, org.apache.tapestry.coerce.ValueConverter, org.apache.hivemind.Location)}.
+     * @param location
+     *          Used by superclass constructor - {@link AbstractBinding#AbstractBinding(String, org.apache.tapestry.coerce.ValueConverter, org.apache.hivemind.Location)}.
+     * @param valueConverter
+     *          Used by superclass constructor - {@link AbstractBinding#AbstractBinding(String, org.apache.tapestry.coerce.ValueConverter, org.apache.hivemind.Location)}.
+     * @param root
+     *          The object this binding should be resolved against.
+     * @param expression
+     *          The string expression.
+     * @param evaluator
+     *          Evaluator used to parse and run the expression.
+     * @param cache
+     *          Expression cache which does efficient caching of parsed expressions.
      */
-
     public ExpressionBinding(String description, Location location, ValueConverter valueConverter,
             IComponent root, String expression, ExpressionEvaluator evaluator,
             ExpressionCache cache)

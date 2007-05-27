@@ -52,4 +52,9 @@ final class BindingMessages
                 component.getExtendedId(),
                 cause);
     }
+
+    public static String unknownComponent(IComponent component, String id)
+    {
+        return _formatter.format("unknown-component", id, component);
+    }
 }

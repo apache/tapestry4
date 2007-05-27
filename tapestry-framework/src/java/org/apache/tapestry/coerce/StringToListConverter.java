@@ -13,17 +13,15 @@
 // limitations under the License.
 package org.apache.tapestry.coerce;
 
+import org.apache.tapestry.TapestryUtils;
+
 import java.util.Arrays;
 import java.util.Collection;
-
-import org.apache.tapestry.TapestryUtils;
 
 
 /**
  * Converts String values into {@link Collection} instances. String values can 
  * be a single "string" or multiple strings delimited by a "," comma.
- * 
- * @author jkuhnert
  */
 public final class StringToListConverter implements TypeConverter
 {

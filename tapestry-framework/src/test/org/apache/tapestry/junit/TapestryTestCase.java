@@ -32,6 +32,7 @@ import org.apache.tapestry.parse.SpecificationParser;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
+import org.apache.tapestry.spec.IParameterSpecification;
 import org.apache.tapestry.util.IPropertyHolder;
 
 import java.util.Arrays;
@@ -63,6 +64,12 @@ public abstract class TapestryTestCase extends BaseComponentTestCase
     {
 
         public IBinding createBinding(IComponent component, String description, String reference,
+                String defaultBindingType, Location location)
+        {
+            return new LiteralBinding(description, _valueConverter, location, reference);
+        }
+
+        public IBinding createBinding(IComponent component, IParameterSpecification param, String description, String reference,
                 String defaultBindingType, Location location)
         {
             return new LiteralBinding(description, _valueConverter, location, reference);

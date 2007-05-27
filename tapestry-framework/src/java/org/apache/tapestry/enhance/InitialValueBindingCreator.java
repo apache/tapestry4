@@ -29,7 +29,6 @@ import org.apache.tapestry.binding.BindingSource;
  */
 public class InitialValueBindingCreator
 {
-
     private BindingSource _bindingSource;
 
     private String _description;
@@ -63,7 +62,6 @@ public class InitialValueBindingCreator
 
     public IBinding createBinding(IComponent component)
     {
-        return _bindingSource.createBinding(component, _description,
-                _initialValue, BindingConstants.OGNL_PREFIX, _location);
+        return _bindingSource.createBinding(component, _description, _initialValue, BindingConstants.OGNL_PREFIX, _location);
     }
 }

@@ -16,189 +16,232 @@
 -->
 
 <module id="tapestry.bindings" version="4.0.0" package="org.apache.tapestry.binding">
-  
-  Services for creating instance of IBinding.
-  
-  <service-point id="OGNLBindingFactory" interface="BindingFactory">
-    
-    Creates bindings where the path is a OGNL expression.
-    
-    <invoke-factory>
-      <construct class="OGNLBindingFactory">
-        <set-service property="expressionEvaluator" service-id="tapestry.ognl.ExpressionEvaluator"/>
-        <set-service property="expressionCache" service-id="tapestry.ognl.ExpressionCache"/>
-        <set-object property="valueConverter" value="infrastructure:valueConverter"/>
-      </construct>
-    </invoke-factory>
-  </service-point>
 
-  <service-point id="MessageBindingFactory" interface="BindingFactory">
-    
-    Creates bindings where the path is a localized message key for the component.
-    
-    <invoke-factory>
-      <construct class="MessageBindingFactory">
-        <set-object property="valueConverter" value="infrastructure:valueConverter"/>  
-      </construct>
-    </invoke-factory>
-    
-  </service-point>
-  
-  <service-point id="LiteralBindingFactory" interface="BindingFactory">
-    
-    Creates bindings where the path is the literal (aka static) value.
-    
-    <invoke-factory>
-      <construct class="LiteralBindingFactory">
-        <set-object property="valueConverter" value="infrastructure:valueConverter"/>  
-      </construct>
-    </invoke-factory> 
-    
-  </service-point>
-  
+    Services for creating instance of IBinding.
 
-  <service-point id="AssetBindingFactory" interface="BindingFactory">
-    
-    Creates bindings where the path is the name of an asset of the component.
-    
-    <invoke-factory>
-      <construct class="AssetBindingFactory">
-        <set-object property="valueConverter" value="infrastructure:valueConverter"/>
-      </construct>
-    </invoke-factory>    
-    
-  </service-point>
+    <service-point id="OGNLBindingFactory" interface="BindingFactory">
 
-  <service-point id="BeanBindingFactory" interface="BindingFactory">
-    
-    Creates bindings where the path is the name of a managed bean defined by the component.
-    
-    <invoke-factory>
-      <construct class="BeanBindingFactory">
-        <set-object property="valueConverter" value="infrastructure:valueConverter"/>
-      </construct>
-    </invoke-factory>    
-    
-  </service-point>
+        Creates bindings where the path is a OGNL expression.
 
-  <service-point id="ListenerBindingFactory" interface="BindingFactory">
-    
-    Binding factory where the path is the name of a component listener method.
-    
-    <invoke-factory>
-      <construct class="ListenerBindingFactory">
-        <set-object property="valueConverter" value="infrastructure:valueConverter"/>
-      </construct>
-    </invoke-factory>    
-    
-  </service-point>
+        <invoke-factory>
+            <construct class="OGNLBindingFactory">
+                <set-service property="expressionEvaluator" service-id="tapestry.ognl.ExpressionEvaluator"/>
+                <set-service property="expressionCache" service-id="tapestry.ognl.ExpressionCache"/>
+                <set-object property="valueConverter" value="infrastructure:valueConverter"/>
+            </construct>
+        </invoke-factory>
+    </service-point>
 
-  <service-point id="ComponentBindingFactory" interface="BindingFactory">
-    
-    Binding factory where the path is the id of a nested component.
-    
-    <invoke-factory>
-      <construct class="ComponentBindingFactory">
-        <set-object property="valueConverter" value="infrastructure:valueConverter"/>
-      </construct>
-    </invoke-factory>    
-    
-  </service-point>
-  
-  <service-point id="StateBindingFactory" interface="BindingFactory">
-    
-    Creates bindings where the path is the name of an asset of the component.
-    
-    <invoke-factory>
-      <construct class="StateBindingFactory">
-        <set-object property="valueConverter" value="infrastructure:valueConverter"/>
-        <set-object property="applicationStateManager" value="infrastructure:applicationStateManager"/> 
-      </construct>
-    </invoke-factory>    
-    
-  </service-point>  
+    <service-point id="MessageBindingFactory" interface="BindingFactory">
 
-  <service-point id="HiveMindBindingFactory" interface="BindingFactory">
-    
-    Creates bindings where the path is a HiveMind object reference.
-    
-    <invoke-factory>
-      <construct class="HiveMindBindingFactory">
-        <set-object property="valueConverter" value="infrastructure:valueConverter"/>
-        <set-service property="injectedValueProvider" service-id="tapestry.InjectedValueProvider"/>
-      </construct>
-    </invoke-factory>
-    
-  </service-point>
-  
-  <service-point id="ClientIdBindingFactory" interface="BindingFactory">    
-      
-    Binding factory where the path is the id of a nested component. Its clientId is returned.
-      
-    <invoke-factory>
-      <construct class="ClientIdBindingFactory">
-        <set-object property="valueConverter" value="infrastructure:valueConverter"/>
-      </construct>
-    </invoke-factory>
-  </service-point>  
-  
-  <service-point id="MetaBindingFactory" interface="BindingFactory">    
-      
-    Utility binding for searching for a meta property value using org.apache.tapestry.services.ComponentPropertySource for meta key/value pairs.
-    
-    <invoke-factory>
-      <construct class="MetaBindingFactory">
-        <set-object property="propertySource" value="service:tapestry.props.ComponentPropertySource"/>
-        <set-object property="valueConverter" value="infrastructure:valueConverter"/>
-      </construct>
-    </invoke-factory>
-  </service-point>
-  
-  <configuration-point id="BindingFactories">
-    
-    Used to map binding prefixes to binding factories.
-    
-    <schema>
-	    <element name="binding">
-	      
-	      <attribute name="prefix" unique="true" required="true">
-	        The unique prefix for this factory.
-	      </attribute>
-	      
-	        <attribute name="service-id" required="true" translator="service">
-          The service associated with the given prefix.
-        </attribute>
-      
-        <conversion class="org.apache.tapestry.services.impl.BindingPrefixContribution">
-          <map attribute="service-id" property="factory"/>
-        </conversion>
-  
-      </element>
-    </schema>
-  </configuration-point>
-  
-  
-  <contribution configuration-id="BindingFactories">
-    <binding prefix="ognl" service-id="OGNLBindingFactory"/>
-    <binding prefix="message" service-id="MessageBindingFactory"/>
-    <binding prefix="literal" service-id="LiteralBindingFactory"/>
-    <binding prefix="asset" service-id="AssetBindingFactory"/>
-    <binding prefix="bean" service-id="BeanBindingFactory"/>
-    <binding prefix="listener" service-id="ListenerBindingFactory"/>
-    <binding prefix="component" service-id="ComponentBindingFactory"/>
-    <binding prefix="state" service-id="StateBindingFactory"/>
-    <binding prefix="hivemind" service-id="HiveMindBindingFactory"/>
-    <binding prefix="clientId" service-id="ClientIdBindingFactory"/>
-    <binding prefix="meta" service-id="MetaBindingFactory" />
-  </contribution>
-  
-  <service-point id="BindingSource">
-    
-    <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.BindingSourceImpl">
-        <set-configuration property="contributions" configuration-id="BindingFactories"/>
-      </construct>
-    </invoke-factory>
-  </service-point>
+        Creates bindings where the path is a localized message key for the component.
+
+        <invoke-factory>
+            <construct class="MessageBindingFactory">
+                <set-object property="valueConverter" value="infrastructure:valueConverter"/>
+            </construct>
+        </invoke-factory>
+
+    </service-point>
+
+    <service-point id="LiteralBindingFactory" interface="BindingFactory">
+
+        Creates bindings where the path is the literal (aka static) value.
+
+        <invoke-factory>
+            <construct class="LiteralBindingFactory">
+                <set-object property="valueConverter" value="infrastructure:valueConverter"/>
+            </construct>
+        </invoke-factory>
+
+    </service-point>
+
+
+    <service-point id="AssetBindingFactory" interface="BindingFactory">
+
+        Creates bindings where the path is the name of an asset of the component.
+
+        <invoke-factory>
+            <construct class="AssetBindingFactory">
+                <set-object property="valueConverter" value="infrastructure:valueConverter"/>
+            </construct>
+        </invoke-factory>
+
+    </service-point>
+
+    <service-point id="BeanBindingFactory" interface="BindingFactory">
+
+        Creates bindings where the path is the name of a managed bean defined by the component.
+
+        <invoke-factory>
+            <construct class="BeanBindingFactory">
+                <set-object property="valueConverter" value="infrastructure:valueConverter"/>
+            </construct>
+        </invoke-factory>
+
+    </service-point>
+
+    <service-point id="ListenerBindingFactory" interface="BindingFactory">
+
+        Binding factory where the path is the name of a component listener method.
+
+        <invoke-factory>
+            <construct class="ListenerBindingFactory">
+                <set-object property="valueConverter" value="infrastructure:valueConverter"/>
+            </construct>
+        </invoke-factory>
+
+    </service-point>
+
+    <service-point id="ComponentBindingFactory" interface="BindingFactory">
+
+        Binding factory where the path is the id of a nested component.
+
+        <invoke-factory>
+            <construct class="ComponentBindingFactory">
+                <set-object property="valueConverter" value="infrastructure:valueConverter"/>
+            </construct>
+        </invoke-factory>
+
+    </service-point>
+
+    <service-point id="StateBindingFactory" interface="BindingFactory">
+
+        Creates bindings where the path is the name of an asset of the component.
+
+        <invoke-factory>
+            <construct class="StateBindingFactory">
+                <set-object property="valueConverter" value="infrastructure:valueConverter"/>
+                <set-object property="applicationStateManager" value="infrastructure:applicationStateManager"/>
+            </construct>
+        </invoke-factory>
+
+    </service-point>
+
+    <service-point id="HiveMindBindingFactory" interface="BindingFactory">
+
+        Creates bindings where the path is a HiveMind object reference.
+
+        <invoke-factory>
+            <construct class="HiveMindBindingFactory">
+                <set-object property="valueConverter" value="infrastructure:valueConverter"/>
+                <set-service property="injectedValueProvider" service-id="tapestry.InjectedValueProvider"/>
+            </construct>
+        </invoke-factory>
+
+    </service-point>
+
+    <service-point id="ClientIdBindingFactory" interface="BindingFactory">
+
+        Binding factory where the path is the id of a nested component. Its clientId is returned.
+
+        <invoke-factory>
+            <construct class="ClientIdBindingFactory">
+                <set-object property="valueConverter" value="infrastructure:valueConverter"/>
+            </construct>
+        </invoke-factory>
+    </service-point>
+
+    <service-point id="ClientIdListBindingFactory" interface="BindingFactory">
+
+        Binding factory where the path is a comma separated list of component ids which will be translated into the equivalent
+        of "return Arrays.asList(new String[] {component.getComponent('stringid').getClientId(), component.getComponent('stringid2').getClientId()});"
+        from a path like "stringid,stringid2".
+
+        <invoke-factory>
+            <construct class="ClientIdListBindingFactory">
+                <set-object property="valueConverter" value="infrastructure:valueConverter"/>
+            </construct>
+        </invoke-factory>
+    </service-point>
+
+    <service-point id="MetaBindingFactory" interface="BindingFactory">
+
+        Utility binding for searching for a meta property value using org.apache.tapestry.services.ComponentPropertySource for meta key/value pairs.
+
+        <invoke-factory>
+            <construct class="MetaBindingFactory">
+                <set-object property="propertySource" value="service:tapestry.props.ComponentPropertySource"/>
+                <set-object property="valueConverter" value="infrastructure:valueConverter"/>
+            </construct>
+        </invoke-factory>
+    </service-point>
+
+    <configuration-point id="BindingFactories">
+
+        Used to map binding prefixes to binding factories.
+
+        <schema>
+            <element name="binding">
+
+                <attribute name="prefix" unique="true" required="true">
+                    The unique prefix for this factory.
+                </attribute>
+
+                <attribute name="service-id" required="true" translator="service">
+                    The service associated with the given prefix.
+                </attribute>
+
+                <conversion class="org.apache.tapestry.services.impl.BindingPrefixContribution">
+                    <map attribute="service-id" property="factory"/>
+                </conversion>
+
+            </element>
+        </schema>
+    </configuration-point>
+
+    <contribution configuration-id="BindingFactories">
+        <binding prefix="ognl" service-id="OGNLBindingFactory"/>
+        <binding prefix="message" service-id="MessageBindingFactory"/>
+        <binding prefix="literal" service-id="LiteralBindingFactory"/>
+        <binding prefix="asset" service-id="AssetBindingFactory"/>
+        <binding prefix="bean" service-id="BeanBindingFactory"/>
+        <binding prefix="listener" service-id="ListenerBindingFactory"/>
+        <binding prefix="component" service-id="ComponentBindingFactory"/>
+        <binding prefix="state" service-id="StateBindingFactory"/>
+        <binding prefix="hivemind" service-id="HiveMindBindingFactory"/>
+        <binding prefix="clientId" service-id="ClientIdBindingFactory"/>
+        <binding prefix="meta" service-id="MetaBindingFactory" />
+    </contribution>
+
+    <configuration-point id="PropertyNameBindingFactories">
+
+        Used to map specific component property names with a binding - but only in the case
+        where a prefix hasn't been specified.  Currently this is used to help bind
+        updateComponents="foo,bar" parameters.
+
+        <schema>
+            <element name="binding" key-attribute="propertyName">
+
+                <attribute name="propertyName" required="true" unique="true" >
+                    The component property name which should cause a binding match for this binding - but only if
+                    no specific prefix (such as ognl:) has been specified.
+                </attribute>
+
+                <attribute name="service-id" required="true" translator="service" >
+                    The service associated with the given propertyName.
+                </attribute>
+
+                <rules>
+                    <push-attribute attribute="service-id"/>
+                    <invoke-parent method="addElement"/>
+                </rules>
+            </element>
+        </schema>
+    </configuration-point>
+
+    <contribution configuration-id="PropertyNameBindingFactories">
+        <binding propertyName="updateComponents" service-id="ClientIdListBindingFactory" />
+    </contribution>
+
+    <service-point id="BindingSource">
+
+        <invoke-factory>
+            <construct class="org.apache.tapestry.services.impl.BindingSourceImpl">
+                <set-configuration property="contributions" configuration-id="BindingFactories" />
+                <set-configuration property="propertyContributions" configuration-id="PropertyNameBindingFactories" />
+            </construct>
+        </invoke-factory>
+    </service-point>
 
 </module>

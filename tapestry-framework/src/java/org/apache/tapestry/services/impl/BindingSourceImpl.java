@@ -19,6 +19,7 @@ import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.binding.BindingFactory;
 import org.apache.tapestry.binding.BindingSource;
+import org.apache.tapestry.spec.IParameterSpecification;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -26,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Implementation of the <code>tapestry.bindings.BindingSource</code> service.
+ * Implementation of the {@link BindingSource} service.
  * 
  * @author Howard Lewis Ship
  * @since 4.0
@@ -34,6 +35,8 @@ import java.util.Map;
 public class BindingSourceImpl implements BindingSource
 {
     private List _contributions;
+
+    private Map _propertyMap;
 
     /**
      * Keyed on prefix, value is {@link BindingFactory}.
@@ -52,11 +55,18 @@ public class BindingSourceImpl implements BindingSource
         }
     }
 
-    public IBinding createBinding(IComponent component, String bindingDescription,
-            String reference, String defaultPrefix, Location location)
+    public IBinding createBinding(IComponent component, String description,
+            String reference, String defaultBindingType, Location location)
     {
-        String prefix = defaultPrefix;
+        return createBinding(component, null, description, reference, defaultBindingType, location);
+    }
+
+    public IBinding createBinding(IComponent component, IParameterSpecification parameter, String description,
+                                  String reference, String defaultBindingType, Location location)
+    {
+        String prefix = null;
         String path = reference;
+        BindingFactory factory = null;
 
         int colonx = reference.indexOf(':');
 
@@ -70,15 +80,32 @@ public class BindingSourceImpl implements BindingSource
 
                 path = reference.substring(colonx + 1);
             }
+        } else if (parameter != null && _propertyMap.containsKey(parameter.getParameterName()))
+        {
+            
+            factory = (BindingFactory) _propertyMap.get(parameter.getParameterName());
         }
 
-        BindingFactory factory = (BindingFactory) _factoryMap.get(prefix);
+        if (prefix == null)
+        {
+            prefix = defaultBindingType;
+        }
 
-        return factory.createBinding(component, bindingDescription, path, location);
+        if (factory == null)
+        {
+            factory = (BindingFactory) _factoryMap.get(prefix);
+        }
+        
+        return factory.createBinding(component, description, path, location);
     }
 
     public void setContributions(List contributions)
     {
         _contributions = contributions;
+    }
+
+    public void setPropertyContributions(Map properties)
+    {
+        _propertyMap = properties;
     }
 }

@@ -14,23 +14,20 @@
 
 package org.apache.tapestry.binding;
 
-import static org.easymock.EasyMock.expect;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.coerce.ValueConverter;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
 
 /**
- * Tests for {@link org.apache.tapestry.binding.ClientIdBinding}.
- * 
- * @since 4.1.1
+ * Tests for {@link org.apache.tapestry.binding.ClientIdBinding}. 
  */
 @Test
 public class TestClientIdBinding extends BindingTestCase
 {
-    public void testGetObject()
+    public void test_Get_Object()
     {
         IComponent nested = newComponent();
         IComponent component = newMock(IComponent.class);
@@ -52,7 +49,7 @@ public class TestClientIdBinding extends BindingTestCase
         verify();
     }
 
-    public void testGetObjectFailure()
+    public void test_Get_Object_Failure()
     {
         IComponent component = newMock(IComponent.class);
 

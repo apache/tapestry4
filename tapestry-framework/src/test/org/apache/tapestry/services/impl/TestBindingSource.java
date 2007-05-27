@@ -20,10 +20,13 @@ import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.binding.BindingConstants;
 import org.apache.tapestry.binding.BindingFactory;
+import org.apache.tapestry.spec.IParameterSpecification;
 import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.BindingSourceImpl}.
@@ -94,6 +97,50 @@ public class TestBindingSource extends BaseComponentTestCase
                 "foo",
                 "an-expression",
                 BindingConstants.OGNL_PREFIX,
+                l);
+
+        assertSame(binding, actual);
+
+        verify();
+    }
+
+    public void test_No_Prefix_ClientIdList_Binding()
+    {
+        IComponent component = newComponent();
+        IBinding binding = newBinding();
+        BindingFactory factory = newFactory();
+        Location l = newLocation();
+
+        BindingPrefixContribution c = new BindingPrefixContribution();
+        c.setPrefix(BindingConstants.LITERAL_PREFIX);
+        c.setFactory(factory);
+
+        BindingFactory idListFactory = newFactory();
+        Map propertyMap = new HashMap();
+        propertyMap.put("updateComponents", idListFactory);
+
+        IParameterSpecification ps = newMock(IParameterSpecification.class);
+
+        expect(ps.getParameterName()).andReturn("updateComponents").anyTimes();
+
+        // Training
+
+        expect(idListFactory.createBinding(component, "foo", "a literal value without a prefix", l)).andReturn(binding);
+
+        replay();
+
+        BindingSourceImpl bs = new BindingSourceImpl();
+        bs.setContributions(Collections.singletonList(c));
+        bs.setPropertyContributions(propertyMap);
+
+        bs.initializeService();
+
+        IBinding actual = bs.createBinding(
+                component,
+                ps,
+                "foo",
+                "a literal value without a prefix",
+                BindingConstants.LITERAL_PREFIX,
                 l);
 
         assertSame(binding, actual);

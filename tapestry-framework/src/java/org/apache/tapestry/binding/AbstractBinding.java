@@ -98,7 +98,8 @@ public abstract class AbstractBinding implements IBinding
     /**
      * Returns the component to which this binding is connected; this is currently only used when
      * building certain exceptions. This implementation returns null.
-     * 
+     *
+     * @return The {@link org.apache.tapestry.IComponent} object this binding is set against.
      * @since 4.0
      */
 
@@ -121,7 +122,11 @@ public abstract class AbstractBinding implements IBinding
         return _description;
     }
 
-    /** @since 4.0 */
+    /**
+     * Gets the converter used to coerce binding values in to their target types.
+     *
+     * @return The {@link ValueConverter} being used by this binding.
+     */
     public ValueConverter getValueConverter()
     {
         return _valueConverter;

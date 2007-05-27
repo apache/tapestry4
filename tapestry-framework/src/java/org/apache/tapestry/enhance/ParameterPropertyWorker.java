@@ -14,9 +14,6 @@
 
 package org.apache.tapestry.enhance;
 
-import java.lang.reflect.Modifier;
-import java.util.Iterator;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
@@ -29,6 +26,9 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
 
+import java.lang.reflect.Modifier;
+import java.util.Iterator;
+
 /**
  * Responsible for creating properties for connected parameters.
  * 
@@ -40,8 +40,7 @@ public class ParameterPropertyWorker implements EnhancementWorker
 
     private ErrorLog _errorLog;
 
-    public void performEnhancement(EnhancementOperation op,
-            IComponentSpecification spec)
+    public void performEnhancement(EnhancementOperation op, IComponentSpecification spec)
     {
         Iterator i = spec.getParameterNames().iterator();
         while(i.hasNext())
@@ -68,8 +67,7 @@ public class ParameterPropertyWorker implements EnhancementWorker
      * radically in release 4.0 but for the moment we're emulating 3.0 behavior.
      */
 
-    private void performEnhancement(EnhancementOperation op,
-            String parameterName, IParameterSpecification ps)
+    private void performEnhancement(EnhancementOperation op, String parameterName, IParameterSpecification ps)
     {
         // If the parameter name doesn't match, its because this is an alias
         // for a true parameter; we ignore aliases.
@@ -102,7 +100,7 @@ public class ParameterPropertyWorker implements EnhancementWorker
      *            renders; false (a much less common case) means that every
      *            access will work through binding object.
      * @param location
-     *            TODO
+     *            Used for reporting line-precise errors in binding resolution / setting / etc..
      */
 
     public void addParameter(EnhancementOperation op, String parameterName,
@@ -167,15 +165,14 @@ public class ParameterPropertyWorker implements EnhancementWorker
         cleanupBody.end();
 
         op.extendMethodImplementation(IComponent.class,
-                EnhanceUtils.CLEANUP_AFTER_RENDER_SIGNATURE, cleanupBody
-                        .toString());
+                EnhanceUtils.CLEANUP_AFTER_RENDER_SIGNATURE, cleanupBody.toString());
     }
 
     private void addBindingReference(BodyBuilder builder,
             String localVariableName, String parameterName)
     {
-        builder.addln("{0} {1} = getBinding(\"{2}\");", IBinding.class
-                .getName(), localVariableName, parameterName);
+        builder.addln("{0} {1} = getBinding(\"{2}\");",
+                      IBinding.class.getName(), localVariableName, parameterName);
     }
 
     private void buildMutator(EnhancementOperation op, String parameterName,

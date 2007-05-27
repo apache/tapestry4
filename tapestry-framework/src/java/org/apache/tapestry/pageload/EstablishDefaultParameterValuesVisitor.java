@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.pageload;
 
-import java.util.Iterator;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
@@ -24,6 +22,8 @@ import org.apache.tapestry.binding.BindingSource;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
 
+import java.util.Iterator;
+
 /**
  * For all parameters in the examined component that have default values, but
  * are not bound, automatically add an ExpressionBinding with the default value.
@@ -31,8 +31,7 @@ import org.apache.tapestry.spec.IParameterSpecification;
  * @author mindbridge
  * @since 3.0
  */
-public class EstablishDefaultParameterValuesVisitor implements
-        IComponentVisitor
+public class EstablishDefaultParameterValuesVisitor implements IComponentVisitor
 {
 
     /** @since 4.0 */

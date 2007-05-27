@@ -14,10 +14,6 @@
 
 package org.apache.tapestry.pageload;
 
-import static org.easymock.EasyMock.endsWith;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.startsWith;
-
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
@@ -26,12 +22,8 @@ import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.binding.BindingSource;
 import org.apache.tapestry.services.ComponentPropertySource;
-import org.apache.tapestry.spec.BindingSpecification;
-import org.apache.tapestry.spec.BindingType;
-import org.apache.tapestry.spec.ComponentSpecification;
-import org.apache.tapestry.spec.ContainedComponent;
-import org.apache.tapestry.spec.IComponentSpecification;
-import org.apache.tapestry.spec.ParameterSpecification;
+import org.apache.tapestry.spec.*;
+import static org.easymock.EasyMock.*;
 import org.testng.annotations.Test;
 
 /**
@@ -45,7 +37,7 @@ import org.testng.annotations.Test;
 public class PageLoaderTest extends BaseComponentTestCase
 {
 
-    public void testAddDuplicateBindingFails()
+    public void test_Add_Duplicate_Binding_Fails()
     {
         IComponent component = newComponent();
         Location l1 = newLocation();
@@ -71,7 +63,7 @@ public class PageLoaderTest extends BaseComponentTestCase
         }
     }
 
-    public void testBindAlias()
+    public void test_Bind_Alias()
     {
         IComponent container = newComponent();
         IComponent component = newComponent();
@@ -104,6 +96,7 @@ public class PageLoaderTest extends BaseComponentTestCase
         trainCreateBinding(
                 source,
                 container,
+                pspec,
                 "parameter barney",
                 "an-expression",
                 "ognl",
@@ -128,8 +121,13 @@ public class PageLoaderTest extends BaseComponentTestCase
     private void trainCreateBinding(BindingSource source, IComponent container, String description,
             String expression, String defaultBindingPrefix, Location l, IBinding binding)
     {
-        expect(source.createBinding(container, description, expression, defaultBindingPrefix, l))
-        .andReturn(binding);
+        expect(source.createBinding(container, description, expression, defaultBindingPrefix, l)).andReturn(binding);
+    }
+
+    private void trainCreateBinding(BindingSource source, IComponent container, IParameterSpecification ps, String description,
+            String expression, String defaultBindingPrefix, Location l, IBinding binding)
+    {
+        expect(source.createBinding(container, ps, description, expression, defaultBindingPrefix, l)).andReturn(binding);
     }
 
     protected BindingSource newBindingSource()
@@ -137,7 +135,7 @@ public class PageLoaderTest extends BaseComponentTestCase
         return newMock(BindingSource.class);
     }
 
-    public void testBindDeprecated()
+    public void test_Bind_Deprecated()
     {
         IComponent container = newComponent();
         IComponent component = newComponent();
@@ -169,7 +167,7 @@ public class PageLoaderTest extends BaseComponentTestCase
                         + "and may be removed in a future release. Consult the documentation for component FredComponent to "
                         + "determine an appropriate replacement."));
 
-        trainCreateBinding(source, container, "parameter fred", "an-expression", "ognl", l, binding);
+        trainCreateBinding(source, container, pspec, "parameter fred", "an-expression", "ognl", l, binding);
 
         trainGetBinding(component, "fred", null);
 
