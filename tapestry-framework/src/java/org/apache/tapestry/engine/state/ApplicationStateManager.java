@@ -25,8 +25,10 @@ public interface ApplicationStateManager
      * 
      * @param objectName
      *            the name of the application state object
+     * @return True if the object with the specified name exists, false otherwise.
+     * 
      * @throws org.apache.hivemind.ApplicationRuntimeException
-     *             if no such object is declared
+     *          If no such object is declared
      */
     boolean exists(String objectName);
 
