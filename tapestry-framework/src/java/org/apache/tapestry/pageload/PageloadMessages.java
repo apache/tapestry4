@@ -146,4 +146,9 @@ final class PageloadMessages
     {
         return _formatter.format("component-not-found", id);
     }
+
+    public static String recursiveComponent(IComponent component)
+    {
+        return _formatter.format("recursive-component", component);
+    }
 }
