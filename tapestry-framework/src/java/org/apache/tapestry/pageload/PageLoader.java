@@ -31,10 +31,7 @@ import org.apache.tapestry.services.ComponentPropertySource;
 import org.apache.tapestry.services.ComponentTemplateLoader;
 import org.apache.tapestry.spec.*;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * Implementation of tapestry.page.PageLoader. Runs the process of building the
@@ -42,7 +39,8 @@ import java.util.Locale;
  * <p>
  * This implementation is not threadsafe, therefore the pooled service model
  * must be used.
- *
+ * </p>
+ * 
  * @author Howard Lewis Ship
  */
 
@@ -146,6 +144,12 @@ public class PageLoader implements IPageLoader
     /** @since 4.0 */
 
     private ClassResolver _classResolver;
+
+    /**
+     * As each component is constructed it is placed on to the component stack,  when construction is finished it is pushed
+     * back off the stack.  This helps in detecting component nesting and properly reporting errors.
+     */
+    private Stack _componentStack = new Stack();
 
     public void initializeService()
     {
@@ -349,6 +353,8 @@ public class PageLoader implements IPageLoader
         if (_depth > _maxDepth)
             _maxDepth = _depth;
 
+        beginConstructComponent(container, containerSpec);
+        
         String defaultBindingPrefix = _componentPropertySource.getComponentProperty(container, TapestryConstants.DEFAULT_BINDING_PREFIX_NAME);
 
         List ids = new ArrayList(containerSpec.getComponentIds());
@@ -364,7 +370,7 @@ public class PageLoader implements IPageLoader
                 // container's specification.
 
                 IContainedComponent contained = containerSpec.getComponent(id);
-
+                
                 String type = contained.getType();
                 Location location = contained.getLocation();
 
@@ -415,9 +421,54 @@ public class PageLoader implements IPageLoader
         {
             throw new ApplicationRuntimeException(PageloadMessages.unableToInstantiateComponent(container, ex),
                                                   container, null, ex);
+        } finally {
+            
+            endConstructComponent(container);
         }
 
         _depth--;
+    }
+
+    /**
+     * Checks the component stack to ensure that the specified component hasn't been improperly nested
+     * and referenced recursively within itself.
+     *
+     * @param component
+     *          The component to add to the current component stack and check for recursion.
+     * @param specification
+     *          The specification of the specified component.
+     */
+    void beginConstructComponent(IComponent component, IComponentSpecification specification)
+    {
+        // check recursion
+
+        int position = _componentStack.search(component);
+        if (position > -1)
+        {
+            Location location = specification.getLocation();
+
+            // try to get the more precise container position location that was referenced
+            // in the template to properly report the precise position of the recursive reference
+            
+            IContainedComponent container = component.getContainedComponent();
+            if (container != null)
+                location = container.getLocation();
+            
+            throw new ApplicationRuntimeException(PageloadMessages.recursiveComponent(component), location, null);
+        }
+
+        _componentStack.push(component);
+    }
+
+    /**
+     * Pops the current component off the stack.
+     *
+     * @param component
+     *          The component that has just been constructed.
+     */
+    void endConstructComponent(IComponent component)
+    {
+        _componentStack.pop();
     }
 
     /**
@@ -572,6 +623,7 @@ public class PageLoader implements IPageLoader
         _count = 0;
         _depth = 0;
         _maxDepth = 0;
+        _componentStack.clear();
 
         _locale = _threadLocale.getLocale();
 

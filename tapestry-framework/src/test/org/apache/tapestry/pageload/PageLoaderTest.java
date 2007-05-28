@@ -118,12 +118,6 @@ public class PageLoaderTest extends BaseComponentTestCase
         verify();
     }
 
-    private void trainCreateBinding(BindingSource source, IComponent container, String description,
-            String expression, String defaultBindingPrefix, Location l, IBinding binding)
-    {
-        expect(source.createBinding(container, description, expression, defaultBindingPrefix, l)).andReturn(binding);
-    }
-
     private void trainCreateBinding(BindingSource source, IComponent container, IParameterSpecification ps, String description,
             String expression, String defaultBindingPrefix, Location l, IBinding binding)
     {
