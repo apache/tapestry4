@@ -14,14 +14,14 @@
 
 package org.apache.tapestry.services.impl;
 
+import org.apache.tapestry.services.CookieSource;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.tapestry.services.CookieSource;
-
 /**
- * Implementation of the {@link org.apache.tapestry.services.CookieSource}service interface.
+ * Implementation of the {@link org.apache.tapestry.services.CookieSource} service interface.
  * 
  * @author Howard Lewis Ship
  * @since 4.0

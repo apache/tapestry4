@@ -14,28 +14,18 @@
 
 package org.apache.tapestry.portlet;
 
-import static org.easymock.EasyMock.checkOrder;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-import static org.easymock.EasyMock.matches;
-
-import java.io.CharArrayWriter;
-import java.io.PrintWriter;
-
 import org.apache.hivemind.Location;
-import org.apache.tapestry.BaseComponentTestCase;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.NestedMarkupWriter;
-import org.apache.tapestry.PageRenderSupport;
+import org.apache.tapestry.*;
 import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.markup.MarkupWriterSource;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.util.ContentType;
 import org.apache.tapestry.web.WebResponse;
+import static org.easymock.EasyMock.*;
 import org.testng.annotations.Test;
+
+import java.io.CharArrayWriter;
+import java.io.PrintWriter;
 
 /**
  * Tests for {@link org.apache.tapestry.portlet.PortletRendererImpl}.
@@ -129,13 +119,15 @@ public class TestPortletRenderer extends BaseComponentTestCase
         PrintWriter pw = newPrintWriter();
         
         WebResponse response = newWebResponse(ct, pw);
-        
         IMarkupWriter nested = newNestedWriter();
+        checkOrder(nested, false);
         
         IMarkupWriter writer = newWriter();
-        
+
         expect(writer.getNestedWriter()).andReturn((NestedMarkupWriter)nested);
-        
+
+        nested.flush();
+
         MarkupWriterSource source = newSource(pw, ct, writer);
         IPage page = newPage(ct);
         AssetFactory assetFactory = newAssetFactory();

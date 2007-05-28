@@ -80,7 +80,8 @@ public class SessionScopeManager implements StateObjectPersistenceManager
         {
             SessionStoreOptimized optimized = (SessionStoreOptimized) stateObject;
 
-            if (!optimized.isStoreToSessionNeeded()) return;
+            if (!optimized.isStoreToSessionNeeded())
+                return;
         }
 
         String key = buildKey(objectName);

@@ -13,18 +13,9 @@
 // limitations under the License.
 package org.apache.tapestry.services.impl;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRender;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.*;
 import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.engine.NullWriter;
 import org.apache.tapestry.markup.MarkupWriterSource;
@@ -33,6 +24,9 @@ import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.util.ContentType;
 import org.apache.tapestry.util.PageRenderSupportImpl;
 import org.apache.tapestry.web.WebResponse;
+
+import java.io.IOException;
+import java.io.PrintWriter;
 
 
 /**
@@ -159,6 +153,8 @@ public class DefaultResponseBuilder implements ResponseBuilder
         
         TapestryUtils.removePageRenderSupport(cycle);
         
+        flush();
+
         if (_closeWriter)
             _writer.close();
     }

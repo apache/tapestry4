@@ -56,15 +56,12 @@ public class PortletRendererImpl implements PortletRenderer
         IPage page = cycle.getPage();
         
         ContentType contentType = page.getResponseContentType();
-        
         PrintWriter printWriter = _response.getPrintWriter(contentType);
-        
         IMarkupWriter writer = _markupWriterSource.newMarkupWriter(printWriter, contentType);
-        
         String namespace = _response.getNamespace();
         
         IMarkupWriter nested = writer.getNestedWriter();
-        
+
         ResponseBuilder builder = new DefaultResponseBuilder(nested, _assetFactory, namespace, false);
         
         builder.renderResponse(cycle);

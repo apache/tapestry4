@@ -14,21 +14,20 @@
 
 package org.apache.tapestry.web;
 
-import java.io.IOException;
-import java.security.Principal;
-import java.util.List;
-import java.util.Locale;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.HiveMind;
+import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.describe.DescriptionReceiver;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.HiveMind;
-import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.describe.DescriptionReceiver;
+import java.io.IOException;
+import java.security.Principal;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Adapter from {@link javax.servlet.http.HttpServletRequest}&nbsp;to
