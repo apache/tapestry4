@@ -40,8 +40,7 @@ Overview
 +-----------------------------------------------------------------------
 ....
 
-@EventListener(targets = "projectChoose", events = "selectOption",
-          submitForm = "myForm")
+@EventListener(targets = "projectChoose", events = "onValueChanged")
 public void projectSelected(IRequestCycle cycle)
 {
 	cycle.getResponseBuilder().updateComponent("myComponentId");

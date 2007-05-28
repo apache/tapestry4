@@ -80,8 +80,8 @@ public @interface EventListener
     boolean focus() default false;
     
     /**
-     * If used in conjunction with {@link #submitForm()}, will either submit the form normally or
-     * asynchronously. Default is asyncrhonous.
+     * If used in conjunction with {@link #submitForm()} <i>(or just targeting a {@link org.apache.tapestry.form.IFormComponent})</i>,
+     * will either submit the form normally or asynchronously. Default is asyncrhonous.
      * 
      * @return True if form should be submitted asynchronously, false otherwise.
      */

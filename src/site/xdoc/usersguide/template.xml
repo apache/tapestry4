@@ -28,16 +28,14 @@
                 <a href="http://opensymphony.com/webwork/">WebWork</a>
                 , Tapestry does not "plug into" an external templating system such as JavaServer
                 Pages or
-                <a href="http://jakarta.apache.org/velocity/">Velocity</a>
+                <a href="http://velocity.apache.org/">Velocity</a>
                 . Instead, Tapestry integrates its own templating system.
-
             </p>
 
             <p>
                 Tapestry templates are designed to look like valid HTML files (component HTML
                 templates will just be snippets of HTML rather than complete pages). Tapestry
                 "hides" its extensions into special attributes of ordinary HTML elements.
-
             </p>
 
             <p>
@@ -46,18 +44,12 @@
             </p>
 
             <subsection name="Template locations">
-
-
-
                 <p>
                     The general rule of thumb is that a page's HTML template is simply an HTML file,
                     stored in the context root directory. That is, you'll have a
-                    <em>MyPage</em>
-                    .html HTML template, a WEB-INF/
-                    <em>MyPage</em>
-                    .page page specification, and a
-                    <em>MyPage</em>
-                    class, in some Java package.
+                    <em>MyPage</em>.html HTML template, a WEB-INF/
+                    <em>MyPage</em>.page page specification, and a
+                    <em>MyPage</em> class, in some Java package.
                 </p>
 
                 <p>
