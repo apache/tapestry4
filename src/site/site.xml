@@ -42,6 +42,7 @@
             <item name="Wiki" href="http://wiki.apache.org/tapestry/" />
             <item name="FAQ" href="http://tapestry.apache.org/tapestry4.1/faq.html" />
             <item name="Demos" href="http://tapestry.apache.org/tapestry4.1/demos.html" />
+            <item name="Release Notes" href="/release-notes.html" />
         </menu>
         
         <menu name="Documentation" >
