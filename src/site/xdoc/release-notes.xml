@@ -41,6 +41,8 @@
                     </li>
                     <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-633'>TAPESTRY-633</a>] -         Default behavior of NumberTranslator treats zeros asymmetrically.
                     </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-638'>TAPESTRY-638</a>] -         Recursive components result in a StackOverflowError
+                    </li>
                     <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-695'>TAPESTRY-695</a>] -         WebRequestServicerFilter lacks support for tapestry.globals.*
                     </li>
                     <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-753'>TAPESTRY-753</a>] -         A component may have multiple &lt;binding&gt;s  with the same name, without error
@@ -324,6 +326,8 @@
                     </li>
                     <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-856'>TAPESTRY-856</a>] -         lazy initialization of abstract properties
                     </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-867'>TAPESTRY-867</a>] -         Do not display errors or errored field decoration on form refresh
+                    </li>
                     <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-888'>TAPESTRY-888</a>] -         DatePicker.js does not support 12-hour time format.
                     </li>
                     <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-906'>TAPESTRY-906</a>] -         Make the org.apache.tapestry.services.impl.ExpressionEvaluatorImpl.createContext() method public/protected
@@ -409,6 +413,8 @@
                     <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1453'>TAPESTRY-1453</a>] -         upgrade dojo to 0.4.2 version
                     </li>
                     <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1474'>TAPESTRY-1474</a>] -         autowiring of generic service properties
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1489'>TAPESTRY-1489</a>] -         ValidationStrings for de and ru
                     </li>
                     <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1513'>TAPESTRY-1513</a>] -         convert StringToListConverter strings going to a binding property of updateComponents to their component clientId equivalents
                     </li>
