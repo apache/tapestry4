@@ -16,15 +16,23 @@
 -->
 
 <!DOCTYPE script PUBLIC
-	"-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
-	"http://tapestry.apache.org/dtd/Script_3_0.dtd">
+        "-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
+        "http://tapestry.apache.org/dtd/Script_3_0.dtd">
 <script>
+    <input-symbol key="name" required="yes" />
+    <input-symbol key="form" required="yes" />
+    <input-symbol key="component" required="yes" />
+    <input-symbol key="functionName" required="yes" />
 
-<input-symbol key="name" required="yes" />
-<input-symbol key="form" required="yes" />
+    <body>
+        <unique>
+        dojo.require("tapestry.event");
+        </unique>
+    </body>
 
-<let key="href">
-javascript:tapestry.form.submit('${form.clientId}','${name}');
-</let>
-
+    <initialization>
+        tapestry.cleanConnect(dojo.byId("${component.clientId}"), "onclick", "linkSubmit${functionName}");
+        tapestry.linkSubmit${functionName}=function(e){tapestry.form.submit('${form.clientId}', '${name}');}
+        dojo.event.connect(dojo.byId("${component.clientId}"), "onclick", tapestry, "linkSubmit${functionName}");
+    </initialization>
 </script>
