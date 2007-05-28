@@ -14,13 +14,13 @@
 
 package org.apache.tapestry.util.io;
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.hivemind.lib.util.StrategyRegistry;
 import org.apache.hivemind.lib.util.StrategyRegistryImpl;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.services.DataSqueezer;
+
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * A class used to convert arbitrary objects to Strings and back. This has particular uses involving
@@ -31,11 +31,11 @@ import org.apache.tapestry.services.DataSqueezer;
 
 public class DataSqueezerImpl implements DataSqueezer
 {
-    private static final String NULL_PREFIX = "X";
+    protected static final String NULL_PREFIX = "X";
 
-    private static final int ARRAY_SIZE = 90;
+    protected static final int ARRAY_SIZE = 90;
 
-    private static final int FIRST_ADAPTOR_OFFSET = 33;
+    protected static final int FIRST_ADAPTOR_OFFSET = 33;
 
     /**
      * An array of adaptors; this is used as a cheap lookup-table when unsqueezing. Each adaptor is
@@ -43,13 +43,13 @@ public class DataSqueezerImpl implements DataSqueezer
      * offset into this table is the character minus 33.
      */
 
-    private SqueezeAdaptor[] _adaptorByPrefix = new SqueezeAdaptor[ARRAY_SIZE];
+    protected SqueezeAdaptor[] _adaptorByPrefix = new SqueezeAdaptor[ARRAY_SIZE];
 
     /**
      * AdaptorRegistry cache of adaptors.
      */
 
-    private StrategyRegistry _adaptors = new StrategyRegistryImpl();
+    protected StrategyRegistry _adaptors = new StrategyRegistryImpl();
 
     public void setSqueezeAdaptors(List adaptors)
     {

@@ -19,7 +19,7 @@ import org.apache.tapestry.engine.ServiceEncoding;
 /**
  * Service tapestry.persist.ClientPropertyPersistenceScope. Determines whether a particular property
  * needs to be persisted or not.
- * 
+ *
  * @author Mindbridge
  * @since 4.0
  * @see org.apache.tapestry.record.ClientPropertyPersistenceStrategy
@@ -28,25 +28,25 @@ public interface ClientPropertyPersistenceScope
 {
     /**
      * Determines whether state should be encoded for the request.
-     * 
+     *
      * @param encoding
      *            identifies the service, URL and base set of parameters
      * @param pageName
      *            the page for which data is potentially to be encoded
      * @param data
+     *              The data to check.
      * @return true if state should be encoded into the encoding, false otherwise
      */
 
-    boolean shouldEncodeState(ServiceEncoding encoding, String pageName,
-            PersistentPropertyData data);
+    boolean shouldEncodeState(ServiceEncoding encoding, String pageName, PersistentPropertyData data);
 
     /**
      * Constructs a parameter name for a particular page name. The parameter name can be recognized
      * (in a later request) by the {@link #isParameterForScope(String)} method.
-     * 
+     *
      * @param pageName
      *            the name of the page for which a corresponding parameter name should be generated.
-     * @returns a query parameter name that identifies the page and this client persistence scope.
+     * @return a query parameter name that identifies the page and this client persistence scope.
      */
 
     String constructParameterName(String pageName);
@@ -54,7 +54,7 @@ public interface ClientPropertyPersistenceScope
     /**
      * Checks a parameter to see if it was the result of {@link #constructParameterName(String)} for
      * this persistence scope.
-     * 
+     *
      * @param parameterName
      *            a query parameter name
      * @return true if the parameterName was genereted (i.e., is properly prefixed) by this scope,
@@ -65,7 +65,7 @@ public interface ClientPropertyPersistenceScope
 
     /**
      * Extracts a page name from a query parameter name.
-     * 
+     *
      * @param parameterName
      *            the paramter name, for which {@link #isParameterForScope(String)} must return true
      * @return the name of the page

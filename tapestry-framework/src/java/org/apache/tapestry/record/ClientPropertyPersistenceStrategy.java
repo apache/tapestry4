@@ -14,16 +14,11 @@
 
 package org.apache.tapestry.record;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.engine.ServiceEncoding;
 import org.apache.tapestry.web.WebRequest;
+
+import java.util.*;
 
 /**
  * Service tapestry.persist.ClientPropertyPersistenceStrategy. Encodes persistent page properties on
@@ -41,13 +36,13 @@ public class ClientPropertyPersistenceStrategy implements PropertyPersistenceStr
      * Keyed on page name (String), values are
      * {@link org.apache.tapestry.record.PersistentPropertyData}.
      */
-    private final Map _data = new LinkedHashMap();
+    protected final Map _data = new LinkedHashMap();
 
-    private PersistentPropertyDataEncoder _encoder;
+    protected PersistentPropertyDataEncoder _encoder;
 
-    private WebRequest _request;
+    protected WebRequest _request;
 
-    private ClientPropertyPersistenceScope _scope;
+    protected ClientPropertyPersistenceScope _scope;
 
     /**
      * Initializer for this service, invoked every time a service instance is created. This

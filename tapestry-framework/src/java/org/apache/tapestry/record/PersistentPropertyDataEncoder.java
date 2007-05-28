@@ -29,14 +29,23 @@ public interface PersistentPropertyDataEncoder
     /**
      * Encodes a (possibly empty) list of {@link PropertyChange}s into a string
      * representation that can later be decoded.
+     *
+     * @param changes
+     *          List of changes to encode into a persistable form.
      * 
-     * @returns encoded string (possibly empty, but not null)
+     * @return encoded string (possibly empty, but not null)
      */
     String encodePageChanges(List changes);
 
     /**
      * Takes a string with an encoded set of page changes, and converts it back
      * into a list of {@link org.apache.tapestry.record.PropertyChange}s.
+     *
+     * @param encoded
+     *          The data to un-encode, which should be equivalent to the same that
+     *          was passed in to {@link #encodePageChanges(java.util.List)}.
+     * 
+     * @return The decoded page data.
      */
 
     List decodePageChanges(String encoded);

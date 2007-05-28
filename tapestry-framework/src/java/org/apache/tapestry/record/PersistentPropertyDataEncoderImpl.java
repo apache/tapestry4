@@ -14,21 +14,6 @@
 
 package org.apache.tapestry.record;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
-
 import org.apache.commons.codec.binary.Base64;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
@@ -37,19 +22,24 @@ import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.util.io.ResolvingObjectInputStream;
 import org.apache.tapestry.util.io.TeeOutputStream;
 
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
+
 /**
  * Responsible for converting lists of {@link org.apache.tapestry.record.PropertyChange}s back and
  * forth to a URL safe encoded string.
- * <p>
+ * <p/>
  * A possible improvement would be to encode the binary data with encryption both on and off, and
  * select the shortest (prefixing with a character that identifies whether encryption should be used
  * to decode).
- * 
- * @author Howard M. Lewis Ship
- * @since 4.0
+ * </p>
  */
-public class PersistentPropertyDataEncoderImpl implements PersistentPropertyDataEncoder
-{
+public class PersistentPropertyDataEncoderImpl implements PersistentPropertyDataEncoder {
     /**
      * Prefix on the MIME encoding that indicates that the encoded data is not encoded.
      */
@@ -62,8 +52,8 @@ public class PersistentPropertyDataEncoderImpl implements PersistentPropertyData
 
     public static final String GZIP_BYTESTREAM_PREFIX = "Z";
 
-    private ClassResolver _classResolver;
-    
+    protected ClassResolver _classResolver;
+
     public String encodePageChanges(List changes)
     {
         Defense.notNull(changes, "changes");
@@ -71,8 +61,7 @@ public class PersistentPropertyDataEncoderImpl implements PersistentPropertyData
         if (changes.isEmpty())
             return "";
 
-        try
-        {
+        try {
             ByteArrayOutputStream bosPlain = new ByteArrayOutputStream();
             ByteArrayOutputStream bosCompressed = new ByteArrayOutputStream();
 
@@ -96,8 +85,7 @@ public class PersistentPropertyDataEncoderImpl implements PersistentPropertyData
 
             return prefix + new String(encoded);
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             throw new ApplicationRuntimeException(RecordMessages.encodeFailure(ex), ex);
         }
     }
@@ -112,8 +100,7 @@ public class PersistentPropertyDataEncoderImpl implements PersistentPropertyData
         if (!(prefix.equals(BYTESTREAM_PREFIX) || prefix.equals(GZIP_BYTESTREAM_PREFIX)))
             throw new ApplicationRuntimeException(RecordMessages.unknownPrefix(prefix));
 
-        try
-        {
+        try {
             // Strip off the prefix, feed that in as a MIME stream.
 
             byte[] decoded = Base64.decodeBase64(encoded.substring(1).getBytes());
@@ -129,8 +116,7 @@ public class PersistentPropertyDataEncoderImpl implements PersistentPropertyData
             // a time. We use a resolving object input stream that knows how to find
             // classes not normally acessible.
 
-            ObjectInputStream ois = new ResolvingObjectInputStream(_classResolver,
-                    new BufferedInputStream(is));
+            ObjectInputStream ois = new ResolvingObjectInputStream(_classResolver, new BufferedInputStream(is));
 
             List result = readChangesFromStream(ois);
 
@@ -138,19 +124,18 @@ public class PersistentPropertyDataEncoderImpl implements PersistentPropertyData
 
             return result;
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             throw new ApplicationRuntimeException(RecordMessages.decodeFailure(ex), ex);
         }
     }
 
-    private void writeChangesToStream(List changes, ObjectOutputStream oos) throws IOException
+    protected void writeChangesToStream(List changes, ObjectOutputStream oos)
+            throws IOException
     {
         oos.writeInt(changes.size());
 
         Iterator i = changes.iterator();
-        while (i.hasNext())
-        {
+        while (i.hasNext()) {
             PropertyChange pc = (PropertyChange) i.next();
 
             String componentPath = pc.getComponentPath();
@@ -163,20 +148,19 @@ public class PersistentPropertyDataEncoderImpl implements PersistentPropertyData
                 oos.writeUTF(componentPath);
 
             oos.writeUTF(propertyName);
-            
+
             oos.writeObject(value);
         }
     }
 
-    private List readChangesFromStream(ObjectInputStream ois) throws IOException,
-            ClassNotFoundException
+    protected List readChangesFromStream(ObjectInputStream ois)
+            throws IOException, ClassNotFoundException
     {
         List result = new ArrayList();
 
         int count = ois.readInt();
 
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             boolean hasPath = ois.readBoolean();
             String componentPath = hasPath ? ois.readUTF() : null;
             String propertyName = ois.readUTF();
