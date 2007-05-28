@@ -17,21 +17,28 @@ package org.apache.tapestry.services;
 /**
  * Lightweight serialization used to encode values into strings that are stored in query parameters
  * and hidden fields.
- * 
- * @author Howard Lewis Ship
- * @since 4.0
  */
 public interface DataSqueezer
 {
     /**
      * Squeezes the data object into a String by locating an appropriate adaptor that can perform
      * the conversion. data may be null.
+     *
+     * @param data
+     *          The object to squeeze.
+     *
+     * @return The string equivalent of the data in "squeezed" form.
      */
     String squeeze(Object data);
 
     /**
-     * A convenience; invokes {@link #squeeze(Object)}for each element in the data array. If data
+     * A convenience; invokes {@link #squeeze(Object)} for each element in the data array. If data
      * is null, returns null.
+     *
+     * @param data
+     *          Array of objects to squeeze.
+     *
+     * @return Squeezed string array.
      */
     String[] squeeze(Object[] data);
 
@@ -39,6 +46,12 @@ public interface DataSqueezer
      * Unsqueezes the string. Note that in a special case, where the first character of the string
      * is not a recognized prefix, it is assumed that the string is simply a string, and returned
      * with no change.
+     *
+     * @param string
+     *          The data to unsqueeze.
+     *
+     * @return The object representation of the data - theoretically matching the object
+     *          passed in via {@link #squeeze(Object)}. 
      */
     Object unsqueeze(String string);
 
@@ -46,6 +59,12 @@ public interface DataSqueezer
      * Convenience method for unsqueezing many strings (back into objects).
      * <p>
      * If strings is null, returns null.
+     * </p>
+     *
+     * @param strings
+     *          The string data array to unsqueeze.
+     *
+     * @return The data in its object form, as was passed in to {@link #squeeze(Object[])}. 
      */
     Object[] unsqueeze(String[] strings);
 }

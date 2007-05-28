@@ -20,8 +20,10 @@ public interface DataSqueezerFilter {
 
     /**
      * Optionally squeezes the data object into a String.
+     * 
      * @param data the data to squeeze
      * @param dataSqueezer the next squeezer in the pipeline
+     * 
      * @return the string representation
      */
     String squeeze(Object data, DataSqueezer dataSqueezer);
@@ -29,8 +31,10 @@ public interface DataSqueezerFilter {
     /**
      * A convenience; invokes {@link #squeeze(Object, DataSqueezer)}for each element in the
      * data array. If data is null, returns null.
+     * 
      * @param data the data to squeeze
      * @param dataSqueezer the next squeezer in the pipeline
+     * 
      * @return the string representation
      */
     String[] squeeze(Object[] data, DataSqueezer dataSqueezer);
@@ -39,8 +43,10 @@ public interface DataSqueezerFilter {
      * Unsqueezes the string. Note that in a special case, where the first
      * character of the string is not a recognized prefix, it is assumed that
      * the string is simply a string, and returned with no change.
+     * 
      * @param string the string representation of the data
      * @param dataSqueezer the next squeezer in the pipeline
+     * 
      * @return the unsqueezed data object
      */
     Object unsqueeze(String string, DataSqueezer dataSqueezer);
@@ -49,8 +55,10 @@ public interface DataSqueezerFilter {
      * Convenience method for unsqueezing many strings (back into objects).
      * <p>
      * If strings is null, returns null.
+     * </p>
      * @param strings the string representation of the data
      * @param dataSqueezer the next squeezer in the pipeline
+     *
      * @return the unsqueezed data object
      */
     Object[] unsqueeze(String[] strings, DataSqueezer dataSqueezer);

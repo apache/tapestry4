@@ -30,25 +30,42 @@ public interface SqueezeAdaptor
 {
     /**
      * Returns one or more characters, each of which will be a prefix for this adaptor.
+     *
+     * @return The prefix for this squeezer.
      */
 
     String getPrefix();
 
     /**
      * Returns the class (or interface) which can be encoded by this adaptor.
+     *
+     * @return The class type that this adaptor can manage.
      */
 
     Class getDataClass();
 
     /**
      * Converts the data object into a String.
-     * 
+     *
+     * @param squeezer
+     *          The squeezer that should be used to ultimately squeeze the data.
+     * @param data
+     *          The data to squeeze.
+     *
+     * @return String representation of data.
      */
 
     String squeeze(DataSqueezer squeezer, Object data);
 
     /**
      * Converts a String back into an appropriate object.
+     *
+     * @param squeezer
+     *          The squeezer to use to unsqueeze the data.
+     * @param string
+     *          The string data - as was returned from {@link #squeeze(org.apache.tapestry.services.DataSqueezer, Object)}.
+     *
+     * @return The re-constituded object representation of the string.
      */
 
     Object unsqueeze(DataSqueezer squeezer, String string);
