@@ -14,14 +14,14 @@
 
 package org.apache.tapestry.valid;
 
-import java.io.Serializable;
-import java.util.List;
-
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.TextField;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * Interface used to track validation errors in forms and
@@ -355,8 +355,7 @@ public interface IValidationDelegate extends Serializable
      * component.
      */
 
-    void writeLabelSuffix(IFormComponent component,
-            IMarkupWriter writer, IRequestCycle cycle);
+    void writeLabelSuffix(IFormComponent component, IMarkupWriter writer, IRequestCycle cycle);
 
     /**
      * Returns true if any form component has errors.

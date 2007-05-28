@@ -14,18 +14,13 @@
 
 package org.apache.tapestry.valid;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.form.IFormComponent;
+
+import java.util.*;
 
 /**
  * A base implementation of {@link IValidationDelegate} that can be used as a
@@ -309,7 +304,7 @@ public class ValidationDelegate implements IValidationDelegate
     }
 
     /**
-     * Does nothing. Override in a subclass to decoreate fields.
+     * Does nothing. Override in a subclass to decorate fields.
      */
 
     public void writePrefix(IMarkupWriter writer, IRequestCycle cycle,
@@ -318,15 +313,27 @@ public class ValidationDelegate implements IValidationDelegate
     }
 
     /**
-     * Does nothing. Override in a subclass to decorate fields.
+     * Currently appends a single css class attribute of <code>fieldInvalid</code> if the field
+     * is in error.  If the field has a matching constraint of {@link ValidationConstraint#REQUIRED}
+     * the <code>fieldMissing</code> is written instead. 
      */
 
     public void writeAttributes(IMarkupWriter writer, IRequestCycle cycle,
             IFormComponent component, IValidator validator)
     {
-        if (isInError()) {
+        IFieldTracking tracking = getFieldTracking(component);
+        if (tracking == null)
+            return;
+
+        if (tracking.getConstraint() != null
+            && tracking.getConstraint() == ValidationConstraint.REQUIRED)
+        {
+            writer.appendAttribute("class", "fieldMissing");
+        } else if (tracking.isInError())
+        {
+
             writer.appendAttribute("class", "fieldInvalid");
-        }
+        }        
     }
 
     /**
@@ -362,7 +369,8 @@ public class ValidationDelegate implements IValidationDelegate
 
     public IRender getFirstError()
     {
-        if (Tapestry.size(_trackings) == 0) return null;
+        if (Tapestry.size(_trackings) == 0)
+            return null;
 
         Iterator i = _trackings.iterator();
 
@@ -392,6 +400,13 @@ public class ValidationDelegate implements IValidationDelegate
         IFieldTracking tracking = (IFieldTracking) _trackingMap.get(fieldName);
 
         return tracking != null && tracking.isInError();
+    }
+
+    protected IFieldTracking getFieldTracking(IFormComponent component)
+    {
+        String fieldName = component.getName();
+
+        return (IFieldTracking) _trackingMap.get(fieldName);
     }
 
     /**
