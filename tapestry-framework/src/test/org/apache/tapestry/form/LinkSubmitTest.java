@@ -14,26 +14,15 @@
 
 package org.apache.tapestry.form;
 
-import static org.easymock.EasyMock.expect;
-
-import java.util.Map;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
-import org.apache.tapestry.BaseComponentTestCase;
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IForm;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRender;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IScript;
-import org.apache.tapestry.IScriptProcessor;
-import org.apache.tapestry.PageRenderSupport;
-import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.*;
 import org.apache.tapestry.valid.IValidationDelegate;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
+
+import java.util.Map;
 
 /**
  * Tests for {@link org.apache.tapestry.form.LinkSubmit}
@@ -72,7 +61,7 @@ public class LinkSubmitTest extends BaseComponentTestCase
 
     }
 
-    public void testRenderNormal()
+    public void test_Render_Normal()
     {
         IMarkupWriter writer = newBufferWriter();
         IRequestCycle cycle = newCycle();
@@ -81,9 +70,8 @@ public class LinkSubmitTest extends BaseComponentTestCase
 
         IForm form = newForm();
 
-        LinkSubmit linkSubmit = newInstance(LinkSubmit.class, new Object[]
-        { "form", form, "name", "fred_1", "script", script, 
-            "id", "fred_id", "clientId", "fred_1", "submitType", "submit" });
+        LinkSubmit linkSubmit = newInstance(LinkSubmit.class, "form", form, "name", "fred_1", "script", script,
+                                            "id", "fred_id", "clientId", "fred_1", "submitType", "submit");
         
         linkSubmit.addBody(newBody());
 
@@ -97,18 +85,17 @@ public class LinkSubmitTest extends BaseComponentTestCase
 
         verify();
 
-        assertBuffer("<a href=\"HREF\" id=\"fred_1\">BODY</a>");
+        assertBuffer("<a href=\"#\" id=\"fred_1\">BODY</a>");
     }
 
-    public void testRenderDisabled()
+    public void test_Render_Disabled()
     {
         IMarkupWriter writer = newBufferWriter();
         IRequestCycle cycle = newCycle();
 
         IForm form = newForm();
 
-        LinkSubmit linkSubmit = newInstance(LinkSubmit.class, new Object[]
-        { "disabled", Boolean.TRUE, "form", form, "name", "fred_1", "idParameter", "fred_id" });
+        LinkSubmit linkSubmit = newInstance(LinkSubmit.class, "disabled", Boolean.TRUE, "form", form, "name", "fred_1", "idParameter", "fred_id");
         linkSubmit.addBody(newBody());
 
         trainResponseBuilder(cycle, writer);
@@ -122,7 +109,7 @@ public class LinkSubmitTest extends BaseComponentTestCase
         assertBuffer("BODY");
     }
 
-    public void testPrepareNormal()
+    public void test_Prepare_Normal()
     {
         IRequestCycle cycle = newCycle();
 
@@ -139,7 +126,7 @@ public class LinkSubmitTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testPrepareConflict()
+    public void test_Prepare_Conflict()
     {
         IRequestCycle cycle = newCycle();
         IPage page = newPage("MyPage");
@@ -151,8 +138,7 @@ public class LinkSubmitTest extends BaseComponentTestCase
 
         trainGetIdPath(page, null);
 
-        LinkSubmit linkSubmit = newInstance(LinkSubmit.class, new Object[]
-        { "id", "fred", "page", page, "container", page, "location", floc });
+        LinkSubmit linkSubmit = newInstance(LinkSubmit.class, "id", "fred", "page", page, "container", page, "location", floc);
 
         replay();
 
@@ -173,7 +159,7 @@ public class LinkSubmitTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testCleanupAfterRender()
+    public void test_Cleanup_After_Render()
     {
         IRequestCycle cycle = newCycle();
 
@@ -188,7 +174,7 @@ public class LinkSubmitTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testIsClicked()
+    public void test_Is_Clicked()
     {
         IRequestCycle cycle = newCycle();
 
@@ -203,7 +189,7 @@ public class LinkSubmitTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testIsNotClicked()
+    public void test_Is_Not_Clicked()
     {
         IRequestCycle cycle = newCycle();
 
@@ -218,7 +204,7 @@ public class LinkSubmitTest extends BaseComponentTestCase
         verify();
     }
 
-    public void testRewind()
+    public void test_Rewind()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
@@ -226,8 +212,7 @@ public class LinkSubmitTest extends BaseComponentTestCase
         IForm form = newForm();
         IValidationDelegate delegate = newDelegate();
 
-        LinkSubmit linkSubmit = newInstance(LinkSubmit.class, new Object[]
-        { "name", "fred", "form", form });
+        LinkSubmit linkSubmit = newInstance(LinkSubmit.class, "name", "fred", "form", form);
         linkSubmit.addBody(body);
 
         trainGetForm(cycle, form);

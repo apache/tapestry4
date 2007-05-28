@@ -14,17 +14,12 @@
 
 package org.apache.tapestry.form;
 
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.tapestry.*;
+import org.apache.tapestry.util.ScriptUtils;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IForm;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IScript;
-import org.apache.tapestry.PageRenderSupport;
-import org.apache.tapestry.TapestryUtils;
 
 /**
  * Implements a component that submits its enclosing form via a JavaScript link. [ <a
@@ -69,21 +64,23 @@ public abstract class LinkSubmit extends AbstractSubmit
         if (!disabled)
         {
             PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, this);
-
-            Map symbols = new HashMap();
-            symbols.put("form", form);
-            symbols.put("name", name);
-            
-            getScript().execute(this, cycle, pageRenderSupport, symbols);
             
             writer.begin("a");
-            writer.attribute("href", (String)symbols.get("href"));
+            writer.attribute("href", "#");
             
             renderIdAttribute(writer, cycle);
 
             renderInformalParameters(writer, cycle);
             
             renderSubmitBindings(writer, cycle);
+
+            Map symbols = new HashMap();
+            symbols.put("form", form);
+            symbols.put("name", name);
+            symbols.put("component", this);
+            symbols.put("functionName", ScriptUtils.functionHash("onclick" + this.hashCode()));
+
+            getScript().execute(this, cycle, pageRenderSupport, symbols);
         }
 
         renderBody(writer, cycle);
