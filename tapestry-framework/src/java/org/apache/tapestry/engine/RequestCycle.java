@@ -507,7 +507,7 @@ public class RequestCycle implements IRequestCycle
     }
 
     /**
-     * Invokes {@link IPageRecorder#commit()}on each page recorder loaded during the request cycle
+     * Invokes {@link IPageRecorder#commit()} on each page recorder loaded during the request cycle
      * (even recorders marked for discard).
      */
 
@@ -526,20 +526,6 @@ public class RequestCycle implements IRequestCycle
             IPageRecorder recorder = (IPageRecorder) i.next();
 
             recorder.commit();
-        }
-        
-        try {
-            
-            // cause headers / cookies to be flushed out to browser 
-
-            _responseBuilder.flush();
-        
-        } catch (Throwable ex)
-        {
-            // But wrap other exceptions in a ApplicationRuntimeException ... this
-            // will ensure that some of the context is available.
-            
-            throw new ApplicationRuntimeException(ex.getMessage(), getPage(), null, ex);
         }
     }
 

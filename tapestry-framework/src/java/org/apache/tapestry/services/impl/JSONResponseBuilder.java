@@ -13,22 +13,9 @@
 // limitations under the License.
 package org.apache.tapestry.services.impl;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IJSONRender;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRender;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.*;
 import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.engine.NullWriter;
 import org.apache.tapestry.json.IJSONWriter;
@@ -40,6 +27,12 @@ import org.apache.tapestry.util.ContentType;
 import org.apache.tapestry.util.PageRenderSupportImpl;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Class that implements JSON responses in tapestry.
@@ -149,6 +142,8 @@ public class JSONResponseBuilder implements ResponseBuilder
         
         TapestryUtils.removePageRenderSupport(cycle);
         
+        flush();
+
         _writer.close();
     }
     

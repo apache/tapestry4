@@ -45,6 +45,7 @@ public abstract class LinkSubmit extends AbstractSubmit
     protected boolean isClicked(IRequestCycle cycle, String name)
     {
         String value = cycle.getParameter(FormConstants.SUBMIT_NAME_PARAMETER);
+        
         return name.equals(value);
     }
 
@@ -87,7 +88,6 @@ public abstract class LinkSubmit extends AbstractSubmit
 
         if (!disabled)
             writer.end();
-
     }
 
     /**
@@ -96,7 +96,7 @@ public abstract class LinkSubmit extends AbstractSubmit
     protected void prepareForRender(IRequestCycle cycle)
     {
         IComponent outer = (IComponent) cycle.getAttribute(ATTRIBUTE_NAME);
-
+        
         if (outer != null)
             throw new ApplicationRuntimeException(FormMessages.linkSubmitMayNotNest(this, outer),
                     this, getLocation(), null);
@@ -128,5 +128,4 @@ public abstract class LinkSubmit extends AbstractSubmit
     {
         return true;
     }
-
 }

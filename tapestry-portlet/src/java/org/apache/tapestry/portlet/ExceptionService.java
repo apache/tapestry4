@@ -14,11 +14,6 @@
 
 package org.apache.tapestry.portlet;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import javax.portlet.PortletURL;
-
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
@@ -26,6 +21,10 @@ import org.apache.tapestry.util.ContentType;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
 import org.apache.tapestry.web.WebSession;
+
+import javax.portlet.PortletURL;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * @author Howard M. Lewis Ship
@@ -59,8 +58,7 @@ public class ExceptionService implements IEngineService
 
         PortletURL url = _globals.getRenderResponse().createActionURL();
 
-        writer
-                .println("<span class=\"portlet-msg-error\">An exception has occured.</span>");
+        writer.println("<span class=\"portlet-msg-error\">An exception has occured.</span>");
         writer.println("<br/>");
         writer.println("<a href=\"" + url.toString()
                 + "\">Click here to continue</a>");

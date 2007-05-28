@@ -14,18 +14,17 @@
 
 package org.apache.tapestry.portlet;
 
-import java.security.Principal;
-import java.util.List;
-import java.util.Locale;
-
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletSession;
-
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.describe.DescriptionReceiver;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebSession;
 import org.apache.tapestry.web.WebUtils;
+
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletSession;
+import java.security.Principal;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Implementation of {@link org.apache.tapestry.web.WebRequest} that adapts a
@@ -136,13 +135,13 @@ public class PortletWebRequest implements WebRequest
     {
         if (attribute == null)
             _portletRequest.removeAttribute(name);
-        else _portletRequest.setAttribute(name, attribute);
+        else
+            _portletRequest.setAttribute(name, attribute);
     }
 
     protected final void unsupported(String methodName)
     {
-        throw new UnsupportedOperationException(PortletMessages
-                .unsupportedMethod(methodName));
+        throw new UnsupportedOperationException(PortletMessages.unsupportedMethod(methodName));
     }
 
     public void describeTo(DescriptionReceiver receiver)
