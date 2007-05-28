@@ -91,6 +91,7 @@
             </item>
             
             <item name="JavaScript Reference" href="/javascript/index.html" collapse="true">
+                <item name="JavascriptDoc" href="/jsdoc/index.html" />
                 <item name="Introduction" href="/javascript/index.html" />
                 <item name="Packaging" href="/javascript/packaging.html" />
                 <item name="Core" href="/javascript/core.html" />
