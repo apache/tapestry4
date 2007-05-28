@@ -26,9 +26,16 @@ log4j.logger.org.apache.tapestry.services.impl.DojoAjaxResponseBuilder=DEBUG
 +-----------------------------------------------------------
 
   This simple configuration example should be enough to turn on an enormous amount of detail on the inner workings of the 
-  {{{../apidocs/org/apache/tapestry/services/ResponseBuilder.html}ResponseBuilder}} service. The global ResponseBuilder hivemind service
-  already comes pre-configured with the hivemind {{{http://hivemind.apache.org/hivemind1/hivemind/LoggingInterceptor.html}logging interceptor}} 
-  service, so you should be able to watch as each of the core methods on that interface are invoked.
+  {{{../apidocs/org/apache/tapestry/services/ResponseBuilder.html}ResponseBuilder}} service. The global
+  {{{../tapestry-framework/hivedoc/service/tapestry.globals.ResponseBuilder.html}tapestry.globals.ResponseBuilder}} hivemind service
+  should be a great place to apply the hivemind {{{http://hivemind.apache.org/hivemind1/hivemind/LoggingInterceptor.html}logging interceptor}}
+  service. An example of applying the logging interceptor would be:
+
++----------------------------------------------------------------------------------
+<implementation service-id="tapestry.globals.ResponseBuilder">
+    <interceptor service-id="hivemind.LoggingInterceptor" />
+</implementation>
++----------------------------------------------------------------------------------
   
 Client Side Debugging
 
@@ -39,7 +46,7 @@ Client Side Debugging
 * Configuration
 
   The logging facilities employed on the client side work in much the same way as the standard log4j style logging semantics many people are used to. The options
-  for turning this kind of logging on / configuration can all be controlled through the {{{../components/general/shell.html}Shell}} or ScriptIncludes components - 
+  for turning this kind of logging on / configuration can all be controlled through the {{{../components/general/shell.html}Shell}} or {{{../components/general/scriptincludes.html}ScriptIncludes}} components - 
   whichever you use in your projects. 
   
   There are 3 core configuration parameters to these components that control the majority of logic here:

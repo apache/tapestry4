@@ -52,7 +52,7 @@
                     The
                     <a href="apidocs/org/apache/tapestry/annotations/Asset.html">Asset</a>
                     annotation is the equivalent of the
-                    <a href="../UsersGuide/spec.html#&lt;asset&gt; element">&lt;asset&gt;</a>
+                    <a href="../usersguide/spec.html#&lt;asset&gt; element">&lt;asset&gt;</a>
                     element in a specification. The value attribute is the path to the asset
                     (possibly prefixed to indicate the domain for the path):
                 </p>
@@ -78,7 +78,7 @@
                     The
                     <a href="apidocs/org/apache/tapestry/annotations/Bean.html">Bean</a>
                     annotation is the equivalent of the
-                    <a href="../UsersGuide/spec.html#&lt;bean&gt; element">&lt;bean&gt;</a>
+                    <a href="../usersguide/spec.html#&lt;bean&gt; element">&lt;bean&gt;</a>
                     element in a specification.
                 </p>
 
@@ -139,7 +139,7 @@
                     <a href="apidocs/org/apache/tapestry/annotations/Component.html">Component</a>
                     annotation is attached to an accessor method and allows a component type to be
                     defined in place, as with the
-                    <a href="../UsersGuide/spec.html#&lt;component&gt; element">&lt;component&gt;</a>
+                    <a href="../usersguide/spec.html#&lt;component&gt; element">&lt;component&gt;</a>
                     element.
                 </p>
 
@@ -206,7 +206,7 @@
                     </a>
                     annotation is used to mark a Java class as a component, and allows several
                     properties normally specified using the
-                    <a href="../UsersGuide/spec.html#&lt;component-specification&gt; element">
+                    <a href="../usersguide/spec.html#&lt;component-specification&gt; element">
                     &lt;component-specification&gt;</a> element.
                 </p>
 
@@ -291,12 +291,11 @@ public abstact class YeOldeComponent extends AbstractComponent
                 </p>
 
                 <source xml:space="preserve">
-@EventListener(events = "selectOption", targets = "projectChoose",
-submitForm = "taskForm", async=true)
+@EventListener(events = "onValueChanged", targets = "projectChoose")
 public void projectSelected(IRequestCycle cycle)
 {
-        cycle.getResponseBuilder().updateComponent("projectDescription");
-        cycle.getResponseBuilder().updateComponent("feedbackBlock");
+  cycle.getResponseBuilder().updateComponent("projectDescription");
+  cycle.getResponseBuilder().updateComponent("feedbackBlock");
 }
                 </source>
 
@@ -315,17 +314,18 @@ public void projectSelected(IRequestCycle cycle)
                             <td>targets</td>
                             <td>String[],String</td>
                             <td>no</td>
-                            <td></td>
+                            <td> </td>
                             <td>
                                 Specifies the components/widgets to listen to events on, in the form of unique
-                                component ids. One of either elements OR targets must be supplied.
+                                component ids. One of either elements OR targets must be supplied.  This is supposed to
+                                be the id as returned by <code>IComponent.getClientId()</code>.
                             </td>
                         </tr>
                         <tr>
                             <td>elements</td>
                             <td>String[],String</td>
                             <td>no</td>
-                            <td></td>
+                            <td> </td>
                             <td>
                                 Specifies the unique html element dom node ID's to listen to events on. One of
                                 either elements OR targets must be supplied.
@@ -335,26 +335,34 @@ public void projectSelected(IRequestCycle cycle)
                             <td>events</td>
                             <td>String[],String</td>
                             <td>yes</td>
-                            <td></td>
+                            <td> </td>
                             <td>
                                 Specifies which javascript "events" to listen for. Just as with the dojo api, these
-                                events can be simple things like <code>onClick</code> or <code>onSubmit</code>, but can
+                                events can be simple things like <code>onclick</code> or <code>onsubmit</code>, but can
                                 also be bound to specific functions if they exist on the component/widget you are targeting.
                                 
-                                <p>
-                                For example, the Autocomplete component wraps a dojo ComboBox widget that has a function named 
-                                <code>selectOption</code> that is called when an item in the list is selected. 
-                                </p>
+                                <br/><br />
+                                For example,  the Autocomplete component wraps a dojo ComboBox widget that has a function named
+                                <code>onValueChanged</code> that is called when an item in the list is selected.
                             </td>
                         </tr>
                         <tr>
                             <td>submitForm</td>
                             <td>String</td>
                             <td>no</td>
-                            <td></td>
+                            <td> </td>
                             <td>
                                 If specified, the form matching the passed in form ID will be submitted before calling your
                                 listener method.
+
+                                <span class="info">
+                                    <strong>Information:</strong>
+                                    <p>
+                                        In almost all instances you will <i>not</i> want to use this parameter as any component
+                                        target implementing IFormComponent will automatically submit the form containing it for you.  This
+                                        only needs to be used in the rare instance where you want to submit a different form.
+                                    </p>
+                                </span>
                             </td>
                         </tr>
                         <tr>
@@ -363,8 +371,8 @@ public void projectSelected(IRequestCycle cycle)
                             <td>no</td>
                             <td>false</td>
                             <td>
-                                When used in conjunction with the <code>submitForm</code> parameter, optionally enables/disables
-                                client side validation when the form is submitted.
+                                When targeting a component implementing IFormComponent, optionally enables/disables
+                                both client side validation <em>and</em> server side validation when the form is submitted. 
                             </td>
                         </tr>
                         <tr>
@@ -373,19 +381,53 @@ public void projectSelected(IRequestCycle cycle)
                             <td>no</td>
                             <td>true</td>
                             <td>
-                                When used in conjunction with the <code>submitForm</code> parameter, optionally submits the form
-                                via a dynamic asynchronous request, or submits it using normal http IO POST methods.
+                                When components implementing IFormComponent are targeted and will cause a form submission this parameter
+                                can additionally be used to cause the submission to happen with or without asynchronous (ajax) IO calls.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>autoSubmit</td>
+                            <td>boolean</td>
+                            <td>no</td>
+                            <td>true</td>
+                            <td>
+                                When components implementing IFormComponent are targeted they will normally automatically cause a form
+                                submission to happen so that the property they manage on your form is updated when your listener method
+                                is called - this parameter can be used to disable the automatic submission of the enclosing form.
+
+                                <span class="warn">
+                                    <strong>Warning:</strong>
+                                    <p>
+                                        Use at your own risk, this is no guarantee what kind of state your properties will be in when this method
+                                        is invoked.  If you aren't relying on form specific properties to do things everything should be fine - just be careful.
+                                    </p>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>focus</td>
+                            <td>boolean</td>
+                            <td>no</td>
+                            <td>false</td>
+                            <td>
+                                When components implementing IFormComponent are targeted and will cause a form submission this parameter
+                                can additionally be used to turn on/off the normal client side form element focusing that normally happens in
+                                Tapestry forms to focus the most important / first field in error.  This can be annoying on AJAX IO calls and so is turned
+                                off by default.
                             </td>
                         </tr>
                     </table>
                 </subsection>
 
+                <subsection name="Listener Parameters">
+                    Many people have asked about the possibility of specifying a list of parameters to pass in to the listener method like you would
+                    do with a <a href="../components/link/directlink.html">DirectLink</a> component.  We are aware of this and hope to get it implemented
+                    sometime in one of the upcoming Tapestry 4.X releases.
+                </subsection>
+
             </subsection>
 
             <subsection name="InitialValue">
-
-
-
                 <p>
                     The
                     <a href="apidocs/org/apache/tapestry/annotations/InitialValue.html">
@@ -450,7 +492,7 @@ public void projectSelected(IRequestCycle cycle)
 
                 <p>
                     This is equivalent to specifying the property attribute of the
-                    <a href="../UsersGuide/spec.html#&lt;asset&gt; element">&lt;asset&gt;</a>
+                    <a href="../usersguide/spec.html#&lt;asset&gt; element">&lt;asset&gt;</a>
                     element.
                 </p>
 
@@ -475,7 +517,7 @@ public void projectSelected(IRequestCycle cycle)
 
                 <p>
                     This is functionally the same as providing the property attribute of the
-                    <a href="../UsersGuide/spec.html#&lt;component&gt; element">&lt;component&gt;</a>
+                    <a href="../usersguide/spec.html#&lt;component&gt; element">&lt;component&gt;</a>
                     element.
                 </p>
 
@@ -488,7 +530,7 @@ public void projectSelected(IRequestCycle cycle)
                     The
                     <a href="apidocs/org/apache/tapestry/annotations/InjectMeta.html">InjectMeta</a>
                     annotation allows meta data from the specification (
-                    <a href="../UsersGuide/spec.html#&lt;meta&gt; element">&lt;meta&gt; elements</a> )
+                    <a href="../usersguide/spec.html#&lt;meta&gt; element">&lt;meta&gt; elements</a> )
                     to be exposed as properties.
                 </p>
 
@@ -534,7 +576,7 @@ public void projectSelected(IRequestCycle cycle)
 
                 <p>
                     The end result is the same as using the
-                    <a href="../UsersGuide/spec.html#&lt;inject&gt; element">&lt;inject&gt;</a>
+                    <a href="../usersguide/spec.html#&lt;inject&gt; element">&lt;inject&gt;</a>
                     element, with the default type of "object".
                 </p>
 
@@ -598,7 +640,7 @@ public void projectSelected(IRequestCycle cycle)
 
                 <p>
                     The end result is equivalent to using the
-                    <a href="../UsersGuide/spec.html#&lt;inject&gt; element">&lt;inject&gt;</a>
+                    <a href="../usersguide/spec.html#&lt;inject&gt; element">&lt;inject&gt;</a>
                     element, with a type of "state".
                 </p>
                 
@@ -636,7 +678,7 @@ public void projectSelected(IRequestCycle cycle)
 
                 <p>
                     The end result is equivalent to using the
-                    <a href="../UsersGuide/spec.html#&lt;inject&gt; element">&lt;inject&gt;</a>
+                    <a href="../usersguide/spec.html#&lt;inject&gt; element">&lt;inject&gt;</a>
                     element, with a type of "state-flag".
                 </p>
                 
@@ -740,7 +782,7 @@ public void projectSelected(IRequestCycle cycle)
                     <a href="apidocs/org/apache/tapestry/annotations/Meta.html">Meta</a>
                     annotation is used to define a meta data value on a page or component class, as
                     with the
-                    <a href="../UsersGuide/spec.html#&lt;meta&gt; element">&lt;meta&gt;</a>
+                    <a href="../usersguide/spec.html#&lt;meta&gt; element">&lt;meta&gt;</a>
                     element in an XML component or page specification.
                 </p>
 
@@ -782,7 +824,7 @@ public abstract class MyComponent extends BaseComponent
                     The
                     <a href="apidocs/org/apache/tapestry/annotations/Parameter.html">Parameter</a>
                     annotation defines a new property, as with
-                    <a href="../UsersGuide/spec.html#&lt;parameter&gt; element">&lt;parameter&gt;</a>
+                    <a href="../usersguide/spec.html#&lt;parameter&gt; element">&lt;parameter&gt;</a>
                     element in an XML component specification.
                 </p>
 
@@ -850,7 +892,7 @@ public abstract class MyComponent extends BaseComponent
 
                 <p>
                     This annotation works exactly like a
-                    <a href="../UsersGuide/spec.html#&lt;property&gt; element">&lt;property&gt;</a>
+                    <a href="../usersguide/spec.html#&lt;property&gt; element">&lt;property&gt;</a>
                     element, except that the initial-value attribute can't be specified. Use the
                     <a href="#InitialValue">@InitialValue</a>
                     annotation to set the property's initial value.
