@@ -281,11 +281,10 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         ResponseBuilder builder = new DojoAjaxResponseBuilder(cycle, writer, parts);
         
         expect(comp.getClientId()).andReturn("comp");
-        
+
         expect(cycle.renderStackIterator()).andReturn(Collections.EMPTY_LIST.iterator());
         
         expect(comp.getClientId()).andReturn("comp1");
-        
         expect(comp.getClientId()).andReturn("comp");
         
         expect(cycle.renderStackIterator()).andReturn(Collections.EMPTY_LIST.iterator());
@@ -402,11 +401,8 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         replay();
         
         builder.beginResponse();
-        
         builder.writeExternalScript(mw, script1, cycle);
-        
         builder.writeExternalScript(mw, script2, cycle);
-        
         builder.endResponse();
         
         assertOutput("<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\" [\n" + 
@@ -441,9 +437,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         replay();
         
         builder.beginResponse();
-        
         builder.writeInitializationScript(mw, script);
-        
         builder.endResponse();
         
         assertOutput("<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\" [\n" + 

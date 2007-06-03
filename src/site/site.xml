@@ -167,7 +167,11 @@
                 <item name="DropdownTimePicker" href="/components/dojo/dropdowntimepicker.html" />
                 <item name="InlineEditBox" href="/components/dojo/inlineeditbox.html" />
             </item>
-            
+
+            <item name="script.aculo.us" href="/components/scriptaculous/index.html" collapse="true">
+                <item name="Suggest" href="/components/scriptaculous/suggest.html" />
+            </item>
+
         </menu>
 
         <menu name="Modules">

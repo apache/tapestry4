@@ -61,20 +61,16 @@
                     <tr>
                         <td>listener</td>
                         <td>
-                            <a
-                                href="../../apidocs/org/apache/tapestry/IActionListener.html">
+                            <a href="../../apidocs/org/apache/tapestry/IActionListener.html">
                                 IActionListener
                             </a>
                         </td>
-                        
                         <td>yes</td>
-
-                        <td></td>
+                        <td> </td>
                         <td>
                             Specifies an object that is notified when the link is clicked, which is
                             typically a listener method of its container (for example, listeners.
-                            <em>method</em>
-                            ).
+                            <em>method</em>).
                         </td>
                     </tr>
                     <tr>
@@ -88,7 +84,7 @@
                             List
                         </td>
                         <td>no</td>
-                        <td></td>
+                        <td> </td>
                         <td>
                             <p>
                                 An array of objects to be encoded into the URL. These parameters
@@ -185,7 +181,7 @@
                         <td>scheme</td>
                         <td>String</td>
                         <td>no</td>
-                        <td></td>
+                        <td> </td>
                         <td>
                             The required scheme ("http" or "https", typically) for the URL. This
                             will force the creation of an absolute URL when the current request's
@@ -200,7 +196,7 @@
                         <td>port</td>
                         <td>Integer</td>
                         <td>no</td>
-                        <td></td>
+                        <td> </td>
                         <td>
                             The required port (80, 443, 8080. 8443, typically) for the URL. This
                             will force the creation of an absolute URL when the current request's
@@ -222,7 +218,7 @@
                         </td>
                         <td>no</td>
 
-                        <td></td>
+                        <td> </td>
 
                         <td>The object which will actually render the link.</td>
                     </tr>
@@ -230,7 +226,7 @@
                         <td>updateComponents</td>
                         <td>String[],Collection</td>
                         <td>no</td>
-                        <td></td>
+                        <td> </td>
                         <td>
                             In an asynchronous request, specifies which components should have their content
                             rendered back to the client. These are expected to be unique component ids. 

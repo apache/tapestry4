@@ -255,13 +255,30 @@
             </construct>
         </invoke-factory>
     </service-point>
-    
+
+    <service-point id="PrototypeResponseContributor" interface="org.apache.tapestry.services.ResponseContributor">
+
+        Contributor responsible for sniffing out and building an appropriate ResponseBuilder object for handling
+        prototype javascript XHR requests.
+
+        <invoke-factory>
+            <construct class="org.apache.tapestry.services.impl.PrototypeResponseContributorImpl" >
+                <set-service property="localeManager" service-id="tapestry.request.RequestLocaleManager"/>
+                <set-object property="markupWriterSource"  value="infrastructure:markupWriterSource"/>
+                <set-object property="webResponse" value="infrastructure:response"/>
+                <set-object property="webRequest" value="infrastructure:request"/>
+                <set-object property="assetFactory" value="infrastructure:assetFactory" />
+            </construct>
+        </invoke-factory>
+    </service-point>
+
     <contribution configuration-id="ResponseContributors">
         Order of addition is very important here, contributors may claim a particular response as
         belonging to a certain protocol, so no guarantees are made as to the
         friendlyness/compatibility between various implementations.
         <invoker object="service:JSONResponseContributor" />
         <invoker object="service:DojoAjaxResponseContributor" />
+        <invoker object="service:PrototypeResponseContributor" />
         <invoker object="service:DefaultResponseContributor" />
     </contribution>
 

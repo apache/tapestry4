@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright 2007 The Apache Software Foundation
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN"
+    "http://maven.apache.org/dtd/xdoc_1_0.dtd">
+<document>
+    <properties>
+        <title>Script.aculo.us Components</title>
+    </properties>
+    <body>
+        <section name="Script.aculo.us Components">
+            <p>
+                This set of components wraps/extends/relies on the <a href="http://script.aculo.us/">script.acuulo.us</a>
+                javascript toolkit to provide ajax / dhtml enhancenced behavior.
+            </p>
+
+            <subsection name="Documentation">
+                <p>
+                    Most of the documentation for using the majority of <a href="http://script.aculo.us/">script.acuulo.us</a>
+                    controls can be found on their wiki <a href="http://wiki.script.aculo.us/scriptaculous/">here</a>. 
+                </p>
+                <p>
+                    <b>Script.aculo.us Documentation:</b> <a href="http://wiki.script.aculo.us/scriptaculous/">http://wiki.script.aculo.us/scriptaculous/</a>.
+                </p>
+            </subsection>
+        </section>
+    </body>
+</document>

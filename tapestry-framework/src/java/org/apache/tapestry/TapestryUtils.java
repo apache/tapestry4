@@ -145,8 +145,7 @@ public final class TapestryUtils
         IForm result = (IForm) cycle.getAttribute(FORM_ATTRIBUTE);
 
         if (result == null)
-            throw new ApplicationRuntimeException(TapestryMessages.noForm(component), component
-                    .getLocation(), null);
+            throw new ApplicationRuntimeException(TapestryMessages.noForm(component), component.getLocation(), null);
 
         return result;
     }
