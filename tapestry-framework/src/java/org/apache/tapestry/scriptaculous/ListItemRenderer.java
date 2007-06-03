@@ -15,10 +15,10 @@ import java.util.Iterator;
  * be an unordered html list.
  * <p/>
  * <pre>
- * <ul>
- *   <li>Apple</li>
- *   <li>Apricot</li>
- * </ul>
+ * &lt;ul&gt;
+ *   &lt;li&gt;Apple&lt;/li&gt;
+ *   &lt;li&gt;Apricot&lt;/li&gt;
+ * &lt;/ul&gt;
  * </pre>
  */
 public interface ListItemRenderer {

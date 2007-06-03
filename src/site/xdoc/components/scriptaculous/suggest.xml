@@ -99,7 +99,7 @@
                         <td> </td>
                         <td>
                             The user-presentable name for the component, which will be used by a
-                            <a href="fieldlabel.html">FieldLabel</a>
+                            <a href="../form/fieldlabel.html">FieldLabel</a>
                             connected to the component.
                         </td>
                     </tr>
@@ -125,7 +125,7 @@
                         <td>translator</td>
                         <td>
                             <a
-                                href="../../tapestry/apidocs/org/apache/tapestry/form/translator/Translator.html">
+                                href="../../apidocs/org/apache/tapestry/form/translator/Translator.html">
                                 Translator
                             </a>
                         </td>
