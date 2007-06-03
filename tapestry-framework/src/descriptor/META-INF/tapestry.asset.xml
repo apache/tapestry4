@@ -179,6 +179,7 @@
         <unprotected-resource contains="^/org/apache/tapestry/.*.html" />
 
         <unprotected-resource contains="^/dojo.*/" />
+        <unprotected-resource contains="^/scriptaculous.*/" />
     </contribution>
 
     <service-point id="UnprotectedResourceMatcher" interface="ResourceMatcher" >

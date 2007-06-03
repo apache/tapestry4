@@ -33,16 +33,13 @@ import org.apache.tapestry.valid.ValidatorException;
  * {@link IPropertySelectionModel} to provide the list of possible values.
  * <p>
  * Often, this is used to select a particular {@link java.lang.Enum} to assign to
- * a property; the {@link EnumPropertySelectionModel} class simplifies this.
+ * a property; the {@link org.apache.tapestry.form.EnumPropertySelectionModel} class simplifies this.
  * <p>
  * Often, a drop-down list will contain an initial option that serves both as a label and to represent 
  * that nothing is selected. This can behavior can easily be achieved by decorating an existing 
  * {@link IPropertySelectionModel} with a {@link LabeledPropertySelectionModel}.
  * <p>
- * As of 4.0, this component can be validated.
  * 
- * @author Howard Lewis Ship
- * @author Paul Ferraro
  */
 public abstract class PropertySelection extends AbstractFormComponent implements ValidatableField
 {   

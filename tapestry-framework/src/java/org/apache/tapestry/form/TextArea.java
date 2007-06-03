@@ -49,7 +49,8 @@ public abstract class TextArea extends AbstractFormComponent implements
 
         writer.attribute("name", getName());
 
-        if (isDisabled()) writer.attribute("disabled", "disabled");
+        if (isDisabled())
+            writer.attribute("disabled", "disabled");
 
         renderIdAttribute(writer, cycle);
 
@@ -60,7 +61,8 @@ public abstract class TextArea extends AbstractFormComponent implements
 
         renderInformalParameters(writer, cycle);
 
-        if (value != null) writer.print(value);
+        if (value != null)
+            writer.print(value);
 
         writer.end();
 

@@ -14,11 +14,11 @@
 
 package org.apache.tapestry.engine;
 
-import java.util.Collection;
-
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IDirect;
 import org.apache.tapestry.IDynamicInvoker;
+
+import java.util.Collection;
 
 /**
  * Parameter object used by {@link org.apache.tapestry.engine.DirectService}.
@@ -81,7 +81,6 @@ public class DirectServiceParameter
         
         if (!_json && !_async && _updateParts.length > 0)
             _async = true;
-        
     }
     
     public IDirect getDirect()

@@ -14,15 +14,15 @@
 
 package org.apache.tapestry.workbench.table;
 
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
-import java.util.StringTokenizer;
-
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.contrib.table.model.IPrimaryKeyConvertor;
+
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
+import java.util.StringTokenizer;
 
 /**
  * @author mindbridge
@@ -70,7 +70,7 @@ public abstract class LocaleList extends BaseComponent
 
     @Parameter(required = true)
     public abstract ILocaleSelectionListener getLocaleSelectionListener();
-    
+
     public IPrimaryKeyConvertor getLocaleConvertor()
     {
         return m_objLocaleConvertor;

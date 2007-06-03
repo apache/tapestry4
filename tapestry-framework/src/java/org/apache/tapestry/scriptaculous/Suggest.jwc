@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Copyright 2007 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+        
+<!DOCTYPE component-specification PUBLIC
+        "-//Apache Software Foundation//Tapestry Specification 4.0//EN"
+        "http://tapestry.apache.org/dtd/Tapestry_4_0.dtd">
+
+<component-specification class="org.apache.tapestry.scriptaculous.Suggest" allow-body="no" allow-informal-parameters="yes">
+
+    <description>
+        Provides dynamic suggestion list autocompletion for textarea and input text fields.
+    </description>
+
+    <parameter name="listener" required="true">
+        <description>
+            Listener method to invoke for each field search request. This listener
+            should expect to get exactly one paramter of type String, which is the value that was typed in to the field. It may additionally
+            receive extra parameters if the parameters parameter is used.
+        </description>
+    </parameter>
+
+    <parameter name="parameters">
+        <description>
+            An array of objects to be encoded into the URL.
+            These parameters will be decoded when the autocompleter is triggered
+            and passed to the listener method. Note that the first parameter passed
+            to the listener will always be the 'search string' - the parameters
+            defined here will follow.
+        </description>
+    </parameter>
+
+    <parameter name="listSource" required="true">
+        <description>
+            Object,String[],Collection of values to be used to autocomplete a particular
+            autocomplete field search, this should be set when this component invokes your input
+            search listener.
+        </description>
+    </parameter>
+
+    <parameter name="stateful" default-value="ognl:false">
+        <description>
+            Whether or not the request created by this component should be required to be stateful or not, default is false.
+        </description>
+    </parameter>
+
+    <parameter name="listItemRenderer">
+        <description>
+            The ListItemRenderer that should be used to render the drop down list, the
+            default renderer iterates over the values and puts the string value in a &lt;li&gt;&lt;/li&gt; block.
+        </description>
+    </parameter>
+
+    <parameter name="maxResults">
+        <description>The maximum number of results to display in response to an autocompletion search request.</description>
+    </parameter>
+
+    <parameter name="updateElementClass" default-value="literal:autocomplete">
+        <description>
+            The class attribute set on the element that will be populated with the results of the autocompletion list
+            response.
+        </description>
+    </parameter>
+    
+    <parameter name="options" default-value="literal:{method: 'get', frequency: 0.2}">
+        <description>
+            Options to be passed directly to the javascript constructor of this javascript control in the form
+            of a json object property map.
+        </description>
+    </parameter>
+
+    <parameter name="value" required="yes" />
+    <parameter name="disabled" />
+    <parameter name="displayName" />
+    <parameter name="translator" default-value="translator:string" />
+    <parameter name="validators" />
+
+    <inject property="listenerInvoker" object="infrastructure:listenerInvoker" />
+    <inject property="engineService" object="service:tapestry.services.Direct" />    
+    <inject property="script" type="script" object="Suggest.script" />
+    <inject property="valueConverter" object="service:tapestry.coerce.ValueConverter" />
+    <inject property="translatedFieldSupport" object="service:tapestry.form.TranslatedFieldSupport" />
+    <inject property="validatableFieldSupport" object="service:tapestry.form.ValidatableFieldSupport" />
+
+</component-specification>

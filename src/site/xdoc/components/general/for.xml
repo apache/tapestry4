@@ -59,7 +59,7 @@
                         <td>source</td>
                         <td>Iterator, Collection, Object[], or Object</td>
                         <td>yes</td>
-                        <td></td>
+                        <td> </td>
                         <td>
                             The source of objects to be iterated, which may be a Collection, an
                             Iterator, an array of Objects, or a even a single Object (which is

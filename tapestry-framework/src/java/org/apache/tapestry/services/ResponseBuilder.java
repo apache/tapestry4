@@ -13,14 +13,10 @@
 // limitations under the License.
 package org.apache.tapestry.services;
 
-import java.io.IOException;
-
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRender;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.PageRenderSupport;
+import org.apache.tapestry.*;
 import org.apache.tapestry.services.impl.DojoAjaxResponseBuilder;
+
+import java.io.IOException;
 
 /**
  * Represents the service responsible for managing all content output that is sent
@@ -47,7 +43,6 @@ import org.apache.tapestry.services.impl.DojoAjaxResponseBuilder;
  * when managaing client side browser state. 
  * </p>
  *
- * @author jkuhnert
  * @since 4.1
  */
 public interface ResponseBuilder extends PageRenderSupport {
@@ -325,5 +320,5 @@ public interface ResponseBuilder extends PageRenderSupport {
      * @param text
      *          The status message. 
      */
-    void addStatusMessage(IMarkupWriter normalWriter, String category, String text);
+    void addStatusMessage(IMarkupWriter writer, String category, String text);
 }
