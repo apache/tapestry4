@@ -14,25 +14,8 @@
 
 package org.apache.tapestry.form;
 
-import static org.easymock.EasyMock.aryEq;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.hivemind.util.PropertyUtils;
-import org.apache.tapestry.IActionListener;
-import org.apache.tapestry.IBinding;
-import org.apache.tapestry.IForm;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IScript;
-import org.apache.tapestry.PageRenderSupport;
+import org.apache.tapestry.*;
 import org.apache.tapestry.engine.DirectServiceParameter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
@@ -41,7 +24,10 @@ import org.apache.tapestry.test.Creator;
 import org.apache.tapestry.util.ScriptUtils;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidationConstants;
+import static org.easymock.EasyMock.*;
 import org.testng.annotations.Test;
+
+import java.util.*;
 
 /**
  * Tests for {@link org.apache.tapestry.form.Submit}.
@@ -377,11 +363,11 @@ public class TestSubmit extends BaseFormComponentTestCase
         IEngineService engine = newEngineService();
         ILink link = newMock(ILink.class);
         
-        Submit submit = newInstance(Submit.class, 
-                new Object[] {"submitType", "cancel", 
-            "submitScript", script, "form", form, 
-            "async", true, "updateComponents", updates,
-            "directService", engine});
+        Submit submit = newInstance(Submit.class,
+                                    "submitType", "cancel",
+                                    "submitScript", script, "form", form,
+                                    "async", true, "updateComponents", updates,
+                                    "directService", engine);
         
         submit.setBinding("onClick", binding);
         
@@ -389,7 +375,6 @@ public class TestSubmit extends BaseFormComponentTestCase
         IMarkupWriter writer = newWriter();
         
         expect(engine.getLink(eq(true), isA(DirectServiceParameter.class))).andReturn(link);
-        
         expect(link.getURL()).andReturn("/test/url");
         
         PageRenderSupport prs = newPageRenderSupport();

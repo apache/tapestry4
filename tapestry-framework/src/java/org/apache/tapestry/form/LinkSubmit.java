@@ -63,9 +63,7 @@ public abstract class LinkSubmit extends AbstractSubmit
         String name = getName();
 
         if (!disabled)
-        {
-            PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, this);
-            
+        {            
             writer.begin("a");
             writer.attribute("href", "#");
             
@@ -75,13 +73,20 @@ public abstract class LinkSubmit extends AbstractSubmit
             
             renderSubmitBindings(writer, cycle);
 
-            Map symbols = new HashMap();
-            symbols.put("form", form);
-            symbols.put("name", name);
-            symbols.put("component", this);
-            symbols.put("functionName", ScriptUtils.functionHash("onclick" + this.hashCode()));
+            // only if superclass hasn't done it already
+            
+            if (!isSubmitBindingBound())
+            {
+                PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, this);
 
-            getScript().execute(this, cycle, pageRenderSupport, symbols);
+                Map symbols = new HashMap();
+                symbols.put("form", form);
+                symbols.put("name", name);
+                symbols.put("component", this);
+                symbols.put("functionName", ScriptUtils.functionHash("onclick" + this.hashCode()));
+
+                getScript().execute(this, cycle, pageRenderSupport, symbols);
+            }
         }
 
         renderBody(writer, cycle);
