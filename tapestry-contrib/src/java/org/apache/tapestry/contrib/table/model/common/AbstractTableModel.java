@@ -14,12 +14,12 @@
 
 package org.apache.tapestry.contrib.table.model.common;
 
-import java.io.Serializable;
-
 import org.apache.tapestry.contrib.table.model.ITableModel;
 import org.apache.tapestry.contrib.table.model.ITablePagingState;
 import org.apache.tapestry.contrib.table.model.ITableSortingState;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableState;
+
+import java.io.Serializable;
 
 /**
  * A base table model that implements the handling of the model state.
@@ -65,8 +65,6 @@ public abstract class AbstractTableModel implements ITableModel, Serializable
     {
         return m_objTableState;
     }
-
-    protected abstract int getRowCount();
     
     public int getPageCount()
     {
@@ -80,5 +78,4 @@ public abstract class AbstractTableModel implements ITableModel, Serializable
 
         return (nRowCount - 1) / nPageSize + 1;
     }
-    
 }

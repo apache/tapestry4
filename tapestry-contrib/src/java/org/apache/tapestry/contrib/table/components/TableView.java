@@ -14,28 +14,12 @@
 
 package org.apache.tapestry.contrib.table.components;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.contrib.table.model.IAdvancedTableColumnSource;
-import org.apache.tapestry.contrib.table.model.IBasicTableModel;
-import org.apache.tapestry.contrib.table.model.ITableAction;
-import org.apache.tapestry.contrib.table.model.ITableColumn;
-import org.apache.tapestry.contrib.table.model.ITableColumnModel;
-import org.apache.tapestry.contrib.table.model.ITableDataModel;
-import org.apache.tapestry.contrib.table.model.ITableModel;
-import org.apache.tapestry.contrib.table.model.ITableModelSource;
-import org.apache.tapestry.contrib.table.model.ITablePagingState;
-import org.apache.tapestry.contrib.table.model.ITableSessionStateManager;
-import org.apache.tapestry.contrib.table.model.ITableSessionStoreManager;
+import org.apache.tapestry.contrib.table.model.*;
 import org.apache.tapestry.contrib.table.model.common.BasicTableModelWrap;
 import org.apache.tapestry.contrib.table.model.simple.SimpleListTableDataModel;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumnModel;
@@ -44,6 +28,12 @@ import org.apache.tapestry.contrib.table.model.simple.SimpleTableState;
 import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEvent;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * A low level Table component that wraps all other low level Table components.
@@ -232,8 +222,7 @@ public abstract class TableView extends BaseComponent implements
             m_objTableModel = generateTableModel(null);
 
         if (m_objTableModel == null)
-            throw new ApplicationRuntimeException(TableMessages
-                    .missingTableModel(this));
+            throw new ApplicationRuntimeException(TableMessages.missingTableModel(this));
 
         return m_objTableModel;
     }

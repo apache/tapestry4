@@ -61,4 +61,11 @@ public interface ITableModel
      *         data, sorting, and paging state
      */
     Iterator getCurrentPageRows();
+
+    /**
+     * Returns the total number of rows / values this model is managing.
+     *
+     * @return The total number of rows - if known.
+     */
+    int getRowCount();
 }

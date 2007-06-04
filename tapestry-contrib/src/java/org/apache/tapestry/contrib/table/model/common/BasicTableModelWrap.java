@@ -14,12 +14,12 @@
 
 package org.apache.tapestry.contrib.table.model.common;
 
-import java.util.Iterator;
-
 import org.apache.tapestry.contrib.table.model.IBasicTableModel;
 import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.apache.tapestry.contrib.table.model.ITableColumnModel;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableState;
+
+import java.util.Iterator;
 
 /**
  * @author mindbridge
@@ -57,7 +57,7 @@ public class BasicTableModelWrap extends AbstractTableModel
     /**
      * @see org.apache.tapestry.contrib.table.model.common.AbstractTableModel#getRowCount()
      */
-    protected int getRowCount()
+    public int getRowCount()
     {
         return m_objBasicTableModel.getRowCount();
     }

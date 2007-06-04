@@ -14,15 +14,15 @@
 
 package org.apache.tapestry.contrib.table.model.sql;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Iterator;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.contrib.table.model.ITableColumnModel;
 import org.apache.tapestry.contrib.table.model.common.AbstractTableModel;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableState;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Iterator;
 
 /**
  * An implementation of ITableModel that obtains its data through SQL queries.
@@ -109,8 +109,7 @@ public class SqlTableModel extends AbstractTableModel
     {
         try
         {
-            ResultSet objResultSet = getSqlDataSource().getCurrentRows(
-                    getSqlColumnModel(), getState());
+            ResultSet objResultSet = getSqlDataSource().getCurrentRows(getSqlColumnModel(), getState());
 
             return new ResultSetIterator(objResultSet)
             {
@@ -141,7 +140,7 @@ public class SqlTableModel extends AbstractTableModel
     /**
      * @see org.apache.tapestry.contrib.table.model.common.AbstractTableModel#getRowCount()
      */
-    protected int getRowCount()
+    public int getRowCount()
     {
         try
         {
