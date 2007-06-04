@@ -61,9 +61,9 @@
       <construct class="impl.CookieSourceImpl">
         <set-service property="request" service-id="tapestry.globals.HttpServletRequest"/>
         <set-service property="response" service-id="tapestry.globals.HttpServletResponse"/>
-        <set property="defaultMaxAge" value="${org.apache.tapestry.default-cookie-max-age}"/>
+        <set-object property="defaultMaxAge" value="app-property:org.apache.tapestry.default-cookie-max-age"/>
       </construct>
-    </invoke-factory>    
+    </invoke-factory>
   </service-point>  
   
   <service-point id="EngineManager">

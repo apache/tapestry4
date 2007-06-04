@@ -120,4 +120,10 @@ public class CookieSourceImpl implements CookieSource
     {
         _defaultMaxAge = defaultMaxAge;
     }
+
+    /** Because hivemind doesn't convert for us */
+    public void setDefaultMaxAge(String max)
+    {
+        _defaultMaxAge = Integer.parseInt(max);
+    }
 }
