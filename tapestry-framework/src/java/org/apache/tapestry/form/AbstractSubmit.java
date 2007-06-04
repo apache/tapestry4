@@ -130,14 +130,13 @@ abstract class AbstractSubmit extends AbstractFormComponent implements IDynamicI
             json.put("async", Boolean.TRUE);
             json.put("json", isJson());
             
-            DirectServiceParameter dsp = 
-                new DirectServiceParameter(form, null, this);
+            DirectServiceParameter dsp = new DirectServiceParameter(form, null, this);
             
             json.put("url", getDirectService().getLink(true, dsp).getURL());
         }
         
         if (!type.equals(FormConstants.SUBMIT_NORMAL)) {
-            if (!isParameterBound("onClick")
+            if (!isParameterBound("onClick") && !isParameterBound("onclick")
                 && (!isAsync() && (update == null || update.size() == 0))) {
                 
                 StringBuffer str = new StringBuffer();
@@ -174,9 +173,27 @@ abstract class AbstractSubmit extends AbstractFormComponent implements IDynamicI
             
             PageRenderSupport prs = TapestryUtils.getPageRenderSupport(cycle, this);
             getSubmitScript().execute(this, cycle, prs, parms);
+
+            setSubmitBindingBound(true);
         }
     }
-    
+
+    /**
+     * Used internall to track whether or not an async submit binding was rendered
+     * as a result of calling {@link #renderSubmitBindings(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)}.
+     *
+     * <p>
+     * Currently this is used to track javascript contributions between the base and subclasses so that
+     * duplicate client side bindings aren't created - such as the case with {@link LinkSubmit} where
+     * client side javascript is always bound to the click of the link - with only the XHR behaviour
+     * changing depending on the configuration of the component.
+     * </p>
+     *
+     * @return True if submit bindings have been configured for this component instance, false otherwise.
+     */
+    public abstract boolean isSubmitBindingBound();
+    public abstract void setSubmitBindingBound(boolean value);
+
     /** parameter. */
     public abstract IActionListener getListener();
     
@@ -212,7 +229,9 @@ abstract class AbstractSubmit extends AbstractFormComponent implements IDynamicI
      * {@inheritDoc}
      */
     public abstract boolean isJson();
-    
+
+
+
     /** Injected. */
     public abstract IEngineService getDirectService();
     

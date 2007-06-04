@@ -18,24 +18,25 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.*;
+import org.apache.tapestry.engine.DirectServiceParameter;
+import org.apache.tapestry.engine.IEngineService;
+import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.valid.IValidationDelegate;
-import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.*;
 import org.testng.annotations.Test;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
- * Tests for {@link org.apache.tapestry.form.LinkSubmit}
- * 
- * @author Howard Lewis Ship
- * @since 4.0
+ * Tests for {@link org.apache.tapestry.form.LinkSubmit} 
  */
-@Test(sequential=true)
+@Test
 public class LinkSubmitTest extends BaseComponentTestCase
 {
     private class ScriptFixture implements IScript
     {
-
         public void execute(IRequestCycle cycle, IScriptProcessor processor, Map symbols)
         {
             assertNotNull(cycle);
@@ -74,9 +75,7 @@ public class LinkSubmitTest extends BaseComponentTestCase
                                             "id", "fred_id", "clientId", "fred_1", "submitType", "submit");
         
         linkSubmit.addBody(newBody());
-
         trainGetSupport(cycle, support);
-        
         trainResponseBuilder(cycle, writer);
         
         replay();
@@ -107,6 +106,44 @@ public class LinkSubmitTest extends BaseComponentTestCase
         verify();
 
         assertBuffer("BODY");
+    }
+
+    public void test_Render_Submit_Bindings_True()
+    {
+        IMarkupWriter writer = newBufferWriter();
+        IRequestCycle cycle = newCycle();
+        IScript script = new ScriptFixture();
+        PageRenderSupport support = newPageRenderSupport();
+
+        IEngineService engine = newMock(IEngineService.class);
+        ILink link = newMock(ILink.class);
+        
+        IForm form = newForm();
+        List updates = Arrays.asList("comp1", "comp2");
+
+        LinkSubmit linkSubmit = newInstance(LinkSubmit.class,
+                                            "updateComponents", updates,
+                                            "form", form,
+                                            "name", "submitMe",
+                                            "clientId", "submitMe",
+                                            "submitType", FormConstants.SUBMIT_NORMAL,
+                                            "directService", engine,
+                                            "submitScript", script);
+        linkSubmit.addBody(newBody());
+
+        expect(engine.getLink(eq(true), isA(DirectServiceParameter.class))).andReturn(link);
+        expect(link.getURL()).andReturn("http://submit");
+
+        trainGetSupport(cycle, support);
+        trainResponseBuilder(cycle, writer);
+
+        replay();
+
+        linkSubmit.renderFormComponent(writer, cycle);
+
+        verify();
+
+        assertBuffer("<a href=\"#\" id=\"submitMe\">BODY</a>");
     }
 
     public void test_Prepare_Normal()

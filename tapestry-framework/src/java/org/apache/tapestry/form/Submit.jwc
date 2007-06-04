@@ -84,11 +84,8 @@
   </parameter>
   
   <parameter name="updateComponents" />
-  
   <parameter name="json" default-value="false" />
-  
   <parameter name="async" default-value="false" />
-  
   <parameter name="id" property="idParameter" default-value="id"/>
   
   <reserved-parameter name="name"/>
