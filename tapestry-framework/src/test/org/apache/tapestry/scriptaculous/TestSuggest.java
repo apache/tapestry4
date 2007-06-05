@@ -61,9 +61,9 @@ public class TestSuggest extends BaseComponentTestCase {
 
         expect(cycle.isRewinding()).andReturn(false).anyTimes();
         expect(resp.isDynamic()).andReturn(false);
-        trainGetAttribute(cycle, TapestryUtils.FORM_ATTRIBUTE, form);
+        expect(cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE)).andReturn(form).anyTimes();
 
-        expect(form.wasPrerendered(writer, comp)).andReturn(false);
+        expect(form.wasPrerendered(writer, comp)).andReturn(false).anyTimes();
         expect(form.getDelegate()).andReturn(delegate).anyTimes();
         expect(form.getElementId(comp)).andReturn("suggest");
         expect(form.isRewinding()).andReturn(false).anyTimes();
@@ -133,9 +133,9 @@ public class TestSuggest extends BaseComponentTestCase {
 
         expect(cycle.isRewinding()).andReturn(false).anyTimes();
         expect(resp.isDynamic()).andReturn(false);
-        trainGetAttribute(cycle, TapestryUtils.FORM_ATTRIBUTE, form);
+        expect(cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE)).andReturn(form).anyTimes();
 
-        expect(form.wasPrerendered(writer, comp)).andReturn(false);
+        expect(form.wasPrerendered(writer, comp)).andReturn(false).anyTimes();
         expect(form.getDelegate()).andReturn(delegate).anyTimes();
         expect(form.getElementId(comp)).andReturn("suggest");
         expect(form.isRewinding()).andReturn(false).anyTimes();
@@ -203,7 +203,7 @@ public class TestSuggest extends BaseComponentTestCase {
 
         expect(cycle.isRewinding()).andReturn(false).anyTimes();
         expect(resp.isDynamic()).andReturn(false);
-        trainGetAttribute(cycle, TapestryUtils.FORM_ATTRIBUTE, form);
+        expect(cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE)).andReturn(form).anyTimes();
 
         expect(translator.format(comp, null)).andReturn("r2d2");
         translator.renderContributions(comp, writer, cycle);
@@ -258,12 +258,15 @@ public class TestSuggest extends BaseComponentTestCase {
                                    "listSource", source,
                                    "valueConverter", converter,
                                    "listItemRenderer", DefaultListItemRenderer.SHARED_INSTANCE);
-        
+
+        expect(form.isRewinding()).andReturn(false);
         expect(cycle.isRewinding()).andReturn(false).anyTimes();
         expect(resp.isDynamic()).andReturn(true);
         trainGetAttribute(cycle, TapestryUtils.FORM_ATTRIBUTE, form);
         expect(form.wasPrerendered(writer, comp)).andReturn(false);
 
+        expect(form.getElementId(comp)).andReturn("suggest");
+        expect(cycle.getParameter("suggest")).andReturn("b");
         expect(converter.coerceValue(source, Iterator.class)).andReturn(source.iterator());
 
         replay();
