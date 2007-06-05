@@ -144,12 +144,20 @@ public abstract class Suggest extends AbstractFormComponent implements Translate
         // render search triggered response instead of normal render if
         // listener was invoked
 
-        if (!cycle.isRewinding()
+        IForm form = TapestryUtils.getForm(cycle, this);
+        setForm(form);
+        
+        if (form.wasPrerendered(writer, this))
+                return;
+        
+        if (!form.isRewinding() && !cycle.isRewinding()
             && getResponse().isDynamic() && isSearchTriggered()) {
 
-            IForm form = TapestryUtils.getForm(cycle, this);
+            setName(form);
+
+            // do nothing if it wasn't for this instance - such as in a loop
             
-            if (form.wasPrerendered(writer, this))
+            if (cycle.getParameter(getClientId()) == null)
                 return;
 
             renderList(writer, cycle);
@@ -157,6 +165,7 @@ public abstract class Suggest extends AbstractFormComponent implements Translate
         }
 
         // defer to super if normal render
+
         super.renderComponent(writer, cycle);
     }
 
