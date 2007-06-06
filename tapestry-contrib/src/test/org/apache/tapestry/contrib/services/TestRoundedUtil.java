@@ -83,7 +83,7 @@ public class TestRoundedUtil extends JComponent {
 
         try {
 
-            image = generator.buildCorner("FF7E00", "white", 160, 160, "tr", 8, 0.6f);
+            image = generator.buildCorner("6188C7", "white", 6, 6, "tr", -1, -1);
         }
         catch (Exception e) {
             e.printStackTrace();

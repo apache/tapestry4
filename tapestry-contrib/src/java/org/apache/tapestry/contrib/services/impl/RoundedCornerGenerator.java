@@ -70,7 +70,7 @@ public class RoundedCornerGenerator {
 
         if (shadowWidth <= 0) {
 
-            BufferedImage arc = drawArc(color, backgroundColor, width, height, angle, false, -1);
+            BufferedImage arc = drawArc(color, width, height, angle, false, -1);
             BufferedImage ret = arc;
 
             Arc2D.Float arcArea = new Arc2D.Float(0, 0, width, height, startAngle, 90, Arc2D.PIE);
@@ -87,14 +87,16 @@ public class RoundedCornerGenerator {
                 g2.drawImage(arc, 0, 0, null);
                 
                 g2.dispose();
+
+                ret = convertType(ret, BufferedImage.TYPE_INT_RGB);
             }
-            
-            return convertType(ret, BufferedImage.TYPE_INT_RGB).getSubimage((int)arcArea.getBounds2D().getX(), (int)arcArea.getBounds2D().getY(),
-                    (int)arcArea.getBounds2D().getWidth(), (int)arcArea.getBounds2D().getHeight());
+
+            return ret.getSubimage((int)arcArea.getBounds2D().getX(), (int)arcArea.getBounds2D().getY(),
+                                   (int)arcArea.getBounds2D().getWidth(), (int)arcArea.getBounds2D().getHeight());
         }
 
-        BufferedImage mask = drawArc(color, backgroundColor, width, height, angle, true, shadowWidth);
-        BufferedImage arc = drawArc(color, backgroundColor, width, height, angle, false, shadowWidth);
+        BufferedImage mask = drawArc(color, width, height, angle, true, shadowWidth);
+        BufferedImage arc = drawArc(color, width, height, angle, false, shadowWidth);
 
         float startX = 0;
         float startY = 0;
@@ -150,10 +152,9 @@ public class RoundedCornerGenerator {
         return result;
     }
 
-    BufferedImage drawArc(String color, String backgroundColor, int width, int height, String angle, boolean masking, int shadowWidth)
+    BufferedImage drawArc(String color, int width, int height, String angle, boolean masking, int shadowWidth)
     {
         Color arcColor = decodeColor(color);
-        Color bgColor = backgroundColor == null ? null : decodeColor(backgroundColor);
         float startAngle = getStartAngle(angle);
 
         int canvasWidth = width;
@@ -204,6 +205,7 @@ public class RoundedCornerGenerator {
         
         // draw arc
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 
         g2.setColor(arcColor);
         g2.setComposite(AlphaComposite.Src);

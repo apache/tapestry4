@@ -3016,9 +3016,12 @@ Object.extend(Event, {
     element = $(element);
     useCapture = useCapture || false;
 
-    if (name == 'keypress' &&
+    /* if (name == 'keypress' &&
       (Prototype.Browser.WebKit || element.attachEvent))
-      name = 'keydown';
+      name = 'keydown';*/
+    if (name == 'keypress' &&
+        ((element.attachEvent && !window.opera) || Prototype.Browser.WebKit))
+        name = 'keydown';
 
     Event._observeAndCache(element, name, observer, useCapture);
   },
@@ -3028,7 +3031,7 @@ Object.extend(Event, {
     useCapture = useCapture || false;
 
     if (name == 'keypress' &&
-        (Prototype.Browser.WebKit || element.attachEvent))
+        ((element.attachEvent && !window.opera) || Prototype.Browser.WebKit))
       name = 'keydown';
 
     if (element.removeEventListener) {
