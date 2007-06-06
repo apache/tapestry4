@@ -1,5 +1,6 @@
 package org.apache.tapestry.contrib.services.impl;
 
+import org.apache.commons.logging.Log;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IEngineService;
@@ -58,6 +59,8 @@ public class RoundedCornerService implements IEngineService {
 
     // holds pre-built binaries for previously generated colors
     private Map _imageCache = new HashMap();
+
+    private Log _log;
 
     public ILink getLink(boolean post, Object parameter)
     {
@@ -129,6 +132,20 @@ public class RoundedCornerService implements IEngineService {
             ImageIO.write(image, type, bo);
 
             data = bo.toByteArray();
+
+            if (data == null || data.length < 1)
+            {
+                _log.error("Image generated had zero length byte array from parameters of:\n"
+                           + "[color:" + color + ", bgColor:" + bgColor
+                           + ", width:" + width + ", height:" + height
+                           + ", angle:" + angle + ", shadowWidth:" + shadowWidth
+                           + ", shadowOpacity:" + shadowOpacity + ", side:" + side
+                           + ", wholeShadow: " + wholeShadow + ", arcWidth: " + arcWidth
+                           + ", arcHeight:" + arcHeight + "\n image: " + image);
+
+                _response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                return;
+            }
 
             _imageCache.put(hashKey, data);
 
@@ -219,5 +236,10 @@ public class RoundedCornerService implements IEngineService {
     public void setResponse(WebResponse response)
     {
         _response = response;
+    }
+
+    public void setLog(Log log)
+    {
+        _log = log;
     }
 }
