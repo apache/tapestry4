@@ -24,8 +24,6 @@ import java.util.List;
 /**
  * Tests for the {@link org.apache.tapestry.html.Shell}&nbsp; component.
  * 
- * @author Howard M. Lewis Ship
- * @since 4.0
  */
 @Test
 public class TestShell extends BaseComponentTestCase
@@ -47,7 +45,6 @@ public class TestShell extends BaseComponentTestCase
         Shell shell = (Shell) newInstance(Shell.class, "builder", builder);
         
         expect(cycle.renderStackPush(shell)).andReturn(shell);
-        
         shell.addBody(body);
 
         trainStoreShellInCycle(cycle, shell);
@@ -59,7 +56,6 @@ public class TestShell extends BaseComponentTestCase
         nested.close();
         
         trainRemoveShellFromCycle(cycle);
-        
         expect(cycle.renderStackPop()).andReturn(shell);
         
         replay();

@@ -25,7 +25,7 @@
     <binding name="service" value="ognl:@org.apache.tapestry.Tapestry@RESTART_SERVICE"/>
   </component>
   
-  <asset name="stylesheet" path="Exception.css"/>
-  <asset name="dynamicStylesheet" path="Exception-Dynamic.css"/>
+  <asset name="stylesheet" path="Exception.css" />
+  <asset name="dynamicStylesheet" path="Exception-Dynamic.css" />
   
 </page-specification>

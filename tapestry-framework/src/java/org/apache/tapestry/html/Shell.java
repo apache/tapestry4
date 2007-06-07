@@ -107,9 +107,7 @@ public abstract class Shell extends AbstractComponent
             if (stylesheet != null)
                 writeStylesheetLink(writer, cycle, stylesheet);
 
-            Iterator i = (Iterator) getValueConverter().coerceValue(
-                    getStylesheets(),
-                    Iterator.class);
+            Iterator i = (Iterator) getValueConverter().coerceValue(getStylesheets(), Iterator.class);
 
             while (i.hasNext())
             {
@@ -125,7 +123,7 @@ public abstract class Shell extends AbstractComponent
 
         renderBody(nested, cycle);
 
-        if (!rewinding && !dynamic)
+        if (!rewinding)
         {
             List relations = getRelations();
             if (relations != null)

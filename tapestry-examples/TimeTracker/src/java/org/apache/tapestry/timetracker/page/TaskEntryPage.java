@@ -13,6 +13,7 @@
 // limitations under the License.
 package org.apache.tapestry.timetracker.page;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.log4j.Logger;
 import org.apache.tapestry.annotations.Component;
 import org.apache.tapestry.annotations.EventListener;
@@ -106,6 +107,8 @@ public abstract class TaskEntryPage<E extends Persistent> extends BasePage
     public void projectSelected()
     {
         getBuilder().updateComponent("projectDescription");
+        
+        throw new ApplicationRuntimeException("I just made this up. :)");
     }
 
     public void showDialog()
