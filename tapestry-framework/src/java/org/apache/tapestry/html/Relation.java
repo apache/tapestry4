@@ -28,13 +28,13 @@ import java.io.StringWriter;
  * Works with the {@link Shell} component to define and append a 
  * relationship between documents (typically a stylesheet) to 
  * the HTML response. 
- * 
+ *
  * @author Andreas Andreou
  * @since 4.1.1
  */
 public abstract class Relation extends AbstractComponent
 {
-    /** 
+    /**
      * {@inheritDoc}
      */
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
@@ -45,9 +45,9 @@ public abstract class Relation extends AbstractComponent
 
             if (shell == null)
                 throw new ApplicationRuntimeException(
-                    HTMLMessages.shellComponentRequired(),
-                    this.getLocation(), null);
-                   
+                        HTMLMessages.shellComponentRequired(),
+                        this.getLocation(), null);
+
             if (getUseBody() && getHref() == null)
             {
                 renderStyleTag(shell, writer, cycle);
@@ -56,17 +56,17 @@ public abstract class Relation extends AbstractComponent
             {
                 renderLinkTag(shell, writer, cycle);
             }
-        }          
-    }    
-    
+        }
+    }
+
     protected void renderLinkTag(Shell shell, IMarkupWriter writer, IRequestCycle cycle)
     {
         Object href = getHref();
-        boolean ok = (href instanceof String) || (href instanceof IAsset);            
+        boolean ok = (href instanceof String) || (href instanceof IAsset);
         if (!ok)
             throw new ApplicationRuntimeException(HTMLMessages.stringOrIAssetExpected(),
-                this.getLocation(), null); 
-                
+                                                  this.getLocation(), null);
+
         String url;
         if (href instanceof String)
         {
@@ -76,7 +76,7 @@ public abstract class Relation extends AbstractComponent
         {
             url = ((IAsset)href).buildURL();
         }
-        
+
         RelationBean bean = new RelationBean();
         bean.setHref(url);
         bean.setMedia(getMedia());
@@ -84,48 +84,48 @@ public abstract class Relation extends AbstractComponent
         bean.setRev(getRev());
         bean.setTitle(getTitle());
         bean.setType(getType());
-        shell.addRelation(bean); 
-    }   
-    
+        shell.addRelation(bean);
+    }
+
     protected void renderStyleTag(Shell shell, IMarkupWriter writer, IRequestCycle cycle)
     {
-        if (getBody()==null) //nothing to include
+        if (getBody() == null) //nothing to include
         {
             return;
         }
-        
+
         StringWriter sWriter = new StringWriter();
         IMarkupWriter nested = getMarkupWriterSource().newMarkupWriter(new PrintWriter(sWriter),
-                new ContentType(writer.getContentType()));
-        
+                                                                       new ContentType(writer.getContentType()));
+
         nested.begin("style");
         nested.attribute("type", "text/css");
-        
+
         if (getMedia()!=null)
             nested.attribute("media", getMedia());
         if (getTitle()!=null)
-            nested.attribute("title", getTitle());        
+            nested.attribute("title", getTitle());
 
         renderBody(nested, cycle);
         nested.close();
 
         shell.includeAdditionalContent(sWriter.toString());
-    }    
-    
+    }
+
     public abstract boolean getUseBody();
-    
+
     public abstract Object getHref();
 
     public abstract String getRel();
-    
-    public abstract String getRev();  
-    
+
+    public abstract String getRev();
+
     public abstract String getType();
-    
+
     public abstract String getTitle();
-        
+
     public abstract String getMedia();
-    
+
     /* injected */
     public abstract MarkupWriterSource getMarkupWriterSource();
 

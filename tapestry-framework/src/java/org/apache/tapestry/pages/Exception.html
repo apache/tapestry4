@@ -16,9 +16,11 @@
 <span jwcid="$content$">
 <html jwcid="@Shell" title="Exception" stylesheet="asset:stylesheet" 
 	  disableCaching="true" doctype="ognl:''">
-  <head jwcid="@If" condition="ognl:dynamic"
-        renderTag="false"><style jwcid="@Style" href="asset:dynamicStylesheet"/></head>
 <body>
+
+<span jwcid="@If" condition="ognl:dynamic" renderTag="false">
+    <style jwcid="@Style" href="asset:dynamicStylesheet"/>
+</span>
 
 <span class="exception-top">
 <span class="exception-header">

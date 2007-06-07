@@ -408,9 +408,11 @@ var tapestry={
 		var dialog=dojo.widget.createWidget("Dialog", {widgetId:"exception"}, excnode);
 		dojo.event.connect(navnode, "onclick", dialog, "hide");
 		dojo.event.connect(dialog, "hide", dialog, "destroy");
-		
-		dialog.show();
-	},
+
+        setTimeout(function(){
+            dialog.show();
+        }, 100);
+    },
 	
 	/**
 	 * Function: cleanConnect

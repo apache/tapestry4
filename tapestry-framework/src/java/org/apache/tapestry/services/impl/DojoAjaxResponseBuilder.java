@@ -521,16 +521,20 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         {
             _statusMessages = new ArrayList();
         }
+        
         _statusMessages.add(category);
         _statusMessages.add(text);        
     }
     
     void writeStatusMessages() {
-        for (int i=0; i<_statusMessages.size(); i+=2)
+
+        for (int i=0; i < _statusMessages.size(); i+=2)
         {
             IMarkupWriter writer = getWriter((String) _statusMessages.get(i), "status");
+
             writer.printRaw((String) _statusMessages.get(i+1));                
         }
+        
         _statusMessages = null;            
     }
     
@@ -545,7 +549,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
             render.render(writer, cycle);
             return;
         }
-        
+
         // check for page exception renders and write content to writer so client can display them
         
         if (IPage.class.isInstance(render)) {
@@ -673,7 +677,13 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      */
     void endResponse()
     {
+        if (!_responseStarted)
+        {
+            beginResponse();
+        }
+        
         // write out captured content
+        
         if (_statusMessages != null)        
             writeStatusMessages();
         
@@ -684,9 +694,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
             
             String key = (String)keys.next();
             NestedMarkupWriter nw = (NestedMarkupWriter)_writers.get(key);
-            
-            nw.end();
-            
+                        
             buffer = nw.getBuffer();
             
             if (_log.isDebugEnabled()) {
