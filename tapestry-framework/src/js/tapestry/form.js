@@ -41,13 +41,12 @@ tapestry.form={
 		}
 		
 		if (!f) { return; }
-		
-		if(!dj_undef("focus", f)){
-			f.focus();
+        if (field.disabled || field.clientWidth < 1) {
 			return;
 		}
-		
-		if (field.disabled || field.clientWidth < 1) {
+        
+        if(!dj_undef("focus", f) && dojo.html.isShowing(f)){
+            f.focus();
 			return;
 		}
 		

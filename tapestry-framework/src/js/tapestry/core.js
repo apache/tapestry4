@@ -42,7 +42,8 @@ var tapestry={
 	// The current client side library version, usually matching the current java library version. (ie 4.1, etc..)
 	version:"4.1.2",
 	scriptInFlight:false, // whether or not javascript is currently being eval'd, default false
-	ScriptFragment:'(?:<script.*?>)((\n|.|\r)*?)(?:<\/script>)', // regexp for script elements
+	ScriptFragment:new RegExp('(?:<script.*?>)((\n|.|\r)*?)(?:<\/script>)', 'im'), // regexp for script elements
+    GlobalScriptFragment:new RegExp('(?:<script.*?>)((\n|.|\r)*?)(?:<\/script>)', 'img'), // regexp for global script fragments
     requestsInFlight:0, // how many ajax requests are currently in progress
     isIE:dojo.render.html.ie,
     
@@ -142,19 +143,13 @@ var tapestry={
 				dojo.log.err("Remote server exception received.");
 				tapestry.presentException(elms[i], kwArgs);
 				return;
-			}
-			
-			if (elmType == "page") {
-				window.location=elms[i].getAttribute("url");
-				return;
-			}
-                        
-                        if (elmType == "status") {
-                                dojo.event.topic.publish(id,
-                                    {message: tapestry.html.getContentAsString(elms[i])}
-                                );
-				continue;
-			}
+			} else if (elmType == "page") {
+                window.location=elms[i].getAttribute("url");
+                return;
+            } else if (elmType == "status") {
+                dojo.event.topic.publish(id, {message: tapestry.html.getContentAsString(elms[i])});
+                continue;
+            }
 			
 			// handle javascript evaluations
 			if (elmType == "script") {
@@ -225,17 +220,17 @@ var tapestry={
 	 * 
 	 */
 	loadContent:function(id, node, element){
-    	if (typeof element.childNodes != "undefined" && element.childNodes.length > 0) {
-        	for (var i = 0; i < element.childNodes.length; i++) {
-            	if (element.childNodes[i].nodeType != 1) { continue; }
-				
-            	var nodeId = element.childNodes[i].getAttribute("id");
-            	if (nodeId) {
-                	element=element.childNodes[i];
-                	break;
-            	}
-        	}
-    	}
+        if (typeof element.childNodes != "undefined" && element.childNodes.length > 0) {
+            for (var i = 0; i < element.childNodes.length; i++) {
+                if (element.childNodes[i].nodeType != 1) { continue; }
+
+                var nodeId = element.childNodes[i].getAttribute("id");
+                if (nodeId) {
+                    element=element.childNodes[i];
+                    break;
+                }
+            }
+        }
     	
     	dojo.event.browser.clean(node); // prevent mem leaks in ie
     	
@@ -302,36 +297,34 @@ var tapestry={
 	 */
 	loadScriptContent:function(element, async){
 		if (typeof async == "undefined") { async = true; }
-		
-		if (tapestry.scriptInFlight) {
+        async = this.isIE;
+
+        if (tapestry.scriptInFlight) {
 			dojo.log.debug("loadScriptContent(): scriptInFlight is true, sleeping");
 			setTimeout(function() { tapestry.loadScriptContent(element, async);}, 5);
 			return;
 		}
         
-		var text=tapestry.html.getContentAsString(element);
-		
-		var match = new RegExp(tapestry.ScriptFragment, 'img');
-	    var response = text.replace(match, '');
-	    var scripts = text.match(match);
+		var text=tapestry.html.getContentAsString(element);		
+	    var response = text.replace(this.GlobalScriptFragment, '');
+	    var scripts = text.match(this.GlobalScriptFragment);
 		
 		if (!scripts) { return; }
 		
-        match = new RegExp(tapestry.ScriptFragment, 'im');
         if (async) {
         	setTimeout(function() { 
-        		tapestry.evaluateScripts(scripts, match); 
+        		tapestry.evaluateScripts(scripts);
         	}, 60);
         } else {
-        	tapestry.evaluateScripts(scripts, match);
+        	tapestry.evaluateScripts(scripts);
         }
 	},
 	
-	evaluateScripts:function(scripts, match){
+	evaluateScripts:function(scripts){
 		tapestry.scriptInFlight = true;
        	
         for (var i=0; i<scripts.length; i++) {
-            var scr = scripts[i].match(match)[1];
+            var scr = scripts[i].match(this.ScriptFragment)[1];
             if(!scr || scr.length <= 0){continue;}
             try {
                 dojo.log.debug("evaluating script:", scr);
@@ -451,8 +444,8 @@ var tapestry={
  * Provides functionality related to parsing and rendering dom nodes.
  */
 tapestry.html={
-    
-    TextareaMatcher:'<textarea(.*?)/>', // regexp for compact textarea elements
+
+    TextareaRegexp:new RegExp('<textarea(.*?)/>'), // regexp for compact textarea elements
     TextareaReplacer:'<textarea$1></textarea>', // replace pattern for compact textareas
 	
     /**
@@ -528,17 +521,16 @@ tapestry.html={
 	},
 	
 	_getContentAsStringMozilla:function(node){
-		var xmlSerializer = new XMLSerializer();
+        if (!this.xmlSerializer){ this.xmlSerializer = new XMLSerializer();}
+        
 	    var s = "";
-	    for (var i = 0; i < node.childNodes.length; i++) {
-	        s += xmlSerializer.serializeToString(node.childNodes[i]);
+        for (var i = 0; i < node.childNodes.length; i++) {
+	        s += this.xmlSerializer.serializeToString(node.childNodes[i]);
 	        if (s == "undefined")
 		        return this._getContentAsStringGeneric(node);
-	    }
-	    
-        s = this._processTextareas(s);
-        
-	    return s;
+        }
+
+        return this._processTextareas(s);
 	},
 	
 	_getContentAsStringGeneric:function(node){
@@ -564,9 +556,8 @@ tapestry.html={
 
 	_processTextareas:function(htmlData)
  	{
-        var match = new RegExp(tapestry.html.TextareaMatcher);
-        while (htmlData.match(match)){
-            htmlData = htmlData.replace(match, tapestry.html.TextareaReplacer);
+        while (htmlData.match(this.TextareaRegexp)){
+            htmlData = htmlData.replace(this.TextareaRegexp, this.TextareaReplacer);
         }
         return htmlData;
  	}
