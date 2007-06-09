@@ -445,8 +445,8 @@ var tapestry={
  */
 tapestry.html={
 
-    TextareaRegexp:new RegExp('<textarea(.*?)/>'), // regexp for compact textarea elements
-    TextareaReplacer:'<textarea$1></textarea>', // replace pattern for compact textareas
+    TextareaRegexp:new RegExp('<([a-zA-Z]?)\\s(.*?)/>'), // regexp for compact textarea elements
+    TextareaReplacer:'<$1 $2></$1>', // replace pattern for compact textareas
 	
     /**
 	 * Function: getContentAsString
