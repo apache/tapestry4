@@ -14,7 +14,12 @@
 package org.apache.tapestry.asset;
 
 import org.apache.commons.logging.LogFactory;
+import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.impl.DefaultClassResolver;
+import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.TestBase;
+import org.apache.tapestry.util.ContentType;
+import org.apache.tapestry.web.WebContext;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
 import static org.easymock.EasyMock.checkOrder;
@@ -22,6 +27,7 @@ import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
 import java.net.URLConnection;
 import java.text.DateFormat;
 
@@ -141,5 +147,52 @@ public class TestAssetService extends TestBase {
         
         verify();
         org.easymock.classextension.EasyMock.verify(url);
+    }
+
+    public void test_ETag_Header_Response()
+            throws Exception
+    {
+        WebRequest request = newMock(WebRequest.class);
+        checkOrder(request, false);
+        WebResponse response = newMock(WebResponse.class);
+        WebContext context = newMock(WebContext.class);
+        IRequestCycle cycle = newMock(IRequestCycle.class);
+        ResourceMatcher matcher = newMock(ResourceMatcher.class);
+        
+        ClassResolver resolver = new DefaultClassResolver();
+        URLConnection url = resolver.getResource("/org/apache/tapestry/asset/tapestry-in-action.png").openConnection();
+
+        AssetService service = new AssetService();
+        service.setRequest(request);
+        service.setResponse(response);
+        service.setLog(LogFactory.getLog("test"));
+        service.setUnprotectedMatcher(matcher);
+        service.setClassResolver(resolver);
+        service.setContext(context);
+
+        expect(cycle.getParameter("path")).andReturn("/org/apache/tapestry/asset/tapestry-in-action.png");
+        expect(cycle.getParameter("digest")).andReturn(null);
+
+        expect(matcher.containsResource("/org/apache/tapestry/asset/tapestry-in-action.png")).andReturn(true);
+
+        expect(request.getHeader("If-Modified-Since")).andReturn(null);
+        expect(context.getMimeType("/org/apache/tapestry/asset/tapestry-in-action.png")).andReturn("image/png");
+
+        response.setDateHeader("Last-Modified", url.getLastModified());
+        response.setDateHeader("Expires", service._expireTime);
+        response.setHeader("Cache-Control", "public, max-age=" + (AssetService.MONTH_SECONDS * 3));
+
+        expect(request.getHeader("User-Agent")).andReturn("Mozilla").anyTimes();
+
+        response.setHeader("ETag", "W/\"" + url.getContentLength() + "-" + url.getLastModified() + "\"");
+        response.setContentLength(url.getContentLength());
+
+        expect(response.getOutputStream(new ContentType("image/png"))).andReturn(new ByteArrayOutputStream());
+
+        replay();
+
+        service.service(cycle);
+
+        verify();        
     }
 }

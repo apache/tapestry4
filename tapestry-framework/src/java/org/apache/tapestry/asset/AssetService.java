@@ -35,10 +35,7 @@ import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.DateFormat;
@@ -106,7 +103,7 @@ public class AssetService implements IEngineService
     }
     
     /** Represents a month of time in seconds. */
-    private static final long MONTH_SECONDS = 60 * 60 * 24 * 30;
+    static final long MONTH_SECONDS = 60 * 60 * 24 * 30;
     
     private Log _log;
     
@@ -145,13 +142,16 @@ public class AssetService implements IEngineService
      * them to not expire ... but a year will do.
      */
 
-    private final long _expireTime = _startupTime + 365 * 24 * 60 * 60 * 1000L;
+    final long _expireTime = _startupTime + 365 * 24 * 60 * 60 * 1000L;
 
     /** @since 4.0 */
 
     private RequestExceptionReporter _exceptionReporter;
-    
-    private Map _cache = new HashMap();
+
+    /**
+     * Cache of static content resources.
+     */
+    private final Map _cache = new HashMap();
     
     /**
      * Builds a {@link ILink}for a {@link PrivateAsset}.
@@ -224,11 +224,9 @@ public class AssetService implements IEngineService
         
         try
         {
-            if (checkDigest
-                    && !_digestSource.getDigestForResource(path).equals(md5Digest))
+            if (checkDigest && !_digestSource.getDigestForResource(path).equals(md5Digest))
             {
-                _response.sendError(HttpServletResponse.SC_FORBIDDEN, AssetMessages
-                        .md5Mismatch(path));
+                _response.sendError(HttpServletResponse.SC_FORBIDDEN, AssetMessages.md5Mismatch(path));
                 return;
             }
             
@@ -243,7 +241,8 @@ public class AssetService implements IEngineService
             
             URL resourceURL = _classResolver.getResource(translatePath(path));
             
-            if (resourceURL == null) {
+            if (resourceURL == null)
+            {
                 _response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 _log.warn(AssetMessages.noSuchResource(path));
                 return;
@@ -257,6 +256,10 @@ public class AssetService implements IEngineService
                 return;
             
             writeAssetContent(cycle, path, resourceConnection);
+        }
+        catch (EOFException eof)
+        {
+            // ignored / expected exceptions happen when browser prematurely abandons connections - IE does this a lot
         }
         catch (Throwable ex)
         {
@@ -310,17 +313,17 @@ public class AssetService implements IEngineService
         DateFormat format = null;
         
         try {
-            
-            if (header != null) {
-                
+
+            if (header != null)
+            {
                 format = (DateFormat) CACHED_FORMAT_POOL.borrowObject();
-                
+
                 modify = format.parse(header).getTime();
             }
-            
+
         } catch (Exception e) { e.printStackTrace(); }
-        finally {
-            
+        finally
+        {    
             if (format != null) 
                 try { CACHED_FORMAT_POOL.returnObject(format); } catch (Throwable t) { t.printStackTrace(); }
         }
@@ -355,13 +358,6 @@ public class AssetService implements IEngineService
         _response.setDateHeader("Expires", _expireTime);
         _response.setHeader("Cache-Control", "public, max-age=" + (MONTH_SECONDS * 3));
         
-        // ie won't cache javascript with etag attached
-        if (_request.getHeader("User-Agent") != null 
-                && _request.getHeader("User-Agent").indexOf("MSIE") < 0 
-                || contentType.indexOf("javascript") < 0)
-            _response.setHeader("ETag", String.valueOf(resourcePath.hashCode()));
-            
-        
         // Set the content type. If the servlet container doesn't
         // provide it, try and guess it by the extension.
         
@@ -369,7 +365,11 @@ public class AssetService implements IEngineService
             contentType = getMimeType(resourcePath);
         
         byte[] data = getAssetData(cycle, resourcePath, resourceConnection, contentType);
+
+        // See ETag definition  - http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.19
         
+        _response.setHeader("ETag", "W/\"" + data.length + "-" + lastModified + "\"");
+
         // force image(or other) caching when detected, esp helps with ie related things
         // see http://mir.aculo.us/2005/08/28/internet-explorer-and-ajax-image-caching-woes
         
