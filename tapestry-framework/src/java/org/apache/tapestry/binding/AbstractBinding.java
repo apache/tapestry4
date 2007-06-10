@@ -30,7 +30,7 @@ public abstract class AbstractBinding implements IBinding
 {
     /** @since 4.0 */
 
-    private final String _description;
+    protected final String _description;
 
     /** @since 4.0 */
 

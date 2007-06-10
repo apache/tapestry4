@@ -28,23 +28,19 @@ import org.apache.tapestry.coerce.ValueConverter;
 
 public class LiteralBinding extends AbstractBinding
 {
-    private final String _value;
-
-    public LiteralBinding(String description, ValueConverter valueConverter, Location location,
-            String value)
+    public LiteralBinding(String description, ValueConverter valueConverter,
+                          Location location, String value)
     {
-        super(description, valueConverter, location);
-
-        _value = value;
+        super(value, valueConverter, location);
     }
 
     public Object getObject()
     {
-        return _value;
+        return _description;
     }
 
     public String toString()
     {
-        return "StaticBinding[" + _value + "]";
+        return "StaticBinding[" + _description + "]";
     }
 }
