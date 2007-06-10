@@ -14,12 +14,12 @@
 
 package org.apache.tapestry.script;
 
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Location;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.Location;
 
 /**
  * Base class for creating tokens which may contain other tokens.
@@ -74,7 +74,7 @@ abstract class AbstractToken implements IScriptToken
 
     /**
      * Evaluates the expression against the session's symbols, using
-     * {@link ExpressionEvaluator#read(Object, String)} and returns the result.
+     * {@link org.apache.tapestry.services.ExpressionEvaluator#read(Object, String)} and returns the result.
      */
     protected Object evaluate(String expression, ScriptSession session)
     {

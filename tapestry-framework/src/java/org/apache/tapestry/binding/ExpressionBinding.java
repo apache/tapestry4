@@ -27,7 +27,7 @@ import org.apache.tapestry.services.ExpressionEvaluator;
  * Implements a dynamic binding, based on evaluating an expression using an expression language.
  * Tapestry's default expression language is the <a href="http://www.ognl.org/">Object Graph
  * Navigation Language </a>.
- * 
+ *
  * @see org.apache.tapestry.services.ExpressionEvaluator
  * @author Howard Lewis Ship
  * @since 2.2
@@ -42,12 +42,6 @@ public class ExpressionBinding extends AbstractBinding
     private final IComponent _root;
 
     /**
-     * The OGNL expression, as a string.
-     */
-
-    private String _expression;
-
-    /**
      * If true, then the binding is invariant.
      */
 
@@ -58,13 +52,13 @@ public class ExpressionBinding extends AbstractBinding
      */
 
     private Node _parsedExpression;
-    
+
     /**
      * Compiled OGNL expression.
      */
-    
+
     private ExpressionAccessor _accessor;
-    
+
     /**
      * Flag set to true once the binding has initialized.
      */
@@ -107,20 +101,19 @@ public class ExpressionBinding extends AbstractBinding
      *          Expression cache which does efficient caching of parsed expressions.
      */
     public ExpressionBinding(String description, Location location, ValueConverter valueConverter,
-            IComponent root, String expression, ExpressionEvaluator evaluator,
-            ExpressionCache cache)
+                             IComponent root, String expression, ExpressionEvaluator evaluator,
+                             ExpressionCache cache)
     {
-        super(description, valueConverter, location);
+        super(expression, valueConverter, location);
 
         _root = root;
-        _expression = expression;
         _evaluator = evaluator;
         _cache = cache;
     }
 
     /**
      * Gets the value of the property path, with the assistance of the {@link ExpressionEvaluator}.
-     * 
+     *
      * @throws BindingException
      *             if an exception is thrown accessing the property.
      */
@@ -136,16 +129,15 @@ public class ExpressionBinding extends AbstractBinding
     {
         try
         {
-            if (_accessor == null && !_writeFailed) {
-                
-                _parsedExpression = (Node)_cache.getCompiledExpression(_root, _expression);
-                
+            if (_accessor == null && !_writeFailed)
+            {
+                _parsedExpression = (Node)_cache.getCompiledExpression(_root, _description);
                 _accessor = _parsedExpression.getAccessor();
             }
-            
+
             if (_accessor != null)
                 return _evaluator.read(_root, _accessor);
-            
+
             return _evaluator.readCompiled(_root, _parsedExpression);
         }
         catch (Throwable t)
@@ -179,9 +171,8 @@ public class ExpressionBinding extends AbstractBinding
 
         try
         {
-            _parsedExpression = (Node)_cache.getCompiledExpression(_expression);
-            
-            _invariant = _evaluator.isConstant(_expression);
+            _parsedExpression = (Node)_cache.getCompiledExpression(_description);
+            _invariant = _evaluator.isConstant(_description);
         }
         catch (Exception ex)
         {
@@ -191,7 +182,7 @@ public class ExpressionBinding extends AbstractBinding
 
     /**
      * Updates the property for the binding to the given value.
-     * 
+     *
      * @throws BindingException
      *             if the property can't be updated (typically due to an security problem, or a
      *             missing mutator method).
@@ -200,21 +191,21 @@ public class ExpressionBinding extends AbstractBinding
     public void setObject(Object value)
     {
         initialize();
-        
+
         if (_invariant)
             throw createReadOnlyBindingException(this);
-        
+
         try
         {
-            if (_accessor == null) {
-                
+            if (_accessor == null)
+            {
                 _evaluator.writeCompiled(_root, _parsedExpression, value);
 
-                if (!_writeFailed) {
-                    
+                if (!_writeFailed)
+                {    
                     // re-parse expression as compilation may be possible now that it potentially has a value
                     try {
-                        _parsedExpression = (Node)_cache.getCompiledExpression(_root, _expression);
+                        _parsedExpression = (Node)_cache.getCompiledExpression(_root, _description);
 
                         _accessor = _parsedExpression.getAccessor();
                     } catch (Throwable t) {
@@ -250,10 +241,10 @@ public class ExpressionBinding extends AbstractBinding
         buffer.append("ExpressionBinding[");
         buffer.append(_root.getExtendedId());
 
-        if (_expression != null)
+        if (_description != null)
         {
             buffer.append(' ');
-            buffer.append(_expression);
+            buffer.append(_description);
         }
 
         buffer.append(']');

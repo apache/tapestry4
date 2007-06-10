@@ -14,12 +14,11 @@
 
 package org.apache.tapestry.binding;
 
-import static org.easymock.EasyMock.expect;
-
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Messages;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.coerce.ValueConverter;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
 
 /**
@@ -60,7 +59,7 @@ public class TestMessageBinding extends BindingTestCase
 
         MessageBinding b = new MessageBinding("param", vc, l, component, "key");
 
-        assertEquals("StringBinding[Foo/bar.baz key]", b.toString());
+        assertEquals("MessageBinding[Foo/bar.baz key]", b.toString());
 
         verify();
     }

@@ -33,18 +33,15 @@ public class MessageBinding extends AbstractBinding
 {
     private final IComponent _component;
 
-    private final String _key;
-
     protected MessageBinding(String description, ValueConverter valueConverter, Location location,
             IComponent component, String key)
     {
-        super(description, valueConverter, location);
+        super(key, valueConverter, location);
 
         Defense.notNull(component, "component");
         Defense.notNull(key, "key");
 
         _component = component;
-        _key = key;
     }
 
     public Object getComponent()
@@ -54,7 +51,7 @@ public class MessageBinding extends AbstractBinding
 
     public String getKey()
     {
-        return _key;
+        return _description;
     }
 
     /**
@@ -63,16 +60,16 @@ public class MessageBinding extends AbstractBinding
 
     public Object getObject()
     {
-        return _component.getMessages().getMessage(_key);
+        return _component.getMessages().getMessage(_description);
     }
 
     public String toString()
     {
-        StringBuffer buffer = new StringBuffer("StringBinding");
+        StringBuffer buffer = new StringBuffer("MessageBinding");
         buffer.append('[');
         buffer.append(_component.getExtendedId());
         buffer.append(' ');
-        buffer.append(_key);
+        buffer.append(_description);
         buffer.append(']');
 
         return buffer.toString();

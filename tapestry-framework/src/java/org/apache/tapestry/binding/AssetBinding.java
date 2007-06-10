@@ -31,26 +31,23 @@ public class AssetBinding extends AbstractBinding
 {
     private final IComponent _component;
 
-    private final String _assetName;
-
     public AssetBinding(String description, ValueConverter valueConverter, Location location,
             IComponent component, String assetName)
     {
-        super(description, valueConverter, location);
+        super(assetName, valueConverter, location);
 
         Defense.notNull(component, "component");
         Defense.notNull(assetName, "assetName");
 
         _component = component;
-        _assetName = assetName;
     }
 
     public Object getObject()
     {
-        IAsset result = _component.getAsset(_assetName);
+        IAsset result = _component.getAsset(_description);
 
         if (result == null)
-            throw new BindingException(BindingMessages.missingAsset(_component, _assetName),
+            throw new BindingException(BindingMessages.missingAsset(_component, _description),
                     _component, getLocation(), this, null);
 
         return result;

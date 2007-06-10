@@ -14,14 +14,13 @@
 
 package org.apache.tapestry.binding;
 
-import static org.easymock.EasyMock.expect;
-
 import org.apache.hivemind.Location;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.coerce.ValueConverter;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
 
 /**
@@ -50,7 +49,7 @@ public class TestAssetBinding extends BindingTestCase
         assertSame(asset, b.getObject());
 
         assertSame(l, b.getLocation());
-        assertEquals("parameterName", b.getDescription());
+        assertEquals("fred", b.getDescription());
 
         assertSame(component, b.getComponent());
 

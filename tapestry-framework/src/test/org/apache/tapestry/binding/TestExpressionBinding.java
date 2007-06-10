@@ -192,8 +192,7 @@ public class TestExpressionBinding extends BindingTestCase
         }
         catch (BindingException ex)
         {
-            assertEquals(
-                    "Binding for parameter foo (ExpressionBinding[Foo/bar.baz exp]) may not be updated.",
+            assertEquals("Binding with value exp (ExpressionBinding[Foo/bar.baz exp]) may not be updated.",
                     ex.getMessage());
         }
 

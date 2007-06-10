@@ -14,14 +14,13 @@
 
 package org.apache.tapestry.binding;
 
-import static org.easymock.EasyMock.expect;
-
-import java.util.Date;
-
 import org.apache.hivemind.Location;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.coerce.ValueConverter;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
+
+import java.util.Date;
 
 /**
  * Tests for {@link org.apache.tapestry.binding.LiteralBinding}. It also tests some common
@@ -33,7 +32,7 @@ import org.testng.annotations.Test;
 @Test
 public class TestLiteralBinding extends BindingTestCase
 {
-    public void testGetObject()
+    public void test_Get_Object()
     {
         Location l = fabricateLocation(22);
         ValueConverter vc = newValueConverter();
@@ -43,7 +42,7 @@ public class TestLiteralBinding extends BindingTestCase
         LiteralBinding b = new LiteralBinding("parameter foo", vc, l, "literal-value");
 
         assertSame(l, b.getLocation());
-        assertEquals("parameter foo", b.getDescription());
+        assertEquals(b.getDescription(), "literal-value");
         assertEquals("literal-value", b.getObject());
 
         assertEquals(true, b.isInvariant());
@@ -52,7 +51,7 @@ public class TestLiteralBinding extends BindingTestCase
         verify();
     }
 
-    public void testToString()
+    public void test_To_String()
     {
         Location l = fabricateLocation(22);
         ValueConverter vc = newValueConverter();
@@ -66,7 +65,7 @@ public class TestLiteralBinding extends BindingTestCase
         verify();
     }
 
-    public void testGetObjectWithClass()
+    public void test_Get_Object_With_Class()
     {
         ValueConverter vc = newMock(ValueConverter.class);
         Location l = fabricateLocation(99);
@@ -84,7 +83,7 @@ public class TestLiteralBinding extends BindingTestCase
         verify();
     }
 
-    public void testGetObjectException()
+    public void test_Get_Object_Exception()
     {
         ValueConverter vc = newMock(ValueConverter.class);
         Location location = fabricateLocation(99);
@@ -104,7 +103,7 @@ public class TestLiteralBinding extends BindingTestCase
         }
         catch (BindingException ex)
         {
-            assertEquals("Error converting value for parameter foo: Failure", ex.getMessage());
+            assertEquals(ex.getMessage(), "Error converting value for my-literal: Failure");
             assertSame(innerException, ex.getRootCause());
             assertSame(location, ex.getLocation());
             assertSame(b, ex.getBinding());
@@ -113,7 +112,7 @@ public class TestLiteralBinding extends BindingTestCase
         verify();
     }
 
-    public void testSetObject()
+    public void test_Set_Object()
     {
         Location l = fabricateLocation(22);
         ValueConverter vc = newValueConverter();
@@ -129,9 +128,8 @@ public class TestLiteralBinding extends BindingTestCase
         }
         catch (BindingException ex)
         {
-            assertEquals(
-                    "Binding for parameter foo (StaticBinding[literal-value]) may not be updated.",
-                    ex.getMessage());
+            assertEquals(ex.getMessage() ,
+                    "Binding with value literal-value (StaticBinding[literal-value]) may not be updated.");
             assertSame(b, ex.getBinding());
             assertSame(l, ex.getLocation());
         }
