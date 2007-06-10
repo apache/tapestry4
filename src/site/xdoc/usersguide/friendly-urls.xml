@@ -66,13 +66,14 @@
             <span class="warn">
                 <strong>Warning:</strong>
                 <p>
-                For security purposes, enabling friendly URLs implies that pages are no longer
-                accessible via their ugly URL counterpart. This is not the case. If a malevolent
-                user can either guess - or via cookies identify - your servlet path, they can
-                construct an ugly URL to a resource that is protected via security and gain access
-                to the protected resource.
+                    For security purposes, enabling friendly URLs implies that pages are no longer
+                    accessible via their ugly URL counterpart. This is not the case. If a malevolent
+                    user can either guess - or via cookies identify - your servlet path, they can
+                    construct an ugly URL to a resource that is protected via security and gain access
+                    to the protected resource.
                 </p>
             </span>
+            
             <p>Friendly URLs are divided into two concerns:</p>
 
             <ul>
@@ -115,8 +116,8 @@
                     query parameter is used to select an engine service by name. A number of
                     services are provided with the framework, the most common of which are:
                 </p>
-                
-                
+
+
                 <dl>
                     <dt>page</dt>
                     <dd>Activates and renders a specific page.</dd>
@@ -190,7 +191,7 @@
                 <p>
                     Friendly URLs are controlled by
                     <a
-                        href="../apidocs/org/apache/tapestry/engine/ServiceEncoder.html">
+                            href="../apidocs/org/apache/tapestry/engine/ServiceEncoder.html">
                         ServiceEncoder
                     </a>
                     s. Getting Tapestry to output friendly URLs is a matter of plugging encoders
@@ -211,9 +212,9 @@
                     </p>
 
                     <source xml:space="preserve">
-&lt;contribution configuration-id="tapestry.url.ServiceEncoders"&gt;
-  &lt;page-service-encoder id="page" extension="html" service="page"/&gt;
-&lt;/contribution&gt;</source>
+                        &lt;contribution configuration-id="tapestry.url.ServiceEncoders"&gt;
+                        &lt;page-service-encoder id="page" extension="html" service="page"/&gt;
+                        &lt;/contribution&gt;</source>
 
                     <p>
                         This contribution to the
@@ -222,7 +223,7 @@
                         </a>
                         configuration point creates a
                         <a
-                            href="../apidocs/org/apache/tapestry/engine/ServiceEncoder.html">
+                                href="../apidocs/org/apache/tapestry/engine/ServiceEncoder.html">
                             ServiceEncoder
                         </a>
                         that maps the
@@ -238,10 +239,10 @@
                         web.xml:
                     </p>
                     <source xml:space="preserve">
-&lt;servlet-mapping&gt;
-  &lt;servlet-name&gt;myapp&lt;/servlet-name&gt;
-  &lt;url-pattern&gt;*.html&lt;/url-pattern&gt;
-&lt;/servlet-mapping&gt;</source>
+                        &lt;servlet-mapping&gt;
+                        &lt;servlet-name&gt;myapp&lt;/servlet-name&gt;
+                        &lt;url-pattern&gt;*.html&lt;/url-pattern&gt;
+                        &lt;/servlet-mapping&gt;</source>
 
 
                     <span class="info">
@@ -284,10 +285,10 @@
                     <p>The hivemodule.xml contribution:</p>
 
                     <source xml:space="preserve">
-&lt;contribution configuration-id="tapestry.url.ServiceEncoders"&gt;
-  &lt;direct-service-encoder id="direct" stateless-extension="direct" stateful-extension="sdirect"/&gt;
-&lt;/contribution&gt;
-</source>
+                        &lt;contribution configuration-id="tapestry.url.ServiceEncoders"&gt;
+                        &lt;direct-service-encoder id="direct" stateless-extension="direct" stateful-extension="sdirect"/&gt;
+                        &lt;/contribution&gt;
+                    </source>
 
                     <p>
                         In addition, the
@@ -298,15 +299,15 @@
                     </p>
 
                     <source xml:space="preserve">
-&lt;servlet-mapping&gt;
-  &lt;servlet-name&gt;myapp&lt;/servlet-name&gt;
-  &lt;url-pattern&gt;*.direct&lt;/url-pattern&gt;
-&lt;/servlet-mapping&gt;
-  
-&lt;servlet-mapping&gt;
-  &lt;servlet-name&gt;myapp&lt;/servlet-name&gt;
-  &lt;url-pattern&gt;*.sdirect&lt;/url-pattern&gt;
-&lt;/servlet-mapping&gt;  </source>
+                        &lt;servlet-mapping&gt;
+                        &lt;servlet-name&gt;myapp&lt;/servlet-name&gt;
+                        &lt;url-pattern&gt;*.direct&lt;/url-pattern&gt;
+                        &lt;/servlet-mapping&gt;
+
+                        &lt;servlet-mapping&gt;
+                        &lt;servlet-name&gt;myapp&lt;/servlet-name&gt;
+                        &lt;url-pattern&gt;*.sdirect&lt;/url-pattern&gt;
+                        &lt;/servlet-mapping&gt;  </source>
 
                 </subsection>
 
@@ -340,9 +341,9 @@
                     </p>
 
                     <source xml:space="preserve">
-&lt;contribution configuration-id="tapestry.url.ServiceEncoders"&gt;
-  &lt;asset-encoder id="asset" path="/assets"/&gt;
-&lt;/contribution&gt;</source>
+                        &lt;contribution configuration-id="tapestry.url.ServiceEncoders"&gt;
+                        &lt;asset-encoder id="asset" path="/assets"/&gt;
+                        &lt;/contribution&gt;</source>
 
                     <p>
                         This contribution will encode asset URLs using the given path. The provided
@@ -359,10 +360,10 @@
                     <p>In addition you must add a mapping to web.xml:</p>
 
                     <source xml:space="preserve">
-&lt;servlet-mapping&gt;
-  &lt;servlet-name&gt;myapp&lt;/servlet-name&gt;
-  &lt;url-pattern&gt;/assets/*&lt;/url-pattern&gt;
-&lt;/servlet-mapping&gt;</source>
+                        &lt;servlet-mapping&gt;
+                        &lt;servlet-name&gt;myapp&lt;/servlet-name&gt;
+                        &lt;url-pattern&gt;/assets/*&lt;/url-pattern&gt;
+                        &lt;/servlet-mapping&gt;</source>
 
 
                     <p>
@@ -393,9 +394,9 @@
                     <p>In your hivemodule.xml:</p>
 
                     <source xml:space="preserve">
-&lt;contribution configuration-id="tapestry.url.ServiceEncoders"&gt;
-  &lt;extension-encoder id="extension" extension="svc" after="*"/&gt;
-&lt;/contribution&gt;</source>
+                        &lt;contribution configuration-id="tapestry.url.ServiceEncoders"&gt;
+                        &lt;extension-encoder id="extension" extension="svc" after="*"/&gt;
+                        &lt;/contribution&gt;</source>
 
 
                     <p>
@@ -408,10 +409,10 @@
                     <p>For this example, another mapping is required in the web.xml:</p>
 
                     <source xml:space="preserve">
-&lt;servlet-mapping&gt;
-  &lt;servlet-name&gt;myapp&lt;/servlet-name&gt;
-  &lt;url-pattern&gt;*.svc&lt;/url-pattern&gt;
-&lt;/servlet-mapping&gt;</source>
+                        &lt;servlet-mapping&gt;
+                        &lt;servlet-name&gt;myapp&lt;/servlet-name&gt;
+                        &lt;url-pattern&gt;*.svc&lt;/url-pattern&gt;
+                        &lt;/servlet-mapping&gt;</source>
                 </subsection>
 
                 <subsection name="encoder">
@@ -422,7 +423,7 @@
                         define your own. The &lt;encoder&gt; element allows an arbitrary object that
                         implements the
                         <a
-                            href="../apidocs/org/apache/tapestry/engine/ServiceEncoder.html">
+                                href="../apidocs/org/apache/tapestry/engine/ServiceEncoder.html">
                             ServiceEncoder
                         </a>
                         interface to be plugged into the pipeline. The &lt;encoder&gt; element
@@ -448,10 +449,10 @@
                     <p>These encoders are configured in hivemodule.xml as follows:</p>
 
                     <source xml:space="preserve">
-&lt;encoder id="viewbook" before="external" object="instance:ViewPageEncoder,pageName=ViewBook,url=/book"/&gt;
-&lt;encoder id="viewperson" before="external" object="instance:ViewPageEncoder,pageName=ViewPerson,url=/person"/&gt;
-&lt;page-service-encoder id="external" extension="external" service="external"/&gt;    
-</source>
+                        &lt;encoder id="viewbook" before="external" object="instance:ViewPageEncoder,pageName=ViewBook,url=/book"/&gt;
+                        &lt;encoder id="viewperson" before="external" object="instance:ViewPageEncoder,pageName=ViewPerson,url=/person"/&gt;
+                        &lt;page-service-encoder id="external" extension="external" service="external"/&gt;
+                    </source>
 
                     <p>
                         The order of the encoders in the pipline is very important, so the use of
@@ -463,14 +464,14 @@
                     <p>The two special pages are mapped in web.xml using their custom URLs:</p>
 
                     <source xml:space="preserve">  &lt;servlet-mapping&gt;
-    &lt;servlet-name&gt;vlib&lt;/servlet-name&gt;
-    &lt;url-pattern&gt;/book/*&lt;/url-pattern&gt;
-  &lt;/servlet-mapping&gt;
-  &lt;servlet-mapping&gt;
-    &lt;servlet-name&gt;vlib&lt;/servlet-name&gt;
-    &lt;url-pattern&gt;/person/*&lt;/url-pattern&gt;
-  &lt;/servlet-mapping&gt;
-</source>
+                        &lt;servlet-name&gt;vlib&lt;/servlet-name&gt;
+                        &lt;url-pattern&gt;/book/*&lt;/url-pattern&gt;
+                        &lt;/servlet-mapping&gt;
+                        &lt;servlet-mapping&gt;
+                        &lt;servlet-name&gt;vlib&lt;/servlet-name&gt;
+                        &lt;url-pattern&gt;/person/*&lt;/url-pattern&gt;
+                        &lt;/servlet-mapping&gt;
+                    </source>
 
                     <p>
                         The implementation of the ViewPageEncoder class is all about an encode()
@@ -482,49 +483,49 @@
                         right page name and the right service, returning (without doing anything) if
                         not. The link being constructed is represented as an instance of
                         <a
-                            href="../apidocs/org/apache/tapestry/engine/ServiceEncoding.html">
+                                href="../apidocs/org/apache/tapestry/engine/ServiceEncoding.html">
                             ServiceEncoding
                         </a>
                         :
                     </p>
 
                     <source xml:space="preserve">
-  public void encode(ServiceEncoding encoding)
-  {
-    if (!isExternalService(encoding))
-      return;
+                        public void encode(ServiceEncoding encoding)
+                        {
+                        if (!isExternalService(encoding))
+                        return;
 
-    String pageName = encoding.getParameterValue(ServiceConstants.PAGE);
+                        String pageName = encoding.getParameterValue(ServiceConstants.PAGE);
 
-    if (!pageName.equals(_pageName))
-      return;
+                        if (!pageName.equals(_pageName))
+                        return;
 
-    StringBuilder builder = new StringBuilder(_url);
+                        StringBuilder builder = new StringBuilder(_url);
 
-    String[] params = encoding.getParameterValues(ServiceConstants.PARAMETER);
+                        String[] params = encoding.getParameterValues(ServiceConstants.PARAMETER);
 
-    // params will not be null; in fact, pretty sure it will consist
-    // of just one element (an integer).
+                        // params will not be null; in fact, pretty sure it will consist
+                        // of just one element (an integer).
 
-    for (String param : params)
-    {
-      builder.append("/");
-      builder.append(param);
-    }
+                        for (String param : params)
+                        {
+                        builder.append("/");
+                        builder.append(param);
+                        }
 
-    encoding.setServletPath(builder.toString());
+                        encoding.setServletPath(builder.toString());
 
-    encoding.setParameterValue(ServiceConstants.SERVICE, null);
-    encoding.setParameterValue(ServiceConstants.PAGE, null);
-    encoding.setParameterValue(ServiceConstants.PARAMETER, null);
-  }
+                        encoding.setParameterValue(ServiceConstants.SERVICE, null);
+                        encoding.setParameterValue(ServiceConstants.PAGE, null);
+                        encoding.setParameterValue(ServiceConstants.PARAMETER, null);
+                        }
 
-  private boolean isExternalService(ServiceEncoding encoding)
-  {
-    String service = encoding.getParameterValue(ServiceConstants.SERVICE);
+                        private boolean isExternalService(ServiceEncoding encoding)
+                        {
+                        String service = encoding.getParameterValue(ServiceConstants.SERVICE);
 
-    return service.equals(Tapestry.EXTERNAL_SERVICE);
-  }  </source>
+                        return service.equals(Tapestry.EXTERNAL_SERVICE);
+                        }  </source>
 
                     <p>
                         We cheat just a bit here because we know that the service parameters will be
@@ -540,20 +541,20 @@
                     </p>
 
                     <source xml:space="preserve">  public void decode(ServiceEncoding encoding)
-  {
-    String servletPath = encoding.getServletPath();
+                        {
+                        String servletPath = encoding.getServletPath();
 
-    if (!servletPath.equals(_url))
-      return;
+                        if (!servletPath.equals(_url))
+                        return;
 
-    String pathInfo = encoding.getPathInfo();
+                        String pathInfo = encoding.getPathInfo();
 
-    String[] params = TapestryUtils.split(pathInfo.substring(1), '/');
+                        String[] params = TapestryUtils.split(pathInfo.substring(1), '/');
 
-    encoding.setParameterValue(ServiceConstants.SERVICE, Tapestry.EXTERNAL_SERVICE);
-    encoding.setParameterValue(ServiceConstants.PAGE, _pageName);
-    encoding.setParameterValues(ServiceConstants.PARAMETER, params);
-  } </source>
+                        encoding.setParameterValue(ServiceConstants.SERVICE, Tapestry.EXTERNAL_SERVICE);
+                        encoding.setParameterValue(ServiceConstants.PAGE, _pageName);
+                        encoding.setParameterValues(ServiceConstants.PARAMETER, params);
+                        } </source>
 
                 </subsection>
 
