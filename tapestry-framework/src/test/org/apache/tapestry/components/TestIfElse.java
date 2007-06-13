@@ -14,18 +14,11 @@
 
 package org.apache.tapestry.components;
 
-import static org.easymock.EasyMock.expect;
-
-import org.apache.tapestry.BaseComponentTestCase;
-import org.apache.tapestry.IBinding;
-import org.apache.tapestry.IForm;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRender;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.*;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.util.io.DataSqueezerUtil;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
 
 /**
@@ -60,9 +53,7 @@ public class TestIfElse extends BaseComponentTestCase
         ElseBean reverse = (ElseBean) newInstance(ElseBean.class);
         
         expect(cycle.renderStackPush(conditional)).andReturn(conditional);
-        
         expect(cycle.isRewinding()).andReturn(false);
-        
         expect(cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE)).andReturn(null);
         
         trainResponseBuilder(cycle, writer);
@@ -72,11 +63,8 @@ public class TestIfElse extends BaseComponentTestCase
         cycle.setAttribute(IfBean.IF_VALUE_ATTRIBUTE, Boolean.TRUE);
         
         expect(cycle.renderStackPop()).andReturn(conditional);
-        
         expect(cycle.renderStackPush(reverse)).andReturn(reverse);
-        
         expect(cycle.getAttribute(IfBean.IF_VALUE_ATTRIBUTE)).andReturn(Boolean.TRUE);
-        
         expect(cycle.renderStackPop()).andReturn(reverse);
         
         IRender body2 = newRender();
@@ -104,19 +92,14 @@ public class TestIfElse extends BaseComponentTestCase
         ElseBean reverse = (ElseBean) newInstance(ElseBean.class);
         
         expect(cycle.renderStackPush(conditional)).andReturn(conditional);
-        
         expect(cycle.isRewinding()).andReturn(false);
-        
         expect(cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE)).andReturn(null);
         
         cycle.setAttribute(IfBean.IF_VALUE_ATTRIBUTE, Boolean.FALSE);
         
         expect(cycle.renderStackPop()).andReturn(conditional);
-        
         expect(cycle.renderStackPush(reverse)).andReturn(reverse);
-        
         expect(cycle.getAttribute(IfBean.IF_VALUE_ATTRIBUTE)).andReturn(Boolean.FALSE);
-        
         expect(cycle.isRewinding()).andReturn(false);
         
         trainResponseBuilder(cycle, writer);
@@ -352,23 +335,21 @@ public class TestIfElse extends BaseComponentTestCase
         
         IRequestCycle cycle = newCycle();
 
-        IfBean conditional = newInstance(TestIfBean.class, 
-                new Object[] { 
-            "condition", Boolean.TRUE, 
-            "element", "div", 
-            "specification", spec,
-            "renderTag", Boolean.TRUE
-        });
+        IfBean conditional = newInstance(TestIfBean.class,
+                                         "condition", Boolean.TRUE,
+                                         "element", "div",
+                                         "specification", spec,
+                                         "renderTag", Boolean.TRUE,
+                                         "clientId", "testIf");
         
         expect(cycle.renderStackPush(conditional)).andReturn(conditional);
-        
         expect(cycle.isRewinding()).andReturn(false);
-        
         expect(cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE)).andReturn(null);
         
         IRender body = newRender(writer, cycle);
 
         writer.begin("div");
+        writer.attribute("id", "testIf");
         writer.attribute("informal", "informal-value");
 
         writer.end("div");

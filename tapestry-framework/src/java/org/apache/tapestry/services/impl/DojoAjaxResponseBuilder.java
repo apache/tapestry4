@@ -177,6 +177,14 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     public void renderResponse(IRequestCycle cycle)
         throws IOException
     {
+        // if response was already started
+
+        if (_responseStarted)
+        {
+            cycle.renderPage(this);
+            return;
+        }
+        
         _localeManager.persistLocale();
         
         _contentType = new ContentType(CONTENT_TYPE + ";charset=" + cycle.getInfrastructure().getOutputEncoding());

@@ -18,13 +18,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
-import org.apache.tapestry.IActionListener;
-import org.apache.tapestry.IBinding;
-import org.apache.tapestry.IForm;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.*;
 import org.apache.tapestry.engine.NullWriter;
 import org.apache.tapestry.form.AbstractFormComponent;
 import org.apache.tapestry.services.DataSqueezer;
@@ -63,10 +57,12 @@ public abstract class IfBean extends AbstractFormComponent
         
         // If the cycle is rewinding, but not this particular form,
         // then do nothing (don't even render the body).
+        
         if (cycleRewinding && form != null && !form.isRewinding())
             return;
         
         // get the condition. work with a hidden field if necessary
+        
         _conditionValue = evaluateCondition(cycle, form, cycleRewinding);
         _rendering = true;
         
@@ -90,9 +86,11 @@ public abstract class IfBean extends AbstractFormComponent
                 if (render)
                 {
                     writer.begin(element);
+
                     renderInformalParameters(writer, cycle);
+                    renderIdAttribute(writer, cycle);
                 }
-                _log.debug("Condition was true so rendering body" + this);
+
                 renderBody(writer, cycle);
 
                 if (render)
@@ -153,9 +151,7 @@ public abstract class IfBean extends AbstractFormComponent
         }
         catch (Exception ex)
         {
-            throw new ApplicationRuntimeException(Tapestry.format(
-                    "If.unable-to-convert-value",
-                    booleanValue), this, null, ex);
+            throw new ApplicationRuntimeException(Tapestry.format("If.unable-to-convert-value",booleanValue), this, null, ex);
         }
 
         form.addHiddenValue(name, externalValue);
@@ -171,9 +167,7 @@ public abstract class IfBean extends AbstractFormComponent
         {
             Object valueObject = getDataSqueezer().unsqueeze(submittedValue);
             if (!(valueObject instanceof Boolean))
-                throw new ApplicationRuntimeException(Tapestry.format(
-                        "If.invalid-condition-type",
-                        submittedValue));
+                throw new ApplicationRuntimeException(Tapestry.format("If.invalid-condition-type", submittedValue));
 
             return ((Boolean) valueObject).booleanValue();
         }

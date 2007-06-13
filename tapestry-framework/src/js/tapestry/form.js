@@ -229,6 +229,7 @@ tapestry.form={
 			dojo.raise("No valid form event found with argument: " + evt);
 			return;
 		}
+
         var id=evt.target.getAttribute("id");
 		if (!id) {
 			dojo.raise("Form had no id attribute.");
@@ -392,8 +393,8 @@ tapestry.form={
 			return;
 		}
 		var formId=form.getAttribute("id");
-		
-		if (!tapestry.form.validation.validateForm(form, this.forms[formId])) {
+
+        if (!tapestry.form.validation.validateForm(form, this.forms[formId])) {
 			dojo.log.debug("Form validation failed for form with id " + formId);
 			return;
 		}
