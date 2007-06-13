@@ -84,7 +84,8 @@ abstract class AbstractSubmit extends AbstractFormComponent implements IDynamicI
         if (listener != null)
             listenerInvoker.invokeListener(listener, AbstractSubmit.this, cycle);
         
-        if (action != null) {
+        if (action != null)
+        {
             Runnable notify = new Runnable()
             {
                 public void run()
@@ -101,8 +102,10 @@ abstract class AbstractSubmit extends AbstractFormComponent implements IDynamicI
      * Manages rendering of important submit client side bindings, like invoking the right submit
      * type or any of the optional {@link IDynamicInvoker} parameters.
      * 
-     * @param writer The writer to use to write content.
-     * @param cycle The current request cycle.
+     * @param writer
+     *          The writer to use to write content.
+     * @param cycle
+     *          The current request cycle.
      */
     protected void renderSubmitBindings(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -113,86 +116,60 @@ abstract class AbstractSubmit extends AbstractFormComponent implements IDynamicI
         
         Defense.notNull(type, "submitType");
         
-        Map parms = null;
-        JSONObject json = null;
         List update = getUpdateComponents();
+        boolean isAsync = isAsync() || update != null && update.size() > 0;
+
+        if (!isAsync && type.equals(FormConstants.SUBMIT_NORMAL))
+            return;
         
-        if (isAsync() || (update != null && update.size() > 0)) {
-            
+        JSONObject json = null;
+
+        // build async URL to form if async
+
+        if (isAsync)
+        {
             IForm form = getForm();
             
-            parms = new HashMap();
-            parms.put("submit", this);
-            parms.put("key", ScriptUtils.functionHash(type + this.hashCode()));
-            
             json = new JSONObject();
-            
             json.put("async", Boolean.TRUE);
             json.put("json", isJson());
             
             DirectServiceParameter dsp = new DirectServiceParameter(form, null, this);
-            
             json.put("url", getDirectService().getLink(true, dsp).getURL());
         }
-        
-        if (!type.equals(FormConstants.SUBMIT_NORMAL)) {
-            if (!isParameterBound("onClick") && !isParameterBound("onclick")
-                && (!isAsync() && (update == null || update.size() == 0))) {
-                
-                StringBuffer str = new StringBuffer();
-                
-                str.append("tapestry.form.").append(type);
-                str.append("('").append(getForm().getClientId()).append("',");
-                str.append("'").append(getName()).append("'");
-                
-                if (json != null){
-                    str.append(",").append(json.toString());
-                }
-                
-                str.append(")");
-                
-                writer.attribute("onClick", str.toString());
-                return;
-            } else {
-                if (parms == null) {
-                    parms = new HashMap();
-                    
-                    parms.put("submit", this);
-                    parms.put("key", ScriptUtils.functionHash(type + this.hashCode()));
-                }
-                
-                parms.put("type", type);
-            }
-        }
-        
-        if (parms != null) {
-            
-            if (json != null) {
-                parms.put("parms", json.toString());
-            }
-            
-            PageRenderSupport prs = TapestryUtils.getPageRenderSupport(cycle, this);
-            getSubmitScript().execute(this, cycle, prs, parms);
 
-            setSubmitBindingBound(true);
+        // only if not async - otherwise we have to stop the client side event to prevent normal form submission
+        // within the submitbindings client side generated function
+        
+        if (!isAsync && !isParameterBound("onClick") && !isParameterBound("onclick"))
+        {
+            StringBuffer str = new StringBuffer();
+
+            str.append("tapestry.form.").append(type);
+            str.append("('").append(getForm().getClientId()).append("',");
+            str.append("'").append(getName()).append("'");
+
+            if (json != null)
+                str.append(",").append(json.toString());
+
+            str.append(")");
+            
+            writer.attribute("onClick", str.toString());
+            return;
         }
+
+        Map parms = new HashMap();
+        parms.put("submit", this);
+        parms.put("key", ScriptUtils.functionHash(type + this.hashCode()));
+        parms.put("type", type);
+
+        if (json != null)
+            parms.put("parms", json.toString());
+        
+        PageRenderSupport prs = TapestryUtils.getPageRenderSupport(cycle, this);
+        getSubmitScript().execute(this, cycle, prs, parms);
     }
 
-    /**
-     * Used internall to track whether or not an async submit binding was rendered
-     * as a result of calling {@link #renderSubmitBindings(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)}.
-     *
-     * <p>
-     * Currently this is used to track javascript contributions between the base and subclasses so that
-     * duplicate client side bindings aren't created - such as the case with {@link LinkSubmit} where
-     * client side javascript is always bound to the click of the link - with only the XHR behaviour
-     * changing depending on the configuration of the component.
-     * </p>
-     *
-     * @return True if submit bindings have been configured for this component instance, false otherwise.
-     */
-    public abstract boolean isSubmitBindingBound();
-    public abstract void setSubmitBindingBound(boolean value);
 
     /** parameter. */
     public abstract IActionListener getListener();

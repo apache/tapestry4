@@ -18,24 +18,23 @@ package org.apache.tapestry.util.text;
  * An object that encodes a character according to rules of the HTML
  * specification, so that it will be properly parsed by a browser irrespectively
  * of the character encoding used in the HTML output.
- * 
+ *
  * @author mb
  * @since 4.0
  */
-public class MarkupCharacterTranslator implements ICharacterTranslator
-{
+public class MarkupCharacterTranslator implements ICharacterTranslator {
 
     private static final String SAFE_CHARACTERS = "01234567890"
-            + "abcdefghijklmnopqrstuvwxyz" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            + "\t\n\r !#$%'()*+,-./:;=?@[\\]^_`{|}~";
+                                                  + "abcdefghijklmnopqrstuvwxyz" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                                                  + "\t\n\r !#$%'()*+,-./:;=?@[\\]^_`{|}~";
 
-    private static final String[][] ENTITIES = { { "\"", "&quot;" },
-            { "<", "&lt;" }, { ">", "&gt;" }, { "&", "&amp;" } };
+    private static final String[][] ENTITIES = {
+            {"\"", "&quot;"},
+            {"<", "&lt;"}, {">", "&gt;"}, {"&", "&amp;"}
+    };
 
-    private static final ICharacterMatcher SAFE_MATCHER = new AsciiCharacterMatcher(
-            SAFE_CHARACTERS);
-    private static final ICharacterTranslator ENTITY_TRANSLATOR = new AsciiCharacterTranslator(
-            ENTITIES);
+    private static final ICharacterMatcher SAFE_MATCHER = new AsciiCharacterMatcher(SAFE_CHARACTERS);
+    private static final ICharacterTranslator ENTITY_TRANSLATOR = new AsciiCharacterTranslator(ENTITIES);
 
     private boolean _encodeNonAscii;
     private ICharacterMatcher _safeMatcher;
@@ -52,7 +51,7 @@ public class MarkupCharacterTranslator implements ICharacterTranslator
     }
 
     public MarkupCharacterTranslator(boolean encodeNonAscii,
-            ICharacterMatcher safeMatcher, ICharacterTranslator entityTranslator)
+                                     ICharacterMatcher safeMatcher, ICharacterTranslator entityTranslator)
     {
         _encodeNonAscii = encodeNonAscii;
         _safeMatcher = safeMatcher;
@@ -60,7 +59,7 @@ public class MarkupCharacterTranslator implements ICharacterTranslator
     }
 
     public MarkupCharacterTranslator(boolean encodeNonAscii,
-            String safeCharacters, String[][] entities)
+                                     String safeCharacters, String[][] entities)
     {
         _encodeNonAscii = encodeNonAscii;
         _safeMatcher = new AsciiCharacterMatcher(safeCharacters);
@@ -74,12 +73,15 @@ public class MarkupCharacterTranslator implements ICharacterTranslator
     {
         // IE and Firefox do not handle characters between 128 and 159 well,
         // so they have to be quoted as well
-        if (ch >= 160 && !_encodeNonAscii) return null;
+        if (ch >= 160 && !_encodeNonAscii)
+            return null;
 
-        if (_safeMatcher.matches(ch)) return null;
+        if (_safeMatcher.matches(ch))
+            return null;
 
         String entity = _entityTranslator.translate(ch);
-        if (entity != null) return entity;
+        if (entity != null)
+            return entity;
 
         // needs to use a NumberFormat here to be fully compliant,
         // but this is accepted fine by the browsers
