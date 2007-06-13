@@ -25,11 +25,7 @@ package org.apache.tapestry.json;
  */
 
 import java.text.ParseException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * A JSONObject is an unordered collection of name/value pairs. Its external
@@ -505,41 +501,44 @@ public class JSONObject
         return o != null ? o.toString() : defaultValue;
     }
 
-    public JSONObject put(String key, boolean value)
+    public JSONObject put(Object key, boolean value)
     {
         put(key, Boolean.valueOf(value));
         return this;
     }
 
-    public JSONObject put(String key, double value)
+    public JSONObject put(Object key, double value)
     {
         put(key, new Double(value));
         return this;
     }
 
-    public JSONObject put(String key, long value)
+    public JSONObject put(Object key, long value)
     {
         put(key, new Long(value));
         return this;
     }
     
-    public JSONObject put(String key, int value)
+    public JSONObject put(Object key, int value)
     {
         put(key, new Integer(value));
         return this;
     }
     
-    public JSONObject put(String key, Object value)
+    public JSONObject put(Object key, Object value)
     {
-        if (key == null) { throw new NullPointerException("Null key."); }
+        if (key == null)
+            throw new NullPointerException("Null key.");
+        
         if (value != null)
         {
             this.myHashMap.put(key, value);
         }
         else
         {
-            remove(key);
+            remove(key.toString());
         }
+        
         return this;
     }
     
@@ -663,7 +662,7 @@ public class JSONObject
                 sb.append(',');
             }
             Object o = keys.next();
-            sb.append(quote(o.toString()));
+            sb.append(valueToString(o));
             sb.append(':');
             sb.append(valueToString(this.myHashMap.get(o)));
         }

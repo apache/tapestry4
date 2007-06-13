@@ -66,25 +66,26 @@ public class LinkSubmitTest extends BaseComponentTestCase
     {
         IMarkupWriter writer = newBufferWriter();
         IRequestCycle cycle = newCycle();
-        IScript script = new ScriptFixture();
-        PageRenderSupport support = newPageRenderSupport();
-
         IForm form = newForm();
 
-        LinkSubmit linkSubmit = newInstance(LinkSubmit.class, "form", form, "name", "fred_1", "script", script,
-                                            "id", "fred_id", "clientId", "fred_1", "submitType", "submit");
-        
+        LinkSubmit linkSubmit = newInstance(LinkSubmit.class,
+                                            "form", form,
+                                            "name", "fred_1",
+                                            "id", "fred_id",
+                                            "clientId", "fred_1", 
+                                            "submitType", FormConstants.SUBMIT_NORMAL);
+
+        expect(form.getClientId()).andReturn("form");
+        trainResponseBuilder(cycle, writer);        
         linkSubmit.addBody(newBody());
-        trainGetSupport(cycle, support);
-        trainResponseBuilder(cycle, writer);
-        
+
         replay();
 
         linkSubmit.renderFormComponent(writer, cycle);
 
         verify();
 
-        assertBuffer("<a href=\"#\" id=\"fred_1\">BODY</a>");
+        assertBuffer("<a href=\"javascript:tapestry.form.submit('form', 'fred_1');\" id=\"fred_1\">BODY</a>");
     }
 
     public void test_Render_Disabled()
@@ -94,7 +95,12 @@ public class LinkSubmitTest extends BaseComponentTestCase
 
         IForm form = newForm();
 
-        LinkSubmit linkSubmit = newInstance(LinkSubmit.class, "disabled", Boolean.TRUE, "form", form, "name", "fred_1", "idParameter", "fred_id");
+        LinkSubmit linkSubmit = newInstance(LinkSubmit.class,
+                                            "disabled", Boolean.TRUE,
+                                            "form", form,
+                                            "name", "fred_1",
+                                            "id", "fred_id",
+                                            "submitType", FormConstants.SUBMIT_NORMAL);
         linkSubmit.addBody(newBody());
 
         trainResponseBuilder(cycle, writer);
@@ -112,8 +118,6 @@ public class LinkSubmitTest extends BaseComponentTestCase
     {
         IMarkupWriter writer = newBufferWriter();
         IRequestCycle cycle = newCycle();
-        IScript script = new ScriptFixture();
-        PageRenderSupport support = newPageRenderSupport();
 
         IEngineService engine = newMock(IEngineService.class);
         ILink link = newMock(ILink.class);
@@ -127,14 +131,14 @@ public class LinkSubmitTest extends BaseComponentTestCase
                                             "name", "submitMe",
                                             "clientId", "submitMe",
                                             "submitType", FormConstants.SUBMIT_NORMAL,
-                                            "directService", engine,
-                                            "submitScript", script);
+                                            "directService", engine);
+
+        expect(form.getClientId()).andReturn("form");
         linkSubmit.addBody(newBody());
 
         expect(engine.getLink(eq(true), isA(DirectServiceParameter.class))).andReturn(link);
         expect(link.getURL()).andReturn("http://submit");
 
-        trainGetSupport(cycle, support);
         trainResponseBuilder(cycle, writer);
 
         replay();
@@ -143,7 +147,9 @@ public class LinkSubmitTest extends BaseComponentTestCase
 
         verify();
 
-        assertBuffer("<a href=\"#\" id=\"submitMe\">BODY</a>");
+        assertBuffer("<a href=\"http://submit\" " +
+                     "onClick=\"tapestry.form.submit('form', 'submitMe'," +
+                     "{async:true,json:false,url:this.href}); return false;\" id=\"submitMe\">BODY</a>");
     }
 
     public void test_Prepare_Normal()

@@ -15,16 +15,21 @@
 package org.apache.tapestry.form;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.tapestry.*;
-import org.apache.tapestry.util.ScriptUtils;
+import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.IComponent;
+import org.apache.tapestry.IForm;
+import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.engine.DirectServiceParameter;
+import org.apache.tapestry.json.JSONLiteral;
+import org.apache.tapestry.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 /**
  * Implements a component that submits its enclosing form via a JavaScript link. [ <a
  * href="../../../../../ComponentReference/LinkSubmit.html">Component Reference </a>]
- * 
+ *
  * @author Richard Lewis-Shell
  */
 
@@ -37,7 +42,7 @@ public abstract class LinkSubmit extends AbstractSubmit
      */
 
     public static final String ATTRIBUTE_NAME = "org.apache.tapestry.form.LinkSubmit";
-
+    
     /**
      * Checks the submit name ({@link FormConstants#SUBMIT_NAME_PARAMETER}) to see if it matches
      * this LinkSubmit's assigned element name.
@@ -45,11 +50,9 @@ public abstract class LinkSubmit extends AbstractSubmit
     protected boolean isClicked(IRequestCycle cycle, String name)
     {
         String value = cycle.getParameter(FormConstants.SUBMIT_NAME_PARAMETER);
-        
+
         return name.equals(value);
     }
-
-    public abstract IScript getScript();
 
     /**
      * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter,
@@ -60,33 +63,37 @@ public abstract class LinkSubmit extends AbstractSubmit
         boolean disabled = isDisabled();
 
         IForm form = getForm();
-        String name = getName();
+        String type = getSubmitType();
+
+        Defense.notNull(type, "submitType");
+
+        List update = getUpdateComponents();
+        boolean isAsync = isAsync() || update != null && update.size() > 0;
 
         if (!disabled)
-        {            
+        {
             writer.begin("a");
-            writer.attribute("href", "#");
-            
-            renderIdAttribute(writer, cycle);
 
-            renderInformalParameters(writer, cycle);
+            String js = "tapestry.form." + type + "('" + form.getClientId() + "', '" + getName() + "'";
             
-            renderSubmitBindings(writer, cycle);
-
-            // only if superclass hasn't done it already
-            
-            if (!isSubmitBindingBound())
+            if (isAsync)
             {
-                PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, this);
+                JSONObject json = new JSONObject();
+                json.put(new JSONLiteral("async"), Boolean.TRUE);
+                json.put(new JSONLiteral("json"), isJson());
 
-                Map symbols = new HashMap();
-                symbols.put("form", form);
-                symbols.put("name", name);
-                symbols.put("component", this);
-                symbols.put("functionName", ScriptUtils.functionHash("onclick" + this.hashCode()));
+                DirectServiceParameter dsp = new DirectServiceParameter(form, null, this);
+                json.put(new JSONLiteral("url"), new JSONLiteral("this.href"));
 
-                getScript().execute(this, cycle, pageRenderSupport, symbols);
+                writer.attribute("href", getDirectService().getLink(true, dsp).getURL());
+                writer.attribute("onClick", js + "," + json.toString() + "); return false;");                        
+            } else {
+
+                writer.attribute("href", "javascript:" + js + ");");
             }
+
+            renderIdAttribute(writer, cycle);
+            renderInformalParameters(writer, cycle);
         }
 
         renderBody(writer, cycle);
@@ -95,16 +102,18 @@ public abstract class LinkSubmit extends AbstractSubmit
             writer.end();
     }
 
+    
+
     /**
      * @see org.apache.tapestry.AbstractComponent#prepareForRender(org.apache.tapestry.IRequestCycle)
      */
     protected void prepareForRender(IRequestCycle cycle)
     {
         IComponent outer = (IComponent) cycle.getAttribute(ATTRIBUTE_NAME);
-        
+
         if (outer != null)
             throw new ApplicationRuntimeException(FormMessages.linkSubmitMayNotNest(this, outer),
-                    this, getLocation(), null);
+                                                  this, getLocation(), null);
 
         cycle.setAttribute(ATTRIBUTE_NAME, this);
     }

@@ -28,9 +28,7 @@
   <parameter name="disabled"/>
   <parameter name="selected"/>
   <parameter name="tag"/>
-  
-  <parameter name="id" property="idParameter" default-value="id"/>
-    
+      
   <parameter name="listener">
       <description>
           A listener that is notified if this component is triggered.
@@ -61,17 +59,13 @@
   </parameter>
   
   <parameter name="updateComponents" />
-  
   <parameter name="json" default-value="false" />
-  
   <parameter name="async" default-value="false" />
   
   <reserved-parameter name="name"/>
   <reserved-parameter name="href"/>
-  
+
   <inject property="directService" object="engine-service:direct" />
   <inject property="listenerInvoker" object="infrastructure:listenerInvoker"/>
-  <inject property="script" type="script" object="LinkSubmit.script"/>
-  <inject property="submitScript" type="script" object="SubmitBindings.script"/>
   
 </component-specification>
