@@ -236,12 +236,13 @@ var tapestry={
     	
     	var content=tapestry.html.getContentAsString(element);
     	if (djConfig["isDebug"]) {
-    		dojo.log.debug("Received element content for id <" + id + "> of: ", content);
+    		dojo.log.debug("Received element content for id <" + id + "> of: " + content);
     	}
 
         // fix for IE - setting innerHTML does not work for SELECTs
         if (tapestry.isIE && node.outerHTML && node.nodeName == "SELECT") {
             node.outerHTML = node.outerHTML.replace(/(<SELECT[^<]*>).*(<\/SELECT>)/, '$1' + content + '$2');
+            node=dojo.byId(id);
         } else {
             if (content && content.length > 0) {
                 node.innerHTML=content;
