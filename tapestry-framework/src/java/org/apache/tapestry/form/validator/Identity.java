@@ -39,7 +39,6 @@ public class Identity extends BaseValidator {
 
     private String _fieldName;
     private int _matchType;
-    private String _identityMessage;
 
     private static final int DIFFER = 0;
     private static final int MATCH = 1;
@@ -126,31 +125,6 @@ public class Identity extends BaseValidator {
         _fieldName = field;
         _matchType = DIFFER;
     }
-
-
-    /**
-     * Get the validation message.
-     *
-     * @return The message configured for this validator, will be null unless configured
-     *          via {@link #setIdentityMessage(String)}.
-     */
-    public String getIdentityMessage()
-    {
-        return _identityMessage;
-    }
-
-    /**
-     * Overrides the <code>field-too-short</code> bundle key. Parameter {0} is the minimum length.
-     * Parameter {1} is the display name of the field.
-     *
-     * @param message The message to set for this validator.
-     */
-
-    public void setIdentityMessage(String message)
-    {
-        _identityMessage = message;
-    }
-
     
     protected String buildIdentityMessage(ValidationMessages messages, IFormComponent field, IFormComponent referent)
     {
@@ -158,7 +132,7 @@ public class Identity extends BaseValidator {
                 field.getDisplayName(), new Integer(_matchType), referent.getDisplayName()
         };
         
-        return messages.formatValidationMessage(_identityMessage,
+        return messages.formatValidationMessage(getMessage(),
                 ValidationStrings.INVALID_FIELD_EQUALITY, parameters);
     }
 
