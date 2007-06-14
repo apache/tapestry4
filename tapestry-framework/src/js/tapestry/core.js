@@ -446,8 +446,8 @@ var tapestry={
  */
 tapestry.html={
 
-    TextareaRegexp:new RegExp('<([a-zA-Z]?)\\s(.*?)/>'), // regexp for compact textarea elements
-    TextareaReplacer:'<$1 $2></$1>', // replace pattern for compact textareas
+    CompactElementRegexp:new RegExp('<([a-zA-Z]*)(.*?)/>'), // regexp for compact html elements
+    CompactElementReplacer:'<$1$2></$1>', // replace pattern for compact html elements
 	
     /**
 	 * Function: getContentAsString
@@ -531,7 +531,7 @@ tapestry.html={
 		        return this._getContentAsStringGeneric(node);
         }
 
-        return this._processTextareas(s);
+        return this._processCompactElements(s);
 	},
 	
 	_getContentAsStringGeneric:function(node){
@@ -555,10 +555,10 @@ tapestry.html={
 		return s;	
 	},
 
-	_processTextareas:function(htmlData)
+	_processCompactElements:function(htmlData)
  	{
-        while (htmlData.match(this.TextareaRegexp)){
-            htmlData = htmlData.replace(this.TextareaRegexp, this.TextareaReplacer);
+            while (htmlData.match(this.CompactElementRegexp)){                
+                htmlData = htmlData.replace(this.CompactElementRegexp, this.CompactElementReplacer);
         }
         return htmlData;
  	}
