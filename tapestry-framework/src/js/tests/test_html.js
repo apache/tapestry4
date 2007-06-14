@@ -35,9 +35,9 @@ function test_html_processTextareas(){
     var initial = "start<textarea id='2' rows=4/>";
     var expected = "start<textarea id='2' rows=4></textarea>";
     
-    jum.assertEquals(expected, tapestry.html._processTextareas(initial));
+    jum.assertEquals(expected, tapestry.html._processCompactElements(initial));
     jum.assertEquals(expected + expected, 
-        tapestry.html._processTextareas(initial+initial));
+        tapestry.html._processCompactElements(initial+initial));
 }
 
 function _createTestNode(element, empty){
