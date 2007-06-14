@@ -72,7 +72,7 @@ public class TestIdentity extends BaseValidatorTestCase
         expect(otherField.getDisplayName()).andReturn("Password-2");
         
         ValidationMessages messages = newMessages();
-        trainIdentityMessages(messages, "Password-1", "Password-2", 1, "err1");        
+        trainIdentityMessages(messages, null, "Password-1", "Password-2", 1, "err1");        
 
         replay();
 
@@ -98,7 +98,8 @@ public class TestIdentity extends BaseValidatorTestCase
         expect(otherField.getDisplayName()).andReturn("Password-2");
         
         ValidationMessages messages = newMessages();
-        trainIdentityMessages(messages, "Password-1", "Password-2", 0, "error");
+        String msgOverride = "Should differ!";
+        trainIdentityMessages(messages, msgOverride, "Password-1", "Password-2", 0, msgOverride);
 
         replay();
 
@@ -108,7 +109,7 @@ public class TestIdentity extends BaseValidatorTestCase
         }
         catch (ValidatorException ex)
         {
-            assertEquals(ex.getMessage(), "error");
+            assertEquals(ex.getMessage(), msgOverride);
             assertEquals(ex.getConstraint(), ValidationConstraint.CONSISTENCY);
         }
     }
@@ -117,16 +118,16 @@ public class TestIdentity extends BaseValidatorTestCase
     {
         JSONObject json = new JSONObject();
         
-        IFormComponent field = newField(/*);//*/"Password", "pass1");
+        IFormComponent field = newField("Password", "pass1");
         expect(field.isDisabled()).andReturn(false);
         
-        IFormComponent otherField = newField(/*);//*/"Verify Password", "pass2");
+        IFormComponent otherField = newField("Verify Password", "pass2");
         trainGetContainerAndComponent(field, "other", otherField);
         
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);        
         expect(context.getProfile()).andReturn(json);        
                 
-        trainIdentityMessages(context, "Password", "Verify Password", 1, "Fields must match");        
+        trainIdentityMessages(context, null, "Password", "Verify Password", 1, "Fields must match");        
         
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
@@ -158,9 +159,10 @@ public class TestIdentity extends BaseValidatorTestCase
         expect(field.getBinding("value")).andReturn(ret);
     }   
 
-    private void trainIdentityMessages(ValidationMessages messages, String name1, String name2, int match, String result)
+    private void trainIdentityMessages(ValidationMessages messages, String msgOverride,
+            String name1, String name2, int match, String result)
     {
-        trainFormatMessage(messages, null, "invalid-field-equality", 
+        trainFormatMessage(messages, msgOverride, "invalid-field-equality", 
                 new Object[]{ name1, new Integer(match), name2 }, 
                 result);
     }    
