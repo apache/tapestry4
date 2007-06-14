@@ -14,17 +14,13 @@
 
 package org.apache.tapestry.markup;
 
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.NestedMarkupWriter;
+
+import java.io.PrintWriter;
+import java.util.*;
 
 /**
  * Completely revised (for 4.0) implementation of {@link org.apache.tapestry.IMarkupWriter}. No

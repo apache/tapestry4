@@ -181,7 +181,16 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
 
         if (_responseStarted)
         {
+            // clear out any previous input
+            clearPartialWriters();
+            
             cycle.renderPage(this);
+
+            TapestryUtils.removePageRenderSupport(cycle);
+            endResponse();
+
+            _writer.close();
+            
             return;
         }
         
@@ -216,7 +225,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         cycle.renderPage(this);
         
         TapestryUtils.removePageRenderSupport(cycle);
-        
+
         endResponse();
         
         _writer.close();
