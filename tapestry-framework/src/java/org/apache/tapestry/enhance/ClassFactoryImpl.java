@@ -18,15 +18,14 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.service.ClassFab;
 import org.apache.hivemind.service.ClassFactory;
 import org.apache.hivemind.service.InterfaceFab;
+import org.apache.tapestry.event.ResetEventListener;
 
 /**
  * Implementation of the hivemind core {@link ClassFactory} service to get around some incompatibilities 
- * the current 1.1.1 implementation of hivemind has with the latest (3.4) version of javassist.
- * 
- * @author jkuhnert
+ * the current 1.1.1 implementation of hivemind has with the latest (3.4) version of javassist. 
  */
-public class ClassFactoryImpl implements ClassFactory
-{
+public class ClassFactoryImpl implements ClassFactory, ResetEventListener {
+    
     static final int EXPIRED_CLASS_COUNT = 100;
     
     /**
@@ -37,7 +36,7 @@ public class ClassFactoryImpl implements ClassFactory
     private CtClassSource _classSource = new CtClassSource(_pool);
 
     private int _classCounter = 0;
-    
+
     public ClassFab newClass(String name, Class superClass)
     {
         try
@@ -45,7 +44,7 @@ public class ClassFactoryImpl implements ClassFactory
             checkPoolExpiration();
             
             CtClass ctNewClass = _classSource.newClass(name, superClass);
-               
+            
             return new ClassFabImpl(_classSource, ctNewClass);
         }
         catch (Exception ex)
@@ -76,7 +75,15 @@ public class ClassFactoryImpl implements ClassFactory
         }
 
     }
-    
+
+    public void resetEventDidOccur()
+    {
+        _classCounter = 0;
+
+        _pool = new HiveMindClassPool();
+        _classSource.setPool(_pool);
+    }
+
     void checkPoolExpiration()
     {
         _classCounter++;

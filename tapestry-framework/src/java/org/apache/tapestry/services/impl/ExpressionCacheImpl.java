@@ -15,14 +15,8 @@
 package org.apache.tapestry.services.impl;
 
 import edu.emory.mathcs.backport.java.util.concurrent.locks.ReentrantLock;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.WeakHashMap;
-
 import ognl.Node;
 import ognl.Ognl;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.event.ReportStatusEvent;
 import org.apache.tapestry.event.ReportStatusListener;
@@ -30,12 +24,16 @@ import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.services.ExpressionCache;
 import org.apache.tapestry.services.ExpressionEvaluator;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.WeakHashMap;
+
 /**
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class ExpressionCacheImpl implements ExpressionCache, ResetEventListener, ReportStatusListener
-{
+public class ExpressionCacheImpl implements ExpressionCache, ResetEventListener, ReportStatusListener {
+    
     private final ReentrantLock _lock = new ReentrantLock();
     
     private String _serviceId;
@@ -78,8 +76,8 @@ public class ExpressionCacheImpl implements ExpressionCache, ResetEventListener,
             
             Map cached = (Map)_objectCache.get(target.getClass());
             
-            if (cached == null) {
-                
+            if (cached == null)
+            {    
                 cached = new HashMap();
                 _objectCache.put(target.getClass(), cached);
             }
@@ -89,7 +87,6 @@ public class ExpressionCacheImpl implements ExpressionCache, ResetEventListener,
             if (result == null || result.getAccessor() == null)
             {
                 result = parse(target, expression);
-                
                 cached.put(expression, result);
             }
             
@@ -130,9 +127,7 @@ public class ExpressionCacheImpl implements ExpressionCache, ResetEventListener,
         }
         catch (Exception ex)
         {
-            throw new ApplicationRuntimeException(ImplMessages.unableToParseExpression(
-                    expression,
-                    ex), ex);
+            throw new ApplicationRuntimeException(ImplMessages.unableToParseExpression(expression,ex), ex);
         }
     }
     
@@ -144,9 +139,7 @@ public class ExpressionCacheImpl implements ExpressionCache, ResetEventListener,
         }
         catch (Exception ex)
         {
-            throw new ApplicationRuntimeException(ImplMessages.unableToParseExpression(
-                    expression,
-                    ex), ex);
+            throw new ApplicationRuntimeException(ImplMessages.unableToParseExpression(expression, ex), ex);
         }
     }
 
