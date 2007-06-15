@@ -446,7 +446,7 @@ var tapestry={
  */
 tapestry.html={
 
-    CompactElementRegexp:new RegExp('<([a-zA-Z]*)(.*?)/>'), // regexp for compact html elements
+    CompactElementRegexp:/<([a-zA-Z](?!nput)[a-zA-Z]*)([^>]*?)\/>/g, // regexp for compact html elements
     CompactElementReplacer:'<$1$2></$1>', // replace pattern for compact html elements
 	
     /**
@@ -557,10 +557,7 @@ tapestry.html={
 
 	_processCompactElements:function(htmlData)
  	{
-            while (htmlData.match(this.CompactElementRegexp)){                
-                htmlData = htmlData.replace(this.CompactElementRegexp, this.CompactElementReplacer);
-        }
-        return htmlData;
+            return htmlData.replace(this.CompactElementRegexp, this.CompactElementReplacer);        
  	}
 }
 
