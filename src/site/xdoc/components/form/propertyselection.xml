@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-    Copyright 2004, 2005 The Apache Software Foundation
+    Copyright 2007 The Apache Software Foundation
     
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -28,47 +28,32 @@
             </p>
             <p>
                 Uses a
-                <a
-                    href="../../apidocs/org/apache/tapestry/form/IPropertySelectionModel.html">
-                    IPropertySelectionModel
-                </a>
+                <a href="../../apidocs/org/apache/tapestry/form/IPropertySelectionModel.html">IPropertySelectionModel</a>
                 to map between Java values that will be assigned, and textual labels that will
                 appear in the HTML response.
             </p>
             <p>
                 A useful property selection model is available (
-                <a
-                    href="../../apidocs/org/apache/tapestry/form/StringPropertySelectionModel.html">
-                    StringPropertySelectionModel
-                </a> , or 
-                <a
-                    href="../../apidocs/org/apache/tapestry/form/BeanPropertySelectionModel.html">
-                    BeanPropertySelectionModel
-                </a>
-                ). You can also create your own model, as illustrated in the examples below.
+                <a href="../../apidocs/org/apache/tapestry/form/StringPropertySelectionModel.html">StringPropertySelectionModel</a>
+                , or
+                <a href="../../apidocs/org/apache/tapestry/form/BeanPropertySelectionModel.html">BeanPropertySelectionModel</a>).
+                You can also create your own model, as illustrated in the examples below.
             </p>
             <p>
-                Note that complex value Objects need to properly implement the
-                <code>Object.equals()</code>
+                Note that complex value Objects need to properly implement the <code>Object.equals()</code>
                 method if the correct initial item is to be displayed.
             </p>
 
             <p>
                 Informal parameters are applied to the <code>&lt;select&gt;</code> tag.  To have greater control
-                over the <code>&lt;option&gt;</code> tags, you must use the
-                <a href="select.html">Select</a>
-                and
-                <a href="option.html">Option</a>
-                components.
+                over the <code>&lt;option&gt;</code> tags, you must use the <a href="select.html">Select</a> and
+                <a href="option.html">Option</a> components.
             </p>
 
             <p>
                 <strong>
                     See also:
-                    <a
-                        href="../../apidocs/org/apache/tapestry/form/PropertySelection.html">
-                        org.apache.tapestry.form.PropertySelection
-                    </a>
+                    <a href="../../apidocs/org/apache/tapestry/form/PropertySelection.html">org.apache.tapestry.form.PropertySelection</a>
                     ,
                     <a href="select.html">Select</a>
                     ,
@@ -98,7 +83,7 @@
                         <td>value</td>
                         <td>Object</td>
                         <td>yes</td>
-                        <td></td>
+                        <td> </td>
                         <td>
                             The property to set. During rendering, this property is read, and sets
                             the default value of the selection (if it is null, no element is
@@ -107,19 +92,47 @@
                         </td>
                     </tr>
                     <tr>
-
                         <td>model</td>
                         <td>
-                            <a
-                                href="../../apidocs/org/apache/tapestry/form/IPropertySelectionModel.html">
+                            <a href="../../apidocs/org/apache/tapestry/form/IPropertySelectionModel.html">
                                 IPropertySelectionModel
                             </a>
                         </td>
                         <td>yes</td>
-                        <td></td>
+                        <td> </td>
                         <td>
                             The model provides a list of possible labels, and matches those labels
                             against possible values that can be assigned back to the property.
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>optionRenderer</td>
+                        <td>
+                            <a href="../../apidocs/org/apache/tapestry/form/IOptionRenderer.html">
+                                IOptionRenderer
+                            </a>
+                        </td>
+                        <td>yes</td>
+                        <td>
+                            <a href="../../apidocs/org/apache/tapestry/form/DefaultOptionRenderer.html">
+                                DefaultOptionRenderer
+                            </a>
+                        </td>
+                        <td>
+                            Object used to render the <code>&lt;option&gt;Label&lt;/option&gt;</code> elements
+                            within the enclosing <code>&lt;select&gt;</code> tags.  The default implementation currently
+                            handles only writing out the <code>disabled/selected</code> attributes corresponding the methods
+                            implemented by
+                            <a href="../../apidocs/org/apache/tapestry/form/IPropertySelectionModel.html">
+                                IPropertySelectionModel
+                            </a>.
+                            <br /><br />
+                            It is possible to implement more advanced display semantics of your options list by implementing a custom
+                            <a href="../../apidocs/org/apache/tapestry/form/IOptionRenderer.html">
+                                IOptionRenderer
+                            </a> of your own.  Things like <code>optgroup</code> and various indentation strategies are typically good
+                            candidates for implementing custom renderers.
                         </td>
 
                     </tr>
@@ -135,24 +148,10 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>submitOnChange (deprecated)</td>
-                        <td>boolean</td>
-                        <td>no</td>
-                        <td>false</td>
-                        <td>
-                            If true, then additional JavaScript is added to submit the containing
-                            form when select is changed. Equivalent to specifying a JavaScript event
-                            handler of
-                            <code>this.form.submit()</code>
-                            .
-                        </td>
-                    </tr>
-
-                    <tr>
                         <td>displayName</td>
                         <td>String</td>
                         <td>no</td>
-                        <td></td>
+                        <td> </td>
                         <td>
 
                             The user-presentable name for the component, which will be used by a
@@ -164,46 +163,17 @@
                         <td>validators</td>
                         <td>
                             Array or collection of
-                            <a
-                                href="../../apidocs/org/apache/tapestry/form/validator/Validator.html">
+                            <a href="../../apidocs/org/apache/tapestry/form/validator/Validator.html">
                                 Validator
                             </a>
                         </td>
                         <td>no</td>
-                        <td></td>
+                        <td> </td>
                         <td>
                             The validators to apply to the component. Something along the lines of:
                             <code>validators:required</code> .<br/><br/>
-                            
-                            <strong>See also:</strong> <a href="../../usersguide/validation.html">Validation</a>
-                        </td>
-                    </tr>
 
-                    <tr>
-                        <td>translator</td>
-                        <td>
-                            <a
-                                href="../../tapestry/apidocs/org/apache/tapestry/form/translator/Translator.html">
-                                Translator
-                            </a>
-                        </td>
-                        <td>no</td>
-                        <td></td>
-                        <td>
-                            The translator to use when displaying and parsing the date.
-                            <br/><br/>
                             <strong>See also:</strong> <a href="../../usersguide/validation.html">Validation</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>id</td>
-                        <td>String</td>
-                        <td>no</td>
-                        <td></td>
-                        <td>
-                            The value of the id attribute in the generated
-                            <code>&lt;select&gt;</code>
-                            tag.
                         </td>
                     </tr>
                 </table>
@@ -230,8 +200,7 @@
                     <p>
                         The PropertySelection component provides Gender selection drop down list
                         using a
-                        <a
-                            href="../../apidocs/org/apache/tapestry/form/StringPropertySelectionModel.html">
+                        <a href="../../apidocs/org/apache/tapestry/form/StringPropertySelectionModel.html">
                             StringPropertySelectionModel
                         </a>
                     </p>
@@ -257,10 +226,102 @@ public abstract class DetailsPage extends BasePage {
   }
 }
 </source>
-
                 </subsection>
 
-                <subsection name="Example 2">
+                <subsection name="Example 2 : Custom IOptionRenderer">
+                    <p>
+                        The <code>optionRenderer</code> parameter allows you complete control over the display of your options list with custom
+                        renderer implementations.  The following example shows a sample custom renderer implementation for generating a google style
+                        drop down actions list. <em>(similar to the gmail drop down actions list)</em>
+                    </p>
+
+                    <p>
+                        The resulting option list would look something like:
+                    </p>
+
+                    <select name="sampleOptions">
+                        <option value="-1" style="color: rgb(119, 119, 119);">choose..</option>
+                        <option value="0" style="padding-left:1em;">Dogs</option>
+                        <option value="1" style="padding-left:1em;">Elephants</option>
+                        <option value="2" style="padding-left:1em;">Mongoose</option>
+                        <option value="3" style="padding-left:1em;">Angry Chipmunks</option>
+                    </select>
+
+                    <source xml:space="preserve"><![CDATA[
+/**
+ * Implementation of {@link IOptionRenderer} that pretty prints options
+ * that aren't disabled with padded whitespace at the beginning.
+ */
+public class FormattedOptionRenderer implements IOptionRenderer {
+
+    // Provided for efficiency / convenience
+    public static final IOptionRenderer DEFAULT_INSTANCE = new FormattedOptionRenderer();
+
+    /**
+     * {@inheritDoc}
+     */
+    public void renderOptions(IMarkupWriter writer, IRequestCycle cycle, IPropertySelectionModel model, Object selected) {
+        int count = model.getOptionCount();
+
+        for (int i = 0; i < count; i++)
+        {
+            Object option = model.getOption(i);
+
+            writer.begin("option");
+            writer.attribute("value", model.getValue(i));
+
+            if (isEqual(option, selected, model))
+                writer.attribute("selected", "selected");
+
+            if (model.isDisabled(i))
+                writer.attribute("style", "color: rgb(119, 119, 119);");
+
+            if (i > 0)
+                writer.printRaw("&nbsp;");
+
+            writer.print(model.getLabel(i));
+            
+            writer.end();
+            writer.println();
+        }
+    }
+
+    protected boolean isEqual(Object left, Object right, IPropertySelectionModel model) {
+
+        if (List.class.isInstance(right) && IPrimaryKeyConverter.class.isInstance(model))
+        {
+            List values = (List) right;
+            IPrimaryKeyConverter converter = (IPrimaryKeyConverter) model;
+
+            if (left == null)
+                return false;
+
+            for (Object option : values)
+                if (converter.getPrimaryKey(option).equals(converter.getPrimaryKey(left)))
+                    return true;
+
+            return false;
+        }
+
+        // Both null, or same object, then are equal
+
+        if (left == right)
+            return true;
+
+        // If one is null, the other isn't, then not equal.
+        
+        if (left == null || right == null)
+            return false;
+
+        // Both non-null; use standard comparison.
+
+        return left.equals(right);
+    }
+}
+]]></source>
+                </subsection>
+
+                <subsection name="Example 3">
 
                     <p>
                         Provides list of clothing items for the user to select. When the user

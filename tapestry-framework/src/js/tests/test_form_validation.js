@@ -11,8 +11,8 @@ function test_register_invalidform(){
 	try {
 		tapestry.form.registerForm("bsid");
 		throw new JUMAssertFailure("Previous test should have failed.");
-	} catch (e) { 
-		jum.assertTrue("testFormRegisterInvalid", e instanceof Error); 
+	} catch (e) {
+		jum.assertTrue("testFormRegisterInvalid", e instanceof Error);
 	}
 }
 
@@ -23,7 +23,7 @@ function test_register_form(){
 		form.submitCalled=true;
 	}
 	form.submitname={value:""};
-	
+
 	tapestry.form.registerForm("regform");
 	jum.assertTrue("formregForm", dojo.lang.isObject(tapestry.form.forms["regform"]));
 	jum.assertTrue("formregProfiles", dojo.lang.isArray(tapestry.form.forms["regform"].profiles));
@@ -38,29 +38,29 @@ function test_validate_realNumber(){
 function test_validate_decimals(){
 	var input = "1,124.12";
 	jum.assertTrue(dojo.validate.isRealNumber(input, {decimal:".",separator:","}));
-	jum.assertTrue(dojo.validate.isInRange(input, {min:2.0,decimal:".",separator:",",symbol:"¤"}));
-	jum.assertTrue(dojo.validate.isInRange(input, {max:1000000001,decimal:".",separator:",",symbol:"¤"}));
+	jum.assertTrue(dojo.validate.isInRange(input, {min:2.0,decimal:".",separator:",",symbol:"ï¿½"}));
+	jum.assertTrue(dojo.validate.isInRange(input, {max:1000000001,decimal:".",separator:",",symbol:"ï¿½"}));
 }
 
 function test_validate_required(){
 	// A generic form
 	var f = {
-		
+
 		tx1: {type: "text", value: " 1001 ",  name: "tx1"},
 		tx2: {type: "text", value: " ",  name: "tx2"},
 		tx3: {type: "text", value: "10/19/2005",  name: "tx3"},
-		
+
 	};
 
 	// Profile for form input
 	var profile = {
-		// required fields
+	// required fields
 		required: ["tx2"]
 	};
-	
+
 	// results object
 	var results = dojo.validate.check(f, profile);
-	
+
 	jum.assertTrue("missing_tx2", results.isMissing("tx2"));
 }
 

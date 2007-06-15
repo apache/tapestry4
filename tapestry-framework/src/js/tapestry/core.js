@@ -37,8 +37,8 @@ if (dj_undef("logging", dojo)) {
  * requests. 
  */
 var tapestry={
-	
-	// property: version 
+
+	// property: version
 	// The current client side library version, usually matching the current java library version. (ie 4.1, etc..)
 	version:"4.1.2",
 	scriptInFlight:false, // whether or not javascript is currently being eval'd, default false
@@ -46,19 +46,19 @@ var tapestry={
     GlobalScriptFragment:new RegExp('(?:<script.*?>)((\n|.|\r)*?)(?:<\/script>)', 'img'), // regexp for global script fragments
     requestsInFlight:0, // how many ajax requests are currently in progress
     isIE:dojo.render.html.ie,
-    
+
     /**
 	 * Function: bind
-	 * 
-	 * Core XHR bind function for tapestry internals. The 
+	 *
+	 * Core XHR bind function for tapestry internals. The
 	 * <error>/<load> functions defined in this package are used to handle
 	 * load/error of dojo.io.bind.
-	 * 
-	 * Parameters: 
-	 * 
+	 *
+	 * Parameters:
+	 *
 	 * 	url - The url to bind the request to.
 	 * 	content - A properties map of optional extra content to send.
-	 *  json - Boolean, optional parameter specifying whether or not to create a 
+	 *  json - Boolean, optional parameter specifying whether or not to create a
 	 * 		   json request. If not specified the default is to use XHR.
 	 */
 	bind:function(url, content, json){
@@ -69,7 +69,7 @@ var tapestry={
             preventCache:true,
             error: (function(){tapestry.error.apply(this, arguments);})
 		};
-		
+
 		// setup content type
 		if (typeof json != "undefined" && json) {
 			parms.mimetype = "text/json";
@@ -85,37 +85,37 @@ var tapestry={
         tapestry.requestsInFlight++;
         dojo.io.queueBind(parms);
 	},
-	
+
 	/**
 	 * Function: error
-	 * 
-	 * Global error handling function for dojo.io.bind requests. This function is mapped 
-	 * as the "error:functionName" part of a request in the dojo.io.bind arguments 
+	 *
+	 * Global error handling function for dojo.io.bind requests. This function is mapped
+	 * as the "error:functionName" part of a request in the dojo.io.bind arguments
 	 * in <tapestry.bind> calls.
-	 * 
+	 *
 	 * See Also:
-	 * 	<tapestry.bind>
+	 * 	<tapestry.bind>, <tapestry.load>
 	 */
 	error:function(type, exception, http, kwArgs){
         tapestry.requestsInFlight--;
         dojo.log.exception("Error received in IO response.", exception);
 	},
-	
+
 	/**
 	 * Function: load
-	 * 
+	 *
 	 * Global load handling function for dojo.io.bind requests. This isn't typically
-	 * called directly by anything, but passed in as the "load" argument to 
-	 * dojo.io.bind when making IO requests as the function that will handle the 
+	 * called directly by anything, but passed in as the "load" argument to
+	 * dojo.io.bind when making IO requests as the function that will handle the
 	 * return response.
-	 * 
+	 *
 	 * Parameters:
 	 * 	type - Type of request.
-	 * 	data - The data returned, depending on the request type might be an xml document / 
+	 * 	data - The data returned, depending on the request type might be an xml document /
 	 * 			plaintext / json / etc.
 	 * 	http - The http object used in request, like XmlHttpRequest.
 	 * 	kwArgs - The original set of arguments passed into dojo.io.bind({arg:val,arg1:val2}).
-	 * 
+	 *
 	 */
 	load:function(type, data, http, kwArgs){
 		dojo.log.debug("tapestry.load() Response received.", data);
@@ -124,13 +124,13 @@ var tapestry={
 			dojo.log.warn("No data received in response.");
 			return;
 		}
-		
+
 		var resp=data.getElementsByTagName("ajax-response");
 		if (!resp || resp.length < 1 || !resp[0].childNodes) {
 			dojo.log.warn("No ajax-response elements received.");
-			return; 
+			return;
 		}
-		
+
 		var elms=resp[0].childNodes;
 		var bodyScripts=[];
 		var initScripts=[];
@@ -138,7 +138,7 @@ var tapestry={
 		for (var i=0; i<elms.length; i++) {
 			var elmType=elms[i].getAttribute("type");
 			var id=elms[i].getAttribute("id");
-			
+
 			if (elmType == "exception") {
 				dojo.log.err("Remote server exception received.");
 				tapestry.presentException(elms[i], kwArgs);
@@ -150,10 +150,10 @@ var tapestry={
                 dojo.event.topic.publish(id, {message: tapestry.html.getContentAsString(elms[i])});
                 continue;
             }
-			
+
 			// handle javascript evaluations
 			if (elmType == "script") {
-				
+
 				if (id == "initializationscript") {
 					initScripts.push(elms[i]);
 					continue;
@@ -172,52 +172,65 @@ var tapestry={
 			} else {
 				rawData.push(elms[i]);
 			}
-			
+
 			if (!id){
 				dojo.log.warn("No element id found in ajax-response node.");
 				continue;
 			}
-			
+
 			var node=dojo.byId(id);
 			if (!node) {
 				dojo.log.warn("No node could be found to update content in with id " + id);
 				continue;
 			}
-			
+
 			tapestry.loadContent(id, node, elms[i]);
 		}
-		
+
 		// load body scripts before initialization
 		for (var i=0; i<bodyScripts.length; i++) {
 			tapestry.loadScriptContent(bodyScripts[i], true);
 		}
-		
+
 		for (var i=0; i<rawData.length; i++) {
 			tapestry.loadScriptContent(rawData[i], true);
 		}
-		
+
 		for (var i=0; i<initScripts.length; i++) {
 			tapestry.loadScriptContent(initScripts[i], true);
 		}
 	},
-	
-	loadJson:function(type, data, http, kwArgs){
-        dojo.log.debug("tapestry.loadJson() Response received.", data);
-        tapestry.requestsInFlight--;
-    },
-	
+
+	/**
+ 	 * Function: loadJson
+ 	 *
+ 	 * Executed by default during JSON requests - default implementation does nothing but decrement
+ 	 * the <tapestry.requestsInFlight> global variable.
+ 	 *
+ 	 * Parameters:
+ 	 * 	type - Type of request.
+	 * 	data - The data returned, depending on the request type might be an xml document /
+	 * 			plaintext / json / etc.
+	 * 	http - The http object used in request, like XmlHttpRequest.
+	 * 	kwArgs - The original set of arguments passed into dojo.io.bind({arg:val,arg1:val2}).
+ 	 */
+	loadJson:function(type, data, http, kwArgs) {
+		dojo.log.debug("tapestry.loadJson() Response received.", data);
+		tapestry.requestsInFlight--;
+	},
+
 	/**
 	 * Function: loadContent
-	 * 
-	 * Used by <tapestry.load> when handling xml responses to iterate over the tapestry 
-	 * specific xml response and appropriately load all content types / perform animations / 
+	 *
+	 * Used by <tapestry.load> when handling xml responses to iterate over the tapestry
+	 * specific xml response and appropriately load all content types / perform animations /
 	 * execute scripts in the proper order / etc..
-	 * 
-	 * Parameters: 
+	 *
+	 * Parameters:
 	 * 	id - The element id that this content should be applied to in the existing document.
-	 * 	node - The node that this new content will be applied to. 
+	 * 	node - The node that this new content will be applied to.
 	 * 	element - The incoming xml node containing rules/content to apply to this node.
-	 * 
+	 *
 	 */
 	loadContent:function(id, node, element){
         if (typeof element.childNodes != "undefined" && element.childNodes.length > 0) {
@@ -231,9 +244,9 @@ var tapestry={
                 }
             }
         }
-    	
+
     	dojo.event.browser.clean(node); // prevent mem leaks in ie
-    	
+
     	var content=tapestry.html.getContentAsString(element);
     	if (djConfig["isDebug"]) {
     		dojo.log.debug("Received element content for id <" + id + "> of: " + content);
@@ -262,11 +275,11 @@ var tapestry={
 					continue;
 				}
 			}
-			
+
 			var nn = attnode.nodeName;
 			var nv = attnode.nodeValue;
 			if (nn == "id" || nn == "type" || nn == "name"){continue;}
-			
+
 			if (nn == "style") {
 				dojo.html.setStyleText(node, nv);
 			} else if (nn == "class") {
@@ -275,21 +288,21 @@ var tapestry={
 				node.setAttribute(nn, nv);
 			}
 		}
-    	
+
     	// apply disabled/not disabled
     	var disabled = element.getAttribute("disabled");
-    	if (!disabled && node["disabled"]) { 
+    	if (!disabled && node["disabled"]) {
     		node.disabled = false;
     	} else if (disabled) {
     		node.disabled = true;
     	}
 	},
-	
+
 	/**
 	 * Function: loadScriptContent
-	 * 
+	 *
 	 * Manages loading javascript content for a specific incoming xml element.
-	 * 
+	 *
 	 * Parameters:
 	 * 	element - The element to parse javascript statements from and execute.
 	 * 	async - Whether or not to process the script content asynchronously, meaning
@@ -305,25 +318,25 @@ var tapestry={
 			setTimeout(function() { tapestry.loadScriptContent(element, async);}, 5);
 			return;
 		}
-        
-		var text=tapestry.html.getContentAsString(element);		
+
+		var text=tapestry.html.getContentAsString(element);
 	    var response = text.replace(this.GlobalScriptFragment, '');
 	    var scripts = text.match(this.GlobalScriptFragment);
-		
+
 		if (!scripts) { return; }
-		
+
         if (async) {
-        	setTimeout(function() { 
+        	setTimeout(function() {
         		tapestry.evaluateScripts(scripts);
         	}, 60);
         } else {
         	tapestry.evaluateScripts(scripts);
         }
 	},
-	
+
 	evaluateScripts:function(scripts){
 		tapestry.scriptInFlight = true;
-       	
+
         for (var i=0; i<scripts.length; i++) {
             var scr = scripts[i].match(this.ScriptFragment)[1];
             if(!scr || scr.length <= 0){continue;}
@@ -335,18 +348,18 @@ var tapestry={
                 dojo.log.exception("Error evaluating script: " + scr, e, false);
             }
         }
-        
+
         tapestry.scriptInFlight = false;
 	},
-	
+
 	/**
 	 * Function: loadScriptFromUrl
-	 * 
-	 * Takes a url string and loads the javascript it points to as a normal 
+	 *
+	 * Takes a url string and loads the javascript it points to as a normal
 	 * document head script include section. ie:
-	 * 
+	 *
 	 * : <script type="text/javascript" src="http://localhost/js/foo.js"></script>
-	 * 
+	 *
 	 * Parameters:
 	 * 	url - The url to the script to load into this documents head.
 	 */
@@ -360,45 +373,45 @@ var tapestry={
 		        }
 		    }
 	    }
-	    
+
 	    if (djConfig.isDebug) {
 	    	dojo.log.debug("loadScriptFromUrl: " + url + " success?: " + dojo.hostenv.loadUri(url));
 	    } else {
 	    	dojo.hostenv.loadUri(url);
 	    }
 	},
-	
+
 	/**
 	 * Function: presentException
-	 * 
-	 * When remote exceptions are caught on the server special xml blocks are returned to 
+	 *
+	 * When remote exceptions are caught on the server special xml blocks are returned to
 	 * the client when the requests are initiated via async IO. This function takes the incoming
 	 * Tapestry exception page content and dumps it into a modal dialog that is presented to the user.
-	 * 
-	 * Parameters: 
+	 *
+	 * Parameters:
 	 * 	node - The incoming xml exception node.
 	 * 	kwArgs - The kwArgs used to initiate the original IO request.
 	 */
 	presentException:function(node, kwArgs) {
         dojo.require("dojo.widget.*");
         dojo.require("dojo.widget.Dialog");
-        
+
         var excnode=document.createElement("div");
 		excnode.setAttribute("id", "exceptiondialog");
 		document.body.appendChild(excnode);
-		
+
 		var contentnode=document.createElement("div");
 		contentnode.innerHTML=tapestry.html.getContentAsString(node);
 		dojo.html.setClass(contentnode, "exceptionDialog");
-		
+
 		var navnode=document.createElement("div");
 		navnode.setAttribute("id", "exceptionDialogHandle");
 		dojo.html.setClass(navnode, "exceptionCloseLink");
 		navnode.appendChild(document.createTextNode("Close"));
-		
+
 		excnode.appendChild(navnode);
 		excnode.appendChild(contentnode);
-		
+
 		var dialog=dojo.widget.createWidget("Dialog", {widgetId:"exception"}, excnode);
 		dojo.event.connect(navnode, "onclick", dialog, "hide");
 		dojo.event.connect(dialog, "hide", dialog, "destroy");
@@ -407,13 +420,13 @@ var tapestry={
             dialog.show();
         }, 100);
     },
-	
+
 	/**
 	 * Function: cleanConnect
-	 * 
+	 *
 	 * Utility used to disconnect a previously connected event/function.
-	 * 
-	 * This assumes that the incoming function name is being attached to 
+	 *
+	 * This assumes that the incoming function name is being attached to
 	 * the global namespace "tapestry".
 	 */
 	cleanConnect:function(target, event, funcName){
@@ -421,11 +434,11 @@ var tapestry={
         	dojo.event.disconnect(target, event, tapestry, funcName);
         }
 	},
-	
+
 	linkOnClick:function(url, id, isJson){
 		var content={beventname:"onClick"};
 		content["beventtarget.id"]=id;
-		
+
 		tapestry.bind(url, content, isJson);
 		return false;
 	},
@@ -448,27 +461,27 @@ tapestry.html={
 
     CompactElementRegexp:/<([a-zA-Z](?!nput)[a-zA-Z]*)([^>]*?)\/>/g, // regexp for compact html elements
     CompactElementReplacer:'<$1$2></$1>', // replace pattern for compact html elements
-	
+
     /**
 	 * Function: getContentAsString
-	 * 
+	 *
 	 * Takes a dom node and returns its contents rendered in a string.
      *
      * The resulting string does NOT contain any markup (or attributes) of
      * the given node - only child nodes are rendered and returned.Content
      *
-     * Implementation Note: This function tries to make use of browser 
+     * Implementation Note: This function tries to make use of browser
      * specific features (the xml attribute of nodes in IE and the XMLSerializer
      * object in Mozilla derivatives) - if those fails, a generic implementation
      * is used that is guaranteed to work in all platforms.
-	 * 
-	 * Parameters: 
-	 * 
+	 *
+	 * Parameters:
+	 *
 	 *	node - The dom node.
 	 * Returns:
-	 * 
+	 *
 	 * The string representation of the given node's contents.
-	 */    
+	 */
 	getContentAsString:function(node){
 		if (typeof node.xml != "undefined") {
 			return this._getContentAsStringIE(node);
@@ -477,31 +490,31 @@ tapestry.html={
 		} else {
 			return this._getContentAsStringGeneric(node);
 		}
-	},        
-	
+	},
+
    /**
 	 * Function: getElementAsString
-	 * 
+	 *
 	 * Takes a dom node and returns itself and its contents rendered in a string.
      *
      * Implementation Note: This function uses a generic implementation in order
      * to generate the returned string.
-	 * 
-	 * Parameters: 
-	 * 
+	 *
+	 * Parameters:
+	 *
 	 *	node - The dom node.
 	 * Returns:
-	 * 
+	 *
 	 * The string representation of the given node.
-	 */         
+	 */
 	getElementAsString:function(node){
 		if (!node) { return ""; }
-		
+
 		var s='<' + node.nodeName;
 		// add attributes
 		if (node.attributes && node.attributes.length > 0) {
 			for (var i=0; i < node.attributes.length; i++) {
-				s += " " + node.attributes[i].name + "=\"" + node.attributes[i].value + "\"";	
+				s += " " + node.attributes[i].name + "=\"" + node.attributes[i].value + "\"";
 			}
 		}
 		// close start tag
@@ -511,7 +524,7 @@ tapestry.html={
 		// end tag
 		s += '</' + node.nodeName + '>';
 		return s;
-	},        
+	},
 
 	_getContentAsStringIE:function(node){
 		var s="";
@@ -520,10 +533,10 @@ tapestry.html={
     	}
     	return s;
 	},
-	
+
 	_getContentAsStringMozilla:function(node){
         if (!this.xmlSerializer){ this.xmlSerializer = new XMLSerializer();}
-        
+
 	    var s = "";
         for (var i = 0; i < node.childNodes.length; i++) {
 	        s += this.xmlSerializer.serializeToString(node.childNodes[i]);
@@ -533,7 +546,7 @@ tapestry.html={
 
         return this._processCompactElements(s);
 	},
-	
+
 	_getContentAsStringGeneric:function(node){
 		var s="";
 		if (node == null) { return s; }
@@ -552,12 +565,12 @@ tapestry.html={
 					break;
 			}
 		}
-		return s;	
+		return s;
 	},
 
 	_processCompactElements:function(htmlData)
  	{
-            return htmlData.replace(this.CompactElementRegexp, this.CompactElementReplacer);        
+            return htmlData.replace(this.CompactElementRegexp, this.CompactElementReplacer);
  	}
 }
 
@@ -568,28 +581,28 @@ tapestry.html={
  * a name/value pair format that can be sent to the remote server.
  */
 tapestry.event={
-	
+
 	/**
 	 * Function: buildEventProperties
-	 * 
+	 *
 	 * Takes an incoming browser generated event (like key/mouse events) and
-	 * creates a js object holding the basic values of the event in order for 
+	 * creates a js object holding the basic values of the event in order for
 	 * it to be submitted to the server.
-	 * 
-	 * Parameters: 
-	 * 
+	 *
+	 * Parameters:
+	 *
 	 *	event - The javascript event method is based on, if it isn't a valid
 	 * 				browser event it will be ignored.
 	 *	props - The existing property object to set the values on, if it doesn't
 	 * 				exist one will be created.
 	 * Returns:
-	 * 
+	 *
 	 * The desired event properties bound to an object. Ie obj.target,obj.charCode, etc..
 	 */
 	buildEventProperties:function(event, props){
 		if (!dojo.event.browser.isEvent(event)) return {};
 		if (!props) props={};
-		
+
 		if(event["type"]) props.beventtype=event.type;
 		if(event["keys"]) props.beventkeys=event.keys;
 		if(event["charCode"]) props.beventcharCode=event.charCode;
@@ -597,42 +610,42 @@ tapestry.event={
 		if(event["pageY"]) props.beventpageY=event.pageY;
 		if(event["layerX"]) props.beventlayerX=event.layerX;
 		if(event["layerY"]) props.beventlayerY=event.layerY;
-		
+
 		if (event["target"]) this.buildTargetProperties(props, event.target);
-		
+
 		return props;
 	},
-	
+
 	/**
 	 * Function: buildTargetProperties
-	 * 
+	 *
 	 * Generic function to build a properties object populated with
 	 * relevent target data.
-	 * 
+	 *
 	 * Parameters:
-	 * 	
+	 *
 	 * 	props - The object that event properties are being set on to return to
 	 * 			the server.
 	 * 	target - The javscript Event.target object that the original event was targeted for.
-	 * 
+	 *
 	 * Returns:
 	 * 	The original props object passed in, populated with any data found.
 	 */
 	buildTargetProperties:function(props, target){
 		if(!target) { return; }
-		
+
 		if (dojo.dom.isNode(target)) {
 			return this.buildNodeProperties(props, target);
 		} else {
 			dojo.raise("buildTargetProperties() Unknown target type:" + target);
 		}
 	},
-	
+
 	/**
 	 * Function: buildNodeProperties
-	 * 
+	 *
 	 * Builds needed target node properties, like the node's id.
-	 * 
+	 *
 	 * Parameters:
 	 * 	props - The object that event properties are being set on to return to
 	 * 			the server.
@@ -648,21 +661,21 @@ tapestry.event={
 tapestry.lang = {
 
 	/**
-	 * Searches the specified list for an object with a matching propertyName/value pair. 
+	 * Searches the specified list for an object with a matching propertyName/value pair.
 	 * @param list 			The array of objects to search.
-	 * @param properyName	The object property key to match on. (ie object[propertyName]) 
+	 * @param properyName	The object property key to match on. (ie object[propertyName])
 	 * 			Can also be a template object to match in the form of {key:{key:value}} nested
-	 * 			as deeply as you like. 
+	 * 			as deeply as you like.
 	 * @param value 		The value to be matched against
 	 * @return The matching array object found, or null.
 	 */
 	find:function(list, property, value){
 		if (!list || !property || list.length < 1) return null;
-		
+
 		// if not propMatch then template object was passed in
 		var propMatch=dojo.lang.isString(property);
 		if (propMatch && !value) return null; //if doing string/other non template match and no value
-		
+
 		for (var i=0; i < list.length; i++) {
 			if (!list[i]) continue;
 			if (propMatch) {
@@ -673,13 +686,13 @@ tapestry.lang = {
 		}
 		return null;
 	},
-	
+
 	// called recursively to match object properties
 	// partially stolen logic from dojo.widget.html.SortableTable.sort
 	matchProperty:function(template, object){
 		if(!dojo.lang.isObject(template) || !dojo.lang.isObject(object))
 			return template.valueOf() == object.valueOf();
-		
+
 		for(var p in template){
 			if(!(p in object)) return false;	//	boolean
 			if (!this.matchProperty(template[p], object[p])) return false;

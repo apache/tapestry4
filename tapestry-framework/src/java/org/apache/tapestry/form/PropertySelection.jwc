@@ -15,32 +15,32 @@
    limitations under the License.
 -->
 
-<!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
-  "http://tapestry.apache.org/dtd/Tapestry_4_0.dtd">
-  
-<component-specification class="org.apache.tapestry.form.PropertySelection" 
-	allow-body="no" 
-	allow-informal-parameters="yes">
-  
-  <description>
-  Creates an HTML select to choose a single property from a list of options.
-  </description>
+<!DOCTYPE component-specification PUBLIC
+        "-//Apache Software Foundation//Tapestry Specification 4.0//EN"
+        "http://tapestry.apache.org/dtd/Tapestry_4_0.dtd">
 
-  <parameter name="value" required="yes"/>
-  
-  <parameter name="model" required="yes"/>
-  
-  <parameter name="disabled"/>
-  
-  <parameter name="displayName"/>
-  
-  <parameter name="validators" />
-  
-  <parameter name="optionRenderer" default-value="ognl:@org.apache.tapestry.form.DefaultOptionRenderer@DEFAULT_INSTANCE" cache="no" />
-  
-  <reserved-parameter name="name"/>
-  
-  <inject property="validatableFieldSupport" object="service:tapestry.form.ValidatableFieldSupport"/>
-  
+<component-specification class="org.apache.tapestry.form.PropertySelection"
+                         allow-body="no"
+                         allow-informal-parameters="yes">
+
+    <description>
+        Creates an HTML select to choose a single property from a list of options.
+    </description>
+
+    <parameter name="value" required="yes"/>
+
+    <parameter name="model" required="yes"/>
+
+    <parameter name="disabled"/>
+
+    <parameter name="displayName"/>
+
+    <parameter name="validators" />
+
+    <parameter name="optionRenderer" default-value="ognl:@org.apache.tapestry.form.DefaultOptionRenderer@DEFAULT_INSTANCE" cache="no" />
+
+    <reserved-parameter name="name"/>
+
+    <inject property="validatableFieldSupport" object="service:tapestry.form.ValidatableFieldSupport"/>
+
 </component-specification>

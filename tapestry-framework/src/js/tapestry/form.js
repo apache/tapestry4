@@ -19,8 +19,7 @@ tapestry.form={
 	
 	/**
 	 * Function: focusField
-	 * If possible, brings keyboard input focus
-	 * to the specified field.
+	 * If possible, brings keyboard input focus to the specified field.
 	 * 
 	 * Parameters:
 	 * 	field - The field(field id) of the field to focus.
