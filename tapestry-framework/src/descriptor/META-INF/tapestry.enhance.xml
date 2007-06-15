@@ -27,7 +27,7 @@
 
         <invoke-factory>
             <construct class="org.apache.tapestry.services.impl.ComponentConstructorFactoryImpl">
-                <set-service property="classFactory" service-id="hivemind.ClassFactory" />
+                <set-service property="classFactory" service-id="tapestry.ClassFactory" />
                 <event-listener service-id="tapestry.ResetEventHub" />
                 <event-listener service-id="tapestry.describe.ReportStatusHub" />
                 <set-service property="validator" service-id="EnhancedClassValidator" />

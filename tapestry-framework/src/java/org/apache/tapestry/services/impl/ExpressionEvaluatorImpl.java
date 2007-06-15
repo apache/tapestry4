@@ -32,8 +32,8 @@ import java.util.Map;
 /**
  * @since 4.0
  */
-public class ExpressionEvaluatorImpl implements ExpressionEvaluator
-{
+public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
+    
     private static final int POOL_MAX_ACTIVE = 200;
 
     private static final long POOL_MIN_IDLE_TIME = 1000 * 60 * 2;

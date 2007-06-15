@@ -14,13 +14,12 @@
 
 package org.apache.tapestry.web;
 
+import org.apache.tapestry.describe.Describable;
+
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.List;
 import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.tapestry.describe.Describable;
 
 /**
  * Contains information about the current request, including URLs, schemes, parameters, properties
@@ -39,7 +38,7 @@ public interface WebRequest extends AttributeHolder, Describable
      * multipart/form-data). Accessing query parameters in such an event requires parsing of the
      * request input stream.
      * 
-     * @returns List of Strings, in ascending alphabetical order
+     * @return List of Strings, in ascending alphabetical order
      */
 
     List getParameterNames();
@@ -76,6 +75,8 @@ public interface WebRequest extends AttributeHolder, Describable
      * Returns the portion of the request URI that indicates the context of the request. The context
      * path always comes first in a request URI. The path starts with a "/" character but does not
      * end with a "/" character.
+     *
+     * @return The servlet context path.
      */
 
     String getContextPath();
@@ -88,13 +89,15 @@ public interface WebRequest extends AttributeHolder, Describable
      * 
      * @param create
      *            if true, the session will be created and returned if it does not already exist
-     * @returns The session, or null if it does not exist (and create is false)
+     * @return The session, or null if it does not exist (and create is false)
      */
     WebSession getSession(boolean create);
 
     /**
      * Returns the name of the scheme used to make this request. For example, http, https, or ftp.
      * Different schemes have different rules for constructing URLs, as noted in RFC 1738.
+     *
+     * @return The scheme.
      */
     String getScheme();
 
@@ -102,7 +105,8 @@ public interface WebRequest extends AttributeHolder, Describable
      * Returns the host name of the server that received the request. Note that behind a firewall,
      * this may be obscured (i.e., it may be the name of the firewall server, which is not
      * necessarily visible to clients outside the firewall).
-     * 
+     *
+     * @return The name of the server.
      * @see org.apache.tapestry.request.IRequestDecoder
      */
 
@@ -110,6 +114,8 @@ public interface WebRequest extends AttributeHolder, Describable
 
     /**
      * Returns the port number on which this request was received.
+     *
+     * @return The port number this request is acting on.
      */
 
     int getServerPort();
@@ -119,6 +125,9 @@ public interface WebRequest extends AttributeHolder, Describable
      * scheme, server and port are omitted.
      * <p>
      * Note: portlets do not know their request URI.
+     * </p>
+     *
+     * @return The requested URI.
      */
 
     String getRequestURI();
@@ -126,6 +135,9 @@ public interface WebRequest extends AttributeHolder, Describable
     /**
      * Redirects to the indicated URL. If the URL is local, then a forward occurs. Otherwise, a
      * client side redirect is returned to the client browser.
+     *
+     * @param URL
+     *          The url to forward the request to.
      */
 
     void forward(String URL);
@@ -134,8 +146,7 @@ public interface WebRequest extends AttributeHolder, Describable
      * Returns the path of the resource which activated this request (this is the equivalent of the
      * servlet path for a servlet request). The activation path will not end with a slash.
      * 
-     * @returns the full servlet path (for servlet requests), or a blank string (for portlet
-     *          requests).
+     * @return The full servlet path (for servlet requests), or a blank string (for portlet requests).
      */
     String getActivationPath();
 
@@ -151,6 +162,8 @@ public interface WebRequest extends AttributeHolder, Describable
     /**
      * Returns the preferred locale to which content should be localized, as specified by the client
      * or by the container. May return null.
+     *
+     * @return The locale associated with the request, may be null.
      */
     Locale getLocale();
 

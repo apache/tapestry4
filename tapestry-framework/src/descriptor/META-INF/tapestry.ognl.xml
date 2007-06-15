@@ -25,6 +25,7 @@
   <service-point id="ExpressionEvaluator" interface="ExpressionEvaluator">
     <invoke-factory>
       <construct class="impl.ExpressionEvaluatorImpl">
+        <set-service property="classFactory" service-id="tapestry.ClassFactory" />
         <set-object property="applicationSpecification" value="infrastructure:applicationSpecification"/>
         <set-configuration property="contributions" configuration-id="PropertyAccessors"/>
         <set-configuration property="nullHandlerContributions" configuration-id="NullHandlers"/>
