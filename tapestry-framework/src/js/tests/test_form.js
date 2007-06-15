@@ -10,7 +10,7 @@ tapestry.form.invalidField=function(field, message){
 function test_form_find(){
 	var node = document.createElement("div");
 	node.setAttribute("id", "testid");
-	
+
 	jum.assertTrue(Tapestry.find(node));
 	jum.assertTrue(Tapestry.find("testid"));
 }
@@ -24,6 +24,7 @@ function test_form_deprecated(){
 		Tapestry.register_form();
 		throw new JUMAssertFailure("Previous test should have failed.");
 	} catch (e) { jum.assertTrue("testFormDepre", e instanceof Error); return; }
+	
 	jum.assertTrue("deprecated", lastMsgContains("deprecated"));
 	Tapestry.onpresubmit();
 	jum.assertTrue("deprecated", lastMsgContains("deprecated"));
@@ -45,23 +46,23 @@ function test_form_invalidHandler(){
 
 function test_form_requireTextField(){
 	Tapestry.require_field(null, "bs", "invalid");
-	
+
 	var node = document.createElement("input");
 	node.setAttribute("id", "testid");
 	node.type="text";
 	node.value="";
-	
+
 	var mockInvalid=new mock(node, "must have value");
 	dojo.event.connect(Tapestry, "default_invalid_field_handler", mockInvalid, "intercept");
-	
+
 	Tapestry.require_field(null, "testid", "must have value");
-	
+
 	jum.assertTrue("invalidCalled", mockInvalid.called);
 	dojo.event.disconnect(Tapestry, "default_invalid_field_handler", mockInvalid, "intercept");
 }
 
 function test_form_submit(){
-	
+
 	var submitCalled=false;
 	var node = document.createElement("form");
 	node.setAttribute("id", "form1");
@@ -70,10 +71,10 @@ function test_form_submit(){
 	}
 	node.submitname={value:""};
 	node.elements=[];
-	
+
 	Tapestry.register_form("form1");
 	Tapestry.submit_form("form1", "testSubmit");
-	
+
 	jum.assertTrue("submitCalled", submitCalled);
 	jum.assertEquals("submitName", node.submitname.value, "testSubmit");
 }
@@ -90,14 +91,14 @@ function test_submit_parms(){
 	node.submitname={value:""};
 	node.elements=[];
 	document.body.appendChild(node);
-	
+
 	dojo.event.connect(dojo.io, "queueBind", this, checkSubmitParms);
-	
+
 	tapestry.form.registerForm("formparmtest");
 	tapestry.form.submit("formparmtest", null, {async:true,url:"/a/url"});
-	
+
 	jum.assertTrue("bindCalled", bindCalled);
-	
+
 	dojo.event.disconnect(dojo.io, "queueBind", this, checkSubmitParms);
 }
 
@@ -116,14 +117,14 @@ function test_submit_defaultParms(){
 	node.submitname={value:""};
 	node.elements=[];
 	document.body.appendChild(node);
-	
+
 	dojo.event.connect(dojo.io, "queueBind", this, checkDefaultParms);
-	
+
 	tapestry.form.registerForm("formasynctest", true);
 	tapestry.form.submit("formasynctest");
-	
+
 	jum.assertTrue("bindCalled", bindCalled);
-	
+
 	dojo.event.disconnect(dojo.io, "queueBind", this, checkDefaultParms);
 }
 
