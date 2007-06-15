@@ -23,13 +23,11 @@ import org.apache.tapestry.valid.ValidatorException;
  * href="../../../../../ComponentReference/TextArea.html">Component Reference</a>]
  * <p>
  * As of 4.0, this component can be configurably translated and validated.
- * 
+ *
  * @author Howard Lewis Ship
  * @author Paul Ferraro
  */
-public abstract class TextArea extends AbstractFormComponent implements
-        TranslatedField
-{
+public abstract class TextArea extends AbstractFormComponent implements TranslatedField {
 
     public abstract Object getValue();
 
@@ -42,7 +40,7 @@ public abstract class TextArea extends AbstractFormComponent implements
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         String value = getTranslatedFieldSupport().format(this, getValue());
-        
+
         renderDelegatePrefix(writer, cycle);
 
         writer.begin("textarea");
@@ -76,13 +74,13 @@ public abstract class TextArea extends AbstractFormComponent implements
     protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         String value = cycle.getParameter(getName());
-        
+
         try
         {
             String text = (String) getTranslatedFieldSupport().parse(this, value);
-            
+
             getValidatableFieldSupport().validate(this, writer, cycle, text);
-            
+
             setValue(text);
         }
         catch (ValidatorException e)
