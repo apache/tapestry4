@@ -2,6 +2,7 @@ package org.apache.tapestry.pageload;
 
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IComponent;
+import org.apache.tapestry.IForm;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.internal.event.ComponentEventProperty;
 import org.apache.tapestry.internal.event.IComponentEventInvoker;
@@ -41,6 +42,41 @@ public class TestEventConnectionVisitor extends BaseComponentTestCase {
         verify();
     }
 
+    public void test_Wire_Element_Form_Events()
+    {
+        IComponentSpecification spec = new ComponentSpecification();
+        spec.addElementEventListener("elem1", new String[] {"onClick"}, "testFoo", "form", false, false, false);
+
+        IComponent comp = newComponent(spec);
+        IPage page = newMock(IPage.class);
+        IForm form = newMock(IForm.class);
+        IComponentEventInvoker invoker = newMock(IComponentEventInvoker.class);
+
+        Map comps = new HashMap();
+        comps.put("form", form);
+
+        expect(comp.getPage()).andReturn(page).anyTimes();
+        expect(page.getComponents()).andReturn(comps).anyTimes();
+        expect(comp.getComponents()).andReturn(Collections.EMPTY_MAP).anyTimes();
+        expect(form.getComponents()).andReturn(Collections.EMPTY_MAP).anyTimes();
+
+        expect(form.getId()).andReturn("form").anyTimes();
+        expect(form.getExtendedId()).andReturn("path/form").anyTimes();
+
+        invoker.addFormEventListener("path/form", spec);
+        invoker.addFormEventListener("path/form", spec);
+
+        replay();
+
+        EventConnectionVisitor v = new EventConnectionVisitor();
+        v.setEventInvoker(invoker);
+
+        v.visitComponent(comp);
+        v.visitComponent(comp);
+
+        verify();
+    }
+
     public void test_Spec_Rewire_Id()
     {
         IComponentSpecification spec = newMock(IComponentSpecification.class);
@@ -57,7 +93,6 @@ public class TestEventConnectionVisitor extends BaseComponentTestCase {
         expect(spec.getElementEvents()).andReturn(Collections.EMPTY_MAP);
 
         invoker.addEventListener("path/comp1", spec);
-
         spec.rewireComponentId("comp1", "path/comp1");
 
         replay();
@@ -76,7 +111,7 @@ public class TestEventConnectionVisitor extends BaseComponentTestCase {
         IPage page = newMock(IPage.class);
 
         expect(comp.getPage()).andReturn(page).anyTimes();
-
+        
         Map comps = new HashMap();
         comps.put(findCompId, comp);
 
@@ -84,7 +119,7 @@ public class TestEventConnectionVisitor extends BaseComponentTestCase {
         expect(comp.getComponents()).andReturn(null).anyTimes();
 
         if (args.length > 0) {
-        
+            
             expect(comp.getExtendedId()).andReturn(args[0] + findCompId).anyTimes();
         }
 

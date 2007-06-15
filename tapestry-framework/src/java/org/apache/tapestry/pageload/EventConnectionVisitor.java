@@ -98,10 +98,11 @@ public class EventConnectionVisitor implements IComponentVisitor, PoolManageable
             discoverPageForms(component.getPage());
 
         IForm form = null;
-        for (int i=0; i < _forms.size(); i++) {
-
+        for (int i=0; i < _forms.size(); i++)
+        {
             IForm f = (IForm) _forms.get(i);
-            if (listener.getFormId().equals(f.getId())) {
+            if (listener.getFormId().equals(f.getExtendedId()) || listener.getFormId().equals(f.getId()))
+            {
                 form = f;
                 break;
             }
@@ -110,7 +111,8 @@ public class EventConnectionVisitor implements IComponentVisitor, PoolManageable
         // couldn't find the form they specified
 
         if (form == null)
-            throw new ApplicationRuntimeException(PageloadMessages.componentNotFound(listener.getFormId()), component, component.getLocation(), null);
+            throw new ApplicationRuntimeException(PageloadMessages.componentNotFound(listener.getFormId()),
+                                                  component, component.getLocation(), null);
 
         String idPath = form.getExtendedId();
         
