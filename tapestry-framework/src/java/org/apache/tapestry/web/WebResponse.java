@@ -14,11 +14,11 @@
 
 package org.apache.tapestry.web;
 
+import org.apache.tapestry.util.ContentType;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-
-import org.apache.tapestry.util.ContentType;
 
 /**
  * Controls the response to the client, and specifically allows for creating the output stream (or
@@ -35,24 +35,40 @@ public interface WebResponse
     /**
      * Returns a output stream to which output should be sent. This method should only be invoked
      * once on a response.
-     * 
+     *
+     * @param contentType
+     *          The encoding type that this outputstream will write content as.
      * @return the output stream, configured for the given type.
+     *
+     * @throws IOException On io error.
      */
 
-    OutputStream getOutputStream(ContentType contentType) throws IOException;
+    OutputStream getOutputStream(ContentType contentType)
+      throws IOException;
 
     /**
      * Returns a {@link PrintWriter} to which output should be sent. This method should be invoked
      * once on a response. A second call is expected to be so that an exception page can be
      * rendered, and the underlying request data is reset.
+     *
+     * @param contentType
+     *          The type of content encoding the writer is for.
+     * @return A new {@link PrintWriter} instance.
+     *
+     * @throws IOException On io error.
      */
 
-    PrintWriter getPrintWriter(ContentType contentType) throws IOException;
+    PrintWriter getPrintWriter(ContentType contentType)
+      throws IOException;
 
     /**
      * Encodes a URL, which adds information to the URL needed to ensure that the request triggered
      * by the URL will be associated with the current session (if any). In most cases, the string is
      * returned unchanged.
+     *
+     * @param url
+     *          The URL to encode.
+     * @return The url encoded.
      */
 
     String encodeURL(String url);
@@ -64,12 +80,20 @@ public interface WebResponse
 
     void reset();
 
+    /**
+     * Sets the response content length header.
+     *
+     * @param contentLength
+     *          The total content length this response will write. 
+     */
     void setContentLength(int contentLength);
 
     /**
      * Returns a value to be prefixed or suffixed with any client-side JavaScript elements
      * (variables and function names) to ensure that they are unique with the context of the entire
      * page. For servlets, this is the empty string.
+     *
+     * @return The namespace that this requests resources should be pre-pended with.
      */
 
     String getNamespace();
@@ -107,12 +131,21 @@ public interface WebResponse
 
     /**
      * Sets the status code for this response.
+     *
+     * @param status
+     *          The HTTP status code to set on the return header.
      */
     void setStatus(int status);
 
     /**
      * Sends an error response.
+     *
+     * @param statusCode
+     *          The error status code to set on the header.
+     * @param message
+     *          The message to give as the reason for error.
+     *
+     * @throws IOException on io error.
      */
-
     void sendError(int statusCode, String message) throws IOException;
 }

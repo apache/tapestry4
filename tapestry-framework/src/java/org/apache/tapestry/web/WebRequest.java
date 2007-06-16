@@ -178,6 +178,55 @@ public interface WebRequest extends AttributeHolder, Describable
     String getHeader(String name);
 
     /**
+     * Returns the value of the specified request header
+     * as a <code>long</code> value that represents a
+     * <code>Date</code> object. Use this method with
+     * headers that contain dates, such as
+     * <code>If-Modified-Since</code>.
+     *
+     * <p>The date is returned as
+     * the number of milliseconds since January 1, 1970 GMT.
+     * The header name is case insensitive.
+     *
+     * <p>If the request did not have a header of the
+     * specified name, this method returns -1. If the header
+     * can't be converted to a date, the method throws
+     * an <code>IllegalArgumentException</code>.
+     *
+     * @param name a <code>String</code> specifying the
+     * name of the header
+     *
+     * @return a <code>long</code> value representing the
+     * date specified in the header expressed as the number
+     * of milliseconds since January 1, 1970 GMT, or -1 if
+     * the named header was not included with the reqest
+     *
+     * @exception IllegalArgumentException If the header value
+     * can't be converted to a date
+     */
+    long getDateHeader(String name);
+
+    /**
+     * Returns the value of the specified request header
+     * as an <code>int</code>. If the request does not have a header
+     * of the specified name, this method returns -1. If the
+     * header cannot be converted to an integer, this method
+     * throws a <code>NumberFormatException</code>.
+     *
+     * <p>The header name is case insensitive.
+     *
+     * @param name a <code>String</code> specifying the name
+     * of a request header
+     *
+     * @return an integer expressing the value of the request header or -1
+     * if the request doesn't have a header of this name
+     *
+     * @exception NumberFormatException If the header value can't be
+     * converted to an <code>int</code>
+     */
+    int getIntHeader(String name);
+
+    /**
      * Returns the login of the user making this request, if the user has been authenticated, or
      * null if the user has not been authenticated.
      * 
