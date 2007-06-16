@@ -108,22 +108,22 @@ public class RoundedCornerService implements IEngineService {
             String type = (bgColor != null) ? "gif" : "png";
 
             byte[] data = (byte[])_imageCache.get(hashKey);
-            if (data != null) {
-
+            if (data != null)
+            {
                 writeImageResponse(data, type);
                 return;
             }
 
             BufferedImage image = null;
 
-            if (wholeShadow) {
-
-                image = _generator.buildShadow(bgColor, width, height, arcWidth, arcHeight, shadowWidth, shadowOpacity);
-            } else if (side != null) {
-
+            if (wholeShadow)
+            {
+                image = _generator.buildShadow(color, bgColor, width, height, arcWidth, arcHeight, shadowWidth, shadowOpacity);
+            } else if (side != null)
+            {
                 image = _generator.buildSideShadow(side, shadowWidth, shadowOpacity);
-            } else {
-
+            } else
+            {
                 image = _generator.buildCorner(color, bgColor, width, height, angle, shadowWidth, shadowOpacity);
             }
 
@@ -151,6 +151,9 @@ public class RoundedCornerService implements IEngineService {
 
             writeImageResponse(data, type);
             
+        } catch (IOException eof)
+        {
+            // ignored / expected exceptions happen when browser prematurely abandons connections - IE does this a lot
         } catch (Throwable ex) {
 
             ex.printStackTrace();

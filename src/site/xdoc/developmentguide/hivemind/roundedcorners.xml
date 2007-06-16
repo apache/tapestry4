@@ -245,7 +245,7 @@
     display:block;
     margin-top:2em;
     padding: 0 1.1em 2em;
-    background: url("rounded?bc=white&w=600&h=40&shadow=true&ah=10&aw=10&sw=4&o=.5") left bottom no-repeat;
+    background: url("rounded?c=white&bc=white&w=600&h=40&shadow=true&ah=10&aw=10&sw=4&o=.5") left bottom no-repeat;
 }
 </style>]]></source>
 
@@ -270,6 +270,23 @@
                     <th>Required</th>
                     <th>Default</th>
                     <th>Description</th>
+                </tr>
+                <tr>
+                    <td>c</td>
+                    <td>
+                        Hex string <br />
+                        or <br />
+                        any <a href="http://www.w3.org/TR/REC-CSS2/syndata.html#color-units">css2</a> color name.
+                    </td>
+                    <td>yes</td>
+                    <td> </td>
+                    <td>
+                        Primary color of the generated image.  Can be any standard hex string - such as <code>FF9900</code> or any
+                        of the 16 standard css2 colors defined in the <a href="http://www.w3.org/TR/REC-CSS2/syndata.html#color-units">w3 css2 spec</a>.
+
+                        <br /><br />
+                        <strong>CSS2 Color names:</strong> aqua, black, blue, fuchsia, gray, green, lime, maroon, navy, olive, purple, red, silver, teal, white, and yellow
+                    </td>
                 </tr>
                 <tr>
                     <td>bc</td>
