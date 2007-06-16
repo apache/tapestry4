@@ -26,7 +26,7 @@ import org.apache.tapestry.event.ResetEventListener;
  */
 public class ClassFactoryImpl implements ClassFactory, ResetEventListener {
     
-    static final int EXPIRED_CLASS_COUNT = 100;
+    static final int EXPIRED_CLASS_COUNT = 120;
     
     /**
      * ClassPool shared by all modules (all CtClassSource instances).
@@ -49,10 +49,7 @@ public class ClassFactoryImpl implements ClassFactory, ResetEventListener {
         }
         catch (Exception ex)
         {
-            throw new ApplicationRuntimeException(EnhanceMessages.unableToCreateClass(
-                    name,
-                    superClass,
-                    ex), ex);
+            throw new ApplicationRuntimeException(EnhanceMessages.unableToCreateClass(name, superClass, ex), ex);
         }
     }
 
@@ -70,30 +67,24 @@ public class ClassFactoryImpl implements ClassFactory, ResetEventListener {
         }
         catch (Exception ex)
         {
-            throw new ApplicationRuntimeException(
-                    EnhanceMessages.unableToCreateInterface(name, ex), ex);
+            throw new ApplicationRuntimeException(EnhanceMessages.unableToCreateInterface(name, ex), ex);
         }
 
     }
 
     public void resetEventDidOccur()
     {
-        _classCounter = 0;
+        if (_classCounter >= EXPIRED_CLASS_COUNT)
+        {
+            _classCounter = 0;
 
-        _pool = new HiveMindClassPool();
-        _classSource.setPool(_pool);
+            _pool = new HiveMindClassPool();
+            _classSource.setPool(_pool);
+        }
     }
 
     void checkPoolExpiration()
     {
         _classCounter++;
-        
-        synchronized(_classSource) {
-            if (_classCounter >= EXPIRED_CLASS_COUNT) {
-                _pool.clearImportedPackages();
-                
-                _classCounter = 0;
-            }
-        }
     }
 }

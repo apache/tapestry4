@@ -15,15 +15,19 @@
 package org.apache.tapestry.services.impl;
 
 import edu.emory.mathcs.backport.java.util.concurrent.locks.ReentrantLock;
+import ognl.ClassCacheInspector;
 import ognl.Node;
 import ognl.Ognl;
+import ognl.OgnlRuntime;
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.event.ReportStatusEvent;
 import org.apache.tapestry.event.ReportStatusListener;
 import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.services.ExpressionCache;
 import org.apache.tapestry.services.ExpressionEvaluator;
 
+import java.beans.Introspector;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -32,8 +36,8 @@ import java.util.WeakHashMap;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class ExpressionCacheImpl implements ExpressionCache, ResetEventListener, ReportStatusListener {
-    
+public class ExpressionCacheImpl implements ExpressionCache, ResetEventListener, ReportStatusListener, ClassCacheInspector {
+
     private final ReentrantLock _lock = new ReentrantLock();
     
     private String _serviceId;
@@ -43,7 +47,17 @@ public class ExpressionCacheImpl implements ExpressionCache, ResetEventListener,
     private Map _objectCache = new WeakHashMap();
     
     private ExpressionEvaluator _evaluator;
-    
+
+    private final boolean _cachingDisabled = Boolean.getBoolean("org.apache.tapestry.disable-caching");
+
+    public void initializeService()
+    {
+        if (_cachingDisabled)
+        {
+            OgnlRuntime.setClassCacheInspector(this);
+        }
+    }
+
     public void resetEventDidOccur()
     {
         try {
@@ -52,10 +66,22 @@ public class ExpressionCacheImpl implements ExpressionCache, ResetEventListener,
             
             _cache.clear();
             _objectCache.clear();
+
+            Introspector.flushCaches();
+
         } finally {
             
             _lock.unlock();
         }
+    }
+
+    public boolean shouldCache(Class type)
+    {
+        if (!_cachingDisabled || type == null
+            || AbstractComponent.class.isAssignableFrom(type))
+            return false;
+
+        return true;
     }
 
     public void reportStatus(ReportStatusEvent event)
