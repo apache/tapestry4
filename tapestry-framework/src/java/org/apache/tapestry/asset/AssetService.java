@@ -17,8 +17,6 @@ package org.apache.tapestry.asset;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
-import org.apache.commons.pool.ObjectPool;
-import org.apache.commons.pool.impl.StackObjectPool;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IRequestCycle;
@@ -41,9 +39,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.text.DateFormat;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.zip.GZIPOutputStream;
@@ -80,12 +76,7 @@ public class AssetService implements IEngineService
      */
 
     public static final String DIGEST = "digest";
-    
-    /**
-     * Pool of date format objects. (pooled because DateFormat isn't thread safe )
-     */
-    static final ObjectPool CACHED_FORMAT_POOL = new StackObjectPool(new PoolableDateFormatFactory("EEE, d MMM yyyy HH:mm:ss Z", Locale.ENGLISH));
-    
+
     /**
      * Defaults MIME types, by extension, used when the servlet container doesn't provide MIME
      * types. ServletExec Debugger, for example, fails to provide these.
@@ -168,7 +159,6 @@ public class AssetService implements IEngineService
         Defense.isAssignable(parameter, String.class, "parameter");
 
         String path = (String) parameter;
-        
         String digest = null;
         
         if(!_unprotectedMatcher.containsResource(path))
@@ -199,7 +189,8 @@ public class AssetService implements IEngineService
         if (result == null)
         {
             int dotx = path.lastIndexOf('.');
-            if (dotx > -1) {
+            if (dotx > -1)
+            {
                 String key = path.substring(dotx + 1).toLowerCase();
                 result = (String) _mimeTypes.get(key);
             }
@@ -306,40 +297,34 @@ public class AssetService implements IEngineService
     {
         // even if it doesn't exist in header the value will be -1, 
         // which means we need to write out the contents of the resource
-        
-        String header = _request.getHeader("If-Modified-Since");
-        long modify = -1;
+
+        long modifiedSince = _request.getDateHeader("If-Modified-Since");
+
+        if (modifiedSince <= 0)
+            return false;
         
         if (_log.isDebugEnabled())
-            _log.debug("cachedResource(" + resourceURL.getURL() + ") modified-since header is: " + header);
+            _log.debug("cachedResource(" + resourceURL.getURL() + ") modified-since header is: " + modifiedSince);
         
-        DateFormat format = null;
-        
-        try {
-
-            if (header != null)
-            {
-                format = (DateFormat) CACHED_FORMAT_POOL.borrowObject();
-
-                modify = format.parse(header).getTime();
-            }
-
-        } catch (Exception e) { e.printStackTrace(); }
-        finally
-        {    
-            if (format != null) 
-                try { CACHED_FORMAT_POOL.returnObject(format); } catch (Throwable t) { t.printStackTrace(); }
-        }
-        
-        if (resourceURL.getLastModified() > modify)
+        if (resourceURL.getLastModified() > modifiedSince)
             return false;
         
         _response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
         
         return true;
     }
-    
-    /** @since 2.2 */
+
+    /**
+     * Writes the asset specified by <code>resourceConnection</code> out to the response stream.
+     *
+     * @param cycle
+     *          The current request.
+     * @param resourcePath
+     *          The path of the resource.
+     * @param resourceConnection
+     *          A connection for the resource.
+     * @throws IOException On error.
+     */
 
     private void writeAssetContent(IRequestCycle cycle, String resourcePath, URLConnection resourceConnection)
             throws IOException
@@ -396,35 +381,35 @@ public class AssetService implements IEngineService
             
             // check cache first
             
-            if (_cache.get(resourcePath) != null) {
-                
+            if (_cache.get(resourcePath) != null)
+            {    
                 cache = (CachedAsset)_cache.get(resourcePath);
                 
                 if (cache.getLastModified() < resourceConnection.getLastModified())
                     cache.clear(resourceConnection.getLastModified());
                 
                 data = cache.getData();
-            } else {
-                
+            } else
+            {    
                 cache = new CachedAsset(resourcePath, resourceConnection.getLastModified(), null, null);
                 
                 _cache.put(resourcePath, cache);
             }
             
-            if (data == null) {
-                
+            if (data == null)
+            {
                 input = resourceConnection.getInputStream();
                 data = IOUtils.toByteArray(input);
-                
+
                 cache.setData(data);
             }
             
             // compress javascript responses when possible
             
-            if (GzipUtil.shouldCompressContentType(contentType) && GzipUtil.isGzipCapable(_request)) {
-                
-                if (cache.getGzipData() == null) {
-                    
+            if (GzipUtil.shouldCompressContentType(contentType) && GzipUtil.isGzipCapable(_request))
+            {    
+                if (cache.getGzipData() == null)
+                {    
                     ByteArrayOutputStream bo = new ByteArrayOutputStream();
                     GZIPOutputStream gzip = new GZIPOutputStream(bo);
                     
@@ -433,10 +418,8 @@ public class AssetService implements IEngineService
                     
                     data = bo.toByteArray();
                     cache.setGzipData(data);
-                } else {
-                    
+                } else
                     data = cache.getGzipData();
-                }
                 
                 _response.setHeader("Content-Encoding", "gzip");
             }

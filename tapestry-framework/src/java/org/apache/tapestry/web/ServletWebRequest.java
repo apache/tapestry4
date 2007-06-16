@@ -204,6 +204,16 @@ public class ServletWebRequest implements WebRequest
         return _servletRequest.getHeader(name);
     }
 
+    public long getDateHeader(String name)
+    {
+        return _servletRequest.getDateHeader(name);
+    }
+
+    public int getIntHeader(String name)
+    {
+        return _servletRequest.getIntHeader(name);
+    }
+
     public String getRemoteUser()
     {
         return _servletRequest.getRemoteUser();

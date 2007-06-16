@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.services.impl;
 
-import java.util.Locale;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.ErrorLog;
@@ -23,6 +21,8 @@ import org.apache.tapestry.IEngine;
 import org.apache.tapestry.engine.BaseEngine;
 import org.apache.tapestry.services.EngineFactory;
 import org.apache.tapestry.spec.IApplicationSpecification;
+
+import java.util.Locale;
 
 /**
  * Standard implementation of {@link org.apache.tapestry.services.EngineFactory} service. This
@@ -77,9 +77,7 @@ public class EngineFactoryImpl implements EngineFactory
             }
             catch (Exception ex)
             {
-                throw new ApplicationRuntimeException(ImplMessages.errorInstantiatingEngine(
-                        _engineClass,
-                        ex), ex);
+                throw new ApplicationRuntimeException(ImplMessages.errorInstantiatingEngine(_engineClass, ex), ex);
             }
         }
     }

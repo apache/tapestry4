@@ -161,6 +161,20 @@ public class PortletWebRequest implements WebRequest
         return null;
     }
 
+    public long getDateHeader(String name)
+    {
+        unsupported("getDateHeader");
+
+        return -1;
+    }
+
+    public int getIntHeader(String name)
+    {
+        unsupported("getIntHeader");
+
+        return -1;
+    }
+
     public String getRemoteUser()
     {
         return _portletRequest.getRemoteUser();

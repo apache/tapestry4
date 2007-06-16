@@ -14,10 +14,10 @@
 
 package org.apache.tapestry.services;
 
-import java.io.IOException;
-
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
+
+import java.io.IOException;
 
 /**
  * Filter interface for {@link org.apache.tapestry.services.WebRequestServicer}.
@@ -28,7 +28,6 @@ import org.apache.tapestry.web.WebResponse;
 public interface WebRequestServicerFilter
 {
 
-    void service(WebRequest request, WebResponse response,
-            WebRequestServicer servicer)
+    void service(WebRequest request, WebResponse response, WebRequestServicer servicer)
         throws IOException;
 }

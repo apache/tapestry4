@@ -53,6 +53,13 @@ public class ServletWebResponse implements WebResponse
 
     /**
      * Alternate constructor used by some tests.
+     *
+     * @param response
+     *          The wrapped response.
+     * @param log
+     *          Logger.
+     * @param tomcatPatch
+     *          Whether or not to apply tomcat workaround.
      */
     ServletWebResponse(HttpServletResponse response, Log log, boolean tomcatPatch)
     {

@@ -29,7 +29,6 @@ import org.testng.annotations.Test;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.net.URLConnection;
-import java.text.DateFormat;
 
 
 /**
@@ -48,42 +47,14 @@ public class TestAssetService extends TestBase {
         AssetService service = new AssetService();
         service.setRequest(request);
         service.setLog(LogFactory.getLog("test"));
-        
-        URLConnection url = org.easymock.classextension.EasyMock.createMock(URLConnection.class);
-        
-        expect(request.getHeader("If-Modified-Since")).andReturn(null);
-        expect(url.getLastModified()).andReturn(System.currentTimeMillis());
+
+        expect(request.getDateHeader("If-Modified-Since")).andReturn(-1l);
         
         replay();
-        org.easymock.classextension.EasyMock.replay(url);
-        
-        assertFalse(service.cachedResource(url));
-        
-        verify();
-        org.easymock.classextension.EasyMock.verify(url);
-    }
-    
-    public void test_Cached_Resource_Malformed_Modified()
-    {
-        WebRequest request = newMock(WebRequest.class);
-        checkOrder(request, false);
-        
-        AssetService service = new AssetService();
-        service.setRequest(request);
-        service.setLog(LogFactory.getLog("test"));
-        
-        URLConnection url = org.easymock.classextension.EasyMock.createMock(URLConnection.class);
-        
-        expect(request.getHeader("If-Modified-Since")).andReturn("Woopedy woopedy");
-        expect(url.getLastModified()).andReturn(System.currentTimeMillis());
-        
-        replay();
-        org.easymock.classextension.EasyMock.replay(url);
-        
-        assertFalse(service.cachedResource(url));
+
+        assertFalse(service.cachedResource(null));
         
         verify();
-        org.easymock.classextension.EasyMock.verify(url);
     }
     
     public void test_Cached_Resource_Stale()
@@ -96,8 +67,10 @@ public class TestAssetService extends TestBase {
         service.setLog(LogFactory.getLog("test"));
         
         URLConnection url = org.easymock.classextension.EasyMock.createMock(URLConnection.class);
-        
-        expect(request.getHeader("If-Modified-Since")).andReturn("Sat, 29 Oct 1994 19:43:31 GMT");
+
+        long modifiedSince = System.currentTimeMillis() - 1000;
+
+        expect(request.getDateHeader("If-Modified-Since")).andReturn(modifiedSince);
         expect(url.getLastModified()).andReturn(System.currentTimeMillis());
         
         replay();
@@ -122,21 +95,12 @@ public class TestAssetService extends TestBase {
         service.setLog(LogFactory.getLog("test"));
         
         URLConnection url = org.easymock.classextension.EasyMock.createMock(URLConnection.class);
-        
-        DateFormat format = null;
-        
-        try {
-            
-            format = (DateFormat) AssetService.CACHED_FORMAT_POOL.borrowObject();
-            
-            expect(request.getHeader("If-Modified-Since")).andReturn("Sat, 29 Oct 1994 19:43:31 GMT");
-            expect(url.getLastModified()).andReturn(format.parse("Sat, 1 Dec 1991 19:43:31 GMT").getTime());
-            
-        } finally {
-            if (format != null) {
-                try { AssetService.CACHED_FORMAT_POOL.returnObject(format); } catch (Throwable t) {}
-            }
-        }
+
+        long lastModified = System.currentTimeMillis() - 4000;
+        long modifiedSince = System.currentTimeMillis();
+
+        expect(request.getDateHeader("If-Modified-Since")).andReturn(modifiedSince);
+        expect(url.getLastModified()).andReturn(lastModified);
         
         response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
         
@@ -175,7 +139,7 @@ public class TestAssetService extends TestBase {
 
         expect(matcher.containsResource("/org/apache/tapestry/asset/tapestry-in-action.png")).andReturn(true);
 
-        expect(request.getHeader("If-Modified-Since")).andReturn(null);
+        expect(request.getDateHeader("If-Modified-Since")).andReturn(-1L);
         expect(context.getMimeType("/org/apache/tapestry/asset/tapestry-in-action.png")).andReturn("image/png");
 
         response.setDateHeader("Last-Modified", url.getLastModified());
