@@ -27,7 +27,7 @@ public class TestRoundedUtil extends JComponent {
 
         return new Dimension(200,200);
     }
-/*
+
     protected void paintComponent(Graphics g) {
 
         Graphics2D g2 = (Graphics2D)g;
@@ -37,7 +37,7 @@ public class TestRoundedUtil extends JComponent {
 
         try {
 
-            image = generator.buildShadow("white", 100, 100, 20f, 20f, 6, 0.5f);
+            image = generator.buildShadow("99ccff", "white", 100, 100, 20f, 20f, 6, 0.5f);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -49,7 +49,7 @@ public class TestRoundedUtil extends JComponent {
 
         g2.drawImage(image, 0, 0, null);
     }
-*/
+
     /*
     protected void paintComponent(Graphics g) {
 
@@ -74,6 +74,7 @@ public class TestRoundedUtil extends JComponent {
     }
     */
 
+    /*
     protected void paintComponent(Graphics g) {
 
         Graphics2D g2 = (Graphics2D)g;
@@ -93,7 +94,7 @@ public class TestRoundedUtil extends JComponent {
         g2.drawImage(image, 0, 0, null);
 
         
-    }
+    }*/
 
     private static void createAndShowGUI() {
         //Create and set up the window.

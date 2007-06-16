@@ -45,9 +45,8 @@ Simple <code>For</code> loop listing locales.
 	
 	.detail {
         display:block;
-        margin-top:2em;
         padding: 0 1.1em 2em;
-        background: url("rounded?bc=white&w=600&h=40&shadow=true&ah=10&aw=10&sw=4&o=.5") left bottom no-repeat;
+        background: url("rounded?c=99ccff&bc=white&w=600&h=50&shadow=true&ah=10&aw=10&sw=2&o=.5") left bottom no-repeat;
     }
 
     .status {
@@ -74,6 +73,7 @@ Simple <code>For</code> loop listing locales.
 
 <div jwcid="localeDetail@Any">
     <p class="detail" jwcid="@If" condition="ognl:selected" >
+        <br/>
             <strong>Country:</strong>
             <span jwcid="@Insert" value="ognl:selected.displayCountry" mode="ognl:@org.apache.tapestry.components.InsertMode@BREAK" />
             &nbsp;

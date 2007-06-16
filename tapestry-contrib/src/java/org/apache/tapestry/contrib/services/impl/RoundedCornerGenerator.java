@@ -267,10 +267,11 @@ public class RoundedCornerGenerator {
         return img.getSubimage(sampleX, sampleY, sampleWidth, sampleHeight);
     }
 
-    public BufferedImage buildShadow(String backgroundColor, int width, int height,
+    public BufferedImage buildShadow(String color, String backgroundColor, int width, int height,
                                      float arcWidth, float arcHeight,
                                      int shadowWidth, float endOpacity)
     {
+        Color fgColor = color == null ? Color.WHITE : decodeColor(color);
         Color bgColor = backgroundColor == null ? null : decodeColor(backgroundColor);
 
         BufferedImage mask = new BufferedImage(width, height,  BufferedImage.TYPE_INT_ARGB);
@@ -279,6 +280,7 @@ public class RoundedCornerGenerator {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         
         RoundRectangle2D.Float fillArea = new RoundRectangle2D.Float(0, 0, width, height, arcHeight, arcWidth);
+        g2.setColor(fgColor);
         g2.fill(fillArea);
         g2.dispose();
 
@@ -304,8 +306,8 @@ public class RoundedCornerGenerator {
         g2 = img.createGraphics();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        if (bgColor != null) {
-
+        if (bgColor != null)
+        {
             fillArea = new RoundRectangle2D.Float(0, 0, width + (shadowWidth * 2), height + (shadowWidth * 2), arcHeight, arcWidth);
             g2.setColor(bgColor);
             g2.fill(fillArea.getBounds2D());
@@ -313,16 +315,16 @@ public class RoundedCornerGenerator {
 
         g2.drawImage(clipImg, 0, 0, null);
 
-        if (bgColor != null) {
-
+        if (fgColor != null)
+        {
             fillArea = new RoundRectangle2D.Float(0, 0, width, height, arcHeight, arcWidth);
-            g2.setColor(bgColor);
+            g2.setColor(fgColor);
             g2.fill(fillArea);
         }
 
         g2.dispose();
 
-        return img;
+        return convertType(img, BufferedImage.TYPE_INT_RGB);
     }
 
     public BufferedImage buildSideShadow(String side, int size, float opacity)
