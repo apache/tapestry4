@@ -14,9 +14,6 @@
 
 package org.apache.tapestry.form;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-
 import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;
@@ -25,6 +22,8 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidatorException;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
 import org.testng.annotations.Test;
 
 /**
@@ -89,13 +88,13 @@ public class TestTextField extends BaseFormComponentTestCase
         assertEquals(value, component.getValue());
     }
 
+    @SuppressWarnings("ALL")
     public void testRewindTranslateFailed()
     {
         TranslatedFieldSupport tfs = newMock(TranslatedFieldSupport.class);
         ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
 
-        TextField component = newInstance(TextField.class, new Object[]
-        { "translatedFieldSupport", tfs, "validatableFieldSupport", vfs });
+        TextField component = newInstance(TextField.class, "translatedFieldSupport", tfs, "validatableFieldSupport", vfs);
 
         IRequestCycle cycle = newCycle();
         
@@ -129,7 +128,6 @@ public class TestTextField extends BaseFormComponentTestCase
             unreachable();
         }
         
-        trainGetDelegate(form, delegate);
         delegate.record(exception);
         
         expect(cycle.renderStackPop()).andReturn(component);
@@ -143,33 +141,28 @@ public class TestTextField extends BaseFormComponentTestCase
         assertNull(component.getValue());
     }
 
+    @SuppressWarnings("ALL")
     public void testRewindValidateFailed()
     {
         TranslatedFieldSupport tfs = newMock(TranslatedFieldSupport.class);
         ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
 
-        TextField component = newInstance(TextField.class, new Object[]
-        { "translatedFieldSupport", tfs, "validatableFieldSupport", vfs });
+        TextField component = newInstance(TextField.class, "translatedFieldSupport", tfs, "validatableFieldSupport", vfs);
 
         IRequestCycle cycle = newCycle();
-        
         IForm form = newMock(IForm.class);
-
         IMarkupWriter writer = newWriter();
-
         IValidationDelegate delegate = newDelegate();
         
         expect(cycle.renderStackPush(component)).andReturn(component);
         
         trainGetForm(cycle, form);
         trainWasPrerendered(form, writer, component, false);
-        trainGetDelegate(form, delegate);
 
         delegate.setFormComponent(component);
 
         trainGetElementId(form, component, "barney");
         trainIsRewinding(form, true);
-
         trainGetParameter(cycle, "barney", "10");
 
         ValidatorException exception = new ValidatorException("test");
@@ -188,8 +181,8 @@ public class TestTextField extends BaseFormComponentTestCase
             unreachable();
         }
         
-        trainGetDelegate(form, delegate);
         delegate.record(exception);
+        trainGetDelegate(form, delegate);
         
         expect(cycle.renderStackPop()).andReturn(component);
         
@@ -306,8 +299,11 @@ public class TestTextField extends BaseFormComponentTestCase
 
         MockDelegate delegate = new MockDelegate();
 
-        TextField component = newInstance(TextField.class, new Object[]
-        { "id", "fred", "translatedFieldSupport", tfs, "validatableFieldSupport", vfs, "value", new Integer(10) });
+        TextField component = newInstance(TextField.class,
+                                          "id", "fred",
+                                          "translatedFieldSupport", tfs,
+                                          "validatableFieldSupport", vfs,
+                                          "value", 10);
         
         expect(cycle.renderStackPush(component)).andReturn(component);
         
@@ -325,17 +321,10 @@ public class TestTextField extends BaseFormComponentTestCase
         
         delegate.setFormComponent(component);
         
-        expect(tfs.format(component, new Integer(10))).andReturn("10");
-        
-        trainGetDelegate(form, delegate);
-        
-        tfs.renderContributions(component, writer, cycle);
-        
-        trainGetDelegate(form, delegate);
-        
-        vfs.renderContributions(component, writer, cycle);
+        expect(tfs.format(component, 10)).andReturn("10");
 
-        trainGetDelegate(form, delegate);
+        tfs.renderContributions(component, writer, cycle);
+        vfs.renderContributions(component, writer, cycle);
         
         expect(cycle.renderStackPop()).andReturn(component);
         
@@ -362,10 +351,9 @@ public class TestTextField extends BaseFormComponentTestCase
 
         MockDelegate delegate = new MockDelegate();
 
-        TextField component = newInstance(TextField.class, new Object[]
-        { "name", "fred", "translatedFieldSupport", tfs, 
-            "validatableFieldSupport", vfs, "value", 
-            new Integer(10), "hidden", Boolean.TRUE });
+        TextField component = newInstance(TextField.class, "name", "fred", "translatedFieldSupport", tfs,
+                                          "validatableFieldSupport", vfs, "value",
+                                          10, "hidden", Boolean.TRUE);
         
         expect(cycle.renderStackPush(component)).andReturn(component);
         
@@ -380,22 +368,11 @@ public class TestTextField extends BaseFormComponentTestCase
         trainIsRewinding(cycle, false);
 
         form.setFormFieldUpdating(true);
-        
         delegate.setFormComponent(component);
 
-        trainGetDelegate(form, delegate);
-
-        expect(tfs.format(component, new Integer(10))).andReturn("10");
-        
-        trainGetDelegate(form, delegate);
-        
+        expect(tfs.format(component, 10)).andReturn("10");
         tfs.renderContributions(component, writer, cycle);
-
-        trainGetDelegate(form, delegate);
-        
         vfs.renderContributions(component, writer, cycle);
-
-        trainGetDelegate(form, delegate);
         
         expect(cycle.renderStackPop()).andReturn(component);
         
@@ -422,10 +399,9 @@ public class TestTextField extends BaseFormComponentTestCase
 
         MockDelegate delegate = new MockDelegate();
 
-        TextField component = newInstance(TextField.class, new Object[]
-        { "name", "fred", "translatedFieldSupport", tfs, 
-            "validatableFieldSupport", vfs, "value", new Integer(10), 
-            "disabled", Boolean.TRUE });
+        TextField component = newInstance(TextField.class, "name", "fred", "translatedFieldSupport", tfs,
+                                          "validatableFieldSupport", vfs, "value", new Integer(10),
+                                          "disabled", Boolean.TRUE);
         
         expect(cycle.renderStackPush(component)).andReturn(component);
         
@@ -440,22 +416,12 @@ public class TestTextField extends BaseFormComponentTestCase
         trainIsRewinding(cycle, false);
 
         form.setFormFieldUpdating(true);
-        
         delegate.setFormComponent(component);
 
-        trainGetDelegate(form, delegate);
-
-        expect(tfs.format(component, new Integer(10))).andReturn("10");
-        
-        trainGetDelegate(form, delegate);
+        expect(tfs.format(component, 10)).andReturn("10");
         
         tfs.renderContributions(component, writer, cycle);
-        
-        trainGetDelegate(form, delegate);
-        
         vfs.renderContributions(component, writer, cycle);
-
-        trainGetDelegate(form, delegate);
         
         expect(cycle.renderStackPop()).andReturn(component);
         
@@ -535,8 +501,10 @@ public class TestTextField extends BaseFormComponentTestCase
 
         MockDelegate delegate = new MockDelegate();
 
-        TextField component = newInstance(TextField.class, new Object[]
-        { "name", "fred", "translatedFieldSupport", tfs, "validatableFieldSupport", vfs });
+        TextField component = newInstance(TextField.class,
+                                          "name", "fred",
+                                          "translatedFieldSupport", tfs,
+                                          "validatableFieldSupport", vfs);
         
         expect(cycle.renderStackPush(component)).andReturn(component);
         
@@ -553,18 +521,10 @@ public class TestTextField extends BaseFormComponentTestCase
         form.setFormFieldUpdating(true);
         
         delegate.setFormComponent(component);
-
         expect(tfs.format(component, null)).andReturn("");
-        
-        trainGetDelegate(form, delegate);
-        
-        tfs.renderContributions(component, writer, cycle);
-        
-        trainGetDelegate(form, delegate);
-        
-        vfs.renderContributions(component, writer, cycle);
 
-        trainGetDelegate(form, delegate);
+        tfs.renderContributions(component, writer, cycle);
+        vfs.renderContributions(component, writer, cycle);
         
         expect(cycle.renderStackPop()).andReturn(component);
         

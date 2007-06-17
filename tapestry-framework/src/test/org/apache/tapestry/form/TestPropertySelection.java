@@ -13,13 +13,12 @@
 // limitations under the License.
 package org.apache.tapestry.form;
 
-import static org.easymock.EasyMock.expect;
-
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidatorException;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
 
 /**
@@ -99,14 +98,12 @@ public class TestPropertySelection extends BaseFormComponentTestCase
         IPropertySelectionModel model = new StringPropertySelectionModel(new String[] { "One", "Two", "Three" }, 
                 new boolean[] {false, false, true});
         
-        PropertySelection component = newInstance(PropertySelection.class, 
-                new Object[]  { 
-            "id", "hannah",
-            "validatableFieldSupport", vfs,
-            "model", model,
-            "value", "One",
-            "optionRenderer", DefaultOptionRenderer.DEFAULT_INSTANCE
-        });
+        PropertySelection component = newInstance(PropertySelection.class,
+                                                  "id", "hannah",
+                                                  "validatableFieldSupport", vfs,
+                                                  "model", model,
+                                                  "value", "One",
+                                                  "optionRenderer", DefaultOptionRenderer.DEFAULT_INSTANCE);
         
         expect(cycle.renderStackPush(component)).andReturn(component);
         
@@ -123,12 +120,7 @@ public class TestPropertySelection extends BaseFormComponentTestCase
         form.setFormFieldUpdating(true);
         
         delegate.setFormComponent(component);
-        
-        trainGetDelegate(form, delegate);
-        
         vfs.renderContributions(component, writer, cycle);
-
-        trainGetDelegate(form, delegate);
         
         expect(cycle.renderStackPop()).andReturn(component);
         

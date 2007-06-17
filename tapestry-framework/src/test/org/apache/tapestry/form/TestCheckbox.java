@@ -14,9 +14,6 @@
 
 package org.apache.tapestry.form;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
@@ -25,6 +22,8 @@ import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidationConstants;
 import org.apache.tapestry.valid.ValidatorException;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
 import org.testng.annotations.Test;
 
 /**
@@ -67,23 +66,13 @@ public class TestCheckbox extends BaseFormComponentTestCase
         expect(cycle.isRewinding()).andReturn(false);
         
         form.setFormFieldUpdating(true);
-        
-        trainGetDelegate(form, delegate);
-        
+
         delegate.writePrefix(writer, cycle, cb, null);
         expect(delegate.isInError()).andReturn(false).anyTimes();
-        
-        trainGetDelegate(form, delegate);
-        expect(delegate.isInError()).andReturn(false);
-        
+
         vfs.renderContributions(cb, writer, cycle);
-        
-        trainGetDelegate(form, delegate);
-        
         delegate.writeSuffix(writer, cycle, cb, null);
-        
-        expect(delegate.isInError()).andReturn(false);
-        
+
         delegate.registerForFocus(cb, ValidationConstants.NORMAL_FIELD);
         
         expect(cycle.renderStackPop()).andReturn(cb);
@@ -102,9 +91,8 @@ public class TestCheckbox extends BaseFormComponentTestCase
         IForm form = newMock(IForm.class);
         ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
         
-        Checkbox cb = newInstance(Checkbox.class, new Object[]
-        { "name", "assignedName", "disabled", Boolean.TRUE, 
-            "form",  form, "validatableFieldSupport", vfs});
+        Checkbox cb = newInstance(Checkbox.class, "name", "assignedName", "disabled", Boolean.TRUE,
+                                  "form", form, "validatableFieldSupport", vfs);
         
         IMarkupWriter writer = newBufferWriter();
         IRequestCycle cycle = newCycle();
@@ -114,13 +102,8 @@ public class TestCheckbox extends BaseFormComponentTestCase
         trainGetDelegate(form, delegate);
         delegate.writePrefix(writer, cycle, cb, null);
         
-        trainGetDelegate(form, delegate);
         expect(delegate.isInError()).andReturn(false);
-        
-        vfs.renderContributions(cb, writer, cycle);
-        
-        trainGetDelegate(form, delegate);
-        
+        vfs.renderContributions(cb, writer, cycle);        
         delegate.writeSuffix(writer, cycle, cb, null);
         
         replay();
@@ -137,10 +120,9 @@ public class TestCheckbox extends BaseFormComponentTestCase
         IForm form = newMock(IForm.class);
         ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
         
-        Checkbox cb = newInstance(Checkbox.class, new Object[]
-        { "name", "assignedName", "value", Boolean.TRUE, "specification",
-                new ComponentSpecification(),
-                "form",  form, "validatableFieldSupport", vfs});
+        Checkbox cb = newInstance(Checkbox.class, "name", "assignedName", "value", Boolean.TRUE, "specification",
+                                  new ComponentSpecification(),
+                                  "form", form, "validatableFieldSupport", vfs);
         
         IMarkupWriter writer = newBufferWriter();
         IRequestCycle cycle = newCycle();
@@ -174,9 +156,13 @@ public class TestCheckbox extends BaseFormComponentTestCase
         IForm form = newMock(IForm.class);
         ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
         
-        Checkbox cb = newInstance(Checkbox.class, new Object[]
-        { "id", "foo", "clientId", "assignedName", "name", "assignedName", "value", Boolean.TRUE,
-            "form",  form, "validatableFieldSupport", vfs});
+        Checkbox cb = newInstance(Checkbox.class,
+                                  "id", "foo",
+                                  "clientId", "assignedName",
+                                  "name", "assignedName",
+                                  "value", Boolean.TRUE,
+                                  "form", form,
+                                  "validatableFieldSupport", vfs);
         
         IMarkupWriter writer = newBufferWriter();
         IRequestCycle cycle = newCycle();
@@ -185,15 +171,9 @@ public class TestCheckbox extends BaseFormComponentTestCase
         trainGetDelegate(form, delegate);
         
         delegate.writePrefix(writer, cycle, cb, null);
-        
-        trainGetDelegate(form, delegate);
-        
+
         expect(delegate.isInError()).andReturn(false).anyTimes();
-        
         vfs.renderContributions(cb, writer, cycle);
-        
-        trainGetDelegate(form, delegate);
-        
         delegate.writeSuffix(writer, cycle, cb, null);
         
         replay();
@@ -209,8 +189,10 @@ public class TestCheckbox extends BaseFormComponentTestCase
     {
         ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
     	
-        Checkbox cb = newInstance(Checkbox.class, new Object[]
-        { "value", Boolean.TRUE, "name", "checkbox", "validatableFieldSupport", vfs });
+        Checkbox cb = newInstance(Checkbox.class,
+                                  "value", Boolean.TRUE,
+                                  "name", "checkbox",
+                                  "validatableFieldSupport", vfs);
 
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycleGetParameter("checkbox", null);
@@ -233,6 +215,7 @@ public class TestCheckbox extends BaseFormComponentTestCase
         assertEquals(false, cb.getValue());
     }
 
+    @SuppressWarnings("ALL")
     public void test_Submit_Validate_Failed()
     {
         ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
@@ -240,8 +223,11 @@ public class TestCheckbox extends BaseFormComponentTestCase
         
         IValidationDelegate delegate = newDelegate();
         
-        Checkbox cb = newInstance(Checkbox.class, new Object[]
-        { "form", form, "value", Boolean.FALSE, "name", "checkbox", "validatableFieldSupport", vfs });
+        Checkbox cb = newInstance(Checkbox.class,
+                                  "form", form,
+                                  "value", Boolean.FALSE,
+                                  "name", "checkbox",
+                                  "validatableFieldSupport", vfs);
 
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycleGetParameter("checkbox", "foo");
@@ -277,8 +263,10 @@ public class TestCheckbox extends BaseFormComponentTestCase
     {
         ValidatableFieldSupport vfs = newMock(ValidatableFieldSupport.class);
         
-        Checkbox cb = newInstance(Checkbox.class, new Object[]
-        { "value", Boolean.FALSE, "name", "checkbox", "validatableFieldSupport", vfs });
+        Checkbox cb = newInstance(Checkbox.class,
+                                  "value", Boolean.FALSE,
+                                  "name", "checkbox",
+                                  "validatableFieldSupport", vfs);
 
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycleGetParameter("checkbox", "foo");
