@@ -14,21 +14,15 @@
 
 package org.apache.tapestry.valid;
 
-import static org.easymock.EasyMock.checkOrder;
-import static org.easymock.EasyMock.expect;
-
 import org.apache.hivemind.Location;
 import org.apache.hivemind.util.PropertyUtils;
-import org.apache.tapestry.BindingException;
-import org.apache.tapestry.IBinding;
-import org.apache.tapestry.IForm;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.*;
 import org.apache.tapestry.form.BaseFormComponentTestCase;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.MockDelegate;
 import org.apache.tapestry.html.BasePage;
+import static org.easymock.EasyMock.checkOrder;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
 
 /**
@@ -134,8 +128,6 @@ public class TestValidField extends BaseFormComponentTestCase
         trainIsRewinding(form, true);
 
         trainGetParameter(cycle, "fred", "fred-value");
-
-        trainGetDelegate(form, delegate);
 
         delegate.recordFieldInputValue("fred-value");
 

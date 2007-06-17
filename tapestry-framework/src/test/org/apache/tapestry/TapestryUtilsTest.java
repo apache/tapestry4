@@ -14,10 +14,9 @@
 
 package org.apache.tapestry;
 
-import static org.easymock.EasyMock.expect;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
 
 /**
@@ -141,16 +140,13 @@ public class TapestryUtilsTest extends BaseComponentTestCase
     public void testGetPageRenderSupportFailure()
     {
         IComponent component = newMock(IComponent.class);
-        
         IRequestCycle cycle = newCycle(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE, null);
         
         expect(component.getExtendedId()).andReturn("Foo/bar").anyTimes();
         
         Location l = newLocation();
         expect(component.getLocation()).andReturn(l);
-        
-        expect(component.getExtendedId()).andReturn("Foo/bar").anyTimes();
-        
+
         replay();
 
         try
@@ -174,12 +170,9 @@ public class TapestryUtilsTest extends BaseComponentTestCase
         
         IRequestCycle cycle = newCycle(TapestryUtils.FORM_ATTRIBUTE, null);
         
-        expect(component.getExtendedId()).andReturn("Foo/bar").anyTimes();
-        
+        expect(component.getExtendedId()).andReturn("Foo/bar").anyTimes();        
         expect(component.getLocation()).andReturn(l);
 
-        expect(component.getExtendedId()).andReturn("Foo/bar").anyTimes();
-        
         replay();
 
         try
