@@ -45,21 +45,14 @@
                 Operates correctly. Requires the Xerces parser to be in the classpath (usually
                 provided by the servlet container).
             </dd>
-
             <dt>Java 1.3.x</dt>
-
             <dd>
                 Operates correctly. Requires the Xerces parser to be in the classpath (usually
                 provided by the servlet container).
             </dd>
-
             <dt>Java 1.4.x (recommended)</dt>
-
-
             <dd>Operates correctly.</dd>
         </dl>
-
-
 
         <p>Supported Java Servlet API Versions:</p>
 
@@ -77,10 +70,7 @@
         </dl>
 
 
-
         <subsection name="Web deployment descriptor">
-
-
             <p>
                 All Tapestry applications make use of the
                 <a
@@ -187,6 +177,7 @@
                 operate without an application specification.
             </p>
 
+            <p>
             <span class="warn">
                 <strong>Fixme:</strong>
                 <p>
@@ -195,6 +186,7 @@
                 . In 4.0, the servlet will create and initialize a HiveMind Registry.
                 </p>
             </span>
+            </p>
 
             <p>
                 The specification is normally stored under WEB-INF. In fact, Tapestry performs a
@@ -239,8 +231,6 @@
         </subsection><!-- configuration.deployment-descriptor -->
 
         <subsection name="Application Property Source">
-
-
             <p>
                 Tapestry occasionally must obtain a value for a configuration property. These
                 configuration properties are items that are frequently optional, and don't fit into
@@ -253,6 +243,7 @@
                 general, the search path for configuration properties is:
             </p>
 
+            <p>
             <ul>
                 <li>
                     As a
@@ -276,23 +267,24 @@
                     symbols.
                 </li>
             </ul>
+            </p>
 
             <p>
                 It is expected that some configuration properties are not defined at any level;
                 those will return null.
             </p>
-
-
+            
             <p>Applications are free to leverage this lookup mechanism as well.</p>
-
+            
+            <p>
             <span class="info">
-                <strong>Fixme:</strong>
+                <strong>fixme:</strong>
                 <p>
-                Need to reference the ApplicationPropertySource, GlobalPropertySource and
-                ComponentPropertySource services here.
+                    Need to reference the ApplicationPropertySource, GlobalPropertySource and ComponentPropertySource services here.
                 </p>
             </span>
-
+            </p>
+            
             <p>
                 Applications may also want to change or augment the default search path; this is
                 accomplished by overriding
@@ -305,6 +297,7 @@
                 . For example, some configuration data could be drawn from a database.
             </p>
 
+            <p>
             <span class="info">
                 <strong>Fixme:</strong>
                 <p>
@@ -312,7 +305,7 @@
                 HiveMind contribution, details to be provided.
                 </p>
             </span>
-
+            </p>
 
         </subsection><!-- configuration.app-property-source -->
 
@@ -384,7 +377,7 @@
 
                 <tr>
                     <td>org.apache.tapestry.component-class-packages</td>
-                    <td></td>
+                    <td> </td>
                     <td>
                         A comma-seperated list of package names, used when
                         <a href="page-class.html#page-class.component">

@@ -32,13 +32,64 @@
         </p>
     </section>
     
+    <section name="Core API Changes">
+        <p>
+            Many of the previously marked as deprecated for removal in Tapestry 4.1 API sections have now been removed.  There is also some new functionality
+            that many may not be aware of.
+        </p>
+        <p>
+            <ul>
+                <li>
+                    <p>
+                        <b>IRequestCycle.getRequestContext() -</b> The old <code>getRequestContext()</code> method has now been removed from
+                        <a href="../apidocs/org/apache/tapestry/IRequestCycle.html">IRequestCycle</a>.  The proper way to get the equivalent
+                        functionality is to have the HttpServletRequest object <a href="injection.html">injected</a> in to your page/component:
+                    </p>
+                    <source xml:space="preserve"><![CDATA[
+@InjectObject("service:tapestry.globals.HttpServletRequest")
+public abstract HttpServletRequest getRequest();
+]]></source>
+                </li>
+                <li>
+                    <p>
+                        <b>Autowiring services -</b>  Thanks to James Carman of <a href="http://hivemind.apache.org">HiveMind</a> all components/pages now support
+                        autowiring of services.  The rule is that you can have any service / configuration that is normally injectable via exlplicit
+                        <a href="injection.html">injection</a> configurations simply by defining a property of the same type as any of the available HiveMind services.
+                        The only caveat is that services of the same interface with more than one contributed definition can't be autowired as it would be impossible
+                        for the framework to correctly choose the right one.
+                    </p>
+                    <p>
+                        This should greatly cut down on a lot of pain of having to look up service ids in the
+                        <a href="../tapestry-framework/hivedoc/">hivedoc</a> documentation.  The injection of the HttpServletRequest outlined in the first point
+                        could be re-written as:
+                    </p>
+                    <source xml:space="preserve"><![CDATA[
+public abstract HttpServletRequest getRequest();
+]]></source>
+                </li>
+                <li>
+                    <p>
+                        <b>IRequestCycle.getServiceParameters() -</b> This method has been replaced with <code>IRequestCycle.getListenerParameters()</code>.
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        <b>org.apache.tapestry.event.PageRenderListener gone -</b> PageRenderListener was split into PageBeginRenderListener and PageEndRenderListener.  More
+                        on the available listener types/events can be found <a href="events.html">here</a>.
+                    </p>
+                </li>
+            </ul>
+        </p>
+    </section>
+    
     <section name="Javascript">
         <p>
             One of the largest changes to come about has been the general strategy in dealing with javascript inclusions as well 
             as bundling of the <a href="http://dojotoolkit.org">Dojo</a> javascript toolkit directly in Tapestry. More about these 
             packaging changes can be found in the <a href="../javascript/index.html">javascript guide</a>.
         </p>
-        
+
+        <p>
         <ul>
             <li>
             <strong>Javascript includes -</strong> The inclusion of dojo now happens automatically if you are using the <a href="../components/general/shell.html">Shell</a> component, 
@@ -188,7 +239,8 @@ setFocus();
                 unique <code>id="foo"</code> attributes to support the new method as well. 
             </li>
           </ul>
-        
+        </p>
+    
         <span class="info">
             <strong>Note:</strong>
             <p>
