@@ -14,6 +14,8 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN"
+    "http://maven.apache.org/dtd/xdoc_1_0.dtd">
 <document>
     <properties>
         <title>Dialog</title>
@@ -21,7 +23,6 @@
     <body>
 
         <section name="Dialog">
-
             <p>
                 Creates a modal Dialog on the client side (of sorts). This component may prove useful for cutting down
                 on typical CRUD operations where you normally have to navigate to a lot of seperate pages to do things
@@ -34,9 +35,17 @@
                 invoke in java code to hide and show the Dialog. They are aptly named <code>hide()</code> and
                 <code>show()</code>.
             </p>
-            
-            <img src="../../images/ComponentReference/Dialog.png" />
-            
+
+            <span class="warn">
+                <strong>Warning:</strong>
+                <p>
+                    There are quite a few gotchas and special conditions you need to be aware of when using this component.  You can find them outlined
+                    as well as solutions to common problems at the bottom of this document.
+                </p>
+            </span>
+
+            <img src="../../images/ComponentReference/Dialog.png" alt="Dialog Example"/>
+
             <p>
                 <strong>
                     See also:
@@ -47,7 +56,7 @@
 
             </p>
             
-            <section name="Parameters">
+            <subsection name="Parameters">
                 <table>
                     <tr>
                         <th>Name</th>
@@ -92,22 +101,161 @@
                     Body:
                     <strong>allowed</strong>
                 </p>
-
                 <p>
                     Informal parameters:
                     <strong>allowed</strong>
                 </p>
-
                 <p>
                     Reserved parameters:
                     <em>none</em>
                 </p>
 
-            </section>
+            </subsection>
 
-            <section name="Examples">
-                TODO...
-            </section>
+            <subsection name="Gotchas">
+                There are a few things that most poeple will need to keep in mind when using this component/client side control.
+
+                <ul>
+                    <li>
+                        <p>
+                        <b>Dialog display flickering</b> - In the typical situation of defining a simple html template definition of a Dialog - such
+                        as in:
+                        </p>
+                        <source xml:space="preserve"><![CDATA[
+<div jwcid="testDialog@Dialog" hidden="ognl:dialogHidden" >
+    <p>Sample dialog display</p>
+</div>
+]]></source>
+                        <p>
+                            With the definition given above you will inevitably get a <em>flickering</em> effect of the content within the dialog being
+                            breifly displayed before being hidden by the client side widget control.  This is simply because your html content is rendered
+                            in the browser before the client side widget has had a chance to hide it.  To be sure that you don't have flickering on your
+                            dialog content simply define a <code>style="display:none"</code> attribute on your Dialog tag:
+                        </p>
+
+                        <source xml:space="preserve"><![CDATA[
+<div jwcid="testDialog@Dialog" hidden="ognl:dialogHidden" style="display:none;">
+    <p>Sample dialog display</p>
+</div>
+]]></source>
+                    </li>
+                    <li>
+                        <p>
+                            <b>Dialog content background color</b> - By default the content you display within the dialog will have an opaque background because
+                            that is the background of the dialog itself.  If you don't want this <em>(the majoriy won't..)</em> you should define a background color
+                            and style accordingly for your content.  It is often easier to define a single css class definition for dialog content and apply it to
+                            a single outer node within the dialog like this:
+                        </p>
+                        <source xml:space="preserve"><![CDATA[
+..
+.dialog { background-color: white; width: 400px; height: 300px; }
+...
+
+<div jwcid="testDialog@Dialog" hidden="ognl:dialogHidden" style="display:none;">
+    <p class="dialog">
+        Sample dialog display
+    </p>
+</div>
+]]></source>
+                    </li>
+                    <li>
+                        <p>
+                            <b>Updating Dialog in AJAX requests</b> - This is by far the biggest gotcha,  so you'll want to read this section carefully.  Because of
+                            the way the client side widget displays/manipulates the Dialog the ultimate position your dialog html node in the overall document will not
+                            be the same as how it is initially rendered by Tapestry.  The short of it is that the client side takes your dialog html node and moves it to
+                            the very bottom of the document - regardless of what is surrounding it or any other careful semantics you have setup. ...So given a sample
+                            html template definition looking like this:
+                        </p>
+
+                        <source xml:space="preserve"><![CDATA[                 
+<body>
+
+  <div id="content">
+     <p>
+        <div jwcid="testDialog@Dialog" hidden="ognl:dialogHidden" style="display:none;">
+            <p>Sample dialog display</p>
+        </div>
+    </p>
+  </div>
+
+</body>
+]]></source>
+                        <p>..the actual placement of your dialog node will actually be more like:</p>
+
+                        <source xml:space="preserve"><![CDATA[
+<body>
+
+  <div id="content">
+     <p>
+
+    </p>
+  </div>
+
+<div id="testDialog" style="display:none;">
+  <p>Sample dialog display</p>
+</div>
+</body>
+]]></source>
+                        <p>
+                            This can cause endless hours of frustration if you don't know about its behaviour - and can get even worse with certain ajax
+                            updating semantics.  The key things to remember with doing ajax updates involving dialogs are:
+                        </p>
+                        <ul>
+                            <li>
+                                <p>
+                                    <b>Only update the dialog directly or things contained within it.</b>
+                                </p>
+                                <p>
+                                    This means that you can't do things like:
+                                </p>
+
+                                <source xml:space="preserve"><![CDATA[
+<a jwcid="@DirectLink" listener="listener:showDialog" updateComponents="dialogUpdateArea">Show Dialog</a>
+
+<div jwcid="dialogUpdateArea@Any">
+<div jwcid="testDialog@Dialog" hidden="ognl:dialogHidden" style="display:none;">
+    <p class="dialog">
+        Sample dialog display
+    </p>
+</div>
+</div>
+]]></source>
+                                <p>
+                                    The above example would have questionable results because the actual client side dom node of the dialog will be detached
+                                    and not actually be a child of the <code>dialogUpdateArea</code> Any component you are trying to update.  The good news is
+                                    that updating a Dialog directly or children within it should work fine, so rewriting the example above to the more correct version
+                                    will yield better results:
+                                </p>
+
+                                <source xml:space="preserve"><![CDATA[
+<a jwcid="@DirectLink" listener="listener:showDialog" updateComponents="testDialog">Show Dialog</a>
+
+<div jwcid="testDialog@Dialog" hidden="ognl:dialogHidden" style="display:none;">
+    <p class="dialog">
+        Sample dialog display
+    </p>
+</div>
+]]></source>
+                            </li>
+                            <li>
+                                <p>
+                                    <b>Don't wrap portions of a <a href="../form/form.html">Form</a>.</b>
+                                </p>
+                                <p>
+                                    Because the Dialog client dom node is always detached you are almost assured to have problems if you try and take
+                                    a small portion of a form and wrap it within a dialog.  The form input controls will be moved to the bottom of your
+                                    document - outside the scope of the containing form - along with all the other content the Dialog normally moves.  This will
+                                    likely result in your form breaking and / or just not submitting the input values contained within the dialog.
+                                </p>
+                                <p>
+                                    For this situation the only real answer is that you need to break the form up in to two separate forms - one that you will nest
+                                    within the Dialog itself and the other being your main outer form. 
+                                </p>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </subsection>
             
         </section>
 
