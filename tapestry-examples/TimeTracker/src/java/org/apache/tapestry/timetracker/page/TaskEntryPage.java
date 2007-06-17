@@ -14,10 +14,7 @@
 package org.apache.tapestry.timetracker.page;
 
 import org.apache.log4j.Logger;
-import org.apache.tapestry.annotations.Component;
-import org.apache.tapestry.annotations.EventListener;
-import org.apache.tapestry.annotations.InjectObject;
-import org.apache.tapestry.annotations.Persist;
+import org.apache.tapestry.annotations.*;
 import org.apache.tapestry.dojo.form.*;
 import org.apache.tapestry.dojo.html.Dialog;
 import org.apache.tapestry.form.TextField;
@@ -88,6 +85,9 @@ public abstract class TaskEntryPage<E extends Persistent> extends BasePage
     
     public abstract ResponseBuilder getBuilder();
 
+    @InjectComponent("testDialog")
+    public abstract Dialog getTestDialog();
+
     /**
      * Selection model for projects.
      * 
@@ -110,10 +110,9 @@ public abstract class TaskEntryPage<E extends Persistent> extends BasePage
 
     public void showDialog()
     {
-        Dialog dlg = (Dialog)getComponent("testDialog");
-        dlg.show();
+        getTestDialog().show();
     }
-    
+
     /**
      * Invoked by form to add a new task.
      */

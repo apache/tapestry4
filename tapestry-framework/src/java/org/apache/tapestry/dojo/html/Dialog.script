@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE script PUBLIC
-  "-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
-  "http://tapestry.apache.org/dtd/Script_3_0.dtd">
+        "-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
+        "http://tapestry.apache.org/dtd/Script_3_0.dtd">
 <!-- 
    Copyright 2004, 2005, 2006 The Apache Software Foundation
 
@@ -18,19 +18,26 @@
    limitations under the License.
 -->
 <script>
-<input-symbol key="component" required="yes" />
-<input-symbol key="props" required="yes" />
+    <input-symbol key="component" required="yes" />
+    <input-symbol key="props" required="yes" />
+    
+    <let key="widget" unique="yes">
+        dialog
+    </let>
+
     <body>
-    <unique>
-    dojo.require("tapestry.widget.Widget");
-    </unique>
+        <unique>
+            dojo.require("tapestry.widget.Widget");
+        </unique>
     </body>
+    
     <initialization>
-    tapestry.widget.synchronizeWidgetState("${component.clientId}", "Dialog", ${props}, ${component.destroy});
-    <if expression="component.hidden">
-        dojo.widget.byId("${component.clientId}").hide();
-    </if><if-not expression="component.hidden">
-        dojo.widget.byId("${component.clientId}").show();
-    </if-not>
+        tapestry.widget.synchronizeWidgetState("${component.clientId}", "Dialog", ${props}, ${component.destroy});
+        <if expression="component.hidden">
+            dojo.widget.byId("${component.clientId}").hide();
+        </if>
+        <if-not expression="component.hidden">
+            dojo.widget.byId("${component.clientId}").show();
+        </if-not>
     </initialization>
 </script>
