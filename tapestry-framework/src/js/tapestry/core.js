@@ -320,7 +320,7 @@ var tapestry={
 		}
 
 		var text=tapestry.html.getContentAsString(element);
-	    var response = text.replace(this.GlobalScriptFragment, '');
+	    text.replace(this.GlobalScriptFragment, '');
 	    var scripts = text.match(this.GlobalScriptFragment);
 
 		if (!scripts) { return; }
@@ -570,7 +570,7 @@ tapestry.html={
 
 	_processCompactElements:function(htmlData)
  	{
-            return htmlData.replace(this.CompactElementRegexp, this.CompactElementReplacer);
+		 return htmlData.replace(this.CompactElementRegexp, this.CompactElementReplacer);
  	}
 }
 

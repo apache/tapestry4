@@ -307,7 +307,11 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
 
         String castExpression = (String) context.get(PRE_CAST);
 
-        if (context.getCurrentType() == null || context.getCurrentType().isPrimitive() || Character.class.isAssignableFrom(context.getCurrentType())) {
+        if (context.getCurrentType() == null
+            || context.getCurrentType().isPrimitive()
+            || Character.class.isAssignableFrom(context.getCurrentType())
+            || Object.class == context.getCurrentType())
+        {
             pre = pre + " ($w) (";
             post = post + ")";
         }
