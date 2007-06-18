@@ -257,7 +257,6 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         expect(comp1.getClientId()).andReturn("comp1").anyTimes();
         
         expect(cycle.getAttribute(ComponentEventConnectionWorker.FORM_NAME_LIST + "form1")).andReturn(null).times(2);
-        
         expect(comp1.getSpecification()).andReturn(comp1Spec);
         
         // render of comp2
@@ -270,7 +269,6 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         expect(comp2.getClientId()).andReturn("comp2").anyTimes();
         
         expect(cycle.getAttribute(ComponentEventConnectionWorker.FORM_NAME_LIST + "form1")).andReturn(null);
-        
         expect(comp2.getSpecification()).andReturn(comp2Spec);
         
         // render of component
@@ -295,18 +293,15 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         List deferred = (List)worker.getDefferedFormConnections().get("form1");
         
         assert deferred != null;
-        assertEquals(deferred.size(), 3);
-        
-        Object[] parms = (Object[])deferred.get(0);
-        assertEquals(4, parms.length);
+        assertEquals(deferred.size(), 2);
+
+        ComponentEventConnectionWorker.DeferredFormConnection fConn = (ComponentEventConnectionWorker.DeferredFormConnection)deferred.get(0);
         
         // assert async is false
-        assert (Boolean)parms[1] == true;
+        assert fConn._async;
+        assert fConn._validate;
         
-        // assert validate form is true
-        assert (Boolean)parms[2] == true;
-        
-        Map parm = (Map)parms[0];
+        Map parm = fConn._scriptParms;
         
         assert parm.get("clientId") != null;
         assert parm.get("component") != null;
@@ -317,27 +312,15 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         assertEquals("comp1", parm.get("clientId"));
         assertEquals(comp1, parm.get("component"));
 
-        // just make sure second element is targeted at comp1 to handle the two events we gave it
-
-        parms = (Object[])deferred.get(1);
-        assertEquals(parms.length, 4);
-
-        parm = (Map)parms[0];
-        assertEquals(parm.get("clientId"), "comp1");
-
         // test comp2 connections
+
+        fConn = (ComponentEventConnectionWorker.DeferredFormConnection)deferred.get(1);
         
-        parms = (Object[])deferred.get(2);
-        assertEquals(4, parms.length);
-        
-        // assert async is false
-        assert (Boolean)parms[1] == true;
-        
-        // assert validate form is true
-        assert (Boolean)parms[2] == true;
-        
-        parm = (Map)parms[0];
-        
+        parm = fConn._scriptParms;
+
+        assert fConn._async;
+        assert fConn._validate;
+
         assert parm.get("clientId") != null;
         assert parm.get("component") != null;
         assert parm.get("url") == null;
@@ -347,6 +330,7 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         assertEquals(parm.get("clientId"), "comp2");
         assertEquals(parm.get("component"), comp2);
     }
+
     
     
     public void test_Form_Render_Deffered()

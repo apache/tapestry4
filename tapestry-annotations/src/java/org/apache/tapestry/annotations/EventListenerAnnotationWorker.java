@@ -23,26 +23,26 @@ import java.lang.reflect.Method;
 
 /**
  * Performs {@link EventListener} annotation enhancements on components.
- * 
+ *
  * @author jkuhnert
  */
 public class EventListenerAnnotationWorker implements SecondaryAnnotationWorker
 {
-    /** 
+    /**
      * {@inheritDoc}
      */
     public boolean canEnhance(Method method)
     {
         return method.getAnnotation(EventListener.class) != null;
     }
-    
-    /** 
+
+    /**
      * {@inheritDoc}
      */
     public void peformEnhancement(EnhancementOperation op, IComponentSpecification spec, Method method, Resource classResource)
     {
         EventListener listener = method.getAnnotation(EventListener.class);
-        
+
         String[] targets = listener.targets();
         String[] elements = listener.elements();
         String formId = listener.submitForm();
@@ -50,20 +50,20 @@ public class EventListenerAnnotationWorker implements SecondaryAnnotationWorker
         boolean async = listener.async();
         boolean focus = listener.focus();
         boolean autoSubmit = listener.autoSubmit();
-        
+
         if (targets.length < 1 && elements.length < 1)
             throw new ApplicationRuntimeException(AnnotationMessages.targetsNotFound(method));
 
-        for (int i=0; i < targets.length; i++) {
-
+        for (int i=0; i < targets.length; i++)
+        {
             spec.addEventListener(targets[i], listener.events(),
-                    method.getName(), formId, validateForm, async, focus, autoSubmit);
+                                  method.getName(), formId, validateForm, async, focus, autoSubmit);
         }
-        
-        for (int i=0; i < elements.length; i++) {
-            
-            spec.addElementEventListener(elements[i], listener.events(), 
-                    method.getName(), formId, validateForm, async, focus);
+
+        for (int i=0; i < elements.length; i++)
+        {
+            spec.addElementEventListener(elements[i], listener.events(),
+                                         method.getName(), formId, validateForm, async, focus);
         }
     }
 }
