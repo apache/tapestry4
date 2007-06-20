@@ -14,9 +14,6 @@
 
 package org.apache.tapestry.services.impl;
 
-import java.io.IOException;
-import java.util.Iterator;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorHandler;
 import org.apache.tapestry.IEngine;
@@ -27,14 +24,12 @@ import org.apache.tapestry.engine.RequestCycleEnvironment;
 import org.apache.tapestry.engine.ServiceEncoder;
 import org.apache.tapestry.engine.ServiceEncodingImpl;
 import org.apache.tapestry.record.PropertyPersistenceStrategySource;
-import org.apache.tapestry.services.AbsoluteURLBuilder;
-import org.apache.tapestry.services.Infrastructure;
-import org.apache.tapestry.services.RequestCycleFactory;
-import org.apache.tapestry.services.RequestGlobals;
-import org.apache.tapestry.services.ResponseDelegateFactory;
-import org.apache.tapestry.services.ServiceConstants;
+import org.apache.tapestry.services.*;
 import org.apache.tapestry.util.QueryParameterMap;
 import org.apache.tapestry.web.WebRequest;
+
+import java.io.IOException;
+import java.util.Iterator;
 
 /**
  * Service that creates instances of {@link org.apache.tapestry.IRequestCycle}on behalf of an
@@ -103,7 +98,7 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
 
     /**
      * Constructs a {@link org.apache.tapestry.util.QueryParameterMap}using the parameters
-     * available from the {@link org.apache.tapestry.request.RequestContext}&nbsp;(but ignoring any
+     * available from the {@link WebRequest}&nbsp;(but ignoring any
      * file upload parameters!).
      */
 
