@@ -310,7 +310,9 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
      * Renders the (unique) id attribute for this component. 
      * 
      * @param writer
+     *          The writer to render attribute in.
      * @param cycle
+     *          The current request.
      */
     protected void renderIdAttribute(IMarkupWriter writer, IRequestCycle cycle)
     {
