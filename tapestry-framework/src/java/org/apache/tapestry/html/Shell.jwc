@@ -115,7 +115,7 @@
         </description>
     </parameter>
 
-    <parameter name="debugEnabled" default-value="true">
+    <parameter name="debugEnabled" default-value="false">
         <description>Allows turning browser debug logging statements on/off.</description>
     </parameter>
     

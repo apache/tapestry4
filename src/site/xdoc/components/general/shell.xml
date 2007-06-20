@@ -236,7 +236,7 @@
                         <td>debugEnabled</td>
                         <td>boolean</td>
                         <td>no</td>
-                        <td>true</td>
+                        <td>false</td>
                         <td>
                             Turns browser level logging completely on/off.
                         </td>
