@@ -36,7 +36,7 @@ If it's not Scottish, it's crap!
 		
 		<assert-output name="English Foo-Bar">
 <![CDATA[
-<foo bar="Totally Screwed!" id="Any" />
+<foo bar="Totally Screwed!" id="Any"></foo>
 ]]>	
 		</assert-output>
 	</request>		
@@ -53,7 +53,7 @@ Zees ees nawt cheeze!
 		
 		<assert-output name="French Foo-Bar">
 <![CDATA[
-<foo bar="Merde!" id="Any" />
+<foo bar="Merde!" id="Any"></foo>
 ]]>	
 		</assert-output>
 		

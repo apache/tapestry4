@@ -21,7 +21,6 @@ import org.apache.tapestry.IRequestCycle;
 /**
  * A component that can substitute for any HTML element. [<a
  * href="../../../../../ComponentReference/Any.html">Component Reference</a>]
- * 
  */
 
 public abstract class Any extends AbstractComponent
@@ -34,23 +33,20 @@ public abstract class Any extends AbstractComponent
         
         if (!rewinding)
         {
-            if (getBodyCount() > 0 || "script".equals(element))
-                writer.begin(element);
-            else
-                writer.beginEmpty(element);
+            writer.begin(element);
             
             renderInformalParameters(writer, cycle);
+            
             if (getId() != null && !isParameterBound("id"))
                 renderIdAttribute(writer, cycle);
         }
         
         renderBody(writer, cycle);
         
-        if (!rewinding && (getBodyCount() > 0 || "script".equals(element)))
+        if (!rewinding)
         {
             writer.end();
         }
-
     }
 
     public abstract String getElement();
