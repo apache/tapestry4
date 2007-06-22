@@ -178,7 +178,7 @@ public class PageSource extends BaseKeyedPoolableObjectFactory implements IPageS
             
         } catch (Exception ex)
         {
-            throw new ApplicationRuntimeException(PageloadMessages.errorPagePoolGet(key));
+            throw new ApplicationRuntimeException(PageloadMessages.errorPagePoolGet(key), ex);
         }
 
 
@@ -212,7 +212,7 @@ public class PageSource extends BaseKeyedPoolableObjectFactory implements IPageS
 
         } catch (Exception ex)
         {
-            throw new ApplicationRuntimeException(PageloadMessages.errorPagePoolGet(key));
+            throw new ApplicationRuntimeException(PageloadMessages.errorPagePoolGet(key), ex);
         }        
     }
 
