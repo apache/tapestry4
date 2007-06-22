@@ -40,12 +40,11 @@ import java.util.*;
  * This implementation is not threadsafe, therefore the pooled service model
  * must be used.
  * </p>
- * 
+ *
  * @author Howard Lewis Ship
  */
 
-public class PageLoader implements IPageLoader
-{
+public class PageLoader implements IPageLoader {
 
     private Log _log;
 
@@ -71,7 +70,10 @@ public class PageLoader implements IPageLoader
     private ComponentTreeWalker _verifyRequiredParametersWalker;
 
     private IComponentVisitor _eventConnectionVisitor;
+
     private ComponentTreeWalker _eventConnectionWalker;
+
+    private IComponentVisitor _componentTypeVisitor;
 
     /** @since 4.0 */
 
@@ -159,15 +161,13 @@ public class PageLoader implements IPageLoader
         IComponentVisitor verifyRequiredParametersVisitor = new VerifyRequiredParametersVisitor();
 
         _verifyRequiredParametersWalker =
-                new ComponentTreeWalker( new IComponentVisitor[] { verifyRequiredParametersVisitor });
+          new ComponentTreeWalker( new IComponentVisitor[] { verifyRequiredParametersVisitor });
 
         _establishDefaultParameterValuesWalker =
-                new ComponentTreeWalker( new IComponentVisitor[] { _establishDefaultParameterValuesVisitor });
-
-        IComponentVisitor componentTypeVisitor = new ComponentTypeVisitor();
+          new ComponentTreeWalker( new IComponentVisitor[] { _establishDefaultParameterValuesVisitor });
 
         _eventConnectionWalker =
-                new ComponentTreeWalker( new IComponentVisitor[] { _eventConnectionVisitor, componentTypeVisitor });
+          new ComponentTreeWalker( new IComponentVisitor[] { _eventConnectionVisitor, _componentTypeVisitor });
     }
 
     /**
@@ -198,8 +198,7 @@ public class PageLoader implements IPageLoader
         if (contained.getInheritInformalParameters())
         {
             if (formalOnly)
-                throw new ApplicationRuntimeException(PageloadMessages
-                        .inheritInformalInvalidComponentFormalOnly(component),
+                throw new ApplicationRuntimeException(PageloadMessages.inheritInformalInvalidComponentFormalOnly(component),
                                                       component, contained.getLocation(), null);
 
             IComponentSpecification containerSpec = container.getSpecification();
@@ -311,7 +310,7 @@ public class PageLoader implements IPageLoader
         component.setBinding(parameterName, binding);
     }
 
-    private IBinding convert(IComponent container, String description, IParameterSpecification param, 
+    private IBinding convert(IComponent container, String description, IParameterSpecification param,
                              String defaultBindingType, IBindingSpecification spec)
     {
         Location location = spec.getLocation();
@@ -354,7 +353,7 @@ public class PageLoader implements IPageLoader
             _maxDepth = _depth;
 
         beginConstructComponent(container, containerSpec);
-        
+
         String defaultBindingPrefix = _componentPropertySource.getComponentProperty(container, TapestryConstants.DEFAULT_BINDING_PREFIX_NAME);
 
         List ids = new ArrayList(containerSpec.getComponentIds());
@@ -370,7 +369,7 @@ public class PageLoader implements IPageLoader
                 // container's specification.
 
                 IContainedComponent contained = containerSpec.getComponent(id);
-                
+
                 String type = contained.getType();
                 Location location = contained.getLocation();
 
@@ -422,7 +421,7 @@ public class PageLoader implements IPageLoader
             throw new ApplicationRuntimeException(PageloadMessages.unableToInstantiateComponent(container, ex),
                                                   container, null, ex);
         } finally {
-            
+
             endConstructComponent(container);
         }
 
@@ -449,11 +448,11 @@ public class PageLoader implements IPageLoader
 
             // try to get the more precise container position location that was referenced
             // in the template to properly report the precise position of the recursive reference
-            
+
             IContainedComponent container = component.getContainedComponent();
             if (container != null)
                 location = container.getLocation();
-            
+
             throw new ApplicationRuntimeException(PageloadMessages.recursiveComponent(component), location, null);
         }
 
@@ -670,8 +669,7 @@ public class PageLoader implements IPageLoader
 
     /** @since 4.0 */
 
-    public void loadTemplateForComponent(IRequestCycle cycle,
-                                         ITemplateComponent component)
+    public void loadTemplateForComponent(IRequestCycle cycle, ITemplateComponent component)
     {
         _componentTemplateLoader.loadTemplate(cycle, component);
     }
@@ -739,6 +737,11 @@ public class PageLoader implements IPageLoader
     public void setEventConnectionVisitor(IComponentVisitor eventConnectionVisitor)
     {
         _eventConnectionVisitor = eventConnectionVisitor;
+    }
+
+    public void setComponentTypeVisitor(IComponentVisitor visitor)
+    {
+        _componentTypeVisitor = visitor;
     }
 
     public void setComponentConstructorFactory(ComponentConstructorFactory componentConstructorFactory)

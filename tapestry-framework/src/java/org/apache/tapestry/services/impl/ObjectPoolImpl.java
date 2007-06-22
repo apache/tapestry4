@@ -14,16 +14,13 @@
 
 package org.apache.tapestry.services.impl;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
+import edu.emory.mathcs.backport.java.util.concurrent.locks.ReentrantLock;
 import org.apache.tapestry.event.ReportStatusEvent;
 import org.apache.tapestry.event.ReportStatusListener;
 import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.services.ObjectPool;
+
+import java.util.*;
 
 /**
  * Implementation of the {@link org.apache.tapestry.services.ObjectPool} interface.
@@ -40,48 +37,65 @@ public class ObjectPoolImpl implements ObjectPool, ResetEventListener, ReportSta
 
     private int _count = 0;
 
+    private final ReentrantLock _lock = new ReentrantLock();
+
     /**
      * Pool of Lists (of pooled objects), keyed on arbitrary key.
      */
     private Map _pool = new HashMap();
-    
-    // TODO: This synchronized block isn't incredibly efficient
-    
-    public synchronized Object get(Object key)
+        
+    public Object get(Object key)
     {
         List pooled = (List) _pool.get(key);
-
-        if (pooled == null || pooled.isEmpty())
-            return null;
-
-        _count--;
-
-        return pooled.remove(0);
-    }
-
-    public synchronized void store(Object key, Object value)
-    {
-        List pooled = (List) _pool.get(key);
-
-        if (pooled == null)
+        
+        try
         {
-            pooled = new LinkedList();
-            _pool.put(key, pooled);
+            _lock.lock();
+            
+            if (pooled == null || pooled.isEmpty())
+                return null;
+
+            _count--;
+
+            return pooled.remove(0);
+
+        } finally
+        {
+            _lock.unlock();
         }
-
-        pooled.add(value);
-
-        _count++;
     }
 
-    public synchronized void resetEventDidOccur()
+    public void store(Object key, Object value)
+    {
+        List pooled = (List) _pool.get(key);
+
+        try
+        {
+            _lock.lock();
+            
+            if (pooled == null)
+            {
+                pooled = new LinkedList();
+                _pool.put(key, pooled);
+            }
+
+            pooled.add(value);
+
+            _count++;
+        } finally
+        {
+            _lock.unlock();
+        }
+    }
+
+    public void resetEventDidOccur()
     {
         _pool.clear();
 
         _count = 0;
     }
 
-    public synchronized void reportStatus(ReportStatusEvent event)
+    public void reportStatus(ReportStatusEvent event)
     {
         event.title(_serviceId);
 
@@ -107,5 +121,4 @@ public class ObjectPoolImpl implements ObjectPool, ResetEventListener, ReportSta
     {
         _serviceId = serviceId;
     }
-
 }

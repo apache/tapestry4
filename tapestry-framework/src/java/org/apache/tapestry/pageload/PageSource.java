@@ -14,15 +14,23 @@
 
 package org.apache.tapestry.pageload;
 
+import org.apache.commons.pool.BaseKeyedPoolableObjectFactory;
+import org.apache.commons.pool.impl.GenericKeyedObjectPool;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.events.RegistryShutdownListener;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.engine.IPageSource;
+import org.apache.tapestry.engine.IPropertySource;
+import org.apache.tapestry.event.ReportStatusEvent;
+import org.apache.tapestry.event.ReportStatusListener;
+import org.apache.tapestry.event.ResetEventListener;
+import org.apache.tapestry.internal.pageload.PageKey;
 import org.apache.tapestry.resolver.PageSpecificationResolver;
-import org.apache.tapestry.services.ObjectPool;
 import org.apache.tapestry.util.MultiKey;
 
 /**
@@ -36,12 +44,12 @@ import org.apache.tapestry.util.MultiKey;
  * <p>
  * TBD: Pooled pages stay forever. Need a strategy for cleaning up the pool, tracking which pages
  * have been in the pool the longest, etc.
- * 
+ *
  * @author Howard Lewis Ship
  */
 
-public class PageSource implements IPageSource
-{   
+public class PageSource extends BaseKeyedPoolableObjectFactory implements IPageSource, ResetEventListener, ReportStatusListener, RegistryShutdownListener {
+    
     /** set by container. */
     private ClassResolver _classResolver;
 
@@ -52,13 +60,50 @@ public class PageSource implements IPageSource
 
     private IPageLoader _loader;
 
+    private IPropertySource _propertySource;
+
+    private String _serviceId;
+
+    /**
+     * Thread safe reference to current request.
+     */
+    private IRequestCycle _cycle;
+
+    static final long MINUTE = 1000 * 60;
+    
     /**
      * The pool of {@link IPage}s. The key is a {@link MultiKey}, built from the page name and the
-     * page locale. This is a reference to a shared pool.
+     * page locale.
      */
+    GenericKeyedObjectPool _pool;
 
-    private ObjectPool _pool;
-    
+    public void initializeService()
+    {
+        _pool = new GenericKeyedObjectPool(this);
+
+        _pool.setMaxActive(Integer.parseInt(_propertySource.getPropertyValue("org.apache.tapestry.page-pool-max-active")));
+        _pool.setMaxIdle(Integer.parseInt(_propertySource.getPropertyValue("org.apache.tapestry.page-pool-max-idle")));
+
+        _pool.setMinIdle(Integer.parseInt(_propertySource.getPropertyValue("org.apache.tapestry.page-pool-min-idle")));
+        
+        _pool.setMinEvictableIdleTimeMillis(MINUTE * Long.parseLong(_propertySource.getPropertyValue("org.apache.tapestry.page-pool-evict-idle-page-minutes")));
+        _pool.setTimeBetweenEvictionRunsMillis(MINUTE * Long.parseLong(_propertySource.getPropertyValue("org.apache.tapestry.page-pool-evict-thread-sleep-minutes")));
+        
+        _pool.setTestWhileIdle(false);
+        _pool.setTestOnBorrow(false);
+        _pool.setTestOnReturn(false);
+    }
+
+    public void registryDidShutdown()
+    {
+        try
+        {
+            _pool.close();
+        } catch (Exception e) {
+            // ignore
+        }
+    }
+
     public ClassResolver getClassResolver()
     {
         return _classResolver;
@@ -66,67 +111,81 @@ public class PageSource implements IPageSource
 
     /**
      * Builds a key for a named page in the application's current locale.
+     *
+     * @param engine
+     *          The current engine servicing this request.
+     * @param pageName
+     *          The name of the page to build key for.
+     *
+     * @return The unique key for ths specified page and current {@link java.util.Locale}. 
      */
 
-    protected MultiKey buildKey(IEngine engine, String pageName)
+    protected PageKey buildKey(IEngine engine, String pageName)
     {
-        Object[] keys = new Object[] { pageName, engine.getLocale() };
-        
-        // Don't make a copy, this array is just for the MultiKey.
-        
-        return new MultiKey(keys, false);
+        return new PageKey(pageName, engine.getLocale());
     }
 
     /**
      * Builds a key from an existing page, using the page's name and locale. This is used when
      * storing a page into the pool.
+     *
+     * @param page
+     *          The page to build the key for.
+     *
+     * @return The unique key for the specified page instance.
      */
 
-    protected MultiKey buildKey(IPage page)
+    protected PageKey buildKey(IPage page)
     {
-        Object[] keys = new Object[] { page.getPageName(), page.getLocale() };
-        
-        // Don't make a copy, this array is just for the MultiKey.
-
-        return new MultiKey(keys, false);
+        return new PageKey(page.getPageName(), page.getLocale());
     }
-    
+
+    public Object makeObject(Object key)
+      throws Exception
+    {
+        PageKey pageKey = (PageKey) key;
+
+        _pageSpecificationResolver.resolve(_cycle, pageKey.getPageName());
+
+        // The loader is responsible for invoking attach(),
+        // and for firing events to PageAttachListeners
+
+        return _loader.loadPage(_pageSpecificationResolver.getSimplePageName(),
+                                _pageSpecificationResolver.getNamespace(),
+                                _cycle,
+                                _pageSpecificationResolver.getSpecification());
+    }
+
     /**
      * Gets the page from a pool, or otherwise loads the page. This operation is threadsafe.
      */
 
     public IPage getPage(IRequestCycle cycle, String pageName)
     {
-        
+
         IEngine engine = cycle.getEngine();
         Object key = buildKey(engine, pageName);
-        
-        IPage result = null;
+
+        IPage result;
 
         // lock our page specific key lock first
         // This is only a temporary measure until a more robust
         // page pool implementation can be created.
 
-        result = (IPage) _pool.get(key);
-
-        if (result == null)
+        try
         {
-            _pageSpecificationResolver.resolve(cycle, pageName);
-
-            // The loader is responsible for invoking attach(),
-            // and for firing events to PageAttachListeners
-
-            result = _loader.loadPage(
-                    _pageSpecificationResolver.getSimplePageName(),
-                    _pageSpecificationResolver.getNamespace(),
-                    cycle,
-                    _pageSpecificationResolver.getSpecification());
+            result = (IPage) _pool.borrowObject(key);
+            
+        } catch (Exception ex)
+        {
+            throw new ApplicationRuntimeException(PageloadMessages.errorPagePoolGet(key));
         }
-        else
-        {
-            // But for pooled pages, we are responsible.
-            // This call will also fire events to any PageAttachListeners
 
+
+        if (result.getEngine() == null)
+        {
+            // This call will also fire events to any PageAttachListeners
+            
             result.attach(engine, cycle);
         }
 
@@ -145,14 +204,41 @@ public class PageSource implements IPageSource
 
         Tapestry.checkMethodInvocation(Tapestry.ABSTRACTPAGE_DETACH_METHOD_ID, "detach()", page);
 
-        _pool.store(buildKey(page), page);
+        PageKey key = buildKey(page);
+
+        try
+        {
+            _pool.returnObject(key, page);
+
+        } catch (Exception ex)
+        {
+            throw new ApplicationRuntimeException(PageloadMessages.errorPagePoolGet(key));
+        }        
     }
 
-    /** @since 4.0 */
-
-    public void setPool(ObjectPool pool)
+    public void resetEventDidOccur()
     {
-        _pool = pool;
+        _pool.clear();
+    }
+
+    public void reportStatus(ReportStatusEvent event)
+    {
+        event.title(_serviceId);
+
+        event.section("Page Pool");
+
+        event.property("active", _pool.getNumActive());
+        event.property("idle", _pool.getNumIdle());
+    }
+
+    public void setServiceId(String serviceId)
+    {
+        _serviceId = serviceId;
+    }
+
+    public void setRequestCycle(IRequestCycle cycle)
+    {
+        _cycle = cycle;
     }
 
     /** @since 4.0 */
@@ -176,4 +262,8 @@ public class PageSource implements IPageSource
         _loader = loader;
     }
 
+    public void setPropertySource(IPropertySource propertySource)
+    {
+        _propertySource = propertySource;
+    }
 }

@@ -151,4 +151,9 @@ final class PageloadMessages
     {
         return _formatter.format("recursive-component", component);
     }
+
+    public static String errorPagePoolGet(Object key)
+    {
+        return _formatter.format("error-page-pool-borrow", key);
+    }
 }

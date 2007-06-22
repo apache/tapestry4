@@ -14,9 +14,9 @@
 
 package org.apache.tapestry.services;
 
-import java.util.Locale;
-
 import org.apache.tapestry.IEngine;
+
+import java.util.Locale;
 
 /**
  * Responsible for creating new instance of {@link org.apache.tapestry.IEngine}.
@@ -29,6 +29,10 @@ public interface EngineFactory
 
     /**
      * Creates and initializes a new engine instance for the specified locale.
+     *
+     * @param locale The locale to create the instance for.
+     *
+     * @return A newly constructed engine.
      */
     IEngine constructNewEngineInstance(Locale locale);
 }
