@@ -22,14 +22,24 @@
     <service-point id="PageSource" interface="org.apache.tapestry.engine.IPageSource">
 
         <invoke-factory>
-            <construct class="PageSource">
-                <set-service property="pool" service-id="PagePool"/>
+            <construct class="PageSource" initialize-method="initializeService">
                 <set-service property="pageSpecificationResolver" service-id="PageSpecificationResolver"/>
                 <set-service property="loader" service-id="PageLoader"/>
+                <set-service property="propertySource" service-id="tapestry.props.ApplicationPropertySource" />
+                <event-listener service-id="tapestry.ResetEventHub"/>
+                <event-listener service-id="tapestry.describe.ReportStatusHub"/>
             </construct>
         </invoke-factory>
 
     </service-point>
+
+    <contribution configuration-id="hivemind.FactoryDefaults">
+        <default symbol="org.apache.tapestry.page-pool-min-idle" value="1" />
+        <default symbol="org.apache.tapestry.page-pool-max-active" value="-1" />
+        <default symbol="org.apache.tapestry.page-pool-max-idle" value="-1" />
+        <default symbol="org.apache.tapestry.page-pool-evict-thread-sleep-minutes" value="4" />
+        <default symbol="org.apache.tapestry.page-pool-evict-idle-page-minutes" value="40" />
+    </contribution>
 
     <service-point id="PageLoader" interface="org.apache.tapestry.engine.IPageLoader">
 
@@ -46,6 +56,7 @@
                 <set-object property="componentPropertySource" value="infrastructure:componentPropertySource"/>
                 <set-service property="threadLocale" service-id="hivemind.ThreadLocale"/>
                 <set-service property="eventConnectionVisitor" service-id="EventConnectionVisitor" />
+                <set-service property="componentTypeVisitor" service-id="ComponentTypeVisitor" />
             </construct>
         </invoke-factory>
     </service-point>
@@ -76,13 +87,15 @@
 
     </service-point>
 
-    <service-point id="PagePool" interface="org.apache.tapestry.services.ObjectPool">
-        <invoke-factory>
-            <construct class="org.apache.tapestry.services.impl.ObjectPoolImpl">
-                <event-listener service-id="tapestry.ResetEventHub"/>
-                <event-listener service-id="tapestry.describe.ReportStatusHub"/>
-            </construct>
+    <service-point id="ComponentTypeVisitor" interface="IComponentVisitor">
+
+        Visits all components in the tree and inspects them for IWidget / or IForm instances
+        so that the appropriate javascript libraries are included automatically.
+
+        <invoke-factory model="pooled">
+            <construct class="ComponentTypeVisitor" />
         </invoke-factory>
+
     </service-point>
 
     <service-point id="PageSpecificationResolver" interface="org.apache.tapestry.resolver.PageSpecificationResolver">

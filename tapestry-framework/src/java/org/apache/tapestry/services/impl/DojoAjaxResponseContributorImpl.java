@@ -13,10 +13,6 @@
 // limitations under the License.
 package org.apache.tapestry.services.impl;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.engine.IEngineService;
@@ -26,6 +22,10 @@ import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.services.ResponseContributor;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -68,7 +68,7 @@ public class DojoAjaxResponseContributorImpl implements ResponseContributor
         
         return new DojoAjaxResponseBuilder(cycle, _localeManager, 
                 _markupWriterSource,
-                _webResponse, _webRequest, errorPages, _assetFactory, 
+                _webResponse, errorPages, _assetFactory, 
                 _webResponse.getNamespace(), _pageService);
     }
     

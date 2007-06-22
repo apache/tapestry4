@@ -14,11 +14,6 @@
 
 package org.apache.tapestry.valid;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.lib.util.StrategyRegistry;
 import org.apache.hivemind.lib.util.StrategyRegistryImpl;
@@ -27,6 +22,11 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.form.IFormComponent;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Simple validation for standard number classes. This is probably insufficient for anything tricky
@@ -339,10 +339,9 @@ public class NumberValidator extends AbstractNumericValidator
         NumberStrategy result = getStrategy(_valueTypeClass);
 
         if (result == null)
-            throw new ApplicationRuntimeException(Tapestry.format(
-                    "NumberValidator.no-adaptor-for-field",
-                    field,
-                    _valueTypeClass.getName()));
+            throw new ApplicationRuntimeException(Tapestry.format("NumberValidator.no-adaptor-for-field",
+                field,
+                _valueTypeClass.getName()));
 
         return result;
     }
@@ -464,9 +463,7 @@ public class NumberValidator extends AbstractNumericValidator
         Class typeClass = (Class) TYPES.get(typeName);
 
         if (typeClass == null)
-            throw new ApplicationRuntimeException(Tapestry.format(
-                    "NumberValidator.unknown-type",
-                    typeName));
+            throw new ApplicationRuntimeException(Tapestry.format("NumberValidator.unknown-type", typeName));
 
         _valueTypeClass = typeClass;
     }

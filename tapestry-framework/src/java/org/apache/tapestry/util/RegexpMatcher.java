@@ -33,23 +33,22 @@ import java.util.regex.Pattern;
  */
 
 public class RegexpMatcher
-{
-    private static final int MAX_ACTIVE = 100;
-    
+{    
     private static final long SLEEP_TIME = 1000 * 60 * 4;
+
+    private static final long EVICT_IDLE_TIME = 1000 * 60 * 60;
     
     private final KeyedPoolableObjectFactory _factory = new RegexpPoolObjectFactory();
-    
+
     private final GenericKeyedObjectPool _pool;
     
     private Map _escapedPatternStrings = new HashMap();
     
     public RegexpMatcher()
     {
-        _pool = new GenericKeyedObjectPool(_factory, MAX_ACTIVE, GenericKeyedObjectPool.WHEN_EXHAUSTED_BLOCK, -1);
+        _pool = new GenericKeyedObjectPool(_factory);
         
-        _pool.setMaxIdle(MAX_ACTIVE / 2);
-        _pool.setMinEvictableIdleTimeMillis(SLEEP_TIME);
+        _pool.setMinEvictableIdleTimeMillis(EVICT_IDLE_TIME);
         _pool.setTimeBetweenEvictionRunsMillis(SLEEP_TIME);
     }
     

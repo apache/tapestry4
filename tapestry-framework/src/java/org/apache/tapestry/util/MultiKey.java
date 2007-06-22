@@ -14,16 +14,15 @@
 
 package org.apache.tapestry.util;
 
+import org.apache.tapestry.Tapestry;
+
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
-import org.apache.tapestry.Tapestry;
-
 /**
- * A complex key that may be used as an alternative to nested
- * {@link java.util.Map}s.
+ * A complex key that may be used as an alternative to nested {@link java.util.Map}s.
  * 
  * @author Howard Lewis Ship
  */
@@ -71,19 +70,18 @@ public class MultiKey implements Externalizable
         super();
 
         if (keys == null || keys.length == 0)
-            throw new IllegalArgumentException(Tapestry
-                    .getMessage("MultiKey.null-keys"));
+            throw new IllegalArgumentException(Tapestry.getMessage("MultiKey.null-keys"));
 
         if (keys[0] == null)
-            throw new IllegalArgumentException(Tapestry
-                    .getMessage("MultiKey.first-element-may-not-be-null"));
+            throw new IllegalArgumentException(Tapestry.getMessage("MultiKey.first-element-may-not-be-null"));
 
         if (makeCopy)
         {
-            this._keys = new Object[keys.length];
+            _keys = new Object[keys.length];
             System.arraycopy(keys, 0, this._keys, 0, keys.length);
         }
-        else this._keys = keys;
+        else
+            _keys = keys;
     }
 
     /**
@@ -99,11 +97,11 @@ public class MultiKey implements Externalizable
     {
         int i;
 
-        if (other == null) return false;
+        if (other == null)
+            return false;
 
         if (_keys == null)
-            throw new IllegalStateException(Tapestry
-                    .getMessage("MultiKey.no-keys"));
+            throw new IllegalStateException(Tapestry.getMessage("MultiKey.no-keys"));
 
         // Would a hashCode check be worthwhile here?
 
@@ -118,7 +116,8 @@ public class MultiKey implements Externalizable
                 // On an exact match, continue. This means that null matches
                 // null.
 
-                if (_keys[i] == otherMulti._keys[i]) continue;
+                if (_keys[i] == otherMulti._keys[i])
+                    continue;
 
                 // If either is null, but not both, then
                 // not a match.
@@ -126,8 +125,8 @@ public class MultiKey implements Externalizable
                 if (_keys[i] == null || otherMulti._keys[i] == null)
                     return false;
 
-                if (!_keys[i].equals(otherMulti._keys[i])) return false;
-
+                if (!_keys[i].equals(otherMulti._keys[i]))
+                    return false;
             }
 
             // Every key equal. A match.

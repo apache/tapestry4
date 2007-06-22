@@ -26,6 +26,8 @@ public interface ObjectPool
     /**
      * Returns an object from the pool, previously stored with the given key.
      * May return null if no such object exists.
+     *
+     * @return 
      */
     Object get(Object key);
 

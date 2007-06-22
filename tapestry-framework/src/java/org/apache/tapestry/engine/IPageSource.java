@@ -40,6 +40,8 @@ public interface IPageSource
      *            the name of the page. May be qualified with a library id prefix, which may even be
      *            nested. Unqualified names are searched for extensively in the application
      *            namespace, and then in the framework namespace.
+     * @return The loaded page.
+     * 
      * @throws org.apache.tapestry.PageNotFoundException
      *             if pageName can't be resolved to a page specification (from which a page instance
      *             can be generated).
@@ -51,14 +53,16 @@ public interface IPageSource
     /**
      * Invoked after the engine is done with the page (typically, after the response to the client
      * has been sent). The page is returned to the pool for later reuse.
+     *
+     * @param page The page to release.
      */
-
     void releasePage(IPage page);
 
     /**
-     * @since 3.0
+     * Gets the class resolver used to load all pages / page components.
+     *
+     * @return {@link ClassResolver} instance used to load classes. 
      */
 
     ClassResolver getClassResolver();
-
 }

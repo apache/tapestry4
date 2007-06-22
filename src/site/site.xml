@@ -86,6 +86,8 @@
                 <item name="HiveMind Services" href="/developmentguide/hivemind/index.html" >
                     <item name="Rounded Corners" href="/developmentguide/hivemind/roundedcorners.html" />
                 </item>
+
+                <item name="Performance Tuning" href="/developmentguide/performancetuning.html" />
             </item>
             
             <item name="XHR/DHTML Guide" href="/ajax/index.html" collapse="true">

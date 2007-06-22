@@ -29,7 +29,6 @@ import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.ContentType;
 import org.apache.tapestry.util.PageRenderSupportImpl;
 import org.apache.tapestry.util.ScriptUtils;
-import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
 
 import java.io.IOException;
@@ -92,11 +91,15 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      * Creates a builder with a pre-configured {@link IMarkupWriter}.
      * Currently only used for testing.
      *
+     * @param cycle
+     *          The current cycle.
      * @param writer
      *          The markup writer to render all "good" content to.
      * @param parts
      *          A set of string ids of the components that may have
      *          their responses rendered.
+     * @param errorPages
+     *          List of page names known to be exception pages.
      */
     public DojoAjaxResponseBuilder(IRequestCycle cycle, IMarkupWriter writer, List parts, List errorPages)
     {
@@ -117,7 +120,9 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     /**
      * Creates a builder with a pre-configured {@link IMarkupWriter}. 
      * Currently only used for testing.
-     * 
+     *
+     * @param cycle
+     *          Current request.
      * @param writer
      *          The markup writer to render all "good" content to.
      * @param parts
@@ -132,19 +137,29 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     /**
      * Creates a new response builder with the required services it needs
      * to render the response when {@link #renderResponse(IRequestCycle)} is called.
-     * 
+     *
+     * @param cycle
+     *          The current request.
      * @param localeManager 
      *          Used to set the locale on the response.
      * @param markupWriterSource
      *          Creates IJSONWriter instance to be used.
      * @param webResponse
      *          Web response for output stream.
+     * @param errorPages
+     *          List of page names known to be exception pages.
+     * @param assetFactory
+     *          Used to manage asset source inclusions.
+     * @param namespace
+     *          The core namespace to use for javascript/client side operations.
+     * @param pageService
+     *          {@link org.apache.tapestry.engine.PageService} used to generate page urls.
      */
     public DojoAjaxResponseBuilder(IRequestCycle cycle, 
             RequestLocaleManager localeManager, 
             MarkupWriterSource markupWriterSource,
-            WebResponse webResponse, WebRequest request, List errorPages, 
-            AssetFactory assetFactory, String namespace, IEngineService service)
+            WebResponse webResponse, List errorPages, 
+            AssetFactory assetFactory, String namespace, IEngineService pageService)
     {
         Defense.notNull(cycle, "cycle");
         Defense.notNull(assetFactory, "assetService");
@@ -154,7 +169,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         _markupWriterSource = markupWriterSource;
         _response = webResponse;
         _errorPages = errorPages;
-        _pageService = service;
+        _pageService = pageService;
         
         // Used by PageRenderSupport
         
@@ -195,7 +210,6 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         }
         
         _localeManager.persistLocale();
-        
         _contentType = new ContentType(CONTENT_TYPE + ";charset=" + cycle.getInfrastructure().getOutputEncoding());
         
         String encoding = _contentType.getParameter(ENCODING_KEY);
@@ -207,12 +221,11 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
             _contentType.setParameter(ENCODING_KEY, encoding);
         }
         
-        if (_writer == null) {
-            
+        if (_writer == null)
+        {
             parseParameters(cycle);
             
             PrintWriter printWriter = _response.getPrintWriter(_contentType);
-            
             _writer = _markupWriterSource.newMarkupWriter(printWriter, _contentType);
         }
         

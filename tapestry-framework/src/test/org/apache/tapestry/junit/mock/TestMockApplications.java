@@ -14,42 +14,15 @@
 
 package org.apache.tapestry.junit.mock;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import ognl.Ognl;
 import ognl.OgnlException;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.PropertyUtils;
-import org.apache.oro.text.regex.MalformedPatternException;
-import org.apache.oro.text.regex.MatchResult;
-import org.apache.oro.text.regex.Pattern;
-import org.apache.oro.text.regex.PatternCompiler;
-import org.apache.oro.text.regex.PatternMatcher;
-import org.apache.oro.text.regex.PatternMatcherInput;
-import org.apache.oro.text.regex.Perl5Compiler;
-import org.apache.oro.text.regex.Perl5Matcher;
+import org.apache.oro.text.regex.*;
 import org.apache.tapestry.ApplicationServlet;
-import org.apache.tapestry.test.mock.InitParameterHolder;
-import org.apache.tapestry.test.mock.MockContext;
-import org.apache.tapestry.test.mock.MockRequest;
-import org.apache.tapestry.test.mock.MockResponse;
-import org.apache.tapestry.test.mock.MockServletConfig;
+import org.apache.tapestry.test.mock.*;
 import org.apache.tapestry.util.xml.DocumentParseException;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -61,6 +34,8 @@ import org.testng.annotations.Test;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
+import java.io.*;
+import java.util.*;
 
 /**
  * A complex class that reads an XML description of a test involving the Mock objects and executes
@@ -182,7 +157,7 @@ public class TestMockApplications
     /**
      * Invoked to execute the request cycle.
      */
-    @Test(dataProvider = "mockTestScripts")
+    @Test(dataProvider = "mockTestScripts", enabled = false)
     public void execute(String testRootDirectory, String path, String fileName) 
     throws Exception
     {

@@ -16,15 +16,16 @@ package org.apache.tapestry.services.impl;
 
 import ognl.*;
 import ognl.enhance.ExpressionAccessor;
-import org.apache.commons.pool.impl.GenericKeyedObjectPool;
 import org.apache.commons.pool.impl.GenericObjectPool;
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.events.RegistryShutdownListener;
 import org.apache.hivemind.service.ClassFactory;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.services.ExpressionCache;
 import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.spec.IApplicationSpecification;
 
+import java.beans.Introspector;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -32,11 +33,9 @@ import java.util.Map;
 /**
  * @since 4.0
  */
-public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
+public class ExpressionEvaluatorImpl implements ExpressionEvaluator, RegistryShutdownListener {
     
-    private static final int POOL_MAX_ACTIVE = 200;
-
-    private static final long POOL_MIN_IDLE_TIME = 1000 * 60 * 2;
+    private static final long POOL_MIN_IDLE_TIME = 1000 * 60 * 50;
 
     private static final long POOL_SLEEP_TIME = 1000 * 60 * 4;
 
@@ -96,8 +95,10 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
         
         OgnlRuntime.setCompiler(new HiveMindExpressionCompiler(_classFactory));
         
-        _contextPool = new GenericObjectPool(new PoolableOgnlContextFactory(_ognlResolver, _typeConverter), POOL_MAX_ACTIVE, GenericKeyedObjectPool.WHEN_EXHAUSTED_GROW, -1);
-        _contextPool.setMaxIdle(POOL_MAX_ACTIVE / 2);
+        _contextPool = new GenericObjectPool(new PoolableOgnlContextFactory(_ognlResolver, _typeConverter));
+
+        _contextPool.setMaxActive(-1);
+        _contextPool.setMaxIdle(-1);
         _contextPool.setMinEvictableIdleTimeMillis(POOL_MIN_IDLE_TIME);
         _contextPool.setTimeBetweenEvictionRunsMillis(POOL_SLEEP_TIME);
     }
@@ -231,7 +232,22 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
                     ex), ex);
         }
     }
-    
+
+    public void registryDidShutdown()
+    {
+        try
+        {
+            _contextPool.clear();
+            _contextPool.close();
+
+            OgnlRuntime.clearCache();
+            Introspector.flushCaches();
+            
+        } catch (Exception et) {
+            // ignore
+        }
+    }
+
     public void setExpressionCache(ExpressionCache expressionCache)
     {
         _expressionCache = expressionCache;

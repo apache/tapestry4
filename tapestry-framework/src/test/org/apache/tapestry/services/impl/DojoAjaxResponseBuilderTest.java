@@ -28,7 +28,6 @@ import org.apache.tapestry.services.RequestLocaleManager;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.ContentType;
-import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
 import static org.easymock.EasyMock.*;
 import org.testng.annotations.AfterClass;
@@ -192,7 +191,6 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
 
         MarkupWriterSource mrs = newMock(MarkupWriterSource.class);
         WebResponse resp = newMock(WebResponse.class);
-        WebRequest req = newMock(WebRequest.class);
         AssetFactory assetFactory = newMock(AssetFactory.class);
         IEngineService pageService = newEngineService();
 
@@ -202,8 +200,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         parts.add("id1");
 
         DojoAjaxResponseBuilder builder =
-                new DojoAjaxResponseBuilder(cycle, rlm, mrs, resp, req,
-                                            errorPages, assetFactory, "", pageService);
+                new DojoAjaxResponseBuilder(cycle, rlm, mrs, resp, errorPages, assetFactory, "", pageService);
 
         expect(page.getPageName()).andReturn("RequestPage").anyTimes();
         expect(cycle.getParameter(ServiceConstants.PAGE)).andReturn("RequestPage").anyTimes();
@@ -234,7 +231,6 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         RequestLocaleManager rlm = newMock(RequestLocaleManager.class);
         MarkupWriterSource mrs = newMock(MarkupWriterSource.class);
         WebResponse resp = newMock(WebResponse.class);
-        WebRequest req = newMock(WebRequest.class);
         AssetFactory assetFactory = newMock(AssetFactory.class);
         IEngineService pageService = newEngineService();
 
@@ -243,8 +239,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         List parts = new ArrayList();
         parts.add("id1");
 
-        DojoAjaxResponseBuilder builder =  new DojoAjaxResponseBuilder(cycle, rlm, mrs, resp, req,
-                                                                       errorPages, assetFactory, "", pageService);
+        DojoAjaxResponseBuilder builder =  new DojoAjaxResponseBuilder(cycle, rlm, mrs, resp, errorPages, assetFactory, "", pageService);
 
         builder.setWriter(writer);
 
@@ -285,7 +280,6 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         RequestLocaleManager rlm = newMock(RequestLocaleManager.class);
         MarkupWriterSource mrs = newMock(MarkupWriterSource.class);
         WebResponse resp = newMock(WebResponse.class);
-        WebRequest req = newMock(WebRequest.class);
         AssetFactory assetFactory = newMock(AssetFactory.class);
         IEngineService pageService = newEngineService();
 
@@ -294,8 +288,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         List parts = new ArrayList();
         parts.add("id1");
 
-        DojoAjaxResponseBuilder builder =  new DojoAjaxResponseBuilder(cycle, rlm, mrs, resp, req,
-                                                                       errorPages, assetFactory, "", pageService);
+        DojoAjaxResponseBuilder builder =  new DojoAjaxResponseBuilder(cycle, rlm, mrs, resp, errorPages, assetFactory, "", pageService);
 
         PrintWriter pw = newPrintWriter();
 
