@@ -46,8 +46,12 @@ var tapestry={
     GlobalScriptFragment:new RegExp('(?:<script.*?>)((\n|.|\r)*?)(?:<\/script>)', 'img'), // regexp for global script fragments
     requestsInFlight:0, // how many ajax requests are currently in progress
     isIE:dojo.render.html.ie,
+	// property: requestEncoding
+	// Defines the encoding that will be used in all Tapestry initiated XHR requests to encode
+	// URL or form data. Gets set by AjaxShellDelegate class on server on most requests by default.
+	requestEncoding:"UTF-8",
 
-    /**
+	/**
 	 * Function: bind
 	 *
 	 * Core XHR bind function for tapestry internals. The
@@ -67,7 +71,8 @@ var tapestry={
 			content:content,
             useCache:true,
             preventCache:true,
-            error: (function(){tapestry.error.apply(this, arguments);})
+			encoding: tapestry.requestEncoding,
+			error: (function(){tapestry.error.apply(this, arguments);})
 		};
 
 		// setup content type
@@ -78,7 +83,6 @@ var tapestry={
 		} else {
 			parms.headers={"dojo-ajax-request":true};
 			parms.mimetype="text/xml";
-			parms.encoding="UTF-8";
 			parms.load=(function(){tapestry.load.apply(this, arguments);});
 		}
 

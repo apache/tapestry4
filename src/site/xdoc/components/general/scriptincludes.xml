@@ -116,7 +116,7 @@ dojo.require("tapestry.namespace");
                         <td>debugEnabled</td>
                         <td>boolean</td>
                         <td>no</td>
-                        <td>true</td>
+                        <td>false</td>
                         <td>
                             Turns browser level logging completely on/off.
                         </td>
@@ -142,7 +142,7 @@ dojo.require("tapestry.namespace");
                         <td>debugContainerId</td>
                         <td>String</td>
                         <td>no</td>
-                        <td>debug</td>
+                        <td> </td>
                         <td>
                             Sets the html element node id of the element you would like all browser debug content to
                             go to, if you have logging turned on.

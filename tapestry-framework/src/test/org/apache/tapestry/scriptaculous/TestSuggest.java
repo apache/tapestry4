@@ -37,6 +37,7 @@ public class TestSuggest extends BaseComponentTestCase {
         
         ResponseBuilder resp = newMock(ResponseBuilder.class);
         IEngineService engine = newMock(IEngineService.class);
+        IEngine cengine = newMock(IEngine.class);
         ILink link = newMock(ILink.class);
         IScript script = newMock(IScript.class);
         PageRenderSupport prs = newMock(PageRenderSupport.class);
@@ -74,6 +75,8 @@ public class TestSuggest extends BaseComponentTestCase {
         translator.renderContributions(comp, writer, cycle);
         validator.renderContributions(comp, writer, cycle);
 
+        expect(cycle.getEngine()).andReturn(cengine);
+        expect(cengine.getOutputEncoding()).andReturn("utf-8");
         expect(engine.getLink(eq(false), isA(DirectServiceParameter.class))).andReturn(link);
         expect(link.getURL()).andReturn("http://url");
 
@@ -94,7 +97,7 @@ public class TestSuggest extends BaseComponentTestCase {
         assertEquals(parms.size(), 4);
         assertEquals(parms.get("inputId"), "suggest");
         assertEquals(parms.get("updateId"), "suggestchoices");
-        assertEquals(parms.get("options"), "{\"onFailure\":\"tapestry.error\"}");
+        assertEquals(parms.get("options"), "{\"onFailure\":\"tapestry.error\",\"encoding\":\"utf-8\"}");
         assertEquals(parms.get("updateUrl"), "http://url");
 
         assertBuffer("<input type=\"text\" autocomplete=\"off\" " +
@@ -109,6 +112,7 @@ public class TestSuggest extends BaseComponentTestCase {
 
         ResponseBuilder resp = newMock(ResponseBuilder.class);
         IEngineService engine = newMock(IEngineService.class);
+        IEngine cengine = newMock(IEngine.class);
         ILink link = newMock(ILink.class);
         IScript script = newMock(IScript.class);
         PageRenderSupport prs = newMock(PageRenderSupport.class);
@@ -146,6 +150,8 @@ public class TestSuggest extends BaseComponentTestCase {
         translator.renderContributions(comp, writer, cycle);
         validator.renderContributions(comp, writer, cycle);
 
+        expect(cycle.getEngine()).andReturn(cengine);
+        expect(cengine.getOutputEncoding()).andReturn("utf-8");
         expect(engine.getLink(eq(false), isA(DirectServiceParameter.class))).andReturn(link);
         expect(link.getURL()).andReturn("http://url");
 
@@ -166,7 +172,7 @@ public class TestSuggest extends BaseComponentTestCase {
         assertEquals(parms.size(), 4);
         assertEquals(parms.get("inputId"), "suggest");
         assertEquals(parms.get("updateId"), "suggestchoices");
-        assertEquals(parms.get("options"), "{\"onFailure\":\"tapestry.error\"}");
+        assertEquals(parms.get("options"), "{\"onFailure\":\"tapestry.error\",\"encoding\":\"utf-8\"}");
         assertEquals(parms.get("updateUrl"), "http://url");
 
         assertBuffer("<textarea id=\"suggest\" name=\"suggest\">r2d2</textarea>" +

@@ -80,7 +80,7 @@ public abstract class Suggest extends AbstractFormComponent implements Translate
      * @return The value converter to use.
      */
     public abstract ValueConverter getValueConverter();
-    
+
     /**
      * Injected.
      *
@@ -146,17 +146,17 @@ public abstract class Suggest extends AbstractFormComponent implements Translate
 
         IForm form = TapestryUtils.getForm(cycle, this);
         setForm(form);
-        
-        if (form.wasPrerendered(writer, this))
-                return;
-        
-        if (!form.isRewinding() && !cycle.isRewinding()
-            && getResponse().isDynamic() && isSearchTriggered()) {
 
+        if (form.wasPrerendered(writer, this))
+            return;
+
+        if (!form.isRewinding() && !cycle.isRewinding()
+            && getResponse().isDynamic() && isSearchTriggered())
+        {
             setName(form);
 
             // do nothing if it wasn't for this instance - such as in a loop
-            
+
             if (cycle.getParameter(getClientId()) == null)
                 return;
 
@@ -183,12 +183,12 @@ public abstract class Suggest extends AbstractFormComponent implements Translate
         Defense.notNull(getListSource(), "listSource for Suggest component.");
 
         Iterator values = (Iterator)getValueConverter().coerceValue(getListSource(), Iterator.class);
-        
+
         if (isParameterBound("maxResults"))
         {
             values = new SizeRestrictingIterator(values, getMaxResults());
         }
-        
+
         getListItemRenderer().renderList(writer, cycle, values);
     }
 
@@ -249,20 +249,26 @@ public abstract class Suggest extends AbstractFormComponent implements Translate
 
         JSONObject json = null;
         String options = getOptions();
-        
+
         try {
 
             json = options != null ? new JSONObject(options) : new JSONObject();
-            
+
         } catch (ParseException ex)
         {
             throw new ApplicationRuntimeException(ScriptaculousMessages.invalidOptions(options, ex), this.getBinding("options").getLocation(), ex);
         }
 
         // bind onFailure client side function if not already defined
+
         if (!json.has("onFailure"))
         {
             json.put("onFailure", "tapestry.error");
+        }
+
+        if (!json.has("encoding"))
+        {
+            json.put("encoding", cycle.getEngine().getOutputEncoding());
         }
 
         Map parms = new HashMap();
@@ -280,7 +286,7 @@ public abstract class Suggest extends AbstractFormComponent implements Translate
 
             listenerParams = new Object[1];
         }
-        
+
         listenerParams[0] = getClientId();
 
         ILink updateLink = getEngineService().getLink(isStateful(), new DirectServiceParameter(this, listenerParams));

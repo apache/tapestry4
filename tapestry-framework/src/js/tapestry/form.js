@@ -418,7 +418,7 @@ tapestry.form={
             useCache:true,
             preventCache:true,
             error: (function(){tapestry.error.apply(this, arguments);}),
-            encoding: "UTF-8"
+            encoding: tapestry.requestEncoding
 		};
 		
 		// check for override
