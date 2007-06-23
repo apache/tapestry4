@@ -65,10 +65,13 @@ public class AjaxShellDelegateTest extends BaseComponentTestCase
         IAsset tPath = newAsset();
         IPage page = newMock(IPage.class);
         checkOrder(page, false);
+        IEngine engine = newMock(IEngine.class);
         
         IRequestCycle cycle = newCycle();
         IMarkupWriter writer = newBufferWriter();
 
+        expect(cycle.getEngine()).andReturn(engine);
+        expect(engine.getOutputEncoding()).andReturn("utf-foo");
         expect(cycle.getPage()).andReturn(page);
         expect(dojoPath.buildURL()).andReturn("http:///dojo/path");
 
@@ -78,9 +81,7 @@ public class AjaxShellDelegateTest extends BaseComponentTestCase
         trainPageLocale(cycle, Locale.US);
         
         expect(dojoSource.buildURL()).andReturn("http:///dojo/path/dojo.js");
-        
         expect(tPath.buildURL()).andReturn("/tapestry");
-        
         expect(tSource.buildURL()).andReturn("/tapestry/tapestry.js");
         
         AjaxShellDelegate d = new AjaxShellDelegate();
@@ -97,15 +98,16 @@ public class AjaxShellDelegateTest extends BaseComponentTestCase
         
         assertBuffer("<script type=\"text/javascript\">djConfig = {\"isDebug\":false,"
                 + "\"baseRelativePath\":\"http:///dojo/path\","
-                +"\"parseWidgets\":false,\"locale\":\"en-us\"} </script>\n" + 
-                "\n" + 
-                " <script type=\"text/javascript\" src=\"http:///dojo/path/dojo.js\"></script>\n"
-                + "<script type=\"text/javascript\">\n" + 
-                "dojo.registerModulePath(\"tapestry\", \"/tapestry\");\n" + 
-                "</script>\n" + 
-                "<script type=\"text/javascript\" src=\"/tapestry/tapestry.js\"></script>\n" + 
-                "<script type=\"text/javascript\">\n" + 
-                "dojo.require(\"tapestry.namespace\");\n" + 
+                +"\"parseWidgets\":false,\"locale\":\"en-us\"} </script>" + SYSTEM_NEWLINE +
+                SYSTEM_NEWLINE + 
+                " <script type=\"text/javascript\" src=\"http:///dojo/path/dojo.js\"></script>" + SYSTEM_NEWLINE
+                + "<script type=\"text/javascript\">" + SYSTEM_NEWLINE + 
+                "dojo.registerModulePath(\"tapestry\", \"/tapestry\");" + SYSTEM_NEWLINE +
+                "</script>" + SYSTEM_NEWLINE +
+                "<script type=\"text/javascript\" src=\"/tapestry/tapestry.js\"></script>" + SYSTEM_NEWLINE +
+                "<script type=\"text/javascript\">" + SYSTEM_NEWLINE +
+                "dojo.require(\"tapestry.namespace\");" + SYSTEM_NEWLINE +
+                "tapestry.requestEncoding='utf-foo';" + SYSTEM_NEWLINE + 
                 "</script>" + SYSTEM_NEWLINE);
     }
     
@@ -117,10 +119,13 @@ public class AjaxShellDelegateTest extends BaseComponentTestCase
         IAsset tPath = newAsset();
         IPage page = newMock(IPage.class);
         checkOrder(page, false);
+        IEngine engine = newMock(IEngine.class);
         
         IRequestCycle cycle = newCycle();
         IMarkupWriter writer = newBufferWriter();
 
+        expect(cycle.getEngine()).andReturn(engine);
+        expect(engine.getOutputEncoding()).andReturn("utf-foo");
         expect(cycle.getPage()).andReturn(page);
         expect(dojoPath.buildURL()).andReturn("http:///dojo/path");
 
@@ -130,9 +135,7 @@ public class AjaxShellDelegateTest extends BaseComponentTestCase
         trainPageLocale(cycle, Locale.UK);
         
         expect(dojoSource.buildURL()).andReturn("http:///dojo/path/dojo.js");
-        
         expect(tPath.buildURL()).andReturn("/tapestry");
-        
         expect(tSource.buildURL()).andReturn("/tapestry/tapestry.js");
         
         AjaxShellDelegate d = new AjaxShellDelegate();
@@ -164,6 +167,7 @@ public class AjaxShellDelegateTest extends BaseComponentTestCase
                      "<script type=\"text/javascript\" src=\"/tapestry/tapestry.js\"></script>\n" +
                      "<script type=\"text/javascript\">\n" +
                      "dojo.require(\"tapestry.namespace\");\n" +
+                     "tapestry.requestEncoding='utf-foo';" + SYSTEM_NEWLINE + 
                      "</script>" + SYSTEM_NEWLINE);
     }
 }

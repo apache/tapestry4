@@ -48,13 +48,13 @@
         </description>
     </parameter>
 
-    <parameter name="debugEnabled" default-value="true">
+    <parameter name="debugEnabled" default-value="false">
         <description>Allows turning browser debug logging statements on/off.</description>
     </parameter>
     
     <parameter name="debugAtAllCosts" default-value="false" />
     
-    <parameter name="debugContainerId" default-value="literal:debug">
+    <parameter name="debugContainerId">
         <description>
             Sets the html element node id of the element you would like all browser debug content to
             go to, if you have logging turned on.
