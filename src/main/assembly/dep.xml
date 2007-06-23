@@ -1,3 +1,6 @@
+<?xml version="1.0"?>
+<!DOCTYPE assembly PUBLIC "-//APACHE//DTD Assembly V1.2//EN"
+        "http://maven.apache.org/xsd/assembly-1.0.0.xsd">
 <assembly>
     <id>bin</id>
     <formats>
@@ -5,18 +8,20 @@
         <format>tar.bz2</format>
         <format>zip</format>
     </formats>
-    <includeBaseDirectory>false</includeBaseDirectory>
+    <includeBaseDirectory>true</includeBaseDirectory>
     <fileSets>
         <fileSet>
             <includes>
                 <include>README*</include>
                 <include>LICENSE*</include>
                 <include>NOTICE*</include>
+                <include>MIT-LICENSE*</include>
+                <include>BUILDING*</include>
             </includes>
         </fileSet>
         <fileSet>
             <directory>target</directory>
-            <outputDirectory></outputDirectory>
+            <outputDirectory>lib</outputDirectory>
             <includes>
                 <include>*.jar</include>
             </includes>
@@ -34,8 +39,8 @@
             </includes>
             
             <binaries>
-                <outputDirectory>modules/${artifactId}</outputDirectory>
-                <includeDependencies>false</includeDependencies>
+                <outputDirectory>lib</outputDirectory>
+                <includeDependencies>true</includeDependencies>
                 <unpack>false</unpack>
             </binaries>
         </moduleSet>
