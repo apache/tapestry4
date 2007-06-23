@@ -243,8 +243,7 @@ public class PageLoader implements IPageLoader {
             {
                 if (!name.equals(parameterName))
                 {
-                    _log.warn(PageloadMessages.usedParameterAlias(contained,
-                                                                  name, parameterName, bspec.getLocation()));
+                    _log.warn(PageloadMessages.usedParameterAlias(contained, name, parameterName, bspec.getLocation()));
                 }
                 else if (pspec.isDeprecated())
                     _log.warn(PageloadMessages.deprecatedParameter(name, bspec.getLocation(), contained.getType()));

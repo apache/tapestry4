@@ -14,11 +14,6 @@
 
 package org.apache.tapestry.enhance;
 
-import static org.easymock.EasyMock.expect;
-
-import java.lang.reflect.Modifier;
-import java.util.Collections;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
@@ -26,15 +21,20 @@ import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.BaseComponentTestCase;
+import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
 import org.apache.tapestry.spec.ParameterSpecification;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
+
+import java.lang.reflect.Modifier;
+import java.util.Collections;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.ParameterPropertyWorker}.
- * 
+ *
  * @author Howard M. Lewis Ship
  */
 @Test
@@ -42,13 +42,13 @@ public class TestParameterPropertyWorker extends BaseComponentTestCase
 {
 
     private ParameterSpecification buildParameterSpec(String parameterName, String type,
-            Location location)
+                                                      Location location)
     {
         return buildParameterSpec(parameterName, parameterName, type, location);
     }
 
     private ParameterSpecification buildParameterSpec(String parameterName, String propertyName,
-            String type, Location location)
+                                                      String type, Location location)
     {
         ParameterSpecification ps = new ParameterSpecification();
 
@@ -61,28 +61,28 @@ public class TestParameterPropertyWorker extends BaseComponentTestCase
     }
 
     private IComponentSpecification buildComponentSpecification(String parameterName,
-            IParameterSpecification ps)
+                                                                IParameterSpecification ps)
     {
         IComponentSpecification result = newSpec();
 
         expect(result.getParameterNames()).andReturn(Collections.singletonList(parameterName));
 
         expect(result.getParameter(parameterName)).andReturn(ps);
-        
+
         return result;
     }
 
-    public void testFailure() throws Exception
+    public void test_Failure() throws Exception
     {
         Location l = newLocation();
 
         IComponentSpecification spec = buildComponentSpecification("wilma", buildParameterSpec(
-                "wilma",
-                "String",
-                l));
-        
+          "wilma",
+          "String",
+          l));
+
         EnhancementOperation op = newMock(EnhancementOperation.class);
-        
+
         Throwable ex = new ApplicationRuntimeException("Simulated error.");
         expect(op.convertTypeName("String")).andThrow(ex);
 
@@ -91,10 +91,10 @@ public class TestParameterPropertyWorker extends BaseComponentTestCase
         ErrorLog log = newMock(ErrorLog.class);
 
         log
-                .error(
-                        "Error adding property wilma to class org.apache.tapestry.BaseComponent: Simulated error.",
-                        l,
-                        ex);
+          .error(
+            "Error adding property wilma to class org.apache.tapestry.BaseComponent: Simulated error.",
+            l,
+            ex);
 
         replay();
 
@@ -106,12 +106,12 @@ public class TestParameterPropertyWorker extends BaseComponentTestCase
         verify();
     }
 
-    public void testSkipParameterAlias()
+    public void test_Skip_Parameter_Alias()
     {
         IComponentSpecification spec = buildComponentSpecification("barney", buildParameterSpec(
-                "fred",
-                null,
-                null));
+          "fred",
+          null,
+          null));
 
         EnhancementOperation op = newMock(EnhancementOperation.class);
 
@@ -129,33 +129,49 @@ public class TestParameterPropertyWorker extends BaseComponentTestCase
      * slightly different control flow.
      */
 
-    public void testStandard()
+    public void test_Standard()
     {
         IComponentSpecification spec = buildComponentSpecification("fred", buildParameterSpec(
-                "fred",
-                null,
-                null));
+          "fred",
+          null,
+          null));
 
         EnhancementOperation op = newMock(EnhancementOperation.class);
 
         expect(op.getPropertyType("fred")).andReturn(String.class);
-        
+
         op.claimProperty("fred");
+
+        String bindingFieldName = "_$fred$Binding";
 
         op.addField("_$fred", String.class);
         op.addField("_$fred$Default", String.class);
         op.addField("_$fred$Cached", boolean.class);
-
-        expect(op.getClassReference(String.class)).andReturn("_class$String");
+        op.addField("_$fred$Binding", IBinding.class);
 
         BodyBuilder builder = new BodyBuilder();
         builder.begin();
+        builder.addln("if ({0} == null)", bindingFieldName);
+        builder.begin();
+        builder.addln("{0} = getBinding(\"{1}\");", bindingFieldName, "fred");
+        builder.end();
+        builder.addln("return {0};", bindingFieldName);
+        builder.end();
+
+        String methodName = EnhanceUtils.createAccessorMethodName(bindingFieldName);
+        op.addMethod(Modifier.PUBLIC,
+                     new MethodSignature(IBinding.class, methodName, new Class[0], null),
+                     builder.toString(), null);
+
+        expect(op.getClassReference(String.class)).andReturn("_class$String");
+
+        builder.clear();
+        builder.begin();
         builder.addln("if (_$fred$Cached) return _$fred;");
-        builder.addln("org.apache.tapestry.IBinding binding = getBinding(\"fred\");");
-        builder.addln("if (binding == null) return _$fred$Default;");
+        builder.addln("if (get_$fred$Binding() == null) return _$fred$Default;");
         builder.add("java.lang.String result = ");
-        builder.addln("(java.lang.String) binding.getObject(_class$String);");
-        builder.addln("if (isRendering() || binding.isInvariant())");
+        builder.addln("(java.lang.String) get_$fred$Binding().getObject(_class$String);");
+        builder.addln("if (isRendering() || get_$fred$Binding().isInvariant())");
         builder.begin();
         builder.addln("_$fred = result;");
         builder.addln("_$fred$Cached = true;");
@@ -165,11 +181,9 @@ public class TestParameterPropertyWorker extends BaseComponentTestCase
 
         expect(op.getAccessorMethodName("fred")).andReturn("getFred");
 
-        op.addMethod(
-                Modifier.PUBLIC,
-                new MethodSignature(String.class, "getFred", null, null),
-                builder.toString(),
-                null);
+        op.addMethod(Modifier.PUBLIC, new MethodSignature(String.class, "getFred", null, null),
+                     builder.toString(),
+                     null);
 
         builder.clear();
 
@@ -180,13 +194,11 @@ public class TestParameterPropertyWorker extends BaseComponentTestCase
         builder.addln("return;");
         builder.end();
 
-        builder.addln("org.apache.tapestry.IBinding binding = getBinding(\"fred\");");
-
-        builder.addln("if (binding == null)");
+        builder.addln("if (get_$fred$Binding() == null)");
         builder
-                .addln("  throw new org.apache.hivemind.ApplicationRuntimeException(\"Parameter 'fred' is not bound and can not be updated.\");");
+          .addln("  throw new org.apache.hivemind.ApplicationRuntimeException(\"Parameter 'fred' is not bound and can not be updated.\");");
 
-        builder.addln("binding.setObject(($w) $1);");
+        builder.addln("get_$fred$Binding().setObject(($w) $1);");
 
         builder.addln("if (isRendering())");
         builder.begin();
@@ -196,21 +208,20 @@ public class TestParameterPropertyWorker extends BaseComponentTestCase
         builder.end();
 
         op.addMethod(Modifier.PUBLIC, new MethodSignature(void.class, "setFred", new Class[]
-        { String.class }, null), builder.toString(), null);
+          { String.class }, null), builder.toString(), null);
 
         BodyBuilder expectedCleanup = new BodyBuilder();
 
-        expectedCleanup.addln("org.apache.tapestry.IBinding fredBinding = getBinding(\"fred\");");
-        expectedCleanup.addln("if (_$fred$Cached && ! fredBinding.isInvariant())");
+        expectedCleanup.addln("if (_$fred$Cached && ! get_$fred$Binding().isInvariant())");
         expectedCleanup.begin();
         expectedCleanup.addln("_$fred$Cached = false;");
         expectedCleanup.addln("_$fred = _$fred$Default;");
         expectedCleanup.end();
 
         op.extendMethodImplementation(
-                IComponent.class,
-                EnhanceUtils.CLEANUP_AFTER_RENDER_SIGNATURE,
-                expectedCleanup.toString());
+          IComponent.class,
+          EnhanceUtils.CLEANUP_AFTER_RENDER_SIGNATURE,
+          expectedCleanup.toString());
 
         replay();
 
@@ -226,14 +237,10 @@ public class TestParameterPropertyWorker extends BaseComponentTestCase
      * but the binding is "fred".
      */
 
-    public void testDifferentPropertyName()
+    public void test_Different_Property_Name()
     {
         Location l = newLocation();
-        IComponentSpecification spec = buildComponentSpecification("myparam", buildParameterSpec(
-                "myparam",
-                "fred",
-                null,
-                l));
+        IComponentSpecification spec = buildComponentSpecification("myparam", buildParameterSpec("myparam", "fred", null, l));
 
         EnhancementOperation op = newMock(EnhancementOperation.class);
 
@@ -241,20 +248,36 @@ public class TestParameterPropertyWorker extends BaseComponentTestCase
 
         op.claimProperty("fred");
 
+        String bindingFieldName = "_$fred$Binding";
+
         op.addField("_$fred", String.class);
         op.addField("_$fred$Default", String.class);
         op.addField("_$fred$Cached", boolean.class);
-
-        expect(op.getClassReference(String.class)).andReturn("_class$String");
+        op.addField("_$fred$Binding", IBinding.class);
 
         BodyBuilder builder = new BodyBuilder();
         builder.begin();
+        builder.addln("if ({0} == null)", bindingFieldName);
+        builder.begin();
+        builder.addln("{0} = getBinding(\"{1}\");", bindingFieldName, "myparam");
+        builder.end();
+        builder.addln("return {0};", bindingFieldName);
+        builder.end();
+
+        String methodName = EnhanceUtils.createAccessorMethodName(bindingFieldName);
+        op.addMethod(Modifier.PUBLIC,
+                     new MethodSignature(IBinding.class, methodName, new Class[0], null),
+                     builder.toString(), l);
+        
+        expect(op.getClassReference(String.class)).andReturn("_class$String");
+
+        builder.clear();
+        builder.begin();
         builder.addln("if (_$fred$Cached) return _$fred;");
-        builder.addln("org.apache.tapestry.IBinding binding = getBinding(\"myparam\");");
-        builder.addln("if (binding == null) return _$fred$Default;");
+        builder.addln("if (get_$fred$Binding() == null) return _$fred$Default;");
         builder.add("java.lang.String result = ");
-        builder.addln("(java.lang.String) binding.getObject(_class$String);");
-        builder.addln("if (isRendering() || binding.isInvariant())");
+        builder.addln("(java.lang.String) get_$fred$Binding().getObject(_class$String);");
+        builder.addln("if (isRendering() || get_$fred$Binding().isInvariant())");
         builder.begin();
         builder.addln("_$fred = result;");
         builder.addln("_$fred$Cached = true;");
@@ -265,10 +288,10 @@ public class TestParameterPropertyWorker extends BaseComponentTestCase
         expect(op.getAccessorMethodName("fred")).andReturn("getFred");
 
         op.addMethod(
-                Modifier.PUBLIC,
-                new MethodSignature(String.class, "getFred", null, null),
-                builder.toString(),
-                l);
+          Modifier.PUBLIC,
+          new MethodSignature(String.class, "getFred", null, null),
+          builder.toString(),
+          l);
 
         builder.clear();
 
@@ -279,13 +302,11 @@ public class TestParameterPropertyWorker extends BaseComponentTestCase
         builder.addln("return;");
         builder.end();
 
-        builder.addln("org.apache.tapestry.IBinding binding = getBinding(\"myparam\");");
-
-        builder.addln("if (binding == null)");
+        builder.addln("if (get_$fred$Binding() == null)");
         builder
-                .addln("  throw new org.apache.hivemind.ApplicationRuntimeException(\"Parameter 'myparam' is not bound and can not be updated.\");");
+          .addln("  throw new org.apache.hivemind.ApplicationRuntimeException(\"Parameter 'myparam' is not bound and can not be updated.\");");
 
-        builder.addln("binding.setObject(($w) $1);");
+        builder.addln("get_$fred$Binding().setObject(($w) $1);");
 
         builder.addln("if (isRendering())");
         builder.begin();
@@ -295,22 +316,20 @@ public class TestParameterPropertyWorker extends BaseComponentTestCase
         builder.end();
 
         op.addMethod(Modifier.PUBLIC, new MethodSignature(void.class, "setFred", new Class[]
-        { String.class }, null), builder.toString(), l);
+          { String.class }, null), builder.toString(), l);
 
         BodyBuilder expectedCleanup = new BodyBuilder();
 
-        expectedCleanup
-                .addln("org.apache.tapestry.IBinding fredBinding = getBinding(\"myparam\");");
-        expectedCleanup.addln("if (_$fred$Cached && ! fredBinding.isInvariant())");
+        expectedCleanup.addln("if (_$fred$Cached && ! get_$fred$Binding().isInvariant())");
         expectedCleanup.begin();
         expectedCleanup.addln("_$fred$Cached = false;");
         expectedCleanup.addln("_$fred = _$fred$Default;");
         expectedCleanup.end();
 
         op.extendMethodImplementation(
-                IComponent.class,
-                EnhanceUtils.CLEANUP_AFTER_RENDER_SIGNATURE,
-                expectedCleanup.toString());
+          IComponent.class,
+          EnhanceUtils.CLEANUP_AFTER_RENDER_SIGNATURE,
+          expectedCleanup.toString());
 
         replay();
 
@@ -321,7 +340,7 @@ public class TestParameterPropertyWorker extends BaseComponentTestCase
         verify();
     }
 
-    public void testPrimitiveType()
+    public void test_Primitive_Type()
     {
         Location l = newLocation();
 
@@ -330,11 +349,10 @@ public class TestParameterPropertyWorker extends BaseComponentTestCase
         BodyBuilder builder = new BodyBuilder();
         builder.begin();
         builder.addln("if (_$fred$Cached) return _$fred;");
-        builder.addln("org.apache.tapestry.IBinding binding = getBinding(\"barney\");");
-        builder.addln("if (binding == null) return _$fred$Default;");
+        builder.addln("if (get_$fred$Binding() == null) return _$fred$Default;");
         builder.add("boolean result = ");
-        builder.addln(EnhanceUtils.class.getName() + ".toBoolean(binding);");
-        builder.addln("if (isRendering() || binding.isInvariant())");
+        builder.addln(EnhanceUtils.class.getName() + ".toBoolean(get_$fred$Binding());");
+        builder.addln("if (isRendering() || get_$fred$Binding().isInvariant())");
         builder.begin();
         builder.addln("_$fred = result;");
         builder.addln("_$fred$Cached = true;");
@@ -345,28 +363,28 @@ public class TestParameterPropertyWorker extends BaseComponentTestCase
         expect(op.getAccessorMethodName("fred")).andReturn("isFred");
 
         op.addMethod(
-                Modifier.PUBLIC,
-                new MethodSignature(boolean.class, "isFred", null, null),
-                builder.toString(),
-                l);
+          Modifier.PUBLIC,
+          new MethodSignature(boolean.class, "isFred", null, null),
+          builder.toString(),
+          l);
 
         replay();
 
         new ParameterPropertyWorker().buildAccessor(
-                op,
-                "barney",
-                "fred",
-                boolean.class,
-                "_$fred",
-                "_$fred$Default",
-                "_$fred$Cached",
-                true,
-                l);
+          op,
+          "fred",
+          boolean.class,
+          "_$fred",
+          "_$fred$Default",
+          "_$fred$Cached",
+          "get_$fred$Binding()",
+          true,
+          l);
 
         verify();
     }
 
-    public void testParameterCacheDisabled()
+    public void test_Parameter_Cache_Disabled()
     {
         Location l = newLocation();
 
@@ -375,11 +393,10 @@ public class TestParameterPropertyWorker extends BaseComponentTestCase
         BodyBuilder builder = new BodyBuilder();
         builder.begin();
         builder.addln("if (_$fred$Cached) return _$fred;");
-        builder.addln("org.apache.tapestry.IBinding binding = getBinding(\"barney\");");
-        builder.addln("if (binding == null) return _$fred$Default;");
+        builder.addln("if (get_$fred$Binding() == null) return _$fred$Default;");
         builder.add("boolean result = ");
-        builder.addln(EnhanceUtils.class.getName() + ".toBoolean(binding);");
-        builder.addln("if (binding.isInvariant())");
+        builder.addln(EnhanceUtils.class.getName() + ".toBoolean(get_$fred$Binding());");
+        builder.addln("if (get_$fred$Binding().isInvariant())");
         builder.begin();
         builder.addln("_$fred = result;");
         builder.addln("_$fred$Cached = true;");
@@ -390,23 +407,23 @@ public class TestParameterPropertyWorker extends BaseComponentTestCase
         expect(op.getAccessorMethodName("fred")).andReturn("isFred");
 
         op.addMethod(
-                Modifier.PUBLIC,
-                new MethodSignature(boolean.class, "isFred", null, null),
-                builder.toString(),
-                l);
+          Modifier.PUBLIC,
+          new MethodSignature(boolean.class, "isFred", null, null),
+          builder.toString(),
+          l);
 
         replay();
 
         new ParameterPropertyWorker().buildAccessor(
-                op,
-                "barney",
-                "fred",
-                boolean.class,
-                "_$fred",
-                "_$fred$Default",
-                "_$fred$Cached",
-                false,
-                l);
+          op,
+          "fred",
+          boolean.class,
+          "_$fred",
+          "_$fred$Default",
+          "_$fred$Cached",
+          "get_$fred$Binding()",
+          false,
+          l);
 
         verify();
     }
