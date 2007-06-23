@@ -301,7 +301,7 @@
                     <configuration>
                         <descriptors>
                             <descriptor>src/main/assembly/dep.xml</descriptor>
-                            <descriptor>src/main/assembly/project.xml</descriptor>
+                            <descriptor>src/main/assembly/full.xml</descriptor>
                         </descriptors>
                     </configuration>
                 </plugin>
