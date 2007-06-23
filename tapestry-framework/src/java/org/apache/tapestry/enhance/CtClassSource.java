@@ -15,7 +15,6 @@ package org.apache.tapestry.enhance;
 
 import javassist.CtClass;
 import javassist.NotFoundException;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.service.ClassFabUtils;
 
@@ -87,8 +86,7 @@ public class CtClassSource
         }
         catch (Throwable ex)
         {
-            throw new ApplicationRuntimeException(EnhanceMessages.unableToWriteClass(ctClass, ex),
-                    ex);
+            throw new ApplicationRuntimeException(EnhanceMessages.unableToWriteClass(ctClass, ex), ex);
         }
     }
     

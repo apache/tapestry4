@@ -16,6 +16,7 @@ package org.apache.tapestry.junit.mock;
 
 import ognl.Ognl;
 import ognl.OgnlException;
+import ognl.OgnlRuntime;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Resource;
@@ -34,6 +35,7 @@ import org.testng.annotations.Test;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
+import java.beans.Introspector;
 import java.io.*;
 import java.util.*;
 
@@ -44,7 +46,7 @@ import java.util.*;
  * The XML format is pretty simple, it contains declarations similar to a web.xml deployment
  * descriptor, a description of the active HttpSession (if any), a description of the HttpRequest,
  * and then a set of expectations for the output stream from the request.
- * 
+ *
  * @author Howard Lewis Ship
  * @since 2.2
  */
@@ -56,15 +58,15 @@ public class TestMockApplications
     public static final String DEFAULT_BASE_DIR = "./";
 
     public static final String SCRIPTS_DIR = "src/scripts";
-    
+
     private static String _baseDir;
-    
+
     private String _testRootDirectory;
 
     private String _path;
 
     private String _fileName;
-    
+
     private Document _document;
 
     private MockContext _context;
@@ -76,7 +78,7 @@ public class TestMockApplications
     private MockRequest _request;
 
     private MockResponse _response;
-    
+
     private int _requestNumber = 0;
 
     private Map _ognlContext = Ognl.createDefaultContext(this);
@@ -96,9 +98,9 @@ public class TestMockApplications
     private PrintStream _savedOut;
 
     private PrintStream _savedErr;
-    
+
     private SAXBuilder _builder = new SAXBuilder();
-    
+
     /**
      * Closes System.out and System.err, then restores them to their original values.
      */
@@ -107,69 +109,69 @@ public class TestMockApplications
     {
         System.err.close();
         System.setErr(_savedErr);
-        
+
         System.out.close();
         System.setOut(_savedOut);
-        
+
         _requestNumber = 0;
         _request = null;
         _response = null;
     }
-    
+
     @DataProvider(name = "mockTestScripts")
     public Object[][] createTestParameters()
     {
         List data = new ArrayList();
-        
+
         File scriptsDir = new File(getBaseDirectory() + SCRIPTS_DIR);
-        
+
         String[] names = scriptsDir.list();
-        
+
         for (int i = 0; i < names.length; i++)
         {
             String name = names[i];
-            
+
             if (name.endsWith(".xml"))
             {
                 data.add(new Object[] {
-                        getBaseDirectory() + "/src/test-data/",
-                        getBaseDirectory() + SCRIPTS_DIR + "/" + name,
-                        name
+                  getBaseDirectory() + "/src/test-data/",
+                  getBaseDirectory() + SCRIPTS_DIR + "/" + name,
+                  name
                 });
             }
         }
-        
+
         return (Object[][])data.toArray(new Object[data.size()][3]);
     }
-    
+
     public String toString()
     {
         StringBuffer buffer = new StringBuffer("MockTester[");
-        
+
         if (_document != null)
             buffer.append(_document);
-        
+
         buffer.append(']');
 
         return buffer.toString();
     }
-    
+
     /**
      * Invoked to execute the request cycle.
      */
     @Test(dataProvider = "mockTestScripts", enabled = false)
-    public void execute(String testRootDirectory, String path, String fileName) 
-    throws Exception
+    public void execute(String testRootDirectory, String path, String fileName)
+      throws Exception
     {
         _testRootDirectory = testRootDirectory;
         _path = path;
         _fileName = fileName;
-        
+
         // setup and get environment ready
         createLogs();
         parse();
         setup();
-        
+
         Element root = _document.getRootElement();
 
         List l = root.getChildren("request");
@@ -183,10 +185,12 @@ public class TestMockApplications
 
             executeRequest(request);
         }
-        
+
         _servlet.destroy();
-        
+
         PropertyUtils.clearCache();
+        OgnlRuntime.clearCache();
+        Introspector.flushCaches();
     }
 
     private void executeRequest(Element request) throws IOException, DocumentParseException
@@ -236,19 +240,21 @@ public class TestMockApplications
         executeAssertions(request);
     }
 
-    private void parse() 
-    throws Exception
+    private void parse()
+      throws Exception
     {
         _document = _builder.build(_path);
     }
-    
+
     private void setup() throws ServletException
     {
         Element root = _document.getRootElement();
-        
+
         if (!root.getName().equals("mock-test"))
             throw new RuntimeException("Root element of " + _path + " must be 'mock-test'.");
-        
+
+        System.setProperty("org.apache.tapestry.disable-caching", "false");
+
         setupContext(root);
         setupServlet(root);
     }
@@ -258,12 +264,12 @@ public class TestMockApplications
         _context = new MockContext(_testRootDirectory);
 
         Element context = parent.getChild("context");
-        
+
         if (context == null)
             return;
-        
+
         String name = context.getAttributeValue("name");
-        
+
         if (name != null)
             _context.setServletContextName(name);
 
@@ -388,7 +394,7 @@ public class TestMockApplications
         // mark this test as an error.
 
         throw new ApplicationRuntimeException("Unable to instantiate servlet class " + className
-                + ".", t);
+                                              + ".", t);
     }
 
     public MockContext getContext()
@@ -453,7 +459,7 @@ public class TestMockApplications
             return;
 
         throw new AssertionError(buildTestName(name) + ": Expression '" + expression
-                + "' was not true.");
+                                 + "' was not true.");
 
     }
 
@@ -483,8 +489,8 @@ public class TestMockApplications
             return ((String) value).length() > 0;
 
         throw new DocumentParseException("Expression '" + expression + "' evaluates to ("
-                + value.getClass().getName() + ") " + value
-                + ", which cannot be interpreted as a boolean.");
+                                         + value.getClass().getName() + ") " + value
+                                         + ", which cannot be interpreted as a boolean.");
     }
 
     /**
@@ -494,8 +500,8 @@ public class TestMockApplications
      * Attribute name is used in error messages.
      */
 
-    private void executeRegexpAssertions(Element request) 
-    throws DocumentParseException
+    private void executeRegexpAssertions(Element request)
+      throws DocumentParseException
     {
         String outputString = null;
 
@@ -527,8 +533,8 @@ public class TestMockApplications
      * Attribute name is used in error messages.
      */
 
-    private void executeOutputAssertions(Element request) 
-    throws DocumentParseException
+    private void executeOutputAssertions(Element request)
+      throws DocumentParseException
     {
         String outputString = null;
 
@@ -541,10 +547,10 @@ public class TestMockApplications
 
             String name = a.getAttributeValue("name");
             String substring = a.getTextTrim();
-            
+
             if (HiveMind.isBlank(substring))
                 throw new DocumentParseException("Substring is null in " + a);
-            
+
             if (outputString == null)
                 outputString = _response.getOutputString();
 
@@ -560,8 +566,8 @@ public class TestMockApplications
      * Attribute name is used in error messages.
      */
 
-    private void executeNoOutputAssertions(Element request) 
-    throws DocumentParseException
+    private void executeNoOutputAssertions(Element request)
+      throws DocumentParseException
     {
         String outputString = null;
 
@@ -591,8 +597,8 @@ public class TestMockApplications
         return _matcher;
     }
 
-    private Pattern compile(String pattern) 
-    throws DocumentParseException
+    private Pattern compile(String pattern)
+      throws DocumentParseException
     {
         Pattern result = (Pattern) _patternCache.get(pattern);
 
@@ -607,7 +613,7 @@ public class TestMockApplications
         catch (MalformedPatternException ex)
         {
             throw new ApplicationRuntimeException("Malformed regular expression: " + pattern
-                    + " in " + _path + ".", ex);
+                                                  + " in " + _path + ".", ex);
         }
 
         _patternCache.put(pattern, result);
@@ -616,17 +622,17 @@ public class TestMockApplications
     }
 
     private void matchRegexp(String name, String text, String pattern)
-            throws DocumentParseException
+      throws DocumentParseException
     {
         Pattern compiled = compile(pattern);
-        
+
         if (getMatcher().contains(text, compiled))
             return;
-        
+
         System.err.println(text);
-        
+
         throw new AssertionError(buildTestName(name)
-                + ": Response does not contain regular expression '" + pattern + "'.");
+                                 + ": Response does not contain regular expression '" + pattern + "'.");
     }
 
     private void matchSubstring(String name, String text, String substring)
@@ -636,11 +642,11 @@ public class TestMockApplications
 
         if (text.indexOf(substring) >= 0)
             return;
-        
+
         System.err.println(text);
-        
+
         throw new AssertionError(buildTestName(name) + ":" + text + "\n Response does not contain string '"
-                + substring + "'.");
+                                 + substring + "'.");
     }
 
     private void matchNoSubstring(String name, String text, String substring)
@@ -654,7 +660,7 @@ public class TestMockApplications
         System.err.println(text);
 
         throw new AssertionError(buildTestName(name) + ": Response contains string '"
-                + substring + "'.");
+                                 + substring + "'.");
     }
 
     private void executeOutputMatchesAssertions(Element request) throws DocumentParseException
@@ -676,7 +682,7 @@ public class TestMockApplications
     }
 
     private void executeOutputMatchAssertion(Element element, String outputString)
-            throws DocumentParseException
+      throws DocumentParseException
     {
         String name = element.getAttributeValue("name");
         String value = element.getAttributeValue("subgroup");
@@ -691,7 +697,7 @@ public class TestMockApplications
 
         PatternMatcher matcher = getMatcher();
         Pattern compiled = compile(pattern);
-        
+
         List<Element> l = element.getChildren("match");
         int count = l.size();
         int i = 0;
@@ -700,30 +706,30 @@ public class TestMockApplications
         {
             MatchResult match = matcher.getMatch();
             String actual = match.group(subgroup);
-            
+
             boolean matched = contentContains(l, actual);
-            
+
             if (i >= count)
             {
                 System.err.println(outputString);
                 throw new AssertionError(buildTestName(name) + ": Too many matches for '"
-                        + pattern + "'.");
+                                         + pattern + "'.");
             }
-            
+
             if (!matched) {
                 System.err.println(outputString);
                 throw new AssertionError(buildTestName(name) + ": No expected match found for "
-                        + "output of '" + actual + "'. ");
+                                         + "output of '" + actual + "'. ");
             }
-            
+
             i++;
         }
-        
+
         if (i < count)
         {
             System.err.println(outputString);
             throw new AssertionError(buildTestName(name) + ": Too few matches for '"
-                    + pattern + "' (expected " + count + " but got " + i + ").");
+                                     + pattern + "' (expected " + count + " but got " + i + ").");
         }
     }
 
@@ -733,10 +739,10 @@ public class TestMockApplications
             if (e.getTextTrim().equals(text))
                 return true;
         }
-        
+
         return false;
     }
-    
+
     private void executeExceptionAssertions(Element request)
     {
         List l = request.getChildren("assert-exception");
@@ -764,7 +770,7 @@ public class TestMockApplications
             return;
 
         throw new AssertionError(buildTestName(name) + " exception message (" + message
-                + ") does not contain '" + value + "'.");
+                                 + ") does not contain '" + value + "'.");
     }
 
     private void executeCookieAssertions(Element request)
@@ -796,11 +802,11 @@ public class TestMockApplications
                 return;
 
             throw new AssertionError(buildTestName(name) + ": Response cookie '" + name
-                    + "': expected '" + value + "', but was '" + cookies[i].getValue() + "'.");
+                                     + "': expected '" + value + "', but was '" + cookies[i].getValue() + "'.");
         }
 
         throw new AssertionError(buildTestName(name) + ": Could not find cookie named '"
-                + name + "' in response.");
+                                 + name + "' in response.");
     }
 
     private String buildTestName(String name)
@@ -832,21 +838,21 @@ public class TestMockApplications
 
         if (!contentType.equals(actualContentType))
             throw new AssertionError(buildTestName(name) + " content-type was '"
-                    + actualContentType + "', expected '" + contentType + "'.");
+                                     + actualContentType + "', expected '" + contentType + "'.");
 
         byte[] actualContent = _response.getResponseBytes();
         byte[] expectedContent = getFileContent(getBaseDirectory() + "/" + path);
 
         if (actualContent.length != expectedContent.length)
             throw new AssertionError(buildTestName(name) + " actual length of "
-                    + actualContent.length + " bytes does not match expected length of "
-                    + expectedContent.length + " bytes.");
+                                     + actualContent.length + " bytes does not match expected length of "
+                                     + expectedContent.length + " bytes.");
 
         for (int i = 0; i < actualContent.length; i++)
         {
             if (actualContent[i] != expectedContent[i])
                 throw new AssertionError(buildTestName(name)
-                        + " content mismatch at index + " + i + ".");
+                                         + " content mismatch at index + " + i + ".");
 
         }
     }
@@ -883,46 +889,46 @@ public class TestMockApplications
             throw new ApplicationRuntimeException("Unable to read file '" + path + "'.", ex);
         }
     }
-    
-    private void createLogs() 
-    throws Exception
+
+    private void createLogs()
+      throws Exception
     {
         File outDir = new File(getBaseDirectory() + LOGS_DIR);
-        
+
         if (!outDir.isDirectory())
             outDir.mkdirs();
-        
+
         _savedOut = System.out;
         _savedErr = System.err;
-        
+
         System.setOut(createPrintStream(outDir.getPath() + "/" + _fileName, "out"));
         System.setErr(createPrintStream(outDir.getPath() + "/" + _fileName, "err"));
     }
-    
+
     private PrintStream createPrintStream(String path, String extension) throws Exception
     {
         File file = new File(path + "." + extension);
-        
+
         // Open and truncate file.
-        
+
         FileOutputStream fos = new FileOutputStream(file);
 
         BufferedOutputStream bos = new BufferedOutputStream(fos);
 
         return new PrintStream(bos, true);
     }
-    
+
     @AfterClass
     public static void deleteDir()
     {
         File file = new File(getBaseDirectory() + "/target/.private");
-        
+
         if (!file.exists())
             return;
-        
+
         deleteRecursive(file);
     }
-    
+
     private static void deleteRecursive(File file)
     {
         if (file.isFile())
@@ -941,7 +947,7 @@ public class TestMockApplications
 
         file.delete();
     }
-    
+
     public static String getBaseDirectory()
     {
         if (_baseDir == null) {
@@ -953,7 +959,7 @@ public class TestMockApplications
                     _baseDir = _baseDir + "tapestry-framework/";
             }
         }
-        
+
         return _baseDir;
     }
 }

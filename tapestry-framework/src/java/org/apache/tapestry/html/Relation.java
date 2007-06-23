@@ -64,8 +64,7 @@ public abstract class Relation extends AbstractComponent
         Object href = getHref();
         boolean ok = (href instanceof String) || (href instanceof IAsset);
         if (!ok)
-            throw new ApplicationRuntimeException(HTMLMessages.stringOrIAssetExpected(),
-                                                  this.getLocation(), null);
+            throw new ApplicationRuntimeException(HTMLMessages.stringOrIAssetExpected(), getLocation(), null);
 
         String url;
         if (href instanceof String)
