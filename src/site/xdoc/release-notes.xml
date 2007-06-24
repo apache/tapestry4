@@ -10,6 +10,369 @@
 
         <section name="Tapestry 4 Releases">
 
+            <subsection name="Release Notes - Tapestry - Version 4.1.2">
+                <h2>        Sub-task
+                </h2>
+                <ul>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1231'>TAPESTRY-1231</a>] -         org.apache.tapestry.form.ImageSubmit renders invalid XHTML attribute 'border=&quot;0&quot;'
+                    </li>
+                </ul>
+
+                <h2>        Bug
+                </h2>
+                <ul>
+                    <li>[<a href='https://issues.apache.org/jira/browse/HIVEMIND-206'>HIVEMIND-206</a>] -         registryDidShutdown not called on Hivemind services on undeploy
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-403'>TAPESTRY-403</a>] -         Bean binding with contrib:tablerows
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-415'>TAPESTRY-415</a>] -         For component should use line precise error reporting for data conversions
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-572'>TAPESTRY-572</a>] -         NumberValidator should accept Strings
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-633'>TAPESTRY-633</a>] -         Default behavior of NumberTranslator treats zeros asymmetrically.
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-638'>TAPESTRY-638</a>] -         Recursive components result in a StackOverflowError
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-695'>TAPESTRY-695</a>] -         WebRequestServicerFilter lacks support for tapestry.globals.*
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-825'>TAPESTRY-825</a>] -         Cookies failing due to improper timing on flush() method
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-851'>TAPESTRY-851</a>] -         DatePicker does not error when bound to values of wrong type
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-853'>TAPESTRY-853</a>] -         Palette silently fails when bound to wrong collection type
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-872'>TAPESTRY-872</a>] -         Persitent page properties are not set before PageAttachListener#pageAttached method is fired
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-873'>TAPESTRY-873</a>] -         Minor XHTML 1.0 Strict compliance issues
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-881'>TAPESTRY-881</a>] -         Allow global i18n bundle location to be customized
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-907'>TAPESTRY-907</a>] -         overridden parameter problem
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-937'>TAPESTRY-937</a>] -         Custom binding prefixes shorter than 2 characters fail without useful diagnostics
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-954'>TAPESTRY-954</a>] -         Session lost when PageLInk inside a form
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-958'>TAPESTRY-958</a>] -         Table column headers with a custom render block cannot be sorted
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-988'>TAPESTRY-988</a>] -         Function mismatch with description in document:  Form.jwc and tapestry.request.xml
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1014'>TAPESTRY-1014</a>] -         java.util.ConcurrentModificationException in portlet when trying to show ArrayList
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1026'>TAPESTRY-1026</a>] -         PageSpecificationResolverImpl doesn't search &quot;implict&quot; page specifications/templates in all the right places.
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1065'>TAPESTRY-1065</a>] -         TreeDataView.renderComponent() and TreeTableDataView.generateNodeList()  cause ClassCastException in ITreeDataModel.getUniqueKey()
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1071'>TAPESTRY-1071</a>] -         Client-side number validation does not work
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1091'>TAPESTRY-1091</a>] -         Invalid URL for injected using annotation assets
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1101'>TAPESTRY-1101</a>] -         @Persist(&quot;session&quot;) does not make the accessor fetch from session everytime
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1120'>TAPESTRY-1120</a>] -         UploadPart / getFileName() doesn't work cross-platform
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1145'>TAPESTRY-1145</a>] -         Unable to trigger EventListener when it is inside a block
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1151'>TAPESTRY-1151</a>] -         PagePool doesnt remove idle pages, heap memory doens't get reallocated
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1179'>TAPESTRY-1179</a>] -         practical component class naming for For, If and Else
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1193'>TAPESTRY-1193</a>] -         .script files: &quot;index&quot; property of &quot;foreach&quot; tag is stored as a String, not an integer
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1198'>TAPESTRY-1198</a>] -         problem with Checkbox + custom validators
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1199'>TAPESTRY-1199</a>] -         multiple Autocompleters on the same page b0rken
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1203'>TAPESTRY-1203</a>] -         boolean.getBoolean doesn't work as expected in InjectMetaWorker
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1204'>TAPESTRY-1204</a>] -         boolean meta values in the component descriptor does not work
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1205'>TAPESTRY-1205</a>] -         bad links in &quot;Defining new Application State Objects&quot; doc's chapter
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1206'>TAPESTRY-1206</a>] -         Asynchronous Selection Boxes work with Firefox 2.0 but not with Internet Explorer 6/7
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1208'>TAPESTRY-1208</a>] -         bad links in &quot;Determining the Page Class&quot;
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1210'>TAPESTRY-1210</a>] -         Problem with InlineEditBox on persisted page property
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1212'>TAPESTRY-1212</a>] -         AlertDialog widget button text should be &quot;OK&quot;
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1214'>TAPESTRY-1214</a>] -         @Submit with submitType=&quot;refresh&quot; : JavaScript syntax error
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1215'>TAPESTRY-1215</a>] -         Autocomplete triggers a syntax error in dojo.js when getValues() returns an empty list
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1216'>TAPESTRY-1216</a>] -         async Submit won't skip client side validation
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1217'>TAPESTRY-1217</a>] -         IE watchInFlight Error when receiving a &lt;tr&gt;
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1218'>TAPESTRY-1218</a>] -         URL to dojo.js is not escaped
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1222'>TAPESTRY-1222</a>] -         HTTP headers setting through WebResponse is ignored
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1227'>TAPESTRY-1227</a>] -         IUploadFile implementations should be prepared for &quot;all&quot; file name-separator characters in getFileName()
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1228'>TAPESTRY-1228</a>] -         core.js doesn't process embedded &lt;script&gt;&lt;/script&gt; elements in ajax fragments
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1229'>TAPESTRY-1229</a>] -         AssetService not thread safe
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1234'>TAPESTRY-1234</a>] -         ResourceMatcherImpl not thread safe on multi-CPU system
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1240'>TAPESTRY-1240</a>] -         LinkSubmit with parameters causes exception although it has validators attached
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1241'>TAPESTRY-1241</a>] -         @EventListener produces multiple events
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1242'>TAPESTRY-1242</a>] -         Typing in autocompleter does not display dropdown values
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1247'>TAPESTRY-1247</a>] -         When a div containing a DirectLink using a PopupLinkRenderer is updated asynchronously, the attached javascript portion of the ajax response is ignored.
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1248'>TAPESTRY-1248</a>] -         Localization Problem when using Min Max Validator
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1249'>TAPESTRY-1249</a>] -         4.1.1 binary downloads include non-Apache modules (including OGNL and Javassist).
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1253'>TAPESTRY-1253</a>] -         Meta injection throws exception unless property accessor is defined
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1254'>TAPESTRY-1254</a>] -         IE7 mixed secure/nonsecure SSL warning on https using dojo dialog component
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1256'>TAPESTRY-1256</a>] -         IllegalStateException if you try to access an ASO with OGNL, before accessing it in code
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1259'>TAPESTRY-1259</a>] -         EventListener generates duplicate javascript with page caching on
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1261'>TAPESTRY-1261</a>] -         need default styling on async exception responses somehow
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1268'>TAPESTRY-1268</a>] -         setting focus=false on EventListener doesn't prevent focus from being claimed on form elements
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1273'>TAPESTRY-1273</a>] -         ValidationStrings_de.properties is incomplete
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1280'>TAPESTRY-1280</a>] -         add exclusion filter for Generic persistent types
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1288'>TAPESTRY-1288</a>] -         Incorrect link in documentation
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1301'>TAPESTRY-1301</a>] -         Class not found with cglib loaded in a parent (non-webapp) classloader. (CglibProxiedPropertyChangeObserverImpl)
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1309'>TAPESTRY-1309</a>] -         clearValidationDecorations in validation.js has huge performance issues with many form elements
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1312'>TAPESTRY-1312</a>] -         When an EventListener updates a datepicker, the new date is not rendered to the user
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1313'>TAPESTRY-1313</a>] -         css classes fieldMissing/fieldInvalid not written in default ValidationDelegate
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1347'>TAPESTRY-1347</a>] -         Shell refresh tag incorrectly encoded with cookies disabled
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1366'>TAPESTRY-1366</a>] -         calling IRequestCycle.redirect() and then setting page properties causes property changes to be lost
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1374'>TAPESTRY-1374</a>] -         GenericsMethodSignatureImpl throw exception!
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1376'>TAPESTRY-1376</a>] -         can't find page if template has parse error
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1380'>TAPESTRY-1380</a>] -         Page name validation regex is incorrect.
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1383'>TAPESTRY-1383</a>] -         number translator
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1390'>TAPESTRY-1390</a>] -         DatePicker component doesn't work in IE
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1391'>TAPESTRY-1391</a>] -         @EventListener method in component doesn't rewind the containing page's client-persistent properties
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1396'>TAPESTRY-1396</a>] -         Specless components in libraries don't get their assets properly resolved
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1398'>TAPESTRY-1398</a>] -         @EventListener in any component doesn't get called
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1399'>TAPESTRY-1399</a>] -         NumberTranslator omitZero attribute doesn't default to true like docs say
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1402'>TAPESTRY-1402</a>] -         OGNL Workaround doesn't work
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1407'>TAPESTRY-1407</a>] -         XHR Exception page renders exception page &amp;&amp; partial content
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1410'>TAPESTRY-1410</a>] -         fail to test GenericsMethodSignatureImpl class.
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1413'>TAPESTRY-1413</a>] -         absolute classpath asset paths not found when no &quot;classpath&quot; specifier used
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1415'>TAPESTRY-1415</a>] -         A page with a form and a getOrg() method will crash on retrieval
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1418'>TAPESTRY-1418</a>] -         ComponentEventInvoker sometimes throws a NPE
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1419'>TAPESTRY-1419</a>] -         Bracket notation with addition in OGNL expression causes failure to find appropriate listener
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1420'>TAPESTRY-1420</a>] -         ognl string concatenation + static syntax does not render properly
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1426'>TAPESTRY-1426</a>] -         Style component bug
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1428'>TAPESTRY-1428</a>] -         Validators contribution fails regexp match
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1432'>TAPESTRY-1432</a>] -         Regression in the AssetFactory().createAsset()
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1437'>TAPESTRY-1437</a>] -         Unnecessary logging of MalformedURLException while searching for component templates
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1452'>TAPESTRY-1452</a>] -         RedirectException does not work on Safari
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1459'>TAPESTRY-1459</a>] -         Can't use dojo Editor
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1462'>TAPESTRY-1462</a>] -         LinkFactoryImpl caches context path and servlet path
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1468'>TAPESTRY-1468</a>] -         dojo.i18n.number needs explicit groupSize parameter of 0 for patterns with no grouping separator
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1477'>TAPESTRY-1477</a>] -         IF component's condition expression get evaluated 3 or more times when it should only be evaluated once.
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1496'>TAPESTRY-1496</a>] -         getTableRow() returns incorrect Class
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1512'>TAPESTRY-1512</a>] -         someone added local parameter to Autocompleter but didn't document it
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1517'>TAPESTRY-1517</a>] -         form submitAsync doesn't set a JSON load handler
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1520'>TAPESTRY-1520</a>] -         Tapestry 4.1 is no longer jdk 1.4 compatible - compiled by java 5
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1527'>TAPESTRY-1527</a>] -         @Dialog component triggers a lot a javascript errors on scroll after show/hide by EventListener
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1534'>TAPESTRY-1534</a>] -         Fix of Bug TAPESTRY-988 results in java.lang.IllegalArgumentException at hivemind.util.PropertyAdaptor.write trying to set the &quot;org.apache.tapestry.default-cookie-max-age&quot;
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1535'>TAPESTRY-1535</a>] -         Suggest component doesn't work in a loop
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1536'>TAPESTRY-1536</a>] -         LinkSubmit creates duplicate onclick event listener when combined with submitBindings() superclass method
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1548'>TAPESTRY-1548</a>] -         tapestry.form.focusField on non displayed field
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1549'>TAPESTRY-1549</a>] -         event connection evaluations via XHR
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1552'>TAPESTRY-1552</a>] -         @Any divs with no body content render &lt;div /&gt; shorthand form
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1553'>TAPESTRY-1553</a>] -         ETag header incorrect format
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1563'>TAPESTRY-1563</a>] -         LinkSubmit async broken with new href javascript event change
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1569'>TAPESTRY-1569</a>] -         If component doesn't render client id
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1574'>TAPESTRY-1574</a>] -         cyclic page rendering of exception pages not detected in DojoAjaxResponseBuilder
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1577'>TAPESTRY-1577</a>] -         optionRenderer not documented in PropertySelection
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1578'>TAPESTRY-1578</a>] -         ParseException in AssetService
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1582'>TAPESTRY-1582</a>] -         whole shadow foreground color not supported
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1587'>TAPESTRY-1587</a>] -         Script assets without a DTD result in a Server Error 500
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1591'>TAPESTRY-1591</a>] -         Encoding for Ajax Request is always UTF-8
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1592'>TAPESTRY-1592</a>] -         TemplateParser converts &lt;div ...&gt;&lt;/div&gt; structures into &lt;div ... /&gt; structures
+                    </li>
+                </ul>
+
+                <h2>        Improvement
+                </h2>
+                <ul>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-410'>TAPESTRY-410</a>] -         IdentityValidator
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-550'>TAPESTRY-550</a>] -         IMarkupWriter should automatically filter out duplicate attributes when rendering an element
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-573'>TAPESTRY-573</a>] -         would like InjectStateWorker to add an &quot;exists&quot; method
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-697'>TAPESTRY-697</a>] -         Add getters for validators properties.
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-717'>TAPESTRY-717</a>] -         Easier accessing the hivemind registry
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-738'>TAPESTRY-738</a>] -         Create ability to use SqueezeAdaptors for @Persist(&quot;client:app&quot;)
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-792'>TAPESTRY-792</a>] -         Defining page property in definition file versus using implemented methods
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-856'>TAPESTRY-856</a>] -         lazy initialization of abstract properties
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-867'>TAPESTRY-867</a>] -         Do not display errors or errored field decoration on form refresh
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-933'>TAPESTRY-933</a>] -         Add getRowCount() to ITableModel interface
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-962'>TAPESTRY-962</a>] -         enhance ExpressionEvaluator
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-989'>TAPESTRY-989</a>] -         Improve @PropertySelection
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-996'>TAPESTRY-996</a>] -         Better locale detection for fully localized applications
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1035'>TAPESTRY-1035</a>] -         Allow common stylesheets/favicon/geoinfo/doctype settings across pages/requests
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1068'>TAPESTRY-1068</a>] -         allow throwing of RenderRewoundException from (submit) listeners
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1088'>TAPESTRY-1088</a>] -         Exception page should have a &quot;reset&quot; ServiceLink
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1182'>TAPESTRY-1182</a>] -         make ComponentAnnotationWorker extensible
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1183'>TAPESTRY-1183</a>] -         @InjectParameterFlag annotation
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1184'>TAPESTRY-1184</a>] -         @InjectPageLink and @InjectExternalLink annotations
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1196'>TAPESTRY-1196</a>] -         When &lt;let unique=&quot;true&quot; ..&gt; is used, make sure the output string is a valid js identifier
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1201'>TAPESTRY-1201</a>] -         tapestry-contrib depends on jboss-j2ee
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1245'>TAPESTRY-1245</a>] -         Alter LinkSubmit to output javascript in onclick (instead of in href)
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1260'>TAPESTRY-1260</a>] -         add logging interceptor to ResponseBuilder services as well as logging of ajax xml response output / etc
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1266'>TAPESTRY-1266</a>] -         Style should not render anything if href is null and no body present
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1305'>TAPESTRY-1305</a>] -         ServiceEncoding needs ability to set the PathInfo variable
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1350'>TAPESTRY-1350</a>] -         add Shell component parameter to disable Tapestry meta runtime info
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1378'>TAPESTRY-1378</a>] -         Make Dropdown date/time pickers capable of taking a generic object - so that things like Joda time can be used as well
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1449'>TAPESTRY-1449</a>] -         Leave off port 443 when generating https URLs
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1453'>TAPESTRY-1453</a>] -         upgrade dojo to 0.4.2 version
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1474'>TAPESTRY-1474</a>] -         autowiring of generic service properties
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1489'>TAPESTRY-1489</a>] -         ValidationStrings for de and ru
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1513'>TAPESTRY-1513</a>] -         convert StringToListConverter strings going to a binding property of updateComponents to their component clientId equivalents
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1550'>TAPESTRY-1550</a>] -         don't log exceptions when browser IO connections close serving asset resources
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1554'>TAPESTRY-1554</a>] -         remove description from AbstractBinding
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1561'>TAPESTRY-1561</a>] -         improve the user experience of javascript-based links
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1589'>TAPESTRY-1589</a>] -         have debugEnabled=false by default for @Shell component
+                    </li>
+                </ul>
+
+                <h2>        New Feature
+                </h2>
+                <ul>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-330'>TAPESTRY-330</a>] -         Add uninitialization tag to Script specification and component
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-817'>TAPESTRY-817</a>] -         Translator for BigDecimal values
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1414'>TAPESTRY-1414</a>] -         I am new about tapestry pls send me user friendly document
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1531'>TAPESTRY-1531</a>] -         Integrate prototype and provide alternative @Suggest component for Autocompleter that uses the more robust scriptaculous version
+                    </li>
+                </ul>
+
+                <h2>        Task
+                </h2>
+                <ul>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-659'>TAPESTRY-659</a>] -         Document available services
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1285'>TAPESTRY-1285</a>] -         Upload http://tapestry.apache.org/dtd/Script_4_0.dtd
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1392'>TAPESTRY-1392</a>] -         Update validation strings for locale pt
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1519'>TAPESTRY-1519</a>] -         upgrade dojo to 0.4.3 release
+                    </li>
+                </ul>
+
+                <h2>        Wish
+                </h2>
+                <ul>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-396'>TAPESTRY-396</a>] -         RequestLocaleManagerImpl: Change private members to protected, to enable overriding implementation
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-765'>TAPESTRY-765</a>] -         Create testing guide
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-838'>TAPESTRY-838</a>] -         ListenerInvokerFilter provides no way to find out what listener method is being invoked
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1454'>TAPESTRY-1454</a>] -         isDisabledDate() in DatePicker in Dojo4.1
+                    </li>
+                </ul>
+
+            </subsection>
+
             <subsection name="Release Notes - Tapestry - Version 4.1.1">
                 <h2>        Sub-task
                 </h2>
