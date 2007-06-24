@@ -104,7 +104,21 @@ public abstract class IfBean extends AbstractFormComponent
 
         cycle.setAttribute(IF_VALUE_ATTRIBUTE, new Boolean(_conditionValue));
     }
-    
+
+    /**
+     * Overriden from {@link AbstractFormComponent} to handle cases where
+     * we're not being wrapped by a {@link IForm} component.
+     *
+     * <p>This is basically a copy of the same method implemented in {@link AbstractComponent}.</p> 
+     */
+    protected void generateClientId()
+    {
+        String id = getSpecifiedId();
+
+        if (id != null && getPage() != null && getPage().getRequestCycle() != null)
+             setClientId(getPage().getRequestCycle().getUniqueId(TapestryUtils.convertTapestryIdToNMToken(id)));
+    }
+
     protected boolean evaluateCondition(IRequestCycle cycle, IForm form, boolean cycleRewinding)
     {
         boolean condition;
