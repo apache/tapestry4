@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="tapestry-framework/src/test"/>
+	<classpathentry kind="src" path="tapestry-framework/src/java"/>
+	<classpathentry kind="src" path="tapestry-examples/TimeTracker/src/java"/>
+	<classpathentry kind="src" path="tapestry-contrib/src/java"/>
+	<classpathentry kind="src" path="tapestry-portlet/src/test"/>
+	<classpathentry kind="src" path="tapestry-portlet/src/java"/>
+	<classpathentry kind="src" path="tapestry-annotations/src/java"/>
+	<classpathentry kind="src" path="tapestry-examples/Workbench/src/test"/>
+	<classpathentry excluding="**/*.java" kind="src" path="tapestry-framework/src/js"/>
+	<classpathentry kind="src" path="tapestry-contrib/src/test"/>
+	<classpathentry kind="src" path="tapestry-annotations/src/test"/>
+	<classpathentry kind="src" path="tapestry-examples/Workbench/src/java"/>
+	<classpathentry kind="lib" path="config"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER"/>
+	<classpathentry kind="lib" path="tapestry-annotations/src/descriptor"/>
+	<classpathentry kind="lib" path="tapestry-contrib/src/descriptor"/>
+	<classpathentry kind="lib" path="tapestry-framework/src/descriptor"/>
+	<classpathentry kind="lib" path="tapestry-portlet/src/descriptor"/>
+	<classpathentry kind="src" path=".apt_generated"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

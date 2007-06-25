@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Copyright 2004, 2005 The Apache Software Foundation
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<document>
+    <properties>
+        <title>RadioGroup</title>
+    </properties>
+    <body>
+
+        <section name="RadioGroup">
+
+            <p>
+                Provides a container group for Radio components. The RadioGroup itself must be
+                within a
+                <a href="form.html">Form</a>
+                component. The
+                <a href="radio.html">Radio</a>
+                and RadioGroup components work together to update a property of an object, much like
+                a more flexible version of a
+                <a href="propertyselection.html">PropertySelection</a>
+                . This component should wrap around other
+                <a href="radio.html">Radio</a>
+                components.
+            </p>
+
+            <span class="warn">
+                <strong>Warning:</strong>
+                <p>
+                RadioGroup components may not nest.
+                </p>
+            </span>
+
+            <p>
+                <strong>
+                    See also:
+                    <a href="../../apidocs/org/apache/tapestry/form/RadioGroup.html">
+                        org.apache.tapestry.form.RadioGroup
+                    </a>
+                    ,
+                    <a href="option.html">Option</a>
+                    ,
+                    <a href="propertyselection.html">PropertySelection</a>
+                    ,
+                    <a href="radio.html">Radio</a>
+                    ,
+                    <a href="select.html">Select</a>
+                </strong>
+
+            </p>
+
+            <section name="Parameters">
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Default</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>selected</td>
+                        <td>Object</td>
+                        <td>yes</td>
+                        <td />
+                        <td>
+                            Read during rendering to determine which Radio will be the default.
+                            Updated during rewinding (when the form is submitted) to indicate which
+                            radio button was selected by the user (null if no button was selected).
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>disabled</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            If true, then all contained Radio components will be disabled as well.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>displayName</td>
+                        <td>string</td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            The user-presentable name for the component, which will be used by a
+                            <a href="fieldlabel.html">FieldLabel</a>
+                            connected to the component.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>validators</td>
+                        <td>
+                            Array or collection of
+                            <a
+                                href="../../apidocs/org/apache/tapestry/form/validator/Validator.html">
+                                Validator
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            The validators to apply to the component. Something along the lines of:
+                            <code>validators:required</code> .<br/><br/>
+                            
+                            <strong>See also:</strong> <a href="../../usersguide/validation.html">Validation</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>translator</td>
+                        <td>
+                            <a
+                                href="../../tapestry/apidocs/org/apache/tapestry/form/translator/Translator.html">
+                                Translator
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            The translator to use when displaying and parsing the date.
+                            <br/><br/>
+                            <strong>See also:</strong> <a href="../../usersguide/validation.html">Validation</a>
+                        </td>
+                    </tr>
+                </table>
+                <p>
+                    Body:
+                    <strong>allowed</strong>
+                </p>
+
+                <p>
+                    Informal parameters:
+                    <strong>forbidden</strong>
+                </p>
+
+                <p>
+                    Reserved parameters:
+                    <em>none</em>
+
+                </p>
+
+            </section>
+
+            <section name="Examples">
+                <p>
+                    This RadioGroup example illustrates an order form where a user can select the
+                    order size.
+                </p>
+
+                <source xml:space="preserve"><![CDATA[
+<form jwcid="@Form" success="listener:doSubmit">
+ <label jwcid="@FieldLabel" field="component:size">Radio</label>
+ <span jwcid="size@RadioGroup" selected="ognl:orderSize" displayName="Size" validators="validators:required">
+  <input type="radio" jwcid="@Radio" value="ognl:@com.myexample.OrderPage@SMALL"/> Small
+  <input type="radio" jwcid="@Radio" value="ognl:@com.myexample.OrderPage@MEDIUM"/> Medium
+  <input type="radio" jwcid="@Radio" value="ognl:@com.myexample.OrderPage@LARGE"/> Large
+  <input type="submit" value="Order"/>
+ </span>
+</form>
+]]></source>
+
+                <source xml:space="preserve">
+package com.myexample;
+
+import org.apache.tapestry.html.BasePage;
+
+public abstract class OrderPage extends BasePage {
+
+  public final static Integer SMALL = new Integer(1);
+  public final static Integer MEDIUM = new Integer(2);
+  public final static Integer LARGE = new Integer(3);
+
+  public abstract Integer getOrderSize();
+
+  public void doSubmit() {
+    // process order
+
+  }
+
+}
+</source>
+            </section>
+
+        </section>
+
+    </body>
+</document>

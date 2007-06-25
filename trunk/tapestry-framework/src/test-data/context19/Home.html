@@ -1,0 +1,15 @@
+<html jwcid="@Shell" title="Home">
+<body jwcid="@Body">
+
+<form jwcid="@Form" listener="listener:formSubmit">
+
+<input type="file" jwcid="@Upload" file="ognl:uploadFile" disabled="ognl:uploadDisabled"/>
+	
+</form>
+
+<br/>
+
+<a href="#" jwcid="@DirectLink" listener="listener:disableUpload">click to disable Upload</a>
+
+</body>
+</html>

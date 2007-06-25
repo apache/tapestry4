@@ -1,0 +1,56 @@
+<html jwcid="@Shell" stylesheet="asset:stylesheet" 
+	title="message:window.title" browserLogLevel="DEBUG" consoleEnabled="true" debugEnabled="false">
+<body jwcid="@Body">
+
+
+<table class="content" border="0" cellpadding="0" cellspacing="0" style="width:92%;">
+<tr>
+<td width="82%">
+<div class="page">
+<span jwcid="@RenderBody">Page content goes here.</span>
+</div>
+</td>
+<td align="left" valign="top" style="padding-top:2em">
+ <ul class="navbar">
+	<li jwcid="@For" source="ognl:pageTabNames" value="ognl:pageName" class="ognl:isActivePage() ? 'here' : ''">
+		<a jwcid="pageLink"><span jwcid="@Insert" value="ognl:pageTitle">Page Title</span></a>
+	</li>
+</ul>
+</td>
+</tr>
+</table>
+
+
+<form jwcid="@Form" focus="false" style="float:left">
+      
+<table class="requestDebug" cellspacing="0">
+  <tr class="control">
+    <td>
+
+        <input type="checkbox" jwcid="inputRequestDebug"/>
+        <span key="prompt.display-request-debug">Display Request Debug Information</span>
+  
+    </td>
+    
+    <td align="right">
+    <input type="checkbox" jwcid="inputDisableInspector"/> Disable Inspector
+    </td>
+    
+  </tr>
+  <tr class="data">
+    <td colspan="2">
+      <span jwcid="@If" condition="ognl:visit.requestDebug">
+        <span jwcid="@RequestDisplay"/>
+      </span>
+    </td>
+  </tr>
+</table>
+
+</form>
+    
+<span jwcid="@contrib:InspectorButton" disabled="ognl:visit.disableInspector"/>
+
+<span jwcid="@contrib:Timeout" autoProlongTime="600" disableWarning="true"/>
+
+</body>
+</html>

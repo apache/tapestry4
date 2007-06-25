@@ -1,0 +1,63 @@
+<!--
+   Copyright 2004 The Apache Software Foundation
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<span jwcid="$content$">
+<table jwcid="@Any" element="table" class="ognl:tableClass">
+  <tr>
+  	<th class="available-header">
+ <span jwcid="@RenderBlock" block="ognl:availableTitleBlock"/>
+ <span jwcid="defaultAvailableTitleBlock@Block"><span key="title.available"/></span>
+</th>
+  	<td element="td" class="controls" rowspan="2">
+  	    <a jwcid="@Any" 
+  	    	element="a" 
+  	    	href="ognl:symbols.selectOnClickScript"><img jwcid="@Image"
+  	    		image="ognl:selectImage"
+  	    		name="ognl:symbols.selectImageName"
+  	    		alt="message:tooltip.select"/></a>
+
+    <a jwcid="@Any" element="a"
+    	href="ognl:symbols.deselectOnClickScript"><img jwcid="@Image"
+    		image="ognl:deselectImage"
+    		name="ognl:symbols.deselectImageName"
+    		alt="message:tooltip.deselect"/></a>
+    
+    <span jwcid="@If" condition="ognl:sortUser">
+
+    <a jwcid="@Any" element="a"
+    	href="ognl:symbols.upOnClickScript"><img jwcid="@Image" 
+    		image="ognl:upImage"
+    		name="ognl:symbols.upImageName"
+    		alt="message:tooltip.moveup"/></a>
+
+    <a jwcid="@Any" element="a"
+    	href="ognl:symbols.downOnClickScript"><img jwcid="@Image"
+    		image="ognl:downImage"
+    		name="ognl:symbols.downImageName"
+    		alt="message:tooltip.movedown"/></a>
+    </span>
+
+    </td>
+  	<th class="selected-header">
+ <span jwcid="@RenderBlock" block="ognl:selectedTitleBlock"/>
+ <span jwcid="defaultSelectedTitleBlock@Block"><span key="title.selected"/></span>
+    </th>
+  </tr>
+  <tr>
+    <td class="available-cell"><select jwcid="@Delegator" delegate="ognl:availableColumn"/></td>
+    <td class="selected-cell"><select jwcid="@Delegator" delegate="ognl:selectedColumn"/></td>
+  </tr>
+</table>
+</span>

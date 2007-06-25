@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project name="Tapestry">
+    <bannerLeft>
+        <name>Tapestry Web Application Framework</name>
+        <href>http://tapestry.apache.org/</href>
+        <src>images/tapestry_banner.gif</src>
+    </bannerLeft>
+    <bannerRight>
+        <name>Apache Software Foundation</name>
+        <href>http://www.apache.org</href>
+        <src>images/asf_logo_wide.gif</src>
+    </bannerRight>
+    
+    <skin>
+        <groupId>org.apache.tapestry</groupId>
+        <artifactId>maven-skin</artifactId>
+        <version>1.1</version>
+    </skin>
+    
+    <publishDate format="dd MMM yyyy" />
+    
+    <body>
+        <links>
+            <item name="Tapestry" href="http://tapestry.apache.org/" />
+            <item name="Hivemind" href="http://jakarta.apache.org/hivemind/" />
+            <item name="Apache" href="http://www.apache.org/" />
+        </links>
+        
+        <head>
+            <script src="http://www.google-analytics.com/urchin.js" type="text/javascript"></script>
+            <script type="text/javascript">_uacct = "UA-400821-1"; urchinTracker();</script>
+            <link rel="shortcut icon" href="http://tapestry.apache.org/tapestry4.1/favicon.ico" />
+        </head>
+        
+        <menu ref="parent" />
+        
+        <menu name="Documentation">
+            
+            <item name="Overview" href="/index.html" />
+                
+            <item name="Components" href="/componentreference/index.html" collapse="true">
+                <item name="AjaxStatus" href="/componentreference/ajaxstatus.html" />
+                <item name="CheckboxGroup" href="/componentreference/checkboxgroup.html" />
+                <item name="ColumnSortImage" href="/componentreference/columnsortimage.html" />
+                <item name="ColumnSortLink" href="/componentreference/columnsortlink.html" />                
+                <item name="ControlCheckbox" href="/componentreference/controlcheckbox.html" />
+                <item name="ControlledCheckbox" href="/componentreference/controlledcheckbox.html" />
+                <item name="DumpObject" href="/componentreference/dumpobject.html" />
+                <item name="InspectorButton" href="/componentreference/inspectorbutton.html" />
+                <item name="MaskEdit" href="/componentreference/maskedit.html" />
+                <item name="MultiplePropertySelection" href="/componentreference/multiplepropertyselection.html" />
+                <item name="Palette" href="/componentreference/palette.html" />
+                <item name="SimpleTableColumnComponent" href="/componentreference/simpletablecolumncomponent.html" />
+                <item name="SimpleTableColumnFormComponent" href="/componentreference/simpletablecolumnformcomponent.html" />
+                <item name="Table" href="/componentreference/table.html" />
+                <item name="TableColumns" href="/componentreference/tablecolumns.html" />
+                <item name="TablePages" href="/componentreference/tablepages.html" />
+                <item name="TableRows" href="/componentreference/tablerows.html" />
+                <item name="TableValues" href="/componentreference/tablevalues.html" />
+                <item name="TableView" href="/componentreference/tableview.html" />
+                <item name="Timeout" href="/componentreference/timeout.html" />
+                <item name="XTile" href="/componentreference/xtile.html" />
+            </item>
+            
+            <item name="Hivedoc" href="/hivedoc/index.html" />
+            
+        </menu>
+        
+        ${reports} 
+    </body>
+    
+</project>

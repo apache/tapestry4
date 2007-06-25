@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Copyright 2004, 2005 The Apache Software Foundation
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<document>
+    <properties>
+        <title>InsertText</title>
+    </properties>
+    <body>
+
+        <section name="InsertText">
+
+            <p>
+                Inserts multi-line text, breaking it into individual lines according to a mode. Commonly used to
+                properly display the data provided by a user via the
+                <a href="../form/textarea.html">TextArea</a>
+                component.
+            </p>
+
+            <span class="warn">
+                <strong>Warning:</strong>
+                <p>
+                    This component has now been deprecated in favor of the additional functionality
+                    added to the <a href="insert.html">Insert</a> component.
+                </p>
+            </span>
+
+            <p>
+                <strong>
+                    See also:
+                    <a href="../../apidocs/org/apache/tapestry/html/InsertText.html">
+                        org.apache.tapestry.html.InsertText
+                    </a>
+                    ,
+                    <a href="../../apidocs/org/apache/tapestry/html/InsertTextMode.html">
+                        org.apache.tapestry.html.InsertTextMode
+                    </a>
+                    ,
+                    <a href="../form/textarea.html">TextArea</a>
+                </strong>
+            </p>
+
+            <section name="Parameters">
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Default</th>
+                        <th>Description</th>
+                    </tr>
+
+                    <tr>
+                        <td>value</td>
+                        <td>string</td>
+                        <td>yes</td>
+                        <td></td>
+                        <td>The multi-line string to render.</td>
+                    </tr>
+
+                    <tr>
+                        <td>mode</td>
+                        <td>
+                            <a href="../../apidocs/org/apache/tapestry/html/InsertTextMode.html">InsertTextMode</a>
+                        </td>
+                        <td>no</td>
+                        <td>BREAK</td>
+                        <td>Controls how each line is rendered.</td>
+                    </tr>
+
+                    <tr>
+                        <td>raw</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            If true, then output is not filtered for HTML entities. Used when the value parameter
+                            contains markup that should be rendered as-is.
+                        </td>
+                    </tr>
+
+                </table>
+
+                <p>
+                    Body:
+                    <strong>removed</strong>
+                </p>
+
+                <p>
+                    Informal parameters:
+                    <strong>forbidden</strong>
+                </p>
+
+                <p>
+                    Reserved parameters:
+                    <em>none</em>
+                </p>
+
+                <p>
+                    The value parameter is split into multiple lines, and each line is printed. The default
+                    <em>mode</em>
+                    renders a
+                    <code>&lt;br/&gt;</code>
+                    tag between lines (that is, before each line after the first line output). The alternate mode
+                    renders
+                    <code>&lt;p&gt; and &lt;/p&gt;</code>
+                    tags around each line.
+                </p>
+            </section>
+
+            <p>
+                The OGNL expression
+                <code>@org.apache.tapestry.html.InsertTextMode@PARAGRAPH</code>
+                can be used to specify paragraph rendering mode.
+            </p>
+
+        </section>
+
+    </body>
+</document>

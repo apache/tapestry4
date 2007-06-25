@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Copyright 2005, 2006 The Apache Software Foundation
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<document>
+    <properties>
+        <title>XTile</title>
+    </properties>
+    <body>
+
+        <section name="XTile">
+
+            <p>
+                A component providing the required JavaScript to pass some information to the server
+                and receive its response without reloading the page (Ajax)
+            </p>
+
+            <span class="warn">
+                <strong>Warning:</strong>
+                <p>
+                The
+                <a
+                    href="../../tapestry-contrib/apidocs/org/apache/tapestry/contrib/ajax/XTileService.html">
+                    XTileService
+                </a>
+                that this component uses does NOT activate any page - it simply calls the specified
+                listener. This means that <code>pageBeginRender()</code> methods will not get called and that
+                <code>cycle.getPage()</code> will return null.
+                </p>
+            </span>
+
+            <subsection name="Parameters">
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Default</th>
+                        <th>Description</th>
+                    </tr>
+
+                    <tr>
+                        <td>listener</td>
+                        <td>
+                            <a
+                                href="../../apidocs/org/apache/tapestry/IActionListener.html">
+                                IActionListener
+                            </a>
+                        </td>
+                        <td>yes</td>
+                        <td></td>
+                        <td>
+                            The listener that will be invoked when the Javascript function with the
+                            given name is invoked. Any parameters passed to the send function will
+                            be available from <code>cycle.getListenerParameters()</code>. In addition, the
+                            listener can perform <code>cycle.setListenerParameters()</code> to pass an array of
+                            strings to the JavaScript receive function.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>sendName</td>
+                        <td>String</td>
+                        <td>yes</td>
+                        <td></td>
+                        <td>
+                            The name of the JavaScript function that the script will define to allow
+                            the application to send information to the server.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>receiveName</td>
+                        <td>String</td>
+                        <td>yes</td>
+                        <td></td>
+                        <td>
+                            The name of the JavaScript function that the script will call to allow
+                            the application to receive information from the server some time after
+                            the send function has been invoked.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>errorName</td>
+                        <td>String</td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            The name of the JavaScript function that the script will call to
+                            indicate that an error has occurred while sending the information to the
+                            server.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>disableCaching</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            Some browsers cache repeated requests that have identical URLs. Pass
+                            'true' to this parameter to disable caching by making the URLs unique.
+                        </td>
+                    </tr>
+                </table>
+
+                <p>
+                    Body:
+                    <strong>removed</strong>
+                </p>
+
+                <p>
+                    Informal parameters:
+                    <strong>allowed</strong>
+                </p>
+
+                <p>
+                    Reserved parameters:
+                    <em>none</em>
+                </p>
+
+            </subsection>
+
+            <subsection name="Examples">
+
+                <p>
+                    The XTile example has portions implemented in the HTML and a listener method in
+                    the page class. They are broken down as follows:
+                </p>
+
+                <p>XTileExample.html</p>
+
+                <source xml:space="preserve">
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;XTile Example&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;span jwcid="@contrib:XTile" listener="ognl:listeners.handleListRequest"
+        sendName="sendPrefix" receiveName="recvList"/&gt;
+    &lt;form action="Results.html" method="post"&gt;
+       &lt;input type="text" onkeyup="sendPrefix(this.value)"/&gt;
+       &lt;br/&gt;
+       &lt;textarea name="listing" rows="5"&gt;&lt;/textarea&gt;
+    &lt;/form&gt;
+    &lt;script&gt;
+      function recvList(arr) {
+      	document.f.listing.value = arr.join("\n");
+      }
+    &lt;/script&gt;
+
+  &lt;/body&gt;
+&lt;/html&gt;
+	</source>
+
+                <p>Then in your page class you just need to add the appropriate method.</p>
+
+                <p>XTileExample.java</p>
+                <source xml:space="preserve">
+    .
+    .
+    .
+    public void handleListRequest(IRequestCycle cycle) {
+      Object[] params = cycle.getListenerParameters();
+      if (params.length == 0) return;
+
+      String typed = params[0].toString();
+      String[] ret = findCompletions(typed);
+      cycle.setListenerParameters(ret);
+    }
+    .
+    .
+    .
+	</source>
+
+            </subsection>
+
+        </section>
+
+    </body>
+</document>

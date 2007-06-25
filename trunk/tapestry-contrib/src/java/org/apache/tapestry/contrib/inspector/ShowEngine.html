@@ -1,0 +1,94 @@
+<!--
+   Copyright 2004 The Apache Software Foundation
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<span jwcid="$content$">
+<table class="inspector-data">
+
+	<tr class="heading">
+		<th colspan="2">Engine/Application Properties</th>
+	</tr>
+	
+	<tr class="heading">
+		<th>Name</th> <th>Property</th>
+	</tr>
+	
+	<tr class="even">
+		<th>Tapestry Framework Version</th>
+		<td><span jwcid="insertFrameworkVersion"/></td>
+	</tr>
+	
+	<tr class="odd">
+		<th>Application Name</th>
+		<td><span jwcid="insertApplicationName"/></td>
+	</tr>
+	
+	<tr class="even">
+		<th>Locale</th>
+		<td><span jwcid="insertLocale"/></td>
+	</tr>
+
+</table>
+
+<div jwcid="@If" condition="ognl:! sessionAttributeNames.empty">
+  
+<h1>Session Data</h1>
+  
+<table class="inspector-data">
+  
+  <tr class="heading">
+    <th>Name</th> <th>Object</th>
+  </tr>
+  <tr jwcid="loop">
+    <td>
+      <span jwcid="@Insert" value="ognl:attributeName"/>
+    </td>
+    <td>
+      <pre><span jwcid="@DumpObject" object="ognl:session.getAttribute(attributeName)"/></pre>
+    </td>
+    
+  </tr>
+  
+</table>  
+  
+</div>
+
+<h1>Operations</h1>
+
+<table class="inspector-data">
+
+	<tr class="even">
+		<td><a jwcid="restart" target="_new"><img jwcid="restartButton"/></a>
+		</td>
+		<td>Restart the application (in a new window).
+		</td>
+	</tr>
+
+	<tr class="even">
+		<td><a jwcid="reset"><img jwcid="resetButton"/></a>
+		</td>
+		<td>
+		Reset the application, discarding all cached specifications, assets
+		and templates.
+		</td>
+	</tr>
+</table>
+
+
+<h1>Request Data</h1>
+
+<span jwcid="@RequestDisplay"/>
+
+</span>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Copyright 2006 The Apache Software Foundation
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<document>
+    <properties>
+        <title>DropdownTimePicker</title>
+    </properties>
+    <body>
+
+        <section name="DropdownTimePicker">
+
+            <p>
+                Provides a form Date field component for selecting <em>times</em>. A drop down selection
+                of time values is displayed, optionally specifying am/pm.
+            </p>
+            <p>
+                JavaScript must be enabled in the client browser to use the drop down calendar. If
+                JavaScript is not enabled users can still enter a date value in the HTML text field.
+            </p>
+            
+            <img src="../../images/ComponentReference/DropdownTimePicker.png" />
+            
+            <p>
+                <strong>
+                    See also:
+                    <a href="dropdowndatepicker.html">DropdownDatePicker</a>
+                    ,
+                    <a href="../form/datepicker.html">DatePicker</a>
+                </strong>
+
+            </p>
+
+            <section name="Parameters">
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Default</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>value</td>
+                        <td>java.util.Date</td>
+                        <td>yes</td>
+                        <td></td>
+                        <td>
+                            The data value. Take care to ensure date time values are 'normalized'
+                            before performing any millisec based comparison or equality operations.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>disabled</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            Controls whether the date field and calendar button is active or not.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>displayName</td>
+                        <td>String</td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            The user-presentable name for the component, which will be used by a
+                            <a href="../form/fieldlabel.html">FieldLabel</a>
+                            connected to the component.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>validators</td>
+                        <td>
+                            Array or collection of
+                            <a
+                                href="../../apidocs/org/apache/tapestry/form/validator/Validator.html">
+                                Validator
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            The validators to apply to the component. Something along the lines of:
+                            <code>validators:required</code> .<br/><br/>
+                            
+                            <strong>See also:</strong> <a href="../../usersguide/validation.html">Validation</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>translator</td>
+                        <td>
+                            <a
+                                href="../../tapestry/apidocs/org/apache/tapestry/form/translator/Translator.html">
+                                Translator
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td>translator:date,pattern=hh:mm a</td>
+                        <td>
+                            The translator to use when displaying and parsing the time.
+                            <br/><br/>
+                            <strong>See also:</strong> <a href="../../usersguide/validation.html">Validation</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>iconAlt</td>
+                        <td>String</td>
+                        <td>no</td>
+                        <td>literal:Select a Time</td>
+                        <td>
+                           The textual name given to the date picking icon before the image is loaded.
+                        </td>
+                    </tr>
+                </table>
+
+                <p>
+                    Body:
+                    <strong>removed</strong>
+                </p>
+                <p>
+                    Informal parameters:
+                    <strong>allowed</strong>
+                </p>
+
+                <p>
+                    Reserved parameters:
+                    <em>name, autocomplete</em>
+                </p>
+
+            </section>
+
+            <section name="Examples">
+                TODO...
+            </section>
+            
+        </section>
+
+    </body>
+</document>

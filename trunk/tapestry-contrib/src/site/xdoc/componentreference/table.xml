@@ -1,0 +1,796 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Copyright 2005 The Apache Software Foundation
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<document>
+    <properties>
+        <title>Table</title>
+    </properties>
+    <body>
+
+        <section name="Table">
+
+            <p>
+                Provides a HTML <code>&lt;table&gt;</code> element. The Table component is a facade component in
+                the Table family. Table allows you to present a sortable and pagable table simply
+                and easily by using only this one component.
+            </p>
+            <p>
+                The Table component allows you to manipulate its appearance by allowing you to
+                define the 'class' attributes of its internal elements. If you want to change the
+                structure of the table, however, you can instead build your own using the lower
+                level components
+                <a href="tableview.html">TableView</a>
+                    ,
+                    <a href="tablepages.html">TablePages</a>
+                    ,
+                    <a href="tablerows.html">TableRows</a>
+                    ,
+                    <a href="tablevalues.html">TableValues</a>
+                    ,
+                    <a href="tablecolumns.html">TableColumns</a>
+                .
+            </p>
+            <p>
+                The Table component delegates the handling of the table model and related activities
+                to the
+                <a href="tableview.html">TableView</a>
+                , and more detailed information about the process can be found in the documentation
+                of that class.
+            </p>
+            <p>
+                <strong>Providing the data</strong>
+            </p>
+            <p>
+                There are many ways to provide the component with the data it has to render, but
+                here are the three major ones:
+            </p>
+            <ol>
+                <li>
+                    <p>
+                        The data is passed to the
+                        <code>source</code>
+                        parameter in the form of an array, a collection, or an iterator, and the
+                        table columns are defined using the
+                        <code>columns</code>
+                        parameter (see further for details). Both of these parameters will be
+                        evaluated at every request by default, so changes in the data or the table
+                        columns will be displayed immediately.
+                    </p>
+                    <p>The example below uses this method.</p>
+                    <p>
+                        This is the easiest and most straightforward approach. It has one
+                        performance limitation, however - if the table is sorting the data according
+                        to a given column, the sorting will be performed at every request. The next
+                        methods provide ways to resolve this possible performance issue.
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        The data is passed to the
+                        <code>source</code>
+                        parameter via an object that implements the
+                        <a
+                            href="../../tapestry-contrib/apidocs/org/apache/tapestry/contrib/table/model/IBasicTableModel.html">
+                            <code>IBasicTableModel</code>
+                        </a>
+                        interface. Through that interface you are given the sorting column (if any)
+                        and the numbers of the items that will be displayed on the current page. You
+                        then need to provide the component with the corresponding data.
+                    </p>
+                    <p>
+                        This method allows you to perform the sorting in the database and load only
+                        the data that will be displayed on the current page (e.g. by using the ORDER
+                        BY, LIMIT, and OFFSET clauses in SQL) and hence it could be far more
+                        efficient.
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        All of the information (data, columns, state) is packaged in an
+                        <a
+                            href="../../tapestry-contrib/apidocs/org/apache/tapestry/contrib/table/model/ITableModel.html">
+                            <code>ITableModel</code>
+                        </a>
+                        and is passed to the
+                        <code>tableModel</code>
+                        parameter.
+                    </p>
+                    <p>
+                        This approach allows greatest flexibility, but is recommended only for
+                        advanced users of the Table components.
+                    </p>
+                </li>
+            </ol>
+
+            <p>
+                <strong>Defining the columns</strong>
+            </p>
+
+            <p>
+                If you define the table columns using the
+                <code>columns</code>
+                parameter, you can either provide a list of
+                <a
+                    href="../../tapestry-contrib/apidocs/org/apache/tapestry/contrib/table/model/ITableColumn.html">
+                    <code>ITableColumn</code>
+                </a>
+                objects, each defining a column in the table, or you can define the columns using a
+                string that describes each column.
+            </p>
+            <p>
+                Please see the example below as a demonstration of the use of the latter approach.
+            </p>
+            <p>The string describing the columns must be formatted in the following way:</p>
+            <ul>
+                <li>The column definitions in the string are separated by commas</li>
+
+                <li>
+                    Each column definition must be of one of the following types:
+                    <ul>
+                        <li>id</li>
+                        <li>id:expression</li>
+                        <li>id:description:expression</li>
+                    </ul>
+                    <br />
+                    Here the
+                    <strong>id</strong>
+                    defines the identification of the column, the
+                    <strong>expression</strong>
+                    is an OGNL expression that extracts the column value from the row object, and
+                    <strong>description</strong>
+                    is the title of the column if it is not defined otherwise.
+                    <p>
+                        Each column definition may be prefixed by the
+                        <strong>!</strong>
+                        character, which identifies the column as non-sortable.
+                    </p>
+                    <p>
+                        If defined, a Block with a name that starts with the column id and ends
+                        with
+                        <em>ColumnValue</em>
+                        will be used to render the column values. Similarly, a Block with a name
+                        that starts with the column id and ends with
+                        <em>ColumnHeader</em>
+                        will be used to render the column headers.
+                    </p>
+                    <p>
+                        Finally, the title of the column will be taken from translation strings of
+                        the component by using the column id as a key.
+                    </p>
+                    <p>
+                        Please see the
+                        <code>LocaleSelection</code>
+                        component for examples.
+                    </p>
+                </li>
+                <li>
+                    A column definition may also be of the type
+                    <ul>
+                        <li>=expression</li>
+                    </ul>
+                    <br />
+                    in which case it identifies an OGNL expression that returns an
+                    <a
+                        href="../../tapestry-contrib/apidocs/org/apache/tapestry/contrib/table/model/ITableColumn.html">
+                        <code>ITableColumn</code>
+                    </a>
+                    object defining the column.
+                </li>
+                <li>
+                    The full description string may be prefixed by the
+                    <strong>*</strong>
+                    character, which means that the table is to be rendered within a form, and the
+                    column headers must submit the form if they are clickable (i.e. if the column is
+                    sortable).
+                </li>
+            </ul>
+            <p>
+                Here is an example of the use of a description string to define columns:
+                <code>
+                    columns="locale:toString(), =currencyColumn,
+                    verbosity:Verbosity:currentRowVerbosity, !delete"
+                </code>
+            </p>
+            <p>
+                <strong>
+                    See also:
+                    <a href="tableview.html">TableView</a>
+                    ,
+                    <a href="tablepages.html">TablePages</a>
+                    ,
+                    <a href="tablerows.html">TableRows</a>
+                    ,
+                    <a href="tablevalues.html">TableValues</a>
+                    ,
+                    <a href="tablecolumns.html">TableColumns</a>
+                </strong>
+            </p>
+
+            <subsection name="Parameters">
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Default</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>source</td>
+                        <td>
+                            <a
+                                href="http://java.sun.com/j2se/1.5.0/docs/api/docs/api/java/lang/Object.html">
+                                Object
+                            </a>
+                            []
+                            <br />
+                            <a
+                                href="http://java.sun.com/j2se/1.5.0/docs/api/docs/api/java/util/Collection.html">
+                                Collection
+                            </a>
+                            <br />
+                            <a
+                                href="http://java.sun.com/j2se/1.5.0/docs/api/docs/api/java/util/Iterator.html">
+                                Iterator
+                            </a>
+                            <br />
+                            <a
+                                href="../../tapestry-contrib/apidocs/org/apache/tapestry/contrib/table/model/IBasicTableModel.html">
+                                <code>IBasicTableModel</code>
+                            </a>
+                        </td>
+                        <td rowspan="3">
+                            You must provide either both
+                            <code>source</code>
+                            and
+                            <code>columns</code>
+                            parameters or the
+                            <code>tableModel</code>
+                            parameter
+                        </td>
+                        <td> </td>
+                        <td>
+                            The data to be displayed by the component. This parameter must be used
+                            in combination with the
+                            <code>columns</code>
+                            parameter. The parameter must be an array of values, a collection, an
+                            iterator, or an object implementing the IBasicTableModel interface.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>columns</td>
+                        <td>
+                            <a
+                                href="http://java.sun.com/j2se/1.5.0/docs/api/docs/api/java/lang/String.html">
+                                String
+                            </a>
+                            <br />
+                            <a
+                                href="../../tapestry-contrib/apidocs/org/apache/tapestry/contrib/table/model/ITableColumnModel.html">
+                                ITableColumnModel
+                            </a>
+                            <br />
+                            <a
+                                href="../../tapestry-contrib/apidocs/org/apache/tapestry/contrib/table/model/ITableColumn.html">
+                                ITableColumn[]
+                            </a>
+                            <br />
+                            <a
+                                href="http://java.sun.com/j2se/1.5.0/docs/api/docs/api/java/util/List.html">
+                                List
+                            </a>
+                            <br />
+                            <a
+                                href="http://java.sun.com/j2se/1.5.0/docs/api/docs/api/java/util/Iterator.html">
+                                Iterator
+                            </a>
+                        </td>
+                        <td></td>
+                        <td> </td>
+                        <td>
+                            The table columns to be displayed. The parameter must be an array, a
+                            list, or an Iterator of ITableColumn objects, an ITableColumnModel, or a
+                            String describing the columns (see documentation).
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>tableModel</td>
+                        <td>
+                            <a
+                                href="../../tapestry-contrib/apidocs/org/apache/tapestry/contrib/table/model/ITableModel.html">
+                                <code>ITableModel</code>
+                            </a>
+                        </td>
+                        <td></td>
+                        <td> </td>
+                        <td>
+                            The
+                            <a
+                                href="../../tapestry-contrib/apidocs/org/apache/tapestry/contrib/table/model/ITableModel.html">
+                                <code>ITableModel</code>
+                            </a>
+                            to be used to render the table. The model contains all of the
+                            information needed to render the table and gives greatest flexibility,
+                            but it may be harder to implement than simply using the
+                            <code>source</code>
+                            and
+                            <code>columns</code>
+                            parameters.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>keyExpression</td>
+                        <td>String</td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                        Only active in a form. An OGNL expression that returns the primary key of the iterated value. 
+            The primary keys are stored in hidden fields during rendering and are loaded from the form
+            during a rewind to ensure that the iterations remain the same.
+            This is a simpler, but a less efficient alternative of the 'converter' parameter.
+            If needed, please use in conjuction with 'fullSource' to reference objects 
+            not currently present in 'source'.
+            <br/><br/>
+            Also, use the 'defaultValue' parameter to define the object to be returned if
+            a value corresponding to a particular primary key cannot be found.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>fullSource</td>
+                        <td>Object/Collection</td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                         Only active in a form and in combination with the 'keyExpression' parameter. 
+            If an object corresponding to a primary key stored in the form cannot be
+            found in the 'source' parameter, then the objects provided by this parameter 
+            are searched for a match next. 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>defaultValue</td>
+                        <td></td>
+                        <td>no</td>
+                        <td>null</td>
+                        <td>
+                         Only active in a form. The value to be used when no match for a 
+                         given primary key is found. 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>converter</td>
+                        <td></td>
+                        <td>no</td>
+                        <td>null</td>
+                        <td>
+                         Only active in a form. Defines how the items iterated upon 
+            will be stored in the form as hidden values and how the stored information will be 
+            converted back to objects. 
+            This interface allows only the primary key of the items to be stored, 
+            rather than the whole item.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>primaryKeys</td>
+                        <td></td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                         Only active in a form. If provided, the parameter is automatically updated 
+		    before a rewind with the list of primary keys stored in the form. 
+		    The parameter is updated right before the iterations begin in a rewind and 
+		    could be used to preload the relevant objects in a provided 'converter'.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>volatile</td>
+                        <td></td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                         Only active in a form. Determines whether to avoid creating hidden fields within a form.
+            Using this parameter may make the form structure different during render and rewind, 
+            and cause exceptions as a result. Please use with caution.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>persist</td>
+                        <td>String</td>
+                        <td></td>
+                        <td><code>literal:session</code></td>
+                        <td>
+                            Defines how the table state (paging and sorting) will be persisted
+                            if no tableSessionStoreManager is defined.
+                            <br/><br/>
+                            The possible values are <code>session</code> (the default), 
+                            <code>client</code>, <code>client:page</code>, 
+                            and <code>client:app</code>.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>tableSessionStateManager</td>
+                        <td>
+                            <a
+                                href="../../tapestry-contrib/apidocs/org/apache/tapestry/contrib/table/model/ITableSessionStateManager.html">
+                                <code>ITableSessionStateManager</code>
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td>
+                            A custom session state manager that reloads the data at each request if
+                            it is provided via the
+                            <code>source</code>
+                            and
+                            <code>columns</code>
+                            parameters or stores all of it in the session if it is provided via the
+                            <code>tableModel</code>
+                            parameter
+                        </td>
+                        <td>
+                            This is the session state manager that will control what part of the
+                            table model will be saved in the session state. It is then used to
+                            recreate the table model by using what was saved in the session.
+                            <p>
+                                You can use one of the stock implementations of
+                                <a
+                                    href="../../tapestry-contrib/apidocs/org/apache/tapestry/contrib/table/model/ITableSessionStateManager.html">
+                                    <code>ITableSessionStateManager</code>
+                                </a>
+                                to determine the session state behaviour, or you can define your
+                                own.
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>tableSessionStoreManager</td>
+                        <td>
+                            <a
+                                href="../../tapestry-contrib/apidocs/org/apache/tapestry/contrib/table/model/ITableSessionStoreManager.html">
+                                <code>ITableSessionStoreManager</code>
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            Determines how the session state (returned by the session state manager)
+                            will be saved in the session. If this parameter is null, then the state
+                            will be saved as a persistent property. If it is not null, then the
+                            methods of the interface will be used to save and load the state.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>columnSettingsContainer</td>
+                        <td>
+                            <a
+                                href="../../apidocs/org/apache/tapestry/IComponent.html">
+                                <code>IComponent</code>
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td>container</td>
+                        <td>
+                            The container used to look up Blocks and messages when the
+                            source/columns mode is being used.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>index</td>
+                        <td>Object</td>
+                        <td>no</td>
+                        <td></td>
+                        <td>If provided, the parameter is updated with the 
+                            index of the loop on each iteration.</td>
+                    </tr>
+                    <tr>
+                        <td>row</td>
+                        <td>Object</td>
+                        <td>no</td>
+                        <td> </td>
+                        <td>The value object of the current row being rendered.</td>
+                    </tr>
+                    <tr>
+                        <td>column</td>
+                        <td>
+                            <a
+                                href="../../tapestry-contrib/apidocs/org/apache/tapestry/contrib/table/model/ITableColumn.html">
+                                <code>ITableColumn</code>
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td> </td>
+                        <td>The object representing the current column being rendered.</td>
+                    </tr>
+
+                    <tr>
+                        <td>pageSize</td>
+                        <td>
+                            <code>int</code>
+                        </td>
+                        <td>no</td>
+                        <td>10</td>
+                        <td>
+                            The number of records displayed per page.
+                            <p>
+                                This parameter is only used with the
+                                <code>source</code>
+                                and
+                                <code>columns</code>
+                                parameters.
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>pagesDisplayed</td>
+                        <td>int</td>
+                        <td>no</td>
+                        <td>7</td>
+                        <td>
+                            Determines the maximum number of pages to be displayed in the page list
+                            when the table has more than one page.
+                            <p>
+                                For example, if the table has 20 pages, and 10 is the current page,
+                                pages from 7 to 13 in the page list will be shown if this parameter
+                                has a value of 7.
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>initialPage</td>
+                        <td>
+                            <code>int</code>
+                        </td>
+                        <td>no</td>
+                        <td>0</td>
+                        <td>
+                            The initial page to be displayed.
+                            <br/><br/>
+                            This is the first page by default.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>initialSortColumn</td>
+                        <td>
+                            <a
+                                href="http://java.sun.com/j2se/1.5.0/docs/api/docs/api/java/lang/String.html">
+                                String
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td>null</td>
+                        <td>
+                            The id of the column to initially sort the table by. A value of
+                            <code>null</code>
+                            indicates no sorting.
+                            <p>
+                                This parameter is only used with the
+                                <code>source</code>
+                                and
+                                <code>columns</code>
+                                parameters.
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>initialSortOrder</td>
+                        <td>
+                            <code>boolean</code>
+                        </td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            The order of the initial sorting. Set this parameter to
+                            <code>false</code>
+                            to sort in an ascending order and to
+                            <code>true</code>
+                            to sort in a descending one.
+                            <p>
+                                This parameter is only used with the
+                                <code>source</code>
+                                and
+                                <code>columns</code>
+                                parameters.
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>arrowUpAsset</td>
+                        <td>
+                            <a
+                                href="../../apidocs/org/apache/tapestry/IAsset.html">
+                                <code>IAsset</code>
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td> </td>
+                        <td>The image to use to describe a column sorted in an ascending order.</td>
+                    </tr>
+
+                    <tr>
+                        <td>arrowDownAsset</td>
+                        <td>
+                            <a
+                                href="../../apidocs/org/apache/tapestry/IAsset.html">
+                                <code>IAsset</code>
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td> </td>
+                        <td>The image to use to describe a column sorted in a descending order.</td>
+                    </tr>
+
+                    <tr>
+                        <td>pagesClass</td>
+                        <td>
+                            <a
+                                href="http://java.sun.com/j2se/1.5.0/docs/api/docs/api/java/lang/String.html">
+                                String
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td> </td>
+                        <td>The CSS class of the table pages.</td>
+                    </tr>
+
+                    <tr>
+                        <td>columnsClass</td>
+                        <td>
+                            <a
+                                href="http://java.sun.com/j2se/1.5.0/docs/api/docs/api/java/lang/String.html">
+                                String
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td> </td>
+                        <td>The CSS class of the table columns.</td>
+                    </tr>
+
+                    <tr>
+                        <td>rowsClass</td>
+                        <td>
+                            <a
+                                href="http://java.sun.com/j2se/1.5.0/docs/api/docs/api/java/lang/String.html">
+                                String
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td> </td>
+                        <td>The CSS class of the table rows.</td>
+                    </tr>
+
+                    <tr>
+                        <td>valuesClass</td>
+                        <td>
+                            <a
+                                href="http://java.sun.com/j2se/1.5.0/docs/api/docs/api/java/lang/String.html">
+                                String
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td> </td>
+                        <td>The CSS class of the table values.</td>
+                    </tr>
+
+                </table>
+
+                <p>
+                    Body:
+                    <strong>removed</strong>
+                </p>
+
+                <p>
+                    Informal parameters:
+                    <strong>allowed</strong>
+                </p>
+
+                <p>
+                    Reserved parameters:
+                    <em>none</em>
+                </p>
+
+            </subsection>
+
+            <subsection name="Examples">
+                <p>
+                    You can find examples in the Tutorial as part of the Workbench application under
+                    the "Table" tab.
+                </p>
+                <p>
+                    That page consists of two components -- the
+                    <code>LocaleList</code>
+                    component and the
+                    <code>LocaleSelection</code>
+                    component.
+                </p>
+                <p>
+                    The
+                    <code>LocaleList</code>
+                    component allows you to view all Locales in a table (similar to the example
+                    above), as well as to choose Locales from the table and add them to your
+                    "selection".
+                </p>
+                <p>
+                    The
+                    <code>LocaleSelection</code>
+                    component displays the selected Locales and provides additional information
+                    about them. It also allows Locales to be removed from the selection.
+                </p>
+                <p>
+                    Even though the two components utilizing the Table are placed on a single page,
+                    they can operate without any interference from each other with no effort at all
+                    on part of the developer -- each table can be sorted independently, for example.
+                    This is a good illustration of the power of Tapestry's component approach.
+                </p>
+
+            </subsection>
+            
+            <subsection name="Complicated Render">
+               <p>
+                This example shows how you can use the individual components that the Table component wraps to
+                provide more control over how the table is rendered.
+               </p>
+               
+               <subsection name="HTML Template">
+<source><![CDATA[
+
+<table jwcid="tableView@contrib:TableView" 
+	source="ognl:scores"
+columns="name:sampleName,score1:Score 1:getScoreDisplay(0),score2:Score 2:getScoreDisplay(1),score3:Score 3:getScoreDisplay(2)"
+	>
+    <tr>
+     <span jwcid="@contrib:TableColumns" />
+    </tr>
+   
+   <tr jwcid="tableRows@contrib:TableRows" class="ognl:beans.evenOdd.next">
+     <td align="left">
+      <span jwcid="@Insert" value="ognl:components.tableRows.tableRow.sampleName" />
+     </td>
+     <td align="right">
+       <span jwcid="@Insert" value="ognl:components.tableRows.tableRow.getScoreDisplay(0)" />
+     </td>
+     <td align="right">
+       <span jwcid="@Insert" value="ognl:components.tableRows.tableRow.getScoreDisplay(1)" />
+     </td>
+     <td align="right">
+       <span jwcid="@Insert" value="ognl:components.tableRows.tableRow.getScoreDisplay(2)" />
+     </td>
+   </tr>
+        
+  <tr>
+    <td colspan="4" class="tablePages">
+      <span jwcid="tablePages@contrib:TablePages"/>
+    </td>
+  </tr>
+</table>
+
+]]></source>
+               </subsection>
+               
+               <p>
+                As you can see from the example there really isn't very much you can't control on an individual basis.
+                Of particular note is the area doing table row rendering, the <code>components.tableRows.tableRow.getFoo</code>
+                reference shows how you can get access to each individual data item being iterated over.
+               </p>
+               
+            </subsection>
+            
+        </section>
+
+    </body>
+</document>

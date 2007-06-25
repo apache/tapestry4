@@ -1,0 +1,93 @@
+<module name="jakarta-tapestry">
+
+  <!-- $Id$ -->
+
+  <url href="http://jakarta.apache.org/tapestry/index.html"/>
+  <description>
+  Component-based web application framework organized around insanely
+  high levels of resuse.
+  </description>
+
+  <cvs repository="jakarta"/>
+  
+  <project name="jakarta-tapestry">
+    <package>org.apache.tapestry</package>
+
+    <ant>
+      <property name="framework.version" value="@@DATE@@"/>
+    </ant>
+
+    <!-- framework -->
+    <depend project="ant" inherit="runtime"/>
+    <depend project="commons-beanutils"/>
+    <depend project="commons-digester"/>
+    
+    <depend project="commons-fileupload"/>
+    
+    
+    <depend project="commons-logging"/>
+    <depend project="commons-lang"/>
+    <depend project="jakarta-bsf"/>
+    <depend project="jakarta-oro"/>
+    <depend project="jakarta-servletapi-4"/>
+    <depend project="ognl"/>
+    <depend project="xml-xerces"/>
+    <depend project="jakarta-oro"/>
+    <depend project="commons-digester"/>
+    <depend project="commons-lang"/>
+    <depend project="jakarta-bsf"/>
+    <depend project="javassist"/>
+        
+    <!-- These aren't built, yet, by Gump.  We direct Gump to
+    	   use the versions stored in our CVS. -->
+    	   
+    <depend project="ognl"/>
+    <depend project="jakarta-commons-codec"/>
+
+    <!-- contrib -->
+    <work nested="framework/classes"/>
+    <depend project="ejb"/>
+
+    <!-- examples -->
+    <work nested="contrib/classes"/>
+    <depend project="jcharts"/>
+
+    <!-- examples/Vlib -->
+    <work nested="examples/VlibBeans/classes"/>
+
+    <jar name="lib/tapestry-@@DATE@@.jar"/>
+    <license name="LICENSE.txt"/>
+
+    <nag from="Howard M. Lewis Ship &lt;hlship@apache.org&gt;"
+         to="tapestry-dev@jakarta.apache.org"/>
+  </project>
+
+  <project name="ognl">
+    <package>ognl</package>
+    <url href="http://www.ognl.org"/>
+    
+    <!-- This needs to be kept up-to-date as we update to later versions of OGNL. -->
+    
+    <jar name="lib/ext/ognl-2.6.3.jar"/>
+    <license name="lib/ext/LICENSE.ognl.txt"/>
+  </project>
+   
+  <project name="jcharts">
+    <package>org.jCharts</package>
+    <url href="http://jcharts.sourceforge.net/"/>
+    <jar name="examples/Workbench/lib/jCharts-0.6.0.jar"/>
+    <license name="examples/Workbench/lib/LICENSE.jCharts.txt"/>
+  </project>
+
+  <!-- This is the 10/19/03 dev version of codec. 
+  	   Needs to be updated to a finalized version when it comes out 
+  	   and this project will be removed.
+  -->
+  <project name="jakarta-commons-codec">
+    <package>org.apache.commons.codec</package>
+    <url href="http://jakarta.apache.org/commons/codec/"/>
+    <jar name="lib/ext/commons-codec-1.2.jar"/>
+    <license name="lib/ext/LICENSE.commons-codec.txt"/>
+  </project>
+
+</module>

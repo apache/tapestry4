@@ -1,0 +1,101 @@
+div.requiredClause {
+	width:auto;
+	float:right;
+	padding-left:2px;
+	border-left:3px solid #ff660a;
+	margin-top:1.5em;
+	font-size: 0.7em;
+	font-weight:bold;
+}
+
+form { clear:both; border:1px solid #d0d8e2; margin:0; margin-bottom:1.5em; }
+form.container { padding:2em 1.5em; }
+* html form.container { width:100%; }
+
+/* field wrappers */
+form div.field{ margin-right:1.5em; padding-left:5px; }
+* html form div.field { margin-right:0.5em; }
+
+/* use in conjunction with div.field: <div class="field required"></div> */
+form div.required{ border-left:3px solid #ff660a; padding-left:2px; }
+form label{ display:block; margin-top:1em; font-size:0.65em; }
+form .ex-container label{ margin-top:0.75em; }
+
+/* input elements */
+form div.dropdown,
+form input.text,
+form input.numeric,
+form select,
+form textarea { border: 1px solid #a2da87; padding: 0.15em; width:100%; }
+form div.dropdown{ padding:0; height:22px; background-color:#fff;}
+form textarea { font-family:sans-serif; font-size:0.8em; margin: 0.55em 0; }
+* html form textarea { width:auto; }
+* html form select{ width:90%; }
+
+form textarea:focus, form input:focus { background-color: #F1F6FC; }
+form input.numeric { text-align:right; }
+
+form p { font-size:0.75em; }
+form h2 { font: 1.2em Tahoma, Myriad, sans-serif; background: #eef0f7 top left repeat-y; color: #4a7db5; padding: 1em 0.35em; }
+form h3 { font: 0.8em Tahoma, Myriad, sans-serif; font-weight:bold; color: #296cb5; margin:1.5em -1em 0 -1em; border-bottom: 1px solid #d0d8e2; padding-bottom:0; }
+form h4 { font: 0.8em Tahoma, Myriad, sans-serif; font-weight:bold; margin:0; margin-top:1em; border-bottom: 1px solid #ddd; }
+
+.submitButton,.submitButton:focus,.alertButton {
+	width: auto;
+	border: none;
+	background-color: #699ED9;
+	color: #fff;
+	padding: 0.1em;
+	border-bottom: 1px solid #5885b6 !important;
+	border-right: 1px solid #5885b6 !important;
+	border-top: 1px solid #92b8e2 !important;
+	border-left: 1px solid #92b8e2 !important;
+	cursor: hand;
+	cursor: pointer;
+}
+
+.alertDialog {
+    margin-left:26%;
+    margin-right:26%;
+    border: 2px solid #ff660a;
+    padding: 1em;
+    background: #ffffff;
+    -moz-border-radius: 10px;
+}
+
+.alertContent .alertButton {
+    float:right;
+    position:relative;
+    bottom:1em;
+}
+
+.fieldMissing {
+    background: #bedef4;
+}
+
+.fieldInvalid {
+    background: #ffaf7e;
+    font-weight: bold;
+}
+
+.missingList, .invalidList {
+    padding-bottom: 0.6em;
+    padding-top: 0.2em;
+    padding-left:0.1em;
+    padding-right:0.2em;
+    margin: 0;
+    width: 26em;
+}
+
+.missingList {
+    border-top: 4px solid #bedef4;
+}
+
+.invalidList {
+    border-top: 4px solid #ffaf7e;
+}
+
+.missingList li, .invalidList li {
+    list-style:none;
+    font-style:italic;
+}

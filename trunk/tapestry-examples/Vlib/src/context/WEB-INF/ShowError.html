@@ -1,0 +1,17 @@
+<span jwcid="$content$">
+	<span jwcid="@If" condition="ognl:page.error" volatile="true">
+		<div class="error">
+			<table>
+				<tr>
+					<td>
+						<img src="/vlib/images/error-icon.png" width="50" height="50" alt="Error" border="0" vspace="10"
+							align="absmiddle"/>
+					</td>
+					<td>
+						<span class="error" jwcid="@Insert" value="ognl:page.error">Error Message</span>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</span>
+</span>

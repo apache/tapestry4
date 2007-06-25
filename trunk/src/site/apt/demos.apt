@@ -1,0 +1,22 @@
+ ------
+Tapestry 4.1 Demos
+ ------
+Jesse Kuhnert
+ ------
+28 July 2006
+ ------
+
+{{{http://opencomponentry.com:8080/timetracker}TimeTracker}}
+
+  The {{{http://opencomponentry.com:8080/timetracker}TimeTracker}} application is a <work in progress> 
+  demonstration of some of the new XHR features available in tapestry.
+  
+  <<Demo:>> {{{http://opencomponentry.com:8080/timetracker}TimeTracker}}
+
+{{{http://opencomponentry.com:8080/workbench}Tapestry Workbench}}
+
+  The familiar {{{http://opencomponentry.com:8080/workbench}Workbench}} application has been updated 
+  to demonstrate what some of the new built in features look like, most notably the client side validation
+  API.
+
+  <<Demo:>> {{{http://opencomponentry.com:8080/workbench}Tapestry Workbench}}

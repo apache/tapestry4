@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+   <!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.2//EN"
+   "http://www.wapforum.org/DTD/wml12.dtd">
+<wml>
+    <head>
+        <meta http-equiv="Cache-Control" content="must-revalidate" forua="true"/>
+        <meta http-equiv="Cache-Control" content="no-cache" forua="true"/>
+    </head>
+
+    <template>
+        <do type="accept" label="Index">
+            <go href="../index.wml" />
+        </do>
+    </template>
+
+	<card id="Welcome" title="Welcome">
+		<p>
+            Hello <b jwcid="@Insert" value="ognl:username">John Doe</b>
+	    </p>
+	</card>
+</wml>

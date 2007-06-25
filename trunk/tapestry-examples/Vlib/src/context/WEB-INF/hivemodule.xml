@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<module id="vlib" version="4.0.0" package="org.apache.tapestry.vlib.services">
+    
+    <contribution configuration-id="tapestry.url.ServiceEncoders">
+        <direct-service-encoder id="direct" stateless-extension="direct" stateful-extension="sdirect"/>
+        <page-service-encoder id="page" extension="page" service="page"/>
+        <encoder id="viewbook" before="external" object="instance:ViewPageEncoder,pageName=ViewBook,url=/book"/>
+        <encoder id="viewperson" before="external" object="instance:ViewPageEncoder,pageName=ViewPerson,url=/person"/>
+        <page-service-encoder id="external" extension="external" service="external"/>    
+        <asset-encoder id="asset" path="/assets"/>
+        <extension-encoder id="ext" extension="svc" after="*"/>
+    </contribution>
+     
+    <service-point id="Operations" interface="org.apache.tapestry.vlib.ejb.IOperations">
+        
+        EJB for the majority of operations needed by the presentation tier.
+        
+        <invoke-factory service-id="hivemind.lib.EJBProxyFactory">
+            <construct home-interface="org.apache.tapestry.vlib.ejb.IOperationsHome" 
+                jndi-name="vlib/Operations"/> 
+        </invoke-factory>
+    </service-point>
+    
+    <service-point id="RemoteTemplate">
+        Used to process and recover from remote exceptions while
+        executing a block of code.
+        
+        <invoke-factory>
+            <construct class="RemoteTemplateImpl">
+                <set-object property="coordinator" value="service:hivemind.lib.RemoteExceptionCoordinator"/>
+                <set-object property="operations" value="service:Operations"/>            
+            </construct>
+        </invoke-factory>
+    </service-point>
+    
+    <service-point id="ErrorPresenter">
+        
+        Activates the Home or MyLibrary page to report an error.
+
+        <invoke-factory>
+            <construct class="ErrorPresenterImpl">
+                <set-object property="stateManager" value="infrastructure:applicationStateManager"/>
+            </construct>
+        </invoke-factory>        
+        <create-instance class="ErrorPresenterImpl"/>
+        
+    </service-point>
+    
+    <service-point id="BookQuerySource">
+        
+        Handles JNDI lookup and retry logic for obtaining
+        an IBookQuery EJB.
+        
+        <invoke-factory>
+            <construct class="BookQuerySourceImpl">
+                <set-object property="nameLookup" value="service:hivemind.lib.NameLookup"/>
+                <set-object property="remoteTemplate" value="service:RemoteTemplate"/>
+                <event-listener service-id="hivemind.lib.RemoteExceptionCoordinator"/>
+            </construct>
+        </invoke-factory>
+                
+    </service-point>
+    
+    <service-point id="ModelSource">
+        
+        Source for common property selection models.
+        
+        <invoke-factory model="threaded">
+            <construct class="ModelSourceImpl">
+                <set-object property="operations" value="service:Operations"/>
+                <set-object property="remoteTemplate" value="service:RemoteTemplate"/>
+                <set-object property="coordinator" value="service:hivemind.lib.RemoteExceptionCoordinator"/>
+            </construct>
+        </invoke-factory>
+        
+    </service-point>
+    
+    <service-point id="ApplicationLifecycle">
+        
+        Controls lifecycle operations; specifically logging out.
+        
+        <invoke-factory model="threaded">
+            <construct class="ApplicationLifecycleImpl">
+                <set-object property="stateManager" value="infrastructure:applicationStateManager"/>
+            </construct>
+        </invoke-factory>        
+    </service-point>
+    
+    <service-point id="DiscardSessionFilter" interface="org.apache.tapestry.services.WebRequestServicerFilter">
+        
+        Filter used to optionally discard the session at the end of a request (typically after a logout).
+        
+        <invoke-factory>
+            <construct class="DiscardSessionFilter">
+                <set-object property="applicationLifecycle" value="service:ApplicationLifecycle"/>
+            </construct>
+        </invoke-factory>
+        
+    </service-point>
+    
+    <contribution configuration-id="tapestry.request.WebRequestServicerPipeline">
+        <filter name="discard-session" object="service:DiscardSessionFilter"/>
+    </contribution>
+    
+    <contribution configuration-id="hivemind.ApplicationDefaults">
+        <!-- Talk to the local JBoss JNDI -->
+        <default symbol="java.naming.factory.initial" value="org.jnp.interfaces.NamingContextFactory"/>
+        <default symbol="java.naming.factory.url.pkgs" value="org.jboss.naming:org.jnp.interfaces"/>
+        <default symbol="java.naming.provider.url" value="localhost:1099"/>
+    </contribution>
+    
+    <contribution configuration-id="tapestry.InfrastructureOverrides"> 
+        <property name="exceptionPageName" value="ApplicationUnavailable" />        
+    </contribution>
+    
+    <!-- Override the default implementation with one specific to the Virtual Library -->
+    
+    <implementation service-id="tapestry.error.StaleSessionExceptionPresenter">       
+        <invoke-factory>            
+            <construct class="VlibStaleSessionPresenter" >
+                <set-object property="responseRenderer" value="infrastructure:responseRenderer" />
+            </construct>            
+        </invoke-factory>
+    </implementation>
+     
+</module>

@@ -1,0 +1,81 @@
+ ------
+Tapestry 4 Tutorials
+ ------
+Jesse Kuhnert
+ ------
+12 May 2007
+ ------
+
+Tapestry tutorial series at DevShed
+
+  {{{http://sundraw.ws/}Alexander Kolesnikov}} has written a great series of Tapestry 4 tutorials that should be a great help for anyone
+  getting started with Tapestry or just wanting a quick reference for some of the common areas of development.
+
+  [[1]] {{{http://www.devshed.com/c/a/Apache/Apache-Tapestry-4-Tutorial/}Apache Tapestry 4 Tutorial}}
+
+  In this article we'll begin by taking a look at servlets and JavaServer Pages, then proceed to learn about the MVC design pattern. After
+  examining the problems these technologies solved, we'll focus on the Tapestry framework, study its advantages, and dispel some prejudices
+  about it. This is the first article in a multi-part series covering Tapestry.
+
+  [[1]] {{{http://www.devshed.com/c/a/Apache/Preparing-the-Workspace-for-Apache-Tapestry/}Preparing the Workspace for Apache Tapestry}}
+
+  In the previous article of this series I explained, in the historical perspective, why Tapestry is a very attractive and advanced framework
+  for building Java Web applications. Now we are moving from theory to practice. But before doing anything, we need to prepare the workplace.
+
+  [[1]] {{{http://www.devshed.com/c/a/Apache/Creating-Your-First-Tapestry-Project/}Creating Your First Tapestry Project}}
+
+  In the previous article, we began moving from theory to practice by preparing our work place and setting up our system. In this article, we
+  actually get our hands dirty (at least figuratively) by building our first Tapestry project.
+
+  [[1]] {{{http://www.devshed.com/c/a/Apache/Introducing-Simple-Components-in-Apache-Tapestry/}Introducing Simple Components in Apache Tapestry}}
+
+  In the previous article, you witnessed the interplay between a Tapestry page and its components (granted, we had only one simple component
+  there, but you get my point). Page class, when rendering its page, finds any components mentioned in the template and asks those components
+  to display themselves, as they know better how to do that. Components, in their turn, might need some information to display themselves, and
+  they ask the page class to provide the necessary information by calling some of its methods
+
+  [[1]] {{{http://www.devshed.com/c/a/Apache/A-Closer-Look-at-Simple-Components-in-Apache-Tapestry/}A Closer Look at Simple Components in Apache Tapestry}}
+
+  In the previous article, we took a look at some of the components that are used most often in Tapestry applications, and learned some important
+  concepts related to them. At the end, we found that we needed three components for our example application. In this article, we will configure
+  those components. We will also learn how to disable caching.
+
+  [[1]] {{{http://www.devshed.com/c/a/Apache/The-Properties-of-Tapestry-Pages/}The Properties of Tapestry Pages}}
+
+  In the previous part of this tutorial we started to build a new project,  GuessTheWord.  The project is very simple, but we are going to spend a lot of
+  time working on it and experimenting with it. This is because the main aim is to learn a lot about the most basic concepts of Tapestry. For every important
+  concept, I want to show you a number of options as to how it can be implemented and explain which option is good for what.
+
+  [[1]] {{{http://www.devshed.com/c/a/Apache/Apache-Tapestry-and-Listener-Methods-Conditional-Components-and-PageLink/}Apache Tapestry and Listener Methods Conditional Components and PageLink}}
+
+  Today we continue to explore some of the most fundamental concepts of Tapestry while building one of the simplest Java Web applications.  In the previous
+  part of this tutorial we became familiar with properties of Tapestry pages and different ways to configure them.  Now we will look into the details of
+  writing listener methods.
+
+  [[1]] {{{http://www.devshed.com/c/a/Apache/Making-a-CelebrityCollector-with-Apache-Tapestry-the-For-Component/}Making a CelebrityCollector with Apache Tapestry: the For Component}}
+
+  We are going to start a new project today, named CelebrityCollector.  At first it will be very simple, but in the following articles we will be adding more
+  and more functionality to it.  Of course, the purpose at this stage of study is not to build a real-world application but to meet different Tapestry
+  components and to learn various important concepts
+
+  [[1]] {{{http://www.devshed.com/c/a/Apache/Apache-Tapestry-and-DirectLink-IoC-and-DI/}Apache Tapestry and DirectLink, IoC and DI }}
+
+  Previously we began building our CelebrityCollector application. But right now it is a hollow shell.  In this article we will use several new Apache Tapestry
+  components to help us start filling in the details.
+
+  [[1]] {{{http://www.devshed.com/c/a/Apache/Apache-Tapestry-ASO-and-More-Components/}Apache Tapestry: ASO and More Components}}
+
+  We shall continue working on the CelebrityCollector application.  The next step is to create a page for adding a new celebrity.  While we create that page, I will
+  introduce you to three more components that will add new capabilities to our application and help us get around certain problems.
+
+  [[1]] {{{http://www.devshed.com/c/a/Apache/The-DatePicker-and-Shell-Components-of-Apache-Tapestry/}The DatePicker and Shell Components of Apache Tapestry}}
+
+  In the previous article in this series we came to adding a component for accepting a date input, to specify the date of birth for the newly added celebrity.
+  DatePicker, a standard Tapestry component, is an excellent choice for this, and we are going to learn today how to add a DatePicker to a page.
+
+  [[1]] {{{http://www.devshed.com/c/a/Apache/PropertySelection-and-IPropertySelectionModel-in-Apache-Tapestry/}PropertySelection and IPropertySelectionModel in Apache Tapestry}}
+
+  We already encountered PropertySelection in one of the previous articles so we know that it is a Tapestry component used to display a drop-down list, allowing the
+  user to choose one of multiple options.  You might think that the way in which options are provided to this component (through its model binding) is somewhat
+  cumbersome when all you need to do is select one of a few strings.  However, PropertySelection was designed with a great deal of power and flexibility in mind, and I
+  hope that today you will appreciate this.

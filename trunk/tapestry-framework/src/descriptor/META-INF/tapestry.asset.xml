@@ -1,0 +1,199 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2004, 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<module id="tapestry.asset" version="4.0.0" package="org.apache.tapestry.asset">
+
+    Factories for creating IAsset instances.
+
+    <configuration-point id="AssetFactories">
+
+        Maps asset path prefixes to AssetFactory implementations.
+
+        <schema>
+            <element name="factory">
+                <attribute name="prefix" required="true" unique="true">
+                    The prefix to map.
+                </attribute>
+                <attribute name="object" required="true" translator="object">
+                    The asset factory for the prefix.
+                </attribute>
+
+                <conversion class="AssetFactoryContribution">
+                    <map attribute="object" property="factory"/>
+                </conversion>
+            </element>
+        </schema>
+    </configuration-point>
+
+    <contribution configuration-id="AssetFactories">
+
+        <factory prefix="context" object="service:ContextAssetFactory"/>
+        <factory prefix="classpath" object="service:ClasspathAssetFactory"/>
+
+    </contribution>
+
+    <service-point id="DefaultAssetFactory" interface="AssetFactory">
+
+        AssetFactory used when the prefix on the path is not known.
+
+        <create-instance class="DefaultAssetFactory"/>
+
+    </service-point>
+
+    <service-point id="ContextAssetFactory" interface="AssetFactory">
+
+        AssetFactory used when the prefix is "context:" or the base
+        resource is a ContextResource.
+
+        <invoke-factory>
+            <construct class="ContextAssetFactory">
+                <set-object property="contextPath" value="infrastructure:contextPath"/>
+                <set-service property="webContext" service-id="tapestry.globals.WebContext"/>
+                <set-object property="localizer" value="infrastructure:resourceLocalizer"/>
+                <set-object property="requestCycle" value="infrastructure:requestCycle" />
+            </construct>
+        </invoke-factory>
+
+    </service-point>
+
+    <service-point id="ClasspathAssetFactory" interface="AssetFactory">
+
+        AssetFactory used when the prefix is "classpath:" or the
+        base resource is a ClasspathResource.
+
+        <invoke-factory>
+            <construct class="ClasspathAssetFactory">
+                <set-object property="assetService" value="engine-service:asset"/>
+            </construct>
+        </invoke-factory>
+    </service-point>
+
+    <configuration-point id="AssetFactoryStrategies" schema-id="hivemind.lib.StrategyRegistry"/>
+
+    <contribution configuration-id="AssetFactoryStrategies">
+        <strategy class="org.apache.hivemind.util.ContextResource" object="service:ContextAssetFactory"/>
+
+        <strategy class="org.apache.tapestry.web.WebContextResource" object="service:ContextAssetFactory"/>
+
+        <strategy class="org.apache.hivemind.util.ClasspathResource" object="service:ClasspathAssetFactory"/>
+
+        <strategy class="ExternalResource" object="service:DefaultAssetFactory"/>
+    </contribution>
+
+    <service-point id="LookupAssetFactory" interface="AssetFactory">
+
+        AssetFactory that delegates to another implementation based on
+        the type of resource.  Used when the asset path does not contain
+        a prefix.
+
+        <invoke-factory service-id="hivemind.lib.StrategyFactory">
+            <construct configuration-id="AssetFactoryStrategies"/>
+        </invoke-factory>
+    </service-point>
+
+
+    <service-point id="AssetSource">
+
+        The master factory for assets, which identifies the correct
+        AssetFactory based on the prefix of the asset path (if any).
+
+        <invoke-factory>
+            <construct class="AssetSourceImpl">
+                <set-configuration property="contributions" configuration-id="AssetFactories"/>
+                <set-service property="lookupAssetFactory" service-id="LookupAssetFactory"/>
+                <set-service property="defaultAssetFactory" service-id="DefaultAssetFactory"/>
+                <set-service property="contextAssetFactory" service-id="ContextAssetFactory" />
+                <set-service property="classpathAssetFactory" service-id="ClasspathAssetFactory" />
+            </construct>
+        </invoke-factory>
+    </service-point>
+
+
+    <service-point id="ResourceDigestSource">
+
+        Reads and caches Digest digests of files exposed by the AssetService.
+
+        <invoke-factory>
+            <construct class="ResourceDigestSourceImpl">
+                <event-listener service-id="tapestry.ResetEventHub"/>
+                <event-listener service-id="tapestry.describe.ReportStatusHub"/>
+            </construct>
+        </invoke-factory>
+    </service-point>
+
+    <contribution configuration-id="tapestry.Infrastructure">
+        <property name="assetFactory" object="service:LookupAssetFactory"/>
+    </contribution>
+
+    <configuration-point id="UnprotectedAssets">
+
+        Maps asset path regexp patterns to assets that won't be required
+        to have md5sum digests, making them visible and accessible to unauthenticated
+        url requests. Care should be taken contributing here. Most things should remain
+        protected, like .class files, database configuration files, etc.
+
+        This configuration is mainly intended to help some resources that require being
+        able to dynamically load content on the browser client-side. One such resource
+        is the http://dojotoolkit.org javascript library, which loads javascript/css/other
+        resources dynamically via XmlHttpRequests for resources that haven't been previously
+        digested.
+
+        <schema>
+            <element name="unprotected-resource">
+                <attribute name="contains" required="true" unique="true">
+                    The regexp pattern to match against.
+                </attribute>
+
+                <rules>
+                    <push-attribute attribute="contains"/>
+                    <invoke-parent method="addElement"/>
+                </rules>
+            </element>
+        </schema>
+    </configuration-point>
+
+    <contribution configuration-id="UnprotectedAssets">
+        List of unprotected asset regexps for ResourceMatcher service.
+
+        <unprotected-resource contains="^/tapestry/" />
+        <unprotected-resource contains="^/org/apache/tapestry/.*.css" />
+        <unprotected-resource contains="^/org/apache/tapestry/.*.gif" />
+        <unprotected-resource contains="^/org/apache/tapestry/.*.png" />
+        <unprotected-resource contains="^/org/apache/tapestry/.*.jpg" />
+        <unprotected-resource contains="^/org/apache/tapestry/.*.js" />
+        <unprotected-resource contains="^/org/apache/tapestry/.*.htm" />
+        <unprotected-resource contains="^/org/apache/tapestry/.*.html" />
+
+        <unprotected-resource contains="^/dojo.*/" />
+        <unprotected-resource contains="^/scriptaculous.*/" />
+    </contribution>
+
+    <service-point id="UnprotectedResourceMatcher" interface="ResourceMatcher" >
+
+        Uses the UnprotectedAssets configuration point to dynamically determine
+        which assets managed by the AssetService should be protected. The default
+        is to protect all resources.
+
+        <invoke-factory>
+            <construct class="ResourceMatcherImpl">
+                <event-listener service-id="tapestry.ResetEventHub"/>
+                <set-configuration configuration-id="UnprotectedAssets" property="contributions" />
+            </construct>
+        </invoke-factory>
+    </service-point>
+
+</module>

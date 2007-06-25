@@ -1,0 +1,101 @@
+// Copyright 2004, 2005 The Apache Software Foundation
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package org.apache.tapestry.form;
+
+/**
+ * Implementation of {@link IPropertySelectionModel} that allows one String from
+ * an array of Strings to be selected as the property.
+ * <p>
+ * Uses a simple index number as the value (used to represent the selected
+ * String). This assumes that the possible values for the Strings will remain
+ * constant between request cycles.
+ * 
+ * @author Howard Lewis Ship
+ */
+
+public class StringPropertySelectionModel implements IPropertySelectionModel
+{
+
+    private String[] _options;
+
+    private boolean[] _disabled;
+    
+    /**
+     * Standard constructor. The options are retained (not copied).
+     */
+    public StringPropertySelectionModel(String[] options)
+    {
+        this._options = options;
+    }
+    
+    /**
+     * Standard constructor. The options are retained (not copied).
+     */
+
+    public StringPropertySelectionModel(String[] options, boolean[] disabled)
+    {
+        this(options);
+        _disabled = disabled;
+    }
+
+    public int getOptionCount()
+    {
+        return _options.length;
+    }
+
+    public Object getOption(int index)
+    {
+        return _options[index];
+    }
+
+    /**
+     * Labels match options.
+     */
+
+    public String getLabel(int index)
+    {
+        return _options[index];
+    }
+
+    /**
+     * Values are indexes into the array of options.
+     */
+
+    public String getValue(int index)
+    {
+        return Integer.toString(index);
+    }
+
+    public boolean isDisabled(int index)
+    {
+        return _disabled != null && _disabled[index];
+    }
+    
+    public Object translateValue(String value)
+    {
+        if (value == null)
+            return null;
+        
+        int index;
+
+        index = Integer.parseInt(value);
+        
+        if (index < 0 || index >= _options.length)
+            return null;
+        
+        return _options[index];
+    }
+
+}

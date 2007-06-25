@@ -1,0 +1,318 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<module id="tapestry.portlet" version="4.0.0" package="org.apache.tapestry.portlet">
+  
+  Add on for Tapestry that adds native Portlet support.
+  
+  <dependency module-id="tapestry" version="4.0.0"/>
+  <dependency module-id="hivemind.lib" version="1.1.0"/>
+  
+  <sub-module descriptor="tapestry.portlet.services.xml"/>
+  <sub-module descriptor="tapestry.portlet.resolver.xml"/>
+  <sub-module descriptor="tapestry.portlet.bindings.xml"/>
+  <sub-module descriptor="tapestry.portlet.multipart.xml"/>
+  
+  <configuration-point id="PortletApplicationInitializers" schema-id="hivemind.lib.ChainContribution">
+    
+    Defines the steps for initializing a Tapestry portlet application.
+    
+  </configuration-point>
+  
+  <service-point id="PortletApplicationInitializer" interface="PortletApplicationInitializer">
+    Master startup for the Portlet application; 
+    invokes an ordered series of other ApplicationInitializer instances contributed to
+    the PortletApplicationInitializers configuration point.
+    
+    <invoke-factory service-id="hivemind.lib.ChainFactory">
+      <construct configuration-id="PortletApplicationInitializers"/>
+    </invoke-factory>
+  </service-point>
+  
+  <service-point id="PortletWebContextInitializer" interface="PortletApplicationInitializer">
+    
+    Creates and stores the WebContext (wrapper around the PortletContext)
+    into ApplicationGlobals.
+    
+    <invoke-factory>
+      <construct class="PortletWebContextInitializer">
+        <set-service property="applicationGlobals" service-id="tapestry.globals.ApplicationGlobals"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>  
+  
+  <service-point id="PortletApplicationSpecificationInitializer" interface="PortletApplicationInitializer">
+    
+    Locates and parses the application specification and informs the ApplicationGlobals service about it.
+    
+    <invoke-factory>
+      <construct class="PortletApplicationSpecificationInitializer">
+        <set-service property="globals" service-id="tapestry.globals.ApplicationGlobals"/>
+        <set-service property="parser" service-id="tapestry.parse.SpecificationParser"/>
+        <set-service property="context" service-id="tapestry.globals.WebContext"/>
+      </construct>
+    </invoke-factory>
+  </service-point>  
+  
+  <contribution configuration-id="PortletApplicationInitializers">
+    <command id="PortletWebContextInitializer" object="service:PortletWebContextInitializer" before="*"/>
+    <command id="PortletApplicationSpecificationInitializer" object="service:PortletApplicationSpecificationInitializer"/>
+  </contribution>
+    
+  <configuration-point id="ActionRequestServicerPipeline" schema-id="hivemind.lib.Pipeline">
+    
+    A pipeline for processing an incoming Portlet action request.
+    
+  </configuration-point>   
+      
+  <service-point id="ActionRequestServicer" interface="ActionRequestServicer">  
+    
+    Service for handling Portlet action requests, built around
+    the ActionRequestServicerPipeline configuration.
+    
+    <invoke-factory service-id="hivemind.lib.PipelineFactory">
+      <create-pipeline filter-interface="ActionRequestServicerFilter"
+        configuration-id="ActionRequestServicerPipeline"/>
+    </invoke-factory>  
+  </service-point>
+  
+  <service-point id="ActionRequestServicerToWebRequestServicerBridge" interface="ActionRequestServicer">
+    
+    Bridge from the ActionRequestServicerPipeline to
+    the tapestry.request.WebRequestServicer pipeline.
+    
+    <invoke-factory>
+      <construct class="ActionRequestServicerToWebRequestServicerBridge">
+        <set-service property="portletRequestGlobals" service-id="PortletRequestGlobals"/>
+        <set-service property="webRequestServicer" service-id="tapestry.request.WebRequestServicer"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <contribution configuration-id="ActionRequestServicerPipeline">
+    <terminator object="service:ActionRequestServicerToWebRequestServicerBridge"/>
+  </contribution>
+  
+  <configuration-point id="RenderRequestServicerPipeline" schema-id="hivemind.lib.Pipeline">
+    
+    A pipeline for processing an incoming Portlet action request.
+    
+  </configuration-point>   
+      
+  <service-point id="RenderRequestServicer" interface="RenderRequestServicer">  
+    
+    Service for handling Portlet action requests, built around
+    the RenderRequestServicerPipeline configuration.
+    
+    <invoke-factory service-id="hivemind.lib.PipelineFactory">
+      <create-pipeline filter-interface="RenderRequestServicerFilter"
+        configuration-id="RenderRequestServicerPipeline"/>
+    </invoke-factory>  
+  </service-point>
+  
+  <service-point id="RenderRequestServicerToWebRequestServicerBridge" interface="RenderRequestServicer">
+    
+    Bridge from the RenderRequestServicerPipeline to
+    the tapestry.request.WebRequestServicer pipeline.
+    
+    <invoke-factory>
+      <construct class="RenderRequestServicerToWebRequestServicerBridge">
+        <set-service property="portletRequestGlobals" service-id="PortletRequestGlobals"/>
+        <set-service property="webRequestServicer" service-id="tapestry.request.WebRequestServicer"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <contribution configuration-id="RenderRequestServicerPipeline">
+    <terminator object="service:RenderRequestServicerToWebRequestServicerBridge"/>
+  </contribution>
+
+
+  <service-point id="PortletRequestGlobals" interface="PortletRequestGlobals">
+    
+    Stores the current request and response objects.
+    
+    <create-instance class="PortletRequestGlobalsImpl" model="threaded"/>
+    
+  </service-point>
+  
+  <service-point id="ActionResponse" interface="javax.portlet.ActionResponse">
+    
+    The ActionResponse for the current request.
+    
+    <invoke-factory service-id="hivemind.lib.ServicePropertyFactory">
+      <construct service-id="PortletRequestGlobals" property="actionResponse"/>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <service-point id="PortletRequest" interface="javax.portlet.PortletRequest">
+    
+    The PortletRequest for the current request. This may be either an ActionRequest
+    or a RenderRequest.
+    
+    <invoke-factory service-id="hivemind.lib.ServicePropertyFactory">
+      <construct service-id="PortletRequestGlobals" property="portletRequest"/>
+    </invoke-factory>
+    
+  </service-point>  
+  
+  <service-point id="RenderResponse" interface="javax.portlet.RenderResponse">
+    
+    The RenderResponse for the current request.
+    
+    <invoke-factory service-id="hivemind.lib.ServicePropertyFactory">
+      <construct service-id="PortletRequestGlobals" property="renderResponse"/>
+    </invoke-factory>
+  </service-point>
+         
+  <service-point id="PortletCookieSource" interface="org.apache.tapestry.services.CookieSource">
+    
+    A "default" (no-op) implementation of the CookieSource interface.
+    
+    <invoke-factory service-id="hivemind.lib.PlaceholderFactory"/>
+  </service-point>
+  
+  <service-point id="PortletLinkFactory" interface="org.apache.tapestry.services.LinkFactory">
+    Implementation of LinkFactory for portlets that builds links using
+    the Portlet API's PortletResponse.setRenderParameter() method.
+    
+    <invoke-factory>
+      <construct class="PortletLinkFactoryImpl">
+        <set-object property="dataSqueezer" value="infrastructure:dataSqueezer"/>
+        <set-configuration property="contributions" configuration-id="tapestry.url.ServiceEncoders"/>
+        <set-service property="renderResponse" service-id="RenderResponse"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <service-point id="PortletAssetLinkFactory" interface="org.apache.tapestry.services.LinkFactory">
+    Implementation of LinkFactory for portlet assets. Uses servlet paths to generate asset links
+    as is normally done, but also re encodes the URL's using IRequestCycle.encodeUrl(string).
+    
+    <invoke-factory>
+      <construct class="PortletAssetLinkFactoryImpl">
+        <set-object property="dataSqueezer" value="infrastructure:dataSqueezer"/>
+        <set-configuration property="contributions" configuration-id="tapestry.url.ServiceEncoders"/>
+        <set-object property="servletPath" value="app-property:org.apache.tapestry.servlet-path"/>
+        <set-object property="contextPath" value="infrastructure:contextPath"/>
+        <set-object property="request" value="infrastructure:request"/>
+        <set-object property="requestCycle" value="infrastructure:requestCycle"/>
+        <set-service property="persistenceStrategySource" 
+          service-id="tapestry.persist.PropertyPersistenceStrategySource"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+ <service-point id="SetupPortletApplicationGlobals" interface="PortletApplicationInitializer">
+  
+  Contributed into the tapestry.init.ApplicationInitializers configuration point
+  to install the servlet-specific framework services and configurations into the
+  tapestry.globals.ApplicationGlobals service.
+  
+  <invoke-factory>
+    <construct class="SetupPortletApplicationGlobals">
+      <set-service property="globals" service-id="tapestry.globals.ApplicationGlobals"/>
+      <set-configuration property="factoryServices" configuration-id="tapestry.portlet.services.FactoryServices"/>
+      <set-service property="infrastructure" service-id="tapestry.Infrastructure"/>      
+    </construct>
+  </invoke-factory>
+ </service-point>
+ 
+  <contribution configuration-id="tapestry.Infrastructure">
+    <property name="linkFactory" mode="portlet" object="service:PortletLinkFactory"/>
+    <property name="rootDescriptionReceiverFactory " mode="portlet" object="service:PortletRootDescriptionReceiverFactory"/>
+    <property name="exceptionPresenter" mode="portlet" object="service:PortletExceptionPresenter"/>
+    <property name="staleLinkExceptionPresenter" mode="portlet" object="service:PortletStaleLinkExceptionPresenter"/>
+    <property name="staleSessionExceptionPresenter" mode="portlet" object="service:PortletStaleSessionExceptionPresenter"/>
+    <property name="cookieSource" mode="portlet" object="service:PortletCookieSource"/>
+  </contribution>
+   
+ <contribution configuration-id="PortletApplicationInitializers">
+  <command id="SetupServletApplicationGlobals" object="service:SetupPortletApplicationGlobals"/>
+ </contribution> 
+  
+  
+  <service-point id="PortletRootDescriptionReceiverFactory" interface="org.apache.tapestry.describe.RootDescriptionReceiverFactory">
+    
+    Overrides the standard tapestry.describe.RootDescriptionReceiverFactory  to change
+    the CSS styles used.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.describe.RootDescriptionReceiverFactory Impl">
+        <set-service property="strategy" service-id="tapestry.describe.DescribableStrategy"/>
+        <set property="headerClass" value="portlet-section-header"/>
+        <set property="subheaderClass" value="portlet-section-subheader"/>
+        <set property="tableClass" value="portlet-section-body"/>
+      </construct>
+    </invoke-factory>
+  </service-point>
+  
+  <service-point id="PortletExceptionPresenter" interface="org.apache.tapestry.error.ExceptionPresenter">
+    
+    Displays stack trace and other information when a runtime exception is thrown.
+    If the exception occurs during an action request, the markup rendered and stored
+    in the session until a later render request (using the exception service).
+    
+    <invoke-factory>
+      <construct class="PortletExceptionPresenter">
+        <set-service property="globals" service-id="PortletRequestGlobals"/>
+        <set-object property="request" value="infrastructure:request"/>
+        <set-object property="response" value="infrastructure:response"/>
+        <set-object property="requestExceptionReporter"
+                       value="infrastructure:requestExceptionReporter"/>   
+        <set-object property="renderStrategy" value="service:tapestry.describe.RenderStrategy"/>
+        <set-object property="markupWriterSource" value="infrastructure:markupWriterSource"/>
+     </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <service-point id="PortletStaleSessionExceptionPresenter" interface="org.apache.tapestry.error.StaleSessionExceptionPresenter">
+    
+    Displays a short message announcing that the session has expired.
+    
+    <invoke-factory>
+      <construct class="PortletStaleSessionExceptionPresenter">
+        <set-service property="globals" service-id="PortletRequestGlobals"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <service-point id="PortletStaleLinkExceptionPresenter" interface="org.apache.tapestry.error.StaleLinkExceptionPresenter">
+    
+    Displays the stale link exception's message.
+    
+    <invoke-factory>
+      <construct class="PortletStaleLinkExceptionPresenter">
+        <set-service property="globals" service-id="PortletRequestGlobals"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>  
+  
+	<contribution configuration-id="tapestry.describe.DescribableStrategies" if="class javax.portlet.PortletSession">
+    <strategy class="javax.portlet.PortletSession" object="instance:PortletSessionDescribableStrategy"/>
+    <strategy class="javax.portlet.PortletConfig" object="instance:PortletConfigStrategy"/>
+  </contribution>    
+</module>

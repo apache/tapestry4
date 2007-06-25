@@ -1,0 +1,58 @@
+ ------
+JavaScript Reference - tapestry.html
+ ------
+Jesse Kuhnert
+ ------
+26 July 2006
+ ------
+ 
+tapestry.html
+
+  This package currently only defines one DOM String related function. 
+
+  The source for <<<tapestry.html>>> can be found {{{http://svn.apache.org/viewvc/tapestry/tapestry4/trunk/tapestry-framework/src/js/tapestry/html.js?view=markup}here}}. 
+
+* tapestry.html.getContentAsString(node)
+
+  Used primarily in {{{core.html}tapestry.bind}} to convert incoming XML document node content into a 
+  javascript String that will be compatible with DomNode.innerHTML calls. The semantics of using innerHTML
+  are fairly quircky from browser to browser <(if you want to maintain stylesheet rules/etc)>, so this function
+  will determine your browser type and act accordingly. It should universally be able to produce a String compatible
+  with innerHTML statements from almost any source, even existing HTML DOM nodes that aren't part of an IO
+  XML document return.
+
+*----------------------*---------------*------------*----------*----------------------------------------------+
+  Parameter            |    Type	   |  Required  | Default  | 		Description
+*----------------------*---------------*------------*----------*----------------------------------------------+
+  node 				   | DOMNode/HtmlDOMNode    |  yes       |          | The XML or HTML DOM node to parse html textual fragment contents from.
+*----------------------*---------------*------------*----------*----------------------------------------------+
+
+** Example usage
+
+  If you wanted to take an IO return chunk of xml that looked like this:
+  
++----------------------------
+<?xml version="1.0"?>
+<ajax-response>
+<response id="chunk1" type="element">
+This is some example html content.
+
+<p>
+As you can see, any valid html element can be embedded in the response.
+</p>
+</response>
+</ajax-response>
++----------------------------
+
+  and place it's content into an existing HTML dom node you might do something like this:
+  
++-----------------------------------------------------------
+dojo.require("tapestry.html"); // ensures tapestry.html package is loaded
+
+var xmlData=functionFoo();
+var domNode = xmlData.getElementById("chunk1");
+
+dojo.byId("myHtmlNode").innerHTML=tapestry.html.getContentAsString(domNode);
++-----------------------------------------------------------
+
+  <<See also:>> {{{http://developer.mozilla.org/en/docs/DOM:document#1022427}Mozilla DOM reference}}

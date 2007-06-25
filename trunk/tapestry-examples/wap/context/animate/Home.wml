@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+   <!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.2//EN"
+   "http://www.wapforum.org/DTD/wml12.dtd">
+<wml>
+
+    <template>
+        <do type="accept" label="Back">
+            <go href="../index.wml"></go>
+        </do>
+    </template>
+
+    <card id="img1" ontimer="#img2" title="">
+        <timer value="5"/>
+        <p align="center">
+            <img jwcid="@wml:Image" image="ognl:assets.first" alt="img1" align="middle"/>
+        </p>
+    </card>
+
+    <card id="img2" ontimer="#img3" title="">
+        <timer value="5"/>
+        <p align="center">
+            <br/>
+            <img jwcid="@wml:Image" image="ognl:assets.second" alt="img2" align="middle"/>
+        </p>
+    </card>
+
+    <card id="img3" ontimer="#img4" title="">
+        <timer value="5"/>
+
+        <p align="center">
+            <br/>
+            <img jwcid="@wml:Image" image="ognl:assets.third" alt="img3" align="middle"/>
+
+        </p>
+    </card>
+
+    <card id="img4" ontimer="#tapestry" title="">
+        <timer value="5"/>
+
+        <p align="center">
+            <br/>
+            <img jwcid="@wml:Image" image="ognl:assets.fourth" alt="img4" align="middle"/>
+
+
+        </p>
+    </card>
+
+    <card id="tapestry" ontimer="#img1" title="Tapestry Mobile">
+        <timer value="5"/>
+
+        <p align="center">
+            <br/>
+            Tapestry
+        </p>
+    </card>
+
+</wml>
+

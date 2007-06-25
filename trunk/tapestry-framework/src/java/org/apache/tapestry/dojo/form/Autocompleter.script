@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE script PUBLIC
+  "-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
+  "http://tapestry.apache.org/dtd/Script_3_0.dtd">
+<script>
+<input-symbol key="id" required="yes" />
+<input-symbol key="props" required="yes" />
+<input-symbol key="form" required="yes" />
+<input-symbol key="widget" required="yes" />
+<let key="completer" unique="yes">
+${id}
+</let>
+    <body>
+        <unique>
+            dojo.require("dojo.widget.Manager");
+            dojo.require("dojo.widget.Select");
+            dojo.require("tapestry.widget.Widget");
+        </unique>
+    </body>
+    <initialization>
+        var ${completer}=${props};
+        tapestry.widget.synchronizeWidgetState("${id}", "Select", ${completer}, ${widget.destroy});
+        if (!dj_undef("label", ${completer}) &amp;&amp; !dj_undef("value", ${completer})){
+            var selw=dojo.widget.byId("${id}");
+            selw.setValue(${completer}["value"]);
+            selw.setLabel(${completer}["label"]);
+        }
+    </initialization>
+</script>

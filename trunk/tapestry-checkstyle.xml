@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	This configuration file was written by the eclipse-cs plugin configuration editor
+-->
+<!--
+Checkstyle-Configuration: tapestry
+Description:
+The core tapestry checkstyle configuration
+-->
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.2//EN" "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
+<module name="Checker">
+    <property name="severity" value="warning"/>
+    <module name="TreeWalker">
+        <module name="FileContentsHolder"/>
+        <module name="JavadocStyle"/>
+        <module name="ConstantName">
+            <property name="format" value="^[A-Z][A-Z0-9]|[a-z][a-z0-9]*(_[A-Z0-9]|[a-z0-9]+)*$"/>
+        </module>
+        <module name="LocalFinalVariableName"/>
+        <module name="LocalVariableName"/>
+        <module name="MemberName">
+            <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Normal naming, but allow either &quot;m_&quot; or &quot;_&quot; as a prefix."/>
+            <property name="format" value="^(m_|_)?[a-z][a-zA-Z0-9]*$"/>
+        </module>
+        <module name="MethodName"/>
+        <module name="PackageName">
+            <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$"/>
+        </module>
+        <module name="ParameterName">
+            <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Either a normal name (w/o underscores) or an all uppercase acronym (rarely used)"/>
+            <property name="format" value="^([a-z][a-zA-Z0-9]*|[A-Z]+)$"/>
+        </module>
+        <module name="StaticVariableName">
+            <property name="format" value="^_?[a-z][a-zA-Z0-9]*$"/>
+        </module>
+        <module name="TypeName"/>
+        <module name="AvoidStarImport"/>
+        <module name="ImportOrder"/>
+        <module name="RedundantImport"/>
+        <module name="UnusedImports">
+            <property name="severity" value="ignore"/>
+        </module>
+        <module name="TabCharacter"/>
+        <module name="ModifierOrder"/>
+        <module name="RedundantModifier"/>
+        <module name="DefaultComesLast"/>
+        <module name="DeclarationOrder"/>
+        <module name="DoubleCheckedLocking">
+            <property name="severity" value="error"/>
+        </module>
+        <module name="EmptyStatement"/>
+        <module name="HiddenField"/>
+        <module name="JUnitTestCase"/>
+        <module name="MissingSwitchDefault">
+            <metadata name="com.atlassw.tools.eclipse.checkstyle.lastEnabledSeverity" value="error"/>
+            <property name="severity" value="ignore"/>
+        </module>
+        <module name="PackageDeclaration">
+            <property name="severity" value="error"/>
+        </module>
+        <module name="ParameterAssignment">
+            <property name="severity" value="info"/>
+        </module>
+        <module name="RedundantThrows"/>
+        <module name="SimplifyBooleanExpression">
+            <property name="severity" value="info"/>
+        </module>
+        <module name="SimplifyBooleanReturn">
+            <property name="severity" value="info"/>
+        </module>
+        <module name="StringLiteralEquality">
+            <property name="severity" value="error"/>
+        </module>
+        <module name="SuperClone">
+            <property name="severity" value="info"/>
+        </module>
+        <module name="SuperFinalize"/>
+        <module name="FinalClass"/>
+        <module name="HideUtilityClassConstructor"/>
+        <module name="InterfaceIsType"/>
+        <module name="MutableException"/>
+        <module name="ArrayTypeStyle"/>
+        <module name="UpperEll"/>
+        <module name="JavadocType">
+            <property name="excludeScope" value="private"/>
+            <property name="scope" value="public"/>
+        </module>
+        <module name="JavadocStyle"/>
+        <module name="WriteTag"/>
+    </module>
+    <module name="PackageHtml"/>
+    <module name="NewlineAtEndOfFile">
+        <property name="lineSeparator" value="lf"/>
+    </module>
+    <module name="SuppressionCommentFilter">
+        <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Enables ignoring checkstyle errors in sepecific blocks"/>
+    </module>
+</module>

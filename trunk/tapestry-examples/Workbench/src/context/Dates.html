@@ -1,0 +1,63 @@
+<span jwcid="@Border">
+
+<h2>Date Pickers</h2>
+
+<p>
+This page is used to demonstrate the DatePicker component. Once submitted the date values input will be displayed below
+via an XHR request.
+</p>
+
+    <form jwcid="valid@Form">
+<input jwcid="inputEnabled"/> Enable Client Side Validation
+</form>
+
+<span jwcid="showError"/>
+
+<form jwcid="dateForm@Form" delegate="bean:delegate" 
+		clientValidationEnabled="ognl:clientValidationEnabled" 
+		async="true" updateComponents="dateDisplay" >
+<table >
+<tbody>
+ <tr>
+ 	<td colspan="2" >
+ 		<input type="checkbox" jwcid="@Checkbox" value="ognl:includeWeek"
+ 		onclick="javascript:this.form.submit();"/>
+ 		Include weeks in DatePicker UI.
+ 		</td>
+ 	</tr>
+ <tr >
+  <td  align="right"><span jwcid="@FieldLabel" field="component:startDate"/>:</td>
+  <td ><input jwcid="startDate@DatePicker" includeWeek="ognl:includeWeek" value="ognl:startDate" 
+  	displayName="Start Date" validators="ognl:{beans.required,beans.maxDate}" 
+  	translator="translator:date,lenient=false,pattern=dd MMM yyyy" /></td> 
+ </tr>
+ <tr>
+  <td  align="right"><span jwcid="@FieldLabel" field="component:endDate"/>:</td>
+  <td ><input jwcid="endDate@DatePicker" includeWeek="ognl:includeWeek" value="ognl:endDate" 
+  		displayName="End Date" validators="ognl:{beans.required,beans.minDate}"/></td>
+ </tr>
+ 
+ <tr>
+ <td></td>
+  <td align="right"><input jwcid="@Submit" value="Submit" /> </td>
+ </tr>
+</tbody>
+</table>
+</form>
+<br/>
+<div jwcid="dateDisplay@Any">
+<u>Submitted Dates</u><br/>
+<table valign="middle">
+	<tr>
+<th>Start date:</th>
+<td> <span jwcid="@Insert" value="ognl:startDate"/></td>
+</tr>
+	<tr>
+<th>End date:</th> 
+	<td>
+		<span jwcid="@Insert" value="ognl:endDate"/>
+		</td></tr>
+</table>
+</div>
+
+</span>
