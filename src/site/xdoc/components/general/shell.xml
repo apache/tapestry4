@@ -264,8 +264,10 @@
                         <td>no</td>
                         <td> </td>
                         <td>
-                            Sets the html element node id of the element you would like all browser debug content to
-                            go to, if you have logging turned on.
+                            If you have logging turned on, all browser debug content is appended at the end of the 
+                            html document. 
+                            You can control this behavior by setting this parameter to the html element node id 
+                            that you want to receive the debug content.
                             
                             <p>
                             For example, if you had an element on your html page with <code>id="myElement"</code> you would

@@ -1,1 +1,0 @@
-A placeholder.  The HiveBuild macros currently expect there to be a src/test even if the module contains no tests.
