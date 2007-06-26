@@ -50,7 +50,29 @@ public void projectSelected(IRequestCycle cycle)
 +-----------------------------------------------------------------------
 
   The string value passed in to <<<updateComponent(String componentId)>>> is the component id of the component
-  you would like to update. 
+  the body of which you would like to update. 
   
   Tapestry will correctly manage and render all javascript/form state/etc needed, depending on the component 
   type you are requesting an update on. 
+  
+  Note, that some Browsers (most notably, Internet Explorer) require the updated body to consist of a single 
+  element. Thus, in your template, instead of 
+  
++-------------------------------------------------------------------------
+ <span jwcid="myComponentId@Any">
+    <span jwcid="@Insert" value="ognl:project.lead.name" class="nameClas" />
+    <span jwcid="@Insert" value="ognl:project.lead.email" class="mailClass" />    
+ </span>
++--------------------------------------------------------------------------
+
+  you should rather have:
+  
++-------------------------------------------------------------------------
+ <span jwcid="myComponentId@Any">
+   <span>
+     <span jwcid="@Insert" value="ognl:project.lead.name" class="nameClas" />
+     <span jwcid="@Insert" value="ognl:project.lead.email" class="mailClass" /> 
+   </span>     
+ </span>
++--------------------------------------------------------------------------
+
