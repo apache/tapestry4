@@ -17,15 +17,25 @@
         <if expression="events">
             <foreach expression="events" key="event">
                 tapestry.cleanConnect(dojo.byId("${clientId}"), "${event[0]}", "event${event[1]}");
-                tapestry.event${event[1]}=function(e){
+                tapestry.event${event[1]}=function( inv ){
+                    result = inv.proceed();
+                    
                     var content={beventname:"${event[0]}"};
-                    tapestry.event.buildEventProperties(e, content);
+                    var event = inv.args[0];
+                    tapestry.event.buildEventProperties( event, content);                    
                     if (!content["beventtarget.id"]) {
                     	content["beventtarget.id"]="${clientId}";
                     }
+                    
+                    if (! dojo.event.browser.isEvent(event)){
+                    	tapestry.event.buildMethodInterceptionProperties( inv.args, content );
+                    }
+                    
                     tapestry.bind("${url}", content);
+
+                    return result;
                 };
-                dojo.event.connect(dojo.byId("${clientId}"), "${event[0]}", tapestry, "event${event[1]}");
+                dojo.event.connect("around", dojo.byId("${clientId}"), "${event[0]}", tapestry, "event${event[1]}");
             </foreach>
         </if>
         <if expression="formEvents">

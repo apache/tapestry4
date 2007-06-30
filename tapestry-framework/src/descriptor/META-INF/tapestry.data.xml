@@ -94,6 +94,7 @@
     <adaptor object="service:SerializableAdaptor"/>
     <adaptor object="instance:ShortAdaptor"/>
     <adaptor object="instance:StringAdaptor"/>
+    <adaptor object="instance:JSONAdaptor"/>
   </contribution>
 
 </module>

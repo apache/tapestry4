@@ -7,6 +7,7 @@ dojo.require("dojo.lang.common");
 dojo.require("dojo.io.BrowserIO");
 dojo.require("dojo.event.browser");
 dojo.require("dojo.html.style");
+dojo.require("dojo.json");
 
 // redirect logging calls to standard debug if logging not enabled
 if (dj_undef("logging", dojo)) {
@@ -604,8 +605,8 @@ tapestry.event={
 	 * The desired event properties bound to an object. Ie obj.target,obj.charCode, etc..
 	 */
 	buildEventProperties:function(event, props){
-		if (!dojo.event.browser.isEvent(event)) return {};
 		if (!props) props={};
+		if (!dojo.event.browser.isEvent(event)) return props;
 
 		if(event["type"]) props.beventtype=event.type;
 		if(event["keys"]) props.beventkeys=event.keys;
@@ -617,6 +618,39 @@ tapestry.event={
 
 		if (event["target"]) this.buildTargetProperties(props, event.target);
 
+		return props;
+	},
+	
+	
+	/**
+	 * Function: buildMethodInterceptionProperties
+	 *
+	 * Stuffs the parameters of an @EventListener-intercepted method into
+	 * a property object suitable to be passed as the content-argument to 
+	 * the bind-function. Arguments will be passed as service-parameters (sp)
+	 * so that the usual listener-invocation mechanism can do its work. 
+	 * String parameters are encoded as such (StringAdaptor, prefix "S")
+	 * Other types/objects will be serialised to a JSON-String which is
+	 * to be handled by the JSONAdaptor on the server side (prefix "J").  
+	 *
+	 * Parameters:
+	 *
+	 *	args - the arguments array.
+	 *	props - The existing property object to set the values on, if it doesn't
+	 * 				exist one will be created.
+	 * Returns:
+	 *
+	 * The passed in properties object augmented in the way described above
+	 */
+	buildMethodInterceptionProperties:function( args, props ){
+	    if (!props) props={};
+	    props.sp = new Array();
+		for ( var i=0; i < args.length; i++ ) {
+			if ( typeof(args[i]) == "string" )
+				props.sp[i] = "S"+String(args[i]);
+			else
+				props.sp[i] = "J"+dojo.json.serialize( args[i] );	
+		}
 		return props;
 	},
 
