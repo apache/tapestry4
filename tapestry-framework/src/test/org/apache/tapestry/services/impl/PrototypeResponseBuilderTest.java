@@ -69,6 +69,5 @@ public class PrototypeResponseBuilderTest extends BaseComponentTestCase {
         verify();
 
         assertSame(builder.getWriter(), writer);
-        assertBuffer("");
     }
 }
