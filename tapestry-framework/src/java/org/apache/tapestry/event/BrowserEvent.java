@@ -13,13 +13,16 @@
 // limitations under the License.
 package org.apache.tapestry.event;
 
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.json.JSONArray;
 
 
 /**
@@ -41,6 +44,8 @@ public class BrowserEvent
     public static final String TARGET="beventtarget";
     public static final String TARGET_ATTR_ID="id";
     
+    public static final String METHOD_ARGUMENTS="methodArguments";
+    
     private String _name;
     private String _type;
     private String[] _keys;
@@ -50,6 +55,9 @@ public class BrowserEvent
     private String _layerX;
     private String _layerY;
     private EventTarget _target;
+    
+    private String _methodArguments;
+    private JSONArray _methodArgumentsArray;
     
     /**
      * Creates a new browser event that will extract its own
@@ -78,6 +86,8 @@ public class BrowserEvent
         if (targetId != null) {
             props.put(TARGET_ATTR_ID, targetId);
         }
+        
+        _methodArguments = cycle.getParameter(METHOD_ARGUMENTS);
     }
     
     /**
@@ -171,6 +181,33 @@ public class BrowserEvent
     {
         return _type;
     }
+    
+    
+    /**
+     * @return the method arguments of an intercepted method-call, if any. If none
+     *         are available, return an empty JSONArray, never null.
+     *         
+     * @throws ApplicationRuntimeException when the JSON-String could not be
+     *         parsed.
+     */
+    public JSONArray getMethodArguments() 
+    {   
+        if ( _methodArgumentsArray == null)
+        {
+            try 
+            {
+                _methodArgumentsArray =
+                        _methodArguments != null ?
+                                new JSONArray( _methodArguments )
+                              : new JSONArray();
+            } 
+            catch (ParseException ex) 
+            {
+                throw new ApplicationRuntimeException(ex);
+            }
+        }
+        return _methodArgumentsArray;
+    }
 
     /**
      * Utility method to check if the current request contains
@@ -198,6 +235,7 @@ public class BrowserEvent
         .append("layerX", _layerX)
         .append("layerY", _layerY)
         .append("target", _target)
+        .append("methodArguments", _methodArguments)
         .toString();
     }
 }
