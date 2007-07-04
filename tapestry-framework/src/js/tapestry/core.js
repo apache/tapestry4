@@ -7,7 +7,8 @@ dojo.require("dojo.lang.common");
 dojo.require("dojo.io.BrowserIO");
 dojo.require("dojo.event.browser");
 dojo.require("dojo.html.style");
-dojo.require("dojo.json");
+
+
 
 // redirect logging calls to standard debug if logging not enabled
 if (dj_undef("logging", dojo)) {
@@ -532,7 +533,7 @@ tapestry.html={
 	},
 
 	_getContentAsStringIE:function(node){
-		var s="";
+		var s=" "; //blank works around an IE-bug
     	for (var i = 0; i < node.childNodes.length; i++){
         	s += node.childNodes[i].xml;
     	}
@@ -600,59 +601,34 @@ tapestry.event={
 	 * 				browser event it will be ignored.
 	 *	props - The existing property object to set the values on, if it doesn't
 	 * 				exist one will be created.
+	 *  args  - The arguments from an method-call interception 
 	 * Returns:
 	 *
 	 * The desired event properties bound to an object. Ie obj.target,obj.charCode, etc..
 	 */
-	buildEventProperties:function(event, props){
+	buildEventProperties:function(event, props, args){
 		if (!props) props={};
-		if (!dojo.event.browser.isEvent(event)) return props;
+		if (dojo.event.browser.isEvent(event)) {
 
-		if(event["type"]) props.beventtype=event.type;
-		if(event["keys"]) props.beventkeys=event.keys;
-		if(event["charCode"]) props.beventcharCode=event.charCode;
-		if(event["pageX"]) props.beventpageX=event.pageX;
-		if(event["pageY"]) props.beventpageY=event.pageY;
-		if(event["layerX"]) props.beventlayerX=event.layerX;
-		if(event["layerY"]) props.beventlayerY=event.layerY;
+			if(event["type"]) props.beventtype=event.type;
+			if(event["keys"]) props.beventkeys=event.keys;
+			if(event["charCode"]) props.beventcharCode=event.charCode;
+			if(event["pageX"]) props.beventpageX=event.pageX;
+			if(event["pageY"]) props.beventpageY=event.pageY;
+			if(event["layerX"]) props.beventlayerX=event.layerX;
+			if(event["layerY"]) props.beventlayerY=event.layerY;
 
-		if (event["target"]) this.buildTargetProperties(props, event.target);
+			if (event["target"]) this.buildTargetProperties(props, event.target);
 
-		return props;
-	},
-	
-	
-	/**
-	 * Function: buildMethodInterceptionProperties
-	 *
-	 * Stuffs the parameters of an @EventListener-intercepted method into
-	 * a property object suitable to be passed as the content-argument to 
-	 * the bind-function. Arguments will be passed as service-parameters (sp)
-	 * so that the usual listener-invocation mechanism can do its work. 
-	 * String parameters are encoded as such (StringAdaptor, prefix "S")
-	 * Other types/objects will be serialised to a JSON-String which is
-	 * to be handled by the JSONAdaptor on the server side (prefix "J").  
-	 *
-	 * Parameters:
-	 *
-	 *	args - the arguments array.
-	 *	props - The existing property object to set the values on, if it doesn't
-	 * 				exist one will be created.
-	 * Returns:
-	 *
-	 * The passed in properties object augmented in the way described above
-	 */
-	buildMethodInterceptionProperties:function( args, props ){
-	    if (!props) props={};
-	    props.sp = new Array();
-		for ( var i=0; i < args.length; i++ ) {
-			if ( typeof(args[i]) == "string" )
-				props.sp[i] = "S"+String(args[i]);
-			else
-				props.sp[i] = "J"+dojo.json.serialize( args[i] );	
+		} else if ( args != undefined ) {
+		
+			props.methodArguments = dojo.json.serialize( args );
+			
 		}
 		return props;
 	},
+	
+	
 
 	/**
 	 * Function: buildTargetProperties
@@ -738,3 +714,133 @@ tapestry.lang = {
 		return true;
 	}
 }
+
+/*
+  ** dojo json support just dumped in here until we build dojo anew for T4 **
+
+	Copyright (c) 2004-2006, The Dojo Foundation
+	All Rights Reserved.
+
+	Licensed under the Academic Free License version 2.1 or above OR the
+	modified BSD license. For more information on Dojo licensing, see:
+
+		http://dojotoolkit.org/community/licensing.shtml
+*/
+
+
+
+dojo.require("dojo.lang.func");
+dojo.require("dojo.string.extras");
+
+dojo.AdapterRegistry = function (returnWrappers) {
+	this.pairs = [];
+	this.returnWrappers = returnWrappers || false;
+};
+dojo.lang.extend(dojo.AdapterRegistry, {register:function (name, check, wrap, directReturn, override) {
+	var type = (override) ? "unshift" : "push";
+	this.pairs[type]([name, check, wrap, directReturn]);
+}, match:function () {
+	for (var i = 0; i < this.pairs.length; i++) {
+		var pair = this.pairs[i];
+		if (pair[1].apply(this, arguments)) {
+			if ((pair[3]) || (this.returnWrappers)) {
+				return pair[2];
+			} else {
+				return pair[2].apply(this, arguments);
+			}
+		}
+	}
+	throw new Error("No match found");
+}, unregister:function (name) {
+	for (var i = 0; i < this.pairs.length; i++) {
+		var pair = this.pairs[i];
+		if (pair[0] == name) {
+			this.pairs.splice(i, 1);
+			return true;
+		}
+	}
+	return false;
+}});
+
+
+dojo.json = {jsonRegistry:new dojo.AdapterRegistry(), register:function (name, check, wrap, override) {
+	dojo.json.jsonRegistry.register(name, check, wrap, override);
+}, evalJson:function (json) {
+	try {
+		return eval("(" + json + ")");
+	}
+	catch (e) {
+		dojo.debug(e);
+		return json;
+	}
+}, serialize:function (o) {
+	var objtype = typeof (o);
+	if (objtype == "undefined") {
+		return "undefined";
+	} else {
+		if ((objtype == "number") || (objtype == "boolean")) {
+			return o + "";
+		} else {
+			if (o === null) {
+				return "null";
+			}
+		}
+	}
+	if (objtype == "string") {
+		return dojo.string.escapeString(o);
+	}
+	var me = arguments.callee;
+	var newObj;
+	if (typeof (o.__json__) == "function") {
+		newObj = o.__json__();
+		if (o !== newObj) {
+			return me(newObj);
+		}
+	}
+	if (typeof (o.json) == "function") {
+		newObj = o.json();
+		if (o !== newObj) {
+			return me(newObj);
+		}
+	}
+	if (objtype != "function" && typeof (o.length) == "number") {
+		var res = [];
+		for (var i = 0; i < o.length; i++) {
+			var val = me(o[i]);
+			if (typeof (val) != "string") {
+				val = "undefined";
+			}
+			res.push(val);
+		}
+		return "[" + res.join(",") + "]";
+	}
+	try {
+		window.o = o;
+		newObj = dojo.json.jsonRegistry.match(o);
+		return me(newObj);
+	}
+	catch (e) {
+	}
+	if (objtype == "function") {
+		return null;
+	}
+	res = [];
+	for (var k in o) {
+		var useKey;
+		if (typeof (k) == "number") {
+			useKey = "\"" + k + "\"";
+		} else {
+			if (typeof (k) == "string") {
+				useKey = dojo.string.escapeString(k);
+			} else {
+				continue;
+			}
+		}
+		val = me(o[k]);
+		if (typeof (val) != "string") {
+			continue;
+		}
+		res.push(useKey + ":" + val);
+	}
+	return "{" + res.join(",") + "}";
+}};
