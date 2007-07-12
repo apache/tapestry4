@@ -47,8 +47,11 @@ public abstract class ImageSubmit extends Submit
     protected boolean isClicked(IRequestCycle cycle, String name)
     {
         String parameterName = name + ".x";
+        
+        // the name.x parameter is not set for asynchronous submits
+        String value = cycle.getParameter(FormConstants.SUBMIT_NAME_PARAMETER);
 
-        return (cycle.getParameter(parameterName) != null);
+        return (cycle.getParameter(parameterName) != null) || name.equals(value);
     }
     
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
