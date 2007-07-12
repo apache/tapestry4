@@ -308,6 +308,7 @@ public class TestImageSubmit extends BaseFormComponentTestCase
         trainIsRewinding(form, true);
 
         trainGetParameter(cycle, "fred.x", null);
+        trainGetParameter(cycle, FormConstants.SUBMIT_NAME_PARAMETER, "peebles");
 
         replay();
 
@@ -343,6 +344,7 @@ public class TestImageSubmit extends BaseFormComponentTestCase
         trainIsRewinding(form, true);
 
         trainGetParameter(cycle, "fred.x", "33");
+        trainGetParameter(cycle, FormConstants.SUBMIT_NAME_PARAMETER, "fred");
 
         replay();
 
@@ -354,6 +356,44 @@ public class TestImageSubmit extends BaseFormComponentTestCase
         // from Submit to test some of the extra logic about
         // notifying listeners (deferred or not).
         // This test "proves" that Submit.handleClick() is invoked.
+
+        verify();
+    }
+    
+    public void testRewindTriggerAsync()
+    {
+        Creator creator = new Creator();
+        ImageSubmit submit = (ImageSubmit) creator.newInstance(ImageSubmit.class, new Object[]
+        { "tag", "clicked" });
+
+        IBinding binding = newBinding();
+        submit.setBinding("selected", binding);
+
+        IValidationDelegate delegate = newDelegate();
+        IForm form = newForm();
+        IRequestCycle cycle = newCycle();
+        IMarkupWriter writer = newWriter();
+
+        trainGetForm(cycle, form);
+
+        trainWasPrerendered(form, writer, submit, false);
+
+        expect(form.getDelegate()).andReturn(delegate);
+
+        delegate.setFormComponent(submit);
+
+        trainGetElementId(form, submit, "fred");
+
+        trainIsRewinding(form, true);
+
+        trainGetParameter(cycle, "fred.x", null);
+        trainGetParameter(cycle, FormConstants.SUBMIT_NAME_PARAMETER, "fred");
+
+        replay();
+
+        submit.renderComponent(writer, cycle);
+
+        assertEquals("clicked", PropertyUtils.read(submit, "selected"));
 
         verify();
     }
@@ -390,7 +430,8 @@ public class TestImageSubmit extends BaseFormComponentTestCase
         trainGetParameter(cycle, "fred.x", "33");
         trainGetParameter(cycle, "fred.x", "33");
         trainGetParameter(cycle, "fred.y", "19");
-
+        trainGetParameter(cycle, FormConstants.SUBMIT_NAME_PARAMETER, "fred");
+        
         replay();
 
         submit.renderComponent(writer, cycle);
