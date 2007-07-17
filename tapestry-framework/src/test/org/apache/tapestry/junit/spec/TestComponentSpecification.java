@@ -14,23 +14,17 @@
 
 package org.apache.tapestry.junit.spec;
 
+import org.apache.tapestry.junit.TapestryTestCase;
+import org.apache.tapestry.spec.*;
+import org.testng.annotations.Test;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.tapestry.junit.TapestryTestCase;
-import org.apache.tapestry.spec.ComponentSpecification;
-import org.apache.tapestry.spec.IAssetSpecification;
-import org.apache.tapestry.spec.IBeanSpecification;
-import org.apache.tapestry.spec.IComponentSpecification;
-import org.apache.tapestry.spec.IContainedComponent;
-import org.apache.tapestry.spec.IParameterSpecification;
-import org.apache.tapestry.spec.ParameterSpecification;
-import org.testng.annotations.Test;
-
 /**
  * Test cases for page and component specifications.
- * 
+ *
  * @author Howard Lewis Ship
  * @since 2.2
  */
@@ -38,13 +32,14 @@ import org.testng.annotations.Test;
 public class TestComponentSpecification extends TapestryTestCase
 {
 
-    public void testBeanProperty() throws Exception
+    public void test_Bean_Property() throws Exception
     {
         IComponentSpecification s = parseComponent("BeanProperty.jwc");
         IBeanSpecification fred = s.getBeanSpecification("fred");
 
-        checkList("propertyNames", new String[]
-        { "bruce", "nicole", "zeta" }, fred.getPropertyNames());
+        checkList("propertyNames",
+                  new String[]{ "bruce", "nicole", "zeta" },
+                  fred.getPropertyNames());
 
         checkProperty(fred, "bruce", "wayne");
         checkProperty(fred, "nicole", "kidman");
@@ -52,13 +47,13 @@ public class TestComponentSpecification extends TapestryTestCase
 
     }
 
-    public void testComponentProperty() throws Exception
+    public void test_Component_Property() throws Exception
     {
         IComponentSpecification s = parseComponent("ComponentProperty.jwc");
         IContainedComponent c = s.getComponent("barney");
 
         checkList("propertyNames", new String[]
-        { "apple", "chocolate", "frozen" }, c.getPropertyNames());
+          { "apple", "chocolate", "frozen" }, c.getPropertyNames());
 
         checkProperty(c, "apple", "pie");
         checkProperty(c, "chocolate", "cake");
@@ -66,7 +61,7 @@ public class TestComponentSpecification extends TapestryTestCase
 
     }
 
-    public void testAssetProperty() throws Exception
+    public void test_Asset_Property() throws Exception
     {
         IComponentSpecification s = parseComponent("AssetProperty.jwc");
 
@@ -76,7 +71,7 @@ public class TestComponentSpecification extends TapestryTestCase
     }
 
     private void checkAsset(IComponentSpecification s, String assetName, String propertyName,
-            String expectedValue)
+                            String expectedValue)
     {
         IAssetSpecification a = s.getAsset(assetName);
 

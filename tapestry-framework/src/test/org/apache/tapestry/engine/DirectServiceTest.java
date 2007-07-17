@@ -261,6 +261,7 @@ public class DirectServiceTest extends ServiceTestCase
         trainGetParameter(cycle, ServiceConstants.CONTAINER, null);
         trainGetParameter(cycle, ServiceConstants.PAGE, "ActivePage");
         trainGetParameter(cycle, ServiceConstants.SESSION, null);
+        trainGetParameter(cycle, BrowserEvent.METHOD_ARGUMENTS, null);
 
         trainGetPage(cycle, "ActivePage", page);
         cycle.activate(page);

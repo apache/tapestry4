@@ -14,30 +14,24 @@
 
 package org.apache.tapestry.spec;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.ToStringBuilder;
 import org.apache.tapestry.Tapestry;
 
+import java.util.*;
+
 /**
  * Specification for a library.
  * {@link org.apache.tapestry.spec.ApplicationSpecification}is a specialized
  * kind of library.
- * 
+ *
  * @author Howard Lewis Ship
  * @since 2.2bv
  */
 
-public class LibrarySpecification extends LocatablePropertyHolder implements
-        ILibrarySpecification
+public class LibrarySpecification extends LocatablePropertyHolder implements ILibrarySpecification
 {
 
     /**
@@ -74,7 +68,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements
     /**
      * The XML Public Id used when the library specification was read (if
      * applicable).
-     * 
+     *
      * @since 2.2
      */
 
@@ -93,7 +87,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements
 
     /**
      * Sets the specification path for an embedded library.
-     * 
+     *
      * @throws IllegalArgumentException
      *             if a library with the given id already exists
      */
@@ -103,8 +97,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements
         if (_libraries == null) _libraries = new HashMap();
 
         if (_libraries.containsKey(id))
-            throw new IllegalArgumentException(Tapestry.format(
-                    "LibrarySpecification.duplicate-child-namespace-id", id));
+            throw new IllegalArgumentException(Tapestry.format("LibrarySpecification.duplicate-child-namespace-id", id));
 
         _libraries.put(id, path);
     }
@@ -121,11 +114,11 @@ public class LibrarySpecification extends LocatablePropertyHolder implements
 
     public void setPageSpecificationPath(String name, String path)
     {
-        if (_pages == null) _pages = new HashMap();
+        if (_pages == null)
+            _pages = new HashMap();
 
         if (_pages.containsKey(name))
-            throw new IllegalArgumentException(Tapestry.format(
-                    "LibrarySpecification.duplicate-page-name", name));
+            throw new IllegalArgumentException(Tapestry.format("LibrarySpecification.duplicate-page-name", name));
 
         _pages.put(name, path);
     }
@@ -137,11 +130,11 @@ public class LibrarySpecification extends LocatablePropertyHolder implements
 
     public void setComponentSpecificationPath(String alias, String path)
     {
-        if (_components == null) _components = new HashMap();
+        if (_components == null)
+            _components = new HashMap();
 
         if (_components.containsKey(alias))
-            throw new IllegalArgumentException(Tapestry.format(
-                    "LibrarySpecification.duplicate-component-alias", alias));
+            throw new IllegalArgumentException(Tapestry.format("LibrarySpecification.duplicate-component-alias", alias));
 
         _components.put(alias, path);
     }
@@ -162,7 +155,8 @@ public class LibrarySpecification extends LocatablePropertyHolder implements
 
     private List sortedKeys(Map map)
     {
-        if (map == null) return Collections.EMPTY_LIST;
+        if (map == null)
+            return Collections.EMPTY_LIST;
 
         List result = new ArrayList(map.keySet());
 
@@ -173,7 +167,8 @@ public class LibrarySpecification extends LocatablePropertyHolder implements
 
     private Object get(Map map, Object key)
     {
-        if (map == null) return null;
+        if (map == null)
+            return null;
 
         return map.get(key);
     }
@@ -204,27 +199,26 @@ public class LibrarySpecification extends LocatablePropertyHolder implements
 
     public Map getExtensionSpecifications()
     {
-        if (_extensions == null) return null;
+        if (_extensions == null)
+            return null;
 
         return Collections.unmodifiableMap(_extensions);
     }
 
     /**
      * Adds another extension specification.
-     * 
+     *
      * @throws IllegalArgumentException
      *             if an extension with the given name already exists.
      */
-
-    public void addExtensionSpecification(String name,
-            IExtensionSpecification extension)
+    public void addExtensionSpecification(String name, IExtensionSpecification extension)
     {
-        if (_extensions == null) _extensions = new HashMap();
+        if (_extensions == null)
+            _extensions = new HashMap();
 
         if (_extensions.containsKey(name))
-            throw new IllegalArgumentException(Tapestry
-                    .format("LibrarySpecification.duplicate-extension-name",
-                            this, name));
+            throw new IllegalArgumentException(Tapestry.format("LibrarySpecification.duplicate-extension-name",
+                                                               this, name));
 
         _extensions.put(name, extension);
     }
@@ -245,7 +239,8 @@ public class LibrarySpecification extends LocatablePropertyHolder implements
 
     public IExtensionSpecification getExtensionSpecification(String name)
     {
-        if (_extensions == null) return null;
+        if (_extensions == null)
+            return null;
 
         return (IExtensionSpecification) _extensions.get(name);
     }
@@ -257,7 +252,8 @@ public class LibrarySpecification extends LocatablePropertyHolder implements
 
     public boolean checkExtension(String name)
     {
-        if (_extensions == null) return false;
+        if (_extensions == null)
+            return false;
 
         return _extensions.containsKey(name);
     }
@@ -265,7 +261,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements
     /**
      * Returns an instantiated extension. Extensions are created as needed and
      * cached for later use.
-     * 
+     *
      * @throws IllegalArgumentException
      *             if no extension specification exists for the given name.
      */
@@ -286,8 +282,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements
         IExtensionSpecification spec = getExtensionSpecification(name);
 
         if (spec == null)
-            throw new IllegalArgumentException(Tapestry.format(
-                    "LibrarySpecification.no-such-extension", name));
+            throw new IllegalArgumentException(Tapestry.format("LibrarySpecification.no-such-extension", name));
 
         if (result == null)
         {
@@ -298,14 +293,22 @@ public class LibrarySpecification extends LocatablePropertyHolder implements
         }
 
         if (typeConstraint != null)
-            applyTypeConstraint(name, result, typeConstraint, spec
-                    .getLocation());
+            applyTypeConstraint(name, result, typeConstraint, spec.getLocation());
 
         return result;
     }
 
     /**
      * Checks that an extension conforms to the supplied type constraint.
+     *
+     * @param name
+     *          Name of the extension to apply constraint check to.
+     * @param extension
+     *          Object extension.
+     * @param typeConstraint
+     *          Constraint to check.
+     * @param location
+     *          Location of specified extension.
      * 
      * @throws IllegalArgumentException
      *             if the extension fails the check.
@@ -313,21 +316,22 @@ public class LibrarySpecification extends LocatablePropertyHolder implements
      */
 
     protected void applyTypeConstraint(String name, Object extension,
-            Class typeConstraint, Location location)
+                                       Class typeConstraint, Location location)
     {
         Class extensionClass = extension.getClass();
 
         // Can you assign an instance of the extension to a variable
         // of type typeContraint legally?
 
-        if (typeConstraint.isAssignableFrom(extensionClass)) return;
+        if (typeConstraint.isAssignableFrom(extensionClass))
+            return;
 
-        String key = typeConstraint.isInterface() ? "LibrarySpecification.extension-does-not-implement-interface"
-                : "LibrarySpecification.extension-not-a-subclass";
+        String key = typeConstraint.isInterface()
+                     ? "LibrarySpecification.extension-does-not-implement-interface"
+                     : "LibrarySpecification.extension-not-a-subclass";
 
-        throw new ApplicationRuntimeException(Tapestry.format(key, name,
-                extensionClass.getName(), typeConstraint.getName()), location,
-                null);
+        throw new ApplicationRuntimeException(
+          Tapestry.format(key, name, extensionClass.getName(), typeConstraint.getName()), location, null);
     }
 
     /**
@@ -337,7 +341,8 @@ public class LibrarySpecification extends LocatablePropertyHolder implements
 
     public synchronized void instantiateImmediateExtensions()
     {
-        if (_extensions == null) return;
+        if (_extensions == null)
+            return;
 
         Iterator i = _extensions.entrySet().iterator();
 
@@ -345,10 +350,10 @@ public class LibrarySpecification extends LocatablePropertyHolder implements
         {
             Map.Entry entry = (Map.Entry) i.next();
 
-            IExtensionSpecification spec = (IExtensionSpecification) entry
-                    .getValue();
+            IExtensionSpecification spec = (IExtensionSpecification) entry.getValue();
 
-            if (!spec.isImmediate()) continue;
+            if (!spec.isImmediate())
+                continue;
 
             String name = (String) entry.getKey();
 
@@ -359,7 +364,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements
 
     /**
      * Returns the extensions map.
-     * 
+     *
      * @return Map of objects.
      */
 
@@ -370,7 +375,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements
 
     /**
      * Updates the extension map.
-     * 
+     *
      * @param extension
      *            A Map of extension specification paths keyed on extension id.
      *            <p>
@@ -384,7 +389,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements
 
     /**
      * Returns the libraries map.
-     * 
+     *
      * @return Map of {@link LibrarySpecification}.
      */
 
@@ -395,7 +400,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements
 
     /**
      * Updates the library map.
-     * 
+     *
      * @param libraries
      *            A Map of library specification paths keyed on library id.
      *            <p>
@@ -409,7 +414,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements
 
     /**
      * Returns the pages map.
-     * 
+     *
      * @return Map of {@link IComponentSpecification}.
      */
 
@@ -420,7 +425,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements
 
     /**
      * Updates the page map.
-     * 
+     *
      * @param pages
      *            A Map of page specification paths keyed on page id.
      *            <p>
@@ -434,7 +439,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements
 
     /**
      * Returns the components map.
-     * 
+     *
      * @return Map of {@link IContainedComponent}.
      */
 
@@ -445,7 +450,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements
 
     /**
      * Updates the components map.
-     * 
+     *
      * @param components
      *            A Map of {@link IContainedComponent}keyed on component id.
      *            The map is retained, not copied.
@@ -510,7 +515,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements
 
     /**
      * Does nothing, subclasses may override to add additional description.
-     * 
+     *
      * @see #toString()
      * @since 3.0
      */

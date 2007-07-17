@@ -50,7 +50,7 @@ import java.util.Locale;
  * <p>
  * TODO: Add tests realted to messages encoding (which can be specified as meta-data on the
  * component specification or, ultimately, in the namespace (library specification).
- * 
+ *
  * @author Howard Lewis Ship
  * @since 2.0.4
  */
@@ -84,7 +84,7 @@ public class TestComponentMessages extends TapestryTestCase
         }
 
         public String getLocalizedComponentProperty(IComponent component, Locale locale,
-                String propertyName)
+                                                    String propertyName)
         {
             return null;
         }
@@ -95,7 +95,7 @@ public class TestComponentMessages extends TapestryTestCase
         }
 
         public String getLocalizedNamespaceProperty(INamespace namespace, Locale locale,
-                String propertyName)
+                                                    String propertyName)
         {
             return null;
         }
@@ -105,7 +105,7 @@ public class TestComponentMessages extends TapestryTestCase
     {
         String actual = messages.getMessage(key);
 
-        assertEquals(expected, actual);
+        assertEquals(actual, expected);
     }
 
     private static final String MOCK1 = "/org/apache/tapestry/junit/MockPage1.page";
@@ -136,13 +136,12 @@ public class TestComponentMessages extends TapestryTestCase
      * much as the full framework would do at runtime.
      */
 
-    private IPage newPage(IComponentSpecification specification, ComponentMessagesSource source,
-            Locale locale)
+    private IPage newPage(IComponentSpecification specification, ComponentMessagesSource source, Locale locale)
     {
         ClassFactory classFactory = new ClassFactoryImpl();
 
-        EnhancementOperationImpl op = new EnhancementOperationImpl(new DefaultClassResolver(),
-                specification, BasePage.class, classFactory, null);
+        EnhancementOperationImpl op =
+          new EnhancementOperationImpl(new DefaultClassResolver(), specification, BasePage.class, classFactory, null);
 
         InjectMessagesWorker injectMessages = new InjectMessagesWorker();
         injectMessages.setComponentMessagesSource(source);
@@ -157,6 +156,30 @@ public class TestComponentMessages extends TapestryTestCase
         result.setPage(result);
 
         return result;
+    }
+
+    private Messages createFullMessages(String location, Locale locale)
+    {
+        ComponentMessagesSourceImpl source = new ComponentMessagesSourceImpl();
+        source.setClasspathResourceFactory(new ClasspathResourceFactoryImpl(new DefaultClassResolver()));
+        source.setComponentPropertySource(new NullComponentPropertySource());
+        source.setComponentResourceResolver(new ComponentResourceResolverImpl());
+
+        IComponentSpecification spec = newSpec(location);
+        spec.setLocation(_locationFixture);
+
+        IPage page = newPage(spec, source, locale);
+
+        Resource resource = new ClasspathResource(new DefaultClassResolver(), "/org/apache/tapestry/junit/Application.application");
+        ILibrarySpecification pspec = new LibrarySpecification();
+        pspec.setSpecificationLocation(resource);
+
+        INamespace parentNamespace = new Namespace(null, null, pspec, null);
+        INamespace namespace = new Namespace(null, parentNamespace, newLibrarySpec(), null);
+
+        page.setNamespace(namespace);
+
+        return source.getMessages(page);
     }
 
     private Messages createMessages(String location, Locale locale)
@@ -189,17 +212,17 @@ public class TestComponentMessages extends TapestryTestCase
         spec.setLocation(_locationFixture);
 
         IPage page = newPage(spec, source, locale);
-        
+
         ILibrarySpecification lspec = newLibrarySpec();
         lspec.setProperty(ComponentMessagesSourceImpl.NAMESPACE_PROPERTIES_NAME, propname);
-        
+
         INamespace namespace = new Namespace(null, null, lspec, null);
 
         page.setNamespace(namespace);
 
         return source.getMessages(page);
     }
-    
+
     public void test_Only_In_Base()
     {
         Messages messages = createMessages(MOCK1, new Locale("en", "US"));
@@ -210,17 +233,17 @@ public class TestComponentMessages extends TapestryTestCase
     public void test_Specification_Properties_File_Change()
     {
         Messages msgs = createMessages(MOCK1, new Locale("en", "US"), "override");
-        
+
         check(msgs, "standard-property", "Whispering wind");
     }
-    
+
     public void test_Specification_Properties_File_Classpath_Change()
     {
         Messages msgs = createMessages(MOCK1, new Locale("en", "US"), "org.apache.tapestry.junit.mock.app.impl.classpath");
-        
+
         check(msgs, "standard-property", "Here!");
     }
-    
+
     /** @since 4.0 */
     public void test_Only_In_Namespace()
     {
@@ -242,10 +265,7 @@ public class TestComponentMessages extends TapestryTestCase
     {
         Messages messages = createMessages(MOCK1, new Locale("en", "US"));
 
-        check(
-                messages,
-                "component-overrides-namespace",
-                "MOCKPAGE1_BASE.component-overrides-namespace");
+        check(messages, "component-overrides-namespace", "MOCKPAGE1_BASE.component-overrides-namespace");
     }
 
     /** @since 4.0 */
@@ -254,9 +274,9 @@ public class TestComponentMessages extends TapestryTestCase
         Messages messages = createMessages(MOCK1, new Locale("fr"));
 
         check(
-                messages,
-                "localized-component-overrides-namespace",
-                "MOCKPAGE1_FR.localized-component-overrides-namespace");
+          messages,
+          "localized-component-overrides-namespace",
+          "MOCKPAGE1_FR.localized-component-overrides-namespace");
     }
 
     public void testMissingKey()
@@ -371,5 +391,19 @@ public class TestComponentMessages extends TapestryTestCase
         page.setNamespace(namespace);
 
         assertEquals("multilocale", source.getMessages(page).getMessage("multilocale"));
+    }
+
+    public void test_Component_Property_From_Application()
+    {
+        Messages messages = createFullMessages(MOCK1, new Locale("en", "US"));
+
+        check(messages, "inherited.app.name", "Mock Wonder");
+    }
+
+    public void test_Component_Property_From_Library_Overrides_Application()
+    {
+        Messages messages = createFullMessages(MOCK1, new Locale("en", "US"));
+
+        check(messages, "library-overrides-application", "LIBRARY.override");
     }
 }

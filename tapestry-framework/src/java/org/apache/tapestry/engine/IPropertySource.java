@@ -30,6 +30,11 @@ public interface IPropertySource
      * IPropertySource may use delegation to resolve the value (that is, if one
      * property source returns null, it may forward the request to another
      * source).
+     *
+     * @param propertyName
+     *          Name of the property to get.
+     * 
+     * @return Value of property or null if none found.
      */
 
     String getPropertyValue(String propertyName);

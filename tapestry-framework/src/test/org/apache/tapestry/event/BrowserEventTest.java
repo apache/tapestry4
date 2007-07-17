@@ -13,69 +13,56 @@
 // limitations under the License.
 package org.apache.tapestry.event;
 
-import static org.easymock.EasyMock.expect;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IRequestCycle;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
 
 /**
- * Tests how BrowserEvent extracts itself from the RequestCycle
- * 
+ * Tests how {@link BrowserEvent} extracts itself from the {@link IRequestCycle}.
  */
 @Test
 public class BrowserEventTest extends BaseComponentTestCase
 {
-    public void testConstructAndReadMethodArguments() {
+    public void test_Construct_And_Read_Method_Arguments()
+    {
         IRequestCycle cycle = newCycle();
-        
-        trainCycleForStandardBrowserEvent(cycle);
-
-        expect(cycle.getParameter(BrowserEvent.METHOD_ARGUMENTS))
-                .andReturn("[1,2]");
-        
-        replay();
-        
-        BrowserEvent event = new BrowserEvent(cycle);
-        
-        verify();
-        
-        assertEquals(1, event.getMethodArguments().getInt(0));
-        assertEquals(2, event.getMethodArguments().getInt(1));
-    }
-    
-    
-    
-    public void testUnparseableJSON() {
-        
-        IRequestCycle cycle = newCycle();
-        
         trainCycleForStandardBrowserEvent(cycle);
         
-        expect(cycle.getParameter(BrowserEvent.METHOD_ARGUMENTS))
-                .andReturn("*/utterRubbŸsh");
+        expect(cycle.getParameter(BrowserEvent.METHOD_ARGUMENTS)).andReturn("[1,2]");
+
         replay();
-        
+
         BrowserEvent event = new BrowserEvent(cycle);
-        
+
         verify();
-        
-        try {
-            event.getMethodArguments();
-            unreachable();
-        } catch( ApplicationRuntimeException e) {
-            //success.
-        }
+
+        assertEquals(event.getMethodArguments().getInt(0), 1);
+        assertEquals(event.getMethodArguments().getInt(1), 2);
     }
 
-    /**
-     * @param cycle
-     */
+    @Test(expectedExceptions = ApplicationRuntimeException.class)
+    public void test_Unparseable_JSON_Method_Arguments()
+    {
+        IRequestCycle cycle = newCycle();
+        trainCycleForStandardBrowserEvent(cycle);
+        
+        expect(cycle.getParameter(BrowserEvent.METHOD_ARGUMENTS)).andReturn("*/utterRubbï¿½sh");
+
+        replay();
+
+        BrowserEvent event = new BrowserEvent(cycle);
+
+        verify();
+
+        event.getMethodArguments();
+    }
+
     private void trainCycleForStandardBrowserEvent(IRequestCycle cycle)
     {
         expect(cycle.getParameter(BrowserEvent.NAME)).andReturn("onClick").anyTimes();
-        
+
         expect(cycle.getParameter(BrowserEvent.TYPE)).andReturn("click");
         expect(cycle.getParameters(BrowserEvent.KEYS)).andReturn(null);
         expect(cycle.getParameter(BrowserEvent.CHAR_CODE)).andReturn(null);
@@ -83,11 +70,7 @@ public class BrowserEventTest extends BaseComponentTestCase
         expect(cycle.getParameter(BrowserEvent.PAGE_Y)).andReturn("1243");
         expect(cycle.getParameter(BrowserEvent.LAYER_X)).andReturn(null);
         expect(cycle.getParameter(BrowserEvent.LAYER_Y)).andReturn(null);
-        
-        expect(cycle.getParameter(BrowserEvent.TARGET + "." + BrowserEvent.TARGET_ATTR_ID))
-        .andReturn("element1");
-    }
-    
-    
 
+        expect(cycle.getParameter(BrowserEvent.TARGET + "." + BrowserEvent.TARGET_ATTR_ID)).andReturn("element1");
+    }
 }

@@ -23,10 +23,15 @@ import org.apache.tapestry.IComponent;
  *
  *  @author Howard Lewis Ship
  *  @since 2.0.4
- *
  */
-
 public interface ComponentMessagesSource
 {
+    /**
+     * Gets the associated localized component messages.
+     *
+     * @param component
+     *          The component to get properties for.
+     * @return The {@link Messages} for the specified component.
+     */
     Messages getMessages(IComponent component);
 }

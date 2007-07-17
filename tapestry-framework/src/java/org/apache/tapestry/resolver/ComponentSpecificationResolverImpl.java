@@ -47,19 +47,18 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * <li>By searching for a named class file within the org.apache.tapestry.component-class-packages
  * property (defined within the namespace)
  * </ul>
- * 
+ *
  * The search for components in library namespaces is more abbreviated:
  * <ul>
  * <li>As declared in the library specification
  * <li><i>type </i>.jwc in the same folder as the library specification
  * <li>By searching the framework namespace
  * </ul>
- * 
+ *
  * @since 3.0
  */
 
-public class ComponentSpecificationResolverImpl extends AbstractSpecificationResolver implements
-        ComponentSpecificationResolver
+public class ComponentSpecificationResolverImpl extends AbstractSpecificationResolver implements ComponentSpecificationResolver
 {
     /** Set by container. */
     private Log _log;
@@ -74,15 +73,15 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
     protected void reset()
     {
         _type = null;
-        
+
         super.reset();
     }
-    
+
     /**
      * Passed the namespace of a container (to resolve the type in) and the type to resolve,
      * performs the processing. A "bare type" (without a library prefix) may be in the
      * containerNamespace, or the framework namespace (a search occurs in that order).
-     * 
+     *
      * @param cycle
      *            current request cycle
      * @param containerNamespace
@@ -107,9 +106,9 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
         }
         else
             resolve(cycle, containerNamespace, null, type, location);
-        
+
         IComponentSpecification spec = getSpecification();
-        
+
         if (spec.isDeprecated())
             _log.warn(ResolverMessages.componentIsDeprecated(type, location));
     }
@@ -118,7 +117,7 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
      * Like
      * {@link #resolve(org.apache.tapestry.IRequestCycle, org.apache.tapestry.INamespace, java.lang.String, Location)},
      * but used when the type has already been parsed into a library id and a simple type.
-     * 
+     *
      * @param cycle
      *            current request cycle
      * @param containerNamespace
@@ -134,7 +133,7 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
      */
 
     public void resolve(IRequestCycle cycle, INamespace containerNamespace, String libraryId,
-            String type, Location location)
+                        String type, Location location)
     {
         reset();
         _type = type;
@@ -165,8 +164,8 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
         if (spec == null)
         {
             throw new ApplicationRuntimeException(ResolverMessages.noSuchComponentType(
-                    type,
-                    namespace), location, null);
+              type,
+              namespace), location, null);
 
         }
 
@@ -186,22 +185,22 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
 
         if (_log.isDebugEnabled())
             _log.debug(ResolverMessages.resolvingComponent(_type, namespace));
-        
+
         String expectedName = _type + ".jwc";
         Resource namespaceLocation = namespace.getSpecificationLocation();
-        
+
         // Look for appropriate file in same folder as the library (or application)
         // specificaiton.
-        
+
         result = check(namespaceLocation.getRelativeResource(expectedName));
-        
+
         if (result != null)
             return result;
 
         if (namespace.isApplicationNamespace()) {
-            
+
             // The application namespace gets some extra searching.
-            
+
             result = check(getWebInfAppLocation().getRelativeResource(expectedName));
 
             if (result == null)
@@ -209,15 +208,15 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
 
             if (result == null)
                 result = check((getContextRoot().getRelativeResource(expectedName)));
-            
+
             if (result != null)
                 return result;
         }
-        
+
         result = getDelegate().findComponentSpecification(cycle, namespace, _type);
         if (result != null)
             return result;
-        
+
         result = searchForComponentClass(namespace, _type);
 
         if (result != null)
@@ -225,12 +224,12 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
 
         // Not in the library or app spec; does it match a component
         // provided by the Framework?
-        
+
         INamespace framework = getSpecificationSource().getFrameworkNamespace();
-        
+
         if (framework.containsComponentType(_type))
             return framework.getComponentSpecification(_type);
-        
+
         return null;
     }
 
@@ -252,7 +251,7 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
         // try classpath relative if namespace relative doesn't resolve
 
         if (componentResource.getResourceURL() == null) {
-            
+
             componentResource = new ClasspathResource(_classResolver, componentClass.getName().replace('.', '/'));
         }
 
@@ -275,15 +274,15 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
 
         return getSpecificationSource().getComponentSpecification(resource);
     }
-    
+
     private void install()
     {
         INamespace namespace = getNamespace();
         IComponentSpecification specification = getSpecification();
-        
+
         if (_log.isDebugEnabled())
             _log.debug(ResolverMessages.installingComponent(_type, namespace, specification));
-        
+
         namespace.installComponentSpecification(_type, specification);
     }
 
