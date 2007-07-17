@@ -4402,6 +4402,8 @@ dojo.event.kwConnect({srcObj:this.bg,srcFunc:"onclick",adviceObj:this,adviceFunc
 },uninitialize:function(){
 this.bgIframe.remove();
 dojo.html.removeNode(this.bg,true);
+dojo.event.disconnect(window, "onscroll", this, "_onScroll");
+dojo.event.disconnect(document.documentElement, "onkey", this, "_onKey");
 },setBackgroundColor:function(_419){
 if(arguments.length>=3){
 _419=new dojo.gfx.color.Color(arguments[0],arguments[1],arguments[2]);
