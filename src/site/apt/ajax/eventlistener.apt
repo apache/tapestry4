@@ -114,6 +114,27 @@ public void projectSelected()
 ....
 +-----------------------------------------------------------------------
 
+** Accessing intercepted functions' parameters on the server-side
+
+  <<Note:>> This feature requires version 4.1.3.
+
+  When listening to a client-side javascript function that does not represent a native
+  browser-event, you can access the parameters passed to the function on the server-side. 
+  The Parameters are made available as a JSON-Array within the class 
+  {{{../apidocs/org/apache/tapestry/event/BrowserEvent.html}BrowserEvent}}.
+  
+  So, given a javascript function "trigger" defined on component "triggerable" which
+  was called like <<<triggerable.trigger(\{"theAnswer":42\}, ... )>>>, you may get hold
+  of the answer like that:
+  
++-----------------------------------------------------------------------
+@EventListener(events="trigger", targets="triggerable", elements="element")
+public void onTriggered( BrowserEvent event )
+{
+   doSomething( event.getMethodArguments().getJSONObject(0).getInt("theAnswer") );
+}
++-----------------------------------------------------------------------    
+
 ** Submitting forms when an event happens, and bypass client validation while you're at it
   
   The last example was good for showing how to listen to widget function events, but what are you
