@@ -14,14 +14,14 @@
 
 package org.apache.tapestry.spec;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.hivemind.Locatable;
 import org.apache.hivemind.LocationHolder;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.util.IPropertyHolder;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 /**
  * A specification for a component, as read from an XML specification file.
@@ -171,8 +171,7 @@ public interface IComponentSpecification extends IPropertyHolder,
      * @throws IllegalArgumentException
      *             if the bean already has a specification.
      */
-    void addBeanSpecification(String name,
-            IBeanSpecification specification);
+    void addBeanSpecification(String name, IBeanSpecification specification);
 
     /**
      * Returns the {@link IBeanSpecification}for the given name, or null if not

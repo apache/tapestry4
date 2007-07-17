@@ -608,8 +608,8 @@ tapestry.event={
 	 */
 	buildEventProperties:function(event, props, args){
 		if (!props) props={};
+		
 		if (dojo.event.browser.isEvent(event)) {
-
 			if(event["type"]) props.beventtype=event.type;
 			if(event["keys"]) props.beventkeys=event.keys;
 			if(event["charCode"]) props.beventcharCode=event.charCode;
@@ -620,11 +620,10 @@ tapestry.event={
 
 			if (event["target"]) this.buildTargetProperties(props, event.target);
 
-		} else if ( args != undefined ) {
-		
+		} else if ( typeof args != "undefined" ) {
 			props.methodArguments = dojo.json.serialize( args );
-			
 		}
+		
 		return props;
 	},
 	

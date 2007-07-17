@@ -14,27 +14,20 @@
 
 package org.apache.tapestry.engine;
 
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IDirectEvent;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.StaleSessionException;
+import org.apache.tapestry.*;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebSession;
+import static org.easymock.EasyMock.*;
 import org.testng.annotations.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Tests for {@link org.apache.tapestry.engine.DirectService}.
@@ -215,6 +208,7 @@ public class DirectEventServiceTest extends ServiceTestCase
         trainGetParameter(cycle, ServiceConstants.CONTAINER, null);
         trainGetParameter(cycle, ServiceConstants.PAGE, "ActivePage");
         trainGetParameter(cycle, ServiceConstants.SESSION, null);
+        trainGetParameter(cycle, BrowserEvent.METHOD_ARGUMENTS, null);
 
         trainGetPage(cycle, "ActivePage", page);
         cycle.activate(page);
@@ -260,7 +254,8 @@ public class DirectEventServiceTest extends ServiceTestCase
         trainGetParameter(cycle, ServiceConstants.CONTAINER, "ComponentPage");
         trainGetParameter(cycle, ServiceConstants.PAGE, "ActivePage");
         trainGetParameter(cycle, ServiceConstants.SESSION, null);
-
+        trainGetParameter(cycle, BrowserEvent.METHOD_ARGUMENTS, null);
+        
         trainGetPage(cycle, "ActivePage", page);
 
         cycle.activate(page);
@@ -345,6 +340,7 @@ public class DirectEventServiceTest extends ServiceTestCase
         trainGetParameter(cycle, ServiceConstants.CONTAINER, null);
         trainGetParameter(cycle, ServiceConstants.PAGE, "ActivePage");
         trainGetParameter(cycle, ServiceConstants.SESSION, "T");
+        trainGetParameter(cycle, BrowserEvent.METHOD_ARGUMENTS, null);
         
         trainGetPage(cycle, "ActivePage", page);
         cycle.activate(page);

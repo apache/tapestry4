@@ -25,9 +25,7 @@ import org.apache.hivemind.util.ToStringBuilder;
  *
  **/
 
-public class ApplicationSpecification
-    extends LibrarySpecification
-    implements IApplicationSpecification
+public class ApplicationSpecification extends LibrarySpecification implements IApplicationSpecification
 {
     private String _name;
     private String _engineClassName;

@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.services.impl;
 
+import edu.emory.mathcs.backport.java.util.concurrent.ConcurrentHashMap;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.lib.chain.ChainBuilder;
 import org.apache.tapestry.IComponent;
@@ -24,13 +25,16 @@ import org.apache.tapestry.services.ComponentPropertySource;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.util.PropertyHolderPropertySource;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * Implementation of tapestry.props.ComponentPropertySource.
  * <p>
  * TODO: Figure out a testing strategy for this beast!
- * 
+ *
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
@@ -40,15 +44,15 @@ public class ComponentPropertySourceImpl implements ComponentPropertySource, Res
 
     private ChainBuilder _chainBuilder;
 
-    private Map _componentSources = new HashMap();
+    private Map _componentSources = new ConcurrentHashMap();
 
-    private Map _localizedComponentSources = new HashMap();
+    private Map _localizedComponentSources = new ConcurrentHashMap();
 
-    private Map _namespaceSources = new HashMap();
+    private Map _namespaceSources = new ConcurrentHashMap();
 
-    private Map _localizedNamespaceSources = new HashMap();
+    private Map _localizedNamespaceSources = new ConcurrentHashMap();
 
-    public synchronized void resetEventDidOccur()
+    public void resetEventDidOccur()
     {
         _componentSources.clear();
         _localizedComponentSources.clear();
@@ -56,7 +60,7 @@ public class ComponentPropertySourceImpl implements ComponentPropertySource, Res
         _localizedNamespaceSources.clear();
     }
 
-    private synchronized IPropertySource getSourceForNamespace(INamespace namespace)
+    private IPropertySource getSourceForNamespace(INamespace namespace)
     {
         Resource key = namespace.getSpecificationLocation();
 
@@ -65,13 +69,14 @@ public class ComponentPropertySourceImpl implements ComponentPropertySource, Res
         if (result == null)
         {
             result = createSourceForNamespace(namespace);
+
             _namespaceSources.put(key, result);
         }
 
         return result;
     }
 
-    private synchronized IPropertySource getSourceForComponent(IComponent component)
+    private IPropertySource getSourceForComponent(IComponent component)
     {
         Resource key = component.getSpecification().getSpecificationLocation();
 
@@ -86,7 +91,7 @@ public class ComponentPropertySourceImpl implements ComponentPropertySource, Res
         return result;
     }
 
-    private synchronized LocalizedPropertySource getLocalizedSourceForComponent(IComponent component)
+    private LocalizedPropertySource getLocalizedSourceForComponent(IComponent component)
     {
         Resource key = component.getSpecification().getSpecificationLocation();
 
@@ -102,7 +107,7 @@ public class ComponentPropertySourceImpl implements ComponentPropertySource, Res
         return result;
     }
 
-    private synchronized LocalizedPropertySource getLocalizedSourceForNamespace(INamespace namespace)
+    private LocalizedPropertySource getLocalizedSourceForNamespace(INamespace namespace)
     {
         Resource key = namespace.getSpecificationLocation();
 
@@ -128,9 +133,9 @@ public class ComponentPropertySourceImpl implements ComponentPropertySource, Res
         sources.add(getSourceForNamespace(component.getNamespace()));
 
         return (IPropertySource) _chainBuilder.buildImplementation(
-                IPropertySource.class,
-                sources,
-                ImplMessages.componentPropertySourceDescription(specification));
+          IPropertySource.class,
+          sources,
+          ImplMessages.componentPropertySourceDescription(specification));
     }
 
     private IPropertySource createSourceForNamespace(INamespace namespace)
@@ -140,10 +145,9 @@ public class ComponentPropertySourceImpl implements ComponentPropertySource, Res
         sources.add(new PropertyHolderPropertySource(namespace.getSpecification()));
         sources.add(_globalProperties);
 
-        return (IPropertySource) _chainBuilder.buildImplementation(
-                IPropertySource.class,
-                sources,
-                ImplMessages.namespacePropertySourceDescription(namespace));
+        return (IPropertySource) _chainBuilder.buildImplementation(IPropertySource.class,
+                                                                   sources,
+                                                                   ImplMessages.namespacePropertySourceDescription(namespace));
     }
 
     public String getComponentProperty(IComponent component, String propertyName)
@@ -151,8 +155,7 @@ public class ComponentPropertySourceImpl implements ComponentPropertySource, Res
         return getSourceForComponent(component).getPropertyValue(propertyName);
     }
 
-    public String getLocalizedComponentProperty(IComponent component, Locale locale,
-            String propertyName)
+    public String getLocalizedComponentProperty(IComponent component, Locale locale, String propertyName)
     {
         return getLocalizedSourceForComponent(component).getPropertyValue(propertyName, locale);
     }
@@ -162,8 +165,7 @@ public class ComponentPropertySourceImpl implements ComponentPropertySource, Res
         return getSourceForNamespace(namespace).getPropertyValue(propertyName);
     }
 
-    public String getLocalizedNamespaceProperty(INamespace namespace, Locale locale,
-            String propertyName)
+    public String getLocalizedNamespaceProperty(INamespace namespace, Locale locale, String propertyName)
     {
         return getLocalizedSourceForNamespace(namespace).getPropertyValue(propertyName, locale);
     }

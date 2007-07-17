@@ -14,17 +14,19 @@
 
 package org.apache.tapestry.services;
 
-import java.util.Locale;
-
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.INamespace;
+
+import java.util.Locale;
 
 /**
  * Encapsulates the logic for searching for component meta-data. Deployed as service
  * tapestry.props.ComponentPropertySource.
+ *
  * <p>
  * TODO: Adjust name, since it now provides access to namespace properties as well as component
  * properties.
+ * </p>
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
@@ -39,6 +41,11 @@ public interface ComponentPropertySource
      * <li>The specification of the application (or the library containing the component).</li>
      * <li>The chain of global property sources.</li>
      * </ul>
+     *
+     * @param component
+     *          The {@link IComponent} to get the property of.
+     * @param propertyName
+     *          Key of the property.
      * 
      * @return the value of the given key, or null if not found.
      */
@@ -51,7 +58,14 @@ public interface ComponentPropertySource
      * property name means that a suffix may be appended to it. If the fully localized name is not
      * found, then the locale is generalized (i.e., from "en_UK" to "en" to nothing) until a match
      * is found.
-     * 
+     *
+     * @param component
+     *          The {@link IComponent} to get the property of.
+     * @param locale
+     *          The {@link Locale} to get properties for.
+     * @param propertyName
+     *          Key of the property.
+     *
      * @return the value of the given property name, or null if not found.
      */
     String getLocalizedComponentProperty(IComponent component, Locale locale, String propertyName);
@@ -59,10 +73,16 @@ public interface ComponentPropertySource
     /**
      * Returns the property value for a particular named meta-data property of the namespace. The
      * search order is:
+     * 
      * <ul>
      * <li>The library or application specification for the namespace.</li>
      * <li>The chain of global property sources.</li>
      * </ul>
+     *
+     * @param namespace
+     *          The namespace to get the property from.
+     * @param propertyName
+     *          The key of the property to get.
      * 
      * @return the value of the given key, or null if not found.
      */
@@ -72,6 +92,15 @@ public interface ComponentPropertySource
     /**
      * As with {@link #getLocalizedComponentProperty(IComponent, Locale, String)}, but with a
      * {@link INamespace}.
+     *
+     * @param namespace
+     *          The namespace to get the property from.
+     * @param locale
+     *          {@link Locale} to filter the properties for.
+     * @param propertyName
+     *          The key of the property to get.
+     *
+     * @return The matching property, or null if not found.
      */
 
     String getLocalizedNamespaceProperty(INamespace namespace, Locale locale, String propertyName);

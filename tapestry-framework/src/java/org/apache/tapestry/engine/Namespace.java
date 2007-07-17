@@ -30,7 +30,7 @@ import java.util.*;
  * Implementation of {@link org.apache.tapestry.INamespace} that works with a
  * {@link org.apache.tapestry.services.NamespaceResources} to obtain page and
  * component specifications as needed.
- * 
+ *
  * @author Howard Lewis Ship
  * @since 2.2
  */
@@ -76,8 +76,8 @@ public class Namespace implements INamespace
 
     private final Map _children = new ConcurrentHashMap();
 
-    public Namespace(String id, INamespace parent,
-            ILibrarySpecification specification, NamespaceResources resources)
+    public Namespace(String id, INamespace parent, ILibrarySpecification specification,
+                     NamespaceResources resources)
     {
         _id = id;
         _parent = parent;
@@ -96,7 +96,8 @@ public class Namespace implements INamespace
 
         if (_applicationNamespace)
             buffer.append("<application>");
-        else buffer.append(getExtendedId());
+        else
+            buffer.append(getExtendedId());
 
         buffer.append(']');
 
@@ -110,9 +111,11 @@ public class Namespace implements INamespace
 
     public String getExtendedId()
     {
-        if (_applicationNamespace) return null;
+        if (_applicationNamespace)
+            return null;
 
-        if (_extendedId == null) _extendedId = buildExtendedId();
+        if (_extendedId == null)
+            _extendedId = buildExtendedId();
 
         return _extendedId;
     }
@@ -206,13 +209,15 @@ public class Namespace implements INamespace
 
     private String buildExtendedId()
     {
-        if (_parent == null) return _id;
+        if (_parent == null)
+            return _id;
 
         String parentId = _parent.getExtendedId();
 
         // If immediate child of application namespace
 
-        if (parentId == null) return _id;
+        if (parentId == null)
+            return _id;
 
         return parentId + "." + _id;
     }
@@ -235,7 +240,7 @@ public class Namespace implements INamespace
 
     /**
      * Gets the specification from the specification source.
-     * 
+     *
      * @throws ApplicationRuntimeException
      *             if the named page is not defined.
      */
@@ -245,16 +250,14 @@ public class Namespace implements INamespace
         String path = _specification.getPageSpecificationPath(name);
 
         if (path == null)
-            throw new ApplicationRuntimeException(Tapestry.format(
-                    "Namespace.no-such-page", name, getNamespaceId()));
+            throw new ApplicationRuntimeException(Tapestry.format("Namespace.no-such-page", name, getNamespaceId()));
 
         // We don't record line-precise data about <page> elements
         // so use the location for the specification as a whole (at least
         // identifying
         // the right file)
 
-        return _resources.getPageSpecification(getSpecificationLocation(),
-                path, getLocation());
+        return _resources.getPageSpecification(getSpecificationLocation(), path, getLocation());
     }
 
     private IComponentSpecification locateComponentSpecification(String type)
@@ -262,16 +265,14 @@ public class Namespace implements INamespace
         String path = _specification.getComponentSpecificationPath(type);
 
         if (path == null)
-            throw new ApplicationRuntimeException(Tapestry.format(
-                    "Namespace.no-such-alias", type, getNamespaceId()));
+            throw new ApplicationRuntimeException(Tapestry.format("Namespace.no-such-alias", type, getNamespaceId()));
 
         // We don't record line-precise data about <component-type> elements
         // so use the location for the specification as a whole (at least
         // identifying
         // the right file)
 
-        return _resources.getComponentSpecification(getSpecificationLocation(),
-                path, getLocation());
+        return _resources.getComponentSpecification(getSpecificationLocation(), path, getLocation());
     }
 
     private INamespace createNamespace(String id)
@@ -279,15 +280,15 @@ public class Namespace implements INamespace
         String path = _specification.getLibrarySpecificationPath(id);
 
         if (path == null)
-            throw new ApplicationRuntimeException(Tapestry.format(
-                    "Namespace.library-id-not-found", id, getNamespaceId()));
+            throw new ApplicationRuntimeException(Tapestry.format("Namespace.library-id-not-found", id, getNamespaceId()));
 
         // We don't record line-precise data about <library> elements
         // so use the location for the specification as a whole (at least
         // identifying
         // the right file)
 
-        ILibrarySpecification ls = _resources.findChildLibrarySpecification(getSpecificationLocation(), path, getLocation());
+        ILibrarySpecification ls =
+          _resources.findChildLibrarySpecification(getSpecificationLocation(), path, getLocation());
 
         return new Namespace(id, this, ls, _resources);
     }
@@ -303,7 +304,8 @@ public class Namespace implements INamespace
     {
         String prefix = getExtendedId();
 
-        if (prefix == null) return pageName;
+        if (prefix == null)
+            return pageName;
 
         return prefix + SEPARATOR + pageName;
     }
@@ -347,20 +349,28 @@ public class Namespace implements INamespace
 
     public Location getLocation()
     {
-        if (_specification == null) return null;
+        if (_specification == null)
+            return null;
 
         return _specification.getLocation();
     }
 
     /**
      * Returns property values defined in the namespace's library specification.
-     * 
+     *
      * @return the property, or null if not provided in the specification.
      * @since 4.0
      */
 
     public String getPropertyValue(String propertyName)
     {
-        return _specification.getProperty(propertyName);
+        String ret = _specification.getProperty(propertyName);
+
+        if (ret == null && _parent != null)
+        {
+            return _parent.getPropertyValue(propertyName);
+        }
+
+        return ret;
     }
 }

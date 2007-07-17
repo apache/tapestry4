@@ -28,8 +28,7 @@ import org.apache.tapestry.util.BasePropertyHolder;
  * @since 3.0
  */
 
-public class LocatablePropertyHolder extends BasePropertyHolder implements
-        LocationHolder
+public class LocatablePropertyHolder extends BasePropertyHolder implements LocationHolder
 {
 
     private Location _location;

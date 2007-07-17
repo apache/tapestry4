@@ -14,11 +14,7 @@
 
 package org.apache.tapestry.util;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  *  Base class implementation for the {@link IPropertyHolder} interface.
@@ -26,7 +22,7 @@ import java.util.Map;
  *
  *  @author Howard Lewis Ship
  *
- **/
+ */
 
 public class BasePropertyHolder implements IPropertyHolder
 {
