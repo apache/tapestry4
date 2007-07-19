@@ -40,6 +40,7 @@ public class BrowserEvent
 
     public static final String TARGET="beventtarget";
     public static final String TARGET_ATTR_ID="id";
+    public static final String COMPONENT_ID = "bcomponentid";
 
     public static final String METHOD_ARGUMENTS="methodArguments";
 
@@ -52,7 +53,8 @@ public class BrowserEvent
     private String _layerX;
     private String _layerY;
     private EventTarget _target;
-
+    private String _componentId;
+    
     private String _methodArguments;
     private JSONArray _methodArgumentsArray;
 
@@ -75,6 +77,7 @@ public class BrowserEvent
         _pageY = cycle.getParameter(PAGE_Y);
         _layerX = cycle.getParameter(LAYER_X);
         _layerY = cycle.getParameter(LAYER_Y);
+        _componentId = cycle.getParameter(COMPONENT_ID);
 
         Map props = new HashMap();
         _target = new EventTarget(props);
@@ -97,8 +100,22 @@ public class BrowserEvent
      */
     public BrowserEvent(String name, EventTarget target)
     {
+        this(name, null, target);
+    }
+
+    /**
+     * Creates a new browser event with the specified
+     * name/target properties.
+     *
+     * @param name The name of the event, ie "onClick", "onBlur", etc..
+     * @param componentId Component targeted.
+     * @param target The target of the client side event.
+     */
+    public BrowserEvent(String name, String componentId, EventTarget target)
+    {
         _name = name;
         _target = target;
+        _componentId = componentId;
     }
 
     /**
@@ -124,6 +141,18 @@ public class BrowserEvent
         return _target;
     }
 
+    /**
+     * Only when the event targeted a {@link org.apache.tapestry.IComponent} - will return the originating
+     * components id as returned from {@link org.apache.tapestry.IComponent#getId()}.  <em>Not</em> present
+     * on element events.
+     *
+     * @return The originating component id that generated the event.
+     */
+    public String getComponentId()
+    {
+        return _componentId;
+    }
+    
     /**
      * @return the charCode
      */

@@ -151,8 +151,8 @@ public class DirectService implements IEngineService
 
     protected void triggerComponent(IRequestCycle cycle, IDirect direct, Object[] parameters)
     {
-        if (BrowserEvent.hasBrowserEvent(cycle)) {
-            
+        if (BrowserEvent.hasBrowserEvent(cycle))
+        {    
             BrowserEvent event = new BrowserEvent(cycle);
             
             Object[] parms = new Object[parameters.length + 1];

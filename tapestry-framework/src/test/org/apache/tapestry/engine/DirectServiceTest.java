@@ -261,15 +261,12 @@ public class DirectServiceTest extends ServiceTestCase
         trainGetParameter(cycle, ServiceConstants.CONTAINER, null);
         trainGetParameter(cycle, ServiceConstants.PAGE, "ActivePage");
         trainGetParameter(cycle, ServiceConstants.SESSION, null);
-        trainGetParameter(cycle, BrowserEvent.METHOD_ARGUMENTS, null);
 
         trainGetPage(cycle, "ActivePage", page);
         cycle.activate(page);
-
         trainGetNestedComponent(page, "fred.barney", d);
 
         trainExtractListenerParameters(lf, cycle, parameters);
-        
         trainExtractBrowserEvent(cycle);
         
         cycle.setListenerParameters(isA(Object[].class));
@@ -293,7 +290,7 @@ public class DirectServiceTest extends ServiceTestCase
      * The complex case is where the component is contained on a different page than the active (at
      * the time of render) page.
      */
-    public void testServiceComplex() throws Exception
+    public void test_Service_Complex() throws Exception
     {
         Object[] parameters = new Object[0];
         IRequestCycle cycle = newCycle();
@@ -337,7 +334,7 @@ public class DirectServiceTest extends ServiceTestCase
         verify();
     }
 
-    public void testServiceNotDirect() throws Exception
+    public void test_Service_Not_Direct() throws Exception
     {
         IRequestCycle cycle = newCycle();
         IPage page = newPage();
@@ -378,7 +375,7 @@ public class DirectServiceTest extends ServiceTestCase
         verify();
     }
 
-    public void testSessionActiveAndRequired() throws Exception
+    public void test_Session_Active_And_Required() throws Exception
     {
         Object[] parameters = new Object[0];
         IRequestCycle cycle = newCycle();
@@ -432,7 +429,7 @@ public class DirectServiceTest extends ServiceTestCase
         expect(direct.isStateful()).andReturn(isStateful);
     }
 
-    public void testStaleSession() throws Exception
+    public void test_Stale_Session() throws Exception
     {
         IRequestCycle cycle = newCycle();
         IPage page = newPage();
