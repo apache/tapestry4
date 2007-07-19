@@ -46,6 +46,7 @@ public class BrowserEventTest extends BaseComponentTestCase
     public void test_Unparseable_JSON_Method_Arguments()
     {
         IRequestCycle cycle = newCycle();
+        
         trainCycleForStandardBrowserEvent(cycle);
         
         expect(cycle.getParameter(BrowserEvent.METHOD_ARGUMENTS)).andReturn("*/utterRubb�sh");
@@ -70,7 +71,8 @@ public class BrowserEventTest extends BaseComponentTestCase
         expect(cycle.getParameter(BrowserEvent.PAGE_Y)).andReturn("1243");
         expect(cycle.getParameter(BrowserEvent.LAYER_X)).andReturn(null);
         expect(cycle.getParameter(BrowserEvent.LAYER_Y)).andReturn(null);
-
+        expect(cycle.getParameter(BrowserEvent.COMPONENT_ID)).andReturn(null);
+        
         expect(cycle.getParameter(BrowserEvent.TARGET + "." + BrowserEvent.TARGET_ATTR_ID)).andReturn("element1");
     }
 }

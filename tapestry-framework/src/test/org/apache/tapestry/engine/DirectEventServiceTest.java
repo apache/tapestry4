@@ -208,7 +208,6 @@ public class DirectEventServiceTest extends ServiceTestCase
         trainGetParameter(cycle, ServiceConstants.CONTAINER, null);
         trainGetParameter(cycle, ServiceConstants.PAGE, "ActivePage");
         trainGetParameter(cycle, ServiceConstants.SESSION, null);
-        trainGetParameter(cycle, BrowserEvent.METHOD_ARGUMENTS, null);
 
         trainGetPage(cycle, "ActivePage", page);
         cycle.activate(page);
@@ -254,18 +253,14 @@ public class DirectEventServiceTest extends ServiceTestCase
         trainGetParameter(cycle, ServiceConstants.CONTAINER, "ComponentPage");
         trainGetParameter(cycle, ServiceConstants.PAGE, "ActivePage");
         trainGetParameter(cycle, ServiceConstants.SESSION, null);
-        trainGetParameter(cycle, BrowserEvent.METHOD_ARGUMENTS, null);
         
         trainGetPage(cycle, "ActivePage", page);
-
         cycle.activate(page);
 
         trainGetPage(cycle, "ComponentPage", componentPage);
-
         trainGetNestedComponent(componentPage, "fred.barney", d);
 
         trainExtractListenerParameters(lf, cycle, parameters);
-
         trainExtractBrowserEvent(cycle);
         
         cycle.setListenerParameters(isA(Object[].class));
@@ -340,7 +335,6 @@ public class DirectEventServiceTest extends ServiceTestCase
         trainGetParameter(cycle, ServiceConstants.CONTAINER, null);
         trainGetParameter(cycle, ServiceConstants.PAGE, "ActivePage");
         trainGetParameter(cycle, ServiceConstants.SESSION, "T");
-        trainGetParameter(cycle, BrowserEvent.METHOD_ARGUMENTS, null);
         
         trainGetPage(cycle, "ActivePage", page);
         cycle.activate(page);

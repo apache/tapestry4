@@ -208,7 +208,7 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         
         Map tprops = new HashMap();
         tprops.put("id", "form1");
-        BrowserEvent event = new BrowserEvent("onSelect", new EventTarget(tprops));
+        BrowserEvent event = new BrowserEvent("onSelect", "form1", new EventTarget(tprops));
         
         ComponentEventInvoker invoker = new ComponentEventInvoker();
         invoker.setInvoker(listenerInvoker);
@@ -264,7 +264,7 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         
         Map tprops = new HashMap();
         tprops.put("id", "form1");
-        BrowserEvent event = new BrowserEvent("onSelect", new EventTarget(tprops));
+        BrowserEvent event = new BrowserEvent("onSelect", "form1", new EventTarget(tprops));
         
         ComponentEventInvoker invoker = new ComponentEventInvoker();
         invoker.setInvoker(listenerInvoker);

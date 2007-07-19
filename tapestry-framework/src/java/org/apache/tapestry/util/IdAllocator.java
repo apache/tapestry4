@@ -84,26 +84,13 @@ public class IdAllocator
     }
 
     /**
-     * Utility for stripping out the standard allocator generated portion of a component id string
-     * in order to get what the most likely original component id was.
-     *
-     * @param input
-     *          The generated component id.
-     * @return The id stripped of any allocated id meta, if any was found.
-     */
-    public static String convertAllocatedComponentId(String input)
-    {
-        if (input == null)
-            return null;
-
-        int index = input.indexOf(SEPARATOR);
-        
-        return index > -1 ? input.substring(0, index) : input;
-    }
-
-    /**
      * Allocates the id. Repeated calls for the same name will return "name",
      * "name_0", "name_1", etc.
+     *
+     * @param name
+     *          The base id to allocate new unique ids from.
+     *
+     * @return A unique version of the passed in id.
      */
 
     public String allocateId(String name)

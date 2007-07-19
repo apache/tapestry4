@@ -272,7 +272,6 @@ public class FormSupportTest extends BaseComponentTestCase {
         form.setEventInvoker(invoker);
 
         trainExtractBrowserEvent(cycle);
-        expect(cycle.getParameter(BrowserEvent.METHOD_ARGUMENTS)).andReturn("null");
 
         replay();
 
@@ -657,7 +656,6 @@ public class FormSupportTest extends BaseComponentTestCase {
         form.setEventInvoker(invoker);
 
         trainExtractBrowserEvent(cycle);
-        expect(cycle.getParameter(BrowserEvent.METHOD_ARGUMENTS)).andReturn("null");
 
         invoker.invokeFormListeners(eq(fs), eq(cycle), isA(BrowserEvent.class));
 
@@ -859,7 +857,6 @@ public class FormSupportTest extends BaseComponentTestCase {
         form.setEventInvoker(invoker);
 
         trainExtractBrowserEvent(cycle);
-        expect(cycle.getParameter(BrowserEvent.METHOD_ARGUMENTS)).andReturn("null");
 
         invoker.invokeFormListeners(eq(fs), eq(cycle), isA(BrowserEvent.class));
 
@@ -1015,7 +1012,6 @@ public class FormSupportTest extends BaseComponentTestCase {
         form.setEventInvoker(invoker);
 
         trainExtractBrowserEvent(cycle);
-        expect(cycle.getParameter(BrowserEvent.METHOD_ARGUMENTS)).andReturn("null");
 
         invoker.invokeFormListeners(eq(fs), eq(cycle), isA(BrowserEvent.class));
 
@@ -1304,7 +1300,6 @@ public class FormSupportTest extends BaseComponentTestCase {
         form.setEventInvoker(invoker);
 
         trainExtractBrowserEvent(cycle);
-        expect(cycle.getParameter(BrowserEvent.METHOD_ARGUMENTS)).andReturn("null");
 
         invoker.invokeFormListeners(eq(fs), eq(cycle), isA(BrowserEvent.class));
 
@@ -1339,7 +1334,6 @@ public class FormSupportTest extends BaseComponentTestCase {
 
         trainCycleForRewind(cycle, "", null);
         trainExtractBrowserEvent(cycle);
-        expect(cycle.getParameter(BrowserEvent.METHOD_ARGUMENTS)).andReturn("null");
 
         writer.print("DEFERRED");
 
