@@ -144,11 +144,8 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         render.render(NullWriter.getSharedInstance(), cycle);
 
         expect(comp1.getClientId()).andReturn("id1").anyTimes();
-
         expect(comp1.peekClientId()).andReturn("id1").anyTimes();
-
         expect(cycle.getInfrastructure()).andReturn(infra);
-
         expect(infra.getOutputEncoding()).andReturn("UTF-8");
 
         writer.printRaw("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
@@ -200,7 +197,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         parts.add("id1");
 
         DojoAjaxResponseBuilder builder =
-                new DojoAjaxResponseBuilder(cycle, rlm, mrs, resp, errorPages, assetFactory, "", pageService);
+          new DojoAjaxResponseBuilder(cycle, rlm, mrs, resp, errorPages, assetFactory, "", pageService);
 
         expect(page.getPageName()).andReturn("RequestPage").anyTimes();
         expect(cycle.getParameter(ServiceConstants.PAGE)).andReturn("RequestPage").anyTimes();
@@ -265,7 +262,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
     private static final String NEWLINE = System.getProperty("line.separator");
 
     public void test_Render_Response_Already_Started()
-            throws IOException
+      throws IOException
     {
         IPage page = newMock(IPage.class);
         checkOrder(page, false);
@@ -276,7 +273,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
 
         ILink link = newMock(ILink.class);
         Location l = newLocation();
-        
+
         RequestLocaleManager rlm = newMock(RequestLocaleManager.class);
         MarkupWriterSource mrs = newMock(MarkupWriterSource.class);
         WebResponse resp = newMock(WebResponse.class);
@@ -303,11 +300,11 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         expect(page.getLocation()).andReturn(l);
         expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE)).andReturn(null);
         cycle.setAttribute(eq(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE), isA(PageRenderSupport.class));
-        
+
         cycle.renderPage(builder);
         // only done to simulate a caught internal stale link / other exception that would cause a new renderPage() request 
         expectLastCall().andThrow(new RedirectException("redir"));
-        
+
         cycle.renderPage(builder);
         cycle.removeAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE);
 
@@ -322,7 +319,7 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
             IMarkupWriter fakeWriter = builder.getComponentWriter("fakeComp");
             fakeWriter.beginEmpty("div");
             fakeWriter.attribute("id", "fakeComp");
-            
+
             builder.renderResponse(cycle);
         }
 

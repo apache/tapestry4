@@ -419,7 +419,10 @@ public class FormSupportImpl implements FormSupport
         String id = comp.getSpecifiedId();
         if (id == null)
             return null;
-        
+
+        if (wasPrerendered(comp))
+            return comp.getClientId();
+
         return _elementIdAllocator.peekNextId(id);
     }
     
@@ -812,7 +815,12 @@ public class FormSupportImpl implements FormSupport
 
         return true;
     }
-    
+
+    public boolean wasPrerendered(IComponent field)
+    {
+        return _prerenderMap.containsKey(field.getExtendedId());
+    }
+
     public void addDeferredRunnable(Runnable runnable)
     {
         Defense.notNull(runnable, "runnable");

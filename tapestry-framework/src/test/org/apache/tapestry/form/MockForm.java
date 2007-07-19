@@ -14,25 +14,9 @@
 
 package org.apache.tapestry.form;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Messages;
-import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IBeanProvider;
-import org.apache.tapestry.IBinding;
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IForm;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.INamespace;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRender;
-import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.*;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.internal.event.IComponentEventInvoker;
 import org.apache.tapestry.json.JSONObject;
@@ -40,6 +24,8 @@ import org.apache.tapestry.listener.ListenerMap;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
 import org.apache.tapestry.valid.IValidationDelegate;
+
+import java.util.*;
 
 /**
  * Mock object used by the {@link org.apache.tapestry.form.FormSupportTest}.
@@ -481,5 +467,9 @@ public class MockForm implements IForm
     {
         return null;
     }
-    
+
+    public boolean wasPrerendered(IComponent field)
+    {
+        return false;
+    }
 }

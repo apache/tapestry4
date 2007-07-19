@@ -14,19 +14,9 @@
 
 package org.apache.tapestry.form;
 
-import static org.easymock.EasyMock.checkOrder;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-
-import org.apache.tapestry.BaseComponentTestCase;
-import org.apache.tapestry.IActionListener;
-import org.apache.tapestry.IBinding;
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IForm;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.*;
 import org.apache.tapestry.valid.IValidationDelegate;
+import static org.easymock.EasyMock.*;
 
 /**
  * Base class for tests of implementations of {@link org.apache.tapestry.form.IFormComponent}.
@@ -58,7 +48,7 @@ public abstract class BaseFormComponentTestCase extends BaseComponentTestCase
 
     protected void trainGetForm(IRequestCycle cycle, IForm form)
     {
-        expect(cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE)).andReturn(form);
+        expect(cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE)).andReturn(form).anyTimes();
     }
 
     protected void trainGetDelegate(IForm form, IValidationDelegate delegate)

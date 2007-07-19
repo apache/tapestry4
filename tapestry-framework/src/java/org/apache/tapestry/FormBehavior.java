@@ -147,7 +147,17 @@ public interface FormBehavior
      *         false if the field should continue as normal.
      */
     boolean wasPrerendered(IMarkupWriter writer, IComponent field);
-    
+
+    /**
+     * Invoked to check if a particular component has been pre-rendered.
+     *
+     * @param field
+     *          The component to check for pre-rendering. (Such as is done by {@link org.apache.tapestry.valid.FieldLabel}.
+     * 
+     * @return True if the component was pre-rendered, false otherwise.
+     */
+    boolean wasPrerendered(IComponent field);
+
     /**
      * Adds a deferred runnable, an object to be executed either before the &lt;/form&gt; tag is
      * rendered (when rendering), or before the form's listener is invoked (when rewinding).

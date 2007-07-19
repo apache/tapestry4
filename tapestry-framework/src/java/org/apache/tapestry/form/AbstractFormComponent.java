@@ -14,11 +14,7 @@
 
 package org.apache.tapestry.form;
 
-import org.apache.tapestry.AbstractComponent;
-import org.apache.tapestry.IForm;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.*;
 import org.apache.tapestry.engine.NullWriter;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidationConstants;
@@ -171,7 +167,7 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
         IForm form = (IForm) getPage().getRequestCycle().getAttribute(TapestryUtils.FORM_ATTRIBUTE);
         if (form == null)
             return null;
-        
+
         return form.peekClientId(this);
     }
     
