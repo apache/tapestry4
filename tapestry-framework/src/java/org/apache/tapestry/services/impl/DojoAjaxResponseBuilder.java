@@ -574,22 +574,24 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     public void render(IMarkupWriter writer, IRender render, IRequestCycle cycle)
     {
         // must be a valid writer already
-        
-        if (NestedMarkupWriterImpl.class.isInstance(writer)) {
+
+        if (NestedMarkupWriterImpl.class.isInstance(writer) && !NullWriter.class.isInstance(writer))
+        {
             render.render(writer, cycle);
             return;
         }
 
         // check for page exception renders and write content to writer so client can display them
         
-        if (IPage.class.isInstance(render)) {
-            
+        if (IPage.class.isInstance(render))
+        {    
             IPage page = (IPage)render;
             String errorPage = getErrorPage(page.getPageName());
             
-            if (errorPage != null) {
-                
+            if (errorPage != null)
+            {    
                 _pageRender = true;
+                
                 clearPartialWriters();
                 render.render(getWriter(errorPage, EXCEPTION_TYPE), cycle);
                 return;
@@ -600,8 +602,8 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
             // this appropriately. (usually by replacing the current dom with whatever this renders)
             
             if (_cycle.getParameter(ServiceConstants.PAGE) != null
-                    && !page.getPageName().equals(_cycle.getParameter(ServiceConstants.PAGE))) {
-                
+                    && !page.getPageName().equals(_cycle.getParameter(ServiceConstants.PAGE)))
+            {    
                 IMarkupWriter urlwriter = _writer.getNestedWriter();
                 
                 urlwriter.begin("response");

@@ -354,7 +354,12 @@ public abstract class Form extends AbstractComponent implements IForm
     {
         return _formSupport.wasPrerendered(writer, field);
     }
-    
+
+    public boolean wasPrerendered(IComponent field)
+    {
+        return _formSupport.wasPrerendered(field);
+    }
+
     /** @since 4.0 */
 
     public void addDeferredRunnable(Runnable runnable)
