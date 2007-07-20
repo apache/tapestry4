@@ -14,17 +14,16 @@
 
 package org.apache.tapestry.pageload;
 
-import static org.easymock.EasyMock.expect;
-
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.services.ClassFinder;
 import org.apache.tapestry.spec.IComponentSpecification;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
 
 /**
  * Tests for {@link org.apache.tapestry.pageload.NamespaceClassSearchComponentClassProvider}.
- * 
+ *
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
@@ -53,16 +52,16 @@ public class TestNamespaceClassSearchComponentClassProvider extends BaseComponen
     {
         INamespace namespace = newNamespace("zip", "org.apache.tapestry.pageload");
         ClassFinder finder = newClassFinder(
-                "org.apache.tapestry.pageload",
-                "bar.Baz",
-                PageLoaderTest.class);
+          "org.apache.tapestry.pageload",
+          "bar.Baz",
+          PageLoaderTest.class);
 
         IComponentSpecification spec = newSpec();
 
         replay();
 
         ComponentClassProviderContext context = new ComponentClassProviderContext("bar/Baz", spec,
-                namespace);
+                                                                                  namespace);
 
         NamespaceClassSearchComponentClassProvider provider = new NamespaceClassSearchComponentClassProvider();
         provider.setClassFinder(finder);
@@ -83,7 +82,7 @@ public class TestNamespaceClassSearchComponentClassProvider extends BaseComponen
         replay();
 
         ComponentClassProviderContext context = new ComponentClassProviderContext("bar/Baz", spec,
-                namespace);
+                                                                                  namespace);
 
         NamespaceClassSearchComponentClassProvider provider = new NamespaceClassSearchComponentClassProvider();
         provider.setClassFinder(finder);

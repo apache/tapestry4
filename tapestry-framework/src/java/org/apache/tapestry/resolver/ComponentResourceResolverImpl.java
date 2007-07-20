@@ -66,8 +66,8 @@ public class ComponentResourceResolverImpl implements IComponentResourceResolver
 
         // In some cases the generic classpath resource path is fine - such as bundled component properties
 
-        if (resource == null) {
-            
+        if (resource == null)
+        {    
             resource = base.getRelativeResource(baseName + extension);
             
             if (resource != null)
@@ -124,11 +124,11 @@ public class ComponentResourceResolverImpl implements IComponentResourceResolver
             String templateName = className.substring((index + packages[i].length()) + 1, className.length()).replaceAll("\\.", "/");
             templateName =  templateName + extension;
 
-            if (_contextAssetFactory.assetExists(component.getSpecification(), _webInfAppLocation, templateName, locale)) {
-
+            if (_contextAssetFactory.assetExists(component.getSpecification(), _webInfAppLocation, templateName, locale))
+            {
                 return _contextAssetFactory.createAsset(_webInfAppLocation, component.getSpecification(),  templateName, locale, component.getLocation()).getResourceLocation();
-            } else if (_contextAssetFactory.assetExists(component.getSpecification(), _webInfLocation, templateName, locale)) {
-
+            } else if (_contextAssetFactory.assetExists(component.getSpecification(), _webInfLocation, templateName, locale))
+            {
                 return _contextAssetFactory.createAsset(_webInfLocation, component.getSpecification(), templateName, locale, component.getLocation()).getResourceLocation();
             }
 
@@ -137,7 +137,34 @@ public class ComponentResourceResolverImpl implements IComponentResourceResolver
             String resourceName = baseName + extension;
 
             if (_classpathAssetFactory.assetExists(component.getSpecification(), base, resourceName, locale))
+            {
                 return _classpathAssetFactory.createAsset(base, component.getSpecification(), resourceName, locale, component.getLocation()).getResourceLocation();
+            }
+
+            // if all else fails try package name context paths
+
+            String[] packageSegments = packages[i].split("\\.");
+            
+            if (packageSegments != null && packageSegments.length > 0)
+            {
+                // start with last segment and slowly build the path up with all of them
+                String packagePath = "";
+
+                for (int s=packageSegments.length - 1; s > -1; s--)
+                {
+                    packagePath += packageSegments[s] + "/";
+
+                    String templatePath = packagePath + templateName;
+                    
+                    if (_contextAssetFactory.assetExists(component.getSpecification(), _webInfAppLocation, templatePath, locale))
+                    {
+                        return _contextAssetFactory.createAsset(_webInfAppLocation, component.getSpecification(),  templatePath, locale, component.getLocation()).getResourceLocation();
+                    } else if (_contextAssetFactory.assetExists(component.getSpecification(), _webInfLocation, templatePath, locale))
+                    {
+                        return _contextAssetFactory.createAsset(_webInfLocation, component.getSpecification(), templatePath, locale, component.getLocation()).getResourceLocation();
+                    }
+                }
+            }
         }
 
         return null;
