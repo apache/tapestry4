@@ -14,12 +14,6 @@
 
 package org.apache.tapestry.enhance;
 
-import static org.easymock.EasyMock.anyObject;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-
-import java.lang.reflect.Modifier;
-
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.service.MethodSignature;
@@ -27,7 +21,10 @@ import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.spec.InjectSpecificationImpl;
+import static org.easymock.EasyMock.*;
 import org.testng.annotations.Test;
+
+import java.lang.reflect.Modifier;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.InjectScriptWorker}.
@@ -38,27 +35,23 @@ import org.testng.annotations.Test;
 @Test
 public class TestInjectScriptWorker extends BaseComponentTestCase
 {
-    public void testSuccess()
+    public void test_Simple_Inject()
+      throws Exception
     {
         EnhancementOperation op = newMock(EnhancementOperation.class);
 
         final Location injectSpecLocation = newLocation();
-
         final IScriptSource source = newMock(IScriptSource.class);
-        
-        // Location componentSpecLocation = newLocation();
         Resource scriptResource = newResource();
-
+        
         op.claimReadonlyProperty("foo");
 
         expect(op.getPropertyType("foo")).andReturn(IScript.class);
-
         expect(op.getAccessorMethodName("foo")).andReturn("getFoo");
-        
         expect(injectSpecLocation.getResource()).andReturn(scriptResource);
         
         expect(scriptResource.getRelativeResource("bar.script")).andReturn(scriptResource);
-        
+        expect(scriptResource.getResourceURL()).andReturn(getResource("autowire-single.xml").getResourceURL());
         expect(op.addInjectedField(eq("_$script"), eq(DeferredScript.class), anyObject()))
         .andReturn("_script");
         
@@ -76,7 +69,7 @@ public class TestInjectScriptWorker extends BaseComponentTestCase
         InjectScriptWorker worker = new InjectScriptWorker();
         worker.setSource(source);
 
-        worker.performEnhancement(op, is);
+        worker.performEnhancement(op, is, null);
 
         verify();
     }

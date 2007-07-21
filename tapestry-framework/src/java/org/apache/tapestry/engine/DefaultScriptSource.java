@@ -14,9 +14,7 @@
 
 package org.apache.tapestry.engine;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import edu.emory.mathcs.backport.java.util.concurrent.ConcurrentHashMap;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Resource;
@@ -30,10 +28,12 @@ import org.apache.tapestry.script.ScriptParser;
 import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.util.xml.DocumentParseException;
 
+import java.util.Map;
+
 /**
  * Provides basic access to scripts available on the classpath. Scripts are cached in memory once
  * parsed.
- * 
+ *
  * @author Howard Lewis Ship
  * @since 1.0.2
  */
@@ -50,21 +50,21 @@ public class DefaultScriptSource implements IScriptSource, ResetEventListener, R
     /** @since 4.0 */
     private ValueConverter _valueConverter;
 
-    private Map _cache = new HashMap();
+    private Map _cache = new ConcurrentHashMap();
 
-    public synchronized void resetEventDidOccur()
+    public void resetEventDidOccur()
     {
         _cache.clear();
     }
 
-    public synchronized void reportStatus(ReportStatusEvent event)
+    public void reportStatus(ReportStatusEvent event)
     {
         event.title(_serviceId);
         event.property("parsed script count", _cache.size());
         event.collection("parsed scripts", _cache.keySet());
     }
 
-    public synchronized IScript getScript(Resource resource)
+    public IScript getScript(Resource resource)
     {
         IScript result = (IScript) _cache.get(resource);
 
@@ -81,17 +81,15 @@ public class DefaultScriptSource implements IScriptSource, ResetEventListener, R
     private IScript parse(Resource resource)
     {
         ScriptParser parser = new ScriptParser(_classResolver, _expressionEvaluator,
-                _valueConverter);
-
+                                               _valueConverter);
         try
         {
             return parser.parse(resource);
         }
         catch (DocumentParseException ex)
         {
-            throw new ApplicationRuntimeException(Tapestry.format(
-                    "DefaultScriptSource.unable-to-parse-script",
-                    resource), ex);
+            throw new ApplicationRuntimeException(Tapestry.format("DefaultScriptSource.unable-to-parse-script",
+                                                                  resource), ex);
         }
     }
 

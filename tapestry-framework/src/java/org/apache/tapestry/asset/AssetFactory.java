@@ -61,6 +61,8 @@ public interface AssetFactory
      * @param location
      *            the location to be associated with the returned asset, or null to not attempt to
      *            localize the asset
+     * 
+     * @return The created asset.
      * @throws org.apache.hivemind.ApplicationRuntimeException
      *             if no matching asset may be found.
      */
@@ -81,6 +83,13 @@ public interface AssetFactory
 
     /**
      * Creates a new asset based on a known resource.
+     *
+     * @param resource
+     *          The resource the asset will represent.
+     * @param location
+     *          Location of the resource. (used for error reporting mostly)
+     *
+     * @return The created asset.
      */
 
     IAsset createAsset(Resource resource, Location location);

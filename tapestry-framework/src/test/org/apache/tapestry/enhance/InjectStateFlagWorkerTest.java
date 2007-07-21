@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.enhance;
 
-import java.lang.reflect.Modifier;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.service.MethodSignature;
@@ -23,6 +21,8 @@ import org.apache.tapestry.engine.state.ApplicationStateManager;
 import org.apache.tapestry.spec.InjectSpecification;
 import org.apache.tapestry.spec.InjectSpecificationImpl;
 import org.testng.annotations.Test;
+
+import java.lang.reflect.Modifier;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.InjectStateFlagWorker}.
@@ -70,7 +70,7 @@ public class InjectStateFlagWorkerTest extends BaseEnhancementTestCase
 
         worker.setApplicationStateManager(asm);
 
-        worker.performEnhancement(op, is);
+        worker.performEnhancement(op, is, null);
 
         verify();
     }
@@ -112,7 +112,7 @@ public class InjectStateFlagWorkerTest extends BaseEnhancementTestCase
 
         worker.setApplicationStateManager(asm);
 
-        worker.performEnhancement(op, is);
+        worker.performEnhancement(op, is, null);
 
         verify();
     }
@@ -139,7 +139,7 @@ public class InjectStateFlagWorkerTest extends BaseEnhancementTestCase
 
         try
         {
-            worker.performEnhancement(op, is);
+            worker.performEnhancement(op, is, null);
             unreachable();
         }
         catch (ApplicationRuntimeException ex)

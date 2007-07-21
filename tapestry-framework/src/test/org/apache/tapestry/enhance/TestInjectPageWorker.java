@@ -14,10 +14,6 @@
 
 package org.apache.tapestry.enhance;
 
-import static org.easymock.EasyMock.expect;
-
-import java.lang.reflect.Modifier;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.service.MethodSignature;
@@ -25,7 +21,10 @@ import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.spec.InjectSpecification;
 import org.apache.tapestry.spec.InjectSpecificationImpl;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
+
+import java.lang.reflect.Modifier;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.InjectPageWorker}.
@@ -50,7 +49,7 @@ public class TestInjectPageWorker extends BaseComponentTestCase
 
         try
         {
-            new InjectPageWorker().performEnhancement(op, is);
+            new InjectPageWorker().performEnhancement(op, is, null);
             unreachable();
         }
         catch (ApplicationRuntimeException ex)
@@ -102,7 +101,7 @@ public class TestInjectPageWorker extends BaseComponentTestCase
 
         InjectSpecification is = newSpec(l);
 
-        new InjectPageWorker().performEnhancement(op, is);
+        new InjectPageWorker().performEnhancement(op, is, null);
 
         verify();
     }
@@ -135,7 +134,7 @@ public class TestInjectPageWorker extends BaseComponentTestCase
 
         InjectSpecification is = newSpec(l);
 
-        new InjectPageWorker().performEnhancement(op, is);
+        new InjectPageWorker().performEnhancement(op, is, null);
 
         verify();
     }

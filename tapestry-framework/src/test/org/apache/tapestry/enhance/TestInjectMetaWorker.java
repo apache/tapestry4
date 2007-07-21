@@ -14,10 +14,6 @@
 
 package org.apache.tapestry.enhance;
 
-import static org.easymock.EasyMock.expect;
-
-import java.lang.reflect.Modifier;
-
 import org.apache.hivemind.Location;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.MethodSignature;
@@ -26,7 +22,10 @@ import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.services.ComponentPropertySource;
 import org.apache.tapestry.spec.InjectSpecification;
 import org.apache.tapestry.spec.InjectSpecificationImpl;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
+
+import java.lang.reflect.Modifier;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.InjectMetaWorker}.
@@ -87,7 +86,7 @@ public class TestInjectMetaWorker extends BaseComponentTestCase
 
         worker.setSource(source);
 
-        worker.performEnhancement(op, spec);
+        worker.performEnhancement(op, spec, null);
 
         verify();
     }
@@ -125,7 +124,7 @@ public class TestInjectMetaWorker extends BaseComponentTestCase
 
         worker.setSource(source);
 
-        worker.performEnhancement(op, spec);
+        worker.performEnhancement(op, spec, null);
 
         verify();
     }
@@ -164,7 +163,7 @@ public class TestInjectMetaWorker extends BaseComponentTestCase
 
         worker.setSource(source);
 
-        worker.performEnhancement(op, spec);
+        worker.performEnhancement(op, spec, null);
 
         verify();
     }
@@ -210,7 +209,7 @@ public class TestInjectMetaWorker extends BaseComponentTestCase
         worker.setSource(source);
         worker.setValueConverter(converter);
 
-        worker.performEnhancement(op, spec);
+        worker.performEnhancement(op, spec, null);
 
         verify();
     }
@@ -253,7 +252,7 @@ public class TestInjectMetaWorker extends BaseComponentTestCase
         worker.setSource(source);
         worker.setValueConverter(converter);
 
-        worker.performEnhancement(op, spec);
+        worker.performEnhancement(op, spec, null);
 
         verify();
     }

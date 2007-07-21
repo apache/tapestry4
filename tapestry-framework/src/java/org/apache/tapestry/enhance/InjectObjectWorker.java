@@ -19,6 +19,7 @@ import org.apache.hivemind.Location;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.services.InjectedValueProvider;
+import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.InjectSpecification;
 
 import java.lang.reflect.Modifier;
@@ -36,7 +37,7 @@ public class InjectObjectWorker implements InjectEnhancementWorker
     private InjectedValueProvider _provider;
 
     public void performEnhancement(EnhancementOperation op,
-            InjectSpecification is)
+                                   InjectSpecification is, IComponentSpecification componentSpec)
     {
         String name = is.getProperty();
         String objectReference = is.getObject();

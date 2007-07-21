@@ -14,10 +14,6 @@
 
 package org.apache.tapestry.enhance;
 
-import java.lang.reflect.Modifier;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.hivemind.Location;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.ClassFabUtils;
@@ -25,7 +21,12 @@ import org.apache.hivemind.service.MethodSignature;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.services.ComponentPropertySource;
+import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.InjectSpecification;
+
+import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Injects meta data obtained via {@link org.apache.tapestry.services.ComponentPropertySource}
@@ -52,7 +53,7 @@ public class InjectMetaWorker implements InjectEnhancementWorker
         _primitiveParser.put(float.class, "java.lang.Float.parseFloat");
     }
 
-    public void performEnhancement(EnhancementOperation op, InjectSpecification spec)
+    public void performEnhancement(EnhancementOperation op, InjectSpecification spec, IComponentSpecification componentSpec)
     {
         String propertyName = spec.getProperty();
         String metaKey = spec.getObject();

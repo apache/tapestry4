@@ -14,15 +14,16 @@
 
 package org.apache.tapestry.enhance;
 
-import java.lang.reflect.Modifier;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.engine.state.ApplicationStateManager;
+import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.InjectSpecification;
+
+import java.lang.reflect.Modifier;
 
 /**
  * Injects a boolean property that indicates if a particular application state object already
@@ -36,7 +37,7 @@ public class InjectStateFlagWorker implements InjectEnhancementWorker
 {
     private ApplicationStateManager _applicationStateManager;
 
-    public void performEnhancement(EnhancementOperation op, InjectSpecification spec)
+    public void performEnhancement(EnhancementOperation op, InjectSpecification spec, IComponentSpecification componentSpec)
     {
         injectStateFlag(op, spec.getObject(), spec.getProperty(), spec.getLocation());
     }
