@@ -323,6 +323,7 @@
         <invoke-factory>
             <construct class="InjectScriptWorker">
                 <set-object property="source" value="infrastructure:scriptSource" />
+                <set-service property="assetSource" service-id="tapestry.asset.AssetSource"/>
             </construct>
         </invoke-factory>
     </service-point>

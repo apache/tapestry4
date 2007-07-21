@@ -14,19 +14,22 @@
 
 package org.apache.tapestry.enhance;
 
-import java.lang.reflect.Modifier;
-
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IScript;
+import org.apache.tapestry.asset.AssetSource;
 import org.apache.tapestry.engine.IScriptSource;
+import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.InjectSpecification;
+
+import java.lang.reflect.Modifier;
 
 /**
  * Injects {@link org.apache.tapestry.IScript} instances directly into pages or components.
- * 
+ *
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
@@ -34,18 +37,20 @@ public class InjectScriptWorker implements InjectEnhancementWorker
 {
     private IScriptSource _source;
 
-    public void performEnhancement(EnhancementOperation op, InjectSpecification spec)
+    private AssetSource _assetSource;
+
+    public void performEnhancement(EnhancementOperation op, InjectSpecification spec, IComponentSpecification componentSpec)
     {
         String propertyName = spec.getProperty();
         String scriptName = spec.getObject();
         Location location = spec.getLocation();
 
-        injectScript(op, propertyName, scriptName, location);
+        injectScript(op, propertyName, scriptName, location, componentSpec);
     }
 
     /**
-     * Injects a compiled script.
-     * 
+     * Injects a script reference.
+     *
      * @param op
      *            the enhancement operation
      * @param propertyName
@@ -55,10 +60,12 @@ public class InjectScriptWorker implements InjectEnhancementWorker
      * @param location
      *            the location of the specification; primarily used as the base location for finding
      *            the script.
+     * @param componentSpec
+     *          Component specification.
      */
 
-    public void injectScript(EnhancementOperation op, String propertyName, String scriptName,
-            Location location)
+    public void injectScript(EnhancementOperation op, String propertyName,
+                             String scriptName, Location location, IComponentSpecification componentSpec)
     {
         Defense.notNull(op, "op");
         Defense.notNull(propertyName, "propertyName");
@@ -75,6 +82,19 @@ public class InjectScriptWorker implements InjectEnhancementWorker
 
         Resource resource = location.getResource().getRelativeResource(scriptName);
 
+        // if can't find resource
+
+        if (resource.getResourceURL() == null)
+        {
+            IAsset scriptAsset = _assetSource.findAsset(location.getResource(), componentSpec,
+                                                        scriptName, null, location);
+
+            if (scriptAsset != null)
+            {
+                resource = scriptAsset.getResourceLocation();
+            }
+        }
+
         DeferredScript script = new DeferredScriptImpl(resource, _source, location);
 
         String fieldName = op.addInjectedField("_$script", DeferredScript.class, script);
@@ -87,5 +107,10 @@ public class InjectScriptWorker implements InjectEnhancementWorker
     public void setSource(IScriptSource source)
     {
         _source = source;
+    }
+
+    public void setAssetSource(AssetSource assetSource)
+    {
+        _assetSource = assetSource;
     }
 }

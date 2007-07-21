@@ -14,12 +14,12 @@
 
 package org.apache.tapestry.enhance;
 
-import java.util.Iterator;
-import java.util.Map;
-
 import org.apache.hivemind.ErrorLog;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.InjectSpecification;
+
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Iterates over the {@link org.apache.tapestry.spec.InjectSpecification}s and locates and
@@ -42,11 +42,11 @@ public class DispatchToInjectWorker implements EnhancementWorker
         {
             InjectSpecification is = (InjectSpecification) i.next();
 
-            invokeWorker(op, is);
+            invokeWorker(op, is, spec);
         }
     }
 
-    private void invokeWorker(EnhancementOperation op, InjectSpecification spec)
+    private void invokeWorker(EnhancementOperation op, InjectSpecification spec, IComponentSpecification componentSpec)
     {
         try
         {
@@ -58,8 +58,7 @@ public class DispatchToInjectWorker implements EnhancementWorker
                 return;
             }
 
-            worker.performEnhancement(op, spec);
-
+            worker.performEnhancement(op, spec, componentSpec);
         }
         catch (Exception ex)
         {

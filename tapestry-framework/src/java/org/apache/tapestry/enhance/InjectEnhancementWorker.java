@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.enhance;
 
+import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.InjectSpecification;
 
 /**
@@ -34,8 +35,14 @@ public interface InjectEnhancementWorker
      * Perform the enhancement defined by the
      * {@link org.apache.tapestry.spec.InjectSpecification}. Thrown runtime
      * exceptions are caught and reported by the invoker.
+     *
+     * @param op
+     *          Current enhancement context.
+     * @param spec
+ *              The injection specificiation configuration.
+     * @param componentSpec
+     *          The component injection is for.
      */
-
-    void performEnhancement(EnhancementOperation op, InjectSpecification spec);
+    void performEnhancement(EnhancementOperation op, InjectSpecification spec, IComponentSpecification componentSpec);
 
 }

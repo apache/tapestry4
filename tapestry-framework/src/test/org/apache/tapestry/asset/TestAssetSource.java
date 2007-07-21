@@ -27,7 +27,7 @@ import java.util.Locale;
 
 /**
  * Tests for {@link org.apache.tapestry.asset.AssetSourceImpl}.
- * 
+ *
  */
 @Test
 public class TestAssetSource extends BaseComponentTestCase
@@ -49,12 +49,12 @@ public class TestAssetSource extends BaseComponentTestCase
     private AssetFactory newAssetFactory(Resource base, String path, Locale locale, Location location, IAsset asset)
     {
         AssetFactory f = newMock(AssetFactory.class);
-        
+
         expect(f.createAsset(base, null, path, locale, location)).andReturn(asset);
 
         return f;
     }
-    
+
     public void test_Known_Prefix()
     {
         Location l = newLocation();
@@ -63,11 +63,11 @@ public class TestAssetSource extends BaseComponentTestCase
         IAsset asset = newAsset();
 
         List contributions = newContributions("known", newAssetFactory(
-                r,
-                "path/to/asset",
-                Locale.ENGLISH,
-                l,
-                asset));
+          r,
+          "path/to/asset",
+          Locale.ENGLISH,
+          l,
+          asset));
 
         replay();
 
@@ -126,18 +126,18 @@ public class TestAssetSource extends BaseComponentTestCase
 
         verify();
     }
-    
+
     public void test_Known_Prefix_Null_Base()
     {
         Location l = newLocation();
         IAsset asset = newAsset();
 
         List contributions = newContributions("known", newAssetFactory(
-                null,
-                "path/to/asset",
-                Locale.ENGLISH,
-                l,
-                asset));
+          null,
+          "path/to/asset",
+          Locale.ENGLISH,
+          l,
+          asset));
 
         replay();
 

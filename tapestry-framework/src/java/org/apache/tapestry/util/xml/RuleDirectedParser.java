@@ -14,18 +14,6 @@
 
 package org.apache.tapestry.util.xml;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
@@ -35,12 +23,19 @@ import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.LocationImpl;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.RegexpMatcher;
-import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
-import org.xml.sax.Locator;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
+import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A simplified version of org.apache.commons.digester.Digester. This version is without as
@@ -55,7 +50,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * coding), in that there's a one-to-one relationship between an element and a rule.
  * <p>
  * Based on SAX2.
- * 
+ *
  * @author Howard Lewis Ship
  * @since 3.0
  */
@@ -65,7 +60,7 @@ public class RuleDirectedParser extends DefaultHandler
     private static final Log LOG = LogFactory.getLog(RuleDirectedParser.class);
 
     private static SAXParserFactory _parserFactory;
-    
+
     private Resource _documentLocation;
 
     private List _ruleStack = new ArrayList();
@@ -122,9 +117,7 @@ public class RuleDirectedParser extends DefaultHandler
             URL url = documentLocation.getResourceURL();
 
             if (url == null)
-                throw new DocumentParseException(Tapestry.format(
-                        "RuleDrivenParser.resource-missing",
-                        documentLocation), documentLocation);
+                throw new DocumentParseException(Tapestry.format("RuleDrivenParser.resource-missing", documentLocation), documentLocation);
 
             return parse(url);
         }
@@ -162,8 +155,8 @@ public class RuleDirectedParser extends DefaultHandler
         catch (IOException ex)
         {
             throw new DocumentParseException(Tapestry.format(
-                    "RuleDrivenParser.unable-to-open-resource",
-                    url), _documentLocation, ex);
+              "RuleDrivenParser.unable-to-open-resource",
+              url), _documentLocation, ex);
         }
 
         InputSource source = new InputSource(stream);
@@ -177,9 +170,9 @@ public class RuleDirectedParser extends DefaultHandler
         catch (Exception ex)
         {
             throw new DocumentParseException(Tapestry.format(
-                    "RuleDrivenParser.parse-error",
-                    url,
-                    ex.getMessage()), getLocation(), ex);
+              "RuleDrivenParser.parse-error",
+              url,
+              ex.getMessage()), getLocation(), ex);
         }
 
         if (LOG.isDebugEnabled())
@@ -306,7 +299,7 @@ public class RuleDirectedParser extends DefaultHandler
     /**
      * Registers a public id and corresponding input source. Generally, the source is a wrapper
      * around an input stream to a package resource.
-     * 
+     *
      * @param publicId
      *            the public identifier to be registerred, generally the publicId of a DTD related
      *            to the document being parsed
@@ -333,8 +326,8 @@ public class RuleDirectedParser extends DefaultHandler
 
         if (rule == null)
             throw new DocumentParseException(Tapestry.format(
-                    "RuleDrivenParser.no-rule-for-element",
-                    localName), getLocation());
+              "RuleDrivenParser.no-rule-for-element",
+              localName), getLocation());
 
         return rule;
     }
@@ -343,7 +336,7 @@ public class RuleDirectedParser extends DefaultHandler
      * Uses the {@link Locator}to track the position in the document as a {@link Location}. This
      * is invoked once (before the initial element is parsed) and the Locator is retained and
      * queried as to the current file location.
-     * 
+     *
      * @see #getLocation()
      */
     public void setDocumentLocator(Locator locator)
@@ -386,7 +379,7 @@ public class RuleDirectedParser extends DefaultHandler
      * the rule stack, then invokes {@link IRule#startElement(RuleDirectedParser, Attributes)}.
      */
     public void startElement(String uri, String localName, String qName, Attributes attributes)
-            throws SAXException
+      throws SAXException
     {
         fireContentRule();
 
@@ -482,7 +475,7 @@ public class RuleDirectedParser extends DefaultHandler
 
         if (LOG.isDebugEnabled())
             LOG.debug("Attempting to resolve entity; publicId = " + publicId + " systemId = "
-                    + systemId);
+                      + systemId);
 
         if (_entities != null)
             entityPath = (String) _entities.get(publicId);
@@ -529,7 +522,7 @@ public class RuleDirectedParser extends DefaultHandler
 
     /**
      * Returns the localName for the current element.
-     * 
+     *
      * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String,
      *      java.lang.String, org.xml.sax.Attributes)
      */
@@ -540,7 +533,7 @@ public class RuleDirectedParser extends DefaultHandler
 
     /**
      * Returns the qualified name for the current element.
-     * 
+     *
      * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String,
      *      java.lang.String, org.xml.sax.Attributes)
      */
@@ -551,7 +544,7 @@ public class RuleDirectedParser extends DefaultHandler
 
     /**
      * Returns the URI for the current element.
-     * 
+     *
      * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String,
      *      java.lang.String, org.xml.sax.Attributes)
      */

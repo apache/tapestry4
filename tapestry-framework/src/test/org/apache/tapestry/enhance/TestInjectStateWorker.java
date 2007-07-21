@@ -14,11 +14,6 @@
 
 package org.apache.tapestry.enhance;
 
-import static org.easymock.EasyMock.expect;
-
-import java.lang.reflect.Modifier;
-import java.util.Map;
-
 import org.apache.hivemind.Location;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.MethodSignature;
@@ -27,7 +22,11 @@ import org.apache.tapestry.engine.state.ApplicationStateManager;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.spec.InjectSpecification;
 import org.apache.tapestry.spec.InjectSpecificationImpl;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
+
+import java.lang.reflect.Modifier;
+import java.util.Map;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.InjectStateWorker}.
@@ -107,7 +106,7 @@ public class TestInjectStateWorker extends BaseComponentTestCase
         InjectStateWorker w = new InjectStateWorker();
         w.setApplicationStateManager(asm);
 
-        w.performEnhancement(op, spec);
+        w.performEnhancement(op, spec, null);
 
         verify();
     }
