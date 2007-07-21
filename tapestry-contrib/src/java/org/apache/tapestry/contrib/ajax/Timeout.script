@@ -94,7 +94,7 @@
     tapestry.TimeoutInitConfirmTimer=function()
     {
 	    <if expression="!disableWarning">
-    	tapestry.TimeoutTimerConfirm = window.setTimeout("TimeoutConfirm()", ${confirmTimeout});
+    	tapestry.TimeoutTimerConfirm = window.setTimeout("tapestry.TimeoutConfirm()", ${confirmTimeout});
     	</if>
 
     	tapestry.TimeoutExpirationTime = new Date();
