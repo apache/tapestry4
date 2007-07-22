@@ -19,6 +19,8 @@ import org.apache.tapestry.dojo.AbstractWidget;
 import org.apache.tapestry.engine.DirectServiceParameter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.json.JSONObject;
+import org.apache.tapestry.link.DirectLink;
+import org.apache.tapestry.listener.ListenerInvoker;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -74,15 +76,21 @@ public abstract class InlineEditBox extends AbstractWidget implements IDirect
     
     public abstract boolean getDoFade();
     
-    public abstract boolean isDiabled();
-    
+    public abstract boolean isDisabled();
+
+    public abstract IActionListener getListener();
+
+    public abstract Object getParameters();
+
+    public abstract void setStateful(boolean value);
+
     /**
      * {@inheritDoc}
      */
     public void renderWidget(IMarkupWriter writer, IRequestCycle cycle)
     {
-        if (!cycle.isRewinding()) {
-            
+        if (!cycle.isRewinding())
+        {    
             writer.begin(getTemplateTagName()); // use whatever template tag they specified
             renderInformalParameters(writer, cycle);
             renderIdAttribute(writer, cycle);
@@ -90,19 +98,16 @@ public abstract class InlineEditBox extends AbstractWidget implements IDirect
         
         renderBody(writer, cycle);
         
-        if (!cycle.isRewinding()) {
-            
+        if (!cycle.isRewinding())
+        {    
             writer.end();
         }
         
-        if(!TEXT_MODE.equals(getMode())
-                && !TEXT_AREA_MODE.equals(getMode())) {
+        if(getMode() == null || (!TEXT_MODE.equals(getMode()) && !TEXT_AREA_MODE.equals(getMode())))
             throw new ApplicationRuntimeException(WidgetMessages.invalidTextMode(getMode()));
-        }
         
-        if (cycle.isRewinding()) {
+        if (cycle.isRewinding())
             return;
-        }
         
         JSONObject prop = new JSONObject();
         prop.put("widgetId", getClientId());
@@ -122,13 +127,17 @@ public abstract class InlineEditBox extends AbstractWidget implements IDirect
     
     /**
      * Callback url used by client side widget to update server component.
+     *
+     * @return The url string to be used by the client side js function to notify
+     *          this component that an update has been made.
      */
     public String getUpdateUrl()
     {
-        DirectServiceParameter dsp =
-            new DirectServiceParameter(this);
+        Object[] parameters = DirectLink.constructServiceParameters(getParameters());
+
+        DirectServiceParameter dsp = new DirectServiceParameter(this, parameters);
         
-        return getEngine().getLink(false, dsp).getURL();
+        return getEngine().getLink(isStateful(), dsp).getURL();
     }
     
     /**
@@ -163,6 +172,11 @@ public abstract class InlineEditBox extends AbstractWidget implements IDirect
         String newValue = cycle.getParameter(getClientId());
         
         setValue(newValue);
+
+        if (getListener() != null)
+        {
+            getListenerInvoker().invokeListener(getListener(), this, cycle);
+        }
     }
     
     /** Injected. */
@@ -170,4 +184,7 @@ public abstract class InlineEditBox extends AbstractWidget implements IDirect
     
     /** Injected. */
     public abstract IScript getScript();
+
+    /** Injected. */
+    public abstract ListenerInvoker getListenerInvoker();
 }

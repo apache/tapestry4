@@ -55,20 +55,15 @@
                     <tr>
                         <th>Name</th>
                         <th>Type</th>
-                        <th>Direction</th>
                         <th>Required</th>
                         <th>Default</th>
-
                         <th>Description</th>
                     </tr>
                     <tr>
                         <td>href</td>
                         <td>String</td>
-
-                        <td>in</td>
-
                         <td>yes</td>
-                        <td />
+                        <td> </td>
                         <td>
                             The URL to trigger when the link is clicked. This is often of the form:
                             <code>&lt;a&gt; href="javascript:functionName('param')"&gt;</code>
@@ -78,10 +73,8 @@
 
                         <td>disabled</td>
                         <td>boolean</td>
-                        <td>in</td>
                         <td>no</td>
                         <td>false</td>
-
                         <td>
 
                             Controls whether the link is produced. If disabled, the portion of the
@@ -90,10 +83,9 @@
                     </tr>
                     <tr>
                         <td>target</td>
-
                         <td>String</td>
                         <td>no</td>
-                        <td />
+                        <td> </td>
                         <td>
                             The name of the html target for this link, this is just the normal html attribute that will
                             control where the response generated from this link will go. (Usually used in frames) 
@@ -101,12 +93,9 @@
                     </tr>
                     <tr>
                         <td>anchor</td>
-
                         <td>String</td>
-                        <td>in</td>
-
                         <td>no</td>
-                        <td />
+                        <td> </td>
                         <td>
                             The name of an anchor or element to link to. The final URL will have '#'
                             and the anchor appended to it.
@@ -117,15 +106,12 @@
                         <td>renderer</td>
 
                         <td>
-                            <a
-                                href="../../apidocs/org/apache/tapestry/link/ILinkRenderer.html">
+                            <a href="../../apidocs/org/apache/tapestry/link/ILinkRenderer.html">
                                 ILinkRenderer
                             </a>
                         </td>
-                        <td>in</td>
                         <td>no</td>
-                        <td />
-
+                        <td> </td>
                         <td>The object which will actually render the link.</td>
                     </tr>
 
@@ -137,7 +123,6 @@
                 </p>
 
                 <p>
-
                     Informal parameters:
                     <strong>allowed</strong>
                 </p>
@@ -150,7 +135,6 @@
             </section>
 
             <section name="Examples">
-
                 <p>
                     Under Construction.
 

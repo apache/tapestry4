@@ -134,8 +134,9 @@ public abstract class TaskEntryPage<E extends Persistent> extends BasePage
 
     @EventListener(events = "onSave", targets="projName")
     public void onNameUpdate()
-    {
-        if (getSelectedProject() != null) {
+    {        
+        if (getSelectedProject() != null)
+        {
             getProjectDao().update(getSelectedProject());
             
             getBuilder().updateComponent("projectChoose");
