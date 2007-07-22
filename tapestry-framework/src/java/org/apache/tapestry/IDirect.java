@@ -18,10 +18,7 @@ package org.apache.tapestry;
 /**
  *  Interface that defines classes that may be messaged by the direct
  *  service.
- *
- *  @author Howard Lewis Ship
- **/
-
+ */
 public interface IDirect extends IComponent, IDynamicInvoker
 {
     /**
@@ -29,8 +26,9 @@ public interface IDirect extends IComponent, IDynamicInvoker
      *  the appropriate action.  The {@link org.apache.tapestry.link.DirectLink} component will
      *  notify its listener.
      *
+     * @param cycle
+     *          The current request.
      */
-
     void trigger(IRequestCycle cycle);
 
     /**
@@ -39,10 +37,10 @@ public interface IDirect extends IComponent, IDynamicInvoker
      *  {@link javax.servlet.http.HttpSession} is active, then a
      *  {@link org.apache.tapestry.StaleSessionException} is
      *  thrown by the service.
-     * 
-     *  @since 2.3
-     * 
+     *
+     * @return Whether or not invocation should include state information and validate
+     *          that a valid session exists when triggered.
+     * @since 2.3
      */
-
     boolean isStateful();
 }

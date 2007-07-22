@@ -13,18 +13,15 @@
 // limitations under the License.
 package org.apache.tapestry.dojo.html;
 
-import static org.easymock.EasyMock.expect;
-
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
 
 
 /**
  * Tests functionality of {@link ScriptIncludes} component.
- *
- * @author jkuhnert
  */
 @Test
 public class TestIncludeScripts extends BaseComponentTestCase
@@ -32,13 +29,10 @@ public class TestIncludeScripts extends BaseComponentTestCase
     public void test_Rewinding()
     {
         IMarkupWriter writer = newWriter();
-        
         IRequestCycle cycle = newCycle(true);
-        
         ScriptIncludes comp = newInstance(ScriptIncludes.class, null);
         
         expect(cycle.renderStackPush(comp)).andReturn(comp);
-        
         expect(cycle.renderStackPop()).andReturn(comp);
         
         replay();
