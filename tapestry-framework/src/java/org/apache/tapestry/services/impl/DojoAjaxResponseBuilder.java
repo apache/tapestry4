@@ -13,11 +13,27 @@
 // limitations under the License.
 package org.apache.tapestry.services.impl;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.*;
+import org.apache.tapestry.IAsset;
+import org.apache.tapestry.IComponent;
+import org.apache.tapestry.IForm;
+import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IPage;
+import org.apache.tapestry.IRender;
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.NestedMarkupWriter;
+import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.NullWriter;
@@ -31,10 +47,6 @@ import org.apache.tapestry.util.PageRenderSupportImpl;
 import org.apache.tapestry.util.ScriptUtils;
 import org.apache.tapestry.web.WebResponse;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.*;
-
 
 /**
  * Main class that handles dojo based ajax responses. These responses are wrapped
@@ -46,6 +58,8 @@ import java.util.*;
 public class DojoAjaxResponseBuilder implements ResponseBuilder
 {
     private static final Log _log = LogFactory.getLog(DojoAjaxResponseBuilder.class);
+
+	private static final String NEWLINE = System.getProperty("line.separator");
     
     private final AssetFactory _assetFactory;
     
@@ -455,7 +469,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         IMarkupWriter writer = getWriter(ResponseBuilder.BODY_SCRIPT, ResponseBuilder.SCRIPT_TYPE);
         
         writer.begin("script");
-        writer.printRaw("\n//<![CDATA[\n");
+        writer.printRaw(NEWLINE + "//<![CDATA[" + NEWLINE);
     }
     
     /** 
@@ -465,7 +479,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     {
         IMarkupWriter writer = getWriter(ResponseBuilder.BODY_SCRIPT, ResponseBuilder.SCRIPT_TYPE);
         
-        writer.printRaw("\n//]]>\n");
+        writer.printRaw(NEWLINE + "//]]>" + NEWLINE);
         writer.end();
     }
     
@@ -498,12 +512,12 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     {
         IMarkupWriter writer = getWriter(ResponseBuilder.BODY_SCRIPT, ResponseBuilder.SCRIPT_TYPE);
         
-        writer.printRaw("\n" + preloadName + " = [];\n");
-        writer.printRaw("if (document.images) {\n");
+        writer.printRaw(NEWLINE + preloadName + " = [];" + NEWLINE);
+        writer.printRaw("if (document.images) {" + NEWLINE);
         
         writer.printRaw(script);
         
-        writer.printRaw("}\n");
+        writer.printRaw("}" + NEWLINE);
     }
     
     /** 
@@ -516,11 +530,11 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         writer.begin("script");
         
         // return is in XML so must escape any potentially non-xml compliant content
-        writer.printRaw("\n//<![CDATA[\n");
+        writer.printRaw(NEWLINE + "//<![CDATA[" + NEWLINE);
         
         writer.printRaw(script);
         
-        writer.printRaw("\n//]]>\n");
+        writer.printRaw(NEWLINE + "//]]>" + NEWLINE);
         
         writer.end();
     }
@@ -687,9 +701,9 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         _writer.printRaw("<?xml version=\"1.0\" encoding=\"" + _cycle.getInfrastructure().getOutputEncoding() + "\"?>");
         _writer.printRaw("<!DOCTYPE html "
                 + "PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" "
-                + "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\" [\n"
-                + "<!ENTITY nbsp '&#160;'>\n"
-                + "]>\n");
+                + "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\" [" + NEWLINE
+                + "<!ENTITY nbsp '&#160;'>" + NEWLINE
+                + "]>" + NEWLINE);
         _writer.printRaw("<ajax-response>");
     }
 
