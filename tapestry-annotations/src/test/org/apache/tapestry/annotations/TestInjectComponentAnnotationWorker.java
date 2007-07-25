@@ -18,6 +18,7 @@ import org.apache.hivemind.Location;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.enhance.InjectComponentWorker;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.engine.IPropertySource;
 import org.testng.annotations.Test;
 
 /**
@@ -42,6 +43,7 @@ public class TestInjectComponentAnnotationWorker extends BaseAnnotationTestCase
         Location l = newLocation();
         EnhancementOperation op = newOp();
         IComponentSpecification spec = newSpec();
+	    IPropertySource propertySource = newPropertySource();
 
         InjectComponentWorker delegate = org.easymock.classextension.EasyMock.createMock(InjectComponentWorker.class);
         
@@ -52,7 +54,7 @@ public class TestInjectComponentAnnotationWorker extends BaseAnnotationTestCase
         
         InjectComponentAnnotationWorker worker = new InjectComponentAnnotationWorker(delegate);
 
-        worker.performEnhancement(op, spec, findMethod(AnnotatedPage.class, "getFredField"), l);
+        worker.performEnhancement(op, spec, findMethod(AnnotatedPage.class, "getFredField"), l, propertySource);
         
         verify();
         org.easymock.classextension.EasyMock.verify(delegate);

@@ -35,9 +35,10 @@ import java.lang.annotation.Target;
 public @interface Persist {
 
     /**
-     * The persistence strategy, defaulting to "session" (meaning, in the HttpSession, as a session
-     * attribute). Tapestry includes another strategy, "client", and additional strategies can be
-     * defined.
+     * The persistence strategy, defaulting to "session", as defined on the 
+     * org.apache.tapestry.default-property-persistence-strategy property (meaning, in the
+     * HttpSession, as a session attribute). Tapestry includes another strategy, "client",
+     * and additional strategies can be defined.
      */
-    String value() default "session";
+    String value() default "";
 }

@@ -26,6 +26,7 @@ import org.apache.tapestry.spec.ContainedComponent;
 import org.apache.tapestry.spec.IBindingSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
+import org.apache.tapestry.engine.IPropertySource;
 
 /**
  * Adds a {@link org.apache.tapestry.spec.IContainedComponent} to the
@@ -39,7 +40,7 @@ public class ComponentAnnotationWorker implements MethodAnnotationEnhancementWor
 {
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Method method, Location location)
+            Method method, Location location, IPropertySource propertySource)
     {
         Component component = method.getAnnotation(Component.class);
 

@@ -17,10 +17,12 @@ package org.apache.tapestry.annotations;
 import java.lang.reflect.Method;
 
 import org.apache.hivemind.Location;
+import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IPropertySpecification;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
 
 /**
@@ -38,12 +40,13 @@ public class PersistAnnotationWorkerTest extends AnnotationEnhancementWorkerTest
 
         EnhancementOperation op = newOp();
         IComponentSpecification spec = new ComponentSpecification();
+	    IPropertySource propertySource = trainPropertySource();
 
-        replay();
+	    replay();
 
         Method m = findMethod(AnnotatedPage.class, "getPersistentProperty");
 
-        new PersistAnnotationWorker().performEnhancement(op, spec, m, l);
+        new PersistAnnotationWorker().performEnhancement(op, spec, m, l, propertySource);
 
         verify();
 
@@ -55,18 +58,19 @@ public class PersistAnnotationWorkerTest extends AnnotationEnhancementWorkerTest
         assertNull(ps.getInitialValue());
     }
 
-    public void testStrategySpecified()
+	public void testStrategySpecified()
     {
         Location l = newLocation();
 
         EnhancementOperation op = newOp();
         IComponentSpecification spec = new ComponentSpecification();
+	    IPropertySource propertySource = trainPropertySource();
 
-        replay();
+	    replay();
 
         Method m = findMethod(AnnotatedPage.class, "getClientPersistentProperty");
 
-        new PersistAnnotationWorker().performEnhancement(op, spec, m, l);
+        new PersistAnnotationWorker().performEnhancement(op, spec, m, l, propertySource);
 
         verify();
 
@@ -84,12 +88,13 @@ public class PersistAnnotationWorkerTest extends AnnotationEnhancementWorkerTest
 
         EnhancementOperation op = newOp();
         IComponentSpecification spec = new ComponentSpecification();
+	    IPropertySource propertySource = trainPropertySource();
 
-        replay();
+	    replay();
 
         Method m = findMethod(AnnotatedPage.class, "getPersistentPropertyWithInitialValue");
 
-        new PersistAnnotationWorker().performEnhancement(op, spec, m, l);
+        new PersistAnnotationWorker().performEnhancement(op, spec, m, l, propertySource);
 
         verify();
 
@@ -101,4 +106,11 @@ public class PersistAnnotationWorkerTest extends AnnotationEnhancementWorkerTest
         assertSame(l, ps.getLocation());
         assertEquals("user.naturalName", ps.getInitialValue());
     }
+
+	private IPropertySource trainPropertySource()
+	{
+		IPropertySource propertySource = newPropertySource();
+		expect(propertySource.getPropertyValue(PersistAnnotationWorker.DEFAULT_PROPERTY_PERSISTENCE_STRATEGY)).andReturn("session");
+		return propertySource;
+	}
 }

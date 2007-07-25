@@ -191,6 +191,7 @@
         <default symbol="org.apache.tapestry.jwcid-attribute-name" value="jwcid"/>
         <default symbol="org.apache.tapestry.default-binding-prefix" value="ognl"/>
         <default symbol="org.apache.tapestry.renderTags" value="true" />
+	    <default symbol="org.apache.tapestry.default-property-persistence-strategy" value="session"/>
     </contribution>
 
     <!-- This may need to be converted into an IPropertySource and injected into the ApplicationPropertySources

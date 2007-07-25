@@ -23,6 +23,7 @@ import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.BeanSpecification;
 import org.apache.tapestry.spec.IBeanSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.engine.IPropertySource;
 
 /**
  * Creates a {@link org.apache.tapestry.spec.IBeanSpecification} from the
@@ -34,7 +35,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
 public class BeanAnnotationWorker implements MethodAnnotationEnhancementWorker
 {
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Method method, Location location)
+            Method method, Location location, IPropertySource propertySource)
     {
         Bean bean = method.getAnnotation(Bean.class);
         String propertyName = AnnotationUtils.getPropertyName(method);

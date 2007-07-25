@@ -24,6 +24,7 @@ import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IBindingSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
+import org.apache.tapestry.engine.IPropertySource;
 import org.testng.annotations.Test;
 
 /**
@@ -47,10 +48,11 @@ public class TestComponentAnnotationWorker extends BaseAnnotationTestCase
         Method method = findMethod(AnnotatedPage.class, methodName);
 
         EnhancementOperation op = newOp();
+	    IPropertySource propertySource = newPropertySource();
 
         replay();        
 
-        new ComponentAnnotationWorker().performEnhancement(op, spec, method, location);
+        new ComponentAnnotationWorker().performEnhancement(op, spec, method, location, propertySource);
 
         verify();
 

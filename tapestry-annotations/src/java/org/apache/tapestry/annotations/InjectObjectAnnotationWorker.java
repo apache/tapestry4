@@ -21,6 +21,7 @@ import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.enhance.InjectObjectWorker;
 import org.apache.tapestry.services.InjectedValueProvider;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.engine.IPropertySource;
 
 /**
  * Performs injection of objects, in much the same way as the &lt;inject&gt; element in a
@@ -47,7 +48,7 @@ public class InjectObjectAnnotationWorker implements MethodAnnotationEnhancement
     }
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Method method, Location location)
+            Method method, Location location, IPropertySource propertySource)
     {
         InjectObject io = method.getAnnotation(InjectObject.class);
 

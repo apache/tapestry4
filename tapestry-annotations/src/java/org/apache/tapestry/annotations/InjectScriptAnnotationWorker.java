@@ -21,6 +21,7 @@ import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.InjectSpecification;
 import org.apache.tapestry.spec.InjectSpecificationImpl;
+import org.apache.tapestry.engine.IPropertySource;
 
 /**
  * @author Howard Lewis Ship
@@ -30,7 +31,7 @@ public class InjectScriptAnnotationWorker implements MethodAnnotationEnhancement
 {
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Method method, Location location)
+            Method method, Location location, IPropertySource propertySource)
     {
         InjectScript annotation = method.getAnnotation(InjectScript.class);
 

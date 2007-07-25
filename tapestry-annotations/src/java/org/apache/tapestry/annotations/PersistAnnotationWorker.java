@@ -17,6 +17,7 @@ package org.apache.tapestry.annotations;
 import java.lang.reflect.Method;
 
 import org.apache.hivemind.Location;
+import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IPropertySpecification;
@@ -37,14 +38,20 @@ import org.apache.tapestry.spec.PropertySpecification;
  */
 public class PersistAnnotationWorker implements MethodAnnotationEnhancementWorker
 {
+	/**
+	 * Application property that gives the default property persistence strategy to use for properties annotated by @Persist
+	 */
+	public static final String DEFAULT_PROPERTY_PERSISTENCE_STRATEGY = "org.apache.tapestry.default-property-persistence-strategy";
+
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Method method, Location location)
+            Method method, Location location, IPropertySource propertySource)
     {
         Persist p = method.getAnnotation(Persist.class);
         InitialValue iv = method.getAnnotation(InitialValue.class);
 
         String propertyName = AnnotationUtils.getPropertyName(method);
-        String stategy = p.value();
+	    String defaultStrategy = propertySource.getPropertyValue(DEFAULT_PROPERTY_PERSISTENCE_STRATEGY);
+        String stategy = p.value().length() == 0 ? defaultStrategy : p.value();
 
         IPropertySpecification pspec = new PropertySpecification();
 

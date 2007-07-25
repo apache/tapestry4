@@ -14,16 +14,16 @@
 
 package org.apache.tapestry.annotations;
 
-import static org.easymock.EasyMock.expect;
-
 import java.lang.reflect.Method;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
+import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
 
 /**
@@ -47,6 +47,7 @@ public class TestParameterAnnotationWorker extends BaseAnnotationTestCase
                 + propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1));
         
         EnhancementOperation op = newMock(EnhancementOperation.class);
+	    IPropertySource propertySource = newPropertySource();
         
         expect(op.getPropertyType(propertyName)).andReturn(m.getReturnType());
         
@@ -54,7 +55,7 @@ public class TestParameterAnnotationWorker extends BaseAnnotationTestCase
 
         replay();
 
-        new ParameterAnnotationWorker().performEnhancement(op, spec, m, location);
+        new ParameterAnnotationWorker().performEnhancement(op, spec, m, location, propertySource);
 
         verify();
 
@@ -124,6 +125,7 @@ public class TestParameterAnnotationWorker extends BaseAnnotationTestCase
         Method m = findMethod(AnnotatedPage.class, "getSimpleParameter");
         
         EnhancementOperation op = newMock(EnhancementOperation.class);
+	    IPropertySource propertySource = newPropertySource();
                 
         IComponentSpecification spec = new ComponentSpecification();
 
@@ -131,7 +133,7 @@ public class TestParameterAnnotationWorker extends BaseAnnotationTestCase
 
         try
         {
-            new ParameterAnnotationWorker().performEnhancement(op, spec, m, null);
+            new ParameterAnnotationWorker().performEnhancement(op, spec, m, null, propertySource);
             unreachable();
         }
         catch (ApplicationRuntimeException ex)
