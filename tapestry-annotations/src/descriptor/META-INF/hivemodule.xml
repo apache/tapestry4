@@ -29,6 +29,7 @@
                 <set-configuration property="methodWorkers" configuration-id="MethodWorkers" />
                 <set-configuration property="classWorkers" configuration-id="ClassWorkers" />
                 <set-configuration property="secondaryAnnotationWorkers" configuration-id="SecondaryAnnotationWorkers" />
+	            <set-service property="propertySource" service-id="tapestry.props.ApplicationPropertySource" />
             </construct>
         </invoke-factory>
 

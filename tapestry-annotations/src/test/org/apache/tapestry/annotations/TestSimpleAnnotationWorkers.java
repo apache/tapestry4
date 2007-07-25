@@ -21,6 +21,7 @@ import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.InjectSpecification;
+import org.apache.tapestry.engine.IPropertySource;
 import org.testng.annotations.Test;
 
 /**
@@ -150,12 +151,13 @@ public class TestSimpleAnnotationWorkers extends BaseAnnotationTestCase
     {
         EnhancementOperation op = newOp();
         IComponentSpecification spec = new ComponentSpecification();
+	    IPropertySource propertySource = newPropertySource();
 
         Method method = findMethod(AnnotatedPage.class, methodName);
 
         replay();
 
-        worker.performEnhancement(op, spec, method, location);
+        worker.performEnhancement(op, spec, method, location, propertySource);
 
         verify();
 

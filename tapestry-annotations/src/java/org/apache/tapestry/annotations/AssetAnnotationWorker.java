@@ -14,13 +14,14 @@
 
 package org.apache.tapestry.annotations;
 
+import java.lang.reflect.Method;
+
 import org.apache.hivemind.Location;
+import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.AssetSpecification;
 import org.apache.tapestry.spec.IAssetSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
-
-import java.lang.reflect.Method;
 
 /**
  * Uses the {@link org.apache.tapestry.annotations.Asset} annotation to create a new
@@ -32,7 +33,7 @@ public class AssetAnnotationWorker implements MethodAnnotationEnhancementWorker
 {
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Method method, Location location)
+            Method method, Location location, IPropertySource propertySource)
     {
         Asset asset = method.getAnnotation(Asset.class);
         String propertyName = AnnotationUtils.getPropertyName(method);

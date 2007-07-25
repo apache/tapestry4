@@ -14,8 +14,13 @@
 
 package org.apache.tapestry.annotations;
 
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.List;
+
 import org.apache.hivemind.Location;
 import org.apache.tapestry.bean.LightweightBeanInitializer;
+import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.BeanLifecycle;
 import org.apache.tapestry.spec.ComponentSpecification;
@@ -23,10 +28,6 @@ import org.apache.tapestry.spec.IBeanSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
-
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * Tests for {@link org.apache.tapestry.annotations.BeanAnnotationWorker}.
@@ -42,12 +43,13 @@ public class TestBeanAnnotationWorker extends BaseAnnotationTestCase
         Location l = newLocation();
         EnhancementOperation op = newOp();
         IComponentSpecification spec = new ComponentSpecification();
+	    IPropertySource propertySource = newPropertySource();
 
         Method m = findMethod(AnnotatedPage.class, "getMapBean");
 
         replay();
 
-        new BeanAnnotationWorker().performEnhancement(op, spec, m, l);
+        new BeanAnnotationWorker().performEnhancement(op, spec, m, l, propertySource);
 
         verify();
 
@@ -74,12 +76,13 @@ public class TestBeanAnnotationWorker extends BaseAnnotationTestCase
         Location l = newLocation();
         EnhancementOperation op = newOp("hashMapBean", HashMap.class);
         IComponentSpecification spec = new ComponentSpecification();
+	    IPropertySource propertySource = newPropertySource();
 
         Method m = findMethod(AnnotatedPage.class, "getHashMapBean");
 
         replay();
 
-        new BeanAnnotationWorker().performEnhancement(op, spec, m, l);
+        new BeanAnnotationWorker().performEnhancement(op, spec, m, l, propertySource);
 
         verify();
 
@@ -96,12 +99,13 @@ public class TestBeanAnnotationWorker extends BaseAnnotationTestCase
     {
         EnhancementOperation op = newOp("beanWithInitializer", TargetValues.class);
         IComponentSpecification spec = new ComponentSpecification();
+	    IPropertySource propertySource = newPropertySource();
 
         Method m = findMethod(AnnotatedPage.class, "getBeanWithInitializer");
 
         replay();
 
-        new BeanAnnotationWorker().performEnhancement(op, spec, m, null);
+        new BeanAnnotationWorker().performEnhancement(op, spec, m, null, propertySource);
 
         verify();
 
@@ -117,12 +121,13 @@ public class TestBeanAnnotationWorker extends BaseAnnotationTestCase
     {
         EnhancementOperation op = newOp();
         IComponentSpecification spec = new ComponentSpecification();
+	    IPropertySource propertySource = newPropertySource();
 
         Method m = findMethod(AnnotatedPage.class, "getRenderLifecycleBean");
 
         replay();
 
-        new BeanAnnotationWorker().performEnhancement(op, spec, m, null);
+        new BeanAnnotationWorker().performEnhancement(op, spec, m, null, propertySource);
 
         verify();
 

@@ -14,20 +14,21 @@
 
 package org.apache.tapestry.annotations;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.ClasspathResource;
+import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.enhance.EnhancementWorker;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.util.DescribedLocation;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Implementation of {@link org.apache.tapestry.enhance.EnhancementWorker} that finds class and
@@ -49,6 +50,8 @@ public class AnnotationEnhancementWorker implements EnhancementWorker
     private Map<Class, ClassAnnotationEnhancementWorker> _classWorkers;
 
     private List<SecondaryAnnotationWorker> _secondaryAnnotationWorkers;
+
+	private IPropertySource _propertySource;
 
     public void setClassWorkers(Map<Class, ClassAnnotationEnhancementWorker> classWorkers)
     {
@@ -137,7 +140,7 @@ public class AnnotationEnhancementWorker implements EnhancementWorker
                     method,
                     annotation,
                     classResource);
-            worker.performEnhancement(op, spec, method, location);
+            worker.performEnhancement(op, spec, method, location, _propertySource);
         }
         catch (Exception ex)
         {
@@ -168,4 +171,9 @@ public class AnnotationEnhancementWorker implements EnhancementWorker
     {
         _secondaryAnnotationWorkers = workers;
     }
+
+	public void setPropertySource(IPropertySource propertySource)
+	{
+		_propertySource = propertySource;
+	}
 }

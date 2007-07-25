@@ -20,6 +20,7 @@ import org.apache.hivemind.Location;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.enhance.InjectComponentWorker;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.engine.IPropertySource;
 
 /**
  * Injects a reference to a compent.
@@ -44,7 +45,7 @@ public class InjectComponentAnnotationWorker implements MethodAnnotationEnhancem
     }
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Method method, Location location)
+            Method method, Location location, IPropertySource propertySource)
     {
         InjectComponent ic = method.getAnnotation(InjectComponent.class);
         String propertyName = AnnotationUtils.getPropertyName(method);

@@ -22,6 +22,7 @@ import org.apache.hivemind.Location;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.IComponentSpecification;
 
@@ -35,7 +36,7 @@ public class MessageAnnotationWorker implements MethodAnnotationEnhancementWorke
 {
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Method method, Location location)
+            Method method, Location location, IPropertySource propertySource)
     {
         if (!method.getReturnType().equals(String.class))
             throw new ApplicationRuntimeException(AnnotationMessages.returnStringOnly(method

@@ -21,6 +21,7 @@ import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.enhance.InjectObjectWorker;
 import org.apache.tapestry.services.InjectedValueProvider;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.engine.IPropertySource;
 import org.testng.annotations.Test;
 
 /**
@@ -45,6 +46,7 @@ public class TestInjectObjectAnnotationWorker extends BaseAnnotationTestCase
 
         EnhancementOperation op = newOp();
         IComponentSpecification spec = newSpec();
+	    IPropertySource propertySource = newPropertySource();
 
         InjectObjectWorker delegate = org.easymock.classextension.EasyMock.createNiceMock(InjectObjectWorker.class);
 
@@ -67,7 +69,7 @@ public class TestInjectObjectAnnotationWorker extends BaseAnnotationTestCase
         
         replay();
         
-        worker.performEnhancement(op, spec, m, l);
+        worker.performEnhancement(op, spec, m, l, propertySource);
         
         verify();
         org.easymock.classextension.EasyMock.verify(delegate);

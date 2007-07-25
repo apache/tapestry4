@@ -20,6 +20,7 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.IPage;
+import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
@@ -37,7 +38,7 @@ public class ParameterAnnotationWorker implements MethodAnnotationEnhancementWor
 {
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Method method, Location location)
+            Method method, Location location, IPropertySource propertySource)
     {
         if (IPage.class.isAssignableFrom(method.getDeclaringClass()))
         {
