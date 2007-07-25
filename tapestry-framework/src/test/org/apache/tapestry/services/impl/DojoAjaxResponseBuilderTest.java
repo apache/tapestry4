@@ -13,8 +13,24 @@
 // limitations under the License.
 package org.apache.tapestry.services.impl;
 
+import java.io.CharArrayWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.apache.hivemind.Location;
-import org.apache.tapestry.*;
+import org.apache.tapestry.BaseComponentTestCase;
+import org.apache.tapestry.IComponent;
+import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IPage;
+import org.apache.tapestry.IRender;
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.NestedMarkupWriter;
+import org.apache.tapestry.PageRenderSupport;
+import org.apache.tapestry.RedirectException;
+import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
@@ -29,16 +45,13 @@ import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.ContentType;
 import org.apache.tapestry.web.WebResponse;
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.checkOrder;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.isA;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
-
-import java.io.CharArrayWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 
 /**
@@ -151,9 +164,9 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         writer.printRaw("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         writer.printRaw("<!DOCTYPE html "
                         + "PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" "
-                        + "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\" [\n"
-                        + "<!ENTITY nbsp '&#160;'>\n"
-                        + "]>\n");
+                        + "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\" [" + NEWLINE
+                        + "<!ENTITY nbsp '&#160;'>" + NEWLINE
+                        + "]>" + NEWLINE);
         writer.printRaw("<ajax-response>");
 
         expect(writer.getNestedWriter()).andReturn(nested);
@@ -420,17 +433,17 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         builder.endBodyScript(mw, cycle);
         builder.endResponse();
 
-        assertOutput("<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\" [\n" +
-                     "<!ENTITY nbsp \'&#160;\'>\n" +
-                     "]>\n" +
-                     "<ajax-response><response id=\"bodyscript\" type=\"script\"><script>\n" +
-                     "//<![CDATA[\n" +
-                     "\n" +
-                     "preloadedvarname = [];\n" +
-                     "if (document.images) {\n" +
-                     "image initializations}\n" +
-                     "var e=4;\n" +
-                     "//]]>\n" +
+        assertOutput("<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\" [" + NEWLINE +
+                     "<!ENTITY nbsp \'&#160;\'>" + NEWLINE +
+                     "]>" + NEWLINE +
+                     "<ajax-response><response id=\"bodyscript\" type=\"script\"><script>" + NEWLINE +
+                     "//<![CDATA[" + NEWLINE +
+                     NEWLINE +
+                     "preloadedvarname = [];" + NEWLINE +
+                     "if (document.images) {" + NEWLINE +
+                     "image initializations}" + NEWLINE +
+                     "var e=4;" + NEWLINE +
+                     "//]]>" + NEWLINE +
                      "</script></response></ajax-response>");
 
         verify();
@@ -463,9 +476,9 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         builder.writeExternalScript(mw, script2, cycle);
         builder.endResponse();
 
-        assertOutput("<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\" [\n" +
-                     "<!ENTITY nbsp \'&#160;\'>\n" +
-                     "]>\n" +
+        assertOutput("<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\" [" + NEWLINE +
+                     "<!ENTITY nbsp \'&#160;\'>" + NEWLINE +
+                     "]>" + NEWLINE +
                      "<ajax-response><response id=\"includescript\" type=\"script\">"
                      + "<include url=\"http://noname/js/package.js\" />"
                      + "<include url=\"http://noname/js/package2.js\" /></response></ajax-response>");
@@ -498,13 +511,13 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         builder.writeInitializationScript(mw, script);
         builder.endResponse();
 
-        assertOutput("<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\" [\n" +
-                     "<!ENTITY nbsp \'&#160;\'>\n" +
-                     "]>\n" +
-                     "<ajax-response><response id=\"initializationscript\" type=\"script\"><script>\n" +
-                     "//<![CDATA[\n" +
-                     "doThisInInit();\n" +
-                     "//]]>\n" +
+        assertOutput("<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\" [" + NEWLINE +
+                     "<!ENTITY nbsp \'&#160;\'>" + NEWLINE +
+                     "]>" + NEWLINE +
+                     "<ajax-response><response id=\"initializationscript\" type=\"script\"><script>" + NEWLINE +
+                     "//<![CDATA[" + NEWLINE +
+                     "doThisInInit();" + NEWLINE +
+                     "//]]>" + NEWLINE +
                      "</script></response></ajax-response>");
 
         verify();

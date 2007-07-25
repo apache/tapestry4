@@ -13,12 +13,16 @@
 // limitations under the License.
 package org.apache.tapestry.dojo;
 
+import java.util.Locale;
+
 import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.*;
+import org.apache.tapestry.IAsset;
+import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IPage;
+import org.apache.tapestry.IRender;
+import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.html.Shell;
 import org.apache.tapestry.json.JSONObject;
-
-import java.util.Locale;
 
 /**
  * The default rendering delegate responseible for include the dojo sources in
@@ -36,6 +40,9 @@ public class AjaxShellDelegate implements IRender {
     public static final String BROWSER_LOG_ERROR="ERROR";
     /** Client side critical log level. */
     public static final String BROWSER_LOG_CRITICAL="CRITICAL";
+
+	private static final String SYSTEM_NEWLINE= (String)java.security.AccessController.doPrivileged(
+            new sun.security.action.GetPropertyAction("line.separator"));
 
     private IAsset _dojoSource;
 
@@ -109,7 +116,7 @@ public class AjaxShellDelegate implements IRender {
 
         StringBuffer str = new StringBuffer("<script type=\"text/javascript\">");
         str.append("djConfig = ").append(dojoConfig.toString())
-          .append(" </script>\n\n ");
+          .append(" </script>" + SYSTEM_NEWLINE + SYSTEM_NEWLINE + " ");
 
         // include the core dojo.js package
 
@@ -132,13 +139,13 @@ public class AjaxShellDelegate implements IRender {
 
         if (_debug)
         {
-            String logRequire = _consoleEnabled ? "dojo.require(\"dojo.debug.console\");\n"
-                                : "dojo.require(\"dojo.logging.Logger\");\n";
+            String logRequire = _consoleEnabled ? "dojo.require(\"dojo.debug.console\");" + SYSTEM_NEWLINE
+                                : "dojo.require(\"dojo.logging.Logger\");" + SYSTEM_NEWLINE;
 
-            str.append("\n<script type=\"text/javascript\">\n");
+            str.append(SYSTEM_NEWLINE + "<script type=\"text/javascript\">" + SYSTEM_NEWLINE);
             str.append(logRequire)
               .append("dojo.log.setLevel(dojo.log.getLevel(\"").append(_browserLogLevel)
-              .append("\"));\n")
+              .append("\"));" + SYSTEM_NEWLINE)
               .append("</script>");
         }
 
@@ -150,10 +157,10 @@ public class AjaxShellDelegate implements IRender {
             tapestryUrl = tapestryUrl.substring(0, tapestryUrl.length() - 1);
         }
 
-        str.append("\n<script type=\"text/javascript\">\n")
+        str.append(SYSTEM_NEWLINE + "<script type=\"text/javascript\">" + SYSTEM_NEWLINE)
           .append("dojo.registerModulePath(\"tapestry\", \"")
-          .append(tapestryUrl).append("\");\n");
-        str.append("</script>\n");
+          .append(tapestryUrl).append("\");" + SYSTEM_NEWLINE);
+        str.append("</script>" + SYSTEM_NEWLINE);
 
         // include core tapestry.js package
 
@@ -162,10 +169,10 @@ public class AjaxShellDelegate implements IRender {
 
         // namespace registration
 
-        str.append("\n<script type=\"text/javascript\">\n");
-        str.append("dojo.require(\"tapestry.namespace\");\n")
+        str.append(SYSTEM_NEWLINE + "<script type=\"text/javascript\">" + SYSTEM_NEWLINE);
+        str.append("dojo.require(\"tapestry.namespace\");" + SYSTEM_NEWLINE)
           .append("tapestry.requestEncoding='").append(cycle.getEngine().getOutputEncoding())
-          .append("';\n").append("</script>");
+          .append("';" + SYSTEM_NEWLINE).append("</script>");
 
         writer.printRaw(str.toString());
         writer.println();
