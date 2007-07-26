@@ -19,7 +19,6 @@ import java.lang.reflect.Method;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.apache.tapestry.engine.IPropertySource;
 
 /**
  * Defines workers that perform annotation enhancements at the method level.
@@ -41,10 +40,8 @@ public interface MethodAnnotationEnhancementWorker
      *            the method to which the annotation is attached. The annotation
      *            may be obtained from the method.
      * @param location TODO
-     * @param propertySource
-     *            application properties for resolving default values
      */
 
     void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Method method, Location location, IPropertySource propertySource);
+            Method method, Location location);
 }

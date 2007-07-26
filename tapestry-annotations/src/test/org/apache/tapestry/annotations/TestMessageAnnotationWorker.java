@@ -22,7 +22,6 @@ import org.apache.hivemind.Location;
 import org.apache.hivemind.Messages;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.hivemind.service.impl.ClassFactoryImpl;
-import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.enhance.EnhanceUtils;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.enhance.EnhancementOperationImpl;
@@ -69,7 +68,6 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase
     {
         EnhancementOperation op = newOp();
         IComponentSpecification spec = newSpec();
-	    IPropertySource propertySource = newPropertySource();
 
         Method method = findMethod(AnnotatedPage.class, "voidMessage");
 
@@ -77,7 +75,7 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase
 
         try
         {
-            new MessageAnnotationWorker().performEnhancement(op, spec, method, null, propertySource);
+            new MessageAnnotationWorker().performEnhancement(op, spec, method, null);
             unreachable();
         }
         catch (ApplicationRuntimeException ex)
@@ -96,7 +94,6 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase
         Location l = newLocation();
         EnhancementOperation op = newOp();
         IComponentSpecification spec = newSpec();
-	    IPropertySource propertySource = newPropertySource();
 
         Method method = findMethod(AnnotatedPage.class, "getLikeGetter");
 
@@ -109,7 +106,7 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase
 
         replay();
 
-        new MessageAnnotationWorker().performEnhancement(op, spec, method, l, propertySource);
+        new MessageAnnotationWorker().performEnhancement(op, spec, method, l);
 
         verify();
     }
@@ -119,7 +116,6 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase
         Location l = newLocation();
         EnhancementOperation op = newOp();
         IComponentSpecification spec = newSpec();
-	    IPropertySource propertySource = newPropertySource();
 
         Method method = findMethod(AnnotatedPage.class, methodName);
 
@@ -127,7 +123,7 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase
 
         replay();
 
-        new MessageAnnotationWorker().performEnhancement(op, spec, method, l, propertySource);
+        new MessageAnnotationWorker().performEnhancement(op, spec, method, l);
 
         verify();
     }
@@ -139,7 +135,6 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase
         ComponentSpecification spec = new ComponentSpecification();
         EnhancementOperationImpl op = new EnhancementOperationImpl(getClassResolver(), spec,
                 baseClass, new ClassFactoryImpl(), null);
-	    IPropertySource propertySource = newPropertySource();
 
         op.addInjectedField("_messages", Messages.class, messages);
 
@@ -147,7 +142,7 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase
 
         Method method = findMethod(baseClass, methodName);
 
-        new MessageAnnotationWorker().performEnhancement(op, spec, method, l, propertySource);
+        new MessageAnnotationWorker().performEnhancement(op, spec, method, l);
 
         ComponentConstructor cc = op.getConstructor();
 

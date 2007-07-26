@@ -29,7 +29,6 @@
                 <set-configuration property="methodWorkers" configuration-id="MethodWorkers" />
                 <set-configuration property="classWorkers" configuration-id="ClassWorkers" />
                 <set-configuration property="secondaryAnnotationWorkers" configuration-id="SecondaryAnnotationWorkers" />
-	            <set-service property="propertySource" service-id="tapestry.props.ApplicationPropertySource" />
             </construct>
         </invoke-factory>
 
@@ -163,7 +162,7 @@
 
         <worker annotation="InjectState" object="instance:InjectStateAnnotationWorker" />
         <worker annotation="InjectStateFlag" object="instance:InjectStateFlagAnnotationWorker" />
-        <worker annotation="Persist" object="instance:PersistAnnotationWorker" />
+        <worker annotation="Persist" object="service:PersistAnnotationWorker" />
         <worker annotation="Bean" object="instance:BeanAnnotationWorker" />
         <worker annotation="Asset" object="instance:AssetAnnotationWorker" />
         <worker annotation="Parameter" object="instance:ParameterAnnotationWorker" />
@@ -178,6 +177,14 @@
             <construct class="ComponentAnnotationWorker" />
         </invoke-factory>
     </service-point>
+
+	<service-point id="PersistAnnotationWorker" interface="MethodAnnotationEnhancementWorker">
+		<invoke-factory>
+			<construct class="PersistAnnotationWorker">
+				<set-service property="propertySource" service-id="tapestry.props.ApplicationPropertySource" />
+			</construct>
+		</invoke-factory>
+	</service-point>
 
     <service-point id="InjectAssetAnnotationWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
 

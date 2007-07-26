@@ -43,14 +43,16 @@ public class PersistAnnotationWorker implements MethodAnnotationEnhancementWorke
 	 */
 	public static final String DEFAULT_PROPERTY_PERSISTENCE_STRATEGY = "org.apache.tapestry.default-property-persistence-strategy";
 
+	private IPropertySource _propertySource;
+
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Method method, Location location, IPropertySource propertySource)
+            Method method, Location location)
     {
         Persist p = method.getAnnotation(Persist.class);
         InitialValue iv = method.getAnnotation(InitialValue.class);
 
         String propertyName = AnnotationUtils.getPropertyName(method);
-	    String defaultStrategy = propertySource.getPropertyValue(DEFAULT_PROPERTY_PERSISTENCE_STRATEGY);
+	    String defaultStrategy = _propertySource.getPropertyValue(DEFAULT_PROPERTY_PERSISTENCE_STRATEGY);
         String stategy = p.value().length() == 0 ? defaultStrategy : p.value();
 
         IPropertySpecification pspec = new PropertySpecification();
@@ -63,4 +65,8 @@ public class PersistAnnotationWorker implements MethodAnnotationEnhancementWorke
         spec.addPropertySpecification(pspec);
     }
 
+	public void setPropertySource(IPropertySource propertySource)
+	{
+		_propertySource = propertySource;
+	}
 }

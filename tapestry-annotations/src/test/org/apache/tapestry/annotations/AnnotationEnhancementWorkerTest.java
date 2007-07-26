@@ -26,7 +26,6 @@ import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.DefaultClassResolver;
-import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.util.DescribedLocation;
@@ -82,7 +81,6 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
 
         EnhancementOperation op = newOp(AnnotatedPage.class);
         IComponentSpecification spec = newSpec();
-	    IPropertySource propertySource = newPropertySource();
 
         MethodAnnotationEnhancementWorker methodWorker = newMethodAnnotationEnhancementWorker();
 
@@ -90,7 +88,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
 
         Location location = newMethodLocation(AnnotatedPage.class, m, InjectObject.class);
 
-        methodWorker.performEnhancement(op, spec, m, location, propertySource);
+        methodWorker.performEnhancement(op, spec, m, location);
 
         replay();
 
@@ -98,7 +96,6 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
         worker.setMethodWorkers(newMap(InjectObject.class, methodWorker));
         worker.setClassResolver(resolver);
         worker.setSecondaryAnnotationWorkers(Collections.EMPTY_LIST);
-	    worker.setPropertySource(propertySource);
         
         worker.performEnhancement(op, spec);
 
@@ -126,7 +123,6 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
 
         EnhancementOperation op = newOp(AnnotatedPageSubclass.class);
         IComponentSpecification spec = newSpec();
-	    IPropertySource propertySource = newPropertySource();
 
         MethodAnnotationEnhancementWorker methodWorker = newMethodAnnotationEnhancementWorker();
 
@@ -134,7 +130,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
 
         Location location = newMethodLocation(AnnotatedPageSubclass.class, m, InjectObject.class);
 
-        methodWorker.performEnhancement(op, spec, m, location, propertySource);
+        methodWorker.performEnhancement(op, spec, m, location);
 
         replay();
 
@@ -142,8 +138,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
         worker.setMethodWorkers(newMap(InjectObject.class, methodWorker));
         worker.setClassResolver(resolver);
         worker.setSecondaryAnnotationWorkers(Collections.EMPTY_LIST);
-	    worker.setPropertySource(propertySource);
-        
+
         worker.performEnhancement(op, spec);
 
         verify();
@@ -158,7 +153,6 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
 
         EnhancementOperation op = newOp(AnnotatedPage.class);
         IComponentSpecification spec = newSpec();
-	    IPropertySource propertySource = newPropertySource();
 
         MethodAnnotationEnhancementWorker methodWorker = newMethodAnnotationEnhancementWorker();
 
@@ -166,7 +160,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
 
         Location location = newMethodLocation(AnnotatedPage.class, m, InjectObject.class);
 
-        methodWorker.performEnhancement(op, spec, m, location, propertySource);
+        methodWorker.performEnhancement(op, spec, m, location);
         expectLastCall().andThrow(t);
 
         log.error("An error occured processing annotation "
@@ -182,8 +176,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
         worker.setErrorLog(log);
         worker.setClassResolver(resolver);
         worker.setSecondaryAnnotationWorkers(Collections.EMPTY_LIST);
-	    worker.setPropertySource(propertySource);
-        
+
         worker.performEnhancement(op, spec);
 
         verify();

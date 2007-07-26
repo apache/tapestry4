@@ -17,7 +17,6 @@ package org.apache.tapestry.annotations;
 import java.lang.reflect.Method;
 
 import org.apache.hivemind.Location;
-import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.AssetSpecification;
 import org.apache.tapestry.spec.IAssetSpecification;
@@ -33,7 +32,7 @@ public class AssetAnnotationWorker implements MethodAnnotationEnhancementWorker
 {
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Method method, Location location, IPropertySource propertySource)
+            Method method, Location location)
     {
         Asset asset = method.getAnnotation(Asset.class);
         String propertyName = AnnotationUtils.getPropertyName(method);

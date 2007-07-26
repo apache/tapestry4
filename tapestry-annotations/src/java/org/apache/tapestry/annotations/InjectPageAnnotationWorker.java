@@ -21,7 +21,6 @@ import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.InjectSpecification;
 import org.apache.tapestry.spec.InjectSpecificationImpl;
-import org.apache.tapestry.engine.IPropertySource;
 
 /**
  * Uses the {@link org.apache.tapestry.annotations.InjectPage} annotation to add an
@@ -35,7 +34,7 @@ public class InjectPageAnnotationWorker implements MethodAnnotationEnhancementWo
 {
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Method method, Location location, IPropertySource propertySource)
+            Method method, Location location)
     {
         InjectPage injectPage = method.getAnnotation(InjectPage.class);
 

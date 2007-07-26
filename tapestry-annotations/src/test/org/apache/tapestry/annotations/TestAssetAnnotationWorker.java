@@ -18,7 +18,6 @@ import java.lang.reflect.Method;
 
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
-import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IAssetSpecification;
@@ -39,13 +38,12 @@ public class TestAssetAnnotationWorker extends BaseAnnotationTestCase
         EnhancementOperation op = newOp();
         IComponentSpecification spec = new ComponentSpecification();
         spec.setSpecificationLocation(r);
-	    IPropertySource propertySource = newPropertySource();
 
         replay();
 
         Method m = findMethod(AnnotatedPage.class, "getGlobalStylesheet");
 
-        new AssetAnnotationWorker().performEnhancement(op, spec, m, l, propertySource);
+        new AssetAnnotationWorker().performEnhancement(op, spec, m, l);
 
         verify();
 
@@ -63,13 +61,12 @@ public class TestAssetAnnotationWorker extends BaseAnnotationTestCase
         EnhancementOperation op = newOp();
         IComponentSpecification spec = new ComponentSpecification();
         spec.setSpecificationLocation(r);
-	    IPropertySource propertySource = newPropertySource();
 
         replay();
 
         Method m = findMethod(AnnotatedPage.class, "getTextAsset");
 
-        new AssetAnnotationWorker().performEnhancement(op, spec, m, l, propertySource);
+        new AssetAnnotationWorker().performEnhancement(op, spec, m, l);
 
         verify();
 
