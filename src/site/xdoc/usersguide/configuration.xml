@@ -411,6 +411,18 @@
                         value is equivalent to one week.
                     </td>
                 </tr>
+
+	            <tr>
+		            <td>org.apache.tapestry.default-property-persistence-strategy</td>
+		            <td>session</td>
+		            <td>
+			            The default property persistence strategy to use for page properties annotated
+			            with @Persist. The default is "session", which stores the properties in the
+			            HttpSession as a session attribute. Tapestry also provides a "client" strategy
+			            and additional strategies can be defined.
+		            </td>
+	            </tr>
+
                 <tr>
                     <td>org.apache.tapestry.application-specification</td>
                     <td></td>
