@@ -21,7 +21,6 @@ import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.ClasspathResource;
 import org.apache.tapestry.BaseComponentTestCase;
-import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.IComponentSpecification;
 
@@ -73,9 +72,4 @@ public class BaseAnnotationTestCase extends BaseComponentTestCase
                 m.getAnnotation(annotationClass),
                 classResource);
     }
-
-	protected IPropertySource newPropertySource()
-	{
-		return newMock(IPropertySource.class);
-	}
 }

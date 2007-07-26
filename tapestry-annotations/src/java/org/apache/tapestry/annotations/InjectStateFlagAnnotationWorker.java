@@ -21,7 +21,6 @@ import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.InjectSpecification;
 import org.apache.tapestry.spec.InjectSpecificationImpl;
-import org.apache.tapestry.engine.IPropertySource;
 
 /**
  * 
@@ -31,7 +30,7 @@ public class InjectStateFlagAnnotationWorker implements MethodAnnotationEnhancem
 {
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Method method, Location location, IPropertySource propertySource)
+            Method method, Location location)
     {
         InjectStateFlag isv = method.getAnnotation(InjectStateFlag.class);
         

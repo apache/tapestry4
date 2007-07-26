@@ -18,7 +18,6 @@ import java.lang.reflect.Method;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
-import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -47,15 +46,14 @@ public class TestParameterAnnotationWorker extends BaseAnnotationTestCase
                 + propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1));
         
         EnhancementOperation op = newMock(EnhancementOperation.class);
-	    IPropertySource propertySource = newPropertySource();
-        
+
         expect(op.getPropertyType(propertyName)).andReturn(m.getReturnType());
         
         IComponentSpecification spec = new ComponentSpecification();
 
         replay();
 
-        new ParameterAnnotationWorker().performEnhancement(op, spec, m, location, propertySource);
+        new ParameterAnnotationWorker().performEnhancement(op, spec, m, location);
 
         verify();
 
@@ -125,15 +123,14 @@ public class TestParameterAnnotationWorker extends BaseAnnotationTestCase
         Method m = findMethod(AnnotatedPage.class, "getSimpleParameter");
         
         EnhancementOperation op = newMock(EnhancementOperation.class);
-	    IPropertySource propertySource = newPropertySource();
-                
+
         IComponentSpecification spec = new ComponentSpecification();
 
         replay();
 
         try
         {
-            new ParameterAnnotationWorker().performEnhancement(op, spec, m, null, propertySource);
+            new ParameterAnnotationWorker().performEnhancement(op, spec, m, null);
             unreachable();
         }
         catch (ApplicationRuntimeException ex)

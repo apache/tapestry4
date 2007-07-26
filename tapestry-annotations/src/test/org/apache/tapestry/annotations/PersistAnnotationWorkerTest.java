@@ -46,7 +46,9 @@ public class PersistAnnotationWorkerTest extends AnnotationEnhancementWorkerTest
 
         Method m = findMethod(AnnotatedPage.class, "getPersistentProperty");
 
-        new PersistAnnotationWorker().performEnhancement(op, spec, m, l, propertySource);
+        PersistAnnotationWorker worker = new PersistAnnotationWorker();
+	    worker.setPropertySource(propertySource);
+	    worker.performEnhancement(op, spec, m, l);
 
         verify();
 
@@ -70,7 +72,9 @@ public class PersistAnnotationWorkerTest extends AnnotationEnhancementWorkerTest
 
         Method m = findMethod(AnnotatedPage.class, "getClientPersistentProperty");
 
-        new PersistAnnotationWorker().performEnhancement(op, spec, m, l, propertySource);
+        PersistAnnotationWorker worker = new PersistAnnotationWorker();
+	    worker.setPropertySource(propertySource);
+	    worker.performEnhancement(op, spec, m, l);
 
         verify();
 
@@ -94,7 +98,9 @@ public class PersistAnnotationWorkerTest extends AnnotationEnhancementWorkerTest
 
         Method m = findMethod(AnnotatedPage.class, "getPersistentPropertyWithInitialValue");
 
-        new PersistAnnotationWorker().performEnhancement(op, spec, m, l, propertySource);
+        PersistAnnotationWorker worker = new PersistAnnotationWorker();
+	    worker.setPropertySource(propertySource);
+	    worker.performEnhancement(op, spec, m, l);
 
         verify();
 
@@ -109,7 +115,7 @@ public class PersistAnnotationWorkerTest extends AnnotationEnhancementWorkerTest
 
 	private IPropertySource trainPropertySource()
 	{
-		IPropertySource propertySource = newPropertySource();
+		IPropertySource propertySource = newMock(IPropertySource.class);
 		expect(propertySource.getPropertyValue(PersistAnnotationWorker.DEFAULT_PROPERTY_PERSISTENCE_STRATEGY)).andReturn("session");
 		return propertySource;
 	}

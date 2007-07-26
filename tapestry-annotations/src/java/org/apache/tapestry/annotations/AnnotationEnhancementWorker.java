@@ -24,7 +24,6 @@ import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.ClasspathResource;
-import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.enhance.EnhancementWorker;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -50,8 +49,6 @@ public class AnnotationEnhancementWorker implements EnhancementWorker
     private Map<Class, ClassAnnotationEnhancementWorker> _classWorkers;
 
     private List<SecondaryAnnotationWorker> _secondaryAnnotationWorkers;
-
-	private IPropertySource _propertySource;
 
     public void setClassWorkers(Map<Class, ClassAnnotationEnhancementWorker> classWorkers)
     {
@@ -140,7 +137,7 @@ public class AnnotationEnhancementWorker implements EnhancementWorker
                     method,
                     annotation,
                     classResource);
-            worker.performEnhancement(op, spec, method, location, _propertySource);
+            worker.performEnhancement(op, spec, method, location);
         }
         catch (Exception ex)
         {
@@ -171,9 +168,4 @@ public class AnnotationEnhancementWorker implements EnhancementWorker
     {
         _secondaryAnnotationWorkers = workers;
     }
-
-	public void setPropertySource(IPropertySource propertySource)
-	{
-		_propertySource = propertySource;
-	}
 }
