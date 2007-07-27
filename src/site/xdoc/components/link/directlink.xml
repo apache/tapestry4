@@ -65,12 +65,14 @@
                                 IActionListener
                             </a>
                         </td>
-                        <td>yes</td>
+                        <td>no</td>
                         <td> </td>
                         <td>
                             Specifies an object that is notified when the link is clicked, which is
                             typically a listener method of its container (for example, listeners.
-                            <em>method</em>).
+                            <em>method</em>). If this parameter is not provided, Tapestry will attempt
+	                        to find a listener with the capitalized id of the component, prefixed by
+	                        "do". For example, jwcid="clear@DirectLink" would expect a listener called doClear().
                         </td>
                     </tr>
                     <tr>

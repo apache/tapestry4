@@ -154,14 +154,17 @@
                                 IActionListener
                             </a>
                         </td>
-                        <td>yes</td>
+                        <td>no</td>
                         <td> </td>
                         <td>
                             Specifies an object that is notified when input is typed in to the field, which is
                             typically a listener method of its container (for example, listeners.
                             <em>method</em>).  This listener method will by default contain exactly one parameter of type String when
                             invoked - which wil be the value that was typed in to the field in the browser.  You may add other
-                            additional parameters using the <b>parameters</b> parameter of this component.
+                            additional parameters using the <b>parameters</b> parameter of this component. If this parameter is not provided,
+	                        Tapestry will attempt to find a listener with the capitalized id of the
+	                        component, prefixed by "do". For example, jwcid="nameSearch@Suggest" would expect
+	                        a listener called doNameSearch().
                             
                             <br /><br />
 
