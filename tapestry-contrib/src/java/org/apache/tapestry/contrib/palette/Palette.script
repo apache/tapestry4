@@ -189,7 +189,9 @@ output symbols:
   javascript:${moveDownFunctionName}();
 </let>
 
-
+<let key="submitListenerFunction">
+    ${baseName}FormSubmitted
+</let>
 <body>
 
 <!-- A variable that is used to track which of the buttons are enabled
@@ -333,6 +335,14 @@ ${availableChangeFunctionName}=function(){
   tapestry.palette.clearSelections(${selectedPath});
   ${updateFunctionName}();
 }
+
+tapestry.${submitListenerFunction}=function(form){
+    form = dojo.byId(form);
+    if(!form){return;}
+    var id=form.getAttribute("id");
+    if ("${formName}" != id){return;}
+    tapestry.${formSubmitFunctionName}();
+}
 </body>
 
 <initialization>
@@ -343,5 +353,9 @@ ${availablePath}.ondblclick = ${selectFunctionName};
 ${updateFunctionName}();
 dojo.event.connect(dojo.byId("${formName}"), "onrefresh" , tapestry, "${formSubmitFunctionName}");
 dojo.event.connect(dojo.byId("${formName}"), "onsubmit" , tapestry, "${formSubmitFunctionName}");
+dojo.event.connect("before", tapestry.form, "submit", tapestry, "${submitListenerFunction}");
+dojo.event.connect("before", tapestry.form, "refresh", tapestry, "${submitListenerFunction}");
+dojo.event.connect("before", tapestry.form, "cancel", tapestry, "${submitListenerFunction}");
+dojo.event.connect("before", tapestry.form, "submitAsync", tapestry, "${submitListenerFunction}");
 </initialization>
 </script>
