@@ -24,7 +24,8 @@ import org.apache.tapestry.listener.ListenerInvoker;
 /**
  * Invokes a listener method, passing listener parameters. This is used when a
  * page or component needs some setup logic that can be best accomplished in
- * Java code.
+ * Java code. If the listener parameter is not bound, attempt to locate an
+ * implicit listener named by the capitalized component id, prefixed by "do".
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
@@ -41,7 +42,12 @@ public abstract class InvokeListener extends AbstractComponent
         {
             cycle.setListenerParameters(parameters);
 
-            getListenerInvoker().invokeListener(getListener(), this, cycle);
+	        IActionListener listener = getListener();
+
+	        if (listener == null)
+	            listener = getContainer().getListeners().getImplicitListener(this);
+
+            getListenerInvoker().invokeListener(listener, this, cycle);
         }
         finally
         {

@@ -20,7 +20,6 @@ import java.util.Map;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 
@@ -50,7 +49,7 @@ public abstract class XTile extends BaseComponent implements IXTile
         IActionListener listener = getListener();
 
         if (listener == null)
-            throw Tapestry.createRequiredParameterException(this, "listener");
+            listener = getContainer().getListeners().getImplicitListener(this);
 
         listener.actionTriggered(this, cycle);
     }

@@ -225,6 +225,19 @@ public class TapestryUtilsTest extends BaseComponentTestCase
         { "", "fred", "", "barney", "", "" }, TapestryUtils.split(",fred,,barney,,"));
     }
 
+	public void testCapitalizeNothing()
+	{
+		assertEquals(null, TapestryUtils.capitalize(null));
+		assertEquals("", TapestryUtils.capitalize(""));
+	}
+
+	public void testCapitalizeNormal()
+	{
+		assertEquals("Test", TapestryUtils.capitalize("test"));
+		assertEquals("Test", TapestryUtils.capitalize("Test"));
+		assertEquals("123abc", TapestryUtils.capitalize("123abc"));
+	}
+
     public void testEnquote()
     {
         assertEquals("'simple'", TapestryUtils.enquote("simple"));

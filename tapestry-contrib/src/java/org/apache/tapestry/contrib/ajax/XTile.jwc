@@ -27,12 +27,14 @@
         and receive its response without reloading the page (Ajax)
     </description>
     
-    <parameter name="listener" required="yes">
+    <parameter name="listener">
         <description>
             The listener that will be invoked when the Javascript function with the given name is invoked.
             Any parameters passed to the send function will be available from cycle.getServiceParameters(). 
             In addition, the listener can perform cycle.setServiceParameters() to pass an array of
-            strings to the JavaScript receive function.
+            strings to the JavaScript receive function. If the listener is not provided, Tapestry will
+	        attempt to find a listener with the capitalized id of the component, prefixed by "do". For
+	        example, jwcid="clear@XTile" would have a listener called doClear().
         </description>
     </parameter>
     

@@ -14,13 +14,16 @@
 
 package org.apache.tapestry.link;
 
-import org.apache.tapestry.*;
+import java.util.List;
+
+import org.apache.tapestry.IActionListener;
+import org.apache.tapestry.IDirect;
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.IScript;
 import org.apache.tapestry.engine.DirectServiceParameter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.listener.ListenerInvoker;
-
-import java.util.List;
 
 /**
  * A component for creating a link using the direct service; used for actions that are not dependant
@@ -85,7 +88,8 @@ public abstract class DirectLink extends AbstractLinkComponent implements IDirec
 
     /**
      * Invoked by the direct service to trigger the application-specific action by notifying the
-     * {@link IActionListener listener}.
+     * {@link IActionListener listener}. If the listener parameter is not bound, attempt to locate
+     * an implicit listener named by the capitalized component id, prefixed by "do".
      * 
      * @throws org.apache.tapestry.StaleSessionException
      *             if the component is stateful, and the session is new.
@@ -96,8 +100,8 @@ public abstract class DirectLink extends AbstractLinkComponent implements IDirec
         IActionListener listener = getListener();
 
         if (listener == null)
-            throw Tapestry.createRequiredParameterException(this, "listener");
-        
+	        listener = getContainer().getListeners().getImplicitListener(this);
+
         getListenerInvoker().invokeListener(listener, this, cycle);
     }
 

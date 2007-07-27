@@ -25,11 +25,15 @@
         Provides dynamic suggestion list autocompletion for textarea and input text fields.
     </description>
 
-    <parameter name="listener" required="true">
+    <parameter name="listener">
         <description>
             Listener method to invoke for each field search request. This listener
-            should expect to get exactly one paramter of type String, which is the value that was typed in to the field. It may additionally
-            receive extra parameters if the parameters parameter is used.
+            should expect to get exactly one parameter of type String, which is the
+	        value that was typed in to the field. It may additionally receive
+	        extra parameters if the parameters parameter is used. If no listener
+	        is provided, Tapestry will attempt to find a listener with the
+	        capitalized id of the component, prefixed by "do". For example,
+	        jwcid="nameSearch@Suggest" would have a listener called doNameSearch(). 
         </description>
     </parameter>
 

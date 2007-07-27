@@ -50,4 +50,9 @@ final class ListenerMessages
         return _formatter.format("no-listener-method-found", name, new Integer(Tapestry
                 .size(serviceParameters)), target);
     }
+
+	static String noImplicitListenerMethodFound(String name, Object target)
+	{
+		return _formatter.format("no-implicit-listener-method-found", name, target);
+	}
 }
