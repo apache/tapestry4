@@ -59,14 +59,17 @@
                                 IActionListener
                             </a>
                         </td>
-                        <td>yes</td>
+                        <td>no</td>
                         <td></td>
                         <td>
                             The listener that will be invoked when the Javascript function with the
                             given name is invoked. Any parameters passed to the send function will
                             be available from <code>cycle.getListenerParameters()</code>. In addition, the
                             listener can perform <code>cycle.setListenerParameters()</code> to pass an array of
-                            strings to the JavaScript receive function.
+                            strings to the JavaScript receive function. If this parameter is not provided,
+	                        Tapestry will attempt to find a listener with the capitalized id of the
+	                        component, prefixed by "do". For example, jwcid="clear@XTile" would expect
+	                        a listener called doClear().
                         </td>
                     </tr>
 

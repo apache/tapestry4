@@ -57,9 +57,12 @@
                                 IActionListener
                             </a>
                         </td>
-                        <td>yes</td>
+                        <td>no</td>
                         <td></td>
-                        <td>The listener to invoke.</td>
+                        <td>The listener to invoke. If this parameter is not provided,
+	                        Tapestry will attempt to find a listener with the capitalized id of the
+	                        component, prefixed by "do". For example, jwcid="clear@InvokeListener" would
+	                        expect a listener called doClear().</td>
                     </tr>
 
                     <tr>

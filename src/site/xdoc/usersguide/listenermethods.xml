@@ -35,7 +35,12 @@
             <a href="../components/form/form.html">Form</a>
             take a listener parameter, and you can use a listener:
             <a href="bindings.html">binding reference</a>
-            to use a listener method in your class as the listener.
+            to use a listener method in your class as the listener. As of Tapestry 4.1.3, components
+	        that require a listener (XTile, DirectLink, InvokeListener, Suggest) no longer need
+	        an explicit listener provided for their "listener" parameter as long as a listener method
+	        exists on the component whose name is composed of the capitalized component id, prefixed
+	        by "do". For example, jwcid="clear@DirectLink" would expect a listener method called
+	        doClear() if the listener parameter is not used.
         </p>
 
         <span class="info">
