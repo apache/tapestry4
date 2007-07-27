@@ -21,7 +21,9 @@ import java.util.Map;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IActionListener;
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
 
 /**
@@ -120,6 +122,59 @@ public class TestListenerMap extends BaseComponentTestCase
             assertEquals("Object *TARGET* does not implement a listener method named 'foobar'.", ex
                     .getMessage());
             assertSame(target, ex.getComponent());
+        }
+
+        verify();
+    }
+
+	public void test_Get_Implicit_Listener()
+	{
+		Object target = new Object();
+        IRequestCycle cycle = newCycle();
+        ListenerMethodInvoker invoker = newInvoker();
+		IComponent component = newMock(IComponent.class);
+		expect(component.getId()).andReturn("action").times(2);
+		Map map = newMap("doAction", invoker);
+
+        invoker.invokeListenerMethod(target, cycle);
+
+        replay();
+
+        ListenerMap lm = new ListenerMapImpl(target, map);
+
+        IActionListener l1 = lm.getImplicitListener(component);
+
+        l1.actionTriggered(null, cycle);
+
+		IActionListener l2 = lm.getImplicitListener(component);
+
+		verify();
+
+        assertSame(l1, l2);
+	}
+
+	public void test_Missing_Implicit_Listener()
+    {
+        ListenerMethodInvoker invoker = newInvoker();
+	    IComponent component = newMock(IComponent.class);
+	    expect(component.getLocation()).andReturn(null);
+	    expect(component.getId()).andReturn("action");
+        Map map = newMap("method", invoker);
+
+        replay();
+
+        ListenerMap lm = new ListenerMapImpl("test", map);
+
+        try
+        {
+            lm.getImplicitListener(component);
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertEquals("No implicit listener method named 'doAction' found in " + component, ex
+                    .getMessage());
+            assertSame(component, ex.getComponent());
         }
 
         verify();

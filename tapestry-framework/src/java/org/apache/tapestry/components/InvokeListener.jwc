@@ -27,7 +27,14 @@
   Invokes a listener, with parameters, during the page render.
   </description>
 
-  <parameter name="listener" required="yes"/>
+  <parameter name="listener">
+	  <description>
+		  The listener to be invoked. If none is provided, Tapestry will attempt
+		  to find a listener with the capitalized id of the component, prefixed
+		  by "do". For example, jwcid="clear@InvokeListener" would have a
+		  listener called doClear().
+	  </description>
+  </parameter>
   	
   <parameter name="parameters">
     <description>

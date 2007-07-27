@@ -18,6 +18,7 @@ import java.util.Collection;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IActionListener;
+import org.apache.tapestry.IComponent;
 
 /**
  * @author Howard M. Lewis Ship
@@ -40,6 +41,20 @@ public interface ListenerMap
      *             if the listener can not be created.
      */
     IActionListener getListener(String name);
+
+	/**
+	 * Gets a listener on the given component generated from the capitalized
+	 * component id, prefixed by "do". For example, jwcid="clear@DirectLink"
+	 * would have a listener called doClear().
+	 *
+	 * @param component
+	 *          the component whose id is used to make up the name of the
+	 *          expected listener
+	 * @returns an object implementing {@link IActionListener}.
+	 * @throws ApplicationRuntimeException
+	 *          if the listener can not be found on the component
+	 */
+	IActionListener getImplicitListener(IComponent component);
 
     /**
      * Returns an unmodifiable collection of the names of the listeners

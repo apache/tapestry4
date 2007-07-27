@@ -27,7 +27,14 @@
   listener.
   </description>
 
-  <parameter name="listener" required="yes"/>
+  <parameter name="listener">
+	  <description>
+		  The listener to be called when the link is clicked. If none is provided,
+		  Tapestry will attempt to find a listener with the capitalized id of the
+		  component, prefixed by "do". For example, jwcid="clear@DirectLink" would
+		  have a listener called doClear().
+	  </description>
+  </parameter>
   	
   <parameter name="parameters">
     <description>

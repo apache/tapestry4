@@ -1,8 +1,22 @@
 package org.apache.tapestry.scriptaculous;
 
+import java.text.ParseException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.*;
+import org.apache.tapestry.IActionListener;
+import org.apache.tapestry.IDirect;
+import org.apache.tapestry.IForm;
+import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.IScript;
+import org.apache.tapestry.PageRenderSupport;
+import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.engine.DirectServiceParameter;
 import org.apache.tapestry.engine.IEngineService;
@@ -17,9 +31,6 @@ import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.util.SizeRestrictingIterator;
 import org.apache.tapestry.valid.ValidatorException;
-
-import java.text.ParseException;
-import java.util.*;
 
 /**
  * Implementation of the <a href="http://wiki.script.aculo.us/scriptaculous/show/Ajax.Autocompleter">Ajax.Autocompleter</a> in
@@ -318,12 +329,14 @@ public abstract class Suggest extends AbstractFormComponent implements Translate
     /**
      * Triggers the listener. The parameters passed are the current text
      * and those specified in the parameters parameter of the component.
+     * If the listener parameter is not bound, attempt to locate an implicit
+     * listener named by the capitalized component id, prefixed by "do".
      */
     public void trigger(IRequestCycle cycle)
     {
         IActionListener listener = getListener();
         if (listener == null)
-            throw Tapestry.createRequiredParameterException(this, "listener");
+            listener = getContainer().getListeners().getImplicitListener(this);
 
         Object[] params = cycle.getListenerParameters();
 

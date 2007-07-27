@@ -14,14 +14,16 @@
 
 package org.apache.tapestry.listener;
 
-import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.IActionListener;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.IActionListener;
+import org.apache.tapestry.IComponent;
+import org.apache.tapestry.TapestryUtils;
 
 /**
  * @author Howard M. Lewis Ship
@@ -68,7 +70,23 @@ public class ListenerMapImpl implements ListenerMap
         return result;
     }
 
-    private IActionListener createListener(String name)
+	public IActionListener getImplicitListener(IComponent component)
+	{
+		IActionListener listener;
+		String generatedName = "do" + TapestryUtils.capitalize(component.getId());
+		try
+		{
+			listener = getListener(generatedName);
+		}
+		catch (ApplicationRuntimeException e)
+		{
+			throw new ApplicationRuntimeException(ListenerMessages.noImplicitListenerMethodFound(generatedName, component), component, null, e);
+		}
+
+		return listener;
+	}
+
+	private IActionListener createListener(String name)
     {
         ListenerMethodInvoker invoker = (ListenerMethodInvoker) _invokers.get(name);
 

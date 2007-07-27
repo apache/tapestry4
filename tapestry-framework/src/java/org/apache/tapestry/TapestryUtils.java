@@ -14,13 +14,13 @@
 
 package org.apache.tapestry;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.util.Defense;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Constants and static methods.
@@ -234,6 +234,18 @@ public final class TapestryUtils
 
         return (String[]) strings.toArray(new String[strings.size()]);
     }
+
+	/**
+	 * Capitalize the first letter of the input if at least 1 character.
+	 */
+
+	public static String capitalize(String input)
+	{
+		if (input == null || input.length() < 1)
+			   return input;
+
+		return input.substring(0, 1).toUpperCase() + input.substring(1);
+	}
 
     /**
      * Enquotes a string within single quotes, ready for insertion as part of a block of JavaScript.
