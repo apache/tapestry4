@@ -49,26 +49,17 @@ public class Visit implements Serializable
      */
 
     private Integer _intValue;
-
     private Double _doubleValue;
-
     private BigDecimal _bigDecimalValue;
-
     private Long _longValue;
-
     private Date _dateValue;
-
     private String _stringValue;
-
     private String _emailValue;
-
     private String _textValue;
-
     private String _zipCode;
-    
     private String _phone;
-
     private String _ipAddress;
+    private int _choice;
 
     /**
      * @return the phone
@@ -78,7 +69,6 @@ public class Visit implements Serializable
         return _phone;
     }
 
-    
     /**
      * @param phone the phone to set
      */
@@ -215,5 +205,15 @@ public class Visit implements Serializable
     public void setIpaddress(String address)
     {
         _ipAddress = address;
+    }
+
+    public int getChoice()
+    {
+        return _choice;
+    }
+
+    public void setChoice(int choice)
+    {
+        _choice = choice;
     }
 }

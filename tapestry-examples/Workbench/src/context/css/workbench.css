@@ -282,32 +282,3 @@ IMG {
     list-style:none;
     font-style:italic;
 }
-/*
-.tablePages {
-    background-color: #5298D9;
-    padding-top: 0.1em;
-    padding-bottom: 0.1em;
-    padding-left: 0.1em;
-    margin: 0;
-    padding-bottom: 0;
-    -moz-border-radius-topleft: 0.3em;
-    -moz-border-radius-topright: 0.3em;
-}
-
-.tablePagesLinks {
-    background-color: #E0F3F7;
-    display:block;
-    padding-top: 0.4em;
-    padding-bottom: 0.1em;
-    padding-left: 0.4em;
-    margin:0;
-    -moz-border-radius-topleft: 0.3em;
-    -moz-border-radius-topright: 0.3em;
-}
-*/
-/*
-.tablePagesLinks span a, .tablePagesLinks a, .tablePagesLinks {
-    color: #7E7E7E;
-    font-size: 1.1em;
-}
-*/

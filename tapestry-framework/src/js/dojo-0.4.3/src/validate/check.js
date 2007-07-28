@@ -88,7 +88,7 @@ _3[_3.length]=_b.name;
 if(!dj_undef("type",_b)&&(_b.type=="select-one"||_b.type=="select-multiple")&&(_b.selectedIndex==-1||/^\s*$/.test(_b.options[_b.selectedIndex].value))){
 _3[_3.length]=_b.name;
 }else{
-if(_b instanceof Array){
+if(dojo.lang.isArrayLike(_b)){
 var _d=false;
 for(var j=0;j<_b.length;j++){
 if(_b[j].checked){
@@ -113,7 +113,7 @@ for(var _10 in _2.required[i]){
 _b=_1[_10];
 _f=_2.required[i][_10];
 }
-if(_b instanceof Array){
+if(dojo.lang.isArrayLike(_b)){
 var _d=0;
 for(var j=0;j<_b.length;j++){
 if(_b[j].checked){
