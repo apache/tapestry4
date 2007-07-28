@@ -13,20 +13,15 @@
 // limitations under the License.
 package org.apache.tapestry.dojo;
 
-import java.util.Locale;
-
 import org.apache.hivemind.Resource;
-import org.apache.tapestry.BaseComponentTestCase;
-import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IEngine;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.*;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import static org.easymock.EasyMock.checkOrder;
 import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
+
+import java.util.Locale;
 
 
 /**
@@ -101,11 +96,11 @@ public class AjaxShellDelegateTest extends BaseComponentTestCase
         
         verify();
         
-        assertBuffer("<script type=\"text/javascript\">djConfig = {\"isDebug\":false,"
+        assertBuffer("<script type=\"text/javascript\">djConfig = {"
                 + "\"baseRelativePath\":\"http:///dojo/path\","
                 +"\"parseWidgets\":false,\"locale\":\"en-us\"} </script>" + SYSTEM_NEWLINE +
                 SYSTEM_NEWLINE + 
-                " <script type=\"text/javascript\" src=\"http:///dojo/path/dojo.js\"></script>" + SYSTEM_NEWLINE
+                "<script type=\"text/javascript\" src=\"http:///dojo/path/dojo.js\"></script>" + SYSTEM_NEWLINE
                 + "<script type=\"text/javascript\">" + SYSTEM_NEWLINE + 
                 "dojo.registerModulePath(\"tapestry\", \"/tapestry\");" + SYSTEM_NEWLINE +
                 "</script>" + SYSTEM_NEWLINE +
@@ -161,7 +156,7 @@ public class AjaxShellDelegateTest extends BaseComponentTestCase
         assertBuffer("<script type=\"text/javascript\">djConfig = {\"isDebug\":true,\"baseRelativePath\":\"http:///dojo/path\"," +
                      "\"parseWidgets\":false,\"locale\":\"en-gb\"} </script>" + SYSTEM_NEWLINE +
                      SYSTEM_NEWLINE +
-                     " <script type=\"text/javascript\" src=\"http:///dojo/path/dojo.js\"></script>" + SYSTEM_NEWLINE +
+                     "<script type=\"text/javascript\" src=\"http:///dojo/path/dojo.js\"></script>" + SYSTEM_NEWLINE +
                      "<script type=\"text/javascript\">" + SYSTEM_NEWLINE +
                      "dojo.require(\"dojo.debug.console\");" + SYSTEM_NEWLINE +
                      "dojo.log.setLevel(dojo.log.getLevel(\"DEBUG\"));" + SYSTEM_NEWLINE +

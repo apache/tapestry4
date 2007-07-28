@@ -13,16 +13,12 @@
 // limitations under the License.
 package org.apache.tapestry.dojo;
 
-import java.util.Locale;
-
 import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRender;
-import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.*;
 import org.apache.tapestry.html.Shell;
 import org.apache.tapestry.json.JSONObject;
+
+import java.util.Locale;
 
 /**
  * The default rendering delegate responseible for include the dojo sources in
@@ -41,8 +37,8 @@ public class AjaxShellDelegate implements IRender {
     /** Client side critical log level. */
     public static final String BROWSER_LOG_CRITICAL="CRITICAL";
 
-	private static final String SYSTEM_NEWLINE= (String)java.security.AccessController.doPrivileged(
-            new sun.security.action.GetPropertyAction("line.separator"));
+    private static final String SYSTEM_NEWLINE= (String)java.security.AccessController.doPrivileged(
+      new sun.security.action.GetPropertyAction("line.separator"));
 
     private IAsset _dojoSource;
 
@@ -70,6 +66,12 @@ public class AjaxShellDelegate implements IRender {
 
     private boolean _debugAtAllCosts;
 
+    /** Default list of pre-bundled dojo supported locales */
+    protected String[] SUPPORTED_LOCALES = { "en-us", "en", "de-de", "de", "en-gb",
+                                             "es-es", "es", "fr-fr", "fr", "zh-cn",
+                                             "zh-tw", "zh" , "it-it", "it", "ja-jp",
+                                             "ja", "ko-kr", "ko", "pt-br", "pt", "xx"};
+
     /**
      * {@inheritDoc}
      */
@@ -83,7 +85,10 @@ public class AjaxShellDelegate implements IRender {
         // .js files to included in the document head so that javascript errors
         // are able to resolve to the context of the file instead of just "dojo.js"
 
-        dojoConfig.put("isDebug", _debug);
+        if (_debug)
+        {
+            dojoConfig.put("isDebug", _debug);
+        }
 
         if (_debugAtAllCosts)
             dojoConfig.put("debugAtAllCosts", _debugAtAllCosts);
@@ -107,16 +112,22 @@ public class AjaxShellDelegate implements IRender {
 
         Locale locale = cycle.getPage().getLocale();
 
-        dojoConfig.put("locale", locale.getLanguage().toLowerCase()
-                                 + ((locale.getCountry() != null && locale.getCountry().trim().length() > 0)
-                                    ? "-" + locale.getCountry().toLowerCase()
-                                    : ""));
+        String localeStr = locale.getLanguage().toLowerCase()
+                           + ((locale.getCountry() != null && locale.getCountry().trim().length() > 0)
+                              ? "-" + locale.getCountry().toLowerCase()
+                              : "");
+
+        if (isLocaleSupported(localeStr))
+        {
+            dojoConfig.put("locale", localeStr);
+        }
 
         // Write the required script includes and dojo.requires
 
         StringBuffer str = new StringBuffer("<script type=\"text/javascript\">");
         str.append("djConfig = ").append(dojoConfig.toString())
-          .append(" </script>" + SYSTEM_NEWLINE + SYSTEM_NEWLINE + " ");
+          .append(" </script>")
+          .append(SYSTEM_NEWLINE).append(SYSTEM_NEWLINE);
 
         // include the core dojo.js package
 
@@ -142,10 +153,10 @@ public class AjaxShellDelegate implements IRender {
             String logRequire = _consoleEnabled ? "dojo.require(\"dojo.debug.console\");" + SYSTEM_NEWLINE
                                 : "dojo.require(\"dojo.logging.Logger\");" + SYSTEM_NEWLINE;
 
-            str.append(SYSTEM_NEWLINE + "<script type=\"text/javascript\">" + SYSTEM_NEWLINE);
+            str.append(SYSTEM_NEWLINE).append("<script type=\"text/javascript\">").append(SYSTEM_NEWLINE);
             str.append(logRequire)
               .append("dojo.log.setLevel(dojo.log.getLevel(\"").append(_browserLogLevel)
-              .append("\"));" + SYSTEM_NEWLINE)
+              .append("\"));").append(SYSTEM_NEWLINE)
               .append("</script>");
         }
 
@@ -157,10 +168,10 @@ public class AjaxShellDelegate implements IRender {
             tapestryUrl = tapestryUrl.substring(0, tapestryUrl.length() - 1);
         }
 
-        str.append(SYSTEM_NEWLINE + "<script type=\"text/javascript\">" + SYSTEM_NEWLINE)
+        str.append(SYSTEM_NEWLINE).append("<script type=\"text/javascript\">").append(SYSTEM_NEWLINE)
           .append("dojo.registerModulePath(\"tapestry\", \"")
-          .append(tapestryUrl).append("\");" + SYSTEM_NEWLINE);
-        str.append("</script>" + SYSTEM_NEWLINE);
+          .append(tapestryUrl).append("\");").append(SYSTEM_NEWLINE);
+        str.append("</script>").append(SYSTEM_NEWLINE);
 
         // include core tapestry.js package
 
@@ -169,13 +180,37 @@ public class AjaxShellDelegate implements IRender {
 
         // namespace registration
 
-        str.append(SYSTEM_NEWLINE + "<script type=\"text/javascript\">" + SYSTEM_NEWLINE);
-        str.append("dojo.require(\"tapestry.namespace\");" + SYSTEM_NEWLINE)
-          .append("tapestry.requestEncoding='").append(cycle.getEngine().getOutputEncoding())
-          .append("';" + SYSTEM_NEWLINE).append("</script>");
+        str.append(SYSTEM_NEWLINE).append("<script type=\"text/javascript\">").append(SYSTEM_NEWLINE);
+        str.append("dojo.require(\"tapestry.namespace\");").append(SYSTEM_NEWLINE)
+          .append("tapestry.requestEncoding='")
+          .append(cycle.getEngine().getOutputEncoding()).append("';")
+          .append(SYSTEM_NEWLINE).append("</script>");
 
         writer.printRaw(str.toString());
         writer.println();
+    }
+
+    /**
+     * Checks if the provided locale string matches one of the predefined {@link #SUPPORTED_LOCALES}
+     * in the dojo javascript library.
+     *
+     * @param locale
+     *          The Dojo formatted locale string to check.
+     *
+     * @return True if locale is supported and ok to define in dojoConfig - false otherwise.
+     */
+    protected boolean isLocaleSupported(String locale)
+    {
+        if (locale == null)
+            return false;
+
+        for (int i=0; i < SUPPORTED_LOCALES.length; i++)
+        {
+            if (locale.equals(SUPPORTED_LOCALES[i]))
+                return true;
+        }
+
+        return false;
     }
 
     /**

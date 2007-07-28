@@ -6,8 +6,8 @@ dojo.require("dojo.lang.common");
 dojo.require("dojo.lang.func");
 dojo.require("dojo.string.common");
 dojo.require("dojo.i18n.common");
-dojo.requireLocalization("dojo.i18n.calendar","gregorian",null,"zh-cn,zh-hk,de,ko,zh-tw,zh,ja,fi,pt-br,fr,es,ROOT,hu,en,it,sv,nl,pt");
-dojo.requireLocalization("dojo.i18n.calendar","gregorianExtras",null,"zh,ja,ROOT");
+dojo.requireLocalization("dojo.i18n.calendar","gregorian",null, dojo.hostenv.localesGenerated.join(","));
+dojo.requireLocalization("dojo.i18n.calendar","gregorianExtras",null, dojo.hostenv.localesGenerated.join(","));
 (function(){
 dojo.date.format=function(_1,_2){
 if(typeof _2=="string"){
