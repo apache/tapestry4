@@ -58,7 +58,7 @@ doesn't support JavaScript).
     <th><label jwcid="@FieldLabel" accessKey="z" field="component:zipCode"/></th>
     <td><input jwcid="zipCode" /></td>
   </tr>
- 
+  
   <tr>
     <th><label for="phone" accessKey="p">Phone</label></th>
     <td><input jwcid="phone" /></td>
@@ -74,7 +74,17 @@ doesn't support JavaScript).
   </tr>
 
   <tr>
-  	<td></td>
+      <th><label jwcid="@FieldLabel" field="component:choose" /></th>
+      <td>
+          <div jwcid="choose@RadioGroup" selected="ognl:visit.choice" displayName="Choose" validators="validators:required" >
+           <input jwcid="@Radio" value="literal:2" />&nbsp;Yes&nbsp;
+           <input jwcid="@Radio" value="literal:4" />&nbsp;No
+          </div>
+      </td>
+  </tr>
+
+  <tr>
+  	<td> </td>
   	<td><input jwcid="continue@ImageSubmit" image="asset:continue"/></td>
   </tr>
 
