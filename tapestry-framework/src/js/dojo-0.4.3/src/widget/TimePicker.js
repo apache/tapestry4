@@ -6,7 +6,7 @@ dojo.require("dojo.date.serialize");
 dojo.require("dojo.date.format");
 dojo.require("dojo.dom");
 dojo.require("dojo.html.style");
-dojo.requireLocalization("dojo.i18n.calendar","gregorian",null,"zh-cn,zh-hk,de,ko,zh-tw,zh,ja,fi,pt-br,fr,es,ROOT,hu,en,it,sv,nl,pt");
+dojo.requireLocalization("dojo.i18n.calendar","gregorian",null, dojo.hostenv.localesGenerated.join(","));
 dojo.requireLocalization("dojo.widget","TimePicker",null,"ROOT");
 dojo.widget.defineWidget("dojo.widget.TimePicker",dojo.widget.HtmlWidget,function(){
 this.time="";

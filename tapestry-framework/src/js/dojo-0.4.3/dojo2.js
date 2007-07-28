@@ -1142,8 +1142,8 @@ dojo.require("dojo.lang.common");
 dojo.require("dojo.lang.func");
 dojo.require("dojo.string.common");
 dojo.require("dojo.i18n.common");
-dojo.requireLocalization("dojo.i18n.calendar","gregorian");
-dojo.requireLocalization("dojo.i18n.calendar","gregorianExtras");
+dojo.requireLocalization("dojo.i18n.calendar","gregorian", null, dojo.hostenv.localesGenerated.join(","));
+dojo.requireLocalization("dojo.i18n.calendar","gregorianExtras", null, dojo.hostenv.localesGenerated.join(","));
 (function(){
 dojo.date.format=function(_f4,_f5){
 if(typeof _f5=="string"){

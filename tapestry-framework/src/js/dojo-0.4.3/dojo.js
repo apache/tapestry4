@@ -515,7 +515,7 @@ var _84="";
 if(_81){
 var _85=_81.split(",");
 for(var i=0;i<_85.length;i++){
-if(_82.indexOf(_85[i])==0){
+if(_82.indexOf(_85[i])==0 || _85[i].indexOf(_82)==0){
 if(_85[i].length>_84.length){
 _84=_85[i];
 }
