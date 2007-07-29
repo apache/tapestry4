@@ -25,8 +25,7 @@ import org.apache.tapestry.services.ClassFinder;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class NamespaceClassSearchComponentClassProvider implements
-        ComponentClassProvider
+public class NamespaceClassSearchComponentClassProvider implements ComponentClassProvider
 {
 
     /**
@@ -38,8 +37,7 @@ public class NamespaceClassSearchComponentClassProvider implements
 
     private ClassFinder _classFinder;
 
-    public String provideComponentClassName(
-            ComponentClassProviderContext context)
+    public String provideComponentClassName(ComponentClassProviderContext context)
     {
         INamespace namespace = context.getNamespace();
         String packages = namespace.getPropertyValue(_packagesName);
