@@ -131,29 +131,29 @@ public class TestParameterPropertyWorker extends BaseComponentTestCase
 
     public void test_Standard()
     {
-        IComponentSpecification spec = buildComponentSpecification("fred", buildParameterSpec(
-          "fred",
-          null,
-          null));
+        IComponentSpecification spec =
+          buildComponentSpecification("fred", buildParameterSpec("fred", null, null));
 
         EnhancementOperation op = newMock(EnhancementOperation.class);
 
         expect(op.getPropertyType("fred")).andReturn(String.class);
-
         op.claimProperty("fred");
 
         String bindingFieldName = "_$fred$Binding";
+        String bindingChecked = bindingFieldName + "Checked";
 
         op.addField("_$fred", String.class);
         op.addField("_$fred$Default", String.class);
         op.addField("_$fred$Cached", boolean.class);
-        op.addField("_$fred$Binding", IBinding.class);
+        op.addField(bindingFieldName, IBinding.class);
+        op.addField(bindingChecked, Boolean.TYPE);
 
         BodyBuilder builder = new BodyBuilder();
         builder.begin();
-        builder.addln("if ({0} == null)", bindingFieldName);
+        builder.addln("if (!{0})", bindingChecked);
         builder.begin();
         builder.addln("{0} = getBinding(\"{1}\");", bindingFieldName, "fred");
+        builder.addln("{0} = true;", bindingChecked);
         builder.end();
         builder.addln("return {0};", bindingFieldName);
         builder.end();
@@ -195,8 +195,7 @@ public class TestParameterPropertyWorker extends BaseComponentTestCase
         builder.end();
 
         builder.addln("if (get_$fred$Binding() == null)");
-        builder
-          .addln("  throw new org.apache.hivemind.ApplicationRuntimeException(\"Parameter 'fred' is not bound and can not be updated.\");");
+        builder.addln("  throw new org.apache.hivemind.ApplicationRuntimeException(\"Parameter 'fred' is not bound and can not be updated.\");");
 
         builder.addln("get_$fred$Binding().setObject(($w) $1);");
 
@@ -249,17 +248,20 @@ public class TestParameterPropertyWorker extends BaseComponentTestCase
         op.claimProperty("fred");
 
         String bindingFieldName = "_$fred$Binding";
+        String bindingChecked = bindingFieldName + "Checked";
 
         op.addField("_$fred", String.class);
         op.addField("_$fred$Default", String.class);
         op.addField("_$fred$Cached", boolean.class);
-        op.addField("_$fred$Binding", IBinding.class);
+        op.addField(bindingFieldName, IBinding.class);
+        op.addField(bindingChecked, Boolean.TYPE);
 
         BodyBuilder builder = new BodyBuilder();
         builder.begin();
-        builder.addln("if ({0} == null)", bindingFieldName);
+        builder.addln("if (!{0})", bindingChecked);
         builder.begin();
         builder.addln("{0} = getBinding(\"{1}\");", bindingFieldName, "myparam");
+        builder.addln("{0} = true;", bindingChecked);
         builder.end();
         builder.addln("return {0};", bindingFieldName);
         builder.end();

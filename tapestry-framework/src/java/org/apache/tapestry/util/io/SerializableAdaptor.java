@@ -14,21 +14,14 @@
 
 package org.apache.tapestry.util.io;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
-
 import org.apache.commons.codec.binary.Base64;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.services.DataSqueezer;
+
+import java.io.*;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * The most complicated of the adaptors, this one takes an arbitrary serializable object, serializes
@@ -84,8 +77,7 @@ public class SerializableAdaptor implements SqueezeAdaptor
 
             byte[] encoded = Base64.encodeBase64(byteArray);
 
-            String prefix = Character.toString(useCompressed ? GZIP_BYTESTREAM_PREFIX
-                    : BYTESTREAM_PREFIX);
+            String prefix = Character.toString(useCompressed ? GZIP_BYTESTREAM_PREFIX  : BYTESTREAM_PREFIX);
 
             return prefix + new String(encoded);
         }

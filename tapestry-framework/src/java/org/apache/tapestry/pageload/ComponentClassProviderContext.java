@@ -32,8 +32,7 @@ public class ComponentClassProviderContext
 
     private IComponentSpecification _specification;
 
-    public ComponentClassProviderContext(String pageName,
-            IComponentSpecification pageSpecification, INamespace namespace)
+    public ComponentClassProviderContext(String pageName, IComponentSpecification pageSpecification, INamespace namespace)
     {
         Defense.notNull(pageName, "pageName");
         Defense.notNull(pageSpecification, "pageSpecification");

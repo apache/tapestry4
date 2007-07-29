@@ -155,12 +155,15 @@ public class ParameterPropertyWorker implements EnhancementWorker
         body.begin();
         
         String bindingFieldName = fieldName + "$Binding";
+        String bindingCheckedName = bindingFieldName + "Checked";
 
         op.addField(bindingFieldName, IBinding.class);
+        op.addField(bindingCheckedName, Boolean.TYPE);
 
-        body.addln("if ({0} == null)", bindingFieldName);
+        body.addln("if (!{0})", bindingCheckedName);
         body.begin();
         body.addln("{0} = getBinding(\"{1}\");", bindingFieldName, parameterName);
+        body.addln("{0} = true;", bindingCheckedName);
         body.end();
 
         body.addln("return {0};", bindingFieldName);

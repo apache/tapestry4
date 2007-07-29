@@ -14,20 +14,6 @@
 
 package org.apache.tapestry;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Properties;
-import java.util.ResourceBundle;
-import java.util.Set;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.event.ChangeObserver;
@@ -36,10 +22,15 @@ import org.apache.tapestry.multipart.IMultipartDecoder;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.util.StringSplitter;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.MessageFormat;
+import java.util.*;
+
 /**
  * A placeholder for a number of (static) methods that don't belong elsewhere, as well as a global
  * location for static constants.
- * 
+ *
  * @since 1.0.1
  * @author Howard Lewis Ship
  */
@@ -62,12 +53,12 @@ public final class Tapestry
     /**
      * Almost identical to the direct service, except specifically for handling
      * browser level events.
-     * 
+     *
      * @since 4.1
      */
-    
+
     public static final String DIRECT_EVENT_SERVICE = "directevent";
-    
+
     /**
      * The name ("external") of a service that a allows {@link IExternalPage} to be selected.
      * Associated with a {@link org.apache.tapestry.link.ExternalLink} component.
@@ -121,13 +112,13 @@ public final class Tapestry
      */
 
     public static final String RESET_SERVICE = "reset";
-    
+
     /**
      * Property name used to get the extension used for templates. This may be set in the page or
      * component specification, or in the page (or component's) immediate container (library or
      * application specification). Unlike most properties, value isn't inherited all the way up the
      * chain. The default template extension is "html".
-     * 
+     *
      * @since 3.0
      */
 
@@ -144,7 +135,7 @@ public final class Tapestry
     /**
      * Suffix appended to a parameter name to form the name of a property that stores the binding
      * for the parameter.
-     * 
+     *
      * @since 3.0
      */
 
@@ -153,7 +144,7 @@ public final class Tapestry
     /**
      * Key used to obtain an extension from the application specification. The extension, if it
      * exists, implements {@link org.apache.tapestry.request.IRequestDecoder}.
-     * 
+     *
      * @since 2.2
      */
 
@@ -164,7 +155,7 @@ public final class Tapestry
      * extension must implement {@link org.apache.tapestry.multipart.IMultipartDecoder} (and is
      * generally a configured instance of
      * {@link IMultipartDecoder}).
-     * 
+     *
      * @since 3.0
      */
 
@@ -172,7 +163,7 @@ public final class Tapestry
 
     /**
      * Method id used to check that {@link IPage#validate(IRequestCycle)} is invoked.
-     * 
+     *
      * @see #checkMethodInvocation(Object, String, Object)
      * @since 3.0
      */
@@ -181,7 +172,7 @@ public final class Tapestry
 
     /**
      * Method id used to check that {@link IPage#detach()} is invoked.
-     * 
+     *
      * @see #checkMethodInvocation(Object, String, Object)
      * @since 3.0
      */
@@ -192,7 +183,7 @@ public final class Tapestry
      * Regular expression defining a simple property name. Used by several different parsers. Simple
      * property names match Java variable names; a leading letter (or underscore), followed by
      * letters, numbers and underscores.
-     * 
+     *
      * @since 3.0
      */
 
@@ -211,10 +202,10 @@ public final class Tapestry
     public static final String VERSION = readVersion();
 
     private static final String UNKNOWN_VERSION = "Unknown";
-    
+
     /**
      * Contains strings loaded from TapestryStrings.properties.
-     * 
+     *
      * @since 1.0.8
      */
 
@@ -242,7 +233,7 @@ public final class Tapestry
 
     private static final ThreadLocal _invokedMethodIds = new ThreadLocal();
 
-    
+
     /**
      * Prevent instantiation.
      */
@@ -337,7 +328,7 @@ public final class Tapestry
 
     /**
      * Closes the stream (if not null), ignoring any {@link IOException}thrown.
-     * 
+     *
      * @since 1.0.2
      */
 
@@ -359,7 +350,7 @@ public final class Tapestry
     /**
      * Gets a string from the TapestryStrings resource bundle. The string in the bundle is treated
      * as a pattern for {@link MessageFormat#format(java.lang.String, java.lang.Object[])}.
-     * 
+     *
      * @since 1.0.8
      */
 
@@ -378,7 +369,7 @@ public final class Tapestry
 
     /**
      * Convienience method for invoking {@link #format(String, Object[])}.
-     * 
+     *
      * @since 3.0
      */
 
@@ -389,38 +380,38 @@ public final class Tapestry
 
     /**
      * Convienience method for invoking {@link #format(String, Object[])}.
-     * 
+     *
      * @since 3.0
      */
 
     public static String format(String key, Object arg)
     {
         return format(key, new Object[]
-        { arg });
+          { arg });
     }
 
     /**
      * Convienience method for invoking {@link #format(String, Object[])}.
-     * 
+     *
      * @since 3.0
      */
 
     public static String format(String key, Object arg1, Object arg2)
     {
         return format(key, new Object[]
-        { arg1, arg2 });
+          { arg1, arg2 });
     }
 
     /**
      * Convienience method for invoking {@link #format(String, Object[])}.
-     * 
+     *
      * @since 3.0
      */
 
     public static String format(String key, Object arg1, Object arg2, Object arg3)
     {
         return format(key, new Object[]
-        { arg1, arg2, arg3 });
+          { arg1, arg2, arg3 });
     }
 
     /**
@@ -453,7 +444,7 @@ public final class Tapestry
 
     /**
      * Returns the size of a collection, or zero if the collection is null.
-     * 
+     *
      * @since 2.2
      */
 
@@ -467,7 +458,7 @@ public final class Tapestry
 
     /**
      * Returns the length of the array, or 0 if the array is null.
-     * 
+     *
      * @since 2.2
      */
 
@@ -481,7 +472,7 @@ public final class Tapestry
 
     /**
      * Returns true if the Map is null or empty.
-     * 
+     *
      * @since 3.0
      */
 
@@ -492,7 +483,7 @@ public final class Tapestry
 
     /**
      * Returns true if the Collection is null or empty.
-     * 
+     *
      * @since 3.0
      */
 
@@ -508,7 +499,7 @@ public final class Tapestry
      * representation as an array will encode more efficiently (via
      * {@link org.apache.tapestry.util.io.DataSqueezerImpl} than serializing the Map and its
      * contents.
-     * 
+     *
      * @return the array of keys and values, or null if the input Map is null or empty
      * @since 2.2
      */
@@ -537,7 +528,7 @@ public final class Tapestry
 
     /**
      * Converts an even-sized array of objects back into a {@link Map}.
-     * 
+     *
      * @see #convertMapToArray(Map)
      * @return a Map, or null if the array is null or empty
      * @since 2.2
@@ -564,10 +555,10 @@ public final class Tapestry
 
         return result;
     }
-    
+
     /**
      * Creates an exception indicating the binding value is null.
-     * 
+     *
      * @since 3.0
      */
 
@@ -579,35 +570,34 @@ public final class Tapestry
     /** @since 3.0 * */
 
     public static ApplicationRuntimeException createNoSuchComponentException(IComponent component,
-            String id, Location location)
+                                                                             String id, Location location)
     {
-        return new ApplicationRuntimeException(format("no-such-component", component
-                .getExtendedId(), id), component, location, null);
+        return new ApplicationRuntimeException(format("no-such-component", component.getExtendedId(), id),
+                                               component, location, null);
     }
 
     /** @since 3.0 * */
 
     public static BindingException createRequiredParameterException(IComponent component,
-            String parameterName)
+                                                                    String parameterName)
     {
-        return new BindingException(format("required-parameter", parameterName, component
-                .getExtendedId()), component, null, component.getBinding(parameterName), null);
+        return new BindingException(format("required-parameter", parameterName, component.getExtendedId()),
+                                    component, null, component.getBinding(parameterName), null);
     }
 
     /** @since 3.0 * */
 
     public static ApplicationRuntimeException createRenderOnlyPropertyException(
-            IComponent component, String propertyName)
+      IComponent component, String propertyName)
     {
-        return new ApplicationRuntimeException(format(
-                "render-only-property",
-                propertyName,
-                component.getExtendedId()), component, null, null);
+        return new ApplicationRuntimeException(format("render-only-property",
+                                                      propertyName,
+                                                      component.getExtendedId()), component, null, null);
     }
 
     /**
      * Clears the list of method invocations.
-     * 
+     *
      * @see #checkMethodInvocation(Object, String, Object)
      * @since 3.0
      */
@@ -620,7 +610,7 @@ public final class Tapestry
     /**
      * Adds a method invocation to the list of invocations. This is done in a super-class
      * implementations.
-     * 
+     *
      * @see #checkMethodInvocation(Object, String, Object)
      * @since 3.0
      */
@@ -648,7 +638,7 @@ public final class Tapestry
      * the super-class implementation was invoked.
      * <p>
      * The list of method invocations is stored in a {@link ThreadLocal} variable.
-     * 
+     *
      * @since 3.0
      */
 
@@ -659,15 +649,14 @@ public final class Tapestry
         if (methodIds != null && methodIds.contains(methodId))
             return;
 
-        throw new ApplicationRuntimeException(Tapestry.format(
-                "Tapestry.missing-method-invocation",
-                object.getClass().getName(),
-                methodName));
+        throw new ApplicationRuntimeException(Tapestry.format("Tapestry.missing-method-invocation",
+                                                              object.getClass().getName(),
+                                                              methodName));
     }
 
     /**
      * Method used by pages and components to send notifications about property changes.
-     * 
+     *
      * @param component
      *            the component containing the property
      * @param propertyName
