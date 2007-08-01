@@ -1,8 +1,15 @@
 dojo.provide("tapestry.form");
+dojo.provide("tapestry.form.datetime");
+dojo.provide("tapestry.form.validation");
+
 dojo.require("dojo.event.browser");
 dojo.require("dojo.dom");
 dojo.require("dojo.html.selection");
 dojo.require("tapestry.core");
+dojo.require("dojo.date.format");
+dojo.require("dojo.validate.datetime");
+dojo.require("dojo.validate.check");
+dojo.require("dojo.html.style");
 
 /**
  * package: tapestry.form
@@ -440,10 +447,6 @@ tapestry.form={
 	}
 }
 
-dojo.provide("tapestry.form.validation");
-dojo.require("dojo.validate.check");
-dojo.require("dojo.html.style");
-
 tapestry.form.validation={
 
 	missingClass:"fieldMissing", // default css class that will be applied to fields missing a value
@@ -740,10 +743,6 @@ tapestry.form.validation={
         return num <= max;
     }
 }
-
-dojo.provide("tapestry.form.datetime");
-dojo.require("dojo.date.format");
-dojo.require("dojo.validate.datetime");
 
 tapestry.form.datetime={
 

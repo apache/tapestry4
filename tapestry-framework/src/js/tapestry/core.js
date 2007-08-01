@@ -3,11 +3,15 @@ dojo.provide("tapestry.html");
 dojo.provide("tapestry.event");
 dojo.provide("tapestry.lang");
 
+dojo.provide("dojo.AdapterRegistry");
+dojo.provide("dojo.json");
+
 dojo.require("dojo.lang.common");
 dojo.require("dojo.io.BrowserIO");
 dojo.require("dojo.event.browser");
 dojo.require("dojo.html.style");
-
+dojo.require("dojo.lang.func");
+dojo.require("dojo.string.extras");
 
 
 // redirect logging calls to standard debug if logging not enabled
@@ -619,10 +623,9 @@ tapestry.event={
 			if(event["layerY"]) props.beventlayerY=event.layerY;
 
 			if (event["target"]) this.buildTargetProperties(props, event.target);
-
-		} else if ( typeof args != "undefined" ) {
-			props.methodArguments = dojo.json.serialize( args );
 		}
+
+		props.methodArguments = dojo.json.serialize( args );
 		
 		return props;
 	},
@@ -714,23 +717,6 @@ tapestry.lang = {
 	}
 }
 
-/*
-  ** dojo json support just dumped in here until we build dojo anew for T4 **
-
-	Copyright (c) 2004-2006, The Dojo Foundation
-	All Rights Reserved.
-
-	Licensed under the Academic Free License version 2.1 or above OR the
-	modified BSD license. For more information on Dojo licensing, see:
-
-		http://dojotoolkit.org/community/licensing.shtml
-*/
-
-
-
-dojo.require("dojo.lang.func");
-dojo.require("dojo.string.extras");
-
 dojo.AdapterRegistry = function (returnWrappers) {
 	this.pairs = [];
 	this.returnWrappers = returnWrappers || false;
@@ -762,9 +748,13 @@ dojo.lang.extend(dojo.AdapterRegistry, {register:function (name, check, wrap, di
 }});
 
 
-dojo.json = {jsonRegistry:new dojo.AdapterRegistry(), register:function (name, check, wrap, override) {
-	dojo.json.jsonRegistry.register(name, check, wrap, override);
-}, evalJson:function (json) {
+dojo.json = {
+	jsonRegistry:new dojo.AdapterRegistry(),
+	register:function (name, check, wrap, override) {
+		dojo.json.jsonRegistry.register(name, check, wrap, override);
+	},
+
+	evalJson:function (json) {
 	try {
 		return eval("(" + json + ")");
 	}
@@ -772,7 +762,9 @@ dojo.json = {jsonRegistry:new dojo.AdapterRegistry(), register:function (name, c
 		dojo.debug(e);
 		return json;
 	}
-}, serialize:function (o) {
+	},
+
+	serialize:function (o) {
 	var objtype = typeof (o);
 	if (objtype == "undefined") {
 		return "undefined";
@@ -796,15 +788,18 @@ dojo.json = {jsonRegistry:new dojo.AdapterRegistry(), register:function (name, c
 			return me(newObj);
 		}
 	}
+
 	if (typeof (o.json) == "function") {
 		newObj = o.json();
 		if (o !== newObj) {
 			return me(newObj);
 		}
 	}
+
 	if (objtype != "function" && typeof (o.length) == "number") {
 		var res = [];
 		for (var i = 0; i < o.length; i++) {
+			if (dojo.event.browser.isEvent(o[i]) || o[i]["stopPropagation"]){continue;}
 			var val = me(o[i]);
 			if (typeof (val) != "string") {
 				val = "undefined";
@@ -823,6 +818,7 @@ dojo.json = {jsonRegistry:new dojo.AdapterRegistry(), register:function (name, c
 	if (objtype == "function") {
 		return null;
 	}
+
 	res = [];
 	for (var k in o) {
 		var useKey;

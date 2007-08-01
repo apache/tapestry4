@@ -67,10 +67,10 @@ public class AjaxShellDelegate implements IRender {
     private boolean _debugAtAllCosts;
 
     /** Default list of pre-bundled dojo supported locales */
-    protected String[] SUPPORTED_LOCALES = { "en-us", "en", "de-de", "de", "en-gb",
+    protected String[] SUPPORTED_LOCALES = { "en-us", "de-de", "de", "en-gb",
                                              "es-es", "es", "fr-fr", "fr", "zh-cn",
                                              "zh-tw", "zh" , "it-it", "it", "ja-jp",
-                                             "ja", "ko-kr", "ko", "pt-br", "pt", "xx"};
+                                             "ja", "ko-kr", "ko", "pt-br", "pt", "en", "xx"};
 
     /**
      * {@inheritDoc}
