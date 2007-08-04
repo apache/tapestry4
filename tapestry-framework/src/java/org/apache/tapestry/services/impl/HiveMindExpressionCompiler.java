@@ -355,10 +355,8 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
     void createLocalReferences(OgnlContext context, ClassFab classFab, Class[] params)
             throws CannotCompileException, NotFoundException
     {
-        context.remove(LOCAL_REFERENCE_COUNTER);
-
-        Map referenceMap = (Map) context.remove(LOCAL_REFERENCE_MAP);
-        if (referenceMap == null)
+        Map referenceMap = context.getLocalReferences();
+        if (referenceMap == null || referenceMap.size() < 1)
             return;
 
         Iterator it = referenceMap.keySet().iterator();
@@ -381,6 +379,8 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
 
             MethodSignature method = new MethodSignature(ref.getType(), ref.getName(), params, null);
             classFab.addMethod(Modifier.PUBLIC, method, body);
+
+            it.remove();
         }
     }
 
