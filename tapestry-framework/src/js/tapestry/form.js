@@ -180,7 +180,7 @@ tapestry.form={
 			return;
 		}
 		
-		this.forms[id].profiles.push(eval(profile));
+		this.forms[id].profiles.push(profile);
 	},
 
 	/**

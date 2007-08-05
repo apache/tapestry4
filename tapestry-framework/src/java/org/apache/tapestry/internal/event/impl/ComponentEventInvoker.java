@@ -78,7 +78,7 @@ public class ComponentEventInvoker implements IComponentEventInvoker, ResetEvent
         String targetId = (String)event.getTarget().get("id");
         String componentId = event.getComponentId();
 
-        if (targetId == null)
+        if (targetId == null || componentId == null)
             return;
 
         List comps = getFormEventListeners(formIdPath);

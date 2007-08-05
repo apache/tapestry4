@@ -17,9 +17,9 @@
         tapestry.event${key}=function(e){
             dojo.event.browser.stopEvent(e);
             
-            var content={beventname:"onClick"};
+            var content={beventname:"onClick", bcomponentid:"${component.id}"};
             tapestry.event.buildEventProperties(e, content);
-            if (!content["beventtarget.id"]) content["beventtarget.id"]="${component.clientId}";
+            if (!content["beventtarget.id"]) {content["beventtarget.id"]="${component.clientId}"};
             
             var url=null;
             if (e["currentTarget"] &amp;&amp; e.currentTarget.getAttribute("href")) {
