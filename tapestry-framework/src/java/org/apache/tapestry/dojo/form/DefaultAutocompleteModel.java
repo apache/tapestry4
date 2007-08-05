@@ -13,12 +13,12 @@
 // limitations under the License.
 package org.apache.tapestry.dojo.form;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.util.Defense;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -85,8 +85,8 @@ public class DefaultAutocompleteModel implements IAutocompleteModel
         
         String filter = match.trim().toLowerCase();
         
-        for (int i = 0; i < _values.size(); i++) {
-            
+        for (int i = 0; i < _values.size(); i++)
+        {    
             Object value = _values.get(i);
             String label = getLabelFor(value);
             
@@ -102,11 +102,11 @@ public class DefaultAutocompleteModel implements IAutocompleteModel
      */
     public String getLabelFor(Object value)
     {
-        try {
-            
+        try
+        {
             return PropertyUtils.getProperty(value, _labelExpression).toString();
-            
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             throw new ApplicationRuntimeException(e);
         }
     }
@@ -116,11 +116,11 @@ public class DefaultAutocompleteModel implements IAutocompleteModel
      */
     public Object getPrimaryKey(Object value)
     {
-        try {
-            
-            return PropertyUtils.getProperty(value, _keyExpression);
-            
-        } catch (Exception e) {
+        try
+        {
+            return PropertyUtils.getProperty(value, _keyExpression);   
+        } catch (Exception e)
+        {
             throw new ApplicationRuntimeException(e);
         }
     }
@@ -130,9 +130,10 @@ public class DefaultAutocompleteModel implements IAutocompleteModel
      */
     public Object getValue(Object primaryKey)
     {
-        for (int i = 0; i < _values.size(); i++) {
-            
+        for (int i = 0; i < _values.size(); i++)
+        {    
             Object value = _values.get(i);
+            
             if (getPrimaryKey(value).toString().equals(primaryKey.toString()))
                 return value;
         }
