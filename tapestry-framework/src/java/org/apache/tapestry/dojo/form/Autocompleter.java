@@ -55,7 +55,7 @@ public abstract class Autocompleter extends AbstractFormWidget implements Valida
             throw Tapestry.createRequiredParameterException(this, "model");
         
         Object value = getValue();
-        Object key = value != null ? model.getPrimaryKey(value) : null;                
+        Object key = value != null && !"".equals(value.toString()) ? model.getPrimaryKey(value) : null;
         
         renderDelegatePrefix(writer, cycle);
         
@@ -83,10 +83,13 @@ public abstract class Autocompleter extends AbstractFormWidget implements Valida
             for (int i=0; i<list.size(); i++) 
             {
                 Object optionKey = model.getPrimaryKey(list.get(i));
+
                 writer.begin("option");
                 writer.attribute("value", getDataSqueezer().squeeze(optionKey));
+
                 if (optionKey!=null && optionKey.equals(key))
                     writer.attribute("selected", "selected");
+                
                 writer.print(model.getLabelFor(list.get(i)));
                 writer.end();
             }
@@ -104,6 +107,7 @@ public abstract class Autocompleter extends AbstractFormWidget implements Valida
             ILink link = getDirectService().getLink(true, new DirectServiceParameter(this));
             json.put("dataUrl", link.getURL() + "&filter=%{searchString}");
         }
+        
         json.put("mode", isLocal() ? MODE_LOCAL : MODE_REMOTE);
         json.put("widgetId", getName());
         json.put("name", getName());
@@ -113,7 +117,7 @@ public abstract class Autocompleter extends AbstractFormWidget implements Valida
         json.put("forceValidOption", isForceValidOption());
         json.put("disabled", isDisabled());
         
-        json.put("value", getDataSqueezer().squeeze(key));
+        json.put("value", key != null ? getDataSqueezer().squeeze(key) : "");
         json.put("label", value != null ? model.getLabelFor(value) : "");
         
         parms.put("props", json.toString());
