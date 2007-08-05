@@ -60,7 +60,7 @@
                         <td>script</td>
                         <td>String</td>
                         <td>no</td>
-                        <td></td>
+                        <td> </td>
                         <td>
                             The path of a resource (on the classpath) containing the script. One of
                             either <code>script</code> or <code>scriptAsset</code> must be specified.
@@ -74,7 +74,7 @@
                             </a>
                         </td>
                         <td>no</td>
-                        <td></td>
+                        <td> </td>
                         <td>
                             A reference to a script as an
                             <a href="../../apidocs/org/apache/tapestry/IAsset.html">
@@ -87,7 +87,7 @@
                         <td>symbols</td>
                         <td>java.util.Map</td>
                         <td>no</td>
-                        <td></td>
+                        <td> </td>
                         <td>
                             The base set of symbols to be provided to the
                             <a href="../../apidocs/org/apache/tapestry/IScript.html">
@@ -139,33 +139,34 @@
                 <p>
                     <strong>HTML Template</strong>
                 </p>
-                <source xml:space="preserve">
-&lt;body jwcid="@Body"&gt;
-&lt;span jwcid="@Script" script="/com/mycorp/scripts/FormFocus.script"/&gt;
-&lt;form jwcid="@Form" listener="ognl:listener.formSubmit"&gt;
- &lt;table cellpadding="4"&gt;
-   &lt;tr&gt;&lt;td&gt;Username:&lt;/td&gt;&lt;td&gt;&lt;input jwcid="@TextField" value="ognl:visit.username" size="12"/&gt;&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;&lt;td&gt;Password:&lt;/td&gt;&lt;td&gt;&lt;input jwcid="@TextField" value="ognl:visit.password" hidden="ognl:true" size="12"/&gt;&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr align="right"&gt;
-   &lt;td colspan="2"&gt;&lt;input type="submit" value="Login"/&gt;&lt;/td&gt;
-  &lt;/tr&gt;
- &lt;/table&gt;
-&lt;/form&gt;
-&lt;/body&gt;
-    </source>
+
+ <source><![CDATA[<body jwcid="@Body">
+<span jwcid="@Script" script="/com/mycorp/scripts/FormFocus.script"/>
+<form jwcid="@Form" listener="ognl:listener.formSubmit">
+ <table cellpadding="4">
+   <tr><td>Username:</td><td><input jwcid="@TextField" value="ognl:visit.username" size="12"/></td>
+  </tr>
+   <tr><td>Password:</td><td><input jwcid="@TextField" value="ognl:visit.password" hidden="ognl:true" size="12"/></td>
+  </tr>
+  <tr align="right">
+   <td colspan="2"><input type="submit" value="Login"/></td>
+  </tr>
+ </table>
+</form>
+</body>]]></source>
                 <p>
                     <strong>Script File (FormFocus.script)</strong>
                 </p>
-                <source xml:space="preserve">
-&lt;script&gt;
-  &lt;body&gt;
-&lt;![CDATA[
+<source><![CDATA[<!DOCTYPE script PUBLIC
+  "-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
+  "http://jakarta.apache.org/tapestry/dtd/Script_3_0.dtd">
+  <script>
+  <body>
+<![CDATA[
 function setFocus() {
     if (document.forms[0]) {
-        for (i = 0; i &lt; document.forms[0].elements.length; i++) {
-            if (document.forms[0].elements[i].type != "hidden" &amp;&amp;
+        for (i = 0; i < document.forms[0].elements.length; i++) {
+            if (document.forms[0].elements[i].type != "hidden" &&
                 document.forms[0].elements[i].disabled != true) {
 
                 document.forms[0].elements[i].focus();
@@ -174,13 +175,11 @@ function setFocus() {
         }
     }
 }
-]]&gt;
-  &lt;/body&gt;
-  &lt;initialization&gt;
+  </body>
+  <initialization>
     setFocus();
-  &lt;/initialization&gt;
-&lt;/script&gt;
-        </source>
+  </initialization>
+</script>]]></source>
                 <p>
                     This alternative FormFocus.script specifies the actual input field to give the
                     focus to. The target input field is identified by an informal parameter named
@@ -216,28 +215,30 @@ function setFocus() {
                 <p>
                     <strong>Script File (FormFocus.script)</strong>
                 </p>
-                <source xml:space="preserve">
-&lt;!--
+<source><![CDATA[<!DOCTYPE script PUBLIC
+  "-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
+  "http://jakarta.apache.org/tapestry/dtd/Script_3_0.dtd">
+<!--
 Selects the specified form input field on body load if the input type is not
 "hidden" and the input field is not disabled.
 
 Input symbols:
   component: the component input field to give focus
---&gt;
-	
-&lt;script&gt;
-	
-&lt;input-symbol key="component" class="org.apache.tapestry.form.AbstractFormComponent" required="yes"/&gt;
+-->
 
-&lt;let key="formObject"&gt;
+<script>
+
+<input-symbol key="component" class="org.apache.tapestry.form.AbstractFormComponent" required="yes"/>
+
+<let key="formObject">
 	document.${component.form.name}
-&lt;/let&gt;
+</let>
 
-&lt;let key="componentObject"&gt;
+<let key="componentObject">
 	${formObject}.${component.name}
-&lt;/let&gt;
+</let>
 
-&lt;body&gt;
+<body>
 function setFocus() {
     var inputField = ${componentObject};
 
@@ -249,15 +250,13 @@ function setFocus() {
          window.alert('InputFocus.script cannot set focus on a hidden field');
     }
 }
-&lt;/body&gt;
+</body>
 
-&lt;initialization&gt;
+<initialization>
     setFocus();
-&lt;/initialization&gt;
+</initialization>
 
-&lt;/script&gt;
-    </source>
-
+</script>]]></source>
             </section>
 
         </section>

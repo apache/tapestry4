@@ -25,13 +25,13 @@
     <description>
         Creates a modal Dialog.
     </description>
-    
-    <parameter name="hidden" default-value="true" />
-    
+
+    <parameter name="hidden" default-value="ognl:true" />
+
     <parameter name="backgroundColor" default-value="literal:black" />
-    
-    <parameter name="opacity" default-value="0.4" />   
-    
+
+    <parameter name="opacity" default-value="0.4" />
+
     <inject property="script" type="script" object="Dialog.script"/>
 
 </component-specification>

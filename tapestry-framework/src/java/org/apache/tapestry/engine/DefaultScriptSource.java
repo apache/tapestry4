@@ -80,8 +80,7 @@ public class DefaultScriptSource implements IScriptSource, ResetEventListener, R
 
     private IScript parse(Resource resource)
     {
-        ScriptParser parser = new ScriptParser(_classResolver, _expressionEvaluator,
-                                               _valueConverter);
+        ScriptParser parser = new ScriptParser(_classResolver, _expressionEvaluator, _valueConverter);
         try
         {
             return parser.parse(resource);
