@@ -14,8 +14,7 @@
         </unique>
     </body>
     <initialization>
-        tapestry.cleanConnect(dojo.byId("${submit.clientId}"), 
-                              "onclick", "event${key}");
+        tapestry.cleanConnect(dojo.byId("${submit.clientId}"), "onclick", "event${key}");
         tapestry.event${key}=function(e){
             dojo.event.browser.stopEvent(e);
             <if expression="parms != null">
