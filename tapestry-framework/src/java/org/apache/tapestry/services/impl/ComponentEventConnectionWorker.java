@@ -83,7 +83,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker, Po
         Boolean _async;
         Boolean _validate;
         String _uniqueHash;
-        
+
         public DeferredFormConnection(String formId, Map scriptParms, Boolean async,
                                       Boolean validate, String uniqueHash)
         {
@@ -411,7 +411,12 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker, Po
                     deferFormConnection(formId, scriptParms,
                                         listener.isAsync(),
                                         listener.isValidateForm(),
-                                        ScriptUtils.functionHash(listener));
+                                        ScriptUtils.functionHash(listener.hashCode() + (String) scriptParms.get("clientId")));
+                    
+                    /*deferFormConnection(formId, scriptParms,
+                                        listener.isAsync(),
+                                        listener.isValidateForm(),
+                                        ScriptUtils.functionHash(listener.hashCode() + (String) scriptParms.get("clientId")));*/
 
                     // re-looping over the same property -> event listener list would
                     // result in duplicate bindings so break out 
@@ -459,10 +464,10 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker, Po
             deferred = new ArrayList();
             _deferredFormConnections.put(formId, deferred);
         }
-        
+
         DeferredFormConnection connection = new DeferredFormConnection(formId, scriptParms, Boolean.valueOf(async),
                                                                        Boolean.valueOf(validate), uniqueHash);
-        
+
         if (!deferred.contains(connection))
             deferred.add(connection);
     }
@@ -475,7 +480,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker, Po
 
     /**
      * Sets the invoker to use/manage event connections.
-     * @param invoker
+     * @param invoker Manages component event invocations.
      */
     public void setEventInvoker(IComponentEventInvoker invoker)
     {
@@ -486,7 +491,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker, Po
      * Sets the engine service that will be used to construct callback
      * URL references to invoke the specified components event listener.
      *
-     * @param eventEngine
+     * @param eventEngine Engine used to create client side urls for updating things async.
      */
     public void setEventEngine(IEngineService eventEngine)
     {
@@ -496,7 +501,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker, Po
     /**
      * The javascript that will be used to connect the component
      * to its configured events. (if any)
-     * @param script
+     * @param script The component script functions.
      */
     public void setComponentScript(String script)
     {
@@ -506,7 +511,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker, Po
     /**
      * The javascript that will be used to connect the widget component
      * to its configured events. (if any)
-     * @param script
+     * @param script The dojo widget based script.
      */
     public void setWidgetScript(String script)
     {
@@ -516,7 +521,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker, Po
     /**
      * The javascript that connects html elements to direct
      * listener methods.
-     * @param script
+     * @param script Event element target scripts.
      */
     public void setElementScript(String script)
     {
@@ -525,7 +530,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker, Po
 
     /**
      * The service that parses script files.
-     * @param scriptSource
+     * @param scriptSource Service.
      */
     public void setScriptSource(IScriptSource scriptSource)
     {

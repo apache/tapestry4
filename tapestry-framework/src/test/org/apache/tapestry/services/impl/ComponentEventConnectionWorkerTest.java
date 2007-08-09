@@ -105,7 +105,8 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         Map elmEvents = spec.getElementEvents();
         Iterator keyIt = elmEvents.keySet().iterator();
         
-        while (keyIt.hasNext()) {
+        while (keyIt.hasNext())
+        {
             String elem = (String)keyIt.next();
             assertEquals(elem, "elementId");
             
@@ -142,7 +143,6 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         trainGetURL(link, "/some/url");
         
         expect(scriptSource.getScript(elemScriptResource)).andReturn(script);
-        
         script.execute(eq(component), eq(cycle), eq(prs), isA(Map.class));
         
         replay();
@@ -163,7 +163,6 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE)).andReturn(prs).anyTimes();
         
         expect(widget.getSpecification()).andReturn(widgetSpec);
-        
         expect(cycle.getAttribute(TapestryUtils.FIELD_PRERENDER)).andReturn(null);
         
         expect(widget.getExtendedId()).andReturn("wid1").anyTimes();
@@ -265,12 +264,24 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE)).andReturn(prs);
         expect(cycle.getAttribute(TapestryUtils.FIELD_PRERENDER)).andReturn(null);
         
-        expect(comp2.getExtendedId()).andReturn("comp2").anyTimes();
-        expect(comp2.getClientId()).andReturn("comp2").anyTimes();
-        
+        expect(comp2.getExtendedId()).andReturn("comp2");
+        expect(comp2.getClientId()).andReturn("comp2");
+
         expect(cycle.getAttribute(ComponentEventConnectionWorker.FORM_NAME_LIST + "form1")).andReturn(null);
         expect(comp2.getSpecification()).andReturn(comp2Spec);
-        
+
+        // second render of comp2
+
+        expect(cycle.isRewinding()).andReturn(false);
+        expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE)).andReturn(prs);
+        expect(cycle.getAttribute(TapestryUtils.FIELD_PRERENDER)).andReturn(null);
+
+        expect(comp2.getExtendedId()).andReturn("comp2");
+        expect(comp2.getClientId()).andReturn("comp2_0");
+
+        expect(cycle.getAttribute(ComponentEventConnectionWorker.FORM_NAME_LIST + "form1")).andReturn(null);
+        expect(comp2.getSpecification()).andReturn(comp2Spec);
+
         // render of component
         
         expect(cycle.isRewinding()).andReturn(false);
@@ -284,6 +295,7 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         worker.renderComponent(cycle, comp1);
         worker.renderComponent(cycle, comp2);
+        worker.renderComponent(cycle, comp2); // to test unique client id connections
         worker.renderComponent(cycle, component);
         
         verify();
@@ -293,7 +305,7 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         List deferred = (List)worker.getDefferedFormConnections().get("form1");
         
         assert deferred != null;
-        assertEquals(deferred.size(), 2);
+        assertEquals(deferred.size(), 3);
 
         ComponentEventConnectionWorker.DeferredFormConnection fConn = (ComponentEventConnectionWorker.DeferredFormConnection)deferred.get(0);
         
@@ -315,7 +327,6 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         // test comp2 connections
 
         fConn = (ComponentEventConnectionWorker.DeferredFormConnection)deferred.get(1);
-        
         parm = fConn._scriptParms;
 
         assert fConn._async;
@@ -329,9 +340,24 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         assertEquals(parm.get("clientId"), "comp2");
         assertEquals(parm.get("component"), comp2);
-    }
 
-    
+        // test comp2 second render connections
+
+        fConn = (ComponentEventConnectionWorker.DeferredFormConnection)deferred.get(2);
+        parm = fConn._scriptParms;
+
+        assert fConn._async;
+        assert fConn._validate;
+
+        assert parm.get("clientId") != null;
+        assert parm.get("component") != null;
+        assert parm.get("url") == null;
+        assert parm.get("formEvents") == null;
+        assert parm.get("target") == null;
+
+        assertEquals(parm.get("clientId"), "comp2_0");
+        assertEquals(parm.get("component"), comp2);
+    }
     
     public void test_Form_Render_Deffered()
     {
@@ -394,7 +420,6 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         expect(comp1.getClientId()).andReturn("comp1").anyTimes();
         
         expect(cycle.getAttribute(ComponentEventConnectionWorker.FORM_NAME_LIST + "form1")).andReturn(null);
-        
         expect(comp1.getSpecification()).andReturn(comp1Spec).anyTimes();
         
         // comp2 render
