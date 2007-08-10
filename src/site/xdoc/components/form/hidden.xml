@@ -57,7 +57,7 @@
                             when the HTML response is generated, and then written when the form is
                             submitted. A
                             <a
-                                href="../../apidocs/org/apache/tapestry/util/io/DataSqueezer.html">
+                                href="../../apidocs/org/apache/tapestry/services/DataSqueezer.html">
                                 DataSqueezer
                             </a>
                             is used to convert the value between an arbitrary type and a String.
@@ -109,7 +109,7 @@
                             <p>
                                 If true (the default) a
                                 <a
-                                    href="../../apidocs/org/apache/tapestry/util/io/DataSqueezer.html">
+                                    href="../../apidocs/org/apache/tapestry/services/DataSqueezer.html">
                                     DataSqueezer
                                 </a>
                                 is used to transform the value Object into the HTML value string,
@@ -121,7 +121,7 @@
                                 in JavaScript (which is not able to interpret even Strings encoded
                                 by
                                 <a
-                                    href="../../apidocs/org/apache/tapestry/util/io/DataSqueezer.html">
+                                    href="../../apidocs/org/apache/tapestry/services/DataSqueezer.html">
                                     DataSqueezer
                                 </a>
                                 ). If you find yourself getting strange errors during the form
