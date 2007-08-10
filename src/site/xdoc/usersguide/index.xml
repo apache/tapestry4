@@ -360,7 +360,7 @@
                 <p>
                     Tapestry 4.0 represents an even more radical leap beyond 3.0 by introducing a
                     new, sophisticated infrastructure on top of the
-                    <a href="http://jakarta.apache.org/hivemind/">HiveMind</a>
+                    <a href="http://hivemind.apache.org/hivemind1/">HiveMind</a>
                     microkernel. This new backbone provides the support necessary to meet the needs
                     of Tapestry's much larger community ... including support for
                     <em>prettier</em>

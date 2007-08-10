@@ -23,7 +23,7 @@
         <section name="HiveMind Integration">
             <p>
                 Tapestry 4.0 is intimately integrated into the
-                <a href="http://jakarta.apache.org/hivemind/">HiveMind</a>
+                <a href="http://hivemind.apache.org/hivemind1/">HiveMind</a>
                 microkernel. Building a complex system onto a dependency injection microkernel such
                 as HiveMind has many benefits; the code is easier to write, test and maintain.
                 HiveMind's flexible approach makes it easy to provide extension points ... many of
@@ -83,7 +83,7 @@
                     <em>locator</em>
                     . The prefix identifies how the locator should be interpreted; in this case, as
                     a full qualified service id. HiveMind itself defines a
-                    <a href="http://jakarta.apache.org/hivemind/hivemind/ObjectProviders.html">
+                    <a href="http://hivemind.apache.org/hivemind1/hivemind/ObjectProviders.html">
                         base set of prefixes
                     </a>
                     , to which Tapestry adds the following:

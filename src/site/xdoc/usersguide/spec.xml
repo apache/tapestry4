@@ -94,7 +94,7 @@
                 <a href="script.html">described seperately</a>
                 . In addition, in Tapestry 4.0, a significant part of an application's behavior is
                 defined by its
-                <a href="http://jakarta.apache.org/hivemind/">HiveMind</a>
+                <a href="http://hivemind.apache.org/hivemind1/">HiveMind</a>
                 module deployment descriptor.
                 </p>
             </span>
