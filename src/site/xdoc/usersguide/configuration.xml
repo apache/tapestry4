@@ -29,7 +29,7 @@
             <p>
             Configuration is the area of greatest change between Tapestry 3.0 and Tapestry 4.0.
             Tapestry 4.0 has been restructured around
-            <a href="http://jakarta.apache.org/hivemind/">HiveMind</a>
+            <a href="http://hivemind.apache.org/hivemind1/">HiveMind</a>
             , which includes a very rich environment for services and configurations.
             </p>
         </span>
@@ -182,7 +182,7 @@
                 <strong>Fixme:</strong>
                 <p>
                 This documentation is out of date with respect to
-                <a href="http://jakarta.apache.org/hivemind/">HiveMind</a>
+                <a href="http://hivemind.apache.org/hivemind1/">HiveMind</a>
                 . In 4.0, the servlet will create and initialize a HiveMind Registry.
                 </p>
             </span>
@@ -263,7 +263,7 @@
                 <li>As a JVM system property.</li>
                 <li>
                     Hard-coded "factory" defaults (for some properties). These are accessed as
-                    <a href="http://jakarta.apache.org/hivemind/">HiveMind</a>
+                    <a href="http://hivemind.apache.org/hivemind1/">HiveMind</a>
                     symbols.
                 </li>
             </ul>
@@ -329,7 +329,7 @@
                 <li>As a JVM system property.</li>
                 <li>
                     Hard-coded "factory" defaults (for some properties). These are accessed as
-                    <a href="http://jakarta.apache.org/hivemind/">HiveMind</a>
+                    <a href="http://hivemind.apache.org/hivemind1/">HiveMind</a>
                     symbols.
                 </li>
             </ul>
@@ -775,7 +775,7 @@ This is a header
                 <strong>Warning:</strong>
                 <p>
                 Application extensions are deprecated as of release 4.0. The use of
-                <a href="http://jakarta.apache.org/hivemind/">HiveMind</a>
+                <a href="http://hivemind.apache.org/hivemind1/">HiveMind</a>
                 services and contributions eliminates the need for extensions.
                 </p>
             </span>
