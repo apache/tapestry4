@@ -226,7 +226,8 @@ public class FormSupportTest extends BaseComponentTestCase {
 
         trainGetFieldFocus(cycle, null);
 
-        support.addInitializationScript(form, "dojo.require(\"tapestry.form\");tapestry.form.focusField('wilma');");
+        support.addInitializationScript(form, "dojo.require(\"tapestry.form\");");
+        support.addScriptAfterInitialization(form, "tapestry.form.focusField('wilma');");
         cycle.setAttribute(FormSupportImpl.FIELD_FOCUS_ATTRIBUTE, Boolean.TRUE);
 
         replay();
@@ -1098,8 +1099,8 @@ public class FormSupportTest extends BaseComponentTestCase {
 
         trainGetFieldFocus(cycle, null);
 
-        support.addInitializationScript(form, "dojo.require(\"tapestry.form\");tapestry.form.focusField('barney');");
-
+        support.addInitializationScript(form, "dojo.require(\"tapestry.form\");");
+        support.addScriptAfterInitialization(form, "tapestry.form.focusField('barney');");
         cycle.setAttribute(FormSupportImpl.FIELD_FOCUS_ATTRIBUTE, Boolean.TRUE);
 
         replay();

@@ -31,7 +31,7 @@ import java.util.*;
 
 /**
  * Encapsulates most of the behavior of a Form component.
- * 
+ *
  */
 public class FormSupportImpl implements FormSupport
 {
@@ -57,14 +57,14 @@ public class FormSupportImpl implements FormSupport
      */
 
     public static final String SUBMIT_MODE = "submitmode";
-    
+
     /**
      * Attribute set to true when a field has been focused; used to prevent conflicting JavaScript
      * for field focusing from being emitted.
      */
 
     public static final String FIELD_FOCUS_ATTRIBUTE = "org.apache.tapestry.field-focused";
-    
+
     private static final Set _standardReservedIds;
 
     static
@@ -76,7 +76,7 @@ public class FormSupportImpl implements FormSupport
         set.add(RESERVED_FORM_IDS);
         set.add(SUBMIT_MODE);
         set.add(FormConstants.SUBMIT_NAME_PARAMETER);
-        
+
         _standardReservedIds = Collections.unmodifiableSet(set);
     }
 
@@ -93,9 +93,9 @@ public class FormSupportImpl implements FormSupport
     }
 
     protected final IRequestCycle _cycle;
-    
+
     protected final IdAllocator _elementIdAllocator = new IdAllocator();
-    
+
     /**
      * Used when rewinding the form to figure to match allocated ids (allocated during the rewind)
      * against expected ids (allocated in the previous request cycle, when the form was rendered).
@@ -144,12 +144,12 @@ public class FormSupportImpl implements FormSupport
      * Client side validation is built up using a json object syntax structure
      */
     private final JSONObject _profile;
-    
+
     /**
      * Used to detect whether or not a form component has been updated and will require form sync on ajax requests
      */
     private boolean _fieldUpdating;
-    
+
     public FormSupportImpl(IMarkupWriter writer, IRequestCycle cycle, IForm form)
     {
         Defense.notNull(writer, "writer");
@@ -160,17 +160,17 @@ public class FormSupportImpl implements FormSupport
         _cycle = cycle;
         _form = form;
         _delegate = form.getDelegate();
-        
+
         _rewinding = cycle.isRewound(form);
         _allocatedIdIndex = 0;
-        
+
         _pageRenderSupport = TapestryUtils.getOptionalPageRenderSupport(cycle);
         _profile = new JSONObject();
     }
 
     /**
      * Alternate constructor used for testing only.
-     * 
+     *
      * @param cycle
      *          The current cycle.
      */
@@ -192,7 +192,7 @@ public class FormSupportImpl implements FormSupport
     {
         return _form;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -225,7 +225,7 @@ public class FormSupportImpl implements FormSupport
      * component whose id is 'page'. A certain number of ids are always reserved, and we find any
      * additional ids beyond that set.
      */
-    
+
     private void addHiddenFieldsForLinkParameters(ILink link)
     {
         String[] names = link.getParameterNames();
@@ -258,14 +258,14 @@ public class FormSupportImpl implements FormSupport
                 sep = ",";
                 hasExtra = true;
             }
-            
+
             addHiddenFieldsForLinkParameter(link, name);
         }
-        
+
         if (hasExtra)
             addHiddenValue(RESERVED_FORM_IDS, extraIds.toString());
     }
-    
+
     public void addHiddenValue(String name, String value)
     {
         _hiddenValues.add(new HiddenFieldData(name, value));
@@ -364,7 +364,7 @@ public class FormSupportImpl implements FormSupport
     {
         return getElementId(component, component.getSpecifiedId());
     }
-    
+
     /**
      * Constructs a unique identifier (within the Form). The identifier consists of the component's
      * id, with an index number added to ensure uniqueness.
@@ -377,28 +377,28 @@ public class FormSupportImpl implements FormSupport
     public String getElementId(IFormComponent component, String baseId)
     {
         // $ is not a valid character in an XML/XHTML id, so convert it to an underscore.
-        
+
         String filteredId = TapestryUtils.convertTapestryIdToNMToken(baseId);
-        
+
         String result = _elementIdAllocator.allocateId(filteredId);
-        
+
         if (_rewinding)
         {
             if (_allocatedIdIndex >= _allocatedIds.size())
             {
-                throw new StaleLinkException(FormMessages.formTooManyIds(_form, _allocatedIds
-                        .size(), component), component);
+                throw new StaleLinkException(FormMessages.formTooManyIds(_form, _allocatedIds.size(),
+                                                                         component), component);
             }
-            
+
             String expected = (String) _allocatedIds.get(_allocatedIdIndex);
-            
+
             if (!result.equals(expected))
                 throw new StaleLinkException(FormMessages.formIdMismatch(
-                        _form,
-                        _allocatedIdIndex,
-                        expected,
-                        result,
-                        component), component);
+                  _form,
+                  _allocatedIdIndex,
+                  expected,
+                  result,
+                  component), component);
         }
         else
         {
@@ -406,11 +406,10 @@ public class FormSupportImpl implements FormSupport
         }
 
         _allocatedIdIndex++;
-        
+
         component.setName(result);
-        
         component.setClientId(result);
-        
+
         return result;
     }
 
@@ -425,7 +424,7 @@ public class FormSupportImpl implements FormSupport
 
         return _elementIdAllocator.peekNextId(id);
     }
-    
+
     public boolean isRewinding()
     {
         return _rewinding;
@@ -442,7 +441,7 @@ public class FormSupportImpl implements FormSupport
      * Converts a string passed as a parameter (and containing a comma separated list of ids) back
      * into the allocateIds property. In addition, return the state of the ID allocater back to
      * where it was at the start of the render.
-     * 
+     *
      * @see #buildAllocatedIdList()
      * @since 3.0
      */
@@ -450,9 +449,9 @@ public class FormSupportImpl implements FormSupport
     private void reinitializeIdAllocatorForRewind()
     {
         String allocatedFormIds = _cycle.getParameter(FORM_IDS);
-        
+
         String[] ids = TapestryUtils.split(allocatedFormIds);
-        
+
         for (int i = 0; i < ids.length; i++)
             _allocatedIds.add(ids[i]);
 
@@ -468,17 +467,17 @@ public class FormSupportImpl implements FormSupport
         for (int i = 0; i < ids.length; i++)
             _elementIdAllocator.allocateId(ids[i]);
     }
-    
+
     int convertSeedToId(String input)
     {
         int index = input.lastIndexOf("_");
-        
+
         if (index < 0)
             throw new ApplicationRuntimeException("Unable to convert seedId of " + input + " to integer.");
-        
+
         return Integer.parseInt(input.substring(index, input.length()));
     }
-    
+
     public void render(String method, IRender informalParametersRenderer, ILink link, String scheme, Integer port)
     {
         String formId = _form.getName();
@@ -494,25 +493,26 @@ public class FormSupportImpl implements FormSupport
         // client-side JavaScript forces an update.
 
         addHiddenValue(SUBMIT_MODE, null);
-        
+
         // And another for the name of the component that
         // triggered the submit.
 
         addHiddenValue(FormConstants.SUBMIT_NAME_PARAMETER, null);
-        
+
         IMarkupWriter nested = _writer.getNestedWriter();
 
         _form.renderBody(nested, _cycle);
 
         runDeferredRunnables();
-        
+
         int portI = (port == null) ? 0 : port.intValue();
-        
+
         writeTag(_writer, method, link.getURL(scheme, null, portI, null, false));
-        
+
         // For XHTML compatibility
+
         _writer.attribute("id", formId);
-        
+
         if (_encodingType != null)
             _writer.attribute("enctype", _encodingType);
 
@@ -527,49 +527,55 @@ public class FormSupportImpl implements FormSupport
         _writer.println();
 
         writeHiddenFields();
-        
+
         // Close the nested writer, inserting its contents.
-        
+
         nested.close();
-        
+
         // Close the <form> tag.
-        
+
         _writer.end();
-        
+
         String fieldId = _delegate.getFocusField();
-        
+
         if (_pageRenderSupport == null)
             return;
-        
+
         // If the form doesn't support focus, or the focus has already been set by a different form,
         // then do nothing.
-        
-        if (!_cycle.isFocusDisabled() && fieldId != null && _form.getFocus() 
-                && _cycle.getAttribute(FIELD_FOCUS_ATTRIBUTE) == null)
+
+        if (!_cycle.isFocusDisabled() && fieldId != null && _form.getFocus()
+            && _cycle.getAttribute(FIELD_FOCUS_ATTRIBUTE) == null)
         {
-            _pageRenderSupport.addInitializationScript(_form, "dojo.require(\"tapestry.form\");tapestry.form.focusField('" + fieldId + "');");
+            _pageRenderSupport.addInitializationScript(_form, "dojo.require(\"tapestry.form\");");
+
+            // needs to happen last to avoid dialog issues in ie - TAPESTRY-1705
+            _pageRenderSupport.addScriptAfterInitialization(_form, "tapestry.form.focusField('" + fieldId + "');");
+
             _cycle.setAttribute(FIELD_FOCUS_ATTRIBUTE, Boolean.TRUE);
         }
-        
+
         // register the validation profile with client side form manager
-        
+
         if (_form.isClientValidationEnabled())
         {
             IPage page = _form.getPage();
 
             // only include dojo widget layer if it's not already been included
 
-            if (!page.hasWidgets()) {
+            if (!page.hasWidgets())
+            {
                 IAsset clientScript = _form.getAsset("clientValidationScript");
-                if (clientScript != null){
 
+                if (clientScript != null)
+                {
                     _pageRenderSupport.addExternalScript(_form, clientScript.getResourceLocation());
                 }
             }
-            
+
             _pageRenderSupport.addInitializationScript(_form, "dojo.require(\"tapestry.form\");tapestry.form.clearProfiles('"
-                    + formId + "'); tapestry.form.registerProfile('" + formId + "'," 
-                    + _profile.toString() + ");");
+                                                              + formId + "'); tapestry.form.registerProfile('" + formId + "',"
+                                                              + _profile.toString() + ");");
         }
     }
 
@@ -584,77 +590,77 @@ public class FormSupportImpl implements FormSupport
     {
         if (_pageRenderSupport == null)
             return;
-        
+
         StringBuffer str = new StringBuffer("dojo.require(\"tapestry.form\");");
         str.append("tapestry.form.registerForm(\"").append(formId).append("\"");
-        
-        if (_form.isAsync()) {
-            
+
+        if (_form.isAsync())
+        {
             str.append(", true");
-            
-            if (_form.isJson()) {
+
+            if (_form.isJson())
+            {
                 str.append(", true");
             }
         }
-        
+
         str.append(");");
-        
+
         _pageRenderSupport.addInitializationScript(_form, str.toString());
     }
-    
+
     public String rewind()
     {
         _form.getDelegate().clear();
 
         String mode = _cycle.getParameter(SUBMIT_MODE);
-        
+
         // On a cancel, don't bother rendering the body or anything else at all.
-        
+
         if (FormConstants.SUBMIT_CANCEL.equals(mode))
             return mode;
-        
+
         reinitializeIdAllocatorForRewind();
-        
+
         _form.renderBody(_writer, _cycle);
-        
+
         // New, handles cases where an eventlistener
         // causes a form submission.
-        
+
         BrowserEvent event = new BrowserEvent(_cycle);
-        
+
         _form.getEventInvoker().invokeFormListeners(this, _cycle, event);
 
         int expected = _allocatedIds.size();
-        
+
         // The other case, _allocatedIdIndex > expected, is
         // checked for inside getElementId(). Remember that
         // _allocatedIdIndex is incremented after allocating.
-        
+
         if (_allocatedIdIndex < expected)
         {
             String nextExpectedId = (String) _allocatedIds.get(_allocatedIdIndex);
-            
-            throw new StaleLinkException(FormMessages.formTooFewIds(_form, expected
-                    - _allocatedIdIndex, nextExpectedId), _form);
+
+            throw new StaleLinkException(FormMessages.formTooFewIds(_form, expected - _allocatedIdIndex, nextExpectedId), _form);
         }
-        
+
         runDeferredRunnables();
 
-        if (_submitModes.contains(mode)) {
-
+        if (_submitModes.contains(mode))
+        {
             // clear errors during refresh
-            
-            if (FormConstants.SUBMIT_REFRESH.equals(mode)) {
 
+            if (FormConstants.SUBMIT_REFRESH.equals(mode))
+            {
                 _form.getDelegate().clearErrors();
             }
 
             return mode;
         }
-        
+
         // Either something wacky on the client side, or a client without
         // javascript enabled.
-        
+
         return FormConstants.SUBMIT_NORMAL;
     }
 
@@ -664,7 +670,7 @@ public class FormSupportImpl implements FormSupport
         while (i.hasNext())
         {
             Runnable r = (Runnable) i.next();
-            
+
             r.run();
         }
     }
@@ -674,9 +680,9 @@ public class FormSupportImpl implements FormSupport
 
         if (_encodingType != null && !_encodingType.equals(encodingType))
             throw new ApplicationRuntimeException(FormMessages.encodingTypeContention(
-                    _form,
-                    _encodingType,
-                    encodingType), _form, null, null);
+              _form,
+              _encodingType,
+              encodingType), _form, null, null);
 
         _encodingType = encodingType;
     }
@@ -689,10 +695,10 @@ public class FormSupportImpl implements FormSupport
         writer.beginEmpty("input");
         writer.attribute("type", "hidden");
         writer.attribute("name", name);
-        
+
         if (HiveMind.isNonBlank(id))
             writer.attribute("id", id);
-        
+
         writer.attribute("value", value == null ? "" : value);
         writer.println();
     }
@@ -703,57 +709,56 @@ public class FormSupportImpl implements FormSupport
      * {@link #writeHiddenFieldList(IMarkupWriter)}. Overriden by
      * {@link org.apache.tapestry.wml.GoFormSupportImpl}.
      */
-    
+
     protected void writeHiddenFields()
     {
         IMarkupWriter writer = getHiddenFieldWriter();
-        
+
         writer.begin("div");
         writer.attribute("style", "display:none;");
         writer.attribute("id", _form.getName() + "hidden");
-        
+
         writeHiddenFieldList(writer);
-        
+
         writer.end();
     }
-    
+
     /**
      * Writes out all hidden values previously added by
      * {@link #addHiddenValue(String, String, String)}, plus the allocated id list.
      */
-    
+
     protected void writeHiddenFieldList(IMarkupWriter writer)
     {
         writeHiddenField(writer, FORM_IDS, null, buildAllocatedIdList());
-        
+
         Iterator i = _hiddenValues.iterator();
         while (i.hasNext())
         {
             HiddenFieldData data = (HiddenFieldData) i.next();
-            
+
             writeHiddenField(writer, data.getName(), data.getId(), data.getValue());
         }
     }
-    
+
     /**
      * Determines if a hidden field change has occurred, which would require
      * that we write hidden form fields using the {@link ResponseBuilder} 
      * writer.
-     * 
+     *
      * @return The default {@link IMarkupWriter} if not doing a managed ajax/json
      *          response, else whatever is returned from {@link ResponseBuilder}.
      */
     protected IMarkupWriter getHiddenFieldWriter()
     {
-        if (_cycle.getResponseBuilder().contains(_form) 
-                || (!_fieldUpdating || !_cycle.getResponseBuilder().isDynamic()) ) {
+        if (_cycle.getResponseBuilder().contains(_form)
+            || (!_fieldUpdating || !_cycle.getResponseBuilder().isDynamic()) )
             return _writer;
-        }
-        
-        return _cycle.getResponseBuilder().getWriter(_form.getName() + "hidden", 
-                ResponseBuilder.ELEMENT_TYPE);
+
+        return _cycle.getResponseBuilder().getWriter(_form.getName() + "hidden",
+                                                     ResponseBuilder.ELEMENT_TYPE);
     }
-    
+
     private void addHiddenFieldsForLinkParameter(ILink link, String parameterName)
     {
         String[] values = link.getParameterValues(parameterName);
@@ -764,9 +769,7 @@ public class FormSupportImpl implements FormSupport
             return;
 
         for (int i = 0; i < values.length; i++)
-        {
             addHiddenValue(parameterName, values[i]);
-        }
     }
 
     protected void writeTag(IMarkupWriter writer, String method, String url)
@@ -784,19 +787,20 @@ public class FormSupportImpl implements FormSupport
         String key = field.getExtendedId();
 
         if (_prerenderMap.containsKey(key))
-            throw new ApplicationRuntimeException(FormMessages.fieldAlreadyPrerendered(field), field, location, null);
-        
+            throw new ApplicationRuntimeException(FormMessages.fieldAlreadyPrerendered(field),
+                                                  field, location, null);
+
         NestedMarkupWriter nested = writer.getNestedWriter();
-        
+
         TapestryUtils.storePrerender(_cycle, field);
-        
+
         _cycle.getResponseBuilder().render(nested, field, _cycle);
-        
+
         TapestryUtils.removePrerender(_cycle);
-        
+
         _prerenderMap.put(key, nested.getBuffer());
     }
-    
+
     public boolean wasPrerendered(IMarkupWriter writer, IComponent field)
     {
         String key = field.getExtendedId();
@@ -833,7 +837,7 @@ public class FormSupportImpl implements FormSupport
         _delegate.registerForFocus(field, priority);
     }
 
-    /** 
+    /**
      * {@inheritDoc}
      */
     public JSONObject getProfile()
@@ -841,15 +845,15 @@ public class FormSupportImpl implements FormSupport
         return _profile;
     }
 
-    /** 
+    /**
      * {@inheritDoc}
      */
     public boolean isFormFieldUpdating()
     {
         return _fieldUpdating;
     }
-    
-    /** 
+
+    /**
      * {@inheritDoc}
      */
     public void setFormFieldUpdating(boolean value)

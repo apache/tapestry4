@@ -20,7 +20,7 @@ import java.util.*;
 
 /**
  * Implementation of response builder for prototype client side library initiated XHR requests.
- * 
+ *
  */
 public class PrototypeResponseBuilder implements ResponseBuilder {
 
@@ -59,7 +59,7 @@ public class PrototypeResponseBuilder implements ResponseBuilder {
     {
         _cycle = cycle;
         _writer = writer;
-        
+
         if (parts != null)
             _parts.addAll(parts);
 
@@ -70,7 +70,7 @@ public class PrototypeResponseBuilder implements ResponseBuilder {
     /**
      * Creates a new response builder with the required services it needs
      * to render the response when {@link #renderResponse(IRequestCycle)} is called.
-     * 
+     *
      * @param cycle
      *          Associated request.
      * @param localeManager
@@ -85,10 +85,10 @@ public class PrototypeResponseBuilder implements ResponseBuilder {
      *          Javascript namespace value - used in portlets.
      */
     public PrototypeResponseBuilder(IRequestCycle cycle,
-            RequestLocaleManager localeManager,
-            MarkupWriterSource markupWriterSource,
-            WebResponse webResponse,
-            AssetFactory assetFactory, String namespace)
+                                    RequestLocaleManager localeManager,
+                                    MarkupWriterSource markupWriterSource,
+                                    WebResponse webResponse,
+                                    AssetFactory assetFactory, String namespace)
     {
         Defense.notNull(cycle, "cycle");
         Defense.notNull(assetFactory, "assetService");
@@ -117,7 +117,7 @@ public class PrototypeResponseBuilder implements ResponseBuilder {
      * {@inheritDoc}
      */
     public void renderResponse(IRequestCycle cycle)
-        throws IOException
+      throws IOException
     {
         _localeManager.persistLocale();
 
@@ -132,8 +132,8 @@ public class PrototypeResponseBuilder implements ResponseBuilder {
             contentType.setParameter(ENCODING_KEY, encoding);
         }
 
-        if (_writer == null) {
-
+        if (_writer == null)
+        {
             parseParameters(cycle);
 
             PrintWriter printWriter = _response.getPrintWriter(contentType);
@@ -157,7 +157,7 @@ public class PrototypeResponseBuilder implements ResponseBuilder {
     }
 
     public void flush()
-    throws IOException
+      throws IOException
     {
         _writer.flush();
     }
@@ -190,8 +190,8 @@ public class PrototypeResponseBuilder implements ResponseBuilder {
     public boolean isBodyScriptAllowed(IComponent target)
     {
         if (target != null
-                && IPage.class.isInstance(target)
-                || (IForm.class.isInstance(target)
+            && IPage.class.isInstance(target)
+            || (IForm.class.isInstance(target)
                 && ((IForm)target).isFormFieldUpdating()))
             return true;
 
@@ -204,8 +204,8 @@ public class PrototypeResponseBuilder implements ResponseBuilder {
     public boolean isExternalScriptAllowed(IComponent target)
     {
         if (target != null
-                && IPage.class.isInstance(target)
-                || (IForm.class.isInstance(target)
+            && IPage.class.isInstance(target)
+            || (IForm.class.isInstance(target)
                 && ((IForm)target).isFormFieldUpdating()))
             return true;
 
@@ -218,8 +218,8 @@ public class PrototypeResponseBuilder implements ResponseBuilder {
     public boolean isInitializationScriptAllowed(IComponent target)
     {
         if (target != null
-                && IPage.class.isInstance(target)
-                || (IForm.class.isInstance(target)
+            && IPage.class.isInstance(target)
+            || (IForm.class.isInstance(target)
                 && ((IForm)target).isFormFieldUpdating()))
             return true;
 
@@ -232,8 +232,8 @@ public class PrototypeResponseBuilder implements ResponseBuilder {
     public boolean isImageInitializationAllowed(IComponent target)
     {
         if (target != null
-                && IPage.class.isInstance(target)
-                || (IForm.class.isInstance(target)
+            && IPage.class.isInstance(target)
+            || (IForm.class.isInstance(target)
                 && ((IForm)target).isFormFieldUpdating()))
             return true;
 
@@ -310,6 +310,11 @@ public class PrototypeResponseBuilder implements ResponseBuilder {
     public void addInitializationScript(String script)
     {
         _prs.addInitializationScript(script);
+    }
+
+    public void addScriptAfterInitialization(IComponent target, String script)
+    {
+        _prs.addScriptAfterInitialization(target, script);
     }
 
     /**
@@ -403,7 +408,7 @@ public class PrototypeResponseBuilder implements ResponseBuilder {
     {
         throw new UnsupportedOperationException("Can't return a status response with prototype based requests.");
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -411,7 +416,8 @@ public class PrototypeResponseBuilder implements ResponseBuilder {
     {
         // must be a valid writer already
 
-        if (NestedMarkupWriterImpl.class.isInstance(writer)) {
+        if (NestedMarkupWriterImpl.class.isInstance(writer))
+        {
             render.render(writer, cycle);
             return;
         }
@@ -440,11 +446,11 @@ public class PrototypeResponseBuilder implements ResponseBuilder {
     public IMarkupWriter getWriter(String id, String type)
     {
         Defense.notNull(id, "id can't be null");
-        
+
         IMarkupWriter w = (IMarkupWriter)_writers.get(id);
         if (w != null)
             return w;
-        
+
         IMarkupWriter nestedWriter = _writer.getNestedWriter();
         _writers.put(id, nestedWriter);
 
@@ -473,14 +479,14 @@ public class PrototypeResponseBuilder implements ResponseBuilder {
     {
         Iterator keys = _writers.keySet().iterator();
 
-        while (keys.hasNext()) {
-
+        while (keys.hasNext())
+        {
             String key = (String)keys.next();
             NestedMarkupWriter nw = (NestedMarkupWriter)_writers.get(key);
-            
+
             nw.close();
         }
-        
+
         _writer.flush();
     }
 
@@ -527,8 +533,8 @@ public class PrototypeResponseBuilder implements ResponseBuilder {
             return true;
 
         Iterator it = _cycle.renderStackIterator();
-        while (it.hasNext()) {
-
+        while (it.hasNext())
+        {
             IComponent comp = (IComponent)it.next();
             String compId = comp.getClientId();
 

@@ -44,7 +44,12 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
     private final ResponseBuilder _builder;
 
     // Lines that belong inside the onLoad event handler for the <body> tag.
+
     private StringBuffer _initializationScript;
+
+    // Used by addScriptAfterInitialization
+
+    private StringBuffer _postInitializationScript;
 
     // Any other scripting desired
 
@@ -202,6 +207,19 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
         _initializationScript.append("\n").append(val);
     }
 
+    public void addScriptAfterInitialization(IComponent target, String script)
+    {
+        if (!_builder.isInitializationScriptAllowed(target))
+            return;
+
+        String strippedScript = stripDuplicateIncludes(script);
+
+        if (_postInitializationScript == null)
+            _postInitializationScript = new StringBuffer(strippedScript.length() + 1);
+
+        _postInitializationScript.append("\n").append(strippedScript);
+    }
+
     /**
      * Provides a mechanism to strip out duplicate dojo.require calls made in script
      * templates in order to reduce amount of redundant javascript written to client.
@@ -218,15 +236,18 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
 
         String ret = input;
 
-        for (int i=0; i < lines.length; i++) {
+        for (int i=0; i < lines.length; i++)
+        {
             if (lines[i].indexOf("dojo.require") < 0)
                 continue;
 
             String line = StringUtils.stripToEmpty(lines[i]);
 
-            if (_requires.containsKey(line)) {
+            if (_requires.containsKey(line))
+            {
                 ret = StringUtils.replaceOnce(ret, line+";", "");
-            } else {
+            } else
+            {
                 _requires.put(line, "t");
             }
         }
@@ -287,6 +308,10 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
      * </ul>
      *
      * @see #writeInitializationScript(IMarkupWriter)
+     * @param writer
+     *          The markup writer to use.
+     * @param cycle
+     *          The current request.
      */
 
     public void writeBodyScript(IMarkupWriter writer, IRequestCycle cycle)
@@ -301,15 +326,15 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
 
         if (any(_imageInitializations))
         {
-            _builder.writeImageInitializations(writer, StringUtils.stripToEmpty(_imageInitializations.toString())
-              , _preloadName, cycle);
+            _builder.writeImageInitializations(writer,
+                                               StringUtils.stripToEmpty(_imageInitializations.toString()),
+                                               _preloadName,
+                                               cycle);
         }
 
         if (any(_bodyScript))
         {
-            _builder.writeBodyScript(writer, StringUtils.stripToEmpty(_bodyScript.toString())
-              ,
-                                     cycle);
+            _builder.writeBodyScript(writer, StringUtils.stripToEmpty(_bodyScript.toString()), cycle);
         }
 
         _builder.endBodyScript(writer, cycle);
@@ -319,14 +344,27 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
      * Writes any image initializations; this should be invoked at the end of the render, after all
      * the related HTML will have already been streamed to the client and parsed by the web browser.
      * Earlier versions of Tapestry uses a <code>window.onload</code> event handler.
+     *
+     * @param writer
+     *          The markup writer to use.
      */
 
     public void writeInitializationScript(IMarkupWriter writer)
     {
-        if (!any(_initializationScript))
+        if (!any(_initializationScript) && !any(_postInitializationScript))
             return;
 
-        _builder.writeInitializationScript(writer, StringUtils.stripToEmpty(_initializationScript.toString()));
+        String script = getContent(_initializationScript) + getContent(_postInitializationScript);
+
+        _builder.writeInitializationScript(writer, StringUtils.stripToEmpty(script));
+    }
+
+    public static String getContent(StringBuffer buffer)
+    {
+        if (buffer == null || buffer.length() < 1)
+            return "";
+        
+        return buffer.toString();
     }
 
     private boolean any(StringBuffer buffer)
