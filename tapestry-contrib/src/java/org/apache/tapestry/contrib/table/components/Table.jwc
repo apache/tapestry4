@@ -224,19 +224,23 @@
   
 	<component id="tableElement" type="Any" inherit-informal-parameters="yes">
 		<binding name="element">literal:table</binding>
-	</component>
+    </component>
 
 	<component id="condPages" type="If">
 		<binding name="condition" value="tableModel.pageCount > 1"/>
-	</component>
+        <binding name="renderTag" value="false" />
+    </component>
 
 	<component id="ifNormalPages" type="If">
 		<binding name="condition" value="showNormalPages"/>
-	</component>
+        <binding name="renderTag" value="false" />
+    </component>
 
-	<component id="elseFormPages" type="Else"/>
+	<component id="elseFormPages" type="Else">
+        <binding name="renderTag" value="false" />
+    </component>
 
-	<component id="tableView" type="TableView">
+    <component id="tableView" type="TableView">
 		<inherited-binding name="tableModel" parameter-name="tableModel"/>
 		<inherited-binding name="source" parameter-name="source"/>
 		<inherited-binding name="columns" parameter-name="columns"/>

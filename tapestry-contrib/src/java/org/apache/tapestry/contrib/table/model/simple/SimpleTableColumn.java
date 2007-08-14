@@ -14,12 +14,12 @@
 
 package org.apache.tapestry.contrib.table.model.simple;
 
-import java.io.Serializable;
-import java.util.Comparator;
-
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.contrib.table.model.ITableRendererSource;
 import org.apache.tapestry.contrib.table.model.common.AbstractTableColumn;
+
+import java.io.Serializable;
+import java.util.Comparator;
 
 /**
  * A simple minimal implementation of the
@@ -146,7 +146,6 @@ public class SimpleTableColumn extends AbstractTableColumn
      */
     public String getDisplayName()
     {
-        m_strDisplayName.replace('.', '_'); // added from patch
         return m_strDisplayName;
     }
 
@@ -158,6 +157,9 @@ public class SimpleTableColumn extends AbstractTableColumn
      */
     public void setDisplayName(String displayName)
     {
+        if (displayName != null)
+            displayName = displayName.replace(".", "_");
+        
         m_strDisplayName = displayName;
     }
 
@@ -223,15 +225,17 @@ public class SimpleTableColumn extends AbstractTableColumn
      */
     public void loadSettings(IComponent objSettingsContainer)
     {
-        String strDisplayName = objSettingsContainer.getMessages().getMessage(
-                getColumnName());
+        String strDisplayName = objSettingsContainer.getMessages().getMessage(getColumnName());
 
         // Hack! the Messages inteface needs to restore the getMessage(key,
         // default), or needs
         // to add a containsKey(key) method. Looking for the '[' used with
         // invalid/unknown keys.
 
-        if (!strDisplayName.startsWith("[")) setDisplayName(strDisplayName);
+        if (!strDisplayName.startsWith("["))
+        {
+            setDisplayName(strDisplayName);
+        }
 
         super.loadSettings(objSettingsContainer);
     }
@@ -256,13 +260,16 @@ public class SimpleTableColumn extends AbstractTableColumn
             boolean bComparable2 = objValue2 instanceof Comparable;
 
             // non-comparable values are considered equal
-            if (!bComparable1 && !bComparable2) return 0;
+            if (!bComparable1 && !bComparable2)
+                return 0;
 
             // non-comparable values (null included) are considered smaller
             // than the comparable ones
-            if (!bComparable1) return -1;
+            if (!bComparable1)
+                return -1;
 
-            if (!bComparable2) return 1;
+            if (!bComparable2)
+                return 1;
 
             return ((Comparable) objValue1).compareTo(objValue2);
         }

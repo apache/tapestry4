@@ -14,17 +14,17 @@
 
 package org.apache.tapestry;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.util.Defense;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Constants and static methods.
- * 
+ *
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
@@ -33,9 +33,9 @@ public final class TapestryUtils
     public static final String PAGE_RENDER_SUPPORT_ATTRIBUTE = "org.apache.tapestry.PageRenderSupport";
 
     public static final String FORM_ATTRIBUTE = "org.apache.tapestry.Form";
-    
+
     public static final String FIELD_PRERENDER = "org.apache.tapestry.form.Prerender";
-    
+
     private static final char QUOTE = '\'';
 
     private static final char BACKSLASH = '\\';
@@ -44,11 +44,11 @@ public final class TapestryUtils
 
     /* defeat instantiation */
     private TapestryUtils() { }
-    
+
     /**
      * Stores an attribute into the request cycle, verifying that no object with that key is already
      * present.
-     * 
+     *
      * @param cycle
      *            the cycle to store the attribute into
      * @param key
@@ -68,9 +68,9 @@ public final class TapestryUtils
         Object existing = cycle.getAttribute(key);
         if (existing != null)
             throw new IllegalStateException(TapestryMessages.nonUniqueAttribute(
-                    object,
-                    key,
-                    existing));
+              object,
+              key,
+              existing));
 
         cycle.setAttribute(key, object);
     }
@@ -103,10 +103,10 @@ public final class TapestryUtils
     {
         storeUniqueAttribute(cycle, FIELD_PRERENDER, component);
     }
-    
+
     /**
      * Gets the previously stored {@link org.apache.tapestry.PageRenderSupport}&nbsp;object.
-     * 
+     *
      * @param cycle
      *            the request cycle storing the support object
      * @param component
@@ -122,14 +122,14 @@ public final class TapestryUtils
         PageRenderSupport result = getOptionalPageRenderSupport(cycle);
         if (result == null)
             throw new ApplicationRuntimeException(TapestryMessages.noPageRenderSupport(component),
-                    component.getLocation(), null);
+                                                  component.getLocation(), null);
 
         return result;
     }
 
     /**
      * Gets the previously stored {@link IForm} object.
-     * 
+     *
      * @param cycle
      *            the request cycle storing the support object
      * @param component
@@ -159,12 +159,12 @@ public final class TapestryUtils
     {
         cycle.removeAttribute(FORM_ATTRIBUTE);
     }
-    
+
     public static void removePrerender(IRequestCycle cycle)
     {
         cycle.removeAttribute(FIELD_PRERENDER);
     }
-    
+
     /**
      * Returns the {@link PageRenderSupport}&nbsp;object if previously stored, or null otherwise.
      * This is used in the rare case that a component wishes to adjust its behavior based on whether
@@ -235,17 +235,17 @@ public final class TapestryUtils
         return (String[]) strings.toArray(new String[strings.size()]);
     }
 
-	/**
-	 * Capitalize the first letter of the input if at least 1 character.
-	 */
+    /**
+     * Capitalize the first letter of the input if at least 1 character.
+     */
 
-	public static String capitalize(String input)
-	{
-		if (input == null || input.length() < 1)
-			   return input;
+    public static String capitalize(String input)
+    {
+        if (input == null || input.length() < 1)
+            return input;
 
-		return input.substring(0, 1).toUpperCase() + input.substring(1);
-	}
+        return input.substring(0, 1).toUpperCase() + input.substring(1);
+    }
 
     /**
      * Enquotes a string within single quotes, ready for insertion as part of a block of JavaScript.
@@ -289,7 +289,7 @@ public final class TapestryUtils
     public static String convertTapestryIdToNMToken(String baseId)
     {
         String result = baseId.replace('$', '_');
-        
+
         while (result.startsWith("_"))
             result = result.substring(1);
 
@@ -313,7 +313,7 @@ public final class TapestryUtils
      */
 
     public static IComponent getComponent(IComponent container, String componentId,
-            Class expectedType, Location location)
+                                          Class expectedType, Location location)
     {
         Defense.notNull(container, "container");
         Defense.notNull(componentId, "componentId");
@@ -333,8 +333,8 @@ public final class TapestryUtils
 
         if (!expectedType.isAssignableFrom(component.getClass()))
             throw new ApplicationRuntimeException(TapestryMessages.componentWrongType(
-                    component,
-                    expectedType), location, null);
+              component,
+              expectedType), location, null);
 
         return component;
     }

@@ -48,6 +48,9 @@ public interface ITableModelSource extends IComponent
 
     /**
      * Stores the provided table action.
+     *
+     * @param action
+     *          The action to store.
      */
     void storeTableAction(ITableAction action);
 
