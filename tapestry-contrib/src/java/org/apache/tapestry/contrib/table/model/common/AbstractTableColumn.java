@@ -14,9 +14,6 @@
 
 package org.apache.tapestry.contrib.table.model.common;
 
-import java.io.Serializable;
-import java.util.Comparator;
-
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
@@ -26,18 +23,20 @@ import org.apache.tapestry.contrib.table.model.ITableModelSource;
 import org.apache.tapestry.contrib.table.model.ITableRendererSource;
 import org.apache.tapestry.valid.RenderString;
 
+import java.io.Serializable;
+import java.util.Comparator;
+
 /**
  * A base implementation of
  * {@link org.apache.tapestry.contrib.table.model.ITableColumn} that allows
  * renderers to be set via aggregation.
- * 
+ *
  * @see org.apache.tapestry.contrib.table.model.ITableRendererSource
  * @author mindbridge
  * @since 2.3
  */
 public class AbstractTableColumn implements IAdvancedTableColumn, Serializable
 {
-
     /**
      * The suffix of the name of the Block that will be used as the column
      * renderer for this column.
@@ -65,15 +64,15 @@ public class AbstractTableColumn implements IAdvancedTableColumn, Serializable
     }
 
     public AbstractTableColumn(String strColumnName, boolean bSortable,
-            Comparator objComparator)
+                               Comparator objComparator)
     {
         this(strColumnName, bSortable, objComparator, null, null);
     }
 
     public AbstractTableColumn(String strColumnName, boolean bSortable,
-            Comparator objComparator,
-            ITableRendererSource objColumnRendererSource,
-            ITableRendererSource objValueRendererSource)
+                               Comparator objComparator,
+                               ITableRendererSource objColumnRendererSource,
+                               ITableRendererSource objValueRendererSource)
     {
         setColumnName(strColumnName);
         setSortable(bSortable);
@@ -92,12 +91,15 @@ public class AbstractTableColumn implements IAdvancedTableColumn, Serializable
 
     /**
      * Sets the columnName.
-     * 
+     *
      * @param columnName
      *            The columnName to set
      */
     public void setColumnName(String columnName)
     {
+        if (columnName != null)
+            columnName = columnName.replace('.', '_');
+        
         m_strColumnName = columnName;
     }
 
@@ -111,7 +113,7 @@ public class AbstractTableColumn implements IAdvancedTableColumn, Serializable
 
     /**
      * Sets whether the column is sortable.
-     * 
+     *
      * @param sortable
      *            The sortable flag to set
      */
@@ -130,7 +132,7 @@ public class AbstractTableColumn implements IAdvancedTableColumn, Serializable
 
     /**
      * Sets the comparator.
-     * 
+     *
      * @param comparator
      *            The comparator to set
      */
@@ -144,9 +146,10 @@ public class AbstractTableColumn implements IAdvancedTableColumn, Serializable
      *      ITableModelSource)
      */
     public IRender getColumnRenderer(IRequestCycle objCycle,
-            ITableModelSource objSource)
+                                     ITableModelSource objSource)
     {
         ITableRendererSource objRendererSource = getColumnRendererSource();
+
         if (objRendererSource == null)
         {
             // log error
@@ -161,9 +164,10 @@ public class AbstractTableColumn implements IAdvancedTableColumn, Serializable
      *      ITableModelSource, Object)
      */
     public IRender getValueRenderer(IRequestCycle objCycle,
-            ITableModelSource objSource, Object objRow)
+                                    ITableModelSource objSource, Object objRow)
     {
         ITableRendererSource objRendererSource = getValueRendererSource();
+
         if (objRendererSource == null)
         {
             // log error
@@ -175,7 +179,7 @@ public class AbstractTableColumn implements IAdvancedTableColumn, Serializable
 
     /**
      * Returns the columnRendererSource.
-     * 
+     *
      * @return ITableColumnRendererSource
      */
     public ITableRendererSource getColumnRendererSource()
@@ -185,19 +189,19 @@ public class AbstractTableColumn implements IAdvancedTableColumn, Serializable
 
     /**
      * Sets the columnRendererSource.
-     * 
+     *
      * @param columnRendererSource
      *            The columnRendererSource to set
      */
     public void setColumnRendererSource(
-            ITableRendererSource columnRendererSource)
+      ITableRendererSource columnRendererSource)
     {
         m_objColumnRendererSource = columnRendererSource;
     }
 
     /**
      * Returns the valueRendererSource.
-     * 
+     *
      * @return the valueRendererSource of this column
      */
     public ITableRendererSource getValueRendererSource()
@@ -207,7 +211,7 @@ public class AbstractTableColumn implements IAdvancedTableColumn, Serializable
 
     /**
      * Sets the valueRendererSource.
-     * 
+     *
      * @param valueRendererSource
      *            The valueRendererSource to set
      */
@@ -220,33 +224,37 @@ public class AbstractTableColumn implements IAdvancedTableColumn, Serializable
      * Use the column name to get the column and value renderer sources from the
      * provided component. Use the column and value renderer sources for all
      * columns if necessary.
-     * 
-     * @param objSettingsContainer
+     *
+     * @param container
      *            the component from which to get the settings
      */
-    public void loadSettings(IComponent objSettingsContainer)
+    public void loadSettings(IComponent container)
     {
-        IComponent objColumnRendererSource = (IComponent) objSettingsContainer
-                .getComponents().get(
-                        getColumnName() + COLUMN_RENDERER_BLOCK_SUFFIX);
-        if (objColumnRendererSource == null)
-            objColumnRendererSource = (IComponent) objSettingsContainer
-                    .getComponents().get(COLUMN_RENDERER_BLOCK_SUFFIX);
-        if (objColumnRendererSource != null
-                && objColumnRendererSource instanceof Block)
-            setColumnRendererSource(new BlockTableRendererSource(
-                    (Block) objColumnRendererSource));
+        IComponent objColumnRendererSource =
+          (IComponent) container.getComponents().get(getColumnName() + COLUMN_RENDERER_BLOCK_SUFFIX);
 
-        IComponent objValueRendererSource = (IComponent) objSettingsContainer
-                .getComponents().get(
-                        getColumnName() + VALUE_RENDERER_BLOCK_SUFFIX);
+        if (objColumnRendererSource == null)
+            objColumnRendererSource = (IComponent) container.getComponents().get(COLUMN_RENDERER_BLOCK_SUFFIX);
+
+        if (objColumnRendererSource != null
+            && objColumnRendererSource instanceof Block)
+        {
+            setColumnRendererSource(new BlockTableRendererSource((Block) objColumnRendererSource));
+        }
+
+        IComponent objValueRendererSource =
+          (IComponent) container.getComponents().get(getColumnName() + VALUE_RENDERER_BLOCK_SUFFIX);
+
         if (objValueRendererSource == null)
-            objValueRendererSource = (IComponent) objSettingsContainer
-                    .getComponents().get(VALUE_RENDERER_BLOCK_SUFFIX);
+        {
+            objValueRendererSource = (IComponent) container.getComponents().get(VALUE_RENDERER_BLOCK_SUFFIX);
+        }
+
         if (objValueRendererSource != null
-                && objValueRendererSource instanceof Block)
-            setValueRendererSource(new BlockTableRendererSource(
-                    (Block) objValueRendererSource));
+            && objValueRendererSource instanceof Block)
+        {
+            setValueRendererSource(new BlockTableRendererSource((Block) objValueRendererSource));
+        }
     }
 
 }

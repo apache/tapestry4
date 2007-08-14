@@ -15,79 +15,81 @@
    limitations under the License.
 -->
 
-<!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
-	
-<component-specification class="org.apache.tapestry.contrib.table.components.TablePages" 
-	allow-body="no" allow-informal-parameters="yes">
-	
-	<description>
-        A low level Table component that renders the pages in the table. 
-        This component must be wrapped by TableView. 
-	</description>
-  
-	<parameter name="pagesDisplayed" 
-		type="int" 
-		required="no"
-		direction="auto"
-    	default-value="7">
-		<description>
-            Determines the maximum number of pages to be displayed in the page list 
-            when the table has more than one page. 
+<!DOCTYPE component-specification PUBLIC
+        "-//Apache Software Foundation//Tapestry Specification 3.0//EN"
+        "http://tapestry.apache.org/dtd/Tapestry_3_0.dtd">
+
+<component-specification class="org.apache.tapestry.contrib.table.components.TablePages"
+                         allow-body="no" allow-informal-parameters="yes">
+
+    <description>
+        A low level Table component that renders the pages in the table.
+        This component must be wrapped by TableView.
+    </description>
+
+    <parameter name="pagesDisplayed"
+               type="int"
+               required="no"
+               direction="auto"
+               default-value="7">
+        <description>
+            Determines the maximum number of pages to be displayed in the page list
+            when the table has more than one page.
         </description>
     </parameter>
 
-	<component id="informal" type="Any" inherit-informal-parameters="yes"/>
-  
-	<component id="condCurrent" type="If">
-		<binding name="condition" expression="condCurrent"/>
-	</component>
-  
-	<component id="condOther" type="Else">
-	</component>
-  
-	<component id="iterPage" type="For">
-		<binding name="source" expression="pageList"/>
-		<binding name="value" expression="displayPage"/>
+    <component id="informal" type="Any" inherit-informal-parameters="yes"/>
+
+    <component id="condCurrent" type="If">
+        <binding name="condition" expression="condCurrent"/>
         <binding name="renderTag" expression="false" />
-	</component>
+    </component>
 
-	<component id="insertCurrentPage" type="Insert">
-	    <binding name="value" expression="displayPage"/>
-	</component>
+    <component id="condOther" type="Else">
+        <binding name="renderTag" expression="false" />
+    </component>
 
-	<component id="insertOtherPage" type="Insert">
-	    <binding name="value" expression="displayPage"/>
-	</component>
+    <component id="iterPage" type="For">
+        <binding name="source" expression="pageList"/>
+        <binding name="value" expression="displayPage"/>
+        <binding name="renderTag" expression="false" />
+    </component>
 
-	<component id="linkPage" type="DirectLink">
-	    <binding name="listener" expression="listeners.changePage"/>
-	    <binding name="parameters" expression="displayPageContext"/>
-	</component>
+    <component id="insertCurrentPage" type="Insert">
+        <binding name="value" expression="displayPage"/>
+    </component>
 
-	<component id="linkFirst" type="DirectLink">
-	    <binding name="listener" expression="listeners.changePage"/>
-	    <binding name="parameters" expression="firstPageContext"/>
-	    <binding name="disabled" expression="!condBack"/>
-	</component>
+    <component id="insertOtherPage" type="Insert">
+        <binding name="value" expression="displayPage"/>
+    </component>
 
-	<component id="linkBack" type="DirectLink">
-	    <binding name="listener" expression="listeners.changePage"/>
-	    <binding name="parameters" expression="backPageContext"/>
-	    <binding name="disabled" expression="!condBack"/>
-	</component>
+    <component id="linkPage" type="DirectLink">
+        <binding name="listener" expression="listeners.changePage"/>
+        <binding name="parameters" expression="displayPageContext"/>
+    </component>
 
-	<component id="linkFwd" type="DirectLink">
-	    <binding name="listener" expression="listeners.changePage"/>
-	    <binding name="parameters" expression="fwdPageContext"/>
-	    <binding name="disabled" expression="!condFwd"/>
-	</component>
-	
-	<component id="linkLast" type="DirectLink">
-	    <binding name="listener" expression="listeners.changePage"/>
-	    <binding name="parameters" expression="lastPageContext"/>
-	    <binding name="disabled" expression="!condFwd"/>
-	</component>
-	
+    <component id="linkFirst" type="DirectLink">
+        <binding name="listener" expression="listeners.changePage"/>
+        <binding name="parameters" expression="firstPageContext"/>
+        <binding name="disabled" expression="!condBack"/>
+    </component>
+
+    <component id="linkBack" type="DirectLink">
+        <binding name="listener" expression="listeners.changePage"/>
+        <binding name="parameters" expression="backPageContext"/>
+        <binding name="disabled" expression="!condBack"/>
+    </component>
+
+    <component id="linkFwd" type="DirectLink">
+        <binding name="listener" expression="listeners.changePage"/>
+        <binding name="parameters" expression="fwdPageContext"/>
+        <binding name="disabled" expression="!condFwd"/>
+    </component>
+
+    <component id="linkLast" type="DirectLink">
+        <binding name="listener" expression="listeners.changePage"/>
+        <binding name="parameters" expression="lastPageContext"/>
+        <binding name="disabled" expression="!condFwd"/>
+    </component>
+
 </component-specification>

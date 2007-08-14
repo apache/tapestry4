@@ -28,21 +28,21 @@ public abstract class Any extends AbstractComponent
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         String element = isParameterBound("element") ? getElement() : getTemplateTagName();
-        
+
         boolean rewinding = cycle.isRewinding();
-        
+
         if (!rewinding)
         {
             writer.begin(element);
-            
+
             renderInformalParameters(writer, cycle);
-            
+
             if (getId() != null && !isParameterBound("id"))
                 renderIdAttribute(writer, cycle);
         }
-        
+
         renderBody(writer, cycle);
-        
+
         if (!rewinding)
         {
             writer.end();
