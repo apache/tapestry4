@@ -31,6 +31,8 @@ public interface RequestLocaleManager
     /**
      * Determines the locale to use for processing the current request. The
      * value is returned, but also stored as locale.
+     *
+     * @return The {@link Locale} to be used for this request.
      */
 
     Locale extractLocaleForCurrentRequest();

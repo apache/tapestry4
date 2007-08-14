@@ -26,7 +26,7 @@ import java.util.*;
 /**
  * Service tapestry.request.RequestLocaleManager. Identifies the Locale provided by the client
  * (either in a Tapestry-specific cookie, or interpolated from the HTTP header.
- * 
+ *
  * @author Howard Lewis Ship
  * @since 4.0
  */
@@ -69,6 +69,12 @@ public class RequestLocaleManagerImpl implements RequestLocaleManager
 
     private Map _localeCache = new HashMap();
 
+    /**
+     * Reference to last persisted locale, if any.  Used to prevent
+     * duplicate cookie writes of the same locale.
+     */
+    private Locale _lastPersisted;
+
     public void initializeService()
     {
         String[] names = TapestryUtils.split(_acceptedLocales);
@@ -79,7 +85,6 @@ public class RequestLocaleManagerImpl implements RequestLocaleManager
         _defaultLocale = getLocale(names[0]);
 
         _acceptedLocaleNamesSet.addAll(Arrays.asList(names));
-
     }
 
     public Locale extractLocaleForCurrentRequest()
@@ -87,7 +92,7 @@ public class RequestLocaleManagerImpl implements RequestLocaleManager
         String localeName = _cookieSource.readCookieValue(TapestryConstants.LOCALE_COOKIE_NAME);
 
         String requestedLocale = (localeName != null) ? localeName : _request.getLocale().toString();
-        
+
         _requestLocale = filterRequestedLocale(requestedLocale);
 
         _threadLocale.setLocale(_requestLocale);
@@ -116,9 +121,10 @@ public class RequestLocaleManagerImpl implements RequestLocaleManager
 
         // now try "best match"
 
-        for (Iterator it = _acceptedLocaleNamesSet.iterator(); it.hasNext();) {
-
+        for (Iterator it = _acceptedLocaleNamesSet.iterator(); it.hasNext();)
+        {
             String locale = (String) it.next();
+
             if (locale.startsWith(localeName))
                 return getLocale(locale);
         }
@@ -137,10 +143,12 @@ public class RequestLocaleManagerImpl implements RequestLocaleManager
     {
         Locale locale = _threadLocale.getLocale();
 
-        if (locale.equals(_requestLocale))
+        if (locale.equals(_requestLocale)
+            || _lastPersisted != null && locale.equals(_lastPersisted))
             return;
 
         _cookieSource.writeCookieValue(TapestryConstants.LOCALE_COOKIE_NAME, locale.toString());
+        _lastPersisted = locale;
     }
 
     Locale getLocale(String name)

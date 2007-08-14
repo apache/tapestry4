@@ -78,7 +78,7 @@ import java.util.Locale;
  * available in JARs or WARs.</td>
  * </tr>
  * </table>
- * 
+ *
  * @author Howard Lewis Ship
  */
 
@@ -90,12 +90,12 @@ public abstract class AbstractEngine implements IEngine
      */
 
     public static final String VISIT_CLASS_PROPERTY_NAME = "org.apache.tapestry.visit-class";
-    
+
     private static final Log LOG = LogFactory.getLog(AbstractEngine.class);
 
     /**
      * The link to the world of HiveMind services.
-     * 
+     *
      * @since 4.0
      */
     private Infrastructure _infrastructure;
@@ -119,7 +119,7 @@ public abstract class AbstractEngine implements IEngine
 
     /**
      * Writes a detailed report of the exception to <code>System.err</code>.
-     * 
+     *
      * @see org.apache.tapestry.error.RequestExceptionReporter
      */
 
@@ -150,7 +150,7 @@ public abstract class AbstractEngine implements IEngine
 
     /**
      * Returns a service with the given name.
-     * 
+     *
      * @see Infrastructure#getServiceMap()
      * @see org.apache.tapestry.services.ServiceMap
      */
@@ -180,7 +180,8 @@ public abstract class AbstractEngine implements IEngine
      */
 
     protected void redirect(String pageName, IRequestCycle cycle,
-            ApplicationRuntimeException exception) throws IOException
+                            ApplicationRuntimeException exception)
+      throws IOException
     {
         IPage page = cycle.getPage(pageName);
 
@@ -194,7 +195,8 @@ public abstract class AbstractEngine implements IEngine
      * {@link org.apache.tapestry.services.ResponseRenderer#renderResponse(IRequestCycle)}.
      */
 
-    public void renderResponse(IRequestCycle cycle) throws IOException
+    public void renderResponse(IRequestCycle cycle)
+      throws IOException
     {
         _infrastructure.getResponseRenderer().renderResponse(cycle);
     }
@@ -203,7 +205,8 @@ public abstract class AbstractEngine implements IEngine
      * Delegate method for the servlet. Services the request.
      */
 
-    public void service(WebRequest request, WebResponse response) throws IOException
+    public void service(WebRequest request, WebResponse response)
+      throws IOException
     {
         IRequestCycle cycle = null;
         IEngineService service = null;
@@ -232,11 +235,10 @@ public abstract class AbstractEngine implements IEngine
             try
             {
                 service = cycle.getService();
+
                 // Let the service handle the rest of the request.
-                
+
                 service.service(cycle);
-                
-                return;
             }
             catch (PageRedirectException ex)
             {
@@ -279,19 +281,19 @@ public abstract class AbstractEngine implements IEngine
             }
         }
     }
-    
+
     /**
      * Handles {@link PageRedirectException} which involves executing
      * {@link IRequestCycle#activate(IPage)} on the target page (of the exception), until either a
      * loop is found, or a page succesfully activates.
      * <p>
      * This should generally not be overriden in subclasses.
-     * 
+     *
      * @since 3.0
      */
 
     protected void handlePageRedirectException(IRequestCycle cycle, PageRedirectException exception)
-            throws IOException
+      throws IOException
     {
         List pageNames = new ArrayList();
 
@@ -344,12 +346,12 @@ public abstract class AbstractEngine implements IEngine
      * implementation (probably a good idea, because the default page hints at "application errors"
      * and isn't localized). The overriding StaleLink implementation must implement a message
      * property of type String.
-     * 
+     *
      * @since 0.2.10
      */
 
     protected void handleStaleLinkException(IRequestCycle cycle, StaleLinkException exception)
-            throws IOException
+      throws IOException
     {
         _infrastructure.getStaleLinkExceptionPresenter().presentStaleLinkException(cycle, exception);
     }
@@ -363,12 +365,12 @@ public abstract class AbstractEngine implements IEngine
      * Subclasses may overide this method (without invoking this implementation), but it is better
      * to override the tapestry.error.StaleSessionExceptionReporter service instead (or contribute a
      * replacement to the tapestry.InfrastructureOverrides configuration point).
-     * 
+     *
      * @since 0.2.10
      */
 
     protected void handleStaleSessionException(IRequestCycle cycle, StaleSessionException exception)
-            throws IOException
+      throws IOException
     {
         _infrastructure.getStaleSessionExceptionPresenter().presentStaleSessionException(cycle, exception);
     }
@@ -401,7 +403,7 @@ public abstract class AbstractEngine implements IEngine
     /**
      * {@inheritDoc}
      */
-    
+
     public String toString()
     {
         ToStringBuilder builder = new ToStringBuilder(this);
@@ -453,7 +455,7 @@ public abstract class AbstractEngine implements IEngine
 
     /**
      * Allows subclasses to include listener methods easily.
-     * 
+     *
      * @since 1.0.2
      */
 
@@ -467,7 +469,7 @@ public abstract class AbstractEngine implements IEngine
 
     /**
      * Invoked when a {@link RedirectException} is thrown during the processing of a request.
-     * 
+     *
      * @throws ApplicationRuntimeException
      *             if an {@link IOException},{@link ServletException}is thrown by the redirect,
      *             or if no {@link javax.servlet.RequestDispatcher} can be found for local resource.
@@ -480,7 +482,7 @@ public abstract class AbstractEngine implements IEngine
 
         if (LOG.isDebugEnabled())
             LOG.debug("Redirecting to: " + location);
-        
+
         _infrastructure.getRequest().forward(location);
     }
 
