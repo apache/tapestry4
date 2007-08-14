@@ -34,14 +34,14 @@ import java.util.Iterator;
 /**
  * Service that creates instances of {@link org.apache.tapestry.IRequestCycle}on behalf of an
  * engine.
- * 
+ *
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class RequestCycleFactoryImpl implements RequestCycleFactory
 {
     private ServiceEncoder[] _encoders;
-    
+
     private PropertyPersistenceStrategySource _strategySource;
 
     private ErrorHandler _errorHandler;
@@ -55,37 +55,37 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
     private RequestGlobals _requestGlobals;
 
     private ResponseDelegateFactory _responseDelegateFactory;
-    
+
     public void initializeService()
     {
         _environment = new RequestCycleEnvironment(_errorHandler, _infrastructure, _strategySource,
-                _absoluteURLBuilder);
+                                                   _absoluteURLBuilder);
     }
 
     public IRequestCycle newRequestCycle(IEngine engine)
     {
         WebRequest request = _infrastructure.getRequest();
-        
+
         QueryParameterMap parameters = extractParameters(request);
-        
+
         decodeParameters(request.getActivationPath(), request.getPathInfo(), parameters);
-        
+
         String serviceName = findService(parameters);
-        
+
         IRequestCycle cycle = new RequestCycle(engine, parameters, serviceName, _environment);
-        
+
         _requestGlobals.store(cycle);
-        
+
         try {
-            
+
             _requestGlobals.store(_responseDelegateFactory.getResponseBuilder(cycle));
-            
+
             cycle.setResponseBuilder(_requestGlobals.getResponseBuilder());
-            
+
         } catch (IOException e) {
             throw new ApplicationRuntimeException("Error creating response builder.", e);
         }
-        
+
         return cycle;
     }
 
@@ -165,7 +165,7 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
     {
         _requestGlobals = requestGlobals;
     }
-    
+
     /**
      * For injection.
      */

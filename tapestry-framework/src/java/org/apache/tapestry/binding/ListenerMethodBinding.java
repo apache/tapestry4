@@ -37,7 +37,7 @@ public class ListenerMethodBinding extends AbstractBinding implements IActionLis
     private IActionListener _listener;
 
     public ListenerMethodBinding(String description, ValueConverter valueConverter, Location location,
-            IComponent component, String methodName)
+                                 IComponent component, String methodName)
     {
         super(description, valueConverter, location);
 
@@ -89,11 +89,11 @@ public class ListenerMethodBinding extends AbstractBinding implements IActionLis
             throw ex;
         }
         catch (RuntimeException ex)
-        {   
+        {
             throw new BindingException(BindingMessages.listenerMethodFailure(
-                    _component,
-                    _methodName,
-                    ex), _component, getLocation(), this, ex);
+              _component,
+              _methodName,
+              ex), _component, getLocation(), this, ex);
         }
     }
 

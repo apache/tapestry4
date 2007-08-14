@@ -77,9 +77,13 @@ public class InfrastructureImpl implements Infrastructure
 
     private String _outputEncoding;
 
+    private RequestLocaleManager _localeManager;
+
     public void setLocale(Locale locale)
     {
         _threadLocale.setLocale(locale);
+        
+        _localeManager.persistLocale();
     }
 
     public String getApplicationId()
@@ -384,6 +388,11 @@ public class InfrastructureImpl implements Infrastructure
     public void setOverrideContributions(List overrideContributions)
     {
         _overrideContributions = overrideContributions;
+    }
+
+    public void setLocaleManager(RequestLocaleManager manager)
+    {
+        _localeManager = manager;
     }
 
     public void setErrorLog(ErrorLog errorLog)
