@@ -31,42 +31,42 @@ import java.io.PrintWriter;
 
 /**
  * Manages normal html responses for tapestry request/response cycles.
- * 
+ *
  * @author jkuhnert
  */
 public class DefaultResponseBuilder implements ResponseBuilder
-{   
+{
     private final AssetFactory _assetFactory;
-    
+
     private final String _namespace;
-    
+
     private PageRenderSupportImpl _prs;
-    
+
     private RequestLocaleManager _localeManager;
-    
+
     private MarkupWriterSource _markupWriterSource;
 
     private WebResponse _webResponse;
-    
+
     /** Default writer for rendering html output. */
     private IMarkupWriter _writer;
-    
+
     private boolean _closeWriter = true;
-    
+
     /**
      * Portlet constructor.
-     * 
+     *
      * @param writer
      */
-    public DefaultResponseBuilder(IMarkupWriter writer, 
-            AssetFactory assetFactory, String namespace, boolean closeWriter)
+    public DefaultResponseBuilder(IMarkupWriter writer,
+                                  AssetFactory assetFactory, String namespace, boolean closeWriter)
     {
         _writer = writer;
         _assetFactory = assetFactory;
         _namespace = namespace;
         _closeWriter = closeWriter;
     }
-    
+
     /**
      * Used in testing only.
      * @param writer
@@ -77,58 +77,57 @@ public class DefaultResponseBuilder implements ResponseBuilder
         _assetFactory = null;
         _namespace = null;
     }
-    
+
     /**
      * Creates a new response builder with the required services it needs
      * to render the response when {@link #renderResponse(IRequestCycle)} is called.
-     * 
-     * @param localeManager 
+     *
+     * @param localeManager
      *          Used to set the locale on the response.
      * @param markupWriterSource
      *          Creates IMarkupWriter instance to be used.
      * @param webResponse
      *          Web response for output stream.
      */
-    public DefaultResponseBuilder(RequestLocaleManager localeManager, 
-            MarkupWriterSource markupWriterSource, WebResponse webResponse,
-            AssetFactory assetFactory, String namespace)
+    public DefaultResponseBuilder(RequestLocaleManager localeManager,
+                                  MarkupWriterSource markupWriterSource, WebResponse webResponse,
+                                  AssetFactory assetFactory, String namespace)
     {
         Defense.notNull(assetFactory, "assetService");
-        
+
         _localeManager = localeManager;
         _markupWriterSource = markupWriterSource;
         _webResponse = webResponse;
-        
+
         // Used by PageRenderSupport
-        
+
         _assetFactory = assetFactory;
         _namespace = namespace;
     }
-    
+
     /**
-     * 
+     *
      * {@inheritDoc}
      */
     public boolean isDynamic()
     {
         return false;
     }
-    
+
     /**
-     * 
+     *
      * {@inheritDoc}
      */
     public void renderResponse(IRequestCycle cycle)
-    throws IOException
+      throws IOException
     {
-        if (_writer == null) {
-            
+        if (_writer == null)
+        {
             _localeManager.persistLocale();
-            
+
             IPage page = cycle.getPage();
 
             ContentType contentType = page.getResponseContentType();
-
             String encoding = contentType.getParameter(ENCODING_KEY);
 
             if (encoding == null)
@@ -137,39 +136,39 @@ public class DefaultResponseBuilder implements ResponseBuilder
 
                 contentType.setParameter(ENCODING_KEY, encoding);
             }
-            
+
             PrintWriter printWriter = _webResponse.getPrintWriter(contentType);
-            
+
             _writer = _markupWriterSource.newMarkupWriter(printWriter, contentType);
         }
-        
+
         // render response
-        
+
         _prs = new PageRenderSupportImpl(_assetFactory, _namespace, cycle.getPage().getLocation(), this);
-        
+
         TapestryUtils.storePageRenderSupport(cycle, _prs);
-        
+
         cycle.renderPage(this);
-        
+
         TapestryUtils.removePageRenderSupport(cycle);
-        
+
         flush();
 
         if (_closeWriter)
             _writer.close();
     }
-    
+
     public void flush()
-    throws IOException
+      throws IOException
     {
         // Important - causes any cookies stored to properly be written out before the
         // rest of the response starts being written - see TAPESTRY-825
 
         _writer.flush();
     }
-    
+
     /**
-     * 
+     *
      * {@inheritDoc}
      */
     public void render(IMarkupWriter writer, IRender render, IRequestCycle cycle)
@@ -179,22 +178,22 @@ public class DefaultResponseBuilder implements ResponseBuilder
         else
             render.render(writer, cycle);
     }
-    
-    /** 
+
+    /**
      * {@inheritDoc}
      */
     public void updateComponent(String id)
     {
     }
-    
-    /** 
+
+    /**
      * {@inheritDoc}
      */
     public boolean contains(IComponent target)
     {
         return false;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -203,29 +202,29 @@ public class DefaultResponseBuilder implements ResponseBuilder
         return false;
     }
 
-    /** 
+    /**
      * {@inheritDoc}
      */
     public IMarkupWriter getWriter()
     {
         if (_writer == null)
             return NullWriter.getSharedInstance();
-        
+
         return _writer;
     }
-    
-    /** 
+
+    /**
      * {@inheritDoc}
      */
     public IMarkupWriter getWriter(String id, String type)
     {
         if (_writer == null)
             return NullWriter.getSharedInstance();
-        
+
         return _writer;
     }
-    
-    /** 
+
+    /**
      * {@inheritDoc}
      */
     public boolean isBodyScriptAllowed(IComponent target)
@@ -233,7 +232,7 @@ public class DefaultResponseBuilder implements ResponseBuilder
         return true;
     }
 
-    /** 
+    /**
      * {@inheritDoc}
      */
     public boolean isExternalScriptAllowed(IComponent target)
@@ -241,14 +240,14 @@ public class DefaultResponseBuilder implements ResponseBuilder
         return true;
     }
 
-    /** 
+    /**
      * {@inheritDoc}
      */
     public boolean isInitializationScriptAllowed(IComponent target)
     {
         return true;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -256,7 +255,7 @@ public class DefaultResponseBuilder implements ResponseBuilder
     {
         return true;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -264,7 +263,7 @@ public class DefaultResponseBuilder implements ResponseBuilder
     {
         return _prs.getPreloadedImageReference(target, source);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -296,7 +295,7 @@ public class DefaultResponseBuilder implements ResponseBuilder
     {
         _prs.addBodyScript(script);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -329,6 +328,11 @@ public class DefaultResponseBuilder implements ResponseBuilder
         _prs.addInitializationScript(script);
     }
 
+    public void addScriptAfterInitialization(IComponent target, String script)
+    {
+        _prs.addScriptAfterInitialization(target, script);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -336,7 +340,7 @@ public class DefaultResponseBuilder implements ResponseBuilder
     {
         return _prs.getUniqueString(baseValue);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -344,7 +348,7 @@ public class DefaultResponseBuilder implements ResponseBuilder
     {
         _prs.writeBodyScript(writer, cycle);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -352,8 +356,8 @@ public class DefaultResponseBuilder implements ResponseBuilder
     {
         _prs.writeInitializationScript(writer);
     }
-    
-    /** 
+
+    /**
      * {@inheritDoc}
      */
     public void beginBodyScript(IMarkupWriter writer, IRequestCycle cycle)
@@ -363,8 +367,8 @@ public class DefaultResponseBuilder implements ResponseBuilder
         writer.printRaw("<!--");
         writer.println();
     }
-    
-    /** 
+
+    /**
      * {@inheritDoc}
      */
     public void endBodyScript(IMarkupWriter writer, IRequestCycle cycle)
@@ -374,7 +378,7 @@ public class DefaultResponseBuilder implements ResponseBuilder
         writer.end();
     }
 
-    /** 
+    /**
      * {@inheritDoc}
      */
     public void writeBodyScript(IMarkupWriter writer, String script, IRequestCycle cycle)
@@ -382,37 +386,37 @@ public class DefaultResponseBuilder implements ResponseBuilder
         writer.printRaw(script);
     }
 
-    /** 
+    /**
      * {@inheritDoc}
      */
     public void writeExternalScript(IMarkupWriter writer, String url, IRequestCycle cycle)
-    {        
+    {
         writer.begin("script");
         writer.attribute("type", "text/javascript");
         writer.attribute("src", url);
         writer.end();
         writer.println();
     }
-    
-    /** 
+
+    /**
      * {@inheritDoc}
      */
     public void writeImageInitializations(IMarkupWriter writer, String script, String preloadName, IRequestCycle cycle)
     {
-        
+
         writer.println();
         writer.printRaw("dojo.addOnLoad(function(e) {\n");
-        
+
         writer.printRaw(preloadName + " = [];\n");
         writer.printRaw("if (document.images)\n");
         writer.printRaw("{\n");
         writer.printRaw(script);
         writer.printRaw("}\n");
-        
+
         writer.printRaw("});");
     }
-    
-    /** 
+
+    /**
      * {@inheritDoc}
      */
     public void writeInitializationScript(IMarkupWriter writer, String script)
@@ -420,13 +424,13 @@ public class DefaultResponseBuilder implements ResponseBuilder
         writer.begin("script");
         writer.attribute("type", "text/javascript");
         writer.printRaw("<!--\n");
-        
+
         writer.printRaw("dojo.addOnLoad(function(e) {\n");
-        
+
         writer.printRaw(script);
-        
+
         writer.printRaw("});");
-        
+
         writer.printRaw("\n// -->");
         writer.end();
     }

@@ -14,17 +14,18 @@
 
 package org.apache.tapestry.junit.script;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IScriptProcessor;
 import org.apache.tapestry.util.IdAllocator;
+import org.apache.tapestry.util.PageRenderSupportImpl;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Used by {@link org.apache.tapestry.junit.script.TestScript}.
- * 
+ *
  * @author Howard Lewis Ship
  * @since 3.0
  */
@@ -33,6 +34,8 @@ public class MockScriptProcessor implements IScriptProcessor
     private StringBuffer _body;
 
     private StringBuffer _initialization;
+
+    private StringBuffer _postInitialization;
 
     private List _externalScripts;
 
@@ -48,7 +51,7 @@ public class MockScriptProcessor implements IScriptProcessor
             _externalScripts.clear();
         _idAllocator.clear();
     }
-    
+
     public void addBodyScript(String script)
     {
         addBodyScript(null, script);
@@ -61,7 +64,7 @@ public class MockScriptProcessor implements IScriptProcessor
 
         _body.append(script);
     }
-    
+
     public String getBody()
     {
         if (_body == null)
@@ -82,20 +85,29 @@ public class MockScriptProcessor implements IScriptProcessor
 
         _initialization.append(script);
     }
-    
+
+    public void addScriptAfterInitialization(IComponent target, String script)
+    {
+        if (_postInitialization == null)
+            _postInitialization = new StringBuffer();
+
+        _postInitialization.append(script);
+    }
+
     public String getInitialization()
     {
-        if (_initialization == null)
+        if (_initialization == null && _postInitialization == null)
             return null;
 
-        return _initialization.toString();
+        return PageRenderSupportImpl.getContent(_initialization)
+               + PageRenderSupportImpl.getContent(_postInitialization);
     }
 
     public void addExternalScript(Resource scriptResource)
     {
         addExternalScript(null, scriptResource);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -124,7 +136,7 @@ public class MockScriptProcessor implements IScriptProcessor
     {
         if (_externalScripts == null)
             _externalScripts = new ArrayList();
-        
+
         _externalScripts.add(scriptResource);
     }
 

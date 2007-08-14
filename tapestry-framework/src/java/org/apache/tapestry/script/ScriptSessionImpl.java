@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.script;
 
-import java.util.Map;
-
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
@@ -23,13 +21,15 @@ import org.apache.tapestry.IScriptProcessor;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.services.ExpressionEvaluator;
 
+import java.util.Map;
+
 /**
  * The result of executing a script, the session is used during the parsing
  * process as well. Following
  * {@link org.apache.tapestry.IScript#execute(IComponent, org.apache.tapestry.IRequestCycle, org.apache.tapestry.IScriptProcessor, java.util.Map)},
  * the session provides access to output symbols as well as the body and
  * initialization blocks created by the script tokens.
- * 
+ *
  * @author Howard Lewis Ship
  * @since 0.2.9
  */
@@ -52,11 +52,11 @@ public class ScriptSessionImpl implements ScriptSession
     private ValueConverter _valueConverter;
 
     private IComponent _component;
-    
+
     public ScriptSessionImpl(Resource scriptTemplateResource,
-            IRequestCycle cycle, IScriptProcessor processor,
-            ExpressionEvaluator evaluator, ValueConverter valueConverter,
-            Map symbols)
+                             IRequestCycle cycle, IScriptProcessor processor,
+                             ExpressionEvaluator evaluator, ValueConverter valueConverter,
+                             Map symbols)
     {
         _scriptTemplateResource = scriptTemplateResource;
         _cycle = cycle;
@@ -65,12 +65,12 @@ public class ScriptSessionImpl implements ScriptSession
         _evaluator = evaluator;
         _valueConverter = valueConverter;
     }
-    
+
     public ScriptSessionImpl(Resource scriptTemplateResource,
-            IComponent component, 
-            IRequestCycle cycle, IScriptProcessor processor,
-            ExpressionEvaluator evaluator, ValueConverter valueConverter,
-            Map symbols)
+                             IComponent component,
+                             IRequestCycle cycle, IScriptProcessor processor,
+                             ExpressionEvaluator evaluator, ValueConverter valueConverter,
+                             Map symbols)
     {
         _scriptTemplateResource = scriptTemplateResource;
         _component = component;
@@ -112,7 +112,7 @@ public class ScriptSessionImpl implements ScriptSession
     {
         addBodyScript(_component, script);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -142,12 +142,12 @@ public class ScriptSessionImpl implements ScriptSession
         if (_processor.isBodyScriptAllowed(target))
             _processor.addBodyScript(target, script);
     }
-    
+
     public void addExternalScript(Resource resource)
     {
         addExternalScript(_component, resource);
     }
-    
+
     public void addExternalScript(IComponent target, Resource resource)
     {
         if (_processor.isExternalScriptAllowed(target))
@@ -163,6 +163,12 @@ public class ScriptSessionImpl implements ScriptSession
     {
         if (_processor.isInitializationScriptAllowed(target))
             _processor.addInitializationScript(target, script);
+    }
+
+    public void addScriptAfterInitialization(IComponent target, String script)
+    {
+        if (_processor.isInitializationScriptAllowed(target))
+            _processor.addScriptAfterInitialization(target, script);
     }
 
     public String getUniqueString(String baseValue)

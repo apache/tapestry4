@@ -30,7 +30,10 @@ public interface PageRenderSupport extends IScriptProcessor
      * a snippet of JavaScript expression that can be inserted into some larger block of JavaScript
      * as a function parameter, or as a property assignment. A typical return value might be
      * <code>tapestry_preload[7].src</code>.
-     * 
+     *
+     * @param url
+     *          The url to the resource to be preloaded.
+     * @return Reference to preload image url.
      * @deprecated To be removed in 4.2, use {@link #getPreloadedImageReference(IComponent, String)} 
      *              or {@link #getPreloadedImageReference(IComponent, IAsset)} instead.
      */
@@ -55,8 +58,11 @@ public interface PageRenderSupport extends IScriptProcessor
      * as a function parameter, or as a property assignment. A typical return value might be
      * <code>tapestry_preload[7].src</code>.
      * 
-     * @param target The component url being loaded for
-     * @param url The asset URL to preload
+     * @param target
+     *          The component url being loaded for.
+     * @param url
+     *          The asset URL to preload.
+     * @return Reference to preload image url.
      */
     
     String getPreloadedImageReference(IComponent target, String url);

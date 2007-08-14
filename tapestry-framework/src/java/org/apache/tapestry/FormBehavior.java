@@ -34,9 +34,14 @@ public interface FormBehavior
     /**
      * Adds an additional event handler. The type determines when the handler will be invoked,
      * {@link FormEventType#SUBMIT}is most typical.
+     *
+     * @param type
+     *          Type of event to add.
+     * @param functionName
+     *          Name of the javascript function being added.
      * 
      * @deprecated Wiring of form event handlers is now managed on the client side. This method may
-     *             be removed in a future release of Tapestry.
+     *             be removed in Tapestry 4.1.2.
      */
     void addEventHandler(FormEventType type, String functionName);
 
@@ -47,6 +52,11 @@ public interface FormBehavior
      * <p>
      * It is acceptible to add multiple hidden fields with the same name. They will be written in
      * the order they are received.
+     *
+     * @param name
+     *          The name of the hidden input.
+     * @param value
+     *          The value to store in the hidden field.
      */
 
     void addHiddenValue(String name, String value);
@@ -58,7 +68,13 @@ public interface FormBehavior
      * <p>
      * It is acceptible to add multiple hidden fields with the same name. They will be written in
      * the order they are received.
-     * 
+     *
+     * @param name
+     *          The name of the hidden input.
+     * @param id
+     *          The id of the hidden input - should almost always be the same as the name.
+     * @param value
+     *          The value to store in the hidden field.
      * @since 3.0
      */
 
@@ -70,9 +86,16 @@ public interface FormBehavior
      * <p>
      * Simply invokes {@link #getElementId(IFormComponent, String)}with the component's id.
      * <p>
-     * Note: yes, some confusion on naming here. This is the form element id, which should be (for
+     *
+     * <p>Note: yes, some confusion on naming here. This is the form element id, which should be (for
      * Tapestry purposes) unique within the rendered form. The {@link IFormComponent#getClientId()}
      * is different, and should be unique within the rendered page.
+     * </p>
+     *
+     * @param component
+     *          The component to get the unique id of.
+     * @return The unique id for this component, to be used in rendering name="id" type elements.
+     *
      */
 
     String getElementId(IFormComponent component);
@@ -85,7 +108,13 @@ public interface FormBehavior
      * {@link org.apache.tapestry.form.ImageSubmit}) have more specific control over their names.
      * <p>
      * Invokes {@link IFormComponent#setName(String)}with the result, as well as returning it.
-     * 
+     *
+     * @param component
+     *          The component to generate an element id for.
+     * @param baseId
+     *          The basic id of the component.
+     * @return The form specific unique identifier for the given element.  May be the same as the baseId
+     *          if this is the first render of that specific component.
      * @throws StaleLinkException
      *             if, when the form itself is rewinding, the element id allocated does not match
      *             the expected id (as allocated when the form rendered). This indicates that the
@@ -98,6 +127,9 @@ public interface FormBehavior
     /**
      * Used internally to "peek" at what the next generated client id will be for the 
      * given component when it renders. Similar to the logic found in {@link IRequestCycle#peekUniqueId(String)}.
+     *
+     * @param component
+     *          The component to determine the next client id for.
      * 
      * @return The next possible client ID for the component.
      */
@@ -106,13 +138,17 @@ public interface FormBehavior
     /**
      * Returns true if the form is rewinding (meaning, the form was the subject of the request
      * cycle).
+     *
+     * @return True if the form is rewinding, false otherwise.
      */
 
     boolean isRewinding();
 
     /**
      * May be invoked by a component to force the encoding type of the form to a particular value.
-     * 
+     *
+     * @param encodingType
+     *          The encoding type to set.
      * @see org.apache.tapestry.form.Upload
      * @throws ApplicationRuntimeException
      *             if the current encoding type is not null and doesn't match the provided encoding
@@ -142,6 +178,11 @@ public interface FormBehavior
      * Invoked by a form control component (a field) that may have been pre-rendered. If the field
      * was pre-rendered, then the buffered output is printed into the writer and true is returned.
      * Otherwise, false is returned.
+     *
+     * @param writer
+     *          The markup writer to render with. (may be ignored during dynamic requests)
+     * @param field
+     *          The component to check for pre-rendering.
      * 
      * @return true if the field was pre-rendered and should do nothing during its render phase,
      *         false if the field should continue as normal.

@@ -42,7 +42,9 @@ tapestry.form={
 		
 		var f=dojo.widget.byId(field);
 		if(f && !dj_undef("focus", f)){
-			f.focus();
+			if (dojo.html.isVisible(f)){
+				f.focus();
+			}
 			return;
 		} else {
 			f = dojo.byId(field);

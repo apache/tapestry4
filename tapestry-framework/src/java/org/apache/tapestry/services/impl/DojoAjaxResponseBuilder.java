@@ -13,27 +13,11 @@
 // limitations under the License.
 package org.apache.tapestry.services.impl;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IForm;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRender;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.NestedMarkupWriter;
-import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.*;
 import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.NullWriter;
@@ -47,35 +31,39 @@ import org.apache.tapestry.util.PageRenderSupportImpl;
 import org.apache.tapestry.util.ScriptUtils;
 import org.apache.tapestry.web.WebResponse;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.*;
+
 
 /**
  * Main class that handles dojo based ajax responses. These responses are wrapped
  * by an xml document format that segments off invididual component/javascript response
  * types into easy to manage xml elements that can then be interpreted and managed by 
  * running client-side javascript.
- * 
+ *
  */
 public class DojoAjaxResponseBuilder implements ResponseBuilder
 {
     private static final Log _log = LogFactory.getLog(DojoAjaxResponseBuilder.class);
 
-	private static final String NEWLINE = System.getProperty("line.separator");
-    
+    private static final String NEWLINE = System.getProperty("line.separator");
+
     private final AssetFactory _assetFactory;
-    
+
     private final String _namespace;
-    
+
     private PageRenderSupportImpl _prs;
-    
+
     // used to create IMarkupWriter
     private RequestLocaleManager _localeManager;
     private MarkupWriterSource _markupWriterSource;
     private WebResponse _response;
-    
+
     private List _errorPages;
-    
+
     private ContentType _contentType;
-    
+
     // our response writer
     private IMarkupWriter _writer;
     // Parts that will be updated.
@@ -84,17 +72,17 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     private Map _writers = new HashMap();
     // List of status messages.
     private List _statusMessages;
-    
+
     private IRequestCycle _cycle;
-    
+
     private IEngineService _pageService;
-    
+
     /**
      * Keeps track of renders involving a whole page response, such 
      * as exception pages or pages activated via {@link IRequestCycle#activate(IPage)}.
      */
     private boolean _pageRender = false;
-    
+
     /**
      * Used to keep track of whether or not the appropriate xml response start
      * block has been started.
@@ -154,7 +142,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      *
      * @param cycle
      *          The current request.
-     * @param localeManager 
+     * @param localeManager
      *          Used to set the locale on the response.
      * @param markupWriterSource
      *          Creates IJSONWriter instance to be used.
@@ -169,42 +157,42 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      * @param pageService
      *          {@link org.apache.tapestry.engine.PageService} used to generate page urls.
      */
-    public DojoAjaxResponseBuilder(IRequestCycle cycle, 
-            RequestLocaleManager localeManager, 
-            MarkupWriterSource markupWriterSource,
-            WebResponse webResponse, List errorPages, 
-            AssetFactory assetFactory, String namespace, IEngineService pageService)
+    public DojoAjaxResponseBuilder(IRequestCycle cycle,
+                                   RequestLocaleManager localeManager,
+                                   MarkupWriterSource markupWriterSource,
+                                   WebResponse webResponse, List errorPages,
+                                   AssetFactory assetFactory, String namespace, IEngineService pageService)
     {
         Defense.notNull(cycle, "cycle");
         Defense.notNull(assetFactory, "assetService");
-        
+
         _cycle = cycle;
         _localeManager = localeManager;
         _markupWriterSource = markupWriterSource;
         _response = webResponse;
         _errorPages = errorPages;
         _pageService = pageService;
-        
+
         // Used by PageRenderSupport
-        
+
         _assetFactory = assetFactory;
         _namespace = namespace;
     }
-    
+
     /**
-     * 
+     *
      * {@inheritDoc}
      */
     public boolean isDynamic()
     {
         return true;
     }
-    
-    /** 
+
+    /**
      * {@inheritDoc}
      */
     public void renderResponse(IRequestCycle cycle)
-        throws IOException
+      throws IOException
     {
         // if response was already started
 
@@ -212,65 +200,66 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         {
             // clear out any previous input
             clearPartialWriters();
-            
+
             cycle.renderPage(this);
 
             TapestryUtils.removePageRenderSupport(cycle);
+            
             endResponse();
 
             _writer.close();
-            
+
             return;
         }
-        
+
         _localeManager.persistLocale();
         _contentType = new ContentType(CONTENT_TYPE + ";charset=" + cycle.getInfrastructure().getOutputEncoding());
-        
+
         String encoding = _contentType.getParameter(ENCODING_KEY);
-        
+
         if (encoding == null)
         {
             encoding = cycle.getEngine().getOutputEncoding();
-            
+
             _contentType.setParameter(ENCODING_KEY, encoding);
         }
-        
+
         if (_writer == null)
         {
             parseParameters(cycle);
-            
+
             PrintWriter printWriter = _response.getPrintWriter(_contentType);
             _writer = _markupWriterSource.newMarkupWriter(printWriter, _contentType);
         }
-        
+
         // render response
-        
+
         _prs = new PageRenderSupportImpl(_assetFactory, _namespace, cycle.getPage().getLocation(), this);
-        
+
         TapestryUtils.storePageRenderSupport(cycle, _prs);
-        
+
         cycle.renderPage(this);
-        
+
         TapestryUtils.removePageRenderSupport(cycle);
 
         endResponse();
-        
+
         _writer.close();
     }
-    
+
     public void flush()
-    throws IOException
+      throws IOException
     {
         // Important - causes any cookies stored to properly be written out before the
         // rest of the response starts being written - see TAPESTRY-825
-        
+
         _writer.flush();
-        
+
         if (!_responseStarted)
             beginResponse();
     }
-    
-    /** 
+
+    /**
      * {@inheritDoc}
      */
     public void updateComponent(String id)
@@ -278,76 +267,76 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         if (!_parts.contains(id))
             _parts.add(id);
     }
-    
-    /** 
+
+    /**
      * {@inheritDoc}
      */
     public IMarkupWriter getWriter()
     {
         return _writer;
     }
-    
+
     void setWriter(IMarkupWriter writer)
     {
         _writer = writer;
     }
-    
-    /** 
+
+    /**
      * {@inheritDoc}
      */
     public boolean isBodyScriptAllowed(IComponent target)
     {
         if (_pageRender)
             return true;
-        
-        if (target != null 
-                && IPage.class.isInstance(target)
-                || (IForm.class.isInstance(target)
+
+        if (target != null
+            && IPage.class.isInstance(target)
+            || (IForm.class.isInstance(target)
                 && ((IForm)target).isFormFieldUpdating()))
             return true;
-        
+
         return contains(target);
     }
-    
-    /** 
+
+    /**
      * {@inheritDoc}
      */
     public boolean isExternalScriptAllowed(IComponent target)
     {
         if (_pageRender)
             return true;
-        
-        if (target != null 
-                && IPage.class.isInstance(target)
-                || (IForm.class.isInstance(target)
+
+        if (target != null
+            && IPage.class.isInstance(target)
+            || (IForm.class.isInstance(target)
                 && ((IForm)target).isFormFieldUpdating()))
             return true;
-        
+
         return contains(target);
     }
-    
-    /** 
+
+    /**
      * {@inheritDoc}
      */
     public boolean isInitializationScriptAllowed(IComponent target)
     {
-        if (_log.isDebugEnabled()) {
-            
+        if (_log.isDebugEnabled())
+        {
             _log.debug("isInitializationScriptAllowed(" + target + ") contains?: " + contains(target) + " _pageRender: " + _pageRender);
         }
-        
+
         if (_pageRender)
             return true;
-        
-        if (target != null 
-                && IPage.class.isInstance(target)
-                || (IForm.class.isInstance(target)
+
+        if (target != null
+            && IPage.class.isInstance(target)
+            || (IForm.class.isInstance(target)
                 && ((IForm)target).isFormFieldUpdating()))
             return true;
-        
+
         return contains(target);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -355,16 +344,16 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     {
         if (_pageRender)
             return true;
-        
-        if (target != null 
-                && IPage.class.isInstance(target)
-                || (IForm.class.isInstance(target)
+
+        if (target != null
+            && IPage.class.isInstance(target)
+            || (IForm.class.isInstance(target)
                 && ((IForm)target).isFormFieldUpdating()))
             return true;
-        
+
         return contains(target);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -372,7 +361,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     {
         return _prs.getPreloadedImageReference(target, source);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -404,7 +393,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     {
         _prs.addBodyScript(script);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -437,6 +426,11 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         _prs.addInitializationScript(script);
     }
 
+    public void addScriptAfterInitialization(IComponent target, String script)
+    {
+        _prs.addScriptAfterInitialization(target, script);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -444,7 +438,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     {
         return _prs.getUniqueString(baseValue);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -452,7 +446,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     {
         _prs.writeBodyScript(writer, cycle);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -460,90 +454,90 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     {
         _prs.writeInitializationScript(writer);
     }
-    
-    /** 
+
+    /**
      * {@inheritDoc}
      */
     public void beginBodyScript(IMarkupWriter normalWriter, IRequestCycle cycle)
     {
         IMarkupWriter writer = getWriter(ResponseBuilder.BODY_SCRIPT, ResponseBuilder.SCRIPT_TYPE);
-        
+
         writer.begin("script");
         writer.printRaw(NEWLINE + "//<![CDATA[" + NEWLINE);
     }
-    
-    /** 
+
+    /**
      * {@inheritDoc}
      */
     public void endBodyScript(IMarkupWriter normalWriter, IRequestCycle cycle)
     {
         IMarkupWriter writer = getWriter(ResponseBuilder.BODY_SCRIPT, ResponseBuilder.SCRIPT_TYPE);
-        
+
         writer.printRaw(NEWLINE + "//]]>" + NEWLINE);
         writer.end();
     }
-    
-    /** 
+
+    /**
      * {@inheritDoc}
      */
     public void writeBodyScript(IMarkupWriter normalWriter, String script, IRequestCycle cycle)
     {
         IMarkupWriter writer = getWriter(ResponseBuilder.BODY_SCRIPT, ResponseBuilder.SCRIPT_TYPE);
-        
+
         writer.printRaw(script);
     }
-    
-    /** 
+
+    /**
      * {@inheritDoc}
      */
     public void writeExternalScript(IMarkupWriter normalWriter, String url, IRequestCycle cycle)
     {
         IMarkupWriter writer = getWriter(ResponseBuilder.INCLUDE_SCRIPT, ResponseBuilder.SCRIPT_TYPE);
-        
+
         // causes asset includes to be loaded dynamically into document head
         writer.beginEmpty("include");
         writer.attribute("url", url);
     }
-    
-    /** 
+
+    /**
      * {@inheritDoc}
      */
     public void writeImageInitializations(IMarkupWriter normalWriter, String script, String preloadName, IRequestCycle cycle)
     {
         IMarkupWriter writer = getWriter(ResponseBuilder.BODY_SCRIPT, ResponseBuilder.SCRIPT_TYPE);
-        
+
         writer.printRaw(NEWLINE + preloadName + " = [];" + NEWLINE);
         writer.printRaw("if (document.images) {" + NEWLINE);
-        
+
         writer.printRaw(script);
-        
+
         writer.printRaw("}" + NEWLINE);
     }
-    
-    /** 
+
+    /**
      * {@inheritDoc}
      */
     public void writeInitializationScript(IMarkupWriter normalWriter, String script)
     {
         IMarkupWriter writer = getWriter(ResponseBuilder.INITIALIZATION_SCRIPT, ResponseBuilder.SCRIPT_TYPE);
-        
+
         writer.begin("script");
-        
+
         // return is in XML so must escape any potentially non-xml compliant content
         writer.printRaw(NEWLINE + "//<![CDATA[" + NEWLINE);
-        
+
         writer.printRaw(script);
-        
+
         writer.printRaw(NEWLINE + "//]]>" + NEWLINE);
-        
+
         writer.end();
     }
-        
+
     public void addStatus(IMarkupWriter normalWriter, String text)
     {
         addStatusMessage(normalWriter, "info", text);
-    }  
-    
+    }
+
     /**
      * Adds a status message to the current response. This implementation keeps track
      * of all messages and appends them to the XHR response. On the client side, 
@@ -565,24 +559,24 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         {
             _statusMessages = new ArrayList();
         }
-        
+
         _statusMessages.add(category);
-        _statusMessages.add(text);        
+        _statusMessages.add(text);
     }
-    
+
     void writeStatusMessages() {
 
         for (int i=0; i < _statusMessages.size(); i+=2)
         {
             IMarkupWriter writer = getWriter((String) _statusMessages.get(i), "status");
 
-            writer.printRaw((String) _statusMessages.get(i+1));                
+            writer.printRaw((String) _statusMessages.get(i+1));
         }
-        
-        _statusMessages = null;            
+
+        _statusMessages = null;
     }
-    
-    /** 
+
+    /**
      * {@inheritDoc}
      */
     public void render(IMarkupWriter writer, IRender render, IRequestCycle cycle)
@@ -596,99 +590,100 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         }
 
         // check for page exception renders and write content to writer so client can display them
-        
+
         if (IPage.class.isInstance(render))
-        {    
+        {
             IPage page = (IPage)render;
             String errorPage = getErrorPage(page.getPageName());
-            
+
             if (errorPage != null)
-            {    
+            {
                 _pageRender = true;
-                
+
                 clearPartialWriters();
                 render.render(getWriter(errorPage, EXCEPTION_TYPE), cycle);
                 return;
             }
-            
+
             // If a page other than the active page originally requested is rendered
             // it means someone activated a new page, so we need to tell the client to handle
             // this appropriately. (usually by replacing the current dom with whatever this renders)
-            
+
             if (_cycle.getParameter(ServiceConstants.PAGE) != null
-                    && !page.getPageName().equals(_cycle.getParameter(ServiceConstants.PAGE)))
-            {    
+                && !page.getPageName().equals(_cycle.getParameter(ServiceConstants.PAGE)))
+            {
                 IMarkupWriter urlwriter = _writer.getNestedWriter();
-                
+
                 urlwriter.begin("response");
                 urlwriter.attribute("type", PAGE_TYPE);
                 urlwriter.attribute("url", _pageService.getLink(true, page.getPageName()).getAbsoluteURL());
-                
+
                 _writers.put(PAGE_TYPE, urlwriter);
                 return;
             }
         }
-        
+
         if (IComponent.class.isInstance(render)
-                && contains((IComponent)render, ((IComponent)render).peekClientId()))
+            && contains((IComponent)render, ((IComponent)render).peekClientId()))
         {
             render.render(getComponentWriter( ((IComponent)render).peekClientId() ), cycle);
             return;
         }
-        
+
         // Nothing else found, throw out response
-        
+
         render.render(NullWriter.getSharedInstance(), cycle);
     }
-    
+
     private String getErrorPage(String pageName)
     {
-        for (int i=0; i < _errorPages.size(); i++) {
+        for (int i=0; i < _errorPages.size(); i++)
+        {
             String page = (String)_errorPages.get(i);
 
             if (pageName.indexOf(page) > -1)
                 return page;
         }
-        
+
         return null;
     }
-    
+
     IMarkupWriter getComponentWriter(String id)
     {
         return getWriter(id, ELEMENT_TYPE);
     }
-    
+
     /**
-     * 
+     *
      * {@inheritDoc}
      */
     public IMarkupWriter getWriter(String id, String type)
     {
         Defense.notNull(id, "id can't be null");
-        
+
         if (!_responseStarted)
             beginResponse();
-        
+
         IMarkupWriter w = (IMarkupWriter)_writers.get(id);
-        if (w != null) 
+        if (w != null)
             return w;
-        
+
         // Make component write to a "nested" writer
         // so that element begin/ends don't conflict
         // with xml element response begin/ends. This is very
         // important.
-        
+
         IMarkupWriter nestedWriter = _writer.getNestedWriter();
         nestedWriter.begin("response");
         nestedWriter.attribute("id", id);
         if (type != null)
             nestedWriter.attribute("type", type);
-        
+
         _writers.put(id, nestedWriter);
-        
+
         return nestedWriter;
     }
-    
+
     /**
      * Called to start an ajax response. Writes xml doctype and starts
      * the <code>ajax-response</code> element that will contain all of
@@ -697,13 +692,14 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     void beginResponse()
     {
         _responseStarted = true;
-        
+
         _writer.printRaw("<?xml version=\"1.0\" encoding=\"" + _cycle.getInfrastructure().getOutputEncoding() + "\"?>");
         _writer.printRaw("<!DOCTYPE html "
-                + "PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" "
-                + "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\" [" + NEWLINE
-                + "<!ENTITY nbsp '&#160;'>" + NEWLINE
-                + "]>" + NEWLINE);
+                         + "PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" "
+                         + "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\" [" + NEWLINE
+                         + "<!ENTITY nbsp '&#160;'>" + NEWLINE
+                         + "]>" + NEWLINE);
+        
         _writer.printRaw("<ajax-response>");
     }
 
@@ -727,43 +723,43 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         {
             beginResponse();
         }
-        
+
         // write out captured content
-        
-        if (_statusMessages != null)        
+
+        if (_statusMessages != null)
             writeStatusMessages();
-        
+
         Iterator keys = _writers.keySet().iterator();
-        String buffer = null;
-        
-        while (keys.hasNext()) {
-            
+        String buffer;
+
+        while (keys.hasNext())
+        {
             String key = (String)keys.next();
             NestedMarkupWriter nw = (NestedMarkupWriter)_writers.get(key);
-                        
+
             buffer = nw.getBuffer();
-            
-            if (_log.isDebugEnabled()) {
-                
+
+            if (_log.isDebugEnabled())
+            {
                 _log.debug("Ajax markup buffer for key <" + key + " contains: " + buffer);
             }
-            
+
             if (!isScriptWriter(key))
                 _writer.printRaw(ScriptUtils.ensureValidScriptTags(buffer));
             else
                 _writer.printRaw(buffer);
         }
-        
+
         // end response
-        
+
         _writer.printRaw("</ajax-response>");
         _writer.flush();
     }
-    
+
     /**
      * Determines if the specified markup writer key is one of
      * the pre-defined script keys from ResponseBuilder.
-     * 
+     *
      * @param key
      *          The key to check.
      * @return True, if key is one of the ResponseBuilder keys. 
@@ -771,35 +767,35 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      */
     boolean isScriptWriter(String key)
     {
-        if (key == null) 
+        if (key == null)
             return false;
-        
+
         if (ResponseBuilder.BODY_SCRIPT.equals(key)
-                || ResponseBuilder.INCLUDE_SCRIPT.equals(key)
-                || ResponseBuilder.INITIALIZATION_SCRIPT.equals(key))
+            || ResponseBuilder.INCLUDE_SCRIPT.equals(key)
+            || ResponseBuilder.INITIALIZATION_SCRIPT.equals(key))
             return true;
-        
+
         return false;
     }
-    
+
     /**
      * Grabs the incoming parameters needed for json responses, most notable the
      * {@link ServiceConstants#UPDATE_PARTS} parameter.
-     * 
+     *
      * @param cycle
      *            The request cycle to parse from
      */
     void parseParameters(IRequestCycle cycle)
     {
         Object[] updateParts = cycle.getParameters(ServiceConstants.UPDATE_PARTS);
-        
+
         if (updateParts == null)
             return;
-        
+
         for(int i = 0; i < updateParts.length; i++)
             _parts.add(updateParts[i].toString());
     }
-    
+
     /**
      * Determines if the specified component is contained in the 
      * responses requested update parts.
@@ -809,32 +805,32 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      */
     public boolean contains(IComponent target)
     {
-        if (target == null) 
+        if (target == null)
             return false;
-        
+
         String id = target.getClientId();
-        
+
         return contains(target, id);
     }
-    
+
     boolean contains(IComponent target, String id)
     {
         if (_parts.contains(id))
             return true;
-        
+
         Iterator it = _cycle.renderStackIterator();
-        while (it.hasNext()) {
-            
+        while (it.hasNext())
+        {
             IComponent comp = (IComponent)it.next();
             String compId = comp.getClientId();
-            
+
             if (comp != target && _parts.contains(compId))
                 return true;
         }
-        
+
         return false;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -842,7 +838,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     {
         if (target == null)
             return false;
-        
+
         return _parts.contains(target.getId());
     }
 }

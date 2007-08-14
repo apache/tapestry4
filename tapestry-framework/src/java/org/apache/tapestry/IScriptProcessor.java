@@ -72,7 +72,22 @@ public interface IScriptProcessor
      *          The script to add.
      */
     void addInitializationScript(IComponent target, String script);
-    
+
+    /**
+     * Works in the same way as {@link #addInitializationScript(IComponent, String)} - except this
+     * method causes the script being added to appear <em>after</em> all of the script content written out
+     * from the normal initialization script processing happens.  This is useful if you have some initialization
+     * script logic that absolutely must happen at the very end of the rest of things.
+     *
+     * @see {@link #addInitializationScript(IComponent, String)}.
+     * 
+     * @param target
+     *          The component the script is being added for.
+     * @param script
+     *          The script to add.
+     */
+    void addScriptAfterInitialization(IComponent target, String script);
+
     /**
      * Adds an external script. The processor is expected to ensure that external scripts are only
      * loaded a single time per page.
