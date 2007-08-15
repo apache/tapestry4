@@ -21,7 +21,6 @@ import org.apache.hivemind.service.MethodSignature;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.engine.state.ApplicationStateManager;
 import org.apache.tapestry.event.PageDetachListener;
-import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.InjectSpecification;
 
 import java.lang.reflect.Modifier;
@@ -44,7 +43,7 @@ public class InjectStateWorker implements InjectEnhancementWorker
     private ApplicationStateManager _applicationStateManager;
 
     public void performEnhancement(EnhancementOperation op,
-                                   InjectSpecification spec, IComponentSpecification componentSpec)
+                                   InjectSpecification spec)
     {
         injectState(op, spec.getObject(), spec.getProperty(), spec.getLocation());
     }

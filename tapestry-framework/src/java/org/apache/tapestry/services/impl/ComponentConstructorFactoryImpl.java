@@ -15,11 +15,6 @@
 package org.apache.tapestry.services.impl;
 
 import edu.emory.mathcs.backport.java.util.concurrent.locks.ReentrantLock;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
@@ -35,18 +30,22 @@ import org.apache.tapestry.services.ComponentConstructor;
 import org.apache.tapestry.services.ComponentConstructorFactory;
 import org.apache.tapestry.spec.IComponentSpecification;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Implementation of the {@link org.apache.tapestry.services.ComponentConstructorFactory} service
  * interface.
- * 
+ *
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class ComponentConstructorFactoryImpl implements ComponentConstructorFactory,
-        ResetEventListener, ReportStatusListener
+                                                        ResetEventListener, ReportStatusListener
 {
     private final ReentrantLock _lock = new ReentrantLock();
-    
+
     private String _serviceId;
 
     private Log _log;
@@ -74,54 +73,53 @@ public class ComponentConstructorFactoryImpl implements ComponentConstructorFact
     public synchronized void reportStatus(ReportStatusEvent event)
     {
         event.title(_serviceId);
-        
+
         event.property("enhanced class count", _cachedConstructors.size());
         event.collection("enhanced classes", _cachedConstructors.keySet());
     }
 
     public ComponentConstructor getComponentConstructor(IComponentSpecification specification,
-            String className)
+                                                        String className)
     {
         Defense.notNull(specification, "specification");
-        
-        try {
-            
+
+        try
+        {
             _lock.lockInterruptibly();
-            
+
             ComponentConstructor result = (ComponentConstructor) _cachedConstructors.get(specification);
-            
-            if (result == null) {
-                
+
+            if (result == null)
+            {
                 Class baseClass = _classResolver.findClass(className);
-                
-                EnhancementOperationImpl eo = new EnhancementOperationImpl(_classResolver,
-                        specification, baseClass, _classFactory, _log);
-                
+
+                EnhancementOperationImpl eo = new EnhancementOperationImpl(_classResolver, specification, baseClass, _classFactory, _log);
+
                 // Invoking on the chain is the same as invoking on every
                 // object in the chain (because method performEnhancement() is type void).
-                
+
                 _chain.performEnhancement(eo, specification);
-                
+
                 result = eo.getConstructor();
-                
+
                 // TODO: This should be optional to work around that IBM JVM bug.
-                
+
                 _validator.validate(baseClass, result.getComponentClass(), specification);
-                
+
                 _cachedConstructors.put(specification, result);
             }
-            
+
             return result;
-            
-        } catch (InterruptedException e) {
-            
-           throw new ApplicationRuntimeException(e);
-        } finally {
-            
+
+        } catch (InterruptedException e)
+        {
+            throw new ApplicationRuntimeException(e);
+        } finally
+        {
             _lock.unlock();
         }
     }
-    
+
     public void setClassFactory(ClassFactory classFactory)
     {
         _classFactory = classFactory;

@@ -19,7 +19,6 @@ import org.apache.hivemind.Location;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.services.InjectedValueProvider;
-import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.InjectSpecification;
 
 import java.lang.reflect.Modifier;
@@ -27,7 +26,7 @@ import java.lang.reflect.Modifier;
 /**
  * Implementation for injection type "object" (the default). Adds read-only
  * properties to the enhanced class that contain objects injected from HiveMind.
- * 
+ *
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
@@ -36,8 +35,7 @@ public class InjectObjectWorker implements InjectEnhancementWorker
 
     private InjectedValueProvider _provider;
 
-    public void performEnhancement(EnhancementOperation op,
-                                   InjectSpecification is, IComponentSpecification componentSpec)
+    public void performEnhancement(EnhancementOperation op, InjectSpecification is)
     {
         String name = is.getProperty();
         String objectReference = is.getObject();
@@ -47,7 +45,7 @@ public class InjectObjectWorker implements InjectEnhancementWorker
     }
 
     public void injectObject(EnhancementOperation op, String objectReference,
-            String propertyName, Location location)
+                             String propertyName, Location location)
     {
         Defense.notNull(op, "op");
         Defense.notNull(propertyName, "propertyName");
@@ -60,22 +58,22 @@ public class InjectObjectWorker implements InjectEnhancementWorker
         op.claimReadonlyProperty(propertyName);
 
         Object injectedValue = _provider.obtainValue(objectReference, location);
-        
+
         if (injectedValue == null)
             throw new ApplicationRuntimeException(EnhanceMessages
-                    .locatedValueIsNull(objectReference), location, null);
-        
+              .locatedValueIsNull(objectReference), location, null);
+
         if (!propertyType.isInstance(injectedValue))
             throw new ApplicationRuntimeException(EnhanceMessages.incompatibleInjectType(objectReference, injectedValue, propertyType),
-                    location, null);
-        
+                                                  location, null);
+
         String fieldName = op.addInjectedField("_$" + propertyName,
-                propertyType, injectedValue);
-        
+                                               propertyType, injectedValue);
+
         String methodName = EnhanceUtils.createAccessorMethodName(propertyName);
 
         op.addMethod(Modifier.PUBLIC, new MethodSignature(propertyType,
-                methodName, null, null), "return " + fieldName + ";", location);
+                                                          methodName, null, null), "return " + fieldName + ";", location);
     }
 
     public void setProvider(InjectedValueProvider provider)

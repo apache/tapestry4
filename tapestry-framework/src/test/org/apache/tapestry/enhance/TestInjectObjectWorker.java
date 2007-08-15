@@ -84,7 +84,7 @@ public class TestInjectObjectWorker extends BaseComponentTestCase
         InjectObjectWorker w = new InjectObjectWorker();
         w.setProvider(p);
 
-        w.performEnhancement(op, spec, null);
+        w.performEnhancement(op, spec);
 
         verify();
     }
@@ -116,7 +116,7 @@ public class TestInjectObjectWorker extends BaseComponentTestCase
         InjectObjectWorker w = new InjectObjectWorker();
         w.setProvider(p);
 
-        w.performEnhancement(op, spec, null);
+        w.performEnhancement(op, spec);
 
         verify();
     }
@@ -149,7 +149,7 @@ public class TestInjectObjectWorker extends BaseComponentTestCase
 
         try
         {
-            w.performEnhancement(op, spec, null);
+            w.performEnhancement(op, spec);
             unreachable();
         }
         catch (ApplicationRuntimeException ex)
@@ -184,7 +184,7 @@ public class TestInjectObjectWorker extends BaseComponentTestCase
 
         try
         {
-            w.performEnhancement(op, spec, null);
+            w.performEnhancement(op, spec);
             unreachable();
 
         }
@@ -226,7 +226,7 @@ public class TestInjectObjectWorker extends BaseComponentTestCase
         InjectObjectWorker w = new InjectObjectWorker();
         w.setProvider(p);
         
-        w.performEnhancement(op, spec, null);
+        w.performEnhancement(op, spec);
 
         verify();
     }

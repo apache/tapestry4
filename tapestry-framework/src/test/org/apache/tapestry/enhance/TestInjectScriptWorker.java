@@ -69,7 +69,7 @@ public class TestInjectScriptWorker extends BaseComponentTestCase
         InjectScriptWorker worker = new InjectScriptWorker();
         worker.setSource(source);
 
-        worker.performEnhancement(op, is, null);
+        worker.performEnhancement(op, is);
 
         verify();
     }

@@ -77,7 +77,7 @@ public class TestDispatchToInjectWorker extends BaseComponentTestCase
         Map map = newMap("object", worker);
         IComponentSpecification spec = newSpec(is);
 
-        worker.performEnhancement(op, is, spec);
+        worker.performEnhancement(op, is);
 
         replay();
 
@@ -128,7 +128,7 @@ public class TestDispatchToInjectWorker extends BaseComponentTestCase
         Throwable t = new RuntimeException("Simulated failure.");
         ErrorLog log = newErrorLog();
 
-        worker.performEnhancement(op, is, spec);
+        worker.performEnhancement(op, is);
         expectLastCall().andThrow(t);
 
         expect(op.getBaseClass()).andReturn(BasePage.class);

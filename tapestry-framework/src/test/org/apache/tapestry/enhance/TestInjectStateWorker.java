@@ -106,7 +106,7 @@ public class TestInjectStateWorker extends BaseComponentTestCase
         InjectStateWorker w = new InjectStateWorker();
         w.setApplicationStateManager(asm);
 
-        w.performEnhancement(op, spec, null);
+        w.performEnhancement(op, spec);
 
         verify();
     }

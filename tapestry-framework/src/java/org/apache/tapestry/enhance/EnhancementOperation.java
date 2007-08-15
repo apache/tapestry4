@@ -16,6 +16,7 @@ package org.apache.tapestry.enhance;
 
 import org.apache.hivemind.Location;
 import org.apache.hivemind.service.MethodSignature;
+import org.apache.tapestry.spec.IComponentSpecification;
 
 import java.util.List;
 
@@ -212,4 +213,11 @@ public interface EnhancementOperation
      */
 
     boolean implementsInterface(Class interfaceClass);
+
+    /**
+     * The specification defined for the component class being enhanced.
+     *
+     * @return The specification for the component being enhanced.
+     */
+    IComponentSpecification getSpecification();
 }

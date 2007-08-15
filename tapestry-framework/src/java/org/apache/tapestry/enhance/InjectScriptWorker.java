@@ -22,7 +22,6 @@ import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.asset.AssetSource;
 import org.apache.tapestry.engine.IScriptSource;
-import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.InjectSpecification;
 
 import java.lang.reflect.Modifier;
@@ -39,13 +38,13 @@ public class InjectScriptWorker implements InjectEnhancementWorker
 
     private AssetSource _assetSource;
 
-    public void performEnhancement(EnhancementOperation op, InjectSpecification spec, IComponentSpecification componentSpec)
+    public void performEnhancement(EnhancementOperation op, InjectSpecification spec)
     {
         String propertyName = spec.getProperty();
         String scriptName = spec.getObject();
         Location location = spec.getLocation();
 
-        injectScript(op, propertyName, scriptName, location, componentSpec);
+        injectScript(op, propertyName, scriptName, location);
     }
 
     /**
@@ -60,12 +59,10 @@ public class InjectScriptWorker implements InjectEnhancementWorker
      * @param location
      *            the location of the specification; primarily used as the base location for finding
      *            the script.
-     * @param componentSpec
-     *          Component specification.
      */
 
     public void injectScript(EnhancementOperation op, String propertyName,
-                             String scriptName, Location location, IComponentSpecification componentSpec)
+                             String scriptName, Location location)
     {
         Defense.notNull(op, "op");
         Defense.notNull(propertyName, "propertyName");
@@ -86,7 +83,7 @@ public class InjectScriptWorker implements InjectEnhancementWorker
 
         if (resource.getResourceURL() == null)
         {
-            IAsset scriptAsset = _assetSource.findAsset(location.getResource(), componentSpec,
+            IAsset scriptAsset = _assetSource.findAsset(location.getResource(), op.getSpecification(),
                                                         scriptName, null, location);
 
             if (scriptAsset != null)

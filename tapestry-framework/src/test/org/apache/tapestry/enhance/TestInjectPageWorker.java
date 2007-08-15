@@ -49,7 +49,7 @@ public class TestInjectPageWorker extends BaseComponentTestCase
 
         try
         {
-            new InjectPageWorker().performEnhancement(op, is, null);
+            new InjectPageWorker().performEnhancement(op, is);
             unreachable();
         }
         catch (ApplicationRuntimeException ex)
@@ -101,7 +101,7 @@ public class TestInjectPageWorker extends BaseComponentTestCase
 
         InjectSpecification is = newSpec(l);
 
-        new InjectPageWorker().performEnhancement(op, is, null);
+        new InjectPageWorker().performEnhancement(op, is);
 
         verify();
     }
@@ -134,7 +134,7 @@ public class TestInjectPageWorker extends BaseComponentTestCase
 
         InjectSpecification is = newSpec(l);
 
-        new InjectPageWorker().performEnhancement(op, is, null);
+        new InjectPageWorker().performEnhancement(op, is);
 
         verify();
     }

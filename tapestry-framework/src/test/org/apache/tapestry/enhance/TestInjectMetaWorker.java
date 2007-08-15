@@ -86,7 +86,7 @@ public class TestInjectMetaWorker extends BaseComponentTestCase
 
         worker.setSource(source);
 
-        worker.performEnhancement(op, spec, null);
+        worker.performEnhancement(op, spec);
 
         verify();
     }
@@ -124,7 +124,7 @@ public class TestInjectMetaWorker extends BaseComponentTestCase
 
         worker.setSource(source);
 
-        worker.performEnhancement(op, spec, null);
+        worker.performEnhancement(op, spec);
 
         verify();
     }
@@ -163,7 +163,7 @@ public class TestInjectMetaWorker extends BaseComponentTestCase
 
         worker.setSource(source);
 
-        worker.performEnhancement(op, spec, null);
+        worker.performEnhancement(op, spec);
 
         verify();
     }
@@ -209,7 +209,7 @@ public class TestInjectMetaWorker extends BaseComponentTestCase
         worker.setSource(source);
         worker.setValueConverter(converter);
 
-        worker.performEnhancement(op, spec, null);
+        worker.performEnhancement(op, spec);
 
         verify();
     }
@@ -252,7 +252,7 @@ public class TestInjectMetaWorker extends BaseComponentTestCase
         worker.setSource(source);
         worker.setValueConverter(converter);
 
-        worker.performEnhancement(op, spec, null);
+        worker.performEnhancement(op, spec);
 
         verify();
     }
