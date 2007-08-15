@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * Iterates over the {@link org.apache.tapestry.spec.InjectSpecification}s and locates and
  * delegates to a {@link org.apache.tapestry.enhance.InjectEnhancementWorker} for each one.
- * 
+ *
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
@@ -42,11 +42,11 @@ public class DispatchToInjectWorker implements EnhancementWorker
         {
             InjectSpecification is = (InjectSpecification) i.next();
 
-            invokeWorker(op, is, spec);
+            invokeWorker(op, is);
         }
     }
 
-    private void invokeWorker(EnhancementOperation op, InjectSpecification spec, IComponentSpecification componentSpec)
+    private void invokeWorker(EnhancementOperation op, InjectSpecification spec)
     {
         try
         {
@@ -58,12 +58,12 @@ public class DispatchToInjectWorker implements EnhancementWorker
                 return;
             }
 
-            worker.performEnhancement(op, spec, componentSpec);
+            worker.performEnhancement(op, spec);
         }
         catch (Exception ex)
         {
-            _errorLog.error(EnhanceMessages.errorAddingProperty(spec.getProperty(), op.getBaseClass(), ex), 
-                    spec.getLocation(), ex);
+            _errorLog.error(EnhanceMessages.errorAddingProperty(spec.getProperty(), op.getBaseClass(), ex),
+                            spec.getLocation(), ex);
         }
     }
 

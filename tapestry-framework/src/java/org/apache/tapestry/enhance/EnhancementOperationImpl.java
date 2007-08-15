@@ -44,14 +44,14 @@ import java.util.*;
  * knows how to collect class changes from enhancements. The method
  * {@link #getConstructor()} finalizes the enhancement into a
  * {@link org.apache.tapestry.services.ComponentConstructor}.
- * 
+ *
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class EnhancementOperationImpl implements EnhancementOperation
 {
     static int _uid = 0;
-    
+
     private ClassResolver _resolver;
 
     private IComponentSpecification _specification;
@@ -122,10 +122,10 @@ public class EnhancementOperationImpl implements EnhancementOperation
     {
         _log = null;
     }
-    
+
     public EnhancementOperationImpl(ClassResolver classResolver,
-            IComponentSpecification specification, Class baseClass,
-            ClassFactory classFactory, Log log)
+                                    IComponentSpecification specification, Class baseClass,
+                                    ClassFactory classFactory, Log log)
     {
         Defense.notNull(classResolver, "classResolver");
         Defense.notNull(specification, "specification");
@@ -182,7 +182,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
     }
 
     private void addPropertiesDeclaredInBaseClass()
-        throws IntrospectionException
+      throws IntrospectionException
     {
         Class introspectClass = _baseClass;
 
@@ -216,9 +216,9 @@ public class EnhancementOperationImpl implements EnhancementOperation
     }
 
     private void addPropertiesDeclaredInClass(Class introspectClass)
-        throws IntrospectionException
+      throws IntrospectionException
     {
-        
+
         BeanInfo bi = Introspector.getBeanInfo(introspectClass);
 
         PropertyDescriptor[] pds = bi.getPropertyDescriptors();
@@ -229,7 +229,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
             String name = pd.getName();
 
-            if (!_properties.containsKey(name)) 
+            if (!_properties.containsKey(name))
                 _properties.put(name, pd);
         }
     }
@@ -243,29 +243,29 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
         _claimedProperties.add(propertyName);
     }
-    
-    /** 
+
+    /**
      * {@inheritDoc}
      */
     public boolean canClaimAsReadOnlyProperty(String propertyName)
     {
-        if(_claimedProperties.contains(propertyName)) 
+        if(_claimedProperties.contains(propertyName))
             return false;
-        
+
         PropertyDescriptor pd = getPropertyDescriptor(propertyName);
-        
-        if (pd == null) 
+
+        if (pd == null)
             return false;
-        
+
         return pd.getWriteMethod() == null ? true : false;
     }
 
     public void claimReadonlyProperty(String propertyName)
     {
         claimProperty(propertyName);
-        
+
         PropertyDescriptor pd = getPropertyDescriptor(propertyName);
-        
+
         if (pd != null && pd.getWriteMethod() != null)
             throw new ApplicationRuntimeException(EnhanceMessages.readonlyProperty(propertyName, pd.getWriteMethod()));
     }
@@ -285,7 +285,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
         // See if this object has been previously added.
 
-        if (existing != null) 
+        if (existing != null)
             return existing;
 
         // TODO: Should be ensure that the name is unique?
@@ -345,17 +345,17 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
         PropertyDescriptor pd = getPropertyDescriptor(name);
 
-        if (pd == null) 
+        if (pd == null)
             return;
 
         Class propertyType = pd.getPropertyType();
 
-        if (propertyType.equals(expectedType)) 
+        if (propertyType.equals(expectedType))
             return;
 
         throw new ApplicationRuntimeException(EnhanceMessages.propertyTypeMismatch(_baseClass, name, propertyType, expectedType));
     }
-    
+
     PropertyDescriptor getPropertyDescriptor(String name)
     {
         return (PropertyDescriptor) _properties.get(name);
@@ -399,7 +399,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
         String result = (String) _finalFields.get(clazz);
 
-        if (result == null) 
+        if (result == null)
             result = addClassReference(clazz);
 
         return result;
@@ -463,8 +463,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
             Object[] params = _constructorArguments.toArray();
 
-            return new ComponentConstructorImpl(c, params,
-                    _classFab.toString(), _specification.getLocation());
+            return new ComponentConstructorImpl(c, params, _classFab.toString(), _specification.getLocation());
         }
         catch (Throwable t)
         {
@@ -479,13 +478,13 @@ public class EnhancementOperationImpl implements EnhancementOperation
         if (_constructorBuilder != null)
         {
             _constructorBuilder.end();
-            
+
             Class[] types = (Class[]) _constructorTypes.toArray(new Class[_constructorTypes.size()]);
-            
+
             _classFab.addConstructor(types, null, _constructorBuilder.toString());
         }
 
-        if (_log != null && _log.isDebugEnabled()) 
+        if (_log != null && _log.isDebugEnabled())
             _log.debug("Creating class:\n\n" + _classFab);
     }
 
@@ -510,7 +509,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
     private Constructor findConstructor()
     {
         Class componentClass = _classFab.createClass();
-        
+
         // The fabricated base class always has exactly one constructor
 
         return componentClass.getConstructors()[0];
@@ -542,7 +541,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
     private void addInterfaceIfNeeded(Class interfaceClass)
     {
-        if (implementsInterface(interfaceClass)) 
+        if (implementsInterface(interfaceClass))
             return;
 
         _classFab.addInterface(interfaceClass);
@@ -551,7 +550,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
     public boolean implementsInterface(Class interfaceClass)
     {
-        if (interfaceClass.isAssignableFrom(_baseClass)) 
+        if (interfaceClass.isAssignableFrom(_baseClass))
             return true;
 
         Iterator i = _addedInterfaces.iterator();
@@ -559,7 +558,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
         {
             Class addedInterface = (Class) i.next();
 
-            if (interfaceClass.isAssignableFrom(addedInterface)) 
+            if (interfaceClass.isAssignableFrom(addedInterface))
                 return true;
         }
 
@@ -616,7 +615,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
             try
             {
                 return c.getDeclaredMethod(sig.getName(), sig
-                        .getParameterTypes());
+                  .getParameterTypes());
             }
             catch (NoSuchMethodException ex)
             {
@@ -641,10 +640,10 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
             String name = pd.getName();
 
-            if (_claimedProperties.contains(name)) 
+            if (_claimedProperties.contains(name))
                 continue;
 
-            if (isAbstractProperty(pd)) 
+            if (isAbstractProperty(pd))
                 result.add(name);
         }
 
@@ -660,11 +659,16 @@ public class EnhancementOperationImpl implements EnhancementOperation
     private boolean isAbstractProperty(PropertyDescriptor pd)
     {
         return isExistingAbstractMethod(pd.getReadMethod())
-                || isExistingAbstractMethod(pd.getWriteMethod());
+               || isExistingAbstractMethod(pd.getWriteMethod());
     }
 
     private boolean isExistingAbstractMethod(Method m)
     {
         return m != null && Modifier.isAbstract(m.getModifiers());
+    }
+
+    public IComponentSpecification getSpecification()
+    {
+        return _specification;
     }
 }

@@ -19,7 +19,6 @@ import org.apache.hivemind.Location;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.tapestry.IPage;
-import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.InjectSpecification;
 
 import java.lang.reflect.Modifier;
@@ -32,7 +31,7 @@ import java.lang.reflect.Modifier;
  */
 public class InjectPageWorker implements InjectEnhancementWorker
 {
-    public void performEnhancement(EnhancementOperation op, InjectSpecification spec, IComponentSpecification componentSpec)
+    public void performEnhancement(EnhancementOperation op, InjectSpecification spec)
     {
         performEnhancement(op, spec.getObject(), spec.getProperty(), spec.getLocation());
     }

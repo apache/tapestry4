@@ -70,7 +70,7 @@ public class InjectStateFlagWorkerTest extends BaseEnhancementTestCase
 
         worker.setApplicationStateManager(asm);
 
-        worker.performEnhancement(op, is, null);
+        worker.performEnhancement(op, is);
 
         verify();
     }
@@ -112,7 +112,7 @@ public class InjectStateFlagWorkerTest extends BaseEnhancementTestCase
 
         worker.setApplicationStateManager(asm);
 
-        worker.performEnhancement(op, is, null);
+        worker.performEnhancement(op, is);
 
         verify();
     }
@@ -139,7 +139,7 @@ public class InjectStateFlagWorkerTest extends BaseEnhancementTestCase
 
         try
         {
-            worker.performEnhancement(op, is, null);
+            worker.performEnhancement(op, is);
             unreachable();
         }
         catch (ApplicationRuntimeException ex)

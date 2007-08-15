@@ -21,7 +21,6 @@ import org.apache.hivemind.service.MethodSignature;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.services.ComponentPropertySource;
-import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.InjectSpecification;
 
 import java.lang.reflect.Modifier;
@@ -32,7 +31,7 @@ import java.util.Map;
  * Injects meta data obtained via {@link org.apache.tapestry.services.ComponentPropertySource}
  * (meaning that meta-data is searched for in the component's specification, then it's namespace
  * (library or application specification), then the global application properties.
- * 
+ *
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
@@ -43,7 +42,7 @@ public class InjectMetaWorker implements InjectEnhancementWorker
     private ComponentPropertySource _source;
 
     private ValueConverter _valueConverter;
-    
+
     private Map _primitiveParser = new HashMap();
     {
         _primitiveParser.put(short.class, "java.lang.Short.parseShort");
@@ -53,7 +52,7 @@ public class InjectMetaWorker implements InjectEnhancementWorker
         _primitiveParser.put(float.class, "java.lang.Float.parseFloat");
     }
 
-    public void performEnhancement(EnhancementOperation op, InjectSpecification spec, IComponentSpecification componentSpec)
+    public void performEnhancement(EnhancementOperation op, InjectSpecification spec)
     {
         String propertyName = spec.getProperty();
         String metaKey = spec.getObject();
@@ -62,21 +61,21 @@ public class InjectMetaWorker implements InjectEnhancementWorker
     }
 
     public void injectMetaValue(EnhancementOperation op, String propertyName, String metaKey,
-            Location location)
+                                Location location)
     {
         Defense.notNull(op, "op");
         Defense.notNull(propertyName, "propertyName");
         Defense.notNull(metaKey, "metaKey");
 
         Class propertyType = op.getPropertyType(propertyName);
-        
+
         // Default to object if not specified
-        
+
         if (propertyType == null) {
-            
+
             propertyType = Object.class;
         }
-        
+
         op.claimReadonlyProperty(propertyName);
 
         String sourceName = op.addInjectedField(SOURCE_NAME, ComponentPropertySource.class, _source);
@@ -89,12 +88,12 @@ public class InjectMetaWorker implements InjectEnhancementWorker
         {
             addPrimitive(op, metaKey, propertyName, sig, sourceName, parser, location);
             return;
-        } else if (propertyType == boolean.class) 
+        } else if (propertyType == boolean.class)
         {
             addBoolean(op, metaKey, propertyName, sig, sourceName, location);
             return;
         }
-        
+
         if (propertyType == char.class)
         {
             addCharacterPrimitive(op, metaKey, propertyName, sig, sourceName, location);
@@ -105,44 +104,43 @@ public class InjectMetaWorker implements InjectEnhancementWorker
     }
 
     private void addPrimitive(EnhancementOperation op, String metaKey, String propertyName,
-            MethodSignature sig, String sourceName, String parser, Location location)
+                              MethodSignature sig, String sourceName, String parser, Location location)
     {
         BodyBuilder builder = new BodyBuilder();
         builder.begin();
-        builder.addln(
-                "java.lang.String meta = {0}.getComponentProperty(this, \"{1}\");",
-                sourceName,
-                metaKey);
+        builder.addln("java.lang.String meta = {0}.getComponentProperty(this, \"{1}\");",
+                      sourceName,
+                      metaKey);
         builder.addln("return {0}(meta);", parser);
         builder.end();
 
         op.addMethod(Modifier.PUBLIC, sig, builder.toString(), location);
     }
-    
+
     private void addBoolean(EnhancementOperation op, String metaKey, String propertyName,
-            MethodSignature sig, String sourceName, Location location)
+                            MethodSignature sig, String sourceName, Location location)
     {
         BodyBuilder builder = new BodyBuilder();
         builder.begin();
         builder.addln(
-                "java.lang.String meta = {0}.getComponentProperty(this, \"{1}\");",
-                sourceName,
-                metaKey);
+          "java.lang.String meta = {0}.getComponentProperty(this, \"{1}\");",
+          sourceName,
+          metaKey);
         builder.addln("return java.lang.Boolean.valueOf(meta).booleanValue();");
         builder.end();
-        
+
         op.addMethod(Modifier.PUBLIC, sig, builder.toString(), location);
     }
-    
+
     private void addCharacterPrimitive(EnhancementOperation op, String metaKey,
-            String propertyName, MethodSignature sig, String sourceName, Location location)
+                                       String propertyName, MethodSignature sig, String sourceName, Location location)
     {
         BodyBuilder builder = new BodyBuilder();
         builder.begin();
         builder.addln(
-                "java.lang.String meta = {0}.getComponentProperty(this, \"{1}\");",
-                sourceName,
-                metaKey);
+          "java.lang.String meta = {0}.getComponentProperty(this, \"{1}\");",
+          sourceName,
+          metaKey);
         builder.addln("return meta.charAt(0);");
         builder.end();
 
@@ -150,21 +148,21 @@ public class InjectMetaWorker implements InjectEnhancementWorker
     }
 
     private void addObject(EnhancementOperation op, String metaKey, String propertyName,
-            Class propertyType, MethodSignature sig, String sourceName, Location location)
+                           Class propertyType, MethodSignature sig, String sourceName, Location location)
     {
         String valueConverterName = op.addInjectedField("_$valueConverter", ValueConverter.class, _valueConverter);
-        
+
         String classRef = op.getClassReference(propertyType);
-        
+
         BodyBuilder builder = new BodyBuilder();
         builder.begin();
         builder.addln("java.lang.String meta = {0}.getComponentProperty(this, \"{1}\");",
-                sourceName,
-                metaKey);
+                      sourceName,
+                      metaKey);
         builder.addln("return ({0}) {1}.coerceValue(meta, {2});", ClassFabUtils
-                .getJavaClassName(propertyType), valueConverterName, classRef);
+          .getJavaClassName(propertyType), valueConverterName, classRef);
         builder.end();
-        
+
         op.addMethod(Modifier.PUBLIC, sig, builder.toString(), location);
     }
 
