@@ -53,6 +53,14 @@
                 that they additionally have drop shadows generated. 
             </p>
 
+            <span class="info">
+                <strong>Information:</strong>
+                <p>
+                    The rounded corner service is currently only available by including the <b>tapestry-contrib</b>
+                    library dependency in your project.
+                </p>
+            </span>
+
         </section>
 
         <section name="Rounded Corner Parameters">
