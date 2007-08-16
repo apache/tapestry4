@@ -14,9 +14,6 @@
 
 package org.apache.tapestry.asset;
 
-import java.io.InputStream;
-import java.net.URL;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
@@ -25,10 +22,13 @@ import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 
+import java.io.InputStream;
+import java.net.URL;
+
 /**
- * An asset whose path is relative to the {@link javax.servlet.ServletContext}containing the
+ * An asset whose path is relative to the {@link javax.servlet.ServletContext} containing the
  * application.
- * 
+ *
  * @author Howard Lewis Ship
  */
 
@@ -47,7 +47,7 @@ public class ContextAsset extends AbstractAsset implements IAsset
         Defense.notNull(contextPath, "contextPath");
 
         _contextPath = contextPath;
-        
+
         _requestCycle = cycle;
     }
 
@@ -62,7 +62,7 @@ public class ContextAsset extends AbstractAsset implements IAsset
         if (_resolvedURL == null)
             _resolvedURL = _contextPath + getResourceLocation().getPath();
 
-        return _requestCycle.encodeURL(_resolvedURL);
+        return _resolvedURL;
     }
 
     public InputStream getResourceAsStream()
@@ -76,8 +76,8 @@ public class ContextAsset extends AbstractAsset implements IAsset
         catch (Exception ex)
         {
             throw new ApplicationRuntimeException(Tapestry.format(
-                    "ContextAsset.resource-missing",
-                    getResourceLocation()), ex);
+              "ContextAsset.resource-missing",
+              getResourceLocation()), ex);
         }
     }
 }

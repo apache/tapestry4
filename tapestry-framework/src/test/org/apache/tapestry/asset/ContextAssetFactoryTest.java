@@ -200,8 +200,6 @@ public class ContextAssetFactoryTest extends BaseComponentTestCase
         IRequestCycle rc = newMock(IRequestCycle.class);
 
         trainGetResource(context, "/asset_fr.png", url);
-
-        trainEncodeURL(rc, "/context/asset_fr.png", "/context/asset_fr.png?encoded");
         
         replay();
 
@@ -213,7 +211,7 @@ public class ContextAssetFactoryTest extends BaseComponentTestCase
 
         String assetUrl = factory.createAbsoluteAsset("/asset.png", Locale.FRENCH, l).buildURL();
 
-        assertTrue(assetUrl.endsWith("?encoded"));
+        assertEquals(assetUrl, "/context/asset_fr.png");
 
         verify();
     }

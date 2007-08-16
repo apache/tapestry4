@@ -105,7 +105,7 @@ public abstract class Shell extends AbstractComponent
             IAsset stylesheet = getStylesheet();
 
             if (stylesheet != null)
-                writeStylesheetLink(writer, cycle, stylesheet);
+                writeStylesheetLink(writer, stylesheet);
 
             Iterator i = (Iterator) getValueConverter().coerceValue(getStylesheets(), Iterator.class);
 
@@ -113,7 +113,7 @@ public abstract class Shell extends AbstractComponent
             {
                 stylesheet = (IAsset) i.next();
 
-                writeStylesheetLink(writer, cycle, stylesheet);
+                writeStylesheetLink(writer, stylesheet);
             }
         }
 
@@ -172,7 +172,7 @@ public abstract class Shell extends AbstractComponent
         }
     }
 
-    private void writeStylesheetLink(IMarkupWriter writer, IRequestCycle cycle, IAsset stylesheet)
+    private void writeStylesheetLink(IMarkupWriter writer, IAsset stylesheet)
     {
         writer.beginEmpty("link");
         writer.attribute("rel", "stylesheet");
