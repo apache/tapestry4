@@ -62,6 +62,30 @@ public class RoundedCornerService implements IEngineService {
 
     private Log _log;
 
+    /** The ImageIO format name to encode images in that don't need alpha transparency */
+    private String _nonTransparentFormatName = "gif";
+
+    public void initialize()
+    {
+        String[] names = ImageIO.getWriterFormatNames();
+
+        boolean supportsGif = false;
+        
+        for (int i=0; i < names.length; i++)
+        {
+            if (names[i].toLowerCase().equals("gif"))
+            {
+                supportsGif = true;
+                break;
+            }
+        }
+
+        if (!supportsGif)
+        {
+            _nonTransparentFormatName = "jpeg";
+        }
+    }
+
     public ILink getLink(boolean post, Object parameter)
     {
         Defense.notNull(parameter, "parameter");
@@ -105,7 +129,7 @@ public class RoundedCornerService implements IEngineService {
         
         try {
             
-            String type = (bgColor != null) ? "gif" : "png";
+            String type = (bgColor != null) ? _nonTransparentFormatName : "png";
 
             byte[] data = (byte[])_imageCache.get(hashKey);
             if (data != null)
@@ -129,13 +153,13 @@ public class RoundedCornerService implements IEngineService {
 
             bo = new ByteArrayOutputStream();
 
-            ImageIO.write(image, type, bo);
+            boolean success = ImageIO.write(image, type, bo);
 
             data = bo.toByteArray();
 
-            if (data == null || data.length < 1)
+            if (!success || data == null || data.length < 1)
             {
-                _log.error("Image generated had zero length byte array from parameters of:\n"
+                _log.error("Image generated had zero length byte array or failed to convert from parameters of:\n"
                            + "[color:" + color + ", bgColor:" + bgColor
                            + ", width:" + width + ", height:" + height
                            + ", angle:" + angle + ", shadowWidth:" + shadowWidth

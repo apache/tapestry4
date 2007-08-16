@@ -61,7 +61,7 @@ public class RoundedCornerGenerator {
 
     public BufferedImage buildCorner(String color, String backgroundColor, int width, int height,
                                      String angle, int shadowWidth, float endOpacity)
-    throws Exception
+      throws Exception
     {
         width = width * 2;
         height = height * 2;
@@ -75,17 +75,17 @@ public class RoundedCornerGenerator {
 
             Arc2D.Float arcArea = new Arc2D.Float(0, 0, width, height, startAngle, 90, Arc2D.PIE);
             if (bgColor != null) {
-                
+
                 ret = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
                 Graphics2D g2 = (Graphics2D)ret.createGraphics();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-                
+
                 g2.setColor(bgColor);
                 g2.fill(arcArea.getBounds2D());
 
                 g2.drawImage(arc, 0, 0, null);
-                
+
                 g2.dispose();
 
                 ret = convertType(ret, BufferedImage.TYPE_INT_RGB);
@@ -139,7 +139,7 @@ public class RoundedCornerGenerator {
         g2.drawImage(arc, 0, 0, null);
 
         return convertType(ret, BufferedImage.TYPE_INT_RGB).getSubimage((int)arcArea.getBounds2D().getX(), (int)arcArea.getBounds2D().getY(),
-                    (int)arcArea.getBounds2D().getWidth(), (int)arcArea.getBounds2D().getHeight());
+                                                                        (int)arcArea.getBounds2D().getWidth(), (int)arcArea.getBounds2D().getHeight());
     }
 
     static BufferedImage convertType(BufferedImage image, int type) {
@@ -183,9 +183,9 @@ public class RoundedCornerGenerator {
 
                 startX -= shadowSize;
                 startY += shadowSize;
-                
+
             } else if (startAngle == ANGLE_BOTTOM_RIGHT) {
-                
+
                 startX -= shadowSize;
                 startY -= shadowSize;
             }
@@ -196,13 +196,13 @@ public class RoundedCornerGenerator {
 
         float extent = 90;
         if (masking) {
-            
+
             extent = 120;
             startAngle -= 20;
         }
-        
+
         Arc2D.Float fillArea = new Arc2D.Float(startX, startY, width, height, startAngle, extent, Arc2D.PIE);
-        
+
         // draw arc
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
@@ -257,7 +257,7 @@ public class RoundedCornerGenerator {
 
         BufferedImage img = new BufferedImage( (width * 4), (height * 4), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = (Graphics2D) img.createGraphics();
-        
+
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setComposite(AlphaComposite.Src);
         g2.drawImage(dropShadow, 0, 0, null);
@@ -278,7 +278,7 @@ public class RoundedCornerGenerator {
         Graphics2D g2 = mask.createGraphics();
 
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        
+
         RoundRectangle2D.Float fillArea = new RoundRectangle2D.Float(0, 0, width, height, arcHeight, arcWidth);
         g2.setColor(fgColor);
         g2.fill(fillArea);
@@ -299,7 +299,7 @@ public class RoundedCornerGenerator {
         g2.setClip(clip);
         g2.drawImage(dropShadow, 0, 0, null);
         g2.dispose();
-        
+
         // draw everything
 
         BufferedImage img = new BufferedImage( width + (shadowWidth * 2), height + (shadowWidth * 2), BufferedImage.TYPE_INT_ARGB);
@@ -328,10 +328,10 @@ public class RoundedCornerGenerator {
     }
 
     public BufferedImage buildSideShadow(String side, int size, float opacity)
-    throws Exception
+      throws Exception
     {
         Defense.notNull(side, "side");
-        
+
         if (opacity <= 0)
             opacity = DEFAULT_OPACITY;
 
@@ -350,7 +350,7 @@ public class RoundedCornerGenerator {
             sampleWidth = size * 2;
             sampleHeight = 2;
         } else if (RIGHT.equals(side)) {
-            
+
             maskWidth = size * 4;
             maskHeight = size * 4;
             sampleY = maskHeight / 2;
@@ -374,7 +374,7 @@ public class RoundedCornerGenerator {
             sampleWidth = 2;
             sampleHeight = size * 2;
         }
-        
+
         BufferedImage mask = new BufferedImage( maskWidth, maskHeight, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = (Graphics2D) mask.createGraphics();
 
@@ -390,12 +390,12 @@ public class RoundedCornerGenerator {
         g2 = (Graphics2D)render.createGraphics();
 
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        
+
         Rectangle2D.Float clip = new Rectangle2D.Float(sampleX, sampleY, sampleWidth, sampleHeight);
 
         g2.setColor(Color.white);
         g2.fill(clip);
-        
+
         g2.drawImage(dropShadow, 0, 0, null);
 
         g2.dispose();
@@ -427,7 +427,7 @@ public class RoundedCornerGenerator {
     /**
      * Decodes the specified input color string into a compatible awt color object. Valid inputs
      * are any in the css2 color spec or hex strings.
-     * 
+     *
      * @param color The color to match.
      * @return The decoded color object, may be black if decoding fails.
      */
@@ -438,7 +438,7 @@ public class RoundedCornerGenerator {
             return specColor;
 
         String hexColor = color.startsWith("0x") ? color : "0x" + color;
-        
+
         return Color.decode(hexColor);
     }
 }
