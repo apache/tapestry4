@@ -196,8 +196,8 @@ public class EngineServiceLink implements ILink
         String result = buffer.toString();
         
         // TODO: This is somewhat questionable right now, was added in to support TAPESTRY-802
-        if (_cycle != null && _stateful) {
-            
+        if (_cycle != null && _stateful)
+        {    
             result = _cycle.encodeURL(result);
         }
         
