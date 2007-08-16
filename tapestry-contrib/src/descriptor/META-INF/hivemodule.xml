@@ -62,7 +62,8 @@
 
     <service-point id="RoundedCornerService" interface="org.apache.tapestry.engine.IEngineService">
         <invoke-factory>
-            <construct class="org.apache.tapestry.contrib.services.impl.RoundedCornerService" >
+            <construct class="org.apache.tapestry.contrib.services.impl.RoundedCornerService"
+                    initialize-method="initialize">
                 <set-object property="exceptionReporter" value="infrastructure:requestExceptionReporter"/>
                 <set-object property="response" value="infrastructure:response"/>
                 <set-object property="linkFactory" value="infrastructure:linkFactory"/>
