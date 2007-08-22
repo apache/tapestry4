@@ -40,7 +40,9 @@ abstract class AbstractSubmit extends AbstractFormComponent implements IDynamicI
      * Determine if this submit component was clicked.
      * 
      * @param cycle
+     *          The current request.
      * @param name
+     *          The name of this form element.
      * @return true if this submit was clicked
      */
     protected abstract boolean isClicked(IRequestCycle cycle, String name);

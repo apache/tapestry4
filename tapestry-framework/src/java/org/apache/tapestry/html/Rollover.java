@@ -14,19 +14,14 @@
 
 package org.apache.tapestry.html;
 
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.tapestry.*;
+import org.apache.tapestry.components.ILinkComponent;
+import org.apache.tapestry.form.IFormComponent;
+import org.apache.tapestry.form.LinkSubmit;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.tapestry.AbstractComponent;
-import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IScript;
-import org.apache.tapestry.PageRenderSupport;
-import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.TapestryUtils;
-import org.apache.tapestry.components.ILinkComponent;
 
 /**
  * Combines a link component (such as
@@ -35,7 +30,7 @@ import org.apache.tapestry.components.ILinkComponent;
  * Navigator and Internet Explorer. [ <a
  * href="../../../../../ComponentReference/Rollover.html">Component Reference
  * </a>]
- * 
+ *
  * @author Howard Lewis Ship
  */
 
@@ -45,45 +40,58 @@ public abstract class Rollover extends AbstractComponent
     /**
      * Converts an {@link IAsset}binding into a usable URL. Returns null if the
      * binding does not exist or the binding's value is null.
+     *
+     * @param asset
+     *          The asset to generate a url for.
+     * @return The url to the asset resource, or null if it couldn't be generated.
      */
 
     protected String getAssetURL(IAsset asset)
     {
-        if (asset == null) return null;
+        if (asset == null)
+            return null;
 
         return asset.buildURL();
     }
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        // No body, so we skip it all if not rewinding (assumes no side effects
-        // on
-        // accessors).
+        // No body, so we skip it all if not rewinding
+        // (assumes no side effects on accessors).
 
-        if (cycle.isRewinding()) 
+        if (cycle.isRewinding())
             return;
 
         String imageURL = null;
         String mouseOverURL = null;
         String mouseOutURL = null;
         boolean dynamic = false;
-        String imageId = null;
+        String imageId;
+        boolean linkDisabled = false;
 
         PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, this);
 
-        ILinkComponent serviceLink = (ILinkComponent) cycle.getAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME);
-        
+        Object serviceLink = cycle.getAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME);
         if (serviceLink == null)
-            throw new ApplicationRuntimeException(Tapestry
-                    .getMessage("Rollover.must-be-contained-by-link"), this, null, null);
+        {
+            serviceLink = cycle.getAttribute(LinkSubmit.ATTRIBUTE_NAME);
 
-        boolean linkDisabled = serviceLink.isDisabled();
+            if (serviceLink != null)
+                linkDisabled = ((IFormComponent) serviceLink).isDisabled();
+        } else
+        {
+            linkDisabled = ((ILinkComponent) serviceLink).isDisabled();
+        }
+
+        if (serviceLink == null)
+            throw new ApplicationRuntimeException(Tapestry.getMessage("Rollover.must-be-contained-by-link"), this, null, null);
 
         if (linkDisabled)
         {
             imageURL = getAssetURL(getDisabled());
 
-            if (imageURL == null) imageURL = getAssetURL(getImage());
+            if (imageURL == null)
+                imageURL = getAssetURL(getImage());
         }
         else
         {
@@ -103,17 +111,17 @@ public abstract class Rollover extends AbstractComponent
 
         if (dynamic)
         {
-            if (mouseOverURL == null) 
+            if (mouseOverURL == null)
                 mouseOverURL = imageURL;
 
-            if (mouseOutURL == null) 
+            if (mouseOutURL == null)
                 mouseOutURL = imageURL;
 
             imageId = writeScript(cycle, pageRenderSupport, serviceLink, mouseOverURL, mouseOutURL);
-            
+
             writer.attribute("id", imageId);
         }
-        
+
         renderInformalParameters(writer, cycle);
 
         writer.closeTag();
@@ -124,23 +132,23 @@ public abstract class Rollover extends AbstractComponent
 
     public abstract IScript getScript();
 
-    private String writeScript(IRequestCycle cycle, PageRenderSupport pageRenderSupport, ILinkComponent link,
-            String mouseOverImageURL, String mouseOutImageURL)
+    private String writeScript(IRequestCycle cycle, PageRenderSupport pageRenderSupport,
+                               Object link, String mouseOverImageURL, String mouseOutImageURL)
     {
         String imageId = pageRenderSupport.getUniqueString(getId());
-        
+
         String preloadedMouseOverImageURL = pageRenderSupport.getPreloadedImageReference(this, mouseOverImageURL);
         String preloadedMouseOutImageURL = pageRenderSupport.getPreloadedImageReference(this, mouseOutImageURL);
-        
+
         Map symbols = new HashMap();
-        
+
         symbols.put("link", link);
         symbols.put("imageId", imageId);
         symbols.put("mouseOverImageURL", preloadedMouseOverImageURL);
         symbols.put("mouseOutImageURL", preloadedMouseOutImageURL);
-        
+
         getScript().execute(this, cycle, pageRenderSupport, symbols);
-        
+
         return imageId;
     }
 

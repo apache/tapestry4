@@ -34,7 +34,8 @@ public interface ILinkComponent extends IComponent
      * Returns the desired scheme (i.e., "http" or "https") for the link, or
      * null to not output a specific scheme (in which case the URL will fall
      * under the incoming request's scheme).
-     * 
+     *
+     * @return The scheme portion of the url to be generated. 
      * @since 4.0
      */
 
@@ -44,7 +45,8 @@ public interface ILinkComponent extends IComponent
      * Returns the desired port (i.e., "80" or "443") for the link, or null to
      * not output a specific port (in which case the URL will fall under the
      * incoming request's port).
-     * 
+     *
+     * @return The http port to use.
      * @since 4.1
      */
 
@@ -52,7 +54,8 @@ public interface ILinkComponent extends IComponent
 
     /**
      * Returns whether this service link component is enabled or disabled.
-     * 
+     *
+     * @return True if disabled, false otherwise.
      * @since 0.2.9
      */
 
@@ -60,7 +63,8 @@ public interface ILinkComponent extends IComponent
 
     /**
      * Returns the anchor defined for this link, or null for no anchor.
-     * 
+     *
+     * @return The <code>#anchorid</code> portion of the url to be generated - if any.
      * @since 3.0
      */
 
@@ -69,7 +73,8 @@ public interface ILinkComponent extends IComponent
     /**
      * Returns the name of the target window or frame for this link, or null if
      * current window or frame is to be used.
-     * 
+     *
+     * @return The <code>target="_this"</code> portion of the link to be generated - if any.
      * @since 4.0
      */
     String getTarget();
@@ -82,8 +87,14 @@ public interface ILinkComponent extends IComponent
      * This was created for use by {@link org.apache.tapestry.html.Rollover} to
      * set mouse over and mouse out handlers on the {@link ILinkComponent} that
      * wraps it, but can be used for many other things as well.
-     * 
+     *
+     * @param type
+     *          The type of event to add.
+     * @param functionName
+     *          The name of the client side javascript function to generate.
+     *
      * @since 0.2.9
+     * @deprecated To be removed in Tapestry 4.1.4. 
      */
 
     void addEventHandler(LinkEventType type, String functionName);
@@ -93,6 +104,10 @@ public interface ILinkComponent extends IComponent
      * link is not disabled) to provide a
      * {@link org.apache.tapestry.engine.EngineServiceLink} that the renderer
      * can convert into a URL.
+     *
+     * @param cycle
+     *          The current request.
+     * @return A {@link ILink} instance representing the link information for this component.
      */
 
     ILink getLink(IRequestCycle cycle);
@@ -102,10 +117,13 @@ public interface ILinkComponent extends IComponent
      * the link render any additional attributes. These are informal parameters,
      * plus any attributes related to events. This is only invoked for
      * non-disabled links.
-     * 
+     *
+     * @param writer
+     *          Markup writer to write content to.
+     * @param cycle
+     *          The current request.
      * @since 3.0
      */
 
-    void renderAdditionalAttributes(IMarkupWriter writer,
-            IRequestCycle cycle);
+    void renderAdditionalAttributes(IMarkupWriter writer, IRequestCycle cycle);
 }
