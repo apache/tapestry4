@@ -87,8 +87,9 @@ public abstract class LinkSubmit extends AbstractSubmit
 
                 writer.attribute("href", getDirectService().getLink(true, dsp).getURL());
                 writer.attribute("onClick", js + "," + json.toString() + "); return false;");                        
-            } else {
-
+            }
+            else
+            {
                 writer.attribute("href", "javascript:" + js + ");");
             }
 

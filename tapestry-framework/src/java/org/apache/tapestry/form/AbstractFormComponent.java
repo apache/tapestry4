@@ -22,14 +22,14 @@ import org.apache.tapestry.valid.ValidationConstants;
 /**
  * A base class for building components that correspond to HTML form elements. All such components
  * must be wrapped (directly or indirectly) by a {@link Form} component.
- * 
+ *
  * @author Howard Lewis Ship
  * @author Paul Ferraro
  * @since 1.0.3
  */
 public abstract class AbstractFormComponent extends AbstractComponent implements IFormComponent
 {
-    
+
     public abstract IForm getForm();
 
     public abstract void setForm(IForm form);
@@ -55,7 +55,7 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
      */
 
     public abstract String getIdParameter();
-    
+
     /**
      * Invoked by {@link AbstractComponent#render(IMarkupWriter, IRequestCycle)} to actually 
      * render the component (with any parameter values already set). 
@@ -64,7 +64,7 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
      * {@link #renderFormComponent(IMarkupWriter, IRequestCycle)} or 
      * {@link #rewindFormComponent(IMarkupWriter, IRequestCycle)}. 
      * Those two are the methods that subclasses should implement. 
-     *  
+     *
      * @see org.apache.tapestry.AbstractComponent#renderComponent(org.apache.tapestry.IMarkupWriter,
      *      org.apache.tapestry.IRequestCycle)
      */
@@ -73,26 +73,26 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
         IForm form = TapestryUtils.getForm(cycle, this);
 
         setForm(form);
-        
+
         if (form.wasPrerendered(writer, this))
             return;
-        
+
         IValidationDelegate delegate = form.getDelegate();
-        
+
         delegate.setFormComponent(this);
-        
+
         setName(form);
-        
+
         if (form.isRewinding())
         {
             if (!isDisabled())
             {
                 rewindFormComponent(writer, cycle);
             }
-            
+
             // This is for the benefit of the couple of components (LinkSubmit) that allow a body.
             // The body should render when the component rewinds.
-            
+
             if (getRenderBodyOnRewind())
                 renderBody(writer, cycle);
         }
@@ -100,15 +100,15 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
         {
             if (!NullWriter.class.isInstance(writer))
                 form.setFormFieldUpdating(true);
-            
+
             renderFormComponent(writer, cycle);
-            
+
             if (getCanTakeFocus() && !isDisabled())
             {
-                delegate.registerForFocus(
-                        this,
-                        delegate.isInError() ? ValidationConstants.ERROR_FIELD
-                                : ValidationConstants.NORMAL_FIELD);
+                delegate.registerForFocus(this,
+                                          delegate.isInError()
+                                          ? ValidationConstants.ERROR_FIELD
+                                          : ValidationConstants.NORMAL_FIELD);
             }
 
         }
@@ -121,7 +121,7 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
      * {@link #rewindFormComponent(IMarkupWriter, IRequestCycle)} should leave this method returning
      * false. Remember that if the component is {@link IFormComponent#isDisabled() disabled} then
      * {@link #rewindFormComponent(IMarkupWriter, IRequestCycle)} won't be invoked.
-     * 
+     *
      * @return false; override this method to change.
      */
     protected boolean getRenderBodyOnRewind()
@@ -143,19 +143,19 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
     {
         getForm().getDelegate().writeSuffix(writer, cycle, this, null);
     }
-    
+
     protected void setName(IForm form)
     {
         setName(form.getElementId(this));
     }
-    
+
     /**
      * {@inheritDoc}
      */
     protected void generateClientId()
     {
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -163,18 +163,18 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
     {
         if (getPage() == null)
             return null;
-        
+
         IForm form = (IForm) getPage().getRequestCycle().getAttribute(TapestryUtils.FORM_ATTRIBUTE);
         if (form == null)
             return null;
 
         return form.peekClientId(this);
     }
-    
+
     /**
      * Returns false. Subclasses that might be required must override this method. Typically, this
      * involves checking against the component's validators.
-     * 
+     *
      * @since 4.0
      */
     public boolean isRequired()
@@ -185,7 +185,7 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
     /**
      * Invoked from {@link #renderComponent(IMarkupWriter, IRequestCycle)} 
      * to render the component. 
-     *  
+     *
      * @param writer
      * @param cycle
      */
@@ -195,7 +195,7 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
      * Invoked from {@link #renderComponent(IMarkupWriter, IRequestCycle)} to rewind the 
      * component. If the component is {@link IFormComponent#isDisabled() disabled} 
      * this will not be invoked. 
-     * 
+     *
      * @param writer
      * @param cycle
      */
