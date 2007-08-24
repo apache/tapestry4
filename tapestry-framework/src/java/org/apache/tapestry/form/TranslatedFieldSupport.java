@@ -26,27 +26,38 @@ public interface TranslatedFieldSupport
 
     /**
      * Formats the field translation.
+     *
      * @param field
+     *          The field the value is being formatted for.
      * @param object
+     *          The object value to be formatted.
+     *
+     * @return The formatted string value of the given object.
      */
     String format(TranslatedField field, Object object);
 
     /**
      * Parses the field value.
      * @param field
+     *          The field to parse the value from.
      * @param text
-     * 
-     * @throws ValidatorException
+     *          The input text.
+     *
+     * @return The parsed field value in its translated object form.
+     * @throws ValidatorException On validation error.
      */
     Object parse(TranslatedField field, String text)
         throws ValidatorException;
 
     /**
-     * Renders any contributions.
+     * Renders client side / misc contributions when the field is being rendered.
+     *
      * @param field
+     *          The field being rendered.
      * @param writer
+     *          The markup writer to use.
      * @param cycle
+     *          The current request.
      */
-    void renderContributions(TranslatedField field,
-            IMarkupWriter writer, IRequestCycle cycle);
+    void renderContributions(TranslatedField field, IMarkupWriter writer, IRequestCycle cycle);
 }

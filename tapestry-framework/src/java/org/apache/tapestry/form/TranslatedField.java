@@ -17,8 +17,9 @@ package org.apache.tapestry.form;
 import org.apache.tapestry.form.translator.Translator;
 
 /**
- * 
- * @author unknown
+ * Represents an input field that can be translated.
+ *
+ * @see {@link TranslatedFieldSupport}. 
  */
 public interface TranslatedField extends ValidatableField
 {

@@ -52,6 +52,7 @@
     <component-type type="For" specification-path="components/For.jwc"/>
     <component-type type="Form" specification-path="form/Form.jwc"/>
     <component-type type="GenericLink" specification-path="link/GenericLink.jwc"/>
+    <component-type type="GTimePicker" specification-path="dojo/form/GTimePicker.jwc"/>
     <component-type type="Hidden" specification-path="form/Hidden.jwc"/>
     <component-type type="If" specification-path="components/If.jwc"/>
     <component-type type="Image" specification-path="html/Image.jwc"/>

@@ -66,12 +66,12 @@ public abstract class TaskEntryPage<E extends Persistent> extends BasePage
     
     @Component(bindings = {"value=startTime", "displayName=message:task.start.time",
             "validators=validators:required"})
-    public abstract DropdownTimePicker getStartPicker();
+    public abstract GTimePicker getStartPicker();
     public abstract Date getStartTime();
     
     @Component(bindings = {"value=endTime", "displayName=message:task.end.time",
             "validators=validators:required,differ=startPicker"})
-    public abstract DropdownTimePicker getEndPicker();
+    public abstract GTimePicker getEndPicker();
     public abstract Date getEndTime();
     
     @Component(bindings = { "value=description", 
