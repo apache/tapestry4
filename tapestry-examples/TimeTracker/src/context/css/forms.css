@@ -1,11 +1,11 @@
 div.requiredClause {
-	width:auto;
-	float:right;
-	padding-left:2px;
-	border-left:3px solid #ff660a;
-	margin-top:1.5em;
-	font-size: 0.7em;
-	font-weight:bold;
+    width:auto;
+    float:right;
+    padding-left:2px;
+    border-left:3px solid #ff660a;
+    margin-top:1.5em;
+    font-size: 0.7em;
+    font-weight:bold;
 }
 
 form { clear:both; border:1px solid #d0d8e2; margin:0; margin-bottom:1.5em; }
@@ -23,10 +23,10 @@ form .ex-container label{ margin-top:0.75em; }
 
 /* input elements */
 form div.dropdown,
-form input.text,
-form input.numeric,
-form select,
-form textarea { border: 1px solid #a2da87; padding: 0.15em; width:100%; }
+    form input.text,
+    form input.numeric,
+    form select,
+    form textarea { border: 1px solid #a2da87; padding: 0.15em; width:100%; }
 form div.dropdown{ padding:0; height:22px; background-color:#fff;}
 form textarea { font-family:sans-serif; font-size:0.8em; margin: 0.55em 0; }
 * html form textarea { width:auto; }
@@ -41,17 +41,17 @@ form h3 { font: 0.8em Tahoma, Myriad, sans-serif; font-weight:bold; color: #296c
 form h4 { font: 0.8em Tahoma, Myriad, sans-serif; font-weight:bold; margin:0; margin-top:1em; border-bottom: 1px solid #ddd; }
 
 .submitButton,.submitButton:focus,.alertButton {
-	width: auto;
-	border: none;
-	background-color: #699ED9;
-	color: #fff;
-	padding: 0.1em;
-	border-bottom: 1px solid #5885b6 !important;
-	border-right: 1px solid #5885b6 !important;
-	border-top: 1px solid #92b8e2 !important;
-	border-left: 1px solid #92b8e2 !important;
-	cursor: hand;
-	cursor: pointer;
+    width: auto;
+    border: none;
+    background-color: #699ED9;
+    color: #fff;
+    padding: 0.1em;
+    border-bottom: 1px solid #5885b6 !important;
+    border-right: 1px solid #5885b6 !important;
+    border-top: 1px solid #92b8e2 !important;
+    border-left: 1px solid #92b8e2 !important;
+    cursor: hand;
+    cursor: pointer;
 }
 
 .alertDialog {
@@ -98,4 +98,21 @@ form h4 { font: 0.8em Tahoma, Myriad, sans-serif; font-weight:bold; margin:0; ma
 .missingList li, .invalidList li {
     list-style:none;
     font-style:italic;
+}
+
+.dropdownCombobox {
+    background: #ffffff;
+    border: 1px solid #545454;
+}
+
+.dropdownOption {
+    font-family: arial;
+    font-size: 0.8em;
+    padding: 0.1em 0 0.1em 0.2em;
+    cursor:pointer;
+}
+
+.optionHover {
+    background: cornflowerblue;
+    color: #ffffff;
 }

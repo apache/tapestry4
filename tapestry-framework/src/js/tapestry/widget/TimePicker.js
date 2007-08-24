@@ -1,337 +1,174 @@
 dojo.provide("tapestry.widget.TimePicker");
 
 dojo.require("dojo.widget.HtmlWidget");
-dojo.require("dojo.date.common");
-dojo.require("dojo.date.format");
-dojo.require("dojo.lang.common");
+dojo.require("dojo.html.style");
+dojo.require("dojo.html.util");
+dojo.require("dojo.html.metrics");
+dojo.require("dojo.html.iframe");
 
 dojo.widget.defineWidget(
-	"tapestry.widget.TimePicker",
-	dojo.widget.HtmlWidget,
-	{
-		
-	}
+        "tapestry.widget.TimePicker",
+        dojo.widget.HtmlWidget,
+{
+    inputNodeId:null, // unique element id of form input text field
+    optionValues:[], // param of 12 hour clock selection values
+    selectedIndex:null, // param of what the default selected index should be
+    dropdownClass:"dropdownCombobox",
+    dropdownOptionClass:"dropdownOption",
+    optionHoverClass:"optionHover",
+
+    inputNode:null, // form input text node
+    selectedNode:null, // currently selected node
+    dropdownNode:null, // drop down div container
+    bgIframe:null,
+    options:[], // option div nodes
+    dropdownPositioned:false,
+    showing:false,
+
+    postCreate: function() {
+        this.inputNode = dojo.byId(this.inputNodeId);
+
+        this.dropdownNode = document.createElement("div");
+        this.dropdownNode.setAttribute("id", this.widgetId + "dropdown");
+        this.dropdownNode.style["display"] = "none";
+        dojo.html.setClass(this.dropdownNode, this.dropdownClass);
+
+        var contDiv = document.createElement("div");
+        this.dropdownNode.appendChild(contDiv);
+        
+        for (var i=0; i < this.optionValues.length; i++){
+            var option = document.createElement("div");
+            option.setAttribute("id", "combooption-" + i);
+            dojo.html.setClass(option, this.dropdownOptionClass);
+            option.appendChild(document.createTextNode(this.optionValues[i]));
+            
+            contDiv.appendChild(option);
+            this.options.push(option);
+
+            if (this.selectedIndex && i == this.selectedIndex){
+                this.selectedNode = option;
+
+                if (!this.inputNode.value || this.inputNode.value.length < 1){
+                    this.inputNode.value=this.optionValues[i];
+                }
+            }
+
+            dojo.event.connect(option, "onmouseover", this, "onOptionMouseOver");
+            dojo.event.connect(option, "onmouseout", this, "onOptionMouseOut");
+            dojo.event.connect(option, "onmousedown", this, "onOptionClicked");
+        }
+
+        var m = dojo.html.getCachedFontMeasurements();
+        var st=this.dropdownNode.style;
+        st["overflow"]="auto";
+        st["zIndex"]=9000;
+        st["position"]="absolute";
+        st["width"]=(m["1em"] * 6) + "px"
+        st["height"]=(m["1em"] * 11) + "px";
+
+        dojo.body().appendChild(this.dropdownNode);
+
+        if (dojo.render.html.ie){
+            this.bgIframe = new dojo.html.BackgroundIframe();
+            this.bgIframe.setZIndex(this.dropdownNode);
+        }
+        
+        dojo.event.connect(this.inputNode, "onclick", this, "onInputClick");
+        dojo.event.connect(this.inputNode, "onblur", this, "hide");
+        
+        dojo.event.connect(dojo.body(), "onkeyup", this, "onKeyUp");
+    },
+
+    onOptionMouseOver: function(evt) {
+        if (!dojo.html.hasClass(evt.target, this.optionHoverClass)) {
+            dojo.html.addClass(evt.target, this.optionHoverClass);
+        }
+    },
+
+    onOptionMouseOut: function(evt) {
+        dojo.html.removeClass(evt.target, this.optionHoverClass);
+    },
+
+    onChange:function() {},
+
+    onOptionClicked: function(evt) {
+        this.selectedNode=evt.target;
+        
+        this.inputNode.value=tapestry.html.getContentAsString(this.selectedNode);
+        this.hide(evt);
+        dojo.html.removeClass(this.selectedNode, this.optionHoverClass);
+
+        this.onChange(evt);
+    },
+
+    onInputClick: function() {
+        if (this.showing){
+            this.hide();
+            return;
+        }
+        
+        this.show();
+
+        if (this.selectedNode){
+            dojo.html.scrollIntoView(this.selectedNode);
+        }
+    },
+
+    onKeyUp: function(evt) {
+        if (evt.keyCode == evt.KEY_ESCAPE) {
+            this.hide(evt);
+        }
+    },
+
+    hide: function(evt) {
+        dojo.html.hide(this.dropdownNode);
+        
+        if (this.bgIframe){
+            this.bgIframe.hide();
+        }
+
+        this.showing=false;
+    },
+
+    show: function(evt) {
+        if (!this.dropdownPositioned){
+            dojo.html.placeOnScreenAroundElement(this.dropdownNode, this.inputNode,
+                                            null, dojo.html.boxSizing.BORDER_BOX,
+                                            {'BL': 'TL', 'TL': 'BL'});
+            this.dropdownPositioned = true;
+        }
+
+        dojo.html.show(this.dropdownNode);
+        
+        if (this.bgIframe){
+            this.bgIframe.size(this.dropdownNode);
+            this.bgIframe.show();
+        }
+
+        this.showing=true;
+    },
+
+    destroyRendering: function(finalize){
+        try{
+            dojo.widget.HtmlWidget.prototype.destroyRendering.call(this, finalize);
+
+            dojo.event.disconnect(this.inputNode, "onclick", this, "onInputClick");
+            dojo.event.disconnect(this.inputNode, "onblur", this, "hide");
+            dojo.event.browser.clean(this.inputNode);
+            
+            dojo.dom.destroyNode(this.dropdownNode);
+            delete this.dropdownNode;
+
+            dojo.event.disconnect(dojo.body(), "onkeyup", this, "onKeyUp");
+
+             if (this.bgIframe){
+                this.bgIframe.remove();
+            }
+        } catch (e) { }
+    },
+
+    getValue:function(){
+        return this.inputNode.value;
+    }
+}
 );
-
-tapestry.widget.TimePicker=function(){
-	dojo.widget.HtmlWidget.call(this);
-	
-	this.widgetType="TimePicker";
-	this.isContainer=false;
-
-	this.hourElement=null;
-	this.minuteElement=null;
-	this.secondElement=null;
-	this.amPmElement=null;
-
-	this.hourUpElement=null;
-	this.hourDownElement=null;
-	this.minuteUpElement=null;
-	this.minuteDownElement=null;
-	this.secondUpElement=null;
-	this.secondDownElement=null;
-	this.amPmUpElement=null;
-	this.amPmDownElement=null;
-
-	//	values
-	this.is24HourClock=false;
-	this.isPm=false;
-	this.date=null;
-
-	//	options
-	this.displayHours=true;
-	this.displayMinutes=true;
-	this.displaySeconds=false;
-
-	this.adjustHoursBy=1;
-	this.adjustMinutesBy=15;
-	this.adjustSecondsBy=15;
-};
-dojo.inherits(tapestry.widget.TimePicker, dojo.widget.HtmlWidget);
-
-dojo.lang.extend(tapestry.widget.TimePicker, {
-	
-	templatePath:null,
-	templateCssPath:null,
-	imagePath:dojo.uri.dojoUri("../tapestry/widget/templates/images/"),
-	
-	getValue:function(){
-		return this.date;
-	},
-	
-	setValue:function(date){
-		if (dojo.lang.isString(date)) { this.date=new Date(date); }
-		else { this.date=date; }
-		
-		this.isPm=this.date.getHours()>=12;
-	},
-	parseValue:function(str){
-		var a=str.match(/\d{1,2}/g);
-		var t=str.match(/(am|pm|a|p)/ig);
-		if(a){
-			var d=new Date();
-			var h=a[0];
-			var m=a[1]?a[1]:0;
-			if(t) t=String(t[0]);
-			if(t&&t.charAt(0).toLowerCase()=="p") h=h%12+12;
-			d.setHours(h);
-			d.setMinutes(m);
-			setValue(d);
-		}
-	},
-
-	adjust:function(){
-		//	set up for set value.
-		var h=this.date.getHours();
-		if(!this.is24HourClock&&this.isPm&&h<12){
-			h+=12;
-		}
-		this.date.setHours(h);
-		this.setValue(this.date);
-
-		var h=this.date.getHours();
-		var m=""+this.date.getMinutes();
-		var s=""+this.date.getSeconds();
-		this.isPm=h>=12?true:false;	//	isPm
-
-		if(h==0) h=24;
-		if(h>12) h-=12;
-		if(m.length==1) m="0"+m;
-		if(s.length==1) s="0"+s;
-
-		this.hourElement.value=h;
-		this.minuteElement.value=m;
-		if (this.secondElement) this.secondElement.value=s;
-		if (!this.is24HourClock){
-			if(this.amPmElement) this.amPmElement.innerHTML=((this.isPm)?"pm":"am");
-		}
-
-	},
-
-	//	event handlers
-	adjustHours:function(e){
-		if(e.target==this.hourUpElement){
-			this.date.setHours(this.date.getHours()+parseInt(this.adjustHoursBy));
-		}
-		if(e.target==this.hourDownElement){
-			this.date.setHours(this.date.getHours()-parseInt(this.adjustHoursBy));
-		}
-		if(e.target==this.hourElement){
-			this.date.setHours(parseInt(this.hourElement.value));
-		}
-		this.adjust();
-	},
-	adjustMinutes:function(e){
-		if(e.target==this.minuteUpElement){
-			this.date.setMinutes(this.date.getMinutes()+parseInt(this.adjustMinutesBy));
-		}
-		if(e.target==this.minuteDownElement){
-			this.date.setMinutes(this.date.getMinutes()-parseInt(this.adjustMinutesBy));
-		}
-		if(e.target==this.minuteElement){
-			this.date.setMinutes(parseInt(this.minuteElement.value));
-		}
-		this.adjust();
-	},
-	adjustSeconds:function(e){
-		if(e.target==this.secondUpElement){
-			this.date.setSeconds(this.date.getSeconds()+parseInt(this.adjustSecondsBy));
-		}
-		if(e.target==this.secondDownElement){
-			this.date.setSeconds(this.date.getSeconds()-parseInt(this.adjustSecondsBy));
-		}
-		if(e.target==this.minuteElement){
-			this.date.setSeconds(parseInt(this.secondElement.value));
-		}
-		this.adjust();
-	},
-	adjustAmPm:function(e){
-		this.isPm=!this.isPm;
-		if(this.date.getHours()>12) this.date.setHours(this.date.getHours()-12);
-		this.adjust();
-	},
-
-	postCreate:function(args){
-		//	make sure any attributes are the right type.
-		this.is24HourClock=Boolean(this.is24HourClock);
-		if (args.date) { this.date = new Date(args.date); }
-		else { this.date = new Date(); }
-		this.isPm=Boolean(this.isPm);
-		
-		//	options
-		this.displayHours=Boolean(this.displayHours);
-		this.displayMinutes=Boolean(this.displayMinutes);
-		this.displaySeconds=Boolean(this.displaySeconds);
-
-		this.adjustHoursBy=parseInt(this.adjustHoursBy);
-		this.adjustMinutesBy=parseInt(this.adjustMinutesBy);
-		this.adjustSecondsBy=parseInt(this.adjustSecondsBy);
-	
-		//	from here we build.
-		this.hourElement=document.createElement("input");
-		this.hourElement.style.width="20px";
-		this.hourElement.style.textAlign="right";
-		dojo.event.connect(this.hourElement, "onchange", this, "adjustHours");
-
-		this.minuteElement=document.createElement("input");
-		this.minuteElement.style.width="20px";
-		this.minuteElement.style.textAlign="right";
-		dojo.event.connect(this.minuteElement, "onchange", this, "adjustMinutes");
-		
-		if (this.displaySeconds){
-			this.secondElement=document.createElement("input");
-			this.secondElement.style.width="20px";
-			this.secondElement.style.textAlign="right";
-			dojo.event.connect(this.secondElement, "onchange", this, "adjustSeconds");
-		}
-		
-		if (!this.is24HourClock){
-			this.amPmElement=document.createElement("span");
-			this.amPmElement.style.width="24px";
-		}
-		
-		this.adjust();
-
-		var container=document.createElement("table");
-		container.setAttribute("cellpadding","0");
-		container.setAttribute("cellspacing","0");
-		container.setAttribute("border","0");
-
-		var row=document.createElement("tr");
-		container.appendChild(row);
-
-		var cell=document.createElement("td");
-		cell.setAttribute("rowspan","2");
-		cell.style.padding="0";
-		cell.appendChild(this.hourElement);
-		row.appendChild(cell);
-
-		cell=document.createElement("td");
-		cell.setAttribute("width","12");
-		cell.style.padding="0";
-		this.hourUpElement=document.createElement("img");
-		this.hourUpElement.setAttribute("src", this.imagePath + "domain_up.gif");
-		this.hourUpElement.setAttribute("width","10");
-		this.hourUpElement.setAttribute("height","10");
-		cell.appendChild(this.hourUpElement);
-		dojo.event.connect(this.hourUpElement, "onclick", this, "adjustHours");
-		row.appendChild(cell);
-
-		cell=document.createElement("td");
-		cell.setAttribute("rowspan","2");
-		cell.style.padding="0";
-		cell.style.paddingLeft="2px";
-		cell.appendChild(this.minuteElement);
-		row.appendChild(cell);
-
-		cell=document.createElement("td");
-		cell.setAttribute("width","12");
-		cell.style.padding="0";
-		this.minuteUpElement=document.createElement("img");
-		this.minuteUpElement.setAttribute("src", this.imagePath + "domain_up.gif");
-		this.minuteUpElement.setAttribute("width","10");
-		this.minuteUpElement.setAttribute("height","10");
-		cell.appendChild(this.minuteUpElement);
-		dojo.event.connect(this.minuteUpElement, "onclick", this, "adjustMinutes");
-		row.appendChild(cell);
-
-		if (this.displaySeconds){
-			cell=document.createElement("td");
-			cell.style.padding="0";
-			cell.setAttribute("rowspan","2");
-			cell.appendChild(this.secondElement);
-			cell.style.paddingLeft="2px";
-			row.appendChild(cell);
-
-			cell=document.createElement("td");
-			cell.setAttribute("width","12");
-			cell.style.padding="0";
-			this.secondUpElement=document.createElement("img");
-			this.secondUpElement.setAttribute("src", this.imagePath + "domain_up.gif");
-			this.secondUpElement.setAttribute("width","10");
-			this.secondUpElement.setAttribute("height","10");
-			cell.appendChild(this.secondUpElement);
-			dojo.event.connect(this.secondUpElement, "onclick", this, "adjustSeconds");
-			row.appendChild(cell);
-		}
-
-		if (!this.is24HourClock){
-			cell=document.createElement("td");
-			cell.setAttribute("rowspan","2");
-			cell.setAttribute("valign","bottom");
-			cell.setAttribute("align","right");
-			cell.style.padding="0 2px";
-			cell.style.border="1px solid #ededde";
-			cell.appendChild(this.amPmElement);
-			row.appendChild(cell);
-
-			cell=document.createElement("td");
-			cell.setAttribute("width","12");
-			cell.style.padding="0";
-			this.amPmUpElement=document.createElement("img");
-			this.amPmUpElement.setAttribute("src", this.imagePath + "domain_up.gif");
-			this.amPmUpElement.setAttribute("width","10");
-			this.amPmUpElement.setAttribute("height","10");
-			cell.appendChild(this.amPmUpElement);
-			dojo.event.connect(this.amPmUpElement, "onclick", this, "adjustAmPm");
-			row.appendChild(cell);
-		}
-
-		row=document.createElement("tr");
-		container.appendChild(row);
-
-		cell=document.createElement("td");
-		cell.setAttribute("width","12");
-		cell.setAttribute("valign","bottom");
-		cell.style.padding="0";
-		this.hourDownElement=document.createElement("img");
-		this.hourDownElement.setAttribute("src", this.imagePath + "domain_down.gif");
-		this.hourDownElement.setAttribute("width","10");
-		this.hourDownElement.setAttribute("height","10");
-		cell.appendChild(this.hourDownElement);
-		dojo.event.connect(this.hourDownElement, "onclick", this, "adjustHours");
-		row.appendChild(cell);
-
-		cell=document.createElement("td");
-		cell.setAttribute("width","12");
-		cell.setAttribute("valign","bottom");
-		cell.style.padding="0";
-		this.minuteDownElement=document.createElement("img");
-		this.minuteDownElement.setAttribute("src", this.imagePath + "domain_down.gif");
-		this.minuteDownElement.setAttribute("width","10");
-		this.minuteDownElement.setAttribute("height","10");
-		cell.appendChild(this.minuteDownElement);
-		dojo.event.connect(this.minuteDownElement, "onclick", this, "adjustMinutes");
-		row.appendChild(cell);
-
-		if (this.displaySeconds){
-			cell=document.createElement("td");
-			cell.setAttribute("width","12");
-			cell.setAttribute("valign","bottom");
-			cell.style.padding="0";
-			this.secondDownElement=document.createElement("img");
-			this.secondDownElement.setAttribute("src", this.imagePath + "domain_down.gif");
-			this.secondDownElement.setAttribute("width","10");
-			this.secondDownElement.setAttribute("height","10");
-			cell.appendChild(this.secondDownElement);
-			dojo.event.connect(this.secondDownElement, "onclick", this, "adjustSeconds");
-			row.appendChild(cell);
-		}
-
-		if (!this.is24HourClock){
-			cell=document.createElement("td");
-			cell.setAttribute("width","12");
-			cell.setAttribute("valign","bottom");
-			cell.style.padding="0";
-			this.amPmDownElement=document.createElement("img");
-			this.amPmDownElement.setAttribute("src", this.imagePath + "domain_down.gif");
-			this.amPmDownElement.setAttribute("width","10");
-			this.amPmDownElement.setAttribute("height","10");
-			cell.appendChild(this.amPmDownElement);
-			dojo.event.connect(this.amPmDownElement, "onclick", this, "adjustAmPm");
-			row.appendChild(cell);
-		}
-
-		this.domNode.appendChild(container);
-	}
-});

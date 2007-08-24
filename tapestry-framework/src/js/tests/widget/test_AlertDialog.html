@@ -5,39 +5,42 @@
 -->
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title>DatePicker Test</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+    <title>AlertDialog Test</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<script type="text/javascript">
-var djConfig = {
-    isDebug: true
-};
-</script>
-<script type="text/javascript" src="../../dojo-0.4.2/dojo.js"></script>
-<script type="text/javascript" src="../../tapestry/core.js"></script>
+    <script type="text/javascript">
+        var djConfig = {
+            isDebug: true
+        };
+    </script>
+    <script type="text/javascript" src="../../dojo-0.4.3/dojo.js"></script>
+    <script type="text/javascript" src="../../dojo-0.4.3/dojo2.js"></script>
+    <script type="text/javascript" src="../../dojo-0.4.3/dojo3.js"></script>
+    <script type="text/javascript" src="../../tapestry/core.js"></script>
 
 </head>
 
 <body>
 <style>
-	
-	.alertDialog {
-		width:260px;
-		border:2px solid #ff660a;
-		padding:1em;
-		padding-bottom:1.7em;
-	}
 
-	.alertDialog .dojoButton {
-		float:right;
-	}
+    .alertDialog {
+        width:260px;
+        border:2px solid #ff660a;
+        padding:1em;
+        padding-bottom:1.7em;
+    }
+
+    .alertDialog .dojoButton {
+        float:right;
+    }
 </style>
 
 <script type="text/javascript">
+    dojo.require("tapestry.form");
     dojo.require("tapestry.namespace");
-    
+
     dojo.addOnLoad(function() {
-    	dojo.widget.byId("alertDialog").show();
+        dojo.widget.byId("alertDialog").show();
     });
 </script>
 <p>la la la la lalala lala </p>
