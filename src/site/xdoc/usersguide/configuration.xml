@@ -40,17 +40,13 @@
         </p>
 
         <dl>
-            <dt>Java 1.2.2</dt>
-            <dd>
-                Operates correctly. Requires the Xerces parser to be in the classpath (usually
-                provided by the servlet container).
-            </dd>
-            <dt>Java 1.3.x</dt>
-            <dd>
-                Operates correctly. Requires the Xerces parser to be in the classpath (usually
-                provided by the servlet container).
-            </dd>
-            <dt>Java 1.4.x (recommended)</dt>
+            <dt>Java 1.4.x</dt>
+            <dd>Operates correctly.</dd>
+            
+            <dt>Java 1.5.x (recommended)</dt>
+            <dd>Operates correctly. Annotation-configuration can be used.</dd>
+            
+            <dt>Java 1.6.x </dt>
             <dd>Operates correctly.</dd>
         </dl>
 
@@ -178,14 +174,9 @@
             </p>
 
             <p>
-            <span class="warn">
-                <strong>Fixme:</strong>
-                <p>
-                This documentation is out of date with respect to
-                <a href="http://hivemind.apache.org/hivemind1/">HiveMind</a>
-                . In 4.0, the servlet will create and initialize a HiveMind Registry.
-                </p>
-            </span>
+             Since Tapestry 4.0, the application specification is complemented and greatly 
+             extended by the <a href="hivemind.html">HiveMind configurations</a>.
+
             </p>
 
             <p>
@@ -230,7 +221,7 @@
 
         </subsection><!-- configuration.deployment-descriptor -->
 
-        <subsection name="Application Property Source">
+        <subsection name="Property Sources">
             <p>
                 Tapestry occasionally must obtain a value for a configuration property. These
                 configuration properties are items that are frequently optional, and don't fit into
@@ -239,12 +230,13 @@
             </p>
 
             <p>
-                Tapestry is very flexible about where values for such properties may be obtained. In
-                general, the search path for configuration properties is:
+                Tapestry is very flexible about where values for such properties may be obtained.
+                There are three kinds of property sources with different search paths which are used
+                in different contexts; these are: global, application and component property sources.
             </p>
 
-            <p>
-            <ul>
+             In general, the search path for configuration properties is:
+            <ul> 
                 <li>
                     As a
                     <a href="spec.html#spec.meta">&lt;meta&gt;</a>
@@ -267,7 +259,7 @@
                     symbols.
                 </li>
             </ul>
-            </p>
+            
 
             <p>
                 It is expected that some configuration properties are not defined at any level;
@@ -277,36 +269,40 @@
             <p>Applications are free to leverage this lookup mechanism as well.</p>
             
             <p>
-            <span class="info">
-                <strong>fixme:</strong>
-                <p>
-                    Need to reference the ApplicationPropertySource, GlobalPropertySource and ComponentPropertySource services here.
-                </p>
-            </span>
+             Within the framework the following three services provide access to properties
+             from the above-mentioned sources:
+             <ul>
+               <li> The <a href="../tapestry-framework/hivedoc/service/tapestry.props.ComponentPropertySource.html">
+                     ComponentPropertySource </a> serves the need of components, looking
+                     up properties starting at component-spec-level and working its way upwards</li>
+               <li> The <a href="../tapestry-framework/hivedoc/service/tapestry.props.ApplicationPropertySource.html">
+                     ApplicationPropertySource </a> provides access to application-scoped
+                     properties where "application" means tapestry application as opposed to web 
+                     application (see next item).</li>
+               <li> The <a href="../tapestry-framework/hivedoc/service/tapestry.props.GlobalPropertySource.html">
+                     GlobalPropertySource </a> provides access to much the same properties as the
+                     ApplicationPropertySource omitting the application-specification itself since
+                     there might be multiple tapestry applications living within the same
+                     web application.</li>
+              </ul>
+            
             </p>
             
             <p>
                 Applications may also want to change or augment the default search path; this is
-                accomplished by overriding
-                <a
-                    href="../apidocs/org/apache/tapestry/engine/AbstractEngine.html">
-                    AbstractEngine
-                </a>
-                method
-                <code>createPropertySource()</code>
+                accomplished by 
+                <ol> 
+                  <li> writing a HiveMind service implementing the interface
+                <a href="../apidocs/org/apache/tapestry/engine/IPropertySource.html">
+                    IPropertySource</a>
+                  </li>
+                <li> contributing it to the <a href="../tapestry-framework/hivedoc/config/tapestry.props.ApplicationPropertySources.html">tapestry.props.ApplicationPropertySource 
+                   configuration point</a></li>
+                </ol>
                 . For example, some configuration data could be drawn from a database.
             </p>
 
-            <p>
-            <span class="info">
-                <strong>Fixme:</strong>
-                <p>
-                The previous paragraph is out of date; extension of the search path will involve a
-                HiveMind contribution, details to be provided.
-                </p>
-            </span>
-            </p>
-
+            
         </subsection><!-- configuration.app-property-source -->
 
         <subsection name="Global Property Source">

@@ -240,9 +240,10 @@
 
             </section><!-- changes -->
 
+			<a name="spec.property-injection"></a>
+			
             <section name="Property Injection">
-
-
+			
                 <p>
                     Several of the specification elements are concerned with
                     <a href="injection.html">property injection</a>
@@ -303,9 +304,10 @@
 
             </section>
 
+			<a name="spec.application"></a>
+			
             <section name="&lt;application&gt; element">
-
-
+            
 
                 <p>
                     <em>root element</em>
@@ -366,9 +368,10 @@
 
             </section><!-- spec.application -->
 
-
+			<a name="spec.asset"></a>
+			
             <section name="&lt;asset&gt; element">
-
+			
 
                 <p>
                     Specifies the location of an asset, a file (typically an image or stylesheet)
@@ -459,8 +462,10 @@
             </section><!-- spec.asset -->
 
 
+			<a name="spec.bean"></a>
+			
             <section name="&lt;bean&gt; element">
-
+			
 
                 <p>
                     Appears in:
@@ -596,8 +601,9 @@
 
             </section><!-- spec.bean -->
 
+			<a name="spec.binding"></a>
             <section name="&lt;binding&gt; element">
-
+			
 
                 <p>
                     Appears in:
@@ -694,8 +700,9 @@
 
             </section><!-- spec.binding -->
 
+			<a name="spec.component"></a>
             <section name="&lt;component&gt; element">
-
+			
 
                 <p>
                     Appears in:
@@ -806,9 +813,9 @@
 
 
 
-
+			<a name="spec.component-specification"></a>
             <section name="&lt;component-specification&gt; element">
-
+			
 
                 <p>
                     <em>root element</em>
@@ -928,8 +935,9 @@
             </section><!-- spec.component-specification -->
 
 
+			<a name="spec.component-type"></a>
             <section name="&lt;component-type&gt; element">
-
+			
 
                 <p>
                     Appears in:
@@ -979,8 +987,10 @@
 
             </section><!-- spec.component-type -->
 
+			<a name="spec.configure"></a>
+			
             <section name="&lt;configure&gt; element">
-
+			
 
                 <p>
                     Appears in:
@@ -1033,9 +1043,10 @@
             </section><!-- spec.configure -->
 
 
-
+			<a name="spec.description"></a>
+			
             <section name="&lt;description&gt; element">
-
+			
 
                 <p>
                     Appears in:
@@ -1059,8 +1070,10 @@
 
             </section><!-- spec.description -->
 
+			<a name="spec.extension"></a>
+			
             <section name="&lt;extension&gt; element">
-
+			
 
                 <p>
                     Appears in:
@@ -1127,8 +1140,9 @@
 
             </section><!-- spec.extension -->
 
+			<a name="spec.inject"></a>
             <section name="&lt;inject&gt; element">
-
+			
 
                 <p>
                     Appears in:
@@ -1196,8 +1210,9 @@
 
             </section><!-- spec.inject -->
 
-
+			<a name="spec.library"></a>
             <section name="&lt;library&gt; element">
+			
 
 
                 <p>
@@ -1257,8 +1272,10 @@
 
             </section><!-- spec.library -->
 
+			<a name="spec.library-specification"></a>
             <section name="&lt;library-specification&gt; element">
-
+			
+			
 
                 <p>
                     <em>root element</em>
@@ -1284,9 +1301,10 @@
 
             </section><!-- spec.library-specification -->
 
-
+			<a name="spec.meta"></a>
+			
             <section name="&lt;meta&gt; element">
-
+			
 
                 <p>
                     Appears in:
@@ -1339,9 +1357,9 @@
 
             </section><!-- spec.meta -->
 
-
+			<a name="spec.page"></a>
             <section name="&lt;page&gt; element">
-
+			
 
                 <p>
                     Appears in:
@@ -1393,8 +1411,9 @@
 
             </section><!-- spec.page -->
 
+			<a name="spec.page-specification"></a>
             <section name="&lt;page-specification&gt; element">
-
+			
 
                 <p>
                     <em>root element</em>
@@ -1463,8 +1482,9 @@
 
             </section><!-- spec.page-specification -->
 
+			<a name="spec.parameter"></a>
             <section name="&lt;parameter&gt; element">
-
+			
 
                 <p>
                     Appears in:
@@ -1599,6 +1619,8 @@
                 </span>
 
             </section><!-- spec.parameter -->
+            
+            <a name="property"></a>
             <section name="&lt;property&gt; element">
 
 
@@ -1702,8 +1724,9 @@
 
             </section><!-- spec.property -->
 
+			<a name="spec.reserved-parameter"></a>
             <section name="&lt;reserved-parameter&gt; element">
-
+			
 
                 <p>
                     Appears in:
@@ -1750,10 +1773,10 @@
 
 
             </section><!-- spec.reserved-parameter -->
-
-
+	
+			<a name="spec.set"></a>
             <section name="&lt;set&gt; element">
-
+			
 
                 <p>
                     Appears in:

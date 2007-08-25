@@ -96,6 +96,7 @@
   "http://jakarta.apache.org/tapestry/dtd/Script_3_0.dtd"&gt;</source>
             </subsection><!-- DOCTYPE -->
 
+			<a name="script.body"></a>
             <subsection name="&lt;body&gt; element">
 
 
@@ -116,6 +117,7 @@
                         href="#script.unique">&lt;unique&gt;</a>)*</source>
             </subsection>
 
+			<a name="script.foreach"></a>
             <subsection name="&lt;foreach&gt; element">
 
 
@@ -176,7 +178,7 @@
                         href="#script.unique">&lt;unique&gt;</a>)*</source>
             </subsection>
 
-
+			<a name="script.if"></a>
             <subsection name="&lt;if&gt; element">
 
 
@@ -223,6 +225,7 @@
 
             </subsection>
 
+			<a name="script.if-not"></a>
             <subsection name="&lt;if-not&gt; element">
 
 
@@ -237,7 +240,7 @@
             </subsection>
 
 
-
+			<a name="script.include-script"></a>
             <subsection name="&lt;include-script&gt; element">
 
 
@@ -280,6 +283,8 @@
                 </table>
 
             </subsection>
+            
+            <a name="script.initialization"></a>
             <subsection name="&lt;initialization&gt; element">
 
 
@@ -301,6 +306,7 @@
                         href="#script.unique">&lt;unique&gt;</a>)*</source>
             </subsection>
 
+			<a name="script.input-symbol"></a>
             <subsection name="&lt;input-symbol&gt; element">
 
 
@@ -357,7 +363,9 @@
                 </table>
 
             </subsection>
-
+            
+            
+			<a name="script.let"></a>
             <subsection name="&lt;let&gt; element">
 
 
@@ -424,7 +432,8 @@
 
 
             </subsection>
-
+	
+			<a name="script.script"></a>
             <subsection name="&lt;script&gt; element">
 
 
@@ -446,7 +455,7 @@
 
             </subsection><!-- script -->
 
-
+			<a name="script.set"></a>
             <subsection name="&lt;set&gt; element">
 
 
@@ -494,6 +503,7 @@
 
             </subsection><!-- script.set -->
 
+			<a name="script.unique"></a>
             <subsection name="&lt;unique&gt; element">
 
 
