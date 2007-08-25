@@ -21,7 +21,7 @@ Custom Exception Pages
   services:
 
 +-----------------------------------------------------------
-<contribution configuration-id="tapestry.InfrastructureOverrides">
+<contribution configuration-id="tapestry.Infrastructure">
     <property name="exceptionPageName" value="Exception"/>
     <property name="exceptionPageName" mode="wml" value="WMLException"/>
     
@@ -50,7 +50,31 @@ Custom Exception Pages
   <<<hivemodule.xml>>> configuration file:
   
 +-----------------------------------------------------------
-<contribution configuration-id="tapestry.Infrastructure">
+<contribution configuration-id="tapestry.InfrastructureOverrides">
     <property name="exceptionPageName" value="MyCustomExceptionPageName"/>
 </contribution>  
++-----------------------------------------------------------
+
+  Your page would have to have a property
+  called <<<exception>>>. A sample page class might look as follows:
+
++-----------------------------------------------------------
+public abstract class MyCustomExceptionPage extends BasePage
+{
+    private static Logger logger = Logger.getLogger(ExceptionPage.class);
+
+    @InitialValue("false")
+    public abstract boolean isPageNotFound();
+    public abstract void setPageNotFound(boolean pageNotFound);
+    
+    public void setException(Throwable t)
+    {
+        logger.error("an exception occured", t);
+        if(t instanceof PageNotFoundException ||
+                t.getCause() instanceof PageNotFoundException)
+        {
+            setPageNotFound(true);
+        }
+    }
+}  
 +-----------------------------------------------------------
