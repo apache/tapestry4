@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.tapestry.BaseComponentTestCase;
+import org.easymock.EasyMock;
+import org.testng.annotations.ExpectedExceptions;
 import org.testng.annotations.Test;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,12 +36,16 @@ public class TestUploadFormParametersWrapper extends BaseComponentTestCase
 {
     private HttpServletRequest newHttpRequest()
     {
-        return newMock(HttpServletRequest.class);
+        HttpServletRequest req = newMock(HttpServletRequest.class);
+        EasyMock.expect(req.getParameterMap()).andReturn( new HashMap() );
+        return req;
     }
-
+    
+       
     public void testMapIsNotModifiable()
     {
         HttpServletRequest request = newHttpRequest();
+        
 
         replay();
 
@@ -137,5 +143,19 @@ public class TestUploadFormParametersWrapper extends BaseComponentTestCase
         assertEquals(false, e.hasMoreElements());
 
         verify();
+    }
+    
+    public void testGetUrlParameter()  // Test fix for TAPESTRY-340
+    {
+        HttpServletRequest req = newMock(HttpServletRequest.class);
+        EasyMock.expect(req.getParameterMap()).andReturn(
+                new HashMap(){{put("urlParam", new String[]{"urlParamValue"} );}} );
+
+        replay();
+        
+        HttpServletRequest r = new UploadFormParametersWrapper(req, new HashMap());
+        
+        assertEquals("urlParamValue", r.getParameter("urlParam") );
+        assertEquals("urlParam", r.getParameterNames().nextElement() );
     }
 }
