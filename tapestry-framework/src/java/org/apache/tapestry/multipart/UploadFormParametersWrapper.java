@@ -49,8 +49,9 @@ public class UploadFormParametersWrapper extends HttpServletRequestWrapper
         super(request);
 
         Defense.notNull(parameterMap, "parameterMap");
-
-        _parameterMap = Collections.unmodifiableMap(parameterMap);
+        // add Parameter from the URL, typically added by JavaScript-URL-manipulation
+        parameterMap.putAll(request.getParameterMap());
+        _parameterMap = Collections.unmodifiableMap(parameterMap );
     }
 
     public String getParameter(String name)
