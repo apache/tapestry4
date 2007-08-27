@@ -22,8 +22,9 @@ dojo.widget.defineWidget(
     dropdownNode:null, // drop down div container
     bgIframe:null,
     options:[], // option div nodes
-    dropdownPositioned:false,
     showing:false,
+    preventBlur:false,
+    hasFocus:false,
 
     postCreate: function() {
         this.inputNode = dojo.byId(this.inputNodeId);
@@ -68,18 +69,22 @@ dojo.widget.defineWidget(
 
         dojo.body().appendChild(this.dropdownNode);
 
-        if (dojo.render.html.ie){
+        if(dojo.render.html.ie55||dojo.render.html.ie60){
             this.bgIframe = new dojo.html.BackgroundIframe();
             this.bgIframe.setZIndex(this.dropdownNode);
         }
         
         dojo.event.connect(this.inputNode, "onclick", this, "onInputClick");
-        dojo.event.connect(this.inputNode, "onblur", this, "hide");
+        dojo.event.connect(this.inputNode, "onblur", this, "onInputBlur");
+
+        dojo.event.connect(this.dropdownNode, "onmouseover", this, "onDropdownMouseOver");
+        dojo.event.connect(this.dropdownNode, "onmouseout", this, "onDropdownMouseOut");
         
         dojo.event.connect(dojo.body(), "onkeyup", this, "onKeyUp");
     },
 
     onOptionMouseOver: function(evt) {
+        this.preventBlur=true;
         if (!dojo.html.hasClass(evt.target, this.optionHoverClass)) {
             dojo.html.addClass(evt.target, this.optionHoverClass);
         }
@@ -106,11 +111,37 @@ dojo.widget.defineWidget(
             this.hide();
             return;
         }
-        
+
+        this.hasFocus=true;
+        this.preventBlur=true;
         this.show();
 
         if (this.selectedNode){
             dojo.html.scrollIntoView(this.selectedNode);
+        }
+    },
+
+    onInputBlur: function(evt) {
+        this.hasFocus=false;
+        if (this.preventBlur){
+            return;
+        }
+
+        this.hide();
+    },
+
+    onDropdownMouseOver: function(evt) {
+        this.preventBlur=true;
+    },
+
+    onDropdownMouseOut: function(evt) {
+        this.preventBlur=false;
+
+        if (this.isWidgetNode(evt["relatedTarget"])){
+            return;
+        }
+        if (!this.hasFocus){
+            this.hide(evt);
         }
     },
 
@@ -122,21 +153,20 @@ dojo.widget.defineWidget(
 
     hide: function(evt) {
         dojo.html.hide(this.dropdownNode);
-        
+
         if (this.bgIframe){
             this.bgIframe.hide();
         }
 
+        this.hasFocus=false;
+        this.preventBlur=false;
         this.showing=false;
     },
 
     show: function(evt) {
-        if (!this.dropdownPositioned){
-            dojo.html.placeOnScreenAroundElement(this.dropdownNode, this.inputNode,
-                                            null, dojo.html.boxSizing.BORDER_BOX,
-                                            {'BL': 'TL', 'TL': 'BL'});
-            this.dropdownPositioned = true;
-        }
+
+        dojo.html.placeOnScreenAroundElement(this.dropdownNode, this.inputNode,
+                null, dojo.html.boxSizing.BORDER_BOX, {'BL': 'TL', 'TL': 'BL'});
 
         dojo.html.show(this.dropdownNode);
         
@@ -148,14 +178,24 @@ dojo.widget.defineWidget(
         this.showing=true;
     },
 
+    isWidgetNode: function(node){
+        if (!node){return false;}
+        
+        return dojo.html.hasClass(node, this.dropdownOptionClass)
+            || dojo.html.hasClass(node, this.dropdownClass);
+    },
+
     destroyRendering: function(finalize){
         try{
             dojo.widget.HtmlWidget.prototype.destroyRendering.call(this, finalize);
 
             dojo.event.disconnect(this.inputNode, "onclick", this, "onInputClick");
-            dojo.event.disconnect(this.inputNode, "onblur", this, "hide");
+            dojo.event.disconnect(this.inputNode, "onblur", this, "onInputBlur");
             dojo.event.browser.clean(this.inputNode);
-            
+
+            dojo.event.disconnect(this.dropdownNode, "onmouseover", this, "onDropdownMouseOver");
+            dojo.event.disconnect(this.dropdownNode, "onmouseout", this, "onDropdownMouseOut");
+
             dojo.dom.destroyNode(this.dropdownNode);
             delete this.dropdownNode;
 
