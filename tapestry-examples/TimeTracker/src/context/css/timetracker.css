@@ -90,3 +90,12 @@ p {
     clear:both;
     width:95%;
 }
+
+.dialog, .dojoDialog {
+    margin-left: 9%;
+    margin-right: 9%;
+    display: block;
+    position: absolute;
+    padding: 0.2em;
+    background-color: #ffffff;
+}
