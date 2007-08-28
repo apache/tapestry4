@@ -25,6 +25,7 @@ dojo.widget.defineWidget(
     showing:false,
     preventBlur:false,
     hasFocus:false,
+    dropdownDim:{height:0, width:0},
 
     postCreate: function() {
         this.inputNode = dojo.byId(this.inputNodeId);
@@ -60,12 +61,15 @@ dojo.widget.defineWidget(
         }
 
         var m = dojo.html.getCachedFontMeasurements();
+        this.dropdownDim.width = m["1em"] * 6;
+        this.dropdownDim.height = m["1em"] * 11;
+
         var st=this.dropdownNode.style;
         st["overflow"]="auto";
         st["zIndex"]=9000;
         st["position"]="absolute";
-        st["width"]=(m["1em"] * 6) + "px"
-        st["height"]=(m["1em"] * 11) + "px";
+        st["width"]=this.dropdownDim.width + "px"
+        st["height"]=this.dropdownDim.height + "px";
 
         dojo.body().appendChild(this.dropdownNode);
 
@@ -165,8 +169,32 @@ dojo.widget.defineWidget(
 
     show: function(evt) {
 
-        dojo.html.placeOnScreenAroundElement(this.dropdownNode, this.inputNode,
-                null, dojo.html.boxSizing.BORDER_BOX, {'BL': 'TL', 'TL': 'BL'});
+        var oldDisplay = this.inputNode.style.display;
+        var mb = dojo.html.getElementBox(this.inputNode, dojo.html.boxSizing.BORDER_BOX);
+        var inputPos = dojo.html.getAbsolutePosition(this.inputNode, true, dojo.html.boxSizing.BORDER_BOX);
+	    this.inputNode.style.display=oldDisplay;
+
+        var view=dojo.html.getViewport();
+        var scroll=dojo.html.getScroll();
+
+        var ddX = inputPos.x + mb.width - this.dropdownDim.width;
+        if (ddX < 0){
+            ddX = inputPos.x;
+        }
+
+        var ddY;
+        if ((inputPos.y + mb.height + this.dropdownDim.height) > view.height){
+            ddY = inputPos.y - this.dropdownDim.height - 1;
+        } else {
+            ddY = inputPos.y + mb.height;
+        }
+
+        if (dojo.render.html.ie && scroll.top > 0){
+            ddY -= scroll.top;
+        }
+
+        this.dropdownNode.style["top"]=ddY+'px';
+        this.dropdownNode.style["left"]=ddX+'px';
 
         dojo.html.show(this.dropdownNode);
         
