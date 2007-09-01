@@ -78,6 +78,9 @@ public abstract class Insert extends AbstractComponent
             writer.begin(getTemplateTagName());
             
             renderInformalParameters(writer, cycle);
+            
+            if (getId() != null && !isParameterBound("id"))
+                renderIdAttribute(writer, cycle);
         }
         
         printText(writer, cycle, insert);
