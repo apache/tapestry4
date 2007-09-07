@@ -14,22 +14,22 @@
 
 package org.apache.tapestry.components;
 
-import java.io.IOException;
-import java.io.LineNumberReader;
-import java.io.Reader;
-import java.io.StringReader;
-import java.text.Format;
-
+import org.apache.commons.io.IOUtils;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 
+import java.io.IOException;
+import java.io.LineNumberReader;
+import java.io.StringReader;
+import java.text.Format;
+
 /**
  * Used to insert some text (from a parameter) into the HTML. [ <a
  * href="../../../../../ComponentReference/Insert.html">Component Reference
  * </a>]
- * 
+ *
  * @author Howard Lewis Ship
  */
 
@@ -42,18 +42,18 @@ public abstract class Insert extends AbstractComponent
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        if (cycle.isRewinding()) 
+        if (cycle.isRewinding())
             return;
-        
+
         Object value = getValue();
-        
-        if (value == null) 
+
+        if (value == null)
             return;
-        
+
         String insert = null;
-        
+
         Format format = getFormat();
-        
+
         if (format == null)
         {
             insert = value.toString();
@@ -71,85 +71,75 @@ public abstract class Insert extends AbstractComponent
                         "format").getLocation(), ex);
             }
         }
-        
+
         boolean render = getRenderTag() || isParameterBound("class");
-        
-        if (render) {
+
+        if (render)
+        {
             writer.begin(getTemplateTagName());
-            
+
             renderInformalParameters(writer, cycle);
-            
+
             if (getId() != null && !isParameterBound("id"))
                 renderIdAttribute(writer, cycle);
         }
-        
+
         printText(writer, cycle, insert);
-        
-        if (render) {
+
+        if (render)
             writer.end();
-        }
     }
-    
+
     protected void printText(IMarkupWriter writer, IRequestCycle cycle, String value)
     {
-        if (getMode() == null) {
-            
+        if (getMode() == null)
+        {
             writer.print(value, getRaw());
             return;
         }
-        
+
         StringReader reader = null;
         LineNumberReader lineReader = null;
         InsertMode mode = getMode();
         boolean raw = getRaw();
-        
+
         try {
             reader = new StringReader(value);
             lineReader = new LineNumberReader(reader);
-            
+
             int lineNumber = 0;
-            
-            while(true) {
+
+            while(true)
+            {
                 String line = lineReader.readLine();
-                
+
                 // Exit loop at end of file.
-                
-                if (line == null) 
+
+                if (line == null)
                     break;
-                
+
                 mode.writeLine(lineNumber, line, writer, raw);
-                
+
                 lineNumber++;
             }
-            
-        } catch (IOException ex) {
-            
+
+        } catch (IOException ex)
+        {
             throw new ApplicationRuntimeException(ComponentMessages.textConversionError(ex), this, null, ex);
-        } finally {
-            
-            close(lineReader);
-            close(reader);
+        } finally
+        {
+            IOUtils.closeQuietly(lineReader);
+            IOUtils.closeQuietly(reader);
         }
     }
-    
-    private void close(Reader reader)
-    {
-        if (reader == null) 
-            return;
 
-        try
-        {
-            reader.close();
-        } catch (IOException e){}
-    }
-    
     public abstract Object getValue();
 
     public abstract Format getFormat();
-    
+
     public abstract boolean getRaw();
-    
+
     public abstract boolean getRenderTag();
-    
+
     public abstract InsertMode getMode();
 }

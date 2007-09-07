@@ -26,8 +26,8 @@
 
   <parameter name="displayName"/>
   <parameter name="translator" default-value="translator:date,pattern=h:mm a"/>
-  <parameter name="validators"/>
-
+  <parameter name="validators" />
+    
   <inject property="script" type="script" object="GTimePicker.script"/>
   <inject property="translatedFieldSupport" object="service:tapestry.form.TranslatedFieldSupport"/>
   <inject property="validatableFieldSupport" object="service:tapestry.form.ValidatableFieldSupport"/>
