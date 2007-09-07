@@ -14,14 +14,13 @@
 
 package org.apache.tapestry.multipart;
 
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Map;
+import org.apache.hivemind.util.Defense;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
-
-import org.apache.hivemind.util.Defense;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Map;
 
 /**
  * {@link javax.servlet.http.HttpServletRequest}&nbsp; wrapper that provides
@@ -43,14 +42,19 @@ public class UploadFormParametersWrapper extends HttpServletRequestWrapper
      *            a map whose keys are parameter names and whose values are
      *            arrays of Strings.
      */
-    public UploadFormParametersWrapper(HttpServletRequest request,
-            Map parameterMap)
+    public UploadFormParametersWrapper(HttpServletRequest request, Map parameterMap)
     {
         super(request);
 
         Defense.notNull(parameterMap, "parameterMap");
+
         // add Parameter from the URL, typically added by JavaScript-URL-manipulation
-        parameterMap.putAll(request.getParameterMap());
+
+        if (request.getParameterMap() != null)
+        {
+            parameterMap.putAll(request.getParameterMap());
+        }
+        
         _parameterMap = Collections.unmodifiableMap(parameterMap );
     }
 

@@ -34,9 +34,9 @@ import java.util.*;
  *
  */
 public class HiveMindExpressionCompiler extends ExpressionCompiler implements OgnlExpressionCompiler {
-    
+
     private static final Log _log = LogFactory.getLog(HiveMindExpressionCompiler.class);
-    
+
     private ClassFactory _classFactory;
 
     public HiveMindExpressionCompiler(ClassFactory classfactory)
@@ -57,7 +57,8 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
 
         Class[] intf = clazz.getInterfaces();
 
-        for (int i = 0; i < intf.length; i++) {
+        for (int i = 0; i < intf.length; i++)
+        {
             if (intf[i].getName().indexOf("util.List") > 0)
                 return intf[i].getName();
             else if (intf[i].getName().indexOf("Iterator") > 0)
@@ -80,15 +81,15 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
             return Iterator.class;
 
         if (Modifier.isPublic(clazz.getModifiers())
-            && clazz.isInterface() || clazz.isPrimitive()) {
-
+            && clazz.isInterface() || clazz.isPrimitive())
+        {
             return clazz;
         }
 
         Class[] intf = clazz.getInterfaces();
 
-        for (int i = 0; i < intf.length; i++) {
-
+        for (int i = 0; i < intf.length; i++)
+        {
             if (List.class.isAssignableFrom(intf[i]))
                 return List.class;
             else if (Iterator.class.isAssignableFrom(intf[i]))
@@ -114,8 +115,12 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
 
         Class ret = context.getRoot().getClass();
 
-        if (!IRender.class.isInstance(context.getRoot()) && context.getFirstAccessor() != null && context.getFirstAccessor().isInstance(context.getRoot()))
+        if (!IRender.class.isInstance(context.getRoot())
+            && context.getFirstAccessor() != null
+            && context.getFirstAccessor().isInstance(context.getRoot()))
+        {
             ret = context.getFirstAccessor();
+        }
 
         return ret;
     }
@@ -124,21 +129,21 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
             throws Exception
     {
         if (_log.isDebugEnabled())
-            _log.debug("Compiling expr class " + expression.getClass().getName() + " and root " + root.getClass().getName() + " with toString:" + expression.toString());
+            _log.debug("Compiling expr class " + expression.getClass().getName()
+                       + " and root " + root.getClass().getName() + " with toString:" + expression.toString());
 
-        synchronized (expression) {
-
+        synchronized (expression)
+        {
             if (expression.getAccessor() != null)
                 return;
 
             String getBody = null;
             String setBody;
-
-            ClassFab classFab = _classFactory.newClass(ClassFabUtils.generateClassName(expression.getClass()), Object.class);
-            classFab.addInterface(ExpressionAccessor.class);
-
+            
             MethodSignature valueGetter = new MethodSignature(Object.class, "get", new Class[]{OgnlContext.class, Object.class}, null);
             MethodSignature valueSetter = new MethodSignature(void.class, "set", new Class[]{OgnlContext.class, Object.class, Object.class}, null);
+
+            CompiledExpression compiled = new CompiledExpression(expression, root, valueGetter, valueSetter);
 
             MethodSignature expressionSetter = new MethodSignature(void.class, "setExpression", new Class[]{Node.class}, null);
 
@@ -147,18 +152,17 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
             if (root != null)
                 Ognl.getValue(expression, context, root);
 
-            try {
-
-                getBody = generateGetter(context, classFab, valueGetter, expression, root);
-
-            } catch (UnsupportedCompilationException uc) {
-
+            try
+            {
+                getBody = generateGetter(context, compiled);
+            } catch (UnsupportedCompilationException uc)
+            {
                 // uc.printStackTrace();
                 // The target object may not fully resolve yet because of a partial tree with a null somewhere, we
                 // don't want to bail out forever because it might be enhancable on another pass eventually
                 return;
-            } catch (javassist.CannotCompileException e) {
-
+            } catch (javassist.CannotCompileException e)
+            {
                 _log.error("Error generating OGNL getter for expression " + expression + " with root " + root + " and body:\n" + getBody, e);
 
                 e.printStackTrace();
@@ -167,12 +171,11 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
                 return;
             }
 
-            try {
-
-                classFab.addMethod(Modifier.PUBLIC, valueGetter, getBody);
-
-            } catch (Throwable t) {
-
+            try
+            {
+                generateClassFab(compiled).addMethod(Modifier.PUBLIC, valueGetter, getBody);
+            } catch (Throwable t)
+            {
                 _log.error("Error generating OGNL getter for expression " + expression + " with root " + root + " and body:\n" + getBody, t);
 
                 t.printStackTrace();
@@ -181,46 +184,46 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
                 return;
             }
 
-            try {
-
-                setBody = generateSetter(context, classFab, valueSetter, expression, root);
-
-            } catch (UnsupportedCompilationException uc) {
-                
+            try
+            {
+                setBody = generateSetter(context, compiled);
+            } catch (UnsupportedCompilationException uc)
+            {
                 //_log.warn("Unsupported setter compilation caught: " + uc.getMessage() + " for expression: " + expression.toString(), uc);
 
-                setBody = generateOgnlSetter(classFab, valueSetter);
+                setBody = generateOgnlSetter(generateClassFab(compiled), valueSetter);
 
-                if (!classFab.containsMethod(expressionSetter)) {
-
-                    classFab.addField("_node", Node.class);
-                    classFab.addMethod(Modifier.PUBLIC, expressionSetter, "{ _node = $1; }");
+                if (!generateClassFab(compiled).containsMethod(expressionSetter))
+                {
+                    generateClassFab(compiled).addField("_node", Node.class);
+                    generateClassFab(compiled).addMethod(Modifier.PUBLIC, expressionSetter, "{ _node = $1; }");
                 }
             }
 
-            try {
+            try
+            {
+                if (setBody == null)
+                {
+                    setBody = generateOgnlSetter(generateClassFab(compiled), valueSetter);
 
-                if (setBody == null) {
-                    setBody = generateOgnlSetter(classFab, valueSetter);
-
-                    if (!classFab.containsMethod(expressionSetter)) {
-
-                        classFab.addField("_node", Node.class);
-                        classFab.addMethod(Modifier.PUBLIC, expressionSetter, "{ _node = $1; }");
+                    if (!generateClassFab(compiled).containsMethod(expressionSetter))
+                    {
+                        generateClassFab(compiled).addField("_node", Node.class);
+                        generateClassFab(compiled).addMethod(Modifier.PUBLIC, expressionSetter, "{ _node = $1; }");
                     }
                 }
 
                 if (setBody != null)
-                    classFab.addMethod(Modifier.PUBLIC, valueSetter, setBody);
+                    generateClassFab(compiled).addMethod(Modifier.PUBLIC, valueSetter, setBody);
 
-                classFab.addConstructor(new Class[0], new Class[0], "{}");
+                generateClassFab(compiled).addConstructor(new Class[0], new Class[0], "{}");
 
-                Class clazz = ((AbstractFab) classFab).createClass(true);
+                Class clazz = ((AbstractFab) generateClassFab(compiled)).createClass(true);
 
                 expression.setAccessor((ExpressionAccessor) clazz.newInstance());
 
-            }  catch (Throwable t) {
-
+            }  catch (Throwable t)
+            {
                 _log.error("Error generating OGNL statements for expression " + expression + " with root " + root, t);
                 t.printStackTrace();
 
@@ -230,20 +233,34 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
 
             // need to set expression on node if the field was just defined.
 
-            if (classFab.containsMethod(expressionSetter)) {
-
+            if (generateClassFab(compiled).containsMethod(expressionSetter))
+            {
                 expression.getAccessor().setExpression(expression);
             }
-
         }
+    }
+
+    ClassFab generateClassFab(CompiledExpression compiled)
+            throws Exception
+    {
+        if (compiled.getGeneratedClass() != null)
+            return compiled.getGeneratedClass();
+
+        ClassFab classFab = _classFactory.newClass(ClassFabUtils.generateClassName(compiled.getExpression().getClass()), Object.class);
+        classFab.addInterface(ExpressionAccessor.class);
+        
+        compiled.setGeneratedClass(classFab);
+
+        return classFab;
     }
 
     protected void generateFailSafe(OgnlContext context, Node expression, Object root)
     {
         if (expression.getAccessor() != null)
             return;
-        
-        try {
+
+        try
+        {
             ClassFab classFab = _classFactory.newClass(expression.getClass().getName() + expression.hashCode() + "Accessor", Object.class);
             classFab.addInterface(ExpressionAccessor.class);
 
@@ -252,15 +269,15 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
 
             MethodSignature expressionSetter = new MethodSignature(void.class, "setExpression", new Class[]{Node.class}, null);
 
-            if (!classFab.containsMethod(expressionSetter)) {
-
+            if (!classFab.containsMethod(expressionSetter))
+            {
                 classFab.addField("_node", Node.class);
                 classFab.addMethod(Modifier.PUBLIC, expressionSetter, "{ _node = $1; }");
             }
 
             classFab.addMethod(Modifier.PUBLIC, valueGetter, generateOgnlGetter(classFab, valueGetter));
             classFab.addMethod(Modifier.PUBLIC, valueSetter, generateOgnlSetter(classFab, valueSetter));
-            
+
             classFab.addConstructor(new Class[0], new Class[0], "{}");
 
             Class clazz = ((AbstractFab) classFab).createClass(true);
@@ -269,18 +286,18 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
 
             // need to set expression on node if the field was just defined.
 
-            if (classFab.containsMethod(expressionSetter)) {
-
+            if (classFab.containsMethod(expressionSetter))
+            {
                 expression.getAccessor().setExpression(expression);
             }
 
-        } catch (Throwable t) {
-            
+        } catch (Throwable t)
+        {
             t.printStackTrace();
         }
     }
 
-    protected String generateGetter(OgnlContext context, ClassFab newClass, MethodSignature valueGetter, Node expression, Object root)
+    protected String generateGetter(OgnlContext context, CompiledExpression compiled)
             throws Exception
     {
         String pre = "";
@@ -288,22 +305,26 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
         String body;
         String getterCode;
 
-        context.setRoot(root);
-        context.setCurrentObject(root);
+        context.setRoot(compiled.getRoot());
+        context.setCurrentObject(compiled.getRoot());
         context.remove(PRE_CAST);
-        
-        try {
 
-            getterCode = expression.toGetSourceString(context, root);
-        } catch (NullPointerException e) {
+        try
+        {
+            getterCode = compiled.getExpression().toGetSourceString(context, compiled.getRoot());
+        } catch (NullPointerException e)
+        {
             if (_log.isDebugEnabled())
                 _log.warn("NullPointer caught compiling getter, may be normal ognl method artifact.", e);
 
             throw new UnsupportedCompilationException("Statement threw nullpointer.");
         }
 
-        if (getterCode == null || getterCode.trim().length() <= 0 && !ASTVarRef.class.isAssignableFrom(expression.getClass()))
+        if (getterCode == null || getterCode.trim().length() <= 0
+                                  && !ASTVarRef.class.isAssignableFrom(compiled.getExpression().getClass()))
+        {
             getterCode = "null";
+        }
 
         String castExpression = (String) context.get(PRE_CAST);
 
@@ -316,26 +337,26 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
             post = post + ")";
         }
 
-        String rootExpr = !getterCode.equals("null") ? getRootExpression(expression, root, context) : "";
+        String rootExpr = !getterCode.equals("null") ? getRootExpression(compiled.getExpression(), compiled.getRoot(), context) : "";
 
         String noRoot = (String) context.remove("_noRoot");
         if (noRoot != null)
             rootExpr = "";
 
-        createLocalReferences(context, newClass, valueGetter.getParameterTypes());
+        createLocalReferences(context, generateClassFab(compiled), compiled.getGetterMethod().getParameterTypes());
 
-        if (OrderedReturn.class.isInstance(expression) && ((OrderedReturn) expression).getLastExpression() != null) {
-
+        if (OrderedReturn.class.isInstance(compiled.getExpression()) && ((OrderedReturn) compiled.getExpression()).getLastExpression() != null)
+        {
             body = "{ "
-                   + (ASTMethod.class.isInstance(expression) || ASTChain.class.isInstance(expression) ? rootExpr : "")
+                   + (ASTMethod.class.isInstance(compiled.getExpression()) || ASTChain.class.isInstance(compiled.getExpression()) ? rootExpr : "")
                    + (castExpression != null ? castExpression : "")
-                   + ((OrderedReturn) expression).getCoreExpression()
-                   + " return " + pre + ((OrderedReturn) expression).getLastExpression()
+                   + ((OrderedReturn) compiled.getExpression()).getCoreExpression()
+                   + " return " + pre + ((OrderedReturn) compiled.getExpression()).getLastExpression()
                    + post
                    + ";}";
 
-        } else {
-
+        } else
+        {
             body = "{ return " + pre
                    + (castExpression != null ? castExpression : "")
                    + rootExpr
@@ -343,7 +364,7 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
                    + post
                    + ";}";
         }
-        
+
         body = body.replaceAll("\\.\\.", ".");
 
         if (_log.isDebugEnabled())
@@ -361,8 +382,8 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
 
         Iterator it = referenceMap.keySet().iterator();
 
-        while (it.hasNext()) {
-
+        while (it.hasNext())
+        {
             String key = (String) it.next();
             LocalReference ref = (LocalReference) referenceMap.get(key);
 
@@ -384,29 +405,29 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
         }
     }
 
-    protected String generateSetter(OgnlContext context, ClassFab newClass, MethodSignature valueSetter, Node expression, Object root)
+    protected String generateSetter(OgnlContext context, CompiledExpression compiled)
             throws Exception
     {
-        if (ExpressionNode.class.isInstance(expression)
-            || ASTConst.class.isInstance(expression))
+        if (ExpressionNode.class.isInstance(compiled.getExpression())
+            || ASTConst.class.isInstance(compiled.getExpression()))
             throw new UnsupportedCompilationException("Can't compile expression/constant setters.");
 
-        context.setRoot(root);
-        context.setCurrentObject(root);
+        context.setRoot(compiled.getRoot());
+        context.setCurrentObject(compiled.getRoot());
         context.remove(PRE_CAST);
 
         String body;
 
-        String setterCode = expression.toSetSourceString(context, root);
+        String setterCode = compiled.getExpression().toSetSourceString(context, compiled.getRoot());
         String castExpression = (String) context.get(PRE_CAST);
 
         if (setterCode == null || setterCode.trim().length() < 1)
             throw new UnsupportedCompilationException("Can't compile null setter body.");
 
-        if (root == null)
+        if (compiled.getRoot() == null)
             throw new UnsupportedCompilationException("Can't compile setters with a null root object.");
 
-        String pre = getRootExpression(expression, root, context);
+        String pre = getRootExpression(compiled.getExpression(), compiled.getRoot(), context);
 
         String noRoot = (String) context.remove("_noRoot");
         if (noRoot != null)
@@ -416,7 +437,7 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
         if (setterValue == null)
             setterValue = "";
 
-        createLocalReferences(context, newClass, valueSetter.getParameterTypes());
+        createLocalReferences(context, generateClassFab(compiled), compiled.getSettermethod().getParameterTypes());
 
         body = "{"
                + setterValue

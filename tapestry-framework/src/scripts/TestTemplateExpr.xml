@@ -36,7 +36,7 @@ Application Name: JUnit Mock Application
 		
 	  	<assert-output name="Specifying informal parameters">
 <![CDATA[
-Second example: <span class="styleClass">JUnit Mock Application</span>
+Second example: <span class="styleClass" id="insertAppName2">JUnit Mock Application</span>
 ]]>
 		</assert-output> 	
 	</request>

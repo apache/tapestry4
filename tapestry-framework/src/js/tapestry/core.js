@@ -301,11 +301,11 @@ var tapestry={
 
     	// apply disabled/not disabled
     	var disabled = element.getAttribute("disabled");
-    	if (!disabled && node["disabled"]) {
-    		node.disabled = false;
-    	} else if (disabled) {
+        if (!disabled && node["disabled"]) {
+            node.disabled = false;
+        } else if (disabled) {
     		node.disabled = true;
-    	}
+        }
 	},
 
 	/**

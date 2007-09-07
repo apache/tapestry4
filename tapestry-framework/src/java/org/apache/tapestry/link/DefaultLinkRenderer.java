@@ -94,9 +94,7 @@ public class DefaultLinkRenderer implements ILinkRenderer
         if (!disabled) {
             
             afterBodyRender(writer, cycle, linkComponent);
-            
-            // linkComponent.renderAdditionalAttributes(writer, cycle);
-            
+                        
             if (hasBody) {
                 wrappedWriter.close();
                 

@@ -35,7 +35,7 @@ public class ClassFactoryImpl implements ClassFactory, ResetEventListener {
 
     private CtClassSource _classSource = new CtClassSource(_pool);
 
-    private int _classCounter = 0;
+    int _classCounter = 0;
 
     public ClassFab newClass(String name, Class superClass)
     {

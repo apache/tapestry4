@@ -13,7 +13,8 @@ import org.testng.annotations.Test;
 @Test
 public class TestHiveMindExpressionCompiler extends TestBase {
 
-    HiveMindExpressionCompiler _compiler = new HiveMindExpressionCompiler(new ClassFactoryImpl());
+    ClassFactoryImpl _classFactory = new ClassFactoryImpl();
+    HiveMindExpressionCompiler _compiler = new HiveMindExpressionCompiler(_classFactory);
 
     public void test_Duplicate_Class_Compiler()
     throws Exception
@@ -46,5 +47,53 @@ public class TestHiveMindExpressionCompiler extends TestBase {
         _compiler.compileExpression(context, expression, expr);
         
         assertEquals(expression.getAccessor().get(context, null), Integer.valueOf(1));
+    }
+
+    public void test_ClassFab_Generation_Count_With_Uncompilable_Expression()
+            throws Exception
+    {
+        OgnlContext context = (OgnlContext) Ognl.createDefaultContext(null);
+        BasicObject root = new BasicObject();
+
+        String exprStr = "user != null && user.name != null ? user.name : name";
+        Node expression = (Node) Ognl.parseExpression(exprStr);
+
+        int prevCount = _classFactory._classCounter;
+
+        _compiler.compileExpression(context, expression, root);
+        assert expression.getAccessor() == null;
+
+        assertEquals(_classFactory._classCounter, prevCount);
+
+        root.setUser(new User());
+
+        _compiler.compileExpression(context, expression, root);
+        assert expression.getAccessor() != null;
+
+        assertEquals(_classFactory._classCounter, prevCount + 1);
+    }
+
+    public void test_ClassFab_Generation_Count_With_Uncompilable_Expression2()
+            throws Exception
+    {
+        OgnlContext context = (OgnlContext) Ognl.createDefaultContext(null);
+        BasicObject root = new BasicObject();
+
+        String exprStr = "user ? user.name : name";
+        Node expression = (Node) Ognl.parseExpression(exprStr);
+
+        int prevCount = _classFactory._classCounter;
+
+        _compiler.compileExpression(context, expression, root);
+        assert expression.getAccessor() == null;
+
+        assertEquals(_classFactory._classCounter, prevCount);
+
+        root.setUser(new User());
+
+        _compiler.compileExpression(context, expression, root);
+        assert expression.getAccessor() != null;
+
+        assertEquals(_classFactory._classCounter, prevCount + 1);
     }
 }
