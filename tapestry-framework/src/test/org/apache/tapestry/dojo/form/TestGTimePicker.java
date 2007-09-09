@@ -94,7 +94,7 @@ public class TestGTimePicker extends BaseFormComponentTestCase
 
         verify();
 
-        assertBuffer("<span class=\"prefix\"><input type=\"text\" name=\"fred\" "
+        assertBuffer("<span class=\"prefix\"><input type=\"text\" autocomplete=\"off\" name=\"fred\" "
                      + "value=\"" + dtValue.toString() + "\" id=\"fred\" class=\"validation-delegate\" /></span>");
     }
 }
