@@ -19,10 +19,15 @@ import java.util.*;
  */
 public abstract class GTimePicker  extends AbstractFormWidget implements TranslatedField
 {
-    /** For a full day broken up in to half hour segments */
+    /**
+     * For a full day - broken up in to half hour segments.
+     */
     static final int TIME_SEGMENT_LENGTH = 48;
 
-    /** parameter. */
+    /**
+     * Core value used to place input in to.
+     * @return The current bound value, may be null.
+     */
     public abstract Object getValue();
 
     public abstract void setValue(Object value);
@@ -41,6 +46,8 @@ public abstract class GTimePicker  extends AbstractFormWidget implements Transla
         writer.beginEmpty("input");
 
         writer.attribute("type", "text");
+        
+        writer.attribute("autocomplete", "off");
 
         writer.attribute("name", getName());
 
