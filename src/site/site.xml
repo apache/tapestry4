@@ -169,6 +169,7 @@
                 <item name="Dialog" href="/components/dojo/dialog.html" />
                 <item name="DropdownDatePicker" href="/components/dojo/dropdowndatepicker.html" />
                 <item name="DropdownTimePicker" href="/components/dojo/dropdowntimepicker.html" />
+                <item name="GTimePicker" href="/components/dojo/gtimepicker.html" />
                 <item name="InlineEditBox" href="/components/dojo/inlineeditbox.html" />
             </item>
 
