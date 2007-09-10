@@ -6,6 +6,8 @@ dojo.require("dojo.html.util");
 dojo.require("dojo.html.metrics");
 dojo.require("dojo.html.iframe");
 
+tapestry.widget.currentTimePicker=null;
+
 dojo.widget.defineWidget(
         "tapestry.widget.TimePicker",
         dojo.widget.HtmlWidget,
@@ -19,6 +21,7 @@ dojo.widget.defineWidget(
 
     inputNode:null, // form input text node
     selectedNode:null, // currently selected node
+    hoveredNode:null, // current node being hovered over with mouse - ie has background color changed
     dropdownNode:null, // drop down div container
     bgIframe:null,
     options:[], // option div nodes
@@ -80,7 +83,9 @@ dojo.widget.defineWidget(
         
         dojo.event.connect(this.inputNode, "onclick", this, "onInputClick");
         dojo.event.connect(this.inputNode, "onblur", this, "onInputBlur");
-
+        dojo.event.connect(this.inputNode, "onkeyup", this, "onInputKeyUp");
+        dojo.event.connect(this.inputNode, "onkeydown", this, "onInputKeyDown");
+        
         dojo.event.connect(this.dropdownNode, "onmouseover", this, "onDropdownMouseOver");
         dojo.event.connect(this.dropdownNode, "onmouseout", this, "onDropdownMouseOut");
         
@@ -88,14 +93,11 @@ dojo.widget.defineWidget(
     },
 
     onOptionMouseOver: function(evt) {
-        this.preventBlur=true;
-        if (!dojo.html.hasClass(evt.target, this.optionHoverClass)) {
-            dojo.html.addClass(evt.target, this.optionHoverClass);
-        }
+        this._selectOption(evt.target);
     },
 
     onOptionMouseOut: function(evt) {
-        dojo.html.removeClass(evt.target, this.optionHoverClass);
+        this._clearOptionSelection(evt.target);
     },
 
     onChange:function() {},
@@ -116,12 +118,10 @@ dojo.widget.defineWidget(
             return;
         }
 
-        this.hasFocus=true;
-        this.preventBlur=true;
         this.show();
 
         if (this.selectedNode){
-            dojo.html.scrollIntoView(this.selectedNode);
+            this.selectedNode.scrollIntoView(true);
         }
     },
 
@@ -139,6 +139,7 @@ dojo.widget.defineWidget(
     },
 
     onDropdownMouseOut: function(evt) {
+        if (!this.showing){return;}
         this.preventBlur=false;
 
         if (this.isWidgetNode(evt["relatedTarget"])){
@@ -155,7 +156,31 @@ dojo.widget.defineWidget(
         }
     },
 
-    hide: function(evt) {
+    onInputKeyUp: function(evt) {
+        switch(evt.keyCode){
+            case evt.KEY_TAB:
+                this.show();
+                break;
+           /* case evt.KEY_UP_ARROW:
+                this.inputNode.focus();
+                this._selectPreviousOption();
+                break;
+            case evt.KEY_DOWN_ARROW:
+                this.inputNode.focus();
+                this._selectNextOption();
+                break;
+                */
+        }
+    },
+
+    onInputKeyDown: function(evt) {
+        switch(evt.keyCode){
+            case evt.KEY_TAB:
+                if (this.showing){this.hide();}
+        }
+    },
+
+    hide: function() {
         dojo.html.hide(this.dropdownNode);
 
         if (this.bgIframe){
@@ -165,9 +190,15 @@ dojo.widget.defineWidget(
         this.hasFocus=false;
         this.preventBlur=false;
         this.showing=false;
+        this.hoveredNode=null;
     },
 
-    show: function(evt) {
+    show: function() {
+
+        if (tapestry.widget.currentTimePicker &&
+                tapestry.widget.currentTimePicker != this){
+            tapestry.widget.currentTimePicker.hide();
+        }
 
         var oldDisplay = this.inputNode.style.display;
         var mb = dojo.html.getElementBox(this.inputNode, dojo.html.boxSizing.BORDER_BOX);
@@ -195,7 +226,7 @@ dojo.widget.defineWidget(
 
         this.dropdownNode.style["top"]=ddY+'px';
         this.dropdownNode.style["left"]=ddX+'px';
-
+        
         dojo.html.show(this.dropdownNode);
         
         if (this.bgIframe){
@@ -204,6 +235,13 @@ dojo.widget.defineWidget(
         }
 
         this.showing=true;
+        this.hasFocus=true;
+        this.preventBlur=true;
+        tapestry.widget.currentTimePicker=this;
+    },
+
+    getValue:function(){
+        return this.inputNode.value;
     },
 
     isWidgetNode: function(node){
@@ -219,6 +257,8 @@ dojo.widget.defineWidget(
 
             dojo.event.disconnect(this.inputNode, "onclick", this, "onInputClick");
             dojo.event.disconnect(this.inputNode, "onblur", this, "onInputBlur");
+            dojo.event.disconnect(this.inputNode, "onkeyup", this, "onInputKeyUp");
+            dojo.event.disconnect(this.inputNode, "onkeydown", this, "onInputKeyDown");
             dojo.event.browser.clean(this.inputNode);
 
             dojo.event.disconnect(this.dropdownNode, "onmouseover", this, "onDropdownMouseOver");
@@ -235,8 +275,47 @@ dojo.widget.defineWidget(
         } catch (e) { }
     },
 
-    getValue:function(){
-        return this.inputNode.value;
+    _selectOption:function(node){
+        if (!node) { return; }
+        
+        this.preventBlur=true;
+        if (!dojo.html.hasClass(node, this.optionHoverClass)) {
+            dojo.html.addClass(node, this.optionHoverClass);
+        }
+
+        this.hoveredNode=node;
+    },
+
+    _clearOptionSelection:function(node){
+        dojo.html.removeClass(node, this.optionHoverClass);
+    },
+
+    _selectPreviousOption:function(){
+        var prevNode;
+        if (!this.hoveredNode){
+            this.hoveredNode=this.options[0];
+            prevNode = this.hoveredNode;
+        } else {
+            prevNode = this.hoveredNode.previousSibling;
+        }
+
+        prevNode.scrollIntoView(true);
+        this._clearOptionSelection(this.hoveredNode);
+        this._selectOption(prevNode);
+    },
+
+    _selectNextOption:function() {
+        var nextNode;
+        if (!this.hoveredNode){
+            this.hoveredNode=this.options[0];
+            nextNode = this.hoveredNode;
+        } else {
+            nextNode = this.hoveredNode.nextSibling;
+        }
+
+        nextNode.scrollIntoView(true);
+        this._clearOptionSelection(this.hoveredNode);
+        this._selectOption(nextNode);
     }
 }
 );
