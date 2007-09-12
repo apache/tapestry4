@@ -158,7 +158,7 @@ public class SimpleTableColumn extends AbstractTableColumn
     public void setDisplayName(String displayName)
     {
         if (displayName != null)
-            displayName = displayName.replace(".", "_");
+            displayName = displayName.replace("_", ".");
         
         m_strDisplayName = displayName;
     }
@@ -225,7 +225,7 @@ public class SimpleTableColumn extends AbstractTableColumn
      */
     public void loadSettings(IComponent objSettingsContainer)
     {
-        String strDisplayName = objSettingsContainer.getMessages().getMessage(getColumnName());
+        String strDisplayName = objSettingsContainer.getMessages().getMessage(getDisplayName());
 
         // Hack! the Messages inteface needs to restore the getMessage(key,
         // default), or needs
