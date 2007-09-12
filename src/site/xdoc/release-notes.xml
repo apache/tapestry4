@@ -10,6 +10,102 @@
 
         <section name="Tapestry 4 Releases">
 
+            <subsection name="Release Notes - Tapestry - Version 4.1.3">
+                <h2>        Bug
+                </h2>
+                <ul>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-340'>TAPESTRY-340</a>] -         url-encoded parameters are not considered in multipart-requests
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-399'>TAPESTRY-399</a>] -         If a RedirectException is thrown after IEngine.setLocale(...) has been called, the cookie org.apache.tapestry.locale is not being set
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1522'>TAPESTRY-1522</a>] -         @EventListener is not been called if target ids contains _
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1527'>TAPESTRY-1527</a>] -         @Dialog component triggers a lot a javascript errors on scroll after show/hide by EventListener
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1540'>TAPESTRY-1540</a>] -         no response with dojo ajax responsebuilder
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1551'>TAPESTRY-1551</a>] -         404 in some dojo bundles
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1575'>TAPESTRY-1575</a>] -         @EventListener doesn't work with multi-part forms
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1580'>TAPESTRY-1580</a>] -         AJAX response to update a component doesn't include the updated component's root tag
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1616'>TAPESTRY-1616</a>] -         Tap 4.1.2 PageNotFoundException not caught
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1622'>TAPESTRY-1622</a>] -         IE 6 doesn't update a component, if its new content is empty.
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1638'>TAPESTRY-1638</a>] -         ImageSubmit doesn't trigger it's listener/action when called asynchronously
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1640'>TAPESTRY-1640</a>] -         FieldLabel + IFormComponent update in ajax request fails because of prerender
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1651'>TAPESTRY-1651</a>] -         ComponentSpecificationResolverImpl not checking app namespace
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1654'>TAPESTRY-1654</a>] -         Contrib:Timeout caused TimeoutConfirm is not defined js error
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1660'>TAPESTRY-1660</a>] -         inject script xml declaration forces context relative paths
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1663'>TAPESTRY-1663</a>] -         @RadioGroup client-side validation does not work
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1680'>TAPESTRY-1680</a>] -         Anchors are missing in usersguide/spec.html
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1681'>TAPESTRY-1681</a>] -         Workbench pom.xml is buggy this patch fixes it
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1682'>TAPESTRY-1682</a>] -         Parameters with defined with a default-value counted as &quot;invariant&quot;
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1685'>TAPESTRY-1685</a>] -         Examples in documentation for @Script are incomplete
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1687'>TAPESTRY-1687</a>] -         Autocompleter handles null values in a wrong way
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1701'>TAPESTRY-1701</a>] -         Wrong link in Hidden component documentation
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1705'>TAPESTRY-1705</a>] -         form focus errors out on ie if focusing on a dialog form before it is displayed
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1706'>TAPESTRY-1706</a>] -         Rounded corner service fails with 0 byte image buffer.
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1740'>TAPESTRY-1740</a>] -         Error in documentation of Custom Exception Pages
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1744'>TAPESTRY-1744</a>] -         tab doesn't close time list drop down on gtimepicker
+                    </li>
+                </ul>
+
+                <h2>        Improvement
+                </h2>
+                <ul>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-400'>TAPESTRY-400</a>] -         LinkSubmit and Rollover should be able to play together.
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1448'>TAPESTRY-1448</a>] -         Ability to set the default @Persist property persistence strategy
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1656'>TAPESTRY-1656</a>] -         InlineEditBox needs a listener parameter
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1661'>TAPESTRY-1661</a>] -         Specless component html template needs a package based resolution strategy
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1688'>TAPESTRY-1688</a>] -         the tapestry form.js script has an unnecessary call to eval
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1693'>TAPESTRY-1693</a>] -         exception pages documentation example wanted and minor mistakes
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1707'>TAPESTRY-1707</a>] -         Note in rounded services documentation that tapestry-contrib must be installed.
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1708'>TAPESTRY-1708</a>] -         Document all rounded service parameters.
+                    </li>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1729'>TAPESTRY-1729</a>] -         Additional bindings for Dialog component
+                    </li>
+                </ul>
+
+                <h2>        New Feature
+                </h2>
+                <ul>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-394'>TAPESTRY-394</a>] -         Default for listener parameter of DirectLink, etc.
+                    </li>
+                </ul>
+
+                <h2>        Wish
+                </h2>
+                <ul>
+                    <li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1202'>TAPESTRY-1202</a>] -         EventListener - send custom data in the same way browser event data is sent
+                    </li>
+                </ul>
+            </subsection>
+
             <subsection name="Release Notes - Tapestry - Version 4.1.2">
                 <h2>        Sub-task
                 </h2>
