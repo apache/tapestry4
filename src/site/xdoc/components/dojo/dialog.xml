@@ -95,6 +95,62 @@
                             valid values would range from <code>0.1 - 1</code>.
                         </td>
                     </tr>
+                    <tr>
+                        <td>followScroll</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>true</td>
+                        <td>
+                            Whether ot not the dialog should follow the scroll remaining centered on the browser viewport.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>closeOnBackgroundClick</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            Whether ot not the dialog should close when clicking on the background.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>blockDuration</td>
+                        <td>int</td>
+                        <td>no</td>
+                        <td>0</td>
+                        <td>
+                            Number of seconds for which the user cannot dismiss the dialog.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>lifeTime</td>
+                        <td>int</td>
+                        <td>no</td>
+                        <td>0</td>
+                        <td>
+                            The number of seconds the dialog will be displayed before automatically disappearing.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>toggle</td>
+                        <td>String</td>
+                        <td>no</td>
+                        <td>literal:fade</td>
+                        <td>
+                            The type of effect to be used on dialog show/hide. Possible values are:
+                            <code>litera:plain</code>, <code>literal:wipe</code>, <code>literal:fade</code>, <code>literal:explode</code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>toggleDuration</td>
+                        <td>int</td>
+                        <td>no</td>
+                        <td>150</td>
+                        <td>
+                            Controls how opaque the background is. This parameter is given in the form of a percent, so
+                            valid values would range from <code>0.1 - 1</code>.
+                        </td>
+                    </tr>
                 </table>
 
                 <p>

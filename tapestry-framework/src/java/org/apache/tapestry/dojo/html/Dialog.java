@@ -37,6 +37,18 @@ public abstract class Dialog extends AbstractWidget
     
     public abstract float getOpacity();
     
+    public abstract boolean getFollowScroll();
+    
+    public abstract boolean getCloseOnBackgroundClick();
+    
+    public abstract int getBlockDuration();
+    
+    public abstract int getLifeTime();
+    
+    public abstract String getToggle();
+    
+    public abstract int getToggleDuration();
+    
     public void show()
     {
         setHidden(false);
@@ -69,6 +81,12 @@ public abstract class Dialog extends AbstractWidget
             JSONObject json = new JSONObject();
             json.put("bgColor", getBackgroundColor());
             json.put("bgOpacity", getOpacity());
+            json.put("followScroll", getFollowScroll());
+            json.put("closeOnBackgroundClick", getCloseOnBackgroundClick());
+            json.put("blockDuration", getBlockDuration());
+            json.put("lifeTime", getLifeTime());
+            json.put("toggle", getToggle());
+            json.put("toggleDuration", getToggleDuration());
 
             Map parms = new HashMap();
             parms.put("component", this);
@@ -77,7 +95,7 @@ public abstract class Dialog extends AbstractWidget
             getScript().execute(this, cycle, TapestryUtils.getPageRenderSupport(cycle, this), parms);
         }
     }
-    
+        
     /** injected. */
     public abstract IScript getScript();
 }
