@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<module id="tapestry.describe" version="4.0.0" package="org.apache.tapestry.describe">
+	
+	Services and adaptors for "describing" various objects into an HTML representation.
+	
+	<configuration-point id="DescribableStrategies" schema-id="hivemind.lib.StrategyRegistry">
+		
+		Maps classes to DescribableStrategy instances.
+		
+	</configuration-point>
+	
+	<contribution configuration-id="DescribableStrategies">
+		<strategy class="Describable" object="instance:NativeStrategy"/>
+		<strategy class="java.lang.Object" object="instance:DefaultStrategy"/>
+		<strategy class="javax.servlet.http.HttpServletRequest" object="instance:HttpServletRequestStrategy"/>
+		<strategy class="javax.servlet.http.Cookie" object="instance:CookieStrategy"/>
+		<strategy class="javax.servlet.http.HttpSession" object="instance:HttpSessionStrategy"/>
+		<strategy class="javax.servlet.ServletContext" object="instance:ServletContextStrategy"/>
+		<strategy class="javax.servlet.Servlet" object="instance:ServletStrategy"/>
+	</contribution>
+	
+	<service-point id="DescribableStrategy">
+		Strategy registry facade for DescribableStrategy.
+		
+		<invoke-factory service-id="hivemind.lib.StrategyFactory">
+			<construct configuration-id="DescribableStrategies"/>
+		</invoke-factory>
+	</service-point>
+	
+	<service-point id="RootDescriptionReceiverFactory">
+		
+		Creates a RootDescriptionReceiver instances around a markup
+		writer and the DescribableStategy service.
+		
+		<invoke-factory>
+			<construct class="RootDescriptionReceiverFactoryImpl">
+				<set-service property="strategy" service-id="DescribableStrategy"/>
+			</construct>
+		</invoke-factory>
+	</service-point>
+	
+	<service-point id="HTMLDescriber">
+		
+		Describes an object in an HTML format.
+		
+		<invoke-factory>
+			<construct class="HTMLDescriberImpl">
+				<set-object property="receiverFactory" value="infrastructure:rootDescriptionReceiverFactory"/>
+			</construct>
+		</invoke-factory>
+	</service-point>
+  
+  <contribution configuration-id="tapestry.Infrastructure">
+     <property name="HTMLDescriber" object="service:HTMLDescriber"/>
+     <property name="rootDescriptionReceiverFactory" object="service:RootDescriptionReceiverFactory"/>
+  </contribution>  
+	
+	
+	<service-point id="ReportStatusHub">
+
+		Event hub used to get different service implementations to produce an HTML-based report
+		of their internal state.
+
+		<invoke-factory>
+			<construct class="ReportStatusHubImpl">
+				<set-object property="receiverFactory" value="infrastructure:rootDescriptionReceiverFactory"/>
+			</construct>
+		</invoke-factory>
+	</service-point>
+	
+	<service-point id="DefaultRenderStrategy" interface="RenderStrategy">
+		
+		Default adapter for objects that uses the HTMLDescriber service to do
+		the work.
+		
+		<invoke-factory>
+			<construct class="DefaultRenderStrategy">
+				<set-object property="describer" value="infrastructure:HTMLDescriber"/>
+			</construct>
+		</invoke-factory>
+	</service-point>
+	
+	<configuration-point id="RenderStrategies" schema-id="hivemind.lib.StrategyRegistry">
+		
+		Maps classes to RenderStrategy objects.
+		
+	</configuration-point>
+	
+	<contribution configuration-id="RenderStrategies">
+		<strategy class="java.lang.Object" object="service:DefaultRenderStrategy"/>
+		<strategy class="org.apache.hivemind.Location" object="instance:LocationRenderStrategy"/>
+		<strategy class="org.apache.hivemind.service.impl.ClassFabImpl" object="instance:PreformattedRenderStrategy"/>
+		<strategy class="java.lang.Object[]" object="service:ObjectArrayRenderStrategy"/>
+	</contribution>
+	
+	<service-point id="ObjectArrayRenderStrategy" interface="RenderStrategy">
+		Renders an array of objects as an unordered list.
+	
+		<invoke-factory>
+			<construct class="ObjectArrayRenderStrategy">
+				<set-service property="renderStrategy" service-id="RenderStrategy"/>
+			</construct>
+		</invoke-factory>	
+		
+	</service-point>
+	
+	<service-point id="RenderStrategy">
+		
+		Strategy service based on the RenderStrategies configuration point, which
+    allows arbitrary objects to be rendered as HTML.
+		
+		<invoke-factory service-id="hivemind.lib.StrategyFactory">
+			<construct configuration-id="RenderStrategies"/>
+		</invoke-factory>
+	</service-point>
+	
+	<service-point id="RenderableAdapterFactory">
+		
+		Provider renderable (IRender) adapters for arbitrary objects.
+		
+		<invoke-factory>
+			<construct class="RenderableAdapterFactoryImpl">
+				<set-service property="strategy" service-id="RenderStrategy"/>
+			</construct>
+		</invoke-factory>
+	</service-point>
+</module>

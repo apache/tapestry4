@@ -1,0 +1,15 @@
+ ------
+Development Guide - Testing
+ ------
+Jesse Kuhnert
+ ------
+29 Apr 2007
+ ------
+
+Testing Tapestry Components and Pages
+
+  There is a new library available - along with comprehensive documention - covering most of the core testing logic that Tapestry itself uses to test components
+  and pages. Please see that site for more information.
+
+  <<tapestry-test:>> {{http://tapestry.apache.org/tapestry4.1/tapestry-test/index.html}}
+  

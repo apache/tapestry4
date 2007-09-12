@@ -1,0 +1,54 @@
+ ------
+JavaScript Reference - Packaging
+ ------
+Jesse Kuhnert
+ ------
+26 July 2006
+ ------
+ 
+Packaging
+
+  The Tapestry javascript API uses the dojo 
+  {{{http://manual.dojotoolkit.org/WikiHome/DojoDotBook/BookModules}packaging system}} to include
+  both dojo and Tapestry javascript files on the fly.
+  
+  This means that most of the API is broken up over a number of files that will be optionally included
+  automatically - only when you need them. As an example, this is how you would import the Tapestry 
+  form related functions onto your page:
+  
++-------------------------
+<script type="text/javascript">
+	dojo.require("tapestry.form");
+	
+	tapestry.form.submit(dojo.byId("myform"));
+</script>
++-------------------------
+
+* Download/Performance concerns of included JavaScript
+
+  A very valid concern that a lot of users will worry about is the performance impact of including all of
+  this JavaScript on their pages! This is still a very grey area that may change to meet real world needs
+  as they come up, but the following is the current thinking behind this:
+  
+  * The bundled {{{http://dojotoolkit.org}dojo}} core javascript file that is included by default is 
+    only about <<<176k>>> in size. This is fairly small compared to the average size of most images displayed
+    in web applications. 
+    
+  * Part of the beauty of the dojo {{{http://manual.dojotoolkit.org/WikiHome/DojoDotBook/BookModules}packaging}} 
+    system is that you can build very small core javascript files and only have your web application incur performance
+    hits for additional functionality <(like widgets)> when you need it. This should keep your app nice and slim
+    in most areas.
+    
+  * Overhauled Tapestry {{{../apidocs/org/apache/tapestry/asset/AssetService.html}AssetService}} 
+  	implementation that does a much better job at properly interpreting and setting the correct browser cache 
+  	settings on included asset resources, like dojo and Tapestry javascript API files/resources. It even goes as far
+  	as serving up the files via a new hivemind configuration point that eliminates the need to have an MD5 hash 
+  	string in the include URL's, making application restarts have no effect on user browser caching of your 
+  	javascript files.
+  
+  []
+  
+  As mentioned previously, this area of Tapestry is not set in stone. The new move to 
+  {{{http://maven.apache.org}maven2}} has made doing snapshot updates of Tapestry very easy, so if/when 
+  issues are found/addressed people should be able to get updated versions pretty quickly.
+  

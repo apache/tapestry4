@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright 2006 The Apache Software Foundation
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<document>
+    <properties>
+        <title>DropdownTimePicker</title>
+    </properties>
+    <body>
+
+        <section name="GTimePicker">
+
+            <p>
+                Provides a form Date field component for selecting <em>time</em> values. A drop down selection
+                of time values are displayed in half hour segments. (48 total)  The 'G' stands for Google as the
+                control was largely based around the <a href="http://www.google.com/calendar/">Google Calendar</a> time
+                input javascript widget.
+            </p>
+            <p>
+                JavaScript must be enabled in the client browser to use the drop down picker. If
+                JavaScript is not enabled users can still enter a date value in the HTML text field.
+            </p>
+
+            <img src="../../images/ComponentReference/GTimePicker.png" />
+
+            <p>
+                <strong>
+                    See also:
+                    <a href="dropdowntimepicker.html">DropdownTimePicker</a>
+                    ,
+                    <a href="dropdowndatepicker.html">DropdownDatePicker</a>
+                    ,
+                    <a href="../form/datepicker.html">DatePicker</a>
+                </strong>
+
+            </p>
+
+            <section name="Parameters">
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Default</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>value</td>
+                        <td>Object</td>
+                        <td>yes</td>
+                        <td></td>
+                        <td>
+                            The data value. Take care to ensure date time values are 'normalized'
+                            before performing any millisec based comparison or equality operations as the date
+                            portion of the translated object will likely be the current day.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>disabled</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            Controls whether the input field is active or not.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>displayName</td>
+                        <td>String</td>
+                        <td>no</td>
+                        <td> </td>
+                        <td>
+                            The user-presentable name for the component, which will be used by a
+                            <a href="../form/fieldlabel.html">FieldLabel</a>
+                            connected to the component.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>validators</td>
+                        <td>
+                            Array or collection of
+                            <a
+                                href="../../apidocs/org/apache/tapestry/form/validator/Validator.html">
+                                Validator
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            The validators to apply to the component. Something along the lines of:
+                            <code>validators:required</code> .<br/><br/>
+
+                            <strong>See also:</strong> <a href="../../usersguide/validation.html">Validation</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>translator</td>
+                        <td>
+                            <a
+                                href="../../tapestry/apidocs/org/apache/tapestry/form/translator/Translator.html">
+                                Translator
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td>translator:date,pattern=h:mm a</td>
+                        <td>
+                            The translator to use when displaying and parsing the time.
+                            <br/><br/>
+                            <strong>See also:</strong> <a href="../../usersguide/validation.html">Validation</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>iconAlt</td>
+                        <td>String</td>
+                        <td>no</td>
+                        <td>literal:Select a Time</td>
+                        <td>
+                           The textual name given to the date picking icon before the image is loaded.
+                        </td>
+                    </tr>
+                </table>
+
+                <p>
+                    Body:
+                    <strong>removed</strong>
+                </p>
+                <p>
+                    Informal parameters:
+                    <strong>allowed</strong>
+                </p>
+
+                <p>
+                    Reserved parameters:
+                    <em>name, autocomplete, type</em>
+                </p>
+
+            </section>
+
+            <section name="CSS Styling">
+                <p>
+                    You will need to define a couple css class definitions in order to have your time picker displayed properly.  The image displayed
+                    of the picker at the top of this page was rendered using the css definitions of:
+                </p>
+
+<source xml:space="preserve"><![CDATA[
+.dropdownCombobox {
+    background: #ffffff;
+    border: 1px solid #545454;
+}
+
+.dropdownOption {
+    font-family: arial;
+    font-size: 0.8em;
+    padding: 0.1em 0 0.1em 0.2em;
+    cursor:hand;
+    cursor:pointer;
+}
+
+.optionHover {
+    background: cornflowerblue;
+    color: #ffffff;
+}
+]]></source>
+            </section>
+
+            <section name="Examples">
+                TODO...
+            </section>
+
+        </section>
+
+    </body>
+</document>

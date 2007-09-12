@@ -1,0 +1,65 @@
+// Copyright 2005 The Apache Software Foundation
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package org.apache.tapestry.html;
+
+import org.apache.tapestry.BaseComponentTestCase;
+import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.describe.HTMLDescriber;
+import org.testng.annotations.Test;
+
+/**
+ * Tests for {@link org.apache.tapestry.html.Describe}.
+ * 
+ * @author Howard M. Lewis Ship
+ */
+@Test
+public class DescribeTest extends BaseComponentTestCase
+{
+    public void testRewinding()
+    {
+        IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle(true, false);
+
+        replay();
+
+        Describe component = (Describe) newInstance(Describe.class);
+
+        component.renderComponent(writer, cycle);
+
+        verify();
+    }
+
+    public void testRender()
+    {
+        IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle(false, false);
+        
+        Object object = new Object();
+        
+        HTMLDescriber describer = newMock(HTMLDescriber.class);
+
+        describer.describeObject(object, writer);
+
+        replay();
+
+        Describe component = newInstance(Describe.class, new Object[]
+        { "object", object, "describer", describer });
+
+        component.renderComponent(writer, cycle);
+
+        verify();
+    }
+}

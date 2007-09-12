@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright 2007 The Apache Software Foundation
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN"
+        "http://maven.apache.org/dtd/xdoc_1_0.dtd">
+<document>
+    <properties>
+        <title>Suggest</title>
+    </properties>
+    <body>
+
+        <section name="Suggest">
+
+            <p>
+                The exact same thing as the standard <a href="../form/textfield.html">TextField</a> component - with the additional
+                client side behavior of providing a dynamic autocompletion suggestion list drop down below the field as input
+                is typed in.
+            </p>
+            <img src="../../images/ComponentReference/Suggest.png" alt="Suggest Example" />
+            <p>
+                The main distinction between this and <a href="../form/textfield.html">TextField</a> is that this component needs some
+                additional parameters such as the source of the dynamic list that will be generated - as well as a listener method to invoke
+                on your page / component when something has been typed in on the client side input field. 
+            </p>
+            <p>
+                In addition to the regular client side enhancements this component can optionally render either a <code>&lt;input type="text" /&gt;</code> standard
+                form input field <em>or</em> it can render a <code>&lt;textarea&gt;Paragraph text...&lt;/textarea&gt;</code>.  The type rendered depends on how you
+                define the component in your html template.  Following is a small example of defining it as a <b>textarea</b> or <b>input</b>:
+            </p>
+<source><![CDATA[<input jwcid="@Suggest" listener="listener:filterSearch" listSource="ognl:listValues" />
+
+...
+
+<textarea jwcid="@Suggest" listener="listener:filterSearch" listSource="ognl:listValues" />
+]]></source>
+            <p>
+                <strong>
+                    See also:
+                    <a href="../../apidocs/org/apache/tapestry/scriptaculous/Suggest.html">Suggest</a>
+                    ,
+                    <a href="../../apidocs/org/apache/tapestry/scriptaculous/ListItemRenderer.html">ListItemRenderer</a>
+                    ,
+                    <a href="../../apidocs/org/apache/tapestry/scriptaculous/DefaultListItemRenderer.html">DefaultListItemRenderer</a>
+                    ,
+                    <a href="http://wiki.script.aculo.us/scriptaculous/show/Ajax.Autocompleter">Script.aculo.us Ajax.Autocompleter</a>
+                    ,
+                    <a href="../form/textfield.html">TextField</a>
+                </strong>
+
+            </p>
+
+            <subsection name="Parameters">
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Default</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>value</td>
+                        <td>string</td>
+                        <td>yes</td>
+                        <td> </td>
+                        <td>
+                            The value to be editted, which is is usually a string. Tapestry has
+                            limited ability to convert to and from strings.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>disabled</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            If true, then a disabled attribute will be rendered as part of the
+                            <code>&lt;input&gt;</code> or <code>&lt;textarea&gt;</code> tag, and the component will not update its value parameter
+                            when the form is submitted.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>displayName</td>
+                        <td>string</td>
+                        <td>no</td>
+                        <td> </td>
+                        <td>
+                            The user-presentable name for the component, which will be used by a
+                            <a href="../form/fieldlabel.html">FieldLabel</a>
+                            connected to the component.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>validators</td>
+                        <td>
+                            Array or collection of
+                            <a
+                                href="../../apidocs/org/apache/tapestry/form/validator/Validator.html">
+                                Validator
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td> </td>
+                        <td>
+                            The validators to apply to the component. Something along the lines of:
+                            <code>validators:required</code> .<br/><br/>
+
+                            <strong>See also:</strong> <a href="../../usersguide/validation.html">Validation</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>translator</td>
+                        <td>
+                            <a
+                                href="../../apidocs/org/apache/tapestry/form/translator/Translator.html">
+                                Translator
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td> </td>
+                        <td>
+                            The translator to use when displaying and parsing the date.
+                            <br/><br/>
+                            <strong>See also:</strong> <a href="../../usersguide/validation.html">Validation</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>hidden</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            If true, then the type attribute will be "password", not "text", and
+                            user input in the browser will be masked.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>listener</td>
+                        <td>
+                            <a href="../../apidocs/org/apache/tapestry/IActionListener.html">
+                                IActionListener
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td> </td>
+                        <td>
+                            Specifies an object that is notified when input is typed in to the field, which is
+                            typically a listener method of its container (for example, listeners.
+                            <em>method</em>).  This listener method will by default contain exactly one parameter of type String when
+                            invoked - which wil be the value that was typed in to the field in the browser.  You may add other
+                            additional parameters using the <b>parameters</b> parameter of this component. If this parameter is not provided,
+	                        Tapestry will attempt to find a listener with the capitalized id of the
+	                        component, prefixed by "do". For example, jwcid="nameSearch@Suggest" would expect
+	                        a listener called doNameSearch().
+                            
+                            <br /><br />
+
+                            <strong>See also:</strong> <a href="../../usersguide/listenermethods.html">Users Guide - Listeners</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>parameters</td>
+                        <td>
+                            Object or
+                            <br />
+                            Object[] or
+                            <br />
+                            List
+                        </td>
+                        <td>no</td>
+                        <td> </td>
+                        <td>
+                            <p>
+                                An array of objects to be encoded into the URL. These parameters
+                                will be decoded when the listener method is executed.
+                            </p>
+                            <p>
+                                In a web application built onto of Enterprise JavaBeans, the context
+                                is often the primary key of some Entity bean; typically such keys
+                                are Strings or Integers.
+                            </p>
+                            <p>
+                                A listener method can retrieve the parameters three ways:
+                                <br />
+                                parameters are declared in the method itself, e.g. - listenerMethod(
+                                <em>parameters</em>
+                                )
+                                <br />
+                                parameters are declared along with the IRequestCycle, e.g. -
+                                listenerMethod(IRequestCycle cycle,
+                                <em>parameters</em>
+                                )
+
+                                <br />
+                                or through the request cycle, e.g. - listenerMethod(IReuqestCycle
+                                cycle), using IRequestCycle.getServiceParameters()
+                            </p>
+                            <p>
+                                Prior to release 2.2, the parameters were always type String. They
+                                may now be of any type; type will be maintained when the parameters
+                                are later retrieved by a listener. See
+                                <a
+                                    href="../../apidocs/org/apache/tapestry/util/io/SqueezeAdaptor.html">
+                                    SqueezeAdaptor
+                                </a>
+                                for more details.
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>stateful</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            If true, then the component requires an active (i.e.,
+                            non-new) HttpSession when triggered. Failing that, it throws a
+                            <a href="../../apidocs/org/apache/tapestry/StaleLinkException.html">
+                                StaleLinkException
+                            </a>
+                            . If false, then no check is necessary. The latter works well with links
+                            that encode all necessary state inside the URL itself.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>listSource</td>
+                        <td>Iterator, Collection, Object[], or Object</td>
+                        <td>yes</td>
+                        <td> </td>
+                        <td>
+                            The source of objects to be iterated, which may be a Collection, an
+                            Iterator, an array of Objects, or a even a single Object (which is
+                            treated as a singleton collection).
+
+                            <br /><br />
+                            This list is used as the source for all dynamic autocompletions and is expected to be appropriately
+                            filtered by you when the corresponding listener method is invoked to filter the list of available options.
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>listItemRenderer</td>
+                        <td><a href="../../apidocs/org/apache/tapestry/scriptaculous/ListItemRenderer.html">ListItemRenderer</a></td>
+                        <td>yes</td>
+                        <td><a href="../../apidocs/org/apache/tapestry/scriptaculous/DefaultListItemRenderer.html">DefaultListItemRenderer</a></td>
+                        <td>
+                            This is the object that the component will defer actual rendering of the dynamic html list to.  According to the
+                            <a href="http://wiki.script.aculo.us/scriptaculous/show/Ajax.Autocompleter">Script.aculo.us Ajax.Autocompleter</a> documentation
+                            it is expected that this renderer return an unordered html list at the very least:
+
+ <source><![CDATA[<ul>
+    <li>First Option</li>
+    <li>Second Option</li>
+    <li>Third Option</li>
+</ul>]]></source>
+                           <br />
+                            More elaborate options are of course possible - such as the
+                            <a href="http://opencomponentry.com:8080/timetracker/LocaleSuggest.html">TimeTracker demo</a> where the options returned
+                            contain image references to render the flag associated with different countries using a custom <a href="../../apidocs/org/apache/tapestry/scriptaculous/ListItemRenderer.html">ListItemRenderer</a>
+                            implementation.  The source for this custom implementation example can be found
+                            <a href="http://svn.apache.org/viewvc/tapestry/tapestry4/trunk/tapestry-examples/TimeTracker/src/java/org/apache/tapestry/timetracker/page/LocaleListItemRenderer.java?view=markup">here</a>. 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>maxResults</td>
+                        <td>int</td>
+                        <td>no</td>
+                        <td> </td>
+                        <td>
+                            Optionally specified the maximum number of autocomplete suggestions that will be displayed to users.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>updateElementClass</td>
+                        <td>String</td>
+                        <td>no</td>
+                        <td>autocomplete</td>
+                        <td>
+                            Specifies the html css class attribute that will be written to the hidden &lt;div&gt; that this component generates
+                            for the local client side javascript to populate the autocompletion results in to.  Override this parameter if you would
+                            like to change the css class name to another definition.
+
+                            The <a href="http://opencomponentry.com:8080/timetracker/LocaleSuggest.html">TimeTracker demo</a> page defines an inline
+                            css style block to style the autocompletion results <em>(something you will have to do for it to be usable at all)</em>
+                            using something like the following:
+
+ <source><![CDATA[<style type="text/css">
+        div.autocomplete {
+            position:absolute;
+            width:250px;
+            background-color:white;
+            border:1px solid #888;
+            margin:0px;
+            padding:0px;
+        }
+        div.autocomplete ul {
+            list-style-type:none;
+            margin:0px;
+            padding:0px;
+        }
+        div.autocomplete ul li.selected { background-color: #ffb;}
+        div.autocomplete ul li {
+            list-style-type:none;
+            display:block;
+            margin:0;
+            padding:4px 0 4px 4px;
+            cursor:pointer;
+        }
+        div.autocomplete ul li img { border:none; margin-right: 10px; vertical-align:middle;}
+    </style>]]></source>
+                            <br /><br />
+                            <span class="warn">
+                                <strong>Warning:</strong>
+                                <p>
+                                    This component provides no default css style rules for the returned list - so if you don't define any such as the example
+                                    above shows your copmonent is not likely to work very well or be very usable.
+                                </p>
+                                <p>
+                                    There are other examples of default styling provided in the
+                                    <a href="http://wiki.script.aculo.us/scriptaculous/show/Ajax.Autocompleter">Script.aculo.us Ajax.Autocompleter</a> documentation.
+                                </p>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>options</td>
+                        <td>String</td>
+                        <td>no</td>
+                        <td>literal:{method: 'get', frequency: 0.2}</td>
+                        <td>
+                            There are additional options for configuring how the client side behavior of this component works covered in the
+                            <a href="http://wiki.script.aculo.us/scriptaculous/show/Ajax.Autocompleter">Script.aculo.us Ajax.Autocompleter</a> documentation. By
+                            default this component uses http get <em>(something highly reccomended, it probably wouldn't even work with post)</em> and configures
+                            the frequency with which results are grabbed for autocompletion when input changes as <b>0.2</b> seconds.  The configuration specified
+                            here is passed in directly to the client side script.aculo.us object so they must conform to
+                            <a href="http://json.org">JSON</a> syntax rules or it will result in a parse exception being generated when your html template is
+                            processed by tapestry. <em>(JSON = JavaScript Object Notation)</em>
+
+                            <br /><br />
+                            You can also pass in things like <code>afterUpdateElement:"nameOfClientSideJavascriptFuncion"</code>, which is a way of having your custom
+                            javascript functions called after an item has been selected from the autocompletion list.
+
+                            <br /><br />
+                            Please see the <a href="http://wiki.script.aculo.us/scriptaculous/show/Ajax.Autocompleter">Script.aculo.us Ajax.Autocompleter</a> documentation
+                            for more information on all the available options. 
+                        </td>
+                    </tr>
+                </table>
+
+                <p>
+                    Body: <strong>removed</strong>
+                </p>
+                <p>
+                    Informal parameters: <strong>allowed</strong>
+                </p>
+                <p>
+                    Reserved parameters: <em>name, autocomplete</em>
+                </p>
+
+            </subsection>
+
+        </section>
+
+        <section name="Example">
+            <p>
+                This example is a basic bare-minimum using the majority of built in defaults to do something similar to the
+                <a href="http://opencomponentry.com:8080/timetracker/LocaleSuggest.html">TimeTracker demo</a> - only without the custom
+                <a href="../../apidocs/org/apache/tapestry/scriptaculous/ListItemRenderer.html">ListItemRenderer</a> implementation.  There is
+                no .page file shown here as this example uses annotations to define the page properties used.
+            </p>
+
+            <subsection name="HTML Template">
+
+ <source><![CDATA[<span jwcid="@Border">
+
+<p>
+Autocompleting input suggestion fields using scriptaculous javascript library.
+</p>
+
+    <style type="text/css">
+        div.autocomplete {
+            position:absolute;
+            width:250px;
+            background-color:white;
+            border:1px solid #888;
+            margin:0px;
+            padding:0px;
+        }
+        div.autocomplete ul {
+            list-style-type:none;
+            margin:0px;
+            padding:0px;
+        }
+        div.autocomplete ul li.selected { background-color: #ffb;}
+        div.autocomplete ul li {
+            list-style-type:none;
+            display:block;
+            margin:0;
+            padding:4px 0 4px 4px;
+            cursor:pointer;
+        }
+        div.autocomplete ul li img { border:none; margin-right: 10px; vertical-align:middle;}
+    </style>
+
+    <form jwcid="@Form" class="container">
+        <h3>Locale suggestion</h3>
+
+        <fieldset>
+             <table width="90%" class="form" cellpadding="2" cellspacing="0" >
+                 <tbody>
+                     <tr>
+                         <td><label jwcid="@FieldLabel" field="component:suggest" /></td>
+                         <td><input jwcid="suggest" size="34" /></td>
+                     </tr>
+                 </tbody>
+             </table>
+        </fieldset>
+    </form>
+
+</span>]]></source>
+            </subsection>
+
+            <subsection name="Java Page">
+ <source><![CDATA[public abstract class LocaleSuggest extends BasePage {
+
+    @Component(bindings = {"value=inputLocale",
+            "displayName=literal:Locale",
+            "listSource=localeList",
+            "listener=listener:suggestLocale"})
+    public abstract Suggest getSuggest();
+
+    public abstract String getInputLocale();
+
+    public abstract String getFilterString();
+    public abstract void setFilterString(String filter);
+
+    public List getLocaleList()
+    {
+        String filter = getFilterString();
+        Locale[] locales = Locale.getAvailableLocales();
+
+        if (filter == null || filter.length() < 1)
+        {
+            return Arrays.asList(locales);
+        }
+
+        filter = filter.toUpperCase();
+
+        List<Locale> ret = new ArrayList<Locale>();
+        // used to ensure no duplicates are stored in the list as java.util.Locale doesn't
+        // provde an equals() method.
+        List temp = new ArrayList();
+
+        for (Locale locale : locales)
+        {
+            if (locale.getDisplayCountry().toUpperCase().indexOf(filter) > -1
+                    && !temp.contains(locale.getDisplayCountry()))
+            {
+                ret.add(locale);
+                temp.add(locale.getDisplayCountry());
+            }
+        }
+
+        return ret;
+    }
+
+    /**
+     * Invoked dynamically via XHR whenever input changes in the form input field. The method above - getLocaleList() -
+     * is what actually filters the list of suggested options displayed based on the characters they typed in to the input field.
+     */
+    public void suggestLocale(String filter)
+    {
+        setFilterString(filter);
+    }
+}
+
+]]></source>
+            </subsection>
+
+        </section>
+
+    </body>
+</document>

@@ -1,0 +1,247 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2004, 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<module id="tapestry.request" version="4.0.0" package="org.apache.tapestry.services">
+
+    Services and configurations for the Tapestry request processing pipeline.
+    It is expected that the IEngine interface will eventually "dissolve" into
+    a collection of loosely bound services.
+
+    <service-point id="EnginePool" interface="ObjectPool">
+
+        Contains engine instances, keyed on locale, ready for use in the current request.
+
+        <invoke-factory>
+            <construct class="impl.ObjectPoolImpl">
+                <event-listener service-id="tapestry.ResetEventHub"/>
+                <event-listener service-id="tapestry.describe.ReportStatusHub"/>
+            </construct>
+        </invoke-factory>
+    </service-point>
+
+    <service-point id="RequestLocaleManager">
+
+        Encapsulates the logic for extracting the locale for the current request.
+
+        <invoke-factory model="pooled">
+            <construct class="impl.RequestLocaleManagerImpl">
+                <set-service property="request" service-id="tapestry.globals.WebRequest"/>
+                <set-object property="cookieSource" value="infrastructure:cookieSource"/>
+                <set-service property="threadLocale" service-id="hivemind.ThreadLocale"/>
+                <set-object property="acceptedLocales" value="app-property:org.apache.tapestry.accepted-locales"/>
+            </construct>
+        </invoke-factory>
+    </service-point>
+
+    <contribution configuration-id="hivemind.FactoryDefaults">
+        <default symbol="org.apache.tapestry.accepted-locales" value=""/>
+        <!-- One week, in seconds -->
+        <default symbol="org.apache.tapestry.default-cookie-max-age" value="604800"/>
+    </contribution>
+
+    <service-point id="CookieSource">
+
+        Allows access to incoming HTTP cookie values for the active (per-thread) request.
+
+        <invoke-factory>
+            <construct class="impl.CookieSourceImpl">
+                <set-service property="request" service-id="tapestry.globals.HttpServletRequest"/>
+                <set-service property="response" service-id="tapestry.globals.HttpServletResponse"/>
+                <set property="defaultMaxAge" value="${org.apache.tapestry.default-cookie-max-age}"/>
+            </construct>
+        </invoke-factory>
+    </service-point>
+
+    <service-point id="EngineManager">
+        Obtains an IEngine implementation for the current request, either from a pool of
+        such engine instance, from a factory, or from the HttpSession.
+
+        <invoke-factory>
+            <construct class="impl.EngineManagerImpl">
+                <set-service property="enginePool" service-id="EnginePool"/>
+                <set-service property="engineFactory" service-id="EngineFactory"/>
+                <set-service property="localeManager" service-id="RequestLocaleManager"/>
+            </construct>
+        </invoke-factory>
+    </service-point>
+
+    <service-point id="EngineFactory">
+
+        Responsible for creating new instances of IEngine as needed.
+
+        <invoke-factory>
+            <construct class="impl.EngineFactoryImpl">
+                <set-object property="applicationSpecification" value="infrastructure:applicationSpecification"/>
+                <set-object property="defaultEngineClassName" value="global-property:org.apache.tapestry.engine-class"/>
+            </construct>
+        </invoke-factory>
+
+    </service-point>
+
+    <configuration-point id="ServletRequestServicerPipeline" schema-id="hivemind.lib.Pipeline">
+
+        A pipeline for processing an incoming servlet request.
+
+    </configuration-point>
+
+    <service-point id="ServletRequestServicer">
+
+        A pipeline for handling each request.
+
+        <invoke-factory service-id="hivemind.lib.PipelineFactory">
+            <create-pipeline filter-interface="ServletRequestServicerFilter" configuration-id="ServletRequestServicerPipeline"/>
+        </invoke-factory>
+    </service-point>
+
+    <contribution configuration-id="ServletRequestServicerPipeline">
+        <filter name="DecodedRequestInjector" object="service:DecodedRequestInjector"/>
+        <filter name="SetupRequestEncoding" object="service:SetupRequestEncoding"/>
+        <terminator object="service:WebRequestServicerPipelineBridge"/>
+    </contribution>
+
+    <service-point id="WebRequestServicerPipelineBridge" interface="ServletRequestServicer">
+        <invoke-factory>
+            <construct class="impl.WebRequestServicerPipelineBridge">
+                <set-service property="webRequestServicer" service-id="WebRequestServicer"/>
+                <set-service property="requestGlobals" service-id="tapestry.globals.RequestGlobals"/>
+            </construct>
+        </invoke-factory>
+    </service-point>
+
+    <configuration-point id="WebRequestServicerPipeline" schema-id="hivemind.lib.Pipeline">
+
+        A pipeline, invoked by the ServletRequestPipeline, that will process the request
+        using the generic WebRequest and WebResponse objects.
+
+    </configuration-point>
+
+    <service-point id="WebRequestServicer">
+
+        A secondary pipeline for handling each requests wrapped in the WebRequest abstraction
+        layer.
+
+        <invoke-factory service-id="hivemind.lib.PipelineFactory">
+            <create-pipeline filter-interface="WebRequestServicerFilter" configuration-id="WebRequestServicerPipeline"/>
+        </invoke-factory>
+    </service-point>
+
+    <contribution configuration-id="WebRequestServicerPipeline">
+        <terminator object="service:InvokeEngineTerminator"/>
+    </contribution>
+
+    <service-point id="InvokeEngineTerminator" interface="WebRequestServicer">
+
+        Terminator service for the WebRequestServicerPipeline. This locates an IEngine instance that
+        can take control of the remainder of the request.
+
+        <invoke-factory>
+            <construct class="impl.InvokeEngineTerminator">
+                <set-service property="engineManager" service-id="EngineManager"/>
+                <set-service property="infrastructure" service-id="tapestry.Infrastructure"/>
+            </construct>
+        </invoke-factory>
+    </service-point>
+
+    <service-point id="DecodedRequestInjector" interface="ServletRequestServicerFilter">
+
+        Filter contributed into the ServletRequestServicerPipeline whose responsibility is
+        to provide a modified HttpServletRequest that reflects the results of
+        an IRequestDecoder (provided as the org.apache.tapestry.request-decoder
+        application extension).  If the extension exists, then a different HttpServletRequest
+        is substituted.
+
+        <invoke-factory>
+            <construct class="org.apache.tapestry.request.DecodedRequestInjector">
+                <set-object property="applicationSpecification" value="infrastructure:applicationSpecification"/>
+            </construct>
+        </invoke-factory>
+
+    </service-point>
+
+    <service-point id="ResponseRenderer">
+        Renders the active page as the response.
+
+        <invoke-factory>
+            <construct class="impl.ResponseRendererImpl" />
+        </invoke-factory>
+    </service-point>
+
+    <contribution configuration-id="tapestry.Infrastructure">
+        <property name="responseRenderer" object="service:ResponseRenderer"/>
+        <property name="requestCycleFactory" object="service:RequestCycleFactory"/>
+        <property name="cookieSource" object="service:CookieSource"/>
+    </contribution>
+
+    <service-point id="AbsoluteURLBuilder">
+
+        Uses HttpServletRequest information to build complete URLs, suitable for use when
+        sending client-side redirects.
+
+        <invoke-factory>
+            <construct class="impl.AbsoluteURLBuilderImpl">
+                <set-object property="request" value="infrastructure:request"/>
+            </construct>
+        </invoke-factory>
+
+    </service-point>
+
+    <service-point id="RequestCycleFactory">
+
+        Creates new IRequestCycle instances.
+
+        <invoke-factory>
+            <construct class="impl.RequestCycleFactoryImpl">
+                <set-object property="encoders"
+                            value="service-property:tapestry.url.LinkFactory:serviceEncoders"/>
+                <set-service property="strategySource" service-id="tapestry.persist.PropertyPersistenceStrategySource"/>
+                <set-service property="infrastructure" service-id="tapestry.Infrastructure"/>
+                <set-service property="absoluteURLBuilder" service-id="AbsoluteURLBuilder"/>
+                <set-service property="requestGlobals" service-id="tapestry.globals.RequestGlobals"/>
+                <set-service property="responseDelegateFactory" service-id="tapestry.services.ResponseDelegateFactory" />
+            </construct>
+        </invoke-factory>
+
+    </service-point>
+
+    <service-point id="SetupRequestEncoding" interface="ServletRequestServicerFilter">
+
+        Sets the output encoding for the request.
+
+        <invoke-factory>
+            <construct class="impl.SetupRequestEncoding">
+                <set-object property="outputEncoding"	value="app-property:org.apache.tapestry.output-encoding"/>
+            </construct>
+        </invoke-factory>
+    </service-point>
+
+    <service-point id="DisableCachingFilter" interface="WebRequestServicerFilter">
+
+        Uses the ResetEventHub  to reset any cached data at the end of the request.
+        Only used during development, not in production.
+
+        <invoke-factory>
+            <construct class="impl.DisableCachingFilter">
+                <set-object property="resetEventHub" value="infrastructure:resetEventHub"/>
+            </construct>
+        </invoke-factory>
+    </service-point>
+
+    <contribution configuration-id="WebRequestServicerPipeline" if="property org.apache.tapestry.disable-caching">
+        <filter name="DisableCachingFilter" object="service:DisableCachingFilter"/>
+    </contribution>
+
+</module>

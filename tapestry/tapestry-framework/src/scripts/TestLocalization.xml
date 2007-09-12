@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+   Copyright 2004, 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<mock-test>
+    <context name="mock" />
+
+  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet">
+  		<init-parameter
+  			name="org.apache.tapestry.application-specification"
+  			value="/org/apache/tapestry/junit/mock/app/Mock.application" />
+  	</servlet>      
+    
+    <request>
+    	
+	  	<assert-output name="English Language Check">
+-- in English
+		</assert-output>
+		
+		<assert-output name="English Blurb">
+If it's not Scottish, it's crap!
+		</assert-output>
+		
+		<assert-output name="English Foo-Bar">
+<![CDATA[
+<foo bar="Totally Screwed!" id="Any"></foo>
+]]>	
+		</assert-output>
+	</request>		
+
+    <request locale="fr">
+    	
+	  	<assert-output name="French Language Check">
+-- in French
+		</assert-output>
+		
+		<assert-output name="French Blurb">
+Zees ees nawt cheeze!
+		</assert-output>
+		
+		<assert-output name="French Foo-Bar">
+<![CDATA[
+<foo bar="Merde!" id="Any"></foo>
+]]>	
+		</assert-output>
+		
+	</request>
+
+	<request>
+	  	<parameter name="service" value="page" />
+      <parameter name="page" value="Assets" />
+		
+		<assert-output name="English Home image">
+<![CDATA[		
+/mock/app?service=asset&amp;path=%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fapp%2Fhome.png
+]]>
+		</assert-output>
+		
+		<assert-output name="English Back image">
+/mock/images/back.png
+		</assert-output>	
+		
+		<assert-output name="DirectLink switch URL">
+<![CDATA[		
+href="/mock/app?component=switch&amp;page=Assets&amp;service=direct"
+]]>
+		</assert-output>	
+	</request>
+	
+	<request locale="fr">
+	  	<parameter name="service" value="page" />
+      <parameter name="page" value="Assets" />
+		
+		<assert-output name="French Home image">
+<![CDATA[		
+/mock/app?service=asset&amp;path=%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fapp%2Fhome_fr.png
+]]>
+		</assert-output>
+		
+		<assert-output name="French Back image">
+/mock/images/back_fr.png
+		</assert-output>	
+		
+		<assert-output name="DirectLink switch URL still stateless">
+<![CDATA[		
+href="/mock/app?component=switch&amp;page=Assets&amp;service=direct"
+]]>
+		</assert-output>							
+	</request>	
+	
+	
+	<!-- Test ability to switch locales and store a cookie descrbing
+	 	 the locale. -->
+	 	 
+	<request>
+		<parameter name="service" value="direct" />
+    <parameter name="page" value="Assets" />
+    <parameter name="component" value="switch" />
+		
+		<!-- Switch sends us back to the Home page, but in French. -->
+		
+		<assert-output name="French Blurb">
+Zees ees nawt cheeze!
+		</assert-output>
+		
+		<assert-output name="DirectLink switch URL still stateless">
+<![CDATA[		
+id="link" href="/mock/app?component=link&amp;page=Home&amp;service=direct&amp;sp=2&amp;sp=d3.5&amp;sp=SHello"
+]]>
+		</assert-output>			
+	</request>			
+			 	 	 
+</mock-test>
+    	

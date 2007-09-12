@@ -1,0 +1,301 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2004, 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<module id="tapestry" version="4.0.0" package="org.apache.tapestry.services">
+
+    The master module for the Apache Tapestry web application framework.
+
+    <dependency module-id="hivemind" version="1.1.0"/>
+    <dependency module-id="hivemind.lib" version="1.1.0"/>
+
+    <implementation service-id="hivemind.ClassFactory" >
+
+        Wrapper around Javassist used to dynamically create classes such as service interceptors.
+
+        <create-instance class="org.apache.tapestry.enhance.ClassFactoryImpl" model="primitive" />
+
+    </implementation>
+
+    <service-point id="ClassFactory" interface="org.apache.hivemind.service.ClassFactory" parameters-occurs="none">
+
+        Wrapper around Javassist used to dynamically create classes such as service interceptors.
+
+        <invoke-factory>
+            <construct class="org.apache.tapestry.enhance.ClassFactoryImpl">
+                <event-listener service-id="tapestry.ResetEventHub" />
+            </construct>
+        </invoke-factory>
+
+    </service-point>
+
+    <sub-module descriptor="tapestry.init.xml"/>
+    <sub-module descriptor="tapestry.globals.xml"/>
+    <sub-module descriptor="tapestry.props.xml"/>
+    <sub-module descriptor="tapestry.request.xml"/>
+    <sub-module descriptor="tapestry.parse.xml"/>
+    <sub-module descriptor="tapestry.enhance.xml"/>
+    <sub-module descriptor="tapestry.page.xml"/>
+    <sub-module descriptor="tapestry.data.xml"/>
+    <sub-module descriptor="tapestry.script.xml"/>
+    <sub-module descriptor="tapestry.bindings.xml"/>
+    <sub-module descriptor="tapestry.services.xml"/>
+    <sub-module descriptor="tapestry.ognl.xml"/>
+    <sub-module descriptor="tapestry.coerce.xml"/>
+    <sub-module descriptor="tapestry.url.xml"/>
+    <sub-module descriptor="tapestry.asset.xml"/>
+    <sub-module descriptor="tapestry.persist.xml"/>
+    <sub-module descriptor="tapestry.state.xml"/>
+    <sub-module descriptor="tapestry.multipart.xml"/>
+    <sub-module descriptor="tapestry.describe.xml"/>
+    <sub-module descriptor="tapestry.markup.xml"/>
+    <sub-module descriptor="tapestry.error.xml"/>
+    <sub-module descriptor="tapestry.valid.xml"/>
+    <sub-module descriptor="tapestry.listener.xml"/>
+    <sub-module descriptor="tapestry.form.xml"/>
+    <sub-module descriptor="tapestry.l10n.xml"/>
+    <sub-module descriptor="tapestry.event.xml"/>
+    <sub-module descriptor="tapestry.render.xml"/>
+
+
+    <service-point id="ClasspathResourceFactory">
+
+        Constructs new instances of ClasspathResource.
+
+        <invoke-factory>
+            <construct class="impl.ClasspathResourceFactoryImpl"/>
+        </invoke-factory>
+    </service-point>
+
+    <schema id="Infrastructure">
+
+        Defines contributions to the Infrastructure and
+        InfrastructureOverride configuration points.
+
+        <element name="property">
+
+            Defines an object to plug into a property of Infrastructure.
+
+            <attribute name="name" required="true">
+                The name of the Infrastructure property.
+            </attribute>
+
+            <attribute name="mode">
+                The mode this contribution applies to. The Infrastructure
+                is initalized to a particular mode.  Contributions
+                that specify a mode override contribution that don't specify a mode,
+                but are ignored if the contribution mode doesn't match the
+                Infrastructure mode.
+            </attribute>
+
+            <attribute name="object"  translator="deferred-object">
+                The object to be contributed into the Infrastructure property.
+            </attribute>
+
+            <attribute name="value">
+                A literal value for the property.  Either value or object should be provided.
+            </attribute>
+
+            <conversion class="impl.InfrastructureContribution">
+                <map attribute="name" property="property"/>
+                <map attribute="object" property="deferredObject"/>
+            </conversion>
+
+        </element>
+
+    </schema>
+
+    <configuration-point id="Infrastructure" schema-id="Infrastructure">
+
+        The "factory" set of contributions into the configuration.  These
+        contributions are overridden by
+        the InfrastructureOverrides configuration point.
+
+    </configuration-point>
+
+    <configuration-point id="InfrastructureOverrides" schema-id="Infrastructure">
+
+        Provides a way for applications to easily override Infrastructure properties.
+
+    </configuration-point>
+
+    <service-point id="Infrastructure">
+
+        A kind of "clearing house" of other services. The Infrastructure is provided to the
+        IEngine instance via the InvokeEngineTerminator service (using an HttpServletRequest
+        attribute).  The engine can then get the other services it depends upon.
+        The infrastructure: object provider allows access to the properties
+        of this service.  The Infrastructure and InfrastructureOverrides
+        configuration points define which services are mapped to which
+        Infrastructure properties.
+
+        <invoke-factory>
+            <construct class="impl.InfrastructureImpl">
+                <set-service property="threadLocale" service-id="hivemind.ThreadLocale"/>
+                <set-configuration property="normalContributions" configuration-id="Infrastructure"/>
+                <set-configuration property="overrideContributions" configuration-id="InfrastructureOverrides"/>
+            </construct>
+        </invoke-factory>
+
+    </service-point>
+
+    <contribution configuration-id="Infrastructure">
+        <property name="componentMessagesSource" object="service:ComponentMessagesSource"/>
+        <property name="resetEventHub" object="service:ResetEventHub"/>
+        <property name="objectPool" object="service:GlobalObjectPool"/>
+        <property name="classFinder" object="service:ClassFinder"/>
+    </contribution>
+
+    <service-point id="ExtensionLookupFactory" interface="org.apache.hivemind.ServiceImplementationFactory">
+
+        A service factory that, in fact, attempts to obtain service implementations
+        as application extensions.  Failing that, a default implementation is
+        constructed.
+
+        <parameters-schema>
+
+            <element name="lookup">
+
+                <attribute name="extension-name" required="true"/>
+                <attribute name="default" translator="object"/>
+
+                <conversion class="impl.ExtensionLookupParameter"/>
+
+            </element>
+
+        </parameters-schema>
+
+        <invoke-factory>
+            <construct class="impl.ExtensionLookupFactory">
+                <set-object property="specification" value="infrastructure:applicationSpecification"/>
+                <set-service property="defaultBuilder" service-id="hivemind.lib.DefaultImplementationBuilder"/>
+            </construct>
+        </invoke-factory>
+    </service-point>
+
+
+    <service-point id="ResetEventHub">
+
+        Coordinator for services that have cached information that should be cleared out (this happens
+        constantly in development, much more rarely in production).
+
+        <create-instance class="impl.ResetEventHubImpl"/>
+    </service-point>
+
+    <service-point id="GlobalObjectPool" interface="ObjectPool">
+
+        A general purpose object pool used throughout the application. Care should be
+        taken to ensure that keys are sufficiently unique.  This service will likely
+        be removed soon; replaced with a number of more individual object pools
+        (as necessary).
+
+        <invoke-factory>
+            <construct class="impl.ObjectPoolImpl">
+                <event-listener service-id="ResetEventHub"/>
+                <event-listener service-id="tapestry.describe.ReportStatusHub"/>
+            </construct>
+        </invoke-factory>
+    </service-point>
+
+
+    <service-point id="ComponentMessagesSource">
+
+        Used to provide components (including pages) with access to their own localized messages.
+
+        <invoke-factory>
+            <construct class="impl.ComponentMessagesSourceImpl">
+                <event-listener service-id="ResetEventHub"/>
+                <set-object property="componentPropertySource" value="infrastructure:componentPropertySource"/>
+                <set-service property="componentResourceResolver" service-id="tapestry.page.ComponentResourceResolver" />
+            </construct>
+        </invoke-factory>
+
+    </service-point>
+
+    <service-point id="InfrastructureObjectProvider" interface="org.apache.hivemind.service.ObjectProvider">
+
+        ObjectProvider mapped to prefix "infrastructure:", the locator is the name of a property of the
+        Infratructure service.
+
+        <invoke-factory>
+            <construct class="impl.InfrastructureObjectProvider">
+                <set-service property="infrastructure" service-id="Infrastructure"/>
+            </construct>
+        </invoke-factory>
+
+    </service-point>
+
+
+    <contribution configuration-id="hivemind.ObjectProviders">
+        <provider prefix="infrastructure" service-id="InfrastructureObjectProvider"/>
+    </contribution>
+
+    <service-point id="DeferredObjectTranslator" interface="org.apache.hivemind.schema.Translator" visibility="private">
+
+        Translator that encapsulates the ObjectTranslator, returning DeferredObjects. This is to prevent
+        premature or unnecessary object creation by the ObjectTranslator.
+
+        <invoke-factory>
+            <construct class="impl.DeferredObjectTranslator">
+                <set-service property="objectTranslator" service-id="ObjectTranslator"/>
+            </construct>
+        </invoke-factory>
+    </service-point>
+
+    <contribution configuration-id="hivemind.Translators">
+        <translator name="deferred-object" service-id="DeferredObjectTranslator"/>
+    </contribution>
+
+    <service-point id="ObjectTranslator" interface="org.apache.hivemind.schema.Translator" visibility="private">
+
+        Translator that works with ObjectProviders to find or create objects.  This is a duplicate
+        of the HiveMind service (which is also private).
+
+        <invoke-factory>
+            <construct
+                    class="org.apache.hivemind.service.impl.ObjectTranslator">
+                <set-configuration configuration-id="hivemind.ObjectProviders" property="contributions"/>
+            </construct>
+        </invoke-factory>
+    </service-point>
+
+    <service-point id="InjectedValueProviderFactory" interface="org.apache.hivemind.ServiceImplementationFactory"
+                   visibility="private" parameters-occurs="none">
+
+        Special service factory for the InjectedValueProvider service.
+
+        <invoke-factory>
+            <construct class="impl.InjectedValueProviderFactory">
+                <set-service property="objectTranslator" service-id="ObjectTranslator"/>
+            </construct>
+        </invoke-factory>
+    </service-point>
+
+    <service-point id="InjectedValueProvider" interface="InjectedValueProvider">
+        <invoke-factory service-id="InjectedValueProviderFactory"/>
+    </service-point>
+
+    <service-point id="ClassFinder">
+
+        Searches for classes within a list of packages.
+
+        <invoke-factory>
+            <construct class="impl.ClassFinderImpl"/>
+        </invoke-factory>
+
+    </service-point>
+
+</module>

@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Copyright 2004, 2005 The Apache Software Foundation
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN"
+    "http://maven.apache.org/dtd/xdoc_1_0.dtd">
+<document>
+<properties>
+    <title>Upgrading from 4.0</title>
+</properties>
+<body>
+    <section name="Upgrading from 4.0">
+        <p>
+            There have been a large number of general bug fixes made in Tapestry 4.1, as well as a lot of work
+            in the area of "ajax" support in the core framework.
+        </p>
+        <p>
+            This guide will attempt to highlight some of the key changes that might affect people trying to upgrade from <strong>4.0.X</strong> 
+            to the current <strong>4.1.X</strong> version. 
+        </p>
+    </section>
+    
+    <section name="Core API Changes">
+        <p>
+            Many of the previously marked as deprecated for removal in Tapestry 4.1 API sections have now been removed.  There is also some new functionality
+            that many may not be aware of.
+        </p>
+        <p>
+            <ul>
+                <li>
+                    <p>
+                        <b>IRequestCycle.getRequestContext() -</b> The old <code>getRequestContext()</code> method has now been removed from
+                        <a href="../apidocs/org/apache/tapestry/IRequestCycle.html">IRequestCycle</a>.  The proper way to get the equivalent
+                        functionality is to have the HttpServletRequest object <a href="injection.html">injected</a> in to your page/component:
+                    </p>
+                    <source xml:space="preserve"><![CDATA[
+@InjectObject("service:tapestry.globals.HttpServletRequest")
+public abstract HttpServletRequest getRequest();
+]]></source>
+                </li>
+                <li>
+                    <p>
+                        <b>Autowiring services -</b>  Thanks to James Carman of <a href="http://hivemind.apache.org">HiveMind</a> all components/pages now support
+                        autowiring of services.  The rule is that you can have any service / configuration that is normally injectable via exlplicit
+                        <a href="injection.html">injection</a> configurations simply by defining a property of the same type as any of the available HiveMind services.
+                        The only caveat is that services of the same interface with more than one contributed definition can't be autowired as it would be impossible
+                        for the framework to correctly choose the right one.
+                    </p>
+                    <p>
+                        This should greatly cut down on a lot of pain of having to look up service ids in the
+                        <a href="../tapestry-framework/hivedoc/">hivedoc</a> documentation.  The injection of the HttpServletRequest outlined in the first point
+                        could be re-written as:
+                    </p>
+                    <source xml:space="preserve"><![CDATA[
+public abstract HttpServletRequest getRequest();
+]]></source>
+                </li>
+                <li>
+                    <p>
+                        <b>IRequestCycle.getServiceParameters() -</b> This method has been replaced with <code>IRequestCycle.getListenerParameters()</code>.
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        <b>org.apache.tapestry.event.PageRenderListener gone -</b> PageRenderListener was split into PageBeginRenderListener and PageEndRenderListener.  More
+                        on the available listener types/events can be found <a href="events.html">here</a>.
+                    </p>
+                </li>
+            </ul>
+        </p>
+    </section>
+    
+    <section name="Javascript">
+        <p>
+            One of the largest changes to come about has been the general strategy in dealing with javascript inclusions as well 
+            as bundling of the <a href="http://dojotoolkit.org">Dojo</a> javascript toolkit directly in Tapestry. More about these 
+            packaging changes can be found in the <a href="../javascript/index.html">javascript guide</a>.
+        </p>
+
+        <p>
+        <ul>
+            <li>
+            <strong>Javascript includes -</strong> The inclusion of dojo now happens automatically if you are using the <a href="../components/general/shell.html">Shell</a> component, 
+            and is in general required for Tapestry to function properly in many circumstances. If don't currently use / can't use the 
+            <a href="../components/general/shell.html">Shell</a> component the same logic is also encapsulated in the 
+            <a href="../components/general/scriptincludes.html">ScriptIncludes</a> component. Both components provide a variety of options 
+            allowing for client side debugging / level of debug statements / whether to use the built in dojo provided or a custom build of your own / etc..
+            </li>
+            
+            <li>
+                <strong>form.events removed -</strong> A good majority of the core Tapestry javascript includes have either been modified or entirely replaced 
+                with new versions that are slightly easier to manage using <a href="http://dojotoolkit.org">Dojo's</a> dynamic module inclusion capability. 
+                <em>Almost</em> 
+                all of the changes are backwards compatible and include new deprecation warning messages when you call one of the old Tapestry javascript
+                functions. The new javascript API's are also heavily documented, which you can browse <a href="../javascript/index.html">here</a>.
+                
+                <br/><br/>
+                
+                There is one change that is unfortunately not backwards compatible with these javascript changes, specifically dealing with the old
+                Form.js javascript functions and how they interact with client side events for the <a href="../components/form/form.html">Form</a> 
+                component. Tapestry used to modify the client side DOM <code>&lt;form&gt;</code> element by attaching a <code>form.events</code> property 
+                to the object. This is no longer the case. Tapestry doesn't modify any of the DOM elements or client side events on your page anymore. While
+                this change has resulted in much easier form handling abilities on the client side it has come with a price of breaking anyone previously
+                relying on this functionality.  
+            </li>
+            
+            <li>
+                <strong>onload and <a href="../components/general/script.html">Script</a> templates -</strong> In previous versions of the framework 
+                Tapestry would try to ensure that javascript was written to the document body in such a way that the various sections of 
+                a <a href="../components/general/script.html">Script</a> template were written out at the correct points in the document to match the 
+                various sections of your template. This has now been modified slightly to use <a href="http://dojotoolkit.org">Dojo's</a> event handling
+                facilities to control this behaviour. 
+                
+                <br/><br/>
+                
+                <strong>Example Javascript Template:</strong>
+<source xml:space="preserve"><![CDATA[
+<script>
+<input-symbol key="component" required="yes"/>
+<let key="formObject">
+    document.${component.form.name}
+</let>
+<let key="componentObject">
+    ${formObject}.${component.name}
+</let>
+
+<body>
+function setFocus() {
+    var inputField = ${componentObject};
+    if (inputField.type != "hidden") {
+        if (inputField.disabled != true) {
+            inputField.focus();
+        }
+    } else {
+         window.alert('InputFocus.script cannot set focus on a hidden field');
+    }
+}
+</body>
+<initialization>
+    setFocus();
+</initialization>
+</script>
+]]></source>
+            
+            <p>
+            In previous versions of the framework the template above would be rendered out as html looking somewhat like:
+            </p>
+<p><strong>Previous Tapestry 4.0.X generated output:</strong></p>
+<source xml:space="preserve"><![CDATA[
+<html>
+<head><title>Sample</title></head>
+
+<body>
+<script type="text/javascript">
+function setFocus() {
+    var inputField = document.form.field;
+    if (inputField.type != "hidden") {
+        if (inputField.disabled != true) {
+            inputField.focus();
+        }
+    } else {
+         window.alert('InputFocus.script cannot set focus on a hidden field');
+    }
+}
+</script>
+
+<p>Hello! This is my sample page.</p>
+
+<script type="text/javascript">
+setFocus();
+</script>
+</body>
+</html>
+]]></source>
+            
+            <p>With the changes made this section would now be rendered as:</p>
+<p><strong>New Tapestry 4.1.X generated output:</strong></p>
+<source xml:space="preserve"><![CDATA[
+<html>
+<head><title>Sample</title></head>
+
+<body>
+<script type="text/javascript">
+function setFocus() {
+    var inputField = document.form.field;
+    if (inputField.type != "hidden") {
+        if (inputField.disabled != true) {
+            inputField.focus();
+        }
+    } else {
+         window.alert('InputFocus.script cannot set focus on a hidden field');
+    }
+}
+</script>
+
+<p>Hello! This is my sample page.</p>
+
+<script type="text/javascript">
+dojo.addOnLoad(function(){
+setFocus();
+});
+</script>
+</body>
+</html>
+]]></source>
+            
+            </li>
+            
+            <li>
+                <strong><a href="../apidocs/org/apache/tapestry/services/ResponseBuilder.html">ResponseBuilder</a> -</strong> Don't like the way
+                javascript is being managed? Don't want to use <a href="http://dojotoolkit.org">Dojo</a> to manage your javascript either? That's ok 
+                too. 
+                
+                <p>
+                    The new response management system allows for easy contribution to many different response types in Tapestry so that you have 
+                    complete control over the whole process. Currently these different types cover normal html rendering / Dojo XHR responses / JSON 
+                    responses. Feel free to replace one of the existing implementations or add your own. More can be found by looking at the hivemind
+                    configuration point for it <a href="../tapestry-framework/hivedoc/config/tapestry.services.ResponseContributors.html">here</a>.
+                </p>
+            </li>
+            
+            <li>
+                <strong><a href="../apidocs/org/apache/tapestry/IComponent.html#getClientId()">IComponent.getClientId()</a> -</strong> The method 
+                that was previously only available to form components has now been moved back up the chain to IComponent itself. The logic surrounding 
+                generating / working with these client ID's has also undergone extensive refactoring / improvements so that you can reliably use this method
+                for (almost?) all of <em>your</em> and the core Tapestry components. This of course means that all of the core Tapestry components now output 
+                unique <code>id="foo"</code> attributes to support the new method as well. 
+            </li>
+          </ul>
+        </p>
+    
+        <span class="info">
+            <strong>Note:</strong>
+            <p>
+                The logic of what value is actually used for the id attribute varies widely depending on many different
+                things
+                <em>(such as finding informal id parameters)</em>
+                , but all of changes are things to make it more intuitive for you / ie tries to do what you expect most
+                of the time.
+            </p>
+        </span>
+    </section>
+    
+    <section name="Asset Management">
+        <ul>
+          <li>
+            <strong><a href="http://blog.opencomponentry.com/?p=30">Gzip Compression</a> -</strong>
+          </li>
+        </ul>
+    </section>
+    
+    <section name="To be continued..">
+        <p>This is very much a work in progress, expect to see much more leak in over the next few weeks.</p>
+    </section>
+    
+</body>
+</document>

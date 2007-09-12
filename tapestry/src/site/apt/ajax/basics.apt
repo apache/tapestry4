@@ -1,0 +1,239 @@
+ ------
+Ajax/DHTML Guide - Basics
+ ------
+Jesse Kuhnert
+ ------
+24 June 2007
+ ------
+
+Ajax Development Basics
+
+  The overall concept behind the majority of built in AJAX functionality in Tapestry is that everything should work exactly the same way in your pages/components
+  in AJAX requests as it does during normal page rendering.  There are a few corner cases that have no real intuitive XHR equivalent which we will discuss as
+  well.
+
+* Including JavaScript in your HTML Template
+
+  One of the first things you will need to do is make sure you have the necessary javascript includes.  Tapestry makes extensive use of the {{{http://dojotoolkit.org}Dojo}}
+  javascript toolkit and provides a couple of options for including it for you automatically via the {{{../components/general/shell.html}Shell}} or
+  {{{../components/general/scriptincludes.html}ScriptIncludes}} components.  An example of defining a basic outer layer using the {{{../components/general/shell.html}Shell}}
+  component would look like:
+
++-------------------------------------------------------------------------------------------------------------
+<html jwcid="@Shell" title="Basic Ajax Page">
+<body jwcid="@Body">
+
+    <p>Basic javascript inclusion sample.</p>
+
+</body>
+</html>
++-------------------------------------------------------------------------------------------------------------
+
+* Updating Components:  The universal updateComponents parameter
+
+  One of the most frequently used pieces of ajax functionality is the <<<updateComponents="foo,bar">>> parameter that is now implemented by all of the core Tapestry
+  components - where it makes sense.   Some of the more familiar of these are {{{../components/link/directlink.html}DirectLink}}, {{{../components/form/linksubmit.html}LinkSubmit}},
+  {{{../components/form/form.html}Form}}, {{{../components/form/imagesubmit.html}ImageSubmit}} and {{{../components/form/submit.html}Submit}}.  We'll build on our previous
+  example and use the {{{../components/link/directlink.html}DirectLink}} component to refresh a current time display.
+
++-------------------------------------------------------------------------------------------------------------
+..
+<p>Basic javascript inclusion sample.</p>
+
+<p>
+    <a jwcid="@DirectLink" listener="listener:setTime" updateComponents="time">Refresh time</a>.
+</p>
+
+<div jwcid="time@Insert" value="ognl:time" renderTag="true" />
+..
++-------------------------------------------------------------------------------------------------------------
+
+  The corresponding java page class:
+
++-------------------------------------------------------------------------------------------------------------
+..
+public abstract BasicAjax extends BasePage {
+
+    public abstract void setTime(Date time);
+
+    public void setTime()
+    {
+        setTime(new java.util.Date());
+    }
+}
++-------------------------------------------------------------------------------------------------------------
+
+  That's it!  Building and running this small example should be all you need to start using the very basic AJAX functionality provided by Tapestry.  
+
+** updateComponents == IComponent.getClientId()
+
+  There are a few subtle things happening here that may not be apparent at first glance.  One of the more important changes in Tapestry 4.1.x was the addition of
+  the {{{../apidocs/org/apache/tapestry/IComponent.html#getClientId()}IComponent.getClientId()}} method to all component classes.  When dealing with client side javascript
+  functionality the unique client side element id of the html elements your components generate becomes very important.  What this method gives you is the unique element id
+  attribute that will be written for any given component depending on the context in which you call it.
+
+  If you are in a {{{../components/general/for.html}For}} loop then the <<<clientId>>> will automatically be incremented for each loop and always represent the unique
+  value of the component.  The same semantics work whether in {{{../components/form/form.html}Forms}} / {{{../components/general/for.html}For}} or any other nested
+  type of structure.  This has been one of key changes in the API that has made the AJAX functionality provided <much> easier to work with.
+
+  In our example the <<<updateComponents>>> parameter given made use of the new smart auto binding functionality added to the framework recently, but you could write
+  the equivalent parameter using an ognl expression as well:
+
++-------------------------------------------------------------------------------------------------------------
+<a jwcid="@DirectLink" listener="listener:setTime"
+    updateComponents="ognl:components.time.clientId">Refresh time</a>
++-------------------------------------------------------------------------------------------------------------
+
+  Things can get a lot uglier once you start trying to update multiple components:
+
++-------------------------------------------------------------------------------------------------------------
+<a jwcid="@DirectLink" listener="listener:setTime"
+    updateComponents="ognl:{components.time.clientId, page.components.status.clientId}">Refresh time</a>
++-------------------------------------------------------------------------------------------------------------
+
+  The much easier simple string list <<<updateComponents="compA, compB, compC">>> is not only shorter / easier to understand but also more efficient and robust
+  in many different circumstances.  For instance, the auto binding functionality would be able to detect that you were trying to update a component contained within
+  one of your own custom components as well as a component on the page containing your component and wire up and find all the correct <<<clientId>>> values for you
+  automatically.
+
+  The thing to walk away with here is that in 98% of the cases you run in to this style of <<<updateComponents>>> syntax is the way to go:
+
++-------------------------------------------------------------------------------------------------------------
+<a jwcid="@DirectLink" listener="listener:setTime" updateComponents="time,status">Refresh time</a>
++-------------------------------------------------------------------------------------------------------------
+
+** How clientId values are generated
+
+  The actual value that is output by a component is determined by a number of rules depending on the context and type of component involved.  Of course,  no id will
+  be generated at all if your custom components don't call the new
+  {{{../apidocs/org/apache/tapestry/AbstractComponent.html#renderIdAttribute(org.apache.tapestry.IMarkupWriter,%20org.apache.tapestry.IRequestCycle)}AbstractComponent.renderIdAttribute(IMarkupWriter, IRequestCycle)}}
+  method provided in the base <<<AbstractComponent>>> superclass that most components derive from.  When that method is called the rules for determining what value to render out
+  in to the generated html element are evaluated in this order:
+
+  [[1]] <<informal id parameter bound?>> - If the definition of the component being rendered had an informal <<<id="UpdatedComponent">>> parameter specified that will
+  take higher precendence than anything else.  It may eventually end up being output as <<<id="UpdatedComponent_4">>> if your component is being rendered in a loop but
+  it will still use the id as the basis for its client side id values.
+
++----------------------------------------------
+<div jwcid="@Any" id="customId" >Content</div>
++----------------------------------------------
+
+  [[1]] <<use IComponent.getId() value>> - If no informal id parameter is bound then the next candidate used to seed the clientIds is the value returned from
+  <<<IComponent.getId()>>>.  This will be the id specified in your <<<Page.page>>> file or the id assigned in your html snippet as in:
+
++----------------------------------------------
+<div jwcid="customId@Any">Content</div>
+
+or .page file:
+
+<component id="customId" type="Any">
+</component>
++----------------------------------------------
+
+  [[1]] <<form component?>> - If the component in question implements {{{../apidocs/org/apache/tapestry/form/IFormComponent.html}IFormComponent}} then the same semantics
+  as above apply with the caveat that the inner workings of client id generation work slightly differently here as they are synchronized back with the normal
+  {{{../components/form/form.html}Form}} input name/clientId semantics that Tapestry has always had.
+
+  []
+  
+  The previously mentioned <<<renderIdAttribute>>> method is the crucual piece that anyone writing custom components will need to make sure to call if you plan on
+  overriding <<<IComponent.renderComponent>>>.  One very simplistic example of calling this new base method would be:
+
++-------------------------------------------------------------------------------------------------------------
+..
+public abstract MyCustomComponent extends AbstractComponent {
+
+    public void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+    {
+        writer.begin("div");
+
+        writer.renderIdAttribute(writer, cycle); <----------------------------------*
+        writer.renderInformalParamters(writer, cycle);
+
+        writer.print("Custom text content..");
+
+        writer.end();
+    }
+}
++-------------------------------------------------------------------------------------------------------------
+
+** Common Mistake:  Can't update a component not already rendered on the page
+
+  One of more common questions on the users mailing list inevitably involves this innocent looking block of code modified from our previous examples:
+
++-------------------------------------------------------------------------------------------------------------
+..
+<p>Basic javascript inclusion sample.</p>
+
+<p>
+    <a jwcid="@DirectLink" listener="listener:setTime" updateComponents="time">Refresh time</a>.
+</p>
+
+<span jwcid="@If" condition="ognl:time != null">
+    <div jwcid="time@Insert" value="ognl:time" renderTag="true" />
+</span>
+..
++-------------------------------------------------------------------------------------------------------------
+
+  The problem with this code is that the component being requested to update - <<<time>>> - doesn't actually exist as a valid client side
+  html element when you click on the <<<Refresh Time>>> link.  The initial block of html generated from this template will really look
+  like:
+
++-------------------------------------------------------------------------------------------------------------
+..
+<p>Basic javascript inclusion sample.</p>
+
+<p>
+    <a href="http://localhost:80080/app?..." id="DirectLink"
+        onClick="return tapestry.linkOnClick(this.href)">Refresh time</a>.
+</p>
+..
++-------------------------------------------------------------------------------------------------------------
+
+  The crucial piece missing in the above sample snippet is an html block for our <<<time>>> component.  It wasn't rendered initially because
+  the time value was null.  The semantics of how the client side XHR io logic works basically comes down to:
+
+  * <<make XHR IO Request>> - Initiate client side XHR request which will eventually return a block of html for our <<<time>>> component
+  of:
+
++-------------------------------------------------------------------------------------------------------------
+<div id="time">10:49 am 1/2/2007</div>
++-------------------------------------------------------------------------------------------------------------
+
+  * <<find the matching client side dom node and update it>> - This is the part that breaks down.  The very basic minimal example of how it is
+  done would look something like:
+
++-------------------------------------------------------------------------------------------------------------
+..
+var responseNode = getResponseHtml(); // this is the time div block from the last example
+
+var updateNode = document.getElementById("time");
+updateNode.innerHTML = getContentAsString(responseNode);
+..
++-------------------------------------------------------------------------------------------------------------
+
+  The resulting client side error that is logged should be something along the lines of <<<"couldn't find a matching client side dom node to update with id of 'time'">>>.
+
+  The solution to get around this varies for each situation but the most common / easiest method is usually done by just wrapping the block that conditionally renders
+  with a simple {{{../components/general/any.html}Any}} component:
+
++-------------------------------------------------------------------------------------------------------------
+..
+<p>Basic javascript inclusion sample.</p>
+
+<p>
+    <a jwcid="@DirectLink" listener="listener:setTime" updateComponents="updateArea">Refresh time</a>.
+</p>
+
+<span jwcid="updateArea@Any">
+    <span jwcid="@If" condition="ognl:time != null">
+        <div jwcid="time@Insert" value="ognl:time" renderTag="true" />
+    </span>
+</span>
+..
++-------------------------------------------------------------------------------------------------------------
+
+  Now the example specifies a <<<updateComponents="updateArea">>> definition for which components to update and has the {{{../components/general/any.html}Any}} updated
+  instead of <<<time>>> directly as it <will> exist on the client side prior to our requesting an update on it and shouldn't interfere overly much with whatever
+  CSS/design we have setup.
+  

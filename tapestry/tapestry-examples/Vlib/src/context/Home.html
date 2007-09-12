@@ -1,0 +1,48 @@
+<html jwcid="$content$">
+<body jwcid="border@Border">
+
+<p>
+Use this form to locate books stored in the Virtual Library.
+When you find a book you want,
+<a href="#" jwcid="@PageLink" page="Login">login</a> and borrow it &#151; just don't forget to
+give it back eventually!
+	</p>	
+	
+<span jwcid="@ShowError"/>
+<span jwcid="@ShowMessage"/>
+
+<form jwcid="form@Form" success="listener:search" stateful="ognl:false">
+  <table class="form">
+    <tr>
+      <th>Title</th>
+      <td><input type="text" jwcid="title@TextField" value="ognl:title" size="30" maxlength="100"/>
+      </td>
+    </tr>
+    <tr>
+      <th>Author</th>
+      <td><input type="text" jwcid="author@TextField" value="ognl:author" size="30" maxlength="100"/>
+      </td>
+    </tr>
+    <tr>
+    	<th>Book Owner</th>	
+    	<td><select jwcid="owner@PropertySelection" value="ognl:ownerId" model="ognl:modelSource.optionalPersonModel"/></td>
+    </tr>
+    <tr>
+      <th>Publisher</th>
+      <td><select jwcid="publisher@PropertySelection" value="ognl:publisherId" model="ognl:modelSource.publisherModel"/>
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+	<input type="image" src="images/search.png" width="46" height="20" border="0" alt="Search"/>
+      </td>
+    </tr>
+  </table>
+</form>
+
+</body>
+
+
+
+</html>

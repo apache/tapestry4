@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<jboss>
+  <secure>true</secure>
+  <resource-managers>
+    <resource-manager res-class="org.jboss.ejb.deployment.JDBCResource">
+      <res-name>jdbc/dataSource</res-name>
+      <res-jndi-name>java:/DefaultDS</res-jndi-name>
+    </resource-manager>
+    
+  </resource-managers>
+  <enterprise-beans>
+    <session>
+      <ejb-name>BookQuery</ejb-name>
+      <jndi-name>vlib/BookQuery</jndi-name>
+      <resource-ref>
+        <res-ref-name>jdbc/dataSource</res-ref-name>
+        <resource-name>jdbc/dataSource</resource-name>
+      </resource-ref>
+    </session>
+    <session>
+      <ejb-name>Operations</ejb-name>
+      <jndi-name>vlib/Operations</jndi-name>
+      <ejb-ref>
+        <ejb-ref-name>ejb/Book</ejb-ref-name>
+        <jndi-name>vlib/Book</jndi-name>
+      </ejb-ref>
+      <ejb-ref>
+        <ejb-ref-name>ejb/Person</ejb-ref-name>
+        <jndi-name>vlib/Person</jndi-name>
+      </ejb-ref>
+      <ejb-ref>
+        <ejb-ref-name>ejb/Publisher</ejb-ref-name>
+        <jndi-name>vlib/Publisher</jndi-name>
+      </ejb-ref>
+      <resource-ref>
+        <res-ref-name>jdbc/dataSource</res-ref-name>
+        <resource-name>jdbc/dataSource</resource-name>
+      </resource-ref>
+    </session>
+    <session>
+      <ejb-name>KeyAllocator</ejb-name>
+      <jndi-name>vlib/KeyAllocator</jndi-name>
+      <resource-ref>
+        <res-ref-name>jdbc/dataSource</res-ref-name>
+        <resource-name>jdbc/dataSource</resource-name>
+      </resource-ref>
+    </session>
+    
+    
+    <entity>
+      <ejb-name>Book</ejb-name>
+      <jndi-name>vlib/Book</jndi-name>
+      <ejb-ref>
+        <ejb-ref-name>ejb/KeyAllocator</ejb-ref-name>
+        <jndi-name>vlib/KeyAllocator</jndi-name>
+      </ejb-ref>
+    </entity>
+    <entity>
+      <ejb-name>Publisher</ejb-name>
+      <jndi-name>vlib/Publisher</jndi-name>
+      <ejb-ref>
+        <ejb-ref-name>ejb/KeyAllocator</ejb-ref-name>
+        <jndi-name>vlib/KeyAllocator</jndi-name>
+      </ejb-ref>
+    </entity>
+    <entity>
+      <ejb-name>Person</ejb-name>
+      <jndi-name>vlib/Person</jndi-name>
+      <ejb-ref>
+        <ejb-ref-name>ejb/KeyAllocator</ejb-ref-name>
+        <jndi-name>vlib/KeyAllocator</jndi-name>
+      </ejb-ref>
+    </entity>
+   
+    
+  </enterprise-beans>
+</jboss>

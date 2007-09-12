@@ -1,0 +1,20 @@
+<html jwcid="@Shell" title="Two">
+<body jwcid="@Body">
+
+Content Type: [<span jwcid="@Insert" value="ognl:file.contentType"/>]
+<br/>
+Path: [<span jwcid="@Insert" value="ognl:file.filePath"/>]
+<br/>
+Name: [<span jwcid="@Insert" value="ognl:file.fileName"/>]
+<br/>
+Size: [<span jwcid="@Insert" value="ognl:file.size"/>]
+<br/>
+In Memory: [<span jwcid="@Insert" value="ognl:file.inMemory"/>]
+
+<span jwcid="@Conditional" condition="ognl:uploadMatch">
+<br/>
+Contents match.
+</span>
+
+</body> 
+</html>

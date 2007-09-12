@@ -1,0 +1,23 @@
+package org.apache.tapestry.util.io;
+
+import org.apache.tapestry.TestBase;
+import org.testng.annotations.Test;
+
+import java.util.Locale;
+
+/**
+ *
+ */
+@Test
+public class SerializableAdaptorTest extends TestBase {
+
+    public void test_Squeeze()
+    {
+        SerializableAdaptor squeezer = new SerializableAdaptor();
+
+        String data = squeezer.squeeze(null, Locale.getDefault());
+
+        assert data != null;
+        assert data.length() > 0;
+    }
+}

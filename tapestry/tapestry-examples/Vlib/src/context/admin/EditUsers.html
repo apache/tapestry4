@@ -1,0 +1,64 @@
+<!DOCTYPE html
+[
+  <!ENTITY nbsp ''>
+]>
+<html jwcid="$content$">
+  <body jwcid="border@Border">
+    <p>This page is used to edit the roster of users on the system.</p>
+    <ul>
+      <li>Admin: If checked, the user is an administrator.</li>
+      <li>Locked Out: If checked, the user will not be allowed to login.</li>
+      <li>Change Password: If checked, the a new password will be assigned to the user.</li>
+      <li>Delete: If checked, the user will be irrevocably removed from the Virtual Library database. Any books owned by
+        the user will be transferred to the current user.</li>
+    </ul>
+    <span jwcid="@ShowMessage"/>
+    <span jwcid="@ShowValidationError" delegate="ognl:validationDelegate"/>
+    <form jwcid="form">
+      <table width="100%" class="data">
+        <tr>
+          <th>User / E-Mail </th>
+          <th>Admin </th>
+          <th>Locked&nbsp;Out </th>
+          <th>Change&nbsp;Password </th>
+          <th>Delete </th>
+        </tr>
+        <tr jwcid="loop">
+          <td>
+            <span jwcid="@Insert" value="ognl:user.naturalName">Joe User</span>
+            <br/>
+            <span jwcid="@Insert" value="ognl:user.email">foo@bar.com</span>
+          </td>
+          <td class="checkbox">
+            <input type="checkbox" jwcid="admin@Checkbox" value="ognl:user.admin"/>
+          </td>
+          <td class="checkbox">
+            <input type="checkbox" jwcid="lockedOut@Checkbox" value="ognl:user.lockedOut"/>
+          </td>
+          <td class="checkbox">
+            <input type="checkbox" jwcid="resetPassword@Checkbox" value="ognl:userConverter.resetPassword"/>
+          </td>
+          <td class="checkbox">
+            <input type="checkbox" jwcid="delete@Checkbox" value="ognl:userConverter.deleted"/>
+          </td>
+        </tr>
+      </table>
+      <table class="form">
+        <tr>
+          <th>
+            <span jwcid="@FieldLabel" field="component:password"/>
+          </th>
+          <td>
+            <input type="text" jwcid="password" size="20" maxlength="20"/>
+          </td>
+        </tr>
+        <tr>
+          <td/>
+          <td>
+            <input type="image" src="../images/update.png" width="52" height="20" alt="Update"/>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </body>
+</html>

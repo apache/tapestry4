@@ -1,0 +1,56 @@
+<html jwcid="$content$">
+<body jwcid="@Border">
+
+<form jwcid="form">
+	
+<p>
+	Please enter your registration information here; this will allow you to access the Virtual Library.
+	Your e-mail address is used as your login id.  Fields marked with
+	<span class="required-field">*</span> are required.
+</p>
+
+<span jwcid="@ShowError"/>
+<span jwcid="@ShowValidationError"/>
+
+  <table class="form">
+    <tr>
+      <th>First Name</th>
+      <td></td>
+      <td><input jwcid="firstName@TextField" value="ognl:firstName" type="text" size="30" maxlength="30"/>
+      </td>
+    </tr>
+    <tr>
+      <th><span jwcid="@FieldLabel" field="component:lastName">Last Name</span>
+      </th>
+      <td><span class="required-field">*</span></td>
+      <td><input jwcid="lastName" type="text" size="30" maxlength="30"/>
+      </td>
+    </tr>
+    <tr>
+      <th><span jwcid="@FieldLabel" field="component:email">E-mail</span>      </th>
+      <td><span class="required-field">*</span></td>
+      <td><input jwcid="email" type="text" size="30" maxlength="60"/>
+      </td>
+    </tr>
+    <tr>
+      <th><span jwcid="@FieldLabel" field="component:password1">Password</span>      </th>
+      <td><span class="required-field">*</span></td>
+      <td><input jwcid="password1" type="password" size="20" maxlength="20"/>
+      </td>
+    </tr>
+    <tr>
+      <th><span jwcid="@FieldLabel" field="component:password2">Password (again)</span>      </th>
+      <td><span class="required-field">*</span></td>
+      <td><input jwcid="password2" type="password" size="20" maxlength="20"/>
+      </td>
+    </tr>
+   	<tr>
+   		<td colspan="2"></td>
+   	<td>
+      		<input type="image" src="images/register.png" width="56" height="20" border="0" alt="Register"/>
+      </td>
+    </tr>
+  </table>
+</form>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Copyright 2005 The Apache Software Foundation
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<document>
+    <properties>
+        <title>ControlledCheckbox</title>
+    </properties>
+    <body>
+
+        <section name="ControlledCheckbox">
+
+            <p>
+                A checkbox whose state may be controlled by other checkboxes using JavaScript. The
+                checkbox rendered by this component may be automatically selected or deselected by a
+                ControlCheckbox within the same group.
+            </p>
+
+            <p>
+                <strong>
+                    See also:
+                    <a href="checkboxgroup.html">CheckboxGroup</a>
+                    ,
+                    <a href="controlcheckbox.html">ControlCheckbox</a>
+                </strong>
+            </p>
+
+            <subsection name="Parameters">
+
+
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Default</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>value</td>
+                        <td>boolean</td>
+                        <td>yes</td>
+                        <td></td>
+                        <td>
+                            Value editted by the component; read on render, updated on form submit.
+                            This sets the check attribute of the rendered element.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>disabled</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            If true, then the checkbox will render as disabled and any input from
+                            the checkbox will be ignored.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>group</td>
+                        <td>
+                            <a
+                                href="../../tapestry-contrib/apidocs/org/apache/tapestry/contrib/form/checkboxes/CheckboxGroup.html">
+                                CheckboxGroup
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            If provided, it specifies the CheckboxGroup this component belongs to.
+                            If it is not specified, then the component is a a part of the
+                            CheckboxGroup that wraps it. Please note that if this parameter is used,
+                            then the CheckboxGroup it refers to must either enclose the current
+                            component, or must be defined after it.
+                        </td>
+                    </tr>
+                </table>
+
+                <p>
+                    Body:
+                    <strong>removed / allowed</strong>
+                </p>
+
+                <p>
+                    Informal parameters:
+                    <strong>allowed / forbidden</strong>
+                </p>
+
+                <p>
+                    Reserved parameters:
+                    <em>none</em>
+                </p>
+
+            </subsection>
+
+            <subsection name="Examples">
+
+                <p>Template</p>
+                <source xml:space="preserve">	
+&lt;form jwcid="form"&gt;
+    &lt;span jwcid="checkboxGroup"&gt;
+    	&lt;input jwcid="controlCheckbox"/&gt;	
+    		&lt;input jwcid="controlledCheckbox1"/&gt;
+    		&lt;input jwcid="controlledCheckbox2"/&gt;
+    		&lt;input jwcid="controlledCheckbox3"/&gt;                        
+    &lt;/span&gt;    
+    ...
+&lt;/form&gt;    
+	</source>
+
+                <p>Specification</p>
+                <source xml:space="preserve">
+&lt;property name="state1" persist="session" initial-value="false"/&gt;
+&lt;property name="state2" persist="session" initial-value="false"/&gt;
+&lt;property name="state3" persist="session" initial-value="false"/&gt;        
+	
+   &lt;component id="checkboxGroup" type="contrib:CheckboxGroup"/&gt;    
+   &lt;component id="controlCheckbox" type="contrib:ControlCheckbox"/&gt;
+   
+&lt;component id="controlledCheckbox1" type="contrib:ControlledCheckbox"&gt;
+	&lt;binding name="value" value="state1"/&gt;
+&lt;/component&gt;   
+&lt;component id="controlledCheckbox2" type="contrib:ControlledCheckbox"&gt;
+	&lt;binding name="value" value="state2"/&gt;
+&lt;/component&gt; 
+&lt;component id="controlledCheckbox3" type="contrib:ControlledCheckbox"&gt;
+	&lt;binding name="value" value="state3"/&gt;
+&lt;/component&gt;  
+	</source>
+            </subsection>
+
+        </section>
+
+    </body>
+</document>

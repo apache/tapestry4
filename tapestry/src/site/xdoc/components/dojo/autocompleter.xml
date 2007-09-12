@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Copyright 2006 The Apache Software Foundation
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN"
+    "http://maven.apache.org/dtd/xdoc_1_0.dtd">
+<document>
+    <properties>
+        <title>Autocompleter</title>
+    </properties>
+    <body>
+
+        <section name="Autocompleter">
+
+            <p>
+                Creates form elements that allow a property of an object to be set from a drop-down
+                list.
+            </p>
+            <img src="../../images/ComponentReference/Autocompleter.png" />
+            <p>
+                Besides the fact that the list being populated is dynamically retrieved via ajax it is almost 
+                identical to the <a href="../form/propertyselection.html">PropertySelection</a> component.
+            </p>
+            <p>
+                Uses a
+                <a href="../../apidocs/org/apache/tapestry/dojo/form/IAutocompleteModel.html">
+                    IAutocompleteModel
+                </a>
+                to map between Java values that will be assigned, and textual labels that will
+                appear in the HTML response.
+            </p>
+            <p>
+                A useful property selection model is available (
+                <a
+                    href="../../apidocs/org/apache/tapestry/dojo/form/DefaultAutocompleteModel.html">
+                    DefaultAutocompleteModel
+                </a>). You can also create your own model, as illustrated in the examples below.
+            </p>
+            
+            <p>
+                <strong>
+                    See also:
+                    <a
+                        href="../../apidocs/org/apache/tapestry/dojo/form/Autocompleter.html">
+                        org.apache.tapestry.dojo.form.Autocompleter
+                    </a>
+                    ,
+                    <a href="../form/select.html">Select</a>
+                    ,
+                    <a href="../form/option.html">Option</a>
+                    ,
+                    <a href="../form/form.html">Form</a>
+                </strong>
+
+            </p>
+
+            <section name="Parameters">
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Default</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>value</td>
+                        <td>Object</td>
+                        <td>yes</td>
+                        <td></td>
+                        <td>
+                            The property to set. During rendering, this property is read, and sets
+                            the default value of the selection (if it is null, no element is
+                            selected). When the form is submitted, this property is updated based on
+                            the new selection.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>model</td>
+                        <td>
+                            <a
+                                href="../../apidocs/org/apache/tapestry/dojo/form/IAutocompleteModel.html">
+                                IAutocompleteModel
+                            </a>
+                        </td>
+                        <td>yes</td>
+                        <td></td>
+                        <td>
+                            The model provides a list of possible labels, and matches those labels
+                            against possible values that can be assigned back to the property.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>disabled</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            Controls whether the <code>&lt;select&gt;</code> is active or not. A disabled
+                            Autocompleter does not update its value parameter. Corresponds to
+                            the "disabled" HTML attribute.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>displayName</td>
+                        <td>String</td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            The user-presentable name for the component, which will be used by a
+                            <a href="../form/fieldlabel.html">FieldLabel</a>
+                            connected to the component.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>validators</td>
+                        <td>
+                            Array or collection of
+                            <a
+                                href="../../apidocs/org/apache/tapestry/form/validator/Validator.html">
+                                Validator
+                            </a>
+                        </td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            The validators to apply to the component. Something along the lines of:
+                            <code>validators:required</code> .<br/><br/>
+                            
+                            <strong>See also:</strong> <a href="../../usersguide/validation.html">Validation</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>local</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>false</td>
+                        <td>
+                            The autocompleter can work either in remote or in local mode. This parameter
+                            controls whether the component will contact the server for finding the matching 
+                            data, or use the values that it already contains within its html nodes.
+                            
+                            In the later case, the model parameter is used during render in order to provide all
+                            possible values. Those are are then rendered as options inside the select tag of the
+                            autocompleter.
+                        </td>
+                    </tr>                    
+                    <tr>
+                        <td>searchDelay</td>
+                        <td>long<em>(ms)</em></td>
+                        <td>no</td>
+                        <td>100 ms</td>
+                        <td>
+                            The amount of time to wait before initiating a server side search based
+                            on user input action.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>fadeTime</td>
+                        <td>long<em>(ms)</em></td>
+                        <td>no</td>
+                        <td>200 ms</td>
+                        <td>
+                            The duration of the animation used to fade away the selection list.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>maxListLength</td>
+                        <td>int</td>
+                        <td>no</td>
+                        <td>8</td>
+                        <td>
+                            Maximum number of items to display in drop down list.
+                        </td>
+                    </tr>
+                </table>
+
+                <p>
+                    Body:
+                    <strong>removed</strong>
+                </p>
+
+                <p>
+                    Informal parameters:
+                    <strong>allowed</strong>
+                </p>
+
+                <p>
+                    Reserved parameters:
+                    <em>name, autocomplete</em>
+                </p>
+
+            </section>
+
+            <section name="Examples">
+                TODO...
+            </section>
+            
+        </section>
+
+    </body>
+</document>

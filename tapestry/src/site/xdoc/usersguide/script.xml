@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Copyright 2005 The Apache Software Foundation
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<document>
+    <properties>
+        <title>Script Template Specification DTDs</title>
+    </properties>
+    <body>
+
+        <section name="Script Template Specification DTDs">
+            <p>
+                Script template specifications are the odd man out when it comes to Tapestry XML
+                files as they don't use the same DTD as the
+                <a href="spec.html">other specifications</a>
+                .
+            </p>
+
+            <p>
+                Script templates are used to dynamically generate JavaScript to support client-side
+                behaviors associated with components. Tapestry is all about dynamically renderered,
+                customized HTML, so it makes sense that dynamically rendered, customize JavaScript
+                to complement that HTML should also be supported.
+            </p>
+
+            <p>
+                Script template files are parsed into memory as instances of
+                <a href="../apidocs/org/apache/tapestry/IScript.html">IScript</a>
+                . These script template
+                <em>objects</em>
+                may be executed to generate the JavaScript.
+            </p>
+
+            <p>
+                Many different script template objects may be executed during the course of
+                rendering a page; all the JavaScript from all the executions are organized into two
+                JavaScript blocks in the output page: the
+                <em>main body</em>
+                at the top of the page (just inside the HTML &lt;body&gt; tag), and an
+                <em>initialization block</em>
+                at the bottom of the page, (just before the HTML &lt;/body&gt; tag).
+            </p>
+
+            <p>
+                Executing a script template requires access to an
+                <a href="../apidocs/org/apache/tapestry/IScriptProcessor.html">
+                    IScriptProcessor
+                </a>
+                instance; this is usually provided by the
+                <a href="../components/general/body.html">Body</a>
+                component. The script processor is responsible for managing the buffers of
+                JavaScript, and assists with generating unique ids for client-side variables and
+                functions.
+            </p>
+
+            <p>
+                A script template works with
+                <em>symbols</em>
+                , a set of key/value pairs (implements as a Map). The script operates upon the input
+                symbols and generates new output symbols along the way, while generating JavaScript.
+                In some cases, the output symbols may be used by a component when rendering HTML.
+            </p>
+
+            <p>
+                Many of the elements in a script template have a body of parsable character data. In
+                the body of an element, you may reference symbols using the Ant-like ${...} syntax.
+                I.e.
+                <code>${name}</code>
+                . In fact, the string inside the curly braces is an
+                <a href="http://www.ognl.org">OGNL</a>
+                expression, so you may create more complex expressions, such as
+                <code>${field.form.name}</code>
+                .
+            </p>
+
+            <subsection name="DOCTYPE">
+
+
+                <p>The DOCTYPE for a script template specification is:</p>
+
+                <source xml:space="preserve">
+&lt;!DOCTYPE script PUBLIC
+  "-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
+  "http://jakarta.apache.org/tapestry/dtd/Script_3_0.dtd"&gt;</source>
+            </subsection><!-- DOCTYPE -->
+
+			<a name="script.body"></a>
+            <subsection name="&lt;body&gt; element">
+
+
+                <p>
+                    Appears in:
+                    <a href="#script.script">&lt;script&gt;</a>
+                </p>
+
+                <p>
+                    Allows a mix of text and control elements. This text is added to the large
+                    scripting block just inside the HTML &lt;body&gt; tag.
+                </p>
+
+                <p>&lt;body&gt; elements:</p>
+
+                <source xml:space="preserve">(<em>text</em> | <a href="#script.foreach">&lt;foreach&gt;</a> | <a
+                        href="#script.if">&lt;if&gt;</a> | <a href="#script.if-not">&lt;if-not&gt;</a> | <a
+                        href="#script.unique">&lt;unique&gt;</a>)*</source>
+            </subsection>
+
+			<a name="script.foreach"></a>
+            <subsection name="&lt;foreach&gt; element">
+
+
+                <p>
+                    Appears in:
+                    <em>many</em>
+                </p>
+
+                <p>
+                    Iterates over a list of items; this is modeled after the For component. No
+                    iteration occurs if the value from the expression is null.
+                </p>
+
+                <table>
+
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Required ?</th>
+                        <th>Default Value</th>
+                        <th>Description</th>
+                    </tr>
+
+                    <tr>
+                        <td>key</td>
+                        <td>string</td>
+                        <td>no</td>
+                        <td />
+                        <td>Defines the symbol into which each succesive value is stored.</td>
+                    </tr>
+
+                    <tr>
+                        <td>index</td>
+                        <td>string</td>
+                        <td>no</td>
+                        <td />
+                        <td>
+                            Defines the symbol into which the index of the value of the current
+                            iteration is stored.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>expression</td>
+                        <td>string</td>
+                        <td>yes</td>
+                        <td />
+                        <td>
+                            The source of values, as an OGNL expression rooted in the symbols Map.
+                        </td>
+                    </tr>
+                </table>
+
+                <p>&lt;foreach&gt; elements:</p>
+
+                <source xml:space="preserve">(<em>text</em> | <a href="#script.foreach">&lt;foreach&gt;</a> | <a
+                        href="#script.if">&lt;if&gt;</a> | <a href="#script.if-not">&lt;if-not&gt;</a> | <a
+                        href="#script.unique">&lt;unique&gt;</a>)*</source>
+            </subsection>
+
+			<a name="script.if"></a>
+            <subsection name="&lt;if&gt; element">
+
+
+                <p>
+                    Appears in:
+                    <em>many</em>
+                </p>
+
+                <p>
+                    Creates a conditional portion of the script; The body of the element is only
+                    included if the expression evaulates to true.
+                </p>
+
+                <table>
+
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Required ?</th>
+                        <th>Default Value</th>
+                        <th>Description</th>
+                    </tr>
+
+                    <tr>
+                        <td>expression</td>
+                        <td>string</td>
+                        <td>yes</td>
+                        <td />
+                        <td>
+                            The
+                            <a href="http://www.ognl.org">OGNL</a>
+                            expression to evaluate.
+                        </td>
+                    </tr>
+
+
+                </table>
+
+                <p>&lt;if&gt; Elements</p>
+
+                <source xml:space="preserve">(<em>text</em> | <a href="#script.foreach">&lt;foreach&gt;</a> | <a
+                        href="#script.if">&lt;if&gt;</a> | <a href="#script.if-not">&lt;if-not&gt;</a> | <a
+                        href="#script.unique">&lt;unique&gt;</a>)*</source>
+
+            </subsection>
+
+			<a name="script.if-not"></a>
+            <subsection name="&lt;if-not&gt; element">
+
+
+                <p>
+                    Identical to the
+                    <a href="#script.if">&lt;if&gt;</a>
+                    element, except that the body is only included in the output if the expression
+                    evaluates to
+                    <strong>false</strong>
+                    .
+                </p>
+            </subsection>
+
+
+			<a name="script.include-script"></a>
+            <subsection name="&lt;include-script&gt; element">
+
+
+                <p>
+                    Inserts a reference to a static JavaScript file stored on the classpath. A
+                    particular file will only be included once per rendering of a page.
+                </p>
+
+                <p>
+                    For best performance, as much logic as possible should be shifted into static
+                    JavaScript library files that are included via this element. The dynamic portion
+                    of the JavaScript should really be initialization of code provided by such a
+                    static JavaScript library. This optimizes that amount of data that must be sent
+                    to the client web browser, as it will be able to cache the content of static
+                    library files.
+                </p>
+
+                <p>
+                    Appears in:
+                    <a href="#script.script">&lt;script&gt;</a>
+                </p>
+
+                <table>
+
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Required ?</th>
+                        <th>Default Value</th>
+                        <th>Description</th>
+                    </tr>
+
+                    <tr>
+                        <td>resource-path</td>
+                        <td>string</td>
+                        <td>yes</td>
+                        <td />
+                        <td>The path to the script within the classpath.</td>
+                    </tr>
+                </table>
+
+            </subsection>
+            
+            <a name="script.initialization"></a>
+            <subsection name="&lt;initialization&gt; element">
+
+
+                <p>
+                    Appears in:
+                    <a href="#script.script">&lt;script&gt;</a>
+                </p>
+
+                <p>
+                    Allows a mix of text and control elements. This text is added to the large
+                    scripting block just inside the HTML &lt;/body&gt; tag. It therefore can
+                    refrence HTML objects within the page.
+                </p>
+
+                <p>&lt;initialization&gt; elements:</p>
+
+                <source xml:space="preserve">(<em>text</em> | <a href="#script.foreach">&lt;foreach&gt;</a> | <a
+                        href="#script.if">&lt;if&gt;</a> | <a href="#script.if-not">&lt;if-not&gt;</a> | <a
+                        href="#script.unique">&lt;unique&gt;</a>)*</source>
+            </subsection>
+
+			<a name="script.input-symbol"></a>
+            <subsection name="&lt;input-symbol&gt; element">
+
+
+                <p>
+                    Appears in:
+                    <a href="#script.script">&lt;script&gt;</a>
+                </p>
+
+                <p>
+                    Defines an input symbol used by the script. Defining input symbols is optional;
+                    it merely enforces that symbols be of a particular type, or enforces that a
+                    non-null value be provided. This is handy as
+                    <em>defensive programming</em>
+                    .
+                </p>
+
+
+                <table>
+
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Required ?</th>
+                        <th>Default Value</th>
+                        <th>Description</th>
+                    </tr>
+
+                    <tr>
+                        <td>key</td>
+                        <td>string</td>
+                        <td>yes</td>
+                        <td />
+                        <td>The name of the symbol to check.</td>
+                    </tr>
+
+                    <tr>
+                        <td>class</td>
+                        <td>string</td>
+                        <td>no</td>
+                        <td />
+                        <td>
+                            If provided, then the actual value must be assignable to the given type
+                            (which may be a Java class or interface name).
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>required</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>no</td>
+                        <td>If "yes", then a non-null value must be provided.</td>
+                    </tr>
+                </table>
+
+            </subsection>
+            
+            
+			<a name="script.let"></a>
+            <subsection name="&lt;let&gt; element">
+
+
+                <p>
+                    Appears in:
+                    <a href="#script.script">&lt;script&gt;</a>
+                </p>
+
+                <p>
+                    Defines a new symbol in terms of a string (usually with embedded expressions).
+                </p>
+
+                <p>
+                    When a string is marked as unique, it is passed through a page-wide filter; if
+                    the name conflicts with a previous unique string, then a numeric suffix is
+                    appended to the string to ensure its uniqueness. This is most useful when
+                    defining JavaScript client-side variables and functions, to ensure there are no
+                    conflicts between different script templates, or successive executions of the
+                    same script template.
+                </p>
+               
+                <span class="info">
+                    <strong>Note:</strong>
+                    <p>
+                        Starting with Tapestry 4.1.2, unique also ensures that the returned string can
+                        be safely used as a javascript identifier (by replacing hyphens, colons and periods with
+                        underscores).
+                    </p>
+                </span>
+
+                <table>
+
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Required ?</th>
+                        <th>Default Value</th>
+                        <th>Description</th>
+                    </tr>
+
+                    <tr>
+                        <td>key</td>
+                        <td>string</td>
+                        <td>yes</td>
+                        <td />
+                        <td>The name of the new symbol to create.</td>
+                    </tr>
+
+                    <tr>
+                        <td>unique</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>no</td>
+                        <td>If yes, then the string is made unique.</td>
+                    </tr>
+
+                </table>
+
+                <p>&lt;let&gt; Elements</p>
+
+                <source xml:space="preserve">(<em>text</em> | <a href="#script.foreach">&lt;foreach&gt;</a> | <a
+                        href="#script.if">&lt;if&gt;</a> | <a href="#script.if-not">&lt;if-not&gt;</a> | <a
+                        href="#script.unique">&lt;unique&gt;</a>)*</source>
+
+
+            </subsection>
+	
+			<a name="script.script"></a>
+            <subsection name="&lt;script&gt; element">
+
+
+                <p>
+                    <em>root element</em>
+                </p>
+
+                <p>
+                    The &lt;script&gt; element is the root element of the document. It contains no
+                    attributes.
+                </p>
+
+                <p>&lt;script&gt; Elements</p>
+                <source xml:space="preserve">
+(<a href="#script.include-script">&lt;include-script&gt;</a>*, <a href="#script.input-symbol">&lt;input-symbol&gt;</a>*, (<a
+                        href="#script.let">&lt;let&gt;</a> | <a href="#script.set">&lt;set&gt;</a>)*, <a
+                        href="#script.body">&lt;body&gt;</a>?, <a href="#script.initialization">&lt;initialization&gt;</a>?)                  
+            </source>
+
+            </subsection><!-- script -->
+
+			<a name="script.set"></a>
+            <subsection name="&lt;set&gt; element">
+
+
+                <p>
+                    Appears in:
+                    <em>many</em>
+                </p>
+
+                <p>
+                    Creates a new symbol, or overwrites an existing symbol, in terms of an
+                    <a href="http://www.ognl.org">OGNL</a>
+                    expression.
+                </p>
+
+                <table>
+
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Required ?</th>
+                        <th>Default Value</th>
+                        <th>Description</th>
+                    </tr>
+
+                    <tr>
+                        <td>key</td>
+                        <td>string</td>
+                        <td>yes</td>
+                        <td />
+                        <td>The key for the input symbol to be created (or overwritten).</td>
+                    </tr>
+
+                    <tr>
+                        <td>expression</td>
+                        <td>string</td>
+                        <td>yes</td>
+                        <td />
+                        <td>
+                            The
+                            <a href="http://www.ognl.org">OGNL</a>
+                            expression to evaluate and assign to the input symbol.
+                        </td>
+                    </tr>
+                </table>
+
+            </subsection><!-- script.set -->
+
+			<a name="script.unique"></a>
+            <subsection name="&lt;unique&gt; element">
+
+
+                <p>
+                    Appears in:
+                    <em>many</em>
+                </p>
+
+                <p>
+                    Defines a block of text that is only rendered once per page. This is appropriate
+                    to certain kinds of initialization code that should not be duplicated, even if
+                    the same script template is executed multiple times.
+                </p>
+
+                <p>&lt;script&gt; elements:</p>
+
+                <source xml:space="preserve">(<em>text</em> | <a href="#script.foreach">&lt;foreach&gt;</a> | <a
+                        href="#script.if">&lt;if&gt;</a> | <a href="#script.if-not">&lt;if-not&gt;</a> | <a
+                        href="#script.unique">&lt;unique&gt;</a>)*</source>
+
+            </subsection>
+
+        </section>
+
+    </body>
+</document>

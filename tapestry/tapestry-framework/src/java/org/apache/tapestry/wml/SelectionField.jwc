@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+   Copyright 2004, 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<!DOCTYPE component-specification PUBLIC
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN"
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+
+<component-specification class="org.apache.tapestry.wml.SelectionField" allow-body="no">
+
+    <description>
+        SelectionField specifies a postfield element and it is used to complement the PropertySelection component.
+    </description>
+
+    <parameter name="value" required="yes" type="java.lang.Object"/>
+
+    <parameter name="model"
+        type="org.apache.tapestry.form.IPropertySelectionModel"
+        required="yes"
+        direction="auto"/>
+
+    <parameter name="name" property-name="varName" type="java.lang.String" direction="in" required="yes">
+        <description>
+            The name attribute specifies an WML variable name.
+        </description>
+    </parameter>
+
+    <reserved-parameter name="value"/>
+
+    <property-specification name="name" type="java.lang.String"/>
+    <property-specification name="form" type="org.apache.tapestry.IForm"/>
+
+</component-specification>

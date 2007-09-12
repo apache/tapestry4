@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+   Copyright 2004, 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<mock-test>
+    <context name="junit" />
+
+    <servlet name="simple" class="org.apache.tapestry.ApplicationServlet">
+  		<init-parameter
+  			name="org.apache.tapestry.application-specification"
+  			value="/org/apache/tapestry/junit/mock/simple/Simple.application" />
+      <init-parameter name="org.apache.tapestry.servlet-path" value="/simple" />
+  	</servlet>
+  	
+  	<request>
+  	
+  	  	
+  	  <assert-output name="Insert render">
+The start of the JUnit test suite: JUnit Simple Application.
+  	  </assert-output>
+  	  
+  	  <assert-output-matches name="Page structure" subgroup="1">
+<![CDATA[
+<(/?\w+)(\s*\w+=".*")*\s*/?>
+]]>
+		<match>html</match>
+		<match>head</match>
+		<match>meta</match>
+		<match>title</match>
+		<match>/title</match>
+        <match>script</match>
+        <match>/script</match>
+        <match>script</match>
+        <match>/script</match>
+        <match>script</match>
+        <match>/script</match>
+        <match>script</match>
+        <match>/script</match>
+        <match>script</match>
+        <match>/script</match>
+        <match>/head</match>
+		<match>body</match>	
+		<match>br</match>	
+		<match>a</match>
+		<match>/a</match>
+		<match>/body</match>
+		<match>/html</match>		
+	  </assert-output-matches>
+  	  	  
+  	  <assert-output name="Shell DOCTYPE render">
+<![CDATA[    	  
+  	  <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+]]>  	  
+  	  </assert-output>
+  	  
+ 
+  	  <assert-output name="Shell title render">
+<![CDATA[    	  
+  	  <title>JUnit Simple Home Page</title>
+]]>  	  
+  	  </assert-output>
+  	  
+  
+  	 <assert-output name="Link to page Two">
+<![CDATA[
+	<a id="link" href="/junit/simple?page=Two&amp;service=page">to page Two</a>
+]]>
+  	 </assert-output>
+  
+  	  <assert name="Session not created">
+  	  request.session == null
+  	  </assert>
+  	  
+  	</request>
+  	
+<!-- Request #2 simulates the user clicking the PageLink URL on the Home page. -->
+
+  <request>
+  	<parameter name="service" value="page" />
+    <parameter name="page" value="Two" />	
+  	
+  	<assert-output name="Page Two Title">
+<![CDATA[
+	<title>Page Two</title>
+]]>
+	</assert-output>
+	
+	<assert-output name="Page Two Shell DOCTYPE render">
+<![CDATA[    	  
+	<!DOCTYPE math SYSTEM "http://www.w3.org/Math/DTD/mathml1/mathml.dtd">
+]]>  	  
+	</assert-output>
+
+	<assert-regexp name="Page Two: No message, yet">
+<![CDATA[
+	<body(\s*\w+=".*")*\s*>\s*<p>This page
+]]>
+	</assert-regexp>
+	
+	<assert-output name="Page Two: DirectLink">
+<![CDATA[
+	DirectLink: <a id="link" href="/junit/simple?component=link&amp;page=Two&amp;service=direct">click it</a>
+]]>	
+	</assert-output>	
+
+	
+  </request>
+  
+<!-- Request #3: Simulate clicking the DirectLink. -->
+  
+  <request>
+  	<parameter name="service" value="direct" />
+    <parameter name="page" value="Two" />
+    <parameter name="component" value="link" />	
+  	
+	<assert-regexp name="Third request, message displayed">
+<![CDATA[
+	<body(\s*\w+=".*")*\s*>\s*Note: You clicked the link!\s*<p>This page
+]]>
+	</assert-regexp>	
+
+  </request>
+		
+</mock-test>

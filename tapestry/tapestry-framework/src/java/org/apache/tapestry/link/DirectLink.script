@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE script PUBLIC
+  "-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
+  "http://tapestry.apache.org/dtd/Script_3_0.dtd">
+<script>
+<input-symbol key="component" required="yes" />
+<input-symbol key="json" required="yes" />
+<input-symbol key="key" required="yes" />
+    <body>
+    <unique>
+    dojo.require("tapestry.event");
+    </unique>
+    </body>
+    <initialization>
+        tapestry.cleanConnect(dojo.byId("${component.clientId}"), 
+                              "onclick", "event${key}");
+        tapestry.event${key}=function(e){
+            dojo.event.browser.stopEvent(e);
+            
+            var content={beventname:"onClick", bcomponentid:"${component.id}"};
+            tapestry.event.buildEventProperties(e, content);
+            if (!content["beventtarget.id"]) {content["beventtarget.id"]="${component.clientId}"};
+            
+            var url=null;
+            if (e["currentTarget"] &amp;&amp; e.currentTarget.getAttribute("href")) {
+                url=e.currentTarget.getAttribute("href");
+            } else if (e["target"] &amp;&amp; e.target.getAttribute("href")) {
+                url=e.target.getAttribute("href");
+            } else if (e["relatedTarget"] &amp;&amp; e.relatedTarget.getAttribute("href")) {
+                url=e.relatedTarget.getAttribute("href");
+            } else {
+                dojo.raise("Error, link target not found or invalid. Couldn't determine href url. " + e);
+                return;
+            }
+            
+            tapestry.bind(url, content, ${json});
+        };
+        dojo.event.connect(dojo.byId("${component.clientId}"), "onclick", tapestry, "event${key}");
+    </initialization>
+</script>

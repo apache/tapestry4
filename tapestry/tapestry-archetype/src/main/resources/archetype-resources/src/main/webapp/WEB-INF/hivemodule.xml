@@ -1,0 +1,77 @@
+<module id="app" version="4.0.0" package="${packageName}">
+
+    <service-point id="globalFactory" interface="${packageName}.application.aso.GlobalFactory">
+        <invoke-factory>
+            <construct class="${packageName}.application.aso.GlobalFactory">
+                <set-object property="utilities" value="spring:utilities"/>
+            </construct>
+        </invoke-factory>
+    </service-point>
+    <!--
+    this creates the factory object that in turn creates the Application State Object
+    -->
+    <service-point id="visitFactory" interface="${packageName}.application.aso.VisitFactory">
+        <invoke-factory>
+            <construct class="${packageName}.application.aso.VisitFactory">
+                <set-object property="utilities" value="spring:utilities"/>
+            </construct>
+        </invoke-factory>
+    </service-point>
+
+    <contribution configuration-id="tapestry.asset.UnprotectedAssets">
+        <unprotected-resource contains=".*js"/>
+    </contribution>
+
+    <contribution configuration-id="tapestry.state.ApplicationObjects">
+        <state-object name="global" scope="application">
+            <invoke-factory object="service:globalFactory"/>
+        </state-object>
+        <state-object name="visit" scope="session">
+            <invoke-factory object="service:visitFactory"/>
+        </state-object>
+
+        <!--
+
+        This form works equally well if you don't need to do anything besides
+        run the constructor to get your application state object working. 
+
+     <contribution configuration-id="tapestry.state.ApplicationObjects">
+      <state-object name="visit" scope="session">
+        <create-instance class="org.example.myapp.application.aso.VisitFactory"/>
+      </state-object>
+    </contribution>
+        -->
+
+
+    </contribution>
+
+    <contribution configuration-id="tapestry.url.ServiceEncoders">
+        <asset-encoder id="asset" path="/assets"/>
+    </contribution>
+
+    <!--
+      =======================================================
+      SERVICES
+      =======================================================
+      -->
+    <!-- this is a listing to tell tapestry which objects are services
+    -->
+    <contribution configuration-id="tapestry.services.ApplicationServices">
+        <service name="RoundedCornerService" object="service:RoundedCornerService"/>
+    </contribution>
+
+    <!-- This configures each one of those services in their own special ways.
+    -->
+    <service-point id="RoundedCornerService" interface="org.apache.tapestry.engine.IEngineService">
+        <invoke-factory>
+            <construct class="${packageName}.services.RoundedCornerService">
+                <set-object property="response" value="infrastructure:response"/>
+                <set-object property="linkFactory" value="infrastructure:linkFactory"/>
+                <set-object property="utilities" value="spring:utilities"/>
+
+            </construct>
+        </invoke-factory>
+    </service-point>
+
+
+</module>

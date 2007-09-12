@@ -1,0 +1,29 @@
+<html>
+<head>
+<title>Basic Remove</title>
+</head>
+<body>
+This is an example of the use of the special jwcid, $remove$.
+
+<table jwcid="$remove$">
+	<tr>
+		<td>Removed!</td>
+	</tr>
+</table>
+
+<p>Next, we remove one row from a table:
+
+<table>
+	<tr>
+		<td>Row 1</td>
+	</tr>
+	<tr jwcid="$Remove$">
+		<td>Row 2 (removed)</td>
+	</tr>
+<span jwcid="e">
+	<tr jwcid="row">
+		<td>Row 3</td>
+	</tr>
+</span>
+</table>
+

@@ -1,0 +1,136 @@
+ ------
+Ajax/DHTML Guide - JSON (JavaScript Object Notation)
+ ------
+Jesse Kuhnert
+ ------
+24 June 2007
+ ------
+
+JSON - JavaScript Object Notation
+
+  JSON is a very popular data transmission format used in many XHR applications - the ever popular gmail application makes extensive use of it.  The official
+  web site has much more information on all the details at {{http://json.org}}.
+
+  While the majority of default XHR (ajax) behaviour provided by Tapestry uses
+  XML as the exchange format - because of how easy it is to wrap existing html blocks - it does also provide a great deal of support/API functionality for you
+  to utilize JSON data transmission formats in your own applications.
+
+  This document will go over some of the basics of using this part of the API on the client / server side as well as show examples of how it is used by Tapestry
+  itself in components such as the {{{../components/dojo/autocompleter.html}Autocompleter}}. 
+
+* JSON Basics
+
+  The basic idea behind the JSON format is that you can output something using it from the server and your browser can evaluate it and access the structures you
+  define directly - like any other javascript object.  For example,  we could define a response listing the general attributes of a user in some theoretical system
+  we are building:
+
++--------------------------------------------------------------------------------------
+{name:"Dr. No", occupation:"Super villain", age:52, email:"noknows@gmail.com"}
++--------------------------------------------------------------------------------------
+
+  The above block of JSON can be interpreted and used on the client side in javascript with a couple simple statements:
+
++--------------------------------------------------------------------------------------
+var user=eval("{name:'Dr No', occupation: 'Super villain'}");
+alert("User occupation:" + user.occupation + " name:" + user.name);
++--------------------------------------------------------------------------------------
+
+  The format also supports returning array like structures as well as nesting of differnt kind of structures as in:
+
++--------------------------------------------------------------------------------------
+{users:[
+    {name:"Dr. No", occupation:"Super villain", age:52, email:"noknows@gmail.com"},
+    {name:"Henrietta Smith"},
+    {name:"Lev Nikolayevich Myshkin", occupation:"Idiot"}
+    ]
+}
+
+or just..:
+
+["10", "30", "14", "5"]
++--------------------------------------------------------------------------------------
+
+  You get the idea..  One of the more useful things provided by {{http://json.org}} is a sample java API for working with the format - {{http://www.json.org/java/index.html}}.
+  Tapestry has incorporated this java code in to the API proper <(with some minor improvements)> so creating our first example JSON object output can be as simple as:
+
++-----------------------------------------------------------------------------------------------------------------
+..
+org.apache.tapestry.json.JSONObject json = new JSONObject();
+json.put("name", "Dr. No");
+json.put("occupation", "Super villain");
+..
+calling json.toString() should produce:
+{"name":"Dr. No", "occupation":"Super villain"}
++-----------------------------------------------------------------------------------------------------------------
+
+  <<See also:>> {{{../apidocs/org/apache/tapestry/json/package-summary.html}Tapestry JSON API}}
+
+* {{{../apidocs/org/apache/tapestry/IJSONRender.html}IJSONRender}}:  Writing JSON capable components
+
+  To support this new format we've added a new optional interface that you can implement in your components - {{{../apidocs/org/apache/tapestry/IJSONRender.html}IJSONRender}}:
+
++-----------------------------------------------------------------------------------------------------------------
+public void renderComponent(IJSONWriter writer, IRequestCycle cycle)
+{
+}
++-----------------------------------------------------------------------------------------------------------------
+
+  The basic idea is the same as the typical <<<IComponent.renderComponent(IMarkupWriter, IRequestCycle)>>> call - except that in this case you are dealing with
+  a {{{../apidocs/org/apache/tapestry/json/IJSONWriter.html}IJSONWriter}} instance instead of the more familiar {{{../apidocs/org/apache/tapestry/IMarkupWriter.html}IMarkupWriter}}.
+  This interface is really just a wrapper around the JSON api provided by Tapestry.
+
+  Once you have implemented this {{{../apidocs/org/apache/tapestry/IJSONRender.html}IJSONRender}} interface in one of your components that is pretty much all there is to
+  do.  The JSON method you implement will only be called if a JSON request is processed by Tapestry <AND> the request has specified your component as one of the components
+  to update and capture the response of.  Otherwise the normal html markup based methods will be called on your component.
+
+** Client Side Processing
+
+  Processing json response data on the client side isn't really something Tapestry can do for you,  so you'll have to have your own consumer of this data set up
+  to handle it beforehand.  If you use the standard Tapestry API's then the global {{{../jsdoc/files/core-js.html#tapestry.loadJson}tapestry.loadJson}} javascript function
+  will be invoked.  Currently this function does nothing other than decrement the global <<<tapestry.requestsInFlight>>> javascript variable value.  You can replace or
+  do an event connection on this function to provide your own implementation.  An example of doing an event connection would be:
+
++-----------------------------------------------------------------------------------------------------------------
+dojo.event.connect(tapestry, "loadJson", function(type, data, http, kwArgs){
+    // do your stuff...the data argument is your json object
+});
++-----------------------------------------------------------------------------------------------------------------
+
+* Example:  Tapestry's Autocompleter Component
+
+  One example of a core Tapestry component that implements the {{{../apidocs/org/apache/tapestry/IJSONRender.html}IJSONRender}} interface is the
+  {{{../components/dojo/autocompleter.html}Autocompleter}} component.  The method implementation of that component looks like this:
+
++-----------------------------------------------------------------------------------------------------------------
+public void renderComponent(IJSONWriter writer, IRequestCycle cycle)
+{
+   IAutocompleteModel model = getModel();
+
+   if (model == null)
+     throw Tapestry.createRequiredParameterException(this, "model");
+
+   List filteredValues = model.getValues(getFilter());
+
+   if (filteredValues == null)
+    return;
+
+   Object key = null;
+   String label = null;
+   JSONObject json = writer.object();
+
+   for (int i=0; i < filteredValues.size(); i++) {
+    Object value = filteredValues.get(i);
+
+    key = model.getPrimaryKey(value);
+    label = model.getLabelFor(value);
+    json.put(getDataSqueezer().squeeze(key), label );
+   }     
+}
++-----------------------------------------------------------------------------------------------------------------
+
+  This component actually makes use of some new base classes - like {{{../apidocs/org/apache/tapestry/dojo/form/AbstractFormWidget.html}AbstractFormWidget}} - don't
+  let this distract you from the <<<IJSONRender>>> interface portion.  They are both mutually exclusive and totally unrelated.
+
+  That is pretty much it.  This component hands off the majority of client side functionality to a Dojo widget and only provides the widget with a URL string produced
+  by a pre-generated JSON request.  You can find the full source and all of the gory details of the rest of
+  that {{{http://svn.apache.org/viewvc/tapestry/tapestry4/trunk/tapestry-framework/src/java/org/apache/tapestry/dojo/form/Autocompleter.java?view=markup}here}}.

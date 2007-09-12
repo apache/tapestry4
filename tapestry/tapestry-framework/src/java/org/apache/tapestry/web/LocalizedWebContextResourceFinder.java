@@ -1,0 +1,86 @@
+// Copyright 2004, 2005 The Apache Software Foundation
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package org.apache.tapestry.web;
+
+import org.apache.hivemind.util.Defense;
+import org.apache.hivemind.util.LocalizedNameGenerator;
+import org.apache.hivemind.util.LocalizedResource;
+
+import java.util.Locale;
+
+/**
+ * Finds localized resources within a {@link org.apache.tapestry.web.WebContext}..
+ * 
+ * @author Howard Lewis Ship
+ * @since 4.0
+ */
+
+public class LocalizedWebContextResourceFinder
+{
+
+    private WebContext _context;
+
+    public LocalizedWebContextResourceFinder(WebContext context)
+    {
+        Defense.notNull(context, "context");
+
+        _context = context;
+    }
+
+    /**
+     * Resolves the resource, returning a path representing the closest match
+     * (with respect to the provided locale). Returns null if no match.
+     * <p>
+     * The provided path is split into a base path and a suffix (at the last
+     * period character). The locale will provide different suffixes to the base
+     * path and the first match is returned.
+     */
+
+    public LocalizedResource resolve(String contextPath, Locale locale)
+    {
+        int dotx = contextPath.lastIndexOf('.');
+        String basePath;
+        String suffix;
+        if (dotx >= 0)
+        {
+            basePath = contextPath.substring(0, dotx);
+            suffix = contextPath.substring(dotx);
+        }
+        else
+        {
+            // Resource without extension
+            basePath = contextPath;
+            suffix = "";
+        }
+
+        LocalizedNameGenerator generator = new LocalizedNameGenerator(basePath,
+                locale, suffix);
+
+        while(generator.more())
+        {
+            String candidatePath = generator.next();
+
+            if (isExistingResource(candidatePath))
+                return new LocalizedResource(candidatePath, generator.getCurrentLocale());
+        }
+
+        return null;
+    }
+
+    private boolean isExistingResource(String path)
+    {
+        return _context.getResource(path) != null;
+    }
+}

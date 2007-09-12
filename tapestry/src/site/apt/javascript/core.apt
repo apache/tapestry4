@@ -1,0 +1,102 @@
+ ------
+JavaScript Reference - tapestry core
+ ------
+Jesse Kuhnert
+ ------
+26 July 2006
+ ------
+ 
+tapestry core API
+
+  This package defines the core API included on all pages by default. Most of it has to do with managing 
+  IO requests, as well as handling remote server exception pages resulting from asynchronous IO calls.
+
+  The source for <<<tapestry.core>>> can be found {{{http://svn.apache.org/viewvc/tapestry/tapestry4/trunk/tapestry-framework/src/js/tapestry/core.js?view=markup}here}}. 
+  
+* tapestry.version
+
+  A string property that defines the current version of the Tapestry JavaScript core API.
+ 
+  An example that would show the current version might be:
+  
++----------------------
+alert("Current tapestry version is " + tapestry.version);
++----------------------
+
+* tapestry.bind(url, content, json)
+
+  Global XHR bind function for tapestry internals. The error/load functions defined in 
+  this package are used to handle load/error of dojo.io.bind.
+
+*----------------------*---------------*------------*----------*----------------------------------------------+
+  Parameter            |    Type	   |  Required  | Default  | 		Description
+*----------------------*---------------*------------*----------*----------------------------------------------+
+  url 				   | String        |  yes       |          | The url to bind the request to.
+*----------------------*---------------*------------*----------*----------------------------------------------+
+  content 			   | json          |  no        |          | A properties map of optional extra content to send. This will be appended to the URL in the form of name/value query parameters.
+*----------------------*---------------*------------*----------*----------------------------------------------+
+  json 				   | boolean       |  no        |   false  | Optional parameter specifying whether or not to create a json request. If not specified the default is to use XHR.
+*----------------------*---------------*------------*----------*----------------------------------------------+
+
+  <<See also:>> Dojo {{{http://manual.dojotoolkit.org/WikiHome/DojoDotBook/Book8}IO}}.
+
+** Example bind call
+
+ The bind call is fairly simple in implementation as it uses the dojo {{{http://manual.dojotoolkit.org/WikiHome/DojoDotBook/Book8}IO}} API
+ to make XHR calls back to tapestry.(or any web url really)
+
++-----------------------------------
+var url="http://localhost:8080/app";
+var content={chosenBook:"Cryptonomicon",numberOfCopies:"10"};
+
+tapestry.bind(url, content);
++-----------------------------------
+
+* tapestry.error(type, exception, http, kwArgs)
+
+  Global error handling function for dojo.io.bind requests. This function is used by all of the IO
+  functions used in tapestry to handle IO errors. The default behaviour of this function is to display
+  a special {{{exceptions.html}Exception}} dojo widget displaying any errors received from the server. If
+  no server exceptions are available the only other action taken is logging the error in the browser 
+  via <<<dojo.log.exception(message, exception)>>>.
+  
+*----------------------*---------------*------------*----------*----------------------------------------------+
+  Parameter            |    Type	   |  Required  | Default  | 		Description
+*----------------------*---------------*------------*----------*----------------------------------------------+
+  type 				   | Object        |  no        |          | The error type receieved.
+*----------------------*---------------*------------*----------*----------------------------------------------+
+  exception 		   | Object        |  no        |          | The javascript exception that was thrown. (if any)
+*----------------------*---------------*------------*----------*----------------------------------------------+
+  http 				   | XmlHttpRequest|  no        |          | The XmlHttpRequest object used to make the IO requests. (implementation dependant on browser being used)
+*----------------------*---------------*------------*----------*----------------------------------------------+
+  kwArgs 			   | JSON          |  no        |          | The original set of arguments passed in to dojo.io.bind() when the IO request was made.
+*----------------------*---------------*------------*----------*----------------------------------------------+
+
+  If you would like to handle errors differently you can either override the definition of 
+  <<<tapestry.error>>> with your own function or be notified when it is executed via:
+  
++-----------------------
+dojo.event.connect(tapestry, "error", function(type, exception, http, kwArgs){
+	// insert your logic for handling errors here, this function will be called ~after~
+	// the core tapestry.error function is called with the above style dojo.event.connect call
+});
++-----------------------
+  
+* tapestry.load(type, data, http, kwArgs)
+
+  The core function registered to handle loading XHR requests. (Xml requests) The implementation details
+  are fairly complicated for this function as they handle parsing/managing Tapestry-defined XML content
+  nodes in a format recognized by the API so that intelligent handling of partial updates/javascript/etc 
+  can be handled on the client.
+  
+*----------------------*---------------*------------*----------*----------------------------------------------+
+  Parameter            |    Type	   |  Required  | Default  | 		Description
+*----------------------*---------------*------------*----------*----------------------------------------------+
+  type 				   | Object        |  no        |          | The error type receieved.
+*----------------------*---------------*------------*----------*----------------------------------------------+
+  data 		   		   | XML Object    |  no        |          | The data recieved in the request. Should be a javascript Xml document.
+*----------------------*---------------*------------*----------*----------------------------------------------+
+  http 				   | XmlHttpRequest|  no        |          | The XmlHttpRequest object used to make the IO requests. (implementation dependant on browser being used)
+*----------------------*---------------*------------*----------*----------------------------------------------+
+  kwArgs 			   | JSON          |  no        |          | The original set of arguments passed in to dojo.io.bind() when the IO request was made.
+*----------------------*---------------*------------*----------*----------------------------------------------+

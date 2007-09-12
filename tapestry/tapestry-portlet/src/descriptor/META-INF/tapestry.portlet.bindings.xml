@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<module id="tapestry.portlet.bindings" version="4.0.0" package="org.apache.tapestry.portlet.bindings">
+  
+  <service-point id="UserAttributeBindingFactory" interface="org.apache.tapestry.binding.BindingFactory">
+    
+    Creates new bindings for Portlet user attributes.
+    
+    <invoke-factory>
+      <construct class="UserAttributeBindingFactory">
+        <set-object property="request" value="service:tapestry.portlet.PortletRequest"/>
+        <set-object property="valueConverter" value="infrastructure:valueConverter"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <contribution configuration-id="tapestry.bindings.BindingFactories" if="class javax.portlet.PortletSession">
+    <binding prefix="user" service-id="UserAttributeBindingFactory"/>
+  </contribution>
+</module>

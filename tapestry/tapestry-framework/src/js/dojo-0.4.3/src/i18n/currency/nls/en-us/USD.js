@@ -1,0 +1,1 @@
+({"symbol":"$","displayName":"US Dollar"});

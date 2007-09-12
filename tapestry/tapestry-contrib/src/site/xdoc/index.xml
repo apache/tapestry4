@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Copyright 2005 The Apache Software Foundation
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<document>
+    <properties>
+        <title>Tapestry Contrib Library</title>
+    </properties>
+    <body>
+
+        <section name="Tapestry Contrib Library">
+
+            <p>A collection of powerful add-on components for Tapestry.</p>
+            <p>
+                This library started as a collection of components
+                <em>contrib</em>
+                uted by the community.
+            </p>
+
+            <p>
+                To make use of this library, you must include its JAR on the classpath (typically,
+                by copying it into WEB-INF/lib), and extend your application specification, and add
+                a &lt;library&gt; element:
+            </p>
+
+            <source xml:space="preserve">
+ &lt;library id="contrib" specification-path="classpath:/org/apache/tapestry/contrib/Contrib.library"/&gt;
+</source>
+
+            <p>You may then reference the components of the framework using the prefix:</p>
+
+            <source xml:space="preserve">
+  &lt;table jwcid="@contrib:Table" ...&gt; ... 
+</source>
+
+            <p>
+                The prefix "contrib:" can be changed; if you don't like typing, make it "c:" ...
+                Tapestry doesn't care!
+            </p>
+
+        </section>
+
+    </body>
+</document>

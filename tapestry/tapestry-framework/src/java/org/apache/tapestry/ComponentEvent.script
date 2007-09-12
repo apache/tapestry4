@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<!DOCTYPE script PUBLIC
+  "-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
+  "http://tapestry.apache.org/dtd/Script_3_0.dtd">
+<script>
+<input-symbol key="component" required="yes" />
+<input-symbol key="clientId" required="yes" />
+<input-symbol key="url" />
+<input-symbol key="events" />
+<input-symbol key="formEvents" />
+    <body>
+        <unique>
+        dojo.require("tapestry.event");
+        </unique>
+    </body>
+    <initialization>
+        <if expression="events">
+            <foreach expression="events" key="event">
+                tapestry.cleanConnect(dojo.byId("${clientId}"), "${event[0]}", "event${event[1]}");
+                tapestry.event${event[1]}=function( event ){
+                    
+                    var content={beventname:"${event[0]}", bcomponentid:"${component.id}"};
+                   
+                    tapestry.event.buildEventProperties( event, content, arguments);                    
+                    if (!content["beventtarget.id"]) {
+                    	content["beventtarget.id"]="${clientId}";
+                    }                                 
+                    
+                    tapestry.bind("${url}", content);
+                };
+                dojo.event.connect(dojo.byId("${clientId}"), "${event[0]}", tapestry, "event${event[1]}");
+            </foreach>
+        </if>
+        <if expression="formEvents">
+            <foreach expression="formEvents" key="formEvent">
+                tapestry.cleanConnect(dojo.byId("${clientId}"), 
+                                     "${formEvent[0]}", "formEvent${formEvent[4]}");
+                tapestry.formEvent${formEvent[4]}=function(e){
+                    var content={beventname:"${formEvent[0]}", bcomponentid:"${component.id}"};
+                    tapestry.event.buildEventProperties(e, content, arguments);
+                    if (!content["beventtarget.id"]){
+                    	content["beventtarget.id"]="${clientId}";
+                    }
+                    <foreach expression="formEvent[1]" key="formName">
+                   var validateState=tapestry.form.forms["${formName}"].validateForm;
+                   var validateForm=${formEvent[3]};
+                   tapestry.form.setFormValidating("${formName}", validateForm);
+                   
+                    <if expression="formEvent[2]">
+                    tapestry.form.submitAsync("${formName}", content);
+                    </if>
+                    <if-not expression="formEvent[2]">
+                    tapestry.form.submit("${formName}");
+                    </if-not>
+                    
+                    tapestry.form.setFormValidating("${formName}", validateState);
+                    </foreach>
+                };
+                dojo.event.connect(dojo.byId("${clientId}"), "${formEvent[0]}",
+                                   tapestry, "formEvent${formEvent[4]}");
+            </foreach>
+        </if>
+    </initialization>
+</script>
