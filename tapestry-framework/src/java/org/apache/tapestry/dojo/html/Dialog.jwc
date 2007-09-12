@@ -31,7 +31,19 @@
     <parameter name="backgroundColor" default-value="literal:black" />
 
     <parameter name="opacity" default-value="0.4" />
+        
+    <parameter name="followScroll" default-value="true" />
+    
+    <parameter name="closeOnBackgroundClick" default-value="false" />
 
+    <parameter name="blockDuration" default-value="0" />
+    
+    <parameter name="lifeTime" default-value="0" />
+            
+    <parameter name="toggle" default-value="literal:fade" />
+            
+    <parameter name="toggleDuration" default-value="150" />
+    
     <inject property="script" type="script" object="Dialog.script"/>
 
 </component-specification>
