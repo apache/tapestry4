@@ -39,7 +39,7 @@ tapestry.form={
 	 */
 	focusField:function(field){
 		if (arguments.length < 1) {return;}
-		
+		try{
 		var f=dojo.widget.byId(field);
 		if(f && !dj_undef("focus", f)){
 			if (dojo.html.isVisible(f)){
@@ -60,7 +60,7 @@ tapestry.form={
 			return;
 		}
 		
-        dojo.html.selectInputText(field);
+        dojo.html.selectInputText(field);} catch(e){dojo.log.debug(e);}
 	},
 	
 	/**
