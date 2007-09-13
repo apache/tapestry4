@@ -5,12 +5,12 @@
     <groupId>org.apache.tapestry</groupId>
     <artifactId>tapestry-contrib</artifactId>
     <packaging>jar</packaging>
-    <version>4.1.3</version>
+    <version>4.1.4-SNAPSHOT</version>
     
     <parent>
         <groupId>org.apache.tapestry</groupId>
         <artifactId>tapestry-project</artifactId>
-        <version>4.1.3</version>
+        <version>4.1.4-SNAPSHOT</version>
     </parent>
     <name>Contrib</name>
     <inceptionYear>2006</inceptionYear>
