@@ -14,14 +14,14 @@
 
 package org.apache.tapestry.markup;
 
-import java.io.CharArrayWriter;
-import java.io.PrintWriter;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IMarkupWriter;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
+
+import java.io.CharArrayWriter;
+import java.io.PrintWriter;
 
 /**
  * Tests for {@link org.apache.tapestry.markup.MarkupWriterImpl}.
@@ -81,7 +81,7 @@ public class TestMarkupWriter extends BaseComponentTestCase
         _writer.reset();
     }
 
-    public void testIntAttribute()
+    public void test_Int_Attribute()
     {
         MarkupFilter filter = new EchoMarkupFilter();
         PrintWriter writer = newPrintWriter();
@@ -99,7 +99,7 @@ public class TestMarkupWriter extends BaseComponentTestCase
         assertOutput("<span width=\"{5}\"></span>");
     }
 
-    public void testIntAttributeRequiresTag()
+    public void test_Int_Attribute_Requires_Tag()
     {
         MarkupFilter filter = newFilter();
         PrintWriter writer = newPrintWriter();
@@ -121,7 +121,7 @@ public class TestMarkupWriter extends BaseComponentTestCase
         verify();
     }
 
-    public void testBooleanAttribute()
+    public void test_Boolean_Attribute()
     {
         MarkupFilter filter = new EchoMarkupFilter();
         PrintWriter writer = newPrintWriter();
@@ -141,7 +141,7 @@ public class TestMarkupWriter extends BaseComponentTestCase
         assertOutput("<div true=\"{true}\" false=\"{false}\"></div>");
     }
 
-    public void testBooleanAttributeRequiresTag()
+    public void test_Boolean_Attribute_Requires_Tag()
     {
         MarkupFilter filter = newFilter();
         PrintWriter writer = newPrintWriter();
@@ -163,7 +163,7 @@ public class TestMarkupWriter extends BaseComponentTestCase
         verify();
     }
 
-    public void testAttribute()
+    public void test_Attribute()
     {
         MarkupFilter filter = new EchoMarkupFilter();
         PrintWriter writer = newPrintWriter();
@@ -179,7 +179,7 @@ public class TestMarkupWriter extends BaseComponentTestCase
         assertOutput("<span width=\"{100%}\"></span>");
     }
 
-    public void testAttributeNull()
+    public void test_Attribute_Null()
     {
         MarkupFilter filter = new EchoMarkupFilter();
         PrintWriter writer = newPrintWriter();
@@ -214,7 +214,7 @@ public class TestMarkupWriter extends BaseComponentTestCase
         assertOutput("<span width=\"{80%}\"></span>");
     }
     
-    public void testAttributeRequiresTag()
+    public void test_Attribute_Requires_Tag()
     {
         MarkupFilter filter = newFilter();
         PrintWriter writer = newPrintWriter();
@@ -251,7 +251,7 @@ public class TestMarkupWriter extends BaseComponentTestCase
         
         assertOutput("<span class=\"{fred barney}\" type=\"{false}\"></span>");
     }
-    
+
     public void test_Append_Attribute_Null()
     {
         MarkupFilter filter = new EchoMarkupFilter();
