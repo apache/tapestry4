@@ -14,13 +14,7 @@
 
 package org.apache.tapestry.valid;
 
-import org.apache.tapestry.AbstractComponent;
-import org.apache.tapestry.BindingException;
-import org.apache.tapestry.IForm;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.*;
 import org.apache.tapestry.form.IFormComponent;
 
 /**
@@ -67,8 +61,7 @@ public abstract class FieldLabel extends AbstractComponent
             displayName = field.getDisplayName();
             
             if (displayName == null)
-                throw new BindingException(ValidMessages.noDisplayName(this,
-                        field), this, null, getBinding("field"), null);
+                throw new BindingException(ValidMessages.noDisplayName(this,field), this, null, getBinding("field"), null);
         }
         
         IValidationDelegate delegate = form.getDelegate();
@@ -79,12 +72,13 @@ public abstract class FieldLabel extends AbstractComponent
             delegate.writeLabelPrefix(field, writer, cycle);
         
         writer.begin("label");
-        
+
+        renderInformalParameters(writer, cycle);
+
         if (id != null) 
             writer.attribute("for", id);
-        
+                
         delegate.writeLabelAttributes(writer, cycle, field);
-        renderInformalParameters(writer, cycle);
         
         delegate.beforeLabelText(writer, cycle, field);
         

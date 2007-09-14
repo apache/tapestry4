@@ -135,8 +135,10 @@ public class MarkupWriterImpl implements IMarkupWriter
         
         DefaultAttribute attr = (DefaultAttribute)_attrMap.get(name);
         
-        if (attr == null) {
+        if (attr == null)
+        {
             attr = new DefaultAttribute(value, false);
+            
             _attrMap.put(name, attr);
             return;
         }
