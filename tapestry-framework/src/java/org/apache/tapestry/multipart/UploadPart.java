@@ -31,7 +31,7 @@ import java.io.InputStream;
  * @author Joe Panico
  * @since 2.0.1
  */
-public class UploadPart extends Object implements IUploadFile
+public class UploadPart implements IUploadFile
 {
 
     private FileItem _fileItem;
