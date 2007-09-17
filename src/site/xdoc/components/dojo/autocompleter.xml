@@ -185,6 +185,26 @@
                             Maximum number of items to display in drop down list.
                         </td>
                     </tr>
+                    <tr>
+                        <td>forceValidOption</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>true</td>
+                        <td>
+							Set to false to allow users to enter values that
+							may differ from the available options.
+                        </td>
+                    </tr>	
+                    <tr>
+                        <td>autoCompleteField</td>
+                        <td>boolean</td>
+                        <td>no</td>
+                        <td>true</td>
+                        <td>
+							If the field should be automatically filled with the 
+							closest match.
+                        </td>
+                    </tr>					
                 </table>
 
                 <p>
