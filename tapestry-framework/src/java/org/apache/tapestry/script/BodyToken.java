@@ -18,7 +18,7 @@ import org.apache.hivemind.Location;
 
 /**
  * Generates a String from its child tokens, then applies it to
- * {@link ScriptSessionImpl#setBody(String)}.
+ * {@link ScriptSession#addBodyScript(String)}.
  * 
  * @author Howard Lewis Ship
  * @since 0.2.9

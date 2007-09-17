@@ -362,7 +362,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker, Po
     boolean isDeferredForm(IComponent component)
     {
         if (IForm.class.isInstance(component)
-            && _deferredFormConnections.get(((IForm)component).getExtendedId()) != null)
+            && _deferredFormConnections.get(component.getExtendedId()) != null)
             return true;
 
         return false;

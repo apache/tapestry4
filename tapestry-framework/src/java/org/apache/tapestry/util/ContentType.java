@@ -200,7 +200,7 @@ public class ContentType
         {
             String key = parameterNames[i];
             String value = getParameter(key);
-            buf.append(";" + key + "=" + value);
+            buf.append(";").append(key).append("=").append(value);
         }
 
         return buf.toString();
