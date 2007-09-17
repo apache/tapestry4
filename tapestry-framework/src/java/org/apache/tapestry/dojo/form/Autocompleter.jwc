@@ -39,7 +39,9 @@
   
   <parameter name="maxListLength" default-value="8" />
   
-  <parameter name="forceValidOption" default-value="true" />
+  <parameter name="forceValidOption" default-value="true"/>
+
+  <parameter name="autoCompleteField" default-value="true"/>
   
   <parameter name="local">
     <description>Makes the autocompleter work in local mode.

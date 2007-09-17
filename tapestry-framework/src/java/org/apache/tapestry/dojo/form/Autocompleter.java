@@ -116,6 +116,7 @@ public abstract class Autocompleter extends AbstractFormWidget implements Valida
         json.put("maxListLength", getMaxListLength());
         json.put("forceValidOption", isForceValidOption());
         json.put("disabled", isDisabled());
+        json.put("autoComplete", getAutoCompleteField());
         
         json.put("value", key != null ? getDataSqueezer().squeeze(key) : "");
         json.put("label", value != null ? model.getLabelFor(value) : "");
@@ -229,6 +230,9 @@ public abstract class Autocompleter extends AbstractFormWidget implements Valida
     
     /** @since 4.1 */
     public abstract String getFilter();
+
+    /** @since 4.1.4 */
+    public abstract boolean getAutoCompleteField();
     
     /** Injected. */
     public abstract DataSqueezer getDataSqueezer();
