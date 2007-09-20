@@ -64,7 +64,7 @@
         
         <command id="component-housekeeping-worker" object="service:ComponentHousekeepingWorker" after="annotation-worker" />
         <command id="component-propertyproxy-worker" object="service:ComponentPropertyProxyWorker" before="tapestry.enhance.specified-property" />
-        <command id="inject-asset-annotation" object="service:InjectAssetAnnotationWorker" after="tapestry.enhance.inject-asset" />
+        <command id="inject-asset-annotation" object="service:InjectAssetAnnotationWorker" after="tapestry.enhance.inject-asset" before="tapestry.enhance.abstract-property"/>
     </contribution>
 
     <configuration-point id="ExcludedProxyAnnotations">
