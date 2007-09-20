@@ -206,7 +206,6 @@ dojo.widget.defineWidget(
 	    this.inputNode.style.display=oldDisplay;
 
         var view=dojo.html.getViewport();
-        var scroll=dojo.html.getScroll();
 
         var ddX = inputPos.x + mb.width - this.dropdownDim.width;
         if (ddX < 0){
@@ -219,11 +218,7 @@ dojo.widget.defineWidget(
         } else {
             ddY = inputPos.y + mb.height;
         }
-
-        if (dojo.render.html.ie && scroll.top > 0){
-            ddY -= scroll.top;
-        }
-
+        
         this.dropdownNode.style["top"]=ddY+'px';
         this.dropdownNode.style["left"]=ddX+'px';
         
