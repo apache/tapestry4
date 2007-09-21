@@ -210,7 +210,7 @@ public class AssetService implements IEngineService
     public void service(IRequestCycle cycle)
             throws IOException
     {
-        String path = cycle.getParameter(PATH);
+        String path = translatePath(cycle.getParameter(PATH));
         String md5Digest = cycle.getParameter(DIGEST);
         boolean checkDigest = !_unprotectedMatcher.containsResource(path);
         
@@ -218,9 +218,19 @@ public class AssetService implements IEngineService
         
         try
         {
+            URL resourceURL = _classResolver.getResource(path);
+
+            if (resourceURL == null)
+            {
+                _response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                _log.info(AssetMessages.noSuchResource(path));
+                return;
+            } 
+            
             if (checkDigest && !_digestSource.getDigestForResource(path).equals(md5Digest))
             {
-                _response.sendError(HttpServletResponse.SC_FORBIDDEN, AssetMessages.md5Mismatch(path));
+                _response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                _log.info(AssetMessages.md5Mismatch(path));
                 return;
             }
             
@@ -230,15 +240,6 @@ public class AssetService implements IEngineService
             if (checkDigest && _request.getHeader("If-Modified-Since") != null)
             {
                 _response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-                return;
-            }
-            
-            URL resourceURL = _classResolver.getResource(translatePath(path));
-            
-            if (resourceURL == null)
-            {
-                _response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                _log.warn(AssetMessages.noSuchResource(path));
                 return;
             }
             
@@ -257,7 +258,9 @@ public class AssetService implements IEngineService
         }
         catch (Throwable ex)
         {
-            _exceptionReporter.reportRequestException(AssetMessages.exceptionReportTitle(path), ex);
+            _response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            _log.warn(AssetMessages.exceptionReportTitle(path), ex);
+            //_exceptionReporter.reportRequestException(AssetMessages.exceptionReportTitle(path), ex);
         }
     }
 

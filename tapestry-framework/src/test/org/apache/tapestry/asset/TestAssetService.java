@@ -15,13 +15,16 @@ package org.apache.tapestry.asset;
 
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.TestBase;
+import org.apache.tapestry.error.RequestExceptionReporter;
 import org.apache.tapestry.util.ContentType;
 import org.apache.tapestry.web.WebContext;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
+import org.easymock.EasyMock;
 import static org.easymock.EasyMock.checkOrder;
 import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
@@ -116,6 +119,7 @@ public class TestAssetService extends TestBase {
     public void test_ETag_Header_Response()
             throws Exception
     {
+        String requestedResource = "/org/apache/tapestry/asset/tapestry-in-action.png";
         WebRequest request = newMock(WebRequest.class);
         checkOrder(request, false);
         WebResponse response = newMock(WebResponse.class);
@@ -124,7 +128,7 @@ public class TestAssetService extends TestBase {
         ResourceMatcher matcher = newMock(ResourceMatcher.class);
         
         ClassResolver resolver = new DefaultClassResolver();
-        URLConnection url = resolver.getResource("/org/apache/tapestry/asset/tapestry-in-action.png").openConnection();
+        URLConnection url = resolver.getResource(requestedResource).openConnection();
 
         AssetService service = new AssetService();
         service.setRequest(request);
@@ -134,13 +138,13 @@ public class TestAssetService extends TestBase {
         service.setClassResolver(resolver);
         service.setContext(context);
 
-        expect(cycle.getParameter("path")).andReturn("/org/apache/tapestry/asset/tapestry-in-action.png");
+        expect(cycle.getParameter("path")).andReturn(requestedResource);
         expect(cycle.getParameter("digest")).andReturn(null);
 
-        expect(matcher.containsResource("/org/apache/tapestry/asset/tapestry-in-action.png")).andReturn(true);
+        expect(matcher.containsResource(requestedResource)).andReturn(true);
 
         expect(request.getDateHeader("If-Modified-Since")).andReturn(-1L);
-        expect(context.getMimeType("/org/apache/tapestry/asset/tapestry-in-action.png")).andReturn("image/png");
+        expect(context.getMimeType(requestedResource)).andReturn("image/png");
 
         response.setDateHeader("Last-Modified", url.getLastModified());
         response.setDateHeader("Expires", service._expireTime);
@@ -158,5 +162,53 @@ public class TestAssetService extends TestBase {
         service.service(cycle);
 
         verify();        
+    }
+
+    public void test_Invalid_Resource()
+            throws Exception
+    {
+        String requestedResource = "/org/apache/tapestry/asset/tapestry-in-action-missing.png";
+        WebRequest request = newMock(WebRequest.class);
+        checkOrder(request, false);
+        WebResponse response = newMock(WebResponse.class);
+        WebContext context = newMock(WebContext.class);
+        IRequestCycle cycle = newMock(IRequestCycle.class);
+        ResourceMatcher matcher = newMock(ResourceMatcher.class);
+        ResourceDigestSource digestSource = newMock(ResourceDigestSource.class);
+        RequestExceptionReporter exceptionReporter = newMock(RequestExceptionReporter.class);
+
+        // digester throws exception for invalid resources
+        expect(digestSource.getDigestForResource(requestedResource))
+            .andThrow(new ApplicationRuntimeException("error"))
+            .anyTimes();
+        // in which case the exception reporter has to show them
+        exceptionReporter.reportRequestException((String)EasyMock.anyObject(), (Throwable)EasyMock.anyObject());
+        EasyMock.expectLastCall().anyTimes();
+
+        ClassResolver resolver = new DefaultClassResolver();
+
+        AssetService service = new AssetService();
+        service.setRequest(request);
+        service.setResponse(response);
+        service.setLog(LogFactory.getLog("test"));
+        service.setUnprotectedMatcher(matcher);
+        service.setClassResolver(resolver);
+        service.setContext(context);
+        service.setDigestSource(digestSource);
+        service.setExceptionReporter(exceptionReporter);
+
+        expect(cycle.getParameter("path")).andReturn(requestedResource);
+        expect(cycle.getParameter("digest")).andReturn(null);
+
+        expect(matcher.containsResource(requestedResource)).andReturn(false);
+
+        // make sure that a 404 is sent - instead of an exception thrown
+        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+
+        replay();
+
+        service.service(cycle);
+
+        verify();
     }
 }

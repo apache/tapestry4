@@ -58,6 +58,24 @@ public class TestResourceDigestSource extends BaseComponentTestCase
         }
     }
 
+    public void testFolderInJar()
+    {
+        ResourceDigestSourceImpl s = new ResourceDigestSourceImpl();
+        s.setClassResolver(new DefaultClassResolver());
+        // the next will throw a NPE inside JarURLInputStream.close
+        // there doesn't seem to be a way to prevent this - so users
+        // of this method should be aware
+        try
+        {
+            s.getDigestForResource("/org/apache/hivemind");
+            fail("digests for packages in jars are known to throw NPE");
+        }
+        catch (NullPointerException e)
+        {
+            // ignore
+        }
+    }
+
     public void testCache()
     {
         ClassResolver resolver = newMock(ClassResolver.class);
