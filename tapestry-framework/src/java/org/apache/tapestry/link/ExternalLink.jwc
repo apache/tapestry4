@@ -27,6 +27,9 @@
   	required="yes" 
   	property="targetPage"/>
 
+  <parameter name="namespace"  
+  	property="targetNamespace"/>        
+        
   <parameter name="parameters">
     <description>
     An object, or list of objects, encoded into the URL

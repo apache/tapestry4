@@ -30,7 +30,6 @@
   	property="targetPage"/>
   
   <parameter name="namespace"  
-  	required="no" 
   	property="targetNamespace"/>
   	  	
   <parameter name="disabled"/>
