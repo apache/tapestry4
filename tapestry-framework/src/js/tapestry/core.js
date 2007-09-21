@@ -440,11 +440,64 @@ var tapestry={
 	 * the global namespace "tapestry".
 	 */
 	cleanConnect:function(target, event, funcName){
+                target = dojo.byId(target);
 		if (!dj_undef(funcName, tapestry)){
         	dojo.event.disconnect(target, event, tapestry, funcName);
         }
 	},
+        
+	/**
+	 * Function: cleanConnectWidget
+         */        
+	cleanConnectWidget:function(target, event, funcName){
+                tapestry.cleanConnect(dojo.widget.byId(target), event, funcName);        
+	},        
+        
+	/**
+	 * Function: connect
+	 *
+	 * Utility used to connect an event/function.
+	 *
+	 * This assumes that the incoming function name is being attached to
+	 * the global namespace "tapestry".
+	 */
+	connect:function(target, event, funcName){
+                target = dojo.byId(target);
+		if (!dj_undef(funcName, tapestry)){
+        	dojo.event.connect(target, event, tapestry, funcName);
+        }
+	},
+        
+	/**
+	 * Function: connectBefore
+         */        
+	connectBefore:function(target, event, funcName){
+                target = dojo.byId(target);
+		if (!dj_undef(funcName, tapestry)){
+        	dojo.event.connect("before", target, event, tapestry, funcName);
+        }
+	},        
+        
+	/**
+	 * Function: connectWidget
+         */        
+	connectWidget:function(target, event, funcName){
+                tapestry.connect(dojo.widget.byId(target), event, funcName);        
+	},
 
+	/**
+	 * Function: byId
+         */                
+        byId:dojo.byId,                
+        
+	/**
+	 * Function: raise
+         */                
+        raise:dojo.raise,         
+
+	/**
+	 * Function: linkOnClick
+         */
 	linkOnClick:function(url, id, isJson){
 		var content={beventname:"onClick"};
 		content["beventtarget.id"]=id;
@@ -671,7 +724,12 @@ tapestry.event={
 		if (node.getAttribute("id")) {
 			props["beventtarget.id"]=node.getAttribute("id");
 		}
-	}
+	},
+        
+        /**
+         * Function: stopEvent
+         */
+        stopEvent:dojo.event.browser.stopEvent
 }
 
 tapestry.lang = {
