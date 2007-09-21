@@ -119,4 +119,9 @@ public class ServiceEncodingImpl implements ServiceEncoding
     {
         return _pathInfo;
     }
+    
+    public void setPathInfo(String pathInfo) 
+    {
+        _pathInfo = pathInfo;
+    }
 }
