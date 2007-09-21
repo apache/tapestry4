@@ -95,6 +95,7 @@ tapestry.palette={
 		var sourceOptions = source.options;
   		var targetOptions = target.options;
   
+                var oldSourceIndex = source.selectedIndex;
   		var targetIndex = target.selectedIndex;
   		var offset = 0;
   
@@ -123,6 +124,14 @@ tapestry.palette={
       			i--;
     		}
   		}
+                // refresh display in IE - otherwise, option may display empty for a while!
+                if (dojo.render.html.ie) {
+                    for (var i=0; i < sourceOptions.length; i++){
+                        source.selectedIndex = i;                        
+                    }
+                    source.selectedIndex = oldSourceIndex;
+                    source.selectedIndex = -1;
+                }
 	},
 	
 	swapOptions:function(options, selectedIndex, targetIndex){
