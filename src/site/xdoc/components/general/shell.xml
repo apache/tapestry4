@@ -311,6 +311,17 @@
                         </td>
                     </tr>
                     <tr>
+                        <td>searchIds</td>
+                        <td>String</td>
+                        <td>no</td>
+                        <td></td>
+                        <td>
+                            Provides a way to have dojo automatically parse a set of html nodes for 
+							widgets without enabling full automatic parsing (which is controlled by the
+							parseWidgets parameter).
+                        </td>
+                    </tr>					
+                    <tr>
                         <td>tapestrySource</td>
                         <td>
                         <a href="../../apidocs/org/apache/tapestry/IAsset.html">
