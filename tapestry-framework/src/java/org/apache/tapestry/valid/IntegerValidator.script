@@ -50,13 +50,13 @@ validate_${field.name}
 <body>
 function ${function}(event)
 {
-  var field = dojo.byId("${field.name}"); 
+  var field = tapestry.byId("${field.name}"); 
   var stringValue = field.value;  
 <if expression="validator.required">
   if (stringValue.length == 0)
   {
      Tapestry.invalid_field(field, "${requiredMessage}");
-     dojo.event.browser.stopEvent(event);
+     tapestry.event.stopEvent(event);
      return;
   }
 </if>
@@ -68,20 +68,20 @@ function ${function}(event)
   if (isNaN(value))
   {
     Tapestry.invalid_field(field, "${formatMessage}");
-    dojo.event.browser.stopEvent(event);
+    tapestry.event.stopEvent(event);
   }
   var regex = /\./;
   if (stringValue.search(regex) != -1)
   {
     Tapestry.invalid_field(field, "${formatMessage}");
-    dojo.event.browser.stopEvent(event);
+    tapestry.event.stopEvent(event);
     return;
   }
 <if expression="minimum != null">
   if (value &lt; ${minimum})
   {
     Tapestry.invalid_field(field, "${rangeMessage}");
-    dojo.event.browser.stopEvent(event);
+    tapestry.event.stopEvent(event);
     return;
   }
 </if>
@@ -89,7 +89,7 @@ function ${function}(event)
   if (value &gt; ${maximum})
   {
     Tapestry.invalid_field(field, "${rangeMessage}");
-    dojo.event.browser.stopEvent(event);
+    tapestry.event.stopEvent(event);
     return;
   }
 </if>

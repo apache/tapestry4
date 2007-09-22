@@ -38,7 +38,7 @@ inlineBox
     </if-not><if expression="component.disabled">
         ${box}.disable();
     </if>
-    dojo.event.connectOnce(${box}.form, "onsubmit", function(e){dojo.event.browser.stopEvent(e);}); 
+    dojo.event.connectOnce(${box}.form, "onsubmit", function(e){tapestry.event.stopEvent(e);}); 
     dojo.event.connectOnce(${box}, "onSave", function(newValue, oldValue){
     	tapestry.bind("${component.updateUrl}", {"${component.clientId}":newValue}, true);
     });
