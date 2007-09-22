@@ -351,6 +351,12 @@ public abstract class Shell extends AbstractComponent
     
     /** @since 4.1.1 */
     
-    public abstract void setContentBuffer(StringBuffer buffer);    
+    public abstract void setContentBuffer(StringBuffer buffer); 
+    
+    /** @since 4.1.4 */
+    public abstract String getSearchIds();
+    
+    /** @since 4.1.4 */
+    public abstract void setSearchIds(String ids);
 
 }

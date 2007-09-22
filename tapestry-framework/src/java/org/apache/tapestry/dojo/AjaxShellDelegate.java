@@ -65,6 +65,8 @@ public class AjaxShellDelegate implements IRender {
     private boolean _preventBackButtonFix;
 
     private boolean _debugAtAllCosts;
+    
+    private String _searchIds;
 
     /** Default list of pre-bundled dojo supported locales */
     protected String[] SUPPORTED_LOCALES = { "en-us", "de-de", "de", "en-gb",
@@ -105,7 +107,10 @@ public class AjaxShellDelegate implements IRender {
         {
             dojoConfig.put("preventBackButtonFix", _preventBackButtonFix);
         }
+        
         dojoConfig.put("parseWidgets", _parseWidgets);
+        if (_searchIds != null)
+            dojoConfig.put("searchIds", _searchIds);
 
         // Supports setting up locale in dojo environment to match the requested page locale.
         // (for things that use these settings, like DropdownDatePicker / date parsing / etc..
@@ -316,6 +321,17 @@ public class AjaxShellDelegate implements IRender {
     public void setParseWidgets(boolean parseWidgets)
     {
         _parseWidgets = parseWidgets;
+    }
+    
+    /**
+     * Provides a way to have dojo automatically parse a known set of page 
+     * widgets without enabling full automatic parsing.
+     * 
+     * @param searchIds the html ids within which to search for widgets
+     */ 
+    public void setSearchIds(String searchIds) 
+    {
+        _searchIds = searchIds;
     }
 
     /**

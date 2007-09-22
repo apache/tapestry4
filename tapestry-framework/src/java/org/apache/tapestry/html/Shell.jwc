@@ -138,6 +138,14 @@
             document. It is highly reccomended that you keep this at its default value of false.
         </description>
     </parameter>
+    
+    <parameter name="searchIds">
+        <description>
+            Provides a way to have dojo automatically parse a known set of page 
+            widgets without enabling full automatic parsing - which is not desirable
+            due to performance reasons, see parseWidgets.
+        </description>
+    </parameter>    
 
     <parameter name="tapestrySource" default-value="asset:defaultTapestrySource">
         <description>
@@ -196,6 +204,7 @@
         <set name="consoleEnabled" value="consoleEnabled" />
         <set name="preventBackButtonFix" value="preventBackButtonFix" />
         <set name="parseWidgets" value="parseWidgets" />
+        <set name="searchIds" value="searchIds" />
     </bean>
 
     <asset name="defaultDojoSource" path="classpath:/dojo-0.4.3/dojo.js" />
