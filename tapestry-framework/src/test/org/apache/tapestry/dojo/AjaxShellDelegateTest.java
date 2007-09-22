@@ -146,7 +146,7 @@ public class AjaxShellDelegateTest extends BaseComponentTestCase
         d.setDebug(true);
         d.setLogLevel(AjaxShellDelegate.BROWSER_LOG_DEBUG);
         d.setConsoleEnabled(true);
-        d.setSearchIds("treeId");
+        d.setSearchIds("['treeId']");
         
         replay();
         
@@ -155,7 +155,7 @@ public class AjaxShellDelegateTest extends BaseComponentTestCase
         verify();
         
         assertBuffer("<script type=\"text/javascript\">djConfig = {\"isDebug\":true,\"baseRelativePath\":\"http:///dojo/path\"," +
-                     "\"parseWidgets\":false,\"searchIds\":\"treeId\",\"locale\":\"en-gb\"} </script>" + SYSTEM_NEWLINE +
+                     "\"parseWidgets\":false,\"searchIds\":['treeId'],\"locale\":\"en-gb\"} </script>" + SYSTEM_NEWLINE +
                      SYSTEM_NEWLINE +
                      "<script type=\"text/javascript\" src=\"http:///dojo/path/dojo.js\"></script>" + SYSTEM_NEWLINE +
                      "<script type=\"text/javascript\">" + SYSTEM_NEWLINE +

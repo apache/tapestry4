@@ -16,6 +16,7 @@ package org.apache.tapestry.dojo;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.*;
 import org.apache.tapestry.html.Shell;
+import org.apache.tapestry.json.JSONLiteral;
 import org.apache.tapestry.json.JSONObject;
 
 import java.util.Locale;
@@ -110,7 +111,7 @@ public class AjaxShellDelegate implements IRender {
         
         dojoConfig.put("parseWidgets", _parseWidgets);
         if (_searchIds != null)
-            dojoConfig.put("searchIds", _searchIds);
+            dojoConfig.put("searchIds", new JSONLiteral(_searchIds));
 
         // Supports setting up locale in dojo environment to match the requested page locale.
         // (for things that use these settings, like DropdownDatePicker / date parsing / etc..
