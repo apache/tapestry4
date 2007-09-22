@@ -17,7 +17,7 @@
 
 <!DOCTYPE script PUBLIC
 	"-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
-	"http://jakarta.apache.org/tapestry/dtd/Script_3_0.dtd">
+	"http://tapestry.apache.org/dtd/Script_3_0.dtd">
 <script>
 	<input-symbol key="confirmTimeout" />
 	<input-symbol key="expirationTimeout" />
@@ -112,10 +112,10 @@
     <if expression="!disableAutoProlong">
     tapestry.TimeoutInitChangeObserver=function()
     {
-        dojo.event.connect(document.body, "onclick", tapestry, "TimeoutHandleOnClick");
-        dojo.event.connect(document.body, "onmousemove", tapestry, "TimeoutHandleOnMouseMove");
-        dojo.event.connect(document.body, "onkeydown", tapestry, "TimeoutHandleOnKeyPress");
-        dojo.event.connect(window, "onscroll", tapestry, "TimeoutHandleOnScroll");
+        tapestry.connect(document.body, "onclick", "TimeoutHandleOnClick");
+        tapestry.connect(document.body, "onmousemove", "TimeoutHandleOnMouseMove");
+        tapestry.connect(document.body, "onkeydown", "TimeoutHandleOnKeyPress");
+        tapestry.connect(window, "onscroll", "TimeoutHandleOnScroll");
     }
     
     tapestry.TimeoutHandleOnClick=function() {

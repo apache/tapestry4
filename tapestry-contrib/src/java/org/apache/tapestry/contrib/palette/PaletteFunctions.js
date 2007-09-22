@@ -125,7 +125,7 @@ tapestry.palette={
     		}
   		}
                 // refresh display in IE - otherwise, option may display empty for a while!
-                if (dojo.render.html.ie) {
+                if (tapestry.isIE) {
                     for (var i=0; i < sourceOptions.length; i++){
                         source.selectedIndex = i;                        
                     }

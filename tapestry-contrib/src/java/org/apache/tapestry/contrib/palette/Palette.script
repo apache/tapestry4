@@ -137,11 +137,11 @@ output symbols:
 </let>
 
 <let key="formPath">
-  dojo.byId('${formName}')
+  tapestry.byId('${formName}')
 </let>
 
 <let key="selectedPath">
-  dojo.byId('${palette.clientId}')
+  tapestry.byId('${palette.clientId}')
 </let>
 
 <let key="selectedChangeFunctionName">
@@ -149,7 +149,7 @@ output symbols:
 </let>
 
 <let key="availablePath">
-  dojo.byId("${availableName}")
+  tapestry.byId("${availableName}")
 </let>
 
 <let key="availableChangeFunctionName">
@@ -337,7 +337,7 @@ ${availableChangeFunctionName}=function(){
 }
 
 tapestry.${submitListenerFunction}=function(form){
-    form = dojo.byId(form);
+    form = tapestry.byId(form);
     if(!form){return;}
     var id=form.getAttribute("id");
     if ("${formName}" != id){return;}
@@ -351,11 +351,11 @@ ${selectedPath}.ondblclick = ${deselectFunctionName};
 ${availablePath}.onchange = ${availableChangeFunctionName};
 ${availablePath}.ondblclick = ${selectFunctionName};
 ${updateFunctionName}();
-dojo.event.connect(dojo.byId("${formName}"), "onrefresh" , tapestry, "${formSubmitFunctionName}");
-dojo.event.connect(dojo.byId("${formName}"), "onsubmit" , tapestry, "${formSubmitFunctionName}");
-dojo.event.connect("before", tapestry.form, "submit", tapestry, "${submitListenerFunction}");
-dojo.event.connect("before", tapestry.form, "refresh", tapestry, "${submitListenerFunction}");
-dojo.event.connect("before", tapestry.form, "cancel", tapestry, "${submitListenerFunction}");
-dojo.event.connect("before", tapestry.form, "submitAsync", tapestry, "${submitListenerFunction}");
+tapestry.connect("${formName}", "onrefresh", "${formSubmitFunctionName}");
+tapestry.connect("${formName}", "onsubmit", "${formSubmitFunctionName}");
+tapestry.connectBefore(tapestry.form, "submit", "${submitListenerFunction}");
+tapestry.connectBefore(tapestry.form, "refresh", "${submitListenerFunction}");
+tapestry.connectBefore(tapestry.form, "cancel", "${submitListenerFunction}");
+tapestry.connectBefore(tapestry.form, "submitAsync", "${submitListenerFunction}");
 </initialization>
 </script>
