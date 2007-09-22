@@ -14,9 +14,9 @@
         </unique>
     </body>
     <initialization>
-        tapestry.cleanConnect(dojo.byId("${submit.clientId}"), "onclick", "event${key}");
+        tapestry.cleanConnect("${submit.clientId}", "onclick", "event${key}");
         tapestry.event${key}=function(e){
-            dojo.event.browser.stopEvent(e);
+            tapestry.event.stopEvent(e);
             <if expression="parms != null">
                 <if expression="type != null">
                     tapestry.form.${type}("${submit.form.clientId}", "${submit.name}", ${parms});
@@ -34,6 +34,6 @@
                 </if-not>
             </if-not>
         };
-        dojo.event.connect(dojo.byId("${submit.clientId}"), "onclick", tapestry, "event${key}");
+        tapestry.connect("${submit.clientId}", "onclick", "event${key}");
     </initialization>
 </script>

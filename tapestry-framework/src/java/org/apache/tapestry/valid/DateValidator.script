@@ -44,11 +44,11 @@ validate_${field.name}
 <body>
 function ${function}(event)
 {
-  var field = dojo.byId("${field.name}");
+  var field = tapestry.byId("${field.name}");
 
   if (field.value.length == 0) {
      Tapestry.invalid_field(field, "${requiredMessage}");
-     dojo.event.browser.stopEvent(event);
+     tapestry.event.stopEvent(event);
   }
 }
 </body>

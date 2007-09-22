@@ -46,7 +46,7 @@ var tapestry={
 
 	// property: version
 	// The current client side library version, usually matching the current java library version. (ie 4.1, etc..)
-	version:"4.1.2",
+	version:"4.1.4",
 	scriptInFlight:false, // whether or not javascript is currently being eval'd, default false
 	ScriptFragment:new RegExp('(?:<script.*?>)((\n|.|\r)*?)(?:<\/script>)', 'im'), // regexp for script elements
     GlobalScriptFragment:new RegExp('(?:<script.*?>)((\n|.|\r)*?)(?:<\/script>)', 'img'), // regexp for global script fragments

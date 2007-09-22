@@ -47,7 +47,7 @@ validate_${field.name}
 <body>
 function ${function}(event)
 {
-  var field = dojo.byId("${field.name}");
+  var field = tapestry.byId("${field.name}");
 
   strValue = field.value.replace(/ /g,"");
 
@@ -57,7 +57,7 @@ function ${function}(event)
   if (strValue.length == 0)
   {
     Tapestry.invalid_field(field, "${requiredMessage}");
-    dojo.event.browser.stopEvent(event);
+    tapestry.event.stopEvent(event);
     return;
   }
 </if>
@@ -71,7 +71,7 @@ function ${function}(event)
   if (strValue.length &lt; ${validator.minimumLength})
   {
     Tapestry.invalid_field(field, "${minimumLengthMessage}");
-    dojo.event.browser.stopEvent(event);
+    tapestry.event.stopEvent(event);
     return;
    }
 </if>
@@ -79,7 +79,7 @@ function ${function}(event)
   atIndex = strValue.indexOf("@");
   if ((atIndex == -1) || (atIndex == 0) || (atIndex == strValue.length -1)) {
     Tapestry.invalid_field(field, "${emailFormatMessage}");
-    dojo.event.browser.stopEvent(event);
+    tapestry.event.stopEvent(event);
   }
 }
 </body>

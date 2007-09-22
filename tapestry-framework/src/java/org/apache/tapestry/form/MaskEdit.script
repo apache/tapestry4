@@ -35,7 +35,7 @@
 
 <body>
 tapestry.${functionName}=function() {
-  initMask(dojo.byId("${formName}").elements["${field.name}"], "${field.mask}");
+  initMask(tapestry.byId("${formName}").elements["${field.name}"], "${field.mask}");
 }
 </body>
 <initialization>

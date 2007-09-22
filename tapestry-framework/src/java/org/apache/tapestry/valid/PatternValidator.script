@@ -49,18 +49,18 @@ var ${pattern} = new RegExp("${validator.escapedPatternString}");
 
 function ${function}(event)
 {
-    var field = dojo.byId("${field.name}");
+    var field = tapestry.byId("${field.name}");
 <if expression="validator.required">
     if (field.value.length == 0)
     {
         Tapestry.invalid_field(field, "${requiredMessage}");
-        dojo.event.browser.stopEvent(event);
+        tapestry.event.stopEvent(event);
         return;
     }
 </if>
     if (field.value.length &gt; 0 &amp;&amp; !${pattern}.test(field.value)) {
         Tapestry.invalid_field(field, "${patternNotMatchedMessage}");
-        dojo.event.browser.stopEvent(event);
+        tapestry.event.stopEvent(event);
     }
 }
 </body>
