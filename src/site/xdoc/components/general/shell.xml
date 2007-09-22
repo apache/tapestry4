@@ -318,7 +318,7 @@
                         <td>
                             Provides a way to have dojo automatically parse a set of html nodes for 
 							widgets without enabling full automatic parsing (which is controlled by the
-							parseWidgets parameter).
+							parseWidgets parameter). Example value: ['node1', 'node2']
                         </td>
                     </tr>					
                     <tr>
