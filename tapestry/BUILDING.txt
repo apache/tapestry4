@@ -1,5 +1,0 @@
-There is a small bug currently with maven that prevents assemblies from being properly produced
-if using the defaults. (to be fixed in maven 2.1)
-
-For now, use a command similar to this to produce a distribution:
-mvn -Dmaven.test.skip=true clean package assembly:assembly
