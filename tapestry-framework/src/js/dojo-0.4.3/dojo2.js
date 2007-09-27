@@ -679,7 +679,7 @@ _85[_85.length]=_8d.name;
 if(!dj_undef("type",_8d)&&(_8d.type=="select-one"||_8d.type=="select-multiple")&&(_8d.selectedIndex==-1||/^\s*$/.test(_8d.options[_8d.selectedIndex].value))){
 _85[_85.length]=_8d.name;
 }else{
-if(dojo.lang.isArrayLike(_8d)){
+if(_8d instanceof Array){
 var _8f=false;
 for(var j=0;j<_8d.length;j++){
 if(_8d[j].checked){
@@ -692,7 +692,7 @@ _85[_85.length]=_8d[0].name;
 if(_84.required instanceof Array){
 for(var i=0;i<_84.required.length;i++){
 if(!dojo.lang.isObject(_84.required[i])){continue;}
-var _8d,_91;
+var _8d,_91, _92;
 for(var _92 in _84.required[i]){
 _8d=_83[_92];
 _91=_84.required[i][_92];

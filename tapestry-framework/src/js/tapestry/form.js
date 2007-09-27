@@ -498,8 +498,7 @@ tapestry.form.validation={
 
 			for (var i=0; i < props.profiles.length; i++) {
 				var results=dojo.validate.check(form, props.profiles[i]);
-
-				if (!this.processResults(form, results, props.profiles[i])) {
+                if (!this.processResults(form, results, props.profiles[i])) {
 					this.summarizeErrors(form, results, props.profiles[i]);
 					return false;
 				}
@@ -532,10 +531,10 @@ tapestry.form.validation={
 	processResults:function(form, results, profile){
 		if (results.isSuccessful()) { return true; }
 
-		var formValid=true;
+        var formValid=true;
 		if (results.hasMissing()) {
 			var missing=results.getMissing();
-			for (var i=0; i < missing.length; i++) {
+            for (var i=0; i < missing.length; i++) {
 				this.handleMissingField(missing[i], profile);
 			}
 
@@ -544,7 +543,7 @@ tapestry.form.validation={
 
 		if (results.hasInvalid()) {
 			var invalid=results.getInvalid();
-			for (var i=0; i < invalid.length; i++) {
+            for (var i=0; i < invalid.length; i++) {
 				this.handleInvalidField(invalid[i], profile);
 			}
 
