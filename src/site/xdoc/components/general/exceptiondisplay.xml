@@ -59,6 +59,17 @@
                         <td></td>
                         <td>Provides the exception descriptions to render.</td>
                     </tr>
+                    <tr>
+                        <td>packages</td>
+                        <td>
+                            List/Array of Strings.
+                        </td>
+                        <td>no</td>
+                        <td></td>
+                        <td>Provides a list of package names that should be highlighted 
+                            when found on stacktraces.
+                        </td>
+                    </tr>                    
 
                 </table>
 
