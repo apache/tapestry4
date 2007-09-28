@@ -145,7 +145,7 @@ public class DefaultResponseBuilderTest extends BaseComponentTestCase
         builder.writeImageInitializations(mw, imageInit, preload, cycle);
         
         assertOutput(LINE_SEPARATOR
-                + "dojo.addOnLoad(function(e) {\n"
+                + "tapestry.addOnLoad(function(e) {\n"
                 + preload + " = [];\n"
                 + "if (document.images)\n"
                 + "{\n" + imageInit + "}\n"
@@ -210,7 +210,7 @@ public class DefaultResponseBuilderTest extends BaseComponentTestCase
         builder.writeInitializationScript(mw, script);
         
         assertOutput("<script type=\"text/javascript\"><!--\n"
-                + "dojo.addOnLoad(function(e) {\n"
+                + "tapestry.addOnLoad(function(e) {\n"
                 + script 
                 + "});"
                 + "\n// -->"
