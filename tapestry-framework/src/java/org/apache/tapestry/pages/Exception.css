@@ -21,7 +21,7 @@ BODY  {
 
 body, td, th {
     font-family: Lucida Grande, Tahoma, Verdana, Arial, sans-serif;
-    font-size: 11pt;
+    font-size: 13px;
     color: #292929;
 }
 
@@ -34,7 +34,7 @@ TABLE.exception-display TR.even  {
 
 TABLE.exception-display TR.odd  {
 	top : auto;
-	background-color : #C0C0FF;
+	background-color : #F6F6F6;
 }
 
 TABLE.exception-display TH  {
@@ -89,8 +89,8 @@ TABLE.exception-display TR.exception-name TD  {
 	font-size : larger;
 	font-weight : bold;
 	text-align : center;
-	background-color : Blue;
-	color : White;
+	/*background-color : Blue;
+	color : White;*/
 }
 
 TABLE.exception-display  {
@@ -151,8 +151,8 @@ DIV.described-object-title
 {
   font-size: large;
   font-weight: bold;
-  color: white;
-  background-color: blue;
+  /*color: white;
+  background-color: blue;*/
 }
 
 TABLE.described-object
@@ -164,8 +164,8 @@ TABLE.described-object
 
 TABLE.described-object TR.section TH
 {
-  color: white;
-  background-color: blue;
+  /*color: white;
+  background-color: blue;*/
   text-align: center;
 }
 
@@ -182,7 +182,7 @@ TABLE.described-object TR.even
 
 TABLE.described-object TR.odd
 {
-  background-color: #C0C0FF;
+  background-color: #eee;
 }
 
 a.toggle {
@@ -191,19 +191,17 @@ a.toggle {
     font-weight:bold;
     display:block;
     clear:left;
-    border-bottom: 2px solid #ffffff;
     margin-top: 0.3em;
+    font-size: 12px;
+    padding: 10px;
 }
 
-a.toggle:hover {
-    background:#EDCC5F;
-}
-
-a.toggleSelected {
-    background:#EDCC5F;
+a.toggleSelected, a.toggle:hover {
+    /*background:#EDCC5F;*/
+    background:#DDD;
 }
 
 .stackSelected {
-    color:red;
+    color:green;
     text-decoration:underline;    
 }

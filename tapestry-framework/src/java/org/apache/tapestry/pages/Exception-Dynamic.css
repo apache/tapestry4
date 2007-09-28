@@ -30,3 +30,62 @@
     -moz-border-radius-topright: 10px;
     -moz-border-radius-topleft: 10px;
 }
+
+span.exception-block, div.displayBlock {
+background:#F9F9F9 none repeat scroll 0%;
+border:1px solid #CCCCFF;
+display:block;
+margin:5px;
+padding:6px;
+}
+
+.toggle {
+display:block;
+    font-size: 11px;
+    padding: 4px;
+    font-weight:bold;
+}
+
+a.toggleSelected, a.toggle:hover {
+    background:#DDD;
+}
+
+TABLE.described-object TR.even
+{
+  background-color: white;
+}
+
+TABLE.described-object TR.odd
+{
+  background-color: #eee;
+}
+
+TABLE.location-content TD.line-number
+{
+  width: 1px; /* Minimum; will expand to fit line numbers.*/
+  align: right;
+  border-right: 1px dotted grey;
+}
+
+TABLE.location-content TR.target-line TD
+{
+  background-color: yellow;
+}
+
+TABLE.location-content TD
+{
+  font-family: terminal,monospace;
+  font-size: 10pt;
+  padding: 0;
+  margin: 0;
+}
+
+TABLE.exception-display TR.stack-trace TD  {
+	font-size : 9pt;
+        font-family: terminal,monospace;
+	text-align : left;
+}
+.stackSelected {
+    color:green;
+    text-decoration:underline;    
+}
