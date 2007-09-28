@@ -4,18 +4,12 @@
 <body>
 
 <span jwcid="$content$">
-<span jwcid="eException">
-	<a jwcid="@Any" href="" class="ognl:(index == (exceptions.length - 1)) ? 'toggle toggleSelected' : 'toggle'" 
-	   onClick="ognl:'return toggleDisplay(\'excdisplay'+index+'\', this)'">[&nbsp;+/-&nbsp;] Exception:</a>
-	   <span jwcid="@Insert" value="ognl:exception.message">A message describing the exception.</span>
-	
-	<table jwcid="@Any" id="ognl:'excdisplay' + index" class="exception-display toggleContent">
+<span jwcid="eException" class="exception-block">
+    <a jwcid="tLink@Any" href="#" class="toggle exception-link">[&nbsp;+/-&nbsp;] Exception:</a>
+	   <span jwcid="@Insert" value="ognl:exception.message">A message describing the exception.</span>	
+	<table jwcid="@Any" id="ognl:components.tLink.clientId + 'Data'" class="exception-display toggleContent">
 		<tr class="exception-name">
 			<td colspan="2"><span jwcid="insertClass">some.exception.Class</span></td>
-		</tr>
-		
-		<tr class="exception-message">
-			<td colspan="2"><span jwcid="insertMessage">A message describing the exception.</span></td>
 		</tr>
 		
 		<tr jwcid="eProperty">
