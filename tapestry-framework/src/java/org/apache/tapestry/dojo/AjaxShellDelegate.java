@@ -15,7 +15,6 @@ package org.apache.tapestry.dojo;
 
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.*;
-import org.apache.tapestry.html.Shell;
 import org.apache.tapestry.json.JSONLiteral;
 import org.apache.tapestry.json.JSONObject;
 

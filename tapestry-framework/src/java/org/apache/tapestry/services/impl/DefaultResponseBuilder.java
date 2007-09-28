@@ -405,7 +405,7 @@ public class DefaultResponseBuilder implements ResponseBuilder
     {
 
         writer.println();
-        writer.printRaw("dojo.addOnLoad(function(e) {\n");
+        writer.printRaw("tapestry.addOnLoad(function(e) {\n");
 
         writer.printRaw(preloadName + " = [];\n");
         writer.printRaw("if (document.images)\n");
@@ -425,7 +425,7 @@ public class DefaultResponseBuilder implements ResponseBuilder
         writer.attribute("type", "text/javascript");
         writer.printRaw("<!--\n");
 
-        writer.printRaw("dojo.addOnLoad(function(e) {\n");
+        writer.printRaw("tapestry.addOnLoad(function(e) {\n");
 
         writer.printRaw(script);
 

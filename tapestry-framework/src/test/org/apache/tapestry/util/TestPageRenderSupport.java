@@ -146,7 +146,7 @@ public class TestPageRenderSupport extends BaseComponentTestCase
 
         assertOutput(new String[]
         { "<script type=\"text/javascript\"><!--","",
-                "dojo.addOnLoad(function(e) {",
+                "tapestry.addOnLoad(function(e) {",
                 "tapestry.preload = [];", "if (document.images)", "{",
                 "tapestry.preload[0] = new Image();",
                 "  tapestry.preload[0].src = \"/foo/bar.gif\";",
@@ -174,7 +174,7 @@ public class TestPageRenderSupport extends BaseComponentTestCase
         
         assertOutput(new String[]
         {"<script type=\"text/javascript\"><!--", "",
-                "dojo.addOnLoad(function(e) {",
+                "tapestry.addOnLoad(function(e) {",
                 "NAMESPACE.preload = [];", "if (document.images)", "{",
                 "NAMESPACE.preload[0] = new Image();",
                 "  NAMESPACE.preload[0].src = \"/foo/bar.gif\";}",
@@ -264,7 +264,7 @@ public class TestPageRenderSupport extends BaseComponentTestCase
         
         assertOutput(new String[]
         { "<script type=\"text/javascript\"><!--",
-                "dojo.addOnLoad(function(e) {",
+                "tapestry.addOnLoad(function(e) {",
                 "myInitializationScript1();", "myInitializationScript2();",
                 "dojo.require(\"dojo.event.*\");","dojo.require(\"dojo.widget.*\");",
                 "",
