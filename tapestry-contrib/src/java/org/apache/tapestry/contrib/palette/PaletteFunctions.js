@@ -34,7 +34,7 @@ tapestry.palette={
 	  	
 	  	var list = [];
 	  	var index = 0;
-	  	var isNavigator = dojo.render.html.mozilla || !options.remove;
+	  	var isNavigator = tapestry.isMozilla || !options.remove;
 	  	
 	  	while (options.length > 0){
 	  		var option = options[0];
@@ -105,7 +105,7 @@ tapestry.palette={
     		var option = sourceOptions[i];
     		
     		if (option.selected) {
-       			if (dojo.render.html.mozilla || !sourceOptions.remove){
+       			if (tapestry.isMozilla || !sourceOptions.remove){
            			// Can't share options between selects in NN4
            			var newOption = new Option(option.text, option.value, false, true);
            			sourceOptions[i] = null;
@@ -138,7 +138,7 @@ tapestry.palette={
 		var option = options[selectedIndex];
 
   		// It's very hard to reorder options in NN4
-  		if (dojo.render.html.mozilla || !options.remove){
+  		if (tapestry.isMozilla || !options.remove){
     		var swap = options[targetIndex];
     
     		var hold = swap.text;
@@ -161,67 +161,4 @@ tapestry.palette={
   		options.remove(selectedIndex);
   		options.add(option, targetIndex);
 	}
-}
-
-function palette_clear_selections(element){ 
-	dojo.deprecated("palette_clear_selections",
-					"use tapestry.palette.clearSelections instead",
-					"4.1.1");
-	tapestry.palette.clearSelections(element);
-}
-
-function palette_select_all(element){
-	dojo.deprecated("palette_select_all",
-					"use tapestry.palette.selectAll instead",
-					"4.1.1");
-	tapestry.palette.selectAll(element);
-}
-
-function palette_sort(element, sorter){
-	dojo.deprecated("palette_sort",
-					"use tapestry.palette.sort instead",
-					"4.1.1");
-	tapestry.palette.sort(element, sorter);
-}
-
-function palette_label_sorter(a, b){
-	dojo.deprecated("palette_label_sorter",
-					"use tapestry.palette.labelSorter instead",
-					"4.1.1");
-	return tapestry.palette.labelSorter(a,b);
-}
-
-function palette_sort_by_label(element){
-	dojo.deprecated("palette_sort_by_label",
-					"use tapestry.palette.sortByLabel instead",
-					"4.1.1");
-	tapestry.palette.sortByLabel(element);
-}
-
-function palette_value_sorter(a, b){
-	dojo.deprecated("palette_value_sorter",
-					"use tapestry.palette.valueSorter instead",
-					"4.1.1");
-	return tapestry.palette.valueSorter(a,b);
-}
-
-function palette_sort_by_value(element){
-	dojo.deprecated("palette_sort_by_value",
-					"use tapestry.palette.sortByValue instead",
-					"4.1.1");
-	tapestry.palette.sortByValue(element);
-}
-  
-function palette_transfer_selections(source, target){
-	dojo.deprecated("palette_transfer_selections",
-					"use tapestry.palette.transferSelections instead",
-					"4.1.1");
-	tapestry.palette.transferSelections(source, target);
-}
-
-function palette_swap_options(options, selectedIndex, targetIndex){
-	dojo.deprecated("palette_swap_options",
-					"use tapestry.palette.swapOptions instead",
-					"4.1.1");
-	tapestry.palette.swapOptions(options, selectedIndex, targetIndex);
 }
