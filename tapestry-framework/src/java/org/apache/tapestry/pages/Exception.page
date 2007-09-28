@@ -21,6 +21,9 @@
 	
 <page-specification class="org.apache.tapestry.pages.Exception">
   
+   <property name="pagePackages" initial-value="literal:org.apache.tapestry.page-class-packages"/> 
+   <property name="componentPackages" initial-value="literal:org.apache.tapestry.component-class-packages"/> 
+    
   <component id="restart" type="ServiceLink">
     <binding name="service" value="ognl:@org.apache.tapestry.Tapestry@RESTART_SERVICE"/>
   </component>

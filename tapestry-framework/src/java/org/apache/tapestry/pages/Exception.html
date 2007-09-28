@@ -30,46 +30,11 @@ An exception has occurred.
 <p>You may continue by <b><a jwcid="restart">restarting</a></b> the session.</p>
 </span>
 
-<span jwcid="@ExceptionDisplay" exceptions="ognl:exceptions"/>
+<span jwcid="@ExceptionDisplay" exceptions="ognl:exceptions" packages="ognl:packages"/>
 
 <span jwcid="@RequestDisplay"/>
-
-<script type="text/javascript">
-dojo.require("dojo.html.style");
-
-var blockCount=0;
-
-function toggleLink(link){
-	if(!link){return;}
-	if(dojo.html.hasClass(link, "toggleSelected")){
-		dojo.html.removeClass(link, "toggleSelected");
-		return;
-	} else {
-		dojo.html.addClass(link, "toggleSelected");
-		return;
-	}
-}
-
-function toggleDisplay(id, link){
-	dojo.html.toggleShowing(dojo.byId(id));
-	toggleLink(link);
-	return false;
-}
-
-(function(){
-	var elms=dojo.html.getElementsByClass('toggleContent');
-	if(elms && elms.length > 0){
-		for(var i=0;i<elms.length;i++){
-			toggleDisplay(elms[i]);
-		}
-	}
-	elms=dojo.html.getElementsByClass('exception-display');
-	if(elms && elms.length > 0){
-		toggleDisplay(elms[elms.length-1]);
-	}
-})();
-</script>
-
+<script type="text/javascript">tapestry.html.enhanceExceptionPage();</script>
+    
 </body>
 </html>
 </span>
