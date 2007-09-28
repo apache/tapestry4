@@ -604,21 +604,24 @@ tapestry.html={
             var elms=dojo.html.getElementsByClass('toggle');
             if(elms && elms.length > 0){
                     for(var i=0;i<elms.length;i++){			
-                            elms[i].onclick = function() {
-                                dojo.html.toggleShowing(dojo.byId(this.id + 'Data'));
-                                if(dojo.html.hasClass(this, "toggleSelected"))
-                                    dojo.html.removeClass(this, "toggleSelected")
+                            dojo.event.connect(elms[i], "onclick", function(e) {
+                                var thisLink = e.target;                                
+                                dojo.html.toggleShowing(dojo.byId(thisLink.id + 'Data'));
+                                if(dojo.html.hasClass(thisLink, "toggleSelected"))
+                                    dojo.html.removeClass(thisLink, "toggleSelected")
                                 else
-                                    dojo.html.addClass(this, "toggleSelected");
+                                    dojo.html.addClass(thisLink, "toggleSelected");
+                                if (e.preventDefault)
+                                    dojo.event.browser.stopEvent(e);
                                 return false;                                                    
-                            };
+                            });
                             dojo.html.toggleShowing(elms[i].id+'Data');
                     }
             }
             // but show last exception's content
             elms=dojo.html.getElementsByClass('exception-link');
             if(elms && elms.length > 0){
-                    elms[elms.length-1].onclick();
+                    elms[elms.length-1].onclick({target:elms[elms.length-1]});
             }            
         },
 
