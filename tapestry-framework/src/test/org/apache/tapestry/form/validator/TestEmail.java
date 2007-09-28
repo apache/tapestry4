@@ -137,7 +137,7 @@ public class TestEmail extends BaseValidatorTestCase
 
         verify();
         
-        assertEquals("{\"constraints\":{\"myfield\":[[dojo.validate.isEmailAddress,false,true]]},"
+        assertEquals("{\"constraints\":{\"myfield\":[[tapestry.form.validation.isEmailAddress,false,true]]},"
                 +"\"myfield\":{\"constraints\":[\"default\\\\message\"]}}",
                 json.toString());
     }
@@ -170,7 +170,7 @@ public class TestEmail extends BaseValidatorTestCase
         
         verify();
         
-        assertEquals("{\"constraints\":{\"barney\":[[dojo.validate.isEmailAddress,false,true]]},"
+        assertEquals("{\"constraints\":{\"barney\":[[tapestry.form.validation.isEmailAddress,false,true]]},"
                 + "\"barney\":{\"constraints\":[\"custom message\"]}}",
                 json.toString());
     }

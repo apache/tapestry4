@@ -86,7 +86,7 @@ public class MaxLength extends BaseValidator
         JSONObject cons = profile.getJSONObject(ValidationConstants.CONSTRAINTS);
         
         accumulateProperty(cons, field.getClientId(), 
-                new JSONLiteral("[dojo.validate.isText,{"
+                new JSONLiteral("[tapestry.form.validation.isText,{"
                         + "maxlength:" + _maxLength + "}]"));
         
         accumulateProfileProperty(field, profile, 

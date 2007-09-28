@@ -85,7 +85,7 @@ public class MinLength extends BaseValidator
         JSONObject cons = profile.getJSONObject(ValidationConstants.CONSTRAINTS);
         
         accumulateProperty(cons, field.getClientId(), 
-                new JSONLiteral("[dojo.validate.isText,{"
+                new JSONLiteral("[tapestry.form.validation.isText,{"
                         + "minlength:" + _minLength + "}]"));
         
         accumulateProfileProperty(field, profile, 

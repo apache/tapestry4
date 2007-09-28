@@ -141,7 +141,7 @@ public class NumberTranslator extends FormatTranslator
         }
 
         cons.accumulate(field.getClientId(),
-                        new JSONLiteral("[dojo.i18n.number.isReal,null,{"
+                        new JSONLiteral("[tapestry.form.validation.isReal,null,{"
                                         + "places:" + format.getMaximumFractionDigits() + ","
                                         + "decimal:"
                                         + JSONObject.quote(format.getDecimalFormatSymbols().getDecimalSeparator())
