@@ -30,9 +30,24 @@ function test_register_form(){
 	jum.assertEquals("formregProfileLength", 0, tapestry.form.forms["regform"].profiles.length);
 }
 
-function test_validate_realNumber(){
+function test_validate_realNumber_Dojo(){//fails from rhino
+	var value="a12";dojo.require("dojo.i18n.number");
+	jum.assertFalse(value, dojo.i18n.number.isReal(value, {places:0,decimal:".",separator:","}));
+}
+
+function test_validate_realNumber(){//fails from rhino
 	var value="a12";
-	jum.assertFalse(value, dojo.validate.isRealNumber(value, {places:0,decimal:".",separator:","}));
+	jum.assertFalse(value, tapestry.form.validation.isReal(value, {places:0,decimal:".",separator:","}));
+}
+
+function test_validate_email(){
+	var value="test@apache.org";
+	jum.assertTrue(value, tapestry.form.validation.isEmailAddress(value));
+}
+
+function test_validate_text(){
+	var value="small";
+	jum.assertTrue(value, tapestry.form.validation.isText(value, {minlength:4}));
 }
 
 function test_validate_decimals(){
