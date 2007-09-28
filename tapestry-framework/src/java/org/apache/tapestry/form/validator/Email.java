@@ -85,7 +85,7 @@ public class Email extends BaseValidator
         JSONObject cons = profile.getJSONObject(ValidationConstants.CONSTRAINTS);
         
         accumulateProperty(cons, field.getClientId(),
-                new JSONLiteral("[dojo.validate.isEmailAddress,false,true]"));
+                new JSONLiteral("[tapestry.form.validation.isEmailAddress,false,true]"));
         
         accumulateProfileProperty(field, profile, 
                 ValidationConstants.CONSTRAINTS, buildMessage(context, field));

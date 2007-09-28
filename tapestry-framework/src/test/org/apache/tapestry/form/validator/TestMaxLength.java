@@ -116,7 +116,7 @@ public class TestMaxLength extends BaseValidatorTestCase
         
         verify();
         
-        assertEquals("{\"constraints\":{\"myfield\":[[dojo.validate.isText,{maxlength:20}]]},"
+        assertEquals("{\"constraints\":{\"myfield\":[[tapestry.form.validation.isText,{maxlength:20}]]},"
                 +"\"myfield\":{\"constraints\":[\"default\\\\message\"]}}",
                 json.toString());
     }
