@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.html;
 
+import java.util.List;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
@@ -41,6 +42,11 @@ public abstract class ExceptionDisplay extends BaseComponent
     public abstract void setCount(int count);
 
     public abstract ExceptionDescription[] getExceptions();
+    
+    /** @since 4.1.4 */
+    public abstract List getPackages();
+    
+    public abstract String getTrace();
     
     /**
      * Each time the current exception is set, as a side effect, the evenOdd
@@ -81,5 +87,23 @@ public abstract class ExceptionDisplay extends BaseComponent
     public boolean isLast()
     {
         return getIndex() == (getCount() - 1);
+    }
+    
+    public boolean isInPackage() {
+        List packages = getPackages();
+        if (packages == null) 
+            return false;
+        
+        String trace = getTrace();
+        for (int i=0; i<packages.size(); i++) {
+            if (trace.startsWith((String)packages.get(i)))
+                return true;
+        }
+        
+        return false;
+    }
+    
+    public String getStackClass() {
+        return isInPackage() ? "stackSelected" : null;
     }
 }

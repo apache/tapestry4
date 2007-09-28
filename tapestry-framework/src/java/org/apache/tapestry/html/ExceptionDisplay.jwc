@@ -33,6 +33,13 @@
     </description>
   </parameter>
   
+  <parameter name="packages" required="no">
+    <description>
+    A list of Strings that contain package names that should be highlighted
+    when printing out the stack traces.
+    </description>
+  </parameter>  
+  
   <bean name="evenOdd" class="org.apache.tapestry.bean.EvenOdd"/>
   
   <!-- Store the current ExceptionProperty -->
@@ -53,10 +60,6 @@
   
   <component id="insertClass" type="Insert">
     <binding name="value" value="exception.exceptionClassName"/>
-  </component>
-  
-  <component id="insertMessage" type="Insert">
-    <binding name="value" value="exception.message"/>
   </component>
   
   <component id="eProperty" type="For">
@@ -86,6 +89,7 @@
     <binding name="element" value="literal:li"/>
     <binding name="source" value="exception.stackTrace"/>
     <binding name="value" value="trace"/>
+    <binding name="class" value="stackClass"/>    
   </component>
   
   <component id="insertStackTrace" type="Insert">

@@ -47,9 +47,9 @@ TABLE.exception-display TD  {
 	width : 100%;	
 }
 
-TABLE.exception-display TR.stack-trace  {
+TABLE.exception-display TR.stack-trace TD  {
 	font-size : small;
-	font-family : sans-serif;
+        font-family: terminal,monospace;
 	text-align : left;
 }
 
@@ -70,10 +70,19 @@ SPAN.exception-message {
 	font-weight: bold;
 }
 
+SPAN.exception-block, DIV.displayBlock {
+    margin:5px;
+    display:block;
+    border:1px solid #ccf;
+    padding:6px;
+    background:#f9f9f9;    
+}
+
 UL  {
 	margin-top : 0;
 	margin-bottom : 0;
 	margin-left : 20px;
+        list-style: none;
 }
 
 TABLE.exception-display TR.exception-name TD  {
@@ -125,14 +134,15 @@ TABLE.location-content TR
 
 TABLE.location-content TD.line-number
 {
-  width: 1px; // Minimum; will expand to fit line numbers.
+  width: 1px; /* Minimum; will expand to fit line numbers.*/
   align: right;
   border-right: 1px dotted grey;
 }
 
 TABLE.location-content TD
 {
-  font: terminal;
+  font-family: terminal,monospace;
+  font-size: 10pt;
   padding: 0;
   margin: 0;
 }
@@ -162,7 +172,7 @@ TABLE.described-object TR.section TH
 TABLE.described-object TH
 {
   text-align: right;
-  width: 1px; // Will stretch to fit.
+  width: 1px; /* Will stretch to fit. */
 }
 
 TABLE.described-object TR.even
@@ -191,4 +201,9 @@ a.toggle:hover {
 
 a.toggleSelected {
     background:#EDCC5F;
+}
+
+.stackSelected {
+    color:red;
+    text-decoration:underline;    
 }
