@@ -52,6 +52,7 @@ var tapestry={
     GlobalScriptFragment:new RegExp('(?:<script.*?>)((\n|.|\r)*?)(?:<\/script>)', 'img'), // regexp for global script fragments
     requestsInFlight:0, // how many ajax requests are currently in progress
     isIE:dojo.render.html.ie,
+    isMozilla:dojo.render.html.mozilla,
 	// property: requestEncoding
 	// Defines the encoding that will be used in all Tapestry initiated XHR requests to encode
 	// URL or form data. Gets set by AjaxShellDelegate class on server on most requests by default.
@@ -493,7 +494,12 @@ var tapestry={
 	/**
 	 * Function: raise
          */                
-        raise:dojo.raise,         
+        raise:dojo.raise, 
+        
+	/**
+	 * Function: addOnLoad
+         */                
+        addOnLoad:dojo.addOnLoad,                
 
 	/**
 	 * Function: linkOnClick
@@ -588,6 +594,33 @@ tapestry.html={
 		s += '</' + node.nodeName + '>';
 		return s;
 	},
+        
+        /**
+         * Adds togglers and js effects to the exception page.
+         */
+        enhanceExceptionPage:function(){
+            dojo.require("dojo.html.style");
+            // attach toggles + hide content
+            var elms=dojo.html.getElementsByClass('toggle');
+            if(elms && elms.length > 0){
+                    for(var i=0;i<elms.length;i++){			
+                            elms[i].onclick = function() {
+                                dojo.html.toggleShowing(dojo.byId(this.id + 'Data'));
+                                if(dojo.html.hasClass(this, "toggleSelected"))
+                                    dojo.html.removeClass(this, "toggleSelected")
+                                else
+                                    dojo.html.addClass(this, "toggleSelected");
+                                return false;                                                    
+                            };
+                            dojo.html.toggleShowing(elms[i].id+'Data');
+                    }
+            }
+            // but show last exception's content
+            elms=dojo.html.getElementsByClass('exception-link');
+            if(elms && elms.length > 0){
+                    elms[elms.length-1].onclick();
+            }            
+        },
 
 	_getContentAsStringIE:function(node){
 		var s=" "; //blank works around an IE-bug
@@ -729,7 +762,7 @@ tapestry.event={
         /**
          * Function: stopEvent
          */
-        stopEvent:dojo.event.browser.stopEvent
+        stopEvent:dojo.event.browser.stopEvent        
 }
 
 tapestry.lang = {
