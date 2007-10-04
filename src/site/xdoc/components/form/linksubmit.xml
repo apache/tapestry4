@@ -153,7 +153,7 @@
                             <p>
                                 Allows deferred listeners (defer = true) access to any rewind state
                                 not conveniently placed using tag/selected (e.g. when there are
-                                multiple objects to select as might happen with a nested Foreach).
+                                multiple objects to select as might happen with a nested For).
                             </p>
                         </td>
                     </tr>

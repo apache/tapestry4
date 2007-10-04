@@ -271,7 +271,7 @@ tokyo=Tokyo
   &lt;parameter name="selectColor" default-value="#7D000D"/&gt;
   &lt;parameter name="unSelectColor" default-value="#C0C0C0"/&gt;
 
-  &lt;component id="loop" type="Foreach"&gt;
+  &lt;component id="loop" type="For"&gt;
     &lt;binding name="source" value="blockIds"/&gt;
     &lt;binding name="value" value="blockId"/&gt;
   &lt;/component&gt;

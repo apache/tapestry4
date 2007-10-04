@@ -150,7 +150,7 @@
 <form jwcid="@Form" listener="listener:formSubmit">
  <label jwcid="@FieldLabel" field="component:colorChooser" displayName="Choose a color">Color</label>
  <select jwcid="colorChooser@Select" multiple="ognl:true" validators="validators:required">
-  <span jwcid="@Foreach" source="ognl:colors" value="ognl:currentColor" index="ognl:currentColorIndex">
+  <span jwcid="@For" source="ognl:colors" value="ognl:currentColor" index="ognl:currentColorIndex">
    <option jwcid="@Option" selected="ognl:selection[currentColorIndex]" label="ognl:currentColor"/>
   </span>
  </select>
