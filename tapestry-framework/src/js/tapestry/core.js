@@ -504,8 +504,8 @@ var tapestry={
 	/**
 	 * Function: linkOnClick
          */
-	linkOnClick:function(url, id, isJson){
-		var content={beventname:"onClick"};
+	linkOnClick:function(url, id, isJson, eventName){
+		var content={beventname:(eventName || "onClick")};
 		content["beventtarget.id"]=id;
 
 		tapestry.bind(url, content, isJson);
