@@ -305,7 +305,7 @@
   <tr>
     <td colspan="6"><hr></td>
   </tr>
-  <tr jwcid="@Foreach" source="ognl:customerList" value="ognl:customer" element="tr">
+  <tr jwcid="@For" source="ognl:customerList" value="ognl:customer" element="tr">
     <td><span jwcid="@Insert" value="ognl:customer.id"/></td>
     <td>&nbsp;</td>
     <td><a jwcid="@DirectLink" listener="listener:customerSelectAction" parameters="ognl:customer.id"> <span jwcid="@Insert" value="ognl:customer.fullName"/> </a></td>

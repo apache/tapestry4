@@ -123,7 +123,7 @@
   
   &lt;property name="image"/&gt;
   
-  &lt;component id="loop" type="Foreach"&gt;
+  &lt;component id="loop" type="For"&gt;
     &lt;binding name="source" value="thumbnails"/&gt;
     &lt;binding name="value" value="image"/&gt;
   &lt;/component&gt;

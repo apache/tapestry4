@@ -714,7 +714,7 @@
                         people, perhaps from some kind of database. When this page renders, the
                         <code>loop</code>
                         component (presumably a
-                        <a href="../components/general/for.html">Foreach</a>
+                        <a href="../components/general/for.html">For</a>
                         , such details being in the page's specification) will render its body zero
                         or more times. So we might see rows for "Frank Miller", "Alan Moore" and so
                         forth (depending on the content of the database). However, every listing

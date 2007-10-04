@@ -232,7 +232,7 @@
                 <source xml:space="preserve"><![CDATA[
 <!-- Navigation Bar -->
 <table bgcolor="navy" cellpadding="8" cellspacing="6" width="100%">
- <tr jwcid="@Foreach" source="ognl:engine@NAVIGATION_PAGES" value="ognl:navigationPage" element="tr">
+ <tr jwcid="@For" source="ognl:engine@NAVIGATION_PAGES" value="ognl:navigationPage" element="tr">
    <td><font color="white"><b><a jwcid="@PageLink" page="ognl:navigationPage" 
              disabled="ognl:! visit.authenticated">Link</a></b></font></td>
  </tr>
