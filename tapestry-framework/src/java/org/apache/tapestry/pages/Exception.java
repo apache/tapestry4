@@ -16,6 +16,7 @@ package org.apache.tapestry.pages;
 
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.util.exception.ExceptionAnalyzer;
@@ -33,6 +34,8 @@ public abstract class Exception extends BasePage implements PageDetachListener
     public abstract String getPagePackages();
     /** @since 4.1.4 */
     public abstract String getComponentPackages();
+    /** @since 4.1.4 */
+    public abstract ISpecificationSource getSpecificationSource();
 
     /** Transient property. */
     public abstract void setExceptions(ExceptionDescription[] exceptions);
@@ -51,15 +54,22 @@ public abstract class Exception extends BasePage implements PageDetachListener
         return getRequestCycle().getResponseBuilder().isDynamic();
     }
     
-    public String[] getPackages() {
-        INamespace namespace = getRequestCycle().getInfrastructure().getSpecificationSource().getApplicationNamespace();
+    public String[] getPackages()
+    {
+        INamespace namespace = getSpecificationSource().getApplicationNamespace();
         String pages = namespace.getPropertyValue(getPagePackages());
         String comps = namespace.getPropertyValue(getComponentPackages());
+        
         StringBuffer sb = new StringBuffer();
-        if (pages!=null) 
+        if (pages!=null)
+        {
             sb.append(pages);
+            if (comps!=null)
+                sb.append(",");
+        }
         if (comps!=null)
-            sb.append(",").append(comps);
+            sb.append(comps);
+
         return TapestryUtils.split(sb.toString(), ',');
     }
 }
