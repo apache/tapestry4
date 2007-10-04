@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 <!DOCTYPE component-specification PUBLIC "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
-    "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
+    "http://tapestry.apache.org/dtd/Tapestry_4_0.dtd">
 <component-specification class="org.apache.tapestry.contrib.ajax.AjaxStatus">
     <description>
         An extension of the Any component that defines an html node that will be shown 
