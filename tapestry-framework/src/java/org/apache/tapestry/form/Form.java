@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.form;
 
-import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.*;
 import org.apache.tapestry.engine.DirectServiceParameter;
@@ -74,7 +73,7 @@ public abstract class Form extends AbstractComponent implements IForm
     /**
      * Indicates to any wrapped form components that they should respond to the form submission.
      * 
-     * @throws ApplicationRuntimeException
+     * @throws org.apache.hivemind.ApplicationRuntimeException
      *             if not rendering.
      */
 
