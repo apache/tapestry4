@@ -21,7 +21,7 @@
   
 <script>
 
-<include-script resource-path="/org/apache/tapestry/contrib/form/MaskEdit.js"/>
+<include-script resource-path="/org/apache/tapestry/form/MaskEdit.js"/>
 
 <input-symbol key="maskEdit" required="yes"/>
 <input-symbol key="maskValue" required="yes"/>
