@@ -31,7 +31,6 @@ import org.apache.tapestry.event.ReportStatusListener;
 import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.internal.pageload.PageKey;
 import org.apache.tapestry.resolver.PageSpecificationResolver;
-import org.apache.tapestry.util.MultiKey;
 
 /**
  * A source for pages for a particular application. Each application should have its own
@@ -72,8 +71,8 @@ public class PageSource extends BaseKeyedPoolableObjectFactory implements IPageS
     static final long MINUTE = 1000 * 60;
     
     /**
-     * The pool of {@link IPage}s. The key is a {@link MultiKey}, built from the page name and the
-     * page locale.
+     * The pool of {@link IPage}s. The key is a {@link org.apache.tapestry.util.MultiKey}, 
+     * built from the page name and the page locale.
      */
     GenericKeyedObjectPool _pool;
 
