@@ -85,7 +85,6 @@
 
     <build>
         <sourceDirectory>src/java</sourceDirectory>
-        <testSourceDirectory>src/test</testSourceDirectory>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -141,6 +140,13 @@
                 <version>2.0.2</version>
                 <configuration>
                     <warSourceDirectory>${basedir}/src/context</warSourceDirectory>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
                 </configuration>
             </plugin>
         </plugins>
