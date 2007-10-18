@@ -124,14 +124,15 @@ tapestry.palette={
       			i--;
     		}
   		}
-                // refresh display in IE - otherwise, option may display empty for a while!
-                if (tapestry.isIE) {
-                    for (var i=0; i < sourceOptions.length; i++){
-                        source.selectedIndex = i;                        
-                    }
-                    source.selectedIndex = oldSourceIndex;
-                    source.selectedIndex = -1;
-                }
+
+        // refresh display in IE - otherwise, option may display empty for a while!
+        if (tapestry.isIE) {
+            for (var i=0; i < sourceOptions.length; i++){
+                source.selectedIndex = i;
+            }
+            source.selectedIndex = oldSourceIndex;
+            source.selectedIndex = -1;
+        }
 	},
 	
 	swapOptions:function(options, selectedIndex, targetIndex){

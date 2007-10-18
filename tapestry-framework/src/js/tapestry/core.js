@@ -761,11 +761,11 @@ tapestry.event={
 			props["beventtarget.id"]=node.getAttribute("id");
 		}
 	},
-        
-        /**
-         * Function: stopEvent
-         */
-        stopEvent:dojo.event.browser.stopEvent        
+
+    /**
+    * Function: stopEvent
+    */
+    stopEvent:dojo.event.browser.stopEvent        
 }
 
 tapestry.lang = {

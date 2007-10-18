@@ -30,9 +30,7 @@ import java.util.Date;
 
 
 /**
- * Manages entering tasks.
- *
- * @author jkuhnert
+ * Manages entering tasks.  Basic demonstration of some of the Tapestry 4.x ajax features. 
  */
 public abstract class TaskEntryPage<E extends Persistent> extends BasePage
 {   

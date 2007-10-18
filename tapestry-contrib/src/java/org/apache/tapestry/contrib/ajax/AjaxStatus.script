@@ -11,6 +11,6 @@
         </unique>
     </body>
     <initialization>
-if(tapestry.fx) tapestry.fx.attachAjaxStatus("${id}");
+if(tapestry.fx) { tapestry.fx.attachAjaxStatus("${id}"); }
     </initialization>
 </script>

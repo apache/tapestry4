@@ -85,6 +85,7 @@ dojo.widget.defineWidget(
         dojo.event.connect(this.inputNode, "onblur", this, "onInputBlur");
         dojo.event.connect(this.inputNode, "onkeyup", this, "onInputKeyUp");
         dojo.event.connect(this.inputNode, "onkeydown", this, "onInputKeyDown");
+        dojo.event.connect(this.inputNode, "onchange", this, "onChange");
         
         dojo.event.connect(this.dropdownNode, "onmouseover", this, "onDropdownMouseOver");
         dojo.event.connect(this.dropdownNode, "onmouseout", this, "onDropdownMouseOut");
@@ -312,5 +313,4 @@ dojo.widget.defineWidget(
         this._clearOptionSelection(this.hoveredNode);
         this._selectOption(nextNode);
     }
-}
-);
+});
