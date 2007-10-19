@@ -62,7 +62,7 @@ public @interface Component {
 
     /**
      * Bindings for the component. Each binding string is of the format
-     * <code><em>name</em>=<em>binding refernce</em></code>, where the binding reference is
+     * <code><em>name</em>=<em>binding reference</em></code>, where the binding reference is
      * the same kind of string (possibly with a prefix such as "ognl:" or "message:" as would appear
      * in a specification.
      * 
@@ -70,4 +70,15 @@ public @interface Component {
      */
 
     String[] bindings() default {};
+
+    /**
+     * Inherited bindings bind a parameter of the component to a parameter
+     * of the container. Each binding string is of the format
+     * <code><em>parameter-name</em>=<em>container-parameter-name</em></code>, where the former is
+     * the name of the component parameter and the latter is the name of the container parameter to bind
+     * the parameter to.
+     * In case both names are the same, it's possible to just use <code><em>parameter-name</em></code>.
+     */
+
+    String[] inheritedBindings() default {};
 }
