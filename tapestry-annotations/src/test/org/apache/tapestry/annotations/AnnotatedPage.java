@@ -103,6 +103,10 @@ public abstract class AnnotatedPage extends BasePage
     { "condition=message", "element=div" })
     public abstract IComponent getComponentWithBindings();
 
+    @Component(type = "Conditional", bindings =
+    { "condition=message", "element=div" }, inheritedBindings = {"title=pageTitle", "email"})
+    public abstract IComponent getComponentWithInheritedBindings();
+
     @Component(type = "TextField", bindings =
     { "value = email", "displayName = message:email-label" })
     public abstract IComponent getWhitespace();

@@ -77,6 +77,11 @@ public class ComponentAnnotationWorker implements MethodAnnotationEnhancementWor
             addBinding(cc, binding, location);
         }
 
+        for (String binding : component.inheritedBindings())
+        {
+            addInheritedBinding(cc, binding, location);
+        }
+
         String id = component.id();
 
         if (id.equals(""))
@@ -116,7 +121,35 @@ public class ComponentAnnotationWorker implements MethodAnnotationEnhancementWor
         bs.setLocation(location);
 
         component.setBinding(name, bs);
-    }    
+    }
+
+    /**
+     * @since 4.1.4
+     */
+    void addInheritedBinding(IContainedComponent component, String binding, Location location)
+    {
+        int equalsx = binding.indexOf('=');
+        String name;
+        String containerName;
+
+        if (equalsx < 0)
+        {
+            name = binding.trim();
+            containerName = name;
+        }
+        else
+        {
+            name = binding.substring(0, equalsx).trim();
+            containerName = binding.substring(equalsx + 1).trim();
+        }
+
+        IBindingSpecification bs = new BindingSpecification();
+        bs.setType(BindingType.INHERITED);
+        bs.setValue(containerName);
+        bs.setLocation(location);
+
+        component.setBinding(name, bs);
+    }
 
     protected void invalidBinding(String binding)
     {

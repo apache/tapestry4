@@ -97,13 +97,8 @@ public class TestComponentAnnotationWorker extends BaseAnnotationTestCase
         Location l = newLocation();
         IContainedComponent cc = run("componentWithBindings", "getComponentWithBindings", l);
 
-        IBindingSpecification bs1 = cc.getBinding("condition");
-        assertSame(l, bs1.getLocation());
-        assertEquals(BindingType.PREFIXED, bs1.getType());
-        assertEquals("message", bs1.getValue());
-
-        IBindingSpecification bs2 = cc.getBinding("element");
-        assertEquals("div", bs2.getValue());
+        assertBinding(cc, "condition", l, BindingType.PREFIXED, "message");
+        assertBinding(cc, "element", l, BindingType.PREFIXED, "div");
     }
 
     public void test_Binding_Whitespace_Trimmed()
@@ -112,13 +107,8 @@ public class TestComponentAnnotationWorker extends BaseAnnotationTestCase
 
         IContainedComponent cc = run("whitespace", "getWhitespace", l);
 
-        IBindingSpecification bs1 = cc.getBinding("value");
-        assertSame(l, bs1.getLocation());
-        assertEquals(BindingType.PREFIXED, bs1.getType());
-        assertEquals("email", bs1.getValue());
-
-        IBindingSpecification bs2 = cc.getBinding("displayName");
-        assertEquals("message:email-label", bs2.getValue());
+        assertBinding(cc, "value", l, BindingType.PREFIXED, "email");
+        assertBinding(cc, "displayName", l, BindingType.PREFIXED, "message:email-label");
     }
     
     public void test_With_Type_And_CopyOf()
@@ -141,12 +131,27 @@ public class TestComponentAnnotationWorker extends BaseAnnotationTestCase
         run(spec, "componentWithBindings", "getComponentWithBindings", l);
         IContainedComponent cc = run(spec, "aComponentCopy", "getComponentWithBindingsCopy", l);
         
-        IBindingSpecification bs1 = cc.getBinding("condition");
-        assertSame(l, bs1.getLocation());
-        assertEquals(BindingType.PREFIXED, bs1.getType());
-        assertEquals("message", bs1.getValue());
+        assertBinding(cc, "condition", l, BindingType.PREFIXED, "message");
+        assertBinding(cc, "element", l, BindingType.PREFIXED, "div");
+    }
 
-        IBindingSpecification bs2 = cc.getBinding("element");
-        assertEquals("div", bs2.getValue());
-    }     
+    public void test_With_InheritedBindings()
+    {
+        Location l = newLocation();
+        IContainedComponent cc = run("componentWithInheritedBindings", "getComponentWithInheritedBindings", l);
+
+        assertBinding(cc, "condition", l, BindingType.PREFIXED, "message");
+        assertBinding(cc, "element", l, BindingType.PREFIXED, "div");
+        assertBinding(cc, "title", l, BindingType.INHERITED, "pageTitle");
+        assertBinding(cc, "email", l, BindingType.INHERITED, "email");
+    }
+
+    void assertBinding(IContainedComponent cc, String name, Location location, BindingType type, String value)
+    {
+        IBindingSpecification spec = cc.getBinding(name);
+        if (location!=null)
+            assertSame(spec.getLocation(), location);
+        assertEquals(spec.getType(), type);
+        assertEquals(spec.getValue(), value);
+    }
 }
