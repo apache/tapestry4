@@ -160,13 +160,6 @@ public class XTileService implements IEngineService
         _response = response;
     }
 
-    public static void main(String[] args)
-    {
-        XTileService objService = new XTileService();
-        System.out.println(objService.generateOutputString(new Object[]
-        { "test > work", new Integer(20) }));
-    }
-
     public void setLinkFactory(LinkFactory linkFactory)
     {
         _linkFactory = linkFactory;
