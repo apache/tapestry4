@@ -267,10 +267,8 @@ var tapestry={
         if (tapestry.isIE && node.outerHTML && node.nodeName == "SELECT") {
             node.outerHTML = node.outerHTML.replace(/(<SELECT[^<]*>).*(<\/SELECT>)/, '$1' + content + '$2');
             node=dojo.byId(id);
-        } else {
-            if (content && content.length > 0) {
-                node.innerHTML=content;
-            }
+        } else if (content && content.length > 0){
+            node.innerHTML=content;
         }
 
         // copy attributes
@@ -295,7 +293,9 @@ var tapestry={
 				dojo.html.setStyleText(node, nv);
 			} else if (nn == "class") {
 				dojo.html.setClass(node, nv);
-			} else {
+			} else if (nn == "value") {
+                node.value = nv;
+            } else {
 				node.setAttribute(nn, nv);
 			}
 		}
@@ -595,35 +595,38 @@ tapestry.html={
 		return s;
 	},
         
-        /**
-         * Adds togglers and js effects to the exception page.
-         */
-        enhanceExceptionPage:function(){
-            dojo.require("dojo.html.style");
-            // attach toggles + hide content
-            var elms=dojo.html.getElementsByClass('toggle');
-            if(elms && elms.length > 0){
-                    for(var i=0;i<elms.length;i++){			
-                            dojo.event.connect(elms[i], "onclick", function(e) {
-                                var thisLink = e.target;                                
-                                dojo.html.toggleShowing(dojo.byId(thisLink.id + 'Data'));
-                                if(dojo.html.hasClass(thisLink, "toggleSelected"))
-                                    dojo.html.removeClass(thisLink, "toggleSelected")
-                                else
-                                    dojo.html.addClass(thisLink, "toggleSelected");
-                                if (e.preventDefault)
-                                    dojo.event.browser.stopEvent(e);
-                                return false;                                                    
-                            });
-                            dojo.html.toggleShowing(elms[i].id+'Data');
-                    }
+    /**
+     * Adds togglers and js effects to the exception page.
+     */
+    enhanceExceptionPage:function(){
+        // attach toggles + hide content
+        
+        var elms=dojo.html.getElementsByClass('toggle');
+        
+        if(elms && elms.length > 0){
+            for(var i=0;i<elms.length;i++){
+
+                dojo.event.connect(elms[i], "onclick", function(e) {
+                    var thisLink = e.target;
+                    dojo.html.toggleShowing(dojo.byId(thisLink.id + 'Data'));
+                    if(dojo.html.hasClass(thisLink, "toggleSelected"))
+                        dojo.html.removeClass(thisLink, "toggleSelected")
+                    else
+                        dojo.html.addClass(thisLink, "toggleSelected");
+                    if (e.preventDefault)
+                        dojo.event.browser.stopEvent(e);
+                    return false;
+                });
+                dojo.html.toggleShowing(elms[i].id+'Data');
             }
-            // but show last exception's content
-            elms=dojo.html.getElementsByClass('exception-link');
-            if(elms && elms.length > 0){
-                    elms[elms.length-1].onclick({target:elms[elms.length-1]});
-            }            
-        },
+        }
+
+        // but show last exception's content
+        elms=dojo.html.getElementsByClass('exception-link');
+        if(elms && elms.length > 0){
+            elms[elms.length-1].onclick({target:elms[elms.length-1]});
+        }
+    },
 
 	_getContentAsStringIE:function(node){
 		var s=" "; //blank works around an IE-bug
