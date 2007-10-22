@@ -88,7 +88,8 @@ public abstract class Relation extends AbstractComponent
 
     protected void renderStyleTag(Shell shell, IMarkupWriter writer, IRequestCycle cycle)
     {
-        if (getBody() == null) //nothing to include
+        // see if nothing (or nowhere) to include
+        if (getBody() == null || writer.getContentType() == null)
         {
             return;
         }
