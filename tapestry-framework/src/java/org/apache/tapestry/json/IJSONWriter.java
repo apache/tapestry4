@@ -52,7 +52,7 @@ public interface IJSONWriter
     void close();
     
     /**
-     * Forwards <code>flush()</code> to this <code>IMarkupWriter</code>'s
+     * Forwards <code>flush()</code> to this <code>IJSONWriter</code>'s
      * <code>PrintWriter</code>.
      */
     void flush();
