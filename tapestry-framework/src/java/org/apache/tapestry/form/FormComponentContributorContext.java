@@ -43,7 +43,7 @@ public interface FormComponentContributorContext extends ValidationMessages
      * Adds initialization to register a submit handler on the client side. A submit handler is a
      * JavaScript method that accepts a single parameter, a (JavaScript) FormSubmitEvent.
      * 
-     * @param submitListener
+     * @param handler
      *            either the name of a submit listener ("myListener"), or an inline implementation
      *            of a listener function ("function(event) { ... } ").
      * @deprecated To be removed in 4.2 with no replacement. The new preferred way to do this is by using simple
