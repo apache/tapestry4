@@ -26,6 +26,7 @@ import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
 import org.testng.annotations.Test;
+import org.testng.annotations.DataProvider;
 
 /**
  * Tests for {@link org.apache.tapestry.form.validator.Email}.
@@ -36,33 +37,21 @@ import org.testng.annotations.Test;
 @Test
 public class TestEmail extends BaseValidatorTestCase
 {
-    public void test_OK() throws Exception
+    @Test(dataProvider = "validEmails", timeOut = 1000)
+    public void test_OK(String email) throws Exception
     {
         IFormComponent field = newField();
         ValidationMessages messages = newMessages();
 
         replay();
 
-        new Email().validate(field, messages, "hlship@apache.org");
+        new Email().validate(field, messages, email);
 
         verify();
     }
 
-    public void test_Ok_Single_Character() throws Exception
-    {
-        IFormComponent field = newField();
-        ValidationMessages messages = newMessages();
-
-        replay();
-        
-        Email email = new Email();
-        email.validate(field, messages, "j@apache.org");
-        email.validate(field, messages, "jkuhnert@a.org");
-
-        verify();
-    }
-    
-    public void test_Fail()
+    @Test(dataProvider = "invalidEmails", timeOut = 1000)
+    public void test_Fail(String email)
     {
         IFormComponent field = newField("My Email");
         ValidationMessages messages = newMessages(
@@ -76,7 +65,7 @@ public class TestEmail extends BaseValidatorTestCase
 
         try
         {
-            new Email().validate(field, messages, "fred");
+            new Email().validate(field, messages, email);
             unreachable();
         }
         catch (ValidatorException ex)
@@ -173,5 +162,28 @@ public class TestEmail extends BaseValidatorTestCase
         assertEquals("{\"constraints\":{\"barney\":[[tapestry.form.validation.isEmailAddress,false,true]]},"
                 + "\"barney\":{\"constraints\":[\"custom message\"]}}",
                 json.toString());
+    }
+
+    @DataProvider(name="validEmails")
+    protected Object[][] getValidEmails() {
+        return new Object[][] {
+                {"hlship@apache.org"},
+                {"j@apache.org"},
+                {"jkuhnert@a.org"},
+                {"J@A.oRg"},
+                {"foo@example-bar.domain.com"},
+                {"FOO@EXample-bAr.domain.com"},
+        };
+    }
+
+    @DataProvider(name="invalidEmails")
+    protected Object[][] getInvalidEmails() {
+        return new Object[][] {
+                {"fred"},
+                {"foooooooooooooooooooooo"},
+                {"foooooooooooooooooooooooooooo"},
+                {"LASKFODSKFO@$#)DJMZCV)TQKALAD"},
+                {""},
+        };
     }
 }
