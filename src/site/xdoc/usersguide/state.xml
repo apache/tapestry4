@@ -437,6 +437,30 @@ public abstract class MyPage extends <a
                             (approximately 4000 characters is a good guideline). This is less a
                             problem for forms.
                         </dd>
+                        <dd>
+	                        <p>
+	                            In Tapestry 4.0 the concept of a <em>scope</em> was introduced,
+	                            specifying how long a property will persist.
+	                            For <code>client</code> there exist two scopes: <code>page</code> and
+	                            <code>app</code>. If you omit the scope it will default to
+	                            <code>client:page</code>.
+	                        </p>
+                            <dl>
+                                <dt>client:page</dt>
+                                <dd>
+                                    <p>
+                                        Persisted properties will be available
+                                        until another page is activated and rendered.
+                                    </p>
+                                </dd>
+                                <dt>client:app</dt>
+                                <dd>
+                                    <p>
+                                        Persisted properties will always be available.
+                                    </p>
+                                </dd>
+                            </dl>
+                        </dd>
                         <dt>session</dt>
                         <dd>
                             The traditional style of property persistence (and the only kind
@@ -450,13 +474,6 @@ public abstract class MyPage extends <a
                         lifecycle of the page property.
                     </p>
 
-                    <span class="info">
-                        <strong>Fixme:</strong>
-                        <p>
-                        Mind Bridge has added (or changed) these, adding a concept of "scope" for
-                        how long a property will persist. This documentation needs to be updated.
-                        </p>
-                    </span>
                 </subsection><!-- state.page-properties.types -->
 
             </section><!-- state.page-properties -->
