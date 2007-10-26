@@ -47,7 +47,7 @@ public class Email extends BaseValidator
             + "re|ro|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sk|sl|sm|sn|sr|st|su|sv|sy|sz|tc|td|tf|tg|th|tj|tk|tm|"
             + "tn|to|tr|tt|tv|tw|tz|ua|ug|uk|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|yu|za|zm|zw";
     public static final String DOMAIN_PATTERN = "([0-9a-z]([-0-9a-z]{0,61}[0-9a-z])?\\.)+" + "(" + TLD_PATTERN + ")";
-    public static final String USERNAME_PATTERN = "([\\\\da-z]+[-._+&'])*[\\\\da-z]+";
+    public static final String USERNAME_PATTERN = "([-/!\\#$*?=_+&'\\da-z]+[.])*[-/!\\#$*?=_+&'\\da-z]+";
     public static final String PATTERN = "^(?i)"+ USERNAME_PATTERN + "@" + "(" + DOMAIN_PATTERN + ")$";
                 
     // TODO: Possible thread safety issue if the validator

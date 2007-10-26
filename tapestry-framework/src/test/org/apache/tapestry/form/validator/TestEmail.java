@@ -173,6 +173,8 @@ public class TestEmail extends BaseValidatorTestCase
                 {"J@A.oRg"},
                 {"foo@example-bar.domain.com"},
                 {"FOO@EXample-bAr.domain.com"},
+                {"_foo@example.com"},
+                {"$user+mailbox_@example-domain.com"},
         };
     }
 
@@ -184,6 +186,8 @@ public class TestEmail extends BaseValidatorTestCase
                 {"foooooooooooooooooooooooooooo"},
                 {"LASKFODSKFO@$#)DJMZCV)TQKALAD"},
                 {""},
+                {"aa@foooooooooooooooooooooooooooooooooooooooooooooooooooooooo"},
+                {"aa@.foooooooooooooooooooooooooooooooooooooooooooooooooooooooo"},
         };
     }
 }
