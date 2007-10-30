@@ -52,14 +52,12 @@ public class ExceptionPresenterImpl implements ExceptionPresenter
             // Worst case scenario. The exception page itself is broken, leaving
             // us with no option but to write the cause to the output.
 
-            _requestExceptionReporter.reportRequestException(ErrorMessages
-                    .unableToProcessClientRequest(cause), cause);
+            _requestExceptionReporter.reportRequestException(ErrorMessages.unableToProcessClientRequest(cause), cause);
 
             // Also, write the exception thrown when redendering the exception
             // page, so that can get fixed as well.
 
-            _requestExceptionReporter.reportRequestException(ErrorMessages
-                    .unableToPresentExceptionPage(ex), ex);
+            _requestExceptionReporter.reportRequestException(ErrorMessages.unableToPresentExceptionPage(ex), ex);
 
             // And throw the exception.
 
@@ -67,8 +65,7 @@ public class ExceptionPresenterImpl implements ExceptionPresenter
         }
 
         if (_verbose)
-            _requestExceptionReporter.reportRequestException(ErrorMessages
-                    .unableToProcessClientRequest(cause), cause);
+            _requestExceptionReporter.reportRequestException(ErrorMessages.unableToProcessClientRequest(cause), cause);
     }
 
     public void setExceptionPageName(String exceptionPageName)

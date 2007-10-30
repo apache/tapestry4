@@ -14,12 +14,13 @@
 
 package org.apache.tapestry.html;
 
-import java.util.List;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.bean.EvenOdd;
 import org.apache.tapestry.util.exception.ExceptionDescription;
+
+import java.util.List;
 
 /**
  * Component used to display an already formatted exception. [ <a
@@ -95,7 +96,8 @@ public abstract class ExceptionDisplay extends BaseComponent
             return false;
         
         String trace = getTrace();
-        for (int i=0; i<packages.size(); i++) {
+        for (int i=0; i<packages.size(); i++)
+        {
             if (trace.startsWith((String)packages.get(i)))
                 return true;
         }
@@ -103,7 +105,8 @@ public abstract class ExceptionDisplay extends BaseComponent
         return false;
     }
     
-    public String getStackClass() {
+    public String getStackClass()
+    {
         return isInPackage() ? "stackSelected" : null;
     }
 }

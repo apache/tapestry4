@@ -14,18 +14,17 @@
 
 package org.apache.tapestry.describe;
 
-import static org.easymock.EasyMock.checkOrder;
-import static org.easymock.EasyMock.expect;
-
-import java.net.URL;
-
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.LocationImpl;
 import org.apache.hivemind.util.URLResource;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import static org.easymock.EasyMock.checkOrder;
+import static org.easymock.EasyMock.expect;
 import org.testng.annotations.Test;
+
+import java.net.URL;
 
 /**
  * Tests for {@link org.apache.tapestry.describe.LocationRenderStrategy}.
@@ -60,6 +59,8 @@ public class TestLocationRenderStrategy extends BaseDescribeTestCase
         writer.beginEmpty("br");
         writer.begin("table");
         writer.attribute("class", "location-content");
+        writer.attribute("cellspacing", "0");
+        writer.attribute("cellpadding", "0");
 
         for (int i = 0; i < lines.length; i++)
         {
