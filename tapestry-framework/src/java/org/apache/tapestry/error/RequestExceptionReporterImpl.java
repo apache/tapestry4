@@ -44,8 +44,7 @@ public class RequestExceptionReporterImpl implements RequestExceptionReporter
     {
         _log.warn(message, cause);
 
-        System.err
-                .println("\n\n**********************************************************\n\n");
+        System.err.println("\n\n**********************************************************\n\n");
 
         System.err.println(message);
 
@@ -60,8 +59,7 @@ public class RequestExceptionReporterImpl implements RequestExceptionReporter
 
         new ExceptionAnalyzer().reportException(cause, System.err);
 
-        System.err
-                .println("\n**********************************************************\n");
+        System.err.println("\n**********************************************************\n");
     }
 
 }

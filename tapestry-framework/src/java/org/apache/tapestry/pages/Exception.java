@@ -61,13 +61,15 @@ public abstract class Exception extends BasePage implements PageDetachListener
         String comps = namespace.getPropertyValue(getComponentPackages());
         
         StringBuffer sb = new StringBuffer();
-        if (pages!=null)
+        if (pages != null)
         {
             sb.append(pages);
+
             if (comps!=null)
                 sb.append(",");
         }
-        if (comps!=null)
+        
+        if (comps != null)
             sb.append(comps);
 
         return TapestryUtils.split(sb.toString(), ',');

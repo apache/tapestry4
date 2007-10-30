@@ -14,16 +14,12 @@
 
 package org.apache.tapestry.describe;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.LineNumberReader;
-import java.io.Reader;
-import java.net.URL;
-
 import org.apache.hivemind.Location;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+
+import java.io.*;
+import java.net.URL;
 
 /**
  * Adapter for displaying {@link org.apache.hivemind.Location}&nbsp;objects as
@@ -53,52 +49,67 @@ public class LocationRenderStrategy implements RenderStrategy
 
         int lineNumber = l.getLineNumber();
 
-        if (lineNumber < 1) return;
+        if (lineNumber < 1)
+            return;
 
         URL url = l.getResource().getResourceURL();
 
-        if (url == null) return;
+        if (url == null)
+            return;
 
         writeResourceContent(writer, url, lineNumber);
     }
 
-    private void writeResourceContent(IMarkupWriter writer, URL url,
-            int lineNumber)
+    private void writeResourceContent(IMarkupWriter writer, URL url, int lineNumber)
     {
         LineNumberReader reader = null;
 
         try
         {
-            reader = new LineNumberReader(new BufferedReader(
-                    new InputStreamReader(url.openStream())));
+            reader = new LineNumberReader(new BufferedReader( new InputStreamReader(url.openStream())));
 
             writer.beginEmpty("br");
             writer.begin("table");
             writer.attribute("class", "location-content");
+            writer.attribute("cellspacing", "0");
+            writer.attribute("cellpadding", "0");
 
             while(true)
             {
                 String line = reader.readLine();
 
-                if (line == null) break;
+                if (line == null)
+                    break;
 
                 int currentLine = reader.getLineNumber();
 
-                if (currentLine > lineNumber + RANGE) break;
+                if (currentLine > lineNumber + RANGE)
+                    break;
 
-                if (currentLine < lineNumber - RANGE) continue;
+                if (currentLine < lineNumber - RANGE)
+                    continue;
 
                 writer.begin("tr");
 
                 if (currentLine == lineNumber)
                     writer.attribute("class", "target-line");
-
+                
                 writer.begin("td");
                 writer.attribute("class", "line-number");
                 writer.print(currentLine);
                 writer.end();
 
                 writer.begin("td");
+
+                // pretty print tabs and spaces properly
+                
+                String spacers = extractWhitespaceStart(line);
+
+                if (spacers != null && spacers.length() > 0)
+                {
+                    writer.printRaw(spacers);
+                }
+
                 writer.print(line);
                 writer.end("tr");
                 writer.println();
@@ -118,11 +129,48 @@ public class LocationRenderStrategy implements RenderStrategy
         }
     }
 
+    /**
+     * Finds any tab or whitespace characters in the beginning of this string - up
+     * to the first occurrence of normal character data and returns it.
+     *
+     * @param input The string to extract whitespace/tab characters from.
+     *
+     * @return The whitespace/tab characters found, or null if none found.
+     */
+    String extractWhitespaceStart(String input)
+    {
+        if (input == null || input.length() < 1)
+            return null;
+
+        char[] vals = input.toCharArray();
+        StringBuffer ret = new StringBuffer();
+        
+        for (int i=0; i < vals.length; i++)
+        {
+            if (Character.isWhitespace(vals[i]))
+            {
+                ret.append("&nbsp;");
+                continue;
+            }
+
+            if (vals[i] == '\t')
+            {
+                ret.append("&nbsp;&nbsp;");
+                continue;
+            }
+
+            break;
+        }
+        
+        return ret.toString();
+    }
+
     private void close(Reader reader)
     {
         try
         {
-            if (reader != null) reader.close();
+            if (reader != null)
+                reader.close();
         }
         catch (IOException ex)
         {

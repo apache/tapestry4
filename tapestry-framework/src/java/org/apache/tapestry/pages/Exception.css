@@ -1,24 +1,13 @@
 P  {}
-
 H1  {}
-
 H2  {}
-
 H3  {}
-
 A  {}
-
 A:Visited  {}
-
 A:Active  {}
-
 A:Hover  {}
 
-BODY  {
-    margin:0;
-    padding:0;
-}
-
+BODY  { margin:0; padding:0;}
 body, td, th {
     font-family: Lucida Grande, Tahoma, Verdana, Arial, sans-serif;
     font-size: 13px;
@@ -28,77 +17,28 @@ body, td, th {
 h2 { font: 1.4em Tahoma, Myriad, sans-serif; font-weight:bold; color: #296cb5; padding-bottom:0; }
 h3 { font: 0.8em Tahoma, Myriad, sans-serif; font-weight:bold; color: #296cb5; padding-bottom:0; }
 
-TABLE.exception-display TR.even  {
-	top : auto;
-}
+TABLE.exception-display TR.even th { top : auto;}
+TABLE.exception-display TR.odd th { top : auto; background-color : #F6F6F6;}
+TABLE.exception-display TH  { text-align : right; font-weight : bold;}
+TABLE.exception-display TD  { text-align : left; width : 100%;	}
+TABLE.exception-display TR.stack-trace TD  { font-size : small; font-family: terminal,monospace; text-align : left;}
 
-TABLE.exception-display TR.odd  {
-	top : auto;
-	background-color : #F6F6F6;
-}
+SPAN.exception-header  { font-size : large; font-weight : bold; color : Red;}
+SPAN.exception-top { display:block; background: #efefef; border-bottom: 2px solid #215E8A; padding:0.4em;}
+SPAN.exception-message {font-weight: bold;}
+SPAN.exception-block, DIV.displayBlock { margin:5px; display:table; width: 98%; border:1px solid #ccf; padding:6px; background:#f9f9f9;}
 
-TABLE.exception-display TH  {
-	text-align : right;
-	font-weight : bold;
-}
-
-TABLE.exception-display TD  {
-	text-align : left;
-	width : 100%;	
-}
-
-TABLE.exception-display TR.stack-trace TD  {
-	font-size : small;
-        font-family: terminal,monospace;
-	text-align : left;
-}
-
-SPAN.exception-header  {
-	font-size : large;
-	font-weight : bold;
-	color : Red;
-}
-
-SPAN.exception-top {
-    display:block;
-    background: #efefef;
-    border-bottom: 2px solid #215E8A;
-    padding:0.4em;
-}
-
-SPAN.exception-message {
-	font-weight: bold;
-}
-
-SPAN.exception-block, DIV.displayBlock {
-    margin:5px;
-    display:block;
-    border:1px solid #ccf;
-    padding:6px;
-    background:#f9f9f9;    
-}
-
-UL  {
-	margin-top : 0;
-	margin-bottom : 0;
-	margin-left : 20px;
-        list-style: none;
-}
+.stack-trace * UL { margin: 0 0 20px 0; list-style: none;}
+.stack-trace * ul li { background-color: white;}
 
 TABLE.exception-display TR.exception-name TD  {
 	font-size : larger;
 	font-weight : bold;
 	text-align : center;
-	/*background-color : Blue;
-	color : White;*/
+	background-color : #3391D4;
+	color : White;
 }
-
-TABLE.exception-display  {
-	width : 100%;
-	margin:0;
-	padding:0;
-}
-
+TABLE.exception-display  { width : 100%; margin:0; padding:0;}
 TABLE.exception-display TR.exception-message TD  {
 	border-width : 1px;
 	border-color : Black;
@@ -107,7 +47,6 @@ TABLE.exception-display TR.exception-message TD  {
 	text-align : left;
 	font-style : italic;
 }
-
 TABLE.exception-display TR.strack-trace-label TD  {
 	margin : 2px;
 	border-width : 1px;
@@ -116,74 +55,20 @@ TABLE.exception-display TR.strack-trace-label TD  {
 	text-align : center;
 }
 
-TABLE.location-content
-{
-  border: 1px solid black;
-}
+TABLE.location-content { border: 1px solid black;}
+TABLE.location-content .target-line TD { background-color: yellow;}
+TABLE.location-content TR { padding: 0; margin: 0;}
+TABLE.location-content TD.line-number { width: 1px; padding: 0 2px; background-color: #2A76AD; text-align: right; border-right: 1px dotted gray; color: #F6F6F6;}
+TABLE.location-content TD { font-family: terminal,monospace; font-size: 10pt; padding: 1px 0 1px 7px; margin: 0; background-color: white; }
 
-TABLE.location-content TR.target-line TD
-{
-  background-color: yellow;
-}
-
-TABLE.location-content TR
-{
-  padding: 0;
-  margin: 0;
-}
-
-TABLE.location-content TD.line-number
-{
-  width: 1px; /* Minimum; will expand to fit line numbers.*/
-  align: right;
-  border-right: 1px dotted grey;
-}
-
-TABLE.location-content TD
-{
-  font-family: terminal,monospace;
-  font-size: 10pt;
-  padding: 0;
-  margin: 0;
-}
-
-DIV.described-object-title
-{
-  font-size: large;
-  font-weight: bold;
-  /*color: white;
-  background-color: blue;*/
-}
-
-TABLE.described-object
-{
-  border: 1px solid black;
-  width: 100%;
-  margin-bottom: 15px;
-}
-
-TABLE.described-object TR.section TH
-{
-  /*color: white;
-  background-color: blue;*/
-  text-align: center;
-}
-
-TABLE.described-object TH
-{
-  text-align: right;
-  width: 1px; /* Will stretch to fit. */
-}
-
-TABLE.described-object TR.even
-{
-  background-color: white;
-}
-
-TABLE.described-object TR.odd
-{
-  background-color: #eee;
-}
+DIV.described-object-title { font-size: large; font-weight: bold; }
+TABLE.described-object { border: 1px solid black; width: 100%; margin-bottom: 15px;}
+TABLE.described-object TR.section TH { text-align: center; color: #215E8A;}
+TABLE.described-object TH { text-align: right; width: 30%;}
+TABLE.described-object TD { padding-left: 2px;}
+TABLE.described-object TR.even { background-color: white; }
+TABLE.described-object TR.odd { background-color: #eee;}
+TABLE.described-object td, TABLE.described-object th { padding: 1px 0; }
 
 a.toggle {
     text-decoration:none;
@@ -195,13 +80,5 @@ a.toggle {
     font-size: 12px;
     padding: 10px;
 }
-
-a.toggleSelected, a.toggle:hover {
-    /*background:#EDCC5F;*/
-    background:#DDD;
-}
-
-.stackSelected {
-    color:green;
-    text-decoration:underline;    
-}
+a.toggleSelected, a.toggle:hover { background:#DDD; }
+.stackSelected { color:green; text-decoration: underline;}

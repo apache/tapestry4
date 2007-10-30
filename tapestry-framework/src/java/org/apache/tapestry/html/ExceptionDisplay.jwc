@@ -63,7 +63,6 @@
   </component>
   
   <component id="eProperty" type="For">
-  	<binding name="element" value="literal:tr"/>
   	<binding name="class" value="beans.evenOdd.next"/>
     <binding name="source" value="exception.properties"/>
     <binding name="value" value="property"/>

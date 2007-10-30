@@ -18,12 +18,7 @@ import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-import java.io.CharArrayWriter;
-import java.io.IOException;
-import java.io.LineNumberReader;
-import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.io.StringReader;
+import java.io.*;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +82,6 @@ public class ExceptionAnalyzer
         Throwable thrown = exception;
         try
         {
-
             while (thrown != null)
             {
                 thrown = buildDescription(thrown);
@@ -201,11 +195,9 @@ public class ExceptionAnalyzer
 
         properties = new ExceptionProperty[propertyDescriptions.size()];
 
-        ExceptionProperty[] propArray = (ExceptionProperty[]) propertyDescriptions
-                .toArray(properties);
+        ExceptionProperty[] propArray = (ExceptionProperty[]) propertyDescriptions.toArray(properties);
 
-        description = new ExceptionDescription(exceptionClass.getName(), message, propArray,
-                stackTrace);
+        description = new ExceptionDescription(exceptionClass.getName(), message, propArray, stackTrace);
 
         exceptionDescriptions.add(description);
 
@@ -403,7 +395,9 @@ public class ExceptionAnalyzer
                     stream.println(stackTrace[j]);
             }
             else
+            {
                 stream.println();
+            }
         }
     }
 
