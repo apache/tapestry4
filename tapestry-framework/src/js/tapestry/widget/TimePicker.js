@@ -34,6 +34,7 @@ dojo.widget.defineWidget(
         this.inputNode = dojo.byId(this.inputNodeId);
 
         this.dropdownNode = document.createElement("div");
+        this.domNode = this.dropdownNode;
         this.dropdownNode.setAttribute("id", this.widgetId + "dropdown");
         this.dropdownNode.style["display"] = "none";
         dojo.html.setClass(this.dropdownNode, this.dropdownClass);
@@ -247,29 +248,34 @@ dojo.widget.defineWidget(
             || dojo.html.hasClass(node, this.dropdownClass);
     },
 
-    destroyRendering: function(finalize){
+    uninitialize: function(){
         try{
-            dojo.widget.HtmlWidget.prototype.destroyRendering.call(this, finalize);
-
+            if (this.showing){
+                this.hide();
+            }
+            if (tapestry.widget.currentTimePicker == this) {
+                delete tapestry.widget.currentTimePicker;
+            }
+            
             dojo.event.disconnect(this.inputNode, "onclick", this, "onInputClick");
             dojo.event.disconnect(this.inputNode, "onblur", this, "onInputBlur");
             dojo.event.disconnect(this.inputNode, "onkeyup", this, "onInputKeyUp");
             dojo.event.disconnect(this.inputNode, "onkeydown", this, "onInputKeyDown");
-            dojo.event.browser.clean(this.inputNode);
+            dojo.event.disconnect(this.inputNode, "onchange", this, "onChange");
 
             dojo.event.disconnect(this.dropdownNode, "onmouseover", this, "onDropdownMouseOver");
             dojo.event.disconnect(this.dropdownNode, "onmouseout", this, "onDropdownMouseOut");
-
             dojo.dom.destroyNode(this.dropdownNode);
-            delete this.dropdownNode;
 
             dojo.event.disconnect(dojo.body(), "onkeyup", this, "onKeyUp");
 
              if (this.bgIframe){
                 this.bgIframe.remove();
             }
-        } catch (e) { }
+        } catch (e) {}
     },
+
+    destroyRendering: function(){},
 
     _selectOption:function(node){
         if (!node) { return; }

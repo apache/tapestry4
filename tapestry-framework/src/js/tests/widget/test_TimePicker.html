@@ -24,12 +24,13 @@
 <body>
 <script type="text/javascript">
     dojo.require("tapestry.namespace");
-
+    dojo.require("tapestry.widget.Widget");
+            
     dojo.addOnLoad(function() {
 
         dojo.widget.createWidget("tapestry:TimePicker", {
             widgetId: "test",
-            inputNodeId:"timeInput",
+            inputNodeId:"test",
             optionValues:["12:00am","12:30am","1:00am","1:30am","2:00am","2:30am","3:00am","3:30am","4:00am","4:30am",
                     "5:00am","5:30am","6:00am","6:30am","7:00am","7:30am","8:00am","8:30am","9:00am","9:30am","10:00am",
                     "10:30am","11:00am","11:30am","12:00pm","12:30pm","1:00pm","1:30pm","2:00pm","2:30pm","3:00pm","3:30pm",
@@ -58,6 +59,17 @@
                     "10:00pm","10:30pm","11:00pm","11:30pm"]
         });
     });
+
+    function destroyWidget(){
+        tapestry.widget.synchronizeWidgetState("test", "tapestry:timepicker", {"inputNodeId":"test"
+
+,"optionValues":["12:00 AM","12:30 AM","1:00 AM","1:30 AM","2:00 AM","2:30 AM","3:00 AM","3:30 AM","4:00 AM",
+                "4:30 AM","5:00 AM","5:30 AM","6:00 AM","6:30 AM","7:00 AM","7:30 AM","8:00 AM","8:30 AM",
+                "9:00 AM","9:30 AM","10:00 AM","10:30 AM","11:00 AM","11:30 AM","12:00 PM","12:30 PM","1:00 PM","1:30 PM"
+                ,"2:00 PM","2:30 PM","3:00 PM","3:30 PM","4:00 PM","4:30 PM","5:00 PM","5:30 PM","6:00 PM","6:30 PM"
+                ,"7:00 PM","7:30 PM","8:00 PM","8:30 PM","9:00 PM","9:30 PM","10:00 PM","10:30 PM","11:00 PM",
+                "11:30PM"],"selectedIndex":18}, true);
+    }
 </script>
 
 <style type="text/css">
@@ -79,12 +91,14 @@
     }
 </style>
 
+<a href="#" onclick="destroyWidget(); return false;" >Destroy / Re-create widget</a>
+
 <form action="#">
     <fieldset>
         <table>
             <tr>
                 <td>
-                    <input id="timeInput" type="text" size="7" value="8:24am" />
+                    <input id="test" type="text" size="7" value="8:24am" />
                 </td>
                 <td>
                     <input id="another" type="text" size="11" />

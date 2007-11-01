@@ -46,7 +46,7 @@ tapestry.widget = {
 			this.createWidget(widgetId, type, props, position);
 		} else if (destroy){
 			widget.destroy();
-			this.createWidget(widgetId, type, props, position);
+            this.createWidget(widgetId, type, props, position);
 		} else {
 			this.setWidgetProperties(widget, props);
 		}
