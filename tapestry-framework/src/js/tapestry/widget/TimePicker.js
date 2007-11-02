@@ -95,11 +95,19 @@ dojo.widget.defineWidget(
     },
 
     onOptionMouseOver: function(evt) {
-        this._selectOption(evt.target);
+        var target = evt.target;
+        if (target.nodeType == 3){ // get around safari bug
+            target = target.parentNode;
+        }
+        this._selectOption(target);
     },
 
     onOptionMouseOut: function(evt) {
-        this._clearOptionSelection(evt.target);
+        var target = evt.target;
+        if (target.nodeType == 3){ // get around safari bug
+            target = target.parentNode;
+        }
+        this._clearOptionSelection(target);
     },
 
     onChange:function() {},
@@ -121,10 +129,6 @@ dojo.widget.defineWidget(
         }
 
         this.show();
-
-        if (this.selectedNode){
-            this.selectedNode.scrollIntoView(true);
-        }
     },
 
     onInputBlur: function(evt) {
@@ -235,6 +239,10 @@ dojo.widget.defineWidget(
         this.hasFocus=true;
         this.preventBlur=true;
         tapestry.widget.currentTimePicker=this;
+
+        if (this.selectedNode){
+            this.selectedNode.scrollIntoView(true);
+        }
     },
 
     getValue:function(){
