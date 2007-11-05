@@ -16,8 +16,8 @@
 -->
 
 <!DOCTYPE component-specification PUBLIC
-        "-//Apache Software Foundation//Tapestry Specification 3.0//EN"
-        "http://tapestry.apache.org/dtd/Tapestry_3_0.dtd">
+        "-//Apache Software Foundation//Tapestry Specification 4.0//EN"
+        "http://tapestry.apache.org/dtd/Tapestry_4_0.dtd">
 
 <component-specification class="org.apache.tapestry.contrib.table.components.TablePages"
                          allow-body="no" allow-informal-parameters="yes">
@@ -28,9 +28,7 @@
     </description>
 
     <parameter name="pagesDisplayed"
-               type="int"
                required="no"
-               direction="auto"
                default-value="7">
         <description>
             Determines the maximum number of pages to be displayed in the page list
@@ -41,55 +39,55 @@
     <component id="informal" type="Any" inherit-informal-parameters="yes"/>
 
     <component id="condCurrent" type="If">
-        <binding name="condition" expression="condCurrent"/>
-        <binding name="renderTag" expression="false" />
+        <binding name="condition" value="condCurrent"/>
+        <binding name="renderTag" value="false" />
     </component>
 
     <component id="condOther" type="Else">
-        <binding name="renderTag" expression="false" />
+        <binding name="renderTag" value="false" />
     </component>
 
     <component id="iterPage" type="For">
-        <binding name="source" expression="pageList"/>
-        <binding name="value" expression="displayPage"/>
-        <binding name="renderTag" expression="false" />
+        <binding name="source" value="pageList"/>
+        <binding name="value" value="displayPage"/>
+        <binding name="renderTag" value="false" />
     </component>
 
     <component id="insertCurrentPage" type="Insert">
-        <binding name="value" expression="displayPage"/>
+        <binding name="value" value="displayPage"/>
     </component>
 
     <component id="insertOtherPage" type="Insert">
-        <binding name="value" expression="displayPage"/>
+        <binding name="value" value="displayPage"/>
     </component>
 
     <component id="linkPage" type="DirectLink">
-        <binding name="listener" expression="listeners.changePage"/>
-        <binding name="parameters" expression="displayPageContext"/>
+        <binding name="listener" value="listeners.changePage"/>
+        <binding name="parameters" value="displayPageContext"/>
     </component>
 
     <component id="linkFirst" type="DirectLink">
-        <binding name="listener" expression="listeners.changePage"/>
-        <binding name="parameters" expression="firstPageContext"/>
-        <binding name="disabled" expression="!condBack"/>
+        <binding name="listener" value="listeners.changePage"/>
+        <binding name="parameters" value="firstPageContext"/>
+        <binding name="disabled" value="!condBack"/>
     </component>
 
     <component id="linkBack" type="DirectLink">
-        <binding name="listener" expression="listeners.changePage"/>
-        <binding name="parameters" expression="backPageContext"/>
-        <binding name="disabled" expression="!condBack"/>
+        <binding name="listener" value="listeners.changePage"/>
+        <binding name="parameters" value="backPageContext"/>
+        <binding name="disabled" value="!condBack"/>
     </component>
 
     <component id="linkFwd" type="DirectLink">
-        <binding name="listener" expression="listeners.changePage"/>
-        <binding name="parameters" expression="fwdPageContext"/>
-        <binding name="disabled" expression="!condFwd"/>
+        <binding name="listener" value="listeners.changePage"/>
+        <binding name="parameters" value="fwdPageContext"/>
+        <binding name="disabled" value="!condFwd"/>
     </component>
 
     <component id="linkLast" type="DirectLink">
-        <binding name="listener" expression="listeners.changePage"/>
-        <binding name="parameters" expression="lastPageContext"/>
-        <binding name="disabled" expression="!condFwd"/>
+        <binding name="listener" value="listeners.changePage"/>
+        <binding name="parameters" value="lastPageContext"/>
+        <binding name="disabled" value="!condFwd"/>
     </component>
 
 </component-specification>

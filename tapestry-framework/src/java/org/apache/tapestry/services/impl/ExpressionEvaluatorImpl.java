@@ -171,7 +171,12 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator, RegistryShu
         try
         {
             context = (OgnlContext)_contextPool.borrowObject();
+
+            // setup context
             
+            context.setRoot(target);
+            context.setCurrentObject(target);
+
             expression.set(context, target, value);
         }
         catch (Exception ex)

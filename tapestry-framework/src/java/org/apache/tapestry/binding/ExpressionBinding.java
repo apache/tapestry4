@@ -220,7 +220,9 @@ public class ExpressionBinding extends AbstractBinding
                     }
                 }
             } else
+            {
                 _evaluator.write(_root, _accessor, value);
+            }
         }
         catch (Throwable ex)
         {
