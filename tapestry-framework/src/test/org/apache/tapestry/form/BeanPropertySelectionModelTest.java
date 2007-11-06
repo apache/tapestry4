@@ -13,11 +13,11 @@
 // limitations under the License.
 package org.apache.tapestry.form;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.tapestry.BaseComponentTestCase;
 import org.testng.annotations.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -29,28 +29,20 @@ import org.testng.annotations.Test;
 public class BeanPropertySelectionModelTest extends BaseComponentTestCase
 {
     
-    /**
-     * Tests using a null arg constuctor.
-     */
-    public void testNullModel()
+    public void test_Null_Model()
     {
         BeanPropertySelectionModel model = new BeanPropertySelectionModel();
         assertEquals(model.getOptionCount(), 0);
     }
     
-    /**
-     * Uses {@link BeanPropertySelectionModelTest} as the 
-     * model.
-     */
-    public void testBasicModel()
+    public void test_Basic_Model()
     {
         List<SimpleBean> list = new ArrayList();
         list.add(new SimpleBean(1, "Name 1", "Description 1"));
         list.add(new SimpleBean(2, "Name 2", "Description 2"));
         list.add(new SimpleBean(3, "Name 3", "Description 3"));
         
-        BeanPropertySelectionModel model =
-            new BeanPropertySelectionModel(list, "name");
+        BeanPropertySelectionModel model = new BeanPropertySelectionModel(list, "name");
         
         assertEquals(model.getOptionCount(), 3);
         
@@ -59,5 +51,30 @@ public class BeanPropertySelectionModelTest extends BaseComponentTestCase
         assertEquals(model.getLabel(2), "Name 3");
         
         assertEquals(model.translateValue("1"), b2);
+    }
+
+    public void test_Invalid_Option_Index()
+    {
+        BeanPropertySelectionModel model = new BeanPropertySelectionModel();
+
+        assertEquals(model.getOptionCount(), 0);
+        assertEquals(model.getOption(3), null);
+    }
+
+    public void test_Null_Label()
+    {
+        List<SimpleBean> list = new ArrayList();
+        list.add(new SimpleBean(1, "Name 1", "Description 1"));
+        list.add(new SimpleBean(2, "Name 2", "Description 2"));
+        list.add(new SimpleBean(3, "Name 3", "Description 3"));
+
+        BeanPropertySelectionModel model = new BeanPropertySelectionModel(list, "name", "test");
+
+        assertEquals(model.getOptionCount(), 4);
+        assert model.getOption(3) != null;
+        
+        assertEquals(model.getOption(0), null);
+        assertEquals(model.getLabel(0), "test");
+        assertEquals(model.getLabel(1), "Name 1");
     }
 }
