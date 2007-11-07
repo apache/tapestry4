@@ -57,8 +57,7 @@ public class LabeledPropertySelectionModelTest extends BaseComponentTestCase
         Object option = null;
         String value = "-1";
 
-        LabeledPropertySelectionModel model = new LabeledPropertySelectionModel(createInnerModel(),
-                label, option, value);
+        LabeledPropertySelectionModel model = new LabeledPropertySelectionModel(createInnerModel(), label, option, value);
 
         assertEquals(label, model.getLabel());
         assertEquals(option, model.getOption());
@@ -67,6 +66,47 @@ public class LabeledPropertySelectionModelTest extends BaseComponentTestCase
         validateLabel(model, label, option, value);
 
         validateModel(model);
+    }
+
+    public void test_Disabled()
+    {
+        String label = "Choose...";
+
+        LabeledPropertySelectionModel model = new LabeledPropertySelectionModel(createInnerModel(), label);
+
+        assertEquals(model.getLabel(0), label);
+        assertEquals(model.getLabel(1), String.valueOf(Boolean.TRUE));
+        assert model.isDisabled(0);
+        assert !model.isDisabled(1);
+    }
+
+    public void test_Label_Option_Disabled()
+    {
+        String label = "Choose...";
+        String option = "-1";
+
+        LabeledPropertySelectionModel model = new LabeledPropertySelectionModel(createInnerModel(), label, option);
+
+        assertEquals(model.getLabel(0), label);
+        assert !model.isDisabled(0);
+        assert !model.isDisabled(1);
+    }
+
+    public void test_Label_Value_With_Option_Disabled()
+    {
+        String label = "Choose...";
+        String value = "-1";
+        Object option = Boolean.FALSE;
+
+        LabeledPropertySelectionModel model = new LabeledPropertySelectionModel(createInnerModel(), label, option, value);
+
+        assertEquals(model.getLabel(0), label);
+        assertEquals(model.getOption(0), option);
+        assertEquals(model.getOptionCount(), 3);
+        assertEquals(model.getValue(0), value);
+        
+        assert !model.isDisabled(0);
+        assert !model.isDisabled(1);
     }
 
     private void validateLabel(IPropertySelectionModel model, String label, Object option,
@@ -99,8 +139,7 @@ public class LabeledPropertySelectionModelTest extends BaseComponentTestCase
     {
         return new IPropertySelectionModel()
         {
-            private boolean[] values = new boolean[]
-            { true, false };
+            private boolean[] values = new boolean[] { true, false };
 
             public int getOptionCount()
             {

@@ -22,13 +22,17 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * This class is a property selection model for an object list. This is used in PropertySelection,
+ * This class is a property selection model for an object list. This is used in {@link PropertySelection},
  * MultiplePropertySelection or Palette tapestry components. For example, to use for a Hospital
- * class, and have the labels be the hospital names. <code>
+ * class, and have the labels be the hospital names.
+ *
+ * <p>
+ * <code>
  * List&lt;Hospital&gt; list = ...;
  * return new BeanPropertySelectionModel(hospitals, "name");
  * </code>
- * This will use getName() on the Hospital object, as its display.
+ * </p>
+ * <p>This will use getName() on the Hospital object, as its display.</p>
  *
  * @author Gabriel Handford
  */
@@ -39,7 +43,6 @@ public class BeanPropertySelectionModel implements IPropertySelectionModel, Seri
     private static final long serialVersionUID = 3763091973006766644L;
     protected List _list;
     protected String _labelField;
-    protected String _nullLabel;
 
     /**
      * Build an empty property selection model.
@@ -78,35 +81,13 @@ public class BeanPropertySelectionModel implements IPropertySelectionModel, Seri
     }
 
     /**
-     * Same as {@link #BeanPropertySelectionModel(java.util.List, String)} - with the added
-     * functionality of using the specified <code>nullLabel</code> field as a pseudo item in
-     * the list of options that stores a null value.   This is useful for situations where you
-     * want to present a "Choose.." option or similar invalid option to prompt users for input.
-     *
-     * @param list
-     *          The list of options.
-     * @param labelField
-     *          The string expression to be used on each object to get the label value
-     *          for the option - such as "user.name".
-     * @param nullLabel
-     *          Will be treated as a pseudo option that always resolves to a null value but
-     *          is properly displayed in the options list as the first element.
-     */
-    public BeanPropertySelectionModel(List list, String labelField, String nullLabel)
-    {
-        this(list, labelField);
-
-        _nullLabel = nullLabel;
-    }
-
-    /**
      * Get the number of options.
      *
      * @return option count
      */
     public int getOptionCount()
     {
-        return _nullLabel != null ? _list.size() + 1 : _list.size();
+        return _list.size();
     }
 
     /**
@@ -118,14 +99,6 @@ public class BeanPropertySelectionModel implements IPropertySelectionModel, Seri
      */
     public Object getOption(int index)
     {
-        if (_nullLabel != null && index == 0)
-        {
-            return null;
-        }
-
-        if (_nullLabel != null)
-            index--;
-        
         if (index > (_list.size() - 1))
         {
             return null;
@@ -143,14 +116,6 @@ public class BeanPropertySelectionModel implements IPropertySelectionModel, Seri
      */
     public String getLabel(int index)
     {
-        if (index == 0 && _nullLabel != null)
-        {
-            return _nullLabel;
-        }
-
-        if (_nullLabel != null)
-            index--;
-        
         Object obj = _list.get(index);
         
         try
@@ -176,7 +141,7 @@ public class BeanPropertySelectionModel implements IPropertySelectionModel, Seri
 
     public boolean isDisabled(int index)
     {
-        return index == 0 && _nullLabel != null;
+        return false;
     }
 
     /**
@@ -193,12 +158,37 @@ public class BeanPropertySelectionModel implements IPropertySelectionModel, Seri
             return null;
         }
 
-        int index = Integer.parseInt(value);
-        if (index == 0 && _nullLabel != null)
-        {
-            return null;
-        }
+        return getOption( Integer.parseInt(value));
+    }
 
-        return getOption(index);
+    public String toString()
+    {
+        return "BeanPropertySelectionModel[" +
+               "_list=" + _list +
+               '\n' +
+               ", _labelField='" + _labelField + '\'' +
+               '\n' +
+               ']';
+    }
+
+    public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (!(o instanceof BeanPropertySelectionModel)) return false;
+
+        BeanPropertySelectionModel that = (BeanPropertySelectionModel) o;
+
+        if (_labelField != null ? !_labelField.equals(that._labelField) : that._labelField != null) return false;
+        if (_list != null ? !_list.equals(that._list) : that._list != null) return false;
+
+        return true;
+    }
+
+    public int hashCode()
+    {
+        int result;
+        result = (_list != null ? _list.hashCode() : 0);
+        result = 31 * result + (_labelField != null ? _labelField.hashCode() : 0);
+        return result;
     }
 }

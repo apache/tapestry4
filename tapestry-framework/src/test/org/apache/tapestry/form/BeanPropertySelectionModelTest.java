@@ -60,21 +60,4 @@ public class BeanPropertySelectionModelTest extends BaseComponentTestCase
         assertEquals(model.getOptionCount(), 0);
         assertEquals(model.getOption(3), null);
     }
-
-    public void test_Null_Label()
-    {
-        List<SimpleBean> list = new ArrayList();
-        list.add(new SimpleBean(1, "Name 1", "Description 1"));
-        list.add(new SimpleBean(2, "Name 2", "Description 2"));
-        list.add(new SimpleBean(3, "Name 3", "Description 3"));
-
-        BeanPropertySelectionModel model = new BeanPropertySelectionModel(list, "name", "test");
-
-        assertEquals(model.getOptionCount(), 4);
-        assert model.getOption(3) != null;
-        
-        assertEquals(model.getOption(0), null);
-        assertEquals(model.getLabel(0), "test");
-        assertEquals(model.getLabel(1), "Name 1");
-    }
 }

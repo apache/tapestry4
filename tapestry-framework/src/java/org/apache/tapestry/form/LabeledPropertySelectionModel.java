@@ -151,8 +151,7 @@ public class LabeledPropertySelectionModel implements IPropertySelectionModel
      * @param value
      *            the value of the initial property
      */
-    public LabeledPropertySelectionModel(IPropertySelectionModel model, String label,
-            Object option, String value)
+    public LabeledPropertySelectionModel(IPropertySelectionModel model, String label, Object option, String value)
     {
         this(model, label, option);
 
@@ -214,7 +213,7 @@ public class LabeledPropertySelectionModel implements IPropertySelectionModel
 
     public boolean isDisabled(int index)
     {
-        return false;
+        return index == 0 && _option == null;
     }
     
     /**
