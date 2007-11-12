@@ -17,7 +17,7 @@ var dojo={
 var tapestry={
     // setup firebug logging - useful for finding unimplemented methods
     log: function() {                   
-        if (console) console.log.apply(this, arguments);
+        if (window.console) console.log.apply(this, arguments);
     },
     /**
      * Executes the passed function when the document has done loading
