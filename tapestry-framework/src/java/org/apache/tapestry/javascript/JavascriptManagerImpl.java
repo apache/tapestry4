@@ -127,7 +127,6 @@ public class JavascriptManagerImpl implements JavascriptManager {
             Location location = new DescribedLocation(new URLResource(path), description);
             asset = _assetSource.findAsset(null, path, null, location);
         }
-        System.out.println("##ASSET for " + path + " : " + asset);
         return asset;
     }
 
