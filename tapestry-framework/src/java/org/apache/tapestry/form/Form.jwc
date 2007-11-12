@@ -116,8 +116,6 @@
     <reserved-parameter name="enctype" />
     <reserved-parameter name="id" />
 
-    <asset name="clientValidationScript" path="classpath:/dojo-0.4.3/dojo3.js" />
-
     <inject property="directService" object="engine-service:direct" />
     <inject property="response" object="infrastructure:response" />
     <inject property="listenerInvoker" object="infrastructure:listenerInvoker" />

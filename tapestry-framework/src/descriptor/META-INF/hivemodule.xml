@@ -69,6 +69,7 @@
     <sub-module descriptor="tapestry.l10n.xml"/>
     <sub-module descriptor="tapestry.event.xml"/>
     <sub-module descriptor="tapestry.render.xml"/>
+    <sub-module descriptor="tapestry.js.xml"/>
 
 
     <service-point id="ClasspathResourceFactory">

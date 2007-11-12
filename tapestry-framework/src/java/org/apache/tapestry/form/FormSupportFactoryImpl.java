@@ -17,6 +17,7 @@ package org.apache.tapestry.form;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.javascript.JavascriptManager;
 
 /**
  * The standard implementation of {@link FormSupportFactory}. It generates 
@@ -26,8 +27,15 @@ import org.apache.tapestry.IRequestCycle;
  */
 public class FormSupportFactoryImpl implements FormSupportFactory
 {
+    private JavascriptManager _javascriptManager;
+    
     public FormSupport createFormSupport(IMarkupWriter writer, IRequestCycle cycle, IForm form) 
     {
-        return new FormSupportImpl(writer, cycle, form);
-    }    
+        return new FormSupportImpl(writer, cycle, form, _javascriptManager);
+    }
+    
+    public void setJavascriptManager(JavascriptManager javascriptManager)
+    {
+        _javascriptManager = javascriptManager;
+    }
 }

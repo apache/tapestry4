@@ -40,7 +40,11 @@
   </service-point>
   
   <service-point id="FormSupportFactory">
-      <create-instance class="FormSupportFactoryImpl"/>
+    <invoke-factory>
+        <construct class="FormSupportFactoryImpl">
+            <set-service property="javascriptManager" service-id="tapestry.js.JavascriptManager"/>
+        </construct>
+    </invoke-factory>      
   </service-point>
   
   <service-point id="GoFormSupportFactory" interface="FormSupportFactory">

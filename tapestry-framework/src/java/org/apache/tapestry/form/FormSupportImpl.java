@@ -14,20 +14,39 @@
 
 package org.apache.tapestry.form;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.*;
+import org.apache.tapestry.IComponent;
+import org.apache.tapestry.IForm;
+import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IPage;
+import org.apache.tapestry.IRender;
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.NestedMarkupWriter;
+import org.apache.tapestry.PageRenderSupport;
+import org.apache.tapestry.StaleLinkException;
+import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.event.BrowserEvent;
+import org.apache.tapestry.javascript.JavascriptManager;
 import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.IdAllocator;
 import org.apache.tapestry.valid.IValidationDelegate;
-
-import java.util.*;
 
 /**
  * Encapsulates most of the behavior of a Form component.
@@ -148,9 +167,17 @@ public class FormSupportImpl implements FormSupport
     /**
      * Used to detect whether or not a form component has been updated and will require form sync on ajax requests
      */
-    private boolean _fieldUpdating;
+    private boolean _fieldUpdating;    
+    
+    private JavascriptManager _javascriptManager;
 
     public FormSupportImpl(IMarkupWriter writer, IRequestCycle cycle, IForm form)
+    {
+        this(writer, cycle, form, null);
+    }
+    
+    public FormSupportImpl(IMarkupWriter writer, IRequestCycle cycle, 
+            IForm form, JavascriptManager javascriptManager)
     {
         Defense.notNull(writer, "writer");
         Defense.notNull(cycle, "cycle");
@@ -166,6 +193,8 @@ public class FormSupportImpl implements FormSupport
 
         _pageRenderSupport = TapestryUtils.getOptionalPageRenderSupport(cycle);
         _profile = new JSONObject();
+        
+        _javascriptManager = javascriptManager;
     }
 
     /**
@@ -565,11 +594,10 @@ public class FormSupportImpl implements FormSupport
 
             if (!page.hasWidgets())
             {
-                IAsset clientScript = _form.getAsset("clientValidationScript");
-
-                if (clientScript != null)
+                if (_javascriptManager != null && _javascriptManager.getMainJsWidgetAsset() != null)
                 {
-                    _pageRenderSupport.addExternalScript(_form, clientScript.getResourceLocation());
+                    _pageRenderSupport.addExternalScript(_form,
+                            _javascriptManager.getMainJsWidgetAsset().getResourceLocation());
                 }
             }
 
