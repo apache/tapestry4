@@ -77,6 +77,10 @@ public class DojoAjaxResponseContributorImpl implements ResponseContributor
      */
     public boolean handlesResponse(IRequestCycle cycle)
     {
+        String parm = cycle.getParameter(DOJO_AJAX_HEADER);
+        
+        if (parm != null && Boolean.valueOf(parm).booleanValue())
+            return true;
         return _webRequest.getHeader(DOJO_AJAX_HEADER) != null;
     }
     
