@@ -471,7 +471,7 @@ var tapestry={
         
 	/**
 	 * Function: connectBefore
-         */        
+	 */
 	connectBefore:function(target, event, funcName){
                 target = dojo.byId(target);
 		if (!dj_undef(funcName, tapestry)){
@@ -481,29 +481,34 @@ var tapestry={
         
 	/**
 	 * Function: connectWidget
-         */        
+	 */
 	connectWidget:function(target, event, funcName){
                 tapestry.connect(dojo.widget.byId(target), event, funcName);        
 	},
 
 	/**
 	 * Function: byId
-         */                
-        byId:dojo.byId,                
+     */
+    byId:dojo.byId,
         
 	/**
 	 * Function: raise
-         */                
-        raise:dojo.raise, 
+     */
+    raise:dojo.raise,
         
 	/**
 	 * Function: addOnLoad
-         */                
-        addOnLoad:dojo.addOnLoad,                
+     */
+    addOnLoad:dojo.addOnLoad,
 
 	/**
+	 * Function: provide
+     */
+    provide:dojo.provide,
+
+    /**
 	 * Function: linkOnClick
-         */
+     */
 	linkOnClick:function(url, id, isJson, eventName){
 		var content={beventname:(eventName || "onClick")};
 		content["beventtarget.id"]=id;
