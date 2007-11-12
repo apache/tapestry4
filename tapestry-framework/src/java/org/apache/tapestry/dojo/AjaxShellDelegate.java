@@ -21,8 +21,8 @@ import org.apache.tapestry.json.JSONObject;
 import java.util.Locale;
 
 /**
- * The default rendering delegate responseible for include the dojo sources in
- * to the {@link Shell} component.
+ * The default rendering delegate responsible for include the dojo sources in
+ * to the {@link org.apache.tapestry.html.Shell} component.
  */
 public class AjaxShellDelegate implements IRender {
 
