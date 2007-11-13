@@ -14,9 +14,10 @@
 
 package org.apache.tapestry.javascript;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.util.URLResource;
 import org.apache.tapestry.IAsset;
@@ -25,10 +26,19 @@ import org.apache.tapestry.asset.AssetSource;
 import org.apache.tapestry.util.DescribedLocation;
 
 /**
+ * An implementation that accepts a comma separated String for
+ * files, formFiles and widgetFiles. 
+ *
  * @author Andreas Andreou
  * @since 4.1.4
  */
 public class JavascriptManagerImpl implements JavascriptManager {
+
+    public JavascriptManagerImpl() {
+        _files = new ArrayList();
+        _formFiles = new ArrayList();
+        _widgetFiles = new ArrayList();
+    }
 
     public IAsset getMainJsAsset()
     {
@@ -122,7 +132,7 @@ public class JavascriptManagerImpl implements JavascriptManager {
     private IAsset findAsset(String path, String description)
     {
         IAsset asset = null;
-        if (path!=null)
+        if ( !HiveMind.isBlank(path) )
         {
             Location location = new DescribedLocation(new URLResource(path), description);
             asset = _assetSource.findAsset(null, path, null, location);
@@ -131,7 +141,7 @@ public class JavascriptManagerImpl implements JavascriptManager {
     }
 
     private IAsset findFirst(List list) {
-        if (list ==null || list.isEmpty())
+        if (list == null || list.isEmpty())
             return null;
         else
             return (IAsset) list.get(0);
