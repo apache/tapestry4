@@ -93,6 +93,8 @@
                 <item name="EventListener" href="/ajax/eventlistener.html" />
                 <item name="ResponseBuilder" href="/ajax/responsebuilder.html" />
                 <item name="JSON" href="/ajax/json.html" />
+                <item name="Dojo Tips" href="/ajax/dojotips.html" />
+                <item name="Beyond Dojo" href="/ajax/beyonddojo.html" />
             </item>
             
             <item name="JavaScript Reference" href="/javascript/index.html" collapse="true">

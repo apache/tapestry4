@@ -1,0 +1,34 @@
+ ------
+Ajax/DHTML Guide - Dojo Tips
+ ------
+Andreas Andreou
+ ------
+13 Nov 2007
+ ------
+ 
+Dojo Tips
+
+* Dojo and L10N
+
+  Dojo and its widgets support l10n and include by default localized messages for
+  the following locales:
+
++-----------------------------------------------------------
+"en-us", "de-de", "de", "en-gb", "es-es",
+"es", "fr-fr", "fr", "zh-cn", "zh-tw",
+"zh" , "it-it", "it", "ja-jp", "ja",
+"ko-kr", "ko", "pt-br", "pt", "en", "xx"
++-----------------------------------------------------------
+
+  Tapestry's {{{../apidocs/org/apache/tapestry/dojo/AjaxShellDelegate.html}AjaxShellDelegate}} takes care of including the 
+  related setting in djConfig if the page's locale matches one of the above.
+
+  To support more locales, you'll need to:
+
+  * Add your translation of dojo messages in the classpath location /dojo-0.4.3/nls/dojo_*.js
+  
+  * Override {{{../apidocs/org/apache/tapestry/dojo/AjaxShellDelegate.html#isLocaleSupported(java.lang.String)}AjaxShellDelegate#isLocaleSupported(String)}} to return true for the
+    newly added locale.
+    
+    
+  
