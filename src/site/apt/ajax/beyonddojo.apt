@@ -1,0 +1,46 @@
+ ------
+Ajax/DHTML Guide - Beyond Dojo
+ ------
+Andreas Andreou
+ ------
+13 Nov 2007
+ ------
+ 
+Beyond Dojo - Adding other javascript libraries
+
+ Starting with Tapestry 4.1.4, it is possible to completely remove dojo from the generated
+ pages, and instead use other javascript libraries. Here are the required steps:
+
+ * Create an 'adapter' javascript file that implements Tapestry's required javascript
+   functions using the js library of your choice. A simple adaptor that does nothing
+   (but is quite useful for documentation and for finding what needs to be implemented
+   is at classpath:/tapestry/skeleton/core.js
+
+ * Add an implementation for the tapestry.js.JavascriptManager service that includes references
+ to the javascript files (both the libraries and of your adaptor). You'll typically want to set
+ the files property to a comma separated String of file references
+ (such as <<<classpath:/js/prototype.js,classpath:/js/scriptaculous.js>>>) and the tapestryFile
+ to your adapter javascript, other properties can be left empty :
+
++-----------------------------------------------------------
+    <implementation service-id="tapestry.js.JavascriptManager">
+        <invoke-factory>
+            <construct class="org.apache.tapestry.javascript.JavascriptManagerImpl">
+                <set-service property="assetSource" service-id="tapestry.asset.AssetSource"/>
+                <set property="files"
+                    value="classpath:/yui/yahoo/yahoo-min.js,classpath:/yui/dom/dom-min.js,classpath:/yui/event/event-min.js"/>
+                <set property="formFiles" value=""/>
+                <set property="widgetFiles" value=""/>
+                <set property="path" value=""/>
+                <set property="tapestryFile" value="classpath:/yui/yui-tapestry.js"/>
+                <set property="tapestryPath" value=""/>
+            </construct>
+        </invoke-factory>
+    </implementation>
++-----------------------------------------------------------
+
+ * Use {{{../apidocs/org/apache/tapestry/javascript/SimpleAjaxShellDelegate.html}SimpleAjaxShellDelegate}}
+   with the {{{../components/general/shell.html}@Shell}} or the {{{../components/general/scriptincludes.html}@ScriptIncludes}}
+   components.
+    
+  
