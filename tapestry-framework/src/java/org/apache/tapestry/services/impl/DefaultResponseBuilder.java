@@ -58,13 +58,15 @@ public class DefaultResponseBuilder implements ResponseBuilder
      *
      * @param writer
      */
-    public DefaultResponseBuilder(IMarkupWriter writer,
+    public DefaultResponseBuilder(IRequestCycle cycle, IMarkupWriter writer,
                                   AssetFactory assetFactory, String namespace, boolean closeWriter)
     {
         _writer = writer;
         _assetFactory = assetFactory;
         _namespace = namespace;
         _closeWriter = closeWriter;
+
+        _prs = new PageRenderSupportImpl(_assetFactory, _namespace, this, cycle);
     }
 
     /**
@@ -82,14 +84,20 @@ public class DefaultResponseBuilder implements ResponseBuilder
      * Creates a new response builder with the required services it needs
      * to render the response when {@link #renderResponse(IRequestCycle)} is called.
      *
+     * @param cycle
+     *          The current request.
      * @param localeManager
      *          Used to set the locale on the response.
      * @param markupWriterSource
      *          Creates IMarkupWriter instance to be used.
      * @param webResponse
      *          Web response for output stream.
+     * @param assetFactory
+     *          Used to generate asset urls.
+     * @param namespace
+     *          Used for portal / javascript namespacing support.
      */
-    public DefaultResponseBuilder(RequestLocaleManager localeManager,
+    public DefaultResponseBuilder(IRequestCycle cycle, RequestLocaleManager localeManager,
                                   MarkupWriterSource markupWriterSource, WebResponse webResponse,
                                   AssetFactory assetFactory, String namespace)
     {
@@ -103,6 +111,8 @@ public class DefaultResponseBuilder implements ResponseBuilder
 
         _assetFactory = assetFactory;
         _namespace = namespace;
+
+        _prs = new PageRenderSupportImpl(_assetFactory, _namespace, this, cycle);
     }
 
     /**
@@ -143,8 +153,6 @@ public class DefaultResponseBuilder implements ResponseBuilder
         }
 
         // render response
-
-        _prs = new PageRenderSupportImpl(_assetFactory, _namespace, cycle.getPage().getLocation(), this);
 
         TapestryUtils.storePageRenderSupport(cycle, _prs);
 

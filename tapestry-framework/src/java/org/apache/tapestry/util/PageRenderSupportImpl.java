@@ -39,7 +39,7 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
 {
     private final AssetFactory _assetFactory;
 
-    private final Location _location;
+    private Location _location;
 
     private final ResponseBuilder _builder;
 
@@ -79,6 +79,24 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
 
     private final Map _requires = new HashMap();
 
+    private IRequestCycle _cycle;
+
+    /**
+     * Creates a new instance bound to the specific location.
+     *
+     * @param assetFactory
+     *          Used to generate asset urls.
+     * @param namespace
+     *          Namespace that javascript / portlet related items should be in.
+     * @param location
+     *          Location of what is primarily the {@link org.apache.tapestry.html.Body} component.
+     * @param builder
+     *          The response delegate.
+     *
+     * @deprecated To be removed in 4.1.2 - use the
+     *              new {@link #PageRenderSupportImpl(org.apache.tapestry.asset.AssetFactory, String, org.apache.tapestry.services.ResponseBuilder, org.apache.tapestry.IRequestCycle)}
+     *              constructor instead.
+     */
     public PageRenderSupportImpl(AssetFactory assetFactory, String namespace,
                                  Location location, ResponseBuilder builder)
     {
@@ -92,6 +110,19 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
         _preloadName = (namespace.equals("") ? "tapestry." : namespace) + "preload";
     }
 
+    public PageRenderSupportImpl(AssetFactory assetFactory, String namespace,
+                                 ResponseBuilder builder, IRequestCycle cycle)
+    {
+        Defense.notNull(assetFactory, "assetService");
+
+        _assetFactory = assetFactory;
+        _idAllocator = new IdAllocator(namespace);
+        _builder = builder;
+        _cycle = cycle;
+
+        _preloadName = (namespace.equals("") ? "tapestry." : namespace) + "preload";
+    }
+
     /**
      * Returns the location, which may be used in error messages. In practical terms, this is the
      * location of the {@link org.apache.tapestry.html.Body}&nbsp;component.
@@ -99,7 +130,22 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
 
     public Location getLocation()
     {
-        return _location;
+        if (_location != null)
+        {
+            return _location;
+        }
+
+        if (_cycle != null)
+        {
+            IRender render = _cycle.renderStackPeek();
+
+            if (render != null && IComponent.class.isInstance(render))
+            {
+                return ((IComponent)render).getLocation();
+            }
+        }
+        
+        return null;
     }
 
     public String getPreloadedImageReference(String URL)

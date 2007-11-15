@@ -13,8 +13,6 @@
 // limitations under the License.
 package org.apache.tapestry.services.impl;
 
-import java.io.IOException;
-
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.markup.MarkupWriterSource;
@@ -22,6 +20,8 @@ import org.apache.tapestry.services.RequestLocaleManager;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.services.ResponseContributor;
 import org.apache.tapestry.web.WebResponse;
+
+import java.io.IOException;
 
 /**
  * Factory that is used if no other has been chosen, handles normal html
@@ -47,7 +47,7 @@ public class DefaultResponseContributorImpl implements ResponseContributor
     public ResponseBuilder createBuilder(IRequestCycle cycle)
     throws IOException
     {
-        return new DefaultResponseBuilder(_localeManager, _markupWriterSource, 
+        return new DefaultResponseBuilder(cycle, _localeManager, _markupWriterSource,
                 _webResponse, _assetFactory, _webResponse.getNamespace());
     }
     

@@ -13,24 +13,8 @@
 // limitations under the License.
 package org.apache.tapestry.services.impl;
 
-import java.io.CharArrayWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.apache.hivemind.Location;
-import org.apache.tapestry.BaseComponentTestCase;
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRender;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.NestedMarkupWriter;
-import org.apache.tapestry.PageRenderSupport;
-import org.apache.tapestry.RedirectException;
-import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.*;
 import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
@@ -45,19 +29,20 @@ import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.ContentType;
 import org.apache.tapestry.web.WebResponse;
-import static org.easymock.EasyMock.checkOrder;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.EasyMock.isA;
+import static org.easymock.EasyMock.*;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
+
+import java.io.CharArrayWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 /**
  * Tests functionality of {@link DojoAjaxResponseBuilder}.
- *
- * @author jkuhnert
  */
 @SuppressWarnings("cast")
 @Test(sequential=true)
@@ -209,9 +194,6 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         List parts = new ArrayList();
         parts.add("id1");
 
-        DojoAjaxResponseBuilder builder =
-          new DojoAjaxResponseBuilder(cycle, rlm, mrs, resp, errorPages, assetFactory, "", pageService);
-
         expect(page.getPageName()).andReturn("RequestPage").anyTimes();
         expect(cycle.getParameter(ServiceConstants.PAGE)).andReturn("RequestPage").anyTimes();
         expect(page.peekClientId()).andReturn("pageId");
@@ -221,6 +203,9 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         page.render(NullWriter.getSharedInstance(), cycle);
 
         replay();
+
+        DojoAjaxResponseBuilder builder =
+          new DojoAjaxResponseBuilder(cycle, rlm, mrs, resp, errorPages, assetFactory, "", pageService);
 
         builder.render(null, page, cycle);
 
@@ -249,10 +234,6 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         List parts = new ArrayList();
         parts.add("id1");
 
-        DojoAjaxResponseBuilder builder =  new DojoAjaxResponseBuilder(cycle, rlm, mrs, resp, errorPages, assetFactory, "", pageService);
-
-        builder.setWriter(writer);
-
         expect(page.getPageName()).andReturn("RequestPage").anyTimes();
         expect(cycle.getParameter(ServiceConstants.PAGE)).andReturn("anotherPage").anyTimes();
 
@@ -267,6 +248,9 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
 
         replay();
 
+        DojoAjaxResponseBuilder builder =  new DojoAjaxResponseBuilder(cycle, rlm, mrs, resp, errorPages, assetFactory, "", pageService);
+        builder.setWriter(writer);
+
         builder.render(null, page, cycle);
 
         verify();
@@ -279,12 +263,11 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
     {
         IPage page = newMock(IPage.class);
         checkOrder(page, false);
+        
         IRequestCycle cycle = newMock(IRequestCycle.class);
         Infrastructure infra = newMock(Infrastructure.class);
         IMarkupWriter writer = newBufferWriter();
-        NestedMarkupWriter nwriter = newNestedWriter();
 
-        ILink link = newMock(ILink.class);
         Location l = newLocation();
 
         RequestLocaleManager rlm = newMock(RequestLocaleManager.class);
@@ -298,10 +281,8 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         List parts = new ArrayList();
         parts.add("id1");
 
-        DojoAjaxResponseBuilder builder =  new DojoAjaxResponseBuilder(cycle, rlm, mrs, resp, errorPages, assetFactory, "", pageService);
-
         PrintWriter pw = newPrintWriter();
-
+        
         rlm.persistLocale();
         expect(cycle.getInfrastructure()).andReturn(infra).anyTimes();
         expect(infra.getOutputEncoding()).andReturn(("UTF-8")).anyTimes();
@@ -309,22 +290,25 @@ public class DojoAjaxResponseBuilderTest extends BaseComponentTestCase
         expect(resp.getPrintWriter(isA(ContentType.class))).andReturn(pw);
         expect(mrs.newMarkupWriter(eq(pw), isA(ContentType.class))).andReturn(writer);
 
-        expect(cycle.getPage()).andReturn(page);
-        expect(page.getLocation()).andReturn(l);
         expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE)).andReturn(null);
         cycle.setAttribute(eq(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE), isA(PageRenderSupport.class));
 
-        cycle.renderPage(builder);
-        // only done to simulate a caught internal stale link / other exception that would cause a new renderPage() request 
+        cycle.renderPage(isA(DojoAjaxResponseBuilder.class));
+        
+        // only done to simulate a caught internal stale link / other
+        // exception that would cause a new renderPage() request
+        
         expectLastCall().andThrow(new RedirectException("redir"));
 
-        cycle.renderPage(builder);
+        cycle.renderPage(isA(DojoAjaxResponseBuilder.class));
         cycle.removeAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE);
 
         replay();
 
-        try {
+        DojoAjaxResponseBuilder builder =  new DojoAjaxResponseBuilder(cycle, rlm, mrs, resp, errorPages, assetFactory, "", pageService);
 
+        try
+        {
             builder.renderResponse(cycle);
             unreachable();
         } catch (RedirectException e)
