@@ -19,6 +19,7 @@ import org.apache.tapestry.IScript;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.dojo.AbstractWidget;
 import org.apache.tapestry.json.JSONObject;
+import org.apache.tapestry.services.ResponseBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,7 +49,17 @@ public abstract class Dialog extends AbstractWidget
     public abstract String getToggle();
     
     public abstract int getToggleDuration();
-    
+
+    /**
+     * If called will execute the client side widget checkSize() function to re-size
+     * and re-center the widget.  This is useful in circumstances where you are updating
+     * content within the dialog itself.
+     */
+    public void resize()
+    {
+        setResizing(true);
+    }
+
     public void show()
     {
         setHidden(false);
@@ -93,9 +104,25 @@ public abstract class Dialog extends AbstractWidget
             parms.put("props", json.toString());
             
             getScript().execute(this, cycle, TapestryUtils.getPageRenderSupport(cycle, this), parms);
+
+            if (isResizing())
+            {
+                if (!getResponseBuilder().isInitializationScriptAllowed(this))
+                {
+                    getResponseBuilder().updateComponent(getId());
+                }
+
+                getResponseBuilder().addScriptAfterInitialization(this, "dojo.widget.byId('" + getClientId() + "').checkSize();");
+            }
         }
     }
-        
+
+    public abstract ResponseBuilder getResponseBuilder();
+
+    public abstract boolean isResizing();
+
+    public abstract void setResizing(boolean value);
+
     /** injected. */
     public abstract IScript getScript();
 }

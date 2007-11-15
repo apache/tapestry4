@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.portlet;
 
-import org.apache.hivemind.Location;
 import org.apache.tapestry.*;
 import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.markup.MarkupWriterSource;
@@ -75,7 +74,6 @@ public class TestPortletRenderer extends BaseComponentTestCase
         IPage page = newMock(IPage.class);
 
         expect(page.getResponseContentType()).andReturn(contentType);
-        
         expect(page.getPageName()).andReturn("ZePage");
 
         return page;
@@ -91,23 +89,17 @@ public class TestPortletRenderer extends BaseComponentTestCase
         IRequestCycle cycle = newCycle();
         
         cycle.activate(pageName);
-
-        expect(cycle.getPage()).andReturn(page).anyTimes();
         
-        Location l = newLocation();
-        
-        expect(page.getLocation()).andReturn(l);
-        
+        expect(cycle.getPage()).andReturn(page).anyTimes();                
         expect(cycle.getAttribute("org.apache.tapestry.PageRenderSupport")).andReturn(null);
         
         // We can check that an instance of PageRenderSupport is passed in, but
         // we can't (easily) check thta it's configured the way we want.
         
-        cycle.setAttribute(eq("org.apache.tapestry.PageRenderSupport"), 
-                isA(PageRenderSupport.class));
+        cycle.setAttribute(eq("org.apache.tapestry.PageRenderSupport"),  isA(PageRenderSupport.class));
         
         cycle.renderPage(isA(ResponseBuilder.class));
-        
+
         cycle.removeAttribute("org.apache.tapestry.PageRenderSupport");
         
         return cycle;
@@ -138,7 +130,6 @@ public class TestPortletRenderer extends BaseComponentTestCase
         writer.comment("Page: ZePage");
         
         writer.comment(matches("Generated:.*"));
-        
         writer.comment(matches("Framework version:.*"));
 
         nested.close();

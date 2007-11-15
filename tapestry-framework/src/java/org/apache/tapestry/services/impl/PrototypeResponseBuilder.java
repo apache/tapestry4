@@ -102,6 +102,8 @@ public class PrototypeResponseBuilder implements ResponseBuilder {
 
         _assetFactory = assetFactory;
         _namespace = namespace;
+        
+        _prs = new PageRenderSupportImpl(_assetFactory, _namespace, this, cycle);
     }
 
     /**
@@ -142,8 +144,6 @@ public class PrototypeResponseBuilder implements ResponseBuilder {
         }
 
         // render response
-
-        _prs = new PageRenderSupportImpl(_assetFactory, _namespace, cycle.getPage().getLocation(), this);
 
         TapestryUtils.storePageRenderSupport(cycle, _prs);
 

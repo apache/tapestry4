@@ -62,7 +62,7 @@ public class PortletRendererImpl implements PortletRenderer
         
         IMarkupWriter nested = writer.getNestedWriter();
 
-        ResponseBuilder builder = new DefaultResponseBuilder(nested, _assetFactory, namespace, false);
+        ResponseBuilder builder = new DefaultResponseBuilder(cycle, nested, _assetFactory, namespace, false);
         
         builder.renderResponse(cycle);
         
