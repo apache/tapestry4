@@ -101,7 +101,7 @@
         <module>tapestry-contrib</module>
         <module>tapestry-portlet</module>
         <module>tapestry-examples</module>
-		<module>tapestry-archetype</module>	
+		<!-- <module>tapestry-archetype</module> -->	
     </modules>
 
     <dependencyManagement>
