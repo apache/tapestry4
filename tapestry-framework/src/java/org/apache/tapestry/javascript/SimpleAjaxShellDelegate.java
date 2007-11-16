@@ -18,22 +18,23 @@ import java.util.List;
 
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IPage;
 
 /**
  * Outputs the main js packages and the tapestry js 
  * that are defined by the {@link JavascriptManager} service.
  */
-public class SimpleAjaxShellDelegate implements IRender {
-
-    private static final String SYSTEM_NEWLINE= (String)java.security.AccessController.doPrivileged(
+public class SimpleAjaxShellDelegate implements IRender
+{
+    private static final String SYSTEM_NEWLINE = (String)java.security.AccessController.doPrivileged(
       new sun.security.action.GetPropertyAction("line.separator"));
 
     private JavascriptManager _javascriptManager;
 
-    public SimpleAjaxShellDelegate(JavascriptManager javascriptManager) {
+    public SimpleAjaxShellDelegate(JavascriptManager javascriptManager)
+    {
         _javascriptManager = javascriptManager;
     }
 
@@ -44,18 +45,20 @@ public class SimpleAjaxShellDelegate implements IRender {
     {
         IPage page = cycle.getPage();
         StringBuffer str = new StringBuffer();
+
         // include all the main js packages
-        appendAssetsAsJavascript(str, _javascriptManager.getJsAssets());
+        appendAssetsAsJavascript(str, _javascriptManager.getAssets());
         if (page.hasFormComponents())
         {
-            appendAssetsAsJavascript(str, _javascriptManager.getJsFormAssets());
+            appendAssetsAsJavascript(str, _javascriptManager.getFormAssets());
         }
         if (page.hasWidgets())
         {
-            appendAssetsAsJavascript(str, _javascriptManager.getJsWidgetAssets());
+            appendAssetsAsJavascript(str, _javascriptManager.getWidgetAssets());
         }
+        
         // include the tapestry js
-        IAsset tapestryAsset = _javascriptManager.getJsTapestryAsset();
+        IAsset tapestryAsset = _javascriptManager.getTapestryAsset();
         if (tapestryAsset!=null)
         {
             str.append("<script type=\"text/javascript\" src=\"")
@@ -66,7 +69,8 @@ public class SimpleAjaxShellDelegate implements IRender {
         writer.println();
     }
 
-    private void appendAssetsAsJavascript(StringBuffer str, List jsAssets) {
+    private void appendAssetsAsJavascript(StringBuffer str, List jsAssets)
+    {
         for (int i = 0; i < jsAssets.size(); i++)
         {
             IAsset asset = (IAsset) jsAssets.get(i);
