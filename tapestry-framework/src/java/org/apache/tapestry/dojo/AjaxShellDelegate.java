@@ -13,12 +13,17 @@
 // limitations under the License.
 package org.apache.tapestry.dojo;
 
+import java.util.Locale;
+
 import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.*;
+import org.apache.tapestry.IAsset;
+import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IPage;
+import org.apache.tapestry.IRender;
+import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.json.JSONLiteral;
 import org.apache.tapestry.json.JSONObject;
 
-import java.util.Locale;
 
 /**
  * The default rendering delegate responsible for include the dojo sources in
@@ -38,7 +43,13 @@ public class AjaxShellDelegate implements IRender {
     public static final String BROWSER_LOG_CRITICAL="CRITICAL";
 
     private static final String SYSTEM_NEWLINE= (String)java.security.AccessController.doPrivileged(
-      new sun.security.action.GetPropertyAction("line.separator"));
+      new sun.security.action.GetPropertyAction("line.separator"));    
+
+    /** Default list of pre-bundled dojo supported locales. */
+    protected String[] SUPPORTED_LOCALES = { "en-us", "de-de", "de", "en-gb",
+                                             "es-es", "es", "fr-fr", "fr", "zh-cn",
+                                             "zh-tw", "zh" , "it-it", "it", "ja-jp",
+                                             "ja", "ko-kr", "ko", "pt-br", "pt", "en", "xx"};
 
     private IAsset _dojoSource;
 
@@ -68,12 +79,6 @@ public class AjaxShellDelegate implements IRender {
     
     private String _searchIds;
 
-    /** Default list of pre-bundled dojo supported locales */
-    protected String[] SUPPORTED_LOCALES = { "en-us", "de-de", "de", "en-gb",
-                                             "es-es", "es", "fr-fr", "fr", "zh-cn",
-                                             "zh-tw", "zh" , "it-it", "it", "ja-jp",
-                                             "ja", "ko-kr", "ko", "pt-br", "pt", "en", "xx"};
-
     /**
      * {@inheritDoc}
      */
@@ -101,7 +106,10 @@ public class AjaxShellDelegate implements IRender {
 
         // The key to resolving everything out of the asset service
 
-        dojoConfig.put("baseRelativePath", _dojoPath.buildURL());
+        if (_dojoPath!=null)
+        {
+            dojoConfig.put("baseRelativePath", _dojoPath.buildURL());
+        }
 
         if (page.hasFormComponents())
         {
@@ -136,16 +144,19 @@ public class AjaxShellDelegate implements IRender {
 
         // include the core dojo.js package
 
-        str.append("<script type=\"text/javascript\" src=\"")
-          .append(_dojoSource.buildURL()).append("\"></script>");
+        if (_dojoSource!=null)
+        {
+            str.append("<script type=\"text/javascript\" src=\"")
+              .append(_dojoSource.buildURL()).append("\"></script>");
+        }
 
-        if (page.hasFormComponents())
+        if (page.hasFormComponents() && _dojoFormSource!=null)
         {
             str.append("<script type=\"text/javascript\" src=\"")
               .append(_dojoFormSource.buildURL()).append("\"></script>");
         }
 
-        if (page.hasWidgets())
+        if (page.hasWidgets() && _dojoWidgetSource!=null)
         {
             str.append("<script type=\"text/javascript\" src=\"")
               .append(_dojoWidgetSource.buildURL()).append("\"></script>");
@@ -167,21 +178,27 @@ public class AjaxShellDelegate implements IRender {
 
         // module path registration to tapestry javascript sources
 
-        String tapestryUrl = _tapestryPath.buildURL();
-        if (tapestryUrl.endsWith("/"))
+        if (_tapestryPath!=null)
         {
-            tapestryUrl = tapestryUrl.substring(0, tapestryUrl.length() - 1);
-        }
+            String tapestryUrl = _tapestryPath.buildURL();
+            if (tapestryUrl.endsWith("/"))
+            {
+                tapestryUrl = tapestryUrl.substring(0, tapestryUrl.length() - 1);
+            }
 
-        str.append(SYSTEM_NEWLINE).append("<script type=\"text/javascript\">").append(SYSTEM_NEWLINE)
-          .append("dojo.registerModulePath(\"tapestry\", \"")
-          .append(tapestryUrl).append("\");").append(SYSTEM_NEWLINE);
-        str.append("</script>").append(SYSTEM_NEWLINE);
+            str.append(SYSTEM_NEWLINE).append("<script type=\"text/javascript\">").append(SYSTEM_NEWLINE)
+              .append("dojo.registerModulePath(\"tapestry\", \"")
+              .append(tapestryUrl).append("\");").append(SYSTEM_NEWLINE);
+            str.append("</script>").append(SYSTEM_NEWLINE);
+        }
 
         // include core tapestry.js package
 
-        str.append("<script type=\"text/javascript\" src=\"")
-          .append(_tapestrySource.buildURL()).append("\"></script>");
+        if (_tapestrySource!=null)
+        {
+            str.append("<script type=\"text/javascript\" src=\"")
+              .append(_tapestrySource.buildURL()).append("\"></script>");
+        }
 
         // namespace registration
 
