@@ -32,55 +32,64 @@ import org.apache.tapestry.util.DescribedLocation;
  * @author Andreas Andreou
  * @since 4.1.4
  */
-public class JavascriptManagerImpl implements JavascriptManager {
+public class JavascriptManagerImpl implements JavascriptManager
+{
+    private AssetSource _assetSource;
+    private List _files;
+    private List _formFiles;
+    private List _widgetFiles;
+    private IAsset _path;
+    private IAsset _tapestryFile;
+    private IAsset _tapestryPath;
 
-    public JavascriptManagerImpl() {
+    public JavascriptManagerImpl()
+    {
         _files = new ArrayList();
         _formFiles = new ArrayList();
         _widgetFiles = new ArrayList();
     }
 
-    public IAsset getMainJsAsset()
+    public IAsset getFirstAsset()
     {
         return findFirst(_files);
     }
 
-    public IAsset getMainJsFormAsset()
+    public IAsset getFirstFormAsset()
     {
         return findFirst(_formFiles);
     }
 
-    public IAsset getMainJsWidgetAsset()
+    public IAsset getFirstWidgetAsset()
     {
         return findFirst(_widgetFiles);
     }
 
-    public List getJsAssets()
+    public List getAssets()
     {
         return _files;
     }
 
-    public List getJsFormAssets()
+    public List getFormAssets()
     {
         return _formFiles;
     }
 
-    public List getJsWidgetAssets()
+    public List getWidgetAssets()
     {
         return _widgetFiles;
     }
 
-    public IAsset getJsPath()
+    public IAsset getPath()
     {
         return _path;
     }
 
-    public IAsset getJsTapestryAsset()
+    public IAsset getTapestryAsset()
     {
         return _tapestryFile;
     }
 
-    public IAsset getJsTapestryPath()
+    public IAsset getTapestryPath()
     {
         return _tapestryPath;
     }
@@ -100,9 +109,9 @@ public class JavascriptManagerImpl implements JavascriptManager {
         _widgetFiles = buildAssetList(widgetFiles, "widgetFiles");
     }
 
-    public void setPath(String path)
+    public void setFolder(String path)
     {
-        _path = findAsset(path, "path");
+        _path = findAsset(path, "folder");
     }
 
     public void setTapestryFile(String tapestryFile)
@@ -110,9 +119,9 @@ public class JavascriptManagerImpl implements JavascriptManager {
         _tapestryFile = findAsset(tapestryFile, "tapestryFile");
     }
 
-    public void setTapestryPath(String tapestryPath)
+    public void setTapestryFolder(String tapestryPath)
     {
-        _tapestryPath = findAsset(tapestryPath, "tapestryPath");
+        _tapestryPath = findAsset(tapestryPath, "tapestryFolder");
     }
 
     public void setAssetSource(AssetSource assetSource)
@@ -120,12 +129,15 @@ public class JavascriptManagerImpl implements JavascriptManager {
         _assetSource = assetSource;
     }
 
-    private List buildAssetList(String files, String name) {
+    private List buildAssetList(String files, String name)
+    {
         String[] js = TapestryUtils.split(files);
+        
         List list = new ArrayList(js.length);
         for (int i=0; i<js.length; i++) {
             list.add(findAsset(js[i], name + i));
         }
+
         return list;
     }
 
@@ -140,19 +152,11 @@ public class JavascriptManagerImpl implements JavascriptManager {
         return asset;
     }
 
-    private IAsset findFirst(List list) {
+    private IAsset findFirst(List list)
+    {
         if (list == null || list.isEmpty())
             return null;
         else
             return (IAsset) list.get(0);
     }
-
-    private List _files;
-    private List _formFiles;
-    private List _widgetFiles;
-    private IAsset _path;
-    private IAsset _tapestryFile;
-    private IAsset _tapestryPath;
-
-    private AssetSource _assetSource;
 }

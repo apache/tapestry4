@@ -594,10 +594,10 @@ public class FormSupportImpl implements FormSupport
 
             if (!page.hasWidgets())
             {
-                if (_javascriptManager != null && _javascriptManager.getMainJsWidgetAsset() != null)
+                if (_javascriptManager != null && _javascriptManager.getFirstWidgetAsset() != null)
                 {
                     _pageRenderSupport.addExternalScript(_form,
-                            _javascriptManager.getMainJsWidgetAsset().getResourceLocation());
+                            _javascriptManager.getFirstWidgetAsset().getResourceLocation());
                 }
             }
 

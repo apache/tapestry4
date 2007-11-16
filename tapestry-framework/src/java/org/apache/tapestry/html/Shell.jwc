@@ -147,38 +147,38 @@
         </description>
     </parameter>    
 
-    <parameter name="tapestrySource" default-value="ognl:jsManager.jsTapestryAsset">
+    <parameter name="tapestrySource" default-value="ognl:jsManager.tapestryAsset">
         <description>
             If specified, allows for the default tapestry source included to be overriden.
         </description>
     </parameter>
 
-    <parameter name="tapestryPath" default-value="ognl:jsManager.jsTapestryPath">
+    <parameter name="tapestryPath" default-value="ognl:jsManager.tapestryPath">
         <description>
             Sets the tapestry path, needed for dojo to properly detect and find tapestry js modules
             when overriding the default dojo bundled with tapestry.
         </description>
     </parameter>
 
-    <parameter name="dojoSource" default-value="ognl:jsManager.mainJsAsset">
+    <parameter name="dojoSource" default-value="ognl:jsManager.firstAsset">
         <description>
             If specified, allows for the default dojo source included to be overriden.
         </description>
     </parameter>
 
-    <parameter name="dojoFormSource" default-value="ognl:jsManager.mainJsFormAsset">
+    <parameter name="dojoFormSource" default-value="ognl:jsManager.firstFormAsset">
         <description>
             If specified, allows for the default dojo source included to be overriden.
         </description>
     </parameter>
 
-    <parameter name="dojoWidgetSource" default-value="ognl:jsManager.mainJsWidgetAsset">
+    <parameter name="dojoWidgetSource" default-value="ognl:jsManager.firstWidgetAsset">
         <description>
             If specified, allows for the default dojo source included to be overriden.
         </description>
     </parameter>
 
-    <parameter name="dojoPath" default-value="ognl:jsManager.jsPath">
+    <parameter name="dojoPath" default-value="ognl:jsManager.path">
         <description>
             Specifies the default path to the root dojo folder, not the dojo.js file itself. This is
             used by the djConfig.baseRelativePath javascript configuration variable in dojo.

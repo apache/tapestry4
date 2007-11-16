@@ -28,9 +28,9 @@
                 <set property="files" value="classpath:/dojo-0.4.3/dojo.js"/>
                 <set property="formFiles" value="classpath:/dojo-0.4.3/dojo2.js"/>
                 <set property="widgetFiles" value="classpath:/dojo-0.4.3/dojo3.js"/>
-                <set property="path" value="classpath:/dojo-0.4.3/"/>
+                <set property="folder" value="classpath:/dojo-0.4.3/"/>
                 <set property="tapestryFile" value="classpath:/tapestry/core.js"/>
-                <set property="tapestryPath" value="classpath:/tapestry/"/>
+                <set property="tapestryFolder" value="classpath:/tapestry/"/>
             </construct>
         </invoke-factory>
 

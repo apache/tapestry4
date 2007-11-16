@@ -44,9 +44,9 @@ public class TestJavascriptManagerImpl extends TestBase
         replay();
 
         JavascriptManagerImpl impl = createImpl(source, "a.js, b.js", "", "", "", "tap", "");
-        assertEquals(impl.getJsAssets().size(), 2);
-        assertNotNull(impl.getMainJsAsset());
-        assertNotNull(impl.getJsTapestryAsset());
+        assertEquals(impl.getAssets().size(), 2);
+        assertNotNull(impl.getFirstAsset());
+        assertNotNull(impl.getTapestryAsset());
 
         verify();
     }
@@ -58,15 +58,15 @@ public class TestJavascriptManagerImpl extends TestBase
     }
 
     private void assertNullAndEmpty(JavascriptManagerImpl impl) {
-        assertNull(impl.getJsPath());
-        assertNull(impl.getJsTapestryAsset());
-        assertNull(impl.getJsTapestryPath());
-        assertNull(impl.getMainJsAsset());
-        assertNull(impl.getMainJsFormAsset());
-        assertNull(impl.getMainJsWidgetAsset());
-        assertTrue(impl.getJsAssets().isEmpty());
-        assertTrue(impl.getJsFormAssets().isEmpty());
-        assertTrue(impl.getJsWidgetAssets().isEmpty());
+        assertNull(impl.getPath());
+        assertNull(impl.getTapestryAsset());
+        assertNull(impl.getTapestryPath());
+        assertNull(impl.getFirstAsset());
+        assertNull(impl.getFirstFormAsset());
+        assertNull(impl.getFirstWidgetAsset());
+        assertTrue(impl.getAssets().isEmpty());
+        assertTrue(impl.getFormAssets().isEmpty());
+        assertTrue(impl.getWidgetAssets().isEmpty());
     }
 
     private JavascriptManagerImpl createImpl(String...params) {
@@ -84,11 +84,11 @@ public class TestJavascriptManagerImpl extends TestBase
         if (params.length>2)
             impl.setWidgetFiles(params[2]);
         if (params.length>3)
-            impl.setPath(params[3]);
+            impl.setFolder(params[3]);
         if (params.length>4)
             impl.setTapestryFile(params[4]);
         if (params.length>5)
-            impl.setTapestryPath(params[5]);
+            impl.setTapestryFolder(params[5]);
         return impl;
     }
 }

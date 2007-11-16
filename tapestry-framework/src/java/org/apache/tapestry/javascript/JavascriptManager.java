@@ -21,48 +21,55 @@ import org.apache.tapestry.IAsset;
 /**
  * Manages javascript files of 3rd party libraries.
  */
-public interface JavascriptManager {
+public interface JavascriptManager
+{
     /**
      * The javascript files that should always be included.
+     *
      * @return A not-null (but possibly empty) list of {@link IAsset}s.
      */
-    List getJsAssets();
+    List getAssets();
 
-    IAsset getMainJsAsset();
+    IAsset getFirstAsset();
 
     /**
      * The javascript files that provide form-related functionality.
      * They're dynamically included when the page contains forms.
+     *
      * @return A not-null (but possibly empty) list of {@link IAsset}s.
      */
-    List getJsFormAssets();
+    List getFormAssets();
     
-    IAsset getMainJsFormAsset();
+    IAsset getFirstFormAsset();
 
     /**
      * The javascript files that provide widget-related functionality.
      * They're dynamically included when the page contains widgets.
+     *
      * @return A not-null (but possibly empty) list of {@link IAsset}s.
      */
-    List getJsWidgetAssets();
+    List getWidgetAssets();
 
-    IAsset getMainJsWidgetAsset();
+    IAsset getFirstWidgetAsset();
 
     /**
      * The base path to the javascript files.
+     *
      * @return if null, it is left unused.
      */
-    IAsset getJsPath();
+    IAsset getPath();
 
     /**
      * The tapestry js file.
+     *
      * @return if null then no tapestry file is included.
      */
-    IAsset getJsTapestryAsset();
+    IAsset getTapestryAsset();
 
     /**
      * The base path to the tapestry js files.
+     * 
      * @return if null, it is left unused.
      */
-    IAsset getJsTapestryPath();
+    IAsset getTapestryPath();
 }
