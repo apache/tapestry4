@@ -73,7 +73,7 @@ public class XTileService implements IEngineService
         parameters.put(ServiceConstants.PAGE, component.getPage().getPageName());
         parameters.put(ServiceConstants.COMPONENT, component.getIdPath());
 
-        return _linkFactory.constructLink(this, false, parameters, false);
+        return _linkFactory.constructLink(this, false, parameters, true);
     }
 
     public void service(IRequestCycle cycle) throws IOException
