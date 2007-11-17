@@ -6,7 +6,7 @@
         <a jwcid="@DirectLink" listener="listener:doRefresh" 
            updateComponents="testme" async="ognl:true">refresh</a>
         
-        <div jwcid="@Any" id="testme">
+        <div jwcid="testme@Any">
             <div id="flag"><span jwcid="@Insert" value="ognl:flag"/></div>
             <form jwcid="@Form" listener="listener:doNothing">
                 <textarea jwcid="@TextArea" value="ognl:text"/>
