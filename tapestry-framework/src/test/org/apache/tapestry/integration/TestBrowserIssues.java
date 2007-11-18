@@ -33,7 +33,7 @@ public class TestBrowserIssues extends Assert
     private static final int JETTY_PORT = 9999;
     private static final String BASE_URL = "http://localhost:9999/";
 
-    /** 60 seconds */
+    /** 60 seconds. */
     public static final String PAGE_LOAD_TIMEOUT = "60000";
 
     private Selenium _selenium;
@@ -71,11 +71,7 @@ public class TestBrowserIssues extends Assert
 
     public void test_issue_1141() throws Exception
     {
-        _selenium.open(BASE_URL);
-
-        clickAndWait("link=TAPESTRY-1141");
-
-        assertTrue(_selenium.getTitle().contains("TAPESTRY-1141"), _selenium.getHtmlSource());
+        openIssuePage("TAPESTRY-1141");
 
         String body = _selenium.getBodyText();
 
@@ -103,28 +99,78 @@ public class TestBrowserIssues extends Assert
         
         waitForInnerHTML("testme", "[6]");
     }
-    
+
     public void test_issue_1129() throws Exception
     {
-        _selenium.open(BASE_URL);
-
-        clickAndWait("link=TAPESTRY-1129");
-
-        assertTrue(_selenium.getTitle().contains("TAPESTRY-1129"));
+        openIssuePage("TAPESTRY-1129");
 
         String body = _selenium.getBodyText();
 
         assertTrue(body.contains("false"));
-        
+
         _selenium.click("link=refresh");
-        
+
         waitForInnerHTML("flag", "true");
-        
+
         assertTrue(_selenium.isElementPresent("TextArea"));
-        
+
         assertTrue("".equals(_selenium.getValue("TextArea").trim()));
     }
-    
+
+    public void test_issue_1775_a() throws Exception
+    {
+        openIssuePage("TAPESTRY-1775");
+
+        assertFalse(_selenium.isElementPresent("msg"));
+
+        _selenium.click("first");
+
+        waitForInnerHTML("msg", "FIRST");
+
+        _selenium.click("second");
+
+        waitForInnerHTML("msg", "SECOND");
+
+        _selenium.click("first");
+
+        waitForInnerHTML("msg", "");        
+    }
+
+    public void test_issue_1775_b() throws Exception
+    {
+        openIssuePage("TAPESTRY-1775");
+
+        assertTrue("".equals(_selenium.getText("msg2").trim()));
+
+        _selenium.click("success");
+
+        waitForInnerHTML("msg2", "SUCCESS");
+
+        _selenium.click("cancel");
+
+        waitForInnerHTML("msg2", "CANCEL");
+
+        _selenium.click("success");
+
+        waitForInnerHTML("msg2", "SUCCESS");
+
+        _selenium.click("refresh");
+
+        waitForInnerHTML("msg2", "REFRESH");
+
+        _selenium.click("success");
+
+        waitForInnerHTML("msg2", "SUCCESS");
+    }
+
+    private void openIssuePage(String issue) {
+        _selenium.open(BASE_URL);
+
+        clickAndWait("link=" + issue);
+
+        assertTrue(_selenium.getTitle().contains(issue));
+    }
+
     private void waitForInnerHTML(String elm, String content)
     {
         _selenium.waitForCondition("selenium.browserbot.getCurrentWindow().document.getElementById('"
