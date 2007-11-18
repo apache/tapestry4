@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.integration.app1.pages;
 
+/**
+ * Integration test for TAPESTRY-1141.
+ */
 public abstract class Tap1141 extends Home {        
     public abstract String getText();
     public abstract void setText(String text);
