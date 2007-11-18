@@ -4,23 +4,22 @@
 
         <form jwcid="@Form" async="true" updateComponents="in">
             <div jwcid="in@Any">
-            <input jwcid="@Submit" value="First" listener="listener:doFirst" async="true"/>
-            <input jwcid="@Submit" value="Second" listener="listener:doSecond" async="true"/>
-            <input type="submit" value="Nothing"/>
+            <input jwcid="first@Submit" value="First" listener="listener:doFirst" async="true"/>
+            <input jwcid="second@Submit" value="Second" listener="listener:doSecond" async="true"/>
+            <input id="nothing" type="submit" value="Nothing"/>
             <span jwcid="msg@Insert" value="ognl:message" style="color:red;" renderTag="true">Message</span>
             </div>
         </form>
 
         <form jwcid="@Form" async="true" updateComponents="msg2"
               success="listener:doSuccess" cancel="listener:doCancel" refresh="listener:doRefresh">
-            <input jwcid="@Submit" value="Success" async="true"/>
-            <input jwcid="@Submit" value="Cancel" submitType="cancel" async="true"/>
-            <input jwcid="@Submit" value="Refresh" submitType="refresh" async="true"/>
+            <input jwcid="success@Submit" value="Success" async="true"/>
+            <input jwcid="cancel@Submit" value="Cancel" submitType="cancel" async="true"/>
+            <input jwcid="refresh@Submit" value="Refresh" submitType="refresh" async="true"/>
         </form>
 
-        <div jwcid="msg2@Any" style="color:red;">
-            <span jwcid="@Insert" value="ognl:message">Message2</span>
-        </div>
+        <div jwcid="msg2@Any"
+             style="color:red;"><span jwcid="@Insert" value="ognl:message">Message2</span></div>
 
     </body>
 </html>
