@@ -279,9 +279,9 @@ tapestry.form={
 			return;
 		}
 		var id=form.getAttribute("id");
-		if (submitName){
-			form.submitname.value=submitName;
-		}
+        if (submitName){
+            form.submitname.value = submitName;
+        }
 
         if (!dj_undef("value", form.submitmode)
                 && (form.submitmode.value == "cancel" || form.submitmode.value == "refresh")
@@ -292,8 +292,8 @@ tapestry.form={
 
         if (!tapestry.form.validation.validateForm(form, this.forms[id])) {
 			return;
-		}
-		
+        }
+
 		if (parms && !dj_undef("async", parms) && parms.async) {
 			tapestry.form.submitAsync(form, null, submitName, parms);
 			return;
@@ -301,9 +301,9 @@ tapestry.form={
 			tapestry.form.submitAsync(form);
 			return;
 		}
-        
-        form.submit();
-	},
+
+            form.submit();
+    },
 	
 	/**
 	 * Function: cancel
@@ -329,7 +329,8 @@ tapestry.form={
         var formName=form.getAttribute("id");
         var validateState=tapestry.form.forms[formName].validateForm;
         tapestry.form.setFormValidating(formName, false);
-        
+
+        var previous = form.submitmode.value;
         form.submitmode.value="cancel";
 
         if (parms && !dj_undef("async", parms) && parms.async){
@@ -337,7 +338,8 @@ tapestry.form={
         } else {
             this.submit(form, submitName, parms);
         }
-        
+
+        form.submitmode.value = previous;
         tapestry.form.setFormValidating(formName, validateState);
 	},
 	
@@ -365,7 +367,8 @@ tapestry.form={
         var formName=form.getAttribute("id");
         var validateState=tapestry.form.forms[formName].validateForm;
         tapestry.form.setFormValidating(formName, false);
-        
+
+        var previous = form.submitmode.value;
         form.submitmode.value="refresh";
 
         if (parms && !dj_undef("async", parms) && parms.async){
@@ -373,7 +376,8 @@ tapestry.form={
         } else {
             this.submit(form, submitName, parms);
         }
-        
+
+        form.submitmode.value = previous;
         tapestry.form.setFormValidating(formName, validateState);
     },
 	
@@ -406,9 +410,10 @@ tapestry.form={
 			dojo.log.debug("Form validation failed for form with id " + formId);
 			return;
 		}
-		
-		if (submitName){
-			form.submitname.value=submitName;
+
+        if (submitName){
+            var previous = form.submitname.value;
+            form.submitname.value=submitName;
 			if(!content){ content={}; }
 			if(form[submitName]){
 				content[submitName]=form[submitName].value;
@@ -419,7 +424,8 @@ tapestry.form={
 		if (!dj_undef("clickedButton", this.forms[formId])) {
 			if (!content) { content={}; }
 			content[this.forms[formId].clickedButton.getAttribute("name")]=this.forms[formId].clickedButton.getAttribute("value");
-		}
+            delete this.forms[formId].clickedButton;
+        }
 
 		var kwArgs={
 			formNode:form,
@@ -446,7 +452,11 @@ tapestry.form={
 		}
 		tapestry.requestsInFlight++;
         dojo.io.queueBind(kwArgs);
-	}
+
+        if (submitName){
+            form.submitname.value = previous;
+        }
+    }
 }
 
 tapestry.form.validation={
