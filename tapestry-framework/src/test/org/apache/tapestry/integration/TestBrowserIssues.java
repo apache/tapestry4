@@ -131,9 +131,9 @@ public class TestBrowserIssues extends Assert
 
         waitForInnerHTML("msg", "SECOND");
 
-        _selenium.click("first");
+        _selenium.click("nothing");
 
-        waitForInnerHTML("msg", "");        
+        waitForNodeToDisappear("msg");
     }
 
     public void test_issue_1775_b() throws Exception
@@ -175,6 +175,12 @@ public class TestBrowserIssues extends Assert
     {
         _selenium.waitForCondition("selenium.browserbot.getCurrentWindow().document.getElementById('"
                 + elm + "').innerHTML=='" + content + "'","6000");                
+    }
+
+    private void waitForNodeToDisappear(String elm)
+    {
+        _selenium.waitForCondition("!selenium.browserbot.getCurrentWindow().document.getElementById('"
+                + elm + "')","6000");
     }
     
     private void submitFromTextfield(String field)
