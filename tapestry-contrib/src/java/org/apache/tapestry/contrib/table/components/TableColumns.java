@@ -14,14 +14,14 @@
 
 package org.apache.tapestry.contrib.table.components;
 
-import java.util.Iterator;
-
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.apache.tapestry.contrib.table.model.ITableColumnModel;
+
+import java.util.Iterator;
 
 /**
  * A low level Table component that renders the column headers in the table.
@@ -82,7 +82,8 @@ public abstract class TableColumns extends AbstractTableViewComponent
     {
         m_objTableColumn = tableColumn;
 
-        if (isParameterBound("column")) setColumn(tableColumn);
+        if (isParameterBound("column"))
+            setColumn(tableColumn);
     }
 
     /**
@@ -92,8 +93,8 @@ public abstract class TableColumns extends AbstractTableViewComponent
      */
     public Iterator getTableColumnIterator()
     {
-        ITableColumnModel objColumnModel = getTableModelSource()
-                .getTableModel().getColumnModel();
+        ITableColumnModel objColumnModel = getTableModelSource() .getTableModel().getColumnModel();
+        
         return objColumnModel.getColumns();
     }
 
@@ -105,8 +106,7 @@ public abstract class TableColumns extends AbstractTableViewComponent
      */
     public IRender getTableColumnRenderer()
     {
-        return getTableColumn().getColumnRenderer(getPage().getRequestCycle(),
-                getTableModelSource());
+        return getTableColumn().getColumnRenderer(getPage().getRequestCycle(), getTableModelSource());
     }
 
     public abstract String getColumnClassParameter();
@@ -120,7 +120,8 @@ public abstract class TableColumns extends AbstractTableViewComponent
      */
     public String getColumnClass()
     {
-        if (isParameterBound("class")) return getColumnClassParameter();
+        if (isParameterBound("class"))
+            return getColumnClassParameter();
 
         return getTableColumn().getColumnName() + TABLE_COLUMN_CSS_CLASS_SUFFIX;
     }
@@ -132,15 +133,12 @@ public abstract class TableColumns extends AbstractTableViewComponent
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         Object oldValueUp = cycle.getAttribute(TABLE_COLUMN_ARROW_UP_ATTRIBUTE);
-        Object oldValueDown = cycle
-                .getAttribute(TABLE_COLUMN_ARROW_DOWN_ATTRIBUTE);
+        Object oldValueDown = cycle.getAttribute(TABLE_COLUMN_ARROW_DOWN_ATTRIBUTE);
 
         try
         {
-            cycle.setAttribute(TABLE_COLUMN_ARROW_UP_ATTRIBUTE,
-                    getArrowUpAsset());
-            cycle.setAttribute(TABLE_COLUMN_ARROW_DOWN_ATTRIBUTE,
-                    getArrowDownAsset());
+            cycle.setAttribute(TABLE_COLUMN_ARROW_UP_ATTRIBUTE, getArrowUpAsset());
+            cycle.setAttribute(TABLE_COLUMN_ARROW_DOWN_ATTRIBUTE, getArrowDownAsset());
 
             super.renderComponent(writer, cycle);
         }

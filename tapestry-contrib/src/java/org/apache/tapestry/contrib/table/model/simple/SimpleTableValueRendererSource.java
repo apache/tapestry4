@@ -33,7 +33,6 @@ import org.apache.tapestry.valid.RenderString;
  */
 public class SimpleTableValueRendererSource implements ITableRendererSource
 {
-
     private static final long serialVersionUID = 1L;
 
     /**

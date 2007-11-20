@@ -28,8 +28,8 @@ import org.apache.tapestry.util.ComponentAddress;
 /**
  * A component that renders a sorting link - to be used with contrib:Table when 
  * customizing a column's header.
- * 
- * 
+ *
+ *
  * @author andyhot
  */
 public abstract class SimpleTableColumnSortLink extends BaseComponent
@@ -45,7 +45,7 @@ public abstract class SimpleTableColumnSortLink extends BaseComponent
     }
 
     public abstract Table getTable();
-    
+
     /**
      * @see org.apache.tapestry.event.PageDetachListener#pageDetached(PageEvent)
      */
@@ -59,21 +59,22 @@ public abstract class SimpleTableColumnSortLink extends BaseComponent
         m_objColumn = null;
         m_objModelSource = null;
     }
-    
-     public void prepareForRender(IRequestCycle cycle)
-     {
-         if (getTable()==null)
+
+    public void prepareForRender(IRequestCycle cycle)
+    {
+        if (getTable()==null)
             throw Tapestry.createRequiredParameterException(this, "table");
-         m_objModelSource = getTable();
-         m_objColumn = getTable().getTableColumn();         
-     }
+        
+        m_objModelSource = getTable();
+        m_objColumn = getTable().getTableColumn();
+    }
 
     /**
      * @see org.apache.tapestry.contrib.table.model.ITableRendererListener#initializeRenderer(IRequestCycle,
      *      ITableModelSource, ITableColumn, Object)
      */
-    public void initializeRenderer(IRequestCycle objCycle,
-            ITableModelSource objSource, ITableColumn objColumn, Object objRow)
+    public void initializeRenderer(IRequestCycle objCycle, ITableModelSource objSource,
+                                   ITableColumn objColumn, Object objRow)
     {
         m_objModelSource = objSource;
         m_objColumn = objColumn;
@@ -81,8 +82,10 @@ public abstract class SimpleTableColumnSortLink extends BaseComponent
 
     public Object[] getColumnSelectedParameters()
     {
-        return new Object[] { new ComponentAddress(m_objModelSource),
-                m_objColumn.getColumnName() };
+        return new Object[] {
+                new ComponentAddress(m_objModelSource),
+                m_objColumn.getColumnName()
+        };
     }
 
     public void columnSelected(IRequestCycle objCycle)
@@ -91,9 +94,8 @@ public abstract class SimpleTableColumnSortLink extends BaseComponent
         ComponentAddress objAddr = (ComponentAddress) arrArgs[0];
         String strColumnName = (String) arrArgs[1];
 
-        ITableModelSource objSource = (ITableModelSource) objAddr
-                .findComponent(objCycle);
+        ITableModelSource objSource = (ITableModelSource) objAddr.findComponent(objCycle);
+        
         objSource.storeTableAction(new TableActionColumnSort(strColumnName));
     }
-
 }

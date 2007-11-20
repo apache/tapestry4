@@ -18,11 +18,7 @@ import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.contrib.table.components.TableColumns;
-import org.apache.tapestry.contrib.table.model.ITableColumn;
-import org.apache.tapestry.contrib.table.model.ITableModel;
-import org.apache.tapestry.contrib.table.model.ITableModelSource;
-import org.apache.tapestry.contrib.table.model.ITableRendererListener;
-import org.apache.tapestry.contrib.table.model.ITableSortingState;
+import org.apache.tapestry.contrib.table.model.*;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumn;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEvent;
@@ -33,7 +29,7 @@ import org.apache.tapestry.util.ComponentAddress;
  * sortable, it renders the header as a link. Clicking on the link causes the
  * table to be sorted on that column. Clicking on the link again causes the
  * sorting order to be reversed.
- * 
+ *
  * @author mindbridge
  */
 public abstract class SimpleTableColumnComponent extends BaseComponent
@@ -67,8 +63,8 @@ public abstract class SimpleTableColumnComponent extends BaseComponent
      * @see org.apache.tapestry.contrib.table.model.ITableRendererListener#initializeRenderer(IRequestCycle,
      *      ITableModelSource, ITableColumn, Object)
      */
-    public void initializeRenderer(IRequestCycle objCycle,
-            ITableModelSource objSource, ITableColumn objColumn, Object objRow)
+    public void initializeRenderer(IRequestCycle objCycle, ITableModelSource objSource,
+                                   ITableColumn objColumn, Object objRow)
     {
         m_objModelSource = objSource;
         m_objColumn = objColumn;
@@ -89,8 +85,10 @@ public abstract class SimpleTableColumnComponent extends BaseComponent
         if (m_objColumn instanceof SimpleTableColumn)
         {
             SimpleTableColumn objSimpleColumn = (SimpleTableColumn) m_objColumn;
+
             return objSimpleColumn.getDisplayName();
         }
+        
         return m_objColumn.getColumnName();
     }
 
@@ -98,6 +96,7 @@ public abstract class SimpleTableColumnComponent extends BaseComponent
     {
         ITableSortingState objSortingState = getTableModel().getSortingState();
         String strSortColumn = objSortingState.getSortColumn();
+        
         return m_objColumn.getColumnName().equals(strSortColumn);
     }
 
@@ -107,17 +106,20 @@ public abstract class SimpleTableColumnComponent extends BaseComponent
 
         IRequestCycle objCycle = getPage().getRequestCycle();
         ITableSortingState objSortingState = getTableModel().getSortingState();
+        
         if (objSortingState.getSortOrder() == ITableSortingState.SORT_ASCENDING)
         {
-            objImageAsset = (IAsset) objCycle
-                    .getAttribute(TableColumns.TABLE_COLUMN_ARROW_UP_ATTRIBUTE);
-            if (objImageAsset == null) objImageAsset = getAsset("sortUp");
+            objImageAsset = (IAsset) objCycle.getAttribute(TableColumns.TABLE_COLUMN_ARROW_UP_ATTRIBUTE);
+            
+            if (objImageAsset == null)
+                objImageAsset = getAsset("sortUp");
         }
         else
         {
-            objImageAsset = (IAsset) objCycle
-                    .getAttribute(TableColumns.TABLE_COLUMN_ARROW_DOWN_ATTRIBUTE);
-            if (objImageAsset == null) objImageAsset = getAsset("sortDown");
+            objImageAsset = (IAsset) objCycle.getAttribute(TableColumns.TABLE_COLUMN_ARROW_DOWN_ATTRIBUTE);
+
+            if (objImageAsset == null)
+                objImageAsset = getAsset("sortDown");
         }
 
         return objImageAsset;
@@ -125,8 +127,10 @@ public abstract class SimpleTableColumnComponent extends BaseComponent
 
     public Object[] getColumnSelectedParameters()
     {
-        return new Object[] { new ComponentAddress(m_objModelSource),
-                m_objColumn.getColumnName() };
+        return new Object[] {
+                new ComponentAddress(m_objModelSource),
+                m_objColumn.getColumnName()
+        };
     }
 
     public void columnSelected(IRequestCycle objCycle)

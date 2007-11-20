@@ -18,11 +18,7 @@ import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.contrib.table.components.TableColumns;
-import org.apache.tapestry.contrib.table.model.ITableColumn;
-import org.apache.tapestry.contrib.table.model.ITableModel;
-import org.apache.tapestry.contrib.table.model.ITableModelSource;
-import org.apache.tapestry.contrib.table.model.ITableRendererListener;
-import org.apache.tapestry.contrib.table.model.ITableSortingState;
+import org.apache.tapestry.contrib.table.model.*;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumn;
 
 /**
@@ -53,8 +49,8 @@ public abstract class SimpleTableColumnFormComponent extends BaseComponent
      * @see org.apache.tapestry.contrib.table.model.ITableRendererListener#initializeRenderer(IRequestCycle,
      *      ITableModelSource, ITableColumn, Object)
      */
-    public void initializeRenderer(IRequestCycle objCycle,
-            ITableModelSource objSource, ITableColumn objColumn, Object objRow)
+    public void initializeRenderer(IRequestCycle objCycle, ITableModelSource objSource,
+                                   ITableColumn objColumn, Object objRow)
     {
         setTableModelSource(objSource);
         setTableColumn(objColumn);
@@ -77,8 +73,10 @@ public abstract class SimpleTableColumnFormComponent extends BaseComponent
         if (objColumn instanceof SimpleTableColumn)
         {
             SimpleTableColumn objSimpleColumn = (SimpleTableColumn) objColumn;
+
             return objSimpleColumn.getDisplayName();
         }
+        
         return objColumn.getColumnName();
     }
 
@@ -95,17 +93,20 @@ public abstract class SimpleTableColumnFormComponent extends BaseComponent
 
         IRequestCycle objCycle = getPage().getRequestCycle();
         ITableSortingState objSortingState = getTableModel().getSortingState();
+        
         if (objSortingState.getSortOrder() == ITableSortingState.SORT_ASCENDING)
         {
-            objImageAsset = (IAsset) objCycle
-                    .getAttribute(TableColumns.TABLE_COLUMN_ARROW_UP_ATTRIBUTE);
-            if (objImageAsset == null) objImageAsset = getAsset("sortUp");
+            objImageAsset = (IAsset) objCycle.getAttribute(TableColumns.TABLE_COLUMN_ARROW_UP_ATTRIBUTE);
+
+            if (objImageAsset == null)
+                objImageAsset = getAsset("sortUp");
         }
         else
         {
-            objImageAsset = (IAsset) objCycle
-                    .getAttribute(TableColumns.TABLE_COLUMN_ARROW_DOWN_ATTRIBUTE);
-            if (objImageAsset == null) objImageAsset = getAsset("sortDown");
+            objImageAsset = (IAsset) objCycle.getAttribute(TableColumns.TABLE_COLUMN_ARROW_DOWN_ATTRIBUTE);
+
+            if (objImageAsset == null)
+                objImageAsset = getAsset("sortDown");
         }
 
         return objImageAsset;
@@ -115,6 +116,7 @@ public abstract class SimpleTableColumnFormComponent extends BaseComponent
     {
         String strColumnName = getSelectedColumnName();
         ITableModelSource objSource = getTableModelSource();
+        
         objSource.storeTableAction(new TableActionColumnSort(strColumnName));
     }
 

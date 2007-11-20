@@ -97,9 +97,6 @@ public class AbstractTableColumn implements IAdvancedTableColumn, Serializable
      */
     public void setColumnName(String columnName)
     {
-        if (columnName != null)
-            columnName = columnName.replace('.', '_');
-        
         m_strColumnName = columnName;
     }
 
@@ -193,8 +190,7 @@ public class AbstractTableColumn implements IAdvancedTableColumn, Serializable
      * @param columnRendererSource
      *            The columnRendererSource to set
      */
-    public void setColumnRendererSource(
-      ITableRendererSource columnRendererSource)
+    public void setColumnRendererSource(ITableRendererSource columnRendererSource)
     {
         m_objColumnRendererSource = columnRendererSource;
     }
@@ -226,32 +222,50 @@ public class AbstractTableColumn implements IAdvancedTableColumn, Serializable
      * columns if necessary.
      *
      * @param container
-     *            the component from which to get the settings
+     *            The component from which to get the settings.
      */
     public void loadSettings(IComponent container)
     {
+        String columnName = getColumnName();
+        
         IComponent objColumnRendererSource =
-          (IComponent) container.getComponents().get(getColumnName() + COLUMN_RENDERER_BLOCK_SUFFIX);
+                (IComponent) container.getComponents().get(columnName + COLUMN_RENDERER_BLOCK_SUFFIX);
+
+        if (objColumnRendererSource == null && columnName.indexOf(".") > -1)
+        {
+            columnName = columnName.replace('.', '_');
+            
+            objColumnRendererSource =
+                (IComponent) container.getComponents().get(columnName + COLUMN_RENDERER_BLOCK_SUFFIX);
+        }
 
         if (objColumnRendererSource == null)
+        {
             objColumnRendererSource = (IComponent) container.getComponents().get(COLUMN_RENDERER_BLOCK_SUFFIX);
+        }
 
-        if (objColumnRendererSource != null
-            && objColumnRendererSource instanceof Block)
+        if (objColumnRendererSource != null && objColumnRendererSource instanceof Block)
         {
             setColumnRendererSource(new BlockTableRendererSource((Block) objColumnRendererSource));
         }
 
         IComponent objValueRendererSource =
-          (IComponent) container.getComponents().get(getColumnName() + VALUE_RENDERER_BLOCK_SUFFIX);
+                (IComponent) container.getComponents().get(columnName + VALUE_RENDERER_BLOCK_SUFFIX);
+
+        if (objValueRendererSource == null && columnName.indexOf(".") > -1)
+        {
+            columnName = columnName.replace('.', '_');
+
+            objValueRendererSource =
+                (IComponent) container.getComponents().get(columnName + VALUE_RENDERER_BLOCK_SUFFIX);
+        }
 
         if (objValueRendererSource == null)
         {
             objValueRendererSource = (IComponent) container.getComponents().get(VALUE_RENDERER_BLOCK_SUFFIX);
         }
 
-        if (objValueRendererSource != null
-            && objValueRendererSource instanceof Block)
+        if (objValueRendererSource != null && objValueRendererSource instanceof Block)
         {
             setValueRendererSource(new BlockTableRendererSource((Block) objValueRendererSource));
         }
