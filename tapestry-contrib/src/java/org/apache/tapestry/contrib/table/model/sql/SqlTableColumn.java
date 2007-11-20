@@ -14,12 +14,12 @@
 
 package org.apache.tapestry.contrib.table.model.sql;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumn;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * @author mindbridge
@@ -71,7 +71,10 @@ public class SqlTableColumn extends SimpleTableColumn
             ResultSet objRS = (ResultSet) objRow;
             String strColumnName = getColumnName();
             Object objValue = objRS.getObject(strColumnName);
-            if (objValue == null) objValue = "";
+
+            if (objValue == null)
+                objValue = "";
+            
             return objValue;
         }
         catch (SQLException e)

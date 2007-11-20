@@ -14,15 +14,15 @@
 
 package org.apache.tapestry.contrib.table.model.simple;
 
+import org.apache.tapestry.contrib.table.model.ITableColumn;
+import org.apache.tapestry.contrib.table.model.ITableColumnModel;
+import org.apache.tapestry.contrib.table.model.common.ArrayIterator;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.tapestry.contrib.table.model.ITableColumn;
-import org.apache.tapestry.contrib.table.model.ITableColumnModel;
-import org.apache.tapestry.contrib.table.model.common.ArrayIterator;
 
 /**
  * A minimal implementation of the
@@ -33,7 +33,6 @@ import org.apache.tapestry.contrib.table.model.common.ArrayIterator;
  */
 public class SimpleTableColumnModel implements ITableColumnModel, Serializable
 {
-
     private static final long serialVersionUID = 1L;
 
     private ITableColumn[] m_arrColumns;
@@ -42,16 +41,17 @@ public class SimpleTableColumnModel implements ITableColumnModel, Serializable
     public SimpleTableColumnModel(ITableColumn[] arrColumns)
     {
         m_arrColumns = arrColumns;
-
         m_mapColumns = new HashMap();
+
         for(int i = 0; i < m_arrColumns.length; i++)
+        {
             m_mapColumns.put(m_arrColumns[i].getColumnName(), m_arrColumns[i]);
+        }
     }
 
     public SimpleTableColumnModel(List arrColumns)
     {
-        this((ITableColumn[]) arrColumns.toArray(new ITableColumn[arrColumns
-                .size()]));
+        this((ITableColumn[]) arrColumns.toArray(new ITableColumn[arrColumns.size()]));
     }
 
     public int getColumnCount()
@@ -66,6 +66,7 @@ public class SimpleTableColumnModel implements ITableColumnModel, Serializable
             // error message
             return null;
         }
+        
         return m_arrColumns[nColumn];
     }
 
@@ -78,5 +79,4 @@ public class SimpleTableColumnModel implements ITableColumnModel, Serializable
     {
         return new ArrayIterator(m_arrColumns);
     }
-
 }

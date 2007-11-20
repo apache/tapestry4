@@ -19,19 +19,13 @@
   "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
   "http://tapestry.apache.org/dtd/Tapestry_4_0.dtd">
 	
-<component-specification class="org.apache.tapestry.workbench.table.LocaleList" 
-	allow-body="no" allow-informal-parameters="yes">
+<component-specification class="org.apache.tapestry.workbench.table.LocaleList" allow-body="no" allow-informal-parameters="yes">
 
     <bean name="rowClass" class="org.apache.tapestry.bean.EvenOdd"/>
 
-    
-	<!--property name="currentLocale"/-->
-	
 	<property name="selectedLocales" persist="session" initial-value="new java.util.HashSet()"/>
 
-	<component id="form" type="Form">
-		<!--binding name="listener" value="listeners.formSubmit"/-->
-	</component>
+	<component id="form" type="Form" />
 
     <component id="checkboxGroup" type="contrib:CheckboxGroup"/>
     
@@ -48,7 +42,7 @@
 	<component id="tableView" type="contrib:TableView">
         <binding name="source" value="@java.util.Locale@getAvailableLocales()"/>
         <binding name="columns">literal: 
-            * locale:toString(), language:displayLanguage, country:displayCountry, 
+            * locale:toString(), language:displayLanguage, country:displayCountry,
             variant:displayVariant, isoLanguage:ISO3Language, isoCountry:ISO3Country
         </binding>
 	</component>
@@ -62,5 +56,4 @@
 	</component>
 
 	<component id="tableValues" type="contrib:TableValues"/>
-
 </component-specification>

@@ -25,7 +25,7 @@ import java.util.Comparator;
  * A simple minimal implementation of the
  * {@link org.apache.tapestry.contrib.table.model.ITableColumn}interface that
  * provides all the basic services for displaying a column.
- * 
+ *
  * @author mindbridge
  */
 public class SimpleTableColumn extends AbstractTableColumn
@@ -41,14 +41,14 @@ public class SimpleTableColumn extends AbstractTableColumn
     public static final ITableRendererSource DEFAULT_VALUE_RENDERER_SOURCE = new SimpleTableValueRendererSource();
 
     private static final long serialVersionUID = 1L;
-    
+
     private String m_strDisplayName;
 
     private ITableColumnEvaluator m_objEvaluator;
 
     /**
      * Creates a SimpleTableColumn.
-     * 
+     *
      * @param strColumnName
      *            the identifying name and display name of the column
      */
@@ -59,7 +59,7 @@ public class SimpleTableColumn extends AbstractTableColumn
 
     /**
      * Creates a SimpleTableColumn.
-     * 
+     *
      * @param strColumnName
      *            the identifying name and display name of the column
      * @param bSortable
@@ -72,7 +72,7 @@ public class SimpleTableColumn extends AbstractTableColumn
 
     /**
      * Creates a SimpleTableColumn.
-     * 
+     *
      * @param strColumnName
      *            the identifying name and display name of the column
      * @param bSortable
@@ -81,14 +81,14 @@ public class SimpleTableColumn extends AbstractTableColumn
      *            the evaluator to extract the column value from the row
      */
     public SimpleTableColumn(String strColumnName,
-            ITableColumnEvaluator objEvaluator, boolean bSortable)
+                             ITableColumnEvaluator objEvaluator, boolean bSortable)
     {
         this(strColumnName, strColumnName, objEvaluator, bSortable);
     }
 
     /**
      * Creates a SimpleTableColumn.
-     * 
+     *
      * @param strColumnName
      *            the identifying name of the column
      * @param strDisplayName
@@ -101,7 +101,7 @@ public class SimpleTableColumn extends AbstractTableColumn
 
     /**
      * Creates a SimpleTableColumn.
-     * 
+     *
      * @param strColumnName
      *            the identifying name of the column
      * @param strDisplayName
@@ -110,14 +110,14 @@ public class SimpleTableColumn extends AbstractTableColumn
      *            whether the column is sortable
      */
     public SimpleTableColumn(String strColumnName, String strDisplayName,
-            boolean bSortable)
+                             boolean bSortable)
     {
         this(strColumnName, strDisplayName, null, bSortable);
     }
 
     /**
      * Creates a SimpleTableColumn.
-     * 
+     *
      * @param strColumnName
      *            the identifying name of the column
      * @param strDisplayName
@@ -128,9 +128,10 @@ public class SimpleTableColumn extends AbstractTableColumn
      *            the evaluator to extract the column value from the row
      */
     public SimpleTableColumn(String strColumnName, String strDisplayName,
-            ITableColumnEvaluator objEvaluator, boolean bSortable)
+                             ITableColumnEvaluator objEvaluator, boolean bSortable)
     {
         super(strColumnName, bSortable, null);
+
         setComparator(new DefaultTableComparator());
         setDisplayName(strDisplayName);
         setColumnRendererSource(DEFAULT_COLUMN_RENDERER_SOURCE);
@@ -141,7 +142,7 @@ public class SimpleTableColumn extends AbstractTableColumn
     /**
      * Returns the display name of the column that will be used in the table
      * header. Override for internationalization.
-     * 
+     *
      * @return String the display name of the column
      */
     public String getDisplayName()
@@ -151,21 +152,18 @@ public class SimpleTableColumn extends AbstractTableColumn
 
     /**
      * Sets the displayName.
-     * 
+     *
      * @param displayName
      *            The displayName to set
      */
     public void setDisplayName(String displayName)
     {
-        if (displayName != null)
-            displayName = displayName.replace('_', '.');
-        
         m_strDisplayName = displayName;
     }
 
     /**
      * Returns the evaluator.
-     * 
+     *
      * @return ITableColumnEvaluator
      */
     public ITableColumnEvaluator getEvaluator()
@@ -175,7 +173,7 @@ public class SimpleTableColumn extends AbstractTableColumn
 
     /**
      * Sets the evaluator.
-     * 
+     *
      * @param evaluator
      *            The evaluator to set
      */
@@ -190,7 +188,7 @@ public class SimpleTableColumn extends AbstractTableColumn
      * This method allows easier use of standard comparators for sorting the
      * column. It simply wraps the provided comparator with a row-to-column
      * convertor and invokes the setComparator() method.
-     * 
+     *
      * @param comparator
      *            The column value comparator
      */
@@ -201,7 +199,7 @@ public class SimpleTableColumn extends AbstractTableColumn
 
     /**
      * Extracts the value of the column from the row object.
-     * 
+     *
      * @param objRow
      *            the row object
      * @return Object the column value
@@ -209,6 +207,7 @@ public class SimpleTableColumn extends AbstractTableColumn
     public Object getColumnValue(Object objRow)
     {
         ITableColumnEvaluator objEvaluator = getEvaluator();
+        
         if (objEvaluator != null)
             return objEvaluator.getColumnValue(this, objRow);
 
@@ -219,7 +218,7 @@ public class SimpleTableColumn extends AbstractTableColumn
     /**
      * Use the column name to get the display name, as well as the column and
      * value renderer sources from the provided component.
-     * 
+     *
      * @param objSettingsContainer
      *            the component from which to get the settings
      */
@@ -241,7 +240,7 @@ public class SimpleTableColumn extends AbstractTableColumn
     }
 
     /**
-     * 
+     *
      * @author mb
      */
     public class DefaultTableComparator implements Comparator, Serializable
