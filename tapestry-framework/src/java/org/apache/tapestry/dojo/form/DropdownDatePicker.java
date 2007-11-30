@@ -72,7 +72,7 @@ public abstract class DropdownDatePicker extends AbstractFormWidget implements T
         // the html output doesn't matter very much as dojo
         // will create an inline input field for us anyways, but we do need
         // a node to reference
-        writer.begin("div");
+        writer.begin(getTemplateTagName());
         renderIdAttribute(writer, cycle);
         
         renderDelegateAttributes(writer, cycle);
