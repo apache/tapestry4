@@ -62,7 +62,8 @@ public class TestDropdownTimePicker extends BaseFormComponentTestCase
                                                    "validatableFieldSupport", vfs,
                                                    "translator", translator,
                                                    "value", dtValue,
-                                                   "page", page);
+                                                   "page", page,
+                                                   "templateTagName", "div");
 
         expect(cycle.renderStackPush(component)).andReturn(component);
         expect(form.getName()).andReturn("testform").anyTimes();
