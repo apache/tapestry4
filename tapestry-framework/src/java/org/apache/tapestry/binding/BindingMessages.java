@@ -26,7 +26,7 @@ final class BindingMessages
 {
     private static final MessageFormatter _formatter = new MessageFormatter(BindingMessages.class);
 
-    /* defeat insantiation */
+    /* defeat instantiation */
     private BindingMessages() { }
     
     static String convertObjectError(IBinding binding, Throwable cause)

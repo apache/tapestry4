@@ -28,7 +28,7 @@ final class MarkupMessages
     private static final MessageFormatter _formatter = new MessageFormatter(MarkupMessages.class,
             "MarkupStrings");
 
-    /* defeat insantiation */
+    /* defeat instantiation */
     private MarkupMessages() { }
     
     static String tagNotOpen()
