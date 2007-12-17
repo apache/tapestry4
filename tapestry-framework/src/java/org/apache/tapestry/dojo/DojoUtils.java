@@ -26,7 +26,7 @@ import org.apache.tapestry.json.JSONObject;
  */
 public final class DojoUtils
 {
-    /* defeat insantiation */
+    /* defeat instantiation */
     private DojoUtils() { }
     
     /**

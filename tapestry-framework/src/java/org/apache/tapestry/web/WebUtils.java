@@ -27,7 +27,7 @@ import org.apache.hivemind.util.Defense;
  */
 public final class WebUtils
 {
-    /* defeat insantiation */
+    /* defeat instantiation */
     private WebUtils() { }
     
     /**

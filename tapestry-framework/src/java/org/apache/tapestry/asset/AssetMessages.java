@@ -27,7 +27,7 @@ final class AssetMessages
 {
     private static final MessageFormatter _formatter = new MessageFormatter(AssetMessages.class);
 
-    /* defeat insantiation */
+    /* defeat instantiation */
     private AssetMessages() { }
     
     static String missingAsset(String path, Resource resource)
