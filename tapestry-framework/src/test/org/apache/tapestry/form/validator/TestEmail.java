@@ -113,8 +113,6 @@ public class TestEmail extends BaseValidatorTestCase
         
         IFormComponent field = newField("Fred", "myfield");
         
-        context.addInitializationScript(field, "dojo.require(\"dojo.validate.web\");");
-        
         expect(context.getProfile()).andReturn(json);
         
         trainFormatMessage(context, null, ValidationStrings.INVALID_EMAIL, 
@@ -140,8 +138,6 @@ public class TestEmail extends BaseValidatorTestCase
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
         
         IFormComponent field = newField("Fred", "barney");
-        
-        context.addInitializationScript(field, "dojo.require(\"dojo.validate.web\");");
         
         expect(context.getProfile()).andReturn(json);
         

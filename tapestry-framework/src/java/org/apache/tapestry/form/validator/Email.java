@@ -86,9 +86,7 @@ public class Email extends BaseValidator
     
     public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
             FormComponentContributorContext context, IFormComponent field)
-    {
-        context.addInitializationScript(field, "dojo.require(\"dojo.validate.web\");");
-        
+    {        
         JSONObject profile = context.getProfile();
         
         if (!profile.has(ValidationConstants.CONSTRAINTS)) {
