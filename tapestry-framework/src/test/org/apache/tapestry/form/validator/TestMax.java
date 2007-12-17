@@ -109,8 +109,6 @@ public class TestMax extends BaseValidatorTestCase
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
         IFormComponent field = newField("My Field", "myfield");
 
-        context.addInitializationScript(field, "dojo.require(\"dojo.i18n.number\");");
-
         Locale locale = Locale.GERMAN;
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
 
@@ -142,8 +140,6 @@ public class TestMax extends BaseValidatorTestCase
         JSONObject json = new JSONObject();
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
         IFormComponent field = newField("My Field", "myfield");
-
-        context.addInitializationScript(field, "dojo.require(\"dojo.i18n.number\");");
 
         Locale locale = Locale.JAPAN;
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);

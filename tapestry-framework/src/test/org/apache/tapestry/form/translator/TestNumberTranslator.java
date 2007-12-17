@@ -240,7 +240,6 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
         
         expect(context.getProfile()).andReturn(json);
-        context.addInitializationScript(field, "dojo.require(\"dojo.i18n.number\");");
         
         trainGetLocale(context, Locale.ENGLISH);
         
@@ -273,7 +272,6 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
 
         expect(context.getProfile()).andReturn(json);
-        context.addInitializationScript(field, "dojo.require(\"dojo.i18n.number\");");
 
         trainGetLocale(context, Locale.US);
 
@@ -308,7 +306,6 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
 
         expect(context.getProfile()).andReturn(json);
-        context.addInitializationScript(field, "dojo.require(\"dojo.i18n.number\");");
         
         trainGetLocale(context, Locale.ENGLISH);
         
@@ -346,7 +343,6 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         FormComponentContributorContext context = newMock(FormComponentContributorContext.class);
         
         expect(context.getProfile()).andReturn(json);
-        context.addInitializationScript(field, "dojo.require(\"dojo.i18n.number\");");
         
         trainGetLocale(context, Locale.ENGLISH);
         
