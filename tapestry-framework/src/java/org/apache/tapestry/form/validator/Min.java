@@ -96,8 +96,6 @@ public class Min extends BaseValidator
         }
         JSONObject cons = profile.getJSONObject(ValidationConstants.CONSTRAINTS);
 
-        context.addInitializationScript(field, "dojo.require(\"dojo.i18n.number\");");
-
         String minString = getStringValue(context.getLocale(), field);
         String grouping = "";
 

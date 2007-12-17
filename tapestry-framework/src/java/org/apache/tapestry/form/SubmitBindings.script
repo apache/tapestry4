@@ -9,7 +9,6 @@
 <input-symbol key="parms" />
     <body>
         <unique>
-            dojo.require("dojo.event.common");
             dojo.require("tapestry.form");
         </unique>
     </body>

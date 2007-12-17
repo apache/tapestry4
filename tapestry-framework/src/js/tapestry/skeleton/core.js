@@ -159,3 +159,7 @@ tapestry.form = {
 tapestry.event = {
     stopEvent: function() {tapestry.log('t.e.stopEvent', arguments);}
 };
+
+tapestry.widget = {
+    synchronizeWidgetState: function() {tapestry.log('t.w.synchronizeWidgetState', arguments);}
+};

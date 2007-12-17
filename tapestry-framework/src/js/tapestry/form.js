@@ -732,6 +732,7 @@ tapestry.form.validation={
     *  the locale settings configured for the current page.
     */
     greaterThanOrEqual:function(value, minString, flags){
+        dojo.require("dojo.i18n.number");
         flags.validate=false;
         var min = dojo.i18n.number.parse(minString, null, flags);
         var num = dojo.i18n.number.parse(value, null, flags);
@@ -746,6 +747,7 @@ tapestry.form.validation={
     *  the locale settings configured for the current page.
     */
     lessThanOrEqual:function(value, maxString, flags){
+        dojo.require("dojo.i18n.number");
         flags.validate=false;
         var max = dojo.i18n.number.parse(maxString, null, flags);
         var num = dojo.i18n.number.parse(value, null, flags);

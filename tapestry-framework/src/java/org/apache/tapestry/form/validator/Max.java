@@ -96,8 +96,6 @@ public class Max extends BaseValidator
         }
         JSONObject cons = profile.getJSONObject(ValidationConstants.CONSTRAINTS);
 
-        context.addInitializationScript(field, "dojo.require(\"dojo.i18n.number\");");
-
         String maxString = getStringValue(context.getLocale(), field);
         String grouping = "";
 
