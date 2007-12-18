@@ -28,8 +28,7 @@ import org.apache.tapestry.IRequestCycle;
  */
 public class SimpleAjaxShellDelegate implements IRender
 {
-    private static final String SYSTEM_NEWLINE = (String)java.security.AccessController.doPrivileged(
-      new sun.security.action.GetPropertyAction("line.separator"));
+    private static final String SYSTEM_NEWLINE = "\n";
 
     private JavascriptManager _javascriptManager;
 
@@ -42,40 +41,78 @@ public class SimpleAjaxShellDelegate implements IRender
      * {@inheritDoc}
      */
     public void render(IMarkupWriter writer, IRequestCycle cycle)
-    {
-        IPage page = cycle.getPage();
-        StringBuffer str = new StringBuffer();
+    {        
+        StringBuffer str = new StringBuffer(300);
+        
+        processPath(str, cycle, _javascriptManager.getPath());
 
         // include all the main js packages
-        appendAssetsAsJavascript(str, _javascriptManager.getAssets());
+        appendAssetsAsJavascript(str, cycle, _javascriptManager.getAssets());
+        
+        IPage page = cycle.getPage();
         if (page.hasFormComponents())
         {
-            appendAssetsAsJavascript(str, _javascriptManager.getFormAssets());
+            appendAssetsAsJavascript(str, cycle, _javascriptManager.getFormAssets());
         }
         if (page.hasWidgets())
         {
-            appendAssetsAsJavascript(str, _javascriptManager.getWidgetAssets());
+            appendAssetsAsJavascript(str, cycle, _javascriptManager.getWidgetAssets());
         }
+        
+        processTapestryPath(str, cycle, _javascriptManager.getTapestryPath());
         
         // include the tapestry js
         IAsset tapestryAsset = _javascriptManager.getTapestryAsset();
         if (tapestryAsset!=null)
         {
-            str.append("<script type=\"text/javascript\" src=\"")
-                .append(tapestryAsset.buildURL()).append("\"></script>").append(SYSTEM_NEWLINE);
+            appendAssetAsJavascript(str, cycle, tapestryAsset);
         }
 
         writer.printRaw(str.toString());
         writer.println();
     }
+    
+    /**
+     * Called before including any javascript. It does nothing by default, but allows
+     * subclasses to change this behavior.  
+     * @param cycle
+     * @param str 
+     * @param path The base path to the javascript files. May be null.
+     */
+    protected void processPath(StringBuffer str, IRequestCycle cycle, IAsset path) 
+    {
+    }  
+    
+    /**
+     * Called before including tapestry's base javascript. It does nothing by default, 
+     * but allows subclasses to change this behavior.  
+     * @param cycle
+     * @param str 
+     * @param path The base path to the tapestry javascript file. May be null.
+     */    
+    protected void processTapestryPath(StringBuffer str, IRequestCycle cycle, IAsset path) 
+    {
+    }      
+    
+    /**
+     * Appends a script tag to include the given asset. 
+     * @param str
+     * @param cycle
+     * @param asset
+     */
+    protected void appendAssetAsJavascript(StringBuffer str, IRequestCycle cycle, IAsset asset)
+    {
+        final String url = asset.buildURL();
+        str.append("<script type=\"text/javascript\" src=\"").append(url)
+                .append("\"></script>").append(SYSTEM_NEWLINE);
+        
+    }        
 
-    private void appendAssetsAsJavascript(StringBuffer str, List jsAssets)
+    private void appendAssetsAsJavascript(StringBuffer str, IRequestCycle cycle, List jsAssets)
     {
         for (int i = 0; i < jsAssets.size(); i++)
         {
-            IAsset asset = (IAsset) jsAssets.get(i);
-            str.append("<script type=\"text/javascript\" src=\"")
-                .append(asset.buildURL()).append("\"></script>").append(SYSTEM_NEWLINE);
+            appendAssetAsJavascript(str, cycle, (IAsset) jsAssets.get(i));
         }
     }
 }
