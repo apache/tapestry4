@@ -14,31 +14,11 @@
 
 package org.apache.tapestry.form;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IForm;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRender;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.NestedMarkupWriter;
-import org.apache.tapestry.PageRenderSupport;
-import org.apache.tapestry.StaleLinkException;
-import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.*;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.javascript.JavascriptManager;
@@ -47,6 +27,8 @@ import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.IdAllocator;
 import org.apache.tapestry.valid.IValidationDelegate;
+
+import java.util.*;
 
 /**
  * Encapsulates most of the behavior of a Form component.
@@ -569,6 +551,8 @@ public class FormSupportImpl implements FormSupport
 
         if (_pageRenderSupport == null)
             return;
+        
+        _pageRenderSupport.addInitializationScript(_form, "dojo.require(\"tapestry.form\");");
 
         // If the form doesn't support focus, or the focus has already been set by a different form,
         // then do nothing.
@@ -576,9 +560,8 @@ public class FormSupportImpl implements FormSupport
         if (!_cycle.isFocusDisabled() && fieldId != null && _form.getFocus()
             && _cycle.getAttribute(FIELD_FOCUS_ATTRIBUTE) == null)
         {
-            _pageRenderSupport.addInitializationScript(_form, "dojo.require(\"tapestry.form\");");
-
             // needs to happen last to avoid dialog issues in ie - TAPESTRY-1705
+            
             _pageRenderSupport.addScriptAfterInitialization(_form, "tapestry.form.focusField('" + fieldId + "');");
 
             _cycle.setAttribute(FIELD_FOCUS_ATTRIBUTE, Boolean.TRUE);
@@ -601,7 +584,7 @@ public class FormSupportImpl implements FormSupport
                 }
             }
 
-            _pageRenderSupport.addInitializationScript(_form, "dojo.require(\"tapestry.form\");tapestry.form.clearProfiles('"
+            _pageRenderSupport.addInitializationScript(_form, "tapestry.form.clearProfiles('"
                                                               + formId + "'); tapestry.form.registerProfile('" + formId + "',"
                                                               + _profile.toString() + ");");
         }

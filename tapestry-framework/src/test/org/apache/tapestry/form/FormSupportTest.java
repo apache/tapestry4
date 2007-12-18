@@ -39,20 +39,20 @@ import java.util.Map;
  */
 @Test(sequential = true)
 public class FormSupportTest extends BaseComponentTestCase {
+
     @DataProvider(name = "allSupports")
     public Object[][] createAllSupports()
     {
         return new Object[][]{
-          {new FormSupportFactoryImpl()},
-          {new MultipleFormSupportFactory()}
+                {new FormSupportFactoryImpl()},
+                {new MultipleFormSupportFactory()}
         };
     }
 
     @DataProvider(name = "mainSupport")
     public Object[][] createMainSupport()
     {
-        return new Object[][]{
-          {new FormSupportFactoryImpl()}
+        return new Object[][]{ {new FormSupportFactoryImpl()}
         };
     }
 
@@ -65,7 +65,7 @@ public class FormSupportTest extends BaseComponentTestCase {
                                            final IMarkupWriter nested)
     {
         return newComponentsRenderBody(fs, new IFormComponent[]
-          {component}, nested);
+                {component}, nested);
     }
 
     private IRender newComponentsRenderBody(final FormSupport fs, final IFormComponent[] component,
@@ -187,16 +187,16 @@ public class FormSupportTest extends BaseComponentTestCase {
         final IFormComponent barney2 = newFormComponent("barney", "barney_0");
 
         IRender body = newComponentsRenderBody(fs, new IFormComponent[]
-          {barney1, wilma, barney2}, nested);
+                {barney1, wilma, barney2}, nested);
 
         form.setBody(body);
 
         trainRegister(support, form, "myform");
 
         trainGetParameterNames(link, new String[]
-          {"service"});
+                {"service"});
         trainGetParameterValues(link, "service", new String[]
-          {"fred"});
+                {"fred"});
 
         trainGetNestedWriter(writer, nested);
 
@@ -267,7 +267,7 @@ public class FormSupportTest extends BaseComponentTestCase {
         final IFormComponent barney2 = newFormComponent("barney", "barney_0");
 
         IRender body = newComponentsRenderBody(fs, new IFormComponent[]
-          {barney1, wilma, barney2}, writer);
+                {barney1, wilma, barney2}, writer);
 
         form.setBody(body);
         form.setEventInvoker(invoker);
@@ -322,10 +322,10 @@ public class FormSupportTest extends BaseComponentTestCase {
         trainRegister(support, form, "myform");
 
         trainGetParameterNames(link, new String[]
-          {"service"});
+                {"service"});
 
         trainGetParameterValues(link, "service", new String[]
-          {"fred"});
+                {"fred"});
 
         trainGetNestedWriter(writer, nested);
 
@@ -349,6 +349,8 @@ public class FormSupportTest extends BaseComponentTestCase {
         nested.close();
 
         writer.end();
+
+        support.addInitializationScript(form, "dojo.require(\"tapestry.form\");");
 
         // Side test: what if no focus field?
 
@@ -396,12 +398,9 @@ public class FormSupportTest extends BaseComponentTestCase {
 
         trainRegister(support, form, "myform");
 
-        trainGetParameterNames(link, new String[]
-          {"service"});
-
-        trainGetParameterValues(link, "service", new String[]
-          {"fred"});
-
+        trainGetParameterNames(link, new String[] {"service"});
+        trainGetParameterValues(link, "service", new String[] {"fred"});
+        
         trainGetNestedWriter(writer, nested);
 
         trainGetURL(link, null, "/app");
@@ -422,6 +421,8 @@ public class FormSupportTest extends BaseComponentTestCase {
         nested.close();
 
         writer.end();
+
+        support.addInitializationScript(form, "dojo.require(\"tapestry.form\");");
 
         trainGetFocusField(delegate, null);
 
@@ -478,9 +479,9 @@ public class FormSupportTest extends BaseComponentTestCase {
         }
         catch (ApplicationRuntimeException ex) {
             assertEquals(
-              "Field EasyMock for interface org.apache.tapestry.form.IFormComponent has already been pre-rendered. "
-              + "This exception may indicate that a FieldLabel rendered, but the corresponding field did not.",
-              ex.getMessage());
+                    "Field EasyMock for interface org.apache.tapestry.form.IFormComponent has already been pre-rendered. "
+                    + "This exception may indicate that a FieldLabel rendered, but the corresponding field did not.",
+                    ex.getMessage());
 
             assertSame(l, ex.getLocation());
             assertSame(field, ex.getComponent());
@@ -558,6 +559,8 @@ public class FormSupportTest extends BaseComponentTestCase {
 
         writer.end();
 
+        support.addInitializationScript(form, "dojo.require(\"tapestry.form\");");
+
         trainGetFocusField(delegate, null);
 
         expect(cycle.isFocusDisabled()).andReturn(false);
@@ -603,10 +606,10 @@ public class FormSupportTest extends BaseComponentTestCase {
         trainRegister(support, form, "myform");
 
         trainGetParameterNames(link, new String[]
-          {"service"});
+                {"service"});
 
         trainGetParameterValues(link, "service", new String[]
-          {"fred"});
+                {"fred"});
 
         trainGetNestedWriter(writer, nested);
 
@@ -618,8 +621,8 @@ public class FormSupportTest extends BaseComponentTestCase {
         }
         catch (ApplicationRuntimeException ex) {
             assertEquals(
-              "Components within form SomePage/myform have requested conflicting encoding types 'foo/bar' and 'zip/zap'.",
-              ex.getMessage());
+                    "Components within form SomePage/myform have requested conflicting encoding types 'foo/bar' and 'zip/zap'.",
+                    ex.getMessage());
             assertSame(form, ex.getComponent());
         }
 
@@ -702,10 +705,10 @@ public class FormSupportTest extends BaseComponentTestCase {
         trainRegister(support, form, "myform");
 
         trainGetParameterNames(link, new String[]
-          {"action"});
+                {"action"});
 
         trainGetParameterValues(link, "action", new String[]
-          {"fred"});
+                {"fred"});
 
         trainGetNestedWriter(writer, nested);
 
@@ -738,6 +741,8 @@ public class FormSupportTest extends BaseComponentTestCase {
         nested.close();
 
         writer.end();
+
+        support.addInitializationScript(form, "dojo.require(\"tapestry.form\");");
 
         trainGetFocusField(delegate, null);
 
@@ -786,10 +791,10 @@ public class FormSupportTest extends BaseComponentTestCase {
         trainRegister(support, form, "myform");
 
         trainGetParameterNames(link, new String[]
-          {"service"});
+                {"service"});
 
         trainGetParameterValues(link, "service", new String[]
-          {"fred"});
+                {"fred"});
 
         trainGetNestedWriter(writer, nested);
 
@@ -814,6 +819,8 @@ public class FormSupportTest extends BaseComponentTestCase {
 
         writer.end();
 
+        support.addInitializationScript(form, "dojo.require(\"tapestry.form\");");
+
         trainGetFocusField(delegate, null);
 
         expect(cycle.isFocusDisabled()).andReturn(false);
@@ -832,7 +839,7 @@ public class FormSupportTest extends BaseComponentTestCase {
         IRequestCycle cycle = newCycle();
         IValidationDelegate delegate = newDelegate();
         ComponentEventInvoker invoker =
-          org.easymock.classextension.EasyMock.createMock(ComponentEventInvoker.class);
+                org.easymock.classextension.EasyMock.createMock(ComponentEventInvoker.class);
 
         MockForm form = new MockForm(delegate);
 
@@ -901,7 +908,7 @@ public class FormSupportTest extends BaseComponentTestCase {
         final IFormComponent barney2 = newFormComponent("barney", "SomePage/barney", l);
 
         IRender body = newComponentsRenderBody(fs, new IFormComponent[]
-          {barney1, wilma, barney2}, writer);
+                {barney1, wilma, barney2}, writer);
 
         form.setBody(body);
 
@@ -913,8 +920,8 @@ public class FormSupportTest extends BaseComponentTestCase {
         }
         catch (StaleLinkException ex) {
             assertEquals(
-              "Rewind of form SomePage/myform expected allocated id #3 to be 'pebbles', but was 'barney_0' (requested by component SomePage/barney).",
-              ex.getMessage());
+                    "Rewind of form SomePage/myform expected allocated id #3 to be 'pebbles', but was 'barney_0' (requested by component SomePage/barney).",
+                    ex.getMessage());
             assertSame(barney2, ex.getComponent());
             assertSame(l, ex.getLocation());
         }
@@ -955,7 +962,7 @@ public class FormSupportTest extends BaseComponentTestCase {
         final IFormComponent barney2 = newFormComponent("barney", "SomePage/barney", l);
 
         IRender body = newComponentsRenderBody(fs, new IFormComponent[]
-          {barney1, wilma, barney2}, writer);
+                {barney1, wilma, barney2}, writer);
 
         form.setBody(body);
 
@@ -967,8 +974,8 @@ public class FormSupportTest extends BaseComponentTestCase {
         }
         catch (StaleLinkException ex) {
             assertEquals(
-              "Rewind of form SomePage/myform expected only 2 form elements, but an additional id was requested by component SomePage/barney.",
-              ex.getMessage());
+                    "Rewind of form SomePage/myform expected only 2 form elements, but an additional id was requested by component SomePage/barney.",
+                    ex.getMessage());
             assertSame(barney2, ex.getComponent());
             assertSame(l, ex.getLocation());
         }
@@ -1024,8 +1031,8 @@ public class FormSupportTest extends BaseComponentTestCase {
         }
         catch (StaleLinkException ex) {
             assertEquals(
-              "Rewind of form SomePage/myform expected 1 more form elements, starting with id 'barney$0'.",
-              ex.getMessage());
+                    "Rewind of form SomePage/myform expected 1 more form elements, starting with id 'barney$0'.",
+                    ex.getMessage());
             assertSame(form, ex.getComponent());
             assertSame(l, ex.getLocation());
         }
@@ -1067,9 +1074,9 @@ public class FormSupportTest extends BaseComponentTestCase {
         trainRegister(support, form, "myform");
 
         trainGetParameterNames(link, new String[]
-          {"service"});
+                {"service"});
         trainGetParameterValues(link, "service", new String[]
-          {"fred"});
+                {"fred"});
 
         trainGetNestedWriter(writer, nested);
 
@@ -1154,11 +1161,9 @@ public class FormSupportTest extends BaseComponentTestCase {
 
         trainRegister(support, form, "myform");
 
-        trainGetParameterNames(link, new String[]
-          {"service"});
-        trainGetParameterValues(link, "service", new String[]
-          {"fred"});
-
+        trainGetParameterNames(link, new String[] {"service"});
+        trainGetParameterValues(link, "service", new String[]{"fred"});
+        
         trainGetNestedWriter(writer, nested);
 
         nested.print("DEFERRED");
@@ -1180,6 +1185,8 @@ public class FormSupportTest extends BaseComponentTestCase {
         nested.close();
 
         writer.end();
+
+        support.addInitializationScript(form, "dojo.require(\"tapestry.form\");");
 
         trainGetFocusField(delegate, null);
 
@@ -1226,9 +1233,9 @@ public class FormSupportTest extends BaseComponentTestCase {
         trainRegister(support, form, "myform");
 
         trainGetParameterNames(link, new String[]
-          {"service"});
+                {"service"});
         trainGetParameterValues(link, "service", new String[]
-          {"fred"});
+                {"fred"});
 
         trainGetNestedWriter(writer, nested);
 
@@ -1249,6 +1256,8 @@ public class FormSupportTest extends BaseComponentTestCase {
         nested.close();
 
         writer.end();
+
+        support.addInitializationScript(form, "dojo.require(\"tapestry.form\");");
 
         trainGetFocusField(delegate, "barney");
 
@@ -1277,7 +1286,7 @@ public class FormSupportTest extends BaseComponentTestCase {
         IValidationDelegate delegate = newDelegate();
         MockForm form = new MockForm(delegate);
         ComponentEventInvoker invoker =
-          org.easymock.classextension.EasyMock.createMock(ComponentEventInvoker.class);
+                org.easymock.classextension.EasyMock.createMock(ComponentEventInvoker.class);
 
         trainIsRewound(cycle, form, true);
 
@@ -1319,7 +1328,7 @@ public class FormSupportTest extends BaseComponentTestCase {
         IValidationDelegate delegate = newDelegate();
         MockForm form = new MockForm(delegate);
         ComponentEventInvoker invoker =
-          org.easymock.classextension.EasyMock.createMock(ComponentEventInvoker.class);
+                org.easymock.classextension.EasyMock.createMock(ComponentEventInvoker.class);
 
         trainIsRewound(cycle, form, true);
 
@@ -1393,9 +1402,9 @@ public class FormSupportTest extends BaseComponentTestCase {
         trainRegister(support, form, "myform");
 
         trainGetParameterNames(link, new String[]
-          {"service"});
+                {"service"});
         trainGetParameterValues(link, "service", new String[]
-          {"fred"});
+                {"fred"});
 
         trainGetNestedWriter(writer, nested);
 
@@ -1426,6 +1435,8 @@ public class FormSupportTest extends BaseComponentTestCase {
         nested.close();
 
         writer.end();
+
+        support.addInitializationScript(form, "dojo.require(\"tapestry.form\");");
 
         trainGetFocusField(delegate, null);
 

@@ -149,8 +149,8 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
 
             // must evaluate expression value at least once if object isn't null
 
-            if (root != null)
-                Ognl.getValue(expression, context, root);
+            //if (root != null)
+              //  Ognl.getValue(expression, context, root);
 
             try
             {
