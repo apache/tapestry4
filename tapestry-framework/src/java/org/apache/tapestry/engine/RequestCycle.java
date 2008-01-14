@@ -28,6 +28,7 @@ import org.apache.tapestry.record.PropertyPersistenceStrategySource;
 import org.apache.tapestry.services.AbsoluteURLBuilder;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.ResponseBuilder;
+import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.IdAllocator;
 import org.apache.tapestry.util.QueryParameterMap;
 import org.apache.tapestry.util.io.CompressedDataEncoder;
@@ -392,9 +393,10 @@ public class RequestCycle implements IRequestCycle
     public void renderPage(ResponseBuilder builder)
     {
         _rewinding = false;
-
+        preallocateReservedIds();
+        
         try
-        {            
+        {
             _page.renderPage(builder, this);
 
         }
@@ -416,6 +418,19 @@ public class RequestCycle implements IRequestCycle
             reset();
         }
 
+    }
+
+    /**
+     * Pre allocates all {@link ServiceConstants#RESERVED_IDS} so that none
+     * are used as component or hidden ids as they would conflict with service
+     * parameters.
+     */
+    private void preallocateReservedIds()
+    {
+        for (int i = 0; i < ServiceConstants.RESERVED_IDS.length; i++)
+        {
+            _idAllocator.allocateId(ServiceConstants.RESERVED_IDS[i]);
+        }
     }
 
     /**
@@ -666,5 +681,6 @@ public class RequestCycle implements IRequestCycle
     public void initializeIdState(String encodedSeed)
     {
         _idAllocator = IdAllocator.fromExternalString( CompressedDataEncoder.decodeString(encodedSeed));
+        preallocateReservedIds();
     }
 }

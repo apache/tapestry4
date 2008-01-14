@@ -253,13 +253,6 @@ public class FormSupportImpl implements FormSupport
         String sep = "";
         boolean hasExtra = false;
 
-        // All the reserved ids, which are essential for
-        // dispatching the request, are automatically reserved.
-        // Thus, if you have a component with an id of 'service', its element id
-        // will likely be 'service$0'.
-
-        preallocateReservedIds();
-
         for (int i = 0; i < count; i++)
         {
             String name = names[i];
@@ -398,7 +391,7 @@ public class FormSupportImpl implements FormSupport
 
         String filteredId = TapestryUtils.convertTapestryIdToNMToken(baseId);
 
-        String result = _cycle.getUniqueId(filteredId); //_elementIdAllocator.allocateId(filteredId);
+        String result = _cycle.getUniqueId(filteredId);
 
         if (_rewinding)
         {
@@ -440,22 +433,14 @@ public class FormSupportImpl implements FormSupport
         if (wasPrerendered(comp))
             return comp.getClientId();
 
-        return _cycle.peekUniqueId(id); //_elementIdAllocator.peekNextId(id);
+        return _cycle.peekUniqueId(id);
     }
 
     public boolean isRewinding()
     {
         return _rewinding;
     }
-
-    private void preallocateReservedIds()
-    {
-        for (int i = 0; i < ServiceConstants.RESERVED_IDS.length; i++)
-        {
-            _cycle.getUniqueId(ServiceConstants.RESERVED_IDS[i]);
-        }
-    }
-
+    
     /**
      * Invoked when rewinding a form to re-initialize the _allocatedIds and _elementIdAllocator.
      * Converts a string passed as a parameter (and containing a comma separated list of ids) back
@@ -479,8 +464,6 @@ public class FormSupportImpl implements FormSupport
 
         // Now, reconstruct the initial state of the
         // id allocator.
-
-        preallocateReservedIds();
 
         String extraReservedIds = _cycle.getParameter(RESERVED_FORM_IDS);
 
