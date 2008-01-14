@@ -30,6 +30,7 @@ import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.util.IdAllocator;
 import org.apache.tapestry.util.QueryParameterMap;
+import org.apache.tapestry.util.io.CompressedDataEncoder;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -39,16 +40,16 @@ import java.util.Stack;
 /**
  * Provides the logic for processing a single request cycle. Provides access to the
  * {@link IEngine engine} and the {@link RequestContext}.
- * 
+ *
  * @author Howard Lewis Ship
  */
 
 public class RequestCycle implements IRequestCycle
 {
     private static final Log LOG = LogFactory.getLog(RequestCycle.class);
-    
+
     protected ResponseBuilder _responseBuilder;
-    
+
     private IPage _page;
 
     private IEngine _engine;
@@ -70,7 +71,7 @@ public class RequestCycle implements IRequestCycle
     /**
      * Contains parameters extracted from the request context, plus any decoded by any
      * {@link ServiceEncoder}s.
-     * 
+     *
      * @since 4.0
      */
 
@@ -115,12 +116,12 @@ public class RequestCycle implements IRequestCycle
     private IdAllocator _idAllocator = new IdAllocator();
 
     private Stack _renderStack = new Stack();
-    
+
     private boolean _focusDisabled = false;
-    
+
     /**
      * Standard constructor used to render a response page.
-     * 
+     *
      * @param engine
      *            the current request's engine
      * @param parameters
@@ -133,7 +134,7 @@ public class RequestCycle implements IRequestCycle
      */
 
     public RequestCycle(IEngine engine, QueryParameterMap parameters, String serviceName,
-            RequestCycleEnvironment environment)
+                        RequestCycleEnvironment environment)
     {
         // Variant from instance to instance
 
@@ -149,10 +150,10 @@ public class RequestCycle implements IRequestCycle
         _absoluteURLBuilder = environment.getAbsoluteURLBuilder();
         _log = new ErrorLogImpl(environment.getErrorHandler(), LOG);
     }
-    
+
     /**
      * Alternate constructor used <strong>only for testing purposes</strong>.
-     * 
+     *
      * @since 4.0
      */
     public RequestCycle()
@@ -281,22 +282,22 @@ public class RequestCycle implements IRequestCycle
 
         return result;
     }
-    
+
     public void setResponseBuilder(ResponseBuilder builder)
     {
         // TODO: What scenerio requires setting the builder after the fact?
         //if (_responseBuilder != null)
-          //  throw new IllegalArgumentException("A ResponseBuilder has already been set on this response.");
-        
+        //  throw new IllegalArgumentException("A ResponseBuilder has already been set on this response.");
+
         _responseBuilder = builder;
     }
-    
+
     public ResponseBuilder getResponseBuilder()
     {
         return _responseBuilder;
     }
-    
-    /** 
+
+    /**
      * {@inheritDoc}
      */
     public boolean renderStackEmpty()
@@ -304,47 +305,47 @@ public class RequestCycle implements IRequestCycle
         return _renderStack.isEmpty();
     }
 
-    /** 
+    /**
      * {@inheritDoc}
      */
     public IRender renderStackPeek()
     {
         if (_renderStack.size() < 1)
             return null;
-        
+
         return (IRender)_renderStack.peek();
     }
 
-    /** 
+    /**
      * {@inheritDoc}
      */
     public IRender renderStackPop()
     {
         if (_renderStack.size() == 0)
             return null;
-        
+
         return (IRender)_renderStack.pop();
     }
 
-    /** 
+    /**
      * {@inheritDoc}
      */
     public IRender renderStackPush(IRender render)
     {
         if (_renderStack.size() > 0 && _renderStack.peek() == render)
             return render;
-        
+
         return (IRender)_renderStack.push(render);
     }
 
-    /** 
+    /**
      * {@inheritDoc}
      */
     public int renderStackSearch(IRender render)
     {
         return _renderStack.search(render);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -352,7 +353,7 @@ public class RequestCycle implements IRequestCycle
     {
         return _renderStack.iterator();
     }
-    
+
     public boolean isRewinding()
     {
         return _rewinding;
@@ -393,9 +394,9 @@ public class RequestCycle implements IRequestCycle
         _rewinding = false;
 
         try
-        {
+        {            
             _page.renderPage(builder, this);
-            
+
         }
         catch (ApplicationRuntimeException ex)
         {
@@ -435,7 +436,7 @@ public class RequestCycle implements IRequestCycle
      * valid, and a {@link ApplicationRuntimeException}&nbsp;is thrown.
      * <p>
      * This clears all attributes.
-     * 
+     *
      * @since 1.0.2
      */
 
@@ -443,7 +444,7 @@ public class RequestCycle implements IRequestCycle
     {
         IPage page = form.getPage();
         _rewinding = true;
-        
+
         _targetComponent = form;
 
         try
@@ -531,7 +532,7 @@ public class RequestCycle implements IRequestCycle
 
     /**
      * As of 4.0, just a synonym for {@link #forgetPage(String)}.
-     * 
+     *
      * @since 2.0.2
      */
 
@@ -560,7 +561,7 @@ public class RequestCycle implements IRequestCycle
 
         activate(page);
     }
-    
+
     /** @since 3.0 */
 
     public void activate(IPage page)
@@ -569,16 +570,16 @@ public class RequestCycle implements IRequestCycle
 
         if (LOG.isDebugEnabled())
             LOG.debug("Activating page " + page);
-        
+
         Tapestry.clearMethodInvocations();
-        
+
         page.validate(this);
-        
+
         Tapestry.checkMethodInvocation(Tapestry.ABSTRACTPAGE_VALIDATE_METHOD_ID, "validate()", page);
 
         _page = page;
     }
-    
+
     /** @since 4.0 */
     public String getParameter(String name)
     {
@@ -599,9 +600,7 @@ public class RequestCycle implements IRequestCycle
         ToStringBuilder b = new ToStringBuilder(this);
 
         b.append("rewinding", _rewinding);
-
         b.append("serviceName", _serviceName);
-
         b.append("serviceParameters", _listenerParameters);
 
         if (_loadedPages != null)
@@ -645,18 +644,27 @@ public class RequestCycle implements IRequestCycle
     {
         return _idAllocator.allocateId(baseId);
     }
-    
+
     /** @since 4.1 */
-    
+
     public String peekUniqueId(String baseId)
     {
         return _idAllocator.peekNextId(baseId);
     }
-    
+
     /** @since 4.0 */
     public void sendRedirect(String URL)
     {
         throw new RedirectException(URL);
     }
 
+    public String encodeIdState()
+    {
+        return CompressedDataEncoder.encodeString(_idAllocator.toExternalString());
+    }
+
+    public void initializeIdState(String encodedSeed)
+    {
+        _idAllocator = IdAllocator.fromExternalString( CompressedDataEncoder.decodeString(encodedSeed));
+    }
 }

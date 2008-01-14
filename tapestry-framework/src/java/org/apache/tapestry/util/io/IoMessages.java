@@ -36,4 +36,9 @@ final class IoMessages
     {
         return _formatter.format("decode-failure", cause);
     }
+
+    static String unknownPrefix(String prefix)
+    {
+        return _formatter.format("unknown-prefix", prefix);
+    }
 }

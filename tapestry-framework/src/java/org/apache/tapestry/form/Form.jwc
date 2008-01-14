@@ -119,5 +119,5 @@
     <inject property="directService" object="engine-service:direct" />
     <inject property="response" object="infrastructure:response" />
     <inject property="listenerInvoker" object="infrastructure:listenerInvoker" />
-    <inject property="formSupportFactory" object="service:tapestry.form.FormSupportFactory"/>
+    <inject property="javascriptManager" object="service:tapestry.js.JavascriptManager"/>
 </component-specification>

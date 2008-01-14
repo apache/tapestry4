@@ -78,6 +78,5 @@ public class ServiceConstants
      * 
      * @see org.apache.tapestry.form.FormSupportImpl
      */
-    public static final String[] RESERVED_IDS =
-    { SERVICE, PAGE, COMPONENT, CONTAINER, SESSION, PARAMETER };
+    public static final String[] RESERVED_IDS = { SERVICE, PAGE, COMPONENT, CONTAINER, SESSION, PARAMETER };
 }

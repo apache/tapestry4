@@ -23,9 +23,11 @@ import org.apache.tapestry.event.EventTarget;
 import org.apache.tapestry.internal.event.impl.ComponentEventInvoker;
 import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.services.ResponseBuilder;
+import org.apache.tapestry.util.IdAllocator;
 import org.apache.tapestry.valid.IValidationDelegate;
+import org.easymock.EasyMock;
 import static org.easymock.EasyMock.*;
-import org.testng.annotations.DataProvider;
+import org.easymock.IAnswer;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
@@ -39,33 +41,16 @@ import java.util.Map;
  */
 @Test(sequential = true)
 public class FormSupportTest extends BaseComponentTestCase {
-
-    @DataProvider(name = "allSupports")
-    public Object[][] createAllSupports()
+    
+    protected FormSupport newFormSupport(IMarkupWriter writer, IRequestCycle cycle, IForm form)
     {
-        return new Object[][]{
-                {new FormSupportFactoryImpl()},
-                {new MultipleFormSupportFactory()}
-        };
-    }
-
-    @DataProvider(name = "mainSupport")
-    public Object[][] createMainSupport()
-    {
-        return new Object[][]{ {new FormSupportFactoryImpl()}
-        };
-    }
-
-    protected FormSupport newFormSupport(IRequestCycle cycle)
-    {
-        return new FormSupportImpl(cycle);
+        return new FormSupportImpl(writer, cycle, form);
     }
 
     private IRender newComponentRenderBody(final FormSupport fs, final IFormComponent component,
                                            final IMarkupWriter nested)
     {
-        return newComponentsRenderBody(fs, new IFormComponent[]
-                {component}, nested);
+        return newComponentsRenderBody(fs, new IFormComponent[] {component}, nested);
     }
 
     private IRender newComponentsRenderBody(final FormSupport fs, final IFormComponent[] component,
@@ -122,8 +107,25 @@ public class FormSupportTest extends BaseComponentTestCase {
         return component;
     }
 
-    @Test(dataProvider = "mainSupport")
-    public void test_Cancel_Rewind(FormSupportFactory factory)
+    protected void trainCycleSeedEncoding(IRequestCycle cycle)
+    {
+        expect(cycle.encodeIdState()).andReturn("ENCODED").anyTimes();
+        
+        expect(cycle.getUniqueId(isA(String.class))).andAnswer(new UniqueIdAnswer()).anyTimes();
+    }
+
+    public class UniqueIdAnswer implements IAnswer<String> {
+
+        IdAllocator _allocator = new IdAllocator();
+
+        public String answer()
+                throws Throwable
+        {
+            return _allocator.allocateId((String) EasyMock.getCurrentArguments()[0]);
+        }
+    }
+
+    public void test_Cancel_Rewind()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
@@ -136,7 +138,7 @@ public class FormSupportTest extends BaseComponentTestCase {
 
         replay();
 
-        final FormSupport fs = factory.createFormSupport(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
@@ -157,8 +159,7 @@ public class FormSupportTest extends BaseComponentTestCase {
         verify();
     }
 
-    @Test(dataProvider = "mainSupport")
-    public void test_Complex_Render(FormSupportFactory factory)
+    public void test_Complex_Render()
     {
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
@@ -167,7 +168,6 @@ public class FormSupportTest extends BaseComponentTestCase {
         IValidationDelegate delegate = newDelegate();
         ILink link = newLink();
         IRender render = newRender();
-
         MockForm form = new MockForm(delegate);
 
         trainIsRewound(cycle, form, false);
@@ -178,25 +178,24 @@ public class FormSupportTest extends BaseComponentTestCase {
 
         replay();
 
-        final FormSupport fs = factory.createFormSupport(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
+        trainCycleSeedEncoding(cycle);
+        
         final IFormComponent barney1 = newFormComponent("barney", "barney");
         final IFormComponent wilma = newFormComponent("wilma", "wilma");
         final IFormComponent barney2 = newFormComponent("barney", "barney_0");
 
-        IRender body = newComponentsRenderBody(fs, new IFormComponent[]
-                {barney1, wilma, barney2}, nested);
+        IRender body = newComponentsRenderBody(fs, new IFormComponent[] {barney1, wilma, barney2}, nested);
 
         form.setBody(body);
 
         trainRegister(support, form, "myform");
 
-        trainGetParameterNames(link, new String[]
-                {"service"});
-        trainGetParameterValues(link, "service", new String[]
-                {"fred"});
+        trainGetParameterNames(link, new String[] {"service"});
+        trainGetParameterValues(link, "service", new String[] {"fred"});
 
         trainGetNestedWriter(writer, nested);
 
@@ -237,8 +236,7 @@ public class FormSupportTest extends BaseComponentTestCase {
         verify();
     }
 
-    @Test(dataProvider = "mainSupport")
-    public void test_Complex_Rewind(FormSupportFactory factory)
+    public void test_Complex_Rewind()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
@@ -254,20 +252,20 @@ public class FormSupportTest extends BaseComponentTestCase {
 
         replay();
 
-        final FormSupport fs = factory.createFormSupport(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
-
+        
         delegate.clear();
 
         trainCycleForRewind(cycle, "barney,wilma,barney_0", null);
+        trainCycleSeedEncoding(cycle);
 
         final IFormComponent barney1 = newFormComponent("barney", "barney");
         final IFormComponent wilma = newFormComponent("wilma", "wilma");
         final IFormComponent barney2 = newFormComponent("barney", "barney_0");
 
-        IRender body = newComponentsRenderBody(fs, new IFormComponent[]
-                {barney1, wilma, barney2}, writer);
+        IRender body = newComponentsRenderBody(fs, new IFormComponent[] {barney1, wilma, barney2}, writer);
 
         form.setBody(body);
         form.setEventInvoker(invoker);
@@ -287,8 +285,7 @@ public class FormSupportTest extends BaseComponentTestCase {
         verify();
     }
 
-    @Test(dataProvider = "allSupports")
-    public void test_Complex_Submit_Event_Handler(FormSupportFactory factory)
+    public void test_Complex_Submit_Event_Handler()
     {
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
@@ -306,9 +303,11 @@ public class FormSupportTest extends BaseComponentTestCase {
 
         replay();
 
-        final FormSupport fs = factory.createFormSupport(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
+
+        trainCycleSeedEncoding(cycle);
 
         form.setBody(new IRender() {
             public void render(IMarkupWriter pwriter, IRequestCycle pcycle)
@@ -320,12 +319,8 @@ public class FormSupportTest extends BaseComponentTestCase {
         });
 
         trainRegister(support, form, "myform");
-
-        trainGetParameterNames(link, new String[]
-                {"service"});
-
-        trainGetParameterValues(link, "service", new String[]
-                {"fred"});
+        trainGetParameterNames(link, new String[] {"service"});
+        trainGetParameterValues(link, "service", new String[] {"fred"});
 
         trainGetNestedWriter(writer, nested);
 
@@ -341,13 +336,11 @@ public class FormSupportTest extends BaseComponentTestCase {
                                               + "\n{\n  mySubmit1();\n  mySubmit2();\n  mySubmit3();\n});\n");
 
         render.render(writer, cycle);
-
         writer.println();
 
         trainHiddenBlock(cycle, builder, writer, form, "fred", "");
 
         nested.close();
-
         writer.end();
 
         support.addInitializationScript(form, "dojo.require(\"tapestry.form\");");
@@ -365,8 +358,7 @@ public class FormSupportTest extends BaseComponentTestCase {
         verify();
     }
 
-    @Test(dataProvider = "allSupports")
-    public void test_Encoding_Type(FormSupportFactory factory)
+    public void test_Encoding_Type()
     {
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
@@ -385,10 +377,12 @@ public class FormSupportTest extends BaseComponentTestCase {
 
         replay();
 
-        final FormSupport fs = factory.createFormSupport(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
+        trainCycleSeedEncoding(cycle);
+        
         form.setBody(new IRender() {
             public void render(IMarkupWriter pwriter, IRequestCycle pcycle)
             {
@@ -435,8 +429,7 @@ public class FormSupportTest extends BaseComponentTestCase {
         verify();
     }
 
-    @Test(dataProvider = "allSupports")
-    public void test_Field_Prerender_Twice(FormSupportFactory factory)
+    public void test_Field_Prerender_Twice()
     {
         IFormComponent field = newField();
         IMarkupWriter writer = newWriter();
@@ -462,7 +455,7 @@ public class FormSupportTest extends BaseComponentTestCase {
 
         replay();
 
-        FormSupport fs = newFormSupport(cycle);
+        FormSupport fs = new FormSupportImpl(cycle);
 
         fs.prerenderField(writer, field, l);
 
@@ -491,8 +484,7 @@ public class FormSupportTest extends BaseComponentTestCase {
 
     }
 
-    @Test(dataProvider = "allSupports")
-    public void test_Hidden_Values(FormSupportFactory factory)
+    public void test_Hidden_Values()
     {
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
@@ -510,10 +502,12 @@ public class FormSupportTest extends BaseComponentTestCase {
 
         replay();
 
-        final FormSupport fs = factory.createFormSupport(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
+        trainCycleSeedEncoding(cycle);
+        
         form.setBody(new IRender() {
             public void render(IMarkupWriter pwriter, IRequestCycle pcycle)
             {
@@ -546,7 +540,9 @@ public class FormSupportTest extends BaseComponentTestCase {
 
         trainDiv(writer, form);
 
+
         trainHidden(writer, "formids", "");
+        trainHidden(writer, "seedids", "ENCODED");
         trainHidden(writer, "service", "fred");
         trainHidden(writer, "submitmode", "");
         trainHidden(writer, FormConstants.SUBMIT_NAME_PARAMETER, "");
@@ -572,8 +568,7 @@ public class FormSupportTest extends BaseComponentTestCase {
         verify();
     }
 
-    @Test(dataProvider = "allSupports")
-    public void test_Invalid_Encoding_Type(FormSupportFactory factory)
+    public void test_Invalid_Encoding_Type()
     {
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
@@ -591,10 +586,12 @@ public class FormSupportTest extends BaseComponentTestCase {
 
         replay();
 
-        final FormSupport fs = factory.createFormSupport(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
+        trainCycleSeedEncoding(cycle);
+        
         form.setBody(new IRender() {
             public void render(IMarkupWriter pwriter, IRequestCycle pcycle)
             {
@@ -605,11 +602,8 @@ public class FormSupportTest extends BaseComponentTestCase {
 
         trainRegister(support, form, "myform");
 
-        trainGetParameterNames(link, new String[]
-                {"service"});
-
-        trainGetParameterValues(link, "service", new String[]
-                {"fred"});
+        trainGetParameterNames(link, new String[]{"service"});
+        trainGetParameterValues(link, "service", new String[]{"fred"});
 
         trainGetNestedWriter(writer, nested);
 
@@ -629,8 +623,7 @@ public class FormSupportTest extends BaseComponentTestCase {
         verify();
     }
 
-    @Test(dataProvider = "mainSupport")
-    public void test_Refresh_Rewind(FormSupportFactory factory)
+    public void test_Refresh_Rewind()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
@@ -639,15 +632,15 @@ public class FormSupportTest extends BaseComponentTestCase {
         ComponentEventInvoker invoker = org.easymock.classextension.EasyMock.createMock(ComponentEventInvoker.class);
 
         trainIsRewound(cycle, form, true);
-
         trainGetPageRenderSupport(cycle, null);
 
         replay();
 
-        final FormSupport fs = factory.createFormSupport(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
+        trainCycleSeedEncoding(cycle);
         delegate.clear();
 
         trainCycleForRewind(cycle, "refresh", "barney", null);
@@ -672,8 +665,7 @@ public class FormSupportTest extends BaseComponentTestCase {
         verify();
     }
 
-    @Test(dataProvider = "mainSupport")
-    public void test_Render_Extra_Reserved_Ids(FormSupportFactory factory)
+    public void test_Render_Extra_Reserved_Ids()
     {
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
@@ -692,10 +684,12 @@ public class FormSupportTest extends BaseComponentTestCase {
 
         replay();
 
-        final FormSupport fs = factory.createFormSupport(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
+        trainCycleSeedEncoding(cycle);
+        
         final IFormComponent component = newFormComponent("action", "action_0");
 
         IRender body = newComponentRenderBody(fs, component, nested);
@@ -703,12 +697,8 @@ public class FormSupportTest extends BaseComponentTestCase {
         form.setBody(body);
 
         trainRegister(support, form, "myform");
-
-        trainGetParameterNames(link, new String[]
-                {"action"});
-
-        trainGetParameterValues(link, "action", new String[]
-                {"fred"});
+        trainGetParameterNames(link, new String[]{"action"});
+        trainGetParameterValues(link, "action", new String[] {"fred"});
 
         trainGetNestedWriter(writer, nested);
 
@@ -725,21 +715,19 @@ public class FormSupportTest extends BaseComponentTestCase {
         writer.println();
 
         expect(cycle.getResponseBuilder()).andReturn(builder);
-
         expect(builder.contains(form)).andReturn(false);
 
         trainDiv(writer, form);
 
         trainHidden(writer, "formids", "action_0");
+        trainHidden(writer, "seedids", "ENCODED");
         trainHidden(writer, "action", "fred");
         trainHidden(writer, "reservedids", "action");
         trainHidden(writer, "submitmode", "");
         trainHidden(writer, FormConstants.SUBMIT_NAME_PARAMETER, "");
 
         writer.end();
-
         nested.close();
-
         writer.end();
 
         support.addInitializationScript(form, "dojo.require(\"tapestry.form\");");
@@ -755,8 +743,7 @@ public class FormSupportTest extends BaseComponentTestCase {
         verify();
     }
 
-    @Test(dataProvider = "allSupports")
-    public void test_Reset_Event_Handler(FormSupportFactory factory)
+    public void test_Reset_Event_Handler()
     {
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
@@ -776,10 +763,11 @@ public class FormSupportTest extends BaseComponentTestCase {
 
         replay();
 
-        final FormSupport fs = factory.createFormSupport(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
+        trainCycleSeedEncoding(cycle);
         form.setBody(new IRender() {
             public void render(IMarkupWriter pwriter, IRequestCycle pcycle)
             {
@@ -790,11 +778,8 @@ public class FormSupportTest extends BaseComponentTestCase {
 
         trainRegister(support, form, "myform");
 
-        trainGetParameterNames(link, new String[]
-                {"service"});
-
-        trainGetParameterValues(link, "service", new String[]
-                {"fred"});
+        trainGetParameterNames(link, new String[] {"service"});
+        trainGetParameterValues(link, "service", new String[] {"fred"});
 
         trainGetNestedWriter(writer, nested);
 
@@ -816,7 +801,6 @@ public class FormSupportTest extends BaseComponentTestCase {
         trainHiddenBlock(cycle, builder, writer, form, "fred", "");
 
         nested.close();
-
         writer.end();
 
         support.addInitializationScript(form, "dojo.require(\"tapestry.form\");");
@@ -832,8 +816,7 @@ public class FormSupportTest extends BaseComponentTestCase {
         verify();
     }
 
-    @Test(dataProvider = "mainSupport")
-    public void test_Rewind_Extra_Reserved_Ids(FormSupportFactory factory)
+    public void test_Rewind_Extra_Reserved_Ids()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
@@ -849,10 +832,11 @@ public class FormSupportTest extends BaseComponentTestCase {
 
         replay();
 
-        final FormSupport fs = factory.createFormSupport(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
+        trainCycleSeedEncoding(cycle);
         delegate.clear();
 
         trainCycleForRewind(cycle, "action_0", "action");
@@ -875,8 +859,7 @@ public class FormSupportTest extends BaseComponentTestCase {
         verify();
     }
 
-    @Test(dataProvider = "mainSupport")
-    public void test_Rewind_Mismatch(FormSupportFactory factory)
+    public void test_Rewind_Mismatch()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
@@ -889,10 +872,11 @@ public class FormSupportTest extends BaseComponentTestCase {
 
         replay();
 
-        final FormSupport fs = factory.createFormSupport(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
+        trainCycleSeedEncoding(cycle);
         Location l = newLocation();
 
         delegate.clear();
@@ -929,8 +913,7 @@ public class FormSupportTest extends BaseComponentTestCase {
         verify();
     }
 
-    @Test(dataProvider = "mainSupport")
-    public void test_Rewind_Too_Long(FormSupportFactory factory)
+    public void test_Rewind_Too_Long()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
@@ -943,12 +926,13 @@ public class FormSupportTest extends BaseComponentTestCase {
 
         replay();
 
-        final FormSupport fs = factory.createFormSupport(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
+        trainCycleSeedEncoding(cycle);
+        
         Location l = newLocation();
-
         delegate.clear();
 
         // So, the scenario here is that component "barney" was inside
@@ -983,8 +967,7 @@ public class FormSupportTest extends BaseComponentTestCase {
         verify();
     }
 
-    @Test(dataProvider = "mainSupport")
-    public void test_Rewind_Too_Short(FormSupportFactory factory)
+    public void test_Rewind_Too_Short()
     {
         Location l = newLocation();
         IMarkupWriter writer = newWriter();
@@ -999,10 +982,11 @@ public class FormSupportTest extends BaseComponentTestCase {
 
         replay();
 
-        final FormSupport fs = factory.createFormSupport(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
+        trainCycleSeedEncoding(cycle);
         delegate.clear();
 
         // So, the scenario here is that component "barney" was inside
@@ -1040,8 +1024,7 @@ public class FormSupportTest extends BaseComponentTestCase {
         verify();
     }
 
-    @Test(dataProvider = "mainSupport")
-    public void test_Simple_Render(FormSupportFactory factory)
+    public void test_Simple_Render()
     {
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
@@ -1061,10 +1044,11 @@ public class FormSupportTest extends BaseComponentTestCase {
 
         replay();
 
-        final FormSupport fs = factory.createFormSupport(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
+        trainCycleSeedEncoding(cycle);
         final IFormComponent component = newFormComponent("barney", "barney");
 
         IRender body = newComponentRenderBody(fs, component, nested);
@@ -1117,8 +1101,7 @@ public class FormSupportTest extends BaseComponentTestCase {
         verify();
     }
 
-    @Test(dataProvider = "allSupports")
-    public void test_Simple_Render_With_Deferred_Runnable(FormSupportFactory factory)
+    public void test_Simple_Render_With_Deferred_Runnable()
     {
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
@@ -1138,10 +1121,11 @@ public class FormSupportTest extends BaseComponentTestCase {
 
         replay();
 
-        final FormSupport fs = factory.createFormSupport(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
+        trainCycleSeedEncoding(cycle);
         IRender body = new IRender() {
             public void render(final IMarkupWriter pwriter, IRequestCycle pcycle)
             {
@@ -1199,8 +1183,7 @@ public class FormSupportTest extends BaseComponentTestCase {
         verify();
     }
 
-    @Test(dataProvider = "mainSupport")
-    public void test_Simple_Render_With_Scheme(FormSupportFactory factory)
+    public void test_Simple_Render_With_Scheme()
     {
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
@@ -1220,10 +1203,11 @@ public class FormSupportTest extends BaseComponentTestCase {
 
         replay();
 
-        final FormSupport fs = factory.createFormSupport(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
+        trainCycleSeedEncoding(cycle);
         final IFormComponent component = newFormComponent("barney", "barney");
 
         IRender body = newComponentRenderBody(fs, component, nested);
@@ -1278,8 +1262,7 @@ public class FormSupportTest extends BaseComponentTestCase {
         verify();
     }
 
-    @Test(dataProvider = "mainSupport")
-    public void test_Simple_Rewind(FormSupportFactory factory)
+    public void test_Simple_Rewind()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
@@ -1294,10 +1277,11 @@ public class FormSupportTest extends BaseComponentTestCase {
 
         replay();
 
-        final FormSupport fs = factory.createFormSupport(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
+        trainCycleSeedEncoding(cycle);
         delegate.clear();
 
         trainCycleForRewind(cycle, "barney", null);
@@ -1320,8 +1304,7 @@ public class FormSupportTest extends BaseComponentTestCase {
         verify();
     }
 
-    @Test(dataProvider = "mainSupport")
-    public void test_Simple_Rewind_With_Deferred_Runnable(FormSupportFactory factory)
+    public void test_Simple_Rewind_With_Deferred_Runnable()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
@@ -1336,10 +1319,11 @@ public class FormSupportTest extends BaseComponentTestCase {
 
         replay();
 
-        final FormSupport fs = factory.createFormSupport(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
+        trainCycleSeedEncoding(cycle);
         delegate.clear();
 
         trainCycleForRewind(cycle, "", null);
@@ -1374,8 +1358,7 @@ public class FormSupportTest extends BaseComponentTestCase {
         verify();
     }
 
-    @Test(dataProvider = "allSupports")
-    public void test_Simple_Submit_Event_Handler(FormSupportFactory factory)
+    public void test_Simple_Submit_Event_Handler()
     {
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
@@ -1395,10 +1378,11 @@ public class FormSupportTest extends BaseComponentTestCase {
 
         replay();
 
-        final FormSupport fs = factory.createFormSupport(writer, cycle, form);
+        final FormSupport fs = newFormSupport(writer, cycle, form);
 
         verify();
 
+        trainCycleSeedEncoding(cycle);
         trainRegister(support, form, "myform");
 
         trainGetParameterNames(link, new String[]
@@ -1457,6 +1441,9 @@ public class FormSupportTest extends BaseComponentTestCase {
     private void trainCycleForRewind(IRequestCycle cycle, String submitMode, String allocatedIds,
                                      String reservedIds)
     {
+        trainGetParameter(cycle, FormSupportImpl.SEED_IDS, "");
+        cycle.initializeIdState("");
+
         trainGetParameter(cycle, FormSupportImpl.SUBMIT_MODE, submitMode);
         trainGetParameter(cycle, FormSupportImpl.FORM_IDS, allocatedIds);
         trainGetParameter(cycle, FormSupportImpl.RESERVED_FORM_IDS, reservedIds);
@@ -1521,6 +1508,7 @@ public class FormSupportTest extends BaseComponentTestCase {
         trainDiv(writer, form);
 
         trainHidden(writer, "formids", formIds);
+        trainHidden(writer, "seedids", "ENCODED");
         trainHidden(writer, "service", serviceName);
         trainHidden(writer, "submitmode", "");
         trainHidden(writer, FormConstants.SUBMIT_NAME_PARAMETER, "");
