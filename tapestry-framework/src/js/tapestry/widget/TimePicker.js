@@ -28,6 +28,7 @@ dojo.widget.defineWidget(
     showing:false,
     preventBlur:false,
     hasFocus:false,
+    hideTimeout:-1,
     dropdownDim:{height:0, width:0},
 
     postCreate: function() {
@@ -91,10 +92,12 @@ dojo.widget.defineWidget(
         dojo.event.connect(this.dropdownNode, "onmouseover", this, "onDropdownMouseOver");
         dojo.event.connect(this.dropdownNode, "onmouseout", this, "onDropdownMouseOut");
         
-        dojo.event.connect(dojo.body(), "onkeyup", this, "onKeyUp");
+        dojo.event.connect(document, "onkeyup", this, "onKeyUp");
+        dojo.event.connect(document, "onclick", this, "onDocumentClick");
     },
 
     onOptionMouseOver: function(evt) {
+        this._clearTimeout();
         var target = evt.target;
         if (target.nodeType == 3){ // get around safari bug
             target = target.parentNode;
@@ -108,6 +111,10 @@ dojo.widget.defineWidget(
             target = target.parentNode;
         }
         this._clearOptionSelection(target);
+        
+        if (this.hideTimeout > -1
+                || (evt["relatedTarget"] && this.isWidgetNode(evt.relatedTarget))){return;}
+        this.hideTimeout = setTimeout(dojo.lang.hitch(this, "_hide"), 1500);
     },
 
     onChange:function() {},
@@ -141,6 +148,7 @@ dojo.widget.defineWidget(
     },
 
     onDropdownMouseOver: function(evt) {
+        this._clearTimeout();
         this.preventBlur=true;
     },
 
@@ -151,14 +159,28 @@ dojo.widget.defineWidget(
         if (this.isWidgetNode(evt["relatedTarget"])){
             return;
         }
+        
+        if (this.hideTimeout > -1
+                || (evt["relatedTarget"] && this.isWidgetNode(evt.relatedTarget))){return;}
+        this.hideTimeout = setTimeout(dojo.lang.hitch(this, "_hide"), 1500);
+        
         if (!this.hasFocus){
             this.hide(evt);
         }
     },
 
     onKeyUp: function(evt) {
+        if (!this.showing){return;}
         if (evt.keyCode == evt.KEY_ESCAPE) {
             this.hide(evt);
+        }
+    },
+
+    onDocumentClick: function(evt) {
+        if(!this.showing){return;}
+        if (evt["target"]
+                && evt.target != this.inputNode && evt.target != this.dropdownNode){
+            this.hide();
         }
     },
 
@@ -200,7 +222,7 @@ dojo.widget.defineWidget(
     },
 
     show: function() {
-
+        this._clearTimeout();
         if (tapestry.widget.currentTimePicker &&
                 tapestry.widget.currentTimePicker.widgetId != this.widgetId){
             tapestry.widget.currentTimePicker.hide();
@@ -227,7 +249,7 @@ dojo.widget.defineWidget(
         
         this.dropdownNode.style["top"]=ddY+'px';
         this.dropdownNode.style["left"]=ddX+'px';
-        
+
         dojo.html.show(this.dropdownNode);
         
         if (this.bgIframe){
@@ -251,9 +273,10 @@ dojo.widget.defineWidget(
 
     isWidgetNode: function(node){
         if (!node){return false;}
-        
-        return dojo.html.hasClass(node, this.dropdownOptionClass)
-            || dojo.html.hasClass(node, this.dropdownClass);
+
+        try {
+            return dojo.html.hasClass(node, this.dropdownOptionClass);
+        } catch (e){return false;}
     },
 
     uninitialize: function(){
@@ -275,7 +298,8 @@ dojo.widget.defineWidget(
             dojo.event.disconnect(this.dropdownNode, "onmouseout", this, "onDropdownMouseOut");
             dojo.dom.destroyNode(this.dropdownNode);
 
-            dojo.event.disconnect(dojo.body(), "onkeyup", this, "onKeyUp");
+            dojo.event.disconnect(document, "onkeyup", this, "onKeyUp");
+            dojo.event.disconnect(document, "onclick", this, "onDocumentClick");
 
              if (this.bgIframe){
                 this.bgIframe.remove();
@@ -284,6 +308,22 @@ dojo.widget.defineWidget(
     },
 
     destroyRendering: function(){},
+
+    _hide: function() {
+        if (!this.showing || this.preventBlur){
+            this.hideTimeout=-1;
+            return;
+        }
+        this.hide();
+        this.hideTimeout=-1;
+    },
+
+    _clearTimeout: function() {
+        if (this.hideTimeout > -1){
+            window.clearTimeout(this.hideTimeout);
+            this.hideTimeout = -1;
+        }
+    },
 
     _selectOption:function(node){
         if (!node) { return; }
