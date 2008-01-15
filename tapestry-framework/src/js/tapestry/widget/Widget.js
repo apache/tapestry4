@@ -72,7 +72,7 @@ tapestry.widget = {
 	},
 	
 	setWidgetProperties: function(w, props){
-		if (!dj_undef("disabled",props) && props.disabled == true 
+		if (!dj_undef("disabled",props) && props.disabled
 			&& dojo.lang.isFunction(w["disable"])){
 			w.disable();
 		}

@@ -644,7 +644,7 @@ public class FormSupportImpl implements FormSupport
         }
 
         runDeferredRunnables();
-
+        
         if (_submitModes.contains(mode))
         {
             // clear errors during refresh

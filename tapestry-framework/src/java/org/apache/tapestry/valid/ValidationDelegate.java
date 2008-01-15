@@ -71,6 +71,7 @@ public class ValidationDelegate implements IValidationDelegate
         {
             FieldTracking ft = (FieldTracking) i.next();
             ft.setErrorRenderer(null);
+            ft.setRenderError(false);
         }
     }
 
@@ -322,7 +323,7 @@ public class ValidationDelegate implements IValidationDelegate
             IFormComponent component, IValidator validator)
     {
         IFieldTracking tracking = getFieldTracking(component);
-        if (tracking == null)
+        if (tracking == null || !tracking.getRenderError())
             return;
 
         if (tracking.getConstraint() != null
@@ -345,7 +346,9 @@ public class ValidationDelegate implements IValidationDelegate
     public void writeSuffix(IMarkupWriter writer, IRequestCycle cycle,
             IFormComponent component, IValidator validator)
     {
-        if (isInError())
+        IFieldTracking tracking = getComponentTracking();
+        
+        if (tracking != null && tracking.isInError() && tracking.getRenderError())
         {
             writer.printRaw("&nbsp;");
             writer.begin("font");

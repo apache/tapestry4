@@ -44,11 +44,8 @@ public abstract class GTimePicker  extends AbstractFormWidget implements Transla
         renderDelegatePrefix(writer, cycle);
 
         writer.beginEmpty("input");
-
         writer.attribute("type", "text");
-        
         writer.attribute("autocomplete", "off");
-
         writer.attribute("name", getName());
 
         if (isDisabled())
@@ -58,7 +55,6 @@ public abstract class GTimePicker  extends AbstractFormWidget implements Transla
             writer.attribute("value", value);
 
         renderIdAttribute(writer, cycle);
-
         renderDelegateAttributes(writer, cycle);
 
         getTranslatedFieldSupport().renderContributions(this, writer, cycle);
@@ -79,7 +75,6 @@ public abstract class GTimePicker  extends AbstractFormWidget implements Transla
         cal.set(Calendar.AM_PM, Calendar.AM);
 
         StringBuffer optStr = new StringBuffer("[");
-
         int selectedIndex = -1;
         
         for(int i=0, hour=0; i < TIME_SEGMENT_LENGTH; i++)
