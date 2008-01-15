@@ -3,16 +3,12 @@ dojo.provide("tapestry.html");
 dojo.provide("tapestry.event");
 dojo.provide("tapestry.lang");
 
-dojo.provide("dojo.AdapterRegistry");
-dojo.provide("dojo.json");
-
 dojo.require("dojo.lang.common");
 dojo.require("dojo.io.BrowserIO");
 dojo.require("dojo.event.browser");
 dojo.require("dojo.html.style");
 dojo.require("dojo.lang.func");
 dojo.require("dojo.string.extras");
-
 
 // redirect logging calls to standard debug if logging not enabled
 if (dj_undef("logging", dojo)) {
@@ -135,7 +131,7 @@ var tapestry={
 			dojo.log.warn("No data received in response.");
 			return;
 		}
-        
+
 		var resp=data.getElementsByTagName("ajax-response");
 		if (!resp || resp.length < 1 || !resp[0].childNodes) {
 			dojo.log.warn("No ajax-response elements received.");
@@ -445,7 +441,7 @@ var tapestry={
 	 * the global namespace "tapestry".
 	 */
 	cleanConnect:function(target, event, funcName){
-                target = dojo.byId(target);
+        target = dojo.byId(target);
 		if (!dj_undef(funcName, tapestry)){
         	dojo.event.disconnect(target, event, tapestry, funcName);
         }
@@ -453,9 +449,9 @@ var tapestry={
 
 	/**
 	 * Function: cleanConnectWidget
-         */
+	 */
 	cleanConnectWidget:function(target, event, funcName){
-                tapestry.cleanConnect(dojo.widget.byId(target), event, funcName);
+        tapestry.cleanConnect(dojo.widget.byId(target), event, funcName);
 	},
 
 	/**
@@ -467,7 +463,7 @@ var tapestry={
 	 * the global namespace "tapestry".
 	 */
 	connect:function(target, event, funcName){
-                target = dojo.byId(target);
+        target = dojo.byId(target);
 		if (!dj_undef(funcName, tapestry)){
         	dojo.event.connect(target, event, tapestry, funcName);
         }
@@ -477,7 +473,7 @@ var tapestry={
 	 * Function: connectBefore
 	 */
 	connectBefore:function(target, event, funcName){
-                target = dojo.byId(target);
+        target = dojo.byId(target);
 		if (!dj_undef(funcName, tapestry)){
         	dojo.event.connect("before", target, event, tapestry, funcName);
         }
@@ -487,7 +483,7 @@ var tapestry={
 	 * Function: connectWidget
 	 */
 	connectWidget:function(target, event, funcName){
-                tapestry.connect(dojo.widget.byId(target), event, funcName);
+        tapestry.connect(dojo.widget.byId(target), event, funcName);
 	},
 
 	/**
@@ -527,7 +523,7 @@ var tapestry={
 	 * Utility used to find out if there are any ajax requests in progress.
 	 */
     isServingRequests:function(){
-	    return (tapestry.requestsInFlight > 0);
+	    return (this.requestsInFlight > 0);
     }
 }
 
@@ -822,6 +818,9 @@ tapestry.lang = {
 		return true;
 	}
 }
+
+dojo.provide("dojo.AdapterRegistry");
+dojo.provide("dojo.json");
 
 dojo.AdapterRegistry = function (returnWrappers) {
 	this.pairs = [];

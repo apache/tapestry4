@@ -23,19 +23,20 @@
 
 <body>
 <script type="text/javascript">
+    dojo.require("dojo.debug.console");
     dojo.require("tapestry.namespace");
     dojo.require("tapestry.widget.Widget");
-            
+
     dojo.addOnLoad(function() {
 
         dojo.widget.createWidget("tapestry:TimePicker", {
             widgetId: "test",
             inputNodeId:"test",
             optionValues:["12:00am","12:30am","1:00am","1:30am","2:00am","2:30am","3:00am","3:30am","4:00am","4:30am",
-                    "5:00am","5:30am","6:00am","6:30am","7:00am","7:30am","8:00am","8:30am","9:00am","9:30am","10:00am",
-                    "10:30am","11:00am","11:30am","12:00pm","12:30pm","1:00pm","1:30pm","2:00pm","2:30pm","3:00pm","3:30pm",
-                    "4:00pm","4:30pm","5:00pm","5:30pm","6:00pm","6:30pm","7:00pm","7:30pm","8:00pm","8:30pm","9:00pm","9:30pm",
-                    "10:00pm","10:30pm","11:00pm","11:30pm"],
+                "5:00am","5:30am","6:00am","6:30am","7:00am","7:30am","8:00am","8:30am","9:00am","9:30am","10:00am",
+                "10:30am","11:00am","11:30am","12:00pm","12:30pm","1:00pm","1:30pm","2:00pm","2:30pm","3:00pm","3:30pm",
+                "4:00pm","4:30pm","5:00pm","5:30pm","6:00pm","6:30pm","7:00pm","7:30pm","8:00pm","8:30pm","9:00pm","9:30pm",
+                "10:00pm","10:30pm","11:00pm","11:30pm"],
             selectedIndex:26
         });
 
@@ -43,32 +44,32 @@
             widgetId: "test2",
             inputNodeId:"another",
             optionValues:["12:00am","12:30am","1:00am","1:30am","2:00am","2:30am","3:00am","3:30am","4:00am","4:30am",
-                    "5:00am","5:30am","6:00am","6:30am","7:00am","7:30am","8:00am","8:30am","9:00am","9:30am","10:00am",
-                    "10:30am","11:00am","11:30am","12:00pm","12:30pm","1:00pm","1:30pm","2:00pm","2:30pm","3:00pm","3:30pm",
-                    "4:00pm","4:30pm","5:00pm","5:30pm","6:00pm","6:30pm","7:00pm","7:30pm","8:00pm","8:30pm","9:00pm","9:30pm",
-                    "10:00pm","10:30pm","11:00pm","11:30pm"]
+                "5:00am","5:30am","6:00am","6:30am","7:00am","7:30am","8:00am","8:30am","9:00am","9:30am","10:00am",
+                "10:30am","11:00am","11:30am","12:00pm","12:30pm","1:00pm","1:30pm","2:00pm","2:30pm","3:00pm","3:30pm",
+                "4:00pm","4:30pm","5:00pm","5:30pm","6:00pm","6:30pm","7:00pm","7:30pm","8:00pm","8:30pm","9:00pm","9:30pm",
+                "10:00pm","10:30pm","11:00pm","11:30pm"]
         });
 
         dojo.widget.createWidget("tapestry:TimePicker", {
             widgetId: "test3",
             inputNodeId:"timeInput2",
             optionValues:["12:00am","12:30am","1:00am","1:30am","2:00am","2:30am","3:00am","3:30am","4:00am","4:30am",
-                    "5:00am","5:30am","6:00am","6:30am","7:00am","7:30am","8:00am","8:30am","9:00am","9:30am","10:00am",
-                    "10:30am","11:00am","11:30am","12:00pm","12:30pm","1:00pm","1:30pm","2:00pm","2:30pm","3:00pm","3:30pm",
-                    "4:00pm","4:30pm","5:00pm","5:30pm","6:00pm","6:30pm","7:00pm","7:30pm","8:00pm","8:30pm","9:00pm","9:30pm",
-                    "10:00pm","10:30pm","11:00pm","11:30pm"]
+                "5:00am","5:30am","6:00am","6:30am","7:00am","7:30am","8:00am","8:30am","9:00am","9:30am","10:00am",
+                "10:30am","11:00am","11:30am","12:00pm","12:30pm","1:00pm","1:30pm","2:00pm","2:30pm","3:00pm","3:30pm",
+                "4:00pm","4:30pm","5:00pm","5:30pm","6:00pm","6:30pm","7:00pm","7:30pm","8:00pm","8:30pm","9:00pm","9:30pm",
+                "10:00pm","10:30pm","11:00pm","11:30pm"]
         });
     });
 
     function destroyWidget(){
         tapestry.widget.synchronizeWidgetState("test", "tapestry:timepicker", {"inputNodeId":"test"
 
-,"optionValues":["12:00 AM","12:30 AM","1:00 AM","1:30 AM","2:00 AM","2:30 AM","3:00 AM","3:30 AM","4:00 AM",
-                "4:30 AM","5:00 AM","5:30 AM","6:00 AM","6:30 AM","7:00 AM","7:30 AM","8:00 AM","8:30 AM",
-                "9:00 AM","9:30 AM","10:00 AM","10:30 AM","11:00 AM","11:30 AM","12:00 PM","12:30 PM","1:00 PM","1:30 PM"
-                ,"2:00 PM","2:30 PM","3:00 PM","3:30 PM","4:00 PM","4:30 PM","5:00 PM","5:30 PM","6:00 PM","6:30 PM"
-                ,"7:00 PM","7:30 PM","8:00 PM","8:30 PM","9:00 PM","9:30 PM","10:00 PM","10:30 PM","11:00 PM",
-                "11:30PM"],"selectedIndex":18}, true);
+            ,"optionValues":["12:00 AM","12:30 AM","1:00 AM","1:30 AM","2:00 AM","2:30 AM","3:00 AM","3:30 AM","4:00 AM",
+            "4:30 AM","5:00 AM","5:30 AM","6:00 AM","6:30 AM","7:00 AM","7:30 AM","8:00 AM","8:30 AM",
+            "9:00 AM","9:30 AM","10:00 AM","10:30 AM","11:00 AM","11:30 AM","12:00 PM","12:30 PM","1:00 PM","1:30 PM"
+            ,"2:00 PM","2:30 PM","3:00 PM","3:30 PM","4:00 PM","4:30 PM","5:00 PM","5:30 PM","6:00 PM","6:30 PM"
+            ,"7:00 PM","7:30 PM","8:00 PM","8:30 PM","9:00 PM","9:30 PM","10:00 PM","10:30 PM","11:00 PM",
+            "11:30PM"],"selectedIndex":18}, true);
     }
 </script>
 
@@ -82,11 +83,12 @@
         font-family: arial;
         font-size: 0.8em;
         padding: 0.1em 0 0.1em 0.2em;
+        cursor:hand;
         cursor:pointer;
     }
 
     .optionHover {
-        background-color: cornflowerblue;
+        background: cornflowerblue;
         color: #ffffff;
     }
 </style>
@@ -128,7 +130,7 @@
 <p>
     Vestibulum mattis blandit velit. Vivamus lobortis eros vel magna. Vivamus ligula nisl, vestibulum nec, ornare sit amet, pretium id, erat. Nulla congue. Morbi at nisl et magna mattis pretium. Aliquam erat volutpat. In convallis. Vestibulum in felis. Nam iaculis, leo quis ornare iaculis, diam lacus auctor metus, a aliquet leo erat vitae tellus. Etiam gravida ipsum tincidunt velit. Curabitur auctor suscipit diam. Mauris mauris felis, gravida et, feugiat nec, sodales ut, purus. Donec lobortis pharetra diam. Aliquam non neque. Sed mi. Morbi ornare nisi at magna.
 </p>
-    Fusce aliquet. Nunc porta, arcu sed hendrerit eleifend, erat neque lobortis nulla, eu faucibus massa quam vel justo. Sed suscipit dolor sit amet quam. Sed vel erat. Praesent ullamcorper, nunc consectetuer pulvinar commodo, risus ipsum suscipit leo, quis porta sapien quam eu augue. Nunc eget diam et elit malesuada pulvinar. Donec varius magna eget purus. Suspendisse sollicitudin tellus vitae lacus. Vestibulum purus libero, varius id, vulputate eget, fermentum quis, sem. In libero nibh, fermentum eget, malesuada pharetra, lacinia nec, eros. Aliquam erat volutpat. Ut egestas auctor mauris. Donec euismod venenatis leo.
+Fusce aliquet. Nunc porta, arcu sed hendrerit eleifend, erat neque lobortis nulla, eu faucibus massa quam vel justo. Sed suscipit dolor sit amet quam. Sed vel erat. Praesent ullamcorper, nunc consectetuer pulvinar commodo, risus ipsum suscipit leo, quis porta sapien quam eu augue. Nunc eget diam et elit malesuada pulvinar. Donec varius magna eget purus. Suspendisse sollicitudin tellus vitae lacus. Vestibulum purus libero, varius id, vulputate eget, fermentum quis, sem. In libero nibh, fermentum eget, malesuada pharetra, lacinia nec, eros. Aliquam erat volutpat. Ut egestas auctor mauris. Donec euismod venenatis leo.
 <p>
     Maecenas ipsum. Sed vitae ipsum sit amet odio condimentum pellentesque. Aliquam eros. Nulla facilisis, purus id lacinia condimentum, ligula metus luctus metus, vitae pharetra nibh mi ut turpis. Aliquam condimentum urna quis mi. Nullam porta lacus nec massa. Nulla euismod ligula vitae lectus. Fusce sit amet dolor. Sed ac augue ut augue fermentum tempus. Morbi ut erat a est rhoncus sagittis. Maecenas justo neque, pharetra in, ullamcorper eu, egestas vitae, eros.
 </p>
@@ -136,62 +138,8 @@
     Aenean sodales, arcu a iaculis tempor, tortor augue pharetra lectus, a egestas justo diam vel est. Cras neque augue, vehicula in, luctus eget, feugiat elementum, mi. Donec feugiat. Nam euismod porttitor elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Curabitur dolor. Nunc ullamcorper viverra nunc. Morbi in purus quis turpis egestas scelerisque. Vivamus suscipit felis vitae est ultrices sagittis. Donec vel nulla sed est vehicula pulvinar.
 </p>
 <p>
-     <input id="timeInput2" type="text" size="7" value="8:24am" />
+    <input id="timeInput2" type="text" size="7" value="8:24am" />
 </p>
-<!--
-<div id="when-st_combobox" class="CB_menu" style="overflow: auto; display: none; position: absolute; top: 39px; left: 23px; width: 5.5em; height: 120px; z-index: 2;">
-    <div>
-        <div id="when-st_combobox_0" class="CB_option">12:00am</div>
-        <div id="when-st_combobox_1" class="CB_option">12:30am</div>
-        <div id="when-st_combobox_2" class="CB_option">1:00am</div>
-        <div id="when-st_combobox_3" class="CB_option">1:30am</div>
-        <div id="when-st_combobox_4" class="CB_option">2:00am</div>
-        <div id="when-st_combobox_5" class="CB_option">2:30am</div>
-        <div id="when-st_combobox_6" class="CB_option">3:00am</div>
-        <div id="when-st_combobox_7" class="CB_option">3:30am</div>
-        <div id="when-st_combobox_8" class="CB_option">4:00am</div>
-        <div id="when-st_combobox_9" class="CB_option">4:30am</div>
-        <div id="when-st_combobox_10" class="CB_option">5:00am</div>
-        <div id="when-st_combobox_11" class="CB_option">5:30am</div>
-        <div id="when-st_combobox_12" class="CB_option">6:00am</div>
-        <div id="when-st_combobox_13" class="CB_option">6:30am</div>
-        <div id="when-st_combobox_14" class="CB_option">7:00am</div>
-        <div id="when-st_combobox_15" class="CB_option">7:30am</div>
-        <div id="when-st_combobox_16" class="CB_option">8:00am</div>
-        <div id="when-st_combobox_17" class="CB_option">8:30am</div>
-        <div id="when-st_combobox_18" class="CB_option">9:00am</div>
-        <div id="when-st_combobox_19" class="CB_option">9:30am</div>
-        <div id="when-st_combobox_20" class="CB_option">10:00am</div>
-        <div id="when-st_combobox_21" class="CB_option">10:30am</div>
-        <div id="when-st_combobox_22" class="CB_option">11:00am</div>
-        <div id="when-st_combobox_23" class="CB_option">11:30am</div>
-        <div id="when-st_combobox_24" class="CB_option">12:00pm</div>
-        <div id="when-st_combobox_25" class="CB_option">12:30pm</div>
-        <div id="when-st_combobox_26" class="CB_option">1:00pm</div>
-        <div id="when-st_combobox_27" class="CB_option">1:30pm</div>
-        <div id="when-st_combobox_28" class="CB_option">2:00pm</div>
-        <div id="when-st_combobox_29" class="CB_option">2:30pm</div>
-        <div id="when-st_combobox_30" class="CB_option">3:00pm</div>
-        <div id="when-st_combobox_31" class="CB_option">3:30pm</div>
-        <div id="when-st_combobox_32" class="CB_option">4:00pm</div>
-        <div id="when-st_combobox_33" class="CB_option">4:30pm</div>
-        <div id="when-st_combobox_34" class="CB_option">5:00pm</div>
-        <div id="when-st_combobox_35" class="CB_option CB_selected">5:30pm</div>
-        <div id="when-st_combobox_36" class="CB_option">6:00pm</div>
-        <div id="when-st_combobox_37" class="CB_option">6:30pm</div>
-        <div id="when-st_combobox_38" class="CB_option">7:00pm</div>
-        <div id="when-st_combobox_39" class="CB_option">7:30pm</div>
-        <div id="when-st_combobox_40" class="CB_option">8:00pm</div>
-        <div id="when-st_combobox_41" class="CB_option">8:30pm</div>
-        <div id="when-st_combobox_42" class="CB_option">9:00pm</div>
-        <div id="when-st_combobox_43" class="CB_option">9:30pm</div>
-        <div id="when-st_combobox_44" class="CB_option">10:00pm</div>
-        <div id="when-st_combobox_45" class="CB_option">10:30pm</div>
-        <div id="when-st_combobox_46" class="CB_option">11:00pm</div>
-        <div id="when-st_combobox_47" class="CB_option">11:30pm</div>
-    </div>
-</div>
--->
 
 </body>
 </html>
