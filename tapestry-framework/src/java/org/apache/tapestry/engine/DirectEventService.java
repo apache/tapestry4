@@ -14,24 +14,19 @@
 
 package org.apache.tapestry.engine;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IDirectEvent;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.StaleSessionException;
-import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.*;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebSession;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Implementation of the direct event service, which encodes the page and component id in the service
@@ -80,13 +75,19 @@ public class DirectEventService implements IEngineService
         
         parameters.put(ServiceConstants.PAGE, activePage.getPageName());
         parameters.put(ServiceConstants.COMPONENT, component.getIdPath());
-        parameters.put(ServiceConstants.CONTAINER, componentPage == activePage ? null
-                : componentPage.getPageName());
+        parameters.put(ServiceConstants.CONTAINER, componentPage == activePage ? null : componentPage.getPageName());
         parameters.put(ServiceConstants.SESSION, stateful ? "T" : null);
+
         if (dsp.getUpdateParts() != null && dsp.getUpdateParts().length > 0)
+        {
             parameters.put(ServiceConstants.UPDATE_PARTS, dsp.getUpdateParts());
+        }
+
         if (dsp.isJSON())
+        {
             parameters.put("json", String.valueOf(dsp.isJSON()));
+        }
+        
         parameters.put(ServiceConstants.PARAMETER, dsp.getServiceParameters());
         
         return _linkFactory.constructLink(this, post, parameters, true);
@@ -128,8 +129,7 @@ public class DirectEventService implements IEngineService
             WebSession session = _request.getSession(false);
 
             if (session == null || session.isNew())
-                throw new StaleSessionException(EngineMessages.requestStateSession(direct),
-                        componentPage);
+                throw new StaleSessionException(EngineMessages.requestStateSession(direct), componentPage);
         }
         
         Object[] parameters = _linkFactory.extractListenerParameters(cycle);

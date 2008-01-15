@@ -111,6 +111,7 @@
             ]]>
             <match>u</match>
             <match>formids</match>
+            <match>seedids</match>
             <match>component</match>
             <match>page</match>
             <match>service</match>
@@ -125,6 +126,7 @@
             ]]>
             <match>u,l</match>
             <match>0</match>
+            <match><![CDATA[ZH4sIAAAAAAAAAFvzloG1fAHDPJ3i1KKyzORUFQOdgsR0EJWcn1uQn5eaVwJm55UkZualFgHZxanFxZn5eSBWAZBwyQcSOfnpICokMxesxDMXYkQuUA+Q8s9zLYOYE5xaUpZYBGfEGwCZpZ55BaUlYINzUpMhqsBO8cnMywbyQCYDAJ2KEjSmAAAA]]></match>
             <match>go</match>
             <match>Home</match>
             <match>direct</match>

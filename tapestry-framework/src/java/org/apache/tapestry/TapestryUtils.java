@@ -221,7 +221,7 @@ public final class TapestryUtils
         }
 
         // If the string contains no delimiters, then
-        // wrap it an an array and return it.
+        // wrap it in an array and return it.
 
         if (start == 0 && length == buffer.length)
         {

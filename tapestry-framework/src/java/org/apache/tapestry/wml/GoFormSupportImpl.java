@@ -30,9 +30,7 @@ import org.apache.tapestry.form.FormSupportImpl;
  */
 public class GoFormSupportImpl extends FormSupportImpl
 {
-
-    public GoFormSupportImpl(IMarkupWriter writer, IRequestCycle cycle,
-            IForm form)
+    public GoFormSupportImpl(IMarkupWriter writer, IRequestCycle cycle, IForm form)
     {
         super(writer, cycle, form);
     }
@@ -66,8 +64,7 @@ public class GoFormSupportImpl extends FormSupportImpl
 
     public void addEventHandler(FormEventType type, String functionName)
     {
-        throw new UnsupportedOperationException(
-                "addEventHandler() not supported for WML Go component.");
+        throw new UnsupportedOperationException("addEventHandler() not supported for WML Go component.");
     }
 
     protected void emitEventManagerInitialization()
