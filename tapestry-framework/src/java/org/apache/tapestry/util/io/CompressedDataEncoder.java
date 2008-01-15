@@ -41,7 +41,7 @@ public class CompressedDataEncoder {
     {
         Defense.notNull(input, "input");
 
-        if (input.isEmpty())
+        if (HiveMind.isBlank(input))
             return "";
 
         try {
