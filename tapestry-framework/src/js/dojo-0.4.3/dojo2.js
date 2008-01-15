@@ -1549,7 +1549,7 @@ return _134(_137.join(""));
 }
 function _buildDateTimeRE(_13a,info,_13c,_13d){
 return _13d.replace(/([a-z])\1*/ig,function(_13e){
-var s;
+var s='';
 var c=_13e.charAt(0);
 var l=_13e.length;
 switch(c){
@@ -1584,10 +1584,9 @@ var pm=_13c.pm||info.pm||"PM";
 if(_13c.strict){
 s=am+"|"+pm;
 }else{
-s=am;
-s+=(am!=am.toLowerCase())?"|"+am.toLowerCase():"";
-s+="|";
-s+=(pm!=pm.toLowerCase())?pm+"|"+pm.toLowerCase():pm;
+for (var i=0; i < am.length; i++){s += '[' + am.charAt(i).toLowerCase() + '|' + am.charAt(i).toUpperCase() + ']';}
+s += '|';
+for (var i=0; i < pm.length; i++){ s += '[' + pm.charAt(i).toLowerCase() + '|' + pm.charAt(i).toUpperCase() + ']';}
 }
 break;
 default:
