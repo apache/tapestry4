@@ -428,4 +428,27 @@ public interface IRequestCycle
      */
 
     void sendRedirect(String URL);
+
+    /**
+     * Encodes the current state of all allocated component ids (using {@link org.apache.tapestry.util.IdAllocator})
+     * to a String value that can be embedded in URLs or forms.
+     *
+     * <p>
+     * This method is used primarily by the {@link org.apache.tapestry.form.Form} component to encode the state
+     * of the current ids allocated so as to maintain consistent state during rewind - especially in cases where
+     * multiple form components are rendered in a page.
+     * </p>
+     *
+     * @return The encoded state,  which can be used to re-initialize a request to the same ID state
+     * by invoking {@link #initializeIdState(String)}.
+     */
+    String encodeIdState();
+
+    /**
+     * Used in conjunction with {@link #encodeIdState()} to re-initialize the internal id allocation state
+     * of a request during a form rewind.
+     *
+     * @param encodedSeed The value returned from a previous invocation of {@link #encodeIdState()} .
+     */
+    void initializeIdState(String encodedSeed);
 }

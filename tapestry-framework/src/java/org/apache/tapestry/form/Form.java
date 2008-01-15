@@ -19,6 +19,7 @@ import org.apache.tapestry.*;
 import org.apache.tapestry.engine.DirectServiceParameter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
+import org.apache.tapestry.javascript.JavascriptManager;
 import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.valid.IValidationDelegate;
@@ -243,7 +244,7 @@ public abstract class Form extends AbstractComponent implements IForm
 
     protected FormSupport newFormSupport(IMarkupWriter writer, IRequestCycle cycle)
     {
-        return getFormSupportFactory().createFormSupport(writer, cycle, this);
+        return new FormSupportImpl(writer, cycle, this, getJavascriptManager());
     }
 
     /**
@@ -402,12 +403,12 @@ public abstract class Form extends AbstractComponent implements IForm
     {
         _formSupport.setFormFieldUpdating(value);
     }
-    
-    /**
-     * Injected.
-     * 
-     * @since 4.1.1
-     */
 
-    public abstract FormSupportFactory getFormSupportFactory();
+    /**
+     * Injected {@link JavascriptManager} which will be used by
+     * form to render javascript contributions.
+     *
+     * @return The configured {@link JavascriptManager} for this request.
+     */
+    public abstract JavascriptManager getJavascriptManager();
 }

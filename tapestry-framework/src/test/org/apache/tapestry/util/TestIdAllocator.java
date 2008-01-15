@@ -13,8 +13,8 @@
 // limitations under the License.
 package org.apache.tapestry.util;
 
-import static org.testng.AssertJUnit.*;
-
+import org.apache.tapestry.util.io.CompressedDataEncoder;
+import static org.testng.AssertJUnit.assertEquals;
 import org.testng.annotations.Test;
 
 
@@ -24,6 +24,7 @@ import org.testng.annotations.Test;
 @Test
 public class TestIdAllocator
 {
+    
     public void test_Simple_Allocation()
     {
         IdAllocator ida = new IdAllocator();
@@ -76,5 +77,89 @@ public class TestIdAllocator
         
         assertEquals("name", ida.allocateId("name"));
         assertEquals("name_0", ida.allocateId("Name"));
+    }
+
+    public void test_To_External_String()
+    {
+        IdAllocator ida = new IdAllocator();
+
+        ida.allocateId("ext");
+        
+        assertEquals(",ext$0", ida.toExternalString());
+
+        ida.allocateId("ext");
+        ida.allocateId("ext2");
+        
+        assertEquals(",ext$1,ext2$0", ida.toExternalString());
+    }
+
+    public void test_Empty_To_External_String()
+    {
+        IdAllocator ida = new IdAllocator();
+
+        assertEquals("", ida.toExternalString());
+    }
+
+    public void test_To_External_String_Namespace()
+    {
+        IdAllocator ida = new IdAllocator("NS");
+
+        ida.allocateId("ext");
+
+        assertEquals("NS,extNS$0", ida.toExternalString());
+    }
+
+    public void test_From_External_String()
+    {
+        String seed = "NS,extNS$3,testNS$2,simpleNS$0";
+
+        assertEquals(seed, IdAllocator.fromExternalString(seed).toExternalString());
+
+        seed = ",ext$0";
+        assertEquals(seed, IdAllocator.fromExternalString(seed).toExternalString());
+
+        seed = "";
+        assertEquals(seed, IdAllocator.fromExternalString(seed).toExternalString());
+    }
+
+    public void test_From_External_String_State()
+    {
+        String seed = "NS,extNS$3,testNS$2,simpleNS$0,ext_0NS$0";
+        IdAllocator ida = IdAllocator.fromExternalString(seed);
+
+        assertEquals("NS", ida._namespace);
+        assertEquals(9, ida._generatorMap.size());
+        assertEquals(4, ida._uniqueGenerators.size());
+        assertEquals("extNS_3", ida.allocateId("ext"));
+    }
+
+    public void test_Compressed_External_String()
+    {
+        String seed = "NS,extNS$3,testNS$2,simpleNS$0,ext_0NS$0";
+
+        String compressed = CompressedDataEncoder.encodeString(seed);
+        assertEquals(seed, CompressedDataEncoder.decodeString(compressed));
+
+        IdAllocator ida = IdAllocator.fromExternalString(CompressedDataEncoder.decodeString(compressed));
+
+        assertEquals("NS", ida._namespace);
+        assertEquals(9, ida._generatorMap.size());
+        assertEquals(4, ida._uniqueGenerators.size());
+        assertEquals("extNS_3", ida.allocateId("ext"));
+    }
+
+    public void test_Clear()
+    {
+        String seed = "NS,extNS$3,testNS$2,simpleNS$0,ext_0NS$0";
+        IdAllocator ida = IdAllocator.fromExternalString(seed);
+
+        assertEquals("NS", ida._namespace);
+        assertEquals(9, ida._generatorMap.size());
+        assertEquals(4, ida._uniqueGenerators.size());
+
+        ida.clear();
+
+        assertEquals(0, ida._generatorMap.size());
+        assertEquals(0, ida._uniqueGenerators.size());
     }
 }

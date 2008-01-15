@@ -430,8 +430,7 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
     public void setId(String value)
     {
         if (_id != null)
-            throw new ApplicationRuntimeException(Tapestry
-                    .getMessage("AbstractComponent.attempt-to-change-component-id"));
+            throw new ApplicationRuntimeException(Tapestry.getMessage("AbstractComponent.attempt-to-change-component-id"));
 
         _id = value;
     }

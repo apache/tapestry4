@@ -19,8 +19,6 @@ import org.apache.tapestry.web.WebRequest;
 /**
  * Encapsulates logic related to various gzip compression schemes and their rules
  * as they apply to different browsers.
- *
- * @author jkuhnert
  */
 public final class GzipUtil
 {
@@ -35,11 +33,14 @@ public final class GzipUtil
      * Determines if gzip compression is appropriate/possible based on the User Agent and 
      * other limiting factors. IE versions &lt; 6.1 are known to not work with gzip compression reliably. 
      *
+     * @param request The current web request to check the headers of.
+     * 
      * @return True, if this request can be served in gzip format. False otherwise.
      */
     public static boolean isGzipCapable(WebRequest request)
     {
         String encoding = request.getHeader("Accept-Encoding");
+
         if (encoding == null || encoding.indexOf("gzip") < 0)
             return false;
 
@@ -47,11 +48,12 @@ public final class GzipUtil
 
         String userAgent = request.getHeader("User-Agent");
         int ieIndex = (userAgent != null) ? userAgent.indexOf("MSIE") : -1;
-        if (ieIndex > -1) {
-
+        if (ieIndex > -1)
+        {
             float version = -1;
 
-            try {
+            try
+            {
                 version = Float.parseFloat(userAgent.substring(ieIndex + 4, ieIndex + 8));
             } catch (NumberFormatException nf) {nf.printStackTrace();}
 

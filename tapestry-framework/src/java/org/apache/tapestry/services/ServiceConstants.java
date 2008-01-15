@@ -50,7 +50,7 @@ public class ServiceConstants
     /**
      * A flag indicating whether a session was active when the link was rendered. If this is true,
      * but no session is active when the request is processed, the a service may at its discression
-     * throw a {@iink org.apache.tapestry.StaleLinkException}
+     * throw a {@link org.apache.tapestry.StaleLinkException}
      */
 
     public static final String SESSION = "session";
@@ -78,6 +78,5 @@ public class ServiceConstants
      * 
      * @see org.apache.tapestry.form.FormSupportImpl
      */
-    public static final String[] RESERVED_IDS =
-    { SERVICE, PAGE, COMPONENT, CONTAINER, SESSION, PARAMETER };
+    public static final String[] RESERVED_IDS = { SERVICE, PAGE, COMPONENT, CONTAINER, SESSION, PARAMETER };
 }

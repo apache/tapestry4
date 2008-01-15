@@ -20,16 +20,16 @@
 
     <servlet name="app" class="org.apache.tapestry.ApplicationServlet">
         <init-parameter
-            name="org.apache.tapestry.application-specification"
-            value="/org/apache/tapestry/junit/mock/wml/Mock.application" />
+                name="org.apache.tapestry.application-specification"
+                value="/org/apache/tapestry/junit/mock/wml/Mock.application" />
         <init-parameter
-            name="org.apache.tapestry.application-mode" value="wml" />                 
+                name="org.apache.tapestry.application-mode" value="wml" />
     </servlet>
 
     <request>
         <parameter name="service" value="page" />
         <parameter name="page" value="Stale" />
- 
+
         <assert-output name="Do component">
             <![CDATA[
             <do type="prev">
@@ -53,6 +53,7 @@
             <postfield name="(.*?)".*?/>
             ]]>
             <match>formids</match>
+            <match>seedids</match>
             <match>component</match>
             <match>page</match>
             <match>service</match>
@@ -65,6 +66,7 @@
             <postfield .*?value="(.*?)" />
             ]]>
             <match></match>
+            <match>ZH4sIAAAAAAAAAFvzloG1PIEhTqc4tagsMzlVxUCnIDEdRCXn5xbk56XmlYDZeSWJmXmpRUB2cWpxcWZ+HohVACRc8oFEcEliTmowXCIlsyg1ucQnMy8byEkHKgAAGmRtGWYAAAA=</match>
             <match>go</match>
             <match>Stale</match>
             <match>direct</match>
