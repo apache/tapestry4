@@ -2440,7 +2440,7 @@ function _processPattern(pattern, applyPattern, applyLiteral, applyAll){
 function _buildDateTimeRE(groups, info, options, pattern){
 	return pattern.replace(/([a-z])\1*/ig, function(match){
 		// Build a simple regexp without parenthesis, which would ruin the match list
-		var s;
+		var s = '';
 		var c = match.charAt(0);
 		var l = match.length;
 		switch(c){
@@ -2475,10 +2475,13 @@ function _buildDateTimeRE(groups, info, options, pattern){
 				if(options.strict){
 					s = am + '|' + pm;
 				}else{
-					s = am;
-					s += (am != am.toLowerCase()) ? '|' + am.toLowerCase() : '';
-					s += '|';
-					s += (pm != pm.toLowerCase()) ? pm + '|' + pm.toLowerCase() : pm;
+					for (var i=0; i < am.length; i++){
+                        s += '[' + am.charAt(i).toLowerCase() + '|' + am.charAt(i).toUpperCase() + ']';
+                    }
+                    s += '|';
+                    for (var i=0; i < pm.length; i++){
+                        s += '[' + pm.charAt(i).toLowerCase() + '|' + pm.charAt(i).toUpperCase() + ']';
+                    }
 				}
 				break;
 			default:
