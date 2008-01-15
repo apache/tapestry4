@@ -40,9 +40,28 @@ public interface IFieldTracking
     /**
      * Returns true if the field is in error (that is, if it has an error
      * message {@link #getErrorRenderer() renderer}.
+     *
+     * @return Whether or not field is in error.
      */
 
     boolean isInError();
+
+    /**
+     * Whether or not any errors found should cause field decoration / error
+     * renderers to render.   This is set to false on form submissions (such as a
+     * refresh submit) where validation shouldn't cause errors to be rendererd.
+     *
+     * @return Whether or not to render errors,  default is true.
+     */
+    boolean getRenderError();
+
+    /**
+     * Sets whether or not to render errors for this tracking.   Gets
+     * set to false on form refresh submits.
+     *
+     * @param value  Whether or not to render errors.
+     */
+    void setRenderError(boolean value);
 
     /**
      * Returns the field component. This may return null if the error is not
@@ -50,6 +69,8 @@ public interface IFieldTracking
      * field tracking object is serialized and deserialized (the underlying
      * component reference is transient); this metehod is primarily used for
      * testing.
+     *
+     * @return The associated component,  or null if not specific to a component.
      */
 
     IFormComponent getComponent();
@@ -58,7 +79,8 @@ public interface IFieldTracking
      * Returns an object that will render the error message. The renderer
      * <em>must</em> implement a simple <code>toString()</code> that does
      * not produce markup, but is a simple message.
-     * 
+     *
+     * @return The {@link IRender} responsible for rendering the error, or null if none is set.
      * @see ValidatorException#ValidatorException(String, IRender,
      *      ValidationConstraint)
      * @since 1.0.9
@@ -70,14 +92,17 @@ public interface IFieldTracking
      * Returns the invalid input recorded for the field. This is stored so that,
      * on a subsequent render, the smae invalid input can be presented to the
      * client to be corrected.
+     *
+     * @return The original input value.
      */
-
     String getInput();
 
     /**
      * Returns the name of the field, that is, the name assigned by the form
      * (this will differ from the component's id when any kind of looping
      * operation is in effect).
+     *
+     * @return The name of the field within the form.
      */
 
     String getFieldName();
@@ -85,6 +110,8 @@ public interface IFieldTracking
     /**
      * Returns the validation constraint that was violated by the input. This
      * may be null if the constraint isn't known.
+     *
+     * @return The associated {@link ValidationConstraint} that caused the field error.
      */
 
     ValidationConstraint getConstraint();

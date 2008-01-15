@@ -14,11 +14,11 @@
 
 package org.apache.tapestry.valid;
 
-import java.io.Serializable;
-
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.form.IFormComponent;
+
+import java.io.Serializable;
 
 /**
  * Default implementation of {@link IFieldTracking}.
@@ -41,6 +41,8 @@ public class FieldTracking implements IFieldTracking, Serializable
     private String _fieldName;
 
     private ValidationConstraint _constraint;
+
+    private boolean _renderErrors = true;
 
     /**
      * Constructor used for unassociated errors; errors that are not about any
@@ -112,4 +114,13 @@ public class FieldTracking implements IFieldTracking, Serializable
         return _renderer != null;
     }
 
+    public boolean getRenderError()
+    {
+        return _renderErrors;
+    }
+
+    public void setRenderError(boolean value)
+    {
+        _renderErrors = value;
+    }
 }

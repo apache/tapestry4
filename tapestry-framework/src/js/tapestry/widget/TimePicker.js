@@ -77,7 +77,7 @@ dojo.widget.defineWidget(
 
         dojo.body().appendChild(this.dropdownNode);
 
-        if(dojo.render.html.ie55||dojo.render.html.ie60){
+        if(dojo.render.html.ie55 || dojo.render.html.ie60){
             this.bgIframe = new dojo.html.BackgroundIframe();
             this.bgIframe.setZIndex(this.dropdownNode);
         }
@@ -202,7 +202,7 @@ dojo.widget.defineWidget(
     show: function() {
 
         if (tapestry.widget.currentTimePicker &&
-                tapestry.widget.currentTimePicker != this){
+                tapestry.widget.currentTimePicker.widgetId != this.widgetId){
             tapestry.widget.currentTimePicker.hide();
         }
 

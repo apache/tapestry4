@@ -122,15 +122,15 @@ public class ComponentEventInvoker implements IComponentEventInvoker, ResetEvent
                 // defer execution until after form is done rewinding
 
                 form.addDeferredRunnable(
-                  new FormRunnable(target.getListeners().getListener(listeners[e].getMethodName()),
-                                   target,
-                                   cycle));
+                        new FormRunnable(target.getListeners().getListener(listeners[e].getMethodName()),
+                                         target,
+                                         cycle));
             }
         }
 
         // Form uses cycle attributes to test whether or not to focus .
         // The attribute existing at all is enough to bypass focusing.
-        
+
         if (disableFocus)
         {
             cycle.disableFocus();
@@ -160,7 +160,7 @@ public class ComponentEventInvoker implements IComponentEventInvoker, ResetEvent
                 target = findComponent(component.getPage().getComponents().values(), listener);
                 props = target.getSpecification().getComponentEvents(idPath);
             }
-            
+
             if (props == null)
                 continue;
 

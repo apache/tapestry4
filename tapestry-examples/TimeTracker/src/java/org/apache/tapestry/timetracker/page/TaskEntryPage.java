@@ -60,22 +60,27 @@ public abstract class TaskEntryPage<E extends Persistent> extends BasePage
     @Component(bindings = {"value=date", 
             "displayName=message:task.start.date"})
     public abstract DropdownDatePicker getDatePicker();
+    
     public abstract Date getDate();
     
     @Component(bindings = {"value=startTime", "displayName=message:task.start.time",
             "validators=validators:required"})
     public abstract GTimePicker getStartPicker();
+    
     public abstract Date getStartTime();
     
     @Component(bindings = {"value=endTime", "displayName=message:task.end.time",
             "validators=validators:required,differ=startPicker"})
     public abstract GTimePicker getEndPicker();
+    
     public abstract Date getEndTime();
+    public abstract void setEndTime(Date time);
     
     @Component(bindings = { "value=description", 
             "displayName=message:task.description",
             "validators=validators:required,maxLength=20"})
     public abstract TextField getDescriptionField();
+    
     public abstract String getDescription();
     
     @InjectObject("service:timetracker.dao.TaskDao")
@@ -145,5 +150,15 @@ public abstract class TaskEntryPage<E extends Persistent> extends BasePage
     public void showSubProject()
     {
         setShowSubProject(true);
+    }
+
+    @EventListener(targets = "startPicker", events = "onChange")
+    public void onChange()
+    {
+        if (getStartTime() != null) {
+            setEndTime(new Date(getStartTime().getTime() + (1000 * 60 * 60 * 4)));
+        }
+        
+        getBuilder().updateComponent("endPicker");
     }
 }

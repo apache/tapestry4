@@ -135,7 +135,7 @@ var tapestry={
 			dojo.log.warn("No data received in response.");
 			return;
 		}
-
+        
 		var resp=data.getElementsByTagName("ajax-response");
 		if (!resp || resp.length < 1 || !resp[0].childNodes) {
 			dojo.log.warn("No ajax-response elements received.");
@@ -195,8 +195,8 @@ var tapestry={
 				continue;
 			}
 
-			tapestry.loadContent(id, node, elms[i]);
-		}
+            tapestry.loadContent(id, node, elms[i]);
+        }
 
 		// load body scripts before initialization
 		for (var i=0; i<bodyScripts.length; i++) {
@@ -256,26 +256,30 @@ var tapestry={
             }
         }
 
-    	dojo.event.browser.clean(node); // prevent mem leaks in ie
-
     	var content=tapestry.html.getContentAsString(element);
     	if (djConfig["isDebug"]) {
     		dojo.log.debug("Received element content for id <" + id + "> of: " + content);
     	}
 
-        // fix for IE - setting innerHTML does not work for SELECTs
-        if (tapestry.isIE && node.outerHTML && node.nodeName == "SELECT") {
-            node.outerHTML = node.outerHTML.replace(/(<SELECT[^<]*>).*(<\/SELECT>)/, '$1' + content + '$2');
-            node=dojo.byId(id);
-        } else if (content && content.length > 0){
-            node.innerHTML=content;
+        // on IE don't destroy event listeners on single element nodes like form input boxes/etc
+        if (!tapestry.isIE || (tapestry.isIE && node.childNodes && node.childNodes.length > 0)){
+            dojo.event.browser.clean(node); // prevent mem leaks in ie
         }
 
+        // fix for IE - setting innerHTML does not work for SELECTs
+        if (tapestry.isIE && !dj_undef("outerHTML", node) && node.nodeName == "SELECT") {
+            node.outerHTML = node.outerHTML.replace(/(<SELECT[^<]*>).*(<\/SELECT>)/, '$1' + content + '$2');
+            node=dojo.byId(id);
+        } else if (content && content.length > 0
+                && (!tapestry.isIE || content.length > 1)){
+            node.innerHTML=content;
+        }
+        
         // copy attributes
 		var atts=element.attributes;
 		var attnode, i=0;
 		while((attnode=atts[i++])){
-			if(tapestry.isIE){
+            if(tapestry.isIE){
 				if(!attnode){ continue; }
 				if((typeof attnode == "object")&&
 					(typeof attnode.nodeValue == 'undefined')||
@@ -298,7 +302,7 @@ var tapestry={
             } else {
 				node.setAttribute(nn, nv);
 			}
-		}
+        }
 
     	// apply disabled/not disabled
     	var disabled = element.getAttribute("disabled");
@@ -446,14 +450,14 @@ var tapestry={
         	dojo.event.disconnect(target, event, tapestry, funcName);
         }
 	},
-        
+
 	/**
 	 * Function: cleanConnectWidget
-         */        
+         */
 	cleanConnectWidget:function(target, event, funcName){
-                tapestry.cleanConnect(dojo.widget.byId(target), event, funcName);        
-	},        
-        
+                tapestry.cleanConnect(dojo.widget.byId(target), event, funcName);
+	},
+
 	/**
 	 * Function: connect
 	 *
@@ -468,7 +472,7 @@ var tapestry={
         	dojo.event.connect(target, event, tapestry, funcName);
         }
 	},
-        
+
 	/**
 	 * Function: connectBefore
 	 */
@@ -477,25 +481,25 @@ var tapestry={
 		if (!dj_undef(funcName, tapestry)){
         	dojo.event.connect("before", target, event, tapestry, funcName);
         }
-	},        
-        
+	},
+
 	/**
 	 * Function: connectWidget
 	 */
 	connectWidget:function(target, event, funcName){
-                tapestry.connect(dojo.widget.byId(target), event, funcName);        
+                tapestry.connect(dojo.widget.byId(target), event, funcName);
 	},
 
 	/**
 	 * Function: byId
      */
     byId:dojo.byId,
-        
+
 	/**
 	 * Function: raise
      */
     raise:dojo.raise,
-        
+
 	/**
 	 * Function: addOnLoad
      */
@@ -557,7 +561,7 @@ tapestry.html={
 	 * The string representation of the given node's contents.
 	 */
 	getContentAsString:function(node){
-		if (typeof node.xml != "undefined") {
+        if (typeof node.xml != "undefined") {
 			return this._getContentAsStringIE(node);
 		} else if (typeof XMLSerializer != "undefined" ) {
 			return this._getContentAsStringMozilla(node);
@@ -599,15 +603,15 @@ tapestry.html={
 		s += '</' + node.nodeName + '>';
 		return s;
 	},
-        
+
     /**
      * Adds togglers and js effects to the exception page.
      */
     enhanceExceptionPage:function(){
         // attach toggles + hide content
-        
+
         var elms=dojo.html.getElementsByClass('toggle');
-        
+
         if(elms && elms.length > 0){
             for(var i=0;i<elms.length;i++){
 
@@ -702,14 +706,14 @@ tapestry.event={
 	 * 				browser event it will be ignored.
 	 *	props - The existing property object to set the values on, if it doesn't
 	 * 				exist one will be created.
-	 *  args  - The arguments from an method-call interception 
+	 *  args  - The arguments from an method-call interception
 	 * Returns:
 	 *
 	 * The desired event properties bound to an object. Ie obj.target,obj.charCode, etc..
 	 */
 	buildEventProperties:function(event, props, args){
 		if (!props) props={};
-		
+
 		if (dojo.event.browser.isEvent(event)) {
 			if(event["type"]) props.beventtype=event.type;
 			if(event["keys"]) props.beventkeys=event.keys;
@@ -723,11 +727,11 @@ tapestry.event={
 		}
 
 		props.methodArguments = dojo.json.serialize( args );
-		
+
 		return props;
 	},
-	
-	
+
+
 
 	/**
 	 * Function: buildTargetProperties
@@ -773,7 +777,7 @@ tapestry.event={
     /**
     * Function: stopEvent
     */
-    stopEvent:dojo.event.browser.stopEvent        
+    stopEvent:dojo.event.browser.stopEvent
 }
 
 tapestry.lang = {

@@ -499,7 +499,7 @@ tapestry.form.validation={
 	validateForm:function(form, props){
 		if (typeof form == "undefined") {return false;}
 		if (typeof props == "undefined") {return true;} // form exists but no profile? just submit I guess..
-		if (!props.validateForm) {return true;}
+        if (!props.validateForm) {return true;}
 
 		try {
 			this.clearValidationDecorations(form, props);
