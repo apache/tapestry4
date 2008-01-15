@@ -14,22 +14,7 @@
 
 package org.apache.tapestry.contrib.palette;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.tapestry.BaseComponent;
-import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IForm;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IScript;
-import org.apache.tapestry.PageRenderSupport;
-import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.*;
 import org.apache.tapestry.components.Block;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IPropertySelectionModel;
@@ -43,6 +28,8 @@ import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidationConstants;
 import org.apache.tapestry.valid.ValidatorException;
+
+import java.util.*;
 
 /**
  * A component used to make a number of selections from a list. The general look is a pair of
@@ -265,11 +252,15 @@ public abstract class Palette extends BaseComponent implements ValidatableFieldE
     {
         _symbols = new HashMap(MAP_SIZE);
 
+        getForm().getDelegate().writePrefix(writer, cycle, this, null);
+
         runScript(cycle);
 
         constructColumns();
 
         getValidatableFieldSupport().renderContributions(this, writer, cycle);
+
+        getForm().getDelegate().writeSuffix(writer, cycle, this, null);
     }
 
     protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
