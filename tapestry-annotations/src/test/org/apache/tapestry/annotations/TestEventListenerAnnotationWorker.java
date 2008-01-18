@@ -39,7 +39,7 @@ public class TestEventListenerAnnotationWorker extends BaseAnnotationTestCase
         EnhancementOperation op = newOp();
         IComponentSpecification spec = new ComponentSpecification();
         Resource resource = newResource(AnnotatedPage.class);
-                
+        
         EventListenerAnnotationWorker worker = new EventListenerAnnotationWorker();
 
         replay();
@@ -137,5 +137,34 @@ public class TestEventListenerAnnotationWorker extends BaseAnnotationTestCase
         
         verify();
     }
-    
+
+
+    public void test_Disable_Aysnc_Event_Connection()
+    {
+        EnhancementOperation op = newOp();
+        IComponentSpecification spec = new ComponentSpecification();
+        Resource resource = newResource(AnnotatedPage.class);
+
+        EventListenerAnnotationWorker worker = new EventListenerAnnotationWorker();
+
+        replay();
+
+        Method m = findMethod(AnnotatedPage.class, "submitForm");
+
+        assertTrue(worker.canEnhance(m));
+        worker.peformEnhancement(op, spec, m, resource);
+
+        verify();
+
+        ComponentEventProperty property = spec.getComponentEvents("foo");
+        assertNotNull(property);
+
+        List listeners = property.getEventListeners("onchange");
+        assertNotNull(listeners);
+        assertEquals(1, listeners.size());
+
+        EventBoundListener listener = (EventBoundListener) listeners.get(0);
+        assert !listener.shouldFocusForm();
+        assert !listener.isAsync();
+    }
 }

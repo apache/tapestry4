@@ -52,7 +52,21 @@ public class ComponentEventPropertyTest extends TestBase {
         assertEquals("doFoo", listener.getMethodName());
         assert listener.isAutoSubmit();
     }
-    
+
+    public void test_Disabled_Async_Property()
+    {
+        String[] events = { "onchange" };
+        ComponentEventProperty p = new ComponentEventProperty("compid");
+
+        p.addListener(events, "submitForm", null, false, false, false, true);
+
+        List listeners = p.getEventListeners("onchange");
+        assertEquals(1, listeners.size());
+
+        EventBoundListener l = (EventBoundListener) listeners.get(0);
+        assert !l.isAsync();
+    }
+
     public void test_Add_Form_Event_Listener()
     {
         String[] events = {"onFoo"};
