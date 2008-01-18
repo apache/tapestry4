@@ -93,7 +93,7 @@ public class TestExpressionEvaluator extends BaseComponentTestCase
         }
         catch (ApplicationRuntimeException ex)
         {
-            assertExceptionSubstring(ex, "Unable to parse OGNL expression");
+            assertExceptionSubstring(ex, "Unable to read OGNL expression");
         }
     }
 

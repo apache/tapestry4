@@ -35,20 +35,20 @@ import java.util.List;
  * <p>
  * Specifically does <em>not</em> provide a &lt;body&gt; tag, that is usually accomplished using a
  * {@link Body}&nbsp; component.
- * 
+ *
  * @author Howard Lewis Ship
  */
 
 public abstract class Shell extends AbstractComponent
 {
     public static final String SHELL_ATTRIBUTE = "org.apache.tapestry.html.Shell";
-    
+
     private static final String GENERATOR_CONTENT = "Tapestry Application Framework, version " + Tapestry.VERSION;
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         TapestryUtils.storeUniqueAttribute(cycle, SHELL_ATTRIBUTE, this);
-        
+
         long startTime = System.currentTimeMillis();
         boolean rewinding = cycle.isRewinding();
         boolean dynamic = getBuilder().isDynamic();
@@ -59,8 +59,8 @@ public abstract class Shell extends AbstractComponent
 
             IPage page = getPage();
 
-            if (!isDisableTapestryMeta()) {
-
+            if (!isDisableTapestryMeta())
+            {
                 writer.comment("Application: " + getApplicationSpecification().getName());
 
                 writer.comment("Page: " + page.getPageName());
@@ -68,6 +68,7 @@ public abstract class Shell extends AbstractComponent
             }
 
             writer.begin("html");
+            renderInformalParameters(writer, cycle);
             writer.println();
             writer.begin("head");
             writer.println();
@@ -101,7 +102,7 @@ public abstract class Shell extends AbstractComponent
 
             if (ajaxDelegate != null)
                 ajaxDelegate.render(writer, cycle);
-            
+
             IAsset stylesheet = getStylesheet();
 
             if (stylesheet != null)
@@ -127,28 +128,28 @@ public abstract class Shell extends AbstractComponent
         {
             List relations = getRelations();
             if (relations != null)
-                writeRelations(writer, relations); 
-            
+                writeRelations(writer, relations);
+
             StringBuffer additionalContent = getContentBuffer();
             if (additionalContent != null)
                 writer.printRaw(additionalContent.toString());
-            
+
             writer.end(); // head
         }
-        
+
         if (!dynamic)
             nested.close();
-        
+
         if (!rewinding && !dynamic)
         {
             writer.end(); // html
             writer.println();
 
-            if (!isDisableTapestryMeta()) {
-                
+            if (!isDisableTapestryMeta())
+            {
                 long endTime = System.currentTimeMillis();
 
-                writer.comment("Render time: ~ " + (endTime - startTime) + " ms");     
+                writer.comment("Render time: ~ " + (endTime - startTime) + " ms");
             }
         }
 
@@ -159,8 +160,8 @@ public abstract class Shell extends AbstractComponent
         super.cleanupAfterRender(cycle);
 
         cycle.removeAttribute(SHELL_ATTRIBUTE);
-    }    
-    
+    }
+
     private void writeDocType(IMarkupWriter writer, IRequestCycle cycle)
     {
         // This is the real code
@@ -180,7 +181,7 @@ public abstract class Shell extends AbstractComponent
         writer.attribute("href", stylesheet.buildURL());
         writer.println();
     }
-    
+
     private void writeRefresh(IMarkupWriter writer, IRequestCycle cycle)
     {
         int refresh = getRefresh();
@@ -203,7 +204,7 @@ public abstract class Shell extends AbstractComponent
 
         writeMetaTag(writer, "http-equiv", "Refresh", buffer.toString());
     }
-    
+
     private void writeMetaTag(IMarkupWriter writer, String key, String value, String content)
     {
         writer.beginEmpty("meta");
@@ -211,10 +212,11 @@ public abstract class Shell extends AbstractComponent
         writer.attribute("content", content);
         writer.println();
     }
-    
+
     private void writeRelations(IMarkupWriter writer, List relations)
     {
         Iterator i = relations.iterator();
+        
         while (i.hasNext())
         {
             RelationBean relationBean = (RelationBean) i.next();
@@ -222,37 +224,39 @@ public abstract class Shell extends AbstractComponent
                 writeRelation(writer, relationBean);
         }
     }
-    
+
     private void writeRelation(IMarkupWriter writer, RelationBean relationBean)
     {
-            writer.beginEmpty("link");
-            writeAttributeIfNotNull(writer, "rel", relationBean.getRel());
-            writeAttributeIfNotNull(writer, "rev", relationBean.getRev());            
-            writeAttributeIfNotNull(writer, "type", relationBean.getType());
-            writeAttributeIfNotNull(writer, "media", relationBean.getMedia());
-            writeAttributeIfNotNull(writer, "title", relationBean.getTitle());
-            writeAttributeIfNotNull(writer, "href", relationBean.getHref());
-            writer.println();
-    }    
-    
+        writer.beginEmpty("link");
+
+        writeAttributeIfNotNull(writer, "rel", relationBean.getRel());
+        writeAttributeIfNotNull(writer, "rev", relationBean.getRev());
+        writeAttributeIfNotNull(writer, "type", relationBean.getType());
+        writeAttributeIfNotNull(writer, "media", relationBean.getMedia());
+        writeAttributeIfNotNull(writer, "title", relationBean.getTitle());
+        writeAttributeIfNotNull(writer, "href", relationBean.getHref());
+        
+        writer.println();
+    }
+
     private void writeAttributeIfNotNull(IMarkupWriter writer, String name, String value)
     {
         if (value != null)
             writer.attribute(name, value);
     }
-    
+
     /**
      * Retrieves the {@link Shell} that was stored into the request
      * cycle. This allows components wrapped by the {@link Shell} to
      * locate it and access the services it provides.
-     * 
+     *
      * @since 4.1.1
      */
     public static Shell get(IRequestCycle cycle)
     {
         return (Shell) cycle.getAttribute(SHELL_ATTRIBUTE);
-    }    
-    
+    }
+
     /**
      * Adds a relation (stylesheets, favicon, e.t.c.) to the page.
      *
@@ -263,17 +267,17 @@ public abstract class Shell extends AbstractComponent
         List relations = getRelations();
         if (relations == null)
             relations = new ArrayList();
-        
+
         if (!relations.contains(relation))
             relations.add(relation);
-        
-        setRelations(relations);             
+
+        setRelations(relations);
     }
 
     /**
      * Include additional content in the header of a page.
-     * 
-     * @param content 
+     *
+     * @param content
      *
      * @since 4.1.1
      */
@@ -281,23 +285,23 @@ public abstract class Shell extends AbstractComponent
     {
         if (HiveMind.isBlank(content))
             return;
-        
+
         StringBuffer buffer = getContentBuffer();
-        
+
         if (buffer == null)
             buffer = new StringBuffer();
-        
+
         buffer.append(content);
-        
+
         setContentBuffer(buffer);
     }
-    
+
     public abstract boolean isDisableCaching();
-    
+
     public abstract IRender getAjaxDelegate();
-    
+
     public abstract IRender getDelegate();
-    
+
     public abstract int getRefresh();
 
     public abstract IAsset getStylesheet();
@@ -328,34 +332,34 @@ public abstract class Shell extends AbstractComponent
     /** @since 4.0 */
 
     public abstract IRender getBaseTagWriter();
-    
+
     /** @since 4.0.1 */
-    
+
     public abstract boolean getRenderBaseTag();
-    
+
     /** @since 4.0.3 */
-    
+
     public abstract boolean getRaw();
-    
+
     /** @since 4.1.1 */
-    
+
     public abstract List getRelations();
-    
+
     /** @since 4.1.1 */
-    
+
     public abstract void setRelations(List relations);
-    
+
     /** @since 4.1.1 */
-    
+
     public abstract StringBuffer getContentBuffer();
-    
+
     /** @since 4.1.1 */
-    
-    public abstract void setContentBuffer(StringBuffer buffer); 
-    
+
+    public abstract void setContentBuffer(StringBuffer buffer);
+
     /** @since 4.1.4 */
     public abstract String getSearchIds();
-    
+
     /** @since 4.1.4 */
     public abstract void setSearchIds(String ids);
 
