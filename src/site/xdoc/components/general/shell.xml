@@ -373,7 +373,7 @@
 
                 <p>
                     Informal parameters:
-                    <strong>forbidden</strong>
+                    <strong>allowed</strong> <em>(informal parameters written to top level html tag)</em>
                 </p>
 
                 <p>

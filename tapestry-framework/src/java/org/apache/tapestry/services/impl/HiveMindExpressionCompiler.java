@@ -147,11 +147,6 @@ public class HiveMindExpressionCompiler extends ExpressionCompiler implements Og
 
             MethodSignature expressionSetter = new MethodSignature(void.class, "setExpression", new Class[]{Node.class}, null);
 
-            // must evaluate expression value at least once if object isn't null
-
-            //if (root != null)
-              //  Ognl.getValue(expression, context, root);
-
             try
             {
                 getBody = generateGetter(context, compiled);
