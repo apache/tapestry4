@@ -68,7 +68,7 @@ public class ComponentEventProperty implements Cloneable
     public void addListener(String[] events, String methodName,
             String formId, boolean validateForm, boolean async, boolean focus)
     {
-        addListener(events, methodName, formId, validateForm, async, focus, false);
+        addListener(events, methodName, formId, validateForm, async, focus, true);
     }
 
     /**
@@ -88,9 +88,18 @@ public class ComponentEventProperty implements Cloneable
     {
         for (int i=0; i < events.length; i++) {
             if (formId != null && formId.length() > 0)
-                addFormEventListener(events[i], methodName, formId, validateForm, async, focus);
-            else
-                addEventListener(events[i], methodName, autoSubmit);
+            {
+                addFormEventListener(events[i], methodName, formId, validateForm, async, focus, autoSubmit);
+            } else
+            {
+                EventBoundListener listener = new EventBoundListener(methodName, formId, validateForm,
+                                                                     _componentId, async, focus, autoSubmit);
+                List listeners = getEventListeners(events[i]);
+                if (!listeners.contains(listener))
+                {
+                    listeners.add(listener);
+                }
+            }
         }
     }
     
@@ -102,9 +111,10 @@ public class ComponentEventProperty implements Cloneable
      * @param validateForm
      */
     public void addFormEventListener(String event, String methodName,
-            String formId, boolean validateForm, boolean async, boolean focus)
+            String formId, boolean validateForm, boolean async, boolean focus, boolean autoSubmit)
     {
-        EventBoundListener listener = new EventBoundListener(methodName, formId, validateForm, _componentId, async, focus);
+        EventBoundListener listener = new EventBoundListener(methodName, formId, validateForm, _componentId,
+                                                             async, focus, autoSubmit);
         
         List listeners = getFormEventListeners(event);
         if (!listeners.contains(listener))

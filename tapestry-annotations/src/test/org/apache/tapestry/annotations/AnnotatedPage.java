@@ -169,6 +169,9 @@ public abstract class AnnotatedPage extends BasePage
     @EventListener(events = { "onClick" }, targets = { "email" }, submitForm = "notExisting")
     public void brokenFormListener() { }
     
+    @EventListener(targets = "foo", events = "onchange", async = false)
+    public void submitForm() {}
+
     @InitialValue("literal:5")
     public abstract int getDefaultPageSize();
     

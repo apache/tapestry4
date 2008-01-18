@@ -15,6 +15,7 @@
 package org.apache.tapestry.workbench.localization;
 
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.annotations.EventListener;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.apache.tapestry.html.BasePage;
 
@@ -31,6 +32,12 @@ public abstract class Localization extends BasePage
     private IPropertySelectionModel localeModel;
 
     public void formSubmit(IRequestCycle cycle)
+    {
+        cycle.activate("localization/Change");
+    }
+
+    @EventListener(targets = "inputLocale", events = "onchange", async = false)
+    public void onChange(IRequestCycle cycle)
     {
         cycle.activate("localization/Change");
     }
