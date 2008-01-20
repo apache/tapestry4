@@ -54,5 +54,41 @@ public void projectSelected(IRequestCycle cycle)
   
   Tapestry will correctly manage and render all javascript/form state/etc needed, depending on the component 
   type you are requesting an update on. 
+
+* Using ResponseBuilder for sending status messages and triggering client-side code
+
+  It is possible to trigger existing client-side code from a java listener method. This
+  is  made possible by {{{../apidocs/org/apache/tapestry/services/ResponseBuilder.html}ResponseBuilder}}s 
+  addStatusMessage method.
+
++-----------------------------------------------------------------------
+....
+
+@EventListener(targets = "projectChoose", events = "onValueChanged")
+public void projectSelected(IRequestCycle cycle)
+{
+  cycle.getResponseBuilder().updateComponent("myComponentId");
+  cycle.getResponseBuilder().addStatusMessage(null, "info", "A project was selected");
+}
+
+....
++-----------------------------------------------------------------------
   
- 
+  When the client is sent the ajax response, tapestry's javascript will 'publish' 
+  the status message at the specified topis, i.e. it will execute
+  dojo.event.topic.publish('info','A project was selected') 
+
+  You can take advantage of this behavior in several different ways:
+
+  [[1]] <<existing widgets>> - Dojo's Toaster is an example of a widget that
+  is subscribed to the 'info' topic. Whenever a message is published  there, it'll
+  scroll itself into view and display it.
+
+  [[1]] <<create new widgets>> - And making them behave like Toaster.
+
+  [[1]] <<trigger javascript code>> - it's easy to triggger your code whenever
+  a message is published. Here's some javascript that will alert the message:
+
++-----------------------------------------------------------------------
+dojo.event.topic.subscribe('info', function(msg) { alert(msg); });
++-----------------------------------------------------------------------
