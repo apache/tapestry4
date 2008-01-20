@@ -65,7 +65,7 @@
     
   <service-point id="ValidatorsBindingFactory" interface="org.apache.tapestry.binding.BindingFactory">
     
-    Factory for the "translator:" binding prefix.
+    Factory for the "validators:" binding prefix.
     
     <invoke-factory>
       <construct class="ValidatorsBindingFactory">
