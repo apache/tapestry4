@@ -13,7 +13,7 @@ EventListener, the swiss army knife of ajax functionality
   Tapestry 4.1. It offers an awful lot,  and is based around the functionality now familiar to many
   in {{{http://dojotoolkit.org}dojo}}'s {{{http://dojotoolkit.org/book/dojo-book-0-4/part-5-connecting-pieces/event-system-0}event API}}.
   
-  <<See also:>> {{{../tapestry-annotations/index.html#EventListener}EventListener}} core annotation documentation.,  {{{http://www.quirksmode.org/js/introevents.html}Quircksmode}}
+  <<See also:>> {{{../tapestry-annotations/index.html#EventListener}EventListener}} core annotation documentation.,  {{{http://www.quirksmode.org/js/introevents.html}Quirksmode}}
   
   At its core this new annotation allows you to bind client side events to page/component 
   {{{../usersguide/listenermethods.html}listener}} methods. "Client Side" events can have a lot
