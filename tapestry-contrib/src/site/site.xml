@@ -38,7 +38,7 @@
         <menu name="Documentation">
             
             <item name="Overview" href="/index.html" />
-                
+            
             <item name="Components" href="/componentreference/index.html" collapse="false">
                 <item name="AjaxStatus" href="/componentreference/ajaxstatus.html" />
                 <item name="CheckboxGroup" href="/componentreference/checkboxgroup.html" />
@@ -62,7 +62,8 @@
                 <item name="Timeout" href="/componentreference/timeout.html" />
                 <item name="XTile" href="/componentreference/xtile.html" />
             </item>
-            
+
+            <item name="Link Renderers" href="/links/index.html" />
             <item name="Hivedoc" href="/hivedoc/index.html" />
             
         </menu>
