@@ -15,11 +15,7 @@
 package org.apache.tapestry.contrib.link;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.PageRenderSupport;
-import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.*;
 import org.apache.tapestry.components.ILinkComponent;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.link.DefaultLinkRenderer;
@@ -38,11 +34,11 @@ import org.apache.tapestry.link.ILinkRenderer;
  * <p>
  * In short, simply add the following parameter to your <code>DirectLink</code>,
  * <code>ExternalLink</code>, or other such link components:
- * 
+ *
  * <pre>
  * renderer = &quot;ognl: @org.apache.tapestry.contrib.link.FormLinkRenderer@RENDERER&quot;
  * </pre>
- * 
+ *
  * and they will automatically start using POST rather than GET requests. Their
  * parameters will no longer be limited in size.
  * @author mb
@@ -60,53 +56,53 @@ public class FormLinkRenderer extends DefaultLinkRenderer
     public static final ILinkRenderer RENDERER = new FormLinkRenderer();
 
     public void renderLink(IMarkupWriter writer, IRequestCycle cycle,
-            ILinkComponent linkComponent)
+                           ILinkComponent linkComponent)
     {
         IMarkupWriter wrappedWriter = null;
 
         if (cycle.getAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME) != null)
-            throw new ApplicationRuntimeException(Tapestry
-                    .getMessage("AbstractLinkComponent.no-nesting"),
-                    linkComponent, null, null);
+            throw new ApplicationRuntimeException(Tapestry.getMessage("AbstractLinkComponent.no-nesting"),
+                                                  linkComponent, null, null);
 
         cycle.setAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME,
-                linkComponent);
-        
-        String formName = cycle.getUniqueId("LinkForm");
-        
-        boolean hasBody = getHasBody();
+                           linkComponent);
 
+        String formName = cycle.getUniqueId("LinkForm");
+
+        boolean hasBody = getHasBody();
         boolean disabled = linkComponent.isDisabled();
 
         if (!disabled && !cycle.isRewinding())
         {
             ILink l = linkComponent.getLink(cycle);
             String anchor = linkComponent.getAnchor();
-            
+
             PageRenderSupport prs = TapestryUtils.getPageRenderSupport(cycle, linkComponent);
-            
+
             String function = generateFormFunction(formName, l, anchor);
             prs.addBodyScript(linkComponent, function);
-            
+
             if (hasBody)
                 writer.begin(getElement());
-            else 
+            else
                 writer.beginEmpty(getElement());
-            
+
             writer.attribute(getUrlAttribute(), "javascript: document."
-                    + formName + ".submit();");
-            
+                                                + formName + ".submit();");
+
             beforeBodyRender(writer, cycle, linkComponent);
-            
+
             // Allow the wrapped components a chance to render.
             // Along the way, they may interact with this component
             // and cause the name variable to get set.
 
             wrappedWriter = writer.getNestedWriter();
         }
-        else wrappedWriter = writer;
+        else
+            wrappedWriter = writer;
 
-        if (hasBody) linkComponent.renderBody(wrappedWriter, cycle);
+        if (hasBody)
+            linkComponent.renderBody(wrappedWriter, cycle);
 
         if (!disabled && !cycle.isRewinding())
         {
@@ -126,11 +122,10 @@ public class FormLinkRenderer extends DefaultLinkRenderer
         }
 
         cycle.removeAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME);
-
     }
 
     private String generateFormFunction(String formName, ILink link,
-            String anchor)
+                                        String anchor)
     {
         String[] parameterNames = link.getParameterNames();
 
@@ -142,13 +137,13 @@ public class FormLinkRenderer extends DefaultLinkRenderer
 
         String url = link.getURL(anchor, false);
         buf.append("  html += \"<form name='" + formName
-                + "' method='post' action='" + url + "'>\";\n");
+                   + "' method='post' action='" + url + "'>\";\n");
 
         for(int i = 0; i < parameterNames.length; i++)
         {
             String parameter = parameterNames[i];
             String[] values = link.getParameterValues(parameter);
-            if (values != null) {               
+            if (values != null) {
                 for (int j = 0; j < values.length; j++) {
                     String value = values[j];
                     buf.append("  html += \"<input type='hidden' name='" + parameter + "' value='" + value + "'/>\";\n");
