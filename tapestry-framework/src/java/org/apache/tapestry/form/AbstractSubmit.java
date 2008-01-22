@@ -14,18 +14,25 @@
 
 package org.apache.tapestry.form;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.*;
+import org.apache.tapestry.IActionListener;
+import org.apache.tapestry.IDynamicInvoker;
+import org.apache.tapestry.IForm;
+import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.IScript;
+import org.apache.tapestry.PageRenderSupport;
+import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.engine.DirectServiceParameter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.util.ScriptUtils;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Superclass for components submitting their form.
@@ -72,7 +79,11 @@ abstract class AbstractSubmit extends AbstractFormComponent implements IDynamicI
         Object parameters = getParameters();
         if (parameters != null)
         {
-            if (parameters instanceof Collection)
+	        if (parameters instanceof Object[])
+	        {
+		        cycle.setListenerParameters((Object[]) parameters);
+	        }
+            else if (parameters instanceof Collection)
             {
                 cycle.setListenerParameters(((Collection) parameters).toArray());
             }

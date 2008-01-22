@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.link;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IDirect;
@@ -61,7 +61,7 @@ public abstract class DirectLink extends AbstractLinkComponent implements IDirec
      *            <ul>
      *              <li>null (returns null)
      *              <li>An array of Object (returns the array)
-     *              <li>A {@link List}(returns an array of the values in the List})
+     *              <li>A {@link Collection}(returns an array of the values in the Collection})
      *              <li>A single object (returns the object as a single-element array)
      *            </ul>
      * @return An array representation of the input object.
@@ -76,12 +76,8 @@ public abstract class DirectLink extends AbstractLinkComponent implements IDirec
         if (parameterValue instanceof Object[])
             return (Object[]) parameterValue;
 
-        if (parameterValue instanceof List)
-        {
-            List list = (List) parameterValue;
-
-            return list.toArray();
-        }
+        if (parameterValue instanceof Collection)
+            return ((Collection) parameterValue).toArray();
 
         return new Object[] { parameterValue };
     }
