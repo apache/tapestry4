@@ -15,7 +15,6 @@
 package org.apache.tapestry.form;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
@@ -36,7 +35,7 @@ import org.apache.tapestry.Tapestry;
  * 
  **/
 
-public abstract class Radio extends AbstractComponent
+public abstract class Radio extends AbstractFormComponent
 {
     /**
      *  Renders the form element, or responds when the form containing the element
@@ -45,35 +44,18 @@ public abstract class Radio extends AbstractComponent
      *
      **/
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+    protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
+	    RadioGroup group = RadioGroup.get(cycle);
 
-        RadioGroup group = RadioGroup.get(cycle);
-        
-        if (group == null)
+	    if (group == null)
             throw new ApplicationRuntimeException(
                 Tapestry.getMessage("Radio.must-be-contained-by-group"),
                 this,
                 null,
                 null);
-
-        // The group determines rewinding from the form.
-
-        boolean rewinding = group.isRewinding();
-
-        int option = group.getNextOptionId();
-
-        if (rewinding)
-        {
-            // If not disabled and this is the selected button within the radio group,
-            // then update set the selection from the group to the value for this
-            // radio button.  This will update the selected parameter of the RadioGroup.
-
-            if (!isDisabled() && !group.isDisabled() && group.isSelected(option))
-                group.updateSelection(getValue());
-            
-            return;
-        }
+	    
+	    int option = group.getNextOptionId();
         
         setClientId(group.getName()+option);
         
@@ -102,9 +84,31 @@ public abstract class Radio extends AbstractComponent
 
         renderInformalParameters(writer, cycle);
 
+	    writer.closeTag();
     }
 
-    public abstract boolean isDisabled();
+	protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
+	{
+		RadioGroup group = RadioGroup.get(cycle);
+
+        if (group == null)
+            throw new ApplicationRuntimeException(
+                Tapestry.getMessage("Radio.must-be-contained-by-group"),
+                this,
+                null,
+                null);
+
+        int option = group.getNextOptionId();
+
+		// If not disabled and this is the selected button within the radio group,
+		// then update set the selection from the group to the value for this
+		// radio button.  This will update the selected parameter of the RadioGroup.
+
+		if (!isDisabled() && !group.isDisabled() && group.isSelected(option))
+			group.updateSelection(getValue());
+	}
+
+	public abstract boolean isDisabled();
 
     public abstract Object getValue();
 }

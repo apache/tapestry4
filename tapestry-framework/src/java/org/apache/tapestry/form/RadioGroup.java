@@ -38,18 +38,18 @@ public abstract class RadioGroup extends AbstractFormComponent implements Valida
      * that its wrapped {@link Radio}components can identify thier state.
      */
 
-    private static final String ATTRIBUTE_NAME = "org.apache.tapestry.active.RadioGroup";
+    static final String ATTRIBUTE_NAME = "org.apache.tapestry.active.RadioGroup";
     
     // Cached copy of the value from the selectedBinding
-    private Object _selection;
+    Object _selection;
 
     // The value from the HTTP request indicating which
     // Radio was selected by the user.
-    private int _selectedOption;
+    int _selectedOption;
 
-    private boolean _rewinding;
+    boolean _rewinding;
 
-    private boolean _rendering;
+    boolean _rendering;
 
     private int _nextOptionId;
 
