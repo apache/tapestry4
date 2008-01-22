@@ -183,7 +183,8 @@
                             <p>
                                 If the parameter is a Collection, it will be converted to an Object
                                 array (to match the IRequestCycle getListenerParameters()
-                                signature).
+                                signature). If the parameter is an Object array, it will be used
+	                            as-is for the listener parameters.
                             </p>
                             <p>
                                 Allows listeners provided by the 'action' parameter to access any

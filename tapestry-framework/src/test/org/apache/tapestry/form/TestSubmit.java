@@ -14,8 +14,20 @@
 
 package org.apache.tapestry.form;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.hivemind.util.PropertyUtils;
-import org.apache.tapestry.*;
+import org.apache.tapestry.IActionListener;
+import org.apache.tapestry.IBinding;
+import org.apache.tapestry.IForm;
+import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.IScript;
+import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.engine.DirectServiceParameter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
@@ -26,8 +38,6 @@ import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidationConstants;
 import static org.easymock.EasyMock.*;
 import org.testng.annotations.Test;
-
-import java.util.*;
 
 /**
  * Tests for {@link org.apache.tapestry.form.Submit}.
@@ -591,7 +601,36 @@ public class TestSubmit extends BaseFormComponentTestCase
         verify();
     }
 
-    public void test_Trigger_With_Action_And_Multiple_Parameters()
+	public void test_Trigger_With_Action_And_Object_Array_Parameter()
+    {
+        IActionListener action = newListener();
+        MockForm form = new MockForm();
+        IRequestCycle cycle = newCycle();
+
+        Object parameter = new Object[] {"p1", "p2"};
+        Creator creator = new Creator();
+        Submit submit = (Submit) creator.newInstance(Submit.class, new Object[]
+        { "action", action, "parameters", parameter, "listenerInvoker",
+                new ListenerInvokerTerminator() });
+
+        cycle.setListenerParameters(aryEq(new Object[] { "p1", "p2" }));
+
+        replay();
+
+        submit.handleClick(cycle, form);
+
+        verify();
+
+        action.actionTriggered(submit, cycle);
+
+        replay();
+
+        form.runDeferred();
+
+        verify();
+    }
+
+    public void test_Trigger_With_Action_And_Collection_Parameter()
     {
         IActionListener action = newListener();
         MockForm form = new MockForm();
