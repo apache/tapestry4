@@ -1,7 +1,7 @@
 package org.apache.tapestry.link;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.tapestry.BaseComponentTestCase;
 import org.testng.annotations.Test;
@@ -23,7 +23,7 @@ public class DirectLinkTest extends BaseComponentTestCase
 		assertEquals(3, objectArrayResult.length);
 		assertEquals(3, objectArrayResult[2]);
 
-		Set set = new HashSet();
+		Set set = new TreeSet();
 		set.add(1);
 		set.add(2);
 		set.add(3);
