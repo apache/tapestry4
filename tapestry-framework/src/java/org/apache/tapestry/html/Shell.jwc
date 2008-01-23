@@ -189,7 +189,6 @@
     <inject property="pageService" object="engine-service:page" />
     <inject property="applicationSpecification" object="infrastructure:applicationSpecification" />
     <inject property="baseTagWriter" object="service:tapestry.url.BaseTagWriter" />
-    <inject property="jsManager" object="service:tapestry.js.JavascriptManager" />    
     
     <bean name="coreAjaxDelegate" class="org.apache.tapestry.dojo.AjaxShellDelegate">
         <set name="dojoSource" value="dojoSource" />
