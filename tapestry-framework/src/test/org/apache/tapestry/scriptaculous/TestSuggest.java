@@ -97,7 +97,7 @@ public class TestSuggest extends BaseComponentTestCase {
         assertEquals(parms.size(), 4);
         assertEquals(parms.get("inputId"), "suggest");
         assertEquals(parms.get("updateId"), "suggestchoices");
-        assertEquals(parms.get("options"), "{\"onFailure\":\"tapestry.error\",\"encoding\":\"utf-8\"}");
+        assertEquals(parms.get("options"), "{\"onFailure\":tapestry.error,\"encoding\":\"utf-8\"}");
         assertEquals(parms.get("updateUrl"), "http://url");
 
         assertBuffer("<input type=\"text\" autocomplete=\"off\" " +
@@ -133,7 +133,8 @@ public class TestSuggest extends BaseComponentTestCase {
                                    "translatedFieldSupport", translator,
                                    "validatableFieldSupport", validator,
                                    "engineService", engine,
-                                   "script", script);
+                                   "script", script,
+                                   "options", "{afterUpdateElement:myapp.processUpdate,other:other}");
 
         expect(cycle.isRewinding()).andReturn(false).anyTimes();
         expect(resp.isDynamic()).andReturn(false);
@@ -172,7 +173,9 @@ public class TestSuggest extends BaseComponentTestCase {
         assertEquals(parms.size(), 4);
         assertEquals(parms.get("inputId"), "suggest");
         assertEquals(parms.get("updateId"), "suggestchoices");
-        assertEquals(parms.get("options"), "{\"onFailure\":\"tapestry.error\",\"encoding\":\"utf-8\"}");
+        assertEquals(parms.get("options"), 
+                "{\"afterUpdateElement\":myapp.processUpdate,\"other\":\"other\"," +
+                "\"onFailure\":tapestry.error,\"encoding\":\"utf-8\"}");
         assertEquals(parms.get("updateUrl"), "http://url");
 
         assertBuffer("<textarea id=\"suggest\" name=\"suggest\">r2d2</textarea>" +
