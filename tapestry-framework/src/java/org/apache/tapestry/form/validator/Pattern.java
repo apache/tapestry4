@@ -21,11 +21,11 @@ import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.json.JSONLiteral;
 import org.apache.tapestry.json.JSONObject;
-import org.apache.tapestry.util.RegexpMatcher;
 import org.apache.tapestry.valid.ValidationConstants;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
+import org.apache.oro.text.regex.Perl5Compiler;
 
 /**
  * Validates a user input string against a regular expression pattern.
@@ -38,10 +38,10 @@ public class Pattern extends BaseValidator
 {
     // It is expectd that each Pattern instance will be used by a single component instance,
     // and therefore be restricted to a single thread.
-    
-    private RegexpMatcher _matcher = new RegexpMatcher();
 
     private String _pattern;
+    private String _quotedPattern;
+    private java.util.regex.Pattern _compiledPattern;
 
     public Pattern()
     {
@@ -57,7 +57,7 @@ public class Pattern extends BaseValidator
     {
         String input = (String) object;
 
-        if (!_matcher.matches(_pattern, input))
+        if (! _compiledPattern.matcher(input).matches() )
             throw new ValidatorException(buildMessage(messages, field),
                     ValidationConstraint.PATTERN_MISMATCH);
     }
@@ -74,9 +74,7 @@ public class Pattern extends BaseValidator
     public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
             FormComponentContributorContext context, IFormComponent field)
     {
-        String pattern = _matcher.getEscapedPatternString(_pattern);
-        
-        JSONObject profile = context.getProfile();
+       JSONObject profile = context.getProfile();
         
         if (!profile.has(ValidationConstants.CONSTRAINTS)) {
             profile.put(ValidationConstants.CONSTRAINTS, new JSONObject());
@@ -85,7 +83,7 @@ public class Pattern extends BaseValidator
         
         accumulateProperty(cons, field.getClientId(), 
                 new JSONLiteral("[tapestry.form.validation.isValidPattern,\""
-                        + pattern + "\"]"));
+                        + _quotedPattern + "\"]"));
         
         accumulateProfileProperty(field, profile, 
                 ValidationConstants.CONSTRAINTS, buildMessage(context, field));
@@ -94,6 +92,8 @@ public class Pattern extends BaseValidator
     public void setPattern(String pattern)
     {
         _pattern = pattern;
+        _compiledPattern = java.util.regex.Pattern.compile(pattern);
+        _quotedPattern =  Perl5Compiler.quotemeta(_pattern);
     }
 
     public String getPattern()
