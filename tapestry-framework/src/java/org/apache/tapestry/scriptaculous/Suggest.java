@@ -25,6 +25,7 @@ import org.apache.tapestry.form.AbstractFormComponent;
 import org.apache.tapestry.form.TranslatedField;
 import org.apache.tapestry.form.TranslatedFieldSupport;
 import org.apache.tapestry.form.ValidatableFieldSupport;
+import org.apache.tapestry.json.JSONLiteral;
 import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.link.DirectLink;
 import org.apache.tapestry.listener.ListenerInvoker;
@@ -62,6 +63,14 @@ import org.apache.tapestry.valid.ValidatorException;
  *
  */
 public abstract class Suggest extends AbstractFormComponent implements TranslatedField, IDirect {
+    
+    /**
+     * Keys that should be treated as javascript literals when contructing the 
+     * options json.
+     */
+    private static final String[] LITERAL_KEYS = new String[]
+        {"onFailure", "updateElement", "afterUpdateElement", "callback"};
+
 
     /**
      * Injected service used to invoke whatever listeners people have setup to handle
@@ -280,6 +289,15 @@ public abstract class Suggest extends AbstractFormComponent implements Translate
         if (!json.has("encoding"))
         {
             json.put("encoding", cycle.getEngine().getOutputEncoding());
+        }
+        
+        for (int i=0; i<LITERAL_KEYS.length; i++) 
+        {
+            String key = LITERAL_KEYS[i];
+            if (json.has(key))
+            {
+                json.put(key, new JSONLiteral(json.getString(key)));
+            }            
         }
 
         Map parms = new HashMap();
