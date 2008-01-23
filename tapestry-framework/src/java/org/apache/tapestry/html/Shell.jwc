@@ -158,7 +158,7 @@
             Sets the tapestry path, needed for dojo to properly detect and find tapestry js modules
             when overriding the default dojo bundled with tapestry.
         </description>
-    </parameter>
+    </parameter>ey
 
     <parameter name="dojoSource" default-value="ognl:jsManager.firstAsset">
         <description>
@@ -185,11 +185,6 @@
         </description>
     </parameter>
 
-    <inject property="valueConverter" object="service:tapestry.coerce.ValueConverter" />
-    <inject property="pageService" object="engine-service:page" />
-    <inject property="applicationSpecification" object="infrastructure:applicationSpecification" />
-    <inject property="baseTagWriter" object="service:tapestry.url.BaseTagWriter" />
-    
     <bean name="coreAjaxDelegate" class="org.apache.tapestry.dojo.AjaxShellDelegate">
         <set name="dojoSource" value="dojoSource" />
         <set name="dojoFormSource" value="dojoFormSource" />
@@ -206,5 +201,11 @@
         <set name="parseWidgets" value="parseWidgets" />
         <set name="searchIds" value="searchIds" />
     </bean>
+
+    <inject property="valueConverter" object="service:tapestry.coerce.ValueConverter" />
+    <inject property="pageService" object="engine-service:page" />
+    <inject property="applicationSpecification" object="infrastructure:applicationSpecification" />
+    <inject property="baseTagWriter" object="service:tapestry.url.BaseTagWriter" />
+    <inject property="jsManager" object="service:tapestry.js.JavascriptManager" />
     
 </component-specification>
