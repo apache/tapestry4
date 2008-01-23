@@ -260,6 +260,7 @@
                     <version>2.3</version>
                     <inherited>true</inherited>
                     <configuration>
+                        <argLine>-Xmx612m -XX:MaxPermSize=324m</argLine>
                         <systemProperties>
                             <property>
                                 <name>user.language</name>

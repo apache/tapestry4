@@ -70,8 +70,7 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator, RegistryShu
     public void initializeService()
     {
         if (_applicationSpecification.checkExtension(Tapestry.OGNL_TYPE_CONVERTER))
-            _typeConverter = (TypeConverter) _applicationSpecification.getExtension(Tapestry.OGNL_TYPE_CONVERTER,
-                    TypeConverter.class);
+            _typeConverter = (TypeConverter) _applicationSpecification.getExtension(Tapestry.OGNL_TYPE_CONVERTER, TypeConverter.class);
 
         Iterator i = _contributions.iterator();
 
@@ -143,8 +142,8 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator, RegistryShu
         }
         catch (Exception ex)
         {
-            throw new ApplicationRuntimeException(ImplMessages.unableToReadExpression(ImplMessages
-                    .parsedExpression(), target, ex), target, null, ex);
+            throw new ApplicationRuntimeException(ImplMessages.unableToReadExpression(ImplMessages.parsedExpression(),
+                                                                                      target, ex), target, null, ex);
         } finally {
             try { if (context != null) _contextPool.returnObject(context); } catch (Exception e) {}
         }

@@ -103,7 +103,7 @@ public class ExpressionCacheImpl implements ExpressionCache, ResetEventListener,
             Map cached = (Map)_objectCache.get(target.getClass());
             
             if (cached == null)
-            {    
+            {
                 cached = new HashMap();
                 _objectCache.put(target.getClass(), cached);
             }

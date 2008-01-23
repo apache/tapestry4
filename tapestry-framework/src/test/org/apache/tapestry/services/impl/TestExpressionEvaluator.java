@@ -14,7 +14,9 @@
 
 package org.apache.tapestry.services.impl;
 
+import ognl.OgnlRuntime;
 import ognl.TypeConverter;
+import ognl.enhance.ExpressionCompiler;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.Tapestry;
@@ -22,6 +24,7 @@ import org.apache.tapestry.enhance.ClassFactoryImpl;
 import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import static org.easymock.EasyMock.expect;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.Collections;
@@ -38,12 +41,21 @@ public class TestExpressionEvaluator extends BaseComponentTestCase
 
         ExpressionEvaluatorImpl result = new ExpressionEvaluatorImpl();
         result.setClassFactory(new ClassFactoryImpl());
-
         result.setExpressionCache(cache);
         
         cache.setEvaluator(result);
 
         return result;
+    }
+
+    // make sure hivemind compiler isn't configured
+    @BeforeMethod
+    public void setup_Ognl()
+    {
+        if (HiveMindExpressionCompiler.class.isInstance(OgnlRuntime.getCompiler()))
+        {
+            OgnlRuntime.setCompiler(new ExpressionCompiler());
+        }
     }
 
     public static class Fixture
@@ -83,7 +95,6 @@ public class TestExpressionEvaluator extends BaseComponentTestCase
     public void test_Read_Fail()
     {
         Fixture f = new Fixture();
-
         ExpressionEvaluator ee = create();
 
         try
@@ -112,7 +123,6 @@ public class TestExpressionEvaluator extends BaseComponentTestCase
     public void test_Write_Fail()
     {
         Fixture f = new Fixture();
-
         ExpressionEvaluator ee = create();
 
         try
