@@ -21,7 +21,6 @@ import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.json.JSONLiteral;
 import org.apache.tapestry.json.JSONObject;
-import org.apache.tapestry.util.RegexpMatcher;
 import org.apache.tapestry.valid.ValidationConstants;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
@@ -49,13 +48,9 @@ public class Email extends BaseValidator
     public static final String DOMAIN_PATTERN = "([0-9a-z]([-0-9a-z]{0,61}[0-9a-z])?\\.)+" + "(" + TLD_PATTERN + ")";
     public static final String USERNAME_PATTERN = "([-/!\\#$*?=_+&'\\da-z]+[.])*[-/!\\#$*?=_+&'\\da-z]+";
     public static final String PATTERN = "^(?i)"+ USERNAME_PATTERN + "@" + "(" + DOMAIN_PATTERN + ")$";
-                
-    // TODO: Possible thread safety issue if the validator
-    // is shared across threads, because the matcher
-    // will be too.
-    
-    private RegexpMatcher _matcher = new RegexpMatcher();
-    
+
+    private static final java.util.regex.Pattern PATTERN_COMPILED = java.util.regex.Pattern.compile(PATTERN);
+
     public Email()
     {
     }
@@ -70,7 +65,7 @@ public class Email extends BaseValidator
     {
         String input = (String) object;
 
-        if (!_matcher.matches(PATTERN, input))
+        if ( !PATTERN_COMPILED.matcher(input).matches() )
             throw new ValidatorException(buildMessage(messages, field),
                     ValidationConstraint.EMAIL_FORMAT);
     }
