@@ -138,7 +138,7 @@
             document. It is highly reccomended that you keep this at its default value of false.
         </description>
     </parameter>
-    
+
     <parameter name="searchIds">
         <description>
             Provides a way to have dojo automatically parse a known set of page 
@@ -158,7 +158,7 @@
             Sets the tapestry path, needed for dojo to properly detect and find tapestry js modules
             when overriding the default dojo bundled with tapestry.
         </description>
-    </parameter>ey
+    </parameter>
 
     <parameter name="dojoSource" default-value="ognl:jsManager.firstAsset">
         <description>
