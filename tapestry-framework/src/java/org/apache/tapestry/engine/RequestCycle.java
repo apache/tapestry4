@@ -681,6 +681,5 @@ public class RequestCycle implements IRequestCycle
     public void initializeIdState(String encodedSeed)
     {
         _idAllocator = IdAllocator.fromExternalString( CompressedDataEncoder.decodeString(encodedSeed));
-        preallocateReservedIds();
     }
 }

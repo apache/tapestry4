@@ -108,6 +108,16 @@ public class IdAllocator
             result = 31 * result + _index;
             return result;
         }
+
+        public String toString()
+        {
+            return "NameGenerator[" +
+                   "_baseId='" + _baseId + '\'' +
+                   '\n' +
+                   ", _index=" + _index +
+                   '\n' +
+                   ']';
+        }
     }
 
     public IdAllocator()
@@ -189,8 +199,8 @@ public class IdAllocator
         // in a peek we don't want to actually increment any id state so we must
         // clone
 
-        if (_generatorMap.containsKey(result.toLowerCase())) {
-
+        if (_generatorMap.containsKey(result.toLowerCase()))
+        {
             try {
                 NameGenerator cg = (NameGenerator)g.clone();
 
@@ -242,11 +252,18 @@ public class IdAllocator
         NameGenerator g = new NameGenerator(baseId, 0);
         _uniqueGenerators.add(g);
         _generatorMap.put(baseId.toLowerCase(), g);
-
+        
         // add generated key to map until we reach top level index value
         while(g._index != index)
         {
-            _generatorMap.put(g.nextId().toLowerCase(), g);
+            String nextId = g.nextId().toLowerCase();
+
+            // only dump value in if not already covered by another allocator
+            
+            if (!_generatorMap.containsKey(nextId))
+            {
+                _generatorMap.put(nextId, g);
+            }
         }
     }
 

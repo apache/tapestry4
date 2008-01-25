@@ -162,4 +162,12 @@ public class TestIdAllocator
         assertEquals(0, ida._generatorMap.size());
         assertEquals(0, ida._uniqueGenerators.size());
     }
+
+    public void test_To_External_String_Underscores()
+    {
+        IdAllocator ida = IdAllocator.fromExternalString(",service$0,page$0,component$0,container$0,session$0,sp$0,NestedIfBorder$0,Shell$0," +
+                                                         "Body$0,TopComponent$0,testId$0,If_0$0,BorderComponent$0,If$2,NestedComponent$0,RenderBody$0,Form$0");
+
+        assertEquals("If_0_0", ida.allocateId("If_0"));
+    }
 }
