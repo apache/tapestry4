@@ -55,7 +55,7 @@ public class Pattern extends BaseValidator
     public void validate(IFormComponent field, ValidationMessages messages, Object object)
             throws ValidatorException
     {
-        String input = (String) object;
+        String input = object.toString();
 
         if (! _compiledPattern.matcher(input).matches() )
             throw new ValidatorException(buildMessage(messages, field),
