@@ -19,13 +19,12 @@ import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.util.Defense;
 import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.util.RegexpMatch;
-import org.apache.tapestry.util.RegexpMatcher;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 
 /**
  * Implementation of the tapestry.form.validator.ValidatorFactory service, which builds and caches
@@ -37,6 +36,7 @@ import java.util.Map;
 public class ValidatorFactoryImpl implements ValidatorFactory
 {
     private static final String PATTERN = "^\\s*(\\$?\\w+)\\s*(=\\s*(((?!,|\\[).)*))?";
+    private static final java.util.regex.Pattern PATTERN_COMPILED = java.util.regex.Pattern.compile(PATTERN);
 
     /**
      * Injected map of validator names to ValidatorContribution.
@@ -54,8 +54,6 @@ public class ValidatorFactoryImpl implements ValidatorFactory
         List result = new ArrayList();
         String chopped = specification;
 
-        RegexpMatcher matcher = new RegexpMatcher();
-
         while (true)
         {
             if (chopped.length() == 0)
@@ -64,24 +62,22 @@ public class ValidatorFactoryImpl implements ValidatorFactory
             if (!result.isEmpty())
             {
                 if (chopped.charAt(0) != ',')
-                    throw new ApplicationRuntimeException(ValidatorMessages
-                            .badSpecification(specification));
+                    failBadSpec(specification);
 
                 chopped = chopped.substring(1);
             }
 
-            RegexpMatch[] matches = matcher.getMatches(PATTERN, chopped);
+            Matcher matcher = PATTERN_COMPILED.matcher(chopped);
 
-            if (matches.length != 1)
-                throw new ApplicationRuntimeException(ValidatorMessages.badSpecification(specification));
+            if (!matcher.find()) failBadSpec(specification);
 
-            RegexpMatch match = matches[0];
-
-            String name = match.getGroup(1);
-            String value = match.getGroup(3);
+            String name = matcher.group(1);
+            String value = matcher.group(3);
             String message = null;
 
-            int length = match.getMatchLength();
+            int length = matcher.group().length();
+
+            if (matcher.find()) failBadSpec(specification);
 
             if (chopped.length() > length)
             {
@@ -108,6 +104,10 @@ public class ValidatorFactoryImpl implements ValidatorFactory
         }
 
         return Collections.unmodifiableList(result);
+    }
+
+    private void failBadSpec(String specification) {
+        throw new ApplicationRuntimeException(ValidatorMessages.badSpecification(specification));
     }
 
     private Validator buildValidator(IComponent component, String name, String value, String message)
