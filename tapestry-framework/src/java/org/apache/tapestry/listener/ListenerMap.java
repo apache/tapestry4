@@ -14,11 +14,11 @@
 
 package org.apache.tapestry.listener;
 
-import java.util.Collection;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IComponent;
+
+import java.util.Collection;
 
 /**
  * @author Howard M. Lewis Ship
@@ -36,7 +36,7 @@ public interface ListenerMap
      *            the name of the method to invoke (the most appropriate method
      *            will be selected if there are multiple overloadings of the
      *            same method name)
-     * @returns an object implementing {@link IActionListener}.
+     * @return an object implementing {@link IActionListener}.
      * @throws ApplicationRuntimeException
      *             if the listener can not be created.
      */
@@ -50,7 +50,7 @@ public interface ListenerMap
 	 * @param component
 	 *          the component whose id is used to make up the name of the
 	 *          expected listener
-	 * @returns an object implementing {@link IActionListener}.
+	 * @return an object implementing {@link IActionListener}.
 	 * @throws ApplicationRuntimeException
 	 *          if the listener can not be found on the component
 	 */
@@ -59,7 +59,8 @@ public interface ListenerMap
     /**
      * Returns an unmodifiable collection of the names of the listeners
      * implemented by the target class.
-     * 
+     *
+     * @return List of known listener names.
      * @since 1.0.6
      */
     Collection getListenerNames();
@@ -67,7 +68,9 @@ public interface ListenerMap
     /**
      * Returns true if this ListenerMapImpl can provide a listener with the
      * given name.
-     * 
+     *
+     * @param name Name of the method to check listener existance of.
+     * @return True if there is a matching listener of that name,  false otherwise.
      * @since 2.2
      */
     boolean canProvideListener(String name);

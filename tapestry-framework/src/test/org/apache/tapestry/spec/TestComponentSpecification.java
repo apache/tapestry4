@@ -230,12 +230,12 @@ public class TestComponentSpecification extends BaseComponentTestCase
         assertEquals(cs.getComponentEvents().size(), 1);
         assert cs.getComponentEvents("comp") != null;
 
-        cs.rewireComponentId("unknown", "new/path");
+        cs.rewireComponentId("unknown", "new/path", "id/path");
 
         assertEquals(cs.getComponentEvents().size(), 1);
 
-        cs.rewireComponentId("comp", "page/comp");
-        cs.rewireComponentId("comp", "page/comp");
+        cs.rewireComponentId("comp", "page/comp", "id/path");
+        cs.rewireComponentId("comp", "page/comp", "id/path");
 
         assertEquals(cs.getComponentEvents().size(), 2);
         assert cs.getComponentEvents("comp") != null;

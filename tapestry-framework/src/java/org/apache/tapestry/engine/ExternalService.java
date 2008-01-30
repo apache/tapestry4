@@ -14,10 +14,6 @@
 
 package org.apache.tapestry.engine;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IExternalPage;
@@ -27,6 +23,10 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The external service enables external applications to reference Tapestry pages via a URL. Pages
@@ -147,9 +147,7 @@ public class ExternalService implements IEngineService
         }
         catch (ClassCastException ex)
         {
-            throw new ApplicationRuntimeException(EngineMessages.pageNotCompatible(
-                    rawPage,
-                    IExternalPage.class), rawPage, null, ex);
+            throw new ApplicationRuntimeException(EngineMessages.pageNotCompatible(rawPage,IExternalPage.class), rawPage, null, ex);
         }
         
         Object[] parameters = _linkFactory.extractListenerParameters(cycle);

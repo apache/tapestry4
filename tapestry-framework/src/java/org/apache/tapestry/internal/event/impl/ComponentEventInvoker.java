@@ -15,10 +15,7 @@ package org.apache.tapestry.internal.event.impl;
 
 import edu.emory.mathcs.backport.java.util.concurrent.ConcurrentHashMap;
 import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.IActionListener;
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IForm;
-import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.*;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.form.FormSupport;
@@ -29,7 +26,9 @@ import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IEventListener;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -76,9 +75,9 @@ public class ComponentEventInvoker implements IComponentEventInvoker, ResetEvent
         String formIdPath = form.getExtendedId();
 
         String targetId = (String)event.getTarget().get("id");
-        String componentId = event.getComponentId();
+        String componentIdPath = event.getComponentIdPath();
 
-        if (targetId == null || componentId == null)
+        if (targetId == null || componentIdPath == null)
             return;
 
         List comps = getFormEventListeners(formIdPath);
@@ -92,19 +91,13 @@ public class ComponentEventInvoker implements IComponentEventInvoker, ResetEvent
             IComponentSpecification spec = (IComponentSpecification)comps.get(i);
             EventBoundListener[] listeners = spec.getFormEvents(formIdPath, event);
 
-            IComponent target = null;
-            if (spec.isPageSpecification())
-            {
-                target = form.getPage();
-            } else {
-                target = findComponent(form.getPage().getComponents().values(), spec);
-            }
-
+            IPage page = form.getPage();
+            
             for (int e=0; e < listeners.length; e++)
             {
                 // ensure ~only~ the method that targeted this event gets called!
 
-                if (!listeners[e].getComponentId().endsWith(componentId))
+                if (!listeners[e].getComponentId().equals(componentIdPath))
                     continue;
 
                 // clear validation errors but not input if async validation is
@@ -118,6 +111,8 @@ public class ComponentEventInvoker implements IComponentEventInvoker, ResetEvent
                 // handle disabling focus
                 if (!disableFocus && !listeners[e].shouldFocusForm())
                     disableFocus = true;
+
+                IComponent target = page.getNestedComponent(listeners[e].getComponentIdPath());
 
                 // defer execution until after form is done rewinding
 
@@ -141,26 +136,18 @@ public class ComponentEventInvoker implements IComponentEventInvoker, ResetEvent
     {
         String idPath = component.getExtendedId();
         List listeners = getEventListeners(idPath);
+        
         if (listeners == null)
             return;
+
+        IPage page = component.getPage();
 
         for (int i = 0; i < listeners.size(); i++)
         {
             IComponentSpecification listener = (IComponentSpecification)listeners.get(i);
 
-            IComponent target;
-            ComponentEventProperty props;
-
-            if (listener.isPageSpecification())
-            {
-                target = component.getPage();
-                props = listener.getComponentEvents(idPath);
-            } else
-            {
-                target = findComponent(component.getPage().getComponents().values(), listener);
-                props = target.getSpecification().getComponentEvents(idPath);
-            }
-
+            ComponentEventProperty props = listener.getComponentEvents(idPath);
+            
             if (props == null)
                 continue;
 
@@ -169,6 +156,8 @@ public class ComponentEventInvoker implements IComponentEventInvoker, ResetEvent
             {
                 EventBoundListener eventListener = (EventBoundListener)clisteners.get(e);
 
+                IComponent target = page.getNestedComponent(eventListener.getComponentIdPath());
+                
                 _invoker.invokeListener(target.getListeners().getListener(eventListener.getMethodName()), target, cycle);
             }
 
@@ -193,30 +182,6 @@ public class ComponentEventInvoker implements IComponentEventInvoker, ResetEvent
 
             _invoker.invokeListener(component.getListeners().getListener(listener.getMethodName()), component, cycle);
         }
-    }
-
-    IComponent findComponent(Collection comps, IComponentSpecification spec)
-    {
-        IComponent ret = null;
-
-        Iterator it = comps.iterator();
-
-        while (it.hasNext())
-        {
-            IComponent comp = (IComponent)it.next();
-
-            if (comp.getSpecification().equals(spec))
-            {
-                ret = comp;
-                break;
-            }
-
-            ret = findComponent(comp.getComponents().values(), spec);
-            if (ret != null)
-                break;
-        }
-
-        return ret;
     }
 
     /** Local runnable for deferred form connections. */

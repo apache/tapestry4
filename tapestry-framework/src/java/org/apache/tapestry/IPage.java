@@ -183,7 +183,7 @@ public interface IPage extends IComponent
      * in) user should not be able to visit directly. This method acts as the first line of defense
      * against a malicous user hacking URLs.
      * <p>
-     * Pages that should be protected will typically throw a {@linkPageRedirectException}, to
+     * Pages that should be protected will typically throw a {@link PageRedirectException}, to
      * redirect the user to an appropriate part of the system (such as, a login page).
      * <p>
      * Since 3.0, it is easiest to not override this method, but to implement the

@@ -19,9 +19,9 @@
                 tapestry.cleanConnect("${clientId}", "${event[0]}", "event${event[1]}");
                 tapestry.event${event[1]}=function( event ){
                     
-                    var content={beventname:"${event[0]}", bcomponentid:"${component.id}"};
+                    var content={beventname:"${event[0]}", bcomponentidpath:"${component.extendedId}", bcomponentid:"${component.id}"};
                    
-                    tapestry.event.buildEventProperties( event, content, arguments);                    
+                    tapestry.event.buildEventProperties( event, content, arguments);
                     if (!content["beventtarget.id"]) {
                     	content["beventtarget.id"]="${clientId}";
                     }                                 
@@ -35,7 +35,7 @@
             <foreach expression="formEvents" key="formEvent">
                 tapestry.cleanConnect("${clientId}", "${formEvent[0]}", "formEvent${formEvent[4]}");
                 tapestry.formEvent${formEvent[4]}=function(e){
-                    var content={beventname:"${formEvent[0]}", bcomponentid:"${component.id}"};
+                    var content={beventname:"${formEvent[0]}", bcomponentidpath:"${component.extendedId}", bcomponentid:"${component.id}"};
                     tapestry.event.buildEventProperties(e, content, arguments);
                     if (!content["beventtarget.id"]){
                     	content["beventtarget.id"]="${clientId}";

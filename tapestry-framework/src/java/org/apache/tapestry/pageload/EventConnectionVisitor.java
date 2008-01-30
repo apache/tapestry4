@@ -32,32 +32,37 @@ public class EventConnectionVisitor implements IComponentVisitor, PoolManageable
         Map events = component.getSpecification().getComponentEvents();
         Set keySet = events.keySet();
         String[] compIds = (String[]) keySet.toArray(new String[keySet.size()]);
-        
+
         for (int i=0; i < compIds.length; i++)
         {
             String compId = compIds[i];
-            ComponentEventProperty property = (ComponentEventProperty) events.get(compId);
 
-            // find the targeted component
+            // find the targeted component, first search component children
+            // and then page children if not contained by component
 
-            IComponent comp = findComponent(compId, component.getPage());
+            IComponent comp = findComponent(compId, component);
+
+            if (comp == null && !IPage.class.isInstance(component))
+            {
+                comp = findComponent(compId, component.getPage());
+            }
 
             if (comp == null)
                 continue;
 
             if (Component.class.isInstance(comp))
                 ((Component)comp).setHasEvents(true);
-            
+
             // wire up with idPath
 
             String idPath = comp.getExtendedId();
-            
-            component.getSpecification().rewireComponentId(compId, idPath);
-            
+
+            component.getSpecification().rewireComponentId(compId, idPath, component.getIdPath());
+
             _invoker.addEventListener(idPath, component.getSpecification());
             wireFormEvents(comp, component.getSpecification());
         }
-        
+
         // find form element targets for re-mapping with proper idpath && IEventInvoker connection
 
         events = component.getSpecification().getElementEvents();
@@ -65,7 +70,8 @@ public class EventConnectionVisitor implements IComponentVisitor, PoolManageable
 
         // for efficiency later in ComponentEventConnectionWorker
 
-        if (events.size() > 0 && Component.class.isInstance(component)) {
+        if (events.size() > 0 && Component.class.isInstance(component))
+        {
             ((Component)component).setHasEvents(true);
         }
 
@@ -80,8 +86,8 @@ public class EventConnectionVisitor implements IComponentVisitor, PoolManageable
                 String key = (String) bindingIt.next();
                 List listeners = property.getFormEventListeners(key);
 
-                for (int i=0; i < listeners.size(); i++) {
-                    
+                for (int i=0; i < listeners.size(); i++)
+                {
                     EventBoundListener listener = (EventBoundListener) listeners.get(i);
                     wireElementFormEvents(listener, component, component.getSpecification());
                 }
@@ -115,7 +121,7 @@ public class EventConnectionVisitor implements IComponentVisitor, PoolManageable
                                                   component, component.getLocation(), null);
 
         String idPath = form.getExtendedId();
-        
+
         listener.setFormId(idPath);
         _invoker.addFormEventListener(idPath, spec);
     }
@@ -143,7 +149,7 @@ public class EventConnectionVisitor implements IComponentVisitor, PoolManageable
         Map components = target.getComponents();
         if (components == null)
             return null;
-        
+
         IComponent comp = (IComponent) components.get(id);
         if (comp != null)
             return comp;
@@ -178,8 +184,8 @@ public class EventConnectionVisitor implements IComponentVisitor, PoolManageable
 
     IForm findComponentForm(IFormComponent child)
     {
-        for (int i = 0; i < _forms.size(); i++) {
-
+        for (int i = 0; i < _forms.size(); i++)
+        {
             IForm form = (IForm) _forms.get(i);
 
             IComponent match = findContainedComponent(child.getExtendedId(), (Component)form);
@@ -201,8 +207,8 @@ public class EventConnectionVisitor implements IComponentVisitor, PoolManageable
         if (children == null)
             return null;
 
-        for (int i=0; i < children.length; i++) {
-
+        for (int i=0; i < children.length; i++)
+        {
             if (children[i] == null)
                 return null;
 
@@ -213,18 +219,18 @@ public class EventConnectionVisitor implements IComponentVisitor, PoolManageable
             if (found != null)
                 return found;
         }
-        
+
         return null;
     }
 
     void checkComponentPage(IComponent component)
     {
-        if (_currentPage == null) {
-
+        if (_currentPage == null)
+        {
             _currentPage = component.getPage();
             _forms.clear();
-        } else if (component.getPage() != _currentPage) {
-
+        } else if (component.getPage() != _currentPage)
+        {
             _currentPage = component.getPage();
             _forms.clear();
         }

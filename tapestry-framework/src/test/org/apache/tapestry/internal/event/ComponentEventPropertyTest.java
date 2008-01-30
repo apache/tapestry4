@@ -196,7 +196,8 @@ public class ComponentEventPropertyTest extends TestBase {
         assertEquals(prop.getFormEvents().size(), 1);
         
         String path = "new/Path/Id";
-        prop.rewireComponentId(path);
+        String idPath = "Home/" + path;
+        prop.rewireComponentId(path, idPath);
 
         assertEquals(prop.getComponentId(), path);
 
@@ -211,6 +212,7 @@ public class ComponentEventPropertyTest extends TestBase {
 
                 EventBoundListener listener = (EventBoundListener) listeners.get(i);
                 assertEquals(listener.getComponentId(), path);
+                assertEquals(listener.getComponentIdPath(), idPath);
             }
         }
 
@@ -224,6 +226,7 @@ public class ComponentEventPropertyTest extends TestBase {
 
                 EventBoundListener listener = (EventBoundListener) listeners.get(i);
                 assertEquals(listener.getComponentId(), path);
+                assertEquals(listener.getComponentIdPath(), idPath);
             }
         }
     }
