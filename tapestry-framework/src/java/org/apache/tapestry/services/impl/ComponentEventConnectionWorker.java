@@ -101,7 +101,8 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker, Po
 
             DeferredFormConnection that = (DeferredFormConnection) o;
 
-            if (_uniqueHash != null ? !_uniqueHash.equals(that._uniqueHash) : that._uniqueHash != null) return false;
+            if (_uniqueHash != null ? !_uniqueHash.equals(that._uniqueHash) : that._uniqueHash != null)
+                return false;
 
             return true;
         }
@@ -157,8 +158,8 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker, Po
         if (props == null)
             return;
 
-        for (int i=0; i < props.length; i++) {
-
+        for (int i=0; i < props.length; i++)
+        {
             String clientId = component.getClientId();
 
             Map parms = new HashMap();
@@ -172,7 +173,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker, Po
                 continue;
 
             DirectEventServiceParameter dsp =
-              new DirectEventServiceParameter((IDirectEvent)component, new Object[] {}, new String[] {}, false);
+                    new DirectEventServiceParameter((IDirectEvent)component, new Object[] {}, new String[] {}, false);
 
             parms.put("url", _eventEngine.getLink(false, dsp).getURL());
             parms.put("events", events);
@@ -191,7 +192,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker, Po
             return;
 
         DirectEventServiceParameter dsp =
-          new DirectEventServiceParameter((IDirectEvent)component, new Object[] {}, new String[] {}, false);
+                new DirectEventServiceParameter((IDirectEvent)component, new Object[] {}, new String[] {}, false);
 
         String url = _eventEngine.getLink(false, dsp).getURL();
 
@@ -202,8 +203,8 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker, Po
         Iterator keys = elements.keySet().iterator();
 
         // build our list of targets / events
-        while (keys.hasNext()) {
-
+        while (keys.hasNext())
+        {
             Map parms = new HashMap();
 
             String target = (String)keys.next();
@@ -238,9 +239,9 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker, Po
     {
         List names = (List)cycle.getAttribute(FORM_NAME_LIST + form.getExtendedId());
 
-        if (names == null) {
+        if (names == null)
+        {
             names = new ArrayList();
-
             cycle.setAttribute(FORM_NAME_LIST + form.getExtendedId(), names);
         }
 
@@ -269,8 +270,8 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker, Po
             if (props == null)
                 continue;
 
-            for (int e=0; e < props.length; e++) {
-
+            for (int e=0; e < props.length; e++)
+            {
                 Object[][] formEvents = buildFormEvents(cycle, form.getExtendedId(),
                                                         props[e].getFormEvents(), fConn._async,
                                                         fConn._validate, fConn._uniqueHash);
@@ -412,11 +413,6 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker, Po
                                         listener.isAsync(),
                                         listener.isValidateForm(),
                                         ScriptUtils.functionHash(listener.hashCode() + (String) scriptParms.get("clientId")));
-                    
-                    /*deferFormConnection(formId, scriptParms,
-                                        listener.isAsync(),
-                                        listener.isValidateForm(),
-                                        ScriptUtils.functionHash(listener.hashCode() + (String) scriptParms.get("clientId")));*/
 
                     // re-looping over the same property -> event listener list would
                     // result in duplicate bindings so break out 
@@ -425,10 +421,10 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker, Po
 
                 // form has been rendered so go ahead
                 retval.add(new Object[] {
-                  event, formNames,
-                  Boolean.valueOf(listener.isAsync()),
-                  Boolean.valueOf(listener.isValidateForm()),
-                  ScriptUtils.functionHash(listener)
+                        event, formNames,
+                        Boolean.valueOf(listener.isAsync()),
+                        Boolean.valueOf(listener.isValidateForm()),
+                        ScriptUtils.functionHash(listener)
                 });
             }
         }

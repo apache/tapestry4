@@ -143,9 +143,11 @@ public interface IEventListener
      * to use the more unique {@link org.apache.tapestry.IComponent#getIdPath()}.
      *
      * @param componentId
-     *          The basic component id.
+     *          The base component id.
+     * @param extendedId
+     *          The id of the component as returned by {@link org.apache.tapestry.IComponent#getExtendedId()}
      * @param idPath
-     *          The id of the component pre-pended with the path of components containing it.
+     *          The id of the component as returned by {@link org.apache.tapestry.IComponent#getIdPath()} 
      */
-    void rewireComponentId(String componentId, String idPath);
+    void rewireComponentId(String componentId, String extendedId, String idPath);
 }

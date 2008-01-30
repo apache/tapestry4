@@ -736,22 +736,22 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
         property.connectAutoSubmitEvents(form.getExtendedId());
     }
 
-    public void rewireComponentId(String componentId, String idPath)
+    public void rewireComponentId(String componentId, String extendedId, String idPath)
     {
         ComponentEventProperty prop = getComponentEvents(componentId);
         if (prop == null)
             return;
 
-        if (_componentEvents.containsKey(idPath))
+        if (_componentEvents.containsKey(extendedId))
             return;
 
         try {
 
             ComponentEventProperty clone = (ComponentEventProperty) prop.clone();
 
-            clone.rewireComponentId(idPath);
+            clone.rewireComponentId(extendedId, idPath);
 
-            _componentEvents.put(idPath, clone);
+            _componentEvents.put(extendedId, clone);
 
         } catch (CloneNotSupportedException e) {
 

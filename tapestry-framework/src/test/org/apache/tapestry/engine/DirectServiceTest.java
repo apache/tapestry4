@@ -32,9 +32,6 @@ import java.util.Map;
 
 /**
  * Tests for {@link org.apache.tapestry.engine.DirectService}.
- * 
- * @author Howard M. Lewis Ship
- * @since 4.0
  */
 @Test
 public class DirectServiceTest extends ServiceTestCase
@@ -55,7 +52,7 @@ public class DirectServiceTest extends ServiceTestCase
         return c;
     }
 
-    public void testGetLinkOnSamePage()
+    public void test_Get_Link_On_Same_Page()
     {
         IPage page = newPage("ThePage");
         IDirect c = newDirect(true);
@@ -93,7 +90,7 @@ public class DirectServiceTest extends ServiceTestCase
         verify();
     }
 
-    public void testGetLinkOnSamePageForPost()
+    public void test_Get_Link_On_Same_Page_For_Post()
     {
         IPage page = newPage("ThePage");
         IDirect c = newDirect(true);
@@ -131,7 +128,7 @@ public class DirectServiceTest extends ServiceTestCase
         verify();
     }
 
-    public void testGetLinkOnSamePageStateful()
+    public void test_Get_Link_On_Same_Page_Stateful()
     {   
         IDirect c = newDirect(true);
         
@@ -170,7 +167,7 @@ public class DirectServiceTest extends ServiceTestCase
         verify();
     }
 
-    public void testGetLinkOnDifferentPage()
+    public void test_Get_Link_On_Different_Page()
     {
         IPage page = newPage("ActivePage");
         IPage componentPage = newPage("ComponentPage");
@@ -208,7 +205,7 @@ public class DirectServiceTest extends ServiceTestCase
         verify();
     }
 
-    public void testServiceSimple() throws Exception
+    public void test_Service_Simple() throws Exception
     {
         Object[] parameters = new Object[0];
         IRequestCycle cycle = newCycle();

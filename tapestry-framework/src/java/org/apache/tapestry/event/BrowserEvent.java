@@ -29,20 +29,21 @@ import java.util.Map;
  */
 public class BrowserEvent
 {
-    public static final String NAME="beventname";
-    public static final String TYPE="beventtype";
-    public static final String KEYS="beventkeys";
-    public static final String CHAR_CODE="beventcharCode";
-    public static final String PAGE_X="beventpageX";
-    public static final String PAGE_Y="beventpageY";
-    public static final String LAYER_X="beventlayerX";
-    public static final String LAYER_Y="beventlayerY";
+    public static final String NAME = "beventname";
+    public static final String TYPE = "beventtype";
+    public static final String KEYS = "beventkeys";
+    public static final String CHAR_CODE = "beventcharCode";
+    public static final String PAGE_X = "beventpageX";
+    public static final String PAGE_Y = "beventpageY";
+    public static final String LAYER_X = "beventlayerX";
+    public static final String LAYER_Y = "beventlayerY";
 
-    public static final String TARGET="beventtarget";
-    public static final String TARGET_ATTR_ID="id";
+    public static final String TARGET = "beventtarget";
+    public static final String TARGET_ATTR_ID = "id";
     public static final String COMPONENT_ID = "bcomponentid";
+    public static final String COMPONENT_ID_PATH = "bcomponentidpath";
 
-    public static final String METHOD_ARGUMENTS="methodArguments";
+    public static final String METHOD_ARGUMENTS = "methodArguments";
 
     private String _name;
     private String _type;
@@ -54,7 +55,8 @@ public class BrowserEvent
     private String _layerY;
     private EventTarget _target;
     private String _componentId;
-    
+    private String _componentIdPath;
+
     private String _methodArguments;
     private JSONArray _methodArgumentsArray;
 
@@ -78,6 +80,7 @@ public class BrowserEvent
         _layerX = cycle.getParameter(LAYER_X);
         _layerY = cycle.getParameter(LAYER_Y);
         _componentId = cycle.getParameter(COMPONENT_ID);
+        _componentIdPath = cycle.getParameter(COMPONENT_ID_PATH);
 
         Map props = new HashMap();
         _target = new EventTarget(props);
@@ -100,22 +103,26 @@ public class BrowserEvent
      */
     public BrowserEvent(String name, EventTarget target)
     {
-        this(name, null, target);
+        this(name, null, null, target);
     }
 
     /**
      * Creates a new browser event with the specified
      * name/target properties.
      *
+     * <p>Currently used for testing only.</p>
+     *
      * @param name The name of the event, ie "onClick", "onBlur", etc..
      * @param componentId Component targeted.
+     * @param componentIdPath The id path of the component.
      * @param target The target of the client side event.
      */
-    public BrowserEvent(String name, String componentId, EventTarget target)
+    public BrowserEvent(String name, String componentId, String componentIdPath, EventTarget target)
     {
         _name = name;
         _target = target;
         _componentId = componentId;
+        _componentIdPath = componentIdPath;
     }
 
     /**
@@ -152,7 +159,18 @@ public class BrowserEvent
     {
         return _componentId;
     }
-    
+
+    /**
+     * If the event was generated for a {@link org.apache.tapestry.IComponent} - will be the
+     * value returned from {@link org.apache.tapestry.IComponent#getExtendedId()}.
+     *
+     * @return Component path id, or null if not present.
+     */
+    public String getComponentIdPath()
+    {
+        return _componentIdPath;
+    }
+
     /**
      * @return the charCode
      */
@@ -224,15 +242,15 @@ public class BrowserEvent
             try
             {
                 _methodArgumentsArray = _methodArguments != null
-                                        ? new JSONArray( _methodArguments )
-                                        : new JSONArray();
+                        ? new JSONArray( _methodArguments )
+                        : new JSONArray();
             }
             catch (ParseException ex)
             {
                 throw new ApplicationRuntimeException(ex);
             }
         }
-        
+
         return _methodArgumentsArray;
     }
 
@@ -271,6 +289,10 @@ public class BrowserEvent
                ", _layerY='" + _layerY + '\'' +
                '\n' +
                ", _target=" + _target +
+               '\n' +
+               ", _componentId='" + _componentId + '\'' +
+               '\n' +
+               ", _componentIdPath='" + _componentIdPath + '\'' +
                '\n' +
                ", _methodArguments='" + _methodArguments + '\'' +
                '\n' +

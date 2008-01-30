@@ -72,6 +72,7 @@ public class BrowserEventTest extends BaseComponentTestCase
         expect(cycle.getParameter(BrowserEvent.LAYER_X)).andReturn(null);
         expect(cycle.getParameter(BrowserEvent.LAYER_Y)).andReturn(null);
         expect(cycle.getParameter(BrowserEvent.COMPONENT_ID)).andReturn(null);
+        expect(cycle.getParameter(BrowserEvent.COMPONENT_ID_PATH)).andReturn(null);
         
         expect(cycle.getParameter(BrowserEvent.TARGET + "." + BrowserEvent.TARGET_ATTR_ID)).andReturn("element1");
     }

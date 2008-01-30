@@ -44,7 +44,7 @@
                     <if-not expression="formEvent[2]">
                     tapestry.form.submit("${formName}");
                     </if-not>
-                    
+                        
                     tapestry.form.setFormValidating("${formName}", validateState);
                     </foreach>
                 };

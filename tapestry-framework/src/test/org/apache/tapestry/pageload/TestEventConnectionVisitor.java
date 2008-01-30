@@ -27,7 +27,7 @@ public class TestEventConnectionVisitor extends BaseComponentTestCase {
         IComponentSpecification spec = new ComponentSpecification();
         spec.addEventListener("comp1", new String[] {"onClick"}, "testFoo", null, false, false, false, false);
 
-        IComponent comp = newComponent(spec, "comp1", "path/");
+        IComponent comp = newComponent(spec, "comp1", "path/", "Home/");
         IComponentEventInvoker invoker = newMock(IComponentEventInvoker.class);
 
         invoker.addEventListener("path/comp1", spec);
@@ -81,7 +81,7 @@ public class TestEventConnectionVisitor extends BaseComponentTestCase {
     {
         IComponentSpecification spec = newMock(IComponentSpecification.class);
         IComponentEventInvoker invoker = newMock(IComponentEventInvoker.class);
-        IComponent comp = newComponent(spec, "comp1", "path/");
+        IComponent comp = newComponent(spec, "comp1", "path/", "Home/");
 
         ComponentEventProperty p = new ComponentEventProperty("comp1");
         p.addListener(new String[] {"onClick"}, "testFoo", null, false, false, false, false);
@@ -93,7 +93,7 @@ public class TestEventConnectionVisitor extends BaseComponentTestCase {
         expect(spec.getElementEvents()).andReturn(Collections.EMPTY_MAP);
 
         invoker.addEventListener("path/comp1", spec);
-        spec.rewireComponentId("comp1", "path/comp1");
+        spec.rewireComponentId("comp1", "path/comp1", "Home/path/comp1");
 
         replay();
 
@@ -118,9 +118,14 @@ public class TestEventConnectionVisitor extends BaseComponentTestCase {
         expect(page.getComponents()).andReturn(comps).anyTimes();
         expect(comp.getComponents()).andReturn(null).anyTimes();
 
-        if (args.length > 0) {
-            
+        if (args.length > 0)
+        {    
             expect(comp.getExtendedId()).andReturn(args[0] + findCompId).anyTimes();
+        }
+
+        if (args.length > 1)
+        {
+            expect(comp.getIdPath()).andReturn((String)args[1] + (String)args[0] + findCompId).anyTimes();
         }
 
         return comp;

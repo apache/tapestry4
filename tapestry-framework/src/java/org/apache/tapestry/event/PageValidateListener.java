@@ -35,6 +35,8 @@ public interface PageValidateListener extends EventListener
      * May throw a {@link org.apache.tapestry.PageRedirectException}, to
      * redirect the user to an appropriate part of the system (such as, a login
      * page).
+     *
+     * @param event The originating event.
      */
 
     void pageValidate(PageEvent event);

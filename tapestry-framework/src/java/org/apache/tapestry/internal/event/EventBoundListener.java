@@ -28,6 +28,8 @@ public class EventBoundListener implements Cloneable
     private boolean _validateForm;
     // The targeted component to listen to events on
     private String _componentId;
+    // The id path of the component that the listener method is connected to
+    private String _componentIdPath;
     
     // If targeting a form, whether or not to submit it asynchronously
     private boolean _async;
@@ -126,6 +128,11 @@ public class EventBoundListener implements Cloneable
         _componentId = id;
     }
 
+    public void setComponentIdPath(String idPath)
+    {
+        _componentIdPath = idPath;
+    }
+
     /**
      * @return the validateForm
      */
@@ -153,6 +160,11 @@ public class EventBoundListener implements Cloneable
     public boolean isAutoSubmit()
     {
         return _autoSubmit;
+    }
+
+    public String getComponentIdPath()
+    {
+        return _componentIdPath;
     }
 
     public Object clone()

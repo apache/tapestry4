@@ -61,6 +61,7 @@ public class ComponentEventProperty implements Cloneable
     /**
      * Adds a listener bound to the specified client side
      * events.
+     * 
      * @param events
      * @param methodName
      * @param async
@@ -86,7 +87,8 @@ public class ComponentEventProperty implements Cloneable
     public void addListener(String[] events, String methodName, 
             String formId, boolean validateForm, boolean async, boolean focus, boolean autoSubmit)
     {
-        for (int i=0; i < events.length; i++) {
+        for (int i=0; i < events.length; i++)
+        {
             if (formId != null && formId.length() > 0)
             {
                 addFormEventListener(events[i], methodName, formId, validateForm, async, focus, autoSubmit);
@@ -140,15 +142,16 @@ public class ComponentEventProperty implements Cloneable
         Iterator it = getEvents().iterator();
         List removeKeys = new ArrayList();
         
-        while (it.hasNext()) {
+        while (it.hasNext())
+        {
             String key = (String)it.next();
-
             List listeners = (List) _eventMap.get(key);
-            Iterator lit = listeners.iterator();
-            while (lit.hasNext()) {
-                
-                EventBoundListener listener = (EventBoundListener) lit.next();
 
+            Iterator lit = listeners.iterator();
+            while (lit.hasNext())
+            {    
+                EventBoundListener listener = (EventBoundListener) lit.next();
+                
                 listener.setFormId(formIdPath);
                 lit.remove();
                 
@@ -159,13 +162,14 @@ public class ComponentEventProperty implements Cloneable
             
             // remove mapping if empty
             
-            if (listeners.size() == 0) {
+            if (listeners.size() == 0)
+            {
                 removeKeys.add(key);
             }
         }
 
-        for (int i=0; i < removeKeys.size(); i++) {
-            
+        for (int i=0; i < removeKeys.size(); i++)
+        {    
             _eventMap.remove(removeKeys.get(i));
         }
 
@@ -189,23 +193,25 @@ public class ComponentEventProperty implements Cloneable
      * Replaces all instances of the existing component id mapped for this property with the new
      * {@link org.apache.tapestry.IComponent#getIdPath()} version.
      *
-     * @param idPath The component id path.
+     * @param extendedId The component extended id path.
+     * @param idPath The component idPath from the page.
      */
-    public void rewireComponentId(String idPath)
+    public void rewireComponentId(String extendedId, String idPath)
     {
-        _componentId = idPath;
+        _componentId = extendedId;
 
         Iterator it = getEvents().iterator();
         while (it.hasNext())
         {
             String key = (String) it.next();
-
             List listeners = (List)_eventMap.get(key);
 
-            for (int i=0; i < listeners.size(); i++) {
-
+            for (int i=0; i < listeners.size(); i++)
+            {
                 EventBoundListener listener = (EventBoundListener) listeners.get(i);
-                listener.setComponentId(idPath);
+
+                listener.setComponentId(extendedId);
+                listener.setComponentIdPath(idPath);
             }
         }
 
@@ -213,13 +219,14 @@ public class ComponentEventProperty implements Cloneable
         while (it.hasNext())
         {
             String key = (String) it.next();
-
             List listeners = (List)_formEventMap.get(key);
 
-            for (int i=0; i < listeners.size(); i++) {
-
+            for (int i=0; i < listeners.size(); i++)
+            {
                 EventBoundListener listener = (EventBoundListener) listeners.get(i);
-                listener.setComponentId(idPath);
+
+                listener.setComponentId(extendedId);
+                listener.setComponentIdPath(idPath);
             }
         }
     }
@@ -243,7 +250,8 @@ public class ComponentEventProperty implements Cloneable
     public List getEventListeners(String event)
     {
         List listeners = (List)_eventMap.get(event);
-        if (listeners == null) {
+        if (listeners == null)
+        {
             listeners = new ArrayList();
             _eventMap.put(event, listeners);
         }
@@ -263,7 +271,8 @@ public class ComponentEventProperty implements Cloneable
     public List getFormEventListeners(String event)
     {
         List listeners = (List)_formEventMap.get(event);
-        if (listeners == null) {
+        if (listeners == null)
+        {
             listeners = new ArrayList();
             _formEventMap.put(event, listeners);
         }
@@ -311,8 +320,10 @@ public class ComponentEventProperty implements Cloneable
         if (listeners == null) 
             return ret;
         
-        for (int i=0; i < listeners.size(); i++) {
+        for (int i=0; i < listeners.size(); i++)
+        {
             EventBoundListener listener = (EventBoundListener)listeners.get(i);
+
             if (listener.getFormId().equals(formId))
                 ret.add(listener);
         }
@@ -330,7 +341,8 @@ public class ComponentEventProperty implements Cloneable
             List listeners = (List)source.get(event);
 
             List newListeners = new ArrayList();
-            for (int i=0; i < listeners.size(); i++) {
+            for (int i=0; i < listeners.size(); i++)
+            {
                 EventBoundListener listener = (EventBoundListener) listeners.get(i);
                 newListeners.add(listener.clone());
             }
