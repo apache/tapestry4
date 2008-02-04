@@ -52,7 +52,7 @@
         <parameter name="page" value="Home" />
         <parameter name="component" value="$Form" />
         <parameter name="RadioGroup" value="2" />
-        <parameter name="formids" value="RadioGroup,Radio,Radio_0,Radio_1,Radio_2" />
+        <parameter name="formids" value="RadioGroup" />
 
         <assert-output name="Page Title">
             <![CDATA[
@@ -83,7 +83,7 @@
         <parameter name="service" value="direct" />
         <parameter name="page" value="Home" />
         <parameter name="component" value="$Form" />
-        <parameter name="formids" value="RadioGroup,Radio,Radio_0,Radio_1,Radio_2" />
+        <parameter name="formids" value="RadioGroup" />
 
         <assert-output name="Page Title">
             <![CDATA[
@@ -115,7 +115,7 @@
         <parameter name="page" value="Home" />
         <parameter name="component" value="$Form" />
         <parameter name="RadioGroup" value="3" />
-        <parameter name="formids" value="RadioGroup,Radio,Radio_0,Radio_1,Radio_2" />
+        <parameter name="formids" value="RadioGroup" />
 
         <assert-output name="Page Title">
             <![CDATA[
@@ -318,7 +318,7 @@
         <parameter name="session" value="T" />
         <parameter name="page" value="NullSelection" />
         <parameter name="component" value="$Form" />
-        <parameter name="formids" value="group,r0,r1,r2,r3" />
+        <parameter name="formids" value="group" />
         
         <parameter name="group" value="1" />
 
@@ -349,7 +349,7 @@
         <parameter name="session" value="T" />
         <parameter name="page" value="NullSelection" />
         <parameter name="component" value="$Form" />
-        <parameter name="formids" value="group,r0,r1,r2,r3" />
+        <parameter name="formids" value="group" />
 
         <assert-output name="No Choice">
             <![CDATA[<input type="radio" name="group" id="group0" checked="checked" value="0" /> No Choice]]>
@@ -399,7 +399,7 @@
         <parameter name="session" value="T" />
         <parameter name="page" value="LanguageSelection" />
         <parameter name="component" value="form" />
-        <parameter name="formids" value="group,Radio,Radio_0,Radio_1" />
+        <parameter name="formids" value="group" />
         <parameter name="group" value="2" />
 
 

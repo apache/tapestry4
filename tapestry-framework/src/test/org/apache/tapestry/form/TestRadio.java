@@ -17,7 +17,7 @@ public class TestRadio extends BaseFormComponentTestCase
 	private IMarkupWriter writer;
 	private IRequestCycle cycle;
 
-	public void testRenderSelected()
+	public void test_Render_Selected()
 	{
 		setupComponent(0, false);
 
@@ -30,7 +30,7 @@ public class TestRadio extends BaseFormComponentTestCase
 		assertBuffer("<input type=\"radio\" name=\"group\" id=\"group0\" checked=\"checked\" value=\"0\" />");
 	}
 
-	public void testRenderUnselected()
+	public void test_Render_Unselected()
 	{
 		setupComponent(1, false);
 
@@ -43,7 +43,7 @@ public class TestRadio extends BaseFormComponentTestCase
 		assertBuffer("<input type=\"radio\" name=\"group\" id=\"group0\" value=\"0\" />");
 	}
 
-	public void testRewindSelected()
+	public void test_Rewind_Selected()
 	{
 		setupComponent(0, true);
 
@@ -59,7 +59,7 @@ public class TestRadio extends BaseFormComponentTestCase
 		verify();
 	}
 
-	public void testRewindUnselected()
+	public void test_Rewind_Unselected()
 	{
 		setupComponent(1, true);
 
@@ -87,14 +87,13 @@ public class TestRadio extends BaseFormComponentTestCase
 		MockDelegate delegate = new MockDelegate();
 
 		expect(cycle.getAttribute(RadioGroup.ATTRIBUTE_NAME)).andReturn(group);
-
 		expect(cycle.renderStackPush(radio)).andReturn(radio);
 
 		trainGetForm(cycle, form);
 		trainWasPrerendered(form, writer, radio, false);
 		trainGetDelegate(form, delegate);
 
-		trainGetElementId(form, radio, "id");
+		//trainGetElementId(form, radio, "id");
 		trainIsRewinding(form, rewinding);
 		if (!rewinding)
 		{

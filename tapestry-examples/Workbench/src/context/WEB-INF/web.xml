@@ -71,6 +71,11 @@
         <url-pattern>/assets/*</url-pattern>
     </servlet-mapping>
 
+    <servlet-mapping>
+        <servlet-name>workbench</servlet-name>
+        <url-pattern>*.html</url-pattern>
+    </servlet-mapping>
+
     <session-config>
         <session-timeout>15</session-timeout>
     </session-config>
