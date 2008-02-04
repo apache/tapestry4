@@ -159,7 +159,7 @@ public class TestMockApplications
     /**
      * Invoked to execute the request cycle.
      */
-    @Test(dataProvider = "mockTestScripts", enabled = true)
+    @Test(dataProvider = "mockTestScripts", enabled = false)
     public void execute(String testRootDirectory, String path, String fileName)
       throws Exception
     {
