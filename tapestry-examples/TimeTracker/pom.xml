@@ -4,12 +4,12 @@
     <groupId>org.apache.tapestry</groupId>
     <artifactId>tapestry-TimeTracker</artifactId>
     <packaging>war</packaging>
-    <version>4.1.4</version>
+    <version>4.1.5-SNAPSHOT</version>
     <!-- This should change to tapestry-project -->
     <parent>
         <groupId>org.apache.tapestry</groupId>
         <artifactId>tapestry-examples</artifactId>
-        <version>4.1.4</version>
+        <version>4.1.5-SNAPSHOT</version>
     </parent>
     <name>Tapestry Time Tracker</name>
     <inceptionYear>2006</inceptionYear>
