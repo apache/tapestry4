@@ -316,6 +316,21 @@
                         </descriptors>
                     </configuration>
                 </plugin>
+                <!-- <plugin>
+                    <groupId>org.codehaus.plexus</groupId>
+                    <artifactId>plexus-io</artifactId>
+                    <version>1.0-alpha-2-SNAPSHOT</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.plexus</groupId>
+                    <artifactId>plexus-archiver</artifactId>
+                    <version>1.0-alpha-10-SNAPSHOT</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.plexus</groupId>
+                    <artifactId>plexus-active-collections</artifactId>
+                    <version>1.0-beta-2-SNAPSHOT</version>
+                </plugin> -->
             </plugins>
         </pluginManagement>
     </build>
@@ -421,7 +436,7 @@
                 <enabled>false</enabled>
             </releases>
             <snapshots>
-                <enabled>true</enabled>
+                <enabled>false</enabled>
             </snapshots>
         </repository>
         <repository>
@@ -435,6 +450,12 @@
         <pluginRepository>
             <id>apache.snapshots</id>
             <url>http://people.apache.org/repo/m2-snapshot-repository</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
         </pluginRepository>
         <pluginRepository>
             <id>codehaus.org</id>
@@ -443,7 +464,7 @@
                 <enabled>false</enabled>
             </snapshots>
             <releases>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </releases>
         </pluginRepository>
     </pluginRepositories>
