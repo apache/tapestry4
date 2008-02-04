@@ -15,6 +15,7 @@
 package org.apache.tapestry.form;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
@@ -26,13 +27,13 @@ import org.apache.tapestry.Tapestry;
  *
  *  [<a href="../../../../../ComponentReference/Radio.html">Component Reference</a>]
  *
- * 
+ *
  *  <p>{@link Radio} and {@link RadioGroup} are generally not used (except
  *  for very special cases).  Instead, a {@link PropertySelection} component is used.
  *
  *
  *  @author Howard Lewis Ship
- * 
+ *
  **/
 
 public abstract class Radio extends AbstractFormComponent
@@ -46,30 +47,30 @@ public abstract class Radio extends AbstractFormComponent
 
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-	    RadioGroup group = RadioGroup.get(cycle);
+        RadioGroup group = RadioGroup.get(cycle);
 
-	    if (group == null)
-            throw new ApplicationRuntimeException(
-                Tapestry.getMessage("Radio.must-be-contained-by-group"),
-                this,
-                null,
-                null);
-	    
-	    int option = group.getNextOptionId();
-        
+        if (group == null)
+            throw new ApplicationRuntimeException(Tapestry.getMessage("Radio.must-be-contained-by-group"),
+                                                  this,
+                                                  null,
+                                                  null);
+
+        int option = group.getNextOptionId();
+
         setClientId(group.getName()+option);
-        
+        setName(group.getName());
+
         writer.beginEmpty("input");
-        
+
         writer.attribute("type", "radio");
-        
-        writer.attribute("name", group.getName());
-        
+
+        writer.attribute("name", getName());
+
         renderIdAttribute(writer, cycle);
-        
+
         // As the group if the value for this Radio matches the selection
         // for the group as a whole; if so this is the default radio and is checked.
-        
+
         if (group.isSelection(getValue()))
             writer.attribute("checked", "checked");
 
@@ -84,31 +85,39 @@ public abstract class Radio extends AbstractFormComponent
 
         renderInformalParameters(writer, cycle);
 
-	    writer.closeTag();
+        writer.closeTag();
     }
 
-	protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
-	{
-		RadioGroup group = RadioGroup.get(cycle);
+    protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
+    {
+        RadioGroup group = RadioGroup.get(cycle);
 
         if (group == null)
             throw new ApplicationRuntimeException(
-                Tapestry.getMessage("Radio.must-be-contained-by-group"),
-                this,
-                null,
-                null);
+                    Tapestry.getMessage("Radio.must-be-contained-by-group"),
+                    this,
+                    null,
+                    null);
 
         int option = group.getNextOptionId();
 
-		// If not disabled and this is the selected button within the radio group,
-		// then update set the selection from the group to the value for this
-		// radio button.  This will update the selected parameter of the RadioGroup.
+        // If not disabled and this is the selected button within the radio group,
+        // then update set the selection from the group to the value for this
+        // radio button.  This will update the selected parameter of the RadioGroup.
 
-		if (!isDisabled() && !group.isDisabled() && group.isSelected(option))
-			group.updateSelection(getValue());
-	}
+        if (!isDisabled() && !group.isDisabled() && group.isSelected(option))
+            group.updateSelection(getValue());
+    }
 
-	public abstract boolean isDisabled();
+    /**
+     * Overridden to do nothing so that special {@link RadioGroup} semantics are handled properly.
+     * @param form The form to set the name on.
+     */
+    protected void setName(IForm form)
+    {
+    }
+
+    public abstract boolean isDisabled();
 
     public abstract Object getValue();
 }
