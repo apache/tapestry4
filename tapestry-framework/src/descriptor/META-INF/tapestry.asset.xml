@@ -169,7 +169,7 @@
     <contribution configuration-id="UnprotectedAssets">
         List of unprotected asset regexps for ResourceMatcher service.
 
-        <unprotected-resource contains="^/tapestry/" />
+        <unprotected-resource contains="^/tapestry.*/" />
         <unprotected-resource contains="^/org/apache/tapestry/.*.css" />
         <unprotected-resource contains="^/org/apache/tapestry/.*.gif" />
         <unprotected-resource contains="^/org/apache/tapestry/.*.png" />
