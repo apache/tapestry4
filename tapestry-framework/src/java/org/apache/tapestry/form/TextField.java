@@ -77,8 +77,8 @@ public abstract class TextField extends AbstractFormComponent implements Transla
 
         renderDelegateSuffix(writer, cycle);
 
-        if (isParameterBound("mask") && !isDisabled()) {
-
+        if (isParameterBound("mask") && !isDisabled())
+        {
             PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, this);
 
             Map symbols = new HashMap();

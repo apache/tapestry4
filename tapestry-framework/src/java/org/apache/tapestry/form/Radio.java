@@ -101,6 +101,9 @@ public abstract class Radio extends AbstractFormComponent
 
         int option = group.getNextOptionId();
 
+        setClientId(group.getName()+option);
+        setName(group.getName());
+
         // If not disabled and this is the selected button within the radio group,
         // then update set the selection from the group to the value for this
         // radio button.  This will update the selected parameter of the RadioGroup.
