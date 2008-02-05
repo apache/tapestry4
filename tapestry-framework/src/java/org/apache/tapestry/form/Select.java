@@ -14,14 +14,14 @@
 
 package org.apache.tapestry.form;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.valid.ValidatorException;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Implements a component that manages an HTML &lt;select&gt; form element. The most common
@@ -92,9 +92,10 @@ public abstract class Select extends AbstractFormComponent implements Validatabl
      */
     protected void prepareForRender(IRequestCycle cycle)
     {
+        super.prepareForRender(cycle);
+        
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-            throw new ApplicationRuntimeException(Tapestry.getMessage("Select.may-not-nest"), this,
-                    null, null);
+            throw new ApplicationRuntimeException(Tapestry.getMessage("Select.may-not-nest"), this, null, null);
 
         cycle.setAttribute(ATTRIBUTE_NAME, this);
 
@@ -107,10 +108,12 @@ public abstract class Select extends AbstractFormComponent implements Validatabl
      */
     protected void cleanupAfterRender(IRequestCycle cycle)
     {
+        super.cleanupAfterRender(cycle);
+
         _rendering = false;
         _selections = null;        
         
-        cycle.removeAttribute(ATTRIBUTE_NAME);           
+        cycle.removeAttribute(ATTRIBUTE_NAME);
     }
 
     /**
