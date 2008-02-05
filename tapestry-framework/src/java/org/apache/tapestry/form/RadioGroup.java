@@ -27,7 +27,7 @@ import org.apache.tapestry.valid.ValidatorException;
  * href="../../../../../ComponentReference/RadioGroup.html">Component Reference </a>]
  * <p>
  * As of 4.0, this component can be validated.
- * 
+ *
  * @author Howard Lewis Ship
  * @author Paul Ferraro
  */
@@ -39,7 +39,7 @@ public abstract class RadioGroup extends AbstractFormComponent implements Valida
      */
 
     static final String ATTRIBUTE_NAME = "org.apache.tapestry.active.RadioGroup";
-    
+
     // Cached copy of the value from the selectedBinding
     Object _selection;
 
@@ -119,12 +119,14 @@ public abstract class RadioGroup extends AbstractFormComponent implements Valida
      */
     protected void prepareForRender(IRequestCycle cycle)
     {
+        super.prepareForRender(cycle);
+
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
             throw new ApplicationRuntimeException(Tapestry.getMessage("RadioGroup.may-not-nest"),
-                    this, null, null);
-        
+                                                  this, null, null);
+
         cycle.setAttribute(ATTRIBUTE_NAME, this);
-        
+
         _rendering = true;
         _nextOptionId = 0;
     }
@@ -134,6 +136,8 @@ public abstract class RadioGroup extends AbstractFormComponent implements Valida
      */
     protected void cleanupAfterRender(IRequestCycle cycle)
     {
+        super.cleanupAfterRender(cycle);
+
         _rendering = false;
         _selection = null;
 
@@ -147,28 +151,28 @@ public abstract class RadioGroup extends AbstractFormComponent implements Valida
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         _rewinding = false;
-        
+
         // For rendering, the Radio components need to know what the current
         // selection is, so that the correct one can mark itself 'checked'.
         _selection = getBinding("selected").getObject();
-        
+
         renderDelegatePrefix(writer, cycle);
-        
+
         writer.begin(getTemplateTagName());
-        
+
         renderInformalParameters(writer, cycle);
-        
+
         renderDelegateAttributes(writer, cycle);
-        
+
         renderBody(writer, cycle);
-        
+
         writer.end();
-        
+
         renderDelegateSuffix(writer, cycle);
-        
+
         getValidatableFieldSupport().renderContributions(this, writer, cycle);
     }
-    
+
     /**
      * @see org.apache.tapestry.form.AbstractFormComponent#rewindFormComponent(org.apache.tapestry.IMarkupWriter,
      *      org.apache.tapestry.IRequestCycle)
@@ -183,9 +187,9 @@ public abstract class RadioGroup extends AbstractFormComponent implements Valida
             _selectedOption = Integer.parseInt(value);
 
         _rewinding = true;
-        
+
         renderBody(writer, cycle);
-        
+
         try
         {
             getValidatableFieldSupport().validate(this, writer, cycle, _selection);
