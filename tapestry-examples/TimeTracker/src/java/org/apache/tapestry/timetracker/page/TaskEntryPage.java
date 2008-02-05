@@ -33,59 +33,59 @@ import java.util.Date;
  * Manages entering tasks.  Basic demonstration of some of the Tapestry 4.x ajax features. 
  */
 public abstract class TaskEntryPage<E extends Persistent> extends BasePage
-{   
+{
     private static final Logger _log = Logger.getLogger(TaskEntryPage.class);
-    
+
     @Component(id = "projectChoose", bindings = { "model=projectModel", "value=selectedProject",
             "displayName=message:choose.project",
             "validators=validators:required"})
     public abstract Autocompleter getProjectChoose();
-    
+
     @InjectObject("service:timetracker.dao.ProjectDao")
     public abstract GenericDao<E> getProjectDao();
-    
+
     @Persist
     public abstract E getSelectedProject();
     public abstract void setSelectedProject(E val);
-    
+
     public abstract void setSubProject(E value);
     public abstract E getSubProject();
-    
+
     @Persist
     public abstract void setShowSubProject(boolean show);
     public abstract boolean getShowSubProject();
-    
+
     public abstract Project getCurrentProject();
-    
-    @Component(bindings = {"value=date", 
+
+    @Component(bindings = {"value=date",
             "displayName=message:task.start.date"})
     public abstract DropdownDatePicker getDatePicker();
-    
+
     public abstract Date getDate();
-    
+
     @Component(bindings = {"value=startTime", "displayName=message:task.start.time",
             "validators=validators:required"})
     public abstract GTimePicker getStartPicker();
-    
+
     public abstract Date getStartTime();
-    
+
     @Component(bindings = {"value=endTime", "displayName=message:task.end.time",
             "validators=validators:required,differ=startPicker"})
     public abstract GTimePicker getEndPicker();
-    
+
     public abstract Date getEndTime();
     public abstract void setEndTime(Date time);
-    
-    @Component(bindings = { "value=description", 
+
+    @Component(bindings = { "value=description",
             "displayName=message:task.description",
             "validators=validators:required,maxLength=20"})
     public abstract TextField getDescriptionField();
-    
+
     public abstract String getDescription();
-    
+
     @InjectObject("service:timetracker.dao.TaskDao")
     public abstract TaskDao getTaskDao();
-    
+
     public abstract ResponseBuilder getBuilder();
 
     @InjectComponent("testDialog")
@@ -93,14 +93,14 @@ public abstract class TaskEntryPage<E extends Persistent> extends BasePage
 
     /**
      * Selection model for projects.
-     * 
+     *
      * @return The project model.
      */
     public IAutocompleteModel getProjectModel()
     {
         return new DefaultAutocompleteModel(getProjectDao().list(), "id", "name");
     }
-    
+
     /**
      * Invoked when an item is selected from the project
      * selection list.
@@ -108,7 +108,7 @@ public abstract class TaskEntryPage<E extends Persistent> extends BasePage
     @EventListener(events = "onValueChanged", targets = "projectChoose")
     public void projectSelected()
     {
-        getBuilder().updateComponent("projectDescription");        
+        getBuilder().updateComponent("projectDescription");
     }
 
     public void showDialog()
@@ -124,24 +124,24 @@ public abstract class TaskEntryPage<E extends Persistent> extends BasePage
         Task task = new Task();
         task.setProjectId(getSelectedProject().getId());
         task.setDescription(getDescription());
-        
+
         _log.debug("addTask date: " + getDate()
-                + "\n startTime: " + getStartTime()
-                + "\n endTime: " + getEndTime());
-        
+                   + "\n startTime: " + getStartTime()
+                   + "\n endTime: " + getEndTime());
+
         task.setStartDate(getStartTime());
         task.setEndDate(getEndTime());
-        
+
         getTaskDao().addTask(task);
     }
 
     @EventListener(events = "onSave", targets="projName")
     public void onNameUpdate()
-    {        
+    {
         if (getSelectedProject() != null)
         {
             getProjectDao().update(getSelectedProject());
-            
+
             getBuilder().updateComponent("projectChoose");
             setSelectedProject(getSelectedProject());
         }
@@ -158,7 +158,7 @@ public abstract class TaskEntryPage<E extends Persistent> extends BasePage
         if (getStartTime() != null) {
             setEndTime(new Date(getStartTime().getTime() + (1000 * 60 * 60 * 4)));
         }
-        
+
         getBuilder().updateComponent("endPicker");
     }
 }
