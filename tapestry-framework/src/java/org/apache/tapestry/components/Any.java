@@ -20,7 +20,7 @@ import org.apache.tapestry.IRequestCycle;
 
 /**
  * A component that can substitute for any HTML element. [<a
- * href="../../../../../ComponentReference/Any.html">Component Reference</a>]
+ * href="../../../../../components/general/any.html">Component Reference</a>]
  */
 
 public abstract class Any extends AbstractComponent

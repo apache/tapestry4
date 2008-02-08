@@ -29,7 +29,7 @@ import java.util.Map;
 /**
  * Works with the {@link Body}component to add a script (and perhaps some
  * initialization) to the HTML response. [ <a
- * href="../../../../../ComponentReference/Script.html">Component Reference
+ * href="../../../../../components/general/script.html">Component Reference
  * </a>]
  * 
  * @author Howard Lewis Ship

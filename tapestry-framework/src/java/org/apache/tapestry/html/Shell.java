@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * Component for creating a standard 'shell' for a page, which comprises the &lt;html&gt; and
  * &lt;head&gt; portions of the page. [ <a
- * href="../../../../../ComponentReference/Shell.html">Component Reference </a>]
+ * href="../../../../../components/general/shell.html">Component Reference </a>]
  * <p>
  * Specifically does <em>not</em> provide a &lt;body&gt; tag, that is usually accomplished using a
  * {@link Body}&nbsp; component.

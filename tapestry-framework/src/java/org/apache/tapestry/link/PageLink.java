@@ -22,7 +22,7 @@ import org.apache.tapestry.engine.ILink;
 /**
  * A component for creating a navigation link to another page, using the page
  * service. [ <a
- * href="../../../../../ComponentReference/PageLink.html">Component Reference
+ * href="../../../../../components/link/pagelink.html">Component Reference
  * </a>]
  * 
  * @author Howard Ship

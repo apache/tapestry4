@@ -24,7 +24,7 @@ import java.util.List;
 
 /**
  * Component used to display an already formatted exception. [ <a
- * href="../../../../../ComponentReference/ExceptionDisplay.html">Component
+ * href="../../../../../components/general/exceptiondisplay.html">Component
  * Reference </a>]
  * 
  * @author Howard Lewis Ship

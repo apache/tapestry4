@@ -19,7 +19,7 @@ import org.apache.tapestry.internal.Component;
 
 /**
  * Renders the text and components wrapped by a component. [<a
- * href="../../../../../ComponentReference/RenderBody.html">Component Reference</a>]
+ * href="../../../../../components/general/renderbody.html">Component Reference</a>]
  * 
  * @author Howard Lewis Ship
  */

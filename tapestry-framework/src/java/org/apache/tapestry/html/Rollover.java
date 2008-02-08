@@ -28,7 +28,7 @@ import java.util.Map;
  * {@link org.apache.tapestry.link.DirectLink}) with an &lt;img&gt; and
  * JavaScript code to create a rollover effect that works with both Netscape
  * Navigator and Internet Explorer. [ <a
- * href="../../../../../ComponentReference/Rollover.html">Component Reference
+ * href="../../../../../components/link/rollover.html">Component Reference
  * </a>]
  *
  * @author Howard Lewis Ship

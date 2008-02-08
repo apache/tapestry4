@@ -23,7 +23,7 @@ import org.apache.tapestry.services.ServiceMap;
  *  engine service}.  A ServiceLink component can emulate a {@link PageLink} or {@link DirectLink} component, 
  *  but is most often used in conjunction with an application-specific service.  
  *
- *  [<a href="../../../../../ComponentReference/ServiceLink.html">Component Reference</a>]
+ *  [<a href="../../../../../components/link/servicelink.html">Component Reference</a>]
  *
  *  @author Howard Lewis Ship
  *
