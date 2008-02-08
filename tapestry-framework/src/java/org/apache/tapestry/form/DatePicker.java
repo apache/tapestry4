@@ -33,7 +33,7 @@ import org.apache.tapestry.valid.ValidatorException;
 
 /**
  * Provides a Form <tt>java.util.Date</tt> field component for selecting dates. [ <a
- * href="../../../../../ComponentReference/DatePicker.html">Component Reference </a>] As of 4.0,
+ * href="../../../../../components/form/datepicker.html">Component Reference </a>] As of 4.0,
  * DatePicker can indicate that it is required, use a custom translator (e.g. for java.sql.Date),
  * and perform validation on the submitted date.
  * <p>

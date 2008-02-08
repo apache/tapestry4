@@ -28,7 +28,7 @@ import org.apache.tapestry.web.WebResponse;
 /**
  * Component which contains form element components. A Form will wrap other components and 
  * static HTML, including form components such as {@link TextArea}, {@link TextField}, 
- * {@link Checkbox}, etc. [ <a href="../../../../../ComponentReference/Form.html">Component Reference </a>]
+ * {@link Checkbox}, etc. [ <a href="../../../../../components/form/form.html">Component Reference </a>]
  * 
  * <p>
  * When a form is submitted, it continues through the rewind cycle until <em>after</em> all of its

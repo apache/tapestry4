@@ -19,7 +19,7 @@ import org.apache.tapestry.IRequestCycle;
 
 /**
  * Implements a component that manages an HTML &lt;input type=submit&gt; form element. [ <a
- * href="../../../../../ComponentReference/Submit.html">Component Reference </a>]
+ * href="../../../../../components/form/submit.html">Component Reference </a>]
  * <p>
  * This component is generally only used when the form has multiple submit buttons, and it is
  * important for the application to know which one was pressed. You may also want to use

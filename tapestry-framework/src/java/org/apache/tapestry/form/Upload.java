@@ -24,7 +24,7 @@ import org.apache.tapestry.valid.ValidatorException;
 
 /**
  * Form element used to upload files. [ <a
- * href="../../../../../ComponentReference/Upload.html">Component Reference
+ * href="../../../../../components/form/upload.html">Component Reference
  * </a>]
  * <p>
  * As of 4.0, this component can be validated.

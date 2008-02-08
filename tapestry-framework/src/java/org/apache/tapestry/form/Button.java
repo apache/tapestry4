@@ -19,7 +19,7 @@ import org.apache.tapestry.IRequestCycle;
 
 /**
  * Implements a component that manages an HTML &lt;button&gt; form element. [ <a
- * href="../../../../../ComponentReference/Button.html">Component Reference </a>]
+ * href="../../../../../components/form/button.html">Component Reference </a>]
  * <p>
  * This component is useful for attaching JavaScript onclick event handlers.
  * 

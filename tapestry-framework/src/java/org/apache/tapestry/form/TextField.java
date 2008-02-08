@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * Implements a component that manages an HTML &lt;input type=text&gt; or
  * &lt;input type=password&gt; form element. [ <a
- * href="../../../../../ComponentReference/TextField.html">Component Reference
+ * href="../../../../../components/form/textfield.html">Component Reference
  * </a>]
  * <p>
  * As of 4.0, this component can be configurably translated and validated.

@@ -21,7 +21,7 @@ import org.apache.tapestry.valid.ValidatorException;
 
 /**
  * Implements a component that manages an HTML &lt;input type=checkbox&gt; form element. [ <a
- * href="../../../../../ComponentReference/Checkbox.html">Component Reference </a>]
+ * href="../../../../../components/form/checkbox.html">Component Reference </a>]
  * <p>
  * As of 4.0, this component can be validated.
  * 

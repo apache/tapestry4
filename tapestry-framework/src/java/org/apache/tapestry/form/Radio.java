@@ -25,7 +25,7 @@ import org.apache.tapestry.Tapestry;
  *  Such a component must be wrapped (possibly indirectly)
  *  inside a {@link RadioGroup} component.
  *
- *  [<a href="../../../../../ComponentReference/Radio.html">Component Reference</a>]
+ *  [<a href="../../../../../components/form/radio.html">Component Reference</a>]
  *
  *
  *  <p>{@link Radio} and {@link RadioGroup} are generally not used (except
