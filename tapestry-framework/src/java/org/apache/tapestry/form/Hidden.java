@@ -24,7 +24,7 @@ import org.apache.tapestry.services.DataSqueezer;
 
 /**
  * Implements a hidden field within a {@link Form}. [ <a
- * href="../../../../../ComponentReference/Hidden.html">Component Reference </a>]
+ * href="../../../../../components/form/hidden.html">Component Reference </a>]
  * 
  * @author Howard Lewis Ship
  * @author Paul Ferraro

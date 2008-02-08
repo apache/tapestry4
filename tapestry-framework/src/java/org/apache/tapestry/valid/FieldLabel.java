@@ -21,7 +21,7 @@ import org.apache.tapestry.form.IFormComponent;
  * Used to label an {@link IFormComponent}. Because such fields know their
  * displayName (user-presentable name), there's no reason to hard code the label
  * in a page's HTML template (this also helps with localization). [ <a
- * href="../../../../../ComponentReference/FieldLabel.html">Component Reference
+ * href="../../../../../components/form/fieldlabel.html">Component Reference
  * </a>]
  * 
  * @author Howard Lewis Lewis Ship

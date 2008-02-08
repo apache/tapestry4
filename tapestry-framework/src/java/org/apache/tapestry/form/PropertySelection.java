@@ -21,7 +21,7 @@ import org.apache.tapestry.valid.ValidatorException;
 
 /**
  * A component used to render a drop-down list of options that the user may select. [ <a
- * href="../../../../../ComponentReference/PropertySelection.html">Component Reference </a>]
+ * href="../../../../../components/form/propertyselection.html">Component Reference </a>]
  * <p>
  * Earlier versions of PropertySelection (through release 2.2) were more flexible, they included a
  * <b>renderer </b> property that controlled how the selection was rendered. Ultimately, this proved

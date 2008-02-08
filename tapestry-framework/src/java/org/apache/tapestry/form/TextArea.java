@@ -20,7 +20,7 @@ import org.apache.tapestry.valid.ValidatorException;
 
 /**
  * Implements a component that manages an HTML &lt;textarea&gt; form element. [<a
- * href="../../../../../ComponentReference/TextArea.html">Component Reference</a>]
+ * href="../../../../../components/form/textarea.html">Component Reference</a>]
  * <p>
  * As of 4.0, this component can be configurably translated and validated.
  *

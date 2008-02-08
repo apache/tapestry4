@@ -32,7 +32,50 @@ An exception has occurred.
 <span jwcid="@ExceptionDisplay" exceptions="ognl:exceptions" packages="ognl:packages"/>
 
 <span jwcid="@RequestDisplay"/>
-<script type="text/javascript">tapestry.html.enhanceExceptionPage();</script>
+
+<style>    
+.bytegenerated {display:none;}    
+.duplicate {font-size:3pt;}
+li.duplicate:hover {font-size:10pt; background:#eee;}
+.duplicateStarter {background:#eee; padding:2px;margin:2px;}
+</style>
+<script type="text/javascript">
+<!--
+    tapestry.html.enhanceExceptionPage();
+var st = document.getElementsByTagName('ul')[0].getElementsByTagName('li');
+processStacks = function(st) {
+if (st.length==0) return;
+var firstStack = st[0].innerHTML;
+var firstPos = 0;
+for (i=1;i<st.length;i++) {
+ var currentStack = st[i].innerHTML;
+     if (currentStack.indexOf('$')==0) {
+        st[i].className='bytegenerated';
+        firstStack = currentStack;
+        firstPos = i;
+        continue;
+     }
+     if (allStartWith('org.apache.tapestry', currentStack, firstStack) ||
+     allStartWith('ognl.', currentStack, firstStack) ||
+     allStartWith('org.mortbay.jetty', currentStack, firstStack) ||
+     allStartWith('org.apache.catalina', currentStack, firstStack)
+     ) {
+    st[i].className='duplicate';st[firstPos].className='duplicateStarter';
+    } else {
+    firstStack = currentStack;
+    firstPos = i;
+    }
+}
+};
+
+allStartWith = function(require, first, second) {
+    return first.indexOf(require)==0 && second.indexOf(require)==0;
+}
+
+processStacks(st);
+
+//-->
+</script>
     
 </body>
 </html>

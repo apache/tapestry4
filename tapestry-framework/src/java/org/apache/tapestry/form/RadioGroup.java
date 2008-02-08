@@ -24,7 +24,7 @@ import org.apache.tapestry.valid.ValidatorException;
  * A special type of form component that is used to contain {@link Radio}components. The Radio and
  * {@link Radio}group components work together to update a property of some other object, much like
  * a more flexible version of a {@link PropertySelection}. [ <a
- * href="../../../../../ComponentReference/RadioGroup.html">Component Reference </a>]
+ * href="../../../../../components/form/radiogroup.html">Component Reference </a>]
  * <p>
  * As of 4.0, this component can be validated.
  *

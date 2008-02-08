@@ -27,7 +27,7 @@ import org.apache.tapestry.Tapestry;
  * the {@link Point}on the image that was clicked (i.e., use the image as a kind of image map,
  * which was the original intent of the HTML element), it is more commonly used to provide a graphic
  * image for the user to click, rather than the rather plain &lt;input type=submit&gt;. [ <a
- * href="../../../../../ComponentReference/ImageSubmit.html">Component Reference </a>]
+ * href="../../../../../components/form/imagesubmit.html">Component Reference </a>]
  * 
  * @author Howard Lewis Ship
  */

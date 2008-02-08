@@ -23,7 +23,7 @@ import org.apache.tapestry.Tapestry;
 /**
  * A component that renders an HTML &lt;option&gt; form element. Such a component must be wrapped
  * (possibly indirectly) inside a {@link Select}component. [ <a
- * href="../../../../../ComponentReference/Option.html">Component Reference </a>]
+ * href="../../../../../components/form/option.html">Component Reference </a>]
  * 
  * @author Howard Lewis Ship
  */

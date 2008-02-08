@@ -28,7 +28,7 @@ import java.util.List;
 
 /**
  * Implements a component that submits its enclosing form via a JavaScript link. [ <a
- * href="../../../../../ComponentReference/LinkSubmit.html">Component Reference </a>]
+ * href="../../../../../components/form/linksubmit.html">Component Reference </a>]
  *
  * @author Richard Lewis-Shell
  */
