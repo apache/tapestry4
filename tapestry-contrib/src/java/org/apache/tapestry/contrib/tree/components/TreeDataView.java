@@ -17,21 +17,26 @@ package org.apache.tapestry.contrib.tree.components;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.contrib.tree.model.ITreeDataModel;
 import org.apache.tapestry.contrib.tree.model.ITreeModel;
 import org.apache.tapestry.contrib.tree.model.ITreeRowSource;
 import org.apache.tapestry.contrib.tree.model.TreeRowObject;
 
 import java.util.Iterator;
+import org.apache.tapestry.event.PageEvent;
+
 
 /**
  * @author tsveltin ?
  */
 public abstract class TreeDataView extends BaseComponent implements
-        ITreeRowSource {
+        ITreeRowSource, PageDetachListener {
     private TreeRowObject m_objTreeRowObject = null;
 
     private int m_nTreeDeep = -1;
+    
+    public abstract TreeView getTreeView();
 
     public TreeDataView()
     {
@@ -45,7 +50,9 @@ public abstract class TreeDataView extends BaseComponent implements
         m_nTreeDeep = -1;
     }
 
-    public abstract TreeView getTreeView();
+    public void pageDetached(PageEvent event) {
+        initialize();
+    }
 
     public void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
