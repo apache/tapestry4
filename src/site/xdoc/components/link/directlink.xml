@@ -232,7 +232,13 @@
                         <td>
                             In an asynchronous request, specifies which components should have their content
                             rendered back to the client. These are expected to be unique component ids. 
-                            
+                            <span class="info">
+                                <strong>Info:</strong>
+                                <p>
+                                    Supplying a value to this parameter forces the asynchronous execution
+                                    of the http request - exactly as if the async parameter was set to true.                                    
+                                </p>
+                            </span>
                             <p>
                             See: <a href="../../apidocs/org/apache/tapestry/services/ResponseBuilder.html">ResponseBuilder</a>
                             </p>
