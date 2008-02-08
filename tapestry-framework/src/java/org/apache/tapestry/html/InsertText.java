@@ -14,15 +14,15 @@
 
 package org.apache.tapestry.html;
 
-import java.io.IOException;
-import java.io.LineNumberReader;
-import java.io.Reader;
-import java.io.StringReader;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+
+import java.io.IOException;
+import java.io.LineNumberReader;
+import java.io.Reader;
+import java.io.StringReader;
 
 /**
  * Inserts formatted text (possibly collected using a
@@ -44,11 +44,13 @@ public abstract class InsertText extends AbstractComponent
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        if (cycle.isRewinding()) return;
+        if (cycle.isRewinding())
+            return;
 
         String value = getValue();
 
-        if (value == null) return;
+        if (value == null)
+            return;
 
         StringReader reader = null;
         LineNumberReader lineReader = null;
@@ -58,7 +60,6 @@ public abstract class InsertText extends AbstractComponent
         try
         {
             reader = new StringReader(value);
-
             lineReader = new LineNumberReader(reader);
 
             int lineNumber = 0;
@@ -80,8 +81,7 @@ public abstract class InsertText extends AbstractComponent
         }
         catch (IOException ex)
         {
-            throw new ApplicationRuntimeException(HTMLMessages
-                    .textConversionError(ex), this, null, ex);
+            throw new ApplicationRuntimeException(HTMLMessages.textConversionError(ex), this, null, ex);
         }
         finally
         {
