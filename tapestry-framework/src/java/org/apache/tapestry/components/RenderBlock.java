@@ -20,7 +20,7 @@ import org.apache.tapestry.IRequestCycle;
 
 /**
  * Renders the text and components wrapped by a {@link Block}component. [ <a
- * href="../../../../../ComponentReference/RenderBlock.html">Component Reference
+ * href="../../../../../components/general/renderblock.html">Component Reference
  * </a>]
  * <p>
  * It is possible for an RenderBlock to obtain a Block from a page

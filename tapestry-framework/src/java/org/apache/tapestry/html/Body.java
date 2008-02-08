@@ -23,7 +23,7 @@ import org.apache.tapestry.services.ResponseBuilder;
  * The body of a Tapestry page. This is used since it allows components on the page access to an
  * initialization script (that is written the start, just inside the &lt;body&gt; tag). This is
  * currently used by {@link Rollover}and {@link Script}components. [ <a
- * href="../../../../../ComponentReference/Body.html">Component Reference </a>]
+ * href="../../../../../components/general/body.html">Component Reference </a>]
  * 
  * @author Howard Lewis Ship
  */

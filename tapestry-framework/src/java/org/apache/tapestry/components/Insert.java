@@ -27,7 +27,7 @@ import java.text.Format;
 
 /**
  * Used to insert some text (from a parameter) into the HTML. [ <a
- * href="../../../../../ComponentReference/Insert.html">Component Reference
+ * href="../../../../../components/general/insert.html">Component Reference
  * </a>]
  *
  * @author Howard Lewis Ship

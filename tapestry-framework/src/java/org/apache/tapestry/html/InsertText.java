@@ -27,7 +27,7 @@ import java.io.StringReader;
 /**
  * Inserts formatted text (possibly collected using a
  * {@link org.apache.tapestry.form.TextArea} component. [<a
- * href="../../../../../ComponentReference/InsertText.html">Component Reference</a>]
+ * href="../../../../../components/general/inserttext.html">Component Reference</a>]
  * <p>
  * To maintain the line breaks provided originally, this component will break
  * the input into individual lines and insert additional HTML to make each line

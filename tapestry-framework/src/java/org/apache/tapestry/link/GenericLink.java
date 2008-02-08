@@ -21,7 +21,7 @@ import org.apache.tapestry.engine.ILink;
  * An implementation of {@link org.apache.tapestry.components.ILinkComponent}
  * that allows the exact HREF to be specified, usually used for client side
  * scripting. [<a
- * href="../../../../../ComponentReference/GenericLink.html">Component Reference</a>]
+ * href="../../../../../components/link/genericlink.html">Component Reference</a>]
  * 
  * @author Howard Lewis Ship
  * @since 2.0.2

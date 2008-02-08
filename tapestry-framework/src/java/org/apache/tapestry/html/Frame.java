@@ -22,7 +22,7 @@ import org.apache.tapestry.engine.ILink;
 
 /**
  * Implements a &lt;frame&gt; within a &lt;frameset&gt;. [ <a
- * href="../../../../../ComponentReference/Frame.html">Component Reference </a>]
+ * href="../../../../../components/general/frame.html">Component Reference </a>]
  * 
  * @author Howard Lewis Ship
  */

@@ -23,7 +23,7 @@ import org.apache.tapestry.Tapestry;
 /**
  * Used to insert an image. To create a rollover image, use the {@link Rollover}
  * class, which integrates a link with the image assets used with the button. [<a
- * href="../../../../../ComponentReference/Image.html">Component Reference</a>]
+ * href="../../../../../components/general/image.html">Component Reference</a>]
  * 
  * @author Howard Lewis Ship
  */

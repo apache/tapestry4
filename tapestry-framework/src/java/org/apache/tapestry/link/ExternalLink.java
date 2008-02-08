@@ -23,7 +23,7 @@ import org.apache.tapestry.engine.ILink;
 /**
  * A component for creating a link to {@link org.apache.tapestry.IExternalPage}using
  * the {@link org.apache.tapestry.engine.ExternalService}. [ <a
- * href="../../../../../ComponentReference/ExternalLink.html">Component
+ * href="../../../../../components/link/externallink.html">Component
  * Reference </a>]
  * 
  * @see org.apache.tapestry.IExternalPage

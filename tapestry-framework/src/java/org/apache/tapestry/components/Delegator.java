@@ -21,7 +21,7 @@ import org.apache.tapestry.IRequestCycle;
 
 /**
  * A component which delegates it's behavior to another object. [<a
- * href="../../../../../ComponentReference/Delegator.html">Component Reference</a>]
+ * href="../../../../../components/general/delegator.html">Component Reference</a>]
  * 
  * @author Howard Lewis Ship
  */

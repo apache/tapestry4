@@ -27,7 +27,7 @@ import org.apache.tapestry.listener.ListenerInvoker;
 
 /**
  * A component for creating a link using the direct service; used for actions that are not dependant
- * on dynamic page state. [ <a href="../../../../../ComponentReference/DirectLink.html">Component
+ * on dynamic page state. [ <a href="../../../../../components/link/directlink.html">Component
  * Reference </a>]
  * 
  */

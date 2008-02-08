@@ -22,7 +22,7 @@ import org.apache.tapestry.IRequestCycle;
 
 /**
  * Prevents its contents from being rendered until triggered by an {@link RenderBlock} component. [<a
- * href="../../../../../ComponentReference/Block.html">Component Reference</a>]
+ * href="../../../../../components/general/block.html">Component Reference</a>]
  * <p>
  * Block and {@link RenderBlock} are used to build a certain class of complicated component that
  * can't be assembled using the normal wrapping containment. Such a super component would have two

@@ -22,9 +22,7 @@ import org.apache.tapestry.form.Form;
 
 /**
  * A {@link Form}component that creates a text field that allows for validation
- * of user input and conversion between string and object values. [ <a
- * href="../../../../../ComponentReference/ValidField.html">Component Reference
- * </a>]
+ * of user input and conversion between string and object values.
  * <p>
  * A ValidatingTextField uses an {@link IValidationDelegate} to track errors and
  * an {@link IValidator}to convert between strings and objects (as well as

@@ -20,8 +20,7 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- * A conditional element on a page which will render its wrapped elements zero or one times. [ <a
- * href="../../../../../ComponentReference/Conditional.html">Component Reference </a>]
+ * A conditional element on a page which will render its wrapped elements zero or one times.
  * 
  * @author Howard Lewis Ship, David Solis
  */
