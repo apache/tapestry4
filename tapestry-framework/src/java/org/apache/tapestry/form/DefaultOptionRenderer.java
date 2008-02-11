@@ -55,7 +55,7 @@ public class DefaultOptionRenderer implements IOptionRenderer
             }
             
             if (model.isDisabled(i))
-                writer.attribute("disabled", "true");
+                writer.attribute("disabled", "disabled");
             
             writer.print(model.getLabel(i));
 

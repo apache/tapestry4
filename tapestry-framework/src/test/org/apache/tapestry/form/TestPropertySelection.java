@@ -133,7 +133,7 @@ public class TestPropertySelection extends BaseFormComponentTestCase
         assertBuffer("<span class=\"prefix\"><select name=\"hannah\" id=\"hannah\" class=\"validation-delegate\">" + SYSTEM_NEWLINE +
                 "<option value=\"0\" selected=\"selected\">One</option>" + SYSTEM_NEWLINE +
                 "<option value=\"1\">Two</option>" + SYSTEM_NEWLINE +
-                "<option value=\"2\" disabled=\"true\">Three</option>" + SYSTEM_NEWLINE +
+                "<option value=\"2\" disabled=\"disabled\">Three</option>" + SYSTEM_NEWLINE +
                 "</select></span>");
     }
 }
