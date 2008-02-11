@@ -5,7 +5,7 @@
 <span jwcid="@Describe" object="ognl:request"/>
 </div></div>
 
-<div jwcid="@If" condition="ognl:request.getSession(false) != null" class="displayBlock">
+<div jwcid="@If" condition="ognl:request.getSession(false) != null" class="displayBlock" renderTag="true">
     <a href="#" class="toggle" id="sessionDisplay">[&nbsp;+/-&nbsp;] Session</a>
     <div id="sessionDisplayData" class="toggleContent">
 <span jwcid="@Describe" object="ognl:request.getSession(false)"/>
