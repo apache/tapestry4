@@ -34,6 +34,12 @@
             <img src="../../images/ComponentReference/DropdownDatePicker.png" />
             
             <p>
+                This component needs a <a href="../general/body.html">Body</a>
+                component and a <a href="../general/shell.html">Shell</a> or
+                <a href="../general/shell.html">ScriptIncludes</a> component to work.
+            </p>                
+            
+            <p>
                 <strong>
                     See also:
                     <a href="dropdowntimepicker.html">DropdownTimePicker</a>

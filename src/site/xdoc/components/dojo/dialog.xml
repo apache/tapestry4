@@ -47,6 +47,12 @@
             <img src="../../images/ComponentReference/Dialog.png" alt="Dialog Example"/>
 
             <p>
+                This component needs a <a href="../general/body.html">Body</a>
+                component and a <a href="../general/shell.html">Shell</a> or
+                <a href="../general/shell.html">ScriptIncludes</a> component to work.
+            </p>                
+            
+            <p>
                 <strong>
                     See also:
                     <a href="../../apidocs/org/apache/tapestry/dojo/html/Dialog.html">

@@ -35,6 +35,12 @@
                 names for each enclosed component ... this is necessary to support advanced features
                 such as loops within forms.
             </p>
+             <p>
+                For client side validation to work you must provide a
+                <a href="../general/body.html">Body</a> component and a
+                <a href="../general/shell.html">Shell</a> or
+                <a href="../general/shell.html">ScriptIncludes</a> component.
+            </p>            
             <p>
                 <strong>
                     See also:
