@@ -157,6 +157,22 @@ tapestry.form = {
 };
 
 tapestry.event = {
+    /**
+     * Takes an incoming browser generated event (like key/mouse events) and
+     * creates a js object holding the basic values of the event in order for
+     * it to be submitted to the server.
+     *
+     * Parameters:
+     *	event - The javascript event method is based on, if it isn't a valid
+     * 				browser event it will be ignored.
+     *	props - The existing property object to set the values on, if it doesn't
+     * 				exist one will be created.
+     *  args  - The arguments from an method-call interception
+     *
+     * Returns:
+     * The desired event properties bound to an object. Ie obj.target,obj.charCode, etc..
+     */
+    buildEventProperties:function(event, props, args){tapestry.log('t.e.buildEventProperties', arguments);},
     stopEvent: function() {tapestry.log('t.e.stopEvent', arguments);}
 };
 
