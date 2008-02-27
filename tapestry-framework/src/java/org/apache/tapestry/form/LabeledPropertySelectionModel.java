@@ -213,7 +213,7 @@ public class LabeledPropertySelectionModel implements IPropertySelectionModel
 
     public boolean isDisabled(int index)
     {
-        return index == 0 && _option == null;
+        return index == 0 ? _option == null : _model.isDisabled(index - 1);
     }
     
     /**
