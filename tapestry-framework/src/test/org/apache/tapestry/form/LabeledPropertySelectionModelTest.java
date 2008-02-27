@@ -78,6 +78,7 @@ public class LabeledPropertySelectionModelTest extends BaseComponentTestCase
         assertEquals(model.getLabel(1), String.valueOf(Boolean.TRUE));
         assert model.isDisabled(0);
         assert !model.isDisabled(1);
+        assert model.isDisabled(2);
     }
 
     public void test_Label_Option_Disabled()
@@ -90,6 +91,7 @@ public class LabeledPropertySelectionModelTest extends BaseComponentTestCase
         assertEquals(model.getLabel(0), label);
         assert !model.isDisabled(0);
         assert !model.isDisabled(1);
+        assert model.isDisabled(2);
     }
 
     public void test_Label_Value_With_Option_Disabled()
@@ -107,6 +109,7 @@ public class LabeledPropertySelectionModelTest extends BaseComponentTestCase
         
         assert !model.isDisabled(0);
         assert !model.isDisabled(1);
+        assert model.isDisabled(2);
     }
 
     private void validateLabel(IPropertySelectionModel model, String label, Object option,
@@ -163,7 +166,7 @@ public class LabeledPropertySelectionModelTest extends BaseComponentTestCase
 
             public boolean isDisabled(int index)
             {
-                return false;
+                return !values[index];
             }
             
             public Object translateValue(String value)
