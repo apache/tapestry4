@@ -72,38 +72,38 @@
         </description>
     </parameter>
 
-    <parameter name="tapestrySource" default-value="asset:defaultTapestrySource">
+    <parameter name="tapestrySource" default-value="ognl:jsManager.tapestryAsset">
         <description>
             If specified, allows for the default tapestry source included to be overriden.
         </description>
     </parameter>
     
-    <parameter name="tapestryPath" default-value="asset:defaultTapestryPath">
+    <parameter name="tapestryPath" default-value="ognl:jsManager.tapestryPath">
         <description>
             Sets the tapestry path, needed for dojo to properly detect and find tapestry js modules
             when overriding the default dojo bundled with tapestry.
         </description>
     </parameter>
     
-    <parameter name="dojoSource" default-value="asset:defaultDojoSource">
+    <parameter name="dojoSource" default-value="ognl:jsManager.firstAsset">
         <description>
             If specified, allows for the default dojo source included to be overriden.
         </description>
     </parameter>
 
-    <parameter name="dojoFormSource" default-value="asset:defaultDojoFormSource">
+    <parameter name="dojoFormSource" default-value="ognl:jsManager.firstFormAsset">
         <description>
             If specified, allows for the default dojo source included to be overriden.
         </description>
     </parameter>
 
-    <parameter name="dojoWidgetSource" default-value="asset:defaultDojoWidgetSource">
+    <parameter name="dojoWidgetSource" default-value="ognl:jsManager.firstWidgetAsset">
         <description>
             If specified, allows for the default dojo source included to be overriden.
         </description>
     </parameter>
 
-    <parameter name="dojoPath" default-value="asset:defaultDojoPath">
+    <parameter name="dojoPath" default-value="ognl:jsManager.path">
         <description>
             Specifies the default path to the root dojo folder, not the dojo.js file itself. This is
             used by the djConfig.baseRelativePath javascript configuration variable in dojo.
@@ -125,12 +125,7 @@
         <set name="preventBackButtonFix" value="preventBackButtonFix" />
         <set name="parseWidgets" value="parseWidgets" />
     </bean>
-
-    <asset name="defaultDojoSource" path="classpath:/dojo-0.4.3/dojo.js" />
-    <asset name="defaultDojoFormSource" path="classpath:/dojo-0.4.3/dojo2.js" />
-    <asset name="defaultDojoWidgetSource" path="classpath:/dojo-0.4.3/dojo3.js" />
-    <asset name="defaultDojoPath" path="classpath:/dojo-0.4.3/" />
-    <asset name="defaultTapestrySource" path="classpath:/tapestry/core.js" />
-    <asset name="defaultTapestryPath" path="classpath:/tapestry/" />
+    
+    <inject property="jsManager" object="service:tapestry.js.JavascriptManager" />
     
 </component-specification>
