@@ -1,0 +1,23 @@
+<html jwcid="@Shell" title="TAPESTRY-2225">
+    <body jwcid="@Body">
+
+        <form jwcid="@Form" cancel="listener:onCancel" refresh="listener:onRefresh">
+            <input type="submit" jwcid="normR@Submit" submitType="refresh" value="REFR"/>
+            <input type="submit" jwcid="normC@Submit" submitType="cancel" value="CANC"/>
+        </form>
+
+        <div jwcid="normal@Insert" value="ognl:message" renderTag="true"></div>
+
+        <hr/>
+
+        <form jwcid="@Form" cancel="listener:onCancelAsync" refresh="listener:onRefreshAsync">
+            <input type="submit" jwcid="asyncR@Submit" submitType="refresh" value="REFR" updateComponents="status"/>
+            <input type="submit" jwcid="asyncC@Submit" submitType="cancel" value="CANC" updateComponents="status"/>
+        </form>
+
+        <div jwcid="status@Any">
+            <span jwcid="@Insert" value="ognl:messageAsync"/>
+        </div>
+
+    </body>
+</html>
