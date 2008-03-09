@@ -41,7 +41,7 @@ Ajax Development Basics
 <p>Basic javascript inclusion sample.</p>
 
 <p>
-    <a jwcid="@DirectLink" listener="listener:setTime" updateComponents="time">Refresh time</a>.
+    <a jwcid="@DirectLink" listener="listener:onTime" updateComponents="time">Refresh time</a>.
 </p>
 
 <div jwcid="time@Insert" value="ognl:time" renderTag="true" />
@@ -54,9 +54,10 @@ Ajax Development Basics
 ..
 public abstract BasicAjax extends BasePage {
 
+	@InitialValue("new java.util.Date()")
     public abstract void setTime(Date time);
 
-    public void setTime()
+    public void onTime()
     {
         setTime(new java.util.Date());
     }
