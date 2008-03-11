@@ -163,12 +163,41 @@ public class TestBrowserIssues extends Assert
         waitForInnerHTML("msg2", "SUCCESS");
     }
 
-    private void openIssuePage(String issue) {
+    public void test_issue_2225() throws Exception
+    {
+        openIssuePage("TAPESTRY-2225");
+
+        assertFalse(_selenium.isElementPresent("normal"));
+        assertTrue(_selenium.isElementPresent("status"));
+
+        _selenium.click("asyncR");
+        waitForInnerHTML("status", "asyncREFRESH");
+        
+        _selenium.click("asyncC");
+        waitForInnerHTML("status", "asyncCANCEL");
+
+        clickAndWait("normR");
+        assertTrue(_selenium.isElementPresent("normal"));
+        assertEquals(getInnerHTML("normal"), "refresh");
+
+        clickAndWait("normC");
+        assertTrue(_selenium.isElementPresent("normal"));
+        assertEquals(getInnerHTML("normal"), "cancel");
+    }
+
+    private void openIssuePage(String issue)
+    {
         _selenium.open(BASE_URL);
 
         clickAndWait("link=" + issue);
 
         assertTrue(_selenium.getTitle().contains(issue));
+    }
+
+    private String getInnerHTML(String elm)
+    {
+        return _selenium.getEval("selenium.browserbot.getCurrentWindow().document.getElementById('"
+            + elm + "').innerHTML");
     }
 
     private void waitForInnerHTML(String elm, String content)

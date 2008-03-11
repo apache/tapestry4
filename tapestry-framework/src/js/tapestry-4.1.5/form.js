@@ -335,12 +335,11 @@ tapestry.form={
 
         if (parms && !dj_undef("async", parms) && parms.async){
             this.submitAsync(form, null, submitName, parms);
+            form.submitmode.value = previous;
+            tapestry.form.setFormValidating(formName, validateState);
         } else {
             this.submit(form, submitName, parms);
         }
-
-        form.submitmode.value = previous;
-        tapestry.form.setFormValidating(formName, validateState);
 	},
 	
 	/**
@@ -373,12 +372,11 @@ tapestry.form={
 
         if (parms && !dj_undef("async", parms) && parms.async){
             this.submitAsync(form, null, submitName, parms);
+            form.submitmode.value = previous;
+            tapestry.form.setFormValidating(formName, validateState);
         } else {
             this.submit(form, submitName, parms);
         }
-
-        form.submitmode.value = previous;
-        tapestry.form.setFormValidating(formName, validateState);
     },
 	
 	/**
