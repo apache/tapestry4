@@ -128,12 +128,28 @@ public void projectSelected()
   of the answer like that:
   
 +-----------------------------------------------------------------------
-@EventListener(events="trigger", targets="triggerable", elements="element")
+@EventListener(events="trigger", targets="triggerable")
 public void onTriggered( BrowserEvent event )
 {
    doSomething( event.getMethodArguments().getJSONObject(0).getInt("theAnswer") );
 }
 +-----------------------------------------------------------------------    
+
+  The following Javascript snippet shows how <<<trigger()>>> could be defined:
+
++-----------------------------------------------------------------------
+<div jwcid="triggerable@Any"> ... </div>
+
+<script type="text/javascript">
+    var triggerable = document.getElementById('triggerable');
+    triggerable.trigger = function(params) {
+        alert('calling server with answer ' + params.theAnswer);
+    }
+</script>
++-----------------------------------------------------------------------
+
+  In fact, the function <<<trigger>>> is not even required to exist, which comes in handy
+  if its only purpose would have been being intercepted at the server-side.
 
 ** Submitting forms when an event happens, and bypass client validation while you're at it
   
