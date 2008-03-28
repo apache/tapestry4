@@ -33,5 +33,5 @@
   <parameter name="validators"/>
   
   <inject property="validatableFieldSupport" object="service:tapestry.form.ValidatableFieldSupport"/>
-    
+  <inject property="script" type="script" object="RadioGroup.script"/>
 </component-specification>

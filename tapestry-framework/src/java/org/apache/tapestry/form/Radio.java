@@ -83,6 +83,13 @@ public abstract class Radio extends AbstractFormComponent
 
         writer.attribute("value", option);
 
+        // don't make it a reserved parameter to preserve backwards compatibility
+        if ( !isParameterBound("onclick") )
+        {
+            String onclickCall = "tapestry.byId('"+group.getClientId()+"').onChange("+option+");";
+            writer.attribute("onclick", onclickCall);
+        }
+
         renderInformalParameters(writer, cycle);
 
         writer.closeTag();

@@ -15,10 +15,11 @@
 package org.apache.tapestry.form;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.*;
 import org.apache.tapestry.valid.ValidatorException;
+
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * A special type of form component that is used to contain {@link Radio}components. The Radio and
@@ -52,6 +53,11 @@ public abstract class RadioGroup extends AbstractFormComponent implements Valida
     boolean _rendering;
 
     private int _nextOptionId;
+
+    /** A script providing a method onChange to be called whenever one of the enclosed radio-buttons is
+     * clicked 
+     */
+    public abstract IScript getScript();
 
     public static RadioGroup get(IRequestCycle cycle)
     {
@@ -145,12 +151,18 @@ public abstract class RadioGroup extends AbstractFormComponent implements Valida
     }
 
     /**
-     * @see org.apache.tapestry.form.AbstractRequirableField#renderFormComponent(org.apache.tapestry.IMarkupWriter,
+     * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter,
      *      org.apache.tapestry.IRequestCycle)
      */
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         _rewinding = false;
+
+        // render script generating the onChange method
+        PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, this);
+        Map symbols = new HashMap();
+        symbols.put( "id", getClientId() );
+        getScript().execute(this, cycle, pageRenderSupport, symbols);
 
         // For rendering, the Radio components need to know what the current
         // selection is, so that the correct one can mark itself 'checked'.
@@ -161,6 +173,9 @@ public abstract class RadioGroup extends AbstractFormComponent implements Valida
         writer.begin(getTemplateTagName());
 
         renderInformalParameters(writer, cycle);
+        
+        if (getId() != null && !isParameterBound("id"))
+                renderIdAttribute(writer, cycle);
 
         renderDelegateAttributes(writer, cycle);
 

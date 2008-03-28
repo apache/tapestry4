@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+   Copyright 2008 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<!DOCTYPE script PUBLIC
+	"-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
+	"http://tapestry.apache.org/dtd/Script_3_0.dtd">
+  
+<script>
+  <!--A script providing a method onChange to a RadioGroup which is to be called whenever one of
+      the enclosed radio-buttons is clicked -->
+    <input-symbol key="id"  class="java.lang.String" required="yes"/>
+
+    <let key="radioGroupElem" unique="yes">
+        radioGroup_${id}
+    </let>
+<body>
+</body>
+
+<initialization>
+    var ${radioGroupElem} = tapestry.byId("${id}");
+
+    if ( ! ${radioGroupElem}.onChange )
+    {
+        ${radioGroupElem}.onChange = function( value ) {/* do nothing */ };
+    }
+</initialization>
+</script>

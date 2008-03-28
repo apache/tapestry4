@@ -1,0 +1,29 @@
+<span jwcid="@Border">
+
+<h2>Intercepting client-side events on the server</h2>
+    <div jwcid="@contrib:AjaxStatus" style="display:none;color:white;background:red;position:absolute;top:0;right:0">
+        Loading ...
+    </div>
+    <p>
+        This page shows how to intercept client-side events. Using the @EventListener annotation a server-side
+        method can be triggered by virtually any event occuring in the Browser.
+    </p>
+    <p>
+        The following example submits a form asynchronously whenever a radio button is clicked.
+        As a result, the yellow phrase at the bottom will be updated.
+    </p>
+
+    <form jwcid="@Form" >
+        <span  jwcid="choose@RadioGroup" selected="ognl:choice"
+               displayName="Choose" validators="validators:required" >
+            <input jwcid="@Radio" value="Yes" />&nbsp;Yes&nbsp;
+            <input jwcid="@Radio" value="No" />&nbsp;No
+            <input jwcid="@Radio" value="Perhaps" />&nbsp;Perhaps
+        </span>
+    </form>
+    <p jwcid="ajaxResponse@Any" style="background:yellow;">
+       You've chosen
+        <span jwcid="@Insert" value="ognl:choice==null ? 'nothing' : '\''+choice+'\''"/>
+    </p>
+
+</span>
