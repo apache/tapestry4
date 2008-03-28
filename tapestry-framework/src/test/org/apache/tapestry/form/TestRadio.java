@@ -27,7 +27,7 @@ public class TestRadio extends BaseFormComponentTestCase
 
 		verify();
 
-		assertBuffer("<input type=\"radio\" name=\"group\" id=\"group0\" checked=\"checked\" value=\"0\" />");
+		assertBuffer("<input type=\"radio\" name=\"group\" id=\"group0\" checked=\"checked\" value=\"0\" onclick=\"tapestry.byId('group').onChange(0);\" />");
 	}
 
 	public void test_Render_Unselected()
@@ -40,7 +40,7 @@ public class TestRadio extends BaseFormComponentTestCase
 
 		verify();
 
-		assertBuffer("<input type=\"radio\" name=\"group\" id=\"group0\" value=\"0\" />");
+		assertBuffer("<input type=\"radio\" name=\"group\" id=\"group0\" value=\"0\" onclick=\"tapestry.byId('group').onChange(0);\" />");
 	}
 
 	public void test_Rewind_Selected()
@@ -74,7 +74,8 @@ public class TestRadio extends BaseFormComponentTestCase
 	{
 		group = newInstance(RadioGroup.class);
 		group.setName("group");
-		group._rendering = true;
+        group.setClientId("group");
+        group._rendering = true;
 		group._rewinding = rewinding;
 		group._selection = selection;
 		group._selectedOption = selection;
