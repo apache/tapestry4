@@ -16,8 +16,11 @@ package org.apache.tapestry.form;
 
 /**
  * Decorates an underlying {@link IPropertySelectionModel}adding an initial property. The label,
- * option, and value of the initial property are configurable.
- * 
+ * option, and value of the initial property are configurable.<p/>
+ *
+ * By default, the label will be rendered as disabled if its option is null. This behavior can be
+ * changed by {@link #setLabelAlwaysEnabled(boolean)}.
+ *  
  * @author Paul Ferraro
  * @since 4.0
  */
@@ -81,6 +84,8 @@ public class LabeledPropertySelectionModel implements IPropertySelectionModel
     private Object _option = null;
 
     private String _value = "";
+
+    private boolean _labelAlwaysEnabled;
     
     /**
      * Constructs a new LabeledPropertySelectionModel using an empty model and default label,
@@ -159,6 +164,29 @@ public class LabeledPropertySelectionModel implements IPropertySelectionModel
     }
 
     /**
+     * Constructs a new LabeledPropertySelectionModel using the specified model, label, option, and
+     * value.
+     *
+     * @param model
+     *            the underlying model to decorate
+     * @param label
+     *            the label of the initial property
+     * @param option
+     *            the option value of the initial property
+     * @param value
+     *            the value of the initial property
+     * @param labelAlwaysEnabled
+     *            if the label should always be enabled
+     */
+    public LabeledPropertySelectionModel(IPropertySelectionModel model, String label, Object option, String value,
+                                         boolean labelAlwaysEnabled)
+    {
+        this(model, label, option, value);
+
+        _labelAlwaysEnabled = labelAlwaysEnabled;
+    }
+
+    /**
      * Returns the underlying IPropertySelectionModel.
      * 
      * @return the underlying IPropertySelectionModel
@@ -213,7 +241,7 @@ public class LabeledPropertySelectionModel implements IPropertySelectionModel
 
     public boolean isDisabled(int index)
     {
-        return index == 0 ? _option == null : _model.isDisabled(index - 1);
+        return index == 0 ? (!_labelAlwaysEnabled && _option == null) : _model.isDisabled(index - 1);
     }
     
     /**
@@ -288,5 +316,21 @@ public class LabeledPropertySelectionModel implements IPropertySelectionModel
     public void setOption(Object option)
     {
         _option = option;
+    }
+
+    /**
+     * Returns if label should always be enabled.
+     */
+    public boolean isLabelAlwaysEnabled()
+    {
+        return _labelAlwaysEnabled;
+    }
+
+    /**
+     * Sets the state of the label.
+     */
+    public void setLabelAlwaysEnabled(boolean labelAlwaysEnabled)
+    {
+        _labelAlwaysEnabled = labelAlwaysEnabled;
     }
 }

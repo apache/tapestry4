@@ -81,6 +81,20 @@ public class LabeledPropertySelectionModelTest extends BaseComponentTestCase
         assert model.isDisabled(2);
     }
 
+    public void test_Label_Never_Disabled()
+    {
+        String label = "Choose...";
+
+        LabeledPropertySelectionModel model =
+                new LabeledPropertySelectionModel(createInnerModel(), label, null, "", true);
+
+        assertEquals(model.getLabel(0), label);
+        assertEquals(model.getLabel(1), String.valueOf(Boolean.TRUE));
+        assert !model.isDisabled(0);
+        assert !model.isDisabled(1);
+        assert model.isDisabled(2);
+    }
+
     public void test_Label_Option_Disabled()
     {
         String label = "Choose...";
