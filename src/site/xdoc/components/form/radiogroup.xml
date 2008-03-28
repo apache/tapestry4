@@ -155,6 +155,7 @@
             </section>
 
             <section name="Examples">
+            <subsection name="Simple Example">
                 <p>
                     This RadioGroup example illustrates an order form where a user can select the
                     order size.
@@ -192,6 +193,49 @@ public abstract class OrderPage extends BasePage {
 
 }
 </source>
+                </subsection>
+                <subsection name="Ajax Example">
+                  <p>This example shows how to intercept user-actions on a RadioGroup asynchronously on
+                    the server.</p>
+                  <p>This is accomplished by targeting the
+                     <a href="../../tapestry-annotations/index.html#EventListener">@EventListener</a>-annotation
+                     at the RadioGroup-element's <code>onChange( index )</code> method. This method will be called
+                     whenever the user clicks on of the group's radio-buttons. The <code>index</code> of the clicked
+                     button is passed as an argument, which is helpful if you choose not to submit the
+                     enclosing form automatically (<code>autoSubmit=false</code>).</p>
+
+ <source xml:space="preserve"><![CDATA[
+<form jwcid="@Form" >
+    <span  jwcid="choose@RadioGroup" selected="ognl:choice"
+           displayName="Choose" validators="validators:required" >
+        <input jwcid="@Radio" value="Yes" />&nbsp;Yes&nbsp;
+        <input jwcid="@Radio" value="No" />&nbsp;No
+        <input jwcid="@Radio" value="Perhaps" />&nbsp;Perhaps
+    </span>
+</form>
+<p jwcid="ajaxResponse@Any" style="background:yellow;">
+   You've chosen
+    <span jwcid="@Insert" value="ognl:choice==null ? 'nothing' : '\''+choice+'\''"/>
+</p>
+]]></source>
+ <source xml:space="preserve"><![CDATA[
+public abstract class AsyncForm extends BasePage
+{
+    public abstract String getChoice();
+
+    @EventListener( targets = "choose", events = "onChange", autoSubmit=true )
+    public void onRadioButtonPressed( BrowserEvent b )
+    {
+        String msg = "You've chosen option " + b.getMethodArguments().get(0) +" -> " + getChoice();
+        System.out.println( msg );
+
+        getRequestCycle().getResponseBuilder().updateComponent("ajaxResponse");
+    }
+}
+]]></source>                    
+
+
+                </subsection>
             </section>
 
         </section>
