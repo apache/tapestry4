@@ -61,8 +61,8 @@ public final class ScriptUtils
     private ScriptUtils() { }
 
     /**
-     * Takes any <script>contents..</script> tags found in the specified
-     * input string and replaces their contents into one large <script></script>
+     * Takes any <code>&lt;script&gt;contents..&lt;/script&gt;</code> tags found in the specified
+     * input string and replaces their contents into one large <code>&lt;script&gt;&lt;/script&gt;</code>
      * block (meaning if multiple script blocks are found, they will be turned into one),
      * with the addition of {@link #BEGIN_COMMENT} inserted before the logic block and
      * {@link #END_COMMENT} inserted after the logic block.
