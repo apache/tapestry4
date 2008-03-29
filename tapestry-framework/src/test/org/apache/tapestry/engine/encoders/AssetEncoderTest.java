@@ -189,4 +189,46 @@ public class AssetEncoderTest extends TestBase {
 
         verify();
     }
+
+    public void test_Decode_Null_Pathinfo()
+    {
+        ServiceEncoding encoding = newEncoding();
+
+        trainGetServletPath(encoding, "/assets");
+        trainGetPathInfo(encoding, null);
+
+        encoding.setParameterValue(ServiceConstants.SERVICE, Tapestry.ASSET_SERVICE);
+        encoding.setParameterValue(AssetService.DIGEST, "");
+        encoding.setParameterValue(AssetService.PATH, "");
+
+        replay();
+
+        AssetEncoder encoder = new AssetEncoder();
+        encoder.setPath("/assets");
+
+        encoder.decode(encoding);
+
+        verify();
+    }
+    
+    public void test_Decode_Empty_Pathinfo()
+    {
+        ServiceEncoding encoding = newEncoding();
+
+        trainGetServletPath(encoding, "/assets");
+        trainGetPathInfo(encoding, "/");
+
+        encoding.setParameterValue(ServiceConstants.SERVICE, Tapestry.ASSET_SERVICE);
+        encoding.setParameterValue(AssetService.DIGEST, "");
+        encoding.setParameterValue(AssetService.PATH, "");         
+
+        replay();
+
+        AssetEncoder encoder = new AssetEncoder();
+        encoder.setPath("/assets");
+
+        encoder.decode(encoding);
+
+        verify();
+    }
 }
