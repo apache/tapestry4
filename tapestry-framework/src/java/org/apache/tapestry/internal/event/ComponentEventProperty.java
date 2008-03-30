@@ -137,6 +137,12 @@ public class ComponentEventProperty implements Cloneable
             listeners.add(listener);
     }
 
+    /**
+     * Moves all of the non-form-submitting events with autoSubmit=true in {@link #_eventMap} over
+     * to the list of form-submitting events {@link #_formEventMap}.
+     * This is called when the targeted component is an {@link org.apache.tapestry.form.IFormComponent}
+     * by the {@link org.apache.tapestry.pageload.EventConnectionVisitor}.
+     * */
     public void connectAutoSubmitEvents(String formIdPath)
     {
         Iterator it = getEvents().iterator();
@@ -151,6 +157,8 @@ public class ComponentEventProperty implements Cloneable
             while (lit.hasNext())
             {    
                 EventBoundListener listener = (EventBoundListener) lit.next();
+               if ( !listener.isAutoSubmit() )
+                    continue;
                 
                 listener.setFormId(formIdPath);
                 lit.remove();
