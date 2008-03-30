@@ -94,6 +94,30 @@ public class ComponentEventPropertyTest extends TestBase {
         assertEquals("doFoo", listener.getMethodName());
         assert listener.isAutoSubmit();
     }
+
+    /**
+     * tests regression of TAPESTRY-2003
+     * */
+    public void test_Add_Form_Event_Listener_no_autoSubmit()
+    {
+        String[] events = {"onFoo"};
+        ComponentEventProperty prop = new ComponentEventProperty("compid");
+
+        prop.addListener(events, "doFoo", "", false, true, false, false);
+        prop.connectAutoSubmitEvents("fooForm");
+
+        assertEquals("compid", prop.getComponentId());
+        assertEquals(1, prop.getEvents().size());
+        assertEquals(0, prop.getFormEvents().size());
+
+        List listeners = prop.getEventListeners("onFoo");
+        assertEquals(1, listeners.size());
+
+        EventBoundListener listener = (EventBoundListener)listeners.get(0);
+        
+        assertEquals("doFoo", listener.getMethodName());
+        assert ! listener.isAutoSubmit();
+    }
     
     public void test_Add_Multiple_Event_Listener()
     {
