@@ -53,20 +53,20 @@ function ${function}(event)
 <if expression="validator.required">
     if (field.value.length == 0)
     {
-        Tapestry.invalid_field(field, "${requiredMessage}");
-        tapestry.event.stopEvent(event);
+        tapestry.form.validation.handleMissingField(field);
+        tapestry.stopEvent(event);
         return;
     }
 </if>
     if (field.value.length &gt; 0 &amp;&amp; !${pattern}.test(field.value)) {
-        Tapestry.invalid_field(field, "${patternNotMatchedMessage}");
-        tapestry.event.stopEvent(event);
+        tapestry.form.validation.handleInvalidField(field);
+        tapestry.stopEvent(event);        
     }
 }
 </body>
 
 <initialization>
-Tapestry.onsubmit('${form.name}', ${function});
+tapestry.connect('${form.name}', "onsubmit", ${function});
 </initialization>
 
 </script>

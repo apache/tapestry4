@@ -302,7 +302,7 @@ tapestry.form={
 			return;
 		}
 
-            form.submit();
+        form.submit();
     },
 	
 	/**
