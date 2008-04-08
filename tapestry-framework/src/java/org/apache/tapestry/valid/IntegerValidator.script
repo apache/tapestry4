@@ -55,9 +55,9 @@ function ${function}(event)
 <if expression="validator.required">
   if (stringValue.length == 0)
   {
-     Tapestry.invalid_field(field, "${requiredMessage}");
-     tapestry.event.stopEvent(event);
-     return;
+    tapestry.form.validation.handleMissingField(field);
+    tapestry.stopEvent(event);
+    return;
   }
 </if>
 <if-not expression="validator.required">
@@ -67,29 +67,29 @@ function ${function}(event)
   var value = stringValue * 1;
   if (isNaN(value))
   {
-    Tapestry.invalid_field(field, "${formatMessage}");
-    tapestry.event.stopEvent(event);
+    tapestry.form.validation.handleInvalidField(field);
+    tapestry.stopEvent(event);
   }
   var regex = /\./;
   if (stringValue.search(regex) != -1)
   {
-    Tapestry.invalid_field(field, "${formatMessage}");
-    tapestry.event.stopEvent(event);
+    tapestry.form.validation.handleInvalidField(field);
+    tapestry.stopEvent(event);
     return;
   }
 <if expression="minimum != null">
   if (value &lt; ${minimum})
   {
-    Tapestry.invalid_field(field, "${rangeMessage}");
-    tapestry.event.stopEvent(event);
+    tapestry.form.validation.handleInvalidField(field);
+    tapestry.stopEvent(event);
     return;
   }
 </if>
 <if expression="maximum != null">
   if (value &gt; ${maximum})
   {
-    Tapestry.invalid_field(field, "${rangeMessage}");
-    tapestry.event.stopEvent(event);
+    tapestry.form.validation.handleInvalidField(field);
+    tapestry.stopEvent(event);
     return;
   }
 </if>
@@ -97,7 +97,7 @@ function ${function}(event)
 </body>
 
 <initialization>
-Tapestry.onsubmit('${form.name}', ${function});
+tapestry.connect('${form.name}', "onsubmit", ${function});
 </initialization>
 
 </script>

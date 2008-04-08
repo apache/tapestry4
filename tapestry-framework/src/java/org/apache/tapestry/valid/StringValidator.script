@@ -49,8 +49,8 @@ function ${function}(event)
 <if expression="validator.required">
   if (field.value.length == 0)
   {
-    Tapestry.invalid_field(field, "${requiredMessage}");
-    tapestry.event.stopEvent(event);
+    tapestry.form.validation.handleMissingField(field);
+    tapestry.stopEvent(event);
     return;
   }
 </if>
@@ -61,8 +61,8 @@ function ${function}(event)
 <if expression="validator.minimumLength">
   if (field.value.length &lt; ${validator.minimumLength})
   {
-    Tapestry.invalid_field(field, "${minimumLengthMessage}");
-    tapestry.event.stopEvent(event);
+    tapestry.form.validation.handleInvalidField(field);
+    tapestry.stopEvent(event);
     return;
   }
 </if>
@@ -71,7 +71,7 @@ function ${function}(event)
 
 
 <initialization>
-Tapestry.onsubmit('${form.name}', ${function});
+tapestry.connect('${form.name}', "onsubmit", ${function});
 </initialization>
 
 </script>

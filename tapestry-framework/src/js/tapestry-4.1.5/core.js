@@ -486,7 +486,19 @@ var tapestry={
         tapestry.connect(dojo.widget.byId(target), event, funcName);
 	},
 
-	/**
+    /**
+     * Function:  stopEvent
+     *
+     * Handles canceling event bubbling propogation.
+     *
+     * Parameters:
+     *  event - The event to stop propogation of.
+     */
+    stopEvent:function(event){
+        dojo.event.browser.stopEvent(event);
+    },
+
+    /**
 	 * Function: byId
      */
     byId:dojo.byId,

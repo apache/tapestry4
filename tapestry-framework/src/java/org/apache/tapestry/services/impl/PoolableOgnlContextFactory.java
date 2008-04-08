@@ -32,9 +32,9 @@ public class PoolableOgnlContextFactory extends BasePoolableObjectFactory {
     {
         OgnlContext context = (OgnlContext)obj;
         
-        if (context.getRoot() != null || context.getValues().size() > 0) {
+        if (context.getRoot() != null || context.getValues().size() > 0)
+        {
             context.clear();
-            context.setRoot(null);
         }
     }
 }

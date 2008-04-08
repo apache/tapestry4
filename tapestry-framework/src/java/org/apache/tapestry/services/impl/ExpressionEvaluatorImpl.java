@@ -174,7 +174,6 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator, RegistryShu
             // setup context
             
             context.setRoot(target);
-            context.setCurrentObject(target);
 
             expression.set(context, target, value);
         }
