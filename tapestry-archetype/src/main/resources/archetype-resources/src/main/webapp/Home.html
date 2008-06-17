@@ -1,37 +1,25 @@
 <!--
 A simple welcome page.
 -->
-<html jwcid="$content$">
-<body jwcid="@Shell" title="literal:'${artifactId}' Start Page">
+<html jwcid="@Shell" title="literal:'${artifactId}' Start Page">
+<body jwcid="@Body">
 <h1>view Start Page</h1>
 
-<p> This is the start page for this application, a good place to start your modifications.
-    Just to prove this is live: </p>
+<p>This is the start page for this application, a good place to
+start your modifications. Just to prove this is live:</p>
 
-<p>
-    <span jwcid="time@Any">
-        The current time is: <span jwcid="@Insert" value="ognl:currentTime"> 12/22/2002 blah </span>
-    </span>
-</p>
+<p><span jwcid="time@Any"> The current time is: <span
+  jwcid="@Insert" value="ognl:currentTime"> 12/22/2002 blah </span> </span></p>
 
-<p>
-    Here's the Echo component working:
-    <span jwcid="@Echo" value="literal:Hello, world!">  bon-jovi</span>
-</p>
+<p>Here's the Echo component working: <span jwcid="@Echo"
+  value="literal:Hello, world!"> bon-jovi</span></p>
 
-<p>
-    <a jwcid="@PageLink" page="Home">refresh</a> |
+<p><a jwcid="@PageLink" page="Home">refresh</a> | <a
+  jwcid="@DirectLink" async="true" listener="listener:refresh">
+refresh via ajax </a></p>
 
-    <a  jwcid = "@DirectLink" async = "true" listener = "listener:refresh">
-    refresh via ajax
-    </a>
-
-
-</p>
-
-<p> Here's another example of a component which in turn leverages an engine-service:
-    <img src="#" alt="" jwcid="@widgets/RoundedCorner"/>
-</p>
+<p>Here's another example of a component which in turn leverages an
+engine-service: <img src="#" alt="" jwcid="@widgets/RoundedCorner" /></p>
 
 </body>
 </html>

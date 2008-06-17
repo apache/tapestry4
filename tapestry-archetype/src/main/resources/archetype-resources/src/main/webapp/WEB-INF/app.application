@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <!DOCTYPE application PUBLIC
-        "-//Apache Software Foundation//Tapestry Specification 4.0//EN"
-        "http://tapestry.apache.org/dtd/Tapestry_4_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://tapestry.apache.org/dtd/Tapestry_4_0.dtd">
 
 <application name="app">
-    <meta key="org.apache.tapestry.page-class-packages" value="${packageName}.pages"/>
-    <meta key="org.apache.tapestry.component-class-packages" value="${packageName}.components"/>
-    <library id="contrib" specification-path="classpath:/org/apache/tapestry/contrib/Contrib.library"/>
+  <meta key="org.apache.tapestry.page-class-packages" value="${packageName}.pages" />
+  <meta key="org.apache.tapestry.component-class-packages" value="${packageName}.components" />
+  <library id="contrib" specification-path="classpath:/org/apache/tapestry/contrib/Contrib.library" />
 </application>

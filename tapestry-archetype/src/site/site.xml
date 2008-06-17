@@ -14,24 +14,21 @@
         <groupId>org.apache.tapestry</groupId>
         <artifactId>maven-skin</artifactId>
         <version>1.0-SNAPSHOT</version>
-    </skin>-->
+        </skin>-->
 
-    <publishDate format="dd MMM yyyy"/>
+    <publishDate format="dd MMM yyyy" />
 
     <body>
         <links>
-            <item name="Tapestry" href="http://tapestry.apache.org"/>
-            <item name="Apache" href="http://www.apache.org/"/>
+            <item name="Tapestry" href="http://tapestry.apache.org" />
+            <item name="Apache" href="http://www.apache.org/" />
         </links>
-
         <menu name="Usage">
-            
-            <item name="Introduction" href="index.html"/>
-            <item name="Why Use This Archetype" href="why.html"/>
-           <item name="About The Resultant Project" href="about_resultant_project.html"/>
-
+            <item name="Introduction" href="index.html" />
+            <item name="Why Use This Archetype" href="why.html" />
+            <item name="About The Resultant Project"
+                href="about_resultant_project.html" />
         </menu>
-        
         ${reports}
     </body>
 </project>
