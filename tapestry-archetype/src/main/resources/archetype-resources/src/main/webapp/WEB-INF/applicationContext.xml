@@ -3,14 +3,15 @@
 
 <beans>
 
-    <!--
-     this object is a convenience object.
-     You could administer any kind of spring object here and know that it would
-     be properly introduced into your component classes with a simple
-     <code>
-        @InjectObject( "spring:beanName") public abstract BeanClass getBeanName();
-     </code>
-    -->
-    <bean lazy-init="true" id="utilities" class="${packageName}.util.Utilities">
-    </bean>
+  <!--
+    this object is a convenience object.
+    You could administer any kind of spring object here and know that it would
+    be properly introduced into your component classes with a simple
+    <code>
+    @InjectObject("spring:beanName") public abstract BeanClass getBeanName();
+    </code>
+  -->
+  <bean lazy-init="true" id="utilities"
+    class="${packageName}.util.Utilities">
+  </bean>
 </beans>

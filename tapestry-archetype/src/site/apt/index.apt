@@ -1,22 +1,22 @@
  ----
- Using the Tapestry 4.x Archetype
+ Using the Tapestry 4.1 Archetype
  ----
 
-Tapestry Archetype (For Tapestry 4)
+Tapestry Archetype (For Tapestry 4.1)
 
   An {{{http://maven.apache.org/plugins/maven-archetype-plugin/index.html}archetype}} is a Maven 2 form of a project template. You can create an empty shell of your project quickly.
 
   What you should know: the latest and greatest Tapestry 5 is just around the corner. There's an excellent archetype for getting up and running with it
   {{{http://tapestry.apache.org/tapestry5/tapestry-simple/}here}}. This archetype is inspired by that one.
 
-  This archetype creates a very simple application using Tapestry (the Dojo-enabled Tapestry versions.)
+  This archetype creates a very simple application using Tapestry 4.1 (the Dojo-enabled Tapestry versions.)
 
   If you don't have Maven, you can get it {{{http://maven.apache.org}here}}. Install it and then invoke:
   
 +---+
 mvn archetype:create -DarchetypeGroupId=org.apache.tapestry \
 -DarchetypeArtifactId=tapestry-archetype \
--DarchetypeVersion=4.1.2-SNAPSHOT -DgroupId=org.example -DartifactId=myapp
+-DarchetypeVersion=4.1.6-SNAPSHOT -DgroupId=org.example -DartifactId=myapp
 +---+
 
   First, you must decide on your group id, artifact id, and version number. For example, let's choose <<org.example>> for our group id,
@@ -27,12 +27,12 @@ mvn archetype:create -DarchetypeGroupId=org.apache.tapestry \
 
   This should yeild a project in the directory in which you invoked the command that has all the fixings for experimenting with Tapestry. 
 
-  You may run the application by issuing <<<mvn jetty6:run>>>. Jetty will monitor your project directory and periodically reload the files (every 10 seconds, in this case).
+  You may run the application by issuing <<<mvn jetty:run>>>. Jetty will monitor your project directory and periodically reload the files (every 10 seconds, in this case).
   We've also configured Tapestry to automatically reload the templates (typically, it caches the files. This setting won't affect the final .war you build, but is great for
   development). Thus, you can modify any .script/.page/.jwc/.html file and expect an instantaneous result. If you modify and recompile a java class file, Jetty will reload
   the context for you and you'll be up and running within 10 seconds.
 
-  You can now see your running application as {{{http://localhost:8080/myapp}http://localhost:8080/myapp}}.
+  You can now see your running application at {{{http://localhost:8080/myapp}http://localhost:8080/myapp}}.
 
   You can hit Control-C to stop Jetty.
 

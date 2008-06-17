@@ -1,17 +1,8 @@
 package ${packageName}.services;
 
-
-import ${packageName}.util.Utilities;
-
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.engine.IEngineService;
-import org.apache.tapestry.engine.ILink;
-import org.apache.tapestry.services.LinkFactory;
-import org.apache.tapestry.util.ContentType;
-import org.apache.tapestry.web.WebResponse;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -20,16 +11,28 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class RoundedCornerService implements IEngineService {
+import javax.imageio.ImageIO;
 
-    enum RoundedCorner {
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.engine.IEngineService;
+import org.apache.tapestry.engine.ILink;
+import org.apache.tapestry.services.LinkFactory;
+import org.apache.tapestry.util.ContentType;
+import org.apache.tapestry.web.WebResponse;
+
+import ${packageName}.util.Utilities;
+
+public class RoundedCornerService implements IEngineService
+{
+
+    enum RoundedCorner
+    {
         NW, NE, SW, SE
     }
 
-
     /**
      * This renders a rounded corner that has the specified size, dimensions, etc.
-     *
+     * 
      * @param bg
      * @param fg
      * @param width
@@ -39,10 +42,9 @@ public class RoundedCornerService implements IEngineService {
      * @throws Throwable
      */
 
-    private BufferedImage renderRoundedCorner(
-            String bg, String fg,
-            int width, int height, RoundedCorner corner
-    ) throws Throwable {
+    private BufferedImage renderRoundedCorner(String bg, String fg, int width, int height, RoundedCorner corner)
+        throws Throwable
+    {
 
         width = width * 2;
         height = height * 2;
@@ -51,35 +53,31 @@ public class RoundedCornerService implements IEngineService {
 
         BufferedImage img = new BufferedImage(visibleW, visibleH, BufferedImage.TYPE_INT_RGB);
 
-
         Graphics2D g2d = img.createGraphics();
 
-
         int x = 0, y = 0;
-        switch (corner) {
-            case NW:
-                // everythings rendered this wa bey default
-                break;
-            case SW:
-                x = 0;
-                y = (visibleH * 3) * -1;
-                ;
-                break;
+        switch(corner) {
+        case NW:
+            // everythings rendered this way by default
+            break;
+        case SW:
+            x = 0;
+            y = (visibleH * 3) * -1;
+            ;
+            break;
 
+        case NE:
+            x = (visibleW * 3) * -1;
+            y = 0;// visibleH * -1 ;
 
-            case NE:
-                x = (visibleW * 3) * -1;
-                y = 0;//visibleH * -1 ;
+            break;
 
-                break;
+        case SE:
+            x = (visibleW * 3) * -1;
+            y = (visibleH * 3) * -1;
 
-            case SE:
-                x = (visibleW * 3) * -1;
-                y = (visibleH * 3) * -1;
-
-                break;
+            break;
         }
-
 
         RoundRectangle2D rect = new RoundRectangle2D.Float(x, y, width * 2, height * 2, width, height);
 
@@ -94,37 +92,32 @@ public class RoundedCornerService implements IEngineService {
         g2d.setColor(fgColor);
         g2d.fill(rect);
 
-
         g2d.dispose();
-
 
         return img;
     }
 
-
     public static String SERVICE_NAME = "RoundedCornerService";
 
-    public void service(IRequestCycle cycle) throws IOException {
+    public void service(IRequestCycle cycle)
+        throws IOException
+    {
 
         // so you hit the service
         // by the time were actually rendering stuff, we will always
         // have a map of <String,String > that translates well.
 
         String corner = cycle.getParameter("corner");
-        String wS = cycle.getParameter("w"),
-                hS = cycle.getParameter("h"),
-                fg = cycle.getParameter("fg"),
-                bg = cycle.getParameter("bg");
+        String wS = cycle.getParameter("w"), hS = cycle.getParameter("h"), fg = cycle.getParameter("fg"), bg = cycle
+                .getParameter("bg");
 
         RoundedCorner crnr = RoundedCorner.valueOf(corner);
 
         int h = Integer.parseInt(hS);
         int w = Integer.parseInt(wS);
 
-
         try {
             OutputStream output = response.getOutputStream(new ContentType("image/jpeg"));
-
 
             BufferedImage rc = renderRoundedCorner(bg, fg, w, h, crnr);
 
@@ -134,21 +127,22 @@ public class RoundedCornerService implements IEngineService {
             getUtilities().log(th);
         }
 
-
     }
 
-
-    public Utilities getUtilities() {
+    public Utilities getUtilities()
+    {
         return utilities;
     }
 
-    public void setUtilities(Utilities utilities) {
+    public void setUtilities(Utilities utilities)
+    {
         this.utilities = utilities;
     }
 
     private Utilities utilities;
 
-    public ILink getLink(boolean isPost, Object parameter) {
+    public ILink getLink(boolean isPost, Object parameter)
+    {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corner", RoundedCorner.NE.toString());
         params.put("bg", "#FFFFFF");
@@ -162,13 +156,12 @@ public class RoundedCornerService implements IEngineService {
 
             Set<String> keys = params.keySet();
 
-            for (String key : keys) {
+            for(String key : keys) {
                 if (p.containsKey(key)) {
 
                     Object value = p.get(key);
 
-                    if (value != null)
-                        params.put(key, value);
+                    if (value != null) params.put(key, value);
 
                 }
             }
@@ -178,27 +171,31 @@ public class RoundedCornerService implements IEngineService {
         return linkFactory.constructLink(this, false, params, true);
     }
 
-
     private LinkFactory linkFactory;
     private WebResponse response;
 
-    public LinkFactory getLinkFactory() {
+    public LinkFactory getLinkFactory()
+    {
         return linkFactory;
     }
 
-    public void setLinkFactory(LinkFactory linkFactory) {
+    public void setLinkFactory(LinkFactory linkFactory)
+    {
         this.linkFactory = linkFactory;
     }
 
-    public WebResponse getResponse() {
+    public WebResponse getResponse()
+    {
         return response;
     }
 
-    public void setResponse(WebResponse response) {
+    public void setResponse(WebResponse response)
+    {
         this.response = response;
     }
 
-    public String getName() {
+    public String getName()
+    {
         return SERVICE_NAME;
     }
 
