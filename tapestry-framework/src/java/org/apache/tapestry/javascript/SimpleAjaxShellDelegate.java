@@ -30,7 +30,7 @@ public class SimpleAjaxShellDelegate implements IRender
 {
     private static final String SYSTEM_NEWLINE = "\n";
 
-    private JavascriptManager _javascriptManager;
+    protected JavascriptManager _javascriptManager;
 
     public SimpleAjaxShellDelegate(JavascriptManager javascriptManager)
     {

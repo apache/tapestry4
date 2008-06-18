@@ -5,7 +5,11 @@
  * It should be used as a reference for building implementations
  * specific to existing javascript frameworks.  
  */
-
+ 
+// dj_undef function that checks if an object is not defined in the window scope  
+if (!window.dj_undef) window.dj_undef=function(name) {
+	return (typeof this[name] == "undefined"); }
+	
 // the two required objects, dojo and tapestry
 var dojo={
     // those methods should only be needed for the dojo implementations
@@ -53,6 +57,22 @@ var tapestry={
      * Parameters: target, event, funcName
      */
     cleanConnect: function() {tapestry.log('t.cleanConnect', arguments);},
+    
+    /**
+     * Connects the event of the given widget with the given function of
+     * the global namespace "tapestry"
+     *
+     * Parameters: widgetId, event, funcName
+     */
+    connectWidget: function() {tapestry.log('t.connectWidget', arguments);},    
+    
+    /**
+     * Disconnects the event of the given widget from the given function of
+     * the global namespace "tapestry"
+     *
+     * Parameters: widgetId, event, funcName
+     */
+    cleanConnectWidget: function() {tapestry.log('t.cleanConnectWidget', arguments);},    
 
 	/**
 	 * Perform an XHR.
