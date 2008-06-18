@@ -129,7 +129,15 @@ public class JavascriptManagerImpl implements JavascriptManager
         _assetSource = assetSource;
     }
 
-    private List buildAssetList(String files, String name)
+    /**
+     * Builds a {@link List} of {@link IAsset} from a comma
+     * separated input string.
+     * 
+     * @param files A comma separated string.
+     * @param name Description of assets.
+     * @return
+     */
+    protected List buildAssetList(String files, String name)
     {
         String[] js = TapestryUtils.split(files);
         
@@ -141,7 +149,14 @@ public class JavascriptManagerImpl implements JavascriptManager
         return list;
     }
 
-    private IAsset findAsset(String path, String description)
+    /**
+     * Finds the given asset (in classpath, context, e.t.c.).
+     * 
+     * @param path
+     * @param description
+     * @return
+     */
+    protected IAsset findAsset(String path, String description)
     {
         IAsset asset = null;
         if ( !HiveMind.isBlank(path) )
