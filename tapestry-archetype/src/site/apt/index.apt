@@ -7,7 +7,7 @@ Tapestry Archetype (For Tapestry 4.1)
   An {{{http://maven.apache.org/plugins/maven-archetype-plugin/index.html}archetype}} is a Maven 2 form of a project template. You can create an empty shell of your project quickly.
 
   What you should know: the latest and greatest Tapestry 5 is just around the corner. There's an excellent archetype for getting up and running with it
-  {{{http://tapestry.apache.org/tapestry5/tapestry-simple/}here}}. This archetype is inspired by that one.
+  {{{http://tapestry.apache.org/tapestry5/quickstart/}here}}. This archetype is inspired by that one.
 
   This archetype creates a very simple application using Tapestry 4.1 (the Dojo-enabled Tapestry versions.)
 
@@ -24,6 +24,12 @@ mvn archetype:create -DarchetypeGroupId=org.apache.tapestry \
   and the artifact id.
 
   <Again, the first time you do this, you'll see a large number of download messages.>
+  
+  Also, if you're trying to use a SNAPSHOT version of the archetype, add 
+  <<-DremoteRepositories=http://people.apache.org/repo/m2-snapshot-repository/>> to the
+  command line arguments... and finally, if you keep getting <no archetype found> messages
+  from maven, add the <<-U>> flag to force maven to check for updates on releases and snapshots 
+  on remote repositories.
 
   This should yeild a project in the directory in which you invoked the command that has all the fixings for experimenting with Tapestry. 
 
