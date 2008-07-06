@@ -196,7 +196,7 @@ public abstract class OrderPage extends BasePage {
                 </subsection>
                 <subsection name="Ajax Example">
                   <p>This example shows how to intercept user-actions on a RadioGroup asynchronously on
-                    the server.</p>
+                    the server. <em>Note:</em> This does only work since 4.1.6 </p>
                   <p>This is accomplished by targeting the
                      <a href="../../tapestry-annotations/index.html#EventListener">@EventListener</a>-annotation
                      at the RadioGroup-element's <code>onChange( index )</code> method. This method will be called
