@@ -15,7 +15,7 @@
 package org.apache.tapestry.pageload;
 
 import org.apache.commons.pool.BaseKeyedPoolableObjectFactory;
-import org.apache.commons.pool.impl.GenericKeyedObjectPool;
+import org.apache.commons.pool.impl.TapestryKeyedObjectPool;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.events.RegistryShutdownListener;
@@ -74,11 +74,11 @@ public class PageSource extends BaseKeyedPoolableObjectFactory implements IPageS
      * The pool of {@link IPage}s. The key is a {@link org.apache.tapestry.util.MultiKey}, 
      * built from the page name and the page locale.
      */
-    GenericKeyedObjectPool _pool;
+    TapestryKeyedObjectPool _pool;
 
     public void initializeService()
     {
-        _pool = new GenericKeyedObjectPool(this);
+        _pool = new TapestryKeyedObjectPool(this);
 
         _pool.setMaxActive(Integer.parseInt(_propertySource.getPropertyValue("org.apache.tapestry.page-pool-max-active")));
         _pool.setMaxIdle(Integer.parseInt(_propertySource.getPropertyValue("org.apache.tapestry.page-pool-max-idle")));
