@@ -21,6 +21,8 @@ import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.util.URLResource;
 import org.apache.tapestry.IAsset;
+import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.asset.AssetSource;
 import org.apache.tapestry.util.DescribedLocation;
@@ -129,7 +131,61 @@ public class JavascriptManagerImpl implements JavascriptManager
         _assetSource = assetSource;
     }
 
+	public void renderLibraryResources(IMarkupWriter writer,
+			IRequestCycle cycle, boolean hasForm, boolean hasWidget) 
+	{
+        // include all the main js packages		
+        appendAssetsAsJavascript(writer, cycle, getAssets());        
+        
+        if (hasForm)
+        {
+            appendAssetsAsJavascript(writer, cycle, getFormAssets());
+        }
+        if (hasWidget)
+        {
+            appendAssetsAsJavascript(writer, cycle, getWidgetAssets());
+        }		
+		
+	}    
+    
+    public void renderLibraryAdaptor(IMarkupWriter writer, IRequestCycle cycle) 
+    {
+    	// include the tapestry js
+        IAsset tapestryAsset = getTapestryAsset();
+        if (tapestryAsset!=null)
+        {
+            appendAssetAsJavascript(writer, cycle, tapestryAsset);
+        }    	
+	}
+
+
+	
     /**
+     * Appends a script tag to include the given asset. 
+     * @param writer
+     * @param cycle
+     * @param asset
+     */
+    protected void appendAssetAsJavascript(IMarkupWriter writer, IRequestCycle cycle, IAsset asset)
+    {
+        final String url = asset.buildURL();
+        
+        writer.begin("script");
+        writer.attribute("type", "text/javascript");
+        writer.attribute("src", url);
+        writer.end();
+        writer.println();
+    }        
+
+    protected void appendAssetsAsJavascript(IMarkupWriter writer, IRequestCycle cycle, List jsAssets)
+    {
+        for (int i = 0; i < jsAssets.size(); i++)
+        {
+            appendAssetAsJavascript(writer, cycle, (IAsset) jsAssets.get(i));
+        }
+    }	
+
+	/**
      * Builds a {@link List} of {@link IAsset} from a comma
      * separated input string.
      * 
