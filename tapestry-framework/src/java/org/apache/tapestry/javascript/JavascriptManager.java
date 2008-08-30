@@ -17,6 +17,8 @@ package org.apache.tapestry.javascript;
 import java.util.List;
 
 import org.apache.tapestry.IAsset;
+import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IRequestCycle;
 
 /**
  * Manages javascript files of 3rd party libraries.
@@ -72,4 +74,23 @@ public interface JavascriptManager
      * @return if null, it is left unused.
      */
     IAsset getTapestryPath();
+    
+    /**
+     * Output the resources (could be .js, .css, e.t.c. files) needed for the current javascript library.
+     * 
+     * @param writer
+     * @param cycle
+     * @param hasForm true if current page includes forms.
+     * @param hasWidget true if current page includes widgets.
+     */
+    void renderLibraryResources(IMarkupWriter writer, IRequestCycle cycle, boolean hasForm, boolean hasWidget);
+    
+    /**
+     * Output the resources needed for tapestry in order to use the current 
+     * javascript library.
+     * 
+     * @param writer
+     * @param cycle
+     */
+    void renderLibraryAdaptor(IMarkupWriter writer, IRequestCycle cycle);
 }
