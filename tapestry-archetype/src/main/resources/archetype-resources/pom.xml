@@ -76,17 +76,17 @@
         <dependency>
             <groupId>org.apache.tapestry</groupId>
             <artifactId>tapestry-annotations</artifactId>
-            <version>4.1.6-SNAPSHOT</version>
+            <version>4.1.6</version>
         </dependency>
         <dependency>
             <groupId>org.apache.tapestry</groupId>
             <artifactId>tapestry-framework</artifactId>
-            <version>4.1.6-SNAPSHOT</version>
+            <version>4.1.6</version>
         </dependency>
         <dependency>
             <groupId>org.apache.tapestry</groupId>
             <artifactId>tapestry-contrib</artifactId>
-            <version>4.1.6-SNAPSHOT</version>
+            <version>4.1.6</version>
         </dependency>
 
         <!-- A dependency on either JUnit or TestNG is required, or the surefire plugin (which runs the tests)

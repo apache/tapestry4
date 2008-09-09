@@ -26,7 +26,7 @@ public abstract class AsyncForm extends BasePage
 {
     public abstract String getChoice();
 
-    @EventListener( targets = "choose", events = "onChange" )
+    @EventListener( targets = "choose", events = "onChange")
     public void onRadioButtonPressed( BrowserEvent b )
     {
         String msg = "You've chosen option " + b.getMethodArguments().get(0) +" -> " + getChoice();
