@@ -4,12 +4,12 @@
     <groupId>org.apache.tapestry</groupId>
     <artifactId>tapestry-framework</artifactId>
     <packaging>jar</packaging>
-    <version>4.1.6-SNAPSHOT</version>
+    <version>4.1.6</version>
     <!-- This should change to tapestry-project -->
     <parent>
         <groupId>org.apache.tapestry</groupId>
         <artifactId>tapestry-project</artifactId>
-        <version>4.1.6-SNAPSHOT</version>
+        <version>4.1.6</version>
     </parent>
     <name>Tapestry Core Library - ${version}</name>
     <inceptionYear>2006</inceptionYear>
@@ -150,11 +150,11 @@
                 </excludes>
             </resource>
             <resource>
-                <directory>src/js/dojo-0.4.3-custom-4.1.5/</directory>
+                <directory>src/js/dojo-0.4.3-custom-4.1.6/</directory>
                 <includes>
                     <include>**/*</include>
                 </includes>
-                <targetPath>dojo-0.4.3-custom-4.1.5</targetPath>
+                <targetPath>dojo-0.4.3-custom-4.1.6</targetPath>
             </resource>
             <resource>
                 <directory>src/js/scriptaculous-1.7.1/</directory>
@@ -164,11 +164,11 @@
                 <targetPath>scriptaculous-1.7.1</targetPath>
             </resource>
             <resource>
-                <directory>src/js/tapestry-4.1.5</directory>
+                <directory>src/js/tapestry-4.1.6</directory>
                 <includes>
                     <include>**/*</include>
                 </includes>
-                <targetPath>tapestry-4.1.5</targetPath>
+                <targetPath>tapestry-4.1.6</targetPath>
             </resource>
         </resources>
 
