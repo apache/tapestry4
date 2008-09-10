@@ -9,7 +9,84 @@
     <body>
 
         <section name="Tapestry 4 Releases">
+	    <subsection name="Release Notes - Tapestry - Version 4.1.6">
 
+        Release Notes - Tapestry - Version 4.1.6
+        
+<h2>        Bug
+</h2>
+<ul>
+<li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1086'>TAPESTRY-1086</a>] -         components that use dojo need a Shell component and should document this fact
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1219'>TAPESTRY-1219</a>] -         The order of loading bodyscripts and initializationscripts is non deterministic
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1269'>TAPESTRY-1269</a>] -         Dojo error on search engine cached pages
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1431'>TAPESTRY-1431</a>] -         Changing org.apache.tapestry.renderTags config property breaks Exception page
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1567'>TAPESTRY-1567</a>] -         Broken links: from API to Component Reference
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1657'>TAPESTRY-1657</a>] -         apidocs's links to 'Component Reference' are broken
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1673'>TAPESTRY-1673</a>] -         Why does submitType=&quot;cancel&quot; kill its listener?
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1761'>TAPESTRY-1761</a>] -         TreeDataView's initialze() is not called
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1773'>TAPESTRY-1773</a>] -         Wrong documentation for Dialog toggleDuration parameter
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-2003'>TAPESTRY-2003</a>] -         EventListener's &quot;autoSubmit&quot; parameter does not work.
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-2171'>TAPESTRY-2171</a>] -         @ScriptIncludes does not use the new jsManager like @Shell. Causes &quot;Exception: Missing classpath resource '/dojo-0.4.3/dojo2.js'.&quot;
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-2201'>TAPESTRY-2201</a>] -         LabeledPropertySelectionModel.isDisabled ignores underlying model
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-2225'>TAPESTRY-2225</a>] -         tapestry.form.refresh is broken
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-2266'>TAPESTRY-2266</a>] -         Incorrect EventListener documentation for intercepting Javascript functions
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-2310'>TAPESTRY-2310</a>] -         LabeledPropertySelectionModel.isDisabled always disables its first option
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-2382'>TAPESTRY-2382</a>] -         Possible deadlock in ExpressionCacheImpl (on _lock instance)
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-2530'>TAPESTRY-2530</a>] -         Possible performance bottleneck in PageSource.makeObject()
+</li>
+</ul>
+    
+<h2>        Improvement
+</h2>
+<ul>
+<li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1246'>TAPESTRY-1246</a>] -         Clientside validation patch
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1252'>TAPESTRY-1252</a>] -         Setting updateComponents in DirectLink forces async execution
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1405'>TAPESTRY-1405</a>] -         EventListeners on RadioGroups don't fire asynchronously
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1677'>TAPESTRY-1677</a>] -         Tapestry Archetype should generate Home.html that uses Body component
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1728'>TAPESTRY-1728</a>] -         tapestry-archetype: update jetty6 plugin to maven-jetty-plugin
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1902'>TAPESTRY-1902</a>] -         Upgrade Dojo to 1.0
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1915'>TAPESTRY-1915</a>] -         AssetEncoder doesn't handle invalid paths missing a digest
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-2091'>TAPESTRY-2091</a>] -         improve html produced by DefaultOptionRenderer 
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-2210'>TAPESTRY-2210</a>] -         Example in  Basic Ajax documentaion cannot work.
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-2466'>TAPESTRY-2466</a>] -         Delegate js library inclusion to JavacriptManager
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-2499'>TAPESTRY-2499</a>] -         Reduce Frustration Experienced By &quot;green&quot; Maven User When Following the Tapestry Archetype Example
+</li>
+</ul>
+    
+<h2>        New Feature
+</h2>
+<ul>
+<li>[<a href='https://issues.apache.org/jira/browse/TAPESTRY-1039'>TAPESTRY-1039</a>] -         EventListeners for RadioGroup component
+</li>
+</ul>
+                            
+	    </subsection>
             <subsection name="Release Notes - Tapestry - Version 4.1.5">
                 <h2>        Sub-task
                 </h2>
