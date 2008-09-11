@@ -5,12 +5,12 @@
     <groupId>org.apache.tapestry</groupId>
     <artifactId>tapestry-VlibBeans</artifactId>
     <packaging>jar</packaging>
-    <version>4.1.6-SNAPSHOT</version>
+    <version>4.1.7-SNAPSHOT-SNAPSHOT</version>
     <!-- This should change to tapestry-project -->
     <parent>
         <groupId>org.apache.tapestry</groupId>
         <artifactId>tapestry-examples</artifactId>
-        <version>4.1.6-SNAPSHOT</version>
+        <version>4.1.7-SNAPSHOT-SNAPSHOT</version>
     </parent>
     <name>Tapestry Virtual Library (Beans)</name>
     <inceptionYear>2006</inceptionYear>
