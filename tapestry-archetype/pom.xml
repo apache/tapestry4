@@ -6,12 +6,12 @@
     <groupId>org.apache.tapestry</groupId>
     <artifactId>tapestry-archetype</artifactId>
     <packaging>jar</packaging>
-    <version>4.1.6</version>
+    <version>4.1.7-SNAPSHOT</version>
 
     <parent>
         <groupId>org.apache.tapestry</groupId>
         <artifactId>tapestry-project</artifactId>
-        <version>4.1.6</version>
+        <version>4.1.7-SNAPSHOT</version>
     </parent>
 
     <name>Simple Tapestry Archetype</name>
