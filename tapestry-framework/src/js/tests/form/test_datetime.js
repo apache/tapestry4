@@ -1,4 +1,4 @@
-dojo.registerModulePath("tapestry", "../tapestry");
+dojo.registerModulePath("tapestry", "../tapestry-4.1.6");
 
 djConfig.locale="fr";
 
