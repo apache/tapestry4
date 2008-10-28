@@ -164,11 +164,11 @@
                 <targetPath>scriptaculous-1.7.1</targetPath>
             </resource>
             <resource>
-                <directory>src/js/tapestry-4.1.7-SNAPSHOT</directory>
+                <directory>src/js/tapestry-4.1.6</directory>
                 <includes>
                     <include>**/*</include>
                 </includes>
-                <targetPath>tapestry-4.1.7-SNAPSHOT</targetPath>
+                <targetPath>tapestry-4.1.6</targetPath>
             </resource>
         </resources>
 
