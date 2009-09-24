@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004 - 2009 The Apache Software Foundation
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.apache.tapestry.html;
 import org.apache.commons.lang.StringUtils;
 import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.*;
+import org.apache.tapestry.markup.MarkupUtils;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
@@ -227,6 +228,11 @@ public abstract class Shell extends AbstractComponent
 
     private void writeRelation(IMarkupWriter writer, RelationBean relationBean)
     {
+        String ieCondition = relationBean.getIeCondition();
+
+        if (ieCondition!=null)
+            MarkupUtils.beginConditionalComment(writer, ieCondition);
+
         writer.beginEmpty("link");
 
         writeAttributeIfNotNull(writer, "rel", relationBean.getRel());
@@ -235,8 +241,13 @@ public abstract class Shell extends AbstractComponent
         writeAttributeIfNotNull(writer, "media", relationBean.getMedia());
         writeAttributeIfNotNull(writer, "title", relationBean.getTitle());
         writeAttributeIfNotNull(writer, "href", relationBean.getHref());
-        
-        writer.println();
+
+        writer.closeTag();
+
+        if (ieCondition!=null)
+            MarkupUtils.endConditionalComment(writer);
+        else
+            writer.println();
     }
 
     private void writeAttributeIfNotNull(IMarkupWriter writer, String name, String value)

@@ -1,4 +1,4 @@
-// Copyright Aug 2, 2006 The Apache Software Foundation
+// Copyright 2006 - 2009 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.markup.MarkupWriterSource;
+import org.apache.tapestry.markup.MarkupUtils;
 import org.apache.tapestry.util.ContentType;
 
 import java.io.PrintWriter;
@@ -83,6 +84,10 @@ public abstract class Relation extends AbstractComponent
         bean.setRev(getRev());
         bean.setTitle(getTitle());
         bean.setType(getType());
+
+        if (isParameterBound("ieCondition"))
+            bean.setIeCondition(getIeCondition());
+
         shell.addRelation(bean);
     }
 
@@ -97,16 +102,24 @@ public abstract class Relation extends AbstractComponent
         StringWriter sWriter = new StringWriter();
         IMarkupWriter nested = getMarkupWriterSource().newMarkupWriter(new PrintWriter(sWriter),
                                                                        new ContentType(writer.getContentType()));
+        String ieCondition = getIeCondition();
+        if (ieCondition != null)
+            MarkupUtils.beginConditionalComment(nested, ieCondition);
 
         nested.begin("style");
         nested.attribute("type", "text/css");
-
         if (getMedia()!=null)
             nested.attribute("media", getMedia());
         if (getTitle()!=null)
             nested.attribute("title", getTitle());
 
         renderBody(nested, cycle);
+
+        nested.end();
+
+        if (ieCondition != null)
+            MarkupUtils.endConditionalComment(nested);
+
         nested.close();
 
         shell.includeAdditionalContent(sWriter.toString());
@@ -125,6 +138,11 @@ public abstract class Relation extends AbstractComponent
     public abstract String getTitle();
 
     public abstract String getMedia();
+
+    /**
+     * @since 4.1.7
+     */
+    public abstract String getIeCondition();
 
     /* injected */
     public abstract MarkupWriterSource getMarkupWriterSource();

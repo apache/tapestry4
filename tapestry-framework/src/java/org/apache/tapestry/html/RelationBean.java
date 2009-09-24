@@ -33,6 +33,8 @@ public class RelationBean
     private String _type;
     /** Title of the relation. */
     private String _title;
+    /** Condition to allow targeting this relation to IE browsers. */
+    private String _ieCondition;
     
     public RelationBean()
     {        
@@ -98,17 +100,21 @@ public class RelationBean
         _title = title;
     }
 
+    public String getIeCondition()
+    {
+        return _ieCondition;
+    }
+
+    public void setIeCondition(String ieCondition)
+    {
+        _ieCondition = ieCondition;
+    }
+
     public int hashCode()
     {
         final int prime = 31;
-        int result = 1;
-        result = prime * result + ((_href == null) ? 0 : _href.hashCode());
-        result = prime * result + ((_media == null) ? 0 : _media.hashCode());
-        result = prime * result + ((_rel == null) ? 0 : _rel.hashCode());
-        result = prime * result + ((_rev == null) ? 0 : _rev.hashCode());
-        result = prime * result + ((_title == null) ? 0 : _title.hashCode());
-        result = prime * result + ((_type == null) ? 0 : _type.hashCode());
-        return result;
+        // href will most probably be the difference between two relations
+        return prime + ((_href == null) ? 0 : _href.hashCode());
     }
 
     public boolean equals(Object obj)
@@ -135,6 +141,9 @@ public class RelationBean
         if (_type == null) {
             if (other._type != null) return false;
         } else if (!_type.equals(other._type)) return false;
+        if (_ieCondition == null) {
+            if (other._ieCondition != null) return false;
+        } else if (!_ieCondition.equals(other._ieCondition)) return false;        
         return true;
     }  
     

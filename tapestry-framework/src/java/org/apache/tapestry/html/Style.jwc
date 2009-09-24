@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-   Copyright 2004, 2005 The Apache Software Foundation
+   Copyright 2004 - 2009 The Apache Software Foundation
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -49,6 +49,14 @@
   <parameter name="media">
     <description>
     Specifies on which device this stylesheet will apply.
+    </description>
+  </parameter>
+
+  <parameter name="ieCondition">
+    <description>
+    If specified, the style (or the css file) will only target IE browsers by surrounding the normal output
+    with a condition comment. That comment starts with &lt;!--[if IE 6]&gt; and ends with &lt;![endif]--&gt;
+    Possible values for this parameter include IE, IE 6, lt IE 6, gte IE 5 e.t.c.
     </description>
   </parameter>
   

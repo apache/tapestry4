@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005-2009 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,17 +14,25 @@
 
 package org.apache.tapestry.html;
 
-import static org.easymock.EasyMock.expect;
+import java.io.PrintWriter;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.IRender;
+import org.apache.tapestry.util.ContentType;
+import org.apache.tapestry.markup.MarkupWriterSource;
+import org.apache.tapestry.markup.MarkupWriterImpl;
+import org.apache.tapestry.markup.AsciiMarkupFilter;
 import org.testng.annotations.Test;
 
+import static org.easymock.EasyMock.*;
+import org.easymock.IAnswer;
+
 /**
- * Tests for the {@link org.apache.tapestry.html.Relation}&nbsp; component.
+ * Tests for the {@link org.apache.tapestry.html.Relation} component.
  * 
  * @author Andreas Andreou
  * @since 4.1.1
@@ -32,7 +40,8 @@ import org.testng.annotations.Test;
 @Test(sequential=true)
 public class TestRelation extends BaseComponentTestCase
 {
-    
+    private static final String SYSTEM_NEWLINE = (String)java.security.AccessController.doPrivileged(
+            new sun.security.action.GetPropertyAction("line.separator"));
     /**
      * Test that Relation does nothing when the entire page is rewinding
      */
@@ -121,7 +130,64 @@ public class TestRelation extends BaseComponentTestCase
         }
 
         verify();         
-    }    
+    }
+
+    public void testIeStyle()
+    {
+        IMarkupWriter writer = newBufferWriter();
+        IRequestCycle cycle = newCycle(false);
+        Location componentLocation = newMock(Location.class);
+        StringBuffer shellOutput = new StringBuffer();
+
+        MarkupWriterSource source = newMock(MarkupWriterSource.class);
+        expect(source.newMarkupWriter(isA(PrintWriter.class), isA(ContentType.class))).andAnswer(
+                new IAnswer<IMarkupWriter>() {
+                    public IMarkupWriter answer() throws Throwable {
+                        return new MarkupWriterImpl("text/html",
+                                (PrintWriter) getCurrentArguments()[0],
+                                new AsciiMarkupFilter());
+                    }
+                }
+        );
+
+        Relation relation = newInstance(Relation.class,
+                "location", componentLocation,
+                "markupWriterSource", source,
+                "useBody", true,
+                "ieCondition", "IE"
+        );
+
+        relation.addBody(new IRender()
+        {
+            public void render(IMarkupWriter writer, IRequestCycle cycle)
+            {
+                writer.print("Some css rules");
+            }
+        });
+
+        trainResponseBuilder(cycle, writer);
+
+        Shell shell = newInstance(Shell.class, "contentBuffer", shellOutput);
+
+        expect(cycle.renderStackPush(relation)).andReturn(relation);
+
+        trainGetShellFromCycle(cycle, shell);
+
+        expect(cycle.renderStackPop()).andReturn(relation);
+
+        replay();
+
+        relation.render(writer, cycle);
+
+        // nothing should be output - just pushed to Shell
+        assertBuffer("");
+
+        // now check what Shell has gathered
+        assertEquals(shellOutput.toString(), SYSTEM_NEWLINE + "<!--[if IE]>" + SYSTEM_NEWLINE +
+                "<style type=\"text/css\">Some css rules</style>" + SYSTEM_NEWLINE +
+                "<![endif]-->" + SYSTEM_NEWLINE);
+        verify();
+    }
     
     protected void trainGetShellFromCycle(IRequestCycle cycle, Shell shell)
     {
