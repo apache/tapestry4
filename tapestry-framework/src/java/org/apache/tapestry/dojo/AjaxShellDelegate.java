@@ -42,9 +42,6 @@ public class AjaxShellDelegate implements IRender {
     /** Client side critical log level. */
     public static final String BROWSER_LOG_CRITICAL="CRITICAL";
 
-    private static final String SYSTEM_NEWLINE= (String)java.security.AccessController.doPrivileged(
-      new sun.security.action.GetPropertyAction("line.separator"));    
-
     /** Default list of pre-bundled dojo supported locales. */
     protected String[] SUPPORTED_LOCALES = { "en-us", "de-de", "de", "en-gb",
                                              "es-es", "es", "fr-fr", "fr", "zh-cn",
@@ -137,43 +134,59 @@ public class AjaxShellDelegate implements IRender {
 
         // Write the required script includes and dojo.requires
 
-        StringBuffer str = new StringBuffer("<script type=\"text/javascript\">");
-        str.append("djConfig = ").append(dojoConfig.toString())
-          .append(" </script>")
-          .append(SYSTEM_NEWLINE).append(SYSTEM_NEWLINE);
+        writer.begin("script");
+        writer.attribute("type", "text/javascript");
+        writer.printRaw("djConfig = ");
+        writer.printRaw(dojoConfig.toString());
+        writer.printRaw(" ");
+        writer.end();
+        writer.println();
+        writer.println();
 
         // include the core dojo.js package
 
         if (_dojoSource!=null)
         {
-            str.append("<script type=\"text/javascript\" src=\"")
-              .append(_dojoSource.buildURL()).append("\"></script>");
+            writer.begin("script");
+            writer.attribute("type", "text/javascript");
+            writer.attribute("src", _dojoSource.buildURL());
+            writer.end();
         }
 
         if (page.hasFormComponents() && _dojoFormSource!=null)
         {
-            str.append("<script type=\"text/javascript\" src=\"")
-              .append(_dojoFormSource.buildURL()).append("\"></script>");
+            writer.begin("script");
+            writer.attribute("type", "text/javascript");
+            writer.attribute("src", _dojoFormSource.buildURL());
+            writer.end();
         }
 
         if (page.hasWidgets() && _dojoWidgetSource!=null)
         {
-            str.append("<script type=\"text/javascript\" src=\"")
-              .append(_dojoWidgetSource.buildURL()).append("\"></script>");
+            writer.begin("script");
+            writer.attribute("type", "text/javascript");
+            writer.attribute("src", _dojoWidgetSource.buildURL());
+            writer.end();            
         }
 
         // configure basic dojo properties , logging includes
 
         if (_debug)
         {
-            String logRequire = _consoleEnabled ? "dojo.require(\"dojo.debug.console\");" + SYSTEM_NEWLINE
-                                : "dojo.require(\"dojo.logging.Logger\");" + SYSTEM_NEWLINE;
+            String logRequire = _consoleEnabled ? "dojo.require(\"dojo.debug.console\");"
+                                : "dojo.require(\"dojo.logging.Logger\");";
 
-            str.append(SYSTEM_NEWLINE).append("<script type=\"text/javascript\">").append(SYSTEM_NEWLINE);
-            str.append(logRequire)
-              .append("dojo.log.setLevel(dojo.log.getLevel(\"").append(_browserLogLevel)
-              .append("\"));").append(SYSTEM_NEWLINE)
-              .append("</script>");
+            writer.println();
+            writer.begin("script");
+            writer.attribute("type", "text/javascript");
+            writer.println();
+            writer.printRaw(logRequire);
+            writer.println();
+            writer.printRaw("dojo.log.setLevel(dojo.log.getLevel(\"");
+            writer.printRaw(_browserLogLevel);
+            writer.printRaw("\"));");
+            writer.println();
+            writer.end();
         }
 
         // module path registration to tapestry javascript sources
@@ -186,29 +199,42 @@ public class AjaxShellDelegate implements IRender {
                 tapestryUrl = tapestryUrl.substring(0, tapestryUrl.length() - 1);
             }
 
-            str.append(SYSTEM_NEWLINE).append("<script type=\"text/javascript\">").append(SYSTEM_NEWLINE)
-              .append("dojo.registerModulePath(\"tapestry\", \"")
-              .append(tapestryUrl).append("\");").append(SYSTEM_NEWLINE);
-            str.append("</script>").append(SYSTEM_NEWLINE);
+            writer.println();
+            writer.begin("script");
+            writer.attribute("type", "text/javascript");
+            writer.println();
+            writer.printRaw("dojo.registerModulePath(\"tapestry\", \"");
+            writer.printRaw(tapestryUrl);
+            writer.printRaw("\");");
+            writer.println();
+            writer.end();
+            writer.println();            
         }
 
         // include core tapestry.js package
 
         if (_tapestrySource!=null)
         {
-            str.append("<script type=\"text/javascript\" src=\"")
-              .append(_tapestrySource.buildURL()).append("\"></script>");
+            writer.begin("script");
+            writer.attribute("type", "text/javascript");
+            writer.attribute("src", _tapestrySource.buildURL());
+            writer.end();
         }
 
         // namespace registration
 
-        str.append(SYSTEM_NEWLINE).append("<script type=\"text/javascript\">").append(SYSTEM_NEWLINE);
-        str.append("dojo.require(\"tapestry.namespace\");").append(SYSTEM_NEWLINE)
-          .append("tapestry.requestEncoding='")
-          .append(cycle.getEngine().getOutputEncoding()).append("';")
-          .append(SYSTEM_NEWLINE).append("</script>");
+        writer.println();
+        writer.begin("script");
+        writer.attribute("type", "text/javascript");
+        writer.println();
+        writer.printRaw("dojo.require(\"tapestry.namespace\");");
+        writer.println();
+        writer.printRaw("tapestry.requestEncoding='");
+        writer.printRaw(cycle.getEngine().getOutputEncoding());
+        writer.printRaw("';");
+        writer.println();
+        writer.end();
 
-        writer.printRaw(str.toString());
         writer.println();
     }
 

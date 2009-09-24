@@ -99,11 +99,6 @@ public abstract class Shell extends AbstractComponent
             if (delegate != null)
                 delegate.render(writer, cycle);
 
-            IRender ajaxDelegate = getAjaxDelegate();
-
-            if (ajaxDelegate != null)
-                ajaxDelegate.render(writer, cycle);
-
             IAsset stylesheet = getStylesheet();
 
             if (stylesheet != null)
@@ -130,6 +125,11 @@ public abstract class Shell extends AbstractComponent
             List relations = getRelations();
             if (relations != null)
                 writeRelations(writer, relations);
+
+            IRender ajaxDelegate = getAjaxDelegate();
+
+            if (ajaxDelegate != null)
+                ajaxDelegate.render(writer, cycle);
 
             StringBuffer additionalContent = getContentBuffer();
             if (additionalContent != null)
