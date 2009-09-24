@@ -399,13 +399,14 @@
                         </tag>
                     </tags>
                     <links>
-                        <link>http://hivemind.apache.org/hivemind/apidocs/</link>
+                        <link>http://hivemind.apache.org/hivemind1/hivemind/apidocs/</link>
                         <link>http://java.sun.com/j2se/1.4.2/docs/api/</link>
                         <link>http://java.sun.com/products/servlet/2.3/javadoc/</link>
                         <link>http://jakarta.apache.org/commons/codec/api-release/</link>
                         <link>http://jakarta.apache.org/commons/fileupload/apidocs/</link>
                         <link>http://jakarta.apache.org/commons/logging/apidocs/</link>
-                        <link>http://www.ognl.org/2.6.9/Documentation/javadoc/</link>
+                        <!--link>http://www.ognl.org/2.6.9/Documentation/javadoc/</link-->
+						<link>http://www.opensymphony.com/ognl/api/</link>
                     </links>
                     <stylesheetfile>${basedir}/src/site/resources/css/jdstyle.css</stylesheetfile>
                 </configuration>
@@ -437,18 +438,7 @@
     <repositories>
         <repository>
             <id>apache.snapshots</id>
-            <url>http://people.apache.org/repo/m2-snapshot-repository</url>
-        </repository>
-        <repository>
-            <id>opencomponentry.com</id>
-            <name>Open Componentry OGNL Repository</name>
-            <url>http://opencomponentry.com/repository/m2-snapshot-repo</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
+			<url>http://repository.apache.org/snapshots</url>
         </repository>
         <repository>
             <id>openqa</id>
@@ -460,7 +450,7 @@
     <pluginRepositories>
         <pluginRepository>
             <id>apache.snapshots</id>
-            <url>http://people.apache.org/repo/m2-snapshot-repository</url>
+			<url>http://repository.apache.org/snapshots</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
