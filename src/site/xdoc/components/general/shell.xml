@@ -214,6 +214,27 @@
                             includes to be overriden.
                         </td>
                     </tr>
+				</table>
+
+          		<p>
+				Parameters used to configure the default 
+                <a href="../../apidocs/org/apache/tapestry/dojo/AjaxShellDelegate.html">ajaxDelegate</a> :
+        	        <span class="info">
+					<strong>Info:</strong>
+					<p>If you've bound the ajaxDelegate parameter to a custom value, 
+					the parameters that follow will not be used (usually those
+					custom delegates will provide different means for configuration). </p>
+					</span>
+				</p> 
+
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Default</th>
+                        <th>Description</th>
+                    </tr>
                     <tr>
                         <td>browserLogLevel</td>
                         <td>String - One of [DEBUG,INFO,WARNING,ERROR,CRITICAL]</td>
@@ -382,6 +403,37 @@
                 </p>
 
             </section>
+
+			<section name="Order of Rendered Content">
+
+				<ul>
+					<li>Doctype</li>
+					<li>Tapestry metadata as comments (optional)</li>
+					<li><code>&lt;html&gt;</code> with informal parameters</li>
+					<li><code>&lt;head&gt;</code></li>
+					<li><code>&lt;meta&gt;</code> related to content generator, caching, content type and refresh (optional)</li>
+					<li><code>&lt;base&gt;</code> (optional)</li>
+					<li><code>&lt;title&gt;</code></li>
+					<li>Rendering of delegate parameter</li>
+					<li>Stylesheets as defined in the stylesheet and stylesheets parameters</li>
+					<li>Stylesheets and <code>&lt;link&gt;</code> to documents as discovered 
+					from <a href="style.html">Style</a> and <a href="relation.html">Relation</a> components within the rendered page
+					</li>
+					<li>Rendering of ajaxDelegate parameter
+	        	        <span class="info">
+						<strong>Info:</strong>
+						<p>Prior to 4.1.7, the ajaxDelegate would render one step earlier
+						(before the <a href="style.html">Style</a> and <a href="relation.html">Relation</a> components)
+						</p>
+						</span>
+					</li>
+					<li>Rendering of any additional content included via <a href="../../apidocs/org/apache/tapestry/html/Shell.html#includeAdditionalContent(java.lang.String)">Shell#includeAdditionalContent(String)</a>
+					</li>
+					<li><code>&lt;/head&gt;</code></li>
+					<li>Rendering of the component's body</li>
+					<li><code>&lt;/html&gt;</code> and optional comment with the elapsed render time</li>
+				</ul>
+			</section>
 
             <section name="Examples">
 

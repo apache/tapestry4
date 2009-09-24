@@ -87,6 +87,15 @@
                         <td></td>
                         <td>Specifies on which device this stylesheet will apply.</td>
                     </tr>                                                                                                 
+
+                    <tr>
+                        <td>ieCondition</td>
+                        <td>String</td>
+                        <td>no</td>
+                        <td></td>
+                        <td>If specified, the normal output of the component will be wrapped within a conditional comment 
+						using the provided condition. Useful for targeting the styles or the css to specific IE browsers.</td>
+                    </tr>                                                                                                 
                 </table>
 
                 <p>
