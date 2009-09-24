@@ -70,6 +70,12 @@
                     <a href="renderblock.html">RenderBlock</a>
                     component can be passed a Block instance, which will trigger the Block to render
                     its body.
+                    <span class="warn">
+						<strong>Warning:</strong>
+						<p>Even though a Block may not render at all, the pageBeginRender method of the
+						components it includes will still get invoked. Also see related warning in <a href="renderblock.html">RenderBlock</a>.
+						</p>
+					</span>
                 </p>
 
                 <p>
