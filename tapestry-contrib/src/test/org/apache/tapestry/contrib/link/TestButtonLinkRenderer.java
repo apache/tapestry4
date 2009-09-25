@@ -30,7 +30,7 @@ public class TestButtonLinkRenderer extends BaseLinkRendererTestCase {
                 "class", "info");
 
         assertLinkRenderer(linkRenderer, linkComponent,
-                "<button type=\"button\" onclick=\"window.location='my.site'\" class=\"info\"></button>",
+                "<button type=\"button\" class=\"info\" onclick=\"window.location='my.site'\"></button>",
                 "");
     }
 
@@ -41,11 +41,7 @@ public class TestButtonLinkRenderer extends BaseLinkRendererTestCase {
                 "onclick", "alert('hi')");
 
         assertLinkRenderer(linkRenderer, linkComponent,
-                "<button type=\"button\" onclick=\"alert('hi')\"></button>",
-                // TODO: correct is
-                // "<button type=\"button\" onclick=\"window.location='my.site'\"></button>"
-                // or even better (TAPESTRY-2251)
-                // "<button type=\"button\" onclick=\"alert('hi');window.location='my.site'\"></button>"
+                "<button type=\"button\" onclick=\"alert('hi') ;window.location='my.site'\"></button>",
                 "");
     }
 
