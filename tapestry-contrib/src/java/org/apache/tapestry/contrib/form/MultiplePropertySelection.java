@@ -155,10 +155,6 @@ public abstract class MultiplePropertySelection extends AbstractFormComponent
         renderer.endRender(this, writer, cycle);
     }
 
-    /**
-     * @see org.apache.tapestry.form.AbstractRequirableField#rewindFormComponent(org.apache.tapestry.IMarkupWriter,
-     *      org.apache.tapestry.IRequestCycle)
-     */
     protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         // get all the values

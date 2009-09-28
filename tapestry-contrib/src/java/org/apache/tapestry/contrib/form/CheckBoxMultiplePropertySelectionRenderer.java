@@ -84,7 +84,7 @@ public class CheckBoxMultiplePropertySelectionRenderer
         writer.attribute("id", id);
         writer.attribute("value", model.getValue(index));
 
-        if (component.isDisabled())
+        if (component.isDisabled() || model.isDisabled(index))
             writer.attribute("disabled", "disabled");
 
         if (selected)
