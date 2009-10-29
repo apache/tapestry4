@@ -26,7 +26,7 @@ package org.apache.tapestry;
 public interface NestedMarkupWriter extends IMarkupWriter
 {
     /**
-     * Returns any makrup so far accumulated by the nested markup writer. When the nested markup
+     * Returns any markup so far accumulated by the nested markup writer. When the nested markup
      * writer is closed, it invokes {@link org.apache.tapestry.IMarkupWriter#printRaw(String)},
      * with this content, on its parent markup writer.
      * <p>

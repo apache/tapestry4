@@ -164,6 +164,58 @@ public class TestAssetService extends TestBase {
         verify();        
     }
 
+    public void test_Gzip_Response() throws Exception
+    {
+        String requestedResource = "/org/apache/tapestry/pages/Exception.css";
+        WebResponse response = newMock(WebResponse.class);
+        IRequestCycle cycle = newMock(IRequestCycle.class);
+
+        ClassResolver resolver = new DefaultClassResolver();
+        URLConnection url = resolver.getResource(requestedResource).openConnection();
+
+        AssetService service = newAssetServiceAllowingGzip(requestedResource, url, cycle, response, resolver);
+
+        response.setHeader("Content-Encoding", "gzip");
+
+        final int originalLength = url.getContentLength();
+        response.setHeader(EasyMock.matches("ETag"),
+                EasyMock.matches("W/\".*-" + url.getLastModified() + "\""));
+        response.setContentLength(EasyMock.lt(originalLength));
+
+        expect(response.getOutputStream(new ContentType("text/css"))).andReturn(new ByteArrayOutputStream());
+
+        replay();
+
+        service.service(cycle);
+
+        verify();
+    }
+
+    public void test_Gzip_Disabled_Response() throws Exception
+    {
+        String requestedResource = "/org/apache/tapestry/pages/Exception.css";
+        WebResponse response = newMock(WebResponse.class);
+        IRequestCycle cycle = newMock(IRequestCycle.class);
+
+        ClassResolver resolver = new DefaultClassResolver();
+        URLConnection url = resolver.getResource(requestedResource).openConnection();
+
+        AssetService service = newAssetServiceAllowingGzip(requestedResource, url, cycle, response, resolver);
+        service.setNeverGzip(true);
+
+        final int originalLength = url.getContentLength();
+        response.setHeader("ETag", "W/\"" + originalLength + "-" + url.getLastModified() + "\"");
+        response.setContentLength(originalLength);
+
+        expect(response.getOutputStream(new ContentType("text/css"))).andReturn(new ByteArrayOutputStream());
+
+        replay();
+
+        service.service(cycle);
+
+        verify();
+    }
+
     public void test_Invalid_Resource()
             throws Exception
     {
@@ -210,5 +262,38 @@ public class TestAssetService extends TestBase {
         service.service(cycle);
 
         verify();
+    }
+
+    private AssetService newAssetServiceAllowingGzip(String requestedResource, URLConnection url,
+                                         IRequestCycle cycle, WebResponse response, ClassResolver resolver)
+    {
+        WebRequest request = newMock(WebRequest.class);
+        checkOrder(request, false);
+        WebContext context = newMock(WebContext.class);
+        ResourceMatcher matcher = newMock(ResourceMatcher.class);
+
+        AssetService service = new AssetService();
+        service.setRequest(request);
+        service.setResponse(response);
+        service.setLog(LogFactory.getLog("test"));
+        service.setUnprotectedMatcher(matcher);
+        service.setClassResolver(resolver);
+        service.setContext(context);
+
+        expect(cycle.getParameter("path")).andReturn(requestedResource);
+        expect(cycle.getParameter("digest")).andReturn(null);
+
+        expect(matcher.containsResource(requestedResource)).andReturn(true);
+
+        expect(request.getDateHeader("If-Modified-Since")).andReturn(-1L);
+        expect(context.getMimeType(requestedResource)).andReturn("text/css");
+
+        response.setDateHeader("Last-Modified", url.getLastModified());
+        response.setDateHeader("Expires", service._expireTime);
+        response.setHeader("Cache-Control", "public, max-age=" + (AssetService.MONTH_SECONDS * 3));
+
+        expect(request.getHeader("User-Agent")).andReturn("Mozilla").anyTimes();
+        expect(request.getHeader("Accept-Encoding")).andReturn("gzip").anyTimes();
+        return service;
     }
 }

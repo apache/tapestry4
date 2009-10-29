@@ -52,7 +52,7 @@ import java.util.zip.GZIPOutputStream;
  * that encodes the path of a resource within the classpath. The {@link #service(IRequestCycle)}
  * method reads the resource and streams it out.
  * <p>
- * TBD: Security issues. Should only be able to retrieve a resource that was previously registerred
+ * TBD: Security issues. Should only be able to retrieve a resource that was previously registered
  * in some way ... otherwise, hackers will be able to suck out the .class files of the application!
  * 
  * @author Howard Lewis Ship
@@ -122,6 +122,9 @@ public class AssetService implements IEngineService
 
     /** @since 4.1 */
     private ResourceMatcher _unprotectedMatcher;
+
+    /** @since 4.1.7 */
+    private boolean _neverGzip;    
     
     /**
      * Startup time for this service; used to set the Last-Modified response header.
@@ -266,7 +269,7 @@ public class AssetService implements IEngineService
 
     /**
      * Utility that helps to resolve css file relative resources included
-     * in a css temlpate via "url('../images/foo.gif')" or fix paths containing 
+     * in a css template via "url('../images/foo.gif')" or fix paths containing 
      * relative resource ".." style notation.
      * 
      * @param path The incoming path to check for relativity.
@@ -409,7 +412,7 @@ public class AssetService implements IEngineService
             
             // compress javascript responses when possible
             
-            if (GzipUtil.shouldCompressContentType(contentType) && GzipUtil.isGzipCapable(_request))
+            if (!_neverGzip && GzipUtil.shouldCompressContentType(contentType) && GzipUtil.isGzipCapable(_request))
             {    
                 if (cache.getGzipData() == null)
                 {    
@@ -485,7 +488,13 @@ public class AssetService implements IEngineService
     {
         _unprotectedMatcher = matcher;
     }
-    
+
+    /** @since 4.1.7 */
+    public void setNeverGzip(boolean neverGzip)
+    {
+        _neverGzip = neverGzip;
+    }
+
     public void setLog(Log log)
     {
         _log = log;
