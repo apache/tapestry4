@@ -324,7 +324,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-assembly-plugin</artifactId>
-		    <version>2.2-beta-1</version>
+                    <version>2.2-beta-4</version>
                     <inherited>true</inherited>
                     <configuration>
                         <descriptors>
@@ -333,21 +333,6 @@
                         </descriptors>
                     </configuration>
                 </plugin>
-                <!-- <plugin>
-                    <groupId>org.codehaus.plexus</groupId>
-                    <artifactId>plexus-io</artifactId>
-                    <version>1.0-alpha-2-SNAPSHOT</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.codehaus.plexus</groupId>
-                    <artifactId>plexus-archiver</artifactId>
-                    <version>1.0-alpha-10-SNAPSHOT</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.codehaus.plexus</groupId>
-                    <artifactId>plexus-active-collections</artifactId>
-                    <version>1.0-beta-2-SNAPSHOT</version>
-                </plugin> -->
             </plugins>
         </pluginManagement>
     </build>
@@ -368,6 +353,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>2.1.2</version>
                 <inherited>true</inherited>
                 <reportSets>
                     <reportSet>
@@ -390,7 +376,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.3</version>
                 <configuration>
                     <linksource>true</linksource>
                     <aggregate>true</aggregate>
@@ -411,8 +396,7 @@
                         <link>http://jakarta.apache.org/commons/codec/api-release/</link>
                         <link>http://jakarta.apache.org/commons/fileupload/apidocs/</link>
                         <link>http://jakarta.apache.org/commons/logging/apidocs/</link>
-                        <!--link>http://www.ognl.org/2.6.9/Documentation/javadoc/</link-->
-						<link>http://www.opensymphony.com/ognl/api/</link>
+                        <link>http://www.opensymphony.com/ognl/api/</link>
                     </links>
                     <stylesheetfile>${basedir}/src/site/resources/css/jdstyle.css</stylesheetfile>
                 </configuration>
@@ -420,7 +404,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
-                <version>2.0</version>
                 <inherited>true</inherited>
             </plugin>
         </plugins>
