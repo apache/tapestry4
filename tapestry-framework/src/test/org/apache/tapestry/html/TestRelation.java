@@ -183,8 +183,8 @@ public class TestRelation extends BaseComponentTestCase
         assertBuffer("");
 
         // now check what Shell has gathered
-        assertEquals(shellOutput.toString(), SYSTEM_NEWLINE + "<!--[if IE]>" + SYSTEM_NEWLINE +
-                "<style type=\"text/css\">Some css rules</style>" + SYSTEM_NEWLINE +
+        assertEquals(shellOutput.toString(), "<!--[if IE]>" + 
+                "<style type=\"text/css\">Some css rules</style>" + 
                 "<![endif]-->" + SYSTEM_NEWLINE);
         verify();
     }

@@ -27,14 +27,11 @@ public class MarkupUtils {
 
     public static void beginConditionalComment(IMarkupWriter writer, String condition)
     {
-        writer.println();
-        writer.printRaw("<!--[if " + condition + "]>");
-        writer.println();
+        writer.printRaw("<!--[if " + condition + "]>");        
     }
 
     public static void endConditionalComment(IMarkupWriter writer)
     {
-        writer.println();
         writer.printRaw("<![endif]-->");
         writer.println();
     }
