@@ -167,7 +167,7 @@ abstract class AbstractSubmit extends AbstractFormComponent implements IDynamicI
 
             str.append(")");
             
-            writer.attribute("onClick", str.toString());
+            writer.attribute("onclick", str.toString());
             return;
         }
 

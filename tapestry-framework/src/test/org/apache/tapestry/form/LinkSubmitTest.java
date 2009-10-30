@@ -148,7 +148,7 @@ public class LinkSubmitTest extends BaseComponentTestCase
         verify();
 
         assertBuffer("<a href=\"http://submit\" " +
-                     "onClick=\"tapestry.form.submit('form', 'submitMe'," +
+                     "onclick=\"tapestry.form.submit('form', 'submitMe'," +
                      "{async:true,json:false,url:this.href}); return false;\" id=\"submitMe\">BODY</a>");
     }
 

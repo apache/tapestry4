@@ -278,7 +278,7 @@ public class TestSubmit extends BaseFormComponentTestCase
         
         expect(form.getClientId()).andReturn("formtest");
         
-        writer.attribute("onClick", "tapestry.form.cancel('formtest','fred')");
+        writer.attribute("onclick", "tapestry.form.cancel('formtest','fred')");
         
         writer.closeTag();
 

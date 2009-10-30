@@ -27,13 +27,13 @@ public class LinkEventType
      * Type for <code>onMouseOver</code>. This may also be called "focus".
      */
 
-    public static final LinkEventType MOUSE_OVER = new LinkEventType("MOUSE_OVER", "onMouseOver");
+    public static final LinkEventType MOUSE_OVER = new LinkEventType("MOUSE_OVER", "onmouseover");
 
     /**
      * Type for <code>onMouseOut</code>. This may also be called "blur".
      */
 
-    public static final LinkEventType MOUSE_OUT = new LinkEventType("MOUSE_OUT", "onMouseOut");
+    public static final LinkEventType MOUSE_OUT = new LinkEventType("MOUSE_OUT", "onmouseout");
 
     /**
      * Type for <code>onClick</code>.
@@ -41,7 +41,7 @@ public class LinkEventType
      * @since 1.0.1
      */
 
-    public static final LinkEventType CLICK = new LinkEventType("CLICK", "onClick");
+    public static final LinkEventType CLICK = new LinkEventType("CLICK", "onclick");
 
     /**
      * Type for <code>onDblClick</code>.
@@ -49,7 +49,7 @@ public class LinkEventType
      * @since 1.0.1
      */
 
-    public static final LinkEventType DOUBLE_CLICK = new LinkEventType("DOUBLE_CLICK", "onDblClick");
+    public static final LinkEventType DOUBLE_CLICK = new LinkEventType("DOUBLE_CLICK", "ondblclick");
 
     /**
      * Type for <code>onMouseDown</code>.
@@ -57,7 +57,7 @@ public class LinkEventType
      * @since 1.0.1.
      */
 
-    public static final LinkEventType MOUSE_DOWN = new LinkEventType("MOUSE_DOWN", "onMouseDown");
+    public static final LinkEventType MOUSE_DOWN = new LinkEventType("MOUSE_DOWN", "onmousedown");
 
     /**
      * Type for <code>onMouseUp</code>.
@@ -65,7 +65,7 @@ public class LinkEventType
      * @since 1.0.1
      */
 
-    public static final LinkEventType MOUSE_UP = new LinkEventType("MOUSE_UP", "onMouseUp");
+    public static final LinkEventType MOUSE_UP = new LinkEventType("MOUSE_UP", "onmouseup");
 
     private final String _name;
 
