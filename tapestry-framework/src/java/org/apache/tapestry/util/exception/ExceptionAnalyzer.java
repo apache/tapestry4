@@ -101,30 +101,15 @@ public class ExceptionAnalyzer
     }
 
     protected Throwable buildDescription(Throwable exception)
-    {
-        BeanInfo info;
-        Class exceptionClass;
-        ExceptionProperty property;
-        PropertyDescriptor[] descriptors;
-        PropertyDescriptor descriptor;
-        Throwable next = null;
-        int i;
-        Object value;
-        Method method;
-        ExceptionProperty[] properties;
-        ExceptionDescription description;
-        String stringValue;
-        String message;
-        String[] stackTrace = null;
-
+    {   
         propertyDescriptions.clear();
-
-        message = exception.getMessage();
-        exceptionClass = exception.getClass();
+        
+        Class exceptionClass = exception.getClass();
 
         // Get properties, ignoring those in Throwable and higher
         // (including the 'message' property).
 
+        BeanInfo info;
         try
         {
             info = Introspector.getBeanInfo(exceptionClass, Throwable.class);
@@ -134,13 +119,16 @@ public class ExceptionAnalyzer
             return null;
         }
 
-        descriptors = info.getPropertyDescriptors();
+        Object value;
+        Throwable next = null;
+        String message = exception.getMessage();
+        PropertyDescriptor[] descriptors = info.getPropertyDescriptors();
 
-        for (i = 0; i < descriptors.length; i++)
+        for (int i = 0; i < descriptors.length; i++)
         {
-            descriptor = descriptors[i];
+        	PropertyDescriptor descriptor = descriptors[i];
 
-            method = descriptor.getReadMethod();
+            Method method = descriptor.getReadMethod();
             if (method == null)
                 continue;
 
@@ -175,29 +163,35 @@ public class ExceptionAnalyzer
                 continue;
             }
 
-            stringValue = value.toString().trim();
+            String stringValue = value.toString();
+            
+            if (stringValue == null)
+            	continue;
+            
+            stringValue = stringValue.trim();            
 
             if (stringValue.length() == 0)
                 continue;
 
-            property = new ExceptionProperty(descriptor.getDisplayName(), value);
+            ExceptionProperty property = new ExceptionProperty(descriptor.getDisplayName(), value);
 
             propertyDescriptions.add(property);
         }
 
         // If exhaustive, or in the deepest exception (where there's no next)
         // the extract the stack trace.
-
+        String[] stackTrace = null;
+        
         if (next == null || exhaustive)
             stackTrace = getStackTrace(exception);
 
         // Would be nice to sort the properties here.
 
-        properties = new ExceptionProperty[propertyDescriptions.size()];
+        ExceptionProperty[] properties = new ExceptionProperty[propertyDescriptions.size()];
 
         ExceptionProperty[] propArray = (ExceptionProperty[]) propertyDescriptions.toArray(properties);
 
-        description = new ExceptionDescription(exceptionClass.getName(), message, propArray, stackTrace);
+        ExceptionDescription description = new ExceptionDescription(exceptionClass.getName(), message, propArray, stackTrace);
 
         exceptionDescriptions.add(description);
 
