@@ -100,8 +100,7 @@ public class DataSqueezerImpl implements DataSqueezer
 
             if (_adaptorByPrefix[offset] != null)
                 throw new IllegalArgumentException(Tapestry.format(
-                        "DataSqueezer.adaptor-prefix-taken",
-                        prefix.substring(i, i)));
+                		"DataSqueezer.adaptor-prefix-taken", "" + ch));
 
             _adaptorByPrefix[offset] = adaptor;
 
@@ -168,7 +167,7 @@ public class DataSqueezerImpl implements DataSqueezer
         if (offset >= 0 && offset < _adaptorByPrefix.length)
             adaptor = _adaptorByPrefix[offset];
 
-        // If the adaptor is not otherwise recognized, the it is simply
+        // If the adaptor is not otherwise recognized, then it is simply
         // an encoded String (the StringAdaptor may not have added
         // a prefix).
 
