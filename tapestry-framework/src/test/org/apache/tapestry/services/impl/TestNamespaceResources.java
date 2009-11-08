@@ -18,6 +18,7 @@ import static org.easymock.EasyMock.expect;
 
 import java.net.URL;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.BaseComponentTestCase;
@@ -99,7 +100,7 @@ public class TestNamespaceResources extends BaseComponentTestCase
         expect(assetSource.findAsset(parent, childPath, null, location)).andReturn(asset);
 
         expect(asset.getResourceLocation()).andReturn(child);
-    }
+    } 
 
     protected IAsset newAsset()
     {
@@ -165,4 +166,28 @@ public class TestNamespaceResources extends BaseComponentTestCase
 
         verify();
     }
+    
+    public void test_Get_Missing_Component_Specification()
+    {
+        Resource libraryResource = newResource();
+        ISpecificationSource source = newSource();
+        AssetSource assetSource = newAssetSource();
+        Location l = newLocation();
+
+        trainResolveChildResource(assetSource, libraryResource, "Missing_Foo.jwc", l, null);
+
+        replay();
+
+        NamespaceResources nr = new NamespaceResourcesImpl(source, assetSource);
+        
+        try {
+        	nr.getComponentSpecification(libraryResource, "Missing_Foo.jwc", l);
+        	
+        	fail("exception should be thrown when resource is missing");
+        } catch (ApplicationRuntimeException e) {System.out.println(e);
+        	assertEquals(e.getLocation(), l);
+        }
+
+        verify();
+    }    
 }

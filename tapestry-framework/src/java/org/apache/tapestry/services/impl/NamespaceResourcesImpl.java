@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.services.impl;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.Defense;
@@ -60,6 +61,9 @@ public class NamespaceResourcesImpl implements NamespaceResources
         IAsset childAsset = _assetSource.findAsset(libraryResource, path, null, location);
 
         Resource childResource = childAsset.getResourceLocation();
+        
+        if (childResource==null)
+        	throw new ApplicationRuntimeException(ImplMessages.templatePathNotFound(path), location, null);
         
         return childResource;
     }

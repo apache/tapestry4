@@ -287,4 +287,9 @@ final class ImplMessages
     {
         return _formatter.getMessage("service-name-is-null");
     }
+    
+    static String templatePathNotFound(String path)
+    {
+        return _formatter.format("template-path-not-found", path);
+    }    
 }
