@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<!DOCTYPE specification PUBLIC 
+	"-//Primix Solutions//Tapestry Specification 1.0//EN"
+	"http://tapestry.primix.com/dtd/Tapestry_1_0.dtd">
+<!-- $Id$ -->
+
+<specification>
+	<class>tests.tapestry.SimpleRadioGroup</class>
+	
+	<parameters>
+		<allow-informal-parameters>no</allow-informal-parameters>
+		
+		<parameter>
+			<name>disabled</name>
+		</parameter>
+
+		<parameter>
+			<name>adaptor</name>
+			<java-type>com.primix.tapestry.components.SelectionAdaptor</java-type>
+			<required>yes</required>
+		</parameter>
+	</parameters>
+	
+	<components>
+		<component>
+			<id>group</id>
+			<type>RadioGroup</type>
+			
+			<bindings>
+				<inherited-binding>
+					<name>disabled</name>
+					<parameter-name>disabled</parameter-name>
+				</inherited-binding>
+			</bindings>
+		</component>
+
+		<component>
+			<id>e</id>
+			<type>Foreach</type>
+			
+			<bindings>
+				<binding>
+					<name>source</name>
+					<property-path>adaptor.options</property-path>
+				</binding>
+				
+				<binding>
+					<name>value</name>
+					<property-path>adaptor.currentSelection</property-path>
+				</binding>
+				
+				<binding>
+					<name>first</name>
+					<property-path>adaptor.first</property-path>
+				</binding>
+				
+				<binding>
+					<name>last</name>
+					<property-path>adaptor.last</property-path>
+				</binding>
+			</bindings>
+		</component>
+		
+		<component>
+			<id>ifNotFirst</id>
+			<type>Conditional</type>
+			
+			<bindings>
+				<binding>
+					<name>condition</name>
+					<property-path>adaptor.first</property-path>
+				</binding>
+				
+				<static-binding>
+					<name>invert</name>
+					<value>true</value>
+				</static-binding>
+			</bindings>
+		</component>
+		
+		<component>
+			<id>radio</id>
+			<type>Radio</type>
+			
+			<bindings>
+				<binding>
+					<name>selected</name>
+					<property-path>adaptor.selected</property-path>
+				</binding>
+			</bindings>
+		</component>
+		
+		<component>
+			<id>label</id>
+			<type>Insert</type>
+			
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>adaptor.currentSelection</property-path>
+				</binding>
+			</bindings>
+		</component>
+	</components>
+	
+</specification>

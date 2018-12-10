@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE specification PUBLIC 
+	"-//Primix Solutions//Tapestry Specification 1.0//EN"
+	"http://tapestry.primix.com/dtd/Tapestry_1_0.dtd">
+<!-- $Id$ -->
+
+<specification>
+	<class>com.primix.tapestry.BasePage</class>
+	
+	<components>
+		<component>
+			<id>border</id>
+			<type>Border</type>
+			
+			<bindings>
+				<static-binding>
+					<name>title</name>
+					<value>Debug</value>
+				</static-binding>
+			</bindings>
+		</component>
+		
+		<component>
+			<id>delegator</id>
+			<type>Delegator</type>
+			
+			<bindings>
+				<binding>
+					<name>delegate</name>
+					<property-path>application.showDebugDelegate</property-path>
+				</binding>
+			</bindings>
+		</component>
+	</components>
+	
+</specification>

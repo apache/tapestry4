@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!DOCTYPE specification PUBLIC 
+	"-//Primix Solutions//Tapestry Specification 1.0//EN"
+	"http://tapestry.primix.com/dtd/Tapestry_1_0.dtd">
+<!-- $Id$ -->
+
+<specification>
+	<class>tests.tapestry.ExceptionReport</class>
+	
+	<components>
+		<component>
+			<id>border</id>
+			<type>Border</type>
+			
+			<bindings>
+				<static-binding>
+					<name>title</name>
+					<value>Exception</value>
+				</static-binding>
+				
+				<static-binding>
+					<name>hideNavigation</name>
+					<value>true</value>
+				</static-binding>
+			</bindings>	
+		</component>
+		
+		<component>
+			<id>exceptionDisplay</id>
+			<type>ExceptionDisplay</type>
+			
+			<bindings>
+				<binding>
+					<name>exceptions</name>
+					<property-path>exceptions</property-path>
+				</binding>
+			</bindings>
+		</component>
+		
+		<component>
+			<id>restartLink</id>
+			<type>Service</type>
+			
+			<bindings>
+				<static-binding>
+					<name>service</name>
+					<value>restart</value>
+				</static-binding>
+			</bindings>
+		</component>
+		
+		<component>
+			<id>showDebug</id>
+			<type>Delegator</type>
+			
+			<bindings>
+				<binding>
+					<name>delegate</name>
+					<property-path>application.showDebugDelegate</property-path>
+				</binding>
+			</bindings>
+		</component>
+	</components>
+	
+</specification>

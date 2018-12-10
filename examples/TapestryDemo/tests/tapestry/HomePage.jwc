@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<!DOCTYPE specification PUBLIC 
+	"-//Primix Solutions//Tapestry Specification 1.0//EN"
+	"http://tapestry.primix.com/dtd/Tapestry_1_0.dtd">
+<!-- $Id$ -->
+
+<specification>
+	<class>tests.tapestry.HomePage</class>
+	
+	<components>
+		<component>
+			<id>border</id>
+			<type>Border</type>
+			
+			<bindings>
+				<static-binding>
+					<name>title</name>
+					<value>Simple Selection</value>
+				</static-binding>
+			</bindings>
+		</component>
+			
+		<component>
+			<id>insertActiveSelection</id>
+			<type>Insert</type>
+			
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>activeSelection</property-path>
+				</binding>
+			</bindings>
+		</component>
+		
+		<component>
+			<id>e</id>
+			<type>Foreach</type>
+			
+			<bindings>
+				<binding>
+					<name>source</name>
+					<property-path>selectionOptions</property-path>
+				</binding>
+				
+				<binding>
+					<name>value</name>
+					<property-path>currentSelection</property-path>
+				</binding>
+			</bindings>
+		</component>
+		
+		<component>
+			<id>changeSelection</id>
+			<type>Action</type>
+			
+			<bindings>
+				<binding>
+					<name>listener</name>
+					<property-path>listener</property-path>
+				</binding>
+			</bindings>
+		</component>
+		
+		<component>
+			<id>insertCurrentSelection</id>
+			<type>Insert</type>
+			
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>currentSelection</property-path>
+				</binding>
+			</bindings>
+		</component>
+			
+		<component>
+			<id>invalidPageLink</id>
+			<type>Page</type>
+			
+			<bindings>
+				<static-binding>
+					<name>page</name>
+					<value>unknown</value>
+				</static-binding>
+			</bindings>
+		</component>
+		
+		<component>
+			<id>classCastLink</id>
+			<type>Direct</type>
+			
+			<bindings>
+				<static-binding>
+					<name>listener</name>
+					<value>static value</value>
+				</static-binding>
+			</bindings>
+		</component>
+		
+		<component>
+			<id>badSpecification</id>
+			<type>Page</type>
+			
+			<bindings>
+				<static-binding>
+					<name>page</name>
+					<value>bad-spec</value>
+				</static-binding>
+			</bindings>
+		</component>
+		
+		<component>
+			<id>badTemplate</id>
+			<type>Page</type>
+			
+			<bindings>
+				<static-binding>
+					<name>page</name>
+					<value>bad-template</value>
+				</static-binding>
+			</bindings>
+		</component>
+	</components>
+</specification>
